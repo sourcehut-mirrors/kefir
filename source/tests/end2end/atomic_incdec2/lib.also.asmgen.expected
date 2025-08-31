@@ -49,17 +49,18 @@ __kefir_text_func_postdec_i8_begin:
     movq i8@GOTPCREL(%rip), %rsi
 _kefir_func_postdec_i8_label1:
     movb (%rsi), %al
-    movsx %al, %rdi
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $-1, %al
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgb %cl, (%rdx)
-    sete %al
-    movzx %al, %rax
-    test %al, %al
+    sete %cl
+    movzx %cl, %rcx
+    movsx %dil, %rax
+    test %cl, %cl
     jz _kefir_func_postdec_i8_label1
-    mov %rdi, %rax
     ret
 __kefir_text_func_postdec_i8_end:
 
@@ -135,17 +136,18 @@ __kefir_text_func_postinc_i8_begin:
     movq i8@GOTPCREL(%rip), %rsi
 _kefir_func_postinc_i8_label1:
     movb (%rsi), %al
-    movsx %al, %rdi
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $1, %al
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgb %cl, (%rdx)
-    sete %al
-    movzx %al, %rax
-    test %al, %al
+    sete %cl
+    movzx %cl, %rcx
+    movsx %dil, %rax
+    test %cl, %cl
     jz _kefir_func_postinc_i8_label1
-    mov %rdi, %rax
     ret
 __kefir_text_func_postinc_i8_end:
 
@@ -319,17 +321,18 @@ __kefir_text_func_postdec_i16_begin:
     movq i16@GOTPCREL(%rip), %rsi
 _kefir_func_postdec_i16_label1:
     movw (%rsi), %ax
-    movsx %ax, %rdi
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $-1, %ax
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgw %cx, (%rdx)
-    sete %al
-    movzx %al, %rax
-    test %al, %al
+    sete %cl
+    movzx %cl, %rcx
+    movsx %di, %rax
+    test %cl, %cl
     jz _kefir_func_postdec_i16_label1
-    mov %rdi, %rax
     ret
 __kefir_text_func_postdec_i16_end:
 
@@ -338,17 +341,18 @@ __kefir_text_func_postdec_i32_begin:
     movq i32@GOTPCREL(%rip), %rsi
 _kefir_func_postdec_i32_label1:
     movl (%rsi), %eax
-    movsx %eax, %rdi
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $-1, %eax
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    movzx %al, %rax
-    test %al, %al
+    sete %cl
+    movzx %cl, %rcx
+    movsx %edi, %rax
+    test %cl, %cl
     jz _kefir_func_postdec_i32_label1
-    mov %rdi, %rax
     ret
 __kefir_text_func_postdec_i32_end:
 
@@ -493,17 +497,18 @@ __kefir_text_func_postinc_i16_begin:
     movq i16@GOTPCREL(%rip), %rsi
 _kefir_func_postinc_i16_label1:
     movw (%rsi), %ax
-    movsx %ax, %rdi
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $1, %ax
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgw %cx, (%rdx)
-    sete %al
-    movzx %al, %rax
-    test %al, %al
+    sete %cl
+    movzx %cl, %rcx
+    movsx %di, %rax
+    test %cl, %cl
     jz _kefir_func_postinc_i16_label1
-    mov %rdi, %rax
     ret
 __kefir_text_func_postinc_i16_end:
 
@@ -512,17 +517,18 @@ __kefir_text_func_postinc_i32_begin:
     movq i32@GOTPCREL(%rip), %rsi
 _kefir_func_postinc_i32_label1:
     movl (%rsi), %eax
-    movsx %eax, %rdi
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $1, %eax
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    movzx %al, %rax
-    test %al, %al
+    sete %cl
+    movzx %cl, %rcx
+    movsx %edi, %rax
+    test %cl, %cl
     jz _kefir_func_postinc_i32_label1
-    mov %rdi, %rax
     ret
 __kefir_text_func_postinc_i32_end:
 

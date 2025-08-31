@@ -487,9 +487,8 @@ __kefir_text_func_conv16char_begin:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %dil, %rax
-    movb %al, -16(%rbp)
-    movb %al, -15(%rbp)
+    movb %dil, -16(%rbp)
+    movb %dil, -15(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp
@@ -521,9 +520,8 @@ __kefir_text_func_conv32char_begin:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %dil, %rax
-    movb %al, -16(%rbp)
-    movb %al, -15(%rbp)
+    movb %dil, -16(%rbp)
+    movb %dil, -15(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp
@@ -654,9 +652,8 @@ __kefir_text_func_conv32short_begin:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %di, %rax
-    movw %ax, -16(%rbp)
-    movw %ax, -14(%rbp)
+    movw %di, -16(%rbp)
+    movw %di, -14(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp
@@ -671,9 +668,8 @@ __kefir_text_func_uconv16char_begin:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %dil, %rax
-    movb %al, -16(%rbp)
-    movb %al, -15(%rbp)
+    movb %dil, -16(%rbp)
+    movb %dil, -15(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp
@@ -705,9 +701,8 @@ __kefir_text_func_uconv32char_begin:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %dil, %rax
-    movb %al, -16(%rbp)
-    movb %al, -15(%rbp)
+    movb %dil, -16(%rbp)
+    movb %dil, -15(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp
@@ -772,9 +767,8 @@ __kefir_text_func_uconv32short_begin:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %di, %rax
-    movw %ax, -16(%rbp)
-    movw %ax, -14(%rbp)
+    movw %di, -16(%rbp)
+    movw %di, -14(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp

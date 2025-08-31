@@ -1,0 +1,99 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global dst8
+.type dst8, @object
+.global src8
+.type src8, @object
+.global copy8
+.type copy8, @function
+.global dst16
+.type dst16, @object
+.global dst32
+.type dst32, @object
+.global dst64
+.type dst64, @object
+.global src16
+.type src16, @object
+.global src32
+.type src32, @object
+.global src64
+.type src64, @object
+.global copy16
+.type copy16, @function
+.global copy32
+.type copy32, @function
+.global copy64
+.type copy64, @function
+
+.section .text
+__kefir_text_section_begin:
+copy8:
+__kefir_text_func_copy8_begin:
+    movq src8@GOTPCREL(%rip), %rax
+    movb (%rax), %al
+    movq dst8@GOTPCREL(%rip), %rcx
+    xchgb (%rcx), %al
+    ret
+__kefir_text_func_copy8_end:
+
+copy16:
+__kefir_text_func_copy16_begin:
+    movq src16@GOTPCREL(%rip), %rax
+    movw (%rax), %ax
+    movq dst16@GOTPCREL(%rip), %rcx
+    xchgw (%rcx), %ax
+    ret
+__kefir_text_func_copy16_end:
+
+copy32:
+__kefir_text_func_copy32_begin:
+    movq src32@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    movq dst32@GOTPCREL(%rip), %rcx
+    xchgl (%rcx), %eax
+    ret
+__kefir_text_func_copy32_end:
+
+copy64:
+__kefir_text_func_copy64_begin:
+    movq src64@GOTPCREL(%rip), %rax
+    movq (%rax), %rax
+    movq dst64@GOTPCREL(%rip), %rcx
+    xchgq (%rcx), %rax
+    ret
+__kefir_text_func_copy64_end:
+
+__kefir_text_section_end:
+
+.section .bss
+dst8:
+    .skip 1
+
+src8:
+    .skip 1
+
+    .align 2
+dst16:
+    .skip 2
+
+    .align 4
+dst32:
+    .skip 4
+
+    .align 8
+dst64:
+    .skip 8
+
+    .align 2
+src16:
+    .skip 2
+
+    .align 4
+src32:
+    .skip 4
+
+    .align 8
+src64:
+    .skip 8
+

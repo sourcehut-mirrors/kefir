@@ -2952,21 +2952,103 @@ static kefir_result_t simplify_bits_extract(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t simplify_int_store(struct kefir_opt_function *func, const struct kefir_opt_instruction *instr,
+static kefir_result_t simplify_int_store(struct kefir_mem *mem, struct kefir_opt_function *func, const struct kefir_opt_instruction *instr,
                                          kefir_opt_instruction_ref_t *replacement_ref) {
-    const struct kefir_opt_instruction *arg1;
+    const struct kefir_opt_instruction *value_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(
-        &func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], &arg1));
-    if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_STORE &&
-         (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS ||
-          arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS)) ||
-        (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_STORE &&
-         (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
-          arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS)) ||
-        (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_STORE &&
-         (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
-          arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS))) {
-        *replacement_ref = arg1->operation.parameters.refs[0];
+        &func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], &value_instr));
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_STORE &&
+        (value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_int8_store(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], value_instr->operation.parameters.refs[0], &instr->operation.parameters.memory_access.flags, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_STORE &&
+        (value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_int16_store(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], value_instr->operation.parameters.refs[0], &instr->operation.parameters.memory_access.flags, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_STORE &&
+        (value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_int32_store(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], value_instr->operation.parameters.refs[0], &instr->operation.parameters.memory_access.flags, replacement_ref));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t simplify_int_atomic_store(struct kefir_mem *mem, struct kefir_opt_function *func, const struct kefir_opt_instruction *instr,
+                                         kefir_opt_instruction_ref_t *replacement_ref) {
+    const struct kefir_opt_instruction *value_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(
+        &func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], &value_instr));
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_STORE8 &&
+        (value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_atomic_store8(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], value_instr->operation.parameters.refs[0], instr->operation.parameters.atomic_op.model, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_STORE16 &&
+        (value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_atomic_store16(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], value_instr->operation.parameters.refs[0], instr->operation.parameters.atomic_op.model, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_STORE32 &&
+        (value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_atomic_store32(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], value_instr->operation.parameters.refs[0], instr->operation.parameters.atomic_op.model, replacement_ref));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t simplify_int_atomic_cmpxchg(struct kefir_mem *mem, struct kefir_opt_function *func, const struct kefir_opt_instruction *instr,
+                                         kefir_opt_instruction_ref_t *replacement_ref) {
+    const struct kefir_opt_instruction *compare_value_instr, *new_value_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(
+        &func->code, instr->operation.parameters.refs[1], &compare_value_instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(
+        &func->code, instr->operation.parameters.refs[2], &new_value_instr));
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8 &&
+        (compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS ||
+         compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS ||
+         compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+         compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+         compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange8(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], compare_value_instr->operation.parameters.refs[0], new_value_instr->id, instr->operation.parameters.atomic_op.model, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8 &&
+        (new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS ||
+         new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS ||
+         new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+         new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+         new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange8(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], compare_value_instr->id, new_value_instr->operation.parameters.refs[0], instr->operation.parameters.atomic_op.model, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16 &&
+        (compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+         compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+         compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange16(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], compare_value_instr->operation.parameters.refs[0], new_value_instr->id, instr->operation.parameters.atomic_op.model, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16 &&
+        (new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+         new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+         new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange16(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], compare_value_instr->id, new_value_instr->operation.parameters.refs[0], instr->operation.parameters.atomic_op.model, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32 &&
+        (compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         compare_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange32(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], compare_value_instr->operation.parameters.refs[0], new_value_instr->id, instr->operation.parameters.atomic_op.model, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32 &&
+        (new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS ||
+         new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange32(mem, &func->code, instr->block_id, instr->operation.parameters.refs[0], compare_value_instr->id, new_value_instr->operation.parameters.refs[0], instr->operation.parameters.atomic_op.model, replacement_ref));
     }
     return KEFIR_OK;
 }
@@ -3873,8 +3955,19 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_INT8_STORE:
                     case KEFIR_OPT_OPCODE_INT16_STORE:
                     case KEFIR_OPT_OPCODE_INT32_STORE:
-                    case KEFIR_OPT_OPCODE_INT64_STORE:
-                        REQUIRE_OK(simplify_int_store(func, instr, &replacement_ref));
+                        REQUIRE_OK(simplify_int_store(mem, func, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_ATOMIC_STORE8:
+                    case KEFIR_OPT_OPCODE_ATOMIC_STORE16:
+                    case KEFIR_OPT_OPCODE_ATOMIC_STORE32:
+                        REQUIRE_OK(simplify_int_atomic_store(mem, func, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8:
+                    case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16:
+                    case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32:
+                        REQUIRE_OK(simplify_int_atomic_cmpxchg(mem, func, instr, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_INT8_TO_BOOL:

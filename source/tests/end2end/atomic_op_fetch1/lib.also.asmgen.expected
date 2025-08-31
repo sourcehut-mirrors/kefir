@@ -57,8 +57,8 @@ __kefir_text_func_or_fetch8_begin:
     movsx %sil, %rsi
 _kefir_func_or_fetch8_label1:
     movb (%rdi), %al
-    movsx %al, %rax
-    mov %rax, %r8
+    movsx %al, %rcx
+    mov %rcx, %r8
     or %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -76,8 +76,8 @@ __kefir_text_func_add_fetch8_begin:
     movsx %sil, %rsi
 _kefir_func_add_fetch8_label1:
     movb (%rdi), %al
-    movsx %al, %rax
-    mov %rax, %r8
+    movsx %al, %rcx
+    mov %rcx, %r8
     add %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -95,8 +95,8 @@ __kefir_text_func_and_fetch8_begin:
     movsx %sil, %rsi
 _kefir_func_and_fetch8_label1:
     movb (%rdi), %al
-    movsx %al, %rax
-    mov %rax, %r8
+    movsx %al, %rcx
+    mov %rcx, %r8
     and %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -114,8 +114,8 @@ __kefir_text_func_or_fetch16_begin:
     movsx %si, %rsi
 _kefir_func_or_fetch16_label1:
     movw (%rdi), %ax
-    movsx %ax, %rax
-    mov %rax, %r8
+    movsx %ax, %rcx
+    mov %rcx, %r8
     or %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -132,18 +132,16 @@ or_fetch32:
 __kefir_text_func_or_fetch32_begin:
 _kefir_func_or_fetch32_label1:
     movl (%rdi), %eax
-    movsx %eax, %r8
-    mov %rax, %r9
-    or %esi, %r9d
+    mov %rax, %r8
+    or %esi, %r8d
     mov %rdi, %rdx
-    mov %r9, %rcx
-    mov %r8, %rax
+    mov %r8, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_or_fetch32_label1
-    mov %r9, %rax
+    mov %r8, %rax
     ret
 __kefir_text_func_or_fetch32_end:
 
@@ -169,8 +167,8 @@ __kefir_text_func_sub_fetch8_begin:
     movsx %sil, %rsi
 _kefir_func_sub_fetch8_label1:
     movb (%rdi), %al
-    movsx %al, %rax
-    mov %rax, %r8
+    movsx %al, %rcx
+    mov %rcx, %r8
     sub %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -188,8 +186,8 @@ __kefir_text_func_xor_fetch8_begin:
     movsx %sil, %rsi
 _kefir_func_xor_fetch8_label1:
     movb (%rdi), %al
-    movsx %al, %rax
-    mov %rax, %r8
+    movsx %al, %rcx
+    mov %rcx, %r8
     xor %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -207,8 +205,8 @@ __kefir_text_func_add_fetch16_begin:
     movsx %si, %rsi
 _kefir_func_add_fetch16_label1:
     movw (%rdi), %ax
-    movsx %ax, %rax
-    mov %rax, %r8
+    movsx %ax, %rcx
+    mov %rcx, %r8
     add %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -225,18 +223,16 @@ add_fetch32:
 __kefir_text_func_add_fetch32_begin:
 _kefir_func_add_fetch32_label1:
     movl (%rdi), %eax
-    movsx %eax, %r8
-    mov %rax, %r9
-    add %esi, %r9d
+    mov %rax, %r8
+    add %esi, %r8d
     mov %rdi, %rdx
-    mov %r9, %rcx
-    mov %r8, %rax
+    mov %r8, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_add_fetch32_label1
-    mov %r9, %rax
+    mov %r8, %rax
     ret
 __kefir_text_func_add_fetch32_end:
 
@@ -262,8 +258,8 @@ __kefir_text_func_and_fetch16_begin:
     movsx %si, %rsi
 _kefir_func_and_fetch16_label1:
     movw (%rdi), %ax
-    movsx %ax, %rax
-    mov %rax, %r8
+    movsx %ax, %rcx
+    mov %rcx, %r8
     and %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -280,18 +276,16 @@ and_fetch32:
 __kefir_text_func_and_fetch32_begin:
 _kefir_func_and_fetch32_label1:
     movl (%rdi), %eax
-    movsx %eax, %r8
-    mov %rax, %r9
-    and %esi, %r9d
+    mov %rax, %r8
+    and %esi, %r8d
     mov %rdi, %rdx
-    mov %r9, %rcx
-    mov %r8, %rax
+    mov %r8, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_and_fetch32_label1
-    mov %r9, %rax
+    mov %r8, %rax
     ret
 __kefir_text_func_and_fetch32_end:
 
@@ -347,8 +341,8 @@ __kefir_text_func_sub_fetch16_begin:
     movsx %si, %rsi
 _kefir_func_sub_fetch16_label1:
     movw (%rdi), %ax
-    movsx %ax, %rax
-    mov %rax, %r8
+    movsx %ax, %rcx
+    mov %rcx, %r8
     sub %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -365,18 +359,16 @@ sub_fetch32:
 __kefir_text_func_sub_fetch32_begin:
 _kefir_func_sub_fetch32_label1:
     movl (%rdi), %eax
-    movsx %eax, %r8
-    mov %rax, %r9
-    sub %esi, %r9d
+    mov %rax, %r8
+    sub %esi, %r8d
     mov %rdi, %rdx
-    mov %r9, %rcx
-    mov %r8, %rax
+    mov %r8, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_sub_fetch32_label1
-    mov %r9, %rax
+    mov %r8, %rax
     ret
 __kefir_text_func_sub_fetch32_end:
 
@@ -402,8 +394,8 @@ __kefir_text_func_xor_fetch16_begin:
     movsx %si, %rsi
 _kefir_func_xor_fetch16_label1:
     movw (%rdi), %ax
-    movsx %ax, %rax
-    mov %rax, %r8
+    movsx %ax, %rcx
+    mov %rcx, %r8
     xor %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -420,18 +412,16 @@ xor_fetch32:
 __kefir_text_func_xor_fetch32_begin:
 _kefir_func_xor_fetch32_label1:
     movl (%rdi), %eax
-    movsx %eax, %r8
-    mov %rax, %r9
-    xor %esi, %r9d
+    mov %rax, %r8
+    xor %esi, %r8d
     mov %rdi, %rdx
-    mov %r9, %rcx
-    mov %r8, %rax
+    mov %r8, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_xor_fetch32_label1
-    mov %r9, %rax
+    mov %r8, %rax
     ret
 __kefir_text_func_xor_fetch32_end:
 
