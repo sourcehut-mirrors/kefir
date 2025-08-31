@@ -32,20 +32,12 @@ __kefir_text_func_get1_begin:
     movd %xmm0, 32(%rdx)
     movd %xmm1, 36(%rdx)
     movl $1, 40(%rdx)
-    leaq 40(%rdx), %rax
-    add $4, %rax
-    movl $2, (%rax)
-    leaq 40(%rdx), %rax
-    add $8, %rax
-    movl $-1, (%rax)
+    movl $2, 44(%rdx)
+    movl $-1, 48(%rdx)
     movw $50, 56(%rdx)
-    leaq 56(%rdx), %rax
-    add $8, %rax
-    movq $-4451786, (%rax)
-    leaq 56(%rdx), %rax
-    add $16, %rax
+    movq $-4451786, 64(%rdx)
     movd _kefir_func_get1_label4(%rip), %xmm0
-    movd %xmm0, (%rax)
+    movd %xmm0, 72(%rdx)
     mov %rdx, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp

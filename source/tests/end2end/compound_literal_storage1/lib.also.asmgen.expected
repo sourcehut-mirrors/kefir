@@ -54,41 +54,27 @@ _kefir_func_get3_label0:
     mov $1, %rax
     neg %eax
     movl %eax, (%rdx)
-    leaq (%rdx), %rdi
-    add $4, %rdi
     mov $2, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $8, %rdi
+    movl %eax, 4(%rdx)
     mov $3, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $12, %rdi
+    movl %eax, 8(%rdx)
     mov $4, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $16, %rdi
+    movl %eax, 12(%rdx)
     mov $5, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $20, %rdi
+    movl %eax, 16(%rdx)
     mov $6, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $24, %rdi
+    movl %eax, 20(%rdx)
     mov $7, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $28, %rdi
+    movl %eax, 24(%rdx)
     mov $8, %rax
     neg %eax
-    movl %eax, (%rdi)
+    movl %eax, 28(%rdx)
     mov %rdx, %rax
     pop %rbp
     ret
@@ -107,41 +93,27 @@ _kefir_func_get4_label0:
     mov $8, %rax
     neg %eax
     movl %eax, (%rdx)
-    leaq (%rdx), %rdi
-    add $4, %rdi
     mov $7, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $8, %rdi
+    movl %eax, 4(%rdx)
     mov $6, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $12, %rdi
+    movl %eax, 8(%rdx)
     mov $5, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $16, %rdi
+    movl %eax, 12(%rdx)
     mov $4, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $20, %rdi
+    movl %eax, 16(%rdx)
     mov $3, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $24, %rdi
+    movl %eax, 20(%rdx)
     mov $2, %rax
     neg %eax
-    movl %eax, (%rdi)
-    leaq (%rdx), %rdi
-    add $28, %rdi
+    movl %eax, 24(%rdx)
     mov $1, %rax
     neg %eax
-    movl %eax, (%rdi)
+    movl %eax, 28(%rdx)
     mov %rdx, %rax
     pop %rbp
     ret

@@ -350,6 +350,78 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
         return KEFIR_OK;
     }
 
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_STORE ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_STORE ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_STORE ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE) {
+        const struct kefir_opt_instruction *location_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
+                                                  &location_instr));
+        if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD) {
+            const struct kefir_opt_instruction *location_arg1_instr, *location_arg2_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, location_instr->operation.parameters.refs[0], &location_arg1_instr));
+            REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, location_instr->operation.parameters.refs[1], &location_arg2_instr));
+
+            if (location_arg2_instr->block_id == instr->block_id &&
+                ((location_arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&
+                location_arg1_instr->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&
+                location_arg1_instr->operation.parameters.imm.integer <= KEFIR_INT32_MAX) ||
+                (location_arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+                location_arg1_instr->operation.parameters.imm.uinteger <= KEFIR_INT32_MAX))) {
+                REQUIRE_OK(dependency_callback(location_arg2_instr->id, dependency_callback_payload));
+                REQUIRE_OK(dependency_callback(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], dependency_callback_payload));
+                *schedule_instruction = true;
+                return KEFIR_OK;
+            } else if (location_arg1_instr->block_id == instr->block_id &&
+                ((location_arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&
+                location_arg2_instr->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&
+                location_arg2_instr->operation.parameters.imm.integer <= KEFIR_INT32_MAX) ||
+                (location_arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+                location_arg2_instr->operation.parameters.imm.uinteger <= KEFIR_INT32_MAX))) {
+                REQUIRE_OK(dependency_callback(location_arg1_instr->id, dependency_callback_payload));
+                REQUIRE_OK(dependency_callback(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], dependency_callback_payload));
+                *schedule_instruction = true;
+                return KEFIR_OK;
+            }
+        }
+    }
+
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_LOAD ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) {
+        const struct kefir_opt_instruction *location_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
+                                                  &location_instr));
+        if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD) {
+            const struct kefir_opt_instruction *location_arg1_instr, *location_arg2_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, location_instr->operation.parameters.refs[0], &location_arg1_instr));
+            REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, location_instr->operation.parameters.refs[1], &location_arg2_instr));
+
+            if (location_arg2_instr->block_id == instr->block_id &&
+                ((location_arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&
+                location_arg1_instr->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&
+                location_arg1_instr->operation.parameters.imm.integer <= KEFIR_INT32_MAX) ||
+                (location_arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+                location_arg1_instr->operation.parameters.imm.uinteger <= KEFIR_INT32_MAX))) {
+                REQUIRE_OK(dependency_callback(location_arg2_instr->id, dependency_callback_payload));
+                *schedule_instruction = true;
+                return KEFIR_OK;
+            } else if (location_arg1_instr->block_id == instr->block_id &&
+                ((location_arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&
+                location_arg2_instr->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&
+                location_arg2_instr->operation.parameters.imm.integer <= KEFIR_INT32_MAX) ||
+                (location_arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+                location_arg2_instr->operation.parameters.imm.uinteger <= KEFIR_INT32_MAX))) {
+                REQUIRE_OK(dependency_callback(location_arg1_instr->id, dependency_callback_payload));
+                *schedule_instruction = true;
+                return KEFIR_OK;
+            }
+        }
+    }
+
     REQUIRE_OK(kefir_opt_instruction_extract_inputs(&param->func->function->code, instr, true, dependency_callback,
                                                     dependency_callback_payload));
     *schedule_instruction = true;

@@ -200,44 +200,25 @@ __kefir_text_func_conv3_end:
 
 test1:
 __kefir_text_func_test1_begin:
-    mov %rdi, %rax
-    movl $1, (%rax)
-    lea 4(%rax), %rdi
     movl $1, (%rdi)
-    lea 8(%rax), %rdi
-    movl $1, (%rdi)
-    lea 12(%rax), %rdi
-    movl $0, (%rdi)
-    lea 16(%rax), %rdi
-    movl $0, (%rdi)
-    lea 20(%rax), %rdi
-    movl $1, (%rdi)
-    lea 24(%rax), %rdi
-    movl $1, (%rdi)
-    lea 28(%rax), %rdi
-    movl $0, (%rdi)
-    lea 32(%rax), %rdi
-    movl $0, (%rdi)
-    lea 36(%rax), %rdi
-    movl $1, (%rdi)
-    lea 40(%rax), %rdi
-    movl $1, (%rdi)
-    lea 44(%rax), %rdi
-    movl $0, (%rdi)
-    lea 48(%rax), %rdi
-    movl $0, (%rdi)
-    lea 52(%rax), %rdi
-    movl $0, (%rdi)
-    lea 56(%rax), %rdi
-    movl $0, (%rdi)
-    lea 60(%rax), %rdi
-    movl $1, (%rdi)
-    lea 64(%rax), %rdi
-    movl $0, (%rdi)
-    lea 68(%rax), %rdi
-    movl $0, (%rdi)
-    lea 72(%rax), %rdi
-    movl $1, (%rdi)
+    movl $1, 4(%rdi)
+    movl $1, 8(%rdi)
+    movl $0, 12(%rdi)
+    movl $0, 16(%rdi)
+    movl $1, 20(%rdi)
+    movl $1, 24(%rdi)
+    movl $0, 28(%rdi)
+    movl $0, 32(%rdi)
+    movl $1, 36(%rdi)
+    movl $1, 40(%rdi)
+    movl $0, 44(%rdi)
+    movl $0, 48(%rdi)
+    movl $0, 52(%rdi)
+    movl $0, 56(%rdi)
+    movl $1, 60(%rdi)
+    movl $0, 64(%rdi)
+    movl $0, 68(%rdi)
+    movl $1, 72(%rdi)
     ret
 __kefir_text_func_test1_end:
 

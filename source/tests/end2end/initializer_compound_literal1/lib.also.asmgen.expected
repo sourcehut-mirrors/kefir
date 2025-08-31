@@ -12,82 +12,66 @@ __kefir_text_func_get_begin:
     mov %rsp, %rbp
     sub $288, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %rdx
-    mov %rsi, %r8
-    leaq (%rdx), %rdi
+    mov %rdi, %r8
+    mov %rsi, %rdx
+    leaq (%r8), %rdi
     xor %eax, %eax
     mov $568, %rcx
     rep stosb
-    movw %r8w, (%rdx)
-    mov %r8, %rsi
+    movw %dx, (%r8)
+    mov %rdx, %rsi
     add $1, %esi
-    movl %esi, 8(%rdx)
-    leaq 8(%rdx), %rax
-    add $8, %rax
-    mov %r8, %rsi
+    movl %esi, 8(%r8)
+    mov %rdx, %rsi
     add $2, %esi
-    movsx %esi, %rcx
-    movq %rcx, (%rax)
-    leaq 8(%rdx), %rax
-    add $16, %rax
-    mov %r8, %rsi
+    movsx %esi, %rax
+    movq %rax, 16(%r8)
+    mov %rdx, %rsi
     add $3, %esi
-    movsx %esi, %rcx
-    cvtsi2ss %rcx, %xmm0
-    movd %xmm0, (%rax)
-    mov %r8, %rsi
+    movsx %esi, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, 24(%r8)
+    mov %rdx, %rsi
     add $4, %esi
     movsx %esi, %rax
     cvtsi2sd %rax, %xmm0
-    movq %xmm0, 32(%rdx)
-    mov %r8, %rsi
+    movq %xmm0, 32(%r8)
+    mov %rdx, %rsi
     add $5, %esi
-    movl %esi, 40(%rdx)
-    leaq 40(%rdx), %rax
-    add $8, %rax
-    mov %r8, %rsi
+    movl %esi, 40(%r8)
+    mov %rdx, %rsi
     add $6, %esi
-    movsx %esi, %rcx
-    movq %rcx, (%rax)
-    leaq 40(%rdx), %rax
-    add $16, %rax
-    mov %r8, %rsi
+    movsx %esi, %rax
+    movq %rax, 48(%r8)
+    mov %rdx, %rsi
     add $7, %esi
-    movsx %esi, %rcx
-    cvtsi2ss %rcx, %xmm0
-    movd %xmm0, (%rax)
-    mov %r8, %rsi
+    movsx %esi, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, 56(%r8)
+    mov %rdx, %rsi
     add $8, %esi
-    movl %esi, 112(%rdx)
-    leaq 112(%rdx), %rax
-    add $8, %rax
-    mov %r8, %rsi
+    movl %esi, 112(%r8)
+    mov %rdx, %rsi
     add $9, %esi
-    movsx %esi, %rcx
-    movq %rcx, (%rax)
-    leaq 112(%rdx), %rax
-    add $16, %rax
-    mov %r8, %rsi
+    movsx %esi, %rax
+    movq %rax, 120(%r8)
+    mov %rdx, %rsi
     add $10, %esi
-    movsx %esi, %rcx
-    cvtsi2ss %rcx, %xmm0
-    movd %xmm0, (%rax)
-    mov %r8, %rsi
+    movsx %esi, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, 128(%r8)
+    mov %rdx, %rsi
     add $11, %esi
-    movl %esi, 136(%rdx)
-    leaq 136(%rdx), %rax
-    add $8, %rax
-    mov %r8, %rsi
+    movl %esi, 136(%r8)
+    mov %rdx, %rsi
     add $12, %esi
-    movsx %esi, %rcx
-    movq %rcx, (%rax)
-    leaq 136(%rdx), %rax
-    add $16, %rax
-    mov %r8, %rsi
+    movsx %esi, %rax
+    movq %rax, 144(%r8)
+    mov %rdx, %rsi
     add $13, %esi
-    movsx %esi, %rcx
-    cvtsi2ss %rcx, %xmm0
-    movd %xmm0, (%rax)
+    movsx %esi, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, 152(%r8)
     leaq -280(%rbp), %rdi
     xor %eax, %eax
     mov $136, %rcx
@@ -98,55 +82,49 @@ __kefir_text_func_get_begin:
     cld
     mov $17, %rcx
     rep movsq
-    leaq 160(%rdx), %rdi
+    leaq 160(%r8), %rdi
     leaq -280(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    leaq 296(%rdx), %rdi
+    leaq 296(%r8), %rdi
     leaq -144(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    mov %r8, %rsi
+    mov %rdx, %rsi
     add $14, %esi
-    movw %si, 432(%rdx)
-    leaq 432(%rdx), %rax
-    add $8, %rax
-    mov %r8, %rsi
+    movw %si, 432(%r8)
+    mov %rdx, %rsi
     add $15, %esi
-    movl %esi, (%rax)
-    mov %r8, %rsi
+    movl %esi, 440(%r8)
+    mov %rdx, %rsi
     add $16, %esi
     movsx %esi, %rax
-    movq %rax, 448(%rdx)
-    mov %r8, %rsi
+    movq %rax, 448(%r8)
+    mov %rdx, %rsi
     add $17, %esi
     movsx %esi, %rax
     cvtsi2ss %rax, %xmm0
-    movd %xmm0, 456(%rdx)
-    leaq 432(%rdx), %rax
-    add $32, %rax
-    mov %r8, %rsi
+    movd %xmm0, 456(%r8)
+    mov %rdx, %rsi
     add $18, %esi
-    movsx %esi, %rcx
-    cvtsi2sd %rcx, %xmm0
-    movq %xmm0, (%rax)
-    leaq 432(%rdx), %rax
-    add $112, %rax
-    mov %r8, %rsi
+    movsx %esi, %rax
+    cvtsi2sd %rax, %xmm0
+    movq %xmm0, 464(%r8)
+    mov %rdx, %rsi
     add $19, %esi
-    movl %esi, (%rax)
-    mov %r8, %rsi
+    movl %esi, 544(%r8)
+    mov %rdx, %rsi
     add $20, %esi
     movsx %esi, %rax
-    movq %rax, 552(%rdx)
-    mov %r8, %rsi
+    movq %rax, 552(%r8)
+    mov %rdx, %rsi
     add $21, %esi
     movsx %esi, %rax
     cvtsi2ss %rax, %xmm0
-    movd %xmm0, 560(%rdx)
-    mov %rdx, %rax
+    movd %xmm0, 560(%r8)
+    mov %r8, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -19,44 +19,28 @@ __kefir_text_func_get_begin:
     rep stosb
     movw $10, (%rdx)
     movl $11, 8(%rdx)
-    leaq 8(%rdx), %rax
-    add $8, %rax
-    movq $12, (%rax)
-    leaq 8(%rdx), %rax
-    add $16, %rax
-    mov $13, %rcx
-    cvtsi2ss %rcx, %xmm0
-    movd %xmm0, (%rax)
+    movq $12, 16(%rdx)
+    mov $13, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, 24(%rdx)
     mov $14, %rax
     cvtsi2sd %rax, %xmm0
     movq %xmm0, 32(%rdx)
     movl $15, 40(%rdx)
-    leaq 40(%rdx), %rax
-    add $8, %rax
-    movq $16, (%rax)
-    leaq 40(%rdx), %rax
-    add $16, %rax
-    mov $17, %rcx
-    cvtsi2ss %rcx, %xmm0
-    movd %xmm0, (%rax)
+    movq $16, 48(%rdx)
+    mov $17, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, 56(%rdx)
     movl $18, 112(%rdx)
-    leaq 112(%rdx), %rax
-    add $8, %rax
-    movq $19, (%rax)
-    leaq 112(%rdx), %rax
-    add $16, %rax
-    mov $20, %rcx
-    cvtsi2ss %rcx, %xmm0
-    movd %xmm0, (%rax)
+    movq $19, 120(%rdx)
+    mov $20, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, 128(%rdx)
     movl $21, 136(%rdx)
-    leaq 136(%rdx), %rax
-    add $8, %rax
-    movq $22, (%rax)
-    leaq 136(%rdx), %rax
-    add $16, %rax
-    mov $23, %rcx
-    cvtsi2ss %rcx, %xmm0
-    movd %xmm0, (%rax)
+    movq $22, 144(%rdx)
+    mov $23, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, 152(%rdx)
     leaq -280(%rbp), %rdi
     xor %eax, %eax
     mov $136, %rcx
@@ -78,21 +62,15 @@ __kefir_text_func_get_begin:
     mov $17, %rcx
     rep movsq
     movw $24, 432(%rdx)
-    leaq 432(%rdx), %rax
-    add $8, %rax
-    movl $25, (%rax)
+    movl $25, 440(%rdx)
     movq $26, 448(%rdx)
     mov $27, %rax
     cvtsi2ss %rax, %xmm0
     movd %xmm0, 456(%rdx)
-    leaq 432(%rdx), %rax
-    add $32, %rax
-    mov $28, %rcx
-    cvtsi2sd %rcx, %xmm0
-    movq %xmm0, (%rax)
-    leaq 432(%rdx), %rax
-    add $112, %rax
-    movl $29, (%rax)
+    mov $28, %rax
+    cvtsi2sd %rax, %xmm0
+    movq %xmm0, 464(%rdx)
+    movl $29, 544(%rdx)
     movq $30, 552(%rdx)
     mov $31, %rax
     cvtsi2ss %rax, %xmm0

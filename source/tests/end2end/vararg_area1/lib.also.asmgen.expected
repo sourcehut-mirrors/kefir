@@ -62,23 +62,19 @@ _kefir_func_process_label2:
     add %rcx, %rdx
     movq %rax, (%rdx)
     movl -56(%rbp), %eax
-    leaq -16(%rbp), %rcx
-    add $8, %rcx
     movsx %eax, %rax
-    mov $4, %rdx
-    imul %rax, %rdx
-    movq %rdx, (%rcx)
-    leaq -16(%rbp), %rax
-    add $0, %rax
-    sub %rdx, %rsp
-    mov $16, %rcx
-    cmp $4, %rcx
-    mov $4, %rdx
-    cmovl %rdx, %rcx
-    neg %rcx
-    and %rcx, %rsp
-    mov %rsp, %rcx
-    movq %rcx, (%rax)
+    mov $4, %rcx
+    imul %rax, %rcx
+    movq %rcx, -8(%rbp)
+    sub %rcx, %rsp
+    mov $16, %rax
+    cmp $4, %rax
+    mov $4, %rcx
+    cmovl %rcx, %rax
+    neg %rax
+    and %rax, %rsp
+    mov %rsp, %rax
+    movq %rax, -16(%rbp)
     movl $0, -52(%rbp)
 _kefir_func_process_label3:
     movl -52(%rbp), %eax

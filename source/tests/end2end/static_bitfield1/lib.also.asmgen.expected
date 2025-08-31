@@ -14,8 +14,7 @@ __kefir_text_func_getfield40_begin:
     mov %rsp, %rbp
 _kefir_func_getfield40_label0:
     movq struct1@GOTPCREL(%rip), %rax
-    add $8, %rax
-    movb (%rax), %al
+    movb 8(%rax), %al
     and $255, %rax
     shl $63, %rax
     shr $63, %rax

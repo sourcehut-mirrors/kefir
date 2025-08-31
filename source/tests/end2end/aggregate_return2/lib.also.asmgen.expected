@@ -59,8 +59,7 @@ __kefir_text_func_testsmall_begin:
     movq %rax, (%rbx)
     movq %xmm0, 8(%rbx)
     movq -64(%rbp), %rdx
-    add $8, %rbx
-    movl (%rbx), %eax
+    movl 8(%rbx), %eax
     cvtsi2ss %rdx, %xmm0
     movd %eax, %xmm1
     addss %xmm1, %xmm0

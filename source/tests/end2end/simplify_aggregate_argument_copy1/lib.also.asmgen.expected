@@ -16,9 +16,7 @@ __kefir_text_func_test2_begin:
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
     movq -16(%rbp), %rax
-    leaq -16(%rbp), %rsi
-    lea 8(%rsi), %rcx
-    movq (%rcx), %rcx
+    movq -8(%rbp), %rcx
     add %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -31,20 +29,13 @@ __kefir_text_func_test8_begin:
     mov %rsp, %rbp
     lea 16(%rbp), %rcx
     movq (%rcx), %rax
-    lea 8(%rcx), %rdx
-    movq (%rdx), %rdx
-    lea 16(%rcx), %rsi
-    movq (%rsi), %rsi
-    lea 24(%rcx), %rdi
-    movq (%rdi), %rdi
-    lea 32(%rcx), %r8
-    movq (%r8), %r8
-    lea 40(%rcx), %r9
-    movq (%r9), %r9
-    lea 48(%rcx), %r10
-    movq (%r10), %r10
-    add $56, %rcx
-    movq (%rcx), %rcx
+    movq 8(%rcx), %rdx
+    movq 16(%rcx), %rsi
+    movq 24(%rcx), %rdi
+    movq 32(%rcx), %r8
+    movq 40(%rcx), %r9
+    movq 48(%rcx), %r10
+    movq 56(%rcx), %rcx
     add %rdx, %rax
     add %rsi, %rax
     add %rdi, %rax

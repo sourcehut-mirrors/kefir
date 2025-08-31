@@ -24,201 +24,103 @@ _kefir_func_getb_label0:
     movl %eax, -4(%rbp)
     movl %eax, (%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $40, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 40(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $80, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 80(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $120, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 120(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $160, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 160(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $4, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 4(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $44, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 44(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $84, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 84(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $124, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 124(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $164, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 164(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $8, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 8(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $48, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 48(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $88, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 88(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $128, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 128(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $168, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 168(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $12, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 12(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $52, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 52(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $92, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 92(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $132, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 132(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $172, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 172(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $16, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 16(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $56, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 56(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $96, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 96(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $136, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 136(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $176, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 176(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $20, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 20(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $60, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 60(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $100, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 100(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $140, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 140(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $180, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 180(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $24, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 24(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $64, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 64(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $104, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 104(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $144, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 144(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $184, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 184(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $28, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 28(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $68, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 68(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $108, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 108(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $148, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 148(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $188, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 188(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $32, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 32(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $72, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 72(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $112, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 112(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $152, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 152(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $192, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 192(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $36, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 36(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $76, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 76(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $116, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 116(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $156, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 156(%rdx)
     movl -4(%rbp), %eax
-    leaq (%rdx), %rdi
-    add $196, %rdi
-    movl %eax, (%rdi)
+    movl %eax, 196(%rdx)
     mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp

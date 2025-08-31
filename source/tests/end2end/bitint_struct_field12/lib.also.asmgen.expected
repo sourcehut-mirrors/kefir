@@ -48,7 +48,6 @@ __kefir_text_func_get1_begin:
 _kefir_func_get1_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    add $0, %rax
     movb (%rax), %al
     shl $59, %rax
     shr $59, %rax
@@ -72,8 +71,7 @@ _kefir_func_get2_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     add $1, %rax
-    add $1, %rax
-    movw (%rax), %ax
+    movw 1(%rax), %ax
     shl $52, %rax
     shr $52, %rax
     shl $52, %rax
@@ -96,10 +94,9 @@ _kefir_func_get3_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     add $4, %rax
-    add $0, %rax
     mov %rax, %rcx
-    add $2, %rcx
-    movb (%rcx), %cl
+    add $0, %rcx
+    movb 2(%rcx), %cl
     movw (%rax), %ax
     and $65535, %rax
     shl $16, %rcx
@@ -126,8 +123,7 @@ _kefir_func_get4_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     add $7, %rax
-    add $1, %rax
-    movl (%rax), %eax
+    movl 1(%rax), %eax
     shl $37, %rax
     shr $37, %rax
     shl $37, %rax
@@ -150,11 +146,10 @@ _kefir_func_get5_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     add $7, %rax
-    add $4, %rax
     mov %rax, %rcx
     add $4, %rcx
-    movb (%rcx), %cl
-    movl (%rax), %eax
+    movb 4(%rcx), %cl
+    movl 4(%rax), %eax
     movabs $4294967295, %rdx
     and %rdx, %rax
     shl $32, %rcx
@@ -181,10 +176,9 @@ _kefir_func_get6_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     add $16, %rax
-    add $0, %rax
     mov %rax, %rcx
-    add $4, %rcx
-    movw (%rcx), %cx
+    add $0, %rcx
+    movw 4(%rcx), %cx
     movl (%rax), %eax
     movabs $4294967295, %rdx
     and %rdx, %rax
@@ -212,21 +206,18 @@ _kefir_func_get7_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     add $22, %rax
-    add $2, %rax
     mov %rax, %rcx
-    add $6, %rcx
-    movb (%rcx), %cl
-    mov %rax, %rdx
-    add $4, %rdx
-    movw (%rdx), %dx
-    movl (%rax), %eax
+    add $2, %rcx
+    movb 6(%rcx), %dl
+    movw 4(%rcx), %cx
+    movl 2(%rax), %eax
     movabs $4294967295, %rsi
     and %rsi, %rax
-    and $65535, %rdx
-    shl $32, %rdx
-    or %rdx, %rax
-    shl $48, %rcx
+    and $65535, %rcx
+    shl $32, %rcx
     or %rcx, %rax
+    shl $48, %rdx
+    or %rdx, %rax
     shl $11, %rax
     shr $11, %rax
     shl $11, %rax
@@ -249,8 +240,7 @@ _kefir_func_get8_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     add $31, %rax
-    add $1, %rax
-    movq (%rax), %rax
+    movq 1(%rax), %rax
     shl $5, %rax
     shr $5, %rax
     shl $5, %rax
@@ -306,9 +296,7 @@ _kefir_func_set1_label0:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov %rcx, %rdx
-    add $0, %rdx
-    movb (%rdx), %dl
+    movb (%rcx), %dl
     shl $56, %rdx
     shr $56, %rdx
     shl $58, %rax
@@ -320,7 +308,6 @@ _kefir_func_set1_label0:
     shl $59, %rax
     shr $59, %rax
     or %rsi, %rax
-    add $0, %rcx
     movb %al, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
@@ -338,9 +325,7 @@ _kefir_func_set2_label0:
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
     add $1, %rcx
-    mov %rcx, %rdx
-    add $1, %rdx
-    movw (%rdx), %dx
+    movw 1(%rcx), %dx
     shl $48, %rdx
     shr $48, %rdx
     shl $50, %rax
@@ -352,8 +337,7 @@ _kefir_func_set2_label0:
     shl $52, %rax
     shr $52, %rax
     or %rsi, %rax
-    add $1, %rcx
-    movw %ax, (%rcx)
+    movw %ax, 1(%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -369,34 +353,32 @@ _kefir_func_set3_label0:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    add $4, %rcx
-    mov %rcx, %rdx
-    add $0, %rdx
-    mov %rdx, %rsi
-    add $2, %rsi
-    movb (%rsi), %sil
-    movw (%rdx), %dx
+    mov %rcx, %rsi
+    add $4, %rsi
+    mov %rsi, %rcx
+    add $0, %rcx
+    movb 2(%rcx), %cl
+    movw (%rsi), %dx
     and $65535, %rdx
-    shl $16, %rsi
-    or %rsi, %rdx
+    shl $16, %rcx
+    or %rcx, %rdx
     shl $40, %rdx
     shr $40, %rdx
     shl $41, %rax
     sar $41, %rax
     shl $41, %rax
     shr $41, %rax
-    movabs $18446744073708503040, %rsi
-    and %rdx, %rsi
+    movabs $18446744073708503040, %rcx
+    and %rdx, %rcx
     shl $44, %rax
     shr $44, %rax
-    or %rsi, %rax
+    or %rcx, %rax
+    mov %rsi, %rcx
     add $0, %rcx
-    mov %rcx, %rdx
-    add $2, %rdx
-    mov %rax, %rsi
-    shr $16, %rsi
-    movb %sil, (%rdx)
-    movw %ax, (%rcx)
+    mov %rax, %rdx
+    shr $16, %rdx
+    movb %dl, 2(%rcx)
+    movw %ax, (%rsi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -413,9 +395,7 @@ _kefir_func_set4_label0:
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
     add $7, %rcx
-    mov %rcx, %rdx
-    add $1, %rdx
-    movl (%rdx), %edx
+    movl 1(%rcx), %edx
     shl $32, %rdx
     shr $32, %rdx
     shl $33, %rax
@@ -427,8 +407,7 @@ _kefir_func_set4_label0:
     shl $37, %rax
     shr $37, %rax
     or %rsi, %rax
-    add $1, %rcx
-    movl %eax, (%rcx)
+    movl %eax, 1(%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -444,35 +423,33 @@ _kefir_func_set5_label0:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    add $7, %rcx
-    mov %rcx, %rdx
-    add $4, %rdx
-    mov %rdx, %rsi
-    add $4, %rsi
-    movb (%rsi), %sil
-    movl (%rdx), %edx
-    movabs $4294967295, %rdi
-    and %rdi, %rdx
-    shl $32, %rsi
-    or %rsi, %rdx
+    mov %rcx, %rdi
+    add $7, %rdi
+    mov %rdi, %rcx
+    add $4, %rcx
+    movb 4(%rcx), %cl
+    movl 4(%rdi), %edx
+    movabs $4294967295, %rsi
+    and %rsi, %rdx
+    shl $32, %rcx
+    or %rcx, %rdx
     shl $24, %rdx
     shr $24, %rdx
     shl $25, %rax
     sar $25, %rax
     shl $25, %rax
     shr $25, %rax
-    movabs $18446743798831644679, %rsi
-    and %rdx, %rsi
+    movabs $18446743798831644679, %rcx
+    and %rdx, %rcx
     shl $29, %rax
     shr $26, %rax
-    or %rsi, %rax
+    or %rcx, %rax
+    mov %rdi, %rcx
     add $4, %rcx
-    mov %rcx, %rdx
-    add $4, %rdx
-    mov %rax, %rsi
-    shr $32, %rsi
-    movb %sil, (%rdx)
-    movl %eax, (%rcx)
+    mov %rax, %rdx
+    shr $32, %rdx
+    movb %dl, 4(%rcx)
+    movl %eax, 4(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -488,35 +465,33 @@ _kefir_func_set6_label0:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    add $16, %rcx
-    mov %rcx, %rdx
-    add $0, %rdx
-    mov %rdx, %rsi
-    add $4, %rsi
-    movw (%rsi), %si
-    movl (%rdx), %edx
-    movabs $4294967295, %rdi
-    and %rdi, %rdx
-    shl $32, %rsi
-    or %rsi, %rdx
+    mov %rcx, %rdi
+    add $16, %rdi
+    mov %rdi, %rcx
+    add $0, %rcx
+    movw 4(%rcx), %cx
+    movl (%rdi), %edx
+    movabs $4294967295, %rsi
+    and %rsi, %rdx
+    shl $32, %rcx
+    or %rcx, %rdx
     shl $16, %rdx
     shr $16, %rdx
     shl $17, %rax
     sar $17, %rax
     shl $17, %rax
     shr $17, %rax
-    movabs $18446673704965373952, %rsi
-    and %rdx, %rsi
+    movabs $18446673704965373952, %rcx
+    and %rdx, %rcx
     shl $18, %rax
     shr $18, %rax
-    or %rsi, %rax
+    or %rcx, %rax
+    mov %rdi, %rcx
     add $0, %rcx
-    mov %rcx, %rdx
-    add $4, %rdx
-    mov %rax, %rsi
-    shr $32, %rsi
-    movw %si, (%rdx)
-    movl %eax, (%rcx)
+    mov %rax, %rdx
+    shr $32, %rdx
+    movw %dx, 4(%rcx)
+    movl %eax, (%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -532,49 +507,43 @@ _kefir_func_set7_label0:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov %rcx, %r9
-    add $22, %r9
-    mov %r9, %rcx
+    mov %rcx, %r8
+    add $22, %r8
+    mov %r8, %rcx
     add $2, %rcx
-    mov %rcx, %rdx
-    add $6, %rdx
-    movb (%rdx), %dl
-    mov %rcx, %rsi
-    add $4, %rsi
-    movw (%rsi), %si
-    movl (%rcx), %edi
-    movabs $4294967295, %r8
-    and %r8, %rdi
-    and $65535, %rsi
-    shl $32, %rsi
-    or %rsi, %rdi
+    movb 6(%rcx), %dl
+    movw 4(%rcx), %cx
+    movl 2(%r8), %esi
+    movabs $4294967295, %rdi
+    and %rdi, %rsi
+    and $65535, %rcx
+    shl $32, %rcx
+    or %rcx, %rsi
     shl $48, %rdx
-    mov %rdi, %rsi
-    or %rdx, %rsi
-    shl $8, %rsi
-    shr $8, %rsi
+    mov %rsi, %rcx
+    or %rdx, %rcx
+    shl $8, %rcx
+    shr $8, %rcx
     shl $9, %rax
     sar $9, %rax
     shl $9, %rax
     shr $9, %rax
     movabs $18437736874454810624, %rdx
-    and %rsi, %rdx
+    and %rcx, %rdx
     shl $11, %rax
     shr $11, %rax
     or %rdx, %rax
-    mov %r9, %rcx
+    mov %r8, %rcx
     add $2, %rcx
     mov %rcx, %rdx
     add $4, %rdx
-    mov %rdx, %rsi
-    add $2, %rsi
-    mov %rax, %rdi
-    shr $32, %rdi
-    mov %rdi, %r8
-    shr $16, %r8
-    movb %r8b, (%rsi)
-    movw %di, (%rdx)
-    movl %eax, (%rcx)
+    mov %rax, %rsi
+    shr $32, %rsi
+    mov %rsi, %rdi
+    shr $16, %rdi
+    movb %dil, 2(%rdx)
+    movw %si, 4(%rcx)
+    movl %eax, 2(%r8)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -591,9 +560,7 @@ _kefir_func_set8_label0:
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
     add $31, %rcx
-    mov %rcx, %rdx
-    add $1, %rdx
-    movq (%rdx), %rdx
+    movq 1(%rcx), %rdx
     shl $0, %rdx
     shr $0, %rdx
     shl $4, %rax
@@ -605,8 +572,7 @@ _kefir_func_set8_label0:
     shl $5, %rax
     shr $5, %rax
     or %rsi, %rax
-    add $1, %rcx
-    movq %rax, (%rcx)
+    movq %rax, 1(%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
