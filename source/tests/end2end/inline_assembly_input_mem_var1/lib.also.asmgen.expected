@@ -19,9 +19,9 @@ __kefir_text_func_add_begin:
     mov -8(%rbp), %rax
     mov %rdi, %rcx
 addq  %rax, (%rcx)
-    mov %rax, -8(%rbp)
     add $8, %rsp
     popfq
+    mov %rax, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -39,9 +39,9 @@ __kefir_text_func_add2_begin:
     mov -8(%rbp), %rax
     mov %rdi, %rcx
 addq  %rax, (%rcx)
-    mov %rax, -8(%rbp)
     add $8, %rsp
     popfq
+    mov %rax, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
