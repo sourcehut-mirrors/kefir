@@ -422,8 +422,7 @@ kefir_result_t kefir_codegen_amd64_copy_memory(struct kefir_mem *, struct kefir_
                                                kefir_asmcmp_virtual_register_index_t,
                                                kefir_asmcmp_virtual_register_index_t, kefir_size_t);
 kefir_result_t kefir_codegen_amd64_zero_memory(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                               kefir_asmcmp_virtual_register_index_t,
-                                               kefir_size_t);
+                                               kefir_asmcmp_virtual_register_index_t, kefir_size_t);
 
 kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                      const struct kefir_opt_instruction *, kefir_bool_t *,
@@ -584,6 +583,20 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define LIBATOMIC_STORE "__atomic_store"
 #define LIBATOMIC_CMPXCHG_N(_n) "__atomic_compare_exchange_" #_n
 #define LIBATOMIC_CMPXCHG "__atomic_compare_exchange"
+
+#define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
+    ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||                                           \
+     (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR ||                                            \
+     (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT ||                                           \
+     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_BRANCH &&                                                 \
+      ((_instr)->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||           \
+       (_instr)->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT)) || \
+     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_SELECT &&                                                 \
+      (_instr)->operation.parameters.refs[0] == (_consumed_ref) &&                                             \
+      (_instr)->operation.parameters.refs[1] != (_consumed_ref) &&                                             \
+      (_instr)->operation.parameters.refs[2] != (_consumed_ref) &&                                             \
+      ((_instr)->operation.parameters.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||                  \
+       (_instr)->operation.parameters.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT)))
 
 #endif
 

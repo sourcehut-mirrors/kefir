@@ -24,6 +24,7 @@
 #include "kefir/target/abi/amd64/return.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/target/abi/util.h"
+#include "kefir/optimizer/code_util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -826,11 +827,22 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange)(
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unepected optimizer instruction opcode");
     }
+
+    kefir_opt_instruction_ref_t use_instr_ref;
+    REQUIRE_OK(kefir_opt_instruction_get_sole_use(&function->function->code, instruction->id, &use_instr_ref));
+
+    const struct kefir_opt_instruction *use_instr = NULL;
+    if (use_instr_ref != KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, use_instr_ref, &use_instr));
+    }
+
     REQUIRE_OK(kefir_asmcmp_amd64_sete(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_movzx(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                        &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG8(result_vreg),
-                                        NULL));
+    if (use_instr == NULL || !KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(use_instr, instruction->id)) {
+        REQUIRE_OK(kefir_asmcmp_amd64_movzx(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+    }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
 

@@ -97,7 +97,6 @@ _kefir_func_test4_label1:
     mov %rdi, %rdx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_test4_label1
     movl -4(%rbp), %edi

@@ -55,7 +55,6 @@ _kefir_func_predec_i8_label1:
     mov %rdi, %rcx
     lock     cmpxchgb %cl, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_predec_i8_label1
     mov %rdi, %rax
@@ -140,7 +139,6 @@ _kefir_func_preinc_i8_label1:
     mov %rdi, %rcx
     lock     cmpxchgb %cl, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_preinc_i8_label1
     mov %rdi, %rax
@@ -233,7 +231,6 @@ _kefir_func_predec_f32_label1:
     movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_predec_f32_label3
     stmxcsr -48(%rbp)
@@ -280,7 +277,6 @@ _kefir_func_predec_f64_label1:
     movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_predec_f64_label3
     stmxcsr -48(%rbp)
@@ -319,7 +315,6 @@ _kefir_func_predec_i16_label1:
     mov %rdi, %rcx
     lock     cmpxchgw %cx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_predec_i16_label1
     mov %rdi, %rax
@@ -337,7 +332,6 @@ _kefir_func_predec_i32_label1:
     mov %rdi, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_predec_i32_label1
     mov %rdi, %rax
@@ -354,7 +348,6 @@ _kefir_func_predec_i64_label1:
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_predec_i64_label1
     mov %rdi, %rax
@@ -371,7 +364,6 @@ _kefir_func_predec_ptr_label1:
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_predec_ptr_label1
     mov %rdi, %rax
@@ -397,7 +389,6 @@ _kefir_func_preinc_f32_label1:
     movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_preinc_f32_label3
     stmxcsr -48(%rbp)
@@ -444,7 +435,6 @@ _kefir_func_preinc_f64_label1:
     movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_preinc_f64_label3
     stmxcsr -48(%rbp)
@@ -483,7 +473,6 @@ _kefir_func_preinc_i16_label1:
     mov %rdi, %rcx
     lock     cmpxchgw %cx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_preinc_i16_label1
     mov %rdi, %rax
@@ -501,7 +490,6 @@ _kefir_func_preinc_i32_label1:
     mov %rdi, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_preinc_i32_label1
     mov %rdi, %rax
@@ -518,7 +506,6 @@ _kefir_func_preinc_i64_label1:
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_preinc_i64_label1
     mov %rdi, %rax
@@ -535,7 +522,6 @@ _kefir_func_preinc_ptr_label1:
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_preinc_ptr_label1
     mov %rdi, %rax

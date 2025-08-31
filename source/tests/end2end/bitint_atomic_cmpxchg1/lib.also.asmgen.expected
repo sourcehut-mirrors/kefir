@@ -45,7 +45,6 @@ _kefir_func_add1_label1:
     mov %rsi, %rcx
     lock     cmpxchgb %cl, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_add1_label4
     jmp _kefir_func_add1_label2
@@ -87,7 +86,6 @@ _kefir_func_add2_label1:
     mov %rsi, %rcx
     lock     cmpxchgw %cx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_add2_label4
     jmp _kefir_func_add2_label2
@@ -129,7 +127,6 @@ _kefir_func_add3_label1:
     mov %rsi, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_add3_label4
     jmp _kefir_func_add3_label2
@@ -171,7 +168,6 @@ _kefir_func_add4_label1:
     mov %rsi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_add4_label4
     jmp _kefir_func_add4_label2
