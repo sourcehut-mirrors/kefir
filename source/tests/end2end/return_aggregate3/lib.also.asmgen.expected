@@ -12,14 +12,15 @@ __kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov %rdi, %rdx
+    mov %rdi, %rcx
     test %rsi, %rsi
     jnz _kefir_func_test_label2
-    leaq -64(%rbp), %rdi
-    xor %eax, %eax
-    mov $64, %rcx
-    rep stosb
-    mov %rdx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -64(%rbp)
+    movdqu %xmm0, -48(%rbp)
+    movdqu %xmm0, -32(%rbp)
+    movdqu %xmm0, -16(%rbp)
+    mov %rcx, %rax
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -48(%rbp), %xmm0
@@ -33,7 +34,7 @@ __kefir_text_func_test_begin:
     ret
 _kefir_func_test_label2:
     not %rsi
-    mov %rdx, %rdi
+    mov %rcx, %rdi
     lea (%rbp), %rsp
     pop %rbp
     jmp get@PLT

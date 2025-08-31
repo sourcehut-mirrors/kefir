@@ -2080,6 +2080,8 @@ static kefir_result_t format_mnemonic(struct kefir_amd64_xasmgen *xasmgen, const
             fprintf(payload->output, "mov");
         } else if (strcmp(mnemonic, "movsl") == 0) {
             fprintf(payload->output, "movsd");
+        } else if (strcmp(mnemonic, "stosl") == 0) {
+            fprintf(payload->output, "stosd");
         } else if (strcmp(mnemonic, "data16") == 0) {
             fprintf(payload->output, "db 0x66\n");
         } else if (strcmp(mnemonic, "rex.W") == 0) {
@@ -2097,6 +2099,8 @@ static kefir_result_t format_mnemonic(struct kefir_amd64_xasmgen *xasmgen, const
         fprintf(payload->output, "fdivp");
     } else if (strcmp(mnemonic, "movsl") == 0) {
         fprintf(payload->output, "movsd");
+    } else if (strcmp(mnemonic, "stosl") == 0) {
+        fprintf(payload->output, "stosd");
     } else {
         fprintf(payload->output, "%s", mnemonic);
     }

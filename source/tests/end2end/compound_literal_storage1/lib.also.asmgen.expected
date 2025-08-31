@@ -45,37 +45,35 @@ get3:
 __kefir_text_func_get3_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rdx
 _kefir_func_get3_label0:
-    leaq (%rdx), %rdi
-    mov $0, %rax
-    mov $32, %rcx
-    rep stosb
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, (%rdi)
+    movdqu %xmm0, 16(%rdi)
     mov $1, %rax
     neg %eax
-    movl %eax, (%rdx)
+    movl %eax, (%rdi)
     mov $2, %rax
     neg %eax
-    movl %eax, 4(%rdx)
+    movl %eax, 4(%rdi)
     mov $3, %rax
     neg %eax
-    movl %eax, 8(%rdx)
+    movl %eax, 8(%rdi)
     mov $4, %rax
     neg %eax
-    movl %eax, 12(%rdx)
+    movl %eax, 12(%rdi)
     mov $5, %rax
     neg %eax
-    movl %eax, 16(%rdx)
+    movl %eax, 16(%rdi)
     mov $6, %rax
     neg %eax
-    movl %eax, 20(%rdx)
+    movl %eax, 20(%rdi)
     mov $7, %rax
     neg %eax
-    movl %eax, 24(%rdx)
+    movl %eax, 24(%rdi)
     mov $8, %rax
     neg %eax
-    movl %eax, 28(%rdx)
-    mov %rdx, %rax
+    movl %eax, 28(%rdi)
+    mov %rdi, %rax
     pop %rbp
     ret
 __kefir_text_func_get3_end:
@@ -84,37 +82,35 @@ get4:
 __kefir_text_func_get4_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rdx
 _kefir_func_get4_label0:
-    leaq (%rdx), %rdi
-    mov $0, %rax
-    mov $32, %rcx
-    rep stosb
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, (%rdi)
+    movdqu %xmm0, 16(%rdi)
     mov $8, %rax
     neg %eax
-    movl %eax, (%rdx)
+    movl %eax, (%rdi)
     mov $7, %rax
     neg %eax
-    movl %eax, 4(%rdx)
+    movl %eax, 4(%rdi)
     mov $6, %rax
     neg %eax
-    movl %eax, 8(%rdx)
+    movl %eax, 8(%rdi)
     mov $5, %rax
     neg %eax
-    movl %eax, 12(%rdx)
+    movl %eax, 12(%rdi)
     mov $4, %rax
     neg %eax
-    movl %eax, 16(%rdx)
+    movl %eax, 16(%rdi)
     mov $3, %rax
     neg %eax
-    movl %eax, 20(%rdx)
+    movl %eax, 20(%rdi)
     mov $2, %rax
     neg %eax
-    movl %eax, 24(%rdx)
+    movl %eax, 24(%rdi)
     mov $1, %rax
     neg %eax
-    movl %eax, 28(%rdx)
-    mov %rdx, %rax
+    movl %eax, 28(%rdi)
+    mov %rdi, %rax
     pop %rbp
     ret
 __kefir_text_func_get4_end:

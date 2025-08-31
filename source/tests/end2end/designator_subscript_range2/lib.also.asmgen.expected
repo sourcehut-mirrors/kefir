@@ -17,8 +17,8 @@ _kefir_func_getb_label0:
     movl %esi, -12(%rbp)
     leaq (%rdx), %rdi
     mov $0, %rax
-    mov $240, %rcx
-    rep stosb
+    mov $30, %rcx
+    rep stosq
     movl -12(%rbp), %edi
     movq %rdx, -32(%rbp)
     call getinteger@PLT

@@ -319,10 +319,8 @@ _kefir_func___kefir_bigint_unsigned_from_float_label0:
     movq %rsi, -32(%rbp)
     movd %xmm0, -40(%rbp)
     movq %rdi, -24(%rbp)
-    leaq -56(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -56(%rbp)
     movl -40(%rbp), %eax
     movl %eax, -56(%rbp)
     movq -56(%rbp), %rax
@@ -483,10 +481,8 @@ _kefir_func___kefir_bigint_unsigned_from_double_label0:
     movq %rsi, -32(%rbp)
     movq %xmm0, -40(%rbp)
     movq %rdi, -24(%rbp)
-    leaq -56(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -56(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -56(%rbp)
     movq -56(%rbp), %rax
@@ -1176,10 +1172,8 @@ _kefir_func___kefir_bigint_signed_from_double_label0:
     movq %rsi, -32(%rbp)
     movq %xmm0, -40(%rbp)
     movq %rdi, -24(%rbp)
-    leaq -56(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -56(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -56(%rbp)
     movq -56(%rbp), %rax
@@ -1532,10 +1526,8 @@ _kefir_func___kefir_bigint_signed_from_float_label0:
     movq %rsi, -32(%rbp)
     movd %xmm0, -40(%rbp)
     movq %rdi, -24(%rbp)
-    leaq -56(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -56(%rbp)
     movl -40(%rbp), %eax
     movl %eax, -56(%rbp)
     movq -56(%rbp), %rax

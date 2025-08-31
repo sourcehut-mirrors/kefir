@@ -47,8 +47,8 @@ __kefir_text_func_test1_begin:
     fstpt 16(%rdi)
     leaq -144(%rbp), %rdi
     xor %eax, %eax
-    mov $128, %rcx
-    rep stosb
+    mov $16, %rcx
+    rep stosq
     lea 112(%rdx), %rdi
     leaq -144(%rbp), %rsi
     cld

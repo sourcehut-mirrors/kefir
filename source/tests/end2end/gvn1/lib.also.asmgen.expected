@@ -137,12 +137,8 @@ __kefir_text_func_orint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     or %esi, %edi
     movl %edi, -16(%rbp)
     neg %edi
@@ -159,12 +155,8 @@ __kefir_text_func_addint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     add %esi, %edi
     movl %edi, -16(%rbp)
     neg %edi
@@ -181,12 +173,8 @@ __kefir_text_func_andint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     and %esi, %edi
     movl %edi, -16(%rbp)
     neg %edi
@@ -203,12 +191,8 @@ __kefir_text_func_borint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     or %esi, %edi
     setne %dil
     movzx %dil, %rdi
@@ -227,12 +211,9 @@ __kefir_text_func_divint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    mov %rdi, %rax
     cdq
     idiv %esi
     movl %eax, -16(%rbp)
@@ -250,12 +231,9 @@ __kefir_text_func_modint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    mov %rdi, %rax
     cdq
     idiv %esi
     movl %edx, -16(%rbp)
@@ -273,12 +251,8 @@ __kefir_text_func_mulint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     imul %esi, %edi
     movl %edi, -16(%rbp)
     neg %edi
@@ -295,12 +269,9 @@ __kefir_text_func_orchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     or %ecx, %eax
     movb %al, -16(%rbp)
@@ -319,12 +290,8 @@ __kefir_text_func_orlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     or %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -341,12 +308,8 @@ __kefir_text_func_sarint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     mov %rsi, %rcx
     sar %cl, %edi
     movl %edi, -16(%rbp)
@@ -364,12 +327,8 @@ __kefir_text_func_shlint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     mov %rsi, %rcx
     shl %cl, %edi
     movl %edi, -16(%rbp)
@@ -387,12 +346,8 @@ __kefir_text_func_subint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     sub %esi, %edi
     movl %edi, -16(%rbp)
     neg %edi
@@ -409,12 +364,8 @@ __kefir_text_func_xorint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     xor %esi, %edi
     movl %edi, -16(%rbp)
     neg %edi
@@ -431,12 +382,9 @@ __kefir_text_func_addchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     add %ecx, %eax
     movb %al, -16(%rbp)
@@ -455,12 +403,8 @@ __kefir_text_func_addlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     add %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -477,12 +421,9 @@ __kefir_text_func_andchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     and %ecx, %eax
     movb %al, -16(%rbp)
@@ -501,12 +442,8 @@ __kefir_text_func_andlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     and %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -523,12 +460,9 @@ __kefir_text_func_bandint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    test %edx, %edx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    test %edi, %edi
     setne %al
     test %esi, %esi
     setne %cl
@@ -549,12 +483,8 @@ __kefir_text_func_borchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     or %sil, %dil
     setne %dil
     movzx %dil, %rdi
@@ -574,12 +504,8 @@ __kefir_text_func_borlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     or %rsi, %rdi
     setne %dil
     movzx %dil, %rdi
@@ -600,12 +526,9 @@ __kefir_text_func_divchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     cdq
     idiv %ecx
@@ -625,12 +548,9 @@ __kefir_text_func_divlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    mov %rdi, %rax
     cqo
     idiv %rsi
     movq %rax, -16(%rbp)
@@ -648,12 +568,9 @@ __kefir_text_func_modchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     cdq
     idiv %ecx
@@ -673,12 +590,9 @@ __kefir_text_func_modlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    mov %rdi, %rax
     cqo
     idiv %rsi
     movq %rdx, -16(%rbp)
@@ -696,12 +610,9 @@ __kefir_text_func_mulchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     imul %ecx, %eax
     movb %al, -16(%rbp)
@@ -720,12 +631,8 @@ __kefir_text_func_mullong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     imul %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -742,12 +649,9 @@ __kefir_text_func_orshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     or %ecx, %eax
     movw %ax, -16(%rbp)
@@ -766,12 +670,9 @@ __kefir_text_func_sarchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     sar %cl, %eax
     movb %al, -16(%rbp)
@@ -790,12 +691,8 @@ __kefir_text_func_sarlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     mov %rsi, %rcx
     sar %cl, %rdi
     movq %rdi, -16(%rbp)
@@ -813,12 +710,9 @@ __kefir_text_func_shlchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     shl %cl, %eax
     movb %al, -16(%rbp)
@@ -837,12 +731,8 @@ __kefir_text_func_shllong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     mov %rsi, %rcx
     shl %cl, %rdi
     movq %rdi, -16(%rbp)
@@ -860,12 +750,8 @@ __kefir_text_func_shruint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     mov %rsi, %rcx
     shr %cl, %edi
     movl %edi, -16(%rbp)
@@ -883,12 +769,9 @@ __kefir_text_func_subchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     sub %ecx, %eax
     movb %al, -16(%rbp)
@@ -907,12 +790,8 @@ __kefir_text_func_sublong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     sub %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -929,12 +808,9 @@ __kefir_text_func_xorchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %dil, %rax
     movsx %sil, %rcx
     xor %ecx, %eax
     movb %al, -16(%rbp)
@@ -953,12 +829,8 @@ __kefir_text_func_xorlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     xor %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -975,12 +847,9 @@ __kefir_text_func_addshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     add %ecx, %eax
     movw %ax, -16(%rbp)
@@ -999,12 +868,9 @@ __kefir_text_func_andshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     and %ecx, %eax
     movw %ax, -16(%rbp)
@@ -1023,12 +889,9 @@ __kefir_text_func_bandchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    test %dl, %dl
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    test %dil, %dil
     setne %al
     test %sil, %sil
     setne %cl
@@ -1050,12 +913,9 @@ __kefir_text_func_bandlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    test %rdx, %rdx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    test %rdi, %rdi
     setne %al
     test %rsi, %rsi
     setne %cl
@@ -1078,12 +938,8 @@ __kefir_text_func_borshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     or %si, %di
     setne %dil
     movzx %dil, %rdi
@@ -1103,12 +959,9 @@ __kefir_text_func_divshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     cdq
     idiv %ecx
@@ -1128,12 +981,9 @@ __kefir_text_func_modshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     cdq
     idiv %ecx
@@ -1153,12 +1003,9 @@ __kefir_text_func_mulshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     imul %ecx, %eax
     movw %ax, -16(%rbp)
@@ -1177,12 +1024,9 @@ __kefir_text_func_sarshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     sar %cl, %eax
     movw %ax, -16(%rbp)
@@ -1201,12 +1045,9 @@ __kefir_text_func_shlshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     shl %cl, %eax
     movw %ax, -16(%rbp)
@@ -1225,12 +1066,9 @@ __kefir_text_func_shruchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movzx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movzx %dil, %rax
     movzx %sil, %rcx
     sar %cl, %eax
     movb %al, -16(%rbp)
@@ -1249,12 +1087,8 @@ __kefir_text_func_shrulong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     mov %rsi, %rcx
     shr %cl, %rdi
     movq %rdi, -16(%rbp)
@@ -1272,12 +1106,9 @@ __kefir_text_func_subshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     sub %ecx, %eax
     movw %ax, -16(%rbp)
@@ -1296,12 +1127,9 @@ __kefir_text_func_udivuint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    mov %rdi, %rax
     xor %edx, %edx
     div %esi
     movl %eax, -16(%rbp)
@@ -1319,12 +1147,9 @@ __kefir_text_func_umoduint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    mov %rdi, %rax
     xor %edx, %edx
     div %esi
     movl %edx, -16(%rbp)
@@ -1342,12 +1167,8 @@ __kefir_text_func_umuluint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     imul %esi, %edi
     movl %edi, -16(%rbp)
     neg %edi
@@ -1364,12 +1185,9 @@ __kefir_text_func_xorshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movsx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movsx %di, %rax
     movsx %si, %rcx
     xor %ecx, %eax
     movw %ax, -16(%rbp)
@@ -1388,12 +1206,9 @@ __kefir_text_func_bandshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    test %dx, %dx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    test %di, %di
     setne %al
     test %si, %si
     setne %cl
@@ -1415,12 +1230,9 @@ __kefir_text_func_shrushort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movzx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movzx %di, %rax
     movzx %si, %rcx
     sar %cl, %eax
     movw %ax, -16(%rbp)
@@ -1439,12 +1251,9 @@ __kefir_text_func_udivuchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movzx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movzx %dil, %rax
     movzx %sil, %rcx
     cdq
     idiv %ecx
@@ -1464,12 +1273,9 @@ __kefir_text_func_udivulong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    mov %rdi, %rax
     xor %edx, %edx
     div %rsi
     movq %rax, -16(%rbp)
@@ -1487,12 +1293,9 @@ __kefir_text_func_umoduchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movzx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movzx %dil, %rax
     movzx %sil, %rcx
     cdq
     idiv %ecx
@@ -1512,12 +1315,9 @@ __kefir_text_func_umodulong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    mov %rdi, %rax
     xor %edx, %edx
     div %rsi
     movq %rdx, -16(%rbp)
@@ -1535,12 +1335,9 @@ __kefir_text_func_umuluchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movzx %dl, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movzx %dil, %rax
     movzx %sil, %rcx
     imul %ecx, %eax
     movb %al, -16(%rbp)
@@ -1559,12 +1356,8 @@ __kefir_text_func_umululong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    mov %rdx, %rdi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     imul %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -1581,12 +1374,9 @@ __kefir_text_func_udivushort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movzx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movzx %di, %rax
     movzx %si, %rcx
     cdq
     idiv %ecx
@@ -1606,12 +1396,9 @@ __kefir_text_func_umodushort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movzx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movzx %di, %rax
     movzx %si, %rcx
     cdq
     idiv %ecx
@@ -1631,12 +1418,9 @@ __kefir_text_func_umulushort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movzx %dx, %rax
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movzx %di, %rax
     movzx %si, %rcx
     imul %ecx, %eax
     movw %ax, -16(%rbp)

@@ -16,8 +16,8 @@ __kefir_text_func_get_begin:
     mov %rsi, %rdx
     leaq (%r8), %rdi
     xor %eax, %eax
-    mov $568, %rcx
-    rep stosb
+    mov $71, %rcx
+    rep stosq
     movw %dx, (%r8)
     mov %rdx, %rsi
     add $1, %esi
@@ -74,8 +74,8 @@ __kefir_text_func_get_begin:
     movd %xmm0, 152(%r8)
     leaq -280(%rbp), %rdi
     xor %eax, %eax
-    mov $136, %rcx
-    rep stosb
+    mov $17, %rcx
+    rep stosq
     movw $-1, -280(%rbp)
     leaq -144(%rbp), %rdi
     leaq -280(%rbp), %rsi

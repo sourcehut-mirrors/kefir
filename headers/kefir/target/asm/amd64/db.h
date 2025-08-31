@@ -202,6 +202,9 @@
     _instr0(movsl, "movsl", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr0(movsq, "movsq", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr0(stosb, "stosb", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
+    _instr0(stosw, "stosw", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
+    _instr0(stosl, "stosl", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
+    _instr0(stosq, "stosq", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
     /* Flags */ \
     _instr0(pushfq, "pushfq", , KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr0(popfq, "popfq", , KEFIR_AMD64_INSTRDB_NONE) _separator \

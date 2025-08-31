@@ -17,10 +17,8 @@ __kefir_text_func_test2_begin:
     movq %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
@@ -45,10 +43,11 @@ __kefir_text_func_test8_begin:
     movdqu %xmm0, -96(%rbp)
     movdqu 48(%rax), %xmm0
     movdqu %xmm0, -80(%rbp)
-    leaq -64(%rbp), %rdi
-    xor %eax, %eax
-    mov $64, %rcx
-    rep stosb
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -64(%rbp)
+    movdqu %xmm0, -48(%rbp)
+    movdqu %xmm0, -32(%rbp)
+    movdqu %xmm0, -16(%rbp)
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu -112(%rbp), %xmm0

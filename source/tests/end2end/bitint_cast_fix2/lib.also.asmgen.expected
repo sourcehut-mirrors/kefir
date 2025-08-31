@@ -2002,10 +2002,8 @@ _kefir_func___kefir_bigint_unsigned_to_float_label7:
     test %al, %al
     jz _kefir_func___kefir_bigint_unsigned_to_float_label9
 _kefir_func___kefir_bigint_unsigned_to_float_label8:
-    leaq -64(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -64(%rbp)
     movq -56(%rbp), %rax
     movq -40(%rbp), %rcx
     movq -32(%rbp), %rdx
@@ -2830,10 +2828,8 @@ _kefir_func___kefir_bigint_signed_to_float_label7:
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_to_float_label9
 _kefir_func___kefir_bigint_signed_to_float_label8:
-    leaq -64(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -64(%rbp)
     movq -56(%rbp), %rax
     movq -40(%rbp), %rcx
     movq -32(%rbp), %rdx

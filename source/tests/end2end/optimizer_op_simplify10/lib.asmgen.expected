@@ -17,10 +17,10 @@ _kefir_func_test_label0:
     movq $100, -40(%rbp)
     movq $-1000, -8(%rbp)
     movl $-314159, -112(%rbp)
-    leaq -104(%rbp), %rdi
-    mov $0, %rax
-    mov $24, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -104(%rbp)
+    movq %rax, -96(%rbp)
+    movq %rax, -88(%rbp)
     movl $1, -104(%rbp)
     movq $2, -96(%rbp)
     movd _kefir_func_test_label1(%rip), %xmm0

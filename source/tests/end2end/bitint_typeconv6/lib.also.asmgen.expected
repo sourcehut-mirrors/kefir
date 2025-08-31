@@ -722,10 +722,8 @@ _kefir_func___kefir_bigint_signed_to_double_label7:
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_to_double_label9
 _kefir_func___kefir_bigint_signed_to_double_label8:
-    leaq -64(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -64(%rbp)
     movq -56(%rbp), %rax
     movq -40(%rbp), %rdx
     movq -32(%rbp), %rsi
@@ -1603,10 +1601,8 @@ _kefir_func___kefir_bigint_unsigned_to_double_label7:
     test %al, %al
     jz _kefir_func___kefir_bigint_unsigned_to_double_label9
 _kefir_func___kefir_bigint_unsigned_to_double_label8:
-    leaq -64(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -64(%rbp)
     movq -56(%rbp), %rax
     movq -40(%rbp), %rdx
     movq -32(%rbp), %rsi
@@ -1918,27 +1914,25 @@ _kefir_func___kefir_bigint_unsigned_to_long_double_label7:
     test %al, %al
     jz _kefir_func___kefir_bigint_unsigned_to_long_double_label9
 _kefir_func___kefir_bigint_unsigned_to_long_double_label8:
-    leaq -80(%rbp), %rdi
-    mov $0, %rax
-    mov $16, %rcx
-    rep stosb
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -80(%rbp)
     movq -48(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -88(%rbp), %rax
     movq -56(%rbp), %rcx
-    leaq -80(%rbp), %rdi
-    add $8, %rdi
-    mov $32768, %rsi
-    movsx %esi, %rdx
-    and %rdx, %rax
-    mov $16383, %rsi
-    movsx %esi, %rdx
-    add %rdx, %rcx
-    mov $32767, %rsi
-    movsx %esi, %rdx
-    and %rdx, %rcx
+    leaq -80(%rbp), %rdx
+    add $8, %rdx
+    mov $32768, %rdi
+    movsx %edi, %rsi
+    and %rsi, %rax
+    mov $16383, %rdi
+    movsx %edi, %rsi
+    add %rsi, %rcx
+    mov $32767, %rdi
+    movsx %edi, %rsi
+    and %rsi, %rcx
     or %rcx, %rax
-    movq %rax, (%rdi)
+    movq %rax, (%rdx)
     fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -2015,11 +2009,11 @@ _kefir_func___kefir_bigint_unsigned_to_long_double_label14:
     movq -64(%rbp), %r8
     movq -96(%rbp), %rdi
     movq -64(%rbp), %rsi
-    movq %rcx, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %r8, -112(%rbp)
+    movq %rcx, -104(%rbp)
     call __kefir_bigint_is_zero
-    movq -112(%rbp), %rcx
-    movq -104(%rbp), %r8
+    movq -112(%rbp), %r8
+    movq -104(%rbp), %rcx
     mov $0, %rdx
     test %eax, %eax
     sete %dl
@@ -2927,10 +2921,8 @@ _kefir_func___kefir_bigint_unsigned_to_float_label7:
     test %al, %al
     jz _kefir_func___kefir_bigint_unsigned_to_float_label9
 _kefir_func___kefir_bigint_unsigned_to_float_label8:
-    leaq -64(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -64(%rbp)
     movq -56(%rbp), %rax
     movq -40(%rbp), %rcx
     movq -32(%rbp), %rdx
@@ -3446,27 +3438,25 @@ _kefir_func___kefir_bigint_signed_to_long_double_label7:
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_to_long_double_label9
 _kefir_func___kefir_bigint_signed_to_long_double_label8:
-    leaq -80(%rbp), %rdi
-    mov $0, %rax
-    mov $16, %rcx
-    rep stosb
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -80(%rbp)
     movq -48(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -88(%rbp), %rax
     movq -56(%rbp), %rcx
-    leaq -80(%rbp), %rdi
-    add $8, %rdi
-    mov $32768, %rsi
-    movsx %esi, %rdx
-    and %rdx, %rax
-    mov $16383, %rsi
-    movsx %esi, %rdx
-    add %rdx, %rcx
-    mov $32767, %rsi
-    movsx %esi, %rdx
-    and %rdx, %rcx
+    leaq -80(%rbp), %rdx
+    add $8, %rdx
+    mov $32768, %rdi
+    movsx %edi, %rsi
+    and %rsi, %rax
+    mov $16383, %rdi
+    movsx %edi, %rsi
+    add %rsi, %rcx
+    mov $32767, %rdi
+    movsx %edi, %rsi
+    and %rsi, %rcx
     or %rcx, %rax
-    movq %rax, (%rdi)
+    movq %rax, (%rdx)
     fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -3543,11 +3533,11 @@ _kefir_func___kefir_bigint_signed_to_long_double_label14:
     movq -64(%rbp), %r8
     movq -96(%rbp), %rdi
     movq -64(%rbp), %rsi
-    movq %rcx, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %r8, -112(%rbp)
+    movq %rcx, -104(%rbp)
     call __kefir_bigint_is_zero
-    movq -112(%rbp), %rcx
-    movq -104(%rbp), %r8
+    movq -112(%rbp), %r8
+    movq -104(%rbp), %rcx
     mov $0, %rdx
     test %eax, %eax
     sete %dl
@@ -4071,10 +4061,8 @@ _kefir_func___kefir_bigint_signed_to_float_label7:
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_to_float_label9
 _kefir_func___kefir_bigint_signed_to_float_label8:
-    leaq -64(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -64(%rbp)
     movq -56(%rbp), %rax
     movq -40(%rbp), %rcx
     movq -32(%rbp), %rdx

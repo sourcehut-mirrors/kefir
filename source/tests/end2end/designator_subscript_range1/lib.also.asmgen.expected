@@ -17,8 +17,8 @@ __kefir_text_func_getb_begin:
 _kefir_func_getb_label0:
     leaq (%rdx), %rdi
     mov $0, %rax
-    mov $200, %rcx
-    rep stosb
+    mov $25, %rcx
+    rep stosq
     mov $1243, %rax
     neg %eax
     movl %eax, -4(%rbp)

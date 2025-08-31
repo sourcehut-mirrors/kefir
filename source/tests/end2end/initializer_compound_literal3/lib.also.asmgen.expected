@@ -13,13 +13,10 @@ __kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -12(%rbp), %rdi
     xor %eax, %eax
-    mov $12, %rcx
-    rep stosb
-    movl %edx, -12(%rbp)
-    mov %rdx, %rdi
+    movq %rax, -12(%rbp)
+    movl %eax, -4(%rbp)
+    movl %edi, -12(%rbp)
     neg %edi
     movl %edi, -4(%rbp)
     movq -12(%rbp), %rax
@@ -34,13 +31,10 @@ __kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    leaq -12(%rbp), %rdi
     xor %eax, %eax
-    mov $12, %rcx
-    rep stosb
-    movl %edx, -12(%rbp)
-    mov %rdx, %rdi
+    movq %rax, -12(%rbp)
+    movl %eax, -4(%rbp)
+    movl %edi, -12(%rbp)
     neg %edi
     movl %edi, -4(%rbp)
     movq -12(%rbp), %rax

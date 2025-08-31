@@ -14,8 +14,8 @@ __kefir_text_func_run_bf_begin:
     mov %rdi, %rdx
     leaq -5144(%rbp), %rdi
     xor %eax, %eax
-    mov $5144, %rcx
-    rep stosb
+    mov $643, %rcx
+    rep stosq
     movq %rdx, -5144(%rbp)
     movb $0, -5136(%rbp)
     movq $0, -1040(%rbp)

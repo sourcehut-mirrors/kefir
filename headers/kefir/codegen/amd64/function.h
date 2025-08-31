@@ -421,6 +421,9 @@ KEFIR_CODEGEN_AMD64_INSTRUCTIONS(DECL_INSTR, ;);
 kefir_result_t kefir_codegen_amd64_copy_memory(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                kefir_asmcmp_virtual_register_index_t,
                                                kefir_asmcmp_virtual_register_index_t, kefir_size_t);
+kefir_result_t kefir_codegen_amd64_zero_memory(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                               kefir_asmcmp_virtual_register_index_t,
+                                               kefir_size_t);
 
 kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                      const struct kefir_opt_instruction *, kefir_bool_t *,

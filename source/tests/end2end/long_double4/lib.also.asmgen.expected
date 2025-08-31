@@ -16,8 +16,8 @@ __kefir_text_func_init_s_begin:
     fldt 16(%rbp)
     leaq (%rdx), %rdi
     xor %eax, %eax
-    mov $112, %rcx
-    rep stosb
+    mov $14, %rcx
+    rep stosq
     movq $0, 8(%rdx)
     fld %st(0)
     fstpt -32(%rbp)

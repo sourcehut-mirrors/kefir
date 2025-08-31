@@ -11,12 +11,12 @@ __kefir_text_func_gets1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $256, %rsp
-    mov %rdi, %r8
     mov %rsi, %rdx
-    leaq -64(%rbp), %rdi
-    xor %eax, %eax
-    mov $64, %rcx
-    rep stosb
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -64(%rbp)
+    movdqu %xmm0, -48(%rbp)
+    movdqu %xmm0, -32(%rbp)
+    movdqu %xmm0, -16(%rbp)
     movl $0, -64(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -128(%rbp)
@@ -50,19 +50,19 @@ __kefir_text_func_gets1_begin:
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -208(%rbp)
     movdqu -256(%rbp), %xmm0
-    movdqu %xmm0, (%r8)
+    movdqu %xmm0, (%rdi)
     movdqu -240(%rbp), %xmm0
-    movdqu %xmm0, 16(%r8)
+    movdqu %xmm0, 16(%rdi)
     movdqu -224(%rbp), %xmm0
-    movdqu %xmm0, 32(%r8)
+    movdqu %xmm0, 32(%rdi)
     movdqu -208(%rbp), %xmm0
-    movdqu %xmm0, 48(%r8)
+    movdqu %xmm0, 48(%rdi)
     movsx %edx, %rax
     imul $4, %rax, %rax
-    leaq (%r8), %rcx
+    leaq (%rdi), %rcx
     add %rax, %rcx
     movl %edx, (%rcx)
-    mov %r8, %rax
+    mov %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -16,10 +16,8 @@ __kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -8(%rbp), %rdi
     xor %eax, %eax
-    mov $8, %rcx
-    rep stosb
+    movq %rax, -8(%rbp)
     movq x@GOTPCREL(%rip), %rax
     add $8, %rax
     movq %rax, -8(%rbp)
@@ -34,10 +32,8 @@ __kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -8(%rbp), %rdi
     xor %eax, %eax
-    mov $8, %rcx
-    rep stosb
+    movq %rax, -8(%rbp)
     movq get1@GOTPCREL(%rip), %rax
     movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
@@ -53,10 +49,8 @@ __kefir_text_func_get3_begin:
     sub $16, %rsp
 _kefir_func_get3_label1:
 _kefir_local_public_label_get3_label1:
-    leaq -8(%rbp), %rdi
     xor %eax, %eax
-    mov $8, %rcx
-    rep stosb
+    movq %rax, -8(%rbp)
     lea _kefir_local_public_label_get3_label1(%rip), %rax
     movq %rax, -8(%rbp)
     movq -8(%rbp), %rax

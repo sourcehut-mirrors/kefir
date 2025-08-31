@@ -28,8 +28,8 @@ _kefir_func_get1_label0:
     movl %esi, -4(%rbp)
     leaq (%r8), %rdi
     mov $0, %rax
-    mov $72, %rcx
-    rep stosb
+    mov $9, %rcx
+    rep stosq
     movl -4(%rbp), %eax
     movsx %eax, %rax
     shl $58, %rax

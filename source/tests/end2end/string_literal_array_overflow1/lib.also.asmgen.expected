@@ -12,10 +12,8 @@ __kefir_text_func_somefn_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_somefn_label0:
-    leaq -8(%rbp), %rdi
-    mov $0, %rax
-    mov $8, %rcx
-    rep stosb
+    xor %eax, %eax
+    movq %rax, -8(%rbp)
     lea __kefir_string_literal0(%rip), %rax
     movq (%rax), %rcx
     movq %rcx, -8(%rbp)

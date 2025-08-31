@@ -14,8 +14,8 @@ __kefir_text_func_init_s1_begin:
     sub $512, %rsp
     leaq -512(%rbp), %rdi
     xor %eax, %eax
-    mov $512, %rcx
-    rep stosb
+    mov $64, %rcx
+    rep stosq
     movq s1@GOTPCREL(%rip), %rdi
     leaq -512(%rbp), %rsi
     cld

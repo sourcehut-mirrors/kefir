@@ -15,8 +15,8 @@ __kefir_text_func_get1_begin:
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
-    mov $80, %rcx
-    rep stosb
+    mov $10, %rcx
+    rep stosq
     movl $58472, (%rdx)
     lea __kefir_string_literal0(%rip), %rax
     movq %rax, 8(%rdx)
