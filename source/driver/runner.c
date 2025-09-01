@@ -243,7 +243,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.ast_global_context.configuration.analysis.permissive_pointer_conv =
         options->features.permissive_pointer_conv;
     compiler.ast_global_context.configuration.standard_version = options->standard_version;
-    compiler.ast_global_context.configuration.analysis.enable_thread_local_common = !options->codegen.emulated_tls;
+    compiler.ast_global_context.configuration.analysis.enable_thread_local_common = options->codegen.tls_common;
     compiler.ast_global_context.configuration.analysis.tentative_definition_placement =
         options->codegen.tentative_definition_placement;
     compiler.ast_global_context.configuration.analysis.symbol_visibility = options->codegen.symbol_visibility;

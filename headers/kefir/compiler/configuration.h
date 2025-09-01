@@ -113,6 +113,7 @@ typedef struct kefir_compiler_runner_configuration {
 
     struct {
         kefir_bool_t emulated_tls;
+        kefir_bool_t tls_common;
         kefir_bool_t position_independent_code;
         kefir_bool_t omit_frame_pointer;
         kefir_bool_t valgrind_compatible_x87;

@@ -308,6 +308,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
            features.declare_atomic_support),
 
     CODEGEN("emulated-tls", codegen.emulated_tls),
+    CODEGEN("tls-common", codegen.tls_common),
     CODEGEN("pic", codegen.position_independent_code),
     CODEGEN("omit-frame-pointer", codegen.omit_frame_pointer),
     CODEGEN("valgrind-compatible-x87", codegen.valgrind_compatible_x87),

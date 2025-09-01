@@ -19,7 +19,7 @@
 */
 
 int x;
-#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
+#if !defined(__OpenBSD__)
 _Thread_local int y;
 #else
 int y;
@@ -31,7 +31,7 @@ int getx() {
 }
 
 int gety() {
-#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
+#if !defined(__OpenBSD__)
     extern _Thread_local int y __attribute__((common));
 #else
     extern int y __attribute__((common));

@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -O1 -Wcodegen-emulated-tls"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -O1 -Wno-codegen-tls-common"

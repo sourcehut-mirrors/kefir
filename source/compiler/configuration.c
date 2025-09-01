@@ -53,6 +53,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
         .standard_version = KEFIR_DEFAULT_STANDARD_VERSION,
         .features = {false, .precise_bitfield_load_store = true, .declare_atomic_support = true, .preprocessor_linemarkers = false},
         .codegen = {.emulated_tls = false,
+                    .tls_common = true,
                     .position_independent_code = false,
                     .omit_frame_pointer = false,
                     .valgrind_compatible_x87 = true,

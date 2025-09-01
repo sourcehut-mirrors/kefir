@@ -25,11 +25,9 @@ int getx() {
     return x;
 }
 
-#if !defined(__FreeBSD__)
 int gety() {
     return y;
 }
-#endif
 
 int getz() {
     return z;

@@ -51,6 +51,8 @@ kefir_result_t kefir_driver_apply_target_profile_configuration(
             REQUIRE_OK(match_backend(target->backend, &compiler_config->target_profile));
             compiler_config->codegen.emulated_tls = true;
         }
+
+        compiler_config->codegen.tls_common = target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX || target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD;
     }
 
     return KEFIR_OK;

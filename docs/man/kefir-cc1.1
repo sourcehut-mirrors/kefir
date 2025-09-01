@@ -271,7 +271,10 @@ flags):
 .Bl -tag -width Ds
 .\"
 .It Ar emulated-tls
-Use emulated TLS [disabled by default, enabled on openbsd platforms]
+Use emulated TLS [disabled by default, enabled on openbsd platform]
+.\"
+.It Ar tls-common
+Generate common section for thread-local storage if respective attribute is on [enabled for linux and netbsd]
 .\"
 .It Ar pic
 Generate position-independent code

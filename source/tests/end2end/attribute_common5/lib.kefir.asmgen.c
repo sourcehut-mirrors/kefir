@@ -18,29 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define LIB1
-#include "./internal.h"
+_Thread_local int x __attribute__((common));
 
 int getx() {
     return x;
-}
-
-int gety() {
-    return y;
-}
-
-int getz() {
-    return z;
-}
-
-int geta() {
-    return w;
-}
-
-int geti() {
-    return i;
-}
-
-int getj() {
-    return j;
 }
