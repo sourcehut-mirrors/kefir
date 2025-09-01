@@ -1,3 +1,11 @@
+// This file is a modified excerpt from glibc 2.42 sys/cdefs.h header.
+//
+// Refer to <https://sourceware.org/glibc/> website for more information,
+// license, etc.
+//
+// Kefir author makes no claims with respect to this file, and provides it only
+// for successful compilation of an external test
+
 // clang-format off
 #include_next <sys/cdefs.h>
 
