@@ -28,72 +28,48 @@ __kefir_text_section_begin:
 geta:
 __kefir_text_func_geta_begin:
 .extern __tls_get_addr
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_geta_label0:
     data16     lea w@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     movl (%rax), %eax
-    pop %rbp
     ret
 __kefir_text_func_geta_end:
 
 geti:
 __kefir_text_func_geti_begin:
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_geti_label0:
     movq i@GOTPCREL(%rip), %rax
     movl (%rax), %eax
-    pop %rbp
     ret
 __kefir_text_func_geti_end:
 
 getj:
 __kefir_text_func_getj_begin:
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_getj_label0:
     movq j@GOTPCREL(%rip), %rax
     movl (%rax), %eax
-    pop %rbp
     ret
 __kefir_text_func_getj_end:
 
 getx:
 __kefir_text_func_getx_begin:
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_getx_label0:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
-    pop %rbp
     ret
 __kefir_text_func_getx_end:
 
 gety:
 __kefir_text_func_gety_begin:
 .extern __tls_get_addr
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_gety_label0:
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     movl (%rax), %eax
-    pop %rbp
     ret
 __kefir_text_func_gety_end:
 
 getz:
 __kefir_text_func_getz_begin:
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_getz_label0:
     lea z(%rip), %rax
     movl (%rax), %eax
-    pop %rbp
     ret
 __kefir_text_func_getz_end:
 
