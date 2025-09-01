@@ -56,6 +56,7 @@ struct kefir_ast_type_layout *kefir_ast_new_type_layout(struct kefir_mem *mem, c
     layout->parent = NULL;
     layout->type = type != NULL ? kefir_ast_unqualified_type(type) : NULL;
     layout->qualified_type = type;
+    layout->actual_type = type;
     layout->alignment = alignment;
     layout->value = value;
     layout->properties.valid = false;

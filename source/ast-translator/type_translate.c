@@ -458,6 +458,9 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_ENUMERATION:
             REQUIRE_OK(kefir_ast_translate_object_type(mem, context, type->enumeration_type.underlying_type, alignment,
                                                        env, builder, layout_ptr, source_location));
+            if (layout_ptr != NULL) {
+                (*layout_ptr)->actual_type = type;
+            }
             break;
 
         case KEFIR_AST_TYPE_STRUCTURE:

@@ -1,0 +1,282 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x
+.type x, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .bss
+    .align 4
+x:
+    .skip 16
+
+
+.section .debug_abbrev
+__kefir_debug_abbrev_section_begin:
+__kefir_debug_abbrev_section_entry_1:
+    .byte 1
+    .byte 17
+    .byte 1
+    .byte 19
+    .byte 5
+    .byte 37
+    .byte 8
+    .byte 17
+    .byte 1
+    .byte 18
+    .byte 7
+    .byte 16
+    .byte 23
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_2:
+    .byte 2
+    .byte 19
+    .byte 1
+    .byte 3
+    .byte 8
+    .byte 11
+    .byte 15
+    .byte 136
+    .byte 1
+    .byte 15
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_3:
+    .byte 3
+    .byte 13
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 73
+    .byte 19
+    .byte 11
+    .byte 15
+    .byte 136
+    .byte 1
+    .byte 15
+    .byte 56
+    .byte 15
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_4:
+    .byte 4
+    .byte 4
+    .byte 1
+    .byte 11
+    .byte 11
+    .byte 136
+    .byte 1
+    .byte 11
+    .byte 73
+    .byte 19
+    .byte 3
+    .byte 8
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_5:
+    .byte 5
+    .byte 36
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 11
+    .byte 11
+    .byte 136
+    .byte 1
+    .byte 11
+    .byte 62
+    .byte 11
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_6:
+    .byte 6
+    .byte 40
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 28
+    .byte 15
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_7:
+    .byte 7
+    .byte 52
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 63
+    .byte 12
+    .byte 60
+    .byte 12
+    .byte 2
+    .byte 24
+    .byte 73
+    .byte 19
+    .byte 110
+    .byte 8
+    .byte 58
+    .byte 8
+    .byte 59
+    .byte 7
+    .byte 57
+    .byte 7
+    .byte 0
+    .byte 0
+    .byte 0
+
+.section .debug_info
+__kefir_debug_info_section:
+    .long __kefir_debug_info_section_end - __kefir_debug_info_section_begin
+__kefir_debug_info_section_begin:
+    .word 5
+    .byte 1
+    .byte 8
+    .long __kefir_debug_abbrev_section_begin
+__kefir_debug_info_section_entry_1:
+    .byte 1
+    .word 29
+    .ascii "Kefir C compiler 0.4.1\000"
+    .quad __kefir_text_section_begin
+    .quad __kefir_text_section_end - __kefir_text_section_begin
+    .long __kefir_debug_lines_section_begin
+__kefir_debug_info_section_entry_2:
+    .byte 7
+    .ascii "x\000"
+    .byte 1
+    .byte 0
+    .byte 9
+    .byte 3
+    .quad x
+    .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
+    .ascii "x\000"
+    .ascii "source/tests/end2end/debug_info_struct_field_enum1/lib.kefir.asmgen.c\000"
+    .quad 46
+    .quad 23
+__kefir_debug_info_section_entry_3:
+    .byte 2
+    .ascii "kefir_driver_target\000"
+    .byte 16
+    .byte 4
+__kefir_debug_info_section_entry_4:
+    .byte 3
+    .ascii "backend\000"
+    .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
+    .byte 4
+    .byte 4
+    .byte 0
+__kefir_debug_info_section_entry_6:
+    .byte 3
+    .ascii "arch\000"
+    .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
+    .byte 4
+    .byte 4
+    .byte 4
+__kefir_debug_info_section_entry_8:
+    .byte 3
+    .ascii "platform\000"
+    .long __kefir_debug_info_section_entry_9 - __kefir_debug_info_section
+    .byte 4
+    .byte 4
+    .byte 8
+__kefir_debug_info_section_entry_10:
+    .byte 3
+    .ascii "variant\000"
+    .long __kefir_debug_info_section_entry_11 - __kefir_debug_info_section
+    .byte 4
+    .byte 4
+    .byte 12
+    .byte 0
+__kefir_debug_info_section_entry_5:
+    .byte 4
+    .byte 4
+    .byte 4
+    .long __kefir_debug_info_section_entry_12 - __kefir_debug_info_section
+    .ascii "kefir_driver_target_backend\000"
+__kefir_debug_info_section_entry_13:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_BACKEND_DEFAULT\000"
+    .byte 0
+    .byte 0
+__kefir_debug_info_section_entry_7:
+    .byte 4
+    .byte 4
+    .byte 4
+    .long __kefir_debug_info_section_entry_12 - __kefir_debug_info_section
+    .ascii "kefir_driver_target_arch\000"
+__kefir_debug_info_section_entry_14:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_ARCH_X86_64\000"
+    .byte 0
+    .byte 0
+__kefir_debug_info_section_entry_9:
+    .byte 4
+    .byte 4
+    .byte 4
+    .long __kefir_debug_info_section_entry_12 - __kefir_debug_info_section
+    .ascii "kefir_driver_target_platform\000"
+__kefir_debug_info_section_entry_15:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_PLATFORM_LINUX\000"
+    .byte 0
+__kefir_debug_info_section_entry_16:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD\000"
+    .byte 1
+__kefir_debug_info_section_entry_17:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD\000"
+    .byte 2
+__kefir_debug_info_section_entry_18:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_PLATFORM_NETBSD\000"
+    .byte 3
+    .byte 0
+__kefir_debug_info_section_entry_11:
+    .byte 4
+    .byte 4
+    .byte 4
+    .long __kefir_debug_info_section_entry_12 - __kefir_debug_info_section
+    .ascii "kefir_driver_target_variant\000"
+__kefir_debug_info_section_entry_19:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_VARIANT_SYSTEM\000"
+    .byte 0
+__kefir_debug_info_section_entry_20:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_VARIANT_GNU\000"
+    .byte 1
+__kefir_debug_info_section_entry_21:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_VARIANT_MUSL\000"
+    .byte 2
+__kefir_debug_info_section_entry_22:
+    .byte 6
+    .ascii "KEFIR_DRIVER_TARGET_VARIANT_NONE\000"
+    .byte 3
+    .byte 0
+__kefir_debug_info_section_entry_12:
+    .byte 5
+    .ascii "unsigned int\000"
+    .byte 4
+    .byte 4
+    .byte 7
+    .byte 0
+    .byte 0
+__kefir_debug_info_section_end:
+
+.section .debug_loclists
+__kefir_debug_loclists_section:
+    .long __kefir_debug_loclists_section_end - __kefir_debug_loclists_section_begin
+__kefir_debug_loclists_section_begin:
+    .word 5
+    .byte 8
+    .byte 0
+    .long 0
+__kefir_debug_loclists_section_end:
+
+.section .debug_line
+__kefir_debug_lines_section_begin:

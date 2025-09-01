@@ -57,6 +57,7 @@ typedef struct kefir_ast_type_layout {
     const struct kefir_ast_type_layout *parent;
     const struct kefir_ast_type *type;
     const struct kefir_ast_type *qualified_type;
+    const struct kefir_ast_type *actual_type;
     kefir_size_t alignment;
     kefir_uptr_t value;
     kefir_bool_t bitfield;

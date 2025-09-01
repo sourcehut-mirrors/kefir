@@ -620,7 +620,7 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
 
                     kefir_ir_debug_entry_id_t field_entry_type_id = KEFIR_IR_DEBUG_ENTRY_ID_NONE;
                     REQUIRE_OK(kefir_ast_translate_debug_type_with_layout(mem, context, translator_env, module,
-                                                                          debug_entries, field->layout->type,
+                                                                          debug_entries, field->layout->actual_type,
                                                                           field->layout, &field_entry_type_id));
                     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
                         mem, &module->debug_info.entries, &module->symbols, field_entry_id,
@@ -752,7 +752,7 @@ static kefir_result_t kefir_ast_translate_debug_type_with_layout(
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain unqualified AST type"));
 
-    REQUIRE(type_layout == NULL || type_layout->type == unqualified_type,
+    REQUIRE(type_layout == NULL || type_layout->type == unqualified_type || type_layout->actual_type == unqualified_type,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected AST type layout match"));
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &type, type));
 
