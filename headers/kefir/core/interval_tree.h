@@ -70,8 +70,9 @@ typedef struct kefir_interval_tree_finder {
 } kefir_interval_tree_finder_t;
 
 kefir_result_t kefir_interval_tree_find(const struct kefir_interval_tree *, kefir_interval_tree_key_t,
-                                       struct kefir_interval_tree_finder *, struct kefir_interval_tree_node **);
-kefir_result_t kefir_interval_tree_find_next(const struct kefir_interval_tree *, struct kefir_interval_tree_finder *, struct kefir_interval_tree_node **);
+                                        struct kefir_interval_tree_finder *, struct kefir_interval_tree_node **);
+kefir_result_t kefir_interval_tree_find_next(const struct kefir_interval_tree *, struct kefir_interval_tree_finder *,
+                                             struct kefir_interval_tree_node **);
 
 typedef struct kefir_interval_tree_iterator {
     struct kefir_hashtree_node_iterator entry;

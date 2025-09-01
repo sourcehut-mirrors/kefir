@@ -34,6 +34,7 @@ typedef struct kefir_preprocessor_tokenizer_context {
 } kefir_preprocessor_tokenizer_context_t;
 
 kefir_result_t kefir_preprocessor_tokenizer_context_init(struct kefir_preprocessor_tokenizer_context *);
-kefir_result_t kefir_preprocessor_tokenize_next(struct kefir_mem *, struct kefir_lexer *, struct kefir_preprocessor_tokenizer_context *, struct kefir_token *);
+kefir_result_t kefir_preprocessor_tokenize_next(struct kefir_mem *, struct kefir_lexer *,
+                                                struct kefir_preprocessor_tokenizer_context *, struct kefir_token *);
 
 #endif

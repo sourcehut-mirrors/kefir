@@ -88,9 +88,9 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
 
     fprintf(out, "Extension library support: %s\n",
 #ifdef KEFIR_EXTENSION_SUPPORT
-        "enabled"
+            "enabled"
 #else
-        "disabled"
+            "disabled"
 #endif
     );
 

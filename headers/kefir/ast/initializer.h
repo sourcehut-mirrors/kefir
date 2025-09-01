@@ -76,7 +76,8 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_desig
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_designation(
     struct kefir_mem *, struct kefir_ast_node_base *, struct kefir_ast_initializer_designation *);
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_range_designation(
-    struct kefir_mem *, struct kefir_ast_node_base *, struct kefir_ast_node_base *, struct kefir_ast_initializer_designation *);
+    struct kefir_mem *, struct kefir_ast_node_base *, struct kefir_ast_node_base *,
+    struct kefir_ast_initializer_designation *);
 struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_clone(
     struct kefir_mem *, struct kefir_ast_initializer_designation *);
 kefir_result_t kefir_ast_initializer_designation_free(struct kefir_mem *, struct kefir_ast_initializer_designation *);

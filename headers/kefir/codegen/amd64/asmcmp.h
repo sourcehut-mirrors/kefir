@@ -136,16 +136,17 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(const struct kefir_
     kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *,                     \
                                                 kefir_asmcmp_instruction_index_t, const struct kefir_asmcmp_value *, \
                                                 kefir_asmcmp_instruction_index_t *);
-#define DEF_OPCODE2_(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                      \
+#define DEF_OPCODE2_(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                     \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(                                           \
         struct kefir_mem *, struct kefir_asmcmp_amd64 *, kefir_asmcmp_instruction_index_t, \
         const struct kefir_asmcmp_value *, const struct kefir_asmcmp_value *, kefir_asmcmp_instruction_index_t *);
-#define DEF_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                      \
-    kefir_result_t kefir_asmcmp_amd64_##_opcode##_rep(                                           \
+#define DEF_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flags, _op1, _op2)           \
+    kefir_result_t kefir_asmcmp_amd64_##_opcode##_rep(                                     \
         struct kefir_mem *, struct kefir_asmcmp_amd64 *, kefir_asmcmp_instruction_index_t, \
         const struct kefir_asmcmp_value *, const struct kefir_asmcmp_value *, kefir_asmcmp_instruction_index_t *);
-#define DEF_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) DEF_OPCODE2_##_variant(_opcode, _mnemonic, _variant, _flags, _op1, _op2)
-#define DEF_OPCODE3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)                           \
+#define DEF_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) \
+    DEF_OPCODE2_##_variant(_opcode, _mnemonic, _variant, _flags, _op1, _op2)
+#define DEF_OPCODE3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)                                           \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *,                      \
                                                 kefir_asmcmp_instruction_index_t, const struct kefir_asmcmp_value *,  \
                                                 const struct kefir_asmcmp_value *, const struct kefir_asmcmp_value *, \

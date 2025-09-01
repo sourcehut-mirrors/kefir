@@ -1,3 +1,4 @@
+// clang-format off
 #include_next <sys/cdefs.h>
 
 # define __REDIRECT(name, proto, alias) name proto __asm__ (__ASMNAME (#alias))
@@ -22,3 +23,4 @@
 #ifndef __REDIRECT_FORTIFY_NTH
 #define __REDIRECT_FORTIFY_NTH __REDIRECT_NTH
 #endif
+// clang-format on

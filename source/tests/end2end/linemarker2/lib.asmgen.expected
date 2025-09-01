@@ -15,9 +15,9 @@ int y = 1;
 # 0 "SOMEOTHER/FILE"
 2000
 # 1000 "FILE\\\\\\\\\\a3"
--2000
+    - 2000
 # 2 "SOME/FILE"
-3000
+    3000
 # 1345 "Hey/\\/ho"
 
 int z = 1000

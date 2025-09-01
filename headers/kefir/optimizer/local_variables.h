@@ -36,6 +36,7 @@ typedef struct kefir_opt_code_variable_conflicts {
 kefir_result_t kefir_opt_code_variable_conflicts_init(struct kefir_opt_code_variable_conflicts *);
 kefir_result_t kefir_opt_code_variable_conflicts_free(struct kefir_mem *, struct kefir_opt_code_variable_conflicts *);
 
-kefir_result_t kefir_opt_code_variable_conflicts_build(struct kefir_mem *, struct kefir_opt_code_variable_conflicts *, const struct kefir_opt_code_liveness *);
+kefir_result_t kefir_opt_code_variable_conflicts_build(struct kefir_mem *, struct kefir_opt_code_variable_conflicts *,
+                                                       const struct kefir_opt_code_liveness *);
 
 #endif

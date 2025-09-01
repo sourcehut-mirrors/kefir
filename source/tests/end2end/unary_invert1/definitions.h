@@ -21,13 +21,7 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-enum Enum1 {
-    A = 1,
-    B = 2,
-    C = 3,
-    D = 4,
-    E = 5
-};
+enum Enum1 { A = 1, B = 2, C = 3, D = 4, E = 5 };
 
 enum Enum1 test1(signed char);
 

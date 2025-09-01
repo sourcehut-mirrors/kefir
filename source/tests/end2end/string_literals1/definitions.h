@@ -21,25 +21,25 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-#define STR0_CONTENT          \
-    "\xff\xff\xee\u2EF0"      \
-    "Привет, wōrl\000" \
+#define STR0_CONTENT     \
+    "\xff\xff\xee\u2EF0" \
+    "Привет, wōrl\000"   \
     "d\U00000f0f"
-#define STR1_CONTENT            \
-    "\xff\xff\xee\u2EF0"        \
+#define STR1_CONTENT     \
+    "\xff\xff\xee\u2EF0" \
     u8"Привет, wōrl\000" \
     "d\U00000f0f"
-#define STR2_CONTENT           \
-    "\xff\xfff\xee\u2EF0"      \
-    u"Привет, wōrl\000" \
+#define STR2_CONTENT      \
+    "\xff\xfff\xee\u2EF0" \
+    u"Привет, wōrl\000"   \
     "d\U00000f0f"
-#define STR3_CONTENT          \
-    "\xff\xfff\xee\u2EF0"     \
-    "Привет, wōrl\000" \
+#define STR3_CONTENT      \
+    "\xff\xfff\xee\u2EF0" \
+    "Привет, wōrl\000"    \
     U"d\U00000f0f"
-#define STR4_CONTENT          \
-    "\xff\xfff\xee\u2EF0"     \
-    "Привет, wōrl\000" \
+#define STR4_CONTENT      \
+    "\xff\xfff\xee\u2EF0" \
+    "Привет, wōrl\000"    \
     L"d\U00000f0f"
 
 extern const char STR0[];

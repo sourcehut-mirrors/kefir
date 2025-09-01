@@ -79,7 +79,7 @@ DECL_BIN_FNS(or);
 DECL_BIN_FNS(xor);
 DECL_BIN_FNS(shl);
 DECL_BIN_FNS(shr);
-DECL_UN_FNS(not );
+DECL_UN_FNS(not);
 DECL_UN_FNS(bnot);
 DECL_UN_FNS(neg);
 

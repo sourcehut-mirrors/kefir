@@ -30,16 +30,15 @@ typedef unsigned short ushort;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 
-#define DECL_OP(_name, _type) \
-    _Bool _name##_##_type(_Bool, _type, _type)
-#define DECL_OPS(_name) \
-    DECL_OP(_name, schar); \
+#define DECL_OP(_name, _type) _Bool _name##_##_type(_Bool, _type, _type)
+#define DECL_OPS(_name)     \
+    DECL_OP(_name, schar);  \
     DECL_OP(_name, sshort); \
-    DECL_OP(_name, sint); \
-    DECL_OP(_name, slong); \
-    DECL_OP(_name, uchar); \
+    DECL_OP(_name, sint);   \
+    DECL_OP(_name, slong);  \
+    DECL_OP(_name, uchar);  \
     DECL_OP(_name, ushort); \
-    DECL_OP(_name, uint); \
+    DECL_OP(_name, uint);   \
     DECL_OP(_name, ulong)
 
 DECL_OPS(equal);
@@ -49,17 +48,9 @@ DECL_OPS(greater_or_equal);
 DECL_OPS(less);
 DECL_OPS(less_or_equal);
 
-enum test_op {
-    OP_EQ,
-    OP_NE,
-    OP_GT,
-    OP_GE,
-    OP_LT,
-    OP_LE
-};
+enum test_op { OP_EQ, OP_NE, OP_GT, OP_GE, OP_LT, OP_LE };
 
-#define DECL_TEST(_type) \
-    _Bool test_##_type(enum test_op, _type, _type) \
+#define DECL_TEST(_type) _Bool test_##_type(enum test_op, _type, _type)
 
 DECL_TEST(schar);
 DECL_TEST(sshort);

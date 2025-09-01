@@ -40,7 +40,11 @@ kefir_result_t kefir_asmcmp_source_map_free(struct kefir_mem *, struct kefir_asm
 kefir_result_t kefir_asmcmp_debug_info_init(struct kefir_asmcmp_debug_info *);
 kefir_result_t kefir_asmcmp_debug_info_free(struct kefir_mem *, struct kefir_asmcmp_debug_info *);
 
-kefir_result_t kefir_asmcmp_source_map_add_location(struct kefir_mem *, struct kefir_asmcmp_source_map *, struct kefir_string_pool *, kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t, const struct kefir_source_location *);
-kefir_result_t kefir_asmcmp_source_map_at(const struct kefir_asmcmp_source_map *, kefir_asmcmp_instruction_index_t, const struct kefir_source_location **);
+kefir_result_t kefir_asmcmp_source_map_add_location(struct kefir_mem *, struct kefir_asmcmp_source_map *,
+                                                    struct kefir_string_pool *, kefir_asmcmp_instruction_index_t,
+                                                    kefir_asmcmp_instruction_index_t,
+                                                    const struct kefir_source_location *);
+kefir_result_t kefir_asmcmp_source_map_at(const struct kefir_asmcmp_source_map *, kefir_asmcmp_instruction_index_t,
+                                          const struct kefir_source_location **);
 
 #endif

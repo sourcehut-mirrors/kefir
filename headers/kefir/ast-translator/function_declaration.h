@@ -43,9 +43,9 @@ typedef struct kefir_ast_translator_function_declaration {
 
 kefir_result_t kefir_ast_translator_function_declaration_init(
     struct kefir_mem *, const struct kefir_ast_context *, const struct kefir_ast_translator_environment *,
-    struct kefir_ast_type_bundle *, const struct kefir_ast_type_traits *, struct kefir_ir_module *, const char *, kefir_bool_t,
-    const struct kefir_ast_type *, const struct kefir_list *, struct kefir_ast_translator_function_declaration **,
-    const struct kefir_source_location *);
+    struct kefir_ast_type_bundle *, const struct kefir_ast_type_traits *, struct kefir_ir_module *, const char *,
+    kefir_bool_t, const struct kefir_ast_type *, const struct kefir_list *,
+    struct kefir_ast_translator_function_declaration **, const struct kefir_source_location *);
 
 kefir_result_t kefir_ast_translator_function_declaration_free(struct kefir_mem *,
                                                               struct kefir_ast_translator_function_declaration *);

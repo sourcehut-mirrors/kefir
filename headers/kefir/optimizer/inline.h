@@ -30,7 +30,9 @@ typedef struct kefir_opt_try_inline_function_call_parameters {
     kefir_size_t max_inlines_per_function;
 } kefir_opt_try_inline_function_call_parameters_t;
 
-kefir_result_t kefir_opt_try_inline_function_call(struct kefir_mem *, const struct kefir_opt_module *, struct kefir_opt_function *,
-    struct kefir_opt_code_structure *, const struct kefir_opt_try_inline_function_call_parameters *, kefir_opt_instruction_ref_t, kefir_bool_t *);
+kefir_result_t kefir_opt_try_inline_function_call(struct kefir_mem *, const struct kefir_opt_module *,
+                                                  struct kefir_opt_function *, struct kefir_opt_code_structure *,
+                                                  const struct kefir_opt_try_inline_function_call_parameters *,
+                                                  kefir_opt_instruction_ref_t, kefir_bool_t *);
 
 #endif

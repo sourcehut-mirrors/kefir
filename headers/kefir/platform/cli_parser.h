@@ -41,8 +41,10 @@ typedef struct kefir_cli_option {
     kefir_uint64_t action_param;
     kefir_size_t param_offset;
     kefir_size_t param_size;
-    kefir_result_t (*prehook)(struct kefir_mem *, struct kefir_string_pool *, const struct kefir_cli_option *, void *, const char *);
-    kefir_result_t (*posthook)(struct kefir_mem *, struct kefir_string_pool *, const struct kefir_cli_option *, void *, const char *);
+    kefir_result_t (*prehook)(struct kefir_mem *, struct kefir_string_pool *, const struct kefir_cli_option *, void *,
+                              const char *);
+    kefir_result_t (*posthook)(struct kefir_mem *, struct kefir_string_pool *, const struct kefir_cli_option *, void *,
+                               const char *);
     void *payload;
 } kefir_cli_option_t;
 
