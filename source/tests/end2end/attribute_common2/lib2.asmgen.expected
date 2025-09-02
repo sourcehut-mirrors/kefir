@@ -1,0 +1,39 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x
+.type x, @object
+.comm x, 4, 4
+.global y
+.type y, @object
+.global getx
+.type getx, @function
+.global gety
+.type gety, @function
+
+.section .text
+__kefir_text_section_begin:
+getx:
+__kefir_text_func_getx_begin:
+    movq x@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    ret
+__kefir_text_func_getx_end:
+
+gety:
+__kefir_text_func_gety_begin:
+.extern __tls_get_addr
+    data16     lea y@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    movl (%rax), %eax
+    ret
+__kefir_text_func_gety_end:
+
+__kefir_text_section_end:
+
+.section .tbss
+    .align 4
+y:
+    .long 0
+

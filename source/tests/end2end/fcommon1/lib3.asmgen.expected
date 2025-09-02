@@ -9,6 +9,7 @@
 .comm x, 4, 4
 .global y
 .type y, @object
+.tls_common y, 4, 4
 .global geta
 .type geta, @function
 .global geti
@@ -86,9 +87,5 @@ z:
 .section .tbss
     .align 4
 w:
-    .long 0
-
-    .align 4
-y:
     .long 0
 

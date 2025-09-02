@@ -7,8 +7,10 @@
 .global x
 .type x, @object
 .comm x, 4, 4
-.global y
-.type y, @object
+.global __emutls_v.y
+.type __emutls_v.y, @object
+.global __emutls_t.y
+.type __emutls_t.y, @object
 .global geta
 .type geta, @function
 .global geti
@@ -26,10 +28,8 @@
 __kefir_text_section_begin:
 geta:
 __kefir_text_func_geta_begin:
-.extern __tls_get_addr
-    data16     lea w@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
+    movq __emutls_v.w@GOTPCREL(%rip), %rdi
+    call __emutls_get_address@PLT
     movl (%rax), %eax
     ret
 __kefir_text_func_geta_end:
@@ -57,10 +57,8 @@ __kefir_text_func_getx_end:
 
 gety:
 __kefir_text_func_gety_begin:
-.extern __tls_get_addr
-    data16     lea y@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
+    movq __emutls_v.y@GOTPCREL(%rip), %rdi
+    call __emutls_get_address@PLT
     movl (%rax), %eax
     ret
 __kefir_text_func_gety_end:
@@ -83,12 +81,10 @@ j:
 z:
     .skip 4
 
-.section .tbss
-    .align 4
-w:
-    .long 0
-
-    .align 4
-y:
-    .long 0
-
+.section .data
+    .align 8
+__emutls_v.w:
+    .quad 4, 4, 0, 0
+    .align 8
+__emutls_v.y:
+    .quad 4, 4, 0, 0

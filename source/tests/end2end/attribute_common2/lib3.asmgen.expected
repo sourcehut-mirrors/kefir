@@ -1,0 +1,38 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x
+.type x, @object
+.comm x, 4, 4
+.global __emutls_v.y
+.type __emutls_v.y, @object
+.global __emutls_t.y
+.type __emutls_t.y, @object
+.global getx
+.type getx, @function
+.global gety
+.type gety, @function
+
+.section .text
+__kefir_text_section_begin:
+getx:
+__kefir_text_func_getx_begin:
+    movq x@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    ret
+__kefir_text_func_getx_end:
+
+gety:
+__kefir_text_func_gety_begin:
+    movq __emutls_v.y@GOTPCREL(%rip), %rdi
+    call __emutls_get_address@PLT
+    movl (%rax), %eax
+    ret
+__kefir_text_func_gety_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+__emutls_v.y:
+    .quad 4, 4, 0, 0
