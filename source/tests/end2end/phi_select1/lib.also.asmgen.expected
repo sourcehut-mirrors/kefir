@@ -66,15 +66,16 @@ __kefir_text_func_select5_begin:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    leaq -48(%rbp), %rcx
-    mov %rcx, %rax
-    leaq -32(%rbp), %rdx
-    mov %rdx, %rcx
-    test %edi, %edi
-    cmovz %rcx, %rax
     fstpt -48(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    test %edi, %edi
+    jnz _kefir_func_select5_label1
+    movq -32(%rbp), %rdi
+    movq %rdi, -48(%rbp)
+    movq -24(%rbp), %rdi
+    movq %rdi, -40(%rbp)
+_kefir_func_select5_label1:
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

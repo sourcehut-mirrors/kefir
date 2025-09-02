@@ -1163,7 +1163,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg1_vreg, &arg1_asmcmp_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg2_vreg, &arg2_asmcmp_vreg));
 
-    kefir_bool_t complex_float_select = false;
+    kefir_bool_t use_conditional_mov = false;
     if (arg1_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR ||
         arg2_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR) {
         REQUIRE(arg1_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR &&
@@ -1179,7 +1179,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
 
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
-                complex_float_select = true;
+                use_conditional_mov = true;
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                              KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
                                                              &arg2_placement_real_vreg));
@@ -1198,6 +1198,17 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
                                                                   result_real_vreg, result_imag_vreg, &result_vreg));
                 break;
         }
+    } else if (arg1_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE ||
+        arg2_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE) {
+        REQUIRE(arg1_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE &&
+                    arg2_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE &&
+                    arg1_asmcmp_vreg->parameters.spill_space_allocation.length == arg2_asmcmp_vreg->parameters.spill_space_allocation.length,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected both virtual registers to be spill space allocations of the same length"));
+        REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+        const kefir_size_t max_alignment = MAX(arg1_asmcmp_vreg->parameters.spill_space_allocation.alignment, arg2_asmcmp_vreg->parameters.spill_space_allocation.alignment);
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &result_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &arg2_placement_vreg));
+        use_conditional_mov = true;
     } else {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &arg2_placement_vreg));
@@ -1243,7 +1254,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
             break;
     }
 
-    if (complex_float_select) {
+    if (use_conditional_mov) {
         kefir_asmcmp_label_index_t no_arg2_move_label;
         REQUIRE_OK(
             kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &no_arg2_move_label));
