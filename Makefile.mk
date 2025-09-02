@@ -5,7 +5,7 @@ USE_SANITIZER=no
 USE_VALGRIND=no
 USE_GCOV=no
 USE_EXTENSION_SUPPORT=no
-KEFIR_GENERATE_COMPILE_COMMANDS?=no
+USE_GEN_COMPILE_COMMANDS?=no
 PLATFORM := $(shell uname | tr '[:upper:]' '[:lower:]')
 
 # Tools
@@ -162,8 +162,10 @@ $(COVERAGE_HTML):
 	@echo "Generating gcov report $@..."
 	@$(GCOVR) --root $(realpath $(ROOT)) --html --html-details --output "$@"
 
+ifeq ($(USE_GEN_COMPILE_COMMANDS),yes)
 COMPILE_COMMANDS_JSON_CMD_FILES=$(shell "$(SCRIPTS_DIR)/gen_compile_commands.py" --cmd-files --build-dir "$(KEFIR_BIN_DIR)")
 $(COMPILE_COMMANDS_JSON): $(COMPILE_COMMANDS_JSON_CMD_FILES)
 	@echo "Generating $@..."
 	@"$(SCRIPTS_DIR)/gen_compile_commands.py" --compile-commands --build-dir "$(KEFIR_BIN_DIR)" > "$@.tmp"
 	@mv "$@.tmp" "$@"
+endif
