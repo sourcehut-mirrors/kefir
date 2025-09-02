@@ -28,7 +28,8 @@
 #include "kefir/core/error.h"
 
 static struct kefir_ast_translator_configuration DefaultConfiguration = {.empty_structs = false,
-                                                                         .precise_bitfield_load_store = true};
+                                                                         .precise_bitfield_load_store = true,
+                                                                        .optimize_stack_frame = true};
 
 kefir_result_t kefir_ast_translator_environment_new_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                           const struct kefir_ast_translator_environment *env,

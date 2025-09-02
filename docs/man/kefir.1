@@ -459,6 +459,13 @@ Declare support of atomics (might require explicit linking of software atomic li
 .It Fl \-no-declare-atomic-support
 Declare the absence of atomic support via defining __STDC_NO_ATOMICS__ macro.
 .\"
+.It Fl \-optimize-stack-frame
+Optimize stack frame layout by reusing space for variables for disjoint lifetimes. Might increase compilation time and memory
+use on very large functions. [default: on].
+.\"
+.It Fl \-no-optimize-stack-frame
+Do not optimize stack frame layout and allocate each variable separately.
+.\"
 .It Fl \-unsigned-char
 Let the type char be unsigned. By default, it is target-specific.
 .\"

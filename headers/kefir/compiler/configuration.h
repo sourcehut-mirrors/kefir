@@ -109,6 +109,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t switch_case_ranges;
         kefir_bool_t designator_subscript_ranges;
         kefir_bool_t preprocessor_linemarkers;
+        kefir_bool_t optimize_stack_frame;
     } features;
 
     struct {

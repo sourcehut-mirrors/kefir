@@ -306,6 +306,10 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
            features.declare_atomic_support),
     SIMPLE(0, "no-declare-atomic-support", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
            features.declare_atomic_support),
+    SIMPLE(0, "optimize-stack-frame", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true,
+           features.optimize_stack_frame),
+    SIMPLE(0, "no-optimize-stack-frame", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
+           features.optimize_stack_frame),
 
     CODEGEN("emulated-tls", codegen.emulated_tls),
     CODEGEN("tls-common", codegen.tls_common),

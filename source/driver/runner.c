@@ -250,6 +250,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
 
     compiler.translator_configuration.empty_structs = options->features.empty_structs;
     compiler.translator_configuration.precise_bitfield_load_store = options->features.precise_bitfield_load_store;
+    compiler.translator_configuration.optimize_stack_frame = options->features.optimize_stack_frame;
 
     compiler.codegen_configuration.emulated_tls = options->codegen.emulated_tls;
     compiler.codegen_configuration.position_independent_code = options->codegen.position_independent_code;
