@@ -1,0 +1,20 @@
+--- bootstrap.c	2024-12-23 22:55:03.000000000 +0200
++++ bootstrap.c	2025-09-02 18:07:08.406928912 +0300
+@@ -114,7 +114,7 @@
+     }
+     {
+         const char *child_argv[] = {
+-            cc, "-o", "zig1", "zig1.c", "stage1/wasi.c", "-std=c99", "-Os", "-lm", NULL,
++            cc, "-o", "zig1", "zig1.c", "stage1/wasi.c", "-std=c99", "-Os", "-Wno-optimize-stack-frame", "-lm", NULL,
+         };
+         print_and_run(child_argv);
+     }
+@@ -179,7 +179,7 @@
+     {
+         const char *child_argv[] = {
+             cc, "-o", "zig2", "zig2.c", "compiler_rt.c",
+-            "-std=c99", "-O2", "-fno-stack-protector",
++            "-std=c99", "-O2", "-Wno-optimize-stack-frame", "-fno-stack-protector",
+             "-Istage1",
+ #if defined(__APPLE__)
+             "-Wl,-stack_size,0x10000000",
