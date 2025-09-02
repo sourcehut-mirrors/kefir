@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: GPL-3.0
+# 
+# Copyright (C) 2020-2025  Jevgenijs Protopopovs
+# 
+# This file is part of Kefir project.
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3.
+# # 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# This Dockerfile documents minimal number of dependencies to build, test and
+# install Kefir on Fedora. It is provided only as a way to do basic testing for
+# Fedora builds, as the author is aware that third parties rely on that.
+# The "official" complete Dockefile is for Ubuntu.
+
+FROM fedora:42 AS base
+
+RUN dnf update -y
+# Minimum build dependencies -- either gcc or clang are sufficient
+RUN dnf install -y gcc clang groff m4 make diffutils mandoc libatomic
+# For musl builds
+RUN dnf install -y musl-devel musl-gcc
