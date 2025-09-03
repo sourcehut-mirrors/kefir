@@ -18,3 +18,13 @@
              "-Istage1",
  #if defined(__APPLE__)
              "-Wl,-stack_size,0x10000000",
+--- stage1/zig.h        2025-09-03 11:48:46.000000000 +0300
++++ stage1/zig.h     2025-09-03 16:59:26.470009380 +0300
+@@ -364,7 +364,7 @@
+ #define zig_weak_linkage_fn zig_weak_linkage_unavailable
+ #endif
+ 
+-#if defined(zig_gnuc) || defined(zig_tinyc) || defined(zig_slimcc)
++#if defined(zig_gnuc) || defined(zig_tinyc) || defined(zig_slimcc) || defined(__KEFIRCC__)
+ #define zig_gnuc_asm
+ #endif
