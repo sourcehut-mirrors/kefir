@@ -843,10 +843,14 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
     if (preprocessor->context->environment.stdc_iec559) {
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_iec559,
                                                     "__STDC_IEC_559__", macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_iec60559_bfp,
+                                                    "__STDC_IEC_60559_BFP__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_iec559_complex) {
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_iec559_complex,
                                                     "__STDC_IEC_559_COMPLEX__", macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_iec60559_complex,
+                                                    "__STDC_IEC_60559_COMPLEX__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_lib_ext1 > 0) {
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_lib_ext1,

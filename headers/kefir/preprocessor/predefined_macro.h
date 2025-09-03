@@ -45,6 +45,8 @@ typedef struct kefir_preprocessor_predefined_macro_scope {
         struct kefir_preprocessor_macro stdc_analyzable;
         struct kefir_preprocessor_macro stdc_iec559;
         struct kefir_preprocessor_macro stdc_iec559_complex;
+        struct kefir_preprocessor_macro stdc_iec60559_bfp;
+        struct kefir_preprocessor_macro stdc_iec60559_complex;
         struct kefir_preprocessor_macro stdc_lib_ext1;
         struct kefir_preprocessor_macro stdc_no_atomics;
         struct kefir_preprocessor_macro stdc_no_complex;

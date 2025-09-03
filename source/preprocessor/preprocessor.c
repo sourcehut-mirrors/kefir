@@ -90,7 +90,7 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     // Conditional macros
     context->environment.stdc_analyzable = false;
     context->environment.stdc_iec559 = true;
-    context->environment.stdc_iec559_complex = false;
+    context->environment.stdc_iec559_complex = true;
     context->environment.stdc_lib_ext1 = 0;
     context->environment.stdc_no_atomics = false;
     context->environment.stdc_no_complex = false;

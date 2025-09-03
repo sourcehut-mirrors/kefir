@@ -49,6 +49,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "analyzable = __STDC_ANALYZABLE__\n"
                            "iec559 = __STDC_IEC_559__\n"
                            "iec559_complex = __STDC_IEC_559_COMPLEX__\n"
+                           "iec60559_bfp = __STDC_IEC_60559_BFP__\n"
+                           "iec60559_complex = __STDC_IEC_60559_COMPLEX__\n"
                            "lib_ext1 = __STDC_LIB_EXT1__\n"
                            "no_atomics = __STDC_NO_ATOMICS__\n"
                            "no_complex = __STDC_NO_COMPLEX__\n"
