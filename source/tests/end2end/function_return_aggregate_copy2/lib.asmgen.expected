@@ -113,18 +113,6 @@
                             },
                             {
                                 "id": 21,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 24
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 6,
-                                "control_next": 25
-                            },
-                            {
-                                "id": 25,
                                 "opcode": "return",
                                 "arg": 20,
                                 "control_next": null
@@ -139,11 +127,9 @@
                                 6,
                                 1,
                                 17,
-                                24,
                                 19,
                                 21,
                                 16,
-                                25,
                                 10,
                                 20,
                                 0,

@@ -512,27 +512,6 @@
                                 "ir_instruction": 28
                             },
                             {
-                                "id": 23,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 24,
-                                "ir_instruction": 33
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 25,
-                                "ir_instruction": 35
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 26,
-                                "ir_instruction": 37
-                            },
-                            {
                                 "id": 13,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 12,
@@ -584,7 +563,7 @@
                                 "ir_instruction": 31
                             },
                             {
-                                "id": 26,
+                                "id": 23,
                                 "opcode": "return",
                                 "arg": 22,
                                 "control_next": null,
@@ -600,12 +579,10 @@
                                 6,
                                 1,
                                 12,
-                                24,
-                                15,
                                 19,
+                                15,
                                 21,
                                 16,
-                                25,
                                 4,
                                 10,
                                 22,
@@ -614,7 +591,6 @@
                                 23,
                                 7,
                                 5,
-                                26,
                                 11,
                                 17,
                                 9,

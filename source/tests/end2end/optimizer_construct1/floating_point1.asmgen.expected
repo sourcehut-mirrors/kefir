@@ -187,34 +187,6 @@
                                 "ir_instruction": 34
                             },
                             {
-                                "id": 26,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 27,
-                                "ir_instruction": 39
-                            },
-                            {
-                                "id": 27,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 28,
-                                "ir_instruction": 41
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 29,
-                                "ir_instruction": 43
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 6,
-                                "control_next": 30,
-                                "ir_instruction": 45
-                            },
-                            {
                                 "id": 18,
                                 "opcode": "float32_add",
                                 "args": [
@@ -269,7 +241,7 @@
                                 "ir_instruction": 37
                             },
                             {
-                                "id": 30,
+                                "id": 26,
                                 "opcode": "return",
                                 "arg": 25,
                                 "control_next": null,
@@ -291,13 +263,11 @@
                                 21,
                                 16,
                                 25,
-                                27,
                                 4,
                                 10,
                                 20,
-                                30,
-                                2,
                                 22,
+                                2,
                                 23,
                                 7,
                                 5,
@@ -305,10 +275,8 @@
                                 11,
                                 17,
                                 9,
-                                28,
                                 3,
                                 0,
-                                29,
                                 18,
                                 8,
                                 14,
@@ -509,34 +477,6 @@
                                 "ir_instruction": 34
                             },
                             {
-                                "id": 26,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 27,
-                                "ir_instruction": 39
-                            },
-                            {
-                                "id": 27,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 28,
-                                "ir_instruction": 41
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 29,
-                                "ir_instruction": 43
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 6,
-                                "control_next": 30,
-                                "ir_instruction": 45
-                            },
-                            {
                                 "id": 18,
                                 "opcode": "float64_add",
                                 "args": [
@@ -591,7 +531,7 @@
                                 "ir_instruction": 37
                             },
                             {
-                                "id": 30,
+                                "id": 26,
                                 "opcode": "return",
                                 "arg": 25,
                                 "control_next": null,
@@ -613,13 +553,11 @@
                                 21,
                                 16,
                                 25,
-                                27,
                                 4,
                                 10,
                                 20,
-                                30,
-                                2,
                                 22,
+                                2,
                                 23,
                                 7,
                                 5,
@@ -627,10 +565,8 @@
                                 11,
                                 17,
                                 9,
-                                28,
                                 3,
                                 0,
-                                29,
                                 18,
                                 8,
                                 14,
@@ -722,20 +658,6 @@
                             },
                             {
                                 "id": 31,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 32,
-                                "ir_instruction": 60
-                            },
-                            {
-                                "id": 32,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 33,
-                                "ir_instruction": 62
-                            },
-                            {
-                                "id": 33,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -750,15 +672,13 @@
                             "alive_instructions": [
                                 6,
                                 1,
-                                32,
-                                33,
+                                7,
+                                5,
                                 31,
                                 4,
                                 3,
                                 2,
-                                0,
-                                7,
-                                5
+                                0
                             ]
                         }
                     }
@@ -846,20 +766,6 @@
                             },
                             {
                                 "id": 31,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 32,
-                                "ir_instruction": 60
-                            },
-                            {
-                                "id": 32,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 33,
-                                "ir_instruction": 62
-                            },
-                            {
-                                "id": 33,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -874,15 +780,13 @@
                             "alive_instructions": [
                                 6,
                                 1,
-                                32,
-                                33,
+                                7,
+                                5,
                                 31,
                                 4,
                                 3,
                                 2,
-                                0,
-                                7,
-                                5
+                                0
                             ]
                         }
                     }
@@ -970,20 +874,6 @@
                             },
                             {
                                 "id": 28,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 29,
-                                "ir_instruction": 49
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 30,
-                                "ir_instruction": 51
-                            },
-                            {
-                                "id": 30,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -998,15 +888,13 @@
                             "alive_instructions": [
                                 6,
                                 1,
+                                7,
+                                5,
                                 4,
                                 28,
                                 3,
                                 2,
-                                30,
-                                29,
-                                0,
-                                7,
-                                5
+                                0
                             ]
                         }
                     }

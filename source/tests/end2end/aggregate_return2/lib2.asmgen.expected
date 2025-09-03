@@ -97,19 +97,7 @@
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 19
-                            },
-                            {
-                                "id": 19,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 20
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 21
+                                "control_next": 18
                             },
                             {
                                 "id": 11,
@@ -127,7 +115,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 21,
+                                "id": 18,
                                 "opcode": "return",
                                 "arg": 17,
                                 "control_next": null
@@ -142,15 +130,13 @@
                                 6,
                                 17,
                                 9,
-                                19,
                                 15,
-                                21,
                                 16,
                                 4,
                                 10,
-                                20,
                                 3,
                                 2,
+                                18,
                                 5,
                                 11,
                                 14,
@@ -239,16 +225,10 @@
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 15
+                                "control_next": 14
                             },
                             {
-                                "id": 15,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 16
-                            },
-                            {
-                                "id": 16,
+                                "id": 14,
                                 "opcode": "return",
                                 "arg": 13,
                                 "control_next": null
@@ -262,14 +242,13 @@
                             "alive_instructions": [
                                 12,
                                 9,
-                                15,
-                                16,
                                 4,
                                 10,
                                 3,
                                 2,
                                 7,
                                 11,
+                                14,
                                 13
                             ]
                         }
@@ -376,34 +355,10 @@
                                 ],
                                 "return_space": null,
                                 "indirect_ref": null,
-                                "control_next": 26
+                                "control_next": 24
                             },
                             {
-                                "id": 26,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 27
-                            },
-                            {
-                                "id": 27,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 6,
-                                "control_next": 28
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 29
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 6,
-                                "control_next": 30
-                            },
-                            {
-                                "id": 30,
+                                "id": 24,
                                 "opcode": "return",
                                 "arg": 23,
                                 "control_next": null
@@ -418,18 +373,14 @@
                                 6,
                                 17,
                                 9,
+                                24,
                                 12,
-                                27,
                                 4,
-                                20,
-                                28,
-                                30,
                                 22,
-                                29,
+                                20,
                                 23,
                                 7,
                                 5,
-                                26,
                                 11,
                                 14
                             ]

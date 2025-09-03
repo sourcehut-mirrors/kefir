@@ -79,13 +79,6 @@
                             },
                             {
                                 "id": 4,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 5,
-                                "ir_instruction": 8
-                            },
-                            {
-                                "id": 5,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -100,7 +93,6 @@
                             "alive_instructions": [
                                 1,
                                 4,
-                                5,
                                 3,
                                 2,
                                 0

@@ -492,10 +492,10 @@ _kefir_func___kefir_bigint_arithmetic_right_shift_label3:
     ja _kefir_func___kefir_bigint_arithmetic_right_shift_label12
     mov %r10, %rsi
 _kefir_func___kefir_bigint_arithmetic_right_shift_label4:
-    mov %r12, %rax
-    sub $1, %rax
     mov $8, %r11
     sub %rsi, %r11
+    mov %r12, %rax
+    sub $1, %rax
     cmp $0, %rsi
     jbe _kefir_func___kefir_bigint_arithmetic_right_shift_label5
 _kefir_func___kefir_bigint_arithmetic_right_shift_label15:

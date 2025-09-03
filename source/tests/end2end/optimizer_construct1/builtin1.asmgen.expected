@@ -111,27 +111,6 @@
                             },
                             {
                                 "id": 12,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 13,
-                                "ir_instruction": 26
-                            },
-                            {
-                                "id": 13,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 14,
-                                "ir_instruction": 28
-                            },
-                            {
-                                "id": 14,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 15,
-                                "ir_instruction": 30
-                            },
-                            {
-                                "id": 15,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -148,7 +127,6 @@
                                 1,
                                 12,
                                 9,
-                                15,
                                 10,
                                 4,
                                 3,
@@ -157,9 +135,7 @@
                                 8,
                                 7,
                                 5,
-                                11,
-                                14,
-                                13
+                                11
                             ]
                         }
                     }
@@ -237,13 +213,6 @@
                             },
                             {
                                 "id": 7,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 8,
-                                "ir_instruction": 11
-                            },
-                            {
-                                "id": 8,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -258,7 +227,6 @@
                             "alive_instructions": [
                                 6,
                                 1,
-                                8,
                                 7,
                                 5,
                                 4,

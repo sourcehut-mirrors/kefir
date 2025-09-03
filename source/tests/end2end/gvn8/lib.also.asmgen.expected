@@ -294,12 +294,12 @@ _kefir_func___kefir_bigint_is_zero_label6:
     ret
 _kefir_func___kefir_bigint_is_zero_label7:
     movzx %dl, %r8
-    mov %r9, %rax
+    mov %r10, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
     imul $8, %rax, %rdx
-    mov %r10, %rsi
+    mov %r9, %rsi
     sub %rdx, %rsi
     add $1, %rsi
     mov $1, %rdx

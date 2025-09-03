@@ -413,11 +413,15 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
-        case KEFIR_IR_OPCODE_LOCAL_LIFETIME_MARK:
+        case KEFIR_IR_OPCODE_LOCAL_LIFETIME_MARK: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-            REQUIRE_OK(kefir_opt_code_builder_local_lifetime_mark(mem, code, current_block_id, instr_ref2, &instr_ref));
-            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
-            break;
+            kefir_uint64_t mark_key = (((kefir_uint64_t) current_block_id) << 32) | ((kefir_uint32_t) instr_ref2);
+            if (!kefir_hashset_has(&state->local_lifetime_marks_per_block, (kefir_hashset_key_t) mark_key)) {
+                REQUIRE_OK(kefir_opt_code_builder_local_lifetime_mark(mem, code, current_block_id, instr_ref2, &instr_ref));
+                REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+                REQUIRE_OK(kefir_hashset_add(mem, &state->local_lifetime_marks_per_block, (kefir_hashset_key_t) mark_key));
+            }
+        } break;
 
         case KEFIR_IR_OPCODE_IJUMP:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
