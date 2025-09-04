@@ -117,7 +117,41 @@
                                             "attributes": []
                                         }
                                     ],
-                                    "attributes": []
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "struct_member",
+                                                    "name": "attr1",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "struct_member",
+                                                    "name": "attr2",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "struct_member",
+                                                    "name": "attr3",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 "declarators": [
                                     {
@@ -141,7 +175,25 @@
                                             "attributes": []
                                         }
                                     ],
-                                    "attributes": []
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "struct_member",
+                                                    "name": "attrx",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                },
+                                                {
+                                                    "prefix": "struct_meber",
+                                                    "name": "attry",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 "declarators": [
                                     {
@@ -169,7 +221,19 @@
                                             "attributes": []
                                         }
                                     ],
-                                    "attributes": []
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "struct_member",
+                                                    "name": "attr0",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 "declarators": [
                                     {

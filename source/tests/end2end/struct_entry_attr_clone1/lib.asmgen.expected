@@ -1,0 +1,334 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "struct",
+                        "identifier": "inner",
+                        "members": [
+                            {
+                                "type": "declaration",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "gnu",
+                                                    "name": "aligned",
+                                                    "parameters": [
+                                                        {
+                                                            "class": "constant",
+                                                            "type": "integer",
+                                                            "value": 32
+                                                        }
+                                                    ],
+                                                    "unstructured_parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "declarators": [
+                                    {
+                                        "declarator": {
+                                            "class": "identifier",
+                                            "identifier": "a",
+                                            "asm_label": null,
+                                            "attributes": []
+                                        },
+                                        "bitwidth": null
+                                    }
+                                ]
+                            }
+                        ],
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "struct",
+                        "identifier": "outer",
+                        "members": [
+                            {
+                                "type": "declaration",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarators": [
+                                    {
+                                        "declarator": {
+                                            "class": "identifier",
+                                            "identifier": "a",
+                                            "asm_label": null,
+                                            "attributes": []
+                                        },
+                                        "bitwidth": null
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "declaration",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "struct",
+                                            "identifier": "inner",
+                                            "members": null,
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarators": [
+                                    {
+                                        "declarator": {
+                                            "class": "identifier",
+                                            "identifier": "b",
+                                            "asm_label": null,
+                                            "attributes": []
+                                        },
+                                        "bitwidth": null
+                                    }
+                                ]
+                            }
+                        ],
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "get",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "void",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "get\u0000",
+                                        "length": 4
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "struct",
+                                    "identifier": "outer",
+                                    "members": null,
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "x",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "list",
+                                    "list": []
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "binary_operation",
+                            "type": "bitwise_and",
+                            "left": {
+                                "class": "cast_operator",
+                                "type_name": {
+                                    "class": "type_name",
+                                    "specifiers": {
+                                        "list": [
+                                            {
+                                                "class": "type_specifier",
+                                                "specifier": "unsigned",
+                                                "attributes": []
+                                            },
+                                            {
+                                                "class": "type_specifier",
+                                                "specifier": "long",
+                                                "attributes": []
+                                            }
+                                        ],
+                                        "attributes": []
+                                    },
+                                    "declarator": {
+                                        "class": "abstract",
+                                        "attributes": []
+                                    }
+                                },
+                                "expression": {
+                                    "class": "unary_operation",
+                                    "type": "address",
+                                    "argument": {
+                                        "class": "struct_member",
+                                        "structure": {
+                                            "class": "identifier",
+                                            "identifier": "x"
+                                        },
+                                        "member": "b"
+                                    }
+                                }
+                            },
+                            "right": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 31
+                            }
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        }
+    ]
+}
