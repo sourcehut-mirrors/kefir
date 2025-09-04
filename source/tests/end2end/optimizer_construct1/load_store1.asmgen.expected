@@ -358,7 +358,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 1,
+                        "control_flow": 7,
                         "code": [
                             {
                                 "id": 6,
@@ -382,49 +382,12 @@
                                 "ir_instruction": 14
                             },
                             {
-                                "id": 0,
-                                "opcode": "alloc_local",
-                                "type_id": 80,
-                                "type_index": 0,
-                                "control_next": null,
-                                "ir_instruction": 0
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 3,
-                                "ir_instruction": 1
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "alloc_local",
-                                "type_id": 80,
-                                "type_index": 1,
-                                "control_next": null,
-                                "ir_instruction": 2
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 5,
-                                "ir_instruction": 3
-                            },
-                            {
                                 "id": 4,
                                 "opcode": "alloc_local",
                                 "type_id": 80,
                                 "type_index": 2,
                                 "control_next": null,
                                 "ir_instruction": 4
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 7,
-                                "ir_instruction": 5
                             },
                             {
                                 "id": 7,
@@ -438,6 +401,14 @@
                                 "ir_instruction": 9
                             },
                             {
+                                "id": 2,
+                                "opcode": "alloc_local",
+                                "type_id": 80,
+                                "type_index": 1,
+                                "control_next": null,
+                                "ir_instruction": 2
+                            },
+                            {
                                 "id": 9,
                                 "opcode": "int8_store",
                                 "location": 2,
@@ -447,6 +418,14 @@
                                 },
                                 "control_next": 11,
                                 "ir_instruction": 13
+                            },
+                            {
+                                "id": 0,
+                                "opcode": "alloc_local",
+                                "type_id": 80,
+                                "type_index": 0,
+                                "control_next": null,
+                                "ir_instruction": 0
                             },
                             {
                                 "id": 11,
@@ -508,8 +487,29 @@
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 23,
+                                "control_next": 1,
                                 "ir_instruction": 28
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 3,
+                                "ir_instruction": 1
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 5,
+                                "ir_instruction": 3
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 23,
+                                "ir_instruction": 5
                             },
                             {
                                 "id": 13,

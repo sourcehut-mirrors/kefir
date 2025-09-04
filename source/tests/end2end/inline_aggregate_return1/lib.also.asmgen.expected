@@ -13,49 +13,49 @@ __kefir_text_func_gets1_begin:
     sub $256, %rsp
     mov %rsi, %rdx
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -64(%rbp)
-    movdqu %xmm0, -48(%rbp)
-    movdqu %xmm0, -32(%rbp)
-    movdqu %xmm0, -16(%rbp)
-    movl $0, -64(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -128(%rbp)
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
-    movdqu -128(%rbp), %xmm0
+    movdqu %xmm0, -256(%rbp)
+    movdqu %xmm0, -240(%rbp)
+    movdqu %xmm0, -224(%rbp)
+    movdqu %xmm0, -208(%rbp)
+    movl $0, -256(%rbp)
+    movdqu -256(%rbp), %xmm0
     movdqu %xmm0, -192(%rbp)
-    movdqu -112(%rbp), %xmm0
+    movdqu -240(%rbp), %xmm0
     movdqu %xmm0, -176(%rbp)
-    movdqu -96(%rbp), %xmm0
+    movdqu -224(%rbp), %xmm0
     movdqu %xmm0, -160(%rbp)
-    movdqu -80(%rbp), %xmm0
+    movdqu -208(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
+    movdqu -192(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movdqu -176(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
+    movdqu -160(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    movdqu -144(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     movsx %edx, %rax
     imul $4, %rax, %rax
-    leaq -192(%rbp), %rcx
+    leaq -128(%rbp), %rcx
     add %rax, %rcx
     mov %rdx, %rsi
     not %esi
     movl %esi, (%rcx)
-    movdqu -192(%rbp), %xmm0
-    movdqu %xmm0, -256(%rbp)
-    movdqu -176(%rbp), %xmm0
-    movdqu %xmm0, -240(%rbp)
-    movdqu -160(%rbp), %xmm0
-    movdqu %xmm0, -224(%rbp)
-    movdqu -144(%rbp), %xmm0
-    movdqu %xmm0, -208(%rbp)
-    movdqu -256(%rbp), %xmm0
+    movdqu -128(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    movdqu -112(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rdi)
-    movdqu -240(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, 16(%rdi)
-    movdqu -224(%rbp), %xmm0
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rdi)
-    movdqu -208(%rbp), %xmm0
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, 48(%rdi)
     movsx %edx, %rax
     imul $4, %rax, %rax

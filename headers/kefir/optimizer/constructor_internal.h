@@ -29,7 +29,7 @@
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/core/hashtreeset.h"
-#include "kefir/core/hashset.h"
+#include "kefir/core/hashtable.h"
 
 typedef struct kefir_opt_constructor_code_block_state {
     kefir_opt_block_id_t block_id;
@@ -47,7 +47,7 @@ typedef struct kefir_opt_constructor_state {
     struct kefir_opt_constructor_code_block_state *current_block;
     struct kefir_hashtreeset indirect_jump_targets;
     kefir_size_t ir_location;
-    struct kefir_hashset local_lifetime_marks_per_block;
+    struct kefir_hashtable local_lifetime_marks_per_block;
 } kefir_opt_constructor_state;
 
 kefir_result_t kefir_opt_constructor_init(struct kefir_opt_function *, struct kefir_opt_constructor_state *);

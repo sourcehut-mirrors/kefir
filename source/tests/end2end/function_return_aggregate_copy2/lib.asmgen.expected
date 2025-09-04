@@ -8,7 +8,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 1,
+                        "control_flow": 13,
                         "code": [
                             {
                                 "id": 8,
@@ -30,23 +30,11 @@
                                 "control_next": null
                             },
                             {
-                                "id": 1,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 7
-                            },
-                            {
                                 "id": 6,
                                 "opcode": "alloc_local",
                                 "type_id": 56,
                                 "type_index": 5,
                                 "control_next": null
-                            },
-                            {
-                                "id": 7,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 6,
-                                "control_next": 13
                             },
                             {
                                 "id": 13,
@@ -109,6 +97,18 @@
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
+                                "control_next": 1
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 7
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
                                 "control_next": 21
                             },
                             {

@@ -42,7 +42,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 1,
+                        "control_flow": 3,
                         "code": [
                             {
                                 "id": 0,
@@ -51,13 +51,6 @@
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 3,
-                                "ir_instruction": 1
                             },
                             {
                                 "id": 2,
@@ -74,8 +67,15 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 4,
+                                "control_next": 1,
                                 "ir_instruction": 5
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 4,
+                                "ir_instruction": 1
                             },
                             {
                                 "id": 4,

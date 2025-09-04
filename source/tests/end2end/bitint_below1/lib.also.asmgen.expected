@@ -360,8 +360,8 @@ _kefir_func___kefir_bigint_unsigned_compare_label9:
     mov $1, %rdx
     movsx %edx, %rax
     add %rax, %rcx
-    movl %ecx, -4(%rbp)
-    movl -4(%rbp), %ecx
+    movl %ecx, -8(%rbp)
+    movl -8(%rbp), %ecx
     movabs $4294967295, %rax
     and %rax, %rcx
     mov $1, %rax
@@ -369,12 +369,12 @@ _kefir_func___kefir_bigint_unsigned_compare_label9:
     mov $1, %rdx
     movsx %edx, %rcx
     sub %rcx, %rax
-    movl %eax, -8(%rbp)
-    movl -8(%rbp), %eax
+    movl %eax, -4(%rbp)
+    movl -4(%rbp), %eax
     movl -16(%rbp), %ecx
     and %eax, %ecx
     movl %ecx, -16(%rbp)
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
     movl -12(%rbp), %ecx
     and %eax, %ecx
     movl %ecx, -12(%rbp)

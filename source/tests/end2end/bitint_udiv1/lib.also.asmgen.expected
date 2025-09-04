@@ -711,15 +711,15 @@ _kefir_func___kefir_bigint_subtract_zero_extend_label7:
     imul %rdx, %rsi
     imul %rsi, %rax
     sub %rax, %rcx
-    movq %rcx, -8(%rbp)
-    movq -8(%rbp), %rcx
+    movq %rcx, -16(%rbp)
+    movq -16(%rbp), %rcx
     mov $1, %rax
     shl %cl, %rax
     mov $1, %rdx
     movsx %edx, %rcx
     sub %rcx, %rax
-    movl %eax, -16(%rbp)
-    movl -16(%rbp), %eax
+    movl %eax, -8(%rbp)
+    movl -8(%rbp), %eax
     movl -24(%rbp), %ecx
     and %eax, %ecx
     movl %ecx, -24(%rbp)
@@ -1293,15 +1293,15 @@ _kefir_func___kefir_bigint_add_zero_extend_label7:
     imul %rdx, %rsi
     imul %rsi, %rax
     sub %rax, %rcx
-    movq %rcx, -8(%rbp)
-    movq -8(%rbp), %rcx
+    movq %rcx, -16(%rbp)
+    movq -16(%rbp), %rcx
     mov $1, %rax
     shl %cl, %rax
     mov $1, %rdx
     movsx %edx, %rcx
     sub %rcx, %rax
-    movl %eax, -16(%rbp)
-    movl -16(%rbp), %eax
+    movl %eax, -8(%rbp)
+    movl -8(%rbp), %eax
     movl -20(%rbp), %ecx
     and %eax, %ecx
     movl %ecx, -20(%rbp)

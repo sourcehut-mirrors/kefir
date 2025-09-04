@@ -53,7 +53,7 @@ _kefir_func_sum_label3:
     movl -28(%rbp), %ecx
     cmp $176, %rcx
     ja _kefir_func_sum_label4
-    leaq -6(%rbp), %rdx
+    leaq -8(%rbp), %rdx
     movq -16(%rbp), %rcx
     movl -32(%rbp), %esi
     add %rsi, %rcx
@@ -67,9 +67,9 @@ _kefir_func_sum_label4:
     movq %rcx, -24(%rbp)
 _kefir_func_sum_label5:
     movw (%rdx), %cx
-    movw %cx, -8(%rbp)
-    movsxb -8(%rbp), %rcx
-    movsxb -7(%rbp), %rdx
+    movw %cx, -6(%rbp)
+    movsxb -6(%rbp), %rcx
+    movsxb -5(%rbp), %rdx
     movsx %r8b, %rax
     imul %edx, %ecx
     add %ecx, %eax

@@ -1561,27 +1561,27 @@ _kefir_func___kefir_bigint_add_label3:
     add %rcx, %rax
     movb (%rax), %al
     and $255, %rax
-    movl %eax, -8(%rbp)
+    movl %eax, -52(%rbp)
     movq -32(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %al
     and $255, %rax
-    movl %eax, -4(%rbp)
+    movl %eax, -8(%rbp)
     movl -56(%rbp), %eax
-    movl -8(%rbp), %ecx
-    movl -4(%rbp), %edx
+    movl -52(%rbp), %ecx
+    movl -8(%rbp), %edx
     add %ecx, %eax
     add %edx, %eax
-    movl %eax, -52(%rbp)
-    movl -52(%rbp), %eax
+    movl %eax, -4(%rbp)
+    movl -4(%rbp), %eax
     movq -40(%rbp), %rcx
     movq -16(%rbp), %rdx
     imul $1, %rdx, %rdx
     add %rdx, %rcx
     movb %al, (%rcx)
-    movl -52(%rbp), %eax
+    movl -4(%rbp), %eax
     mov $8, %rcx
     movsx %ecx, %rdx
     mov $1, %rcx

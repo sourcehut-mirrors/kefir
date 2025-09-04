@@ -416,11 +416,17 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         case KEFIR_IR_OPCODE_LOCAL_LIFETIME_MARK: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             kefir_uint64_t mark_key = (((kefir_uint64_t) current_block_id) << 32) | ((kefir_uint32_t) instr_ref2);
-            if (!kefir_hashset_has(&state->local_lifetime_marks_per_block, (kefir_hashset_key_t) mark_key)) {
+            kefir_hashtable_value_t value;
+            kefir_result_t res = kefir_hashtable_at(&state->local_lifetime_marks_per_block, (kefir_hashtable_key_t) mark_key, &value);
+            if (res == KEFIR_NOT_FOUND) {
                 REQUIRE_OK(kefir_opt_code_builder_local_lifetime_mark(mem, code, current_block_id, instr_ref2, &instr_ref));
-                REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
-                REQUIRE_OK(kefir_hashset_add(mem, &state->local_lifetime_marks_per_block, (kefir_hashset_key_t) mark_key));
+                REQUIRE_OK(kefir_hashtable_insert(mem, &state->local_lifetime_marks_per_block, (kefir_hashtable_key_t) mark_key, (kefir_hashtable_value_t) instr_ref));
+            } else {
+                REQUIRE_OK(res);
+                instr_ref = (kefir_opt_instruction_ref_t) value;
+                REQUIRE_OK(kefir_opt_code_container_drop_control(code, instr_ref));
             }
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
         } break;
 
         case KEFIR_IR_OPCODE_IJUMP:
