@@ -1,0 +1,57 @@
+image: ubuntu/noble
+packages:
+  - build-essential
+  - gcc-12
+  - clang-15
+  - valgrind
+  - wget
+  - yasm
+  - cmake
+  - m4
+  - musl-dev
+  - musl-tools
+sources:
+  - https://git.sr.ht/~jprotopopov/kefir
+  - https://github.com/csmith-project/csmith
+tasks:
+  - build_csmith: |
+      mkdir csmith/build
+      cd csmith/build
+      cmake -DCMAKE_INSTALL_PREFIX=$HOME/csmith-install ..
+      make -j$(nproc)
+      make install
+  - test_gcc: |
+      cd kefir
+      make clean
+      export CSMITH=$HOME/csmith-install/bin/csmith
+      LC_ALL=C.UTF-8 make test USE_EXTENSION_SUPPORT=yes USE_SHARED=no CC=musl-gcc KEFIR_TEST_USE_MUSL=yes PROFILE=reldebug KEFIR_END2END_SELECTIVE_VALGRIND=yes -j$(nproc)
+  - build: |
+      cd kefir
+      make clean
+      LC_ALL=C.UTF-8 make all PROFILE=reldebug CC=musl-gcc USE_SHARED=no -j$(nproc)
+  - lua_tests: |
+      cd kefir
+      export LC_ALL=C.UTF-8
+      make bin/tests/external/lua.test.done KEFIR_EXTERNAL_TEST_LUA_CFLAGS="-O1 -fPIC -pie" CC=musl-gcc USE_SHARED=no
+  - c_testsuite: |
+      cd kefir
+      export LC_ALL=C.UTF-8
+      make bin/tests/external/c-testsuite.test.done KEFIR_EXTERNAL_TEST_C_TESTSUITE_CFLAGS="-O1 -fPIC -pie" CC=musl-gcc USE_SHARED=no
+  - gcc_torture: |
+      cd kefir
+      export LC_ALL=C.UTF-8
+      make bin/tests/external/gcc-torture.test.done KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS="-O1 -fPIC -pie" CC=musl-gcc USE_SHARED=no
+  - bootstrap: |
+      cd kefir
+      make clean
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
+      LC_ALL=C.UTF-8 make bootstrap_test BOOTSTRAP_EXTRA_CFLAGS="-O1 -g" CC=musl-gcc USE_SHARED=no -j$(nproc)
+  - bootstrap_yasm: |
+      cd kefir
+      make clean
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
+      LC_ALL=C.UTF-8 make bootstrap_test BOOTSTRAP_EXTRA_CFLAGS="-O1 -masm=x86_64-yasm" AS=yasm CC=musl-gcc USE_SHARED=no -j$(nproc)
+triggers:
+  - action: email
+    condition: failure
+    to: jevgenij@protopopov.lv
