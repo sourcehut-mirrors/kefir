@@ -24,7 +24,7 @@ tasks:
       cd kefir
       make clean
       export CSMITH=$HOME/csmith-install/bin/csmith
-      LC_ALL=C.UTF-8 make test USE_EXTENSION_SUPPORT=yes USE_SHARED=no CC=musl-gcc KEFIR_TEST_USE_MUSL=yes PROFILE=reldebug KEFIR_END2END_SELECTIVE_VALGRIND=yes -j$(nproc)
+      LC_ALL=C.UTF-8 make test USE_SHARED=no CC=musl-gcc KEFIR_TEST_USE_MUSL=yes PROFILE=reldebug KEFIR_END2END_SELECTIVE_VALGRIND=yes -j$(nproc)
   - build: |
       cd kefir
       make clean
