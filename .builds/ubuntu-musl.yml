@@ -20,6 +20,15 @@ tasks:
       cmake -DCMAKE_INSTALL_PREFIX=$HOME/csmith-install ..
       make -j$(nproc)
       make install
+  - test_self: |
+      cd kefir
+      make clean
+      make all CC=musl-gcc USE_SHARED=no -j$(nproc)
+      make install prefix=$HOME/kefir-install
+      make clean
+      make all PROFILE=release CC=$HOME/kefir-install/bin/kefir USE_SHARED=no -j$(nproc)
+      export CSMITH=$HOME/csmith-install/bin/csmith
+      LC_ALL=C.UTF-8 make test PROFILE=release CC=$HOME/kefir-install/bin/kefir KEFIR_TEST_USE_MUSL=yes USE_SHARED=no -j$(nproc)
   - test_gcc: |
       cd kefir
       make clean
