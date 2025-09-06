@@ -1,6 +1,7 @@
 BOOTSTRAP=no
 ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))/../..
-WORK_DIR=$(ROOT_DIR)/bin/portable
+BIN_DIR := $(ROOT_DIR)/bin
+WORK_DIR := $(BIN_DIR)/portable
 
 all: portable
 

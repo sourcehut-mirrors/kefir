@@ -53,10 +53,10 @@ bootstrap_test: .BOOTSTRAP_TEST
 	@echo "Bootstrap successfully finished"
 
 portable:
-	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=no all
+	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=no  BIN_DIR=$(KEFIR_BIN_DIR) all
 
 portable_bootstrap:
-	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=yes all
+	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=yes BIN_DIR=$(KEFIR_BIN_DIR) all
 
 web: .WEB
 
