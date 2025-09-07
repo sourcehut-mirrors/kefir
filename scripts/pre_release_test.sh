@@ -114,7 +114,7 @@ own_test_suite () {
     log "Own test suite with Kefir musl host compiler"
     make CC=musl-gcc USE_SHARED=no KEFIR_BIN_DIR="$ROOT_DIR/bin/kefir-musl-host-stage1" -j$(nproc)
     make install KEFIR_BIN_DIR="$ROOT_DIR/bin/kefir-musl-host-stage1" prefix="$ROOT_DIR/bin/kefir-musl-host-install"
-    make test KEFIR_BIN_DIR="$ROOT_DIR/bin/kefir-musl-host-stage2" USE_EXTENSION_SUPPORT=yes PROFILE=release KEFIR_TEST_USE_MUSL=yes USE_SHARED=no CC="$ROOT_DIR/bin/kefir-musl-host-install/bin/kefir" -j$(nproc) 2>&1 | tee "$OUTDIR/own/kefir-musl-host.log"
+    make test KEFIR_BIN_DIR="$ROOT_DIR/bin/kefir-musl-host-stage2" PROFILE=release KEFIR_TEST_USE_MUSL=yes USE_SHARED=no CC="$ROOT_DIR/bin/kefir-musl-host-install/bin/kefir" -j$(nproc) 2>&1 | tee "$OUTDIR/own/kefir-musl-host.log"
 }
 
 bootstrap_test () {
@@ -157,11 +157,11 @@ external_test_suite () {
     make KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc)
     print_make_deps "$ROOT_DIR/bin/external" .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE | while read TEST_TARGET; do
         log "External test: $(basename $TEST_TARGET)"
-        make "$TEST_TARGET" KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc) 2>&1 | tee "$OUTDIR/external/$(basename $TEST_TARGET).log"
+        unbuffer make "$TEST_TARGET" KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc) 2>&1 | tee "$OUTDIR/external/$(basename $TEST_TARGET).log"
     done
 
     log "Uncaptured external tests"
-    make .EXTERNAL_TESTS_SUITE KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc) 2>&1 | tee "$OUTDIR/external/uncaptured.log"
+    unbuffer make .EXTERNAL_TESTS_SUITE KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc) 2>&1 | tee "$OUTDIR/external/uncaptured.log"
 }
 
 webapp_build () {
