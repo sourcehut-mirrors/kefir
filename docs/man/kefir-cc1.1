@@ -1,4 +1,4 @@
-.Dd January 2025
+.Dd September 2025
 .Dt kefir-cc1 1
 .Os
 .\"
@@ -6,7 +6,7 @@
 .\"
 .Sh NAME
 .Nm kefir-cc1
-.Nd C17 language compiler
+.Nd C17/C23 language compiler
 .\"
 .\"
 .\"
@@ -19,7 +19,7 @@
 .\"
 .Sh DESCRIPTION
 .Nm
-is a C17 language compiler (without a driver). If no input file is provided, stdin is used.
+is a C17/C23 language compiler (without a driver). If no input file is provided, stdin is used.
 .\"
 .\"
 .\"
@@ -30,7 +30,7 @@ is a C17 language compiler (without a driver). If no input file is provided, std
 Use C17 language language standard.
 .\"
 .It Fl \-c23-standard
-Use C23 language language standard [work in progress].
+Use C23 language language standard.
 .\"
 .It Fl \-pp-timestamp Ar timestamp
 Override preprocessor timestamp
@@ -374,7 +374,8 @@ non-zero exit code retruned.
 .\"
 .Sh STANDARDS
 .Nm
-implements C17 language standard as specified in its final draft.
+implements C17 language standard as specified in its final draft, and C23 language stadard (except _Decimal support)
+as specified in the first draft of C2Y.
 .\"
 .Sh NOTES
 The
@@ -384,7 +385,7 @@ compiler is licensed under the terms of GNU GPLv3 license.
 .Pp
 .Nm
 is developed and maintained by
-.An Jevgenijs Protopopovs
+.An Jevgenij Protopopov (legally: Jevgenijs Protopopovs)
 .\"
 .Pp
 Please report bugs found in

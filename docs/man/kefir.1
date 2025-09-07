@@ -1,4 +1,4 @@
-.Dd January 2025
+.Dd September 2025
 .Dt kefir 1
 .Os
 .\"
@@ -6,7 +6,7 @@
 .\"
 .Sh NAME
 .Nm kefir
-.Nd C17 language compiler
+.Nd C17/C23 language compiler
 .\"
 .\"
 .\"
@@ -86,7 +86,7 @@ Preprocess C-language source files, print results to standard output
 .\"
 .It Fl std= Ar standard
 Determine language standard. For C23, supported values are: c23, c2x, gnu23, gnu2x, iso9899:2024.
-For C17 [default], any other value not listed for C23.
+For C17 [default], any other value not explicitly listed for C23.
 .\"
 .It Fl x language
 Specify processing for the next input files. Supported values: none [default],
@@ -357,7 +357,7 @@ Extra compiler options available via -W switch:
 Use C17 language language standard.
 .\"
 .It Fl \-c23-standard
-Use C23 language language standard [work in progress].
+Use C23 language language standard.
 .\"
 .It Fl \-pp-timestamp Ar timestamp
 Override preprocessor timestamp
@@ -749,7 +749,8 @@ non-zero exit code returned.
 .\"
 .Sh STANDARDS
 .Nm
-implements C17 language standard as specified in its final draft.
+implements C17 language standard as specified in its final draft, and C23 language stadard (except _Decimal support)
+as specified in the first draft of C2Y.
 .\"
 .Sh NOTES
 The
@@ -760,7 +761,7 @@ Runtime code provided along with kefir is licensed under the terms of BSD-3-Clau
 .Pp
 .Nm
 is developed and maintained by
-.An Jevgenijs Protopopovs
+.An Jevgenij Protopopov (legally: Jevgenijs Protopopovs)
 .\"
 .Pp
 Please report bugs found in
