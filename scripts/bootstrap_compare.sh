@@ -38,7 +38,7 @@ function do_sha256_checksum () {
             ;;
         
         *)
-            echo "Unknown uname: $host"
+            echo "Unknown uname: $host" >&2
             exit 1
             ;;
     esac
@@ -53,6 +53,8 @@ done
 if [[ -f "$STAGE1/libkefir.so" ]]; then
     stage1_sha256=`do_sha256_checksum "$STAGE1/libkefir.so"`
     stage2_sha256=`do_sha256_checksum "$STAGE2/libkefir.so"`
+    echo "$STAGE1/libkefir.so sha256: $stage1_sha256"
+    echo "$STAGE2/libkefir.so sha256: $stage2_sha256"
     if [[ "$stage1_sha256" != "$stage2_sha256" ]]; then
         echo "libkefir.so sha256 mismatch"
         exit 1
@@ -61,6 +63,8 @@ fi
 
 stage1_sha256=`do_sha256_checksum "$STAGE1/kefir"`
 stage2_sha256=`do_sha256_checksum "$STAGE2/kefir"`
+echo "$STAGE1/kefir sha256: $stage1_sha256"
+echo "$STAGE2/kefir sha256: $stage2_sha256"
 if [[ "$stage1_sha256" != "$stage2_sha256" ]]; then
     echo "kefir sha256 mismatch"
     exit 1
