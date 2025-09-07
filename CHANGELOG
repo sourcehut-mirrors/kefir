@@ -2,6 +2,15 @@
 
 This file documents notable changes to the project.
 
+## [0.5.0] - 2025-09-09
+Project release:
+* Implementation of C23 support (except _Decimal) as specified by the first C2Y
+  standard draft.
+* Major optimizations and improvement of generated code quality.
+* Improvements in compatibility and correctness for building real-world software;
+  implementation of additional builtins.
+* Optimization of compiler performance itself.
+
 ## [0.4.1] - 2025-02-01
 Project release:
 * Major improvements in compatibility and correctness for building real-world
