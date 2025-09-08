@@ -29,6 +29,8 @@ $(KEFIR_EXTERNAL_TEST_ZSTD_SOURCE_DIR)/zstd: $(KEFIR_EXTERNAL_TEST_ZSTD_SOURCE_D
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
+		KEFIR_AS="$(AS)" \
+		KEFIR_LD="$(LD)" \
 		$(MAKE)
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/zstd.test.done: $(KEFIR_EXTERNAL_TEST_ZSTD_SOURCE_DIR)/zstd
@@ -37,6 +39,8 @@ $(KEFIR_EXTERNAL_TESTS_DIR)/zstd.test.done: $(KEFIR_EXTERNAL_TEST_ZSTD_SOURCE_DI
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
+		KEFIR_AS="$(AS)" \
+		KEFIR_LD="$(LD)" \
 		$(MAKE) check
 	@touch "$@"
 	@echo "zstd $(KEFIR_EXTERNAL_TEST_ZSTD_VERSION) test successfully finished"
