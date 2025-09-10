@@ -479,6 +479,96 @@ static kefir_result_t format_punctuator(struct kefir_json_output *json, kefir_pu
     return KEFIR_OK;
 }
 
+static kefir_result_t format_pragma(struct kefir_json_output *json, kefir_pragma_token_type_t pragma,
+                                    kefir_pragma_token_parameter_t param) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "pragma"));
+    switch (pragma) {
+        case KEFIR_PRAGMA_TOKEN_FP_CONTRACT:
+            REQUIRE_OK(kefir_json_output_string(json, "fp_contract"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_FENV_ACCESS:
+            REQUIRE_OK(kefir_json_output_string(json, "fenv_access"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_CX_LIMITED_RANGE:
+            REQUIRE_OK(kefir_json_output_string(json, "cx_limited_range"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_FENV_ROUND:
+            REQUIRE_OK(kefir_json_output_string(json, "fenv_round"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_FENV_DEC_ROUND:
+            REQUIRE_OK(kefir_json_output_string(json, "fenv_dec_round"));
+            break;
+    }
+
+    REQUIRE_OK(kefir_json_output_object_key(json, "param"));
+    switch (param) {
+        case KEFIR_PRAGMA_TOKEN_PARAM_ON:
+            REQUIRE_OK(kefir_json_output_string(json, "on"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_OFF:
+            REQUIRE_OK(kefir_json_output_string(json, "off"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT:
+            REQUIRE_OK(kefir_json_output_string(json, "default"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DOWNWARD:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_downward"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEAREST:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_tonearest"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEARESTFROMZERO:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_tonearestfromzero"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_TOWARDZERO:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_towardzero"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_UPWARD:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_upward"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DYNAMIC:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_dynamic"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DOWNWARD:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_dec_downward"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEAREST:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_dec_tonearest"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEARESTFROMZERO:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_dec_tonearestfromzero"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TOWARDZERO:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_dec_towardzero"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_UPWARD:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_dec_upward"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DYNAMIC:
+            REQUIRE_OK(kefir_json_output_string(json, "fe_dec_dynamic"));
+            break;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_constant(struct kefir_json_output *json, const struct kefir_constant_token *constant) {
     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
     switch (constant->type) {
@@ -712,6 +802,13 @@ kefir_result_t kefir_token_format(struct kefir_json_output *json, const struct k
             REQUIRE_OK(kefir_json_output_string(json, "sentinel"));
             REQUIRE_OK(kefir_json_output_object_key(json, "preprocessor"));
             REQUIRE_OK(kefir_json_output_boolean(json, false));
+            break;
+
+        case KEFIR_TOKEN_PRAGMA:
+            REQUIRE_OK(kefir_json_output_string(json, "pragma"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "preprocessor"));
+            REQUIRE_OK(kefir_json_output_boolean(json, false));
+            REQUIRE_OK(format_pragma(json, token->pragma, token->pragma_param));
             break;
 
         case KEFIR_TOKEN_KEYWORD:

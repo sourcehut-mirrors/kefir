@@ -94,6 +94,94 @@ static kefir_result_t format_punctuator(FILE *out, kefir_punctuator_token_t punc
     return KEFIR_OK;
 }
 
+static kefir_result_t format_pragma(FILE *out, kefir_pragma_token_type_t pragma, kefir_pragma_token_parameter_t param) {
+    fprintf(out, "\n#pragma STDC ");
+    switch (pragma) {
+        case KEFIR_PRAGMA_TOKEN_FP_CONTRACT:
+            fprintf(out, "FP_CONTRACT");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_FENV_ACCESS:
+            fprintf(out, "FENV_ACCESS");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_CX_LIMITED_RANGE:
+            fprintf(out, "CX_LIMITED_RANGE");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_FENV_ROUND:
+            fprintf(out, "FENV_ROUND");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_FENV_DEC_ROUND:
+            fprintf(out, "FENV_DEC_ROUND");
+            break;
+    }
+
+    switch (param) {
+        case KEFIR_PRAGMA_TOKEN_PARAM_ON:
+            fprintf(out, " ON\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_OFF:
+            fprintf(out, " OFF\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT:
+            fprintf(out, " DEFAULT\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DOWNWARD:
+            fprintf(out, " FE_DOWNWARD\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEAREST:
+            fprintf(out, " FE_TONEAREST\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEARESTFROMZERO:
+            fprintf(out, " FE_TONEARESTFROMZERO\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_TOWARDZERO:
+            fprintf(out, " FE_TOWARDZERO\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_UPWARD:
+            fprintf(out, " FE_UPWARD\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DYNAMIC:
+            fprintf(out, " FE_DYNAMIC\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DOWNWARD:
+            fprintf(out, " FE_DEC_DOWRDWARD\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEAREST:
+            fprintf(out, " FE_DEC_TONEAREST\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEARESTFROMZERO:
+            fprintf(out, " FE_DEC_TONEARESTFROMZERO\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TOWARDZERO:
+            fprintf(out, " FE_DEC_TOWARDZERO\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_UPWARD:
+            fprintf(out, " FE_DEC_UPWARD\n");
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DYNAMIC:
+            fprintf(out, " FE_DEC_DYNAMIC\n");
+            break;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_char(FILE *out, char chr) {
     switch (chr) {
         case '\'':
@@ -389,6 +477,10 @@ static kefir_result_t format_token(FILE *out, const struct kefir_token *token,
             REQUIRE_OK(format_punctuator(out, token->punctuator));
             break;
 
+        case KEFIR_TOKEN_PRAGMA:
+            REQUIRE_OK(format_pragma(out, token->pragma, token->pragma_param));
+            break;
+
         case KEFIR_TOKEN_PP_WHITESPACE:
             if (token->pp_whitespace.newline && ws_format == KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL) {
                 fprintf(out, "\n");
@@ -422,10 +514,11 @@ static kefir_result_t format_token(FILE *out, const struct kefir_token *token,
 
 static kefir_result_t print_linemarker(FILE *out, const struct kefir_source_location *source_location) {
     fprintf(out, "# %" KEFIR_UINT_FMT " \"%s\"\n", source_location->line, source_location->source);
-    return KEFIR_OK;   
+    return KEFIR_OK;
 }
 
-kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buffer *buffer, kefir_bool_t include_linemarkers,
+kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buffer *buffer,
+                                         kefir_bool_t include_linemarkers,
                                          kefir_preprocessor_whitespace_format_t ws_format) {
     REQUIRE(out != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
@@ -470,7 +563,9 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
         }
 
         if (ws_format != KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL || !prev_token_non_newline_ws || !token_non_newline_ws || empty_line /* Print all whitespaces at the beginning of the line for indentation; collapse adjacent non-newline whitespaces within the line */) {
-            if (include_linemarkers && token->source_location.source != NULL && i != 0 && printed_newline && ((prev_location.source != NULL && strcmp(prev_location.source, token->source_location.source) != 0) || prev_location.line + 1 != token->source_location.line)) {
+            if (include_linemarkers && token->source_location.source != NULL && i != 0 && printed_newline &&
+                ((prev_location.source != NULL && strcmp(prev_location.source, token->source_location.source) != 0) ||
+                 prev_location.line + 1 != token->source_location.line)) {
                 REQUIRE_OK(print_linemarker(out, &token->source_location));
             }
             REQUIRE_OK(format_token(out, token, ws_format));

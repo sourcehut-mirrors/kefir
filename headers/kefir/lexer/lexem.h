@@ -39,6 +39,7 @@ typedef enum kefir_token_class {
     KEFIR_TOKEN_CONSTANT,
     KEFIR_TOKEN_STRING_LITERAL,
     KEFIR_TOKEN_PUNCTUATOR,
+    KEFIR_TOKEN_PRAGMA,
 
     // Preprocessing tokens
     KEFIR_TOKEN_PP_WHITESPACE,
@@ -131,6 +132,32 @@ typedef enum kefir_constant_token_type {
     KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR,
     KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR
 } kefir_constant_token_type_t;
+
+typedef enum kefir_pragma_token_type {
+    KEFIR_PRAGMA_TOKEN_FP_CONTRACT,
+    KEFIR_PRAGMA_TOKEN_FENV_ACCESS,
+    KEFIR_PRAGMA_TOKEN_CX_LIMITED_RANGE,
+    KEFIR_PRAGMA_TOKEN_FENV_ROUND,
+    KEFIR_PRAGMA_TOKEN_FENV_DEC_ROUND
+} kefir_pragma_token_type_t;
+
+typedef enum kefir_pragma_token_parameter {
+    KEFIR_PRAGMA_TOKEN_PARAM_ON,
+    KEFIR_PRAGMA_TOKEN_PARAM_OFF,
+    KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_DOWNWARD,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEAREST,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEARESTFROMZERO,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_TOWARDZERO,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_UPWARD,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_DYNAMIC,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DOWNWARD,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEAREST,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEARESTFROMZERO,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TOWARDZERO,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_UPWARD,
+    KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DYNAMIC
+} kefir_pragma_token_parameter_t;
 
 typedef enum kefir_string_literal_token_type {
     KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
@@ -277,6 +304,10 @@ typedef struct kefir_token {
         struct kefir_constant_token constant;
         struct kefir_string_literal_token string_literal;
         kefir_punctuator_token_t punctuator;
+        struct {
+            kefir_pragma_token_type_t pragma;
+            kefir_pragma_token_parameter_t pragma_param;
+        };
         struct kefir_pptoken_pp_whitespace pp_whitespace;
         struct kefir_pptoken_pp_number pp_number;
         struct kefir_pptoken_pp_header_name pp_header_name;
@@ -335,6 +366,7 @@ kefir_bool_t kefir_token_string_literal_type_concat(kefir_string_literal_token_t
                                                     kefir_string_literal_token_type_t,
                                                     kefir_string_literal_token_type_t *);
 kefir_result_t kefir_token_new_punctuator(kefir_punctuator_token_t, struct kefir_token *);
+kefir_result_t kefir_token_new_pragma(kefir_pragma_token_type_t, kefir_pragma_token_parameter_t, struct kefir_token *);
 kefir_result_t kefir_token_new_pp_whitespace(kefir_bool_t, struct kefir_token *);
 kefir_result_t kefir_token_new_pp_number(struct kefir_mem *, const char *, kefir_size_t, struct kefir_token *);
 kefir_result_t kefir_token_new_pp_header_name(struct kefir_mem *, kefir_bool_t, const char *, kefir_size_t,

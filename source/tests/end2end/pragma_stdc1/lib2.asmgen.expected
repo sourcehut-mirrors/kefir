@@ -1,0 +1,132 @@
+[
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fp_contract",
+        "param": "on"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fp_contract",
+        "param": "off"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fp_contract",
+        "param": "default"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_access",
+        "param": "on"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_access",
+        "param": "off"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_access",
+        "param": "default"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "cx_limited_range",
+        "param": "on"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "cx_limited_range",
+        "param": "off"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "cx_limited_range",
+        "param": "default"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_round",
+        "param": "fe_downward"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_round",
+        "param": "fe_tonearest"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_round",
+        "param": "fe_tonearestfromzero"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_round",
+        "param": "fe_towardzero"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_round",
+        "param": "fe_upward"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_round",
+        "param": "fe_dynamic"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_dec_round",
+        "param": "fe_dec_downward"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_dec_round",
+        "param": "fe_dec_tonearest"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_dec_round",
+        "param": "fe_dec_tonearestfromzero"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_dec_round",
+        "param": "fe_dec_towardzero"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_dec_round",
+        "param": "fe_dec_upward"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_dec_round",
+        "param": "fe_dec_dynamic"
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false
+    }
+]

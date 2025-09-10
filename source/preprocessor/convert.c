@@ -59,6 +59,7 @@ kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *mem, struct ke
         case KEFIR_TOKEN_CONSTANT:
         case KEFIR_TOKEN_STRING_LITERAL:
         case KEFIR_TOKEN_PUNCTUATOR:
+        case KEFIR_TOKEN_PRAGMA:
         case KEFIR_TOKEN_EXTENSION:
             REQUIRE_OK(kefir_token_copy(mem, dst, src));
             break;
@@ -91,6 +92,7 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, st
             case KEFIR_TOKEN_KEYWORD:
             case KEFIR_TOKEN_CONSTANT:
             case KEFIR_TOKEN_PUNCTUATOR:
+            case KEFIR_TOKEN_PRAGMA:
             case KEFIR_TOKEN_EXTENSION: {
                 struct kefir_token *allocated_token;
                 REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));

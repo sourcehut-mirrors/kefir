@@ -384,6 +384,9 @@ static kefir_result_t macro_concatenation_impl(struct kefir_mem *mem, struct kef
             case KEFIR_TOKEN_CONSTANT:
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &left->source_location, "Unexpected constant token");
 
+            case KEFIR_TOKEN_PRAGMA:
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &left->source_location, "Unexpected pragma");
+
             case KEFIR_TOKEN_STRING_LITERAL:
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &left->source_location,
                                               "Unexpected string literal token");
@@ -480,10 +483,9 @@ static kefir_result_t macro_concatenation(struct kefir_mem *mem, struct kefir_pr
     return KEFIR_OK;
 }
 
-static kefir_result_t match_va_opt_concat(
-    struct kefir_mem *, struct kefir_preprocessor *, struct kefir_string_pool *,
-    struct kefir_token_allocator *, struct kefir_preprocessor_token_sequence *,
-    const struct kefir_preprocessor_user_macro *, const struct kefir_hashtree *);
+static kefir_result_t match_va_opt_concat(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_string_pool *,
+                                          struct kefir_token_allocator *, struct kefir_preprocessor_token_sequence *,
+                                          const struct kefir_preprocessor_user_macro *, const struct kefir_hashtree *);
 
 static kefir_result_t match_concatenation(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_string_pool *symbols,
@@ -527,10 +529,10 @@ static kefir_result_t match_concatenation(
         REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, NULL, NULL));
         REQUIRE_OK(match_va_opt_concat(mem, preprocessor, symbols, token_allocator, seq, user_macro, arg_tree));
         REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, &right_operand, NULL));
-        REQUIRE(
-            right_operand != NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &source_location,
-                                "Preprocessor concatenation operator cannot be placed at the end of replacement list"));
+        REQUIRE(right_operand != NULL,
+                KEFIR_SET_SOURCE_ERROR(
+                    KEFIR_LEXER_ERROR, &source_location,
+                    "Preprocessor concatenation operator cannot be placed at the end of replacement list"));
     }
 
     REQUIRE_OK(macro_concatenation(mem, preprocessor, arg_tree, user_macro, symbols, token_allocator, output_buffer,
@@ -721,27 +723,28 @@ static kefir_result_t match_va_opt_concat_impl(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_string_pool *symbols,
     struct kefir_token_allocator *token_allocator, struct kefir_preprocessor_token_sequence *seq,
     const struct kefir_preprocessor_user_macro *user_macro, const struct kefir_hashtree *arg_tree,
-    struct kefir_token_buffer *subst_buffer,
-    struct kefir_token_buffer *arg_buffer) {
+    struct kefir_token_buffer *subst_buffer, struct kefir_token_buffer *arg_buffer) {
     REQUIRE_OK(
         match_va_opt_impl(mem, preprocessor, token_allocator, seq, user_macro, arg_tree, subst_buffer, arg_buffer));
     REQUIRE_OK(kefir_token_buffer_reset(mem, arg_buffer));
     REQUIRE_OK(run_replacement_list_substitutions(mem, preprocessor, symbols, token_allocator, user_macro, subst_buffer,
                                                   arg_tree, arg_buffer));
-    REQUIRE_OK(kefir_preprocessor_token_sequence_push_front(mem, seq, arg_buffer, KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL));
+    REQUIRE_OK(kefir_preprocessor_token_sequence_push_front(mem, seq, arg_buffer,
+                                                            KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL));
     return KEFIR_OK;
 }
 
-static kefir_result_t match_va_opt_concat(
-    struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_string_pool *symbols,
-    struct kefir_token_allocator *token_allocator, struct kefir_preprocessor_token_sequence *seq,
-    const struct kefir_preprocessor_user_macro *user_macro, const struct kefir_hashtree *arg_tree) {
+static kefir_result_t match_va_opt_concat(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                          struct kefir_string_pool *symbols,
+                                          struct kefir_token_allocator *token_allocator,
+                                          struct kefir_preprocessor_token_sequence *seq,
+                                          const struct kefir_preprocessor_user_macro *user_macro,
+                                          const struct kefir_hashtree *arg_tree) {
     struct kefir_token_buffer subst_buffer, arg_buffer;
     REQUIRE_OK(kefir_token_buffer_init(&subst_buffer));
     REQUIRE_OK(kefir_token_buffer_init(&arg_buffer));
-    kefir_result_t res =
-        match_va_opt_concat_impl(mem, preprocessor, symbols, token_allocator, seq, user_macro, arg_tree,
-                                          &subst_buffer, &arg_buffer);
+    kefir_result_t res = match_va_opt_concat_impl(mem, preprocessor, symbols, token_allocator, seq, user_macro,
+                                                  arg_tree, &subst_buffer, &arg_buffer);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &arg_buffer);
         kefir_token_buffer_free(mem, &subst_buffer);

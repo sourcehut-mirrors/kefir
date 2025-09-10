@@ -457,14 +457,13 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
     });
     REQUIRE_OK(source_file.close(mem, &source_file));
 
-    const struct kefir_token *buffer_tail = buffer_length > 0
-        ? kefir_token_buffer_at(buffer, buffer_length - 1)
-        : NULL;
+    const struct kefir_token *buffer_tail = buffer_length > 0 ? kefir_token_buffer_at(buffer, buffer_length - 1) : NULL;
     if (buffer_tail == NULL || buffer_tail->klass != KEFIR_TOKEN_PP_WHITESPACE || !buffer_tail->pp_whitespace.newline) {
         struct kefir_token *newline_token;
         REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &newline_token));
         REQUIRE_OK(kefir_token_new_pp_whitespace(true, newline_token));
-        newline_token->source_location = buffer_tail != NULL ? buffer_tail->source_location : directive->source_location;
+        newline_token->source_location =
+            buffer_tail != NULL ? buffer_tail->source_location : directive->source_location;
         REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, newline_token));
     }
     return KEFIR_OK;
@@ -919,9 +918,9 @@ static kefir_result_t process_elif(struct kefir_mem *mem, struct kefir_preproces
 }
 
 static kefir_result_t process_error(struct kefir_preprocessor_directive *directive) {
-// clang-format off
+    // clang-format off
     return KEFIR_SET_SOURCE_ERRORF(KEFIR_PREPROCESSOR_ERROR_DIRECTIVE, &directive->source_location, "%*s", directive->error_message.length, directive->error_message.content);
-// clang-format on
+    // clang-format on
 }
 
 static kefir_result_t process_warning(struct kefir_preprocessor_directive *directive, FILE *warning_output) {
@@ -979,7 +978,8 @@ static kefir_result_t process_line(struct kefir_mem *mem, struct kefir_preproces
 }
 
 static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
-                                     struct kefir_preprocessor_directive *directive) {
+                                     struct kefir_preprocessor_directive *directive,
+                                     struct kefir_token_allocator *token_allocator, struct kefir_token_buffer *buffer) {
     UNUSED(mem);
     UNUSED(preprocessor);
     const kefir_size_t pp_tokens_length = kefir_token_buffer_length(&directive->pp_tokens);
@@ -993,6 +993,77 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert file path into string pool"));
         REQUIRE_OK(
             kefir_hashtreeset_add(mem, &preprocessor->context->include_once, (kefir_hashtreeset_entry_t) filepath));
+    } else if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "STDC") == 0) {
+        kefir_size_t index = 1;
+        do {
+            token = kefir_token_buffer_at(&directive->pp_tokens, index++);
+        } while (token != NULL && token->klass == KEFIR_TOKEN_PP_WHITESPACE);
+        const struct kefir_token *arg_token;
+        do {
+            arg_token = kefir_token_buffer_at(&directive->pp_tokens, index++);
+        } while (arg_token != NULL && arg_token->klass == KEFIR_TOKEN_PP_WHITESPACE);
+        kefir_pragma_token_type_t pragma_type;
+        kefir_pragma_token_parameter_t pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT;
+        if (token != NULL && token->klass == KEFIR_TOKEN_IDENTIFIER) {
+            kefir_bool_t valid_pragma = true;
+            if (strcmp(token->identifier, "FP_CONTRACT") == 0) {
+                pragma_type = KEFIR_PRAGMA_TOKEN_FP_CONTRACT;
+            } else if (strcmp(token->identifier, "FENV_ACCESS") == 0) {
+                pragma_type = KEFIR_PRAGMA_TOKEN_FENV_ACCESS;
+            } else if (strcmp(token->identifier, "CX_LIMITED_RANGE") == 0) {
+                pragma_type = KEFIR_PRAGMA_TOKEN_CX_LIMITED_RANGE;
+            } else if (strcmp(token->identifier, "FENV_ROUND") == 0) {
+                pragma_type = KEFIR_PRAGMA_TOKEN_FENV_ROUND;
+            } else if (strcmp(token->identifier, "FENV_DEC_ROUND") == 0) {
+                pragma_type = KEFIR_PRAGMA_TOKEN_FENV_DEC_ROUND;
+            } else {
+                valid_pragma = false;
+            }
+
+            if (valid_pragma && arg_token != NULL && arg_token->klass == KEFIR_TOKEN_IDENTIFIER) {
+                if (strcmp(arg_token->identifier, "ON") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_ON;
+                } else if (strcmp(arg_token->identifier, "OFF") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_OFF;
+                } else if (strcmp(arg_token->identifier, "DEFAULT") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT;
+                } else if (strcmp(arg_token->identifier, "FE_DOWNWARD") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DOWNWARD;
+                } else if (strcmp(arg_token->identifier, "FE_TONEAREST") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEAREST;
+                } else if (strcmp(arg_token->identifier, "FE_TONEARESTFROMZERO") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEARESTFROMZERO;
+                } else if (strcmp(arg_token->identifier, "FE_TOWARDZERO") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_TOWARDZERO;
+                } else if (strcmp(arg_token->identifier, "FE_UPWARD") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_UPWARD;
+                } else if (strcmp(arg_token->identifier, "FE_DYNAMIC") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DYNAMIC;
+                } else if (strcmp(arg_token->identifier, "FE_DEC_DOWNWARD") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DOWNWARD;
+                } else if (strcmp(arg_token->identifier, "FE_DEC_TONEAREST") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEAREST;
+                } else if (strcmp(arg_token->identifier, "FE_DEC_TONEARESTFROMZERO") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEARESTFROMZERO;
+                } else if (strcmp(arg_token->identifier, "FE_DEC_TOWARDZERO") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TOWARDZERO;
+                } else if (strcmp(arg_token->identifier, "FE_DEC_UPWARD") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_UPWARD;
+                } else if (strcmp(arg_token->identifier, "FE_DEC_DYNAMIC") == 0) {
+                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DYNAMIC;
+                } else {
+                    valid_pragma = false;
+                }
+            }
+
+            if (valid_pragma) {
+                struct kefir_token *token;
+                REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &token));
+                REQUIRE_OK(kefir_token_new_pragma(pragma_type, pragma_param, token));
+                REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, token));
+                token->source_location = directive->source_location;
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -1003,8 +1074,9 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
                                     kefir_preprocessor_token_destination_t *token_destination) {
     *token_destination = KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL;
     REQUIRE(preprocessor->mode != KEFIR_PREPROCESSOR_MODE_MINIMAL ||
-        directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN ||
-        directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER, KEFIR_OK);
+                directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN ||
+                directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER,
+            KEFIR_OK);
 
     switch (directive->type) {
         case KEFIR_PREPROCESSOR_DIRECTIVE_IFDEF: {
@@ -1136,7 +1208,7 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:
-            REQUIRE_OK(process_pragma(mem, preprocessor, directive));
+            REQUIRE_OK(process_pragma(mem, preprocessor, directive, token_allocator, buffer));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_LINE:
