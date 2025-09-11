@@ -100,11 +100,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_json_output_array_begin(&json));
 
-    while (kefir_parser_token_cursor_at(&cursor, 0)->klass != KEFIR_TOKEN_SENTINEL) {
+    while (kefir_parser_token_cursor_at(&cursor, 0, true)->klass != KEFIR_TOKEN_SENTINEL) {
         struct kefir_ast_initializer_designation *designation = NULL;
         REQUIRE_OK(parser.ruleset.initializer_designation(mem, &parser, &designation));
-        REQUIRE(kefir_parser_token_cursor_at(&cursor, 0)->klass == KEFIR_TOKEN_PUNCTUATOR, KEFIR_INTERNAL_ERROR);
-        REQUIRE(kefir_parser_token_cursor_at(&cursor, 0)->punctuator == KEFIR_PUNCTUATOR_SEMICOLON,
+        REQUIRE(kefir_parser_token_cursor_at(&cursor, 0, true)->klass == KEFIR_TOKEN_PUNCTUATOR, KEFIR_INTERNAL_ERROR);
+        REQUIRE(kefir_parser_token_cursor_at(&cursor, 0, true)->punctuator == KEFIR_PUNCTUATOR_SEMICOLON,
                 KEFIR_INTERNAL_ERROR);
         REQUIRE_OK(kefir_parser_token_cursor_next(&cursor));
         REQUIRE_OK(kefir_ast_format_initializer_designation(&json, designation, false));

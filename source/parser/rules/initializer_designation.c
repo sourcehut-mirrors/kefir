@@ -10,11 +10,12 @@ static kefir_result_t scan_index(struct kefir_mem *mem, struct kefir_parser *par
     REQUIRE_MATCH_OK(
         &res, KEFIR_PARSER_RULE_APPLY(mem, parser, constant_expression, &index),
         KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected constant expression"));
-    if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_ELLIPSIS) && parser->configuration->designator_subscript_ranges) {
+    if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_ELLIPSIS) &&
+        parser->configuration->designator_subscript_ranges) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        REQUIRE_MATCH_OK(
-            &res, KEFIR_PARSER_RULE_APPLY(mem, parser, constant_expression, &range_end_index),
-            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected constant expression"));
+        REQUIRE_MATCH_OK(&res, KEFIR_PARSER_RULE_APPLY(mem, parser, constant_expression, &range_end_index),
+                         KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                                "Expected constant expression"));
     }
     REQUIRE_ELSE(PARSER_TOKEN_IS_RIGHT_BRACKET(parser, 0), {
         if (range_end_index != NULL) {
@@ -55,7 +56,7 @@ static kefir_result_t scan_member(struct kefir_mem *mem, struct kefir_parser *pa
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected identifier"));
-    const char *identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
+    const char *identifier = PARSER_CURSOR(parser, 0)->identifier;
     REQUIRE_OK(PARSER_SHIFT(parser));
     struct kefir_ast_initializer_designation *new_designation =
         kefir_ast_new_initializer_member_designation(mem, parser->symbols, identifier, *designation);
@@ -69,7 +70,7 @@ static kefir_result_t scan_member(struct kefir_mem *mem, struct kefir_parser *pa
 static kefir_result_t scan_field_colon(struct kefir_mem *mem, struct kefir_parser *parser,
                                        struct kefir_ast_initializer_designation **designation) {
     struct kefir_source_location location = *PARSER_TOKEN_LOCATION(parser, 0);
-    const char *identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
+    const char *identifier = PARSER_CURSOR(parser, 0)->identifier;
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE_OK(PARSER_SHIFT(parser));
     struct kefir_ast_initializer_designation *new_designation =

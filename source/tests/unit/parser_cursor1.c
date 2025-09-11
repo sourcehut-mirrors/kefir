@@ -36,28 +36,28 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
     const struct kefir_token *token = NULL;
 
     do {
-        token = kefir_parser_token_cursor_at(&cursor, 0);
+        token = kefir_parser_token_cursor_at(&cursor, 0, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_CONSTANT);
         ASSERT(token->constant.type == KEFIR_CONSTANT_TOKEN_CHAR);
         ASSERT(token->constant.character == 'X');
 
-        token = kefir_parser_token_cursor_at(&cursor, 1);
+        token = kefir_parser_token_cursor_at(&cursor, 1, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_IDENTIFIER);
         ASSERT(strcmp(token->identifier, "ident1") == 0);
 
-        token = kefir_parser_token_cursor_at(&cursor, 2);
+        token = kefir_parser_token_cursor_at(&cursor, 2, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_KEYWORD);
         ASSERT(token->keyword == KEFIR_KEYWORD_ALIGNAS);
 
-        token = kefir_parser_token_cursor_at(&cursor, 3);
+        token = kefir_parser_token_cursor_at(&cursor, 3, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_PUNCTUATOR);
         ASSERT(token->punctuator == KEFIR_PUNCTUATOR_RIGHT_ARROW);
 
-        token = kefir_parser_token_cursor_at(&cursor, 4);
+        token = kefir_parser_token_cursor_at(&cursor, 4, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_SENTINEL);
     } while (0);
@@ -65,22 +65,22 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
     ASSERT_OK(kefir_parser_token_cursor_next(&cursor));
 
     do {
-        token = kefir_parser_token_cursor_at(&cursor, 0);
+        token = kefir_parser_token_cursor_at(&cursor, 0, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_IDENTIFIER);
         ASSERT(strcmp(token->identifier, "ident1") == 0);
 
-        token = kefir_parser_token_cursor_at(&cursor, 1);
+        token = kefir_parser_token_cursor_at(&cursor, 1, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_KEYWORD);
         ASSERT(token->keyword == KEFIR_KEYWORD_ALIGNAS);
 
-        token = kefir_parser_token_cursor_at(&cursor, 2);
+        token = kefir_parser_token_cursor_at(&cursor, 2, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_PUNCTUATOR);
         ASSERT(token->punctuator == KEFIR_PUNCTUATOR_RIGHT_ARROW);
 
-        token = kefir_parser_token_cursor_at(&cursor, 3);
+        token = kefir_parser_token_cursor_at(&cursor, 3, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_SENTINEL);
     } while (0);
@@ -91,12 +91,12 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
     ASSERT_OK(kefir_parser_token_cursor_next(&cursor));
 
     do {
-        token = kefir_parser_token_cursor_at(&cursor, 0);
+        token = kefir_parser_token_cursor_at(&cursor, 0, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_PUNCTUATOR);
         ASSERT(token->punctuator == KEFIR_PUNCTUATOR_RIGHT_ARROW);
 
-        token = kefir_parser_token_cursor_at(&cursor, 1);
+        token = kefir_parser_token_cursor_at(&cursor, 1, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_SENTINEL);
     } while (0);
@@ -104,22 +104,22 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
     ASSERT_OK(kefir_parser_token_cursor_restore(&cursor, checkpoint));
 
     do {
-        token = kefir_parser_token_cursor_at(&cursor, 0);
+        token = kefir_parser_token_cursor_at(&cursor, 0, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_IDENTIFIER);
         ASSERT(strcmp(token->identifier, "ident1") == 0);
 
-        token = kefir_parser_token_cursor_at(&cursor, 1);
+        token = kefir_parser_token_cursor_at(&cursor, 1, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_KEYWORD);
         ASSERT(token->keyword == KEFIR_KEYWORD_ALIGNAS);
 
-        token = kefir_parser_token_cursor_at(&cursor, 2);
+        token = kefir_parser_token_cursor_at(&cursor, 2, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_PUNCTUATOR);
         ASSERT(token->punctuator == KEFIR_PUNCTUATOR_RIGHT_ARROW);
 
-        token = kefir_parser_token_cursor_at(&cursor, 3);
+        token = kefir_parser_token_cursor_at(&cursor, 3, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_SENTINEL);
     } while (0);
@@ -127,28 +127,28 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
     ASSERT_OK(kefir_parser_token_cursor_reset(&cursor));
 
     do {
-        token = kefir_parser_token_cursor_at(&cursor, 0);
+        token = kefir_parser_token_cursor_at(&cursor, 0, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_CONSTANT);
         ASSERT(token->constant.type == KEFIR_CONSTANT_TOKEN_CHAR);
         ASSERT(token->constant.character == 'X');
 
-        token = kefir_parser_token_cursor_at(&cursor, 1);
+        token = kefir_parser_token_cursor_at(&cursor, 1, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_IDENTIFIER);
         ASSERT(strcmp(token->identifier, "ident1") == 0);
 
-        token = kefir_parser_token_cursor_at(&cursor, 2);
+        token = kefir_parser_token_cursor_at(&cursor, 2, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_KEYWORD);
         ASSERT(token->keyword == KEFIR_KEYWORD_ALIGNAS);
 
-        token = kefir_parser_token_cursor_at(&cursor, 3);
+        token = kefir_parser_token_cursor_at(&cursor, 3, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_PUNCTUATOR);
         ASSERT(token->punctuator == KEFIR_PUNCTUATOR_RIGHT_ARROW);
 
-        token = kefir_parser_token_cursor_at(&cursor, 4);
+        token = kefir_parser_token_cursor_at(&cursor, 4, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_SENTINEL);
     } while (0);

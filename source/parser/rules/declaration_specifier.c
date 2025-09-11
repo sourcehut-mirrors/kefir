@@ -238,7 +238,7 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
     });
 
     if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0)) {
-        identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
+        identifier = PARSER_CURSOR(parser, 0)->identifier;
         res = PARSER_SHIFT(parser);
         SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
         complete = PARSER_TOKEN_IS_LEFT_BRACE(parser, 0);
@@ -307,7 +307,7 @@ static kefir_result_t scan_enum_field_declaration(struct kefir_mem *mem, struct 
     REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected enumeration constant identifier"));
-    const char *identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
+    const char *identifier = PARSER_CURSOR(parser, 0)->identifier;
     REQUIRE_OK(PARSER_SHIFT(parser));
 
     kefir_result_t res = KEFIR_OK;
@@ -381,7 +381,7 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
     });
 
     if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0)) {
-        identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
+        identifier = PARSER_CURSOR(parser, 0)->identifier;
         REQUIRE_CHAIN(&res, PARSER_SHIFT(parser));
         complete =
             PARSER_TOKEN_IS_LEFT_BRACE(parser, 0) || PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON);
@@ -478,7 +478,8 @@ static kefir_result_t has_type_specifiers(struct kefir_ast_declarator_specifier_
          iter != NULL && res == KEFIR_OK && !*result;
          res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
 
-        if (specifier->klass == KEFIR_AST_TYPE_SPECIFIER && specifier->type_specifier.specifier != KEFIR_AST_TYPE_SPECIFIER_UNSIGNED_OVERRIDE) {
+        if (specifier->klass == KEFIR_AST_TYPE_SPECIFIER &&
+            specifier->type_specifier.specifier != KEFIR_AST_TYPE_SPECIFIER_UNSIGNED_OVERRIDE) {
             *result = true;
         }
     }
@@ -609,7 +610,7 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
         REQUIRE_OK(has_type_specifiers(specifiers, &has_specs));
         REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0) && !has_specs,
                 KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match type specifier"));
-        const char *identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
+        const char *identifier = PARSER_CURSOR(parser, 0)->identifier;
         kefir_bool_t is_typedef;
         kefir_result_t res = kefir_parser_scope_is_typedef(parser->scope, identifier, &is_typedef);
         if (res == KEFIR_NOT_FOUND) {

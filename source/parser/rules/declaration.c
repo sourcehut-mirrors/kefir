@@ -26,7 +26,8 @@
 #include "kefir/ast/downcast.h"
 
 static kefir_result_t kefir_parser_update_scope_with_declarator(struct kefir_mem *mem, struct kefir_parser *parser,
-                                                          const struct kefir_ast_declaration *declaration, struct kefir_ast_declarator *declarator) {
+                                                                const struct kefir_ast_declaration *declaration,
+                                                                struct kefir_ast_declarator *declarator) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(declaration != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declaration"));
@@ -81,11 +82,11 @@ static kefir_result_t scan_init_declaration(struct kefir_mem *mem, struct kefir_
 
     struct kefir_ast_node_base *declaration_node;
     REQUIRE_OK(kefir_parser_ast_builder_peek(builder, &declaration_node));
-    REQUIRE(declaration_node->klass->type == KEFIR_AST_DECLARATION, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected node of AST declaration list type"));
+    REQUIRE(declaration_node->klass->type == KEFIR_AST_DECLARATION,
+            KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected node of AST declaration list type"));
     ASSIGN_DECL_CAST(struct kefir_ast_declaration *, decl_list, declaration_node->self);
 
-    struct kefir_source_location source_location =
-        kefir_parser_token_cursor_at(builder->parser->cursor, 0)->source_location;
+    struct kefir_source_location source_location = PARSER_CURSOR(builder->parser, 0)->source_location;
     REQUIRE_OK(builder->parser->ruleset.declarator(mem, builder->parser, &declarator));
     res = kefir_parser_update_scope_with_declarator(mem, builder->parser, decl_list, declarator);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -146,7 +147,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
             kefir_ast_node_attributes_free(mem, &attributes);
             return res;
         });
-        init_declarator->base.source_location = kefir_parser_token_cursor_at(parser->cursor, 0)->source_location;
+        init_declarator->base.source_location = PARSER_CURSOR(parser, 0)->source_location;
     }
 
     while (res == KEFIR_OK && scan_init_decl) {

@@ -133,8 +133,8 @@ static kefir_result_t scan_direct_declarator_base(struct kefir_mem *mem, struct 
         REQUIRE_CHAIN_SET(&res, PARSER_TOKEN_IS_IDENTIFIER(parser, 0),
                           KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Expected identifier"));
         if (res == KEFIR_OK) {
-            base_declarator = kefir_ast_declarator_identifier(
-                mem, parser->symbols, kefir_parser_token_cursor_at(parser->cursor, 0)->identifier);
+            base_declarator =
+                kefir_ast_declarator_identifier(mem, parser->symbols, PARSER_CURSOR(parser, 0)->identifier);
             REQUIRE_CHAIN_SET(&res, base_declarator != NULL,
                               KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST identifier declarator"));
             if (base_declarator != NULL) {
@@ -301,7 +301,7 @@ static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefi
         return res;
     });
 
-    struct kefir_source_location source_location = kefir_parser_token_cursor_at(parser->cursor, 0)->source_location;
+    struct kefir_source_location source_location = PARSER_CURSOR(parser, 0)->source_location;
     struct kefir_ast_declarator *declarator = NULL;
     res = scan_function_parameter_declarator(mem, parser, &declarator);
     REQUIRE_ELSE(res == KEFIR_OK, {

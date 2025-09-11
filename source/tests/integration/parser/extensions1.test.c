@@ -25,10 +25,10 @@
 
 static kefir_result_t next_identifier(struct kefir_mem *mem, struct kefir_parser *parser,
                                       struct kefir_ast_node_base **result, void *payload) {
-    const struct kefir_token *token = kefir_parser_token_cursor_at(parser->cursor, 0);
+    const struct kefir_token *token = kefir_parser_token_cursor_at(parser->cursor, 0, true);
     if (token != NULL && token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "@") == 0) {
         REQUIRE_OK(kefir_parser_token_cursor_next(parser->cursor));
-        token = kefir_parser_token_cursor_at(parser->cursor, 0);
+        token = kefir_parser_token_cursor_at(parser->cursor, 0, true);
         if (token != NULL && token->klass == KEFIR_TOKEN_PUNCTUATOR &&
             token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE) {
             *result = KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, parser->symbols, "__runtime_entry_point"));
@@ -94,7 +94,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_json_output_array_begin(&json));
 
-    while (kefir_parser_token_cursor_at(&cursor, 0)->klass != KEFIR_TOKEN_SENTINEL) {
+    while (kefir_parser_token_cursor_at(&cursor, 0, true)->klass != KEFIR_TOKEN_SENTINEL) {
         struct kefir_ast_node_base *node = NULL;
         REQUIRE_OK(KEFIR_PARSER_NEXT_STATEMENT(mem, &parser, &node));
         REQUIRE_OK(kefir_ast_format(&json, node, false));

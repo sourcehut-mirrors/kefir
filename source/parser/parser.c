@@ -88,7 +88,8 @@ kefir_result_t kefir_parser_apply(struct kefir_mem *mem, struct kefir_parser *pa
 
     kefir_size_t checkpoint;
     REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
-    struct kefir_source_location source_location = kefir_parser_token_cursor_at(parser->cursor, 0)->source_location;
+    struct kefir_source_location source_location =
+        kefir_parser_token_cursor_at(parser->cursor, 0, true)->source_location;
     kefir_result_t res = rule(mem, parser, result, payload);
     if (res == KEFIR_NO_MATCH) {
         REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));

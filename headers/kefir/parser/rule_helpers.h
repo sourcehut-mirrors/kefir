@@ -34,7 +34,7 @@
         REQUIRE((_result) != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST node")); \
     } while (0)
 
-#define PARSER_CURSOR(_parser, _idx) (kefir_parser_token_cursor_at((_parser)->cursor, (_idx)))
+#define PARSER_CURSOR(_parser, _idx) (kefir_parser_token_cursor_at((_parser)->cursor, (_idx), true))
 #define PARSER_TOKEN_IS(_parser, _idx, _klass) (PARSER_CURSOR((_parser), (_idx))->klass == (_klass))
 #define PARSER_TOKEN_IS_SENTINEL(_parser, _idx) PARSER_TOKEN_IS((_parser), (_idx), KEFIR_TOKEN_SENTINEL)
 #define PARSER_TOKEN_IS_KEYWORD(_parser, _idx, _keyword) \

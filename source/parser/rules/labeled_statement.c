@@ -28,7 +28,7 @@ static kefir_result_t parse_labelled_stmt(struct kefir_mem *mem, struct kefir_pa
 
     kefir_result_t res;
     if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0) && PARSER_TOKEN_IS_PUNCTUATOR(parser, 1, KEFIR_PUNCTUATOR_COLON)) {
-        const char *identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
+        const char *identifier = PARSER_CURSOR(parser, 0)->identifier;
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_OK(PARSER_SHIFT(parser));
 

@@ -22,7 +22,8 @@
 #include "kefir/parser/builder.h"
 #include "kefir/core/source_error.h"
 
-static kefir_result_t scan_return(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder, struct kefir_ast_node_attributes *attributes) {
+static kefir_result_t scan_return(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                  struct kefir_ast_node_attributes *attributes) {
     struct kefir_parser *parser = builder->parser;
     REQUIRE_OK(PARSER_SHIFT(parser));
     if (!PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON)) {
@@ -40,7 +41,8 @@ static kefir_result_t scan_return(struct kefir_mem *mem, struct kefir_parser_ast
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_goto(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder, struct kefir_ast_node_attributes *attributes) {
+static kefir_result_t scan_goto(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                struct kefir_ast_node_attributes *attributes) {
     struct kefir_parser *parser = builder->parser;
     REQUIRE_OK(PARSER_SHIFT(parser));
 
@@ -48,7 +50,7 @@ static kefir_result_t scan_goto(struct kefir_mem *mem, struct kefir_parser_ast_b
         REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected identifier"));
 
-        const char *identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
+        const char *identifier = PARSER_CURSOR(parser, 0)->identifier;
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_OK(kefir_parser_ast_builder_goto_statement(mem, builder, identifier, attributes));
         REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON),
@@ -73,7 +75,8 @@ static kefir_result_t scan_goto(struct kefir_mem *mem, struct kefir_parser_ast_b
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_continue(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder, struct kefir_ast_node_attributes *attributes) {
+static kefir_result_t scan_continue(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                    struct kefir_ast_node_attributes *attributes) {
     struct kefir_parser *parser = builder->parser;
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE_OK(kefir_parser_ast_builder_continue_statement(mem, builder, attributes));
@@ -83,7 +86,8 @@ static kefir_result_t scan_continue(struct kefir_mem *mem, struct kefir_parser_a
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_break(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder, struct kefir_ast_node_attributes *attributes) {
+static kefir_result_t scan_break(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                 struct kefir_ast_node_attributes *attributes) {
     struct kefir_parser *parser = builder->parser;
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE_OK(kefir_parser_ast_builder_break_statement(mem, builder, attributes));
