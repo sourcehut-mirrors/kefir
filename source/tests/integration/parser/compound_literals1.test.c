@@ -111,7 +111,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE(kefir_parser_token_cursor_at(&cursor, 0, true)->klass == KEFIR_TOKEN_PUNCTUATOR, KEFIR_INTERNAL_ERROR);
         REQUIRE(kefir_parser_token_cursor_at(&cursor, 0, true)->punctuator == KEFIR_PUNCTUATOR_SEMICOLON,
                 KEFIR_INTERNAL_ERROR);
-        REQUIRE_OK(kefir_parser_token_cursor_next(&cursor));
+        REQUIRE_OK(kefir_parser_token_cursor_next(&cursor, true));
         REQUIRE_OK(kefir_ast_format(&json, node, false));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
     }

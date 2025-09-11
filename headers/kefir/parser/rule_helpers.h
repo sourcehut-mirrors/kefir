@@ -63,7 +63,8 @@
 
 #define PARSER_TOKEN_LOCATION(_parser, _idx) (&PARSER_CURSOR((_parser), (_idx))->source_location)
 
-#define PARSER_SHIFT(_parser) (kefir_parser_token_cursor_next((_parser)->cursor))
+#define PARSER_SHIFT_EXT(_parser, _skip_pragmas) (kefir_parser_token_cursor_next((_parser)->cursor, (_skip_pragmas)))
+#define PARSER_SHIFT(_parser) PARSER_SHIFT_EXT((_parser), true)
 
 #define REQUIRE_ALLOC(_ptr, _expr, _error)                                           \
     do {                                                                             \

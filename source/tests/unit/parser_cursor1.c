@@ -62,7 +62,7 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
         ASSERT(token->klass == KEFIR_TOKEN_SENTINEL);
     } while (0);
 
-    ASSERT_OK(kefir_parser_token_cursor_next(&cursor));
+    ASSERT_OK(kefir_parser_token_cursor_next(&cursor, true));
 
     do {
         token = kefir_parser_token_cursor_at(&cursor, 0, true);
@@ -87,8 +87,8 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
 
     kefir_size_t checkpoint;
     ASSERT_OK(kefir_parser_token_cursor_save(&cursor, &checkpoint));
-    ASSERT_OK(kefir_parser_token_cursor_next(&cursor));
-    ASSERT_OK(kefir_parser_token_cursor_next(&cursor));
+    ASSERT_OK(kefir_parser_token_cursor_next(&cursor, true));
+    ASSERT_OK(kefir_parser_token_cursor_next(&cursor, true));
 
     do {
         token = kefir_parser_token_cursor_at(&cursor, 0, true);

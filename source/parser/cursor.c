@@ -72,24 +72,45 @@ kefir_result_t kefir_parser_token_cursor_init_direct(struct kefir_parser_token_c
     return KEFIR_OK;
 }
 
+static void cursor_skip_pragmas(const struct kefir_parser_token_cursor *cursor, kefir_size_t *offset) {
+    do {
+        const struct kefir_token *token;
+        kefir_result_t res = cursor->handle->get_token(*offset, &token, cursor->handle);
+
+        if (res == KEFIR_OK && token != NULL && token->klass == KEFIR_TOKEN_PRAGMA) {
+            (*offset)++;
+            continue;
+        }
+    } while (false);
+}
+
 const struct kefir_token *kefir_parser_token_cursor_at(const struct kefir_parser_token_cursor *cursor,
                                                        kefir_size_t offset, kefir_bool_t skip_pragmas) {
     REQUIRE(cursor != NULL, NULL);
 
-    for (;;) {
-        const kefir_size_t index = cursor->index + offset;
-        const struct kefir_token *token;
-        kefir_result_t res = cursor->handle->get_token(index, &token, cursor->handle);
-        REQUIRE(res == KEFIR_OK, &cursor->sentinel);
-        if (token != NULL) {
-            if (skip_pragmas && token->klass == KEFIR_TOKEN_PRAGMA) {
-                offset++;
-                continue;
+    kefir_size_t token_index = cursor->index;
+    if (skip_pragmas) {
+        cursor_skip_pragmas(cursor, &token_index);
+    }
+
+    const struct kefir_token *token;
+    if (skip_pragmas) {
+        for (kefir_size_t i = 0; i < offset; i++) {
+            token_index++;
+            if (skip_pragmas) {
+                cursor_skip_pragmas(cursor, &token_index);
             }
-            return token;
-        } else {
-            return &cursor->sentinel;
         }
+    } else {
+        token_index += offset;
+    }
+
+    kefir_result_t res = cursor->handle->get_token(token_index, &token, cursor->handle);
+    REQUIRE(res == KEFIR_OK, &cursor->sentinel);
+    if (token != NULL) {
+        return token;
+    } else {
+        return &cursor->sentinel;
     }
 }
 
@@ -99,10 +120,17 @@ kefir_result_t kefir_parser_token_cursor_reset(struct kefir_parser_token_cursor 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_parser_token_cursor_next(struct kefir_parser_token_cursor *cursor) {
+kefir_result_t kefir_parser_token_cursor_next(struct kefir_parser_token_cursor *cursor, kefir_bool_t skip_pragmas) {
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected value token cursor"));
     kefir_size_t length;
     REQUIRE_OK(cursor->handle->length(&length, cursor->handle));
+    if (skip_pragmas) {
+        const struct kefir_token *token;
+        kefir_result_t res = cursor->handle->get_token(cursor->index, &token, cursor->handle);
+        for (; cursor->index < length && res == KEFIR_OK && token->klass == KEFIR_TOKEN_PRAGMA;) {
+            res = cursor->handle->get_token(++cursor->index, &token, cursor->handle);
+        }
+    }
     if (cursor->index < length) {
         cursor->index++;
     }

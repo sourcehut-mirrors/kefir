@@ -27,7 +27,7 @@ static kefir_result_t next_identifier(struct kefir_mem *mem, struct kefir_parser
                                       struct kefir_ast_node_base **result, void *payload) {
     const struct kefir_token *token = kefir_parser_token_cursor_at(parser->cursor, 0, true);
     if (token != NULL && token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "@") == 0) {
-        REQUIRE_OK(kefir_parser_token_cursor_next(parser->cursor));
+        REQUIRE_OK(kefir_parser_token_cursor_next(parser->cursor, true));
         token = kefir_parser_token_cursor_at(parser->cursor, 0, true);
         if (token != NULL && token->klass == KEFIR_TOKEN_PUNCTUATOR &&
             token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE) {

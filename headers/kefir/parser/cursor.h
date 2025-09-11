@@ -40,7 +40,7 @@ kefir_result_t kefir_parser_token_cursor_init_direct(struct kefir_parser_token_c
 const struct kefir_token *kefir_parser_token_cursor_at(const struct kefir_parser_token_cursor *, kefir_size_t,
                                                        kefir_bool_t);
 kefir_result_t kefir_parser_token_cursor_reset(struct kefir_parser_token_cursor *);
-kefir_result_t kefir_parser_token_cursor_next(struct kefir_parser_token_cursor *);
+kefir_result_t kefir_parser_token_cursor_next(struct kefir_parser_token_cursor *, kefir_bool_t);
 kefir_result_t kefir_parser_token_cursor_save(struct kefir_parser_token_cursor *, kefir_size_t *);
 kefir_result_t kefir_parser_token_cursor_restore(struct kefir_parser_token_cursor *, kefir_size_t);
 
