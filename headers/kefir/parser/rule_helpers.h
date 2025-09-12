@@ -34,8 +34,12 @@
         REQUIRE((_result) != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST node")); \
     } while (0)
 
-#define PARSER_CURSOR(_parser, _idx) (kefir_parser_token_cursor_at((_parser)->cursor, (_idx), true))
+#define PARSER_CURSOR_EXT(_parser, _idx, _skip_pragma) \
+    (kefir_parser_token_cursor_at((_parser)->cursor, (_idx), (_skip_pragma)))
+#define PARSER_CURSOR(_parser, _idx) PARSER_CURSOR_EXT((_parser), (_idx), true)
 #define PARSER_TOKEN_IS(_parser, _idx, _klass) (PARSER_CURSOR((_parser), (_idx))->klass == (_klass))
+#define PARSER_TOKEN_IS_EXT(_parser, _idx, _klass, _skip_pragma) \
+    (PARSER_CURSOR_EXT((_parser), (_idx), (_skip_pragma))->klass == (_klass))
 #define PARSER_TOKEN_IS_SENTINEL(_parser, _idx) PARSER_TOKEN_IS((_parser), (_idx), KEFIR_TOKEN_SENTINEL)
 #define PARSER_TOKEN_IS_KEYWORD(_parser, _idx, _keyword) \
     (PARSER_TOKEN_IS((_parser), (_idx), KEFIR_TOKEN_KEYWORD) && PARSER_CURSOR((_parser), (_idx))->keyword == (_keyword))
@@ -44,9 +48,12 @@
     (PARSER_TOKEN_IS((_parser), (_idx), KEFIR_TOKEN_CONSTANT) && \
      PARSER_CURSOR((_parser), (_idx))->constant.type == (_type))
 #define PARSER_TOKEN_IS_STRING_LITERAL(_parser, _idx) PARSER_TOKEN_IS((_parser), (_idx), KEFIR_TOKEN_STRING_LITERAL)
-#define PARSER_TOKEN_IS_PUNCTUATOR(_parser, _idx, _punctuator)     \
-    (PARSER_TOKEN_IS((_parser), (_idx), KEFIR_TOKEN_PUNCTUATOR) && \
-     PARSER_CURSOR((_parser), (_idx))->punctuator == (_punctuator))
+#define PARSER_TOKEN_IS_PUNCTUATOR_EXT(_parser, _idx, _punctuator, _skip_pragma)       \
+    (PARSER_TOKEN_IS_EXT((_parser), (_idx), KEFIR_TOKEN_PUNCTUATOR, (_skip_pragma)) && \
+     PARSER_CURSOR_EXT((_parser), (_idx), (_skip_pragma))->punctuator == (_punctuator))
+#define PARSER_TOKEN_IS_PUNCTUATOR(_parser, _idx, _punctuator) \
+    PARSER_TOKEN_IS_PUNCTUATOR_EXT((_parser), (_idx), (_punctuator), true)
+#define PARSER_TOKEN_IS_PRAGMA(_parser, _idx) (PARSER_TOKEN_IS_EXT((_parser), (_idx), KEFIR_TOKEN_PRAGMA, false))
 
 #define PARSER_TOKEN_IS_LEFT_BRACKET(_parser, _idx)                                  \
     (PARSER_TOKEN_IS_PUNCTUATOR((_parser), (_idx), KEFIR_PUNCTUATOR_LEFT_BRACKET) || \

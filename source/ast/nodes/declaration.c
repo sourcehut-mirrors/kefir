@@ -78,6 +78,7 @@ struct kefir_ast_declaration *kefir_ast_new_declaration(struct kefir_mem *mem) {
 
     REQUIRE_CHAIN(&res, kefir_list_init(&declaration->init_declarators));
     REQUIRE_CHAIN(&res, kefir_list_on_remove(&declaration->init_declarators, declaration_free, NULL));
+    REQUIRE_CHAIN(&res, kefir_ast_pragma_state_init(&declaration->pragmas));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, &declaration->specifiers);
         KEFIR_FREE(mem, declaration);

@@ -878,6 +878,98 @@ static kefir_result_t visit_type_name(const struct kefir_ast_visitor *visitor, c
     return KEFIR_OK;
 }
 
+static kefir_result_t format_pragma_state(struct kefir_json_output *json,
+                                          const struct kefir_ast_pragma_state *pragmas) {
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+#define FORMAT_ON_OFF(_value)                                          \
+    do {                                                               \
+        switch ((_value)) {                                            \
+            case KEFIR_AST_PRAGMA_VALUE_DEFAULT:                       \
+                REQUIRE_OK(kefir_json_output_string(json, "default")); \
+                break;                                                 \
+                                                                       \
+            case KEFIR_AST_PRAGMA_VALUE_ON:                            \
+                REQUIRE_OK(kefir_json_output_string(json, "on"));      \
+                break;                                                 \
+                                                                       \
+            case KEFIR_AST_PRAGMA_VALUE_OFF:                           \
+                REQUIRE_OK(kefir_json_output_string(json, "off"));     \
+                break;                                                 \
+        }                                                              \
+    } while (0)
+    if (pragmas->fp_contract.present) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "fp_contract"));
+        FORMAT_ON_OFF(pragmas->fp_contract.value);
+    }
+    if (pragmas->fenv_access.present) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "fenv_access"));
+        FORMAT_ON_OFF(pragmas->fenv_access.value);
+    }
+    if (pragmas->cx_limited_range.present) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "cx_limited_range"));
+        FORMAT_ON_OFF(pragmas->cx_limited_range.value);
+    }
+#undef FORMAT_ON_OFF
+    if (pragmas->fenv_round.present) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "fenv_round"));
+        switch (pragmas->fenv_round.value) {
+            case KEFIR_AST_PRAGMA_VALUE_FE_DOWNWARD:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_downward"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_TONEAREST:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_tonearest"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_TONEARESTFROMZERO:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_tonearestfromzero"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_TOWARDZERO:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_towardzero"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_UPWARD:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_upward"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_DYNAMIC:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_dynamic"));
+                break;
+        }
+    }
+    if (pragmas->fenv_dec_round.present) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "fenv_dec_round"));
+        switch (pragmas->fenv_dec_round.value) {
+            case KEFIR_AST_PRAGMA_VALUE_FE_DEC_DOWNWARD:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_dec_downward"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_DEC_TONEAREST:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_dec_tonearest"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_DEC_TONEARESTFROMZERO:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_dec_tonearestfromzero"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_DEC_TOWARDZERO:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_dec_towardzero"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_DEC_UPWARD:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_dec_upward"));
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_DEC_DYNAMIC:
+                REQUIRE_OK(kefir_json_output_string(json, "fe_dec_dynamic"));
+                break;
+        }
+    }
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 static kefir_result_t visit_declaration(const struct kefir_ast_visitor *visitor,
                                         const struct kefir_ast_declaration *node, void *payload) {
     UNUSED(visitor);
@@ -901,6 +993,10 @@ static kefir_result_t visit_declaration(const struct kefir_ast_visitor *visitor,
     REQUIRE_OK(kefir_json_output_array_end(json));
     if (param->display_source_location) {
         REQUIRE_OK(format_source_location(json, KEFIR_AST_NODE_BASE(node)));
+    }
+    if (KEFIR_AST_PRAGMA_STATE_IS_PRESENT(&node->pragmas)) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "pragmas"));
+        REQUIRE_OK(format_pragma_state(json, &node->pragmas));
     }
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
@@ -1404,6 +1500,10 @@ static kefir_result_t visit_function_definitions(const struct kefir_ast_visitor 
     REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(node->body), param->display_source_location));
     if (param->display_source_location) {
         REQUIRE_OK(format_source_location(json, KEFIR_AST_NODE_BASE(node)));
+    }
+    if (KEFIR_AST_PRAGMA_STATE_IS_PRESENT(&node->pragmas)) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "pragmas"));
+        REQUIRE_OK(format_pragma_state(json, &node->pragmas));
     }
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;

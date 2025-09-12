@@ -1,0 +1,455 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "var1",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 1
+                        }
+                    }
+                }
+            ],
+            "pragmas": {
+                "fp_contract": "on",
+                "fenv_access": "off",
+                "cx_limited_range": "default"
+            }
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "test1",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "void",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "test1\u0000",
+                                        "length": 6
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "pragmas": {
+                "fp_contract": "on",
+                "fenv_access": "off",
+                "cx_limited_range": "default"
+            }
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "var2",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 1
+                        }
+                    }
+                }
+            ],
+            "pragmas": {
+                "fp_contract": "on",
+                "fenv_access": "off",
+                "cx_limited_range": "off",
+                "fenv_round": "fe_tonearest"
+            }
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "test2",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "void",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "test2\u0000",
+                                        "length": 6
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "pragmas": {
+                "fp_contract": "on",
+                "fenv_access": "off",
+                "cx_limited_range": "off",
+                "fenv_round": "fe_tonearest"
+            }
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "var3",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 1
+                        }
+                    }
+                }
+            ],
+            "pragmas": {
+                "fp_contract": "off",
+                "fenv_access": "off",
+                "cx_limited_range": "off",
+                "fenv_round": "fe_tonearest",
+                "fenv_dec_round": "fe_dec_towardzero"
+            }
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "test3",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "void",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "test3\u0000",
+                                        "length": 6
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "pragmas": {
+                "fp_contract": "off",
+                "fenv_access": "off",
+                "cx_limited_range": "off",
+                "fenv_round": "fe_tonearest",
+                "fenv_dec_round": "fe_dec_towardzero"
+            }
+        }
+    ]
+}

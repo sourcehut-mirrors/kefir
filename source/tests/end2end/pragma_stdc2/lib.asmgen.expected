@@ -148,6 +148,9 @@
                     }
                 ],
                 "attributes": []
+            },
+            "pragmas": {
+                "fenv_access": "off"
             }
         }
     ]

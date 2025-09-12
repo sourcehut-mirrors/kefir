@@ -167,6 +167,9 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(function_definition)(struct kefir_mem
     struct kefir_list declaration_list;
     struct kefir_ast_node_base *compound_statement_node = NULL;
 
+    struct kefir_ast_pragma_state pragmas;
+    REQUIRE_OK(kefir_parser_pragmas_collect(&pragmas, &parser->pragmas));
+
     kefir_result_t res = KEFIR_OK;
     struct kefir_ast_node_attributes attributes;
     REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
@@ -207,6 +210,8 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(function_definition)(struct kefir_mem
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST function definition");
     });
+
+    func_definition->pragmas = pragmas;
 
     res = kefir_ast_declarator_specifier_list_clone(mem, &func_definition->specifiers, &specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {

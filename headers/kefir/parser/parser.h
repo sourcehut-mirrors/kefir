@@ -25,6 +25,7 @@
 #include "kefir/parser/cursor.h"
 #include "kefir/parser/scope.h"
 #include "kefir/parser/ruleset.h"
+#include "kefir/parser/pragma.h"
 #include "kefir/ast/node.h"
 
 typedef struct kefir_parser kefir_parser_t;
@@ -57,6 +58,7 @@ typedef struct kefir_parser {
 
     struct kefir_parser_scope local_scope;
     struct kefir_parser_scope *scope;
+    struct kefir_parser_pragmas pragmas;
 
     const struct kefir_parser_extensions *extensions;
     void *extension_payload;

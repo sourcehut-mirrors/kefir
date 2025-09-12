@@ -56,6 +56,8 @@ kefir_result_t kefir_parser_init(struct kefir_mem *mem, struct kefir_parser *par
     parser->extension_payload = NULL;
     parser->configuration = &DefaultConfiguration;
 
+    REQUIRE_OK(kefir_parser_pragmas_init(&parser->pragmas));
+
     kefir_result_t res;
     KEFIR_RUN_EXTENSION0(&res, mem, parser, on_init);
     REQUIRE_ELSE(res == KEFIR_OK, {

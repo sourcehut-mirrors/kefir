@@ -160,6 +160,7 @@ struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct k
 
     res = kefir_list_init(&func->declarations);
     REQUIRE_CHAIN(&res, kefir_list_on_remove(&func->declarations, declaration_entry_free, NULL));
+    REQUIRE_CHAIN(&res, kefir_ast_pragma_state_init(&func->pragmas));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, &func->specifiers);
         KEFIR_FREE(mem, func);

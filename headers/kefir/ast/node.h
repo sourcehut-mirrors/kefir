@@ -26,6 +26,7 @@
 #include "kefir/core/string_pool.h"
 #include "kefir/ast/initializer.h"
 #include "kefir/ast/declarator.h"
+#include "kefir/ast/pragma.h"
 #include "kefir/lexer/buffer.h"
 #include "kefir/lexer/allocator.h"
 
@@ -83,6 +84,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_init_declarator, {
 KEFIR_AST_NODE_STRUCT(kefir_ast_declaration, {
     struct kefir_ast_declarator_specifier_list specifiers;
     struct kefir_list init_declarators;
+    struct kefir_ast_pragma_state pragmas;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_attribute_declaration, { struct kefir_ast_node_attributes attributes; });
@@ -233,6 +235,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_function_definition, {
     struct kefir_ast_declarator *declarator;
     struct kefir_list declarations;
     struct kefir_ast_compound_statement *body;
+    struct kefir_ast_pragma_state pragmas;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_translation_unit, { struct kefir_list external_definitions; });

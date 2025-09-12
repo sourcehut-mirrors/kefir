@@ -19,6 +19,7 @@
 */
 
 #include "kefir/parser/rule_helpers.h"
+#include "kefir/ast/downcast.h"
 
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(external_declaration)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                                  struct kefir_ast_node_base **result, void *payload) {
@@ -26,6 +27,22 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(external_declaration)(struct kefir_me
     kefir_result_t res = KEFIR_PARSER_RULE_APPLY(mem, parser, function_definition, result);
     REQUIRE(res == KEFIR_NO_MATCH, res);
     res = KEFIR_PARSER_RULE_APPLY(mem, parser, declaration, result);
+    if (res != KEFIR_NO_MATCH) {
+        REQUIRE_OK(res);
+        struct kefir_ast_declaration *decl_list = NULL;
+        res = kefir_ast_downcast_declaration(*result, &decl_list, false);
+        if (res == KEFIR_NO_MATCH) {
+            return KEFIR_OK;
+        } else {
+            REQUIRE_CHAIN(&res, kefir_parser_pragmas_collect(&decl_list->pragmas, &parser->pragmas));
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                KEFIR_AST_NODE_FREE(mem, *result);
+                *result = NULL;
+                return res;
+            });
+            return KEFIR_OK;
+        }
+    }
     REQUIRE(res == KEFIR_NO_MATCH, res);
     REQUIRE_OK(KEFIR_PARSER_RULE_APPLY(mem, parser, assembly, result));
     return KEFIR_OK;
