@@ -2,43 +2,6 @@
     "class": "translation_unit",
     "external_declarations": [
         {
-            "class": "declaration",
-            "specifiers": {
-                "list": [
-                    {
-                        "class": "type_specifier",
-                        "specifier": "int",
-                        "attributes": []
-                    }
-                ],
-                "attributes": []
-            },
-            "init_declarators": [
-                {
-                    "class": "init_declarator",
-                    "declarator": {
-                        "class": "identifier",
-                        "identifier": "var1",
-                        "asm_label": null,
-                        "attributes": []
-                    },
-                    "initializer": {
-                        "type": "expression",
-                        "expression": {
-                            "class": "constant",
-                            "type": "integer",
-                            "value": 1
-                        }
-                    }
-                }
-            ],
-            "pragmas": {
-                "fp_contract": "on",
-                "fenv_access": "off",
-                "cx_limited_range": "default"
-            }
-        },
-        {
             "class": "function_definition",
             "specifiers": {
                 "list": [
@@ -139,55 +102,100 @@
                                 }
                             }
                         ]
+                    },
+                    {
+                        "class": "compound_statement",
+                        "items": [
+                            {
+                                "class": "compound_statement",
+                                "items": [
+                                    {
+                                        "class": "expression_statement",
+                                        "expression": {
+                                            "class": "cast_operator",
+                                            "type_name": {
+                                                "class": "type_name",
+                                                "specifiers": {
+                                                    "list": [
+                                                        {
+                                                            "class": "type_specifier",
+                                                            "specifier": "void",
+                                                            "attributes": []
+                                                        }
+                                                    ],
+                                                    "attributes": []
+                                                },
+                                                "declarator": {
+                                                    "class": "abstract",
+                                                    "attributes": []
+                                                }
+                                            },
+                                            "expression": {
+                                                "class": "constant",
+                                                "type": "integer",
+                                                "value": 0
+                                            }
+                                        },
+                                        "attributes": []
+                                    }
+                                ],
+                                "attributes": [],
+                                "pragmas": {
+                                    "fenv_dec_round": "fe_dec_towardzero"
+                                }
+                            },
+                            {
+                                "class": "compound_statement",
+                                "items": [
+                                    {
+                                        "class": "expression_statement",
+                                        "expression": {
+                                            "class": "cast_operator",
+                                            "type_name": {
+                                                "class": "type_name",
+                                                "specifiers": {
+                                                    "list": [
+                                                        {
+                                                            "class": "type_specifier",
+                                                            "specifier": "void",
+                                                            "attributes": []
+                                                        }
+                                                    ],
+                                                    "attributes": []
+                                                },
+                                                "declarator": {
+                                                    "class": "abstract",
+                                                    "attributes": []
+                                                }
+                                            },
+                                            "expression": {
+                                                "class": "constant",
+                                                "type": "integer",
+                                                "value": 1
+                                            }
+                                        },
+                                        "attributes": []
+                                    }
+                                ],
+                                "attributes": [],
+                                "pragmas": {
+                                    "fenv_round": "fe_upward"
+                                }
+                            }
+                        ],
+                        "attributes": [],
+                        "pragmas": {
+                            "fp_contract": "default",
+                            "fenv_access": "on"
+                        }
                     }
                 ],
                 "attributes": [],
                 "pragmas": {
-                    "fp_contract": "default"
+                    "fp_contract": "on",
+                    "fenv_access": "off",
+                    "cx_limited_range": "default"
                 }
-            },
-            "pragmas": {
-                "fp_contract": "on",
-                "fenv_access": "off",
-                "cx_limited_range": "default"
-            }
-        },
-        {
-            "class": "declaration",
-            "specifiers": {
-                "list": [
-                    {
-                        "class": "type_specifier",
-                        "specifier": "int",
-                        "attributes": []
-                    }
-                ],
-                "attributes": []
-            },
-            "init_declarators": [
-                {
-                    "class": "init_declarator",
-                    "declarator": {
-                        "class": "identifier",
-                        "identifier": "var2",
-                        "asm_label": null,
-                        "attributes": []
-                    },
-                    "initializer": {
-                        "type": "expression",
-                        "expression": {
-                            "class": "constant",
-                            "type": "integer",
-                            "value": 1
-                        }
-                    }
-                }
-            ],
-            "pragmas": {
-                "fp_contract": "on",
-                "fenv_access": "off",
-                "cx_limited_range": "off",
-                "fenv_round": "fe_tonearest"
             }
         },
         {
@@ -291,170 +299,50 @@
                                 }
                             }
                         ]
+                    },
+                    {
+                        "class": "compound_statement",
+                        "items": [
+                            {
+                                "class": "expression_statement",
+                                "expression": {
+                                    "class": "cast_operator",
+                                    "type_name": {
+                                        "class": "type_name",
+                                        "specifiers": {
+                                            "list": [
+                                                {
+                                                    "class": "type_specifier",
+                                                    "specifier": "void",
+                                                    "attributes": []
+                                                }
+                                            ],
+                                            "attributes": []
+                                        },
+                                        "declarator": {
+                                            "class": "abstract",
+                                            "attributes": []
+                                        }
+                                    },
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 0
+                                    }
+                                },
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": [],
+                        "pragmas": {
+                            "fenv_dec_round": "fe_dec_towardzero"
+                        }
                     }
                 ],
                 "attributes": [],
                 "pragmas": {
-                    "fenv_access": "default"
+                    "fenv_round": "fe_upward"
                 }
-            },
-            "pragmas": {
-                "fp_contract": "on",
-                "fenv_access": "off",
-                "cx_limited_range": "off",
-                "fenv_round": "fe_tonearest"
-            }
-        },
-        {
-            "class": "declaration",
-            "specifiers": {
-                "list": [
-                    {
-                        "class": "type_specifier",
-                        "specifier": "int",
-                        "attributes": []
-                    }
-                ],
-                "attributes": []
-            },
-            "init_declarators": [
-                {
-                    "class": "init_declarator",
-                    "declarator": {
-                        "class": "identifier",
-                        "identifier": "var3",
-                        "asm_label": null,
-                        "attributes": []
-                    },
-                    "initializer": {
-                        "type": "expression",
-                        "expression": {
-                            "class": "constant",
-                            "type": "integer",
-                            "value": 1
-                        }
-                    }
-                }
-            ],
-            "pragmas": {
-                "fp_contract": "off",
-                "fenv_access": "off",
-                "cx_limited_range": "off",
-                "fenv_round": "fe_tonearest",
-                "fenv_dec_round": "fe_dec_towardzero"
-            }
-        },
-        {
-            "class": "function_definition",
-            "specifiers": {
-                "list": [
-                    {
-                        "class": "type_specifier",
-                        "specifier": "void",
-                        "attributes": []
-                    }
-                ],
-                "attributes": []
-            },
-            "declarator": {
-                "class": "function",
-                "declarator": {
-                    "class": "identifier",
-                    "identifier": "test3",
-                    "asm_label": null,
-                    "attributes": []
-                },
-                "ellipsis": false,
-                "parameters": [
-                    {
-                        "class": "declaration",
-                        "specifiers": {
-                            "list": [
-                                {
-                                    "class": "type_specifier",
-                                    "specifier": "void",
-                                    "attributes": []
-                                }
-                            ],
-                            "attributes": []
-                        },
-                        "init_declarators": [
-                            {
-                                "class": "init_declarator",
-                                "declarator": {
-                                    "class": "abstract",
-                                    "attributes": []
-                                },
-                                "initializer": null
-                            }
-                        ]
-                    }
-                ],
-                "attributes": []
-            },
-            "declarations": [],
-            "body": {
-                "class": "compound_statement",
-                "items": [
-                    {
-                        "class": "declaration",
-                        "specifiers": {
-                            "list": [
-                                {
-                                    "class": "storage_class",
-                                    "storage": "static",
-                                    "attributes": []
-                                },
-                                {
-                                    "class": "type_qualifier",
-                                    "qualifier": "const",
-                                    "attributes": []
-                                },
-                                {
-                                    "class": "type_specifier",
-                                    "specifier": "char",
-                                    "attributes": []
-                                }
-                            ],
-                            "attributes": []
-                        },
-                        "init_declarators": [
-                            {
-                                "class": "init_declarator",
-                                "declarator": {
-                                    "class": "array",
-                                    "declarator": {
-                                        "class": "identifier",
-                                        "identifier": "__func__",
-                                        "asm_label": null,
-                                        "attributes": []
-                                    },
-                                    "type": "unbounded",
-                                    "static": false,
-                                    "type_qualifiers": [],
-                                    "attributes": []
-                                },
-                                "initializer": {
-                                    "type": "expression",
-                                    "expression": {
-                                        "class": "string_literal",
-                                        "type": "multibyte",
-                                        "content": "test3\u0000",
-                                        "length": 6
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ],
-                "attributes": []
-            },
-            "pragmas": {
-                "fp_contract": "off",
-                "fenv_access": "off",
-                "cx_limited_range": "off",
-                "fenv_round": "fe_tonearest",
-                "fenv_dec_round": "fe_dec_towardzero"
             }
         }
     ]

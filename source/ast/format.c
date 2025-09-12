@@ -1180,6 +1180,10 @@ static kefir_result_t visit_compound_statement(const struct kefir_ast_visitor *v
         REQUIRE_OK(format_source_location(json, KEFIR_AST_NODE_BASE(node)));
     }
     REQUIRE_OK(format_attributes(json, &node->attributes, param->display_source_location));
+    if (KEFIR_AST_PRAGMA_STATE_IS_PRESENT(&node->pragmas)) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "pragmas"));
+        REQUIRE_OK(format_pragma_state(json, &node->pragmas));
+    }
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
 }

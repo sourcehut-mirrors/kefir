@@ -147,7 +147,10 @@
                         "attributes": []
                     }
                 ],
-                "attributes": []
+                "attributes": [],
+                "pragmas": {
+                    "fenv_access": "on"
+                }
             },
             "pragmas": {
                 "fenv_access": "off"

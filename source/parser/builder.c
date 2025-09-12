@@ -87,7 +87,7 @@ kefir_result_t kefir_parser_ast_builder_pop(struct kefir_mem *mem, struct kefir_
 }
 
 kefir_result_t kefir_parser_ast_builder_peek(struct kefir_parser_ast_builder *builder,
-                                            struct kefir_ast_node_base **node_ptr) {
+                                             struct kefir_ast_node_base **node_ptr) {
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
     struct kefir_list_entry *iter = kefir_list_tail(&builder->stack);
@@ -753,12 +753,17 @@ kefir_result_t kefir_parser_ast_builder_init_declarator(struct kefir_mem *mem, s
 
 kefir_result_t kefir_parser_ast_builder_compound_statement(struct kefir_mem *mem,
                                                            struct kefir_parser_ast_builder *builder,
-                                                           struct kefir_ast_node_attributes *attributes) {
+                                                           struct kefir_ast_node_attributes *attributes,
+                                                           const struct kefir_ast_pragma_state *pragmas) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
     struct kefir_ast_compound_statement *stmt = kefir_ast_new_compound_statement(mem);
     REQUIRE(stmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST compound statement"));
+
+    if (pragmas != NULL) {
+        stmt->pragmas = *pragmas;
+    }
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {

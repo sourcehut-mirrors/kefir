@@ -113,9 +113,11 @@ static kefir_result_t match_dec_direction_pragma_param(kefir_ast_pragma_dec_dire
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_pragma(struct kefir_ast_pragma_state *state, kefir_pragma_token_type_t type,
-                                  kefir_pragma_token_parameter_t param,
-                                  const struct kefir_source_location *source_location) {
+kefir_result_t kefir_parser_scan_pragma(struct kefir_ast_pragma_state *state, kefir_pragma_token_type_t type,
+                                        kefir_pragma_token_parameter_t param,
+                                        const struct kefir_source_location *source_location) {
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST pragma state"));
+
     switch (type) {
         case KEFIR_PRAGMA_TOKEN_FP_CONTRACT:
             REQUIRE_OK(match_on_off_pragma_param(&state->fp_contract.value, param, source_location));
@@ -159,8 +161,8 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         }
         if (PARSER_TOKEN_IS_PRAGMA(builder->parser, 0)) {
             const struct kefir_token *token = PARSER_CURSOR_EXT(builder->parser, 0, false);
-            REQUIRE_OK(scan_pragma(&builder->parser->pragmas.file_scope, token->pragma, token->pragma_param,
-                                   &token->source_location));
+            REQUIRE_OK(kefir_parser_scan_pragma(&builder->parser->pragmas.file_scope, token->pragma,
+                                                token->pragma_param, &token->source_location));
             PARSER_SHIFT_EXT(builder->parser, false);
             continue;
         }

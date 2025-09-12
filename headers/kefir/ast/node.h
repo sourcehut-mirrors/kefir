@@ -178,6 +178,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_expression_statement, {
 KEFIR_AST_NODE_STRUCT(kefir_ast_compound_statement, {
     struct kefir_list block_items;
     struct kefir_ast_node_attributes attributes;
+    struct kefir_ast_pragma_state pragmas;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_conditional_statement, {

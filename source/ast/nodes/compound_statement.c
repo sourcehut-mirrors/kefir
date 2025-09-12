@@ -82,6 +82,7 @@ struct kefir_ast_compound_statement *kefir_ast_new_compound_statement(struct kef
     });
 
     res = kefir_ast_node_attributes_init(&stmt->attributes);
+    REQUIRE_CHAIN(&res, kefir_ast_pragma_state_init(&stmt->pragmas));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
         return NULL;

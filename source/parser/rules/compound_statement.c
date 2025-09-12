@@ -29,7 +29,16 @@ static kefir_result_t parse_compound_statement(struct kefir_mem *mem, struct kef
     REQUIRE(PARSER_TOKEN_IS_LEFT_BRACE(parser, 0),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match compound statement"));
     REQUIRE_OK(PARSER_SHIFT(parser));
-    REQUIRE_OK(kefir_parser_ast_builder_compound_statement(mem, builder, attributes));
+
+    struct kefir_ast_pragma_state pragmas;
+    REQUIRE_OK(kefir_ast_pragma_state_init(&pragmas));
+    while (PARSER_TOKEN_IS_PRAGMA(builder->parser, 0)) {
+        const struct kefir_token *token = PARSER_CURSOR_EXT(builder->parser, 0, false);
+        REQUIRE_OK(kefir_parser_scan_pragma(&pragmas, token->pragma, token->pragma_param, &token->source_location));
+        REQUIRE_OK(PARSER_SHIFT_EXT(builder->parser, false));
+    }
+
+    REQUIRE_OK(kefir_parser_ast_builder_compound_statement(mem, builder, attributes, &pragmas));
     REQUIRE_OK(kefir_parser_scope_push_block(mem, parser->scope));
 
     while (!PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0)) {

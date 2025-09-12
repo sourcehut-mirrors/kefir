@@ -111,5 +111,7 @@
 
 kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem, struct kefir_parser *parser,
                                                           struct kefir_ast_declaration *);
+kefir_result_t kefir_parser_scan_pragma(struct kefir_ast_pragma_state *, kefir_pragma_token_type_t,
+                                        kefir_pragma_token_parameter_t, const struct kefir_source_location *);
 
 #endif
