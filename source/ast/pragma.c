@@ -23,12 +23,33 @@
 #include "kefir/core/error.h"
 
 kefir_result_t kefir_ast_pragma_state_init(struct kefir_ast_pragma_state *state) {
-    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to parser pragma state"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST pragma state"));
 
     state->fp_contract.present = false;
     state->fenv_access.present = false;
     state->cx_limited_range.present = false;
     state->fenv_round.present = false;
     state->fenv_dec_round.present = false;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_pragma_state_merge(struct kefir_ast_pragma_state *state,
+                                            const struct kefir_ast_pragma_state *merged_state) {
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination AST pragma state"));
+    REQUIRE(merged_state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source AST pragma state"));
+
+#define MERGE(_id)                                  \
+    if (merged_state->_id.present) {                \
+        state->_id.value = merged_state->_id.value; \
+        state->_id.present = true;                  \
+    }
+
+    MERGE(fp_contract)
+    MERGE(fenv_access)
+    MERGE(fenv_round)
+    MERGE(fenv_dec_round)
+    MERGE(cx_limited_range)
+
+#undef MERGE
     return KEFIR_OK;
 }

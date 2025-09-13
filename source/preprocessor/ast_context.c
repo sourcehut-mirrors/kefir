@@ -174,6 +174,24 @@ static kefir_result_t context_current_flow_control_point(struct kefir_mem *mem, 
     return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Control flow cannot be referenced in a preprocessor AST context");
 }
 
+static kefir_result_t context_update_pragma_state(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                  const struct kefir_ast_pragma_state *pragmas) {
+    UNUSED(mem);
+    UNUSED(context);
+    UNUSED(pragmas);
+
+    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Pragmas are not supported in a preprocessor AST context");
+}
+
+static kefir_result_t context_collect_pragma_state(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                   struct kefir_ast_pragma_state *pragmas) {
+    UNUSED(mem);
+    UNUSED(context);
+    UNUSED(pragmas);
+
+    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Pragmas are not supported in a preprocessor AST context");
+}
+
 kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
                                                    struct kefir_preprocessor_ast_context *context,
                                                    struct kefir_string_pool *symbols,
@@ -201,6 +219,8 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.push_external_ordinary_scope = pp_push_external_ordinary_scope;
     context->context.pop_external_oridnary_scope = pp_pop_external_oridnary_scope;
     context->context.current_flow_control_point = context_current_flow_control_point;
+    context->context.update_pragma_state = context_update_pragma_state;
+    context->context.collect_pragma_state = context_collect_pragma_state;
 
     context->context.symbols = symbols;
     context->context.type_traits = type_traits;

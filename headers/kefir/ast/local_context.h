@@ -40,6 +40,12 @@ typedef struct kefir_ast_local_context {
     struct kefir_ast_identifier_block_scope tag_scope;
     struct kefir_ast_identifier_flat_scope label_scope;
 
+    struct kefir_ast_pragma_state pragmas;
+    struct {
+        kefir_bool_t enable_fenv_access;
+        kefir_bool_t disallow_fp_contract;
+    } pragma_stats;
+
     struct {
         kefir_id_t next_id;
     } temporary_ids;

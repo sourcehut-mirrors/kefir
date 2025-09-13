@@ -34,6 +34,7 @@
 #include "kefir/ast/declarator.h"
 #include "kefir/ast/cache.h"
 #include "kefir/ast/constants.h"
+#include "kefir/ast/pragma.h"
 #include "kefir/util/bigint.h"
 #include <stdio.h>
 
@@ -126,6 +127,10 @@ typedef struct kefir_ast_context {
     kefir_result_t (*pop_external_oridnary_scope)(struct kefir_mem *, const struct kefir_ast_context *);
     kefir_result_t (*current_flow_control_point)(struct kefir_mem *, const struct kefir_ast_context *,
                                                  struct kefir_ast_flow_control_point **);
+    kefir_result_t (*update_pragma_state)(struct kefir_mem *, const struct kefir_ast_context *,
+                                          const struct kefir_ast_pragma_state *);
+    kefir_result_t (*collect_pragma_state)(struct kefir_mem *, const struct kefir_ast_context *,
+                                           struct kefir_ast_pragma_state *);
 
     struct kefir_string_pool *symbols;
     const struct kefir_ast_type_traits *type_traits;

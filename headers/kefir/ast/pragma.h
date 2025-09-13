@@ -79,6 +79,12 @@ typedef struct kefir_ast_pragma_state {
     ((_state)->fp_contract.present || (_state)->fenv_access.present || (_state)->cx_limited_range.present || \
      (_state)->fenv_round.present || (_state)->fenv_dec_round.present)
 
+#define KEFIR_AST_PRAGMA_STATE_FENV_ACCESS_ON(_state) \
+    ((_state)->fenv_access.present && (_state)->fenv_access.value == KEFIR_AST_PRAGMA_VALUE_ON)
+#define KEFIR_AST_PRAGMA_STATE_FP_CONTRACT_OFF(_state) \
+    ((_state)->fp_contract.present && (_state)->fp_contract.value == KEFIR_AST_PRAGMA_VALUE_OFF)
+
 kefir_result_t kefir_ast_pragma_state_init(struct kefir_ast_pragma_state *);
+kefir_result_t kefir_ast_pragma_state_merge(struct kefir_ast_pragma_state *, const struct kefir_ast_pragma_state *);
 
 #endif

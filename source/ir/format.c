@@ -918,6 +918,16 @@ static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, c
         REQUIRE_OK(kefir_json_output_boolean(json, true));
     }
 
+    if (func->flags.enable_fenv_access) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "enable_fenv_access"));
+        REQUIRE_OK(kefir_json_output_boolean(json, true));
+    }
+
+    if (func->flags.disallow_fp_contract) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "disallow_fp_contract"));
+        REQUIRE_OK(kefir_json_output_boolean(json, true));
+    }
+
     REQUIRE_OK(kefir_json_output_object_key(json, "body"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (kefir_size_t i = 0; i < kefir_irblock_length(&func->body); i++) {

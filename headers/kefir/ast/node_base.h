@@ -90,6 +90,11 @@ typedef struct kefir_ast_node_properties {
         kefir_ast_function_specifier_t function;
         const char *identifier;
         const struct kefir_ast_scoped_identifier *scoped_id;
+
+        struct {
+            kefir_bool_t enable_fenv_access;
+            kefir_bool_t disallow_fp_contract;
+        } pragma_stats;
     } function_definition;
 
     struct {

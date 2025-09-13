@@ -47,6 +47,8 @@ typedef struct kefir_ast_global_context {
     struct kefir_ast_identifier_flat_scope ordinary_scope;
     struct kefir_ast_identifier_flat_scope tag_scope;
 
+    struct kefir_ast_pragma_state pragmas;
+
     struct kefir_hashtree owned_objects;
 
     struct {

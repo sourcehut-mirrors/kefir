@@ -36,6 +36,11 @@ kefir_result_t kefir_ast_analyze_compound_statement_node(struct kefir_mem *mem, 
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST compound statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
+    struct kefir_ast_pragma_state current_pragma_state;
+    REQUIRE_OK(context->collect_pragma_state(mem, context, &current_pragma_state));
+    const kefir_bool_t empty_current_pragma_state = !KEFIR_AST_PRAGMA_STATE_IS_PRESENT(&current_pragma_state);
+    REQUIRE_OK(context->update_pragma_state(mem, context, &node->pragmas));
+
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
 
@@ -61,5 +66,9 @@ kefir_result_t kefir_ast_analyze_compound_statement_node(struct kefir_mem *mem, 
     }
     REQUIRE_OK(kefir_ast_flow_control_tree_pop(context->flow_control_tree));
     REQUIRE_OK(context->pop_block(mem, context));
+
+    if (empty_current_pragma_state) {
+        // TODO
+    }
     return KEFIR_OK;
 }

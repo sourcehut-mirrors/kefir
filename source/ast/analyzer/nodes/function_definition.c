@@ -196,6 +196,10 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
 
     kefir_result_t res = KEFIR_OK;
 
+    struct kefir_ast_pragma_state global_pragma_state;
+    REQUIRE_OK(context->update_pragma_state(mem, context, &node->pragmas));
+    REQUIRE_OK(context->collect_pragma_state(mem, context, &global_pragma_state));
+
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_FUNCTION_DEFINITION;
 
@@ -288,6 +292,8 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     local_context->context.surrounding_function_name = base->properties.function_definition.identifier;
     *scoped_id->function.local_context_ptr = local_context;
 
+    REQUIRE_OK(local_context->context.update_pragma_state(mem, &local_context->context, &node->body->pragmas));
+
     REQUIRE_OK(kefir_ast_node_properties_init(&node->body->base.properties));
     node->body->base.properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
 
@@ -347,5 +353,11 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL,
             &scoped_id));
     }
+
+    base->properties.function_definition.pragma_stats.enable_fenv_access =
+        KEFIR_AST_PRAGMA_STATE_FENV_ACCESS_ON(&global_pragma_state) || local_context->pragma_stats.enable_fenv_access;
+    base->properties.function_definition.pragma_stats.disallow_fp_contract =
+        KEFIR_AST_PRAGMA_STATE_FP_CONTRACT_OFF(&global_pragma_state) ||
+        local_context->pragma_stats.disallow_fp_contract;
     return KEFIR_OK;
 }
