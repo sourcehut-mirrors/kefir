@@ -10,8 +10,7 @@ get:
 __kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $288, %rsp
-    stmxcsr -8(%rbp)
+    sub $272, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -20,67 +19,84 @@ __kefir_text_func_get_begin:
     movw $10, (%rdx)
     movl $11, 8(%rdx)
     movq $12, 16(%rdx)
-    mov $13, %rax
-    cvtsi2ss %rax, %xmm0
+    movd _kefir_func_get_label1(%rip), %xmm0
     movd %xmm0, 24(%rdx)
-    mov $14, %rax
-    cvtsi2sd %rax, %xmm0
+    movq _kefir_func_get_label2(%rip), %xmm0
     movq %xmm0, 32(%rdx)
     movl $15, 40(%rdx)
     movq $16, 48(%rdx)
-    mov $17, %rax
-    cvtsi2ss %rax, %xmm0
+    movd _kefir_func_get_label3(%rip), %xmm0
     movd %xmm0, 56(%rdx)
     movl $18, 112(%rdx)
     movq $19, 120(%rdx)
-    mov $20, %rax
-    cvtsi2ss %rax, %xmm0
+    movd _kefir_func_get_label4(%rip), %xmm0
     movd %xmm0, 128(%rdx)
     movl $21, 136(%rdx)
     movq $22, 144(%rdx)
-    mov $23, %rax
-    cvtsi2ss %rax, %xmm0
+    movd _kefir_func_get_label5(%rip), %xmm0
     movd %xmm0, 152(%rdx)
-    leaq -280(%rbp), %rdi
+    leaq -272(%rbp), %rdi
     xor %eax, %eax
     mov $17, %rcx
     rep stosq
-    movw $-1, -280(%rbp)
-    leaq -144(%rbp), %rdi
-    leaq -280(%rbp), %rsi
+    movw $-1, -272(%rbp)
+    leaq -136(%rbp), %rdi
+    leaq -272(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
     leaq 160(%rdx), %rdi
-    leaq -280(%rbp), %rsi
+    leaq -272(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
     leaq 296(%rdx), %rdi
-    leaq -144(%rbp), %rsi
+    leaq -136(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
     movw $24, 432(%rdx)
     movl $25, 440(%rdx)
     movq $26, 448(%rdx)
-    mov $27, %rax
-    cvtsi2ss %rax, %xmm0
+    movd _kefir_func_get_label6(%rip), %xmm0
     movd %xmm0, 456(%rdx)
-    mov $28, %rax
-    cvtsi2sd %rax, %xmm0
+    movq _kefir_func_get_label7(%rip), %xmm0
     movq %xmm0, 464(%rdx)
     movl $29, 544(%rdx)
     movq $30, 552(%rdx)
-    mov $31, %rax
-    cvtsi2ss %rax, %xmm0
+    movd _kefir_func_get_label8(%rip), %xmm0
     movd %xmm0, 560(%rdx)
     mov %rdx, %rax
-    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_get_end:
+.section .rodata
+    .align 4
+_kefir_func_get_label1:
+    .long 1095761920
+    .align 8
+_kefir_func_get_label2:
+    .quad 4624070917402656768
+    .align 4
+_kefir_func_get_label3:
+    .long 1099431936
+    .align 4
+_kefir_func_get_label4:
+    .long 1101004800
+    .align 4
+_kefir_func_get_label5:
+    .long 1102577664
+    .align 4
+_kefir_func_get_label6:
+    .long 1104674816
+    .align 8
+_kefir_func_get_label7:
+    .quad 4628574517030027264
+    .align 4
+_kefir_func_get_label8:
+    .long 1106771968
+.section .text
 
 __kefir_text_section_end:
 

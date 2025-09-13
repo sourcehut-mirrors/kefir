@@ -20,10 +20,7 @@ __kefir_text_func_increment_begin:
     fld %st(0)
     fstpt -32(%rbp)
     fstpt (%rax)
-    mov $1, %rax
-    push %rax
-    fildq (%rsp)
-    add $8, %rsp
+    fldt _kefir_func_increment_label1(%rip)
     fldt -32(%rbp)
     fld %st(0)
     fstpt -32(%rbp)
@@ -33,6 +30,12 @@ __kefir_text_func_increment_begin:
     pop %rbp
     ret
 __kefir_text_func_increment_end:
+.section .rodata
+    .align 8
+_kefir_func_increment_label1:
+    .quad 9223372036854775808
+    .quad 16383
+.section .text
 
 __kefir_text_section_end:
 

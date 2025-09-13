@@ -28,9 +28,6 @@ __kefir_text_func_pnanl_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
     fldt _kefir_func_pnanl_label3(%rip)
-    fldt _kefir_func_pnanl_label4(%rip)
-    fxch %st(1)
-    fdivp
     fstpt -48(%rbp)
     sub $16, %rsp
     fldt -48(%rbp)
@@ -39,7 +36,7 @@ __kefir_text_func_pnanl_begin:
     add $16, %rsp
     test %eax, %eax
     jnz _kefir_func_pnanl_label1
-_kefir_func_pnanl_label5:
+_kefir_func_pnanl_label4:
     movq -48(%rbp), %rax
     movq %rax, -32(%rbp)
     movq -40(%rbp), %rax
@@ -66,12 +63,8 @@ __kefir_text_func_pnanl_end:
 .section .rodata
     .align 8
 _kefir_func_pnanl_label3:
-    .quad 0
-    .quad 0
-    .align 8
-_kefir_func_pnanl_label4:
-    .quad 0
-    .quad 0
+    .quad 13835058055282163712
+    .quad 65535
 .section .text
 
 __kefir_text_section_end:

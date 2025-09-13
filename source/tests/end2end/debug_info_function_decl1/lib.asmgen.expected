@@ -32,17 +32,14 @@ _kefir_func_temp_label2:
     mov $3, %rdx
     xor %eax, %eax
     call test2@PLT
+.loc 0 31 5
 _kefir_func_temp_label3:
-    mov $5, %rax
+    fldt _kefir_func_temp_label4(%rip)
 .loc 0 31 5
-    push %rax
-    fildq (%rsp)
-    add $8, %rsp
+_kefir_func_temp_label5:
+    fldt _kefir_func_temp_label6(%rip)
 .loc 0 31 5
-_kefir_func_temp_label4:
-    fldt _kefir_func_temp_label5(%rip)
-.loc 0 31 5
-_kefir_func_temp_label6:
+_kefir_func_temp_label7:
     fstpt -48(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
@@ -50,7 +47,7 @@ _kefir_func_temp_label6:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 31 5
-_kefir_func_temp_label7:
+_kefir_func_temp_label8:
     sub $32, %rsp
     mov $3, %rdi
     mov $4, %rsi
@@ -61,7 +58,7 @@ _kefir_func_temp_label7:
     call test3@PLT
     add $32, %rsp
 .loc 0 32 5
-_kefir_func_temp_label8:
+_kefir_func_temp_label9:
     mov $1, %rdi
     mov $2, %rsi
     mov $3, %rdx
@@ -70,25 +67,23 @@ _kefir_func_temp_label8:
     xor %eax, %eax
     call test4@PLT
 .loc 0 33 5
-_kefir_func_temp_label9:
+_kefir_func_temp_label10:
     mov $1, %rdi
     mov $2, %rsi
     mov $3, %rdx
     call test5@PLT
-_kefir_func_temp_label10:
-    mov $3, %rax
 .loc 0 34 5
-    cvtsi2sd %rax, %xmm0
 _kefir_func_temp_label11:
-    mov $4, %rax
+    movq _kefir_func_temp_label12(%rip), %xmm0
 .loc 0 34 5
-    cvtsi2ss %rax, %xmm1
-.loc 0 34 5
-_kefir_func_temp_label12:
-    movd _kefir_func_temp_label13(%rip), %xmm2
+_kefir_func_temp_label13:
+    movd _kefir_func_temp_label14(%rip), %xmm1
 .loc 0 34 5
 _kefir_func_temp_label15:
-_kefir_func_temp_label14:
+    movd _kefir_func_temp_label16(%rip), %xmm2
+.loc 0 34 5
+_kefir_func_temp_label18:
+_kefir_func_temp_label17:
     mov $1, %rdi
     mov $2, %rsi
     insertps $16, %xmm2, %xmm1
@@ -98,7 +93,7 @@ _kefir_func_temp_label14:
     mov $8, %r9
     mov $2, %rax
     call test6@PLT
-_kefir_func_temp_label16:
+_kefir_func_temp_label19:
     mov $100, %rdi
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
@@ -108,11 +103,21 @@ _kefir_func_temp_label16:
 __kefir_text_func_temp_end:
 .section .rodata
     .align 8
-_kefir_func_temp_label5:
+_kefir_func_temp_label4:
+    .quad 11529215046068469760
+    .quad 16385
+    .align 8
+_kefir_func_temp_label6:
     .quad 0
     .quad 0
+    .align 8
+_kefir_func_temp_label12:
+    .quad 4613937818241073152
     .align 4
-_kefir_func_temp_label13:
+_kefir_func_temp_label14:
+    .long 1082130432
+    .align 4
+_kefir_func_temp_label16:
     .long 0
 .section .text
 
