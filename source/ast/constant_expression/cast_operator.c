@@ -121,7 +121,7 @@ static kefir_result_t cast_integral_type_from_float(struct kefir_mem *mem, const
 
     if (type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
         value->integer = (bool) source;
-    } else if (signed_integer) {
+    } else if (signed_integer || source < 0.0) {
         switch (type_info.size) {
             case 1:
                 value->integer = (kefir_int8_t) source;
@@ -144,7 +144,11 @@ static kefir_result_t cast_integral_type_from_float(struct kefir_mem *mem, const
         if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(type)) {
             REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
             REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, type->bitprecise.width));
-            REQUIRE_OK(kefir_bigint_signed_from_long_double(value->bitprecise, source));
+            if (signed_integer) {
+                REQUIRE_OK(kefir_bigint_signed_from_long_double(value->bitprecise, source));
+            } else {
+                REQUIRE_OK(kefir_bigint_unsigned_from_long_double(value->bitprecise, source));
+            }
         }
     } else {
         switch (type_info.size) {
