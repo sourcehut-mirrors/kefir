@@ -491,8 +491,17 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
 
             REQUIRE_OK(add_library_paths(mem, linker_config, externals->musl.library_path));
 
-            if (linker_config->flags.link_default_libs && linker_config->flags.link_libc) {
-                LINK_FILE(externals->musl.library_path, "libc.a");
+            if (linker_config->flags.link_default_libs) {
+                if (linker_config->flags.link_libc) {
+                    LINK_FILE(externals->musl.library_path, "libc.a");
+                }
+                
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--push-state"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--as-needed"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc_eh"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--no-as-needed"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--pop-state"));
             }
 
             if (linker_config->flags.link_start_files) {
