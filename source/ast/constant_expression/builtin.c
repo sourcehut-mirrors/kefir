@@ -261,15 +261,15 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
-                    value->integer = isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point);
+                    value->integer = (_Bool) isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point);
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-                    value->integer = isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point);
+                    value->integer = (_Bool) isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point);
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-                    value->integer = isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point);
+                    value->integer = (_Bool) isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point);
                     break;
 
                 default:
