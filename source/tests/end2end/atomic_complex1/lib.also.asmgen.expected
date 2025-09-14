@@ -34,6 +34,12 @@
 .type sub_f32, @function
 .global sub_f64
 .type sub_f64, @function
+.extern __divdc3
+.extern __divsc3
+.extern __divxc3
+.extern __muldc3
+.extern __mulsc3
+.extern __mulxc3
 
 .section .text
 __kefir_text_section_begin:
@@ -94,58 +100,24 @@ __kefir_text_func_div_ld_begin:
     fldt -80(%rbp)
     fldt -64(%rbp)
     fldt -48(%rbp)
-    fld %st(0)
-    fabs
     fldt -32(%rbp)
-    fld %st(0)
-    fabs
-    fcomip %st(2), %st(0)
-    fxch %st(1)
-    fstp %st(0)
-    fldt __kefir_constant_complex_long_double_div(%rip)
-    jb _kefir_func_div_ld_label3
-    fxch %st(1)
-    fdivr %st(0), %st(2)
-    fld %st(2)
-    fmul %st(3), %st(0)
-    fadd %st(2), %st(0)
-    fmulp %st(0), %st(1)
-    fdivrp %st(0), %st(1)
-    fld %st(3)
-    fmul %st(2), %st(0)
-    fadd %st(3), %st(0)
-    fmul %st(1), %st(0)
-    fxch %st(3)
-    fmulp %st(0), %st(2)
-    fxch %st(3)
-    fsubrp %st(0), %st(1)
-    fmulp %st(0), %st(2)
-    fxch %st(1)
-_kefir_func_div_ld_label2:
-    fxch %st(1)
-    jmp _kefir_func_div_ld_label4
-_kefir_func_div_ld_label3:
-    fxch %st(1)
-    fdiv %st(2), %st(0)
-    fld %st(0)
-    fmul %st(1), %st(0)
-    fadd %st(2), %st(0)
-    fmulp %st(0), %st(3)
-    fxch %st(2)
-    fdivrp %st(0), %st(1)
-    fld %st(2)
-    fmul %st(2), %st(0)
-    fadd %st(4), %st(0)
-    fmul %st(1), %st(0)
-    fxch %st(4)
-    fmulp %st(0), %st(2)
-    fxch %st(1)
-    fsubrp %st(0), %st(2)
-    fmulp %st(0), %st(1)
-    jmp _kefir_func_div_ld_label2
-_kefir_func_div_ld_label4:
     fstpt -80(%rbp)
     fstpt -64(%rbp)
+    fstpt -48(%rbp)
+    fstpt -32(%rbp)
+    sub $64, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    fldt -48(%rbp)
+    fstpt 16(%rsp)
+    fldt -64(%rbp)
+    fstpt 32(%rsp)
+    fldt -80(%rbp)
+    fstpt 48(%rsp)
+    call __divxc3@PLT
+    fstpt -80(%rbp)
+    fstpt -64(%rbp)
+    add $64, %rsp
     fldt -64(%rbp)
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -173,22 +145,27 @@ __kefir_text_func_mul_ld_begin:
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
+    fldt -80(%rbp)
     fldt -64(%rbp)
-    fld %st(0)
     fldt -48(%rbp)
     fldt -32(%rbp)
-    fmul %st(0), %st(2)
-    fldt -80(%rbp)
-    fmul %st(2)
-    fsubp %st(3)
-    fxch %st(2)
-    fxch %st(3)
-    fmulp %st(1)
-    fldt -80(%rbp)
-    fmulp %st(2)
-    faddp %st(1)
-    fstpt -64(%rbp)
     fstpt -80(%rbp)
+    fstpt -64(%rbp)
+    fstpt -48(%rbp)
+    fstpt -32(%rbp)
+    sub $64, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    fldt -48(%rbp)
+    fstpt 16(%rsp)
+    fldt -64(%rbp)
+    fstpt 32(%rsp)
+    fldt -80(%rbp)
+    fstpt 48(%rsp)
+    call __mulxc3@PLT
+    fstpt -80(%rbp)
+    fstpt -64(%rbp)
+    add $64, %rsp
     fldt -64(%rbp)
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -355,25 +332,7 @@ __kefir_text_func_div_f32_begin:
     movdqu -32(%rbp), %xmm0
     movd -64(%rbp), %xmm2
     movd -60(%rbp), %xmm3
-    insertps $16, %xmm1, %xmm0
-    insertps $16, %xmm3, %xmm2
-    cvtps2pd %xmm2, %xmm1
-    cvtps2pd %xmm0, %xmm0
-    movaps %xmm1, %xmm2
-    movaps %xmm1, %xmm3
-    unpcklpd %xmm1, %xmm2
-    mulpd %xmm0, %xmm2
-    shufpd $1, %xmm0, %xmm0
-    unpckhpd %xmm1, %xmm3
-    mulpd %xmm1, %xmm1
-    mulpd %xmm3, %xmm0
-    movaps %xmm1, %xmm3
-    xorps __kefir_constant_complex_float32_div(%rip), %xmm0
-    shufpd $1, %xmm1, %xmm3
-    addpd %xmm0, %xmm2
-    addpd %xmm3, %xmm1
-    divpd %xmm1, %xmm2
-    cvtpd2ps %xmm2, %xmm0
+    call __divsc3@PLT
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     insertps $16, %xmm1, %xmm0
@@ -387,66 +346,31 @@ div_f64:
 __kefir_text_func_div_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-    fstcw -8(%rbp)
-    stmxcsr -16(%rbp)
+    sub $64, %rsp
+    stmxcsr -8(%rbp)
     mov %rdi, %rax
     movq f64_1@GOTPCREL(%rip), %rsi
-    movq %rax, -64(%rbp)
-    lea -80(%rbp), %rdx
+    movq %rax, -48(%rbp)
+    lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -64(%rbp), %rax
-    movq -80(%rbp), %xmm0
-    movq -72(%rbp), %xmm1
-    movdqu %xmm1, -48(%rbp)
-    movdqu %xmm0, -32(%rbp)
+    movq -48(%rbp), %rax
+    movq -64(%rbp), %xmm0
+    movq -56(%rbp), %xmm1
+    movdqu %xmm1, -40(%rbp)
+    movdqu %xmm0, -24(%rbp)
     mov %rax, %rsi
-    lea -80(%rbp), %rdx
+    lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -48(%rbp), %xmm1
-    movdqu -32(%rbp), %xmm0
-    movq -80(%rbp), %xmm2
-    movq -72(%rbp), %xmm3
-    movq %xmm0, -80(%rbp)
-    movq %xmm1, -72(%rbp)
-    movq %xmm2, -64(%rbp)
-    movq %xmm3, -56(%rbp)
-    fld1
-    fldl -64(%rbp)
-    fld %st(0)
-    fmul %st(1)
-    fldl -56(%rbp)
-    fld %st(0)
-    fmul %st(1)
-    faddp %st(2)
-    fxch %st(1)
-    fdivrp %st(3)
-    fldl -80(%rbp)
-    fld %st(0)
-    fmul %st(3)
-    fxch %st(1)
-    fmul %st(2)
-    fldl -72(%rbp)
-    fld %st(0)
-    fmulp %st(4)
-    fxch %st(3)
-    faddp %st(2)
-    fxch %st(1)
-    fmul %st(4)
-    fstpl -80(%rbp)
-    fxch %st(2)
-    fmulp %st(1)
-    fsubp
-    fmulp
-    fstpl -72(%rbp)
-    movq -80(%rbp), %xmm0
-    movq -72(%rbp), %xmm1
-    ldmxcsr -16(%rbp)
-    fldcw -8(%rbp)
+    movdqu -40(%rbp), %xmm1
+    movdqu -24(%rbp), %xmm0
+    movq -64(%rbp), %xmm2
+    movq -56(%rbp), %xmm3
+    call __divdc3@PLT
+    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -479,17 +403,7 @@ __kefir_text_func_mul_f32_begin:
     movdqu -32(%rbp), %xmm0
     movd -64(%rbp), %xmm2
     movd -60(%rbp), %xmm3
-    insertps $16, %xmm1, %xmm0
-    movaps %xmm2, %xmm1
-    insertps $16, %xmm3, %xmm1
-    movaps %xmm1, %xmm2
-    shufps $160, %xmm1, %xmm2
-    mulps %xmm0, %xmm2
-    xorps __kefir_constant_complex_float32_mul(%rip), %xmm0
-    shufps $177, %xmm0, %xmm0
-    shufps $245, %xmm1, %xmm1
-    mulps %xmm1, %xmm0
-    addps %xmm2, %xmm0
+    call __mulsc3@PLT
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     insertps $16, %xmm1, %xmm0
@@ -526,18 +440,7 @@ __kefir_text_func_mul_f64_begin:
     movdqu -24(%rbp), %xmm0
     movq -64(%rbp), %xmm2
     movq -56(%rbp), %xmm3
-    unpcklpd %xmm1, %xmm0
-    movaps %xmm0, %xmm1
-    xorps __kefir_constant_complex_float64_mul(%rip), %xmm1
-    shufpd $1, %xmm1, %xmm1
-    unpcklpd %xmm2, %xmm2
-    unpcklpd %xmm3, %xmm3
-    mulpd %xmm0, %xmm2
-    mulpd %xmm1, %xmm3
-    addpd %xmm2, %xmm3
-    movaps %xmm3, %xmm1
-    movaps %xmm3, %xmm0
-    unpckhpd %xmm3, %xmm1
+    call __muldc3@PLT
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -663,30 +566,6 @@ __kefir_text_func_sub_f64_end:
 __kefir_text_section_end:
 
 .section .rodata
-    .align 16
-__kefir_constant_complex_float32_mul:
-    .long 0
-    .long 2147483648
-    .long 0
-    .long 2147483648
-    .align 16
-__kefir_constant_complex_float32_div:
-    .long 0
-    .long 0
-    .long 0
-    .long 2147483648
-    .align 16
-__kefir_constant_complex_float64_mul:
-    .long 0
-    .long 0
-    .long 0
-    .long 2147483648
-    .align 16
-__kefir_constant_complex_long_double_div:
-    .long 0
-    .long 2147483648
-    .long 16383
-    .long 0
     .align 16
 __kefir_constant_complex_float32_neg:
     .long 2147483648

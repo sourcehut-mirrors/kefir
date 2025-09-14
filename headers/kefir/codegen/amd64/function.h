@@ -303,12 +303,12 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(complex_float32_add_sub, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_SUB) _separator \
     _def(complex_float64_add_sub, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_SUB) _separator \
     _def(complex_long_double_add_sub, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_SUB) _separator \
-    _def(complex_float32_mul, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_MUL) _separator \
-    _def(complex_float32_div, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_DIV) _separator \
-    _def(complex_float64_mul, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_MUL) _separator \
-    _def(complex_float64_div, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_DIV) _separator \
-    _def(complex_long_double_mul, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_MUL) _separator \
-    _def(complex_long_double_div, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_MUL) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_DIV) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_MUL) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_DIV) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_MUL) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV) _separator \
     _def(complex_float32_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_NEG) _separator \
     _def(complex_float64_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_NEG) _separator \
     _def(complex_long_double_neg, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG) _separator \
@@ -583,6 +583,13 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define LIBATOMIC_STORE "__atomic_store"
 #define LIBATOMIC_CMPXCHG_N(_n) "__atomic_compare_exchange_" #_n
 #define LIBATOMIC_CMPXCHG "__atomic_compare_exchange"
+
+#define SOFTFLOAT_MULSC3 "__mulsc3"
+#define SOFTFLOAT_MULDC3 "__muldc3"
+#define SOFTFLOAT_MULXC3 "__mulxc3"
+#define SOFTFLOAT_DIVSC3 "__divsc3"
+#define SOFTFLOAT_DIVDC3 "__divdc3"
+#define SOFTFLOAT_DIVXC3 "__divxc3"
 
 #define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||                                           \
