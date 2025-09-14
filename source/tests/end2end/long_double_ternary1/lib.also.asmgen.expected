@@ -14,19 +14,24 @@ __kefir_text_func_test1_begin:
     fstcw -8(%rbp)
     mov %rdi, %rax
     cdq
-    mov $2, %rcx
-    idiv %ecx
+    mov $2, %rdi
+    idiv %edi
     fldt _kefir_func_test1_label1(%rip)
     fldt _kefir_func_test1_label2(%rip)
-    leaq -48(%rbp), %rcx
-    mov %rcx, %rax
-    leaq -32(%rbp), %rdi
-    mov %rdi, %rcx
-    cmp $0, %edx
-    cmovne %rcx, %rax
-    fstpt -32(%rbp)
     fstpt -48(%rbp)
-    fldt (%rax)
+    fstpt -32(%rbp)
+    cmp $0, %edx
+    je _kefir_func_test1_label3
+    movq -48(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -24(%rbp)
+_kefir_func_test1_label3:
+    movq -32(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -40(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
