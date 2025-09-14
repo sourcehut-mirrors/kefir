@@ -1162,6 +1162,95 @@ static kefir_result_t translate_flt_rounds(struct kefir_mem *mem, struct kefir_c
     return KEFIR_OK;
 }
 
+static kefir_result_t translate_isnanf32(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                           const struct kefir_opt_instruction *instruction,
+                                           const struct kefir_opt_call_node *call_node,
+                                           kefir_asmcmp_virtual_register_index_t *result_vreg_ptr) {
+    UNUSED(instruction);
+    kefir_asmcmp_virtual_register_index_t result_vreg, arg_vreg;
+
+    REQUIRE(call_node->argument_count == 1,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected one argument for __kefir_builtin_isnanf32"));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &arg_vreg));
+
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
+    REQUIRE_OK(kefir_asmcmp_amd64_xor(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG32(result_vreg),
+        &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG(arg_vreg),
+        &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_setp(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+
+    *result_vreg_ptr = result_vreg;
+    return KEFIR_OK;
+}
+
+static kefir_result_t translate_isnanf64(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                           const struct kefir_opt_instruction *instruction,
+                                           const struct kefir_opt_call_node *call_node,
+                                           kefir_asmcmp_virtual_register_index_t *result_vreg_ptr) {
+    UNUSED(instruction);
+    kefir_asmcmp_virtual_register_index_t result_vreg, arg_vreg;
+
+    REQUIRE(call_node->argument_count == 1,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected one argument for __kefir_builtin_isnanf64"));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &arg_vreg));
+
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
+    REQUIRE_OK(kefir_asmcmp_amd64_xor(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG32(result_vreg),
+        &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_ucomisd(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG(arg_vreg),
+        &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_setp(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+
+    *result_vreg_ptr = result_vreg;
+    return KEFIR_OK;
+}
+
+static kefir_result_t translate_isnanl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                           const struct kefir_opt_instruction *instruction,
+                                           const struct kefir_opt_call_node *call_node,
+                                           kefir_asmcmp_virtual_register_index_t *result_vreg_ptr) {
+    UNUSED(instruction);
+    kefir_asmcmp_virtual_register_index_t result_vreg;
+
+    REQUIRE(call_node->argument_count == 1,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected one argument for __kefir_builtin_isnanl"));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[0]));
+    REQUIRE_OK(kefir_asmcmp_amd64_xor(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG32(result_vreg),
+        &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_fucomi(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                         &KEFIR_ASMCMP_MAKE_X87(0), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_setp(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+
+    *result_vreg_ptr = result_vreg;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *mem,
                                                      struct kefir_codegen_amd64_function *function,
                                                      const struct kefir_opt_instruction *instruction,
@@ -1315,6 +1404,15 @@ kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *mem,
     } else if (strcmp(ir_func_decl->name, "__kefir_builtin_flt_rounds") == 0) {
         ASSIGN_PTR(found_builtin, true);
         REQUIRE_OK(translate_flt_rounds(mem, function, instruction, call_node, result_vreg_ptr));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_isnanf32") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_isnanf32(mem, function, instruction, call_node, result_vreg_ptr));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_isnanf64") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_isnanf64(mem, function, instruction, call_node, result_vreg_ptr));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_isnanl") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_isnanl(mem, function, instruction, call_node, result_vreg_ptr));
     } else {
         ASSIGN_PTR(found_builtin, false);
     }

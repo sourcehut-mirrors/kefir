@@ -516,6 +516,24 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE:
             base->properties.type = kefir_ast_type_void();
             break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_ISNAN: {
+            REQUIRE(kefir_list_length(&node->arguments) >= 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "ffsg/ctzg/clzg builtin invocation should have at least one parameter"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+            REQUIRE(arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                           "Expected an expression of integer type"));
+            const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
+            REQUIRE(KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(arg1_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                           "Expected an expression of integer type"));
+            base->properties.type = kefir_ast_type_signed_int();
+        } break;
     }
     return KEFIR_OK;
 }
