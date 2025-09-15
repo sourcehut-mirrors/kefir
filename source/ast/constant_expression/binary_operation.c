@@ -24,15 +24,11 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 #include "kefir/ast/type_conv.h"
-#include <complex.h>
+#include "kefir/util/softfloat.h"
 
 #define ANY_OF(x, y, _klass) \
     (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF((x), (_klass)) || KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF((y), (_klass)))
 #define CONST_EXPR_ANY_OF(x, y, _klass) ((x)->klass == (_klass) || (y)->klass == (_klass))
-
-// Soft-float library calls -- temporary solution
-_Complex long double __mulxc3(long double, long double, long double, long double);
-_Complex long double __divxc3(long double, long double, long double, long double);
 
 static kefir_result_t evaluate_pointer_offset(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                               const struct kefir_ast_node_base *node,
@@ -366,9 +362,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected both binary constant expression parts to have "
                                                              "complex floating-point type after cast"));
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
-                _Complex long double result = __mulxc3(lhs_value.complex_floating_point.real, lhs_value.complex_floating_point.imaginary, rhs_value.complex_floating_point.real, rhs_value.complex_floating_point.imaginary);
-                value->complex_floating_point.real = creall(result);
-                value->complex_floating_point.imaginary = cimagl(result);
+                struct kefir_softfloat_complex_long_double result = kefir_softfloat_complex_long_double_mul(
+                    (struct kefir_softfloat_complex_long_double) {lhs_value.complex_floating_point.real, lhs_value.complex_floating_point.imaginary},
+                    (struct kefir_softfloat_complex_long_double) {rhs_value.complex_floating_point.real, rhs_value.complex_floating_point.imaginary});
+                value->complex_floating_point.real = result.real;
+                value->complex_floating_point.imaginary = result.imaginary;
             } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 REQUIRE(lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT &&
                             rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT,
@@ -421,9 +419,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected both binary constant expression parts to have "
                                                              "complex floating-point type after cast"));
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
-                _Complex long double result = __divxc3(lhs_value.complex_floating_point.real, lhs_value.complex_floating_point.imaginary, rhs_value.complex_floating_point.real, rhs_value.complex_floating_point.imaginary);
-                value->complex_floating_point.real = creall(result);
-                value->complex_floating_point.imaginary = cimagl(result);
+                struct kefir_softfloat_complex_long_double result = kefir_softfloat_complex_long_double_div(
+                    (struct kefir_softfloat_complex_long_double) {lhs_value.complex_floating_point.real, lhs_value.complex_floating_point.imaginary},
+                    (struct kefir_softfloat_complex_long_double) {rhs_value.complex_floating_point.real, rhs_value.complex_floating_point.imaginary});
+                value->complex_floating_point.real = result.real;
+                value->complex_floating_point.imaginary = result.imaginary;
             } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 REQUIRE(lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT &&
                             rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT,
