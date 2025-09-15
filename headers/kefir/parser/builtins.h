@@ -57,6 +57,7 @@
 #define KEFIR_PARSER_BUILTIN_KEFIR_BITFIELD_WIDTH "__kefir_builtin_bitfield_width"
 #define KEFIR_PARSER_BUILTIN_KEFIR_UNREACHABLE "__kefir_builtin_unreachable"
 #define KEFIR_PARSER_BUILTIN_KEFIR_ISNAN "__kefir_builtin_isnan"
+#define KEFIR_PARSER_BUILTIN_KEFIR_ISINF "__kefir_builtin_isinf"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 

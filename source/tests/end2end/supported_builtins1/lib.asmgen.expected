@@ -112,6 +112,7 @@ __builtin_prefetch
 __builtin_va_start
 __builtin_constant_p
 __builtin_flt_rounds
+__builtin_isinf_sign
 __builtin_popcountll
 __sync_lock_test_and_set
 __builtin_usubll_overflow

@@ -1352,7 +1352,6 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             }
         } break;
 
-
         case KEFIR_AST_BUILTIN_KEFIR_ISNAN: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
@@ -1389,6 +1388,33 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
                     DEF_BUILTIN("__kefir_builtin_isnanl", KEFIR_IR_TYPE_LONG_DOUBLE);      
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
+                    break;
+                default:
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location, "Expected floating-point type argument");
+            }
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_ISINF: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+
+            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+
+            const struct kefir_ir_function_decl *ir_decl;
+            switch (unqualified_type->tag) {
+                case KEFIR_AST_TYPE_SCALAR_FLOAT:
+                    DEF_BUILTIN("__kefir_builtin_isinff32", KEFIR_IR_TYPE_FLOAT32);      
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
+                    break;
+
+                case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+                    DEF_BUILTIN("__kefir_builtin_isinff64", KEFIR_IR_TYPE_FLOAT64);      
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
+                    break;
+
+                case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                    DEF_BUILTIN("__kefir_builtin_isinfl", KEFIR_IR_TYPE_LONG_DOUBLE);      
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
 #undef DEF_BUILTIN

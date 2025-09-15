@@ -719,6 +719,7 @@ extern int __kefir_builtin_flt_rounds(void);
 #define __builtin_flt_rounds() __kefir_builtin_flt_rounds()
 
 #define __builtin_isnan(...) __kefir_builtin_isnan(__VA_ARGS__)
+#define __builtin_isinf_sign(...) __kefir_builtin_isinf(__VA_ARGS__)
 
 #define __builtin_assoc_barrier(...) (__VA_ARGS__)
 

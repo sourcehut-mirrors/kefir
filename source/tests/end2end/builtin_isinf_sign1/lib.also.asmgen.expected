@@ -1,0 +1,115 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global f32
+.type f32, @object
+.global f64
+.type f64, @object
+.global f80
+.type f80, @object
+.global is_inf_f32
+.type is_inf_f32, @function
+.global is_inf_f64
+.type is_inf_f64, @function
+.global is_inf_f80
+.type is_inf_f80, @function
+
+.section .text
+__kefir_text_section_begin:
+is_inf_f32:
+__kefir_text_func_is_inf_f32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_is_inf_f32_label0:
+    movd %xmm0, -12(%rbp)
+    movl -12(%rbp), %eax
+    mov %rax, %rcx
+    mov %rcx, %rdx
+    and $2147483647, %edx
+    sar $31, %ecx
+    or $1, %ecx
+    xor %eax, %eax
+    cmp $2139095040, %edx
+    cmove %ecx, %eax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_is_inf_f32_end:
+
+is_inf_f64:
+__kefir_text_func_is_inf_f64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_is_inf_f64_label0:
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movabs $9223372036854775807, %rcx
+    and %rax, %rcx
+    sar $63, %rax
+    or $1, %rax
+    xor %edx, %edx
+    movabs $9218868437227405312, %rsi
+    cmp %rsi, %rcx
+    cmove %eax, %edx
+    mov %rdx, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_is_inf_f64_end:
+
+is_inf_f80:
+__kefir_text_func_is_inf_f80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+_kefir_func_is_inf_f80_label0:
+    fldt 16(%rbp)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fstpt -48(%rbp)
+    movsxw -40(%rbp), %rcx
+    mov %rcx, %rdx
+    not %edx
+    movabs $9223372036854775808, %rsi
+    xorq -48(%rbp), %rsi
+    and $32767, %edx
+    shr $15, %rcx
+    or $1, %ecx
+    xor %eax, %eax
+    or %rsi, %rdx
+    cmove %ecx, %eax
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_is_inf_f80_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+f32:
+    .long 1
+    .long 4294967295
+    .long 0
+
+    .align 4
+f64:
+    .long 1
+    .long 4294967295
+    .long 0
+
+    .align 4
+f80:
+    .long 1
+    .long 4294967295
+    .long 0
+
