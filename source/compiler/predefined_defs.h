@@ -586,6 +586,22 @@ extern int __kefir_builtin_parityll(long);
 
 extern int __kefir_builtin_flt_rounds(void);
 
+extern _Bool __kefir_builtin_isgreaterf(float, float);
+extern _Bool __kefir_builtin_isgreater(double, double);
+extern _Bool __kefir_builtin_isgreaterl(long double, long double);
+
+extern _Bool __kefir_builtin_isgreaterequalf(float, float);
+extern _Bool __kefir_builtin_isgreaterequal(double, double);
+extern _Bool __kefir_builtin_isgreaterequall(long double, long double);
+
+extern _Bool __kefir_builtin_islessf(float, float);
+extern _Bool __kefir_builtin_isless(double, double);
+extern _Bool __kefir_builtin_islessl(long double, long double);
+
+extern _Bool __kefir_builtin_islessequalf(float, float);
+extern _Bool __kefir_builtin_islessequal(double, double);
+extern _Bool __kefir_builtin_islessequall(long double, long double);
+
 // Builtins
 #define __builtin_va_start(_vlist, _arg) __builtin_c23_va_start((_vlist), (_arg))
 #define __builtin_expect(_exp, _c) ((_c), (_exp))
@@ -720,6 +736,70 @@ extern int __kefir_builtin_flt_rounds(void);
 
 #define __builtin_isnan(...) __kefir_builtin_isnan(__VA_ARGS__)
 #define __builtin_isinf_sign(...) __kefir_builtin_isinf(__VA_ARGS__)
+
+#define __kefir_builtin_isgreater_nonconst(_x, _y)                                                   \
+    ({                                                                                               \
+        typedef __typeof_unqual__((_x) + (_y)) __common_type_t;                                      \
+        _Generic(__common_type_t,                                                                    \
+            float: __kefir_builtin_isgreaterf((__common_type_t) (_x), (__common_type_t) (_y)),       \
+            double: __kefir_builtin_isgreater((__common_type_t) (_x), (__common_type_t) (_y)),       \
+            long double: __kefir_builtin_isgreaterl((__common_type_t) (_x), (__common_type_t) (_y)), \
+            default: ({                                                                              \
+                     _Static_assert("__builtin_isgreater expects floating-point type arguments");    \
+                     0;                                                                              \
+                 }));                                                                                \
+    })
+#define __builtin_isgreater(_x, _y)                                                          \
+    (__builtin_choose_expr(__kefir_builtin_constant((_x)) && __kefir_builtin_constant((_y)), \
+                           ((__constexpr _Bool) {(_x) > (_y)}), __kefir_builtin_isgreater_nonconst((_x), (_y))))
+
+#define __kefir_builtin_isgreaterequal_nonconst(_x, _y)                                                   \
+    ({                                                                                                    \
+        typedef __typeof_unqual__((_x) + (_y)) __common_type_t;                                           \
+        _Generic(__common_type_t,                                                                         \
+            float: __kefir_builtin_isgreaterequalf((__common_type_t) (_x), (__common_type_t) (_y)),       \
+            double: __kefir_builtin_isgreaterequal((__common_type_t) (_x), (__common_type_t) (_y)),       \
+            long double: __kefir_builtin_isgreaterequall((__common_type_t) (_x), (__common_type_t) (_y)), \
+            default: ({                                                                                   \
+                     _Static_assert("__builtin_isgreaterequal expects floating-point type arguments");    \
+                     0;                                                                                   \
+                 }));                                                                                     \
+    })
+#define __builtin_isgreaterequal(_x, _y)                                                     \
+    (__builtin_choose_expr(__kefir_builtin_constant((_x)) && __kefir_builtin_constant((_y)), \
+                           ((__constexpr _Bool) {(_x) >= (_y)}), __kefir_builtin_isgreaterequal_nonconst((_x), (_y))))
+
+#define __kefir_builtin_isless_nonconst(_x, _y)                                                   \
+    ({                                                                                            \
+        typedef __typeof_unqual__((_x) + (_y)) __common_type_t;                                   \
+        _Generic(__common_type_t,                                                                 \
+            float: __kefir_builtin_islessf((__common_type_t) (_x), (__common_type_t) (_y)),       \
+            double: __kefir_builtin_isless((__common_type_t) (_x), (__common_type_t) (_y)),       \
+            long double: __kefir_builtin_islessl((__common_type_t) (_x), (__common_type_t) (_y)), \
+            default: ({                                                                           \
+                     _Static_assert("__builtin_isless expects floating-point type arguments");    \
+                     0;                                                                           \
+                 }));                                                                             \
+    })
+#define __builtin_isless(_x, _y)                                                             \
+    (__builtin_choose_expr(__kefir_builtin_constant((_x)) && __kefir_builtin_constant((_y)), \
+                           ((__constexpr _Bool) {(_x) < (_y)}), __kefir_builtin_isless_nonconst((_x), (_y))))
+
+#define __kefir_builtin_islessequal_nonconst(_x, _y)                                                   \
+    ({                                                                                                 \
+        typedef __typeof_unqual__((_x) + (_y)) __common_type_t;                                        \
+        _Generic(__common_type_t,                                                                      \
+            float: __kefir_builtin_islessequalf((__common_type_t) (_x), (__common_type_t) (_y)),       \
+            double: __kefir_builtin_islessequal((__common_type_t) (_x), (__common_type_t) (_y)),       \
+            long double: __kefir_builtin_islessequall((__common_type_t) (_x), (__common_type_t) (_y)), \
+            default: ({                                                                                \
+                     _Static_assert("__builtin_islessequal expects floating-point type arguments");    \
+                     0;                                                                                \
+                 }));                                                                                  \
+    })
+#define __builtin_islessequal(_x, _y)                                                        \
+    (__builtin_choose_expr(__kefir_builtin_constant((_x)) && __kefir_builtin_constant((_y)), \
+                           ((__constexpr _Bool) {(_x) <= (_y)}), __kefir_builtin_islessequal_nonconst((_x), (_y))))
 
 #define __builtin_assoc_barrier(...) (__VA_ARGS__)
 

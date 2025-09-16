@@ -11,6 +11,7 @@ __builtin_alloca
 __builtin_clrsbg
 __builtin_clrsbl
 __builtin_expect
+__builtin_isless
 __builtin_parity
 __builtin_va_arg
 __builtin_va_end
@@ -60,6 +61,7 @@ __builtin_assume_aligned
 __builtin_stdc_has_single_bit
 __builtin_huge_valf
 __builtin_huge_vall
+__builtin_isgreater
 __builtin_popcountg
 __builtin_popcountl
 __builtin_saddl_overflow
@@ -95,6 +97,7 @@ __builtin_sub_overflow
 __sync_fetch_and_or
 __sync_lock_release
 __builtin_choose_expr
+__builtin_islessequal
 __builtin_unreachable
 __sync_or_and_fetch
 __builtin_frame_address
@@ -139,6 +142,7 @@ __atomic_test_and_set
 __atomic_thread_fence
 __builtin_stdc_first_trailing_zero
 __builtin_smull_overflow
+__builtin_isgreaterequal
 __builtin_stdc_first_trailing_one
 __sync_bool_compare_and_swap
 __builtin_stdc_trailing_zeros

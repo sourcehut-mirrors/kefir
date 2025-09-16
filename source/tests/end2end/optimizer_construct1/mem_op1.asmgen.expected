@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 28,
+            "id": 40,
             "name": "getY",
             "code": {
                 "entry_point": 0,
@@ -20,7 +20,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 56,
+                                "type_id": 80,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
@@ -145,7 +145,7 @@
             }
         },
         {
-            "id": 29,
+            "id": 41,
             "name": "getZ",
             "code": {
                 "entry_point": 0,
@@ -164,7 +164,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 56,
+                                "type_id": 80,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
@@ -289,7 +289,7 @@
             }
         },
         {
-            "id": 30,
+            "id": 42,
             "name": "test_zero",
             "code": {
                 "entry_point": 0,
@@ -308,7 +308,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 68,
+                                "type_id": 92,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
@@ -327,7 +327,7 @@
                             {
                                 "id": 2,
                                 "opcode": "alloc_local",
-                                "type_id": 68,
+                                "type_id": 92,
                                 "type_index": 1,
                                 "control_next": null,
                                 "ir_instruction": 2
@@ -338,7 +338,7 @@
                                 "target": 2,
                                 "source": null,
                                 "type": {
-                                    "id": 70,
+                                    "id": 94,
                                     "index": 0
                                 },
                                 "control_next": 10,
@@ -451,7 +451,7 @@
                                 "target": 17,
                                 "source": 2,
                                 "type": {
-                                    "id": 70,
+                                    "id": 94,
                                     "index": 0
                                 },
                                 "control_next": 1,

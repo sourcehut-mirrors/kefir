@@ -43,6 +43,13 @@
             "alias": null
         },
         {
+            "symbol": "__kefir_builtin_isgreaterequal",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "__kefir_function_test5_static___func___4",
             "type": "global_data",
             "scope": "local",
@@ -85,6 +92,20 @@
             "alias": null
         },
         {
+            "symbol": "__kefir_builtin_isgreaterf",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_isgreaterl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "__kefir_builtin_popcountll",
             "type": "function",
             "scope": "import",
@@ -92,7 +113,35 @@
             "alias": null
         },
         {
+            "symbol": "__kefir_builtin_isgreater",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "__kefir_builtin_popcountl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_isgreaterequalf",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_isgreaterequall",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_islessequal",
             "type": "function",
             "scope": "import",
             "visibility": "default",
@@ -176,6 +225,20 @@
             "alias": null
         },
         {
+            "symbol": "__kefir_builtin_islessf",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_islessl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "__kefir_builtin_parityl",
             "type": "function",
             "scope": "import",
@@ -184,6 +247,13 @@
         },
         {
             "symbol": "__kefir_builtin_clrsbl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_isless",
             "type": "function",
             "scope": "import",
             "visibility": "default",
@@ -244,15 +314,29 @@
             "scope": "import",
             "visibility": "default",
             "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_islessequalf",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_islessequall",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
     "types": [
         {
-            "identifier": 60,
+            "identifier": 84,
             "type": []
         },
         {
-            "identifier": 63,
+            "identifier": 87,
             "type": [
                 {
                     "type": "array",
@@ -264,7 +348,7 @@
             ]
         },
         {
-            "identifier": 67,
+            "identifier": 91,
             "type": [
                 {
                     "type": "array",
@@ -280,7 +364,7 @@
         {
             "identifier": "__kefir_function_test2_static___func___1",
             "storage": "global",
-            "type": 67,
+            "type": 91,
             "value": [
                 {
                     "class": "string",
@@ -296,7 +380,7 @@
         {
             "identifier": "__kefir_function_test5_static___func___4",
             "storage": "global",
-            "type": 67,
+            "type": 91,
             "value": [
                 {
                     "class": "string",
@@ -312,7 +396,7 @@
         {
             "identifier": "__kefir_function_test4_static___func___3",
             "storage": "global",
-            "type": 67,
+            "type": 91,
             "value": [
                 {
                     "class": "string",
@@ -328,7 +412,7 @@
         {
             "identifier": "__kefir_function_test3_static___func___2",
             "storage": "global",
-            "type": 67,
+            "type": 91,
             "value": [
                 {
                     "class": "string",
@@ -344,7 +428,7 @@
         {
             "identifier": "__kefir_function_test_static___func___0",
             "storage": "global",
-            "type": 63,
+            "type": 87,
             "value": [
                 {
                     "class": "string",
@@ -443,7 +527,7 @@
         },
         {
             "identifier": 5,
-            "name": "__kefir_builtin_clrsb",
+            "name": "__kefir_builtin_isgreaterequal",
             "parameters": 10,
             "vararg": false,
             "returns": 11,
@@ -452,7 +536,7 @@
         },
         {
             "identifier": 6,
-            "name": "__kefir_builtin_clzll",
+            "name": "__kefir_builtin_clrsb",
             "parameters": 12,
             "vararg": false,
             "returns": 13,
@@ -461,7 +545,7 @@
         },
         {
             "identifier": 7,
-            "name": "__kefir_builtin_ctzll",
+            "name": "__kefir_builtin_clzll",
             "parameters": 14,
             "vararg": false,
             "returns": 15,
@@ -470,7 +554,7 @@
         },
         {
             "identifier": 8,
-            "name": "__kefir_builtin_ffsll",
+            "name": "__kefir_builtin_ctzll",
             "parameters": 16,
             "vararg": false,
             "returns": 17,
@@ -479,7 +563,7 @@
         },
         {
             "identifier": 9,
-            "name": "__kefir_builtin_flt_rounds",
+            "name": "__kefir_builtin_ffsll",
             "parameters": 18,
             "vararg": false,
             "returns": 19,
@@ -488,7 +572,7 @@
         },
         {
             "identifier": 10,
-            "name": "__kefir_builtin_popcountll",
+            "name": "__kefir_builtin_flt_rounds",
             "parameters": 20,
             "vararg": false,
             "returns": 21,
@@ -497,7 +581,7 @@
         },
         {
             "identifier": 11,
-            "name": "__kefir_builtin_popcountl",
+            "name": "__kefir_builtin_isgreaterf",
             "parameters": 22,
             "vararg": false,
             "returns": 23,
@@ -506,7 +590,7 @@
         },
         {
             "identifier": 12,
-            "name": "__kefir_builtin_return_address",
+            "name": "__kefir_builtin_isgreaterl",
             "parameters": 24,
             "vararg": false,
             "returns": 25,
@@ -515,7 +599,7 @@
         },
         {
             "identifier": 13,
-            "name": "__kefir_builtin_clz",
+            "name": "__kefir_builtin_popcountll",
             "parameters": 26,
             "vararg": false,
             "returns": 27,
@@ -524,7 +608,7 @@
         },
         {
             "identifier": 14,
-            "name": "__kefir_builtin_ctz",
+            "name": "__kefir_builtin_isgreater",
             "parameters": 28,
             "vararg": false,
             "returns": 29,
@@ -533,7 +617,7 @@
         },
         {
             "identifier": 15,
-            "name": "__kefir_builtin_ffs",
+            "name": "__kefir_builtin_popcountl",
             "parameters": 30,
             "vararg": false,
             "returns": 31,
@@ -542,7 +626,7 @@
         },
         {
             "identifier": 16,
-            "name": "__kefir_builtin_parityll",
+            "name": "__kefir_builtin_isgreaterequalf",
             "parameters": 32,
             "vararg": false,
             "returns": 33,
@@ -551,7 +635,7 @@
         },
         {
             "identifier": 17,
-            "name": "__kefir_builtin_popcount",
+            "name": "__kefir_builtin_isgreaterequall",
             "parameters": 34,
             "vararg": false,
             "returns": 35,
@@ -560,7 +644,7 @@
         },
         {
             "identifier": 18,
-            "name": "__kefir_builtin_bswap16",
+            "name": "__kefir_builtin_islessequal",
             "parameters": 36,
             "vararg": false,
             "returns": 37,
@@ -569,7 +653,7 @@
         },
         {
             "identifier": 19,
-            "name": "__kefir_builtin_bswap32",
+            "name": "__kefir_builtin_return_address",
             "parameters": 38,
             "vararg": false,
             "returns": 39,
@@ -578,7 +662,7 @@
         },
         {
             "identifier": 20,
-            "name": "__kefir_builtin_bswap64",
+            "name": "__kefir_builtin_clz",
             "parameters": 40,
             "vararg": false,
             "returns": 41,
@@ -587,7 +671,7 @@
         },
         {
             "identifier": 21,
-            "name": "__kefir_builtin_clrsbll",
+            "name": "__kefir_builtin_ctz",
             "parameters": 42,
             "vararg": false,
             "returns": 43,
@@ -596,7 +680,7 @@
         },
         {
             "identifier": 22,
-            "name": "__kefir_builtin_parityl",
+            "name": "__kefir_builtin_ffs",
             "parameters": 44,
             "vararg": false,
             "returns": 45,
@@ -605,7 +689,7 @@
         },
         {
             "identifier": 23,
-            "name": "__kefir_builtin_clrsbl",
+            "name": "__kefir_builtin_parityll",
             "parameters": 46,
             "vararg": false,
             "returns": 47,
@@ -614,7 +698,7 @@
         },
         {
             "identifier": 24,
-            "name": "__kefir_builtin_parity",
+            "name": "__kefir_builtin_popcount",
             "parameters": 48,
             "vararg": false,
             "returns": 49,
@@ -623,7 +707,7 @@
         },
         {
             "identifier": 25,
-            "name": "__kefir_builtin_frame_address",
+            "name": "__kefir_builtin_bswap16",
             "parameters": 50,
             "vararg": false,
             "returns": 51,
@@ -632,7 +716,7 @@
         },
         {
             "identifier": 26,
-            "name": "__kefir_builtin_clzl",
+            "name": "__kefir_builtin_bswap32",
             "parameters": 52,
             "vararg": false,
             "returns": 53,
@@ -641,7 +725,7 @@
         },
         {
             "identifier": 27,
-            "name": "__kefir_builtin_ctzl",
+            "name": "__kefir_builtin_bswap64",
             "parameters": 54,
             "vararg": false,
             "returns": 55,
@@ -650,7 +734,7 @@
         },
         {
             "identifier": 28,
-            "name": "__kefir_builtin_ffsl",
+            "name": "__kefir_builtin_clrsbll",
             "parameters": 56,
             "vararg": false,
             "returns": 57,
@@ -659,7 +743,7 @@
         },
         {
             "identifier": 29,
-            "name": "__kefir_builtin_trap",
+            "name": "__kefir_builtin_islessf",
             "parameters": 58,
             "vararg": false,
             "returns": 59,
@@ -668,77 +752,185 @@
         },
         {
             "identifier": 30,
-            "name": "test",
+            "name": "__kefir_builtin_islessl",
             "parameters": 60,
             "vararg": false,
-            "returns": 60,
+            "returns": 61,
             "returns_twice": false,
-            "no_return": true
+            "no_return": false
         },
         {
             "identifier": 31,
-            "name": "test2",
-            "parameters": 60,
+            "name": "__kefir_builtin_parityl",
+            "parameters": 62,
             "vararg": false,
-            "returns": 60,
+            "returns": 63,
             "returns_twice": false,
-            "no_return": true
+            "no_return": false
         },
         {
             "identifier": 32,
-            "name": "test3",
-            "parameters": 60,
+            "name": "__kefir_builtin_clrsbl",
+            "parameters": 64,
             "vararg": false,
-            "returns": 60,
+            "returns": 65,
             "returns_twice": false,
-            "no_return": true
+            "no_return": false
         },
         {
             "identifier": 33,
-            "name": "test4",
-            "parameters": 60,
+            "name": "__kefir_builtin_isless",
+            "parameters": 66,
             "vararg": false,
-            "returns": 60,
+            "returns": 67,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 34,
+            "name": "__kefir_builtin_parity",
+            "parameters": 68,
+            "vararg": false,
+            "returns": 69,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 35,
+            "name": "__kefir_builtin_frame_address",
+            "parameters": 70,
+            "vararg": false,
+            "returns": 71,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 36,
+            "name": "__kefir_builtin_clzl",
+            "parameters": 72,
+            "vararg": false,
+            "returns": 73,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 37,
+            "name": "__kefir_builtin_ctzl",
+            "parameters": 74,
+            "vararg": false,
+            "returns": 75,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 38,
+            "name": "__kefir_builtin_ffsl",
+            "parameters": 76,
+            "vararg": false,
+            "returns": 77,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 39,
+            "name": "__kefir_builtin_trap",
+            "parameters": 78,
+            "vararg": false,
+            "returns": 79,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 40,
+            "name": "__kefir_builtin_islessequalf",
+            "parameters": 80,
+            "vararg": false,
+            "returns": 81,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 41,
+            "name": "__kefir_builtin_islessequall",
+            "parameters": 82,
+            "vararg": false,
+            "returns": 83,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 42,
+            "name": "test",
+            "parameters": 84,
+            "vararg": false,
+            "returns": 84,
             "returns_twice": false,
             "no_return": true
         },
         {
-            "identifier": 34,
-            "name": "test5",
-            "parameters": 60,
+            "identifier": 43,
+            "name": "test2",
+            "parameters": 84,
             "vararg": false,
-            "returns": 60,
+            "returns": 84,
+            "returns_twice": false,
+            "no_return": true
+        },
+        {
+            "identifier": 44,
+            "name": "test3",
+            "parameters": 84,
+            "vararg": false,
+            "returns": 84,
+            "returns_twice": false,
+            "no_return": true
+        },
+        {
+            "identifier": 45,
+            "name": "test4",
+            "parameters": 84,
+            "vararg": false,
+            "returns": 84,
+            "returns_twice": false,
+            "no_return": true
+        },
+        {
+            "identifier": 46,
+            "name": "test5",
+            "parameters": 84,
+            "vararg": false,
+            "returns": 84,
             "returns_twice": false,
             "no_return": true
         }
     ],
     "functions": [
         {
-            "identifier": 30,
+            "identifier": 42,
             "name": "test",
             "body": [],
             "public_labels": []
         },
         {
-            "identifier": 31,
+            "identifier": 43,
             "name": "test2",
             "body": [],
             "public_labels": []
         },
         {
-            "identifier": 32,
+            "identifier": 44,
             "name": "test3",
             "body": [],
             "public_labels": []
         },
         {
-            "identifier": 33,
+            "identifier": 45,
             "name": "test4",
             "body": [],
             "public_labels": []
         },
         {
-            "identifier": 34,
+            "identifier": 46,
             "name": "test5",
             "body": [],
             "public_labels": []

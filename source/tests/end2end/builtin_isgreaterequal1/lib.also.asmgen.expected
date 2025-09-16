@@ -1,0 +1,123 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global f32
+.type f32, @object
+.global f64
+.type f64, @object
+.global f80
+.type f80, @object
+.global is_greaterequal_f32
+.type is_greaterequal_f32, @function
+.global is_greaterequal_f64
+.type is_greaterequal_f64, @function
+.global is_greaterequal_f80
+.type is_greaterequal_f80, @function
+
+.section .text
+__kefir_text_section_begin:
+is_greaterequal_f32:
+__kefir_text_func_is_greaterequal_f32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_is_greaterequal_f32_label0:
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movl -16(%rbp), %ecx
+    movl -12(%rbp), %edx
+    xor %eax, %eax
+    movd %ecx, %xmm0
+    movd %edx, %xmm1
+    ucomiss %xmm1, %xmm0
+    setnb %al
+    and $255, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_is_greaterequal_f32_end:
+
+is_greaterequal_f64:
+__kefir_text_func_is_greaterequal_f64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_is_greaterequal_f64_label0:
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -24(%rbp), %rcx
+    movq -16(%rbp), %rdx
+    xor %eax, %eax
+    movq %rcx, %xmm0
+    movq %rdx, %xmm1
+    ucomisd %xmm1, %xmm0
+    setnb %al
+    and $255, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_is_greaterequal_f64_end:
+
+is_greaterequal_f80:
+__kefir_text_func_is_greaterequal_f80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+    fstcw -8(%rbp)
+_kefir_func_is_greaterequal_f80_label0:
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    movq $0, -24(%rbp)
+    fxch %st(1)
+    fstpt -32(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    fldt -48(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    xor %eax, %eax
+    fucomi %st(1)
+    setnb %al
+    and $255, %rax
+    fstpt -64(%rbp)
+    fstpt -64(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_is_greaterequal_f80_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+f32:
+    .long 1
+    .long 0
+    .long 1
+    .long 0
+    .long 1
+    .long 1
+
+    .align 16
+f64:
+    .long 1
+    .long 0
+    .long 1
+    .long 0
+    .long 1
+    .long 1
+
+    .align 16
+f80:
+    .long 1
+    .long 0
+    .long 1
+    .long 0
+    .long 1
+    .long 1
+
