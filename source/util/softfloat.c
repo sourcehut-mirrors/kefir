@@ -28,16 +28,16 @@
 // https://open-std.org/JTC1/SC22/WG14/www/docs/n3220.pdf (see page 542).
 
 static kefir_long_double_t own_fmaximum_numl(kefir_long_double_t x, kefir_long_double_t y) {
-    if (isgreater (x, y)) {
+    if (isgreater(x, y)) {
         return x;
-    } else if (isless (x, y)) {
+    } else if (isless(x, y)) {
         return y;
     } else if (x == y) {
-        return copysign(1, x) >= copysign(1, y)
+        return copysignl(1, x) >= copysignl(1, y)
             ? x
             : y;
-    } else if (isnan (y)) {
-        return isnan (x)
+    } else if (isnan(y)) {
+        return isnan(x)
             ? x + y
             : x;
     } else {
