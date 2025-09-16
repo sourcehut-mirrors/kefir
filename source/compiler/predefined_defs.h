@@ -801,6 +801,10 @@ extern _Bool __kefir_builtin_islessequall(long double, long double);
     (__builtin_choose_expr(__kefir_builtin_constant((_x)) && __kefir_builtin_constant((_y)), \
                            ((__constexpr _Bool) {(_x) <= (_y)}), __kefir_builtin_islessequal_nonconst((_x), (_y))))
 
+#define __builtin_copysignf(_x, _y) __kefir_builtin_copysignf((_x), (_y))
+#define __builtin_copysign(_x, _y) __kefir_builtin_copysign((_x), (_y))
+#define __builtin_copysignl(_x, _y) __kefir_builtin_copysignl((_x), (_y))
+
 #define __builtin_assoc_barrier(...) (__VA_ARGS__)
 
 #define __builtin_LINE() __LINE__

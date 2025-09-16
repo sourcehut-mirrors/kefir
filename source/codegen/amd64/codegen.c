@@ -502,6 +502,47 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
             kefir_asm_amd64_xasmgen_operand_immu(&codegen_module->codegen->xasmgen_helpers.operands[0], 0x80000000)));
     }
+
+    if (codegen_module->constants.copysign_float32) {
+        DECLARE_RODATA;
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
+        REQUIRE_OK(
+            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_CONSTANT_COPYSIGNF));
+
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen_module->codegen->xasmgen_helpers.operands[0], 2147483648ull)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen_module->codegen->xasmgen_helpers.operands[0], 0)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen_module->codegen->xasmgen_helpers.operands[0], 0)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen_module->codegen->xasmgen_helpers.operands[0], 0)));
+    }
+
+
+    if (codegen_module->constants.copysign_float64) {
+        DECLARE_RODATA;
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
+        REQUIRE_OK(
+            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_CONSTANT_COPYSIGN));
+
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen_module->codegen->xasmgen_helpers.operands[0], 0)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen_module->codegen->xasmgen_helpers.operands[0], 2147483648ull)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen_module->codegen->xasmgen_helpers.operands[0], 0)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen_module->codegen->xasmgen_helpers.operands[0], 0)));
+    }
     return KEFIR_OK;
 }
 

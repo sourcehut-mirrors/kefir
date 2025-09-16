@@ -1423,6 +1423,52 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location, "Expected floating-point type argument");
             }
         } break;
+
+#define DEF_COPYSIGN(_id, _ast_type, _ir_type) \
+        do { \
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value); \
+            kefir_list_next(&iter); \
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value); \
+ \
+            const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type); \
+            const struct kefir_ast_type *arg2_type = kefir_ast_unqualified_type(arg2_node->properties.type); \
+ \
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg1_node, builder, context)); \
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits, arg1_type, (_ast_type))); \
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg2_node, builder, context)); \
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits, arg2_type, (_ast_type))); \
+ \
+            const struct kefir_ir_function_decl *ir_decl; \
+            kefir_id_t parameters_type_id, returns_type_id; \
+            struct kefir_ir_type *parameters_type = \
+                kefir_ir_module_new_type(mem, context->module, 2, &parameters_type_id); \
+            REQUIRE(parameters_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type")); \
+            struct kefir_ir_type *returns_type = kefir_ir_module_new_type(mem, context->module, 1, &returns_type_id); \
+            REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type")); \
+ \
+            REQUIRE_OK(kefir_ir_type_append(parameters_type, (_ir_type), 0, 0)); \
+            REQUIRE_OK(kefir_ir_type_append(parameters_type, (_ir_type), 0, 0)); \
+            REQUIRE_OK(kefir_ir_type_append(returns_type, (_ir_type), 0, 0)); \
+            ir_decl = kefir_ir_module_new_function_declaration(mem, context->module, (_id), \
+                                                                parameters_type_id, false, returns_type_id); \
+            REQUIRE(ir_decl != NULL, \
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration")); \
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id)); \
+        } while (0)
+
+        case KEFIR_AST_BUILTIN_KEFIR_COPYSIGNF:
+            DEF_COPYSIGN("__kefir_builtin_copysignf", kefir_ast_type_float(), KEFIR_IR_TYPE_FLOAT32);
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_COPYSIGN:
+            DEF_COPYSIGN("__kefir_builtin_copysign", kefir_ast_type_double(), KEFIR_IR_TYPE_FLOAT64);
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_COPYSIGNL:
+            DEF_COPYSIGN("__kefir_builtin_copysignl", kefir_ast_type_long_double(), KEFIR_IR_TYPE_LONG_DOUBLE);
+            break;
+
+#undef DEF_COPYSIGN
     }
     return KEFIR_OK;
 }

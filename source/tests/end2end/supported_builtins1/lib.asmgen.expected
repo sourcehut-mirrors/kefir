@@ -59,6 +59,8 @@ __builtin_stdc_count_ones
 __builtin_stdc_first_leading_one
 __builtin_assume_aligned
 __builtin_stdc_has_single_bit
+__builtin_copysignf
+__builtin_copysignl
 __builtin_huge_valf
 __builtin_huge_vall
 __builtin_isgreater
@@ -107,6 +109,7 @@ __atomic_nand_fetch
 __builtin_add_overflow_p
 __builtin_ssubll_overflow
 __builtin_FUNCTION
+__builtin_copysign
 __builtin_huge_val
 __builtin_offsetof
 __builtin_parityll

@@ -50,5 +50,7 @@
 #define KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_DIV "__kefir_constant_complex_float32_div"
 #define KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_MUL "__kefir_constant_complex_float64_mul"
 #define KEFIR_AMD64_CONSTANT_COMPLEX_LONG_DOUBLE_DIV "__kefir_constant_complex_long_double_div"
+#define KEFIR_AMD64_CONSTANT_COPYSIGNF "__kefir_constant_copysignf"
+#define KEFIR_AMD64_CONSTANT_COPYSIGN "__kefir_constant_copysign"
 
 #endif

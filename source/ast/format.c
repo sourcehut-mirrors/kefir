@@ -493,6 +493,18 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_KEFIR_ISINF:
             REQUIRE_OK(kefir_json_output_string(json, "kefir_isinf"));
             break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_COPYSIGNF:
+            REQUIRE_OK(kefir_json_output_string(json, "kefir_copysignf"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_COPYSIGN:
+            REQUIRE_OK(kefir_json_output_string(json, "kefir_copysign"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_COPYSIGNL:
+            REQUIRE_OK(kefir_json_output_string(json, "kefir_copysignl"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

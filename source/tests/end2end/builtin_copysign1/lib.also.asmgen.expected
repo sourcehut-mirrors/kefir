@@ -1,0 +1,144 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global f32
+.type f32, @object
+.global f64
+.type f64, @object
+.global f80
+.type f80, @object
+.global my_copysign
+.type my_copysign, @function
+.global my_copysignf
+.type my_copysignf, @function
+.global my_copysignl
+.type my_copysignl, @function
+
+.section .text
+__kefir_text_section_begin:
+my_copysign:
+__kefir_text_func_my_copysign_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_my_copysign_label0:
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -24(%rbp), %rax
+    movq -16(%rbp), %rcx
+    movdqu __kefir_constant_copysign(%rip), %xmm0
+    movaps %xmm0, %xmm1
+    movq %rcx, %xmm2
+    andpd %xmm2, %xmm0
+    movq %rax, %xmm2
+    andnpd %xmm2, %xmm1
+    orpd %xmm0, %xmm1
+    movaps %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_my_copysign_end:
+
+my_copysignf:
+__kefir_text_func_my_copysignf_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_my_copysignf_label0:
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
+    movdqu __kefir_constant_copysignf(%rip), %xmm0
+    movaps %xmm0, %xmm1
+    movd %ecx, %xmm2
+    andps %xmm2, %xmm0
+    movd %eax, %xmm2
+    andnps %xmm2, %xmm1
+    orps %xmm0, %xmm1
+    movaps %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_my_copysignf_end:
+
+my_copysignl:
+__kefir_text_func_my_copysignl_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+_kefir_func_my_copysignl_label0:
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    movq $0, -24(%rbp)
+    fxch %st(1)
+    fstpt -32(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    fldt -48(%rbp)
+    fldt -32(%rbp)
+    fxam
+    fnstsw %ax
+    fxch %st(1)
+    fabs
+    fld %st(0)
+    test $512, %ax
+    fchs
+    fcmove %st(1), %st(0)
+    fstp %st(1)
+    fxch %st(1)
+    fstp %st(0)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_my_copysignl_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+f32:
+    .long 1078523331
+    .long 3226006979
+    .long 1078523331
+    .long 3226006979
+    .long 0
+    .long 2147483648
+
+    .align 16
+f64:
+    .quad 4614253070214989087
+    .quad 13837625107069764895
+    .quad 4614253070214989087
+    .quad 13837625107069764895
+    .quad 0
+    .quad 9223372036854775808
+
+    .align 16
+f80:
+    .quad 14480694097861998019, 16384
+    .quad 14480694097861998019, 49152
+    .quad 14480694097861998019, 16384
+    .quad 14480694097861998019, 49152
+    .quad 0, 0
+    .quad 0, 32768
+
+.section .rodata
+    .align 16
+__kefir_constant_copysignf:
+    .long 2147483648
+    .long 0
+    .long 0
+    .long 0
+    .align 16
+__kefir_constant_copysign:
+    .long 0
+    .long 2147483648
+    .long 0
+    .long 0
