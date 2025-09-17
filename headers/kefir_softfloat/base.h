@@ -38,8 +38,24 @@
 #error "__KEFIR_SOFTFLOAT_BOOL_TYPE_T__ is missing"
 #endif
 
+#ifndef __KEFIR_SOFTFLOAT_FLOAT_T__
+#error "__KEFIR_SOFTFLOAT_FLOAT_T__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_DOUBLE_T__
+#error "__KEFIR_SOFTFLOAT_DOUBLE_T__ is missing"
+#endif
+
 #ifndef __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__
 #error "__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_COMPLEX_FLOAT_T__
+#error "__KEFIR_SOFTFLOAT_COMPLEX_FLOAT_T__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_T__
+#error "__KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_T__ is missing"
 #endif
 
 #ifndef __KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_T__
@@ -54,12 +70,28 @@
 #error "__KEFIR_SOFTFLOAT_ISINF_SIGN__ is missing"
 #endif
 
+#ifndef __KEFIR_SOFTFLOAT_COPYSIGNF__
+#error "__KEFIR_SOFTFLOAT_COPYSIGNF__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_COPYSIGN__
+#error "__KEFIR_SOFTFLOAT_COPYSIGN__ is missing"
+#endif
+
 #ifndef __KEFIR_SOFTFLOAT_COPYSIGNL__
 #error "__KEFIR_SOFTFLOAT_COPYSIGNL__ is missing"
 #endif
 
 #ifndef __KEFIR_SOFTFLOAT_INFINITY__
 #error "__KEFIR_SOFTFLOAT_INFINITY__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__
+#error "__KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_MAKE_COMPLEX_DOUBLE__
+#error "__KEFIR_SOFTFLOAT_MAKE_COMPLEX_DOUBLE__ is missing"
 #endif
 
 #ifndef __KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__

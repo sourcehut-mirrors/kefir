@@ -506,6 +506,14 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
             REQUIRE_OK(kefir_json_output_string(json, "kefir_copysignl"));
             break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_FLOAT:
+            REQUIRE_OK(kefir_json_output_string(json, "kefir_complex_float"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE:
+            REQUIRE_OK(kefir_json_output_string(json, "kefir_complex_double"));
+            break;
+
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(kefir_json_output_string(json, "kefir_complex_long_double"));
             break;

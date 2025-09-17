@@ -268,7 +268,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
 
                 default:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
-                                           "Expected floating-point constant expression");
+                                                  "Expected floating-point constant expression");
             }
         } break;
 
@@ -281,29 +281,24 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                                            "Expected floating-point constant expression"));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            const kefir_ast_constant_expression_float_t fp_value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point;
+            const kefir_ast_constant_expression_float_t fp_value =
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point;
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
                     if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) == NULL) {
-                        value->integer = isinf(fp_value)
-                            ? (isgreater(fp_value, 0.0)
-                                ? 1
-                                : -1)
-                            : 0;
+                        value->integer = isinf(fp_value) ? (isgreater(fp_value, 0.0) ? 1 : -1) : 0;
                     } else {
                         value->integer = isinf((kefir_float64_t) fp_value)
-                            ? (isgreater((kefir_float64_t) fp_value, 0.0)
-                                ? 1
-                                : -1)
-                            : 0;
+                                             ? (isgreater((kefir_float64_t) fp_value, 0.0) ? 1 : -1)
+                                             : 0;
                     }
                     break;
 
                 default:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
-                                           "Expected floating-point constant expression");
+                                                  "Expected floating-point constant expression");
             }
         } break;
 
@@ -321,11 +316,13 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg2_node->source_location,
                                            "Expected floating-point constant expression"));
 
-
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = copysignl(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg2_node)->floating_point);
+            value->floating_point = copysignl(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point,
+                                              KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg2_node)->floating_point);
         } break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_FLOAT:
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE:
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
             kefir_list_next(&iter);
@@ -338,10 +335,10 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg2_node->source_location,
                                            "Expected floating-point constant expression"));
 
-
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND;
             value->complex_floating_point.real = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point;
-            value->complex_floating_point.imaginary = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg2_node)->floating_point;
+            value->complex_floating_point.imaginary =
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg2_node)->floating_point;
         } break;
 
         case KEFIR_AST_BUILTIN_FFSG: {

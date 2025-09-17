@@ -626,6 +626,8 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             base->properties.type = kefir_ast_type_long_double();
         } break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_FLOAT:
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE:
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE: {
             REQUIRE(kefir_list_length(&node->arguments) == 2,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
@@ -653,7 +655,13 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg2_node->source_location,
                                            "Expected an expression of floating point type"));
 
-            base->properties.type = kefir_ast_type_complex_long_double();
+            if (node->builtin == KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_FLOAT) {
+                base->properties.type = kefir_ast_type_complex_float();
+            } else if (node->builtin == KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE) {
+                base->properties.type = kefir_ast_type_complex_double();
+            } else {
+                base->properties.type = kefir_ast_type_complex_long_double();
+            }
         } break;
     }
     return KEFIR_OK;

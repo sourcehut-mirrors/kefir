@@ -22,17 +22,46 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-#define MAKE_COMPLEX_LONG_DOUBLE(_x, _y) (struct kefir_softfloat_complex_long_double){(_x), (_y)}
+typedef struct kefir_softfloat_complex_float {
+    kefir_float32_t real;
+    kefir_float32_t imaginary;
+} kefir_softfloat_complex_float_t;
+
+typedef struct kefir_softfloat_complex_double {
+    kefir_float64_t real;
+    kefir_float64_t imaginary;
+} kefir_softfloat_complex_double_t;
+
+#define MAKE_COMPLEX_FLOAT(_x, _y)           \
+    (struct kefir_softfloat_complex_float) { \
+        (_x), (_y)                           \
+    }
+#define MAKE_COMPLEX_DOUBLE(_x, _y)           \
+    (struct kefir_softfloat_complex_double) { \
+        (_x), (_y)                            \
+    }
+#define MAKE_COMPLEX_LONG_DOUBLE(_x, _y)           \
+    (struct kefir_softfloat_complex_long_double) { \
+        (_x), (_y)                                 \
+    }
 
 #include <math.h>
 #define __KEFIR_SOFTFLOAT_USE_SOFTFLOAT_IMPL__
 #define __KEFIR_SOFTFLOAT_BOOL_TYPE_T__ kefir_bool_t
+#define __KEFIR_SOFTFLOAT_FLOAT_T__ kefir_float32_t
+#define __KEFIR_SOFTFLOAT_DOUBLE_T__ kefir_float64_t
 #define __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ kefir_long_double_t
+#define __KEFIR_SOFTFLOAT_COMPLEX_FLOAT_T__ struct kefir_softfloat_complex_float
+#define __KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_T__ struct kefir_softfloat_complex_double
 #define __KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_T__ struct kefir_softfloat_complex_long_double
 #define __KEFIR_SOFTFLOAT_ISNAN__ isnan
 #define __KEFIR_SOFTFLOAT_ISINF_SIGN__ isinf
+#define __KEFIR_SOFTFLOAT_COPYSIGNF__ copysignf
+#define __KEFIR_SOFTFLOAT_COPYSIGN__ copysign
 #define __KEFIR_SOFTFLOAT_COPYSIGNL__ copysignl
 #define __KEFIR_SOFTFLOAT_INFINITY__ INFINITY
+#define __KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__ MAKE_COMPLEX_FLOAT
+#define __KEFIR_SOFTFLOAT_MAKE_COMPLEX_DOUBLE__ MAKE_COMPLEX_DOUBLE
 #define __KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__ MAKE_COMPLEX_LONG_DOUBLE
 #include "kefir_softfloat/softfloat.h"
 
@@ -46,23 +75,23 @@ static kefir_long_double_t own_fmaximum_numl(kefir_long_double_t x, kefir_long_d
     } else if (isless(x, y)) {
         return y;
     } else if (x == y) {
-        return copysignl(1, x) >= copysignl(1, y)
-            ? x
-            : y;
+        return copysignl(1, x) >= copysignl(1, y) ? x : y;
     } else if (isnan(y)) {
-        return isnan(x)
-            ? x + y
-            : x;
+        return isnan(x) ? x + y : x;
     } else {
         return y;
     }
 }
 
-struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_mul(struct kefir_softfloat_complex_long_double lhs, struct kefir_softfloat_complex_long_double rhs) {
+struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_mul(
+    struct kefir_softfloat_complex_long_double lhs, struct kefir_softfloat_complex_long_double rhs) {
+    UNUSED(__kefir_softfloat_complex_float_mul);   // Dummy UNUSED -- to avoid compiler complaints
+    UNUSED(__kefir_softfloat_complex_double_mul);  // Dummy UNUSED -- to avoid compiler complaints
     return __kefir_softfloat_complex_long_double_mul(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }
 
-struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_div(struct kefir_softfloat_complex_long_double lhs, struct kefir_softfloat_complex_long_double rhs) {
+struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_div(
+    struct kefir_softfloat_complex_long_double lhs, struct kefir_softfloat_complex_long_double rhs) {
     kefir_long_double_t a = lhs.real, b = lhs.imaginary;
     kefir_long_double_t c = rhs.real, d = rhs.imaginary;
 
@@ -77,9 +106,9 @@ struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_d
     const kefir_long_double_t denom = c * c + d * d;
 #define EVAL_X() (a * c + b * d)
 #define EVAL_Y() (b * c - a * d)
-#define COPYSIGN_IF_INF(_var) \
-    do { \
-        *(_var) = copysignl(isinf(*(_var)) ? 1.0: 0.0, *(_var)); \
+#define COPYSIGN_IF_INF(_var)                                     \
+    do {                                                          \
+        *(_var) = copysignl(isinf(*(_var)) ? 1.0 : 0.0, *(_var)); \
     } while (0)
     kefir_long_double_t x = scalbnl(EVAL_X() / denom, -ilogbw);
     kefir_long_double_t y = scalbnl(EVAL_Y() / denom, -ilogbw);
@@ -102,7 +131,5 @@ struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_d
 #undef EVAL_X
 #undef EVAL_Y
     }
-    return (struct kefir_softfloat_complex_long_double) {
-        x, y
-    };
+    return (struct kefir_softfloat_complex_long_double) {x, y};
 }

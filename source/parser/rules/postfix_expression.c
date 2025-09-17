@@ -171,6 +171,8 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
         case KEFIR_AST_BUILTIN_KEFIR_COPYSIGNF:
         case KEFIR_AST_BUILTIN_KEFIR_COPYSIGN:
         case KEFIR_AST_BUILTIN_KEFIR_COPYSIGNL:
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_FLOAT:
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE:
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE:
             while (!PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
                 res =
