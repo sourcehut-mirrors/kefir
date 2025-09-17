@@ -61,6 +61,7 @@
 #define KEFIR_PARSER_BUILTIN_KEFIR_COPYSIGNF "__kefir_builtin_copysignf"
 #define KEFIR_PARSER_BUILTIN_KEFIR_COPYSIGN "__kefir_builtin_copysign"
 #define KEFIR_PARSER_BUILTIN_KEFIR_COPYSIGNL "__kefir_builtin_copysignl"
+#define KEFIR_PARSER_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE "__kefir_builtin_construct_complex_long_double"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 

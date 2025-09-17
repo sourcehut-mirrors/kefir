@@ -31,7 +31,7 @@ $(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.h: $(wildcard $(BIN_HEADERS_INCD
 		-D__KEFIR_SOFTFLOAT_ISINF_SIGN__=__builtin_isinf_sign \
 		-D__KEFIR_SOFTFLOAT_COPYSIGNL__=__builtin_copysignl \
 		-D__KEFIR_SOFTFLOAT_INFINITY__="__builtin_inff()" \
-		-D__KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__="__kefir_builtin_complex_long_double" \
+		-D__KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__="__kefir_builtin_construct_complex_long_double" \
 		"$(BIN_HEADERS_INCDIR)/kefir_softfloat/softfloat.h" > "$@.tmp"
 	@mv "$@.tmp" "$@"
 $(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.binary.h: $(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.h

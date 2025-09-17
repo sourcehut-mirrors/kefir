@@ -340,7 +340,8 @@ typedef enum kefir_ast_builtin_operator {
     KEFIR_AST_BUILTIN_KEFIR_ISINF,
     KEFIR_AST_BUILTIN_KEFIR_COPYSIGNF,
     KEFIR_AST_BUILTIN_KEFIR_COPYSIGN,
-    KEFIR_AST_BUILTIN_KEFIR_COPYSIGNL
+    KEFIR_AST_BUILTIN_KEFIR_COPYSIGNL,
+    KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE
 } kefir_ast_builtin_operator_t;
 
 typedef enum kefir_ast_declarator_visibility_attr {

@@ -1469,6 +1469,21 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             break;
 
 #undef DEF_COPYSIGN
+
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
+
+            const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
+            const struct kefir_ast_type *arg2_type = kefir_ast_unqualified_type(arg2_node->properties.type);
+
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg1_node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits, arg1_type, kefir_ast_type_complex_long_double()));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg2_node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits, arg2_type, kefir_ast_type_complex_long_double()));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
+        } break;
     }
     return KEFIR_OK;
 }

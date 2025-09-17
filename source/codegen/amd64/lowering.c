@@ -444,7 +444,7 @@ DECL_BUILTIN_RUNTIME_FN(muldc3, SOFTFLOAT_MULDC3, 4, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_COMPLEX_FLOAT64, 0, 0));
 })
-DECL_BUILTIN_RUNTIME_FN(mulxc3, SOFTFLOAT_MULXC3, 4, 1, {
+DECL_BIGINT_RUNTIME_FN(mulxc3, KEFIR_SOFTFLOAT_MULXC3, 4, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));

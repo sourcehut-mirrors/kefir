@@ -1876,6 +1876,9 @@ static kefir_result_t translate_copysignl(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, tmp_vreg,
+                                                                  KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
 
     REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[1]));

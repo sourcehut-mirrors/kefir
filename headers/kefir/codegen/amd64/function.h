@@ -586,10 +586,11 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 
 #define SOFTFLOAT_MULSC3 "__mulsc3"
 #define SOFTFLOAT_MULDC3 "__muldc3"
-#define SOFTFLOAT_MULXC3 "__mulxc3"
 #define SOFTFLOAT_DIVSC3 "__divsc3"
 #define SOFTFLOAT_DIVDC3 "__divdc3"
 #define SOFTFLOAT_DIVXC3 "__divxc3"
+
+#define KEFIR_SOFTFLOAT_MULXC3 "__kefir_softfloat_complex_long_double_mul"
 
 #define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||                                           \

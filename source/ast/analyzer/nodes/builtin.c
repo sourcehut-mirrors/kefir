@@ -625,6 +625,36 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
 
             base->properties.type = kefir_ast_type_long_double();
         } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE: {
+            REQUIRE(kefir_list_length(&node->arguments) == 2,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "complex long double builtin invocations should have two parameters"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+            REQUIRE(arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                           "Expected an expression of floating point type"));
+            const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
+            REQUIRE(KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(arg1_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                           "Expected an expression of floating point type"));
+
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg2_node));
+            REQUIRE(arg2_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg2_node->source_location,
+                                           "Expected an expression of floating point type"));
+            const struct kefir_ast_type *arg2_type = kefir_ast_unqualified_type(arg2_node->properties.type);
+            REQUIRE(KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(arg2_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg2_node->source_location,
+                                           "Expected an expression of floating point type"));
+
+            base->properties.type = kefir_ast_type_complex_long_double();
+        } break;
     }
     return KEFIR_OK;
 }
