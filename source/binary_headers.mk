@@ -17,7 +17,25 @@ $(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.h: $(wildcard $(BIN_HEADERS_INCDIR)
 		"$(BIN_HEADERS_INCDIR)/kefir_bigint/bigint.h" > "$@.tmp"
 	@mv "$@.tmp" "$@"
 $(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.binary.h: $(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.h
-$(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.binary.h: BINARY_HEADER_CONTENT=$(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.h --zero
+$(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.binary.h: BINARY_HEADER_CONTENT=$(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.h
+
+$(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.h: $(wildcard $(BIN_HEADERS_INCDIR)/kefir_softfloat/*.h)
+	@echo "Generating $@"
+	@mkdir -p "$(shell dirname $@)"
+	@$(BIN_HEADERS_CC) -E -I "$(BIN_HEADERS_INCDIR)" \
+		-D__KEFIR_SOFTFLOAT_USE_SOFTFLOAT_IMPL__  \
+		-D__KEFIR_SOFTFLOAT_BOOL_TYPE_T__=_Bool \
+		-D__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__="long double" \
+		-D__KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_T__="_Complex long double" \
+		-D__KEFIR_SOFTFLOAT_ISNAN__=__builtin_isnan \
+		-D__KEFIR_SOFTFLOAT_ISINF_SIGN__=__builtin_isinf_sign \
+		-D__KEFIR_SOFTFLOAT_COPYSIGNL__=__builtin_copysignl \
+		-D__KEFIR_SOFTFLOAT_INFINITY__="__builtin_inff()" \
+		-D__KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__="__kefir_builtin_complex_long_double" \
+		"$(BIN_HEADERS_INCDIR)/kefir_softfloat/softfloat.h" > "$@.tmp"
+	@mv "$@.tmp" "$@"
+$(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.binary.h: $(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.h
+$(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.binary.h: BINARY_HEADER_CONTENT=$(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.h
 
 $(BIN_HEADERS_DESTDIR)/compiler/compiler.deps: $(BIN_HEADERS_DESTDIR)/compiler/predefined_defs.binary.h
 	@mkdir -p $(shell dirname "$@")
@@ -35,6 +53,7 @@ $(BIN_HEADERS_DESTDIR)/web/main.deps: $(BIN_HEADERS_DESTDIR)/driver/help.binary.
 	@mkdir -p $(shell dirname "$@")
 	@echo '-I$(shell dirname "$@")/../driver -DKEFIR_DRIVER_HELP_INCLUDE=help.binary.h' > $@
 
-$(BIN_HEADERS_DESTDIR)/compiler/runtime.deps: $(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.binary.h
+$(BIN_HEADERS_DESTDIR)/compiler/runtime.deps: $(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.binary.h $(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.binary.h
 	@mkdir -p $(shell dirname "$@")
 	@echo "-I$(shell dirname "$@") -DKEFIR_COMPILER_RUNTIME_KEFIR_BIGINT_INCLUDE=kefir_bigint.binary.h" >> $@
+	@echo "-I$(shell dirname "$@") -DKEFIR_COMPILER_RUNTIME_KEFIR_SOFTFLOAT_INCLUDE=kefir_softfloat.binary.h" >> $@

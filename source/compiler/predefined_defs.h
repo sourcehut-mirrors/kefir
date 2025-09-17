@@ -805,6 +805,8 @@ extern _Bool __kefir_builtin_islessequall(long double, long double);
 #define __builtin_copysign(_x, _y) __kefir_builtin_copysign((_x), (_y))
 #define __builtin_copysignl(_x, _y) __kefir_builtin_copysignl((_x), (_y))
 
+#define __kefir_builtin_complex_long_double(_x, _y) ((_x) + 1.0i * (_y))
+
 #define __builtin_assoc_barrier(...) (__VA_ARGS__)
 
 #define __builtin_LINE() __LINE__

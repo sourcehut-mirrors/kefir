@@ -21,7 +21,20 @@
 #include "kefir/util/softfloat.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+
+#define MAKE_COMPLEX_LONG_DOUBLE(_x, _y) (struct kefir_softfloat_complex_long_double){(_x), (_y)}
+
 #include <math.h>
+#define __KEFIR_SOFTFLOAT_USE_SOFTFLOAT_IMPL__
+#define __KEFIR_SOFTFLOAT_BOOL_TYPE_T__ kefir_bool_t
+#define __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ kefir_long_double_t
+#define __KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_T__ struct kefir_softfloat_complex_long_double
+#define __KEFIR_SOFTFLOAT_ISNAN__ isnan
+#define __KEFIR_SOFTFLOAT_ISINF_SIGN__ isinf
+#define __KEFIR_SOFTFLOAT_COPYSIGNL__ copysignl
+#define __KEFIR_SOFTFLOAT_INFINITY__ INFINITY
+#define __KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__ MAKE_COMPLEX_LONG_DOUBLE
+#include "kefir_softfloat/softfloat.h"
 
 // Complex long double multiplication and vision routines provided below are
 // based on the algorithms described in the appendix G of
@@ -46,61 +59,7 @@ static kefir_long_double_t own_fmaximum_numl(kefir_long_double_t x, kefir_long_d
 }
 
 struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_mul(struct kefir_softfloat_complex_long_double lhs, struct kefir_softfloat_complex_long_double rhs) {
-    kefir_long_double_t a = lhs.real, b = lhs.imaginary,
-                        c = rhs.real, d = rhs.imaginary,
-                        ac = a * c, bd = b * d,
-                        ad = a * d, bc = b * c,
-                        x = ac - bd, y = ad + bc;
-    if (isnan(x) && isnan(y)) {
-        kefir_bool_t do_recompute = false;
-        const kefir_bool_t a_inf = isinf(a);
-        const kefir_bool_t b_inf = isinf(b);
-        const kefir_bool_t c_inf = isinf(c);
-        const kefir_bool_t d_inf = isinf(d);
-#define UPDATE_IF_NAN(_var) \
-        do { \
-            if (isnan(_var)) { \
-                _var = copysignl(0.0, _var); \
-            } \
-        } while (0)
-#define COPYSIGN_IF_INF(_var) \
-        do { \
-            _var = copysignl(_var##_inf ? 1.0 : 0.0, _var); \
-        } while (0)
-        if (a_inf || b_inf) {
-            COPYSIGN_IF_INF(a);
-            COPYSIGN_IF_INF(b);
-            UPDATE_IF_NAN(c);
-            UPDATE_IF_NAN(d);
-            do_recompute = true;
-        }
-
-        if (c_inf || d_inf) {
-            COPYSIGN_IF_INF(c);
-            COPYSIGN_IF_INF(d);
-            UPDATE_IF_NAN(a);
-            UPDATE_IF_NAN(b);
-            do_recompute = true;
-        }
-
-        if (!do_recompute && (isinf(ac) || isinf(bd) || isinf(ad) || isinf(bc))) {
-            UPDATE_IF_NAN(a);
-            UPDATE_IF_NAN(b);
-            UPDATE_IF_NAN(c);
-            UPDATE_IF_NAN(d);
-            do_recompute = true;
-        }
-#undef COPYSIGN_IF_INF
-#undef UPDATE_IF_NAN
-
-        if (do_recompute) {
-            x = INFINITY * (a * c - b * d);
-            y = INFINITY * (a * d + b * c);
-        }
-    }
-    return (struct kefir_softfloat_complex_long_double) {
-        x, y
-    };
+    return __kefir_softfloat_complex_long_double_mul(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }
 
 struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_div(struct kefir_softfloat_complex_long_double lhs, struct kefir_softfloat_complex_long_double rhs) {

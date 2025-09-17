@@ -23,10 +23,13 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static const char KefirCodegenBigintRuntime[] = {
+static const char KeifrCodegenInlineRuntime[] = {
 #include STRINGIFY(KEFIR_COMPILER_RUNTIME_KEFIR_BIGINT_INCLUDE)
+, '\n',
+#include STRINGIFY(KEFIR_COMPILER_RUNTIME_KEFIR_SOFTFLOAT_INCLUDE)
+, 0
 };
-static kefir_uint64_t KefirCodegenBigintRuntimeLength = sizeof(KefirCodegenBigintRuntime);
+static kefir_uint64_t KeifrCodegenInlineRuntimeLength = sizeof(KeifrCodegenInlineRuntime);
 
 static kefir_result_t source_locator_open(struct kefir_mem *mem,
                                           const struct kefir_preprocessor_source_locator *locator,
@@ -64,7 +67,7 @@ static kefir_result_t mark_used_functions(struct kefir_ir_module *module, const 
 static kefir_result_t generate_runtime_functions_impl(struct kefir_mem *mem, FILE *output,
                                                       const struct kefir_hashtreeset *functions,
                                                       struct kefir_compiler_context *context) {
-    const char *filename = "<bigint-runtime>";
+    const char *filename = "<kefir-inline-runtime>";
 
     struct kefir_token_buffer buffer;
     struct kefir_ast_translation_unit *defs_unit;
@@ -74,7 +77,7 @@ static kefir_result_t generate_runtime_functions_impl(struct kefir_mem *mem, FIL
 
     kefir_result_t res =
         kefir_compiler_preprocess_lex(mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, &context->builtin_token_allocator, &buffer,
-                                      KefirCodegenBigintRuntime, KefirCodegenBigintRuntimeLength, filename, filename);
+                                      KeifrCodegenInlineRuntime, KeifrCodegenInlineRuntimeLength, filename, filename);
     REQUIRE_CHAIN(&res, kefir_compiler_parse(mem, context, &buffer, &defs_unit));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &buffer);
