@@ -1,0 +1,153 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global f32
+.type f32, @object
+.global f64
+.type f64, @object
+.global f80
+.type f80, @object
+.global is_finite_f32
+.type is_finite_f32, @function
+.global is_finite_f64
+.type is_finite_f64, @function
+.global is_finite_f80
+.type is_finite_f80, @function
+
+.section .text
+__kefir_text_section_begin:
+is_finite_f32:
+__kefir_text_func_is_finite_f32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_is_finite_f32_label0:
+    movd %xmm0, -12(%rbp)
+    movl -12(%rbp), %eax
+    movq %rax, %xmm0
+    andps __kefir_constant_isfinitef32_mask(%rip), %xmm0
+    movdqu __kefir_constant_isfinitef32_cmp(%rip), %xmm1
+    xor %eax, %eax
+    ucomiss %xmm0, %xmm1
+    setnb %al
+    test %eax, %eax
+    setne %al
+    movzx %al, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_is_finite_f32_end:
+
+is_finite_f64:
+__kefir_text_func_is_finite_f64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_is_finite_f64_label0:
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq %rax, %xmm0
+    andpd __kefir_constant_isfinitef64_mask(%rip), %xmm0
+    movdqu __kefir_constant_isfinitef64_cmp(%rip), %xmm1
+    xor %eax, %eax
+    ucomisd %xmm0, %xmm1
+    setnb %al
+    test %eax, %eax
+    setne %al
+    movzx %al, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_is_finite_f64_end:
+
+is_finite_f80:
+__kefir_text_func_is_finite_f80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+_kefir_func_is_finite_f80_label0:
+    fldt 16(%rbp)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fabs
+    xor %eax, %eax
+    fldt __kefir_constant_isfinitel_cmp(%rip)
+    fucomip %st(1)
+    setnb %al
+    fstp %st(0)
+    test %eax, %eax
+    setne %al
+    movzx %al, %rax
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_is_finite_f80_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+f32:
+    .long 1
+    .long 1
+    .long 1
+    .long 0
+    .long 0
+    .long 0
+
+    .align 16
+f64:
+    .long 1
+    .long 1
+    .long 1
+    .long 0
+    .long 0
+    .long 0
+
+    .align 16
+f80:
+    .long 1
+    .long 1
+    .long 1
+    .long 0
+    .long 0
+    .long 0
+
+.section .rodata
+    .align 16
+__kefir_constant_isfinitef32_mask:
+    .long 2147483647
+    .long 0
+    .long 0
+    .long 0
+    .align 16
+__kefir_constant_isfinitef32_cmp:
+    .long 2139095039
+    .long 0
+    .long 0
+    .long 0
+    .align 16
+__kefir_constant_isfinitef64_mask:
+    .long 18446744073709551615
+    .long 2147483647
+    .long 0
+    .long 0
+    .align 16
+__kefir_constant_isfinitef64_cmp:
+    .long 18446744073709551615
+    .long 2146435071
+    .long 0
+    .long 0
+    .align 16
+__kefir_constant_isfinitel_cmp:
+    .long 18446744073709551615
+    .long 18446744073709551615
+    .long 32766
+    .long 0

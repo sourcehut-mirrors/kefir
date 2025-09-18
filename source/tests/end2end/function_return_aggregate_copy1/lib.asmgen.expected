@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 43,
+            "id": 46,
             "name": "get2",
             "code": {
                 "entry_point": 0,
@@ -25,14 +25,14 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 89,
+                                "type_id": 95,
                                 "type_index": 0,
                                 "control_next": null
                             },
                             {
                                 "id": 13,
                                 "opcode": "invoke",
-                                "function_declaration_id": 44,
+                                "function_declaration_id": 47,
                                 "arguments": [
                                     10
                                 ],
@@ -124,7 +124,7 @@
             }
         },
         {
-            "id": 45,
+            "id": 48,
             "name": "get3",
             "code": {
                 "entry_point": 0,
@@ -155,7 +155,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 89,
+                                "type_id": 95,
                                 "type_index": 0,
                                 "control_next": null
                             },
@@ -172,14 +172,14 @@
                             {
                                 "id": 6,
                                 "opcode": "alloc_local",
-                                "type_id": 89,
+                                "type_id": 95,
                                 "type_index": 5,
                                 "control_next": null
                             },
                             {
                                 "id": 15,
                                 "opcode": "invoke",
-                                "function_declaration_id": 46,
+                                "function_declaration_id": 49,
                                 "arguments": [
                                     10
                                 ],
@@ -193,7 +193,7 @@
                                 "target": 0,
                                 "source": 15,
                                 "type": {
-                                    "id": 92,
+                                    "id": 98,
                                     "index": 0
                                 },
                                 "control_next": 22

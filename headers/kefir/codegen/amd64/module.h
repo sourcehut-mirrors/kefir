@@ -44,6 +44,9 @@ typedef struct kefir_codegen_amd64_module {
         kefir_bool_t complex_long_double_div;
         kefir_bool_t copysign_float32;
         kefir_bool_t copysign_float64;
+        kefir_bool_t isfinite_float32;
+        kefir_bool_t isfinite_float64;
+        kefir_bool_t isfinite_long_double;
     } constants;
 } kefir_codegen_amd64_module_t;
 

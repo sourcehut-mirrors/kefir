@@ -52,5 +52,10 @@
 #define KEFIR_AMD64_CONSTANT_COMPLEX_LONG_DOUBLE_DIV "__kefir_constant_complex_long_double_div"
 #define KEFIR_AMD64_CONSTANT_COPYSIGNF "__kefir_constant_copysignf"
 #define KEFIR_AMD64_CONSTANT_COPYSIGN "__kefir_constant_copysign"
+#define KEFIR_AMD64_CONSTANT_ISFINITEF32_MASK "__kefir_constant_isfinitef32_mask"
+#define KEFIR_AMD64_CONSTANT_ISFINITEF32_CMP "__kefir_constant_isfinitef32_cmp"
+#define KEFIR_AMD64_CONSTANT_ISFINITEF64_MASK "__kefir_constant_isfinitef64_mask"
+#define KEFIR_AMD64_CONSTANT_ISFINITEF64_CMP "__kefir_constant_isfinitef64_cmp"
+#define KEFIR_AMD64_CONSTANT_ISFINITEL_CMP "__kefir_constant_isfinitel_cmp"
 
 #endif

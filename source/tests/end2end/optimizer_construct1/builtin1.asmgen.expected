@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 42,
+            "id": 45,
             "name": "test",
             "code": {
                 "entry_point": 0,
@@ -20,7 +20,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 86,
+                                "type_id": 92,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
@@ -39,7 +39,7 @@
                             {
                                 "id": 2,
                                 "opcode": "alloc_local",
-                                "type_id": 86,
+                                "type_id": 92,
                                 "type_index": 1,
                                 "control_next": null,
                                 "ir_instruction": 2
@@ -54,7 +54,7 @@
                             {
                                 "id": 4,
                                 "opcode": "alloc_local",
-                                "type_id": 86,
+                                "type_id": 92,
                                 "type_index": 7,
                                 "control_next": null,
                                 "ir_instruction": 4
@@ -75,7 +75,7 @@
                                 "target": 4,
                                 "source": null,
                                 "type": {
-                                    "id": 88,
+                                    "id": 94,
                                     "index": 0
                                 },
                                 "control_next": 11,
@@ -146,7 +146,7 @@
             }
         },
         {
-            "id": 43,
+            "id": 46,
             "name": "test2",
             "code": {
                 "entry_point": 0,
@@ -158,7 +158,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 88,
+                                "type_id": 94,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 0

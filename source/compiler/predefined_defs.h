@@ -605,6 +605,9 @@ extern _Bool __kefir_builtin_islessequall(long double, long double);
 float __kefir_builtin_copysignf(float, float);
 double __kefir_builtin_copysign(double, double);
 long double __kefir_builtin_copysignl(long double, long double);
+int __kefir_builtin_isfinitef32(float);
+int __kefir_builtin_isfinitef64(double);
+int __kefir_builtin_isfinitel(long double);
 
 // Builtins
 #define __builtin_va_start(_vlist, _arg) __builtin_c23_va_start((_vlist), (_arg))
@@ -740,6 +743,7 @@ long double __kefir_builtin_copysignl(long double, long double);
 
 #define __builtin_isnan(...) __kefir_builtin_isnan(__VA_ARGS__)
 #define __builtin_isinf_sign(...) __kefir_builtin_isinf(__VA_ARGS__)
+#define __builtin_isfinite(...) __kefir_builtin_isfinite(__VA_ARGS__)
 
 #define __kefir_builtin_isgreater_nonconst(_x, _y)                                                   \
     ({                                                                                               \

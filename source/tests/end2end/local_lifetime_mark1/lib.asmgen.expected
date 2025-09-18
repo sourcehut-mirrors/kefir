@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 42,
+            "id": 45,
             "name": "test1",
             "code": {
                 "entry_point": 0,
@@ -31,7 +31,7 @@
                             {
                                 "id": 4,
                                 "opcode": "alloc_local",
-                                "type_id": 84,
+                                "type_id": 90,
                                 "type_index": 2,
                                 "control_next": null
                             },
@@ -109,7 +109,7 @@
             }
         },
         {
-            "id": 43,
+            "id": 46,
             "name": "test2",
             "code": {
                 "entry_point": 0,
@@ -127,7 +127,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 90,
+                                "type_id": 96,
                                 "type_index": 2,
                                 "control_next": null
                             },
@@ -140,7 +140,7 @@
                             {
                                 "id": 2,
                                 "opcode": "alloc_local",
-                                "type_id": 90,
+                                "type_id": 96,
                                 "type_index": 3,
                                 "control_next": null
                             },
@@ -153,7 +153,7 @@
                             {
                                 "id": 4,
                                 "opcode": "alloc_local",
-                                "type_id": 90,
+                                "type_id": 96,
                                 "type_index": 4,
                                 "control_next": null
                             },
@@ -166,7 +166,7 @@
                             {
                                 "id": 6,
                                 "opcode": "alloc_local",
-                                "type_id": 90,
+                                "type_id": 96,
                                 "type_index": 7,
                                 "control_next": null
                             },
@@ -179,7 +179,7 @@
                             {
                                 "id": 8,
                                 "opcode": "alloc_local",
-                                "type_id": 90,
+                                "type_id": 96,
                                 "type_index": 9,
                                 "control_next": null
                             },
@@ -227,7 +227,7 @@
                                 "target": 4,
                                 "source": null,
                                 "type": {
-                                    "id": 94,
+                                    "id": 100,
                                     "index": 0
                                 },
                                 "control_next": 20
@@ -279,7 +279,7 @@
                             {
                                 "id": 25,
                                 "opcode": "alloc_local",
-                                "type_id": 90,
+                                "type_id": 96,
                                 "type_index": 0,
                                 "control_next": null
                             },
@@ -372,7 +372,7 @@
                             {
                                 "id": 44,
                                 "opcode": "alloc_local",
-                                "type_id": 90,
+                                "type_id": 96,
                                 "type_index": 13,
                                 "control_next": null
                             },
@@ -732,7 +732,7 @@
                             {
                                 "id": 236,
                                 "opcode": "alloc_local",
-                                "type_id": 90,
+                                "type_id": 96,
                                 "type_index": 15,
                                 "control_next": null
                             },
@@ -840,7 +840,7 @@
                             {
                                 "id": 109,
                                 "opcode": "invoke",
-                                "function_declaration_id": 44,
+                                "function_declaration_id": 47,
                                 "arguments": [
                                     108
                                 ],
@@ -950,7 +950,7 @@
                             {
                                 "id": 235,
                                 "opcode": "alloc_local",
-                                "type_id": 90,
+                                "type_id": 96,
                                 "type_index": 14,
                                 "control_next": null
                             },

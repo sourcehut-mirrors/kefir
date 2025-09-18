@@ -111,6 +111,7 @@ __builtin_ssubll_overflow
 __builtin_FUNCTION
 __builtin_copysign
 __builtin_huge_val
+__builtin_isfinite
 __builtin_offsetof
 __builtin_parityll
 __builtin_popcount

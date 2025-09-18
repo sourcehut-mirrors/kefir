@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 45,
+            "id": 48,
             "name": "load_unsigned",
             "code": {
                 "entry_point": 0,
@@ -35,7 +35,7 @@
             }
         },
         {
-            "id": 46,
+            "id": 49,
             "name": "load_signed",
             "code": {
                 "entry_point": 0,
@@ -69,7 +69,7 @@
             }
         },
         {
-            "id": 47,
+            "id": 50,
             "name": "store",
             "code": {
                 "entry_point": 0,
@@ -351,7 +351,7 @@
             }
         },
         {
-            "id": 48,
+            "id": 51,
             "name": "locals",
             "code": {
                 "entry_point": 0,
@@ -384,7 +384,7 @@
                             {
                                 "id": 4,
                                 "opcode": "alloc_local",
-                                "type_id": 110,
+                                "type_id": 116,
                                 "type_index": 2,
                                 "control_next": null,
                                 "ir_instruction": 4
@@ -403,7 +403,7 @@
                             {
                                 "id": 2,
                                 "opcode": "alloc_local",
-                                "type_id": 110,
+                                "type_id": 116,
                                 "type_index": 1,
                                 "control_next": null,
                                 "ir_instruction": 2
@@ -422,7 +422,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 110,
+                                "type_id": 116,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
@@ -474,7 +474,7 @@
                             {
                                 "id": 18,
                                 "opcode": "get_thread_local",
-                                "global_ref": 76,
+                                "global_ref": 79,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 27
@@ -610,7 +610,7 @@
             }
         },
         {
-            "id": 49,
+            "id": 52,
             "name": "volatiles1",
             "code": {
                 "entry_point": 0,
@@ -622,7 +622,7 @@
                             {
                                 "id": 0,
                                 "opcode": "get_global",
-                                "global_ref": 78,
+                                "global_ref": 81,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
@@ -641,7 +641,7 @@
                             {
                                 "id": 2,
                                 "opcode": "get_global",
-                                "global_ref": 79,
+                                "global_ref": 82,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 2
@@ -660,7 +660,7 @@
                             {
                                 "id": 5,
                                 "opcode": "get_global",
-                                "global_ref": 80,
+                                "global_ref": 83,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 5
@@ -679,7 +679,7 @@
                             {
                                 "id": 9,
                                 "opcode": "get_global",
-                                "global_ref": 81,
+                                "global_ref": 84,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 9
@@ -770,7 +770,7 @@
                             {
                                 "id": 17,
                                 "opcode": "get_global",
-                                "global_ref": 79,
+                                "global_ref": 82,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 18
@@ -796,7 +796,7 @@
                             {
                                 "id": 20,
                                 "opcode": "get_global",
-                                "global_ref": 80,
+                                "global_ref": 83,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 25
@@ -822,7 +822,7 @@
                             {
                                 "id": 24,
                                 "opcode": "get_global",
-                                "global_ref": 81,
+                                "global_ref": 84,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 33
@@ -855,7 +855,7 @@
                             {
                                 "id": 28,
                                 "opcode": "get_global",
-                                "global_ref": 78,
+                                "global_ref": 81,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 41

@@ -517,6 +517,10 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(kefir_json_output_string(json, "kefir_complex_long_double"));
             break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_ISFINITE:
+            REQUIRE_OK(kefir_json_output_string(json, "kefir_isfinite"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

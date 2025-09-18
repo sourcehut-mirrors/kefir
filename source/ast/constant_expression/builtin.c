@@ -341,6 +341,34 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg2_node)->floating_point;
         } break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_ISFINITE: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
+
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg1_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg1_node->source_location,
+                                           "Expected floating-point constant expression"));
+
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            switch (arg1_type->tag) {
+                case KEFIR_AST_TYPE_SCALAR_FLOAT:
+                    value->integer = isfinite((kefir_float32_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point) ? 1 : 0;
+                    break;
+
+                case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+                    value->integer = isfinite((kefir_float64_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point) ? 1 : 0;
+                    break;
+
+                case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                    value->integer = isfinite((kefir_long_double_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point) ? 1 : 0;
+                    break;
+
+                default:
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg1_node->source_location,
+                                           "Expected floating-point constant expression");
+            }
+        } break;
+
         case KEFIR_AST_BUILTIN_FFSG: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);

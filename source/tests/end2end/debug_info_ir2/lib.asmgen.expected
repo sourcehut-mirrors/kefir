@@ -121,7 +121,7 @@
             }
         },
         {
-            "symbol": "__kefir_builtin_isgreater",
+            "symbol": "__kefir_builtin_isfinitel",
             "type": "function",
             "scope": "import",
             "visibility": "default",
@@ -131,17 +131,17 @@
             }
         },
         {
-            "symbol": "__kefir_builtin_popcountl",
+            "symbol": "__kefir_builtin_isgreater",
             "type": "function",
             "scope": "import",
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 36
+                "entry": 35
             }
         },
         {
-            "symbol": "__kefir_builtin_isgreaterequalf",
+            "symbol": "__kefir_builtin_popcountl",
             "type": "function",
             "scope": "import",
             "visibility": "default",
@@ -151,13 +151,43 @@
             }
         },
         {
+            "symbol": "__kefir_builtin_isgreaterequalf",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "entry": 40
+            }
+        },
+        {
             "symbol": "__kefir_builtin_isgreaterequall",
             "type": "function",
             "scope": "import",
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 41
+                "entry": 43
+            }
+        },
+        {
+            "symbol": "__kefir_builtin_isfinitef32",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "entry": 46
+            }
+        },
+        {
+            "symbol": "__kefir_builtin_isfinitef64",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "entry": 48
             }
         },
         {
@@ -167,7 +197,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 44
+                "entry": 50
             }
         },
         {
@@ -177,7 +207,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 124
+                "entry": 130
             }
         },
         {
@@ -187,7 +217,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 47
+                "entry": 53
             }
         },
         {
@@ -197,7 +227,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 51
+                "entry": 57
             }
         },
         {
@@ -207,7 +237,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 54
+                "entry": 60
             }
         },
         {
@@ -217,7 +247,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 56
+                "entry": 62
             }
         },
         {
@@ -227,7 +257,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 58
+                "entry": 64
             }
         },
         {
@@ -237,7 +267,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 61
+                "entry": 67
             }
         },
         {
@@ -247,7 +277,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 63
+                "entry": 69
             }
         },
         {
@@ -257,7 +287,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 65
+                "entry": 71
             }
         },
         {
@@ -267,7 +297,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 68
+                "entry": 74
             }
         },
         {
@@ -277,7 +307,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 70
+                "entry": 76
             }
         },
         {
@@ -287,7 +317,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 72
+                "entry": 78
             }
         },
         {
@@ -297,7 +327,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 74
+                "entry": 80
             }
         },
         {
@@ -307,7 +337,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 77
+                "entry": 83
             }
         },
         {
@@ -317,7 +347,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 80
+                "entry": 86
             }
         },
         {
@@ -327,7 +357,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 82
+                "entry": 88
             }
         },
         {
@@ -337,7 +367,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 84
+                "entry": 90
             }
         },
         {
@@ -347,7 +377,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 87
+                "entry": 93
             }
         },
         {
@@ -357,7 +387,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 89
+                "entry": 95
             }
         },
         {
@@ -367,7 +397,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 92
+                "entry": 98
             }
         },
         {
@@ -377,7 +407,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 94
+                "entry": 100
             }
         },
         {
@@ -387,7 +417,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 96
+                "entry": 102
             }
         },
         {
@@ -397,7 +427,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 98
+                "entry": 104
             }
         },
         {
@@ -407,7 +437,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 99
+                "entry": 105
             }
         },
         {
@@ -417,13 +447,13 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 102
+                "entry": 108
             }
         }
     ],
     "types": [
         {
-            "identifier": 82,
+            "identifier": 88,
             "type": [
                 {
                     "type": "int32"
@@ -431,7 +461,7 @@
             ]
         },
         {
-            "identifier": 84,
+            "identifier": 90,
             "type": [
                 {
                     "type": "int32"
@@ -460,7 +490,7 @@
             ]
         },
         {
-            "identifier": 85,
+            "identifier": 91,
             "type": [
                 {
                     "type": "array",
@@ -476,7 +506,7 @@
         {
             "identifier": "__kefir_function_test1_static___func___4",
             "storage": "global",
-            "type": 85,
+            "type": 91,
             "value": [
                 {
                     "class": "string",
@@ -610,7 +640,7 @@
         },
         {
             "identifier": 12,
-            "name": "__kefir_builtin_isgreater",
+            "name": "__kefir_builtin_isfinitel",
             "parameters": 24,
             "vararg": false,
             "returns": 25,
@@ -619,7 +649,7 @@
         },
         {
             "identifier": 13,
-            "name": "__kefir_builtin_popcountl",
+            "name": "__kefir_builtin_isgreater",
             "parameters": 26,
             "vararg": false,
             "returns": 27,
@@ -628,7 +658,7 @@
         },
         {
             "identifier": 14,
-            "name": "__kefir_builtin_isgreaterequalf",
+            "name": "__kefir_builtin_popcountl",
             "parameters": 28,
             "vararg": false,
             "returns": 29,
@@ -637,7 +667,7 @@
         },
         {
             "identifier": 15,
-            "name": "__kefir_builtin_isgreaterequall",
+            "name": "__kefir_builtin_isgreaterequalf",
             "parameters": 30,
             "vararg": false,
             "returns": 31,
@@ -646,7 +676,7 @@
         },
         {
             "identifier": 16,
-            "name": "__kefir_builtin_islessequal",
+            "name": "__kefir_builtin_isgreaterequall",
             "parameters": 32,
             "vararg": false,
             "returns": 33,
@@ -655,7 +685,7 @@
         },
         {
             "identifier": 17,
-            "name": "__kefir_builtin_return_address",
+            "name": "__kefir_builtin_isfinitef32",
             "parameters": 34,
             "vararg": false,
             "returns": 35,
@@ -664,7 +694,7 @@
         },
         {
             "identifier": 18,
-            "name": "__kefir_builtin_clz",
+            "name": "__kefir_builtin_isfinitef64",
             "parameters": 36,
             "vararg": false,
             "returns": 37,
@@ -673,7 +703,7 @@
         },
         {
             "identifier": 19,
-            "name": "__kefir_builtin_ctz",
+            "name": "__kefir_builtin_islessequal",
             "parameters": 38,
             "vararg": false,
             "returns": 39,
@@ -682,7 +712,7 @@
         },
         {
             "identifier": 20,
-            "name": "__kefir_builtin_ffs",
+            "name": "__kefir_builtin_return_address",
             "parameters": 40,
             "vararg": false,
             "returns": 41,
@@ -691,7 +721,7 @@
         },
         {
             "identifier": 21,
-            "name": "__kefir_builtin_copysign",
+            "name": "__kefir_builtin_clz",
             "parameters": 42,
             "vararg": false,
             "returns": 43,
@@ -700,7 +730,7 @@
         },
         {
             "identifier": 22,
-            "name": "__kefir_builtin_parityll",
+            "name": "__kefir_builtin_ctz",
             "parameters": 44,
             "vararg": false,
             "returns": 45,
@@ -709,7 +739,7 @@
         },
         {
             "identifier": 23,
-            "name": "__kefir_builtin_popcount",
+            "name": "__kefir_builtin_ffs",
             "parameters": 46,
             "vararg": false,
             "returns": 47,
@@ -718,7 +748,7 @@
         },
         {
             "identifier": 24,
-            "name": "__kefir_builtin_bswap16",
+            "name": "__kefir_builtin_copysign",
             "parameters": 48,
             "vararg": false,
             "returns": 49,
@@ -727,7 +757,7 @@
         },
         {
             "identifier": 25,
-            "name": "__kefir_builtin_bswap32",
+            "name": "__kefir_builtin_parityll",
             "parameters": 50,
             "vararg": false,
             "returns": 51,
@@ -736,7 +766,7 @@
         },
         {
             "identifier": 26,
-            "name": "__kefir_builtin_bswap64",
+            "name": "__kefir_builtin_popcount",
             "parameters": 52,
             "vararg": false,
             "returns": 53,
@@ -745,7 +775,7 @@
         },
         {
             "identifier": 27,
-            "name": "__kefir_builtin_clrsbll",
+            "name": "__kefir_builtin_bswap16",
             "parameters": 54,
             "vararg": false,
             "returns": 55,
@@ -754,7 +784,7 @@
         },
         {
             "identifier": 28,
-            "name": "__kefir_builtin_islessf",
+            "name": "__kefir_builtin_bswap32",
             "parameters": 56,
             "vararg": false,
             "returns": 57,
@@ -763,7 +793,7 @@
         },
         {
             "identifier": 29,
-            "name": "__kefir_builtin_islessl",
+            "name": "__kefir_builtin_bswap64",
             "parameters": 58,
             "vararg": false,
             "returns": 59,
@@ -772,7 +802,7 @@
         },
         {
             "identifier": 30,
-            "name": "__kefir_builtin_parityl",
+            "name": "__kefir_builtin_clrsbll",
             "parameters": 60,
             "vararg": false,
             "returns": 61,
@@ -781,7 +811,7 @@
         },
         {
             "identifier": 31,
-            "name": "__kefir_builtin_clrsbl",
+            "name": "__kefir_builtin_islessf",
             "parameters": 62,
             "vararg": false,
             "returns": 63,
@@ -790,7 +820,7 @@
         },
         {
             "identifier": 32,
-            "name": "__kefir_builtin_isless",
+            "name": "__kefir_builtin_islessl",
             "parameters": 64,
             "vararg": false,
             "returns": 65,
@@ -799,7 +829,7 @@
         },
         {
             "identifier": 33,
-            "name": "__kefir_builtin_parity",
+            "name": "__kefir_builtin_parityl",
             "parameters": 66,
             "vararg": false,
             "returns": 67,
@@ -808,7 +838,7 @@
         },
         {
             "identifier": 34,
-            "name": "__kefir_builtin_frame_address",
+            "name": "__kefir_builtin_clrsbl",
             "parameters": 68,
             "vararg": false,
             "returns": 69,
@@ -817,7 +847,7 @@
         },
         {
             "identifier": 35,
-            "name": "__kefir_builtin_clzl",
+            "name": "__kefir_builtin_isless",
             "parameters": 70,
             "vararg": false,
             "returns": 71,
@@ -826,7 +856,7 @@
         },
         {
             "identifier": 36,
-            "name": "__kefir_builtin_ctzl",
+            "name": "__kefir_builtin_parity",
             "parameters": 72,
             "vararg": false,
             "returns": 73,
@@ -835,7 +865,7 @@
         },
         {
             "identifier": 37,
-            "name": "__kefir_builtin_ffsl",
+            "name": "__kefir_builtin_frame_address",
             "parameters": 74,
             "vararg": false,
             "returns": 75,
@@ -844,7 +874,7 @@
         },
         {
             "identifier": 38,
-            "name": "__kefir_builtin_trap",
+            "name": "__kefir_builtin_clzl",
             "parameters": 76,
             "vararg": false,
             "returns": 77,
@@ -853,7 +883,7 @@
         },
         {
             "identifier": 39,
-            "name": "__kefir_builtin_islessequalf",
+            "name": "__kefir_builtin_ctzl",
             "parameters": 78,
             "vararg": false,
             "returns": 79,
@@ -862,7 +892,7 @@
         },
         {
             "identifier": 40,
-            "name": "__kefir_builtin_islessequall",
+            "name": "__kefir_builtin_ffsl",
             "parameters": 80,
             "vararg": false,
             "returns": 81,
@@ -871,23 +901,50 @@
         },
         {
             "identifier": 41,
-            "name": "test1",
+            "name": "__kefir_builtin_trap",
             "parameters": 82,
             "vararg": false,
-            "returns": 82,
+            "returns": 83,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 42,
+            "name": "__kefir_builtin_islessequalf",
+            "parameters": 84,
+            "vararg": false,
+            "returns": 85,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 43,
+            "name": "__kefir_builtin_islessequall",
+            "parameters": 86,
+            "vararg": false,
+            "returns": 87,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 44,
+            "name": "test1",
+            "parameters": 88,
+            "vararg": false,
+            "returns": 88,
             "returns_twice": false,
             "no_return": false
         }
     ],
     "functions": [
         {
-            "identifier": 41,
+            "identifier": 44,
             "name": "test1",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 360777252864,
-                    "type": 84,
+                    "id": 386547056640,
+                    "type": 90,
                     "type_index": 0
                 },
                 {
@@ -895,8 +952,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252865,
-                    "type": 84,
+                    "id": 386547056641,
+                    "type": 90,
                     "type_index": 1
                 },
                 {
@@ -904,8 +961,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252866,
-                    "type": 84,
+                    "id": 386547056642,
+                    "type": 90,
                     "type_index": 2
                 },
                 {
@@ -913,8 +970,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252867,
-                    "type": 84,
+                    "id": 386547056643,
+                    "type": 90,
                     "type_index": 3
                 },
                 {
@@ -926,8 +983,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252864,
-                    "type": 84,
+                    "id": 386547056640,
+                    "type": 90,
                     "type_index": 0
                 },
                 {
@@ -942,8 +999,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252865,
-                    "type": 84,
+                    "id": 386547056641,
+                    "type": 90,
                     "type_index": 1
                 },
                 {
@@ -964,8 +1021,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252866,
-                    "type": 84,
+                    "id": 386547056642,
+                    "type": 90,
                     "type_index": 2
                 },
                 {
@@ -986,8 +1043,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252867,
-                    "type": 84,
+                    "id": 386547056643,
+                    "type": 90,
                     "type_index": 3
                 },
                 {
@@ -1008,8 +1065,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252864,
-                    "type": 84,
+                    "id": 386547056640,
+                    "type": 90,
                     "type_index": 0
                 },
                 {
@@ -1028,8 +1085,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252868,
-                    "type": 84,
+                    "id": 386547056644,
+                    "type": 90,
                     "type_index": 4
                 },
                 {
@@ -1037,8 +1094,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252869,
-                    "type": 84,
+                    "id": 386547056645,
+                    "type": 90,
                     "type_index": 5
                 },
                 {
@@ -1046,8 +1103,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252868,
-                    "type": 84,
+                    "id": 386547056644,
+                    "type": 90,
                     "type_index": 4
                 },
                 {
@@ -1068,8 +1125,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252869,
-                    "type": 84,
+                    "id": 386547056645,
+                    "type": 90,
                     "type_index": 5
                 },
                 {
@@ -1077,8 +1134,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252865,
-                    "type": 84,
+                    "id": 386547056641,
+                    "type": 90,
                     "type_index": 1
                 },
                 {
@@ -1097,8 +1154,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252870,
-                    "type": 84,
+                    "id": 386547056646,
+                    "type": 90,
                     "type_index": 6
                 },
                 {
@@ -1106,8 +1163,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252870,
-                    "type": 84,
+                    "id": 386547056646,
+                    "type": 90,
                     "type_index": 6
                 },
                 {
@@ -1115,8 +1172,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252870,
-                    "type": 84,
+                    "id": 386547056646,
+                    "type": 90,
                     "type_index": 6
                 },
                 {
@@ -1128,8 +1185,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252868,
-                    "type": 84,
+                    "id": 386547056644,
+                    "type": 90,
                     "type_index": 4
                 },
                 {
@@ -1137,8 +1194,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252869,
-                    "type": 84,
+                    "id": 386547056645,
+                    "type": 90,
                     "type_index": 5
                 },
                 {
@@ -1150,8 +1207,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252871,
-                    "type": 84,
+                    "id": 386547056647,
+                    "type": 90,
                     "type_index": 7
                 },
                 {
@@ -1159,8 +1216,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252871,
-                    "type": 84,
+                    "id": 386547056647,
+                    "type": 90,
                     "type_index": 7
                 },
                 {
@@ -1168,8 +1225,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252871,
-                    "type": 84,
+                    "id": 386547056647,
+                    "type": 90,
                     "type_index": 7
                 },
                 {
@@ -1181,8 +1238,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252864,
-                    "type": 84,
+                    "id": 386547056640,
+                    "type": 90,
                     "type_index": 0
                 },
                 {
@@ -1190,8 +1247,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252865,
-                    "type": 84,
+                    "id": 386547056641,
+                    "type": 90,
                     "type_index": 1
                 },
                 {
@@ -1199,8 +1256,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252866,
-                    "type": 84,
+                    "id": 386547056642,
+                    "type": 90,
                     "type_index": 2
                 },
                 {
@@ -1208,8 +1265,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252867,
-                    "type": 84,
+                    "id": 386547056643,
+                    "type": 90,
                     "type_index": 3
                 },
                 {
@@ -1220,8 +1277,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252864,
-                    "type": 84,
+                    "id": 386547056640,
+                    "type": 90,
                     "type_index": 0
                 },
                 {
@@ -1229,8 +1286,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252865,
-                    "type": 84,
+                    "id": 386547056641,
+                    "type": 90,
                     "type_index": 1
                 },
                 {
@@ -1238,8 +1295,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252866,
-                    "type": 84,
+                    "id": 386547056642,
+                    "type": 90,
                     "type_index": 2
                 },
                 {
@@ -1247,8 +1304,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 360777252867,
-                    "type": 84,
+                    "id": 386547056643,
+                    "type": 90,
                     "type_index": 3
                 },
                 {
@@ -1256,7 +1313,7 @@
                 }
             ],
             "public_labels": [],
-            "subroutine_id": 105,
+            "subroutine_id": 111,
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
@@ -2119,6 +2176,57 @@
                 "attributes": [
                     {
                         "tag": "name",
+                        "value": "__kefir_builtin_isfinitel"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 610
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 5
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 34,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 23
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 35,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
                         "value": "__kefir_builtin_isgreater"
                     },
                     {
@@ -2152,7 +2260,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 34,
+                        "identifier": 36,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2163,7 +2271,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 35,
+                        "identifier": 37,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2176,7 +2284,7 @@
                 ]
             },
             {
-                "identifier": 36,
+                "identifier": 38,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2214,7 +2322,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 37,
+                        "identifier": 39,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2227,7 +2335,7 @@
                 ]
             },
             {
-                "identifier": 38,
+                "identifier": 40,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2265,7 +2373,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 39,
+                        "identifier": 41,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2276,7 +2384,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 40,
+                        "identifier": 42,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2289,7 +2397,7 @@
                 ]
             },
             {
-                "identifier": 41,
+                "identifier": 43,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2327,7 +2435,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 42,
+                        "identifier": 44,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2338,7 +2446,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 43,
+                        "identifier": 45,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2351,7 +2459,109 @@
                 ]
             },
             {
-                "identifier": 44,
+                "identifier": 46,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_isfinitef32"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 608
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 5
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 47,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 19
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 48,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_isfinitef64"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 609
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 5
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 49,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 50,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2389,7 +2599,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 45,
+                        "identifier": 51,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2400,7 +2610,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 46,
+                        "identifier": 52,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2413,7 +2623,7 @@
                 ]
             },
             {
-                "identifier": 47,
+                "identifier": 53,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2422,7 +2632,7 @@
                     },
                     {
                         "tag": "type",
-                        "value": 48
+                        "value": 54
                     },
                     {
                         "tag": "function_prototyped",
@@ -2451,7 +2661,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 50,
+                        "identifier": 56,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2464,7 +2674,7 @@
                 ]
             },
             {
-                "identifier": 48,
+                "identifier": 54,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -2477,13 +2687,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 49
+                        "value": 55
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 49,
+                "identifier": 55,
                 "tag": "type_void",
                 "attributes": [
                     {
@@ -2494,7 +2704,7 @@
                 "children": []
             },
             {
-                "identifier": 51,
+                "identifier": 57,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2532,12 +2742,12 @@
                 ],
                 "children": [
                     {
-                        "identifier": 52,
+                        "identifier": 58,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 53
+                                "value": 59
                             }
                         ],
                         "children": []
@@ -2545,7 +2755,7 @@
                 ]
             },
             {
-                "identifier": 53,
+                "identifier": 59,
                 "tag": "type_unsigned_int",
                 "attributes": [
                     {
@@ -2564,7 +2774,7 @@
                 "children": []
             },
             {
-                "identifier": 54,
+                "identifier": 60,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2602,12 +2812,12 @@
                 ],
                 "children": [
                     {
-                        "identifier": 55,
+                        "identifier": 61,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 53
+                                "value": 59
                             }
                         ],
                         "children": []
@@ -2615,7 +2825,7 @@
                 ]
             },
             {
-                "identifier": 56,
+                "identifier": 62,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2653,7 +2863,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 57,
+                        "identifier": 63,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2666,7 +2876,7 @@
                 ]
             },
             {
-                "identifier": 58,
+                "identifier": 64,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2704,7 +2914,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 59,
+                        "identifier": 65,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2715,7 +2925,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 60,
+                        "identifier": 66,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2728,7 +2938,7 @@
                 ]
             },
             {
-                "identifier": 61,
+                "identifier": 67,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2766,7 +2976,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 62,
+                        "identifier": 68,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2779,7 +2989,7 @@
                 ]
             },
             {
-                "identifier": 63,
+                "identifier": 69,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2817,12 +3027,12 @@
                 ],
                 "children": [
                     {
-                        "identifier": 64,
+                        "identifier": 70,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 53
+                                "value": 59
                             }
                         ],
                         "children": []
@@ -2830,7 +3040,7 @@
                 ]
             },
             {
-                "identifier": 65,
+                "identifier": 71,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2839,7 +3049,7 @@
                     },
                     {
                         "tag": "type",
-                        "value": 66
+                        "value": 72
                     },
                     {
                         "tag": "function_prototyped",
@@ -2868,12 +3078,12 @@
                 ],
                 "children": [
                     {
-                        "identifier": 67,
+                        "identifier": 73,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 66
+                                "value": 72
                             }
                         ],
                         "children": []
@@ -2881,7 +3091,7 @@
                 ]
             },
             {
-                "identifier": 66,
+                "identifier": 72,
                 "tag": "type_unsigned_int",
                 "attributes": [
                     {
@@ -2900,7 +3110,7 @@
                 "children": []
             },
             {
-                "identifier": 68,
+                "identifier": 74,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2909,7 +3119,7 @@
                     },
                     {
                         "tag": "type",
-                        "value": 53
+                        "value": 59
                     },
                     {
                         "tag": "function_prototyped",
@@ -2938,12 +3148,12 @@
                 ],
                 "children": [
                     {
-                        "identifier": 69,
+                        "identifier": 75,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 53
+                                "value": 59
                             }
                         ],
                         "children": []
@@ -2951,7 +3161,7 @@
                 ]
             },
             {
-                "identifier": 70,
+                "identifier": 76,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2989,7 +3199,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 71,
+                        "identifier": 77,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3002,7 +3212,7 @@
                 ]
             },
             {
-                "identifier": 72,
+                "identifier": 78,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3040,7 +3250,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 73,
+                        "identifier": 79,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3053,7 +3263,7 @@
                 ]
             },
             {
-                "identifier": 74,
+                "identifier": 80,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3091,7 +3301,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 75,
+                        "identifier": 81,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3102,7 +3312,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 76,
+                        "identifier": 82,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3115,7 +3325,7 @@
                 ]
             },
             {
-                "identifier": 77,
+                "identifier": 83,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3153,7 +3363,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 78,
+                        "identifier": 84,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3164,7 +3374,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 79,
+                        "identifier": 85,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3177,7 +3387,7 @@
                 ]
             },
             {
-                "identifier": 80,
+                "identifier": 86,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3215,7 +3425,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 81,
+                        "identifier": 87,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3228,7 +3438,7 @@
                 ]
             },
             {
-                "identifier": 82,
+                "identifier": 88,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3266,7 +3476,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 83,
+                        "identifier": 89,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3279,7 +3489,7 @@
                 ]
             },
             {
-                "identifier": 84,
+                "identifier": 90,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3317,7 +3527,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 85,
+                        "identifier": 91,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3328,7 +3538,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 86,
+                        "identifier": 92,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3341,7 +3551,7 @@
                 ]
             },
             {
-                "identifier": 87,
+                "identifier": 93,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3379,7 +3589,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 88,
+                        "identifier": 94,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3392,7 +3602,7 @@
                 ]
             },
             {
-                "identifier": 89,
+                "identifier": 95,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3401,7 +3611,7 @@
                     },
                     {
                         "tag": "type",
-                        "value": 90
+                        "value": 96
                     },
                     {
                         "tag": "function_prototyped",
@@ -3430,7 +3640,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 91,
+                        "identifier": 97,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3443,7 +3653,7 @@
                 ]
             },
             {
-                "identifier": 90,
+                "identifier": 96,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -3456,13 +3666,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 49
+                        "value": 55
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 92,
+                "identifier": 98,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3500,7 +3710,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 93,
+                        "identifier": 99,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3513,7 +3723,7 @@
                 ]
             },
             {
-                "identifier": 94,
+                "identifier": 100,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3551,7 +3761,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 95,
+                        "identifier": 101,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3564,7 +3774,7 @@
                 ]
             },
             {
-                "identifier": 96,
+                "identifier": 102,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3602,7 +3812,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 97,
+                        "identifier": 103,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3615,7 +3825,7 @@
                 ]
             },
             {
-                "identifier": 98,
+                "identifier": 104,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3624,7 +3834,7 @@
                     },
                     {
                         "tag": "type",
-                        "value": 49
+                        "value": 55
                     },
                     {
                         "tag": "function_prototyped",
@@ -3654,7 +3864,7 @@
                 "children": []
             },
             {
-                "identifier": 99,
+                "identifier": 105,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3692,7 +3902,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 100,
+                        "identifier": 106,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3703,7 +3913,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 101,
+                        "identifier": 107,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3716,7 +3926,7 @@
                 ]
             },
             {
-                "identifier": 102,
+                "identifier": 108,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3754,7 +3964,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 103,
+                        "identifier": 109,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3765,7 +3975,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 104,
+                        "identifier": 110,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3778,7 +3988,7 @@
                 ]
             },
             {
-                "identifier": 105,
+                "identifier": 111,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3820,7 +4030,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 106,
+                        "identifier": 112,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3839,7 +4049,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 107,
+                        "identifier": 113,
                         "tag": "lexical_block",
                         "attributes": [
                             {
@@ -3853,7 +4063,7 @@
                         ],
                         "children": [
                             {
-                                "identifier": 108,
+                                "identifier": 114,
                                 "tag": "lexical_block",
                                 "attributes": [
                                     {
@@ -3867,7 +4077,7 @@
                                 ],
                                 "children": [
                                     {
-                                        "identifier": 109,
+                                        "identifier": 115,
                                         "tag": "lexical_block",
                                         "attributes": [
                                             {
@@ -3881,7 +4091,7 @@
                                         ],
                                         "children": [
                                             {
-                                                "identifier": 110,
+                                                "identifier": 116,
                                                 "tag": "lexical_block",
                                                 "attributes": [
                                                     {
@@ -3895,7 +4105,7 @@
                                                 ],
                                                 "children": [
                                                     {
-                                                        "identifier": 111,
+                                                        "identifier": 117,
                                                         "tag": "variable",
                                                         "attributes": [
                                                             {
@@ -3904,7 +4114,7 @@
                                                             },
                                                             {
                                                                 "tag": "type",
-                                                                "value": 112
+                                                                "value": 118
                                                             },
                                                             {
                                                                 "tag": "code_begin",
@@ -3917,8 +4127,8 @@
                                                             {
                                                                 "tag": "local_variable",
                                                                 "value": {
-                                                                    "variable_id": 360777252870,
-                                                                    "type_id": 84,
+                                                                    "variable_id": 386547056646,
+                                                                    "type_id": 90,
                                                                     "type_index": 6
                                                                 }
                                                             },
@@ -3950,7 +4160,7 @@
                                         ]
                                     },
                                     {
-                                        "identifier": 114,
+                                        "identifier": 120,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -3972,8 +4182,8 @@
                                             {
                                                 "tag": "local_variable",
                                                 "value": {
-                                                    "variable_id": 360777252868,
-                                                    "type_id": 84,
+                                                    "variable_id": 386547056644,
+                                                    "type_id": 90,
                                                     "type_index": 4
                                                 }
                                             },
@@ -4001,7 +4211,7 @@
                                         "children": []
                                     },
                                     {
-                                        "identifier": 115,
+                                        "identifier": 121,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -4010,7 +4220,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 116
+                                                "value": 122
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -4023,8 +4233,8 @@
                                             {
                                                 "tag": "local_variable",
                                                 "value": {
-                                                    "variable_id": 360777252869,
-                                                    "type_id": 84,
+                                                    "variable_id": 386547056645,
+                                                    "type_id": 90,
                                                     "type_index": 5
                                                 }
                                             },
@@ -4054,7 +4264,7 @@
                                 ]
                             },
                             {
-                                "identifier": 117,
+                                "identifier": 123,
                                 "tag": "lexical_block",
                                 "attributes": [
                                     {
@@ -4068,7 +4278,7 @@
                                 ],
                                 "children": [
                                     {
-                                        "identifier": 118,
+                                        "identifier": 124,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -4077,7 +4287,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 119
+                                                "value": 125
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -4090,8 +4300,8 @@
                                             {
                                                 "tag": "local_variable",
                                                 "value": {
-                                                    "variable_id": 360777252871,
-                                                    "type_id": 84,
+                                                    "variable_id": 386547056647,
+                                                    "type_id": 90,
                                                     "type_index": 7
                                                 }
                                             },
@@ -4123,7 +4333,7 @@
                         ]
                     },
                     {
-                        "identifier": 120,
+                        "identifier": 126,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -4145,8 +4355,8 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 360777252864,
-                                    "type_id": 84,
+                                    "variable_id": 386547056640,
+                                    "type_id": 90,
                                     "type_index": 0
                                 }
                             },
@@ -4174,7 +4384,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 121,
+                        "identifier": 127,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -4196,8 +4406,8 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 360777252865,
-                                    "type_id": 84,
+                                    "variable_id": 386547056641,
+                                    "type_id": 90,
                                     "type_index": 1
                                 }
                             },
@@ -4225,7 +4435,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 122,
+                        "identifier": 128,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -4247,8 +4457,8 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 360777252866,
-                                    "type_id": 84,
+                                    "variable_id": 386547056642,
+                                    "type_id": 90,
                                     "type_index": 2
                                 }
                             },
@@ -4276,7 +4486,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 123,
+                        "identifier": 129,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -4298,8 +4508,8 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 360777252867,
-                                    "type_id": 84,
+                                    "variable_id": 386547056643,
+                                    "type_id": 90,
                                     "type_index": 3
                                 }
                             },
@@ -4327,7 +4537,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 124,
+                        "identifier": 130,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -4336,7 +4546,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 125
+                                "value": 131
                             },
                             {
                                 "tag": "code_begin",
@@ -4348,7 +4558,7 @@
                             },
                             {
                                 "tag": "global_variable",
-                                "value": 63
+                                "value": 66
                             },
                             {
                                 "tag": "external",
@@ -4364,7 +4574,7 @@
                 ]
             },
             {
-                "identifier": 112,
+                "identifier": 118,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -4377,13 +4587,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 113
+                        "value": 119
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 113,
+                "identifier": 119,
                 "tag": "type_signed_character",
                 "attributes": [
                     {
@@ -4402,7 +4612,7 @@
                 "children": []
             },
             {
-                "identifier": 116,
+                "identifier": 122,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -4421,7 +4631,7 @@
                 "children": []
             },
             {
-                "identifier": 119,
+                "identifier": 125,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -4434,13 +4644,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 49
+                        "value": 55
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 125,
+                "identifier": 131,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -4453,12 +4663,12 @@
                     },
                     {
                         "tag": "type",
-                        "value": 113
+                        "value": 119
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 126,
+                        "identifier": 132,
                         "tag": "array_subrange",
                         "attributes": [
                             {

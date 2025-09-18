@@ -204,6 +204,13 @@
             "alias": null
         },
         {
+            "symbol": "__kefir_builtin_isfinitel",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "__kefir_builtin_isgreater",
             "type": "function",
             "scope": "import",
@@ -226,6 +233,20 @@
         },
         {
             "symbol": "__kefir_builtin_isgreaterequall",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_isfinitef32",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_isfinitef64",
             "type": "function",
             "scope": "import",
             "visibility": "default",
@@ -465,11 +486,11 @@
     ],
     "types": [
         {
-            "identifier": 106,
+            "identifier": 112,
             "type": []
         },
         {
-            "identifier": 107,
+            "identifier": 113,
             "type": [
                 {
                     "type": "int8"
@@ -477,7 +498,7 @@
             ]
         },
         {
-            "identifier": 111,
+            "identifier": 117,
             "type": [
                 {
                     "type": "int16"
@@ -485,7 +506,7 @@
             ]
         },
         {
-            "identifier": 115,
+            "identifier": 121,
             "type": [
                 {
                     "type": "int32"
@@ -493,7 +514,7 @@
             ]
         },
         {
-            "identifier": 119,
+            "identifier": 125,
             "type": [
                 {
                     "type": "int64"
@@ -501,7 +522,7 @@
             ]
         },
         {
-            "identifier": 133,
+            "identifier": 139,
             "type": [
                 {
                     "type": "array",
@@ -513,7 +534,7 @@
             ]
         },
         {
-            "identifier": 138,
+            "identifier": 144,
             "type": [
                 {
                     "type": "int64"
@@ -524,7 +545,7 @@
             ]
         },
         {
-            "identifier": 150,
+            "identifier": 156,
             "type": [
                 {
                     "type": "array",
@@ -550,7 +571,7 @@
             ]
         },
         {
-            "identifier": 151,
+            "identifier": 157,
             "type": [
                 {
                     "type": "array",
@@ -566,7 +587,7 @@
         {
             "identifier": "__kefir_function_setC_static___func___13",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -582,7 +603,7 @@
         {
             "identifier": "__kefir_function_getB_static___func___5",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -598,7 +619,7 @@
         {
             "identifier": "__kefir_function_setB_static___func___11",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -614,7 +635,7 @@
         {
             "identifier": "__kefir_function_getA_static___func___4",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -630,7 +651,7 @@
         {
             "identifier": "__kefir_function_vla_test_static___func___23",
             "storage": "global",
-            "type": 151,
+            "type": 157,
             "value": [
                 {
                     "class": "string",
@@ -646,7 +667,7 @@
         {
             "identifier": "__kefir_function_getD_static___func___7",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -662,7 +683,7 @@
         {
             "identifier": "__kefir_function_setS_static___func___18",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -678,7 +699,7 @@
         {
             "identifier": "__kefir_function_getC_static___func___6",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -694,7 +715,7 @@
         {
             "identifier": "__kefir_function_sumS_static___func___20",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -710,7 +731,7 @@
         {
             "identifier": "__kefir_function_setA_static___func___9",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -726,7 +747,7 @@
         {
             "identifier": "__kefir_function_setD_static___func___15",
             "storage": "global",
-            "type": 133,
+            "type": 139,
             "value": [
                 {
                     "class": "string",
@@ -1020,7 +1041,7 @@
         },
         {
             "identifier": 22,
-            "name": "__kefir_builtin_isgreater",
+            "name": "__kefir_builtin_isfinitel",
             "parameters": 48,
             "vararg": false,
             "returns": 49,
@@ -1029,7 +1050,7 @@
         },
         {
             "identifier": 23,
-            "name": "__kefir_builtin_popcountl",
+            "name": "__kefir_builtin_isgreater",
             "parameters": 50,
             "vararg": false,
             "returns": 51,
@@ -1038,7 +1059,7 @@
         },
         {
             "identifier": 24,
-            "name": "__kefir_builtin_isgreaterequalf",
+            "name": "__kefir_builtin_popcountl",
             "parameters": 52,
             "vararg": false,
             "returns": 53,
@@ -1047,7 +1068,7 @@
         },
         {
             "identifier": 25,
-            "name": "__kefir_builtin_isgreaterequall",
+            "name": "__kefir_builtin_isgreaterequalf",
             "parameters": 54,
             "vararg": false,
             "returns": 55,
@@ -1056,7 +1077,7 @@
         },
         {
             "identifier": 26,
-            "name": "__kefir_builtin_islessequal",
+            "name": "__kefir_builtin_isgreaterequall",
             "parameters": 56,
             "vararg": false,
             "returns": 57,
@@ -1065,7 +1086,7 @@
         },
         {
             "identifier": 27,
-            "name": "__kefir_builtin_return_address",
+            "name": "__kefir_builtin_isfinitef32",
             "parameters": 58,
             "vararg": false,
             "returns": 59,
@@ -1074,7 +1095,7 @@
         },
         {
             "identifier": 28,
-            "name": "__kefir_builtin_clz",
+            "name": "__kefir_builtin_isfinitef64",
             "parameters": 60,
             "vararg": false,
             "returns": 61,
@@ -1083,7 +1104,7 @@
         },
         {
             "identifier": 29,
-            "name": "__kefir_builtin_ctz",
+            "name": "__kefir_builtin_islessequal",
             "parameters": 62,
             "vararg": false,
             "returns": 63,
@@ -1092,7 +1113,7 @@
         },
         {
             "identifier": 30,
-            "name": "__kefir_builtin_ffs",
+            "name": "__kefir_builtin_return_address",
             "parameters": 64,
             "vararg": false,
             "returns": 65,
@@ -1101,7 +1122,7 @@
         },
         {
             "identifier": 31,
-            "name": "__kefir_builtin_copysign",
+            "name": "__kefir_builtin_clz",
             "parameters": 66,
             "vararg": false,
             "returns": 67,
@@ -1110,7 +1131,7 @@
         },
         {
             "identifier": 32,
-            "name": "__kefir_builtin_parityll",
+            "name": "__kefir_builtin_ctz",
             "parameters": 68,
             "vararg": false,
             "returns": 69,
@@ -1119,7 +1140,7 @@
         },
         {
             "identifier": 33,
-            "name": "__kefir_builtin_popcount",
+            "name": "__kefir_builtin_ffs",
             "parameters": 70,
             "vararg": false,
             "returns": 71,
@@ -1128,7 +1149,7 @@
         },
         {
             "identifier": 34,
-            "name": "__kefir_builtin_bswap16",
+            "name": "__kefir_builtin_copysign",
             "parameters": 72,
             "vararg": false,
             "returns": 73,
@@ -1137,7 +1158,7 @@
         },
         {
             "identifier": 35,
-            "name": "__kefir_builtin_bswap32",
+            "name": "__kefir_builtin_parityll",
             "parameters": 74,
             "vararg": false,
             "returns": 75,
@@ -1146,7 +1167,7 @@
         },
         {
             "identifier": 36,
-            "name": "__kefir_builtin_bswap64",
+            "name": "__kefir_builtin_popcount",
             "parameters": 76,
             "vararg": false,
             "returns": 77,
@@ -1155,7 +1176,7 @@
         },
         {
             "identifier": 37,
-            "name": "__kefir_builtin_clrsbll",
+            "name": "__kefir_builtin_bswap16",
             "parameters": 78,
             "vararg": false,
             "returns": 79,
@@ -1164,7 +1185,7 @@
         },
         {
             "identifier": 38,
-            "name": "__kefir_builtin_islessf",
+            "name": "__kefir_builtin_bswap32",
             "parameters": 80,
             "vararg": false,
             "returns": 81,
@@ -1173,7 +1194,7 @@
         },
         {
             "identifier": 39,
-            "name": "__kefir_builtin_islessl",
+            "name": "__kefir_builtin_bswap64",
             "parameters": 82,
             "vararg": false,
             "returns": 83,
@@ -1182,7 +1203,7 @@
         },
         {
             "identifier": 40,
-            "name": "__kefir_builtin_parityl",
+            "name": "__kefir_builtin_clrsbll",
             "parameters": 84,
             "vararg": false,
             "returns": 85,
@@ -1191,7 +1212,7 @@
         },
         {
             "identifier": 41,
-            "name": "__kefir_builtin_clrsbl",
+            "name": "__kefir_builtin_islessf",
             "parameters": 86,
             "vararg": false,
             "returns": 87,
@@ -1200,7 +1221,7 @@
         },
         {
             "identifier": 42,
-            "name": "__kefir_builtin_isless",
+            "name": "__kefir_builtin_islessl",
             "parameters": 88,
             "vararg": false,
             "returns": 89,
@@ -1209,7 +1230,7 @@
         },
         {
             "identifier": 43,
-            "name": "__kefir_builtin_parity",
+            "name": "__kefir_builtin_parityl",
             "parameters": 90,
             "vararg": false,
             "returns": 91,
@@ -1218,7 +1239,7 @@
         },
         {
             "identifier": 44,
-            "name": "__kefir_builtin_frame_address",
+            "name": "__kefir_builtin_clrsbl",
             "parameters": 92,
             "vararg": false,
             "returns": 93,
@@ -1227,7 +1248,7 @@
         },
         {
             "identifier": 45,
-            "name": "__kefir_builtin_clzl",
+            "name": "__kefir_builtin_isless",
             "parameters": 94,
             "vararg": false,
             "returns": 95,
@@ -1236,7 +1257,7 @@
         },
         {
             "identifier": 46,
-            "name": "__kefir_builtin_ctzl",
+            "name": "__kefir_builtin_parity",
             "parameters": 96,
             "vararg": false,
             "returns": 97,
@@ -1245,7 +1266,7 @@
         },
         {
             "identifier": 47,
-            "name": "__kefir_builtin_ffsl",
+            "name": "__kefir_builtin_frame_address",
             "parameters": 98,
             "vararg": false,
             "returns": 99,
@@ -1254,7 +1275,7 @@
         },
         {
             "identifier": 48,
-            "name": "__kefir_builtin_trap",
+            "name": "__kefir_builtin_clzl",
             "parameters": 100,
             "vararg": false,
             "returns": 101,
@@ -1263,7 +1284,7 @@
         },
         {
             "identifier": 49,
-            "name": "__kefir_builtin_islessequalf",
+            "name": "__kefir_builtin_ctzl",
             "parameters": 102,
             "vararg": false,
             "returns": 103,
@@ -1272,7 +1293,7 @@
         },
         {
             "identifier": 50,
-            "name": "__kefir_builtin_islessequall",
+            "name": "__kefir_builtin_ffsl",
             "parameters": 104,
             "vararg": false,
             "returns": 105,
@@ -1281,7 +1302,7 @@
         },
         {
             "identifier": 51,
-            "name": "getA",
+            "name": "__kefir_builtin_trap",
             "parameters": 106,
             "vararg": false,
             "returns": 107,
@@ -1290,98 +1311,125 @@
         },
         {
             "identifier": 52,
-            "name": "getB",
-            "parameters": 106,
+            "name": "__kefir_builtin_islessequalf",
+            "parameters": 108,
+            "vararg": false,
+            "returns": 109,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 53,
+            "name": "__kefir_builtin_islessequall",
+            "parameters": 110,
             "vararg": false,
             "returns": 111,
             "returns_twice": false,
             "no_return": false
         },
         {
-            "identifier": 53,
-            "name": "getC",
-            "parameters": 106,
-            "vararg": false,
-            "returns": 115,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 54,
-            "name": "getD",
-            "parameters": 106,
+            "name": "getA",
+            "parameters": 112,
             "vararg": false,
-            "returns": 119,
+            "returns": 113,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 55,
-            "name": "setA",
-            "parameters": 107,
+            "name": "getB",
+            "parameters": 112,
             "vararg": false,
-            "returns": 106,
+            "returns": 117,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 56,
-            "name": "setB",
-            "parameters": 111,
+            "name": "getC",
+            "parameters": 112,
             "vararg": false,
-            "returns": 106,
+            "returns": 121,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 57,
-            "name": "setC",
-            "parameters": 115,
+            "name": "getD",
+            "parameters": 112,
             "vararg": false,
-            "returns": 106,
+            "returns": 125,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 58,
-            "name": "setD",
-            "parameters": 119,
+            "name": "setA",
+            "parameters": 113,
             "vararg": false,
-            "returns": 106,
+            "returns": 112,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 59,
-            "name": "setS",
-            "parameters": 138,
+            "name": "setB",
+            "parameters": 117,
             "vararg": false,
-            "returns": 106,
+            "returns": 112,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 60,
-            "name": "sumS",
-            "parameters": 119,
+            "name": "setC",
+            "parameters": 121,
             "vararg": false,
-            "returns": 119,
+            "returns": 112,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 61,
-            "name": "vla_test",
-            "parameters": 115,
+            "name": "setD",
+            "parameters": 125,
             "vararg": false,
-            "returns": 106,
+            "returns": 112,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 62,
+            "name": "setS",
+            "parameters": 144,
+            "vararg": false,
+            "returns": 112,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 63,
+            "name": "sumS",
+            "parameters": 125,
+            "vararg": false,
+            "returns": 125,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 64,
+            "name": "vla_test",
+            "parameters": 121,
+            "vararg": false,
+            "returns": 112,
             "returns_twice": false,
             "no_return": false
         }
     ],
     "functions": [
         {
-            "identifier": 51,
+            "identifier": 54,
             "name": "getA",
             "body": [
                 {
@@ -1403,7 +1451,7 @@
             "public_labels": []
         },
         {
-            "identifier": 52,
+            "identifier": 55,
             "name": "getB",
             "body": [
                 {
@@ -1425,7 +1473,7 @@
             "public_labels": []
         },
         {
-            "identifier": 53,
+            "identifier": 56,
             "name": "getC",
             "body": [
                 {
@@ -1447,7 +1495,7 @@
             "public_labels": []
         },
         {
-            "identifier": 54,
+            "identifier": 57,
             "name": "getD",
             "body": [
                 {
@@ -1469,13 +1517,13 @@
             "public_labels": []
         },
         {
-            "identifier": 55,
+            "identifier": 58,
             "name": "setA",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 532575944704,
-                    "type": 107,
+                    "id": 558345748480,
+                    "type": 113,
                     "type_index": 0
                 },
                 {
@@ -1487,8 +1535,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 532575944704,
-                    "type": 107,
+                    "id": 558345748480,
+                    "type": 113,
                     "type_index": 0
                 },
                 {
@@ -1503,8 +1551,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 532575944704,
-                    "type": 107,
+                    "id": 558345748480,
+                    "type": 113,
                     "type_index": 0
                 },
                 {
@@ -1542,8 +1590,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 532575944704,
-                    "type": 107,
+                    "id": 558345748480,
+                    "type": 113,
                     "type_index": 0
                 },
                 {
@@ -1553,13 +1601,13 @@
             "public_labels": []
         },
         {
-            "identifier": 56,
+            "identifier": 59,
             "name": "setB",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 549755813888,
-                    "type": 111,
+                    "id": 575525617664,
+                    "type": 117,
                     "type_index": 0
                 },
                 {
@@ -1571,8 +1619,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 549755813888,
-                    "type": 111,
+                    "id": 575525617664,
+                    "type": 117,
                     "type_index": 0
                 },
                 {
@@ -1587,8 +1635,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 549755813888,
-                    "type": 111,
+                    "id": 575525617664,
+                    "type": 117,
                     "type_index": 0
                 },
                 {
@@ -1626,8 +1674,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 549755813888,
-                    "type": 111,
+                    "id": 575525617664,
+                    "type": 117,
                     "type_index": 0
                 },
                 {
@@ -1637,13 +1685,13 @@
             "public_labels": []
         },
         {
-            "identifier": 57,
+            "identifier": 60,
             "name": "setC",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 566935683072,
-                    "type": 115,
+                    "id": 592705486848,
+                    "type": 121,
                     "type_index": 0
                 },
                 {
@@ -1655,8 +1703,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 566935683072,
-                    "type": 115,
+                    "id": 592705486848,
+                    "type": 121,
                     "type_index": 0
                 },
                 {
@@ -1671,8 +1719,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 566935683072,
-                    "type": 115,
+                    "id": 592705486848,
+                    "type": 121,
                     "type_index": 0
                 },
                 {
@@ -1710,8 +1758,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 566935683072,
-                    "type": 115,
+                    "id": 592705486848,
+                    "type": 121,
                     "type_index": 0
                 },
                 {
@@ -1721,13 +1769,13 @@
             "public_labels": []
         },
         {
-            "identifier": 58,
+            "identifier": 61,
             "name": "setD",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 584115552256,
-                    "type": 119,
+                    "id": 609885356032,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -1739,8 +1787,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552256,
-                    "type": 119,
+                    "id": 609885356032,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -1755,8 +1803,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552256,
-                    "type": 119,
+                    "id": 609885356032,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -1794,8 +1842,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552256,
-                    "type": 119,
+                    "id": 609885356032,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -1805,13 +1853,13 @@
             "public_labels": []
         },
         {
-            "identifier": 59,
+            "identifier": 62,
             "name": "setS",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 601295421440,
-                    "type": 138,
+                    "id": 627065225216,
+                    "type": 144,
                     "type_index": 0
                 },
                 {
@@ -1819,8 +1867,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421441,
-                    "type": 138,
+                    "id": 627065225217,
+                    "type": 144,
                     "type_index": 1
                 },
                 {
@@ -1832,8 +1880,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421441,
-                    "type": 138,
+                    "id": 627065225217,
+                    "type": 144,
                     "type_index": 1
                 },
                 {
@@ -1852,8 +1900,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421440,
-                    "type": 138,
+                    "id": 627065225216,
+                    "type": 144,
                     "type_index": 0
                 },
                 {
@@ -1868,8 +1916,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421441,
-                    "type": 138,
+                    "id": 627065225217,
+                    "type": 144,
                     "type_index": 1
                 },
                 {
@@ -1880,8 +1928,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421440,
-                    "type": 138,
+                    "id": 627065225216,
+                    "type": 144,
                     "type_index": 0
                 },
                 {
@@ -1970,8 +2018,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421441,
-                    "type": 138,
+                    "id": 627065225217,
+                    "type": 144,
                     "type_index": 1
                 },
                 {
@@ -1982,8 +2030,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421440,
-                    "type": 138,
+                    "id": 627065225216,
+                    "type": 144,
                     "type_index": 0
                 },
                 {
@@ -2072,8 +2120,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421441,
-                    "type": 138,
+                    "id": 627065225217,
+                    "type": 144,
                     "type_index": 1
                 },
                 {
@@ -2084,8 +2132,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421440,
-                    "type": 138,
+                    "id": 627065225216,
+                    "type": 144,
                     "type_index": 0
                 },
                 {
@@ -2251,8 +2299,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421441,
-                    "type": 138,
+                    "id": 627065225217,
+                    "type": 144,
                     "type_index": 1
                 },
                 {
@@ -2266,8 +2314,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421440,
-                    "type": 138,
+                    "id": 627065225216,
+                    "type": 144,
                     "type_index": 0
                 },
                 {
@@ -2433,8 +2481,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421441,
-                    "type": 138,
+                    "id": 627065225217,
+                    "type": 144,
                     "type_index": 1
                 },
                 {
@@ -2445,8 +2493,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421440,
-                    "type": 138,
+                    "id": 627065225216,
+                    "type": 144,
                     "type_index": 0
                 },
                 {
@@ -2485,8 +2533,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421440,
-                    "type": 138,
+                    "id": 627065225216,
+                    "type": 144,
                     "type_index": 0
                 },
                 {
@@ -2494,8 +2542,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 601295421441,
-                    "type": 138,
+                    "id": 627065225217,
+                    "type": 144,
                     "type_index": 1
                 },
                 {
@@ -2505,13 +2553,13 @@
             "public_labels": []
         },
         {
-            "identifier": 60,
+            "identifier": 63,
             "name": "sumS",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 622770257920,
-                    "type": 119,
+                    "id": 648540061696,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -2523,8 +2571,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 622770257920,
-                    "type": 119,
+                    "id": 648540061696,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -2539,8 +2587,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 622770257920,
-                    "type": 119,
+                    "id": 648540061696,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -2581,8 +2629,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 622770257920,
-                    "type": 119,
+                    "id": 648540061696,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -2626,8 +2674,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 622770257920,
-                    "type": 119,
+                    "id": 648540061696,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -2716,8 +2764,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 622770257920,
-                    "type": 119,
+                    "id": 648540061696,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -2803,8 +2851,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 622770257920,
-                    "type": 119,
+                    "id": 648540061696,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -2834,8 +2882,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 622770257920,
-                    "type": 119,
+                    "id": 648540061696,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -2846,8 +2894,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 622770257920,
-                    "type": 119,
+                    "id": 648540061696,
+                    "type": 125,
                     "type_index": 0
                 },
                 {
@@ -2857,13 +2905,13 @@
             "public_labels": []
         },
         {
-            "identifier": 61,
+            "identifier": 64,
             "name": "vla_test",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 644245094402,
-                    "type": 150,
+                    "id": 670014898178,
+                    "type": 156,
                     "type_index": 2
                 },
                 {
@@ -2875,8 +2923,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094402,
-                    "type": 150,
+                    "id": 670014898178,
+                    "type": 156,
                     "type_index": 2
                 },
                 {
@@ -2891,8 +2939,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094403,
-                    "type": 150,
+                    "id": 670014898179,
+                    "type": 156,
                     "type_index": 3
                 },
                 {
@@ -2900,8 +2948,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094400,
-                    "type": 150,
+                    "id": 670014898176,
+                    "type": 156,
                     "type_index": 0
                 },
                 {
@@ -2929,8 +2977,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094403,
-                    "type": 150,
+                    "id": 670014898179,
+                    "type": 156,
                     "type_index": 3
                 },
                 {
@@ -2946,8 +2994,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094402,
-                    "type": 150,
+                    "id": 670014898178,
+                    "type": 156,
                     "type_index": 2
                 },
                 {
@@ -2964,8 +3012,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094403,
-                    "type": 150,
+                    "id": 670014898179,
+                    "type": 156,
                     "type_index": 3
                 },
                 {
@@ -3001,8 +3049,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094403,
-                    "type": 150,
+                    "id": 670014898179,
+                    "type": 156,
                     "type_index": 3
                 },
                 {
@@ -3020,8 +3068,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094403,
-                    "type": 150,
+                    "id": 670014898179,
+                    "type": 156,
                     "type_index": 3
                 },
                 {
@@ -3065,8 +3113,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094403,
-                    "type": 150,
+                    "id": 670014898179,
+                    "type": 156,
                     "type_index": 3
                 },
                 {
@@ -3122,8 +3170,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094400,
-                    "type": 150,
+                    "id": 670014898176,
+                    "type": 156,
                     "type_index": 0
                 },
                 {
@@ -3151,8 +3199,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094403,
-                    "type": 150,
+                    "id": 670014898179,
+                    "type": 156,
                     "type_index": 3
                 },
                 {
@@ -3160,8 +3208,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 644245094402,
-                    "type": 150,
+                    "id": 670014898178,
+                    "type": 156,
                     "type_index": 2
                 },
                 {

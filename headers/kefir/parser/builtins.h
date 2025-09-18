@@ -64,6 +64,7 @@
 #define KEFIR_PARSER_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_FLOAT "__kefir_builtin_construct_complex_float"
 #define KEFIR_PARSER_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE "__kefir_builtin_construct_complex_double"
 #define KEFIR_PARSER_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE "__kefir_builtin_construct_complex_long_double"
+#define KEFIR_PARSER_BUILTIN_KEFIR_ISFINITE "__kefir_builtin_isfinite"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 
