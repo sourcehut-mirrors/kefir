@@ -106,6 +106,10 @@
 #error "__KEFIR_SOFTFLOAT_ISLESS__ is missing"
 #endif
 
+#ifndef __KEFIR_SOFTFLOAT_ISFINITE__
+#error "__KEFIR_SOFTFLOAT_ISFINITE__ is missing"
+#endif
+
 #ifndef __KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__
 #error "__KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__ is missing"
 #endif

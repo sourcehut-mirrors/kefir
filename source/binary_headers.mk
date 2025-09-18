@@ -42,6 +42,7 @@ $(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.h: $(wildcard $(BIN_HEADERS_INCD
 		-D__KEFIR_SOFTFLOAT_INFINITY__="__builtin_inff()" \
 		-D__KEFIR_SOFTFLOAT_ISGREATER__="__builtin_isgreater" \
 		-D__KEFIR_SOFTFLOAT_ISLESS__="__builtin_isless" \
+		-D__KEFIR_SOFTFLOAT_ISFINITE__="__builtin_isfinite" \
 		-D__KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__="__kefir_builtin_construct_complex_float" \
 		-D__KEFIR_SOFTFLOAT_MAKE_COMPLEX_DOUBLE__="__kefir_builtin_construct_complex_double" \
 		-D__KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__="__kefir_builtin_construct_complex_long_double" \

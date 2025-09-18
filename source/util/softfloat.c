@@ -66,6 +66,7 @@ typedef struct kefir_softfloat_complex_double {
 #define __KEFIR_SOFTFLOAT_INFINITY__ INFINITY
 #define __KEFIR_SOFTFLOAT_ISGREATER__ isgreater
 #define __KEFIR_SOFTFLOAT_ISLESS__ isless
+#define __KEFIR_SOFTFLOAT_ISFINITE__ isfinite
 #define __KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__ MAKE_COMPLEX_FLOAT
 #define __KEFIR_SOFTFLOAT_MAKE_COMPLEX_DOUBLE__ MAKE_COMPLEX_DOUBLE
 #define __KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__ MAKE_COMPLEX_LONG_DOUBLE
@@ -89,7 +90,7 @@ struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_d
 
     const __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ logbw = logbl(__kefir_softfloat_fmaximum_numl(__kefir_softfloat_fabsl(c), __kefir_softfloat_fabsl(d)));
     int ilogbw = 0;
-    if (isfinite(logbw)) {
+    if (__KEFIR_SOFTFLOAT_ISFINITE__(logbw)) {
         ilogbw = (int) logbw;
         c = __kefir_softfloat_scalbnl(c, -ilogbw);
         d = __kefir_softfloat_scalbnl(d, -ilogbw);
@@ -108,12 +109,12 @@ struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_d
         if (denom == 0.0L && (!__KEFIR_SOFTFLOAT_ISNAN__(a) || !__KEFIR_SOFTFLOAT_ISNAN__(b))) {
             x = __KEFIR_SOFTFLOAT_COPYSIGNL__(__KEFIR_SOFTFLOAT_INFINITY__, c) * a;
             y = __KEFIR_SOFTFLOAT_COPYSIGNL__(__KEFIR_SOFTFLOAT_INFINITY__, c) * b;
-        } else if ((__KEFIR_SOFTFLOAT_ISINF_SIGN__(a) || __KEFIR_SOFTFLOAT_ISINF_SIGN__(b)) && isfinite(c) && isfinite(d)) {
+        } else if ((__KEFIR_SOFTFLOAT_ISINF_SIGN__(a) || __KEFIR_SOFTFLOAT_ISINF_SIGN__(b)) && __KEFIR_SOFTFLOAT_ISFINITE__(c) && __KEFIR_SOFTFLOAT_ISFINITE__(d)) {
             COPYSIGN_IF_INF(&a);
             COPYSIGN_IF_INF(&b);
             x = __KEFIR_SOFTFLOAT_INFINITY__ * EVAL_X();
             y = __KEFIR_SOFTFLOAT_INFINITY__ * EVAL_Y();
-        } else if (__KEFIR_SOFTFLOAT_ISINF_SIGN__(logbw) && logbw > 0.0L && isfinite(a) && isfinite(b)) {
+        } else if (__KEFIR_SOFTFLOAT_ISINF_SIGN__(logbw) && logbw > 0.0L && __KEFIR_SOFTFLOAT_ISFINITE__(a) && __KEFIR_SOFTFLOAT_ISFINITE__(b)) {
             COPYSIGN_IF_INF(&c);
             COPYSIGN_IF_INF(&d);
             x = 0.0 * EVAL_X();
