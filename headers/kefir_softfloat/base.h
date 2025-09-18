@@ -34,8 +34,20 @@
 #error "softfloat.h header shall not be included directly"
 #endif
 
+#ifndef __KEFIR_SOFTFLOAT_LDBL_MANT_DIG__
+#error "__KEFIR_SOFTFLOAT_LDBL_MANT_DIG__ is missing"
+#endif
+
 #ifndef __KEFIR_SOFTFLOAT_BOOL_TYPE_T__
 #error "__KEFIR_SOFTFLOAT_BOOL_TYPE_T__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_INT_T__
+#error "__KEFIR_SOFTFLOAT_INT_T__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_UINT64_T__
+#error "__KEFIR_SOFTFLOAT_UINT64_T__ is missing"
 #endif
 
 #ifndef __KEFIR_SOFTFLOAT_FLOAT_T__
@@ -84,6 +96,14 @@
 
 #ifndef __KEFIR_SOFTFLOAT_INFINITY__
 #error "__KEFIR_SOFTFLOAT_INFINITY__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_ISGREATER__
+#error "__KEFIR_SOFTFLOAT_ISGREATER__ is missing"
+#endif
+
+#ifndef __KEFIR_SOFTFLOAT_ISLESS__
+#error "__KEFIR_SOFTFLOAT_ISLESS__ is missing"
 #endif
 
 #ifndef __KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__

@@ -24,7 +24,10 @@ $(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.h: $(wildcard $(BIN_HEADERS_INCD
 	@mkdir -p "$(shell dirname $@)"
 	@$(BIN_HEADERS_CC) -E -I "$(BIN_HEADERS_INCDIR)" \
 		-D__KEFIR_SOFTFLOAT_USE_SOFTFLOAT_IMPL__  \
+		-D__KEFIR_SOFTFLOAT_LDBL_MANT_DIG__="__LDBL_MANT_DIG__" \
 		-D__KEFIR_SOFTFLOAT_BOOL_TYPE_T__=_Bool \
+		-D__KEFIR_SOFTFLOAT_INT_T__="int" \
+		-D__KEFIR_SOFTFLOAT_UINT64_T__="__UINT64_TYPE__" \
 		-D__KEFIR_SOFTFLOAT_FLOAT_T__="float" \
 		-D__KEFIR_SOFTFLOAT_DOUBLE_T__="double" \
 		-D__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__="long double" \
@@ -37,6 +40,8 @@ $(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.h: $(wildcard $(BIN_HEADERS_INCD
 		-D__KEFIR_SOFTFLOAT_COPYSIGN__=__builtin_copysign \
 		-D__KEFIR_SOFTFLOAT_COPYSIGNL__=__builtin_copysignl \
 		-D__KEFIR_SOFTFLOAT_INFINITY__="__builtin_inff()" \
+		-D__KEFIR_SOFTFLOAT_ISGREATER__="__builtin_isgreater" \
+		-D__KEFIR_SOFTFLOAT_ISLESS__="__builtin_isless" \
 		-D__KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__="__kefir_builtin_construct_complex_float" \
 		-D__KEFIR_SOFTFLOAT_MAKE_COMPLEX_DOUBLE__="__kefir_builtin_construct_complex_double" \
 		-D__KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__="__kefir_builtin_construct_complex_long_double" \

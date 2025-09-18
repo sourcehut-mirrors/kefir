@@ -31,6 +31,7 @@
 #define __KEFIR_SOFTFLOAT_SOFTFLOAT_H_
 
 #include "kefir_softfloat/base.h"
+#include "kefir_softfloat/math.h"
 #include "kefir_softfloat/complex.h"
 
 #endif

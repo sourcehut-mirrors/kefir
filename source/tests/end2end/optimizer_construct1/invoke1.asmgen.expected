@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 43,
+            "id": 46,
             "name": "main",
             "code": {
                 "entry_point": 0,
@@ -13,7 +13,7 @@
                             {
                                 "id": 0,
                                 "opcode": "invoke",
-                                "function_declaration_id": 44,
+                                "function_declaration_id": 47,
                                 "arguments": [],
                                 "return_space": null,
                                 "indirect_ref": null,
@@ -30,7 +30,7 @@
                             {
                                 "id": 2,
                                 "opcode": "invoke",
-                                "function_declaration_id": 45,
+                                "function_declaration_id": 48,
                                 "arguments": [
                                     1
                                 ],
@@ -84,7 +84,7 @@
                             {
                                 "id": 9,
                                 "opcode": "invoke",
-                                "function_declaration_id": 46,
+                                "function_declaration_id": 49,
                                 "arguments": [
                                     3,
                                     4,
@@ -101,7 +101,7 @@
                             {
                                 "id": 10,
                                 "opcode": "invoke",
-                                "function_declaration_id": 47,
+                                "function_declaration_id": 50,
                                 "arguments": [],
                                 "return_space": null,
                                 "indirect_ref": null,
@@ -159,7 +159,7 @@
                             {
                                 "id": 17,
                                 "opcode": "invoke",
-                                "function_declaration_id": 48,
+                                "function_declaration_id": 51,
                                 "arguments": [
                                     11,
                                     16
@@ -172,7 +172,7 @@
                             {
                                 "id": 19,
                                 "opcode": "invoke",
-                                "function_declaration_id": 50,
+                                "function_declaration_id": 53,
                                 "arguments": [],
                                 "return_space": null,
                                 "indirect_ref": null,
@@ -203,7 +203,7 @@
                             {
                                 "id": 23,
                                 "opcode": "invoke",
-                                "function_declaration_id": 51,
+                                "function_declaration_id": 54,
                                 "arguments": [
                                     20,
                                     21,
@@ -231,7 +231,7 @@
                             {
                                 "id": 26,
                                 "opcode": "invoke",
-                                "function_declaration_id": 52,
+                                "function_declaration_id": 55,
                                 "arguments": [
                                     24,
                                     25
@@ -244,7 +244,7 @@
                             {
                                 "id": 27,
                                 "opcode": "invoke",
-                                "function_declaration_id": 53,
+                                "function_declaration_id": 56,
                                 "arguments": [],
                                 "return_space": null,
                                 "indirect_ref": null,
@@ -268,7 +268,7 @@
                             {
                                 "id": 29,
                                 "opcode": "invoke",
-                                "function_declaration_id": 49,
+                                "function_declaration_id": 52,
                                 "arguments": [
                                     18,
                                     19,
@@ -298,7 +298,7 @@
                             {
                                 "id": 32,
                                 "opcode": "invoke_virtual",
-                                "function_declaration_id": 54,
+                                "function_declaration_id": 57,
                                 "arguments": [
                                     31
                                 ],
@@ -339,7 +339,7 @@
                             {
                                 "id": 37,
                                 "opcode": "invoke_virtual",
-                                "function_declaration_id": 55,
+                                "function_declaration_id": 58,
                                 "arguments": [
                                     34,
                                     35,

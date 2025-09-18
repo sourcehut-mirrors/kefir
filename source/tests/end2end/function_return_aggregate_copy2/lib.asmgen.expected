@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 39,
+            "id": 42,
             "name": "get2",
             "code": {
                 "entry_point": 0,
@@ -25,21 +25,21 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 80,
+                                "type_id": 86,
                                 "type_index": 0,
                                 "control_next": null
                             },
                             {
                                 "id": 6,
                                 "opcode": "alloc_local",
-                                "type_id": 80,
+                                "type_id": 86,
                                 "type_index": 5,
                                 "control_next": null
                             },
                             {
                                 "id": 13,
                                 "opcode": "invoke",
-                                "function_declaration_id": 40,
+                                "function_declaration_id": 43,
                                 "arguments": [
                                     0,
                                     10
@@ -54,7 +54,7 @@
                                 "target": 0,
                                 "source": 13,
                                 "type": {
-                                    "id": 83,
+                                    "id": 89,
                                     "index": 0
                                 },
                                 "control_next": 20

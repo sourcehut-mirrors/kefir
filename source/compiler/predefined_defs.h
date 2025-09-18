@@ -602,6 +602,10 @@ extern _Bool __kefir_builtin_islessequalf(float, float);
 extern _Bool __kefir_builtin_islessequal(double, double);
 extern _Bool __kefir_builtin_islessequall(long double, long double);
 
+float __kefir_builtin_copysignf(float, float);
+double __kefir_builtin_copysign(double, double);
+long double __kefir_builtin_copysignl(long double, long double);
+
 // Builtins
 #define __builtin_va_start(_vlist, _arg) __builtin_c23_va_start((_vlist), (_arg))
 #define __builtin_expect(_exp, _c) ((_c), (_exp))
