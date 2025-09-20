@@ -24,7 +24,7 @@ __kefir_text_func_test2_begin:
     call test@PLT
     movq -48(%rbp), %rcx
     test %ecx, %ecx
-    jnz _kefir_func_test2_label3
+    jnz __kefir_func_test2_label3
     movl $10, -16(%rbp)
     movl $11, -12(%rbp)
     movl $12, -24(%rbp)
@@ -36,7 +36,7 @@ __kefir_text_func_test2_begin:
     leaq -24(%rbp), %r9
     xor %eax, %eax
     call test@PLT
-_kefir_func_test2_label2:
+__kefir_func_test2_label2:
     movl $100, -28(%rbp)
     mov $3, %rdi
     leaq -8(%rbp), %rsi
@@ -47,7 +47,7 @@ _kefir_func_test2_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_test2_label3:
+__kefir_func_test2_label3:
     movl $3, -36(%rbp)
     movl $4, -4(%rbp)
     mov $4, %rdi
@@ -58,11 +58,11 @@ _kefir_func_test2_label3:
     xor %eax, %eax
     call test@PLT
     movl $0, -20(%rbp)
-_kefir_func_test2_label4:
+__kefir_func_test2_label4:
     movl -20(%rbp), %eax
     cmp $10, %eax
-    jge _kefir_func_test2_label2
-_kefir_func_test2_label5:
+    jge __kefir_func_test2_label2
+__kefir_func_test2_label5:
     mov $5, %rdi
     leaq -8(%rbp), %rsi
     leaq -40(%rbp), %rdx
@@ -74,7 +74,7 @@ _kefir_func_test2_label5:
     movl -20(%rbp), %eax
     add $1, %eax
     movl %eax, -20(%rbp)
-    jmp _kefir_func_test2_label4
+    jmp __kefir_func_test2_label4
 __kefir_text_func_test2_end:
 
 __kefir_text_section_end:

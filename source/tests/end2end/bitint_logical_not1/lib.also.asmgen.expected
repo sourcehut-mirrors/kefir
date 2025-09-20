@@ -21,7 +21,7 @@ __kefir_text_func_bnot1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_bnot1_label0:
+__kefir_func_bnot1_label0:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
     shl $58, %rax
@@ -42,7 +42,7 @@ __kefir_text_func_bnot2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_bnot2_label0:
+__kefir_func_bnot2_label0:
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
     shl $50, %rax
@@ -63,7 +63,7 @@ __kefir_text_func_bnot3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_bnot3_label0:
+__kefir_func_bnot3_label0:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     shl $35, %rax
@@ -84,7 +84,7 @@ __kefir_text_func_bnot4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_bnot4_label0:
+__kefir_func_bnot4_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     shl $6, %rax
@@ -105,7 +105,7 @@ __kefir_text_func_bnot5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-_kefir_func_bnot5_label0:
+__kefir_func_bnot5_label0:
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movdqu -32(%rbp), %xmm0
@@ -129,7 +129,7 @@ __kefir_text_func_bnot6_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-_kefir_func_bnot6_label0:
+__kefir_func_bnot6_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
     movq %rcx, -40(%rbp)
@@ -175,7 +175,7 @@ __kefir_text_func___kefir_bigint_is_zero_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func___kefir_bigint_is_zero_label0:
+__kefir_func___kefir_bigint_is_zero_label0:
     movq %rsi, -56(%rbp)
     movq %rdi, -48(%rbp)
     movq -56(%rbp), %rax
@@ -187,8 +187,8 @@ _kefir_func___kefir_bigint_is_zero_label0:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_is_zero_label9
-_kefir_func___kefir_bigint_is_zero_label1:
+    jz __kefir_func___kefir_bigint_is_zero_label9
+__kefir_func___kefir_bigint_is_zero_label1:
     movq -56(%rbp), %rax
     mov $8, %rdx
     movsx %edx, %rcx
@@ -208,7 +208,7 @@ _kefir_func___kefir_bigint_is_zero_label1:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -32(%rbp)
-_kefir_func___kefir_bigint_is_zero_label2:
+__kefir_func___kefir_bigint_is_zero_label2:
     movq -32(%rbp), %rax
     movq -40(%rbp), %rcx
     mov $0, %rdx
@@ -217,13 +217,13 @@ _kefir_func___kefir_bigint_is_zero_label2:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_is_zero_label4
-_kefir_func___kefir_bigint_is_zero_label3:
+    jz __kefir_func___kefir_bigint_is_zero_label4
+__kefir_func___kefir_bigint_is_zero_label3:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func___kefir_bigint_is_zero_label4:
+__kefir_func___kefir_bigint_is_zero_label4:
     movq -48(%rbp), %rax
     movq -32(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -241,24 +241,24 @@ _kefir_func___kefir_bigint_is_zero_label4:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_is_zero_label8
-_kefir_func___kefir_bigint_is_zero_label5:
+    jz __kefir_func___kefir_bigint_is_zero_label8
+__kefir_func___kefir_bigint_is_zero_label5:
     movb -24(%rbp), %al
     test %al, %al
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_is_zero_label7
-_kefir_func___kefir_bigint_is_zero_label6:
+    jz __kefir_func___kefir_bigint_is_zero_label7
+__kefir_func___kefir_bigint_is_zero_label6:
     movq -32(%rbp), %rax
     add $1, %rax
     movq %rax, -32(%rbp)
-    jmp _kefir_func___kefir_bigint_is_zero_label2
-_kefir_func___kefir_bigint_is_zero_label7:
+    jmp __kefir_func___kefir_bigint_is_zero_label2
+__kefir_func___kefir_bigint_is_zero_label7:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func___kefir_bigint_is_zero_label8:
+__kefir_func___kefir_bigint_is_zero_label8:
     movq -56(%rbp), %rax
     mov $1, %rdx
     movsx %edx, %rcx
@@ -297,8 +297,8 @@ _kefir_func___kefir_bigint_is_zero_label8:
     and $255, %rcx
     and %eax, %ecx
     movb %cl, -24(%rbp)
-    jmp _kefir_func___kefir_bigint_is_zero_label5
-_kefir_func___kefir_bigint_is_zero_label9:
+    jmp __kefir_func___kefir_bigint_is_zero_label5
+__kefir_func___kefir_bigint_is_zero_label9:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp

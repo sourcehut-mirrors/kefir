@@ -27,7 +27,7 @@ __kefir_text_func_add1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_add1_label0:
+__kefir_func_add1_label0:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
     movq a@GOTPCREL(%rip), %rdx
@@ -35,7 +35,7 @@ _kefir_func_add1_label0:
     sar $58, %rax
     mov %rdx, %rdi
     mov %rax, %r8
-_kefir_func_add1_label1:
+__kefir_func_add1_label1:
     movb (%rdi), %al
     shl $58, %rax
     sar $58, %rax
@@ -46,21 +46,21 @@ _kefir_func_add1_label1:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz _kefir_func_add1_label4
-    jmp _kefir_func_add1_label2
-_kefir_func_add1_label4:
+    jz __kefir_func_add1_label4
+    jmp __kefir_func_add1_label2
+__kefir_func_add1_label4:
     mov %rdi, %rdx
     mov %r8, %rax
-    jmp _kefir_func_add1_label3
-_kefir_func_add1_label2:
+    jmp __kefir_func_add1_label3
+__kefir_func_add1_label2:
     mov %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_add1_label3:
+__kefir_func_add1_label3:
     mov %rdx, %rdi
     mov %rax, %r8
-    jmp _kefir_func_add1_label1
+    jmp __kefir_func_add1_label1
 __kefir_text_func_add1_end:
 
 add2:
@@ -68,7 +68,7 @@ __kefir_text_func_add2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_add2_label0:
+__kefir_func_add2_label0:
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
     movq b@GOTPCREL(%rip), %rdx
@@ -76,7 +76,7 @@ _kefir_func_add2_label0:
     sar $51, %rax
     mov %rdx, %rdi
     mov %rax, %r8
-_kefir_func_add2_label1:
+__kefir_func_add2_label1:
     movw (%rdi), %ax
     shl $51, %rax
     sar $51, %rax
@@ -87,21 +87,21 @@ _kefir_func_add2_label1:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz _kefir_func_add2_label4
-    jmp _kefir_func_add2_label2
-_kefir_func_add2_label4:
+    jz __kefir_func_add2_label4
+    jmp __kefir_func_add2_label2
+__kefir_func_add2_label4:
     mov %rdi, %rdx
     mov %r8, %rax
-    jmp _kefir_func_add2_label3
-_kefir_func_add2_label2:
+    jmp __kefir_func_add2_label3
+__kefir_func_add2_label2:
     mov %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_add2_label3:
+__kefir_func_add2_label3:
     mov %rdx, %rdi
     mov %rax, %r8
-    jmp _kefir_func_add2_label1
+    jmp __kefir_func_add2_label1
 __kefir_text_func_add2_end:
 
 add3:
@@ -109,7 +109,7 @@ __kefir_text_func_add3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_add3_label0:
+__kefir_func_add3_label0:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     movq c@GOTPCREL(%rip), %rdx
@@ -117,7 +117,7 @@ _kefir_func_add3_label0:
     sar $37, %rax
     mov %rdx, %rdi
     mov %rax, %r8
-_kefir_func_add3_label1:
+__kefir_func_add3_label1:
     movl (%rdi), %eax
     shl $37, %rax
     sar $37, %rax
@@ -128,21 +128,21 @@ _kefir_func_add3_label1:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz _kefir_func_add3_label4
-    jmp _kefir_func_add3_label2
-_kefir_func_add3_label4:
+    jz __kefir_func_add3_label4
+    jmp __kefir_func_add3_label2
+__kefir_func_add3_label4:
     mov %rdi, %rdx
     mov %r8, %rax
-    jmp _kefir_func_add3_label3
-_kefir_func_add3_label2:
+    jmp __kefir_func_add3_label3
+__kefir_func_add3_label2:
     mov %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_add3_label3:
+__kefir_func_add3_label3:
     mov %rdx, %rdi
     mov %rax, %r8
-    jmp _kefir_func_add3_label1
+    jmp __kefir_func_add3_label1
 __kefir_text_func_add3_end:
 
 add4:
@@ -150,7 +150,7 @@ __kefir_text_func_add4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_add4_label0:
+__kefir_func_add4_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movq d@GOTPCREL(%rip), %rdx
@@ -158,7 +158,7 @@ _kefir_func_add4_label0:
     sar $14, %rax
     mov %rdx, %rdi
     mov %rax, %r8
-_kefir_func_add4_label1:
+__kefir_func_add4_label1:
     movq (%rdi), %rax
     shl $14, %rax
     sar $14, %rax
@@ -169,21 +169,21 @@ _kefir_func_add4_label1:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz _kefir_func_add4_label4
-    jmp _kefir_func_add4_label2
-_kefir_func_add4_label4:
+    jz __kefir_func_add4_label4
+    jmp __kefir_func_add4_label2
+__kefir_func_add4_label4:
     mov %rdi, %rdx
     mov %r8, %rax
-    jmp _kefir_func_add4_label3
-_kefir_func_add4_label2:
+    jmp __kefir_func_add4_label3
+__kefir_func_add4_label2:
     mov %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_add4_label3:
+__kefir_func_add4_label3:
     mov %rdx, %rdi
     mov %rax, %r8
-    jmp _kefir_func_add4_label1
+    jmp __kefir_func_add4_label1
 __kefir_text_func_add4_end:
 
 add5:
@@ -191,7 +191,7 @@ __kefir_text_func_add5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
-_kefir_func_add5_label0:
+__kefir_func_add5_label0:
     movq %rdi, -48(%rbp)
     movq %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
@@ -204,7 +204,7 @@ _kefir_func_add5_label0:
     movq %rax, -64(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -56(%rbp)
-_kefir_func_add5_label1:
+__kefir_func_add5_label1:
     movq %r10, -96(%rbp)
     leaq -112(%rbp), %rax
     mov %rax, %rdx
@@ -236,28 +236,28 @@ _kefir_func_add5_label1:
     call __atomic_compare_exchange@PLT
     movq -32(%rbp), %r10
     test %al, %al
-    jz _kefir_func_add5_label4
-    jmp _kefir_func_add5_label2
-_kefir_func_add5_label4:
+    jz __kefir_func_add5_label4
+    jmp __kefir_func_add5_label2
+__kefir_func_add5_label4:
     mov %r10, %rsi
     movq -64(%rbp), %rax
     movq %rax, -112(%rbp)
     movq -56(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp _kefir_func_add5_label3
-_kefir_func_add5_label2:
+    jmp __kefir_func_add5_label3
+__kefir_func_add5_label2:
     movq -80(%rbp), %rax
     movq -72(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_add5_label3:
+__kefir_func_add5_label3:
     mov %rsi, %r10
     movq -112(%rbp), %rax
     movq %rax, -64(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -56(%rbp)
-    jmp _kefir_func_add5_label1
+    jmp __kefir_func_add5_label1
 __kefir_text_func_add5_end:
 
 add6:
@@ -266,7 +266,7 @@ __kefir_text_func_add6_begin:
     mov %rsp, %rbp
     sub $256, %rsp
     mov %rdi, %r11
-_kefir_func_add6_label0:
+__kefir_func_add6_label0:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -48(%rbp)
@@ -294,7 +294,7 @@ _kefir_func_add6_label0:
     movq %rax, -80(%rbp)
     movq -216(%rbp), %rax
     movq %rax, -72(%rbp)
-_kefir_func_add6_label1:
+__kefir_func_add6_label1:
     movq %r10, -256(%rbp)
     movq %r11, -248(%rbp)
     leaq -208(%rbp), %rax
@@ -340,9 +340,9 @@ _kefir_func_add6_label1:
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
     test %al, %al
-    jz _kefir_func_add6_label4
-    jmp _kefir_func_add6_label2
-_kefir_func_add6_label4:
+    jz __kefir_func_add6_label4
+    jmp __kefir_func_add6_label2
+__kefir_func_add6_label4:
     mov %r10, %rsi
     movq -112(%rbp), %rax
     movq %rax, -256(%rbp)
@@ -356,8 +356,8 @@ _kefir_func_add6_label4:
     movq %rax, -224(%rbp)
     movq -72(%rbp), %rax
     movq %rax, -216(%rbp)
-    jmp _kefir_func_add6_label3
-_kefir_func_add6_label2:
+    jmp __kefir_func_add6_label3
+__kefir_func_add6_label2:
     mov %r11, %rax
     movdqu -160(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -368,7 +368,7 @@ _kefir_func_add6_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_add6_label3:
+__kefir_func_add6_label3:
     mov %rsi, %r10
     movq -256(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -382,7 +382,7 @@ _kefir_func_add6_label3:
     movq %rax, -80(%rbp)
     movq -216(%rbp), %rax
     movq %rax, -72(%rbp)
-    jmp _kefir_func_add6_label1
+    jmp __kefir_func_add6_label1
 __kefir_text_func_add6_end:
 
 __kefir_text_section_end:
@@ -397,7 +397,7 @@ __kefir_text_func___kefir_bigint_add_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func___kefir_bigint_add_label0:
+__kefir_func___kefir_bigint_add_label0:
     movq %rdx, -48(%rbp)
     movq %rsi, -32(%rbp)
     movq %rdi, -40(%rbp)
@@ -421,7 +421,7 @@ _kefir_func___kefir_bigint_add_label0:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -16(%rbp)
-_kefir_func___kefir_bigint_add_label1:
+__kefir_func___kefir_bigint_add_label1:
     movq -16(%rbp), %rax
     movq -24(%rbp), %rcx
     mov $0, %rdx
@@ -430,13 +430,13 @@ _kefir_func___kefir_bigint_add_label1:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_add_label3
-_kefir_func___kefir_bigint_add_label2:
+    jz __kefir_func___kefir_bigint_add_label3
+__kefir_func___kefir_bigint_add_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func___kefir_bigint_add_label3:
+__kefir_func___kefir_bigint_add_label3:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -473,7 +473,7 @@ _kefir_func___kefir_bigint_add_label3:
     movq -16(%rbp), %rax
     add $1, %rax
     movq %rax, -16(%rbp)
-    jmp _kefir_func___kefir_bigint_add_label1
+    jmp __kefir_func___kefir_bigint_add_label1
 __kefir_text_func___kefir_bigint_add_end:
 
 

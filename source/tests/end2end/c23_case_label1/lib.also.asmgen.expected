@@ -13,13 +13,13 @@ __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
     cmp $0, %edi
-    je _kefir_func_test1_label3
+    je __kefir_func_test1_label3
     cmp $1, %edi
-    je _kefir_func_test1_label3
+    je __kefir_func_test1_label3
     neg %edi
     mov %rdi, %rax
     ret
-_kefir_func_test1_label3:
+__kefir_func_test1_label3:
     not %edi
     mov %rdi, %rax
     ret
@@ -34,12 +34,12 @@ __kefir_text_func_test2_begin:
     cmp $9, %edi
     setle %cl
     and %cl, %al
-    jnz _kefir_func_test2_label3
+    jnz __kefir_func_test2_label3
     cmp $10, %edi
-    je _kefir_func_test2_label3
+    je __kefir_func_test2_label3
     mov %rdi, %rax
     ret
-_kefir_func_test2_label3:
+__kefir_func_test2_label3:
     neg %edi
     mov %rdi, %rax
     ret
@@ -48,7 +48,7 @@ __kefir_text_func_test2_end:
 test3:
 __kefir_text_func_test3_begin:
     cmp $10, %edi
-    je _kefir_func_test3_label2
+    je __kefir_func_test3_label2
     xor %eax, %eax
     cmp $0, %edi
     setge %al
@@ -56,12 +56,12 @@ __kefir_text_func_test3_begin:
     cmp $9, %edi
     setle %cl
     and %cl, %al
-    jnz _kefir_func_test3_label3
-_kefir_func_test3_label2:
+    jnz __kefir_func_test3_label3
+__kefir_func_test3_label2:
     neg %edi
     mov %rdi, %rax
     ret
-_kefir_func_test3_label3:
+__kefir_func_test3_label3:
     mov %rdi, %rax
     ret
 __kefir_text_func_test3_end:

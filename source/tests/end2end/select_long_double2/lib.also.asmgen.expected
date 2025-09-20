@@ -35,30 +35,30 @@ __kefir_text_func_get_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get_label2
+    jnz __kefir_func_get_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get_label1:
+__kefir_func_get_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get_label2:
+__kefir_func_get_label2:
     cmp $1, %esi
-    je _kefir_func_get_label3
+    je __kefir_func_get_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get_label3:
+__kefir_func_get_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get_label1
+    jmp __kefir_func_get_label1
 __kefir_text_func_get_end:
 
 get2:
@@ -72,30 +72,30 @@ __kefir_text_func_get2_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get2_label2
+    jnz __kefir_func_get2_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get2_label1:
+__kefir_func_get2_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get2_label2:
+__kefir_func_get2_label2:
     cmp $2, %esi
-    jne _kefir_func_get2_label3
+    jne __kefir_func_get2_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get2_label3:
+__kefir_func_get2_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get2_label1
+    jmp __kefir_func_get2_label1
 __kefir_text_func_get2_end:
 
 get3:
@@ -109,30 +109,30 @@ __kefir_text_func_get3_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get3_label2
+    jnz __kefir_func_get3_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get3_label1:
+__kefir_func_get3_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get3_label2:
+__kefir_func_get3_label2:
     cmp $3, %esi
-    jg _kefir_func_get3_label3
+    jg __kefir_func_get3_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get3_label3:
+__kefir_func_get3_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get3_label1
+    jmp __kefir_func_get3_label1
 __kefir_text_func_get3_end:
 
 get4:
@@ -146,30 +146,30 @@ __kefir_text_func_get4_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get4_label2
+    jnz __kefir_func_get4_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get4_label1:
+__kefir_func_get4_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get4_label2:
+__kefir_func_get4_label2:
     cmp $4, %esi
-    jge _kefir_func_get4_label3
+    jge __kefir_func_get4_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get4_label3:
+__kefir_func_get4_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get4_label1
+    jmp __kefir_func_get4_label1
 __kefir_text_func_get4_end:
 
 get5:
@@ -183,30 +183,30 @@ __kefir_text_func_get5_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get5_label2
+    jnz __kefir_func_get5_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get5_label1:
+__kefir_func_get5_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get5_label2:
+__kefir_func_get5_label2:
     cmp $-3, %esi
-    jl _kefir_func_get5_label3
+    jl __kefir_func_get5_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get5_label3:
+__kefir_func_get5_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get5_label1
+    jmp __kefir_func_get5_label1
 __kefir_text_func_get5_end:
 
 get6:
@@ -220,30 +220,30 @@ __kefir_text_func_get6_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get6_label2
+    jnz __kefir_func_get6_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get6_label1:
+__kefir_func_get6_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get6_label2:
+__kefir_func_get6_label2:
     cmp $-4, %esi
-    jle _kefir_func_get6_label3
+    jle __kefir_func_get6_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get6_label3:
+__kefir_func_get6_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get6_label1
+    jmp __kefir_func_get6_label1
 __kefir_text_func_get6_end:
 
 get7:
@@ -257,30 +257,30 @@ __kefir_text_func_get7_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get7_label2
+    jnz __kefir_func_get7_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get7_label1:
+__kefir_func_get7_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get7_label2:
+__kefir_func_get7_label2:
     cmp $30, %esi
-    ja _kefir_func_get7_label3
+    ja __kefir_func_get7_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get7_label3:
+__kefir_func_get7_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get7_label1
+    jmp __kefir_func_get7_label1
 __kefir_text_func_get7_end:
 
 get8:
@@ -294,30 +294,30 @@ __kefir_text_func_get8_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get8_label2
+    jnz __kefir_func_get8_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get8_label1:
+__kefir_func_get8_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get8_label2:
+__kefir_func_get8_label2:
     cmp $40, %esi
-    jae _kefir_func_get8_label3
+    jae __kefir_func_get8_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get8_label3:
+__kefir_func_get8_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get8_label1
+    jmp __kefir_func_get8_label1
 __kefir_text_func_get8_end:
 
 get9:
@@ -331,30 +331,30 @@ __kefir_text_func_get9_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get9_label2
+    jnz __kefir_func_get9_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get9_label1:
+__kefir_func_get9_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get9_label2:
+__kefir_func_get9_label2:
     cmp $100, %esi
-    jb _kefir_func_get9_label3
+    jb __kefir_func_get9_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get9_label3:
+__kefir_func_get9_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get9_label1
+    jmp __kefir_func_get9_label1
 __kefir_text_func_get9_end:
 
 get10:
@@ -368,30 +368,30 @@ __kefir_text_func_get10_begin:
     fstpt -64(%rbp)
     fstpt -48(%rbp)
     test %edi, %edi
-    jnz _kefir_func_get10_label2
+    jnz __kefir_func_get10_label2
     movq -64(%rbp), %rdi
     movq %rdi, -32(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -24(%rbp)
-_kefir_func_get10_label1:
+__kefir_func_get10_label1:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get10_label2:
+__kefir_func_get10_label2:
     cmp $200, %esi
-    jbe _kefir_func_get10_label3
+    jbe __kefir_func_get10_label3
     movq -48(%rbp), %rsi
     movq %rsi, -64(%rbp)
     movq -40(%rbp), %rsi
     movq %rsi, -56(%rbp)
-_kefir_func_get10_label3:
+__kefir_func_get10_label3:
     movq -64(%rbp), %rsi
     movq %rsi, -32(%rbp)
     movq -56(%rbp), %rsi
     movq %rsi, -24(%rbp)
-    jmp _kefir_func_get10_label1
+    jmp __kefir_func_get10_label1
 __kefir_text_func_get10_end:
 
 __kefir_text_section_end:

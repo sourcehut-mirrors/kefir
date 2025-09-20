@@ -22,7 +22,7 @@ __kefir_text_func_is_greaterequal_f32_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_is_greaterequal_f32_label0:
+__kefir_func_is_greaterequal_f32_label0:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %ecx
@@ -45,7 +45,7 @@ __kefir_text_func_is_greaterequal_f64_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_is_greaterequal_f64_label0:
+__kefir_func_is_greaterequal_f64_label0:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rcx
@@ -68,7 +68,7 @@ __kefir_text_func_is_greaterequal_f80_begin:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-_kefir_func_is_greaterequal_f80_label0:
+__kefir_func_is_greaterequal_f80_label0:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)

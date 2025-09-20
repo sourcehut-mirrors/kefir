@@ -34,7 +34,7 @@ __kefir_text_func_call1_proxy_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-_kefir_func_call1_proxy_label0:
+__kefir_func_call1_proxy_label0:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rdi
     leaq -16(%rbp), %rbx
@@ -53,7 +53,7 @@ __kefir_text_func_call2_proxy_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-_kefir_func_call2_proxy_label0:
+__kefir_func_call2_proxy_label0:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rdi
     leaq -16(%rbp), %rbx
@@ -72,7 +72,7 @@ __kefir_text_func_call3_proxy_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-_kefir_func_call3_proxy_label0:
+__kefir_func_call3_proxy_label0:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rdi
     leaq -16(%rbp), %rbx
@@ -93,7 +93,7 @@ __kefir_text_func_call4_proxy_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-_kefir_func_call4_proxy_label0:
+__kefir_func_call4_proxy_label0:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rdi
     leaq -16(%rbp), %rbx
@@ -112,7 +112,7 @@ __kefir_text_func_call5_proxy_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-_kefir_func_call5_proxy_label0:
+__kefir_func_call5_proxy_label0:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rdi
     leaq -16(%rbp), %rbx
@@ -133,7 +133,7 @@ __kefir_text_func_call6_proxy_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-_kefir_func_call6_proxy_label0:
+__kefir_func_call6_proxy_label0:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rdi
     leaq -16(%rbp), %rbx
@@ -154,7 +154,7 @@ __kefir_text_func_call7_proxy_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-_kefir_func_call7_proxy_label0:
+__kefir_func_call7_proxy_label0:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rdi
     leaq -16(%rbp), %rbx
@@ -177,7 +177,7 @@ __kefir_text_func_call8_proxy_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-_kefir_func_call8_proxy_label0:
+__kefir_func_call8_proxy_label0:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rdi
     leaq -16(%rbp), %rbx

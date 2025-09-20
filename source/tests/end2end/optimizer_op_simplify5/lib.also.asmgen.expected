@@ -18,7 +18,7 @@ __kefir_text_func_less_or_equalsld_begin:
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-_kefir_func_less_or_equalsld_label0:
+__kefir_func_less_or_equalsld_label0:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
@@ -65,7 +65,7 @@ __kefir_text_func_greater_or_equalsd_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_greater_or_equalsd_label0:
+__kefir_func_greater_or_equalsd_label0:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rcx
@@ -87,7 +87,7 @@ __kefir_text_func_less_or_equalsd_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_less_or_equalsd_label0:
+__kefir_func_less_or_equalsd_label0:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rcx
@@ -109,7 +109,7 @@ __kefir_text_func_greater_or_equalsld_begin:
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-_kefir_func_greater_or_equalsld_label0:
+__kefir_func_greater_or_equalsld_label0:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)

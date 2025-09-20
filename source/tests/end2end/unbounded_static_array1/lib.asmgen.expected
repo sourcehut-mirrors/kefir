@@ -20,7 +20,7 @@ get:
 __kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get_label0:
+__kefir_func_get_label0:
     lea somearray(%rip), %rax
     pop %rbp
     ret
@@ -30,7 +30,7 @@ get2:
 __kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get2_label0:
+__kefir_func_get2_label0:
     lea someotherarray(%rip), %rax
     pop %rbp
     ret
@@ -41,7 +41,7 @@ __kefir_text_func_tget_begin:
 .extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
-_kefir_func_tget_label0:
+__kefir_func_tget_label0:
     data16     lea tsomearray@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
@@ -54,7 +54,7 @@ __kefir_text_func_tget2_begin:
 .extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
-_kefir_func_tget2_label0:
+__kefir_func_tget2_label0:
     data16     lea tsomeotherarray@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT

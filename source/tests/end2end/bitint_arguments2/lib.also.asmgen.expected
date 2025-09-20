@@ -18,7 +18,7 @@ __kefir_text_func_test1_begin:
     push %r12
     push %r13
     sub $56, %rsp
-_kefir_func_test1_label0:
+__kefir_func_test1_label0:
     mov 56(%rbp), %rax
     mov 48(%rbp), %r10
     mov 40(%rbp), %r11

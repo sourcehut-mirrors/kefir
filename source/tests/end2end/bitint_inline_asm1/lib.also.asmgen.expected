@@ -19,7 +19,7 @@ __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test1_label0:
+__kefir_func_test1_label0:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %cl
     shl $58, %rcx
@@ -40,7 +40,7 @@ __kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test2_label0:
+__kefir_func_test2_label0:
     movw %di, -2(%rbp)
     movw -2(%rbp), %cx
     shl $50, %rcx
@@ -61,7 +61,7 @@ __kefir_text_func_test3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test3_label0:
+__kefir_func_test3_label0:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %ecx
     shl $35, %rcx
@@ -82,7 +82,7 @@ __kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test4_label0:
+__kefir_func_test4_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rcx
     shl $4, %rcx
@@ -103,7 +103,7 @@ __kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func_test5_label0:
+__kefir_func_test5_label0:
     movq %rdi, -64(%rbp)
     movq %rsi, -56(%rbp)
     movdqu -64(%rbp), %xmm0

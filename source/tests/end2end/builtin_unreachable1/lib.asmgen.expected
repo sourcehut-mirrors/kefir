@@ -11,7 +11,7 @@ test:
 __kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_test_label0:
+__kefir_func_test_label0:
     movq value1@GOTPCREL(%rip), %rax
     movl $1, (%rax)
     ud2

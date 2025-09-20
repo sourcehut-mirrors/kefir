@@ -24,7 +24,7 @@ get1:
 __kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get1_label0:
+__kefir_func_get1_label0:
     mov $7, %rax
     shl $61, %rax
     shr $61, %rax
@@ -36,7 +36,7 @@ get2:
 __kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get2_label0:
+__kefir_func_get2_label0:
     mov $7, %rax
     shl $60, %rax
     sar $60, %rax
@@ -48,7 +48,7 @@ get3:
 __kefir_text_func_get3_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get3_label0:
+__kefir_func_get3_label0:
     mov $633, %rax
     shl $54, %rax
     shr $54, %rax
@@ -60,7 +60,7 @@ get4:
 __kefir_text_func_get4_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get4_label0:
+__kefir_func_get4_label0:
     mov $633, %rax
     shl $53, %rax
     sar $53, %rax
@@ -72,7 +72,7 @@ get5:
 __kefir_text_func_get5_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get5_label0:
+__kefir_func_get5_label0:
     mov $16710822, %rax
     shl $40, %rax
     shr $40, %rax
@@ -84,7 +84,7 @@ get6:
 __kefir_text_func_get6_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get6_label0:
+__kefir_func_get6_label0:
     mov $16710822, %rax
     shl $39, %rax
     sar $39, %rax
@@ -96,7 +96,7 @@ get7:
 __kefir_text_func_get7_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get7_label0:
+__kefir_func_get7_label0:
     movabs $78187493546, %rax
     shl $27, %rax
     shr $27, %rax
@@ -108,7 +108,7 @@ get8:
 __kefir_text_func_get8_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get8_label0:
+__kefir_func_get8_label0:
     movabs $78187493546, %rax
     shl $26, %rax
     sar $26, %rax

@@ -28,7 +28,7 @@ __kefir_text_func_sub_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-_kefir_func_sub_label0:
+__kefir_func_sub_label0:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -16(%rbp), %rax
@@ -52,7 +52,7 @@ __kefir_text_func_subf_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-_kefir_func_subf_label0:
+__kefir_func_subf_label0:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
     movl -12(%rbp), %eax
@@ -76,7 +76,7 @@ __kefir_text_func_subl_begin:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-_kefir_func_subl_label0:
+__kefir_func_subl_label0:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
@@ -103,7 +103,7 @@ __kefir_text_func_mydiv_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-_kefir_func_mydiv_label0:
+__kefir_func_mydiv_label0:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -16(%rbp), %rax
@@ -127,7 +127,7 @@ __kefir_text_func_mydivf_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-_kefir_func_mydivf_label0:
+__kefir_func_mydivf_label0:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
     movl -12(%rbp), %eax
@@ -151,7 +151,7 @@ __kefir_text_func_mydivl_begin:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-_kefir_func_mydivl_label0:
+__kefir_func_mydivl_label0:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
@@ -178,7 +178,7 @@ __kefir_text_func_mydivr_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-_kefir_func_mydivr_label0:
+__kefir_func_mydivr_label0:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -16(%rbp), %rax
@@ -202,7 +202,7 @@ __kefir_text_func_mydivrf_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-_kefir_func_mydivrf_label0:
+__kefir_func_mydivrf_label0:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
     movl -12(%rbp), %eax
@@ -226,7 +226,7 @@ __kefir_text_func_mydivrl_begin:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-_kefir_func_mydivrl_label0:
+__kefir_func_mydivrl_label0:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)

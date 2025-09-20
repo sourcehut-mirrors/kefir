@@ -14,7 +14,7 @@ __kefir_text_func_get1_begin:
     push %rbx
     sub $152, %rsp
     mov %rdi, %r8
-_kefir_func_get1_label0:
+__kefir_func_get1_label0:
     movq %rsi, -144(%rbp)
     movq -144(%rbp), %rax
     mov $0, %rdx
@@ -29,8 +29,8 @@ _kefir_func_get1_label0:
     setne %dl
     movzx %dl, %rdx
     test %edx, %edx
-    jz _kefir_func_get1_label3
-_kefir_func_get1_label1:
+    jz __kefir_func_get1_label3
+__kefir_func_get1_label1:
     xorps %xmm0, %xmm0
     movdqu %xmm0, -136(%rbp)
     movdqu %xmm0, -120(%rbp)
@@ -86,7 +86,7 @@ _kefir_func_get1_label1:
     xor %rdx, %rcx
     movq %rcx, (%rax)
     leaq -136(%rbp), %rcx
-_kefir_func_get1_label2:
+__kefir_func_get1_label2:
     mov %r8, %rax
     movdqu (%rcx), %xmm0
     movdqu %xmm0, (%rax)
@@ -100,14 +100,14 @@ _kefir_func_get1_label2:
     pop %rbx
     pop %rbp
     ret
-_kefir_func_get1_label3:
+__kefir_func_get1_label3:
     leaq -72(%rbp), %rbx
     movq %r8, -160(%rbp)
     mov %rbx, %rdi
     call empty1@PLT
     movq -160(%rbp), %r8
     mov %rax, %rcx
-    jmp _kefir_func_get1_label2
+    jmp __kefir_func_get1_label2
 __kefir_text_func_get1_end:
 
 __kefir_text_section_end:

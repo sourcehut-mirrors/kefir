@@ -37,7 +37,7 @@
 #define KEFIR_AMD64_VARARG_SAVE_INT "__kefir_text_func_%s_vararg_save_int"
 
 #define KEFIR_AMD64_STRING_LITERAL "__kefir_string_literal%" KEFIR_ID_FMT
-#define KEFIR_AMD64_LABEL "_kefir_func_%s_label%" KEFIR_SIZE_FMT
+#define KEFIR_AMD64_LABEL "__kefir_func_%s_label%" KEFIR_SIZE_FMT
 #define KEFIR_AMD64_CONSTANT_FLOAT32_TO_UINT "__kefir_constant_float32_to_uint"
 #define KEFIR_AMD64_CONSTANT_FLOAT64_TO_UINT "__kefir_constant_float64_to_uint"
 #define KEFIR_AMD64_CONSTANT_LONG_DOUBLE_TO_UINT "__kefir_constant_long_double_to_uint"

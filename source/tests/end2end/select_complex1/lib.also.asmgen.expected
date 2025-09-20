@@ -34,25 +34,25 @@ __kefir_text_func_get_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get_label2
+    jnz __kefir_func_get_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get_label1:
+__kefir_func_get_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get_label2:
+__kefir_func_get_label2:
     movaps %xmm5, %xmm3
     cmp $1, %esi
-    je _kefir_func_get_label3
+    je __kefir_func_get_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get_label3:
+__kefir_func_get_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get_label1
+    jmp __kefir_func_get_label1
 __kefir_text_func_get_end:
 
 get2:
@@ -65,25 +65,25 @@ __kefir_text_func_get2_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get2_label2
+    jnz __kefir_func_get2_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get2_label1:
+__kefir_func_get2_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get2_label2:
+__kefir_func_get2_label2:
     movaps %xmm5, %xmm3
     cmp $2, %esi
-    jne _kefir_func_get2_label3
+    jne __kefir_func_get2_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get2_label3:
+__kefir_func_get2_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get2_label1
+    jmp __kefir_func_get2_label1
 __kefir_text_func_get2_end:
 
 get3:
@@ -96,25 +96,25 @@ __kefir_text_func_get3_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get3_label2
+    jnz __kefir_func_get3_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get3_label1:
+__kefir_func_get3_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get3_label2:
+__kefir_func_get3_label2:
     movaps %xmm5, %xmm3
     cmp $3, %esi
-    jg _kefir_func_get3_label3
+    jg __kefir_func_get3_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get3_label3:
+__kefir_func_get3_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get3_label1
+    jmp __kefir_func_get3_label1
 __kefir_text_func_get3_end:
 
 get4:
@@ -127,25 +127,25 @@ __kefir_text_func_get4_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get4_label2
+    jnz __kefir_func_get4_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get4_label1:
+__kefir_func_get4_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get4_label2:
+__kefir_func_get4_label2:
     movaps %xmm5, %xmm3
     cmp $4, %esi
-    jge _kefir_func_get4_label3
+    jge __kefir_func_get4_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get4_label3:
+__kefir_func_get4_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get4_label1
+    jmp __kefir_func_get4_label1
 __kefir_text_func_get4_end:
 
 get5:
@@ -158,25 +158,25 @@ __kefir_text_func_get5_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get5_label2
+    jnz __kefir_func_get5_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get5_label1:
+__kefir_func_get5_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get5_label2:
+__kefir_func_get5_label2:
     movaps %xmm5, %xmm3
     cmp $-3, %esi
-    jl _kefir_func_get5_label3
+    jl __kefir_func_get5_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get5_label3:
+__kefir_func_get5_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get5_label1
+    jmp __kefir_func_get5_label1
 __kefir_text_func_get5_end:
 
 get6:
@@ -189,25 +189,25 @@ __kefir_text_func_get6_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get6_label2
+    jnz __kefir_func_get6_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get6_label1:
+__kefir_func_get6_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get6_label2:
+__kefir_func_get6_label2:
     movaps %xmm5, %xmm3
     cmp $-4, %esi
-    jle _kefir_func_get6_label3
+    jle __kefir_func_get6_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get6_label3:
+__kefir_func_get6_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get6_label1
+    jmp __kefir_func_get6_label1
 __kefir_text_func_get6_end:
 
 get7:
@@ -220,25 +220,25 @@ __kefir_text_func_get7_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get7_label2
+    jnz __kefir_func_get7_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get7_label1:
+__kefir_func_get7_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get7_label2:
+__kefir_func_get7_label2:
     movaps %xmm5, %xmm3
     cmp $30, %esi
-    ja _kefir_func_get7_label3
+    ja __kefir_func_get7_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get7_label3:
+__kefir_func_get7_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get7_label1
+    jmp __kefir_func_get7_label1
 __kefir_text_func_get7_end:
 
 get8:
@@ -251,25 +251,25 @@ __kefir_text_func_get8_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get8_label2
+    jnz __kefir_func_get8_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get8_label1:
+__kefir_func_get8_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get8_label2:
+__kefir_func_get8_label2:
     movaps %xmm5, %xmm3
     cmp $40, %esi
-    jae _kefir_func_get8_label3
+    jae __kefir_func_get8_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get8_label3:
+__kefir_func_get8_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get8_label1
+    jmp __kefir_func_get8_label1
 __kefir_text_func_get8_end:
 
 get9:
@@ -282,25 +282,25 @@ __kefir_text_func_get9_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get9_label2
+    jnz __kefir_func_get9_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get9_label1:
+__kefir_func_get9_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get9_label2:
+__kefir_func_get9_label2:
     movaps %xmm5, %xmm3
     cmp $100, %esi
-    jb _kefir_func_get9_label3
+    jb __kefir_func_get9_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get9_label3:
+__kefir_func_get9_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get9_label1
+    jmp __kefir_func_get9_label1
 __kefir_text_func_get9_end:
 
 get10:
@@ -313,25 +313,25 @@ __kefir_text_func_get10_begin:
     movaps %xmm0, %xmm2
     shufps $1, %xmm2, %xmm2
     test %edi, %edi
-    jnz _kefir_func_get10_label2
+    jnz __kefir_func_get10_label2
     movaps %xmm0, %xmm3
     movaps %xmm2, %xmm4
-_kefir_func_get10_label1:
+__kefir_func_get10_label1:
     movaps %xmm3, %xmm0
     insertps $16, %xmm4, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_get10_label2:
+__kefir_func_get10_label2:
     movaps %xmm5, %xmm3
     cmp $200, %esi
-    jbe _kefir_func_get10_label3
+    jbe __kefir_func_get10_label3
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm2
-_kefir_func_get10_label3:
+__kefir_func_get10_label3:
     movaps %xmm2, %xmm4
     movaps %xmm0, %xmm3
-    jmp _kefir_func_get10_label1
+    jmp __kefir_func_get10_label1
 __kefir_text_func_get10_end:
 
 __kefir_text_section_end:

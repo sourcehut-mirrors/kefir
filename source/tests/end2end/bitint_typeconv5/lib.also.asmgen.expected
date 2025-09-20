@@ -22,7 +22,7 @@ __kefir_text_func_get0_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_get0_label0:
+__kefir_func_get0_label0:
     movabs $3405691582, %rax
     shl $31, %rax
     sar $31, %rax
@@ -39,23 +39,23 @@ __kefir_text_func_get1_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_get1_label0:
+__kefir_func_get1_label0:
     movabs $3405691582, %rax
     shl $32, %rax
     shr $32, %rax
     pxor %xmm0, %xmm0
     test %rax, %rax
-    js _kefir_func_get1_label1
+    js __kefir_func_get1_label1
     cvtsi2ss %rax, %xmm0
-    jmp _kefir_func_get1_label2
-_kefir_func_get1_label1:
+    jmp __kefir_func_get1_label2
+__kefir_func_get1_label1:
     mov %rax, %rcx
     and $1, %rcx
     shr $1, %rax
     or %rax, %rcx
     cvtsi2ss %rcx, %xmm0
     addss %xmm0, %xmm0
-_kefir_func_get1_label2:
+__kefir_func_get1_label2:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -68,7 +68,7 @@ __kefir_text_func_get2_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_get2_label0:
+__kefir_func_get2_label0:
     movabs $802555952865, %rax
     shl $23, %rax
     sar $23, %rax
@@ -85,23 +85,23 @@ __kefir_text_func_get3_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_get3_label0:
+__kefir_func_get3_label0:
     movabs $802555952865, %rax
     shl $24, %rax
     shr $24, %rax
     pxor %xmm0, %xmm0
     test %rax, %rax
-    js _kefir_func_get3_label1
+    js __kefir_func_get3_label1
     cvtsi2sd %rax, %xmm0
-    jmp _kefir_func_get3_label2
-_kefir_func_get3_label1:
+    jmp __kefir_func_get3_label2
+__kefir_func_get3_label1:
     mov %rax, %rcx
     and $1, %rcx
     shr $1, %rax
     or %rax, %rcx
     cvtsi2sd %rcx, %xmm0
     addsd %xmm0, %xmm0
-_kefir_func_get3_label2:
+__kefir_func_get3_label2:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -114,7 +114,7 @@ __kefir_text_func_get4_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-_kefir_func_get4_label0:
+__kefir_func_get4_label0:
     movabs $1152902735017034547, %rax
     shl $3, %rax
     sar $3, %rax
@@ -133,7 +133,7 @@ __kefir_text_func_get5_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-_kefir_func_get5_label0:
+__kefir_func_get5_label0:
     movabs $1152902735017034547, %rax
     shl $4, %rax
     shr $4, %rax
@@ -141,9 +141,9 @@ _kefir_func_get5_label0:
     fildq (%rsp)
     add $8, %rsp
     test %rax, %rax
-    jns _kefir_func_get5_label1
+    jns __kefir_func_get5_label1
     fadds __kefir_constant_uint_to_long_double(%rip)
-_kefir_func_get5_label1:
+__kefir_func_get5_label1:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

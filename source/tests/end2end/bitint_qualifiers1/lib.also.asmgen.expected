@@ -15,7 +15,7 @@ __kefir_text_func_add_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_add_label0:
+__kefir_func_add_label0:
     movq %rsi, -16(%rbp)
     movq %rdi, -8(%rbp)
     movq -16(%rbp), %rcx
@@ -36,7 +36,7 @@ get:
 __kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_get_label0:
+__kefir_func_get_label0:
     movq value@GOTPCREL(%rip), %rax
     pop %rbp
     ret

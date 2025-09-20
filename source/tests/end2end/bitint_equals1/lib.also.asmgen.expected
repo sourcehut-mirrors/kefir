@@ -21,7 +21,7 @@ __kefir_text_func_equals1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_equals1_label0:
+__kefir_func_equals1_label0:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
@@ -48,7 +48,7 @@ __kefir_text_func_equals2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_equals2_label0:
+__kefir_func_equals2_label0:
     movw %si, -2(%rbp)
     movw %di, -4(%rbp)
     movw -4(%rbp), %ax
@@ -75,7 +75,7 @@ __kefir_text_func_equals3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_equals3_label0:
+__kefir_func_equals3_label0:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -102,7 +102,7 @@ __kefir_text_func_equals4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_equals4_label0:
+__kefir_func_equals4_label0:
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
@@ -129,7 +129,7 @@ __kefir_text_func_equals5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-_kefir_func_equals5_label0:
+__kefir_func_equals5_label0:
     movq %rdx, -64(%rbp)
     movq %rcx, -56(%rbp)
     movq %rdi, -48(%rbp)
@@ -162,7 +162,7 @@ __kefir_text_func_equals6_begin:
     push %rbp
     mov %rsp, %rbp
     sub $160, %rsp
-_kefir_func_equals6_label0:
+__kefir_func_equals6_label0:
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
     movq (%rax), %rdx
@@ -232,7 +232,7 @@ __kefir_text_func___kefir_bigint_unsigned_compare_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func___kefir_bigint_unsigned_compare_label0:
+__kefir_func___kefir_bigint_unsigned_compare_label0:
     movq %rdx, -56(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -48(%rbp)
@@ -254,7 +254,7 @@ _kefir_func___kefir_bigint_unsigned_compare_label0:
     movq %rax, -32(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -24(%rbp)
-_kefir_func___kefir_bigint_unsigned_compare_label1:
+__kefir_func___kefir_bigint_unsigned_compare_label1:
     movq -24(%rbp), %rax
     mov $0, %rdx
     movsx %edx, %rcx
@@ -264,13 +264,13 @@ _kefir_func___kefir_bigint_unsigned_compare_label1:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_unsigned_compare_label3
-_kefir_func___kefir_bigint_unsigned_compare_label2:
+    jz __kefir_func___kefir_bigint_unsigned_compare_label3
+__kefir_func___kefir_bigint_unsigned_compare_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func___kefir_bigint_unsigned_compare_label3:
+__kefir_func___kefir_bigint_unsigned_compare_label3:
     movq -48(%rbp), %rax
     movq -24(%rbp), %rcx
     mov $1, %rsi
@@ -299,8 +299,8 @@ _kefir_func___kefir_bigint_unsigned_compare_label3:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_unsigned_compare_label9
-_kefir_func___kefir_bigint_unsigned_compare_label4:
+    jz __kefir_func___kefir_bigint_unsigned_compare_label9
+__kefir_func___kefir_bigint_unsigned_compare_label4:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
     mov $0, %rdx
@@ -309,8 +309,8 @@ _kefir_func___kefir_bigint_unsigned_compare_label4:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_unsigned_compare_label8
-_kefir_func___kefir_bigint_unsigned_compare_label5:
+    jz __kefir_func___kefir_bigint_unsigned_compare_label8
+__kefir_func___kefir_bigint_unsigned_compare_label5:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
     mov $0, %rdx
@@ -319,24 +319,24 @@ _kefir_func___kefir_bigint_unsigned_compare_label5:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_unsigned_compare_label7
-_kefir_func___kefir_bigint_unsigned_compare_label6:
+    jz __kefir_func___kefir_bigint_unsigned_compare_label7
+__kefir_func___kefir_bigint_unsigned_compare_label6:
     movq -24(%rbp), %rax
     add $-1, %rax
     movq %rax, -24(%rbp)
-    jmp _kefir_func___kefir_bigint_unsigned_compare_label1
-_kefir_func___kefir_bigint_unsigned_compare_label7:
+    jmp __kefir_func___kefir_bigint_unsigned_compare_label1
+__kefir_func___kefir_bigint_unsigned_compare_label7:
     mov $1, %rax
     neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func___kefir_bigint_unsigned_compare_label8:
+__kefir_func___kefir_bigint_unsigned_compare_label8:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func___kefir_bigint_unsigned_compare_label9:
+__kefir_func___kefir_bigint_unsigned_compare_label9:
     movq -56(%rbp), %rcx
     movq -56(%rbp), %rax
     mov $1, %rsi
@@ -378,7 +378,7 @@ _kefir_func___kefir_bigint_unsigned_compare_label9:
     movl -12(%rbp), %ecx
     and %eax, %ecx
     movl %ecx, -12(%rbp)
-    jmp _kefir_func___kefir_bigint_unsigned_compare_label4
+    jmp __kefir_func___kefir_bigint_unsigned_compare_label4
 __kefir_text_func___kefir_bigint_unsigned_compare_end:
 
 

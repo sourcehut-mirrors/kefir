@@ -20,7 +20,7 @@ __kefir_text_func_test1_begin:
     mov %rcx, %r11
     or %esi, %r11d
     xor %ebx, %ebx
-_kefir_func_test1_label1:
+__kefir_func_test1_label1:
     mov %rbx, %r12
     mov %rdx, %rcx
     shl %cl, %r12d
@@ -29,17 +29,17 @@ _kefir_func_test1_label1:
     mov %r10, %r13
     add %rax, %r13
     cmp %esi, %ebx
-    je _kefir_func_test1_label4
+    je __kefir_func_test1_label4
     xor %r9d, %r9d
-_kefir_func_test1_label2:
+__kefir_func_test1_label2:
     mov %rbx, %rax
     add $1, %eax
     cmp %edx, %r9d
-    jne _kefir_func_test1_label3
-_kefir_func_test1_label5:
+    jne __kefir_func_test1_label3
+__kefir_func_test1_label5:
     mov %rax, %rbx
-    jmp _kefir_func_test1_label1
-_kefir_func_test1_label3:
+    jmp __kefir_func_test1_label1
+__kefir_func_test1_label3:
     movsx %r9d, %r8
     imul $4, %r8, %r8
     mov %r13, %rdi
@@ -51,8 +51,8 @@ _kefir_func_test1_label3:
     mov %r9, %r8
     add $1, %r8d
     mov %r8, %r9
-    jmp _kefir_func_test1_label2
-_kefir_func_test1_label4:
+    jmp __kefir_func_test1_label2
+__kefir_func_test1_label4:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -70,7 +70,7 @@ __kefir_text_func_test2_begin:
     mov %rcx, %r10
     mov %rdi, %r11
     xor %ebx, %ebx
-_kefir_func_test2_label1:
+__kefir_func_test2_label1:
 _kefir_local_public_label_test2_outer:
     mov %r10, %r12
     or %esi, %r12d
@@ -82,17 +82,17 @@ _kefir_local_public_label_test2_outer:
     mov %rdx, %rcx
     shl %cl, %r14d
     cmp %esi, %ebx
-    je _kefir_func_test2_label4
+    je __kefir_func_test2_label4
     xor %r9d, %r9d
-_kefir_func_test2_label2:
+__kefir_func_test2_label2:
     mov %rbx, %rax
     add $1, %eax
     cmp %edx, %r9d
-    jne _kefir_func_test2_label3
-_kefir_func_test2_label5:
+    jne __kefir_func_test2_label3
+__kefir_func_test2_label5:
     mov %rax, %rbx
-    jmp _kefir_func_test2_label1
-_kefir_func_test2_label3:
+    jmp __kefir_func_test2_label1
+__kefir_func_test2_label3:
     movsx %r9d, %r8
     imul $4, %r8, %r8
     mov %r13, %rdi
@@ -104,8 +104,8 @@ _kefir_func_test2_label3:
     mov %r9, %r8
     add $1, %r8d
     mov %r8, %r9
-    jmp _kefir_func_test2_label2
-_kefir_func_test2_label4:
+    jmp __kefir_func_test2_label2
+__kefir_func_test2_label4:
     pop %r14
     pop %r13
     pop %r12

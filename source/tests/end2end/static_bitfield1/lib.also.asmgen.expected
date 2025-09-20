@@ -12,7 +12,7 @@ getfield40:
 __kefir_text_func_getfield40_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_getfield40_label0:
+__kefir_func_getfield40_label0:
     movq struct1@GOTPCREL(%rip), %rax
     movb 8(%rax), %al
     and $255, %rax

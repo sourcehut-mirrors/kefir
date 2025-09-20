@@ -14,7 +14,7 @@ insert:
 __kefir_text_func_insert_begin:
     push %rbp
     mov %rbp, %rsp
-_kefir_func_insert_label0:
+__kefir_func_insert_label0:
     mov %rax, 0
     movabs %rcx, 18446744073709551615
     and %rcx, 0
@@ -199,7 +199,7 @@ extracts:
 __kefir_text_func_extracts_begin:
     push %rbp
     mov %rbp, %rsp
-_kefir_func_extracts_label0:
+__kefir_func_extracts_label0:
     mov %rax, 0
     shl %rax, 64
     sar %rax, 64
@@ -318,7 +318,7 @@ extractu:
 __kefir_text_func_extractu_begin:
     push %rbp
     mov %rbp, %rsp
-_kefir_func_extractu_label0:
+__kefir_func_extractu_label0:
     mov %rax, 0
     shl %rax, 64
     shr %rax, 64

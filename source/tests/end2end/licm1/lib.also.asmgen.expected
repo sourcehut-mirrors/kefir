@@ -13,11 +13,11 @@ __kefir_text_func_test1_begin:
     mov %rdx, %r8
     add $1, %r8d
     xor %r9d, %r9d
-_kefir_func_test1_label1:
+__kefir_func_test1_label1:
     cmp %esi, %r9d
-    jl _kefir_func_test1_label3
+    jl __kefir_func_test1_label3
     ret
-_kefir_func_test1_label3:
+__kefir_func_test1_label3:
     movsx %r9d, %rax
     imul $4, %rax, %rax
     mov %rcx, %rdi
@@ -29,7 +29,7 @@ _kefir_func_test1_label3:
     mov %r9, %rax
     add $1, %eax
     mov %rax, %r9
-    jmp _kefir_func_test1_label1
+    jmp __kefir_func_test1_label1
 __kefir_text_func_test1_end:
 
 __kefir_text_section_end:

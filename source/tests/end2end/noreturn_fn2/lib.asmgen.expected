@@ -17,7 +17,7 @@ test1:
 __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_test1_label0:
+__kefir_func_test1_label0:
     call do_exit@PLT
     ud2
 __kefir_text_func_test1_end:
@@ -26,7 +26,7 @@ test3:
 __kefir_text_func_test3_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_test3_label0:
+__kefir_func_test3_label0:
     call do_exit@PLT
     ud2
 __kefir_text_func_test3_end:
@@ -35,7 +35,7 @@ test4:
 __kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_test4_label0:
+__kefir_func_test4_label0:
     call do_exit@PLT
     ud2
 __kefir_text_func_test4_end:
@@ -44,7 +44,7 @@ test5:
 __kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_test5_label0:
+__kefir_func_test5_label0:
     call do_exit@PLT
     ud2
 __kefir_text_func_test5_end:

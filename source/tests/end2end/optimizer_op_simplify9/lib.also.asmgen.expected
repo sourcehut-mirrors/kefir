@@ -14,7 +14,7 @@ int_sar_const:
 __kefir_text_func_int_sar_const_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_int_sar_const_label0:
+__kefir_func_int_sar_const_label0:
     sar $4, %rdi
     mov %rdi, %rax
     pop %rbp
@@ -25,7 +25,7 @@ int_shl_const:
 __kefir_text_func_int_shl_const_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_int_shl_const_label0:
+__kefir_func_int_shl_const_label0:
     shl $6, %rdi
     mov %rdi, %rax
     pop %rbp
@@ -36,7 +36,7 @@ int_shr_const:
 __kefir_text_func_int_shr_const_begin:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_int_shr_const_label0:
+__kefir_func_int_shr_const_label0:
     shr $4, %rdi
     mov %rdi, %rax
     pop %rbp

@@ -15,7 +15,7 @@ __kefir_text_func_ulong2uint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_ulong2uint_label0:
+__kefir_func_ulong2uint_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
@@ -28,7 +28,7 @@ __kefir_text_func_ulong2uchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_ulong2uchar_label0:
+__kefir_func_ulong2uchar_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
@@ -41,7 +41,7 @@ __kefir_text_func_ulong2ushort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_ulong2ushort_label0:
+__kefir_func_ulong2ushort_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp

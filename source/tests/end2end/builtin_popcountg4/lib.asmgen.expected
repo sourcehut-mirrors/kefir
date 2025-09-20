@@ -13,7 +13,7 @@ __kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_get_label0:
+__kefir_func_get_label0:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %ecx
     mov %ecx, %eax

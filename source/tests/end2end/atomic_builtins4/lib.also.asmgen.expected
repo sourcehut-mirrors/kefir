@@ -27,9 +27,9 @@ __kefir_text_func_test_atomic_compare_exchange8_begin:
     mov %rax, %rcx
     movb (%rsi), %al
     lock     cmpxchgb %cl, (%rdx)
-    je _kefir_func_test_atomic_compare_exchange8_label1
+    je __kefir_func_test_atomic_compare_exchange8_label1
     movb %al, (%rsi)
-_kefir_func_test_atomic_compare_exchange8_label1:
+__kefir_func_test_atomic_compare_exchange8_label1:
     sete %al
     ret
 __kefir_text_func_test_atomic_compare_exchange8_end:
@@ -41,9 +41,9 @@ __kefir_text_func_test2_atomic_compare_exchange16_begin:
     mov %rax, %rcx
     movw (%rsi), %ax
     lock     cmpxchgw %cx, (%rdx)
-    je _kefir_func_test2_atomic_compare_exchange16_label1
+    je __kefir_func_test2_atomic_compare_exchange16_label1
     movw %ax, (%rsi)
-_kefir_func_test2_atomic_compare_exchange16_label1:
+__kefir_func_test2_atomic_compare_exchange16_label1:
     sete %al
     ret
 __kefir_text_func_test2_atomic_compare_exchange16_end:
@@ -55,9 +55,9 @@ __kefir_text_func_test2_atomic_compare_exchange32_begin:
     mov %rax, %rcx
     movl (%rsi), %eax
     lock     cmpxchgl %ecx, (%rdx)
-    je _kefir_func_test2_atomic_compare_exchange32_label1
+    je __kefir_func_test2_atomic_compare_exchange32_label1
     movl %eax, (%rsi)
-_kefir_func_test2_atomic_compare_exchange32_label1:
+__kefir_func_test2_atomic_compare_exchange32_label1:
     sete %al
     ret
 __kefir_text_func_test2_atomic_compare_exchange32_end:
@@ -69,9 +69,9 @@ __kefir_text_func_test2_atomic_compare_exchange64_begin:
     mov %rax, %rcx
     movq (%rsi), %rax
     lock     cmpxchgq %rcx, (%rdx)
-    je _kefir_func_test2_atomic_compare_exchange64_label1
+    je __kefir_func_test2_atomic_compare_exchange64_label1
     movq %rax, (%rsi)
-_kefir_func_test2_atomic_compare_exchange64_label1:
+__kefir_func_test2_atomic_compare_exchange64_label1:
     sete %al
     ret
 __kefir_text_func_test2_atomic_compare_exchange64_end:
@@ -83,9 +83,9 @@ __kefir_text_func_test2_atomic_compare_exchange8_begin:
     mov %rax, %rcx
     movb (%rsi), %al
     lock     cmpxchgb %cl, (%rdx)
-    je _kefir_func_test2_atomic_compare_exchange8_label1
+    je __kefir_func_test2_atomic_compare_exchange8_label1
     movb %al, (%rsi)
-_kefir_func_test2_atomic_compare_exchange8_label1:
+__kefir_func_test2_atomic_compare_exchange8_label1:
     sete %al
     ret
 __kefir_text_func_test2_atomic_compare_exchange8_end:
@@ -97,9 +97,9 @@ __kefir_text_func_test_atomic_compare_exchange16_begin:
     mov %rax, %rcx
     movw (%rsi), %ax
     lock     cmpxchgw %cx, (%rdx)
-    je _kefir_func_test_atomic_compare_exchange16_label1
+    je __kefir_func_test_atomic_compare_exchange16_label1
     movw %ax, (%rsi)
-_kefir_func_test_atomic_compare_exchange16_label1:
+__kefir_func_test_atomic_compare_exchange16_label1:
     sete %al
     ret
 __kefir_text_func_test_atomic_compare_exchange16_end:
@@ -111,9 +111,9 @@ __kefir_text_func_test_atomic_compare_exchange32_begin:
     mov %rax, %rcx
     movl (%rsi), %eax
     lock     cmpxchgl %ecx, (%rdx)
-    je _kefir_func_test_atomic_compare_exchange32_label1
+    je __kefir_func_test_atomic_compare_exchange32_label1
     movl %eax, (%rsi)
-_kefir_func_test_atomic_compare_exchange32_label1:
+__kefir_func_test_atomic_compare_exchange32_label1:
     sete %al
     ret
 __kefir_text_func_test_atomic_compare_exchange32_end:
@@ -125,9 +125,9 @@ __kefir_text_func_test_atomic_compare_exchange64_begin:
     mov %rax, %rcx
     movq (%rsi), %rax
     lock     cmpxchgq %rcx, (%rdx)
-    je _kefir_func_test_atomic_compare_exchange64_label1
+    je __kefir_func_test_atomic_compare_exchange64_label1
     movq %rax, (%rsi)
-_kefir_func_test_atomic_compare_exchange64_label1:
+__kefir_func_test_atomic_compare_exchange64_label1:
     sete %al
     ret
 __kefir_text_func_test_atomic_compare_exchange64_end:
