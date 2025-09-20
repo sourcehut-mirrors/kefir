@@ -105,45 +105,56 @@ SOFTFLOAT_DEFINE_COMPLEX_MUL(__kefir_softfloat_complex_long_double_mul, __KEFIR_
 #undef COPYSIGN_IF_INF
 #undef UPDATE_IF_NAN
 
-static __KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_T__ __kefir_softfloat_complex_long_double_div(
-    __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ a, __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ b, __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ c, __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ d) {
-    const __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ logbw = __kefir_softfloat_logbl(__kefir_softfloat_fmaximum_numl(__kefir_softfloat_fabsl(c), __kefir_softfloat_fabsl(d)));
-    __KEFIR_SOFTFLOAT_INT_T__ ilogbw = 0;
-    if (__KEFIR_SOFTFLOAT_ISFINITE__(logbw)) {
-        ilogbw = (__KEFIR_SOFTFLOAT_INT_T__) logbw;
-        c = __kefir_softfloat_scalbnl(c, -ilogbw);
-        d = __kefir_softfloat_scalbnl(d, -ilogbw);
-    }
-
-    const __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ denom = c * c + d * d;
 #define EVAL_X() (a * c + b * d)
 #define EVAL_Y() (b * c - a * d)
-#define COPYSIGN_IF_INF(_var)                                     \
+#define COPYSIGN_IF_INF(_copysign, _var)                                     \
     do {                                                          \
-        *(_var) = __KEFIR_SOFTFLOAT_COPYSIGNL__(__KEFIR_SOFTFLOAT_ISINF_SIGN__(*(_var)) ? 1.0 : 0.0, *(_var)); \
+        *(_var) = _copysign(__KEFIR_SOFTFLOAT_ISINF_SIGN__(*(_var)) ? 1.0 : 0.0, *(_var)); \
     } while (0)
-    __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ x = __kefir_softfloat_scalbnl(EVAL_X() / denom, -ilogbw);
-    __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ y = __kefir_softfloat_scalbnl(EVAL_Y() / denom, -ilogbw);
-    if (__KEFIR_SOFTFLOAT_ISNAN__(x) && __KEFIR_SOFTFLOAT_ISNAN__(y)) {
-        if (denom == 0.0L && (!__KEFIR_SOFTFLOAT_ISNAN__(a) || !__KEFIR_SOFTFLOAT_ISNAN__(b))) {
-            x = __KEFIR_SOFTFLOAT_COPYSIGNL__(__KEFIR_SOFTFLOAT_INFINITY__, c) * a;
-            y = __KEFIR_SOFTFLOAT_COPYSIGNL__(__KEFIR_SOFTFLOAT_INFINITY__, c) * b;
-        } else if ((__KEFIR_SOFTFLOAT_ISINF_SIGN__(a) || __KEFIR_SOFTFLOAT_ISINF_SIGN__(b)) && __KEFIR_SOFTFLOAT_ISFINITE__(c) && __KEFIR_SOFTFLOAT_ISFINITE__(d)) {
-            COPYSIGN_IF_INF(&a);
-            COPYSIGN_IF_INF(&b);
-            x = __KEFIR_SOFTFLOAT_INFINITY__ * EVAL_X();
-            y = __KEFIR_SOFTFLOAT_INFINITY__ * EVAL_Y();
-        } else if (__KEFIR_SOFTFLOAT_ISINF_SIGN__(logbw) && logbw > 0.0L && __KEFIR_SOFTFLOAT_ISFINITE__(a) && __KEFIR_SOFTFLOAT_ISFINITE__(b)) {
-            COPYSIGN_IF_INF(&c);
-            COPYSIGN_IF_INF(&d);
-            x = 0.0 * EVAL_X();
-            y = 0.0 * EVAL_Y();
-        }
+#define SOFTFLOAT_DEFINE_COMPLEX_DIV(_id, _scalar_type, _complex_type, _copysign, _logb_fn, _scalb_fn, _make_complex)               \
+    static _complex_type _id( \
+        _scalar_type a, _scalar_type b, _scalar_type c, _scalar_type d) { \
+        const _scalar_type logbw = _logb_fn(c, d); \
+        __KEFIR_SOFTFLOAT_INT_T__ ilogbw = 0; \
+        if (__KEFIR_SOFTFLOAT_ISFINITE__(logbw)) { \
+            ilogbw = (__KEFIR_SOFTFLOAT_INT_T__) logbw; \
+            c = _scalb_fn(c, -ilogbw); \
+            d = _scalb_fn(d, -ilogbw); \
+        } \
+ \
+        const _scalar_type denom = c * c + d * d; \
+        _scalar_type x = _scalb_fn(EVAL_X() / denom, -ilogbw); \
+        _scalar_type y = _scalb_fn(EVAL_Y() / denom, -ilogbw); \
+        if (__KEFIR_SOFTFLOAT_ISNAN__(x) && __KEFIR_SOFTFLOAT_ISNAN__(y)) { \
+            if (denom == 0.0L && (!__KEFIR_SOFTFLOAT_ISNAN__(a) || !__KEFIR_SOFTFLOAT_ISNAN__(b))) { \
+                x = _copysign(__KEFIR_SOFTFLOAT_INFINITY__, c) * a; \
+                y = _copysign(__KEFIR_SOFTFLOAT_INFINITY__, c) * b; \
+            } else if ((__KEFIR_SOFTFLOAT_ISINF_SIGN__(a) || __KEFIR_SOFTFLOAT_ISINF_SIGN__(b)) && __KEFIR_SOFTFLOAT_ISFINITE__(c) && __KEFIR_SOFTFLOAT_ISFINITE__(d)) { \
+                COPYSIGN_IF_INF(_copysign, &a); \
+                COPYSIGN_IF_INF(_copysign, &b); \
+                x = __KEFIR_SOFTFLOAT_INFINITY__ * EVAL_X(); \
+                y = __KEFIR_SOFTFLOAT_INFINITY__ * EVAL_Y(); \
+            } else if (__KEFIR_SOFTFLOAT_ISINF_SIGN__(logbw) && logbw > 0.0L && __KEFIR_SOFTFLOAT_ISFINITE__(a) && __KEFIR_SOFTFLOAT_ISFINITE__(b)) { \
+                COPYSIGN_IF_INF(_copysign, &c); \
+                COPYSIGN_IF_INF(_copysign, &d); \
+                x = 0.0 * EVAL_X(); \
+                y = 0.0 * EVAL_Y(); \
+            } \
+        } \
+        return _make_complex(x, y); \
+    }
+
+#define LOGB_FN(_arg1, _arg2) __kefir_softfloat_logb(__kefir_softfloat_fmaximum_num(__kefir_softfloat_fabs((_arg1)), __kefir_softfloat_fabs((_arg2))))
+SOFTFLOAT_DEFINE_COMPLEX_DIV(__kefir_softfloat_complex_double_div, __KEFIR_SOFTFLOAT_DOUBLE_T__, __KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_T__, __KEFIR_SOFTFLOAT_COPYSIGN__, LOGB_FN, __kefir_softfloat_scalbn, __KEFIR_SOFTFLOAT_MAKE_COMPLEX_DOUBLE__)
+#undef LOGB_FN
+
+#define LOGB_FN(_arg1, _arg2) __kefir_softfloat_logbl(__kefir_softfloat_fmaximum_numl(__kefir_softfloat_fabsl((_arg1)), __kefir_softfloat_fabsl((_arg2))))
+SOFTFLOAT_DEFINE_COMPLEX_DIV(__kefir_softfloat_complex_long_double_div, __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__, __KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_T__, __KEFIR_SOFTFLOAT_COPYSIGNL__, LOGB_FN, __kefir_softfloat_scalbnl, __KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__)
+#undef LOGB_FN
+
 #undef COPYSIGN_IF_INF
 #undef EVAL_X
 #undef EVAL_Y
-    }
-    return __KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__(x, y);
-}
+#undef SOFTFLOAT_DEFINE_COMPLEX_DIV
 
 #endif

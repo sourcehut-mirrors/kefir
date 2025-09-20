@@ -585,11 +585,11 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define LIBATOMIC_CMPXCHG "__atomic_compare_exchange"
 
 #define SOFTFLOAT_DIVSC3 "__divsc3"
-#define SOFTFLOAT_DIVDC3 "__divdc3"
 
 #define KEFIR_SOFTFLOAT_COMPLEX_FLOAT_MUL "__kefir_softfloat_complex_float_mul"
 #define KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_MUL "__kefir_softfloat_complex_double_mul"
 #define KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_MUL "__kefir_softfloat_complex_long_double_mul"
+#define KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_DIV "__kefir_softfloat_complex_double_div"
 #define KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_DIV "__kefir_softfloat_complex_long_double_div"
 
 #define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
