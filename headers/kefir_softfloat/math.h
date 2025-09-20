@@ -32,10 +32,124 @@
 
 #include "kefir_softfloat/base.h"
 
+union __kefir_softfloat_float_repr {
+    __KEFIR_SOFTFLOAT_FLOAT_T__ f;
+    __KEFIR_SOFTFLOAT_UINT64_T__ uint;
+};
+
 union __kefir_softfloat_double_repr {
     __KEFIR_SOFTFLOAT_DOUBLE_T__ d;
     __KEFIR_SOFTFLOAT_UINT64_T__ uint;
 };
+
+static __KEFIR_SOFTFLOAT_FLOAT_T__ __kefir_softfloat_fabsf(__KEFIR_SOFTFLOAT_FLOAT_T__ value) {
+    union __kefir_softfloat_float_repr rep = {
+        .f = value
+    };
+
+    rep.uint &= (1ull << 31) - 1;
+    return rep.f;
+}
+
+static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogbf(__KEFIR_SOFTFLOAT_FLOAT_T__ x) {
+#ifdef __KEFIRCC__
+	#pragma STDC FENV_ACCESS ON
+#endif
+#define MANT_WIDTH 23
+#define EXP_SIGN_WIDTH 9
+#define EXP_MASK 0xff
+#define EXP_OFFSET 0x7f
+#define LOGNAN (-0x80000000)
+	union __kefir_softfloat_float_repr repr = {
+        .f = x
+    };
+	__KEFIR_SOFTFLOAT_INT_T__ exponent = ((repr.uint) >> MANT_WIDTH) & EXP_MASK;
+    __KEFIR_SOFTFLOAT_UINT64_T__ irepr = repr.uint << EXP_SIGN_WIDTH;
+
+    __KEFIR_SOFTFLOAT_INT_T__ res = exponent - EXP_OFFSET;
+	if (exponent == EXP_MASK) {
+        volatile __KEFIR_SOFTFLOAT_FLOAT_T__ tmp = 0.0L / 0.0L;
+        (void) tmp;
+        res = irepr ? LOGNAN : __KEFIR_SOFTFLOAT_INT_MAX__;
+	} else if (exponent == 0) {
+		if (irepr == 0) {
+            volatile __KEFIR_SOFTFLOAT_FLOAT_T__ tmp = 0.0L / 0.0L;
+            (void) tmp;
+            res = LOGNAN;
+		} else {
+            res = -EXP_OFFSET;
+            for (; irepr >> 31 == 0; irepr <<= 1) {
+                res--;
+            }
+        }
+	}
+    return res;
+#undef EXP_OFFSET
+#undef LOGNAN
+#undef EXP_SIGN_WIDTH
+#undef MANT_WIDTH
+#undef EXP_MASK
+}
+
+static __KEFIR_SOFTFLOAT_FLOAT_T__ __kefir_softfloat_scalbnf(__KEFIR_SOFTFLOAT_FLOAT_T__ x, __KEFIR_SOFTFLOAT_INT_T__ n) {
+	union __kefir_softfloat_float_repr rep;
+
+#define UP_THRESH 127
+#define UP_FACTOR 0x1p127f
+#define DOWN_THRESH 126
+#define DOWN_OFFSET 24
+#define DOWN_FACTOR (0x1p-126f * 0x1p24f)
+#define EXP_OFFSET 23
+    for (__KEFIR_SOFTFLOAT_INT_T__ i = 0; i < 2 && n > UP_THRESH; i++) {
+		x *= UP_FACTOR;
+		n -= UP_THRESH;
+    }
+    if (n > UP_THRESH) {
+        n = UP_THRESH;
+    }
+    for (__KEFIR_SOFTFLOAT_INT_T__ i = 0; i < 2 && n < -DOWN_THRESH; i++) {
+		x *= DOWN_FACTOR;
+		n += DOWN_THRESH - DOWN_OFFSET;
+    }
+    if (n < -DOWN_THRESH) {
+        n = -DOWN_THRESH;
+    }
+
+    rep.uint = ((__KEFIR_SOFTFLOAT_UINT64_T__) (UP_THRESH + n)) << EXP_OFFSET;
+	return x * rep.f;
+#undef EXP_OFFSET
+#undef UP_THRESH
+#undef UP_FACTOR
+#undef DOWN_THRESH
+#undef DOWN_OFFSET
+#undef DOWN_FACTOR
+}
+
+static __KEFIR_SOFTFLOAT_FLOAT_T__ __kefir_softfloat_logbf(__KEFIR_SOFTFLOAT_FLOAT_T__ x) {
+    if (!__KEFIR_SOFTFLOAT_ISFINITE__(x)) {
+        return x * x;
+    } else if (x == 0.0) {
+		return -__KEFIR_SOFTFLOAT_INFINITY__;
+    } else {
+	    return (__KEFIR_SOFTFLOAT_FLOAT_T__) __kefir_softfloat_ilogbf(x);
+    }
+}
+
+static __KEFIR_SOFTFLOAT_FLOAT_T__ __kefir_softfloat_fmaximum_numf(__KEFIR_SOFTFLOAT_FLOAT_T__ x, __KEFIR_SOFTFLOAT_FLOAT_T__ y) {
+    if (__KEFIR_SOFTFLOAT_ISLESS__(x, y)) {
+        return y;
+    } else if (__KEFIR_SOFTFLOAT_ISGREATER__(x, y)) {
+        return x;
+    } else if (x == y) {
+        return __KEFIR_SOFTFLOAT_COPYSIGNF__(1.0f, x) >= __KEFIR_SOFTFLOAT_COPYSIGNF__(1.0f, y) ? x : y;
+    }
+
+    return __KEFIR_SOFTFLOAT_ISNAN__(y)
+        ? (__KEFIR_SOFTFLOAT_ISNAN__(x)
+            ? x + y
+            : x)
+        : y;
+}
 
 static __KEFIR_SOFTFLOAT_DOUBLE_T__ __kefir_softfloat_fabs(__KEFIR_SOFTFLOAT_DOUBLE_T__ value) {
     union __kefir_softfloat_double_repr rep = {
@@ -63,12 +177,12 @@ static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogb(__KEFIR_SOFTFLOAT_DOUBL
 
     __KEFIR_SOFTFLOAT_INT_T__ res = exponent - EXP_OFFSET;
 	if (exponent == EXP_MASK) {
-        volatile __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ tmp = 0.0L / 0.0L;
+        volatile __KEFIR_SOFTFLOAT_DOUBLE_T__ tmp = 0.0L / 0.0L;
         (void) tmp;
         res = irepr ? LOGNAN : __KEFIR_SOFTFLOAT_INT_MAX__;
 	} else if (exponent == 0) {
 		if (irepr == 0) {
-            volatile __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ tmp = 0.0L / 0.0L;
+            volatile __KEFIR_SOFTFLOAT_DOUBLE_T__ tmp = 0.0L / 0.0L;
             (void) tmp;
             res = LOGNAN;
 		} else {
@@ -81,6 +195,7 @@ static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogb(__KEFIR_SOFTFLOAT_DOUBL
     return res;
 #undef EXP_OFFSET
 #undef LOGNAN
+#undef EXP_SIGN_WIDTH
 #undef MANT_WIDTH
 #undef EXP_MASK
 }

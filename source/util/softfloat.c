@@ -86,6 +86,7 @@ struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_m
 
 struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_div(
     struct kefir_softfloat_complex_long_double lhs, struct kefir_softfloat_complex_long_double rhs) {
+    UNUSED(__kefir_softfloat_complex_float_div);  // Dummy UNUSED -- to avoid compiler complaints
     UNUSED(__kefir_softfloat_complex_double_div);  // Dummy UNUSED -- to avoid compiler complaints
     return __kefir_softfloat_complex_long_double_div(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }

@@ -144,6 +144,10 @@ SOFTFLOAT_DEFINE_COMPLEX_MUL(__kefir_softfloat_complex_long_double_mul, __KEFIR_
         return _make_complex(x, y); \
     }
 
+#define LOGB_FN(_arg1, _arg2) __kefir_softfloat_logbf(__kefir_softfloat_fmaximum_numf(__kefir_softfloat_fabsf((_arg1)), __kefir_softfloat_fabsf((_arg2))))
+SOFTFLOAT_DEFINE_COMPLEX_DIV(__kefir_softfloat_complex_float_div, __KEFIR_SOFTFLOAT_FLOAT_T__, __KEFIR_SOFTFLOAT_COMPLEX_FLOAT_T__, __KEFIR_SOFTFLOAT_COPYSIGNF__, LOGB_FN, __kefir_softfloat_scalbnf, __KEFIR_SOFTFLOAT_MAKE_COMPLEX_FLOAT__)
+#undef LOGB_FN
+
 #define LOGB_FN(_arg1, _arg2) __kefir_softfloat_logb(__kefir_softfloat_fmaximum_num(__kefir_softfloat_fabs((_arg1)), __kefir_softfloat_fabs((_arg2))))
 SOFTFLOAT_DEFINE_COMPLEX_DIV(__kefir_softfloat_complex_double_div, __KEFIR_SOFTFLOAT_DOUBLE_T__, __KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_T__, __KEFIR_SOFTFLOAT_COPYSIGN__, LOGB_FN, __kefir_softfloat_scalbn, __KEFIR_SOFTFLOAT_MAKE_COMPLEX_DOUBLE__)
 #undef LOGB_FN
