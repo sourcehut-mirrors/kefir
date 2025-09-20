@@ -33,6 +33,7 @@ typedef struct kefir_codegen_runtime_hooks {
 } kefir_codegen_runtime_hooks_t;
 
 typedef struct kefir_codegen_configuration {
+    const char *symbol_prefix;
     kefir_bool_t emulated_tls;
     kefir_bool_t position_independent_code;
     kefir_bool_t omit_frame_pointer;

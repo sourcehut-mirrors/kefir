@@ -314,6 +314,55 @@ static kefir_result_t attach_label_to_instr(struct kefir_mem *, struct kefir_asm
 
 static kefir_result_t detach_label(struct kefir_mem *, struct kefir_asmcmp_context *, struct kefir_asmcmp_label *);
 
+static kefir_result_t allocate_value_symbols(struct kefir_mem *mem, struct kefir_asmcmp_context *context, struct kefir_asmcmp_value *value) {
+    switch (value->type) {
+        case KEFIR_ASMCMP_VALUE_TYPE_NONE:
+        case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
+        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
+        case KEFIR_ASMCMP_VALUE_TYPE_X87:
+        case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
+        case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
+            switch (value->indirect.type) {
+                case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
+                    value->indirect.base.external_label = kefir_string_pool_insert(mem, &context->strings, value->indirect.base.external_label, NULL);
+                    REQUIRE(value->indirect.base.external_label != NULL,
+                            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert label name into string pool"));
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                    // Intentionally left blank
+                    break;
+            }
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
+            value->rip_indirection.external = kefir_string_pool_insert(mem, &context->strings, value->rip_indirection.external, NULL);
+            REQUIRE(value->rip_indirection.external != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert label name into string pool"));
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
+            value->external_label.symbolic = kefir_string_pool_insert(mem, &context->strings, value->external_label.symbolic, NULL);
+            REQUIRE(value->external_label.symbolic != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert label name into string pool"));
+            break;
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
                                                        kefir_asmcmp_instruction_index_t after_index,
                                                        const struct kefir_asmcmp_instruction *instr,
@@ -337,6 +386,10 @@ kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *mem, st
     struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[index];
     handle->index = index;
     memcpy(&handle->instr, instr, sizeof(struct kefir_asmcmp_instruction));
+
+    REQUIRE_OK(allocate_value_symbols(mem, context, &handle->instr.args[0]));
+    REQUIRE_OK(allocate_value_symbols(mem, context, &handle->instr.args[1]));
+    REQUIRE_OK(allocate_value_symbols(mem, context, &handle->instr.args[2]));
 
     struct kefir_asmcmp_instruction_handle *const prev_handle = HANDLE_AT(context, after_index);
     struct kefir_asmcmp_instruction_handle *const next_handle =

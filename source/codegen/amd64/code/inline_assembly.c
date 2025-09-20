@@ -1201,7 +1201,7 @@ static kefir_result_t format_normal_parameter(struct kefir_mem *mem, struct kefi
             case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_LITERAL_BASED: {
                 const char *symbol;
                 REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &symbol, KEFIR_AMD64_STRING_LITERAL,
-                                               asm_param->immediate_literal_base));
+                                               function->codegen->config->symbol_prefix, asm_param->immediate_literal_base));
                 REQUIRE_OK(kefir_asmcmp_inline_assembly_add_value(
                     mem, &function->code.context, context->inline_asm_idx,
                     &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, symbol,

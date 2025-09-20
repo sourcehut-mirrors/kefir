@@ -659,7 +659,7 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
         switch (instr->operation.opcode) {
             case KEFIR_OPT_OPCODE_FLOAT32_CONST: {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 4));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, ir_identifier->symbol,
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, func->codegen->config->symbol_prefix, ir_identifier->symbol,
                                                      constant_label));
                 union {
                     kefir_uint32_t u32;
@@ -673,7 +673,7 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
 
             case KEFIR_OPT_OPCODE_FLOAT64_CONST: {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 8));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, ir_identifier->symbol,
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, func->codegen->config->symbol_prefix, ir_identifier->symbol,
                                                      constant_label));
                 union {
                     kefir_uint64_t u64;
@@ -687,7 +687,7 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
 
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST: {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 8));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, ir_identifier->symbol,
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, func->codegen->config->symbol_prefix, ir_identifier->symbol,
                                                      constant_label));
                 volatile union {
                     kefir_uint64_t u64[2];
@@ -949,10 +949,10 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     }
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, &func->stack_frame));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_FUNCTION_BEGIN, ir_identifier->symbol));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_FUNCTION_BEGIN, codegen->config->symbol_prefix, ir_identifier->symbol));
     REQUIRE_OK(kefir_asmcmp_amd64_generate_code(mem, &codegen->xasmgen, codegen->debug_info_tracker, &func->code,
-                                                &func->stack_frame));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_FUNCTION_END, ir_identifier->symbol));
+                                                &func->stack_frame, codegen->config));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_FUNCTION_END, codegen->config->symbol_prefix, ir_identifier->symbol));
     REQUIRE_OK(generate_constants(mem, func));
     return KEFIR_OK;
 }

@@ -24,6 +24,7 @@
 #include "kefir/core/error.h"
 
 const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {
+    .symbol_prefix = "__kefir",
     .emulated_tls = false,
     .position_independent_code = false,
     .omit_frame_pointer = false,

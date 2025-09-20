@@ -73,7 +73,7 @@ static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
             &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
             kefir_asm_amd64_xasmgen_operand_label(
                 &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL,
+                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
                                                        ir_identifier->symbol, begin_label))));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
@@ -81,11 +81,11 @@ static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
                 &codegen_function->codegen->xasmgen_helpers.operands[0],
                 kefir_asm_amd64_xasmgen_operand_label(
                     &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                    kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers[0], KEFIR_AMD64_LABEL,
+                    kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers[0], KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
                                                            ir_identifier->symbol, end_label)),
                 kefir_asm_amd64_xasmgen_operand_label(
                     &codegen_function->codegen->xasmgen_helpers.operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                    kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers[1], KEFIR_AMD64_LABEL,
+                    kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers[1], KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
                                                            ir_identifier->symbol, begin_label)))));
     } else {
         ASSIGN_PTR(dwarf_entry_id, KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL);
