@@ -145,6 +145,7 @@ static kefir_result_t generate_runtime_functions(struct kefir_mem *mem, FILE *ou
     context.codegen_configuration = hooks->compiler_context->codegen_configuration;
     context.codegen_configuration.debug_info = false;
     context.codegen_configuration.runtime_function_generator_mode = true;
+    context.codegen_configuration.symbol_prefix = "__kefir_runtime";
 
     kefir_result_t res = kefir_optimizer_configuration_copy_from(mem, &context.optimizer_configuration,
                                                                  &hooks->compiler_context->optimizer_configuration);

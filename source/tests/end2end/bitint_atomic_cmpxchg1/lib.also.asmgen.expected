@@ -393,11 +393,11 @@ __kefir_text_section_end:
 
 .section .text
 __kefir_bigint_add:
-__kefir_text_func___kefir_bigint_add_begin:
+__kefir_runtime_text_func___kefir_bigint_add_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-__kefir_func___kefir_bigint_add_label0:
+__kefir_runtime_func___kefir_bigint_add_label0:
     movq %rdx, -48(%rbp)
     movq %rsi, -32(%rbp)
     movq %rdi, -40(%rbp)
@@ -421,7 +421,7 @@ __kefir_func___kefir_bigint_add_label0:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -16(%rbp)
-__kefir_func___kefir_bigint_add_label1:
+__kefir_runtime_func___kefir_bigint_add_label1:
     movq -16(%rbp), %rax
     movq -24(%rbp), %rcx
     mov $0, %rdx
@@ -430,13 +430,13 @@ __kefir_func___kefir_bigint_add_label1:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz __kefir_func___kefir_bigint_add_label3
-__kefir_func___kefir_bigint_add_label2:
+    jz __kefir_runtime_func___kefir_bigint_add_label3
+__kefir_runtime_func___kefir_bigint_add_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func___kefir_bigint_add_label3:
+__kefir_runtime_func___kefir_bigint_add_label3:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -473,7 +473,7 @@ __kefir_func___kefir_bigint_add_label3:
     movq -16(%rbp), %rax
     add $1, %rax
     movq %rax, -16(%rbp)
-    jmp __kefir_func___kefir_bigint_add_label1
-__kefir_text_func___kefir_bigint_add_end:
+    jmp __kefir_runtime_func___kefir_bigint_add_label1
+__kefir_runtime_text_func___kefir_bigint_add_end:
 
 

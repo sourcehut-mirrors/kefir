@@ -173,7 +173,7 @@ __kefir_text_section_end:
 
 .section .text
 __kefir_bigint_unsigned_compare:
-__kefir_text_func___kefir_bigint_unsigned_compare_begin:
+__kefir_runtime_text_func___kefir_bigint_unsigned_compare_begin:
     push %rbx
     push %r12
     push %r13
@@ -189,16 +189,16 @@ __kefir_text_func___kefir_bigint_unsigned_compare_begin:
     div %rcx
     mov %rax, %rbx
     mov %rbx, %r12
-__kefir_func___kefir_bigint_unsigned_compare_label1:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label1:
     cmp $0, %r12
-    ja __kefir_func___kefir_bigint_unsigned_compare_label3
+    ja __kefir_runtime_func___kefir_bigint_unsigned_compare_label3
     xor %eax, %eax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     ret
-__kefir_func___kefir_bigint_unsigned_compare_label3:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label3:
     mov %r12, %rax
     sub $1, %rax
     mov %r11, %rdi
@@ -210,32 +210,32 @@ __kefir_func___kefir_bigint_unsigned_compare_label3:
     add %rax, %rsi
     movzxb (%rsi), %r9
     cmp %rbx, %r12
-    je __kefir_func___kefir_bigint_unsigned_compare_label8
+    je __kefir_runtime_func___kefir_bigint_unsigned_compare_label8
     mov %r10, %rcx
     mov %r9, %r8
-__kefir_func___kefir_bigint_unsigned_compare_label4:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label4:
     cmp %r8d, %ecx
-    ja __kefir_func___kefir_bigint_unsigned_compare_label7
+    ja __kefir_runtime_func___kefir_bigint_unsigned_compare_label7
     lea -1(%r12), %rax
     cmp %r8d, %ecx
-    jb __kefir_func___kefir_bigint_unsigned_compare_label6
+    jb __kefir_runtime_func___kefir_bigint_unsigned_compare_label6
     mov %rax, %r12
-    jmp __kefir_func___kefir_bigint_unsigned_compare_label1
-__kefir_func___kefir_bigint_unsigned_compare_label6:
+    jmp __kefir_runtime_func___kefir_bigint_unsigned_compare_label1
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
     mov $-1, %rax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     ret
-__kefir_func___kefir_bigint_unsigned_compare_label7:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label7:
     mov $1, %rax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     ret
-__kefir_func___kefir_bigint_unsigned_compare_label8:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     mov %r13, %rcx
     sub $1, %rcx
     mov %r13, %rdx
@@ -256,11 +256,11 @@ __kefir_func___kefir_bigint_unsigned_compare_label8:
     and %r8d, %ecx
     and %r8d, %r9d
     mov %r9, %r8
-    jmp __kefir_func___kefir_bigint_unsigned_compare_label4
-__kefir_text_func___kefir_bigint_unsigned_compare_end:
+    jmp __kefir_runtime_func___kefir_bigint_unsigned_compare_label4
+__kefir_runtime_text_func___kefir_bigint_unsigned_compare_end:
 
 __kefir_bigint_trailing_zeros:
-__kefir_text_func___kefir_bigint_trailing_zeros_begin:
+__kefir_runtime_text_func___kefir_bigint_trailing_zeros_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
@@ -273,7 +273,7 @@ __kefir_text_func___kefir_bigint_trailing_zeros_begin:
     movq %rsi, -56(%rbp)
     movq %rdi, -48(%rbp)
     cmpq $0, -56(%rbp)
-    je __kefir_func___kefir_bigint_trailing_zeros_label9
+    je __kefir_runtime_func___kefir_bigint_trailing_zeros_label9
     movq -56(%rbp), %rsi
     sub $-7, %rsi
     mov %rsi, %rax
@@ -283,9 +283,9 @@ __kefir_text_func___kefir_bigint_trailing_zeros_begin:
     mov %rax, %r14
     xor %r15d, %r15d
     xor %r10d, %r10d
-__kefir_func___kefir_bigint_trailing_zeros_label2:
+__kefir_runtime_func___kefir_bigint_trailing_zeros_label2:
     cmp %r14, %r15
-    jb __kefir_func___kefir_bigint_trailing_zeros_label4
+    jb __kefir_runtime_func___kefir_bigint_trailing_zeros_label4
     movq -64(%rbp), %rax
     lea -40(%rbp), %rsp
     pop %r15
@@ -295,7 +295,7 @@ __kefir_func___kefir_bigint_trailing_zeros_label2:
     pop %rbx
     pop %rbp
     ret
-__kefir_func___kefir_bigint_trailing_zeros_label4:
+__kefir_runtime_func___kefir_bigint_trailing_zeros_label4:
     movq -48(%rbp), %rdi
     add %r15, %rdi
     movb (%rdi), %r12b
@@ -311,20 +311,20 @@ __kefir_func___kefir_bigint_trailing_zeros_label4:
     lea 8(%r10), %r9
     movzx %r12b, %rcx
     cmp $0, %ecx
-    je __kefir_func___kefir_bigint_trailing_zeros_label6
+    je __kefir_runtime_func___kefir_bigint_trailing_zeros_label6
     xor %ebx, %ebx
     mov %r10, %r13
-    jmp __kefir_func___kefir_bigint_trailing_zeros_label5
-__kefir_func___kefir_bigint_trailing_zeros_label5:
+    jmp __kefir_runtime_func___kefir_bigint_trailing_zeros_label5
+__kefir_runtime_func___kefir_bigint_trailing_zeros_label5:
     cmp %r8, %rbx
-    jb __kefir_func___kefir_bigint_trailing_zeros_label7
+    jb __kefir_runtime_func___kefir_bigint_trailing_zeros_label7
     mov %r13, %r9
-__kefir_func___kefir_bigint_trailing_zeros_label6:
+__kefir_runtime_func___kefir_bigint_trailing_zeros_label6:
     lea 1(%r15), %rcx
     mov %rcx, %r15
     mov %r9, %r10
-    jmp __kefir_func___kefir_bigint_trailing_zeros_label2
-__kefir_func___kefir_bigint_trailing_zeros_label7:
+    jmp __kefir_runtime_func___kefir_bigint_trailing_zeros_label2
+__kefir_runtime_func___kefir_bigint_trailing_zeros_label7:
     lea 1(%rbx), %r9
     lea 1(%r13), %r10
     movzx %r12b, %r11
@@ -332,11 +332,11 @@ __kefir_func___kefir_bigint_trailing_zeros_label7:
     sar %cl, %r11d
     and $1, %r11d
     cmp $1, %r11d
-    je __kefir_func___kefir_bigint_trailing_zeros_label8
+    je __kefir_runtime_func___kefir_bigint_trailing_zeros_label8
     mov %r9, %rbx
     mov %r10, %r13
-    jmp __kefir_func___kefir_bigint_trailing_zeros_label5
-__kefir_func___kefir_bigint_trailing_zeros_label8:
+    jmp __kefir_runtime_func___kefir_bigint_trailing_zeros_label5
+__kefir_runtime_func___kefir_bigint_trailing_zeros_label8:
     mov %r13, %rax
     lea -40(%rbp), %rsp
     pop %r15
@@ -346,7 +346,7 @@ __kefir_func___kefir_bigint_trailing_zeros_label8:
     pop %rbx
     pop %rbp
     ret
-__kefir_func___kefir_bigint_trailing_zeros_label9:
+__kefir_runtime_func___kefir_bigint_trailing_zeros_label9:
     movq -64(%rbp), %rax
     lea -40(%rbp), %rsp
     pop %r15
@@ -356,6 +356,6 @@ __kefir_func___kefir_bigint_trailing_zeros_label9:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func___kefir_bigint_trailing_zeros_end:
+__kefir_runtime_text_func___kefir_bigint_trailing_zeros_end:
 
 
