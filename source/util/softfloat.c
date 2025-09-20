@@ -49,6 +49,7 @@ typedef struct kefir_softfloat_complex_double {
 #include <float.h>
 #define __KEFIR_SOFTFLOAT_USE_SOFTFLOAT_IMPL__
 #define __KEFIR_SOFTFLOAT_LDBL_MANT_DIG__ LDBL_MANT_DIG
+#define __KEFIR_SOFTFLOAT_INT_MAX__ INT_MAX
 #define __KEFIR_SOFTFLOAT_BOOL_TYPE_T__ kefir_bool_t
 #define __KEFIR_SOFTFLOAT_INT_T__ kefir_int_t
 #define __KEFIR_SOFTFLOAT_UINT64_T__ kefir_uint64_t
@@ -88,7 +89,7 @@ struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_d
     __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ a = lhs.real, b = lhs.imaginary;
     __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ c = rhs.real, d = rhs.imaginary;
 
-    const __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ logbw = logbl(__kefir_softfloat_fmaximum_numl(__kefir_softfloat_fabsl(c), __kefir_softfloat_fabsl(d)));
+    const __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ logbw = __kefir_softfloat_logbl(__kefir_softfloat_fmaximum_numl(__kefir_softfloat_fabsl(c), __kefir_softfloat_fabsl(d)));
     int ilogbw = 0;
     if (__KEFIR_SOFTFLOAT_ISFINITE__(logbw)) {
         ilogbw = (int) logbw;

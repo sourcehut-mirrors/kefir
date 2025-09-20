@@ -38,6 +38,10 @@
 #error "__KEFIR_SOFTFLOAT_LDBL_MANT_DIG__ is missing"
 #endif
 
+#ifndef __KEFIR_SOFTFLOAT_INT_MAX__
+#error "__KEFIR_SOFTFLOAT_INT_MAX__ is missing"
+#endif
+
 #ifndef __KEFIR_SOFTFLOAT_BOOL_TYPE_T__
 #error "__KEFIR_SOFTFLOAT_BOOL_TYPE_T__ is missing"
 #endif
