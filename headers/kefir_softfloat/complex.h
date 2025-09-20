@@ -105,4 +105,45 @@ SOFTFLOAT_DEFINE_COMPLEX_MUL(__kefir_softfloat_complex_long_double_mul, __KEFIR_
 #undef COPYSIGN_IF_INF
 #undef UPDATE_IF_NAN
 
+static __KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_T__ __kefir_softfloat_complex_long_double_div(
+    __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ a, __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ b, __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ c, __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ d) {
+    const __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ logbw = __kefir_softfloat_logbl(__kefir_softfloat_fmaximum_numl(__kefir_softfloat_fabsl(c), __kefir_softfloat_fabsl(d)));
+    __KEFIR_SOFTFLOAT_INT_T__ ilogbw = 0;
+    if (__KEFIR_SOFTFLOAT_ISFINITE__(logbw)) {
+        ilogbw = (__KEFIR_SOFTFLOAT_INT_T__) logbw;
+        c = __kefir_softfloat_scalbnl(c, -ilogbw);
+        d = __kefir_softfloat_scalbnl(d, -ilogbw);
+    }
+
+    const __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ denom = c * c + d * d;
+#define EVAL_X() (a * c + b * d)
+#define EVAL_Y() (b * c - a * d)
+#define COPYSIGN_IF_INF(_var)                                     \
+    do {                                                          \
+        *(_var) = __KEFIR_SOFTFLOAT_COPYSIGNL__(__KEFIR_SOFTFLOAT_ISINF_SIGN__(*(_var)) ? 1.0 : 0.0, *(_var)); \
+    } while (0)
+    __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ x = __kefir_softfloat_scalbnl(EVAL_X() / denom, -ilogbw);
+    __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ y = __kefir_softfloat_scalbnl(EVAL_Y() / denom, -ilogbw);
+    if (__KEFIR_SOFTFLOAT_ISNAN__(x) && __KEFIR_SOFTFLOAT_ISNAN__(y)) {
+        if (denom == 0.0L && (!__KEFIR_SOFTFLOAT_ISNAN__(a) || !__KEFIR_SOFTFLOAT_ISNAN__(b))) {
+            x = __KEFIR_SOFTFLOAT_COPYSIGNL__(__KEFIR_SOFTFLOAT_INFINITY__, c) * a;
+            y = __KEFIR_SOFTFLOAT_COPYSIGNL__(__KEFIR_SOFTFLOAT_INFINITY__, c) * b;
+        } else if ((__KEFIR_SOFTFLOAT_ISINF_SIGN__(a) || __KEFIR_SOFTFLOAT_ISINF_SIGN__(b)) && __KEFIR_SOFTFLOAT_ISFINITE__(c) && __KEFIR_SOFTFLOAT_ISFINITE__(d)) {
+            COPYSIGN_IF_INF(&a);
+            COPYSIGN_IF_INF(&b);
+            x = __KEFIR_SOFTFLOAT_INFINITY__ * EVAL_X();
+            y = __KEFIR_SOFTFLOAT_INFINITY__ * EVAL_Y();
+        } else if (__KEFIR_SOFTFLOAT_ISINF_SIGN__(logbw) && logbw > 0.0L && __KEFIR_SOFTFLOAT_ISFINITE__(a) && __KEFIR_SOFTFLOAT_ISFINITE__(b)) {
+            COPYSIGN_IF_INF(&c);
+            COPYSIGN_IF_INF(&d);
+            x = 0.0 * EVAL_X();
+            y = 0.0 * EVAL_Y();
+        }
+#undef COPYSIGN_IF_INF
+#undef EVAL_X
+#undef EVAL_Y
+    }
+    return __KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__(x, y);
+}
+
 #endif
