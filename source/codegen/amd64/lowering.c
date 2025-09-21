@@ -83,16 +83,16 @@ struct lowering_param {
         kefir_id_t builtin_parity;
         kefir_id_t builtin_parityl;
 
-        kefir_id_t mulsc3;
-        kefir_id_t muldc3;
-        kefir_id_t mulxc3;
-        kefir_id_t divsc3;
-        kefir_id_t divdc3;
-        kefir_id_t divxc3;
+        kefir_id_t softfloat_complex_float_mul;
+        kefir_id_t softfloat_complex_double_mul;
+        kefir_id_t softfloat_complex_long_double_mul;
+        kefir_id_t softfloat_complex_float_div;
+        kefir_id_t softfloat_complex_double_div;
+        kefir_id_t softfloat_complex_long_double_div;
     } runtime_fn;
 };
 
-#define BIGINT_RUNTIME_FN_IDENTIFIER(_name)                                                                \
+#define RUNTIME_FN_IDENTIFIER(_name)                                                                \
     (struct kefir_ir_identifier) {                                                                         \
         .symbol = (_name), .type = KEFIR_IR_IDENTIFIER_FUNCTION, .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL, \
         .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT, .alias = NULL, .debug_info = {               \
@@ -108,7 +108,7 @@ struct lowering_param {
         }                                                                                                   \
     }
 
-#define DECL_BIGINT_RUNTIME_FN(_id, _name, _params, _returns, _init)                                             \
+#define DECL_RUNTIME_FN(_id, _name, _params, _returns, _init)                                             \
     static kefir_result_t get_##_id##_function_decl_id(struct kefir_mem *mem, struct kefir_opt_module *module,   \
                                                        struct lowering_param *param, kefir_id_t *func_decl_id) { \
         if (param->runtime_fn._id != KEFIR_ID_NONE) {                                                            \
@@ -131,7 +131,7 @@ struct lowering_param {
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));          \
                                                                                                                  \
         REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module->ir_module, func_decl->name,                   \
-                                                      &BIGINT_RUNTIME_FN_IDENTIFIER(func_decl->name)));          \
+                                                      &RUNTIME_FN_IDENTIFIER(func_decl->name)));          \
                                                                                                                  \
         REQUIRE_OK(kefir_opt_module_require_runtime_function(mem, module, func_decl->name));                     \
                                                                                                                  \
@@ -170,214 +170,214 @@ struct lowering_param {
         return KEFIR_OK;                                                                                         \
     }
 
-DECL_BIGINT_RUNTIME_FN(bigint_set_signed, BIGINT_GET_SET_SIGNED_INTEGER_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_set_signed, BIGINT_GET_SET_SIGNED_INTEGER_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_set_unsigned, BIGINT_GET_SET_UNSIGNED_INTEGER_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_set_unsigned, BIGINT_GET_SET_UNSIGNED_INTEGER_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_cast_signed, BIGINT_CAST_SIGNED_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_cast_signed, BIGINT_CAST_SIGNED_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_cast_unsigned, BIGINT_CAST_UNSIGNED_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_cast_unsigned, BIGINT_CAST_UNSIGNED_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_signed_to_float, BIGINT_SIGNED_TO_FLOAT_FN, 3, 1, {
+DECL_RUNTIME_FN(bigint_signed_to_float, BIGINT_SIGNED_TO_FLOAT_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_to_float, BIGINT_UNSIGNED_TO_FLOAT_FN, 3, 1, {
+DECL_RUNTIME_FN(bigint_unsigned_to_float, BIGINT_UNSIGNED_TO_FLOAT_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_signed_to_double, BIGINT_SIGNED_TO_DOUBLE_FN, 3, 1, {
+DECL_RUNTIME_FN(bigint_signed_to_double, BIGINT_SIGNED_TO_DOUBLE_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_to_double, BIGINT_UNSIGNED_TO_DOUBLE_FN, 3, 1, {
+DECL_RUNTIME_FN(bigint_unsigned_to_double, BIGINT_UNSIGNED_TO_DOUBLE_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_signed_to_long_double, BIGINT_SIGNED_TO_LONG_DOUBLE_FN, 3, 1, {
+DECL_RUNTIME_FN(bigint_signed_to_long_double, BIGINT_SIGNED_TO_LONG_DOUBLE_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_to_long_double, BIGINT_UNSIGNED_TO_LONG_DOUBLE_FN, 3, 1, {
+DECL_RUNTIME_FN(bigint_unsigned_to_long_double, BIGINT_UNSIGNED_TO_LONG_DOUBLE_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_signed_from_float, BIGINT_SIGNED_FROM_FLOAT_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_signed_from_float, BIGINT_SIGNED_FROM_FLOAT_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_from_float, BIGINT_UNSIGNED_FROM_FLOAT_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_unsigned_from_float, BIGINT_UNSIGNED_FROM_FLOAT_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_signed_from_double, BIGINT_SIGNED_FROM_DOUBLE_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_signed_from_double, BIGINT_SIGNED_FROM_DOUBLE_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_from_double, BIGINT_UNSIGNED_FROM_DOUBLE_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_unsigned_from_double, BIGINT_UNSIGNED_FROM_DOUBLE_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_signed_from_long_double, BIGINT_SIGNED_FROM_LONG_DOUBLE_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_signed_from_long_double, BIGINT_SIGNED_FROM_LONG_DOUBLE_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_from_long_double, BIGINT_UNSIGNED_FROM_LONG_DOUBLE_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_unsigned_from_long_double, BIGINT_UNSIGNED_FROM_LONG_DOUBLE_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_is_zero, BIGINT_IS_ZERO_FN, 2, 1, {
+DECL_RUNTIME_FN(bigint_is_zero, BIGINT_IS_ZERO_FN, 2, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT8, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_negate, BIGINT_NEGATE_FN, 2, 0, {
+DECL_RUNTIME_FN(bigint_negate, BIGINT_NEGATE_FN, 2, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_invert, BIGINT_INVERT_FN, 2, 0, {
+DECL_RUNTIME_FN(bigint_invert, BIGINT_INVERT_FN, 2, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_add, BIGINT_ADD_FN, 3, 0, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BIGINT_RUNTIME_FN(bigint_subtract, BIGINT_SUBTRACT_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_add, BIGINT_ADD_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_and, BIGINT_AND_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_subtract, BIGINT_SUBTRACT_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_or, BIGINT_OR_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_and, BIGINT_AND_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_xor, BIGINT_XOR_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_or, BIGINT_OR_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_signed_multiply, BIGINT_SIGNED_MULTIPLY_FN, 6, 0, {
+DECL_RUNTIME_FN(bigint_xor, BIGINT_XOR_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_multiply, BIGINT_UNSIGNED_MULTIPLY_FN, 5, 0, {
+DECL_RUNTIME_FN(bigint_signed_multiply, BIGINT_SIGNED_MULTIPLY_FN, 6, 0, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_signed_divide, BIGINT_SIGNED_DIVIDE_FN, 5, 0, {
+DECL_RUNTIME_FN(bigint_unsigned_multiply, BIGINT_UNSIGNED_MULTIPLY_FN, 5, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_divide, BIGINT_UNSIGNED_DIVIDE_FN, 5, 0, {
+DECL_RUNTIME_FN(bigint_signed_divide, BIGINT_SIGNED_DIVIDE_FN, 5, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_lshift, BIGINT_LEFT_SHIFT_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_unsigned_divide, BIGINT_UNSIGNED_DIVIDE_FN, 5, 0, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_rshift, BIGINT_RIGHT_SHIFT_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_lshift, BIGINT_LEFT_SHIFT_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_arshift, BIGINT_ARITHMETIC_RIGHT_SHIFT_FN, 3, 0, {
+DECL_RUNTIME_FN(bigint_rshift, BIGINT_RIGHT_SHIFT_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_compare, BIGINT_UNSIGNED_COMPARE_FN, 3, 1, {
+DECL_RUNTIME_FN(bigint_arshift, BIGINT_ARITHMETIC_RIGHT_SHIFT_FN, 3, 0, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_RUNTIME_FN(bigint_unsigned_compare, BIGINT_UNSIGNED_COMPARE_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT8, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_signed_compare, BIGINT_SIGNED_COMPARE_FN, 3, 1, {
+DECL_RUNTIME_FN(bigint_signed_compare, BIGINT_SIGNED_COMPARE_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_least_significant_nonzero, BIGINT_LEAST_SIGNIFICANT_NONZERO_FN, 2, 1, {
+DECL_RUNTIME_FN(bigint_least_significant_nonzero, BIGINT_LEAST_SIGNIFICANT_NONZERO_FN, 2, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_leading_zeros, BIGINT_LEADING_ZEROS_FN, 3, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BIGINT_RUNTIME_FN(bigint_trailing_zeros, BIGINT_TRAILING_ZEROS_FN, 3, 1, {
+DECL_RUNTIME_FN(bigint_leading_zeros, BIGINT_LEADING_ZEROS_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_redundant_sign_bits, BIGINT_REDUNDANT_SIGN_BITS_FN, 2, 1, {
+DECL_RUNTIME_FN(bigint_trailing_zeros, BIGINT_TRAILING_ZEROS_FN, 3, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_RUNTIME_FN(bigint_redundant_sign_bits, BIGINT_REDUNDANT_SIGN_BITS_FN, 2, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_nonzero_count, BIGINT_NONZERO_COUNT_FN, 2, 1, {
+DECL_RUNTIME_FN(bigint_nonzero_count, BIGINT_NONZERO_COUNT_FN, 2, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_parity, BIGINT_PARITY_FN, 2, 1, {
+DECL_RUNTIME_FN(bigint_parity, BIGINT_PARITY_FN, 2, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
@@ -430,42 +430,42 @@ DECL_BUILTIN_RUNTIME_FN(builtin_parityl, BUILTIN_PARITYL_FN, 1, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(mulsc3, KEFIR_SOFTFLOAT_COMPLEX_FLOAT_MUL, 4, 1, {
+DECL_RUNTIME_FN(softfloat_complex_float_mul, KEFIR_SOFTFLOAT_COMPLEX_FLOAT_MUL, 4, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_COMPLEX_FLOAT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(muldc3, KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_MUL, 4, 1, {
+DECL_RUNTIME_FN(softfloat_complex_double_mul, KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_MUL, 4, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_COMPLEX_FLOAT64, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(mulxc3, KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_MUL, 4, 1, {
+DECL_RUNTIME_FN(softfloat_complex_long_double_mul, KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_MUL, 4, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(divsc3, KEFIR_SOFTFLOAT_COMPLEX_FLOAT_DIV, 4, 1, {
+DECL_RUNTIME_FN(softfloat_complex_float_div, KEFIR_SOFTFLOAT_COMPLEX_FLOAT_DIV, 4, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_COMPLEX_FLOAT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(divdc3, KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_DIV, 4, 1, {
+DECL_RUNTIME_FN(softfloat_complex_double_div, KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_DIV, 4, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_COMPLEX_FLOAT64, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(divxc3, KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_DIV, 4, 1, {
+DECL_RUNTIME_FN(softfloat_complex_long_double_div, KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_DIV, 4, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
@@ -2826,7 +2826,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
 
             kefir_id_t mulsc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_mulsc3_function_decl_id(mem, module, param, &mulsc3_func_decl_id));
+            REQUIRE_OK(get_softfloat_complex_float_mul_function_decl_id(mem, module, param, &mulsc3_func_decl_id));
 
             kefir_opt_call_id_t call_node_id;
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, mulsc3_func_decl_id, 4,
@@ -2852,7 +2852,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
 
             kefir_id_t muldc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_muldc3_function_decl_id(mem, module, param, &muldc3_func_decl_id));
+            REQUIRE_OK(get_softfloat_complex_double_mul_function_decl_id(mem, module, param, &muldc3_func_decl_id));
 
             kefir_opt_call_id_t call_node_id;
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, muldc3_func_decl_id, 4,
@@ -2878,7 +2878,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                                                                             &arg2_imag_ref));
 
             kefir_id_t mulxc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_mulxc3_function_decl_id(mem, module, param, &mulxc3_func_decl_id));
+            REQUIRE_OK(get_softfloat_complex_long_double_mul_function_decl_id(mem, module, param, &mulxc3_func_decl_id));
 
             kefir_opt_call_id_t call_node_id;
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, mulxc3_func_decl_id, 4,
@@ -2904,7 +2904,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
 
             kefir_id_t divsc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_divsc3_function_decl_id(mem, module, param, &divsc3_func_decl_id));
+            REQUIRE_OK(get_softfloat_complex_float_div_function_decl_id(mem, module, param, &divsc3_func_decl_id));
 
             kefir_opt_call_id_t call_node_id;
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, divsc3_func_decl_id, 4,
@@ -2930,7 +2930,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
 
             kefir_id_t divdc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_divdc3_function_decl_id(mem, module, param, &divdc3_func_decl_id));
+            REQUIRE_OK(get_softfloat_complex_double_div_function_decl_id(mem, module, param, &divdc3_func_decl_id));
 
             kefir_opt_call_id_t call_node_id;
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, divdc3_func_decl_id, 4,
@@ -2956,7 +2956,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                                                                             &arg2_imag_ref));
 
             kefir_id_t divxc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_divxc3_function_decl_id(mem, module, param, &divxc3_func_decl_id));
+            REQUIRE_OK(get_softfloat_complex_long_double_div_function_decl_id(mem, module, param, &divxc3_func_decl_id));
 
             kefir_opt_call_id_t call_node_id;
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, divxc3_func_decl_id, 4,
@@ -3076,12 +3076,12 @@ kefir_result_t kefir_codegen_amd64_lower_function(struct kefir_mem *mem, struct 
                                                   .builtin_popcountl = KEFIR_ID_NONE,
                                                   .builtin_parity = KEFIR_ID_NONE,
                                                   .builtin_parityl = KEFIR_ID_NONE,
-                                                  .mulsc3 = KEFIR_ID_NONE,
-                                                  .muldc3 = KEFIR_ID_NONE,
-                                                  .mulxc3 = KEFIR_ID_NONE,
-                                                  .divsc3 = KEFIR_ID_NONE,
-                                                  .divdc3 = KEFIR_ID_NONE,
-                                                  .divxc3 = KEFIR_ID_NONE}};
+                                                  .softfloat_complex_float_mul = KEFIR_ID_NONE,
+                                                  .softfloat_complex_double_mul = KEFIR_ID_NONE,
+                                                  .softfloat_complex_long_double_mul = KEFIR_ID_NONE,
+                                                  .softfloat_complex_float_div = KEFIR_ID_NONE,
+                                                  .softfloat_complex_double_div = KEFIR_ID_NONE,
+                                                  .softfloat_complex_long_double_div = KEFIR_ID_NONE}};
     REQUIRE_OK(lower_function(mem, module, func, &param));
     return KEFIR_OK;
 }
