@@ -834,12 +834,13 @@ __kefir_softfloat_ilogb:
 __kefir_runtime_text_func___kefir_softfloat_ilogb_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
     xor %eax, %eax
-    movq %rax, -16(%rbp)
-    movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %rax, -24(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -24(%rbp), %rax
+    movq -24(%rbp), %rcx
     shr $52, %rax
     and $2047, %rax
     mov %rcx, %rsi
@@ -853,6 +854,7 @@ __kefir_runtime_text_func___kefir_softfloat_ilogb_begin:
     mov %rcx, %rdi
 __kefir_runtime_func___kefir_softfloat_ilogb_label2:
     mov %rdi, %rax
+    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -878,14 +880,18 @@ __kefir_runtime_func___kefir_softfloat_ilogb_label7:
     jmp __kefir_runtime_func___kefir_softfloat_ilogb_label4
 __kefir_runtime_func___kefir_softfloat_ilogb_label5:
     movq __kefir_runtime_func___kefir_softfloat_ilogb_label8(%rip), %xmm0
-    movq %xmm0, -8(%rbp)
-    movq -8(%rbp), %rax
+    movq __kefir_runtime_func___kefir_softfloat_ilogb_label9(%rip), %xmm1
+    divsd %xmm1, %xmm0
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
     mov $-2147483648, %rdi
     jmp __kefir_runtime_func___kefir_softfloat_ilogb_label2
 __kefir_runtime_func___kefir_softfloat_ilogb_label6:
-    movq __kefir_runtime_func___kefir_softfloat_ilogb_label9(%rip), %xmm0
-    movq %xmm0, -8(%rbp)
-    movq -8(%rbp), %rax
+    movq __kefir_runtime_func___kefir_softfloat_ilogb_label10(%rip), %xmm0
+    movq __kefir_runtime_func___kefir_softfloat_ilogb_label11(%rip), %xmm1
+    divsd %xmm1, %xmm0
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
     mov $-2147483648, %rax
     mov $2147483647, %rdx
     test %rsi, %rsi
@@ -896,10 +902,16 @@ __kefir_runtime_text_func___kefir_softfloat_ilogb_end:
 .section .rodata
     .align 8
 __kefir_runtime_func___kefir_softfloat_ilogb_label8:
-    .quad 18444492273895866368
+    .quad 0
     .align 8
 __kefir_runtime_func___kefir_softfloat_ilogb_label9:
-    .quad 18444492273895866368
+    .quad 0
+    .align 8
+__kefir_runtime_func___kefir_softfloat_ilogb_label10:
+    .quad 0
+    .align 8
+__kefir_runtime_func___kefir_softfloat_ilogb_label11:
+    .quad 0
 .section .text
 
 

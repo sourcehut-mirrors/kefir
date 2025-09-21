@@ -30,6 +30,11 @@
 #ifndef __KEFIR_SOFTFLOAT_MATH_H__
 #define __KEFIR_SOFTFLOAT_MATH_H__
 
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#endif
+
 #include "kefir_softfloat/base.h"
 
 union __kefir_softfloat_float_repr {
@@ -52,9 +57,7 @@ static __KEFIR_SOFTFLOAT_FLOAT_T__ __kefir_softfloat_fabsf(__KEFIR_SOFTFLOAT_FLO
 }
 
 static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogbf(__KEFIR_SOFTFLOAT_FLOAT_T__ x) {
-#ifdef __KEFIRCC__
-	#pragma STDC FENV_ACCESS ON
-#endif
+#pragma STDC FENV_ACCESS ON
 #define MANT_WIDTH 23
 #define EXP_SIGN_WIDTH 9
 #define EXP_MASK 0xff
@@ -68,12 +71,12 @@ static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogbf(__KEFIR_SOFTFLOAT_FLOA
 
     __KEFIR_SOFTFLOAT_INT_T__ res = exponent - EXP_OFFSET;
 	if (exponent == EXP_MASK) {
-        volatile __KEFIR_SOFTFLOAT_FLOAT_T__ tmp = 0.0L / 0.0L;
+        volatile __KEFIR_SOFTFLOAT_FLOAT_T__ tmp = 0.0 / 0.0;
         (void) tmp;
         res = irepr ? LOGNAN : __KEFIR_SOFTFLOAT_INT_MAX__;
 	} else if (exponent == 0) {
 		if (irepr == 0) {
-            volatile __KEFIR_SOFTFLOAT_FLOAT_T__ tmp = 0.0L / 0.0L;
+            volatile __KEFIR_SOFTFLOAT_FLOAT_T__ tmp = 0.0 / 0.0;
             (void) tmp;
             res = LOGNAN;
 		} else {
@@ -161,9 +164,7 @@ static __KEFIR_SOFTFLOAT_DOUBLE_T__ __kefir_softfloat_fabs(__KEFIR_SOFTFLOAT_DOU
 }
 
 static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogb(__KEFIR_SOFTFLOAT_DOUBLE_T__ x) {
-#ifdef __KEFIRCC__
-	#pragma STDC FENV_ACCESS ON
-#endif
+#pragma STDC FENV_ACCESS ON
 #define MANT_WIDTH 52
 #define EXP_SIGN_WIDTH 12
 #define EXP_MASK 0x7ff
@@ -177,12 +178,12 @@ static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogb(__KEFIR_SOFTFLOAT_DOUBL
 
     __KEFIR_SOFTFLOAT_INT_T__ res = exponent - EXP_OFFSET;
 	if (exponent == EXP_MASK) {
-        volatile __KEFIR_SOFTFLOAT_DOUBLE_T__ tmp = 0.0L / 0.0L;
+        volatile __KEFIR_SOFTFLOAT_DOUBLE_T__ tmp = 0.0 / 0.0;
         (void) tmp;
         res = irepr ? LOGNAN : __KEFIR_SOFTFLOAT_INT_MAX__;
 	} else if (exponent == 0) {
 		if (irepr == 0) {
-            volatile __KEFIR_SOFTFLOAT_DOUBLE_T__ tmp = 0.0L / 0.0L;
+            volatile __KEFIR_SOFTFLOAT_DOUBLE_T__ tmp = 0.0 / 0.0;
             (void) tmp;
             res = LOGNAN;
 		} else {
@@ -309,6 +310,7 @@ static __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ __kefir_softfloat_scalbnl(__KEFIR_SOFTF
 }
 
 static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogbl(__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ x) {
+#pragma STDC FENV_ACCESS ON 
 	union __kefir_softfloat_long_double_repr rep = {
         .ld = x
     };
@@ -317,9 +319,6 @@ static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogbl(__KEFIR_SOFTFLOAT_LONG
 #define MNT_BITS 64
 #define MNT_MASK (1ull << (MNT_BITS - 1))
 #define LOGNAN (-0x80000000)
-#ifdef __KEFIRCC__
-#pragma STDC FENV_ACCESS ON
-#endif
 	__KEFIR_SOFTFLOAT_UINT64_T__ mantissa = rep.uint[0],
 	                             exponent = rep.uint[1] & EXP_MAX;
 
@@ -375,5 +374,9 @@ static __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ __kefir_softfloat_fmaximum_numl(__KEFIR
             : x)
         : y;
 }
+
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
 
 #endif

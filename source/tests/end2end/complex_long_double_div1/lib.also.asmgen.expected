@@ -968,6 +968,9 @@ __kefir_runtime_func___kefir_softfloat_ilogbl_label3:
     ret
 __kefir_runtime_func___kefir_softfloat_ilogbl_label4:
     fldt __kefir_runtime_func___kefir_softfloat_ilogbl_label8(%rip)
+    fldt __kefir_runtime_func___kefir_softfloat_ilogbl_label9(%rip)
+    fxch %st(1)
+    fdivp
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
@@ -991,12 +994,15 @@ __kefir_runtime_func___kefir_softfloat_ilogbl_label5:
     mov %r8, %rdi
     and %rsi, %rdi
     jnz __kefir_runtime_func___kefir_softfloat_ilogbl_label3
-__kefir_runtime_func___kefir_softfloat_ilogbl_label9:
+__kefir_runtime_func___kefir_softfloat_ilogbl_label10:
     mov %rcx, %r8
     mov %rdx, %r9
     jmp __kefir_runtime_func___kefir_softfloat_ilogbl_label5
 __kefir_runtime_func___kefir_softfloat_ilogbl_label6:
-    fldt __kefir_runtime_func___kefir_softfloat_ilogbl_label10(%rip)
+    fldt __kefir_runtime_func___kefir_softfloat_ilogbl_label11(%rip)
+    fldt __kefir_runtime_func___kefir_softfloat_ilogbl_label12(%rip)
+    fxch %st(1)
+    fdivp
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
@@ -1007,12 +1013,20 @@ __kefir_runtime_text_func___kefir_softfloat_ilogbl_end:
 .section .rodata
     .align 8
 __kefir_runtime_func___kefir_softfloat_ilogbl_label8:
-    .quad 13835058055282163712
-    .quad 65535
+    .quad 0
+    .quad 0
     .align 8
-__kefir_runtime_func___kefir_softfloat_ilogbl_label10:
-    .quad 13835058055282163712
-    .quad 65535
+__kefir_runtime_func___kefir_softfloat_ilogbl_label9:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_runtime_func___kefir_softfloat_ilogbl_label11:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_runtime_func___kefir_softfloat_ilogbl_label12:
+    .quad 0
+    .quad 0
 .section .text
 
 __kefir_softfloat_fmaximum_numl:
