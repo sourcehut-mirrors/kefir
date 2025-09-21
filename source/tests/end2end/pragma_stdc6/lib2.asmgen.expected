@@ -1,0 +1,117 @@
+[
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fp_contract",
+        "param": "fe_downward"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "void",
+        "spelling": "void"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "fn1"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_round",
+        "param": "fe_dec_downward"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "void",
+        "spelling": "void"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "fn2"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "fenv_dec_round",
+        "param": "on"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "void",
+        "spelling": "void"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "fn3"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false
+    }
+]

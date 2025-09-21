@@ -39,7 +39,7 @@ static kefir_result_t match_on_off_pragma_param(kefir_ast_pragma_on_off_value_t 
             break;
 
         default:
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Unexpected on-off pragma parameter");
+            return KEFIR_SET_SOURCE_ERROR(KEFIR_NO_MATCH, source_location, "Unexpected on-off pragma parameter");
     }
     return KEFIR_OK;
 }
@@ -73,7 +73,7 @@ static kefir_result_t match_direction_pragma_param(kefir_ast_pragma_direction_va
             break;
 
         default:
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Unexpected direction pragma parameter");
+            return KEFIR_SET_SOURCE_ERROR(KEFIR_NO_MATCH, source_location, "Unexpected direction pragma parameter");
     }
     return KEFIR_OK;
 }
@@ -107,7 +107,7 @@ static kefir_result_t match_dec_direction_pragma_param(kefir_ast_pragma_dec_dire
             break;
 
         default:
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
+            return KEFIR_SET_SOURCE_ERROR(KEFIR_NO_MATCH, source_location,
                                           "Unexpected decimal direction pragma parameter");
     }
     return KEFIR_OK;
@@ -161,8 +161,11 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         }
         if (PARSER_TOKEN_IS_PRAGMA(builder->parser, 0)) {
             const struct kefir_token *token = PARSER_CURSOR_EXT(builder->parser, 0, false);
-            REQUIRE_OK(kefir_parser_scan_pragma(&builder->parser->pragmas.file_scope, token->pragma,
-                                                token->pragma_param, &token->source_location));
+            res = kefir_parser_scan_pragma(&builder->parser->pragmas.file_scope, token->pragma,
+                                                token->pragma_param, &token->source_location);
+            if (res != KEFIR_NO_MATCH) {
+                REQUIRE_OK(res);
+            }
             PARSER_SHIFT_EXT(builder->parser, false);
             continue;
         }

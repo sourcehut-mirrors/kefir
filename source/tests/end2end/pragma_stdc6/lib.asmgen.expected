@@ -1,0 +1,12 @@
+
+
+#pragma STDC FP_CONTRACT FE_DOWNWARD
+void fn1() {}
+
+
+#pragma STDC FENV_ROUND FE_DEC_DOWRDWARD
+void fn2() {}
+
+
+#pragma STDC FENV_DEC_ROUND ON
+void fn3() {}

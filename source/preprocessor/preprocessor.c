@@ -1065,8 +1065,11 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
 
                 struct kefir_ast_pragma_state pragma_state;
                 REQUIRE_OK(kefir_ast_pragma_state_init(&pragma_state));
-                REQUIRE_OK(kefir_parser_scan_pragma(&pragma_state, pragma_type, pragma_param, &token->source_location));
-                REQUIRE_OK(preprocessor->context->ast_context->update_pragma_state(mem, preprocessor->context->ast_context, &pragma_state));
+                kefir_result_t res = kefir_parser_scan_pragma(&pragma_state, pragma_type, pragma_param, &token->source_location);
+                if (res != KEFIR_NO_MATCH) {
+                    REQUIRE_OK(res);
+                    REQUIRE_OK(preprocessor->context->ast_context->update_pragma_state(mem, preprocessor->context->ast_context, &pragma_state));
+                }
             }
         }
     }
