@@ -247,9 +247,6 @@ The following details need to be taken into account:
   be provided along with other Kefir runtime headers, the author has
   deliberately avoided including any library- or platform-specific hacks into
   Kefir.
-* Kefir does not explicitly implement `STDC` floating-point environment pragmas.
-  The compiler does not optimize floating-point operations, therefore these
-  pragmas are effectively no-op.
 * Atomic operations implement sequentially-consistent semantics irrespective of
   specified memory order. This behavior is safe and shall not break any
   software. Atomic operations of non-native sizes rely on external software
@@ -643,9 +640,7 @@ Kefir includes the following optimization passes at `-O1` level:
 * Phi propagation -- the optimizer identifies SSA phi nodes that can be replaced
   by direct SSA instruction references.
 * Constant folding -- the optimizer identifies all constant subtrees of SSA and
-  folds them. Note that this optimization operates only on integral scalar
-  values, floating-point constant folding can be implemented only after the
-  frontend supports respective `STDC` pragmas.
+  folds them.
 * Simplification -- this optimization pass combines canonicalization,
   optimization and simplification of many diverse instruction shapes.
   Simplification is implemented as ad-hoc pattern matching upon the optimizer IR
@@ -701,14 +696,15 @@ for the precise optimization pipeline, and consult the manual page for
 command-line options to define the optimization pipeline passes explicitly.
 
 Kefir focuses the optimizations predominantly on integral scalars limited to a
-single function scope. Aggregate values are mostly optimized with respect to
-redundant copy elimination upon function calls. Inter-procedural optimizations
-are limited to function inlining. Both alias analysis and escape analysis are
-very rudimentary, and are limited to the needs of very specific optimization
-passes. The author sees no major obstacles for implementing more aggressive
-optimizations within current optimizer IR framework, however current pipeline
-has been characterized by the author as conservative as it does not change the
-order of non-local memory accesses within a function.
+single function scope. Floating-point optimizations are more limited, whereas
+aggregate values are mostly optimized with respect to redundant copy elimination
+upon function calls. Inter-procedural optimizations are limited to function
+inlining. Both alias analysis and escape analysis are very rudimentary, and are
+limited to the needs of very specific optimization passes. The author sees no
+major obstacles for implementing more aggressive optimizations within current
+optimizer IR framework, however current pipeline has been characterized by the
+author as conservative as it does not change the order of non-local memory
+accesses within a function.
 
 #### Runtime library
 
