@@ -27,7 +27,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/constant_expression.h"
 #include "kefir/preprocessor/format.h"
-#include "kefir/core/string_buffer.h"
+#include "kefir/parser/pragma.h"
 
 static const struct kefir_preprocessor_configuration DefaultConfiguration = {
     .named_macro_vararg = false,
@@ -1062,6 +1062,11 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
                 REQUIRE_OK(kefir_token_new_pragma(pragma_type, pragma_param, token));
                 REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, token));
                 token->source_location = directive->source_location;
+
+                struct kefir_ast_pragma_state pragma_state;
+                REQUIRE_OK(kefir_ast_pragma_state_init(&pragma_state));
+                REQUIRE_OK(kefir_parser_scan_pragma(&pragma_state, pragma_type, pragma_param, &token->source_location));
+                REQUIRE_OK(preprocessor->context->ast_context->update_pragma_state(mem, preprocessor->context->ast_context, &pragma_state));
             }
         }
     }

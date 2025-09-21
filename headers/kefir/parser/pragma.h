@@ -23,6 +23,7 @@
 
 #include "kefir/core/basic-types.h"
 #include "kefir/ast/pragma.h"
+#include "kefir/lexer/lexem.h"
 
 typedef struct kefir_parser_pragmas {
     struct kefir_ast_pragma_state file_scope;
@@ -32,5 +33,8 @@ typedef struct kefir_parser_pragmas {
 
 kefir_result_t kefir_parser_pragmas_init(struct kefir_parser_pragmas *);
 kefir_result_t kefir_parser_pragmas_collect(struct kefir_ast_pragma_state *, const struct kefir_parser_pragmas *);
+
+kefir_result_t kefir_parser_scan_pragma(struct kefir_ast_pragma_state *, kefir_pragma_token_type_t,
+                                        kefir_pragma_token_parameter_t, const struct kefir_source_location *);
 
 #endif

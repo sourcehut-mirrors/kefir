@@ -176,20 +176,30 @@ static kefir_result_t context_current_flow_control_point(struct kefir_mem *mem, 
 
 static kefir_result_t context_update_pragma_state(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                   const struct kefir_ast_pragma_state *pragmas) {
-    UNUSED(mem);
-    UNUSED(context);
-    UNUSED(pragmas);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor AST context"));
+    REQUIRE(pragmas != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST pragma state"));
 
-    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Pragmas are not supported in a preprocessor AST context");
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context,
+        context->payload);
+
+    REQUIRE_OK(kefir_ast_pragma_state_merge(&ast_context->pragma_state, pragmas));
+    return KEFIR_OK;
 }
 
 static kefir_result_t context_collect_pragma_state(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                    struct kefir_ast_pragma_state *pragmas) {
     UNUSED(mem);
-    UNUSED(context);
-    UNUSED(pragmas);
+    REQUIRE(context != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor AST context"));
+    REQUIRE(pragmas != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST pragma state"));
 
-    REQUIRE_OK(kefir_ast_pragma_state_init(pragmas));
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context,
+        context->payload);
+    *pragmas = ast_context->pragma_state;
     return KEFIR_OK;
 }
 
@@ -229,6 +239,7 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     REQUIRE_OK(kefir_bigint_pool_init(&context->bigint_pool));
     REQUIRE_OK(kefir_ast_context_configuration_defaults(&context->configuration));
     REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));
+    REQUIRE_OK(kefir_ast_pragma_state_init(&context->pragma_state));
     context->context.type_bundle = &context->type_bundle;
     context->context.cache = &context->cache;
     context->context.bigint_pool = &context->bigint_pool;
@@ -240,7 +251,7 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.surrounding_function = NULL;
     context->context.surrounding_function_name = NULL;
     context->context.configuration = &context->configuration;
-    context->context.payload = NULL;
+    context->context.payload = context;
 
     context->context.extensions = extensions;
     context->context.extensions_payload = NULL;
