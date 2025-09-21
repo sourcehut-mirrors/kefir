@@ -189,7 +189,8 @@ static kefir_result_t context_collect_pragma_state(struct kefir_mem *mem, const 
     UNUSED(context);
     UNUSED(pragmas);
 
-    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Pragmas are not supported in a preprocessor AST context");
+    REQUIRE_OK(kefir_ast_pragma_state_init(pragmas));
+    return KEFIR_OK;
 }
 
 kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,

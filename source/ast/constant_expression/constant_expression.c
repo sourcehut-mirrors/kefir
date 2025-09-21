@@ -22,6 +22,7 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
+#include <fenv.h>
 
 struct eval_param {
     struct kefir_mem *mem;
@@ -76,10 +77,16 @@ static kefir_result_t evaluate_extension_node(const struct kefir_ast_visitor *vi
     return KEFIR_OK;
 }
 
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#endif
+
 kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *mem,
                                                             const struct kefir_ast_context *context,
                                                             const struct kefir_ast_node_base *node,
                                                             struct kefir_ast_constant_expression_value *value) {
+#pragma STDC FENV_ACCESS ON
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node"));
@@ -111,8 +118,50 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *me
     visitor.comma_operator = evaluate_comma_operator;
     visitor.function_call = evaluate_function_call;
     visitor.extension_node = evaluate_extension_node;
-    return KEFIR_AST_NODE_VISIT(&visitor, node, &param);
+    
+    struct kefir_ast_pragma_state pragma_state;
+    REQUIRE_OK(context->collect_pragma_state(mem, context, &pragma_state));
+
+    const int current_rounding_mode = fegetround();
+    if (pragma_state.fenv_round.present) {
+        switch (pragma_state.fenv_round.value) {
+            case KEFIR_AST_PRAGMA_VALUE_FE_DOWNWARD:
+                fesetround(FE_DOWNWARD);
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_TONEAREST:
+                fesetround(FE_TONEAREST);
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_TONEARESTFROMZERO:
+#ifdef FE_TONEARESTFROMZERO
+                fesetround(FE_TONEARESTFROMZERO);
+#else
+                fesetround(FE_TONEAREST);
+#endif
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_TOWARDZERO:
+                fesetround(FE_TOWARDZERO);
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_UPWARD:
+                fesetround(FE_UPWARD);
+                break;
+
+            case KEFIR_AST_PRAGMA_VALUE_FE_DYNAMIC:
+                // Intentionally left blank
+                break;
+        }
+    }
+    kefir_result_t res = KEFIR_AST_NODE_VISIT(&visitor, node, &param);
+    fesetround(current_rounding_mode);
+    return res;
 }
+
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
 
 kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir_ast_constant_expression_value *value,
                                                               kefir_bool_t *boolean) {
