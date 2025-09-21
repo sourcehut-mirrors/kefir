@@ -46,5 +46,23 @@ int main(void) {
     assert(fabs(cimag(sub64()) - (-3.14 - 1.1)) < 1e-7);
     assert(fabsl(creall(sub80()) - (1.1l - 2.718l)) < 1e-9l);
     assert(fabsl(cimagl(sub80()) - (3.14l + 1.1l)) < 1e-9l);
+
+#define MUL_REAL(a, b, c, d) ((a) * (c) - (b) * (d))
+#define MUL_IMAG(a, b, c, d) ((a) * (d) + (b) * (c))
+    assert(fabs(crealf(mul32()) - MUL_REAL(1.1f, 3.14f, 2.718f, -1.1f)) < 1e-5);
+    assert(fabs(cimagf(mul32()) - MUL_IMAG(1.1f, 3.14f, 2.718f, -1.1f)) < 1e-5);
+    assert(fabs(creal(mul64()) - MUL_REAL(-1.1, -3.14, 2.718, 1.1)) < 1e-7);
+    assert(fabs(cimag(mul64()) - MUL_IMAG(-1.1, -3.14, 2.718, 1.1)) < 1e-7);
+    assert(fabsl(creall(mul80()) - MUL_REAL(1.1L, 3.14L, 2.718L, -1.1L)) < 1e-8l);
+    assert(fabsl(cimagl(mul80()) - MUL_IMAG(1.1L, 3.14L, 2.718L, -1.1L)) < 1e-8l);
+
+#define DIV_REAL(a, b, c, d) (((a) * (c) + (b) * (d)) / ((c) * (c) + (d) * (d)))
+#define DIV_IMAG(a, b, c, d) (((b) * (c) - (a) * (d)) / ((c) * (c) + (d) * (d)))
+    assert(fabs(crealf(div32()) - DIV_REAL(1.1f, 3.14f, 2.718f, -1.1f)) < 1e-5);
+    assert(fabs(cimagf(div32()) - DIV_IMAG(1.1f, 3.14f, 2.718f, -1.1f)) < 1e-5);
+    assert(fabs(creal(div64()) - DIV_REAL(-1.1, -3.14, 2.718, 1.1)) < 1e-7);
+    assert(fabs(cimag(div64()) - DIV_IMAG(-1.1, -3.14, 2.718, 1.1)) < 1e-7);
+    assert(fabsl(creall(div80()) - DIV_REAL(1.1L, 3.14L, 2.718L, -1.1L)) < 1e-8l);
+    assert(fabsl(cimagl(div80()) - DIV_IMAG(1.1L, 3.14L, 2.718L, -1.1L)) < 1e-8l);
     return EXIT_SUCCESS;
 }

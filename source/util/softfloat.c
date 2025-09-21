@@ -22,16 +22,6 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-typedef struct kefir_softfloat_complex_float {
-    kefir_float32_t real;
-    kefir_float32_t imaginary;
-} kefir_softfloat_complex_float_t;
-
-typedef struct kefir_softfloat_complex_double {
-    kefir_float64_t real;
-    kefir_float64_t imaginary;
-} kefir_softfloat_complex_double_t;
-
 #define MAKE_COMPLEX_FLOAT(_x, _y)           \
     (struct kefir_softfloat_complex_float) { \
         (_x), (_y)                           \
@@ -73,20 +63,32 @@ typedef struct kefir_softfloat_complex_double {
 #define __KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__ MAKE_COMPLEX_LONG_DOUBLE
 #include "kefir_softfloat/softfloat.h"
 
-// Complex long double multiplication and vision routines provided below are
-// based on the algorithms described in the appendix G of
-// https://open-std.org/JTC1/SC22/WG14/www/docs/n3220.pdf (see page 542).
+struct kefir_softfloat_complex_float kefir_softfloat_complex_float_mul(
+    struct kefir_softfloat_complex_float lhs, struct kefir_softfloat_complex_float rhs) {
+    return __kefir_softfloat_complex_float_mul(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
+}
+
+struct kefir_softfloat_complex_double kefir_softfloat_complex_double_mul(
+    struct kefir_softfloat_complex_double lhs, struct kefir_softfloat_complex_double rhs) {
+    return __kefir_softfloat_complex_double_mul(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
+}
 
 struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_mul(
     struct kefir_softfloat_complex_long_double lhs, struct kefir_softfloat_complex_long_double rhs) {
-    UNUSED(__kefir_softfloat_complex_float_mul);   // Dummy UNUSED -- to avoid compiler complaints
-    UNUSED(__kefir_softfloat_complex_double_mul);  // Dummy UNUSED -- to avoid compiler complaints
     return __kefir_softfloat_complex_long_double_mul(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
+}
+
+struct kefir_softfloat_complex_float kefir_softfloat_complex_float_div(
+    struct kefir_softfloat_complex_float lhs, struct kefir_softfloat_complex_float rhs) {
+    return __kefir_softfloat_complex_float_div(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
+}
+
+struct kefir_softfloat_complex_double kefir_softfloat_complex_double_div(
+    struct kefir_softfloat_complex_double lhs, struct kefir_softfloat_complex_double rhs) {
+    return __kefir_softfloat_complex_double_div(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }
 
 struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_div(
     struct kefir_softfloat_complex_long_double lhs, struct kefir_softfloat_complex_long_double rhs) {
-    UNUSED(__kefir_softfloat_complex_float_div);  // Dummy UNUSED -- to avoid compiler complaints
-    UNUSED(__kefir_softfloat_complex_double_div);  // Dummy UNUSED -- to avoid compiler complaints
     return __kefir_softfloat_complex_long_double_div(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }

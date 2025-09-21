@@ -55,3 +55,28 @@ _Complex double sub64(void) {
 _Complex long double sub80(void) {
     return (3.14il + 1.1l) - (2.718l - 1.1il);
 }
+
+_Complex float mul32(void) {
+    return (3.14if + 1.1f) * (2.718f - 1.1fi);
+}
+
+_Complex double mul64(void) {
+    return (-3.14i - 1.1) * (2.718 + 1.1i);
+}
+
+_Complex long double mul80(void) {
+    return (3.14il + 1.1l) * (2.718l - 1.1il);
+}
+
+_Complex float div32(void) {
+    return (3.14if + 1.1f) / (2.718f - 1.1fi);
+}
+
+_Complex double div64(void) {
+    return (-3.14i - 1.1) / (2.718 + 1.1i);
+}
+
+_Complex long double div80(void) {
+    return (3.14il + 1.1l) / (2.718l - 1.1il);
+}
+

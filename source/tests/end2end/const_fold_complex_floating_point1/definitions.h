@@ -30,5 +30,11 @@ _Complex long double add80(void);
 _Complex float sub32(void);
 _Complex double sub64(void);
 _Complex long double sub80(void);
+_Complex float mul32(void);
+_Complex double mul64(void);
+_Complex long double mul80(void);
+_Complex float div32(void);
+_Complex double div64(void);
+_Complex long double div80(void);
 
 #endif

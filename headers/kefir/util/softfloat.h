@@ -23,12 +23,26 @@
 
 #include "kefir/core/basic-types.h"
 
+typedef struct kefir_softfloat_complex_float {
+    kefir_float32_t real;
+    kefir_float32_t imaginary;
+} kefir_softfloat_complex_float_t;
+
+typedef struct kefir_softfloat_complex_double {
+    kefir_float64_t real;
+    kefir_float64_t imaginary;
+} kefir_softfloat_complex_double_t;
+
 typedef struct kefir_softfloat_complex_long_double {
     kefir_long_double_t real;
     kefir_long_double_t imaginary;
 } kefir_softfloat_complex_long_double_t;
 
+struct kefir_softfloat_complex_float kefir_softfloat_complex_float_mul(struct kefir_softfloat_complex_float, struct kefir_softfloat_complex_float);
+struct kefir_softfloat_complex_double kefir_softfloat_complex_double_mul(struct kefir_softfloat_complex_double, struct kefir_softfloat_complex_double);
 struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_mul(struct kefir_softfloat_complex_long_double, struct kefir_softfloat_complex_long_double);
+struct kefir_softfloat_complex_float kefir_softfloat_complex_float_div(struct kefir_softfloat_complex_float, struct kefir_softfloat_complex_float);
+struct kefir_softfloat_complex_double kefir_softfloat_complex_double_div(struct kefir_softfloat_complex_double, struct kefir_softfloat_complex_double);
 struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_div(struct kefir_softfloat_complex_long_double, struct kefir_softfloat_complex_long_double);
 
 #endif
