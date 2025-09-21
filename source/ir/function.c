@@ -71,6 +71,7 @@ kefir_result_t kefir_ir_function_alloc(struct kefir_mem *mem, struct kefir_ir_fu
     func->flags.inline_function = false;
     func->flags.enable_fenv_access = false;
     func->flags.disallow_fp_contract = false;
+    func->flags.cx_limited_range = false;
     kefir_result_t res = kefir_ir_function_debug_info_init(&func->debug_info);
     REQUIRE_CHAIN(&res, kefir_irblock_alloc(mem, bodySz, &func->body));
     REQUIRE_ELSE(res == KEFIR_OK, {

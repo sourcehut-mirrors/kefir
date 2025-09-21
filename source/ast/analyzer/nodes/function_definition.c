@@ -359,5 +359,15 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     base->properties.function_definition.pragma_stats.disallow_fp_contract =
         KEFIR_AST_PRAGMA_STATE_FP_CONTRACT_OFF(&global_pragma_state) ||
         local_context->pragma_stats.disallow_fp_contract;
+    if (global_pragma_state.cx_limited_range.present) {
+        base->properties.function_definition.pragma_stats.cx_limited_range = global_pragma_state.cx_limited_range.value;
+    } else {
+        base->properties.function_definition.pragma_stats.cx_limited_range = KEFIR_AST_PRAGMA_VALUE_DEFAULT;
+    }
+    if ((local_context->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_ON &&
+        base->properties.function_definition.pragma_stats.cx_limited_range != KEFIR_AST_PRAGMA_VALUE_OFF) ||
+        local_context->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_OFF) {
+        base->properties.function_definition.pragma_stats.cx_limited_range = local_context->pragma_stats.cx_limited_range;
+    }
     return KEFIR_OK;
 }

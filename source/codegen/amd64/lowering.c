@@ -23,6 +23,7 @@
 #include "kefir/codegen/amd64/lowering.h"
 #include "kefir/target/abi/amd64/base.h"
 #include "kefir/optimizer/builder.h"
+#include "kefir/optimizer/configuration.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -2811,161 +2812,173 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             }
         } break;
 
-        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_MUL: {
-            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
-            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_MUL:
+            if (!func->ir_func->flags.cx_limited_range) {
+                const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+                const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
 
-            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float32_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg1_ref, &arg1_imag_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float32_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
+                kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float32_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg1_ref, &arg1_imag_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float32_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
 
-            kefir_id_t mulsc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_softfloat_complex_float_mul_function_decl_id(mem, module, param, &mulsc3_func_decl_id));
+                kefir_id_t mulsc3_func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(get_softfloat_complex_float_mul_function_decl_id(mem, module, param, &mulsc3_func_decl_id));
 
-            kefir_opt_call_id_t call_node_id;
-            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, mulsc3_func_decl_id, 4,
-                                                         KEFIR_ID_NONE, &call_node_id, replacement_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
-        } break;
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, mulsc3_func_decl_id, 4,
+                                                            KEFIR_ID_NONE, &call_node_id, replacement_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
+            }
+            break;
 
-        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_MUL: {
-            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
-            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_MUL:
+            if (!func->ir_func->flags.cx_limited_range) {
+                const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+                const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
 
-            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float64_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg1_ref, &arg1_imag_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float64_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
+                kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float64_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg1_ref, &arg1_imag_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float64_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
 
-            kefir_id_t muldc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_softfloat_complex_double_mul_function_decl_id(mem, module, param, &muldc3_func_decl_id));
+                kefir_id_t muldc3_func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(get_softfloat_complex_double_mul_function_decl_id(mem, module, param, &muldc3_func_decl_id));
 
-            kefir_opt_call_id_t call_node_id;
-            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, muldc3_func_decl_id, 4,
-                                                         KEFIR_ID_NONE, &call_node_id, replacement_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
-        } break;
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, muldc3_func_decl_id, 4,
+                                                            KEFIR_ID_NONE, &call_node_id, replacement_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
+            }
+            break;
 
-        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_MUL: {
-            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
-            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_MUL:
+            if (!func->ir_func->flags.cx_limited_range) {
+                const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+                const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
 
-            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
-            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg1_ref,
-                                                                            &arg1_imag_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
-            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg2_ref,
-                                                                            &arg2_imag_ref));
+                kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+                REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg1_ref,
+                                                                                &arg1_imag_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
+                REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg2_ref,
+                                                                                &arg2_imag_ref));
 
-            kefir_id_t mulxc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_softfloat_complex_long_double_mul_function_decl_id(mem, module, param, &mulxc3_func_decl_id));
+                kefir_id_t mulxc3_func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(get_softfloat_complex_long_double_mul_function_decl_id(mem, module, param, &mulxc3_func_decl_id));
 
-            kefir_opt_call_id_t call_node_id;
-            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, mulxc3_func_decl_id, 4,
-                                                         KEFIR_ID_NONE, &call_node_id, replacement_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
-        } break;
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, mulxc3_func_decl_id, 4,
+                                                            KEFIR_ID_NONE, &call_node_id, replacement_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
+            }
+            break;
 
-        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_DIV: {
-            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
-            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_DIV:
+            if (!func->ir_func->flags.cx_limited_range) {
+                const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+                const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
 
-            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float32_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg1_ref, &arg1_imag_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float32_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
+                kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float32_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg1_ref, &arg1_imag_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float32_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float32_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
 
-            kefir_id_t divsc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_softfloat_complex_float_div_function_decl_id(mem, module, param, &divsc3_func_decl_id));
+                kefir_id_t divsc3_func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(get_softfloat_complex_float_div_function_decl_id(mem, module, param, &divsc3_func_decl_id));
 
-            kefir_opt_call_id_t call_node_id;
-            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, divsc3_func_decl_id, 4,
-                                                         KEFIR_ID_NONE, &call_node_id, replacement_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
-        } break;
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, divsc3_func_decl_id, 4,
+                                                            KEFIR_ID_NONE, &call_node_id, replacement_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
+            }
+            break;
 
-        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_DIV: {
-            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
-            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_DIV:
+            if (!func->ir_func->flags.cx_limited_range) {
+                const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+                const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
 
-            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float64_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg1_ref, &arg1_imag_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float64_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
+                kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float64_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg1_ref, &arg1_imag_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float64_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_float64_imaginary(mem, &func->code, block_id, arg2_ref, &arg2_imag_ref));
 
-            kefir_id_t divdc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_softfloat_complex_double_div_function_decl_id(mem, module, param, &divdc3_func_decl_id));
+                kefir_id_t divdc3_func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(get_softfloat_complex_double_div_function_decl_id(mem, module, param, &divdc3_func_decl_id));
 
-            kefir_opt_call_id_t call_node_id;
-            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, divdc3_func_decl_id, 4,
-                                                         KEFIR_ID_NONE, &call_node_id, replacement_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
-        } break;
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, divdc3_func_decl_id, 4,
+                                                            KEFIR_ID_NONE, &call_node_id, replacement_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
+            }
+            break;
 
-        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV: {
-            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
-            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV:
+            if (!func->ir_func->flags.cx_limited_range) {
+                const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+                const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
 
-            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
-            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg1_ref,
-                                                                            &arg1_imag_ref));
-            REQUIRE_OK(
-                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
-            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg2_ref,
-                                                                            &arg2_imag_ref));
+                kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+                REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg1_ref,
+                                                                                &arg1_imag_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
+                REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg2_ref,
+                                                                                &arg2_imag_ref));
 
-            kefir_id_t divxc3_func_decl_id = KEFIR_ID_NONE;
-            REQUIRE_OK(get_softfloat_complex_long_double_div_function_decl_id(mem, module, param, &divxc3_func_decl_id));
+                kefir_id_t divxc3_func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(get_softfloat_complex_long_double_div_function_decl_id(mem, module, param, &divxc3_func_decl_id));
 
-            kefir_opt_call_id_t call_node_id;
-            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, divxc3_func_decl_id, 4,
-                                                         KEFIR_ID_NONE, &call_node_id, replacement_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
-            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
-        } break;
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, divxc3_func_decl_id, 4,
+                                                            KEFIR_ID_NONE, &call_node_id, replacement_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
+            }
+            break;
 
         default:
             // Intentionally left blank

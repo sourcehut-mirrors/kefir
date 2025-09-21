@@ -44,6 +44,7 @@ typedef struct kefir_ast_local_context {
     struct {
         kefir_bool_t enable_fenv_access;
         kefir_bool_t disallow_fp_contract;
+        kefir_ast_pragma_on_off_value_t cx_limited_range;
     } pragma_stats;
 
     struct {

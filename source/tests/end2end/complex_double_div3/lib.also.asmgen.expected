@@ -1,0 +1,58 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global divide
+.type divide, @function
+
+.section .text
+__kefir_text_section_begin:
+divide:
+__kefir_text_func_divide_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $80, %rsp
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
+    movq %xmm0, -80(%rbp)
+    movq %xmm1, -72(%rbp)
+    movq %xmm2, -64(%rbp)
+    movq %xmm3, -56(%rbp)
+    fld1
+    fldl -64(%rbp)
+    fld %st(0)
+    fmul %st(1)
+    fldl -56(%rbp)
+    fld %st(0)
+    fmul %st(1)
+    faddp %st(2)
+    fxch %st(1)
+    fdivrp %st(3)
+    fldl -80(%rbp)
+    fld %st(0)
+    fmul %st(3)
+    fxch %st(1)
+    fmul %st(2)
+    fldl -72(%rbp)
+    fld %st(0)
+    fmulp %st(4)
+    fxch %st(3)
+    faddp %st(2)
+    fxch %st(1)
+    fmul %st(4)
+    fstpl -80(%rbp)
+    fxch %st(2)
+    fmulp %st(1)
+    fsubp
+    fmulp
+    fstpl -72(%rbp)
+    movq -80(%rbp), %xmm0
+    movq -72(%rbp), %xmm1
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_divide_end:
+
+__kefir_text_section_end:
+

@@ -55,6 +55,7 @@ typedef struct kefir_ir_function {
         kefir_bool_t inline_function;
         kefir_bool_t enable_fenv_access;
         kefir_bool_t disallow_fp_contract;
+        kefir_bool_t cx_limited_range;
     } flags;
     struct kefir_ir_function_debug_info debug_info;
 } kefir_ir_function_t;

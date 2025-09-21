@@ -258,6 +258,10 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         compiler_config->features.designator_subscript_ranges = true;
     }
 
+    if (config->flags.cx_limited_range || config->flags.fast_math) {
+        compiler_config->optimizer.cx_limited_range = true;
+    }
+
     switch (config->compiler.tentative_definition_placement) {
         case KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT:
             compiler_config->codegen.tentative_definition_placement =

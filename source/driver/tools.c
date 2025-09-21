@@ -169,6 +169,10 @@ static kefir_result_t output_compiler_config(FILE *output,
         fprintf(output, " --disable-lowering");
     }
 
+    if (configuration->optimizer.cx_limited_range) {
+        fprintf(output, " --opt-cx-limited-range");
+    }
+
 #define FEATURE(_id, _name)                         \
     if (configuration->features._id) {              \
         fprintf(output, " --feature-%s", _name);    \

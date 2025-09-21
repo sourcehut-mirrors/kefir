@@ -262,6 +262,10 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             config->flags.omit_frame_pointer = KEFIR_DRIVER_FRAME_POINTER_OMISSION_DISABLE;
         } else if (strcmp("-fomit-frame-pointer", arg) == 0) {
             config->flags.omit_frame_pointer = KEFIR_DRIVER_FRAME_POINTER_OMISSION_ENABLE;
+        } else if (strcmp("-ffast-math", arg) == 0) {
+            config->flags.fast_math = true;
+        } else if (strcmp("-fcx-limited-range", arg) == 0) {
+            config->flags.cx_limited_range = true;
         } else if (strcmp("-g", arg) == 0 || strcmp("-ggdb", arg) == 0) {
             config->flags.debug_info = true;
         } else if (STRNCMP("-ggdb", arg) == 0) {

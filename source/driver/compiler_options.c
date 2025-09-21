@@ -258,6 +258,8 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
 
     SIMPLE(0, "enable-lowering", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false, optimizer.disable_lowering),
     SIMPLE(0, "disable-lowering", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, optimizer.disable_lowering),
+    SIMPLE(0, "opt-cx-limited-range", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, optimizer.cx_limited_range),
+    SIMPLE(0, "no-opt-cx-limited-range", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false, optimizer.cx_limited_range),
 
     CUSTOM('D', "define", true, define_hook),
     CUSTOM('U', "undefine", true, undefine_hook),

@@ -1,0 +1,41 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global mul
+.type mul, @function
+
+.section .text
+__kefir_text_section_begin:
+mul:
+__kefir_text_func_mul_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    stmxcsr -8(%rbp)
+    unpcklpd %xmm1, %xmm0
+    movaps %xmm0, %xmm1
+    xorps __kefir_constant_complex_float64_mul(%rip), %xmm1
+    shufpd $1, %xmm1, %xmm1
+    unpcklpd %xmm2, %xmm2
+    unpcklpd %xmm3, %xmm3
+    mulpd %xmm0, %xmm2
+    mulpd %xmm1, %xmm3
+    addpd %xmm2, %xmm3
+    movaps %xmm3, %xmm1
+    movaps %xmm3, %xmm0
+    unpckhpd %xmm3, %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_mul_end:
+
+__kefir_text_section_end:
+
+.section .rodata
+    .align 16
+__kefir_constant_complex_float64_mul:
+    .long 0
+    .long 0
+    .long 0
+    .long 2147483648

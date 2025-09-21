@@ -586,6 +586,11 @@ static kefir_result_t context_update_pragma_state(struct kefir_mem *mem, const s
         local_ctx->pragma_stats.enable_fenv_access || KEFIR_AST_PRAGMA_STATE_FENV_ACCESS_ON(&local_ctx->pragmas);
     local_ctx->pragma_stats.disallow_fp_contract =
         local_ctx->pragma_stats.disallow_fp_contract || KEFIR_AST_PRAGMA_STATE_FP_CONTRACT_OFF(&local_ctx->pragmas);
+    if (local_ctx->pragmas.cx_limited_range.present &&
+        ((local_ctx->pragmas.cx_limited_range.value == KEFIR_AST_PRAGMA_VALUE_ON && local_ctx->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_DEFAULT) ||
+        local_ctx->pragmas.cx_limited_range.value == KEFIR_AST_PRAGMA_VALUE_OFF)) {
+        local_ctx->pragma_stats.cx_limited_range = local_ctx->pragmas.cx_limited_range.value;
+    }
     return KEFIR_OK;
 }
 
@@ -625,6 +630,7 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_ast_pragma_state_init(&context->pragmas));
     context->pragma_stats.enable_fenv_access = false;
     context->pragma_stats.disallow_fp_contract = false;
+    context->pragma_stats.cx_limited_range = KEFIR_AST_PRAGMA_VALUE_DEFAULT;
 
     context->context.resolve_ordinary_identifier = context_resolve_ordinary_identifier;
     context->context.resolve_tag_identifier = context_resolve_tag_identifier;

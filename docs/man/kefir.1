@@ -131,6 +131,13 @@ particular symbol attribute.
 .It Fl fno-common
 Do not place tentative definitions into common section [default].
 .\"
+.It Fl ffast-math
+Enable additional floating-point math optimization at the expense of correctness in edge cases.
+Currently only enables \-fcx-limited-range option. [default: off]
+.\"
+.It Fl fcx-limited-range
+Perform more efficient handling of complex floating-point multiplication and division at the expense of correctness in edge cases [default: off]
+.\"
 .It Fl D Ar name[=value]
 Define preprocessor macro
 .\"
