@@ -3812,6 +3812,31 @@ static kefir_result_t simplify_unreachable(struct kefir_mem *mem, struct kefir_o
     return KEFIR_OK;
 }
 
+static kefir_result_t simplify_complex_float_part(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                           const struct kefir_opt_instruction *instr,
+                                           kefir_opt_instruction_ref_t *replacement_ref) {
+    UNUSED(mem);
+    const struct kefir_opt_instruction *arg1;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
+
+    if ((instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_REAL &&
+        arg1->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_FROM) ||
+        (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_REAL &&
+        arg1->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_FROM) ||
+        (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_REAL &&
+        arg1->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_FROM)) {
+        *replacement_ref = arg1->operation.parameters.refs[0];
+    } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_IMAGINARY &&
+        arg1->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_FROM) ||
+        (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_IMAGINARY &&
+        arg1->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_FROM) ||
+        (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY &&
+        arg1->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_FROM)) {
+        *replacement_ref = arg1->operation.parameters.refs[1];
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                              struct kefir_opt_function *func,
                                              struct kefir_opt_code_structure *structure) {
@@ -4015,6 +4040,15 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
 
                     case KEFIR_OPT_OPCODE_UNREACHABLE:
                         REQUIRE_OK(simplify_unreachable(mem, func, instr));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_REAL:
+                    case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_IMAGINARY:
+                    case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_REAL:
+                    case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_IMAGINARY:
+                    case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_REAL:
+                    case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY:
+                        REQUIRE_OK(simplify_complex_float_part(mem, func, instr, &replacement_ref));
                         break;
 
                     default:

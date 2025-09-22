@@ -297,12 +297,12 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(complex_float32_truncate_1bit, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_TRUNCATE_1BIT) _separator \
     _def(complex_float64_truncate_1bit, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_TRUNCATE_1BIT) _separator \
     _def(complex_long_double_truncate_1bit, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT) _separator \
-    _def(complex_float32_add_sub, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_ADD) _separator \
-    _def(complex_float64_add_sub, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_ADD) _separator \
-    _def(complex_long_double_add_sub, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_ADD) _separator \
-    _def(complex_float32_add_sub, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_SUB) _separator \
-    _def(complex_float64_add_sub, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_SUB) _separator \
-    _def(complex_long_double_add_sub, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_SUB) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_ADD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_ADD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_ADD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_SUB) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_SUB) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_SUB) _separator \
     _def(complex_float32_mul, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_MUL) _separator \
     _def(complex_float32_div, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_DIV) _separator \
     _def(complex_float64_mul, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_MUL) _separator \
@@ -350,63 +350,63 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(mul_overflow, KEFIR_OPT_OPCODE_MUL_OVERFLOW) _separator \
     _def(bitint_const, KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST) _separator \
     _def(bitint_const, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_GET_SIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_CAST_UNSIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_FLOAT) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_FLOAT) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DOUBLE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DOUBLE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_LONG_DOUBLE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_LONG_DOUBLE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_SIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_UNSIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_SIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_UNSIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_UNSIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_TO_BOOL) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_LOAD) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_STORE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_STORE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_NEGATE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_INVERT) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BOOL_NOT) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ADD) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_SUB) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_IMUL) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UMUL) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_IDIV) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UDIV) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_IMOD) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UMOD) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_LSHIFT) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_RSHIFT) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ARSHIFT) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_AND) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_OR) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_XOR) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_EQUAL) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_GREATER) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ABOVE) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_LESS) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BELOW) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_EXTRACT_SIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_EXTRACT_UNSIGNED) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_INSERT) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_FFS) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLZ) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_CTZ) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT) _separator \
-    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_GET_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_CAST_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_FLOAT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_FLOAT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DOUBLE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DOUBLE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_LONG_DOUBLE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_LONG_DOUBLE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_TO_BOOL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_LOAD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_STORE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_STORE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_NEGATE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_INVERT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BOOL_NOT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_ADD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_SUB) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_IMUL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_UMUL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_IDIV) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_UDIV) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_IMOD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_UMOD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_LSHIFT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_RSHIFT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_ARSHIFT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_AND) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_OR) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_XOR) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_EQUAL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_GREATER) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_ABOVE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_LESS) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BELOW) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_EXTRACT_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_EXTRACT_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_INSERT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_FFS) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLZ) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_CTZ) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
