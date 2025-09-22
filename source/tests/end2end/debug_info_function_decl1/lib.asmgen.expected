@@ -40,10 +40,8 @@ __kefir_func_temp_label5:
     fldt __kefir_func_temp_label6(%rip)
 .loc 0 31 5
 __kefir_func_temp_label7:
-    fstpt -48(%rbp)
-    fstpt -32(%rbp)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 31 5

@@ -167,10 +167,6 @@ __kefir_text_func_add80_begin:
     fsubp
     fxch %st(1)
     faddp
-    fstpt -48(%rbp)
-    fstpt -32(%rbp)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
     fldt -32(%rbp)
@@ -672,10 +668,6 @@ __kefir_text_func_neg80_begin:
     fstcw -8(%rbp)
     fldt __kefir_func_neg80_label1(%rip)
     fldt __kefir_func_neg80_label2(%rip)
-    fstpt -80(%rbp)
-    fstpt -64(%rbp)
-    fldt -64(%rbp)
-    fldt -80(%rbp)
     fstpt -64(%rbp)
     fstpt -80(%rbp)
     fldt -80(%rbp)
@@ -692,10 +684,6 @@ __kefir_text_func_neg80_begin:
     fldt __kefir_func_neg80_label4(%rip)
     fxch %st(1)
     faddp
-    fstpt -80(%rbp)
-    fstpt -64(%rbp)
-    fldt -64(%rbp)
-    fldt -80(%rbp)
     fstpt -64(%rbp)
     fstpt -80(%rbp)
     fldt -80(%rbp)
@@ -863,10 +851,6 @@ __kefir_text_func_sub80_begin:
     fsubp
     fxch %st(1)
     fsubp
-    fstpt -48(%rbp)
-    fstpt -32(%rbp)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
     fldt -32(%rbp)

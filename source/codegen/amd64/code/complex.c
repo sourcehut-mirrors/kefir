@@ -254,22 +254,28 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_from)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
-    kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;
+    kefir_asmcmp_virtual_register_index_t result_vreg;
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, instruction->operation.parameters.refs[0]));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, instruction->operation.parameters.refs[1]));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_consume_by(mem, function, instruction->operation.parameters.refs[0], instruction->id));
+    if (instruction->operation.parameters.refs[0] != instruction->operation.parameters.refs[1]) {
+        REQUIRE_OK(kefir_codegen_amd64_function_x87_consume_by(mem, function, instruction->operation.parameters.refs[1], instruction->id));
+        REQUIRE_OK(kefir_codegen_amd64_function_x87_pop(mem, function));
+    }
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_pop(mem, function));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
         mem, &function->code.context, kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant),
         kefir_abi_amd64_complex_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_fld(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(arg1_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_fld(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(arg2_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
+    if (instruction->operation.parameters.refs[0] == instruction->operation.parameters.refs[1]) {
+        REQUIRE_OK(kefir_codegen_amd64_function_x87_ensure(mem, function, 2));
+        REQUIRE_OK(kefir_asmcmp_amd64_fld(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_X87(0),
+            NULL));
+    }
     REQUIRE_OK(kefir_asmcmp_amd64_fstp(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, 2 * KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT),

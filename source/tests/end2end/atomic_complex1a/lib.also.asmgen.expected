@@ -64,10 +64,6 @@ __kefir_text_func_add_ld_begin:
     fldt -32(%rbp)
     fxch %st(1)
     faddp
-    fstpt -80(%rbp)
-    fstpt -64(%rbp)
-    fldt -64(%rbp)
-    fldt -80(%rbp)
     fstpt -64(%rbp)
     fstpt -80(%rbp)
     fldt -64(%rbp)
@@ -226,10 +222,6 @@ __kefir_text_func_sub_ld_begin:
     fldt -32(%rbp)
     fxch %st(1)
     fsubp
-    fstpt -80(%rbp)
-    fstpt -64(%rbp)
-    fldt -64(%rbp)
-    fldt -80(%rbp)
     fstpt -64(%rbp)
     fstpt -80(%rbp)
     fldt -64(%rbp)
