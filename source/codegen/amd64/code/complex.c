@@ -1439,6 +1439,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float64_neg)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
+    function->codegen_module->constants.complex_float64_neg = true;
 
     kefir_asmcmp_virtual_register_index_t result_vreg, result_real_vreg, result_imag_vreg, arg1_vreg, arg1_real_vreg,
         arg1_imag_vreg;
