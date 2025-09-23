@@ -3089,21 +3089,20 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             }
             break;
 
-        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV:
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV: {
+            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+
+            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
+            REQUIRE_OK(
+                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg1_ref,
+                                                                            &arg1_imag_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg2_ref,
+                                                                            &arg2_imag_ref));
             if (!func->ir_func->flags.cx_limited_range) {
-                const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
-                const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
-
-                kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
-                REQUIRE_OK(
-                    kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
-                REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg1_ref,
-                                                                                &arg1_imag_ref));
-                REQUIRE_OK(
-                    kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
-                REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg2_ref,
-                                                                                &arg2_imag_ref));
-
                 kefir_id_t divxc3_func_decl_id = KEFIR_ID_NONE;
                 REQUIRE_OK(get_softfloat_complex_long_double_div_function_decl_id(mem, module, param, &divxc3_func_decl_id));
 
@@ -3114,8 +3113,35 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_imag_ref));
                 REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_real_ref));
                 REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_imag_ref));
+            } else {
+                kefir_opt_instruction_ref_t dividend_real_ac_ref, dividend_real_bd_ref, dividend_imag_ad_ref, dividend_imag_bc_ref, dividend_real_ref, dividend_imag_ref,
+                    arg2_real_squre_ref, arg2_imag_squre_ref, divisor_ref, result_real_ref, result_imag_ref;
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_mul(mem, &func->code, block_id, arg1_real_ref, arg2_real_ref, &dividend_real_ac_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_mul(mem, &func->code, block_id, arg1_imag_ref, arg2_imag_ref, &dividend_real_bd_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_mul(mem, &func->code, block_id, arg1_real_ref, arg2_imag_ref, &dividend_imag_ad_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_mul(mem, &func->code, block_id, arg1_imag_ref, arg2_real_ref, &dividend_imag_bc_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_add(mem, &func->code, block_id, dividend_real_ac_ref, dividend_real_bd_ref, &dividend_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_sub(mem, &func->code, block_id, dividend_imag_bc_ref, dividend_imag_ad_ref, &dividend_imag_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_mul(mem, &func->code, block_id, arg2_real_ref, arg2_real_ref, &arg2_real_squre_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_mul(mem, &func->code, block_id, arg2_imag_ref, arg2_imag_ref, &arg2_imag_squre_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_add(mem, &func->code, block_id, arg2_real_squre_ref, arg2_imag_squre_ref, &divisor_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_div(mem, &func->code, block_id, dividend_real_ref, divisor_ref, &result_real_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_long_double_div(mem, &func->code, block_id, dividend_imag_ref, divisor_ref, &result_imag_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_complex_long_double_from(mem, &func->code, block_id, result_real_ref, result_imag_ref, replacement_ref));
             }
-            break;
+        } break;
 
         default:
             // Intentionally left blank

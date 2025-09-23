@@ -10,65 +10,61 @@ divide:
 __kefir_text_func_divide_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
     fldt (%rcx)
-    fldt 16(%rcx)
     fldt (%rax)
     fld %st(0)
-    fabs
+    fld %st(2)
+    fmulp
+    fldt 16(%rcx)
     fldt 16(%rax)
     fld %st(0)
-    fabs
-    fcomip %st(2), %st(0)
-    fxch %st(1)
-    fstp %st(0)
-    fldt __kefir_constant_complex_long_double_div(%rip)
-    jb __kefir_func_divide_label3
-    fxch %st(1)
-    fdivr %st(0), %st(2)
     fld %st(2)
-    fmul %st(3), %st(0)
-    fadd %st(2), %st(0)
-    fmulp %st(0), %st(1)
-    fdivrp %st(0), %st(1)
-    fld %st(3)
-    fmul %st(2), %st(0)
-    fadd %st(3), %st(0)
-    fmul %st(1), %st(0)
-    fxch %st(3)
-    fmulp %st(0), %st(2)
-    fxch %st(3)
-    fsubrp %st(0), %st(1)
-    fmulp %st(0), %st(2)
+    fmulp
     fxch %st(1)
-__kefir_func_divide_label2:
-    fxch %st(1)
-    jmp __kefir_func_divide_label4
-__kefir_func_divide_label3:
-    fxch %st(1)
-    fdiv %st(2), %st(0)
-    fld %st(0)
-    fmul %st(1), %st(0)
-    fadd %st(2), %st(0)
-    fmulp %st(0), %st(3)
     fxch %st(2)
-    fdivrp %st(0), %st(1)
+    fxch %st(3)
+    faddp
+    fld %st(3)
+    fld %st(0)
+    fmulp
     fld %st(2)
-    fmul %st(2), %st(0)
-    fadd %st(4), %st(0)
-    fmul %st(1), %st(0)
-    fxch %st(4)
-    fmulp %st(0), %st(2)
+    fld %st(0)
+    fmulp
     fxch %st(1)
-    fsubrp %st(0), %st(2)
-    fmulp %st(0), %st(1)
-    jmp __kefir_func_divide_label2
-__kefir_func_divide_label4:
-    fstpt -48(%rbp)
+    faddp
+    fld %st(0)
+    fxch %st(1)
+    fxch %st(2)
+    fdivp
+    fld %st(4)
+    fld %st(4)
+    fmulp
+    fld %st(3)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
+    fmulp
+    fxch %st(1)
+    fsubp
+    fld %st(2)
+    fxch %st(1)
+    fdivp
     fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fstp %st(0)
+    fstp %st(0)
+    fstp %st(0)
+    fstp %st(0)
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
@@ -79,10 +75,3 @@ __kefir_text_func_divide_end:
 
 __kefir_text_section_end:
 
-.section .rodata
-    .align 16
-__kefir_constant_complex_long_double_div:
-    .long 0
-    .long 2147483648
-    .long 16383
-    .long 0
