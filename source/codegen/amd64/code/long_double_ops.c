@@ -339,20 +339,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_binary_op)(
         kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     if (instruction->operation.parameters.refs[0] != instruction->operation.parameters.refs[1]) {
-        REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, instruction->operation.parameters.refs[1]));
-        REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, instruction->operation.parameters.refs[0]));
-
-        REQUIRE_OK(kefir_codegen_amd64_function_x87_consume_by(mem, function, instruction->operation.parameters.refs[0],
-                                                               instruction->id));
-        REQUIRE_OK(kefir_codegen_amd64_function_x87_consume_by(mem, function, instruction->operation.parameters.refs[1],
-                                                               instruction->id));
+        REQUIRE_OK(kefir_codegen_amd64_function_x87_load_consume_by(mem, function, instruction->operation.parameters.refs[1], instruction->id));
+        REQUIRE_OK(kefir_codegen_amd64_function_x87_load_consume_by(mem, function, instruction->operation.parameters.refs[0], instruction->id));
 
         REQUIRE_OK(kefir_codegen_amd64_function_x87_pop(mem, function));
         REQUIRE_OK(kefir_codegen_amd64_function_x87_pop(mem, function));
     } else {
-        REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, instruction->operation.parameters.refs[0]));
-        REQUIRE_OK(kefir_codegen_amd64_function_x87_consume_by(mem, function, instruction->operation.parameters.refs[0],
-                                                               instruction->id));
+        REQUIRE_OK(kefir_codegen_amd64_function_x87_load_consume_by(mem, function, instruction->operation.parameters.refs[0], instruction->id));
         REQUIRE_OK(kefir_codegen_amd64_function_x87_ensure(mem, function, 1));
         REQUIRE_OK(kefir_codegen_amd64_function_x87_pop(mem, function));
         REQUIRE_OK(kefir_asmcmp_amd64_fld(mem, &function->code,

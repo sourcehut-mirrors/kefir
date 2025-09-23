@@ -81,8 +81,6 @@ __kefir_func_predec_ld_label1:
     movq -80(%rbp), %r10
     fldt __kefir_func_predec_ld_label4(%rip)
     fldt -96(%rbp)
-    fld %st(0)
-    fstpt -96(%rbp)
     faddp
     fstpt -64(%rbp)
     movq %r10, -16(%rbp)
@@ -165,8 +163,6 @@ __kefir_func_preinc_ld_label1:
     movq -80(%rbp), %r10
     fldt __kefir_func_preinc_ld_label4(%rip)
     fldt -96(%rbp)
-    fld %st(0)
-    fstpt -96(%rbp)
     faddp
     fstpt -64(%rbp)
     movq %r10, -16(%rbp)

@@ -22,8 +22,6 @@ __kefir_text_func_increment_begin:
     fstpt (%rax)
     fldt __kefir_func_increment_label1(%rip)
     fldt -32(%rbp)
-    fld %st(0)
-    fstpt -32(%rbp)
     faddp
     fldcw -8(%rbp)
     lea (%rbp), %rsp

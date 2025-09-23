@@ -152,8 +152,6 @@ __kefir_func_add_ld_label1:
     movq -96(%rbp), %r10
     fldt -64(%rbp)
     fldt -112(%rbp)
-    fld %st(0)
-    fstpt -112(%rbp)
     faddp
     fstpt -80(%rbp)
     movq %r10, -16(%rbp)
@@ -721,8 +719,6 @@ __kefir_func_divide_ld_label1:
     movq -96(%rbp), %r10
     fldt -64(%rbp)
     fldt -112(%rbp)
-    fld %st(0)
-    fstpt -112(%rbp)
     fdivp
     fstpt -80(%rbp)
     movq %r10, -16(%rbp)
@@ -1023,8 +1019,6 @@ __kefir_func_multiply_ld_label1:
     movq -96(%rbp), %r10
     fldt -64(%rbp)
     fldt -112(%rbp)
-    fld %st(0)
-    fstpt -112(%rbp)
     fmulp
     fstpt -80(%rbp)
     movq %r10, -16(%rbp)
@@ -1104,8 +1098,6 @@ __kefir_func_subtract_ld_label1:
     movq -96(%rbp), %r10
     fldt -64(%rbp)
     fldt -112(%rbp)
-    fld %st(0)
-    fstpt -112(%rbp)
     fsubp
     fstpt -80(%rbp)
     movq %r10, -16(%rbp)

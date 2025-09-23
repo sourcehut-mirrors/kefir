@@ -175,22 +175,34 @@ __kefir_text_func_mul_ld_begin:
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -64(%rbp)
-    fld %st(0)
-    fldt -48(%rbp)
-    fldt -32(%rbp)
-    fmul %st(0), %st(2)
     fldt -80(%rbp)
-    fmul %st(2)
-    fsubp %st(3)
+    fldt -48(%rbp)
+    fld %st(0)
+    fld %st(2)
+    fmulp
+    fldt -64(%rbp)
+    fldt -32(%rbp)
+    fld %st(0)
+    fld %st(2)
+    fmulp
+    fxch %st(1)
     fxch %st(2)
     fxch %st(3)
-    fmulp %st(1)
-    fldt -80(%rbp)
-    fmulp %st(2)
-    faddp %st(1)
+    fsubp
+    fld %st(1)
+    fld %st(5)
+    fmulp
+    fld %st(4)
+    fld %st(4)
+    fmulp
+    fxch %st(1)
+    faddp
     fstpt -64(%rbp)
     fstpt -80(%rbp)
+    fstpt -48(%rbp)
+    fstpt -48(%rbp)
+    fstpt -48(%rbp)
+    fstpt -48(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
     fldcw -8(%rbp)

@@ -83,8 +83,6 @@ __kefir_func_postdec_ld_label1:
     movq -96(%rbp), %r10
     fldt __kefir_func_postdec_ld_label4(%rip)
     fldt -64(%rbp)
-    fld %st(0)
-    fstpt -64(%rbp)
     faddp
     fstpt -96(%rbp)
     movq %r10, -16(%rbp)
@@ -169,8 +167,6 @@ __kefir_func_postinc_ld_label1:
     movq -96(%rbp), %r10
     fldt __kefir_func_postinc_ld_label4(%rip)
     fldt -64(%rbp)
-    fld %st(0)
-    fstpt -64(%rbp)
     faddp
     fstpt -96(%rbp)
     movq %r10, -16(%rbp)

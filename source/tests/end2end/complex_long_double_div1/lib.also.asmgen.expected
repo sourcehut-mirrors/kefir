@@ -111,39 +111,28 @@ __kefir_runtime_text_func___kefir_softfloat_complex_long_double_div_begin:
 __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label1:
     fldt -80(%rbp)
     fldt -48(%rbp)
-    fld %st(0)
-    fstpt -48(%rbp)
-    fld %st(1)
-    fstpt -80(%rbp)
     fmulp
     fldt -64(%rbp)
     fldt -32(%rbp)
-    fld %st(0)
-    fstpt -32(%rbp)
-    fld %st(1)
-    fstpt -64(%rbp)
     fmulp
     fxch %st(1)
     faddp
     fldt -80(%rbp)
     fld %st(0)
-    fstpt -80(%rbp)
-    fld %st(0)
     fmulp
     fldt -64(%rbp)
-    fld %st(0)
-    fstpt -64(%rbp)
     fld %st(0)
     fmulp
     fxch %st(1)
     faddp
+    fld %st(0)
     fxch %st(1)
-    fld %st(1)
-    fstpt -112(%rbp)
+    fxch %st(2)
     fdivp
     mov %rdi, %rax
     neg %eax
     fstpt -208(%rbp)
+    fstpt -112(%rbp)
     sub $16, %rsp
     movq %rax, -192(%rbp)
     fldt -208(%rbp)
@@ -154,24 +143,14 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label1:
     add $16, %rsp
     fldt -80(%rbp)
     fldt -32(%rbp)
-    fld %st(0)
-    fstpt -32(%rbp)
-    fld %st(1)
-    fstpt -80(%rbp)
     fmulp
     fldt -64(%rbp)
     fldt -48(%rbp)
-    fld %st(0)
-    fstpt -48(%rbp)
-    fld %st(1)
-    fstpt -64(%rbp)
     fmulp
     fxch %st(1)
     fsubp
     fldt -112(%rbp)
     fxch %st(1)
-    fld %st(1)
-    fstpt -112(%rbp)
     fdivp
     fstpt -208(%rbp)
     fstpt -144(%rbp)
@@ -368,18 +347,9 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label14:
     fldt __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label33(%rip)
     fldt -176(%rbp)
     fldt -48(%rbp)
-    fld %st(0)
-    fstpt -48(%rbp)
-    fld %st(1)
-    fstpt -176(%rbp)
     fmulp
-    fxch %st(1)
-    fxch %st(2)
+    fld %st(2)
     fldt -32(%rbp)
-    fld %st(0)
-    fstpt -32(%rbp)
-    fld %st(1)
-    fstpt -208(%rbp)
     fmulp
     fxch %st(1)
     faddp
@@ -388,17 +358,9 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label14:
     fldt __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label34(%rip)
     fldt -176(%rbp)
     fldt -32(%rbp)
-    fld %st(0)
-    fstpt -32(%rbp)
-    fld %st(1)
-    fstpt -176(%rbp)
     fmulp
-    fldt -208(%rbp)
+    fld %st(3)
     fldt -48(%rbp)
-    fld %st(0)
-    fstpt -48(%rbp)
-    fld %st(1)
-    fstpt -208(%rbp)
     fmulp
     fxch %st(1)
     fsubp
@@ -406,6 +368,7 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label14:
     fmulp
     fstpt -208(%rbp)
     fstpt -192(%rbp)
+    fstpt -176(%rbp)
     fstpt -64(%rbp)
     movq -192(%rbp), %rax
     movq %rax, -176(%rbp)
@@ -521,19 +484,9 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label18:
     fldt __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label40(%rip)
     fldt -80(%rbp)
     fldt -176(%rbp)
-    fld %st(0)
-    fstpt -176(%rbp)
-    fld %st(1)
-    fstpt -80(%rbp)
     fmulp
     fldt -64(%rbp)
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fld %st(0)
-    fstpt -208(%rbp)
-    fld %st(1)
-    fstpt -64(%rbp)
+    fld %st(3)
     fmulp
     fxch %st(1)
     faddp
@@ -541,18 +494,10 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label18:
     fmulp
     fldt __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label41(%rip)
     fldt -80(%rbp)
-    fldt -208(%rbp)
-    fld %st(0)
-    fstpt -208(%rbp)
-    fld %st(1)
-    fstpt -80(%rbp)
+    fld %st(3)
     fmulp
     fldt -64(%rbp)
     fldt -176(%rbp)
-    fld %st(0)
-    fstpt -176(%rbp)
-    fld %st(1)
-    fstpt -64(%rbp)
     fmulp
     fxch %st(1)
     fsubp
@@ -560,6 +505,7 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label18:
     fmulp
     fstpt -208(%rbp)
     fstpt -192(%rbp)
+    fstpt -176(%rbp)
     fstpt -32(%rbp)
     movq -192(%rbp), %rax
     movq %rax, -176(%rbp)
@@ -642,14 +588,10 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label22:
     fxch %st(1)
     fxch %st(2)
     fxch %st(3)
-    fld %st(1)
-    fstpt -48(%rbp)
     fmulp
     fldt -32(%rbp)
     fxch %st(1)
     fxch %st(2)
-    fld %st(1)
-    fstpt -32(%rbp)
     fmulp
     fstpt -208(%rbp)
     fstpt -192(%rbp)
@@ -867,8 +809,6 @@ __kefir_runtime_func___kefir_softfloat_scalbnl_label2:
     movq %rax, -24(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
-    fld %st(0)
-    fstpt -48(%rbp)
     fmulp
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -881,8 +821,6 @@ __kefir_runtime_func___kefir_softfloat_scalbnl_label4:
     add $16269, %edi
     fldt __kefir_runtime_func___kefir_softfloat_scalbnl_label7(%rip)
     fldt -48(%rbp)
-    fld %st(0)
-    fstpt -48(%rbp)
     fmulp
     fstpt -80(%rbp)
     fstpt -64(%rbp)
@@ -900,8 +838,6 @@ __kefir_runtime_func___kefir_softfloat_scalbnl_label5:
     sub $16383, %edi
     fldt __kefir_runtime_func___kefir_softfloat_scalbnl_label8(%rip)
     fldt -64(%rbp)
-    fld %st(0)
-    fstpt -64(%rbp)
     fmulp
     fstpt -80(%rbp)
     mov %rax, %r9
@@ -1098,10 +1034,6 @@ __kefir_runtime_func___kefir_softfloat_fmaximum_numl_label11:
 __kefir_runtime_func___kefir_softfloat_fmaximum_numl_label5:
     fldt -32(%rbp)
     fldt -48(%rbp)
-    fld %st(0)
-    fstpt -48(%rbp)
-    fld %st(1)
-    fstpt -32(%rbp)
     faddp
     fstpt -80(%rbp)
 __kefir_runtime_func___kefir_softfloat_fmaximum_numl_label6:
@@ -1274,8 +1206,6 @@ __kefir_runtime_func___kefir_softfloat_logbl_label3:
     ret
 __kefir_runtime_func___kefir_softfloat_logbl_label4:
     fldt -32(%rbp)
-    fld %st(0)
-    fstpt -32(%rbp)
     fld %st(0)
     fmulp
     fxch %st(2)

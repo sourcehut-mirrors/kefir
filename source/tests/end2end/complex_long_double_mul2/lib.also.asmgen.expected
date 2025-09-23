@@ -10,28 +10,40 @@ mul:
 __kefir_text_func_mul_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
-    fldt 16(%rcx)
-    fld %st(0)
-    fldt (%rax)
-    fldt 16(%rax)
-    fmul %st(0), %st(2)
     fldt (%rcx)
-    fmul %st(2)
-    fsubp %st(3)
+    fldt (%rax)
+    fld %st(0)
+    fld %st(2)
+    fmulp
+    fldt 16(%rcx)
+    fldt 16(%rax)
+    fld %st(0)
+    fld %st(2)
+    fmulp
+    fxch %st(1)
     fxch %st(2)
     fxch %st(3)
-    fmulp %st(1)
-    fldt (%rcx)
-    fmulp %st(2)
-    faddp %st(1)
-    fstpt -32(%rbp)
+    fsubp
+    fld %st(1)
+    fld %st(5)
+    fmulp
+    fld %st(4)
+    fld %st(4)
+    fmulp
+    fxch %st(1)
+    faddp
     fstpt -48(%rbp)
-    fldt -32(%rbp)
+    fstpt -64(%rbp)
+    fstpt -32(%rbp)
+    fstpt -32(%rbp)
+    fstpt -32(%rbp)
+    fstpt -32(%rbp)
     fldt -48(%rbp)
+    fldt -64(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
