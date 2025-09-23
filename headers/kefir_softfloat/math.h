@@ -357,6 +357,22 @@ static __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ __kefir_softfloat_logbl(__KEFIR_SOFTFLO
 	    return (__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__) __kefir_softfloat_ilogbl(x);
     }
 }
+#else
+static __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ __kefir_softfloat_fabsl(__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ value) {
+    return (__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__) __kefir_softfloat_fabs((__KEFIR_SOFTFLOAT_DOUBLE_T__) value);
+}
+
+static __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ __kefir_softfloat_scalbnl(__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ x, __KEFIR_SOFTFLOAT_INT_T__ n) {
+    return (__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__) __kefir_softfloat_scalbn((__KEFIR_SOFTFLOAT_DOUBLE_T__) x, n);
+}
+
+static __KEFIR_SOFTFLOAT_INT_T__ __kefir_softfloat_ilogbl(__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ x) {
+    return __kefir_softfloat_ilogb((__KEFIR_SOFTFLOAT_DOUBLE_T__) x);
+}
+
+static __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ __kefir_softfloat_logbl(__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ x) {
+    return (__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__) __kefir_softfloat_logb((__KEFIR_SOFTFLOAT_DOUBLE_T__) x);
+}
 #endif
 
 static __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ __kefir_softfloat_fmaximum_numl(__KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ x, __KEFIR_SOFTFLOAT_LONG_DOUBLE_T__ y) {
