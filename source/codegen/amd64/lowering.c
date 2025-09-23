@@ -2812,6 +2812,19 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG: {
+            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+
+            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, result_real_ref, result_imag_ref;
+            REQUIRE_OK(
+                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg1_ref, &arg1_imag_ref));
+            REQUIRE_OK(kefir_opt_code_builder_long_double_neg(mem, &func->code, block_id, arg1_real_ref, &result_real_ref));
+            REQUIRE_OK(kefir_opt_code_builder_long_double_neg(mem, &func->code, block_id, arg1_imag_ref, &result_imag_ref));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_from(mem, &func->code, block_id, result_real_ref, result_imag_ref, replacement_ref));
+        } break;
+
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_ADD: {
             const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
             const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];

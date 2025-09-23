@@ -174,19 +174,19 @@ neg_ld:
 __kefir_text_func_neg_ld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     movq ld_1@GOTPCREL(%rip), %rsi
-    lea -80(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -80(%rbp)
+    fldt -48(%rbp)
     fchs
-    fstpt -48(%rbp)
-    fldt -64(%rbp)
+    fldt -32(%rbp)
     fchs
     fstpt -32(%rbp)
+    fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)

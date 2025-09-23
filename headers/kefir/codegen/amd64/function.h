@@ -311,7 +311,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(complex_long_double_div, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV) _separator \
     _def(complex_float32_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_NEG) _separator \
     _def(complex_float64_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_NEG) _separator \
-    _def(complex_long_double_neg, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG) _separator \
     _def(complex_float32_load, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD) _separator \
     _def(complex_float64_load, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD) _separator \
     _def(complex_long_double_load, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD) _separator \
