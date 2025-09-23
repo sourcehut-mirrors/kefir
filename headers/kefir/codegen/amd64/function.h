@@ -468,6 +468,9 @@ kefir_result_t kefir_codegen_amd64_function_x87_load_consume_by(struct kefir_mem
 kefir_result_t kefir_codegen_amd64_function_x87_consume_by(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                            kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_x87_flush(struct kefir_mem *, struct kefir_codegen_amd64_function *);
+kefir_result_t kefir_codegen_amd64_function_x87_clear(struct kefir_mem *,
+                                                      struct kefir_codegen_amd64_function *, kefir_size_t);
+kefir_bool_t kefir_codegen_amd64_function_x87_has(const struct kefir_codegen_amd64_function *, kefir_opt_instruction_ref_t);
 
 typedef struct kefir_codegen_amd64_function_x87_locations_iterator {
     const struct kefir_hashtree *x87_slots;

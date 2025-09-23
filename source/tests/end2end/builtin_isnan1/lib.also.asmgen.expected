@@ -66,7 +66,7 @@ is_nan_f80:
 __kefir_text_func_is_nan_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
 __kefir_func_is_nan_f80_label0:
     fldt 16(%rbp)
@@ -79,7 +79,7 @@ __kefir_func_is_nan_f80_label0:
     test %eax, %eax
     setne %al
     movzx %al, %rax
-    fstpt -48(%rbp)
+    fstp %st(0)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

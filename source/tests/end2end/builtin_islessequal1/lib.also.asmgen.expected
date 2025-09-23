@@ -66,7 +66,7 @@ is_lessequal_f80:
 __kefir_text_func_is_lessequal_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
 __kefir_func_is_lessequal_f80_label0:
     fldt 32(%rbp)
@@ -84,8 +84,8 @@ __kefir_func_is_lessequal_f80_label0:
     fucomi %st(1)
     setnb %al
     and $255, %rax
-    fstpt -64(%rbp)
-    fstpt -64(%rbp)
+    fstp %st(0)
+    fstp %st(0)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
