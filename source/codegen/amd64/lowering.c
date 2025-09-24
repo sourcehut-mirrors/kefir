@@ -23,7 +23,7 @@
 #include "kefir/codegen/amd64/lowering.h"
 #include "kefir/target/abi/amd64/base.h"
 #include "kefir/optimizer/builder.h"
-#include "kefir/optimizer/configuration.h"
+#include "kefir/optimizer/code_util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -3177,6 +3177,50 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                                                                             
             REQUIRE_OK(
                 kefir_opt_code_builder_long_double_pair_truncate_1bit(mem, &func->code, block_id, arg1_real_ref, arg1_imag_ref, replacement_ref));
+        } break;
+
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD: {
+            kefir_opt_instruction_ref_t instr_ref = instr->id;
+            const kefir_opt_instruction_ref_t location_ref = instr->operation.parameters.refs[0];
+            struct kefir_opt_memory_access_flags flags = instr->operation.parameters.memory_access.flags;
+
+            kefir_opt_instruction_ref_t imag_offset_ref, imag_location_ref, real_ref, imag_ref;
+            REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD, &imag_offset_ref));
+            REQUIRE_OK(kefir_opt_code_builder_int64_add(mem, &func->code, block_id, location_ref, imag_offset_ref, &imag_location_ref));
+            REQUIRE_OK(kefir_opt_code_builder_long_double_load(mem, &func->code, block_id, location_ref, &flags, &real_ref));
+            REQUIRE_OK(kefir_opt_code_builder_long_double_load(mem, &func->code, block_id, imag_location_ref, &flags, &imag_ref));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_from(mem, &func->code, block_id, real_ref, imag_ref, replacement_ref));
+
+            kefir_bool_t is_control_flow;
+            REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&func->code, instr_ref, &is_control_flow));
+            if (is_control_flow) {
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_ref, real_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_ref, imag_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE: {
+            kefir_opt_instruction_ref_t instr_ref = instr->id;
+            const kefir_opt_instruction_ref_t location_ref = instr->operation.parameters.refs[0];
+            const kefir_opt_instruction_ref_t value_ref = instr->operation.parameters.refs[1];
+            struct kefir_opt_memory_access_flags flags = instr->operation.parameters.memory_access.flags;
+
+            kefir_opt_instruction_ref_t imag_offset_ref, imag_location_ref, real_ref, imag_ref, real_store_ref, imag_store_ref;
+            REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD, &imag_offset_ref));
+            REQUIRE_OK(kefir_opt_code_builder_int64_add(mem, &func->code, block_id, location_ref, imag_offset_ref, &imag_location_ref));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, value_ref, &real_ref));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, value_ref, &imag_ref));
+            REQUIRE_OK(kefir_opt_code_builder_long_double_store(mem, &func->code, block_id, location_ref, real_ref, &flags, &real_store_ref));
+            REQUIRE_OK(kefir_opt_code_builder_long_double_store(mem, &func->code, block_id, imag_location_ref, imag_ref, &flags, &imag_store_ref));
+
+            kefir_bool_t is_control_flow;
+            REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&func->code, instr_ref, &is_control_flow));
+            if (is_control_flow) {
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_ref, real_store_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_ref, imag_store_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
+            }
         } break;
 
         default:

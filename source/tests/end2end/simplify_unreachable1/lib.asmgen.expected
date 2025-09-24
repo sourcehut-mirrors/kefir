@@ -189,32 +189,26 @@ __kefir_func_test15_label2:
 
 test16:
 __kefir_text_func_test16_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
-    fstcw -8(%rbp)
     movq c80@GOTPCREL(%rip), %rax
+    add $16, %rax
     fldt __kefir_func_test16_label1(%rip)
-    fldt __kefir_func_test16_label2(%rip)
-    fstpt -32(%rbp)
-    fstpt -48(%rbp)
     movq $0, 8(%rax)
-    movq $0, 24(%rax)
-    fldt -48(%rbp)
     fstpt (%rax)
-    fldt -32(%rbp)
-    fstpt 16(%rax)
+    movq c80@GOTPCREL(%rip), %rax
+    fldt __kefir_func_test16_label2(%rip)
+    movq $0, 8(%rax)
+    fstpt (%rax)
     ud2
 __kefir_text_func_test16_end:
 .section .rodata
     .align 8
 __kefir_func_test16_label1:
-    .quad 9223372036854775808
-    .quad 16383
+    .quad 0
+    .quad 0
     .align 8
 __kefir_func_test16_label2:
-    .quad 0
-    .quad 0
+    .quad 9223372036854775808
+    .quad 16383
 .section .text
 
 test17:
