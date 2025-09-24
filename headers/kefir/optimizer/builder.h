@@ -393,6 +393,7 @@ BINARY_OP(complex_long_double_from);
 BINARY_OP(complex_float32_equals);
 BINARY_OP(complex_float64_equals);
 BINARY_OP(complex_long_double_equals);
+BINARY_OP(long_double_pair_truncate_1bit);
 
 BINARY_OP(complex_float32_add);
 BINARY_OP(complex_float64_add);

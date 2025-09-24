@@ -992,6 +992,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(complex_float32_equals, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_EQUALS)
             BINARY_OP(complex_float64_equals, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_EQUALS)
             BINARY_OP(complex_long_double_equals, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_EQUALS)
+            BINARY_OP(long_double_pair_truncate_1bit, KEFIR_IR_OPCODE_LONG_DOUBLE_PAIR_TRUNCATE_1BIT)
 
             BINARY_OP(complex_float32_add, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_ADD)
             BINARY_OP(complex_float64_add, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_ADD)

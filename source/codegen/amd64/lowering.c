@@ -3143,6 +3143,42 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_EQUALS: {
+            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+
+            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref, arg2_real_ref, arg2_imag_ref;
+            REQUIRE_OK(
+                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg1_ref,
+                                                                            &arg1_imag_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg2_ref, &arg2_real_ref));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg2_ref,
+                                                                            &arg2_imag_ref));
+                                                                            
+            kefir_opt_instruction_ref_t real_cmp_ref, imag_cmp_ref;
+            REQUIRE_OK(
+                kefir_opt_code_builder_long_double_equals(mem, &func->code, block_id, arg1_real_ref, arg2_real_ref, &real_cmp_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_long_double_equals(mem, &func->code, block_id, arg1_imag_ref, arg2_imag_ref, &imag_cmp_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_int64_and(mem, &func->code, block_id, real_cmp_ref, imag_cmp_ref, replacement_ref));
+        } break;
+
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT: {
+            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+
+            kefir_opt_instruction_ref_t arg1_real_ref, arg1_imag_ref;
+            REQUIRE_OK(
+                kefir_opt_code_builder_complex_long_double_real(mem, &func->code, block_id, arg1_ref, &arg1_real_ref));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_imaginary(mem, &func->code, block_id, arg1_ref,
+                                                                            &arg1_imag_ref));
+                                                                            
+            REQUIRE_OK(
+                kefir_opt_code_builder_long_double_pair_truncate_1bit(mem, &func->code, block_id, arg1_real_ref, arg1_imag_ref, replacement_ref));
+        } break;
+
         default:
             // Intentionally left blank
             break;

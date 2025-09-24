@@ -1,0 +1,79 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global cld_eq
+.type cld_eq, @function
+.global cld_trunc
+.type cld_trunc, @function
+
+.section .text
+__kefir_text_section_begin:
+cld_eq:
+__kefir_text_func_cld_eq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    lea 48(%rbp), %rax
+    lea 16(%rbp), %rcx
+    fldt (%rcx)
+    fldt (%rax)
+    fxch %st(1)
+    xor %edx, %edx
+    xor %esi, %esi
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %dl
+    cmovne %rsi, %rdx
+    fldt 16(%rcx)
+    fldt 16(%rax)
+    fxch %st(1)
+    xor %eax, %eax
+    xor %ecx, %ecx
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %al
+    cmovne %rcx, %rax
+    and %rax, %rdx
+    test %edx, %edx
+    setne %al
+    movzx %al, %rax
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_cld_eq_end:
+
+cld_trunc:
+__kefir_text_func_cld_trunc_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    fldt (%rax)
+    fldt 16(%rax)
+    fldz
+    fucomi %st(1)
+    fstp %st(0)
+    setp %cl
+    setne %dl
+    or %cl, %dl
+    fxch %st(1)
+    fldz
+    fucomi %st(1)
+    fstp %st(0)
+    setp %cl
+    setne %al
+    or %cl, %al
+    or %dl, %al
+    fstp %st(0)
+    fstp %st(0)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_cld_trunc_end:
+
+__kefir_text_section_end:
+

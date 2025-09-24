@@ -293,10 +293,11 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(complex_long_double_imaginary, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY) _separator \
     _def(complex_float32_equals, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_EQUALS) _separator \
     _def(complex_float64_equals, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_EQUALS) _separator \
-    _def(complex_long_double_equals, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_EQUALS) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_EQUALS) _separator \
     _def(complex_float32_truncate_1bit, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_TRUNCATE_1BIT) _separator \
     _def(complex_float64_truncate_1bit, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_TRUNCATE_1BIT) _separator \
-    _def(complex_long_double_truncate_1bit, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT) _separator \
+    _def(long_double_pair_truncate_1bit, KEFIR_OPT_OPCODE_LONG_DOUBLE_PAIR_TRUNCATE_1BIT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_ADD) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_ADD) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_ADD) _separator \

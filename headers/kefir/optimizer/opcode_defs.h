@@ -234,6 +234,7 @@
     OPCODE(COMPLEX_LONG_DOUBLE_EQUALS, "complex_long_double_equals", ref2) SEPARATOR \
     OPCODE(COMPLEX_FLOAT32_TRUNCATE_1BIT, "complex_float32_truncate_1bit", ref1) SEPARATOR \
     OPCODE(COMPLEX_FLOAT64_TRUNCATE_1BIT, "complex_float64_truncate_1bit", ref1) SEPARATOR \
+    OPCODE(LONG_DOUBLE_PAIR_TRUNCATE_1BIT, "long_double_pair_truncate_1bit", ref2) SEPARATOR \
     OPCODE(COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT, "complex_long_double_truncate_1bit", ref1) SEPARATOR \
     OPCODE(COMPLEX_FLOAT32_ADD, "complex_float32_add", ref2) SEPARATOR \
     OPCODE(COMPLEX_FLOAT64_ADD, "complex_float64_add", ref2) SEPARATOR \
