@@ -37,7 +37,7 @@
 #define KEFIR_UNIX_HOST_PLATFORM
 #endif
 
-#if defined(__STDC_IEC_60559_DFP__) || (defined(__GNUC__) && !defined (__clang__))
+#if (defined(__STDC_IEC_60559_DFP__) || (defined(__GNUC__) && !defined (__clang__))) && !defined(KEFIR_NETBSD_HOST_PLATFORM)
 #define KEFIR_PLATFORM_HAS_DECIMAL_FP
 #endif
 
