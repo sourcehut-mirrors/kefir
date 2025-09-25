@@ -5,7 +5,6 @@ include source/tests/Makefile.mk
 include source/cc1/Makefile.mk
 include source/driver/Makefile.mk
 include source/web/Makefile.mk
-include dfp_shim/Makefile.mk
 include docs/man/Makefile.mk
 include install.mk
 
@@ -33,7 +32,6 @@ endif
 .WEB: $(WEB)
 .WEBAPP: $(WEBAPP)
 .MAN_PAGES: $(MAN_PAGES)
-.DFP_SHIM: $(KEFIR_DFP_SHIM_STATIC_LIB)
 
 all: .BINARIES .MAN_PAGES
 
@@ -62,8 +60,6 @@ portable_bootstrap:
 	@mkdir -p "$(KEFIR_BIN_DIR)"
 	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=yes BIN_DIR=$$($(REALPATH) $(KEFIR_BIN_DIR)) all
 
-dfp_shim: .DFP_SHIM
-
 web: .WEB
 
 webapp: .WEBAPP
@@ -81,7 +77,7 @@ compile_commands: $(COMPILE_COMMANDS_JSON)
 
 .NOTPARALLEL: .EXTERNAL_TESTS_SUITE .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE $(EXTERNAL_TESTS_BASE_SUITE) $(EXTERNAL_TESTS_FAST_SUITE) $(EXTERNAL_TESTS_SLOW_SUITE) $(EXTERNAL_TESTS_EXTRA_SUITE)
 
-.PHONY: all test generate_test_artifacts bootstrap_test web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap dfp_shim compile_commands \
-        .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE .EXTERNAL_TESTS_SUITE .BOOTSTRAP .MAN_PAGES .DFP_SHIM
+.PHONY: all test generate_test_artifacts bootstrap_test web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap compile_commands \
+        .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE .EXTERNAL_TESTS_SUITE .BOOTSTRAP .MAN_PAGES
 
 .DEFAULT_GOAL := all
