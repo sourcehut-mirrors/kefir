@@ -870,6 +870,36 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
+        case KEFIR_AST_TYPE_SPECIFIER_DECIMAL32:
+            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                                               "Decimal32 type specifier cannot be combined with others"));
+            REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine type specifiers with referenced type definition"));
+            *base_type = kefir_ast_type_decimal32();
+            *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
+            break;
+
+        case KEFIR_AST_TYPE_SPECIFIER_DECIMAL64:
+            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                                               "Decimal32 type specifier cannot be combined with others"));
+            REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine type specifiers with referenced type definition"));
+            *base_type = kefir_ast_type_decimal64();
+            *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
+            break;
+
+        case KEFIR_AST_TYPE_SPECIFIER_DECIMAL128:
+            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                                               "Decimal32 type specifier cannot be combined with others"));
+            REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine type specifiers with referenced type definition"));
+            *base_type = kefir_ast_type_decimal128();
+            *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
+            break;
+
         case KEFIR_AST_TYPE_SPECIFIER_SIGNED:
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,

@@ -47,3 +47,6 @@ skip compile/20050622-1.c
 # __attribute__((scalar_storage_order))
 skip execute/20230630-2.c
 skip execute/20230630-4.c
+
+# Decimal
+skip execute/pr80692.c

@@ -233,6 +233,18 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                                                 display_source_location));
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_DECIMAL32:
+                    REQUIRE_OK(kefir_json_output_string(json, "decimal32"));
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_DECIMAL64:
+                    REQUIRE_OK(kefir_json_output_string(json, "decimal64"));
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_DECIMAL128:
+                    REQUIRE_OK(kefir_json_output_string(json, "decimal128"));
+                    break;
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type specifier");
             }

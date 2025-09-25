@@ -1,0 +1,546 @@
+[
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal32",
+        "spelling": "_Decimal32"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "a"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 0
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal64",
+        "spelling": "_Decimal64"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "b"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 0
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal128",
+        "spelling": "_Decimal128"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "c"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 0
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "const",
+        "spelling": "const"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal32",
+        "spelling": "_Decimal32"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "volatile",
+        "spelling": "volatile"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "d"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "volatile",
+        "spelling": "volatile"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal64",
+        "spelling": "_Decimal64"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "e"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "const",
+        "spelling": "const"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal128",
+        "spelling": "_Decimal128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "const",
+        "spelling": "const"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "const",
+        "spelling": "const"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "f"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal32",
+        "spelling": "_Decimal32"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "add"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal32",
+        "spelling": "_Decimal32"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ","
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "const",
+        "spelling": "const"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal32",
+        "spelling": "_Decimal32"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "return",
+        "spelling": "return"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "+"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "const",
+        "spelling": "const"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal64",
+        "spelling": "_Decimal64"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "add2"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "const",
+        "spelling": "const"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal64",
+        "spelling": "_Decimal64"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ","
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "volatile",
+        "spelling": "volatile"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal64",
+        "spelling": "_Decimal64"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "return",
+        "spelling": "return"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "+"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "const",
+        "spelling": "const"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal128",
+        "spelling": "_Decimal128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "add3"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "const",
+        "spelling": "const"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal128",
+        "spelling": "_Decimal128"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ","
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "volatile",
+        "spelling": "volatile"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal128",
+        "spelling": "_Decimal128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "return",
+        "spelling": "return"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "&"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_Decimal128",
+        "spelling": "_Decimal128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "+"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "*"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false
+    }
+]

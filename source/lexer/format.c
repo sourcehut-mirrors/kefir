@@ -245,6 +245,18 @@ static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keywo
         case KEFIR_KEYWORD_BITINT:
             REQUIRE_OK(kefir_json_output_string(json, "_BitInt"));
             break;
+
+        case KEFIR_KEYWORD_DECIMAL32:
+            REQUIRE_OK(kefir_json_output_string(json, "_Decimal32"));
+            break;
+
+        case KEFIR_KEYWORD_DECIMAL64:
+            REQUIRE_OK(kefir_json_output_string(json, "_Decimal64"));
+            break;
+
+        case KEFIR_KEYWORD_DECIMAL128:
+            REQUIRE_OK(kefir_json_output_string(json, "_Decimal128"));
+            break;
     }
     if (spelling) {
         REQUIRE_OK(kefir_json_output_object_key(json, "spelling"));
