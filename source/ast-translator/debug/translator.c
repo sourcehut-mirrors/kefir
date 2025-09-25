@@ -367,6 +367,11 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                              (kefir_hashtree_value_t) *entry_id_ptr));
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Debug information for decimal floating-point types is not implemented yet");
+
         case KEFIR_AST_TYPE_COMPLEX_FLOAT:
             REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
             REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,

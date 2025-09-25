@@ -266,6 +266,11 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     value->integer = (_Bool) isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point);
                     break;
 
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "__builtin_isnan is not implemented for decimal floating-point numbers yet");
+
                 default:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                                   "Expected floating-point constant expression");

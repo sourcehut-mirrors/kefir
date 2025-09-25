@@ -125,6 +125,12 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
             }
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                            "Unary operations are not implemented for decimal floating-point values yet");
+
         default:
             REQUIRE(
                 KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_type),
@@ -408,6 +414,11 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_ADD,
                                                            normalized_type->bitprecise.width));
                 break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");

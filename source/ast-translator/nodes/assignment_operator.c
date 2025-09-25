@@ -180,6 +180,11 @@ static kefir_result_t generate_multiplication_op(const struct generate_op_parame
             }
             break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
@@ -400,6 +405,11 @@ static kefir_result_t generate_division_op(const struct generate_op_parameters *
                                                            params->common_type->bitprecise.width));
             }
             break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -801,6 +811,11 @@ static kefir_result_t generate_add(const struct generate_op_parameters *params) 
                                                            params->common_type->bitprecise.width));
                 break;
 
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
         }
@@ -893,6 +908,11 @@ static kefir_result_t generate_sub(const struct generate_op_parameters *params) 
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_SUB,
                                                            params->common_type->bitprecise.width));
                 break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");

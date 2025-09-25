@@ -77,6 +77,8 @@ static kefir_result_t cast_to_float32(struct kefir_mem *mem, struct kefir_ir_mod
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_FLOAT32, 0));
     } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_FLOAT32, 0));
+    } else if (KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(origin)) {
+        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Cannot cast decimals to floating-point values");
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast pointers to floating-point values");
     }
@@ -119,6 +121,8 @@ static kefir_result_t cast_to_float64(struct kefir_mem *mem, struct kefir_ir_mod
         // Intentionally left blank
     } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_FLOAT64, 0));
+    } else if (KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(origin)) {
+        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Cannot cast decimals to floating-point values");
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast pointers to floating-point values");
     }
@@ -160,6 +164,8 @@ static kefir_result_t cast_to_long_double(struct kefir_mem *mem, struct kefir_ir
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_LONG_DOUBLE, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE) {
         // Intentionally left blank
+    } else if (KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(origin)) {
+        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Cannot cast decimals to floating-point values");
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast pointers to floating-point values");
     }
@@ -353,6 +359,8 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
         } else {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_UINT, 0));
         }
+    } else if (KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(origin)) {
+        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Cannot cast decimals to integers");
     }
 
     kefir_bool_t origin_type_signedness;
@@ -612,6 +620,8 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(const struct kefir_ast_type_
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_TRUNCATE_1BIT, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT, 0));
+    } else if (KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(origin)) {
+        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Cannot cast decimals to booleans");
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
@@ -727,6 +737,11 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(cast_to_complex_long_double(mem, module, builder, type_traits, normalized_origin));
             break;
+            
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Cannot cast to decimals are not implemented yet");
 
         default:
             REQUIRE_OK(cast_to_integer(type_traits, builder, normalized_origin, normalized_destination));

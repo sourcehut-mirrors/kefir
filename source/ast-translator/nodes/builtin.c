@@ -1390,6 +1390,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     DEF_BUILTIN("__kefir_builtin_isnanl", KEFIR_IR_TYPE_LONG_DOUBLE);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
+
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
+                                                  "__builtin_isnan is not implemented for decimal floating-point values yet");
+
                 default:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
                                                   "Expected floating-point type argument");
@@ -1418,6 +1425,12 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     DEF_BUILTIN("__kefir_builtin_isinfl", KEFIR_IR_TYPE_LONG_DOUBLE);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
+
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
+                                                  "__builtin_isinf is not implemented for decimal floating-point values yet");
 #undef DEF_BUILTIN
 
                 default:
@@ -1563,6 +1576,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     DEF_BUILTIN("__kefir_builtin_isfinitel", KEFIR_IR_TYPE_LONG_DOUBLE);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
+
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
+                                                  "__builtin_isfinite is not implemented for decimal floating-point values yet");
+
                 default:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
                                                   "Expected floating-point type argument");

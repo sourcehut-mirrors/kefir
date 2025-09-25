@@ -453,6 +453,11 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
                                                          normalizer->bitprecise.width, is_signed, mem_flags, 0));
         } break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+
         case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE:
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             // Intentionally left blank
@@ -546,6 +551,11 @@ kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_typ
                                                          normalizer->bitprecise.width, is_signed, mem_flags,
                                                          atomic_memory_order));
         } break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
 
         case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE:
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
@@ -654,6 +664,11 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
                                                          0));
         } break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");
 
@@ -735,6 +750,11 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITINT_STORE,
                                                        normalizer->bitprecise.width, mem_flags));
             break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
 
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");
@@ -820,6 +840,11 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
                                                          normalizer->bitprecise.width, mem_flags, atomic_memory_order,
                                                          0));
         } break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
 
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");

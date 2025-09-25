@@ -46,6 +46,9 @@ SCALAR_TYPE(signed_long_long);
 SCALAR_TYPE(float);
 SCALAR_TYPE(double);
 SCALAR_TYPE(long_double);
+SCALAR_TYPE(decimal32);
+SCALAR_TYPE(decimal64);
+SCALAR_TYPE(decimal128);
 SCALAR_TYPE(nullptr);
 #undef SCALAR_TYPE
 
@@ -80,9 +83,14 @@ const struct kefir_ast_type *kefir_ast_type_unsigned_bitprecise(struct kefir_mem
      KEFIR_INTERNAL_AST_TYPE_IS_UNSIGNED_INTEGER(base))
 #define KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) \
     (KEFIR_AST_TYPE_IS_NONENUM_INTEGRAL_TYPE(base) || (base)->tag == KEFIR_AST_TYPE_ENUMERATION)
-#define KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base)                                               \
+#define KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(base)                                               \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || (base)->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)
+#define KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(base)                                               \
+    ((base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32 || (base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64 || \
+     (base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128)
+#define KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base)                                               \
+    (KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(base) || KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(base))
 #define KEFIR_AST_TYPE_IS_LONG_DOUBLE(base) ((base)->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)
 #define KEFIR_AST_TYPE_IS_REAL_TYPE(base) \
     (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base))

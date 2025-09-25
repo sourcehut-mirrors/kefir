@@ -428,7 +428,8 @@ kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *type, kefir_
     } else if (type->tag == KEFIR_AST_TYPE_SCALAR_POINTER || type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_POINTER_TYPE_CLASS;
     } else if (type->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE ||
-               type->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE) {
+               type->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE || type->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32 ||
+                type->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64 || type->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_REAL_TYPE_CLASS;
     } else if (type->tag == KEFIR_AST_TYPE_FUNCTION) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_FUNCTION_TYPE_CLASS;
@@ -518,6 +519,18 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
             *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE;
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32;
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64;
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128;
             break;
 
         case KEFIR_AST_TYPE_COMPLEX_FLOAT:

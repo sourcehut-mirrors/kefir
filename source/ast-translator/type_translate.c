@@ -93,6 +93,11 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
             typeentry->param = type->bitprecise.width;
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point types are not implemented yet");
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Not a scalar type");
     }
@@ -444,6 +449,9 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+        case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
             REQUIRE_OK(translate_scalar_type(mem, context, type, alignment, builder, layout_ptr));

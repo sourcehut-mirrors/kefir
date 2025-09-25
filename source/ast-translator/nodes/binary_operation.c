@@ -128,6 +128,11 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
                                                            result_normalized_type->bitprecise.width));
                 break;
 
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
         }
@@ -225,6 +230,11 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_SUB,
                                                            result_normalized_type->bitprecise.width));
                 break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -357,6 +367,11 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
             }
             break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
@@ -450,6 +465,11 @@ static kefir_result_t translate_division(struct kefir_mem *mem, struct kefir_ast
                                                            result_normalized_type->bitprecise.width));
             }
             break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -774,6 +794,11 @@ static kefir_result_t translate_relational_equals(const struct kefir_ast_type_tr
                 KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_EQUAL, common_type->bitprecise.width));
             break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of a scalar type");
     }
@@ -865,6 +890,11 @@ static kefir_result_t translate_relational_less(const struct kefir_ast_type_trai
             }
             break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of a scalar type");
     }
@@ -947,6 +977,11 @@ static kefir_result_t translate_relational_greater(const struct kefir_ast_type_t
                                                            common_type->bitprecise.width));
             }
             break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of a scalar type");

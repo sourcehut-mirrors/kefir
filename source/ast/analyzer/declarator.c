@@ -1087,6 +1087,9 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_COMPLEX_FLOAT:
                 case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
                 case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
@@ -1147,6 +1150,9 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_COMPLEX_FLOAT:
                 case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
                 case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
