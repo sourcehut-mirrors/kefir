@@ -212,6 +212,30 @@ static kefir_result_t visit_constant(const struct kefir_ast_visitor *visitor, co
             REQUIRE_OK(kefir_json_output_long_double(json, node->value.long_double));
             break;
 
+        case KEFIR_AST_DECIMAL32_CONSTANT: {
+            REQUIRE_OK(kefir_json_output_string(json, "decimal32"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            char buf[128] = {0};
+            kefir_dfp_decimal32_format(buf, sizeof(buf), node->value.decimal32);
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
+        case KEFIR_AST_DECIMAL64_CONSTANT: {
+            REQUIRE_OK(kefir_json_output_string(json, "decimal64"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            char buf[128] = {0};
+            kefir_dfp_decimal64_format(buf, sizeof(buf), node->value.decimal64);
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
+        case KEFIR_AST_DECIMAL128_CONSTANT: {
+            REQUIRE_OK(kefir_json_output_string(json, "decimal128"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            char buf[128] = {0};
+            kefir_dfp_decimal128_format(buf, sizeof(buf), node->value.decimal128);
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
         case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "complex_float"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));

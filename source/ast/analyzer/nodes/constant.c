@@ -106,6 +106,18 @@ kefir_result_t kefir_ast_analyze_constant_node(struct kefir_mem *mem, const stru
             base->properties.type = kefir_ast_type_long_double();
             break;
 
+        case KEFIR_AST_DECIMAL32_CONSTANT:
+            base->properties.type = kefir_ast_type_decimal32();
+            break;
+
+        case KEFIR_AST_DECIMAL64_CONSTANT:
+            base->properties.type = kefir_ast_type_decimal64();
+            break;
+
+        case KEFIR_AST_DECIMAL128_CONSTANT:
+            base->properties.type = kefir_ast_type_decimal128();
+            break;
+
         case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
             base->properties.type = kefir_ast_type_complex_float();
             break;

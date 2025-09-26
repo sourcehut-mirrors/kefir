@@ -153,6 +153,11 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             value->complex_floating_point.real = node->value.complex_long_double.real;
             value->complex_floating_point.imaginary = node->value.complex_long_double.imaginary;
             break;
+
+        case KEFIR_AST_DECIMAL32_CONSTANT:
+        case KEFIR_AST_DECIMAL64_CONSTANT:
+        case KEFIR_AST_DECIMAL128_CONSTANT:
+            return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating-point constant evaluation is not implemented yet");
     }
     return KEFIR_OK;
 }

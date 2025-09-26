@@ -147,6 +147,11 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
             break;
 
+        case KEFIR_AST_DECIMAL32_CONSTANT:
+        case KEFIR_AST_DECIMAL64_CONSTANT:
+        case KEFIR_AST_DECIMAL128_CONSTANT:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point constant translation is not implemented yet");
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected AST constant type");
     }

@@ -178,9 +178,22 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL32:
+            REQUIRE_ALLOC(
+                result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal32(mem, token->constant.decimal32)),
+                "Failed to allocate AST constant");
+            break;
+
         case KEFIR_CONSTANT_TOKEN_DECIMAL64:
+            REQUIRE_ALLOC(
+                result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64(mem, token->constant.decimal64)),
+                "Failed to allocate AST constant");
+            break;
+
         case KEFIR_CONSTANT_TOKEN_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Decimal floating-point parsing is not supported yet");
+            REQUIRE_ALLOC(
+                result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal128(mem, token->constant.decimal128)),
+                "Failed to allocate AST constant");
+            break;
     }
     REQUIRE_OK(PARSER_SHIFT(parser));
     return KEFIR_OK;
