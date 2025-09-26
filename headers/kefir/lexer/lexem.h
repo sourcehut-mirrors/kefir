@@ -27,6 +27,7 @@
 #include "kefir/core/string_pool.h"
 #include "kefir/core/source_location.h"
 #include "kefir/util/bigint.h"
+#include "kefir/util/dfp.h"
 #include <stdio.h>
 
 typedef struct kefir_token kefir_token_t;
@@ -129,6 +130,9 @@ typedef enum kefir_constant_token_type {
     KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT,
     KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE,
     KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE,
+    KEFIR_CONSTANT_TOKEN_DECIMAL32,
+    KEFIR_CONSTANT_TOKEN_DECIMAL64,
+    KEFIR_CONSTANT_TOKEN_DECIMAL128,
     KEFIR_CONSTANT_TOKEN_CHAR,
     KEFIR_CONSTANT_TOKEN_WIDE_CHAR,
     KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR,
@@ -195,6 +199,9 @@ typedef struct kefir_constant_token {
         kefir_char16_t unicode16_char;
         kefir_char32_t unicode32_char;
         struct kefir_bigint bitprecise;
+        kefir_dfp_decimal32_t decimal32;
+        kefir_dfp_decimal64_t decimal64;
+        kefir_dfp_decimal128_t decimal128;
     };
 } kefir_constant_token_t;
 
@@ -353,6 +360,9 @@ kefir_result_t kefir_token_new_constant_complex_float(kefir_float32_t, kefir_flo
 kefir_result_t kefir_token_new_constant_complex_double(kefir_float64_t, kefir_float64_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_complex_long_double(kefir_long_double_t, kefir_long_double_t,
                                                             struct kefir_token *);
+kefir_result_t kefir_token_new_constant_decimal32(kefir_dfp_decimal32_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_decimal64(kefir_dfp_decimal64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_decimal128(kefir_dfp_decimal128_t, struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_multibyte(struct kefir_mem *, const char *, kefir_size_t,
                                                         struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_unicode8(struct kefir_mem *, const char *, kefir_size_t,

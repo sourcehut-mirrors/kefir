@@ -186,7 +186,46 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_neg(kefir_dfp_decimal128_t x) {
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_dfp_decimal32_t kefir_dfp_decimal32_scan(const char *input) {
+    UNUSED(input);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_scan(const char *input) {
+    UNUSED(input);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_scan(const char *input) {
+    UNUSED(input);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal32_format(char *str, kefir_size_t len, kefir_dfp_decimal32_t value) {
+    UNUSED(str);
+    UNUSED(len);
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal64_format(char *str, kefir_size_t len, kefir_dfp_decimal64_t value) {
+    UNUSED(str);
+    UNUSED(len);
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal128_format(char *str, kefir_size_t len, kefir_dfp_decimal128_t value) {
+    UNUSED(str);
+    UNUSED(len);
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
 #else
+#include <stdio.h>
+#include <math.h>
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 
@@ -466,6 +505,156 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_neg(kefir_dfp_decimal128_t x) {
     };
     return res_view.shim;
 }
+
+#define SCAN_DECIMAL_IMPL(_decimal_type, _num_of_sigificant_digits, _value_ptr) \
+    do { \
+        *(_value_ptr) = 0; \
+        kefir_int64_t exponent = 0, digits = 0; \
+        kefir_bool_t negative = false; \
+ \
+        if (*input == '-') { \
+            negative = true; \
+            input++; \
+        } \
+ \
+        for (; *input != '\0' && *input != '.' && *input != 'e' && *input != 'E'; input++) { \
+            if (*input >= '0' && *input <= '9') { \
+                if (digits < (_num_of_sigificant_digits)) { \
+                    *(_value_ptr) = *(_value_ptr) * 10 + (_decimal_type)(*input - '0'); \
+                } else if (digits == (_num_of_sigificant_digits)) { \
+                    if ((*input - '0') >= 5) { \
+                        (*(_value_ptr))++; \
+                    } \
+                } \
+                digits++; \
+            } \
+        } \
+ \
+        if (*input == '.') { \
+            input++; \
+            for (; *input != '\0' && *input != 'e' && *input != 'E'; input++) { \
+                if (*input >= '0' && *input <= '9') { \
+                    if (digits < (_num_of_sigificant_digits)) { \
+                        *(_value_ptr) = *(_value_ptr) * 10 + (_decimal_type)(*input - '0'); \
+                        exponent--; \
+                    }  else if (digits == (_num_of_sigificant_digits)) { \
+                        if ((*input - '0') >= 5) { \
+                            (*(_value_ptr))++; \
+                        } \
+                    } \
+                    digits++; \
+                } \
+            } \
+        } \
+ \
+        if (*input == 'e' || *input == 'E') { \
+            input++; \
+            exponent += strtoll(input, NULL, 10); \
+        } \
+ \
+        for (; exponent > 0; exponent--) { \
+            *(_value_ptr) *= 10; \
+        } \
+        for (; exponent < 0; exponent++) { \
+            *(_value_ptr) /= 10; \
+        } \
+        if (negative) { \
+            *(_value_ptr) *= -1; \
+        } \
+    } while (0)
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_scan(const char *input) {
+    union decimal32_view view = {
+        .decimal = 0
+    };
+    SCAN_DECIMAL_IMPL(_Decimal32, 7, &view.decimal);
+    return view.shim;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_scan(const char *input) {
+    union decimal64_view view = {
+        .decimal = 0
+    };
+    SCAN_DECIMAL_IMPL(_Decimal64, 16, &view.decimal);
+    return view.shim;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_scan(const char *input) {
+    union decimal128_view view = {
+        .decimal = 0
+    };
+    SCAN_DECIMAL_IMPL(_Decimal128, 34, &view.decimal);
+    return view.shim;
+}
+
+#undef SCAN_DECIMAL_IMPL
+
+#define PRINT_DECIMAL_IMPL(_str, _len, _value_ptr, _digits) \
+    do { \
+        if (isnan(*(_value_ptr))) {\
+            snprintf(str, len, "NaN"); \
+            break; \
+        } \
+        if (isinf(*(_value_ptr))) {\
+            snprintf(str, len, "%sInfinity", *(_value_ptr) < 0 ? "-" : ""); \
+            break; \
+        } \
+ \
+        kefir_size_t written = 0; \
+ \
+        if (*(_value_ptr) < 0) { \
+            written += snprintf(str + written, len - written, "-"); \
+            *(_value_ptr) = -*(_value_ptr); \
+        } \
+ \
+        kefir_int64_t exp = 0; \
+        for (; *(_value_ptr) >= 10; exp++) { \
+            *(_value_ptr) /= 10; \
+        } \
+        for (; *(_value_ptr) > 0 && *(_value_ptr) < 1; exp--) { \
+            *(_value_ptr) *= 10; \
+        } \
+ \
+        kefir_int64_t d = (kefir_int64_t) *(_value_ptr); \
+        written += snprintf(str + written, len - written, "%" KEFIR_INT64_FMT, d); \
+        *(_value_ptr) = (*(_value_ptr) - d) * 10; \
+ \
+        if (*(_value_ptr) > 0) { \
+            written += snprintf(str + written, len - written, "."); \
+            for (int i = 1; i < (_digits) && *(_value_ptr) > 0; i++) { \
+                d = (kefir_int64_t) *(_value_ptr); \
+                written += snprintf(str + written, len - written, "%" KEFIR_INT64_FMT, d); \
+                *(_value_ptr) = (*(_value_ptr) - d) * 10; \
+            } \
+        } \
+ \
+        if (exp != 0) { \
+            written += snprintf(str + written, len - written, "e%" KEFIR_INT64_FMT, exp); \
+        } \
+    } while (0)
+
+void kefir_dfp_decimal32_format(char *str, kefir_size_t len, kefir_dfp_decimal32_t value) {
+    union decimal32_view view = {
+        .shim = value
+    };
+    PRINT_DECIMAL_IMPL(str, len, &view.decimal, 7);
+}
+
+void kefir_dfp_decimal64_format(char *str, kefir_size_t len, kefir_dfp_decimal64_t value) {
+    union decimal64_view view = {
+        .shim = value
+    };
+    PRINT_DECIMAL_IMPL(str, len, &view.decimal, 16);
+}
+
+void kefir_dfp_decimal128_format(char *str, kefir_size_t len, kefir_dfp_decimal128_t value) {
+    union decimal128_view view = {
+        .shim = value
+    };
+    PRINT_DECIMAL_IMPL(str, len, &view.decimal, 34);
+}
+
+#undef PRINT_DECIMAL_IMPL
 
 #pragma GCC diagnostic pop
 #endif

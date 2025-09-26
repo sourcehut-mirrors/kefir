@@ -22,6 +22,7 @@
 #define KEFIR_UTIL_DFP_H_
 
 #include "kefir/core/basic-types.h"
+#include "kefir/core/mem.h"
 
 typedef struct kefir_dfp_decimal32 {
     kefir_uint32_t uvalue;
@@ -63,5 +64,11 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_sub(kefir_dfp_decimal128_t, kefir_df
 kefir_dfp_decimal128_t kefir_dfp_decimal128_mul(kefir_dfp_decimal128_t, kefir_dfp_decimal128_t);
 kefir_dfp_decimal128_t kefir_dfp_decimal128_div(kefir_dfp_decimal128_t, kefir_dfp_decimal128_t);
 kefir_dfp_decimal128_t kefir_dfp_decimal128_neg(kefir_dfp_decimal128_t);
+kefir_dfp_decimal32_t kefir_dfp_decimal32_scan(const char *);
+kefir_dfp_decimal64_t kefir_dfp_decimal64_scan(const char *);
+kefir_dfp_decimal128_t kefir_dfp_decimal128_scan(const char *);
+void kefir_dfp_decimal32_format(char *, kefir_size_t, kefir_dfp_decimal32_t);
+void kefir_dfp_decimal64_format(char *, kefir_size_t, kefir_dfp_decimal64_t);
+void kefir_dfp_decimal128_format(char *, kefir_size_t, kefir_dfp_decimal128_t);
 
 #endif

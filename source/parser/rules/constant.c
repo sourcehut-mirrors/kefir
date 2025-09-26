@@ -176,6 +176,11 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
                 result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unicode32_char(mem, token->constant.unicode32_char)),
                 "Failed to allocate AST constant");
             break;
+
+        case KEFIR_CONSTANT_TOKEN_DECIMAL32:
+        case KEFIR_CONSTANT_TOKEN_DECIMAL64:
+        case KEFIR_CONSTANT_TOKEN_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Decimal floating-point parsing is not supported yet");
     }
     REQUIRE_OK(PARSER_SHIFT(parser));
     return KEFIR_OK;

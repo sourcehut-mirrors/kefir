@@ -24,6 +24,7 @@
 #include "kefir/util/char32.h"
 #include "kefir/core/source_error.h"
 #include "kefir/core/string_buffer.h"
+#include "kefir/util/dfp.h"
 
 static kefir_result_t match_fractional_part(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                             struct kefir_string_buffer *strbuf) {
@@ -98,7 +99,7 @@ static kefir_result_t match_exponent(struct kefir_mem *mem, struct kefir_lexer_s
     return KEFIR_OK;
 }
 
-enum fp_constant_type { FLOAT_CONSTANT = 0, DOUBLE_CONSTANT, LONG_DOUBLE_CONSTANT };
+enum fp_constant_type { FLOAT_CONSTANT = 0, DOUBLE_CONSTANT, LONG_DOUBLE_CONSTANT, DECIMAL32_CONSTANT, DECIMAL64_CONSTANT, DECIMAL128_CONSTANT };
 
 static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enum fp_constant_type *constant_type,
                                    kefir_bool_t *imaginary) {
@@ -123,6 +124,21 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
             *constant_type = FLOAT_CONSTANT;
             REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
             break;
+
+        case U'd':
+        case U'D': {
+            kefir_char32_t chr2 = kefir_lexer_source_cursor_at(cursor, 1);
+            if (chr2 == U'f' || chr2 == U'F') {
+                *constant_type = DECIMAL32_CONSTANT;
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
+            } else if (chr2 == U'd' || chr2 == U'D') {
+                *constant_type = DECIMAL64_CONSTANT;
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
+            } else if (chr2 == U'l' || chr2 == U'L') {
+                *constant_type = DECIMAL128_CONSTANT;
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
+            }
+        } break;
 
         default:
             // Intentionally left blank
@@ -174,6 +190,21 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
             } else {
                 REQUIRE_OK(kefir_token_new_constant_long_double(strtold(literal, NULL), token));
             }
+            break;
+
+        case DECIMAL32_CONSTANT:
+            REQUIRE(kefir_dfp_is_supported(), KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_SUPPORTED, &cursor->location, "Decimal floating-point support is not available in current environment"));
+            REQUIRE_OK(kefir_token_new_constant_decimal32(kefir_dfp_decimal32_scan(literal), token));
+            break;
+
+        case DECIMAL64_CONSTANT:
+            REQUIRE(kefir_dfp_is_supported(), KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_SUPPORTED, &cursor->location, "Decimal floating-point support is not available in current environment"));
+            REQUIRE_OK(kefir_token_new_constant_decimal64(kefir_dfp_decimal64_scan(literal), token));
+            break;
+
+        case DECIMAL128_CONSTANT:
+            REQUIRE(kefir_dfp_is_supported(), KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_SUPPORTED, &cursor->location, "Decimal floating-point support is not available in current environment"));
+            REQUIRE_OK(kefir_token_new_constant_decimal128(kefir_dfp_decimal128_scan(literal), token));
             break;
     }
     return KEFIR_OK;
@@ -317,6 +348,11 @@ static kefir_result_t match_hexadecimal_impl(struct kefir_mem *mem, struct kefir
                 REQUIRE_OK(kefir_token_new_constant_long_double(strtold(literal, NULL), token));
             }
             break;
+
+        case DECIMAL32_CONSTANT:
+        case DECIMAL64_CONSTANT:
+        case DECIMAL128_CONSTANT:
+            return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor->location, "Decimal floating-point values cannot have hexadecimal format");
     }
     return KEFIR_OK;
 }

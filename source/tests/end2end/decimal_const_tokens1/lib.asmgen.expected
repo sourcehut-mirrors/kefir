@@ -1,0 +1,138 @@
+[
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal32",
+        "value": "3.478413e4"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal32",
+        "value": "7.288424e5"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal32",
+        "value": "8.372714e2"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal32",
+        "value": "2.736471e5"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal64",
+        "value": "7.4272376274e4"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal64",
+        "value": "4.7248456274e5"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal64",
+        "value": "3.8743726477e3"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal64",
+        "value": "5.22472748e2"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal128",
+        "value": "4.829585728457424727582757825861787e14"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal128",
+        "value": "9.842746178527814472671878742e15"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal128",
+        "value": "9.537642847653781863746278e17"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "decimal128",
+        "value": "8.42748272818718487414726472747e19"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false
+    }
+]
