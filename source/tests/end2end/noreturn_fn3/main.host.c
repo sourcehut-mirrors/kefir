@@ -24,7 +24,7 @@
 #include "./definitions.h"
 
 int value = 1000;
-void do_exit() {
+void do_exit(void) {
     assert(value == 2);
     exit(EXIT_SUCCESS);
 }

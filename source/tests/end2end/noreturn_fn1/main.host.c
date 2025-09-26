@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-void do_exit() {
+void do_exit(void) {
     exit(EXIT_SUCCESS);
 }
 

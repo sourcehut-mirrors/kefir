@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-_Noreturn void do_exit() {
+_Noreturn void do_exit(void) {
     exit(EXIT_SUCCESS);
 }
 

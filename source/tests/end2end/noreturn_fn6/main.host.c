@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-_Noreturn struct S1 do_exit() {
+_Noreturn struct S1 do_exit(void) {
     exit(EXIT_SUCCESS);
 }
 

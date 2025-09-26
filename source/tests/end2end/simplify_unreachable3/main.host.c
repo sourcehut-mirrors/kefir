@@ -24,7 +24,7 @@
 #include "./definitions.h"
 
 int flag = 0;
-void do_exit() {
+void do_exit(void) {
     assert(flag == 1);
     exit(EXIT_SUCCESS);
 }

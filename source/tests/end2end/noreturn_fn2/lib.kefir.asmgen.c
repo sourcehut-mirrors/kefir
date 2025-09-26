@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-void do_exit();
+void do_exit(void);
 
 _Noreturn void test1(void) {
     do_exit();
