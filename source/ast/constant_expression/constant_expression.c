@@ -202,6 +202,9 @@ kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir
             }
             break;
 
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+            return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT  /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating point casts in constant evaluation are not implemented yet");
+
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
             return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
 
@@ -328,6 +331,9 @@ kefir_result_t kefir_ast_constant_expression_value_equal(const struct kefir_ast_
             }
             break;
 
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+            return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT  /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating point comparison in constant evaluation are not implemented yet");
+
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
             return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to compare compound constant expressions");
     }
@@ -363,6 +369,7 @@ kefir_result_t kefir_ast_constant_expression_is_statically_known(
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
             *is_statically_known = true;
             break;

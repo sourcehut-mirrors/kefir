@@ -136,6 +136,21 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             value->floating_point = node->value.long_double;
             break;
 
+        case KEFIR_AST_DECIMAL32_CONSTANT:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+            value->decimal = kefir_dfp_decimal128_from_decimal32(node->value.decimal32);
+            break;
+
+        case KEFIR_AST_DECIMAL64_CONSTANT:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+            value->decimal = kefir_dfp_decimal128_from_decimal64(node->value.decimal64);
+            break;
+
+        case KEFIR_AST_DECIMAL128_CONSTANT:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+            value->decimal = node->value.decimal128;
+            break;
+
         case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
             value->complex_floating_point.real = node->value.complex_float32.real;
@@ -153,11 +168,6 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             value->complex_floating_point.real = node->value.complex_long_double.real;
             value->complex_floating_point.imaginary = node->value.complex_long_double.imaginary;
             break;
-
-        case KEFIR_AST_DECIMAL32_CONSTANT:
-        case KEFIR_AST_DECIMAL64_CONSTANT:
-        case KEFIR_AST_DECIMAL128_CONSTANT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating-point constant evaluation is not implemented yet");
     }
     return KEFIR_OK;
 }

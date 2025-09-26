@@ -99,6 +99,36 @@ kefir_long_double_t kefir_dfp_decimal128_to_long_double(kefir_dfp_decimal128_t x
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_decimal64(kefir_dfp_decimal64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_decimal128(kefir_dfp_decimal128_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_decimal32(kefir_dfp_decimal32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_decimal128(kefir_dfp_decimal128_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_decimal64(kefir_dfp_decimal64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
 kefir_dfp_decimal32_t kefir_dfp_decimal32_add(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
     UNUSED(x);
     UNUSED(y);
@@ -330,6 +360,66 @@ kefir_long_double_t kefir_dfp_decimal128_to_long_double(kefir_dfp_decimal128_t x
         .shim = x
     };
     return (kefir_long_double_t) view.decimal;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_decimal64(kefir_dfp_decimal64_t x) {
+    union decimal64_view view = {
+        .shim = x
+    };
+    union decimal32_view out_view = {
+        .decimal = (_Decimal32) view.decimal
+    };
+    return out_view.shim;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_decimal128(kefir_dfp_decimal128_t x) {
+    union decimal128_view view = {
+        .shim = x
+    };
+    union decimal32_view out_view = {
+        .decimal = (_Decimal32) view.decimal
+    };
+    return out_view.shim;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_decimal32(kefir_dfp_decimal32_t x) {
+    union decimal32_view view = {
+        .shim = x
+    };
+    union decimal64_view out_view = {
+        .decimal = (_Decimal64) view.decimal
+    };
+    return out_view.shim;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_decimal128(kefir_dfp_decimal128_t x) {
+    union decimal128_view view = {
+        .shim = x
+    };
+    union decimal64_view out_view = {
+        .decimal = (_Decimal64) view.decimal
+    };
+    return out_view.shim;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_t x) {
+    union decimal32_view view = {
+        .shim = x
+    };
+    union decimal128_view out_view = {
+        .decimal = (_Decimal128) view.decimal
+    };
+    return out_view.shim;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_decimal64(kefir_dfp_decimal64_t x) {
+    union decimal64_view view = {
+        .shim = x
+    };
+    union decimal128_view out_view = {
+        .decimal = (_Decimal128) view.decimal
+    };
+    return out_view.shim;
 }
 
 kefir_dfp_decimal32_t kefir_dfp_decimal32_add(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {

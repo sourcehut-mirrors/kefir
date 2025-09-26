@@ -263,6 +263,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                 KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
                 param_value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->integer;
+                // TODO Decimal KEFIR_NOT_IMPLEMENTED
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
                 switch (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.type) {

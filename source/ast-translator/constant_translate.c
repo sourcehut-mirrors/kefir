@@ -102,6 +102,9 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
             }
             break;
 
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating point constant translation is not implemented yet");
+
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_COMPLEX_FLOAT:

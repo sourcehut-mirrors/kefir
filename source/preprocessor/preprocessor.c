@@ -601,6 +601,7 @@ kefir_result_t kefir_preprocessor_scan_embed_limit(struct kefir_mem *mem, struct
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
@@ -869,6 +870,9 @@ static kefir_result_t evaluate_pp_tokens_as_bool(struct kefir_mem *mem, struct k
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
             *result = expr_value.floating_point != 0;
             break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating point conversion to boolean is not implemented yet");
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
             *result = expr_value.complex_floating_point.real != 0 || expr_value.complex_floating_point.imaginary != 0;

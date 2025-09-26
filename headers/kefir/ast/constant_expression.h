@@ -25,11 +25,13 @@
 #include "kefir/ast/base.h"
 #include "kefir/ast/constants.h"
 #include "kefir/core/source_location.h"
+#include "kefir/util/dfp.h"
 
 typedef enum kefir_ast_constant_expression_class {
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT,
+    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND
@@ -42,6 +44,7 @@ typedef enum kefir_ast_constant_expression_pointer_base_type {
 } kefir_ast_constant_expression_pointer_base_type_t;
 
 typedef kefir_long_double_t kefir_ast_constant_expression_float_t;
+typedef kefir_dfp_decimal128_t kefir_ast_constant_expression_decimal_t;
 
 #define KEFIR_AST_CONSTANT_EXPRESSION_INT_MIN KEFIR_INT64_MIN
 #define KEFIR_AST_CONSTANT_EXPRESSION_INT_MAX KEFIR_INT64_MAX
@@ -73,6 +76,7 @@ typedef struct kefir_ast_constant_expression_value {
     };
     struct kefir_bigint *bitprecise;
     kefir_ast_constant_expression_float_t floating_point;
+    kefir_ast_constant_expression_decimal_t decimal;
     struct {
         kefir_ast_constant_expression_float_t real;
         kefir_ast_constant_expression_float_t imaginary;
