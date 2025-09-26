@@ -337,6 +337,7 @@ static kefir_result_t enum_constant_compare(const struct kefir_ast_type_traits *
     const struct kefir_ast_type *common_arith_type =
         kefir_ast_type_common_arithmetic(type_traits, lhs_type, (struct kefir_ast_bitfield_properties) {0}, rhs_type,
                                          (struct kefir_ast_bitfield_properties) {0});
+    REQUIRE(common_arith_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to determina common arithmetic type"));
     kefir_bool_t is_signed;
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, common_arith_type, &is_signed));
 
@@ -368,7 +369,7 @@ static kefir_result_t enum_constant_range_fits_signed_int(const struct kefir_ast
                                                           const struct kefir_ast_type *min_value_type,
                                                           const struct kefir_ast_type *max_value_type,
                                                           kefir_bool_t *fits_int) {
-    kefir_int_t min_fits_int, max_fits_int;
+    kefir_int_t min_fits_int = 0, max_fits_int = 0;
     REQUIRE_OK(enum_constant_compare(type_traits, min_value, min_value_type,
                                      kefir_data_model_descriptor_signed_int_min(type_traits->data_model),
                                      kefir_ast_type_signed_int(), &min_fits_int));
@@ -385,7 +386,7 @@ static kefir_result_t enum_constant_range_fits_unsigned_int(const struct kefir_a
                                                             const struct kefir_ast_type *min_value_type,
                                                             const struct kefir_ast_type *max_value_type,
                                                             kefir_bool_t *fits_int) {
-    kefir_int_t min_fits_int, max_fits_int;
+    kefir_int_t min_fits_int = 0, max_fits_int = 0;
     REQUIRE_OK(
         enum_constant_compare(type_traits, min_value, min_value_type, 0, kefir_ast_type_unsigned_int(), &min_fits_int));
     REQUIRE_OK(enum_constant_compare(type_traits, max_value, max_value_type,
@@ -571,7 +572,7 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
                 min_constant_type = enumerator_constant_processing_type;
                 min_constant_value = constant_value;
             } else {
-                kefir_int_t cmp;
+                kefir_int_t cmp = 0;
                 REQUIRE_OK(enum_constant_compare(context->type_traits, constant_value,
                                                  enumerator_constant_processing_type, min_constant_value,
                                                  min_constant_type, &cmp));
@@ -586,7 +587,7 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
                 max_constant_type = enumerator_constant_processing_type;
                 max_constant_value = constant_value;
             } else {
-                kefir_int_t cmp;
+                kefir_int_t cmp = 0;
                 REQUIRE_OK(enum_constant_compare(context->type_traits, constant_value,
                                                  enumerator_constant_processing_type, max_constant_value,
                                                  max_constant_type, &cmp));
