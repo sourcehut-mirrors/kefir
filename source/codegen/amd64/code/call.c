@@ -205,6 +205,11 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                         // Intentionally left blank
                         break;
 
+                    case KEFIR_IR_TYPE_DECIMAL32:
+                    case KEFIR_IR_TYPE_DECIMAL64:
+                    case KEFIR_IR_TYPE_DECIMAL128:
+                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point function arguments are not implemented yet");
+
                     case KEFIR_IR_TYPE_NONE:
                     case KEFIR_IR_TYPE_COUNT:
                         return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type code");
@@ -531,6 +536,11 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_80BIT),
                             NULL));
                         break;
+
+                    case KEFIR_IR_TYPE_DECIMAL32:
+                    case KEFIR_IR_TYPE_DECIMAL64:
+                    case KEFIR_IR_TYPE_DECIMAL128:
+                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point function arguments are not implemented yet");
 
                     case KEFIR_IR_TYPE_BITFIELD:
                     case KEFIR_IR_TYPE_NONE:

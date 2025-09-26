@@ -94,9 +94,16 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+            typeentry->typecode = KEFIR_IR_TYPE_DECIMAL32;
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+            typeentry->typecode = KEFIR_IR_TYPE_DECIMAL64;
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point types are not implemented yet");
+            typeentry->typecode = KEFIR_IR_TYPE_DECIMAL128;
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Not a scalar type");

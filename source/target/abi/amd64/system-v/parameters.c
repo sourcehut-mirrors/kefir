@@ -154,6 +154,8 @@ static kefir_result_t assign_nested_scalar(const struct kefir_ir_type *type, kef
                                            const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
     UNUSED(index);
+    REQUIRE(typeentry->typecode != KEFIR_IR_TYPE_DECIMAL32 && typeentry->typecode != KEFIR_IR_TYPE_DECIMAL64 &&
+        typeentry->typecode != KEFIR_IR_TYPE_DECIMAL128, KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point parameters are not implemented yet"));
     struct recursive_aggregate_allocation *info = (struct recursive_aggregate_allocation *) payload;
     const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
     REQUIRE_OK(kefir_abi_amd64_type_layout_at(info->layout, index, &layout));
@@ -366,6 +368,15 @@ static kefir_result_t aggregate_postmerger(struct kefir_mem *mem,
         return aggregate_disown(mem, alloc);
     }
     return KEFIR_OK;
+}
+
+static kefir_result_t assign_decimal(const struct kefir_ir_type *type, kefir_size_t index,
+                                          const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    UNUSED(typeentry);
+    UNUSED(payload);
+    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point parameters are not implemented yet");
 }
 
 static kefir_result_t nested_visitor_init(struct kefir_ir_type_visitor *visitor) {
@@ -674,6 +685,9 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_classify(struct kefir_mem *mem, co
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = assign_immediate_struct;
     visitor.visit[KEFIR_IR_TYPE_UNION] = assign_immediate_union;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = assign_immediate_array;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = assign_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = assign_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = assign_decimal;
     struct input_allocation info = {.mem = mem, .layout = layout, .allocation = allocation};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &info, 0, kefir_ir_type_children(type)));
     return KEFIR_OK;
@@ -1050,6 +1064,9 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate(struct kefir_mem *mem, co
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_allocate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_allocate;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_allocate;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = assign_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = assign_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = assign_decimal;
     struct allocation_state state = {.mem = mem, .current = location, .layout = layout, .allocation = allocation};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &state, 0, kefir_ir_type_children(type)));
     return KEFIR_OK;
@@ -1075,6 +1092,9 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate_return(
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_allocate_return;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_allocate_return;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_allocate_return;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = assign_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = assign_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = assign_decimal;
     struct allocation_state state = {.mem = mem, .current = location, .layout = layout, .allocation = allocation};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &state, 0, kefir_ir_type_children(type)));
     return KEFIR_OK;

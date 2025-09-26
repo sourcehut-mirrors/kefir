@@ -354,6 +354,16 @@ static kefir_result_t long_double_static_data(const struct kefir_ir_type *type, 
     return KEFIR_OK;
 }
 
+static kefir_result_t decimal_static_data(const struct kefir_ir_type *type, kefir_size_t index,
+                                          const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR type entry"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
+
+    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point static data is not implemented yet");
+}
+
 static kefir_result_t complex_float32_static_data(const struct kefir_ir_type *type, kefir_size_t index,
                                                   const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
@@ -636,6 +646,9 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = array_static_data;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = struct_static_data;
     visitor.visit[KEFIR_IR_TYPE_UNION] = union_static_data;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = decimal_static_data;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = decimal_static_data;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = decimal_static_data;
 
     struct static_data_param param = {
         .codegen = codegen, .module = module, .data = data, .visitor = &visitor, .slot = 0, .offset = 0};

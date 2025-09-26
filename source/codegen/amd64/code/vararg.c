@@ -1135,6 +1135,15 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
     return KEFIR_OK;
 }
 
+static kefir_result_t vararg_visit_decimal(const struct kefir_ir_type *type, kefir_size_t index,
+                                                   const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    UNUSED(typeentry);
+    UNUSED(payload);
+    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point vararg is not implemented yet");
+}
+
 static kefir_result_t vararg_get_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                       const struct kefir_opt_instruction *instruction) {
     const kefir_id_t type_id = (kefir_id_t) instruction->operation.parameters.type.type_id;
@@ -1154,6 +1163,9 @@ static kefir_result_t vararg_get_impl(struct kefir_mem *mem, struct kefir_codege
     visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = vararg_visit_long_double;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT32] = vararg_visit_complex_float32;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT64] = vararg_visit_complex_float64;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = vararg_visit_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = vararg_visit_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = vararg_visit_decimal;
 
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(
         type, &visitor,

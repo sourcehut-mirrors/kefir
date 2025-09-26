@@ -337,6 +337,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                     }
                     break;
 
+                case KEFIR_IR_TYPE_DECIMAL32:
+                case KEFIR_IR_TYPE_DECIMAL64:
+                case KEFIR_IR_TYPE_DECIMAL128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point function arguments are not implemented yet");
+
                 case KEFIR_IR_TYPE_BITFIELD:
                 case KEFIR_IR_TYPE_NONE:
                 case KEFIR_IR_TYPE_COUNT:

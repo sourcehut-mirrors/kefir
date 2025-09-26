@@ -141,6 +141,11 @@ static kefir_result_t mark_scalar_candidate(struct mem2reg_state *state, kefir_o
                                              (kefir_hashtreeset_entry_t) instr_ref));
             break;
 
+        case KEFIR_IR_TYPE_DECIMAL32:
+        case KEFIR_IR_TYPE_DECIMAL64:
+        case KEFIR_IR_TYPE_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point values in mem2reg are not supported yet");
+
         case KEFIR_IR_TYPE_STRUCT:
         case KEFIR_IR_TYPE_ARRAY:
         case KEFIR_IR_TYPE_UNION:
@@ -414,6 +419,11 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
             REQUIRE_OK(kefir_opt_code_builder_bitint_from_unsigned(state->mem, &state->func->code, source_block_ref,
                                                                    local_typeentry->param, zero_instr_ref, instr_ref));
         } break;
+
+        case KEFIR_IR_TYPE_DECIMAL32:
+        case KEFIR_IR_TYPE_DECIMAL64:
+        case KEFIR_IR_TYPE_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point values in mem2reg are not supported yet");
 
         case KEFIR_IR_TYPE_STRUCT:
         case KEFIR_IR_TYPE_ARRAY:
@@ -774,6 +784,11 @@ static kefir_result_t mem2reg_load_local_variable(struct mem2reg_state *state,
                 &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
             break;
 
+        case KEFIR_IR_TYPE_DECIMAL32:
+        case KEFIR_IR_TYPE_DECIMAL64:
+        case KEFIR_IR_TYPE_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point values in mem2reg are not supported yet");
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type");
     }
@@ -896,6 +911,11 @@ static kefir_result_t mem2reg_generate_store(struct mem2reg_state *state, kefir_
                 state->mem, &state->func->code, block_id, instr_ref, output_ref,
                 &(const struct kefir_opt_memory_access_flags) {0}, &store_instr_ref));
             break;
+
+        case KEFIR_IR_TYPE_DECIMAL32:
+        case KEFIR_IR_TYPE_DECIMAL64:
+        case KEFIR_IR_TYPE_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point values in mem2reg are not supported yet");
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type");

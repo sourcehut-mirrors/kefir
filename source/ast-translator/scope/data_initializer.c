@@ -266,6 +266,11 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                                                              (kefir_long_double_t) value.integer));
                     break;
 
+                case KEFIR_IR_TYPE_DECIMAL32:
+                case KEFIR_IR_TYPE_DECIMAL64:
+                case KEFIR_IR_TYPE_DECIMAL128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point types are not implemented in data initialization yet");
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR type entry code");
             }
@@ -307,6 +312,11 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                     REQUIRE_OK(kefir_ir_data_set_complex_long_double(param->mem, param->data, slot,
                                                                      value.floating_point, 0.0L));
                     break;
+
+                case KEFIR_IR_TYPE_DECIMAL32:
+                case KEFIR_IR_TYPE_DECIMAL64:
+                case KEFIR_IR_TYPE_DECIMAL128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point types are not implemented in data initialization yet");
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR type entry code");
@@ -355,6 +365,11 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                                                                      value.complex_floating_point.real,
                                                                      value.complex_floating_point.imaginary));
                     break;
+
+                case KEFIR_IR_TYPE_DECIMAL32:
+                case KEFIR_IR_TYPE_DECIMAL64:
+                case KEFIR_IR_TYPE_DECIMAL128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point types are not implemented in data initialization yet");
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR type entry code");

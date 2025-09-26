@@ -324,6 +324,11 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
             }
             break;
 
+        case KEFIR_IR_TYPE_DECIMAL32:
+        case KEFIR_IR_TYPE_DECIMAL64:
+        case KEFIR_IR_TYPE_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point inline assembly parameters are not implemented yet");
+
         case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
@@ -859,6 +864,11 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
             }
             break;
 
+        case KEFIR_IR_TYPE_DECIMAL32:
+        case KEFIR_IR_TYPE_DECIMAL64:
+        case KEFIR_IR_TYPE_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point inline assembly parameters are not implemented yet");
+
         case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
@@ -940,6 +950,12 @@ static kefir_result_t read_x87_input(struct kefir_mem *mem, struct kefir_codegen
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
             break;
+
+
+        case KEFIR_IR_TYPE_DECIMAL32:
+        case KEFIR_IR_TYPE_DECIMAL64:
+        case KEFIR_IR_TYPE_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point inline assembly parameters are not implemented yet");
 
         case KEFIR_IR_TYPE_INT8:
         case KEFIR_IR_TYPE_INT16:
@@ -1577,6 +1593,11 @@ static kefir_result_t store_x87_output(struct kefir_mem *mem, struct kefir_codeg
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(load_store_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
             break;
 
+        case KEFIR_IR_TYPE_DECIMAL32:
+        case KEFIR_IR_TYPE_DECIMAL64:
+        case KEFIR_IR_TYPE_DECIMAL128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point inline assembly parameters are not implemented yet");
+
         case KEFIR_IR_TYPE_INT8:
         case KEFIR_IR_TYPE_INT16:
         case KEFIR_IR_TYPE_INT32:
@@ -1718,6 +1739,11 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
                         break;
                 }
                 break;
+
+            case KEFIR_IR_TYPE_DECIMAL32:
+            case KEFIR_IR_TYPE_DECIMAL64:
+            case KEFIR_IR_TYPE_DECIMAL128:
+                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point inline assembly parameters are not implemented yet");
 
             case KEFIR_IR_TYPE_BITFIELD:
             case KEFIR_IR_TYPE_NONE:

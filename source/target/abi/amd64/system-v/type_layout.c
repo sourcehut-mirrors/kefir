@@ -262,6 +262,15 @@ static kefir_result_t calculate_array_layout(const struct kefir_ir_type *type, k
     return update_compound_type_layout(compound_type_layout, data, typeentry);
 }
 
+static kefir_result_t calculate_decimal_layout(const struct kefir_ir_type *type, kefir_size_t index,
+                                          const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    UNUSED(typeentry);
+    UNUSED(payload);
+    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point parameters are not implemented yet");
+}
+
 static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_abi_amd64_type_layout_context_t context,
                                        kefir_size_t index, kefir_size_t count, struct kefir_vector *vector) {
     struct kefir_ir_type_visitor visitor;
@@ -283,6 +292,9 @@ static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_a
     visitor.visit[KEFIR_IR_TYPE_UNION] = calculate_struct_union_layout;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = calculate_array_layout;
     visitor.visit[KEFIR_IR_TYPE_NONE] = calculate_integer_layout;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = calculate_decimal_layout;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = calculate_decimal_layout;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = calculate_decimal_layout;
     return kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &compound_type_layout, index, count);
 }
 
