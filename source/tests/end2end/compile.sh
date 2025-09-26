@@ -32,6 +32,8 @@ export KEFIR_RTINC="$(dirname $SCRIPT)/../../../headers/kefir/runtime"
 
 KEFIR_CFLAGS=" --target host-none -fPIC -pie -I \"$(dirname $SRC_FILE)\" -I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\""
 
+source "$(dirname $SCRIPT)/common.sh"
+
 if [[ "x$ASMGEN" == "xyes" ]]; then
     KEFIR_CFLAGS="$KEFIR_CFLAGS -Wno-codegen-emulated-tls -S"
     OUTPUT_ARG="-o- >$DST_FILE"

@@ -872,6 +872,10 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_no_vla,
                                                     "__STDC_NO_VLA__", macro_produce_one_apply));
     }
+    if (preprocessor->context->environment.kefir_decimal_support) {
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefir_decimal_support,
+                                                    "__KEFIRCC_DECIMAL_SUPPORT__", macro_produce_one_apply));
+    }
     REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc, "__KEFIRCC__",
                                                 macro_produce_one_apply));
 

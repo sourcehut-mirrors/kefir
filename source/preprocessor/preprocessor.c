@@ -96,6 +96,7 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     context->environment.stdc_no_complex = false;
     context->environment.stdc_no_threads = false;
     context->environment.stdc_no_vla = false;
+    context->environment.kefir_decimal_support = kefir_dfp_is_supported();
 
     context->preprocessor_config = &DefaultConfiguration;
 
