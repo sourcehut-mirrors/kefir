@@ -129,6 +129,81 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_from_decimal64(kefir_dfp_decimal64_t
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_bool_t kefir_dfp_decimal32_to_bool(kefir_dfp_decimal32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_bool_t kefir_dfp_decimal64_to_bool(kefir_dfp_decimal64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_bool_t kefir_dfp_decimal128_to_bool(kefir_dfp_decimal128_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_int64_t kefir_dfp_decimal32_to_int64(kefir_dfp_decimal32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_int64_t kefir_dfp_decimal64_to_int64(kefir_dfp_decimal64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_int64_t kefir_dfp_decimal128_to_int64(kefir_dfp_decimal128_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_uint64_t kefir_dfp_decimal32_to_uint64(kefir_dfp_decimal32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_uint64_t kefir_dfp_decimal64_to_uint64(kefir_dfp_decimal64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_uint64_t kefir_dfp_decimal128_to_uint64(kefir_dfp_decimal128_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_float32_t kefir_dfp_decimal32_to_float(kefir_dfp_decimal32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_float32_t kefir_dfp_decimal64_to_float(kefir_dfp_decimal64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_float32_t kefir_dfp_decimal128_to_float(kefir_dfp_decimal128_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_float64_t kefir_dfp_decimal32_to_double(kefir_dfp_decimal32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_float64_t kefir_dfp_decimal64_to_double(kefir_dfp_decimal64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
+kefir_float64_t kefir_dfp_decimal128_to_double(kefir_dfp_decimal128_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;    
+}
+
 kefir_dfp_decimal32_t kefir_dfp_decimal32_add(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
     UNUSED(x);
     UNUSED(y);
@@ -422,6 +497,111 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_from_decimal64(kefir_dfp_decimal64_t
     return out_view.shim;
 }
 
+kefir_bool_t kefir_dfp_decimal32_to_bool(kefir_dfp_decimal32_t x) {
+    union decimal32_view view = {
+        .shim = x
+    };
+    return (kefir_bool_t) view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal64_to_bool(kefir_dfp_decimal64_t x) {
+    union decimal64_view view = {
+        .shim = x
+    };
+    return (kefir_bool_t) view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal128_to_bool(kefir_dfp_decimal128_t x) {
+    union decimal128_view view = {
+        .shim = x
+    };
+    return (kefir_bool_t) view.decimal; 
+}
+
+kefir_int64_t kefir_dfp_decimal32_to_int64(kefir_dfp_decimal32_t x) {
+    union decimal32_view view = {
+        .shim = x
+    };
+    return (kefir_int64_t) view.decimal;
+}
+
+kefir_int64_t kefir_dfp_decimal64_to_int64(kefir_dfp_decimal64_t x) {
+    union decimal64_view view = {
+        .shim = x
+    };
+    return (kefir_int64_t) view.decimal;
+}
+
+kefir_int64_t kefir_dfp_decimal128_to_int64(kefir_dfp_decimal128_t x) {
+    union decimal128_view view = {
+        .shim = x
+    };
+    return (kefir_int64_t) view.decimal;
+}
+
+kefir_uint64_t kefir_dfp_decimal32_to_uint64(kefir_dfp_decimal32_t x) {
+    union decimal32_view view = {
+        .shim = x
+    };
+    return (kefir_uint64_t) view.decimal;    
+}
+
+kefir_uint64_t kefir_dfp_decimal64_to_uint64(kefir_dfp_decimal64_t x) {
+    union decimal64_view view = {
+        .shim = x
+    };
+    return (kefir_uint64_t) view.decimal;   
+}
+
+kefir_uint64_t kefir_dfp_decimal128_to_uint64(kefir_dfp_decimal128_t x) {
+    union decimal128_view view = {
+        .shim = x
+    };
+    return (kefir_uint64_t) view.decimal;   
+}
+
+kefir_float32_t kefir_dfp_decimal32_to_float(kefir_dfp_decimal32_t x) {
+    union decimal32_view view = {
+        .shim = x
+    };
+    return (kefir_float32_t) view.decimal;
+}
+
+kefir_float32_t kefir_dfp_decimal64_to_float(kefir_dfp_decimal64_t x) {
+    union decimal64_view view = {
+        .shim = x
+    };
+    return (kefir_float32_t) view.decimal;
+}
+
+kefir_float32_t kefir_dfp_decimal128_to_float(kefir_dfp_decimal128_t x) {
+    union decimal128_view view = {
+        .shim = x
+    };
+    return (kefir_float32_t) view.decimal;
+}
+
+kefir_float64_t kefir_dfp_decimal32_to_double(kefir_dfp_decimal32_t x) {
+    union decimal32_view view = {
+        .shim = x
+    };
+    return (kefir_float64_t) view.decimal;
+}
+
+kefir_float64_t kefir_dfp_decimal64_to_double(kefir_dfp_decimal64_t x) {
+    union decimal64_view view = {
+        .shim = x
+    };
+    return (kefir_float64_t) view.decimal;
+}
+
+kefir_float64_t kefir_dfp_decimal128_to_double(kefir_dfp_decimal128_t x) {
+    union decimal128_view view = {
+        .shim = x
+    };
+    return (kefir_float64_t) view.decimal;
+}
+
 kefir_dfp_decimal32_t kefir_dfp_decimal32_add(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
     union decimal32_view lhs_view = {
         .shim = x,
@@ -627,7 +807,7 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_neg(kefir_dfp_decimal128_t x) {
                     if (digits < (_num_of_sigificant_digits) || (_num_of_sigificant_digits) < 0) { \
                         *(_value_ptr) = *(_value_ptr) * 10 + (_decimal_type)(*input - '0'); \
                         exponent--; \
-                    }  else if (digits == (_num_of_sigificant_digits)) { \
+                    } else if (digits == (_num_of_sigificant_digits)) { \
                         if ((*input - '0') >= 5) { \
                             (*(_value_ptr))++; \
                         } \

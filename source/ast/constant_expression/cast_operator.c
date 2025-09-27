@@ -238,7 +238,19 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
-                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT  /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating point casts in constant evaluation are not implemented yet");
+                if (unqualified_destination_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
+                    value->integer = kefir_dfp_decimal128_to_bool(source->decimal);
+                } else {
+                    REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_destination_type), KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Conversion of decimal types into bit-precise integers is not supported yet"));
+                    kefir_bool_t signed_type;
+                    REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_destination_type, &signed_type));
+                    if (signed_type) {
+                        value->integer = kefir_dfp_decimal128_to_int64(source->decimal);
+                    } else {
+                        value->integer = kefir_dfp_decimal128_to_uint64(source->decimal);
+                    }
+                }
+                break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
                 return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
@@ -282,12 +294,13 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 value->floating_point = source->complex_floating_point.real;
                 break;
 
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+                value->floating_point = kefir_dfp_decimal128_to_long_double(source->decimal);
+                break;
+
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                               "Address to floating point cast is not a constant expression");
-
-            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
-                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT  /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating point casts in constant evaluation are not implemented yet");
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
                 return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
@@ -298,10 +311,24 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
     } else if (KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(unqualified_destination_type)) {
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
         switch (source->klass) {
-            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER: {
+                REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_source_type), KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Conversion of decimal types from bit-precise integers is not supported yet"));
+                kefir_bool_t signed_type;
+                REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_type));
+                if (signed_type) {
+                    value->decimal = kefir_dfp_decimal128_from_int64(source->integer);
+                } else {
+                    value->decimal = kefir_dfp_decimal128_from_uint64(source->uinteger);
+                }
+            } break;
+
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+                value->decimal = kefir_dfp_decimal128_from_long_double(source->floating_point);
+                break;
+
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT  /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating point casts in constant evaluation are not implemented yet");
+                value->decimal = kefir_dfp_decimal128_from_long_double(source->complex_floating_point.real);
+                break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
@@ -361,7 +388,9 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
-                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT  /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating point casts in constant evaluation are not implemented yet");
+                value->complex_floating_point.real = kefir_dfp_decimal128_to_long_double(source->decimal);
+                value->complex_floating_point.imaginary = 0.0;
+                break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
                 return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
@@ -384,6 +413,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                               "Unable to cast floating point to address");
@@ -392,9 +422,6 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 value->pointer = source->pointer;
                 value->pointer.pointer_node = node;
                 break;
-
-            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
-                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT  /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating point casts in constant evaluation are not implemented yet");
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
                 return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");

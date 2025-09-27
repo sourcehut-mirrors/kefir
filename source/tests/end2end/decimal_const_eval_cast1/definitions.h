@@ -21,8 +21,8 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-extern int x;
-extern int y[2];
-extern int z[4];
+extern unsigned long a[], b[];
+extern int c[], d[], e[], f[], g[], h[];
+extern _Bool x[];
 
 #endif

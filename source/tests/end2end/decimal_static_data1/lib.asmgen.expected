@@ -110,8 +110,8 @@ __kefir_debug_info_section_entry_2:
     .quad x
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
     .ascii "x\000"
-    .ascii "source/tests/end2end/decimal_static_data1/lib.kefir.asmgen.c\000"
-    .quad 21
+    .ascii "decimal_static_data1\000"
+    .quad 23
     .quad 12
 __kefir_debug_info_section_entry_4:
     .byte 3
@@ -123,8 +123,8 @@ __kefir_debug_info_section_entry_4:
     .quad y
     .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
     .ascii "y\000"
-    .ascii "source/tests/end2end/decimal_static_data1/lib.kefir.asmgen.c\000"
-    .quad 22
+    .ascii "decimal_static_data1\000"
+    .quad 24
     .quad 12
 __kefir_debug_info_section_entry_6:
     .byte 3
@@ -136,8 +136,8 @@ __kefir_debug_info_section_entry_6:
     .quad z
     .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
     .ascii "z\000"
-    .ascii "source/tests/end2end/decimal_static_data1/lib.kefir.asmgen.c\000"
-    .quad 23
+    .ascii "decimal_static_data1\000"
+    .quad 25
     .quad 13
 __kefir_debug_info_section_entry_3:
     .byte 2

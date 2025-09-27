@@ -18,13 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#line __LINE__ "decimal_static_data1"
+
 #ifdef __KEFIRCC_DECIMAL_SUPPORT__
-_Bool has_decimal = 1;
 _Decimal32 x = 1234.3445df;
 _Decimal64 y = 53842748.487275288dd;
 _Decimal128 z = 174728758558753582875285.285782752857582dl;
 #else
-_Bool has_decimal = 0;
 int x = 0;
 int y[2] = {0};
 int z[4] = {0};
