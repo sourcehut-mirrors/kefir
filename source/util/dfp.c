@@ -291,6 +291,24 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_neg(kefir_dfp_decimal128_t x) {
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_bool_t kefir_dfp_decimal32_equals(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal64_equals(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal128_equals(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
 kefir_dfp_decimal32_t kefir_dfp_decimal32_scan(const char *input) {
     UNUSED(input);
     FAIL_NOT_SUPPORTED;
@@ -774,6 +792,33 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_neg(kefir_dfp_decimal128_t x) {
         .decimal = -lhs_view.decimal
     };
     return res_view.shim;
+}
+
+kefir_bool_t kefir_dfp_decimal32_equals(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    union decimal32_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal == rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal64_equals(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    union decimal64_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal == rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal128_equals(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    union decimal128_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal == rhs_view.decimal;
 }
 
 #define SCAN_DECIMAL_IMPL(_decimal_type, _num_of_sigificant_digits, _value_ptr) \

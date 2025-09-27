@@ -85,6 +85,9 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_sub(kefir_dfp_decimal128_t, kefir_df
 kefir_dfp_decimal128_t kefir_dfp_decimal128_mul(kefir_dfp_decimal128_t, kefir_dfp_decimal128_t);
 kefir_dfp_decimal128_t kefir_dfp_decimal128_div(kefir_dfp_decimal128_t, kefir_dfp_decimal128_t);
 kefir_dfp_decimal128_t kefir_dfp_decimal128_neg(kefir_dfp_decimal128_t);
+kefir_bool_t kefir_dfp_decimal32_equals(kefir_dfp_decimal32_t, kefir_dfp_decimal32_t);
+kefir_bool_t kefir_dfp_decimal64_equals(kefir_dfp_decimal64_t, kefir_dfp_decimal64_t);
+kefir_bool_t kefir_dfp_decimal128_equals(kefir_dfp_decimal128_t, kefir_dfp_decimal128_t);
 kefir_dfp_decimal32_t kefir_dfp_decimal32_scan(const char *);
 kefir_dfp_decimal64_t kefir_dfp_decimal64_scan(const char *);
 kefir_dfp_decimal128_t kefir_dfp_decimal128_scan(const char *);
