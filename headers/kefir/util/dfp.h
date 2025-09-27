@@ -122,5 +122,11 @@ void kefir_dfp_decimal64_to_signed_bitint(const struct kefir_bigint *, kefir_dfp
 void kefir_dfp_decimal64_to_unsigned_bitint(const struct kefir_bigint *, kefir_dfp_decimal64_t);
 void kefir_dfp_decimal128_to_signed_bitint(const struct kefir_bigint *, kefir_dfp_decimal128_t);
 void kefir_dfp_decimal128_to_unsigned_bitint(const struct kefir_bigint *, kefir_dfp_decimal128_t);
+kefir_bool_t kefir_dfp_decimal32_isnan(kefir_dfp_decimal32_t);
+kefir_bool_t kefir_dfp_decimal64_isnan(kefir_dfp_decimal64_t);
+kefir_bool_t kefir_dfp_decimal128_isnan(kefir_dfp_decimal128_t);
+kefir_bool_t kefir_dfp_decimal32_isinf(kefir_dfp_decimal32_t);
+kefir_bool_t kefir_dfp_decimal64_isinf(kefir_dfp_decimal64_t);
+kefir_bool_t kefir_dfp_decimal128_isinf(kefir_dfp_decimal128_t);
 
 #endif

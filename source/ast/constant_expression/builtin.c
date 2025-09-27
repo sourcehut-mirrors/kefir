@@ -254,22 +254,25 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
 
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
-                                           "Expected floating-point constant expression"));
-
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                                                "Expected floating-point constant expression"));
                     value->integer = (_Bool) isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point);
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "__builtin_isnan is not implemented for decimal floating-point numbers yet");
+                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                                                "Expected floating-point constant expression"));
+                    value->integer = (_Bool) kefir_dfp_decimal128_isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->decimal);
+                    break;
 
                 default:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
@@ -281,17 +284,16 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
 
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
-                                           "Expected floating-point constant expression"));
-
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            const kefir_ast_constant_expression_float_t fp_value =
-                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point;
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-                case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE: {
+                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                                                "Expected floating-point constant expression"));
+                    const kefir_ast_constant_expression_float_t fp_value =
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point;
                     if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) == NULL) {
                         value->integer = isinf(fp_value) ? (isgreater(fp_value, 0.0) ? 1 : -1) : 0;
                     } else {
@@ -299,6 +301,15 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                                              ? (isgreater((kefir_float64_t) fp_value, 0.0) ? 1 : -1)
                                              : 0;
                     }
+                } break;
+
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                                                "Expected floating-point constant expression"));
+                    value->integer = (_Bool) kefir_dfp_decimal128_isinf(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->decimal);
                     break;
 
                 default:

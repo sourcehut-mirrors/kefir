@@ -501,6 +501,36 @@ void kefir_dfp_decimal128_to_unsigned_bitint(const struct kefir_bigint *value, k
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_bool_t kefir_dfp_decimal32_isnan(kefir_dfp_decimal32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal64_isnan(kefir_dfp_decimal64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal128_isnan(kefir_dfp_decimal128_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal32_isinf(kefir_dfp_decimal32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal64_isinf(kefir_dfp_decimal64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal128_isinf(kefir_dfp_decimal128_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
 #else
 #include <stdio.h>
 #include <math.h>
@@ -1352,6 +1382,51 @@ void kefir_dfp_decimal128_to_unsigned_bitint(const struct kefir_bigint *value, k
         .shim = decimal
     };
     __bid_fixtdbitint((kefir_uint64_t *) value->digits, (kefir_int64_t) value->bitwidth, view.decimal);
+}
+
+kefir_bool_t kefir_dfp_decimal32_isnan(kefir_dfp_decimal32_t x) {
+    union decimal32_view view = {
+        .shim = x
+    };
+    return view.decimal != view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal64_isnan(kefir_dfp_decimal64_t x) {
+    union decimal64_view view = {
+        .shim = x
+    };
+    return view.decimal != view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal128_isnan(kefir_dfp_decimal128_t x) {
+    union decimal128_view view = {
+        .shim = x
+    };
+    return view.decimal != view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal32_isinf(kefir_dfp_decimal32_t x) {
+    union decimal32_view view = {
+        .shim = x
+    };
+    _Decimal32 positive_inf = 1.0df / 0.0df;
+    return view.decimal == positive_inf || view.decimal == -positive_inf;
+}
+
+kefir_bool_t kefir_dfp_decimal64_isinf(kefir_dfp_decimal64_t x) {
+    union decimal64_view view = {
+        .shim = x
+    };
+    _Decimal64 positive_inf = 1.0dd / 0.0dd;
+    return view.decimal == positive_inf || view.decimal == -positive_inf;
+}
+
+kefir_bool_t kefir_dfp_decimal128_isinf(kefir_dfp_decimal128_t x) {
+    union decimal128_view view = {
+        .shim = x
+    };
+    _Decimal128 positive_inf = 1.0dl / 0.0dl;
+    return view.decimal == positive_inf || view.decimal == -positive_inf;
 }
 
 #pragma GCC diagnostic pop
