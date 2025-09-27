@@ -109,7 +109,8 @@ typedef enum kefir_dwarf_encoding {
     KEFIR_DWARF(DW_ATE_signed) = 0x5,
     KEFIR_DWARF(DW_ATE_signed_char) = 0x6,
     KEFIR_DWARF(DW_ATE_unsigned) = 0x7,
-    KEFIR_DWARF(DW_ATE_unsigned_char) = 0x8
+    KEFIR_DWARF(DW_ATE_unsigned_char) = 0x8,
+    KEFIR_DWARF(DW_ATE_decimal_float) = 0xf
 } kefir_dwarf_encoding_t;
 
 typedef enum kefir_dwarf_operation {

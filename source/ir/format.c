@@ -1178,6 +1178,30 @@ static kefir_result_t format_datum(struct kefir_json_output *json, const struct 
                 REQUIRE_OK(kefir_json_output_long_double(json, value->value.long_double));
                 break;
 
+            case KEFIR_IR_DATA_VALUE_DECIMAL32: {
+                REQUIRE_OK(kefir_json_output_string(json, "decimal32"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                char buf[128];
+                kefir_dfp_decimal32_format(buf, sizeof(buf), value->value.decimal32);
+                REQUIRE_OK(kefir_json_output_string(json, buf));
+            } break;
+
+            case KEFIR_IR_DATA_VALUE_DECIMAL64: {
+                REQUIRE_OK(kefir_json_output_string(json, "decimal64"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                char buf[128];
+                kefir_dfp_decimal64_format(buf, sizeof(buf), value->value.decimal64);
+                REQUIRE_OK(kefir_json_output_string(json, buf));
+            } break;
+
+            case KEFIR_IR_DATA_VALUE_DECIMAL128: {
+                REQUIRE_OK(kefir_json_output_string(json, "decimal128"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                char buf[128];
+                kefir_dfp_decimal128_format(buf, sizeof(buf), value->value.decimal128);
+                REQUIRE_OK(kefir_json_output_string(json, buf));
+            } break;
+
             case KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT32:
                 REQUIRE_OK(kefir_json_output_string(json, "complex_float32"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
@@ -1607,6 +1631,10 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
 
         case KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT:
             REQUIRE_OK(kefir_json_output_string(json, "type_float"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_DECIMAL:
+            REQUIRE_OK(kefir_json_output_string(json, "type_decimal"));
             break;
 
         case KEFIR_IR_DEBUG_ENTRY_TYPE_COMPLEX_FLOAT:

@@ -25,6 +25,7 @@
 #include "kefir/ir/type.h"
 #include "kefir/core/block_tree.h"
 #include "kefir/core/mem.h"
+#include "kefir/util/dfp.h"
 
 typedef enum kefir_ir_data_storage {
     KEFIR_IR_DATA_GLOBAL_STORAGE,
@@ -54,6 +55,9 @@ typedef enum kefir_ir_data_value_type {
     KEFIR_IR_DATA_VALUE_FLOAT32,
     KEFIR_IR_DATA_VALUE_FLOAT64,
     KEFIR_IR_DATA_VALUE_LONG_DOUBLE,
+    KEFIR_IR_DATA_VALUE_DECIMAL32,
+    KEFIR_IR_DATA_VALUE_DECIMAL64,
+    KEFIR_IR_DATA_VALUE_DECIMAL128,
     KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT32,
     KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT64,
     KEFIR_IR_DATA_VALUE_COMPLEX_LONG_DOUBLE,
@@ -73,6 +77,9 @@ typedef struct kefir_ir_data_value {
         kefir_float32_t float32;
         kefir_float64_t float64;
         kefir_long_double_t long_double;
+        kefir_dfp_decimal32_t decimal32;
+        kefir_dfp_decimal64_t decimal64;
+        kefir_dfp_decimal128_t decimal128;
         struct {
             kefir_float32_t real;
             kefir_float32_t imaginary;
@@ -129,6 +136,13 @@ kefir_result_t kefir_ir_data_set_complex_float64(struct kefir_mem *, struct kefi
 
 kefir_result_t kefir_ir_data_set_complex_long_double(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
                                                      kefir_long_double_t, kefir_long_double_t);
+
+kefir_result_t kefir_ir_data_set_decimal32(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
+                                                     kefir_dfp_decimal32_t);
+kefir_result_t kefir_ir_data_set_decimal64(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
+                                                     kefir_dfp_decimal64_t);
+kefir_result_t kefir_ir_data_set_decimal128(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
+                                                     kefir_dfp_decimal128_t);
 
 kefir_result_t kefir_ir_data_set_string(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
                                         kefir_ir_string_literal_type_t, const void *, kefir_size_t);

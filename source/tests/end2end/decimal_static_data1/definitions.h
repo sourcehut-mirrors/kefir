@@ -18,14 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-_Decimal32 get32(void) {
-    return 487274.47274df;
-}
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
 
-_Decimal64 get64(void) {
-    return 48724374.4727382484477428dd;
-}
+extern _Bool has_decimal;
+extern int x;
+extern int y[2];
+extern int z[4];
 
-_Decimal128 get128(void) {
-    return 48533724374.472738248843754dl;
-}
+#endif

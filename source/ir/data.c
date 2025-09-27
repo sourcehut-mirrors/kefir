@@ -232,6 +232,51 @@ kefir_result_t kefir_ir_data_set_long_double(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_data_set_decimal32(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                             kefir_dfp_decimal32_t value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
+    REQUIRE(index < data->total_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested index exceeds IR data length"));
+    REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
+
+    struct kefir_ir_data_value *entry;
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
+
+    entry->type = KEFIR_IR_DATA_VALUE_DECIMAL32;
+    entry->value.decimal32 = value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_data_set_decimal64(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                             kefir_dfp_decimal64_t value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
+    REQUIRE(index < data->total_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested index exceeds IR data length"));
+    REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
+
+    struct kefir_ir_data_value *entry;
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
+
+    entry->type = KEFIR_IR_DATA_VALUE_DECIMAL64;
+    entry->value.decimal64 = value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_data_set_decimal128(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                             kefir_dfp_decimal128_t value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
+    REQUIRE(index < data->total_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested index exceeds IR data length"));
+    REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
+
+    struct kefir_ir_data_value *entry;
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
+
+    entry->type = KEFIR_IR_DATA_VALUE_DECIMAL128;
+    entry->value.decimal128 = value;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_data_set_complex_float32(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
                                                  kefir_float32_t real, kefir_float32_t imaginary) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

@@ -18,14 +18,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-_Decimal32 get32(void) {
-    return 487274.47274df;
-}
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include "./definitions.h"
 
-_Decimal64 get64(void) {
-    return 48724374.4727382484477428dd;
-}
-
-_Decimal128 get128(void) {
-    return 48533724374.472738248843754dl;
+int main(void) {
+    assert(x == 823317928ll);
+    assert(y[0] == 767246825ll);
+    assert(y[1] == 819142904ll);
+    assert(z[0] == 889893065ll);
+    assert(z[1] == -405455524ll);
+    assert(z[2] == -558933437ll);
+    assert(z[3] == 808212005ll);
+    return EXIT_SUCCESS;
 }

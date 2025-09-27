@@ -259,6 +259,9 @@ static kefir_result_t compact_data(struct kefir_mem *mem, struct kefir_ir_data *
             case KEFIR_IR_DATA_VALUE_FLOAT32:
             case KEFIR_IR_DATA_VALUE_FLOAT64:
             case KEFIR_IR_DATA_VALUE_LONG_DOUBLE:
+            case KEFIR_IR_DATA_VALUE_DECIMAL32:
+            case KEFIR_IR_DATA_VALUE_DECIMAL64:
+            case KEFIR_IR_DATA_VALUE_DECIMAL128:
             case KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT32:
             case KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT64:
             case KEFIR_IR_DATA_VALUE_COMPLEX_LONG_DOUBLE:

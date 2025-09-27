@@ -246,7 +246,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
         }
-    } else if (KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(unqualified_destination_type)) {
+    } else if (KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(unqualified_destination_type)) {
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
         switch (source->klass) {
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
@@ -288,6 +288,28 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
                 return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT  /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating point casts in constant evaluation are not implemented yet");
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
+                return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
+        }
+    } else if (KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(unqualified_destination_type)) {
+        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+        switch (source->klass) {
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT  /* KEFIR_NOT_IMPLEMENTED */, "Decimal floating point casts in constant evaluation are not implemented yet");
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                                              "Address to decimal floating point cast is not a constant expression");
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+                value->decimal = source->decimal;
+                break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
                 return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");

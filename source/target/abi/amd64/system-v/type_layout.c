@@ -265,10 +265,30 @@ static kefir_result_t calculate_array_layout(const struct kefir_ir_type *type, k
 static kefir_result_t calculate_decimal_layout(const struct kefir_ir_type *type, kefir_size_t index,
                                           const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
-    UNUSED(index);
-    UNUSED(typeentry);
-    UNUSED(payload);
-    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point parameters are not implemented yet");
+    struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
+    ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, data,
+                     kefir_vector_at(compound_type_layout->vector, index));
+    switch (typeentry->typecode) {
+        case KEFIR_IR_TYPE_DECIMAL32:
+            data->size = 4;
+            data->alignment = 4;
+            break;
+
+        case KEFIR_IR_TYPE_DECIMAL64:
+            data->size = 8;
+            data->alignment = 8;
+            break;
+
+        case KEFIR_IR_TYPE_DECIMAL128:
+            data->size = 16;
+            data->alignment = 16;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-decimal floating point type");
+    }
+    data->aligned = true;
+    return update_compound_type_layout(compound_type_layout, data, typeentry);
 }
 
 static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_abi_amd64_type_layout_context_t context,

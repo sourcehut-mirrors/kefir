@@ -609,7 +609,7 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_neg(kefir_dfp_decimal128_t x) {
  \
         for (; *input != '\0' && *input != '.' && *input != 'e' && *input != 'E'; input++) { \
             if (*input >= '0' && *input <= '9') { \
-                if (digits < (_num_of_sigificant_digits)) { \
+                if (digits < (_num_of_sigificant_digits) || (_num_of_sigificant_digits) < 0) { \
                     *(_value_ptr) = *(_value_ptr) * 10 + (_decimal_type)(*input - '0'); \
                 } else if (digits == (_num_of_sigificant_digits)) { \
                     if ((*input - '0') >= 5) { \
@@ -624,7 +624,7 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_neg(kefir_dfp_decimal128_t x) {
             input++; \
             for (; *input != '\0' && *input != 'e' && *input != 'E'; input++) { \
                 if (*input >= '0' && *input <= '9') { \
-                    if (digits < (_num_of_sigificant_digits)) { \
+                    if (digits < (_num_of_sigificant_digits) || (_num_of_sigificant_digits) < 0) { \
                         *(_value_ptr) = *(_value_ptr) * 10 + (_decimal_type)(*input - '0'); \
                         exponent--; \
                     }  else if (digits == (_num_of_sigificant_digits)) { \
@@ -657,7 +657,7 @@ kefir_dfp_decimal32_t kefir_dfp_decimal32_scan(const char *input) {
     union decimal32_view view = {
         .decimal = 0
     };
-    SCAN_DECIMAL_IMPL(_Decimal32, 7, &view.decimal);
+    SCAN_DECIMAL_IMPL(_Decimal32, -1, &view.decimal);
     return view.shim;
 }
 
@@ -665,7 +665,7 @@ kefir_dfp_decimal64_t kefir_dfp_decimal64_scan(const char *input) {
     union decimal64_view view = {
         .decimal = 0
     };
-    SCAN_DECIMAL_IMPL(_Decimal64, 16, &view.decimal);
+    SCAN_DECIMAL_IMPL(_Decimal64, -1, &view.decimal);
     return view.shim;
 }
 

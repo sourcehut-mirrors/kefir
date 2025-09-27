@@ -314,9 +314,19 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                     break;
 
                 case KEFIR_IR_TYPE_DECIMAL32:
+                    REQUIRE_OK(kefir_ir_data_set_decimal32(param->mem, param->data, slot,
+                                                                     kefir_dfp_decimal32_from_decimal128(value.decimal)));
+                    break;
+
                 case KEFIR_IR_TYPE_DECIMAL64:
+                    REQUIRE_OK(kefir_ir_data_set_decimal64(param->mem, param->data, slot,
+                                                                     kefir_dfp_decimal64_from_decimal128(value.decimal)));
+                    break;
+
                 case KEFIR_IR_TYPE_DECIMAL128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point types are not implemented in data initialization yet");
+                    REQUIRE_OK(kefir_ir_data_set_decimal128(param->mem, param->data, slot,
+                                                                     value.decimal));
+                    break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR type entry code");
@@ -324,7 +334,26 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point types are not implemented in data initialization yet");
+            switch (target_typeentry->typecode) {
+                case KEFIR_IR_TYPE_DECIMAL32:
+                    REQUIRE_OK(kefir_ir_data_set_decimal32(param->mem, param->data, slot,
+                                                                     kefir_dfp_decimal32_from_decimal128(value.decimal)));
+                    break;
+
+                case KEFIR_IR_TYPE_DECIMAL64:
+                    REQUIRE_OK(kefir_ir_data_set_decimal64(param->mem, param->data, slot,
+                                                                     kefir_dfp_decimal64_from_decimal128(value.decimal)));
+                    break;
+
+                case KEFIR_IR_TYPE_DECIMAL128:
+                    REQUIRE_OK(kefir_ir_data_set_decimal128(param->mem, param->data, slot,
+                                                                     value.decimal));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR type entry code");
+            }
+            break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
             switch (target_typeentry->typecode) {

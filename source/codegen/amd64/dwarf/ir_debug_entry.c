@@ -443,6 +443,7 @@ static kefir_result_t generate_type_immediate_abbrev(struct kefir_mem *mem, stru
         case KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_INT:
         case KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_INT:
         case KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT:
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_DECIMAL:
         case KEFIR_IR_DEBUG_ENTRY_TYPE_COMPLEX_FLOAT:
             REQUIRE_OK(define_scalar_type_abbrev(codegen, context));
             REQUIRE_OK(kefir_hashtree_insert(mem, &context->abbrev.entries.ir_debug_entries,
@@ -847,6 +848,10 @@ static kefir_result_t generate_type_immediate_info(struct kefir_mem *mem, struct
 
         case KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT:
             DEFINE_SCALAR_TYPE_INFO(KEFIR_DWARF(DW_ATE_float));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_DECIMAL:
+            DEFINE_SCALAR_TYPE_INFO(KEFIR_DWARF(DW_ATE_decimal_float));
             break;
 
         case KEFIR_IR_DEBUG_ENTRY_TYPE_COMPLEX_FLOAT:

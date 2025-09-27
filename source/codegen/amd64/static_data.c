@@ -357,11 +357,73 @@ static kefir_result_t long_double_static_data(const struct kefir_ir_type *type, 
 static kefir_result_t decimal_static_data(const struct kefir_ir_type *type, kefir_size_t index,
                                           const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
-    UNUSED(index);
     REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR type entry"));
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
 
-    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point static data is not implemented yet");
+    ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
+    const struct kefir_ir_data_value *entry;
+    REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
+
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
+    if (typeentry->typecode != KEFIR_IR_TYPE_BITFIELD) {
+        REQUIRE_OK(align_offset(layout, param));
+    }
+    switch (typeentry->typecode) {
+        case KEFIR_IR_TYPE_DECIMAL32:
+            if (entry->defined) {
+                REQUIRE(entry->type == KEFIR_IR_DATA_VALUE_DECIMAL32, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected decimal128 data"));
+                REQUIRE_OK(
+                    KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+                                            kefir_asm_amd64_xasmgen_operand_immu(
+                                                &param->codegen->xasmgen_helpers.operands[0], entry->value.decimal32.uvalue)));
+            } else {
+                REQUIRE_OK(
+                    KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+                                            kefir_asm_amd64_xasmgen_operand_immu(
+                                                &param->codegen->xasmgen_helpers.operands[0], 0)));
+            }
+            break;
+
+        case KEFIR_IR_TYPE_DECIMAL64:
+            if (entry->defined) {
+                REQUIRE(entry->type == KEFIR_IR_DATA_VALUE_DECIMAL64, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected decimal64 data"));
+                REQUIRE_OK(
+                    KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                                            kefir_asm_amd64_xasmgen_operand_immu(
+                                                &param->codegen->xasmgen_helpers.operands[0], entry->value.decimal64.uvalue)));
+            } else {
+                REQUIRE_OK(
+                    KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                                            kefir_asm_amd64_xasmgen_operand_immu(
+                                                &param->codegen->xasmgen_helpers.operands[0], 0)));
+            }
+            break;
+
+        case KEFIR_IR_TYPE_DECIMAL128:
+            if (entry->defined) {
+                REQUIRE(entry->type == KEFIR_IR_DATA_VALUE_DECIMAL128, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected decimal128 data"));
+                REQUIRE_OK(
+                    KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                                            kefir_asm_amd64_xasmgen_operand_immu(
+                                                &param->codegen->xasmgen_helpers.operands[0], entry->value.decimal128.uvalue[0]),
+                                            kefir_asm_amd64_xasmgen_operand_immu(
+                                                &param->codegen->xasmgen_helpers.operands[1], entry->value.decimal128.uvalue[1])));
+            } else {
+                REQUIRE_OK(
+                    KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                                            kefir_asm_amd64_xasmgen_operand_immu(
+                                                &param->codegen->xasmgen_helpers.operands[0], 0),
+                                        kefir_asm_amd64_xasmgen_operand_immu(
+                                                &param->codegen->xasmgen_helpers.operands[0], 0)));
+            }
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-decimal type");
+    }
+    param->offset += layout->size;
+    return KEFIR_OK;
 }
 
 static kefir_result_t complex_float32_static_data(const struct kefir_ir_type *type, kefir_size_t index,

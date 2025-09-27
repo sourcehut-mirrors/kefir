@@ -18,14 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-_Decimal32 get32(void) {
-    return 487274.47274df;
-}
-
-_Decimal64 get64(void) {
-    return 48724374.4727382484477428dd;
-}
-
-_Decimal128 get128(void) {
-    return 48533724374.472738248843754dl;
-}
+_Decimal32 x = 1234.3445df;
+_Decimal64 y = 53842748.487275288dd;
+_Decimal128 z = 174728758558753582875285.285782752857582dl;
