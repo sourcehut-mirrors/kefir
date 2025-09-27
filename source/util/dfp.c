@@ -309,6 +309,96 @@ kefir_bool_t kefir_dfp_decimal128_equals(kefir_dfp_decimal128_t x, kefir_dfp_dec
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_bool_t kefir_dfp_decimal32_not_equals(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal64_not_equals(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal128_not_equals(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal32_greater(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal64_greater(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal128_greater(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal32_greater_or_equal(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal64_greater_or_equal(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal128_greater_or_equal(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal32_less(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal64_less(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal128_less(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal32_less_or_equal(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal64_less_or_equal(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_bool_t kefir_dfp_decimal128_less_or_equal(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    UNUSED(x);
+    UNUSED(y);
+    FAIL_NOT_SUPPORTED;
+}
+
 kefir_dfp_decimal32_t kefir_dfp_decimal32_scan(const char *input) {
     UNUSED(input);
     FAIL_NOT_SUPPORTED;
@@ -819,6 +909,141 @@ kefir_bool_t kefir_dfp_decimal128_equals(kefir_dfp_decimal128_t x, kefir_dfp_dec
         .shim = y
     };
     return lhs_view.decimal == rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal32_not_equals(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    union decimal32_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal != rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal64_not_equals(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    union decimal64_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal != rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal128_not_equals(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    union decimal128_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal != rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal32_greater(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    union decimal32_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal > rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal64_greater(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    union decimal64_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal > rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal128_greater(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    union decimal128_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal > rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal32_greater_or_equal(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    union decimal32_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal >= rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal64_greater_or_equal(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    union decimal64_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal >= rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal128_greater_or_equal(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    union decimal128_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal >= rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal32_less(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    union decimal32_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal < rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal64_less(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    union decimal64_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal < rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal128_less(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    union decimal128_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal < rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal32_less_or_equal(kefir_dfp_decimal32_t x, kefir_dfp_decimal32_t y) {
+    union decimal32_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal <= rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal64_less_or_equal(kefir_dfp_decimal64_t x, kefir_dfp_decimal64_t y) {
+    union decimal64_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal <= rhs_view.decimal;
+}
+
+kefir_bool_t kefir_dfp_decimal128_less_or_equal(kefir_dfp_decimal128_t x, kefir_dfp_decimal128_t y) {
+    union decimal128_view lhs_view = {
+        .shim = x,
+    }, rhs_view = {
+        .shim = y
+    };
+    return lhs_view.decimal <= rhs_view.decimal;
 }
 
 #define SCAN_DECIMAL_IMPL(_decimal_type, _num_of_sigificant_digits, _value_ptr) \

@@ -241,6 +241,15 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                     value->floating_point = lhs_value.floating_point + rhs_value.floating_point;
+                } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    REQUIRE(
+                        lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                            rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                        KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                    value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+                    value->decimal = kefir_dfp_decimal128_add(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
                     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
@@ -317,6 +326,15 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                     value->floating_point = lhs_value.floating_point - rhs_value.floating_point;
+                } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    REQUIRE(
+                        lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                            rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                        KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                    value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+                    value->decimal = kefir_dfp_decimal128_sub(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
                     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
@@ -375,7 +393,16 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = lhs_value.floating_point * rhs_value.floating_point;
-            } else {
+            } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    REQUIRE(
+                        lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                            rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                        KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                    value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+                    value->decimal = kefir_dfp_decimal128_mul(lhs_value.decimal, rhs_value.decimal);
+                } else {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                 if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
                     struct kefir_bigint *acc_bigint;
@@ -432,6 +459,15 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = lhs_value.floating_point / rhs_value.floating_point;
+            } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                REQUIRE(
+                    lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                        rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                    KEFIR_SET_ERROR(
+                        KEFIR_INVALID_STATE,
+                        "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+                value->decimal = kefir_dfp_decimal128_div(lhs_value.decimal, rhs_value.decimal);
             } else if (common_type_signed_integer) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                 if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
@@ -844,6 +880,14 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_INVALID_STATE,
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->integer = lhs_value.floating_point < rhs_value.floating_point;
+                } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    REQUIRE(
+                        lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                            rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                        KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                    value->integer = kefir_dfp_decimal128_less(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
@@ -913,6 +957,14 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_INVALID_STATE,
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->integer = lhs_value.floating_point <= rhs_value.floating_point;
+                } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    REQUIRE(
+                        lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                            rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                        KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                    value->integer = kefir_dfp_decimal128_less_or_equal(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
@@ -982,6 +1034,14 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_INVALID_STATE,
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->integer = lhs_value.floating_point > rhs_value.floating_point;
+                } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    REQUIRE(
+                        lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                            rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                        KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                    value->integer = kefir_dfp_decimal128_greater(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
@@ -1051,6 +1111,14 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_INVALID_STATE,
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->integer = lhs_value.floating_point >= rhs_value.floating_point;
+                } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    REQUIRE(
+                        lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                            rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                        KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                    value->integer = kefir_dfp_decimal128_greater_or_equal(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
@@ -1123,6 +1191,14 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_INVALID_STATE,
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->integer = lhs_value.floating_point == rhs_value.floating_point;
+                } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    REQUIRE(
+                        lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                            rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                        KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                    value->integer = kefir_dfp_decimal128_equals(lhs_value.decimal, rhs_value.decimal);
                 } else {
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
@@ -1184,6 +1260,14 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_INVALID_STATE,
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->integer = lhs_value.floating_point != rhs_value.floating_point;
+                } else if (CONST_EXPR_ANY_OF(&lhs_value, &rhs_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    REQUIRE(
+                        lhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL &&
+                            rhs_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL,
+                        KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Expected both binary constant expression parts to have decimal floating-point type after cast"));
+                    value->integer = kefir_dfp_decimal128_not_equals(lhs_value.decimal, rhs_value.decimal);
                 } else {
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
@@ -1298,6 +1382,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             kefir_bool_t arg2_bool = false;
             if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 arg1_bool = (kefir_bool_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->floating_point;
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                arg1_bool = kefir_dfp_decimal128_to_bool(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->decimal);
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 arg1_bool =
@@ -1329,6 +1415,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                                "Unable to evaluate constant expression"));
                 if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                     arg2_bool = (kefir_bool_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->floating_point;
+                } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    arg2_bool = kefir_dfp_decimal128_to_bool(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->decimal);
                 } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(
                                node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                     arg2_bool = (kefir_bool_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)
@@ -1369,6 +1457,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             kefir_bool_t arg2_bool = false;
             if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 arg1_bool = (kefir_bool_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->floating_point;
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                arg1_bool = kefir_dfp_decimal128_to_bool(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->decimal);
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 arg1_bool =
@@ -1400,6 +1490,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                                "Unable to evaluate constant expression"));
                 if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                     arg2_bool = (kefir_bool_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->floating_point;
+                } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                    arg2_bool = kefir_dfp_decimal128_to_bool(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->decimal);
                 } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(
                                node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                     arg2_bool = (kefir_bool_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)

@@ -97,6 +97,9 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->floating_point;
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+                value->decimal = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->decimal;
             } else {
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg->source_location,
                                               "Expected integeral or floating-point constant expression");
@@ -184,6 +187,9 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = -KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->floating_point;
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+                value->decimal = kefir_dfp_decimal128_neg(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->decimal);
             } else {
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg->source_location,
                                               "Expected integeral or floating-point constant expression");
@@ -251,6 +257,8 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                           ->complex_floating_point.imaginary);
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = !KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->floating_point;
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                value->integer = !kefir_dfp_decimal128_to_bool(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->decimal);
             } else {
                 REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->arg),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg->source_location,
