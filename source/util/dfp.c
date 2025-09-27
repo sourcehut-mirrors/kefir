@@ -1227,11 +1227,11 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_scan(const char *input) {
 
 #define PRINT_DECIMAL_IMPL(_str, _len, _value_ptr, _digits) \
     do { \
-        if (isnan(*(_value_ptr))) {\
+        if ((*(_value_ptr)) != (*(_value_ptr))) {\
             snprintf(str, len, "NaN"); \
             break; \
         } \
-        if (isinf(*(_value_ptr))) {\
+        if ((*(_value_ptr)) == 1.0df / 0.0df || (*(_value_ptr)) == -1.0df / 0.0df) {\
             snprintf(str, len, "%sInfinity", *(_value_ptr) < 0 ? "-" : ""); \
             break; \
         } \
