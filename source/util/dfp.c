@@ -435,6 +435,72 @@ void kefir_dfp_decimal128_format(char *str, kefir_size_t len, kefir_dfp_decimal1
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_signed_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_unsigned_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_signed_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_unsigned_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_signed_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_unsigned_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal32_to_signed_bitint(const struct kefir_bigint *value, kefir_dfp_decimal32_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal32_to_unsigned_bitint(const struct kefir_bigint *value, kefir_dfp_decimal32_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal64_to_signed_bitint(const struct kefir_bigint *value, kefir_dfp_decimal64_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal64_to_unsigned_bitint(const struct kefir_bigint *value, kefir_dfp_decimal64_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal128_to_signed_bitint(const struct kefir_bigint *value, kefir_dfp_decimal128_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal128_to_unsigned_bitint(const struct kefir_bigint *value, kefir_dfp_decimal128_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
 #else
 #include <stdio.h>
 #include <math.h>
@@ -1195,6 +1261,98 @@ void kefir_dfp_decimal128_format(char *str, kefir_size_t len, kefir_dfp_decimal1
 }
 
 #undef PRINT_DECIMAL_IMPL
+
+extern _Decimal32 __bid_floatbitintsd(const kefir_uint64_t *, kefir_int64_t);
+extern _Decimal64 __bid_floatbitintdd(const kefir_uint64_t *, kefir_int64_t);
+extern _Decimal128 __bid_floatbitinttd(const kefir_uint64_t *, kefir_int64_t);
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_signed_bitint(const struct kefir_bigint *value) {
+    union decimal32_view view = {
+        .decimal = __bid_floatbitintsd((const kefir_uint64_t *) value->digits, -(kefir_int64_t) value->bitwidth)
+    };
+    return view.shim;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_unsigned_bitint(const struct kefir_bigint *value) {
+    union decimal32_view view = {
+        .decimal = __bid_floatbitintsd((const kefir_uint64_t *) value->digits, (kefir_int64_t) value->bitwidth)
+    };
+    return view.shim;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_signed_bitint(const struct kefir_bigint *value) {
+    union decimal64_view view = {
+        .decimal = __bid_floatbitintdd((const kefir_uint64_t *) value->digits, -(kefir_int64_t) value->bitwidth)
+    };
+    return view.shim;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_unsigned_bitint(const struct kefir_bigint *value) {
+    union decimal64_view view = {
+        .decimal = __bid_floatbitintdd((const kefir_uint64_t *) value->digits, (kefir_int64_t) value->bitwidth)
+    };
+    return view.shim;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_signed_bitint(const struct kefir_bigint *value) {
+    union decimal128_view view = {
+        .decimal = __bid_floatbitinttd((const kefir_uint64_t *) value->digits, -(kefir_int64_t) value->bitwidth)
+    };
+    return view.shim;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_unsigned_bitint(const struct kefir_bigint *value) {
+    union decimal128_view view = {
+        .decimal = __bid_floatbitinttd((const kefir_uint64_t *) value->digits, (kefir_int64_t) value->bitwidth)
+    };
+    return view.shim;
+}
+
+void __bid_fixsdbitint(kefir_uint64_t *r, kefir_int64_t, _Decimal32);
+void __bid_fixddbitint(kefir_uint64_t *r, kefir_int64_t, _Decimal64);
+void __bid_fixtdbitint(kefir_uint64_t *r, kefir_int64_t, _Decimal128);
+
+void kefir_dfp_decimal32_to_signed_bitint(const struct kefir_bigint *value, kefir_dfp_decimal32_t decimal) {
+    union decimal32_view view = {
+        .shim = decimal
+    };
+    __bid_fixsdbitint((kefir_uint64_t *) value->digits, -(kefir_int64_t) value->bitwidth, view.decimal);
+}
+
+void kefir_dfp_decimal32_to_unsigned_bitint(const struct kefir_bigint *value, kefir_dfp_decimal32_t decimal) {
+    union decimal32_view view = {
+        .shim = decimal
+    };
+    __bid_fixsdbitint((kefir_uint64_t *) value->digits, (kefir_int64_t) value->bitwidth, view.decimal);
+}
+
+void kefir_dfp_decimal64_to_signed_bitint(const struct kefir_bigint *value, kefir_dfp_decimal64_t decimal) {
+    union decimal64_view view = {
+        .shim = decimal
+    };
+    __bid_fixddbitint((kefir_uint64_t *) value->digits, -(kefir_int64_t) value->bitwidth, view.decimal);
+}
+
+void kefir_dfp_decimal64_to_unsigned_bitint(const struct kefir_bigint *value, kefir_dfp_decimal64_t decimal) {
+    union decimal64_view view = {
+        .shim = decimal
+    };
+    __bid_fixddbitint((kefir_uint64_t *) value->digits, (kefir_int64_t) value->bitwidth, view.decimal);
+}
+
+void kefir_dfp_decimal128_to_signed_bitint(const struct kefir_bigint *value, kefir_dfp_decimal128_t decimal) {
+    union decimal128_view view = {
+        .shim = decimal
+    };
+    __bid_fixtdbitint((kefir_uint64_t *) value->digits, -(kefir_int64_t) value->bitwidth, view.decimal);
+}
+
+void kefir_dfp_decimal128_to_unsigned_bitint(const struct kefir_bigint *value, kefir_dfp_decimal128_t decimal) {
+    union decimal128_view view = {
+        .shim = decimal
+    };
+    __bid_fixtdbitint((kefir_uint64_t *) value->digits, (kefir_int64_t) value->bitwidth, view.decimal);
+}
 
 #pragma GCC diagnostic pop
 #endif

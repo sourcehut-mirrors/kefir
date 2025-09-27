@@ -241,10 +241,17 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 if (unqualified_destination_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
                     value->integer = kefir_dfp_decimal128_to_bool(source->decimal);
                 } else {
-                    REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_destination_type), KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Conversion of decimal types into bit-precise integers is not supported yet"));
                     kefir_bool_t signed_type;
                     REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_destination_type, &signed_type));
-                    if (signed_type) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_destination_type)) {
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                        REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, unqualified_destination_type->bitprecise.width));
+                        if (signed_type) {
+                            kefir_dfp_decimal128_to_signed_bitint(value->bitprecise, source->decimal);
+                        } else {
+                            kefir_dfp_decimal128_to_unsigned_bitint(value->bitprecise, source->decimal);
+                        }
+                    } else if (signed_type) {
                         value->integer = kefir_dfp_decimal128_to_int64(source->decimal);
                     } else {
                         value->integer = kefir_dfp_decimal128_to_uint64(source->decimal);
@@ -312,10 +319,15 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
         switch (source->klass) {
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER: {
-                REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_source_type), KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Conversion of decimal types from bit-precise integers is not supported yet"));
                 kefir_bool_t signed_type;
                 REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_type));
-                if (signed_type) {
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_source_type)) {
+                    if (signed_type) {
+                        value->decimal = kefir_dfp_decimal128_from_signed_bitint(source->bitprecise);
+                    } else {
+                        value->decimal = kefir_dfp_decimal128_from_unsigned_bitint(source->bitprecise);
+                    }
+                } else if (signed_type) {
                     value->decimal = kefir_dfp_decimal128_from_int64(source->integer);
                 } else {
                     value->decimal = kefir_dfp_decimal128_from_uint64(source->uinteger);

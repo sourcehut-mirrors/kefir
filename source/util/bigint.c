@@ -64,7 +64,7 @@ kefir_result_t kefir_bigint_copy(struct kefir_bigint *dest, const struct kefir_b
 }
 
 static kefir_result_t bigint_ensure_width(struct kefir_mem *mem, struct kefir_bigint *bigint, kefir_size_t width) {
-    const kefir_size_t required_capacity = (width + CHAR_BIT - 1) / CHAR_BIT;
+    const kefir_size_t required_capacity = (width + sizeof(kefir_uint64_t) * CHAR_BIT - 1) / CHAR_BIT;
     if (bigint->capacity < required_capacity) {
         kefir_uint8_t *new_digits = KEFIR_REALLOC(mem, bigint->digits, sizeof(kefir_uint8_t) * required_capacity);
         REQUIRE(new_digits != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to ensure bigint capacity"));

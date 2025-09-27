@@ -23,6 +23,7 @@
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
+#include "kefir/util/bigint.h"
 
 typedef struct kefir_dfp_decimal32 {
     kefir_uint32_t uvalue;
@@ -109,5 +110,17 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_scan(const char *);
 void kefir_dfp_decimal32_format(char *, kefir_size_t, kefir_dfp_decimal32_t);
 void kefir_dfp_decimal64_format(char *, kefir_size_t, kefir_dfp_decimal64_t);
 void kefir_dfp_decimal128_format(char *, kefir_size_t, kefir_dfp_decimal128_t);
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_signed_bitint(const struct kefir_bigint *);
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_unsigned_bitint(const struct kefir_bigint *);
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_signed_bitint(const struct kefir_bigint *);
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_unsigned_bitint(const struct kefir_bigint *);
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_signed_bitint(const struct kefir_bigint *);
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_unsigned_bitint(const struct kefir_bigint *);
+void kefir_dfp_decimal32_to_signed_bitint(const struct kefir_bigint *, kefir_dfp_decimal32_t);
+void kefir_dfp_decimal32_to_unsigned_bitint(const struct kefir_bigint *, kefir_dfp_decimal32_t);
+void kefir_dfp_decimal64_to_signed_bitint(const struct kefir_bigint *, kefir_dfp_decimal64_t);
+void kefir_dfp_decimal64_to_unsigned_bitint(const struct kefir_bigint *, kefir_dfp_decimal64_t);
+void kefir_dfp_decimal128_to_signed_bitint(const struct kefir_bigint *, kefir_dfp_decimal128_t);
+void kefir_dfp_decimal128_to_unsigned_bitint(const struct kefir_bigint *, kefir_dfp_decimal128_t);
 
 #endif
