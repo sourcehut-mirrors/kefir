@@ -154,8 +154,6 @@ static kefir_result_t assign_nested_scalar(const struct kefir_ir_type *type, kef
                                            const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
     UNUSED(index);
-    REQUIRE(typeentry->typecode != KEFIR_IR_TYPE_DECIMAL32 && typeentry->typecode != KEFIR_IR_TYPE_DECIMAL64 &&
-        typeentry->typecode != KEFIR_IR_TYPE_DECIMAL128, KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point parameters are not implemented yet"));
     struct recursive_aggregate_allocation *info = (struct recursive_aggregate_allocation *) payload;
     const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
     REQUIRE_OK(kefir_abi_amd64_type_layout_at(info->layout, index, &layout));
@@ -163,17 +161,31 @@ static kefir_result_t assign_nested_scalar(const struct kefir_ir_type *type, kef
     allocation->type = KEFIR_AMD64_SYSV_INPUT_PARAM_NESTED;
     allocation->klass = KEFIR_AMD64_SYSV_PARAM_NO_CLASS;
     allocation->index = index;
-    kefir_abi_amd64_sysv_data_class_t dataclass =
-        (typeentry->typecode == KEFIR_IR_TYPE_FLOAT32 || typeentry->typecode == KEFIR_IR_TYPE_FLOAT64)
-            ? KEFIR_AMD64_SYSV_PARAM_SSE
-            : KEFIR_AMD64_SYSV_PARAM_INTEGER;
-    if (typeentry->typecode == KEFIR_IR_TYPE_BITFIELD) {
-        REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next_bitfield(&info->top_allocation->container, dataclass,
-                                                             KEFIR_IR_BITFIELD_PARAM_GET_WIDTH(typeentry->param),
-                                                             &allocation->container_reference));
+    if (typeentry->typecode == KEFIR_IR_TYPE_DECIMAL32 ||
+        typeentry->typecode == KEFIR_IR_TYPE_DECIMAL64) {
+        REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&info->top_allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE,
+                                                    KEFIR_AMD64_ABI_QWORD, layout->alignment,
+                                                    &allocation->container_reference));
+    } else if (typeentry->typecode == KEFIR_IR_TYPE_DECIMAL128) {
+        REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&info->top_allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE,
+                                                    KEFIR_AMD64_ABI_QWORD, layout->alignment,
+                                                    &allocation->container_reference));
+        REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&info->top_allocation->container, KEFIR_AMD64_SYSV_PARAM_SSEUP,
+                                                    KEFIR_AMD64_ABI_QWORD, layout->alignment,
+                                                    &allocation->container_reference));
     } else {
-        REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&info->top_allocation->container, dataclass, layout->size,
-                                                    layout->alignment, &allocation->container_reference));
+        kefir_abi_amd64_sysv_data_class_t dataclass =
+            (typeentry->typecode == KEFIR_IR_TYPE_FLOAT32 || typeentry->typecode == KEFIR_IR_TYPE_FLOAT64)
+                ? KEFIR_AMD64_SYSV_PARAM_SSE
+                : KEFIR_AMD64_SYSV_PARAM_INTEGER;
+        if (typeentry->typecode == KEFIR_IR_TYPE_BITFIELD) {
+            REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next_bitfield(&info->top_allocation->container, dataclass,
+                                                                KEFIR_IR_BITFIELD_PARAM_GET_WIDTH(typeentry->param),
+                                                                &allocation->container_reference));
+        } else {
+            REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&info->top_allocation->container, dataclass, layout->size,
+                                                        layout->alignment, &allocation->container_reference));
+        }
     }
     return KEFIR_OK;
 }
@@ -373,10 +385,35 @@ static kefir_result_t aggregate_postmerger(struct kefir_mem *mem,
 static kefir_result_t assign_decimal(const struct kefir_ir_type *type, kefir_size_t index,
                                           const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
-    UNUSED(index);
-    UNUSED(typeentry);
-    UNUSED(payload);
-    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point parameters are not implemented yet");
+    struct input_allocation *info = (struct input_allocation *) payload;
+    struct kefir_abi_sysv_amd64_parameter_allocation *allocation = &info->allocation[info->slot++];
+    allocation->type = KEFIR_AMD64_SYSV_INPUT_PARAM_IMMEDIATE;
+    allocation->klass = KEFIR_AMD64_SYSV_PARAM_SSE;
+    allocation->index = index;
+    switch (typeentry->typecode) {
+        case KEFIR_IR_TYPE_DECIMAL32:
+            allocation->requirements.sse = 1;
+            allocation->requirements.memory.size = 4;
+            allocation->requirements.memory.alignment = 4;
+            break;
+
+        case KEFIR_IR_TYPE_DECIMAL64:
+            allocation->requirements.sse = 1;
+            allocation->requirements.memory.size = 8;
+            allocation->requirements.memory.alignment = 8;
+            break;
+
+        case KEFIR_IR_TYPE_DECIMAL128:
+            allocation->requirements.sse = 1;
+            allocation->requirements.sseup = 1;
+            allocation->requirements.memory.size = 16;
+            allocation->requirements.memory.alignment = 16;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type code");
+    }
+    return KEFIR_OK;
 }
 
 static kefir_result_t nested_visitor_init(struct kefir_ir_type_visitor *visitor) {
@@ -766,7 +803,42 @@ static kefir_result_t sse_allocate_return(const struct kefir_ir_type *type, kefi
     UNUSED(index);
     UNUSED(typeentry);
     struct allocation_state *state = (struct allocation_state *) payload;
-    REQUIRE(state->current->integer_register == 0,
+    REQUIRE(state->current->sse_register == 0,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to return multiple sse values"));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
+    struct kefir_abi_sysv_amd64_parameter_allocation *alloc = &state->allocation[slot];
+    alloc->location.sse_register = 0;
+    state->current->sse_register++;
+    return KEFIR_OK;
+}
+
+static kefir_result_t decimal_sse_allocate(const struct kefir_ir_type *type, kefir_size_t index,
+                                   const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(index);
+    UNUSED(typeentry);
+    struct allocation_state *state = (struct allocation_state *) payload;
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
+    struct kefir_abi_sysv_amd64_parameter_allocation *alloc = &state->allocation[slot];
+    if (state->current->sse_register + 1 <= ABI_SSE_REGS) {
+        alloc->location.sse_register = state->current->sse_register++;
+    } else {
+        const kefir_size_t alignment = MAX(alloc->requirements.memory.alignment, KEFIR_AMD64_ABI_QWORD);
+        state->current->stack_offset = kefir_target_abi_pad_aligned(state->current->stack_offset, alignment);
+        alloc->klass = KEFIR_AMD64_SYSV_PARAM_MEMORY;
+        alloc->location.stack_offset = state->current->stack_offset;
+        state->current->stack_offset += MAX(alloc->requirements.memory.size, KEFIR_AMD64_ABI_QWORD);
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t decimal_sse_allocate_return(const struct kefir_ir_type *type, kefir_size_t index,
+                                          const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(index);
+    UNUSED(typeentry);
+    struct allocation_state *state = (struct allocation_state *) payload;
+    REQUIRE(state->current->sse_register == 0,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to return multiple sse values"));
     kefir_size_t slot;
     REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
@@ -1064,9 +1136,9 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate(struct kefir_mem *mem, co
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_allocate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_allocate;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_allocate;
-    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = assign_decimal;
-    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = assign_decimal;
-    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = assign_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = decimal_sse_allocate;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = decimal_sse_allocate;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = decimal_sse_allocate;
     struct allocation_state state = {.mem = mem, .current = location, .layout = layout, .allocation = allocation};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &state, 0, kefir_ir_type_children(type)));
     return KEFIR_OK;
@@ -1092,9 +1164,9 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate_return(
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_allocate_return;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_allocate_return;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_allocate_return;
-    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = assign_decimal;
-    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = assign_decimal;
-    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = assign_decimal;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL32] = decimal_sse_allocate_return;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL64] = decimal_sse_allocate_return;
+    visitor.visit[KEFIR_IR_TYPE_DECIMAL128] = decimal_sse_allocate_return;
     struct allocation_state state = {.mem = mem, .current = location, .layout = layout, .allocation = allocation};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &state, 0, kefir_ir_type_children(type)));
     return KEFIR_OK;

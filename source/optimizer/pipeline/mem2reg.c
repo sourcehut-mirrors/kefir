@@ -137,14 +137,12 @@ static kefir_result_t mark_scalar_candidate(struct mem2reg_state *state, kefir_o
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_IR_TYPE_BITINT:
-            REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->scalar_local_candidates,
-                                             (kefir_hashtreeset_entry_t) instr_ref));
-            break;
-
         case KEFIR_IR_TYPE_DECIMAL32:
         case KEFIR_IR_TYPE_DECIMAL64:
         case KEFIR_IR_TYPE_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point values in mem2reg are not supported yet");
+            REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->scalar_local_candidates,
+                                             (kefir_hashtreeset_entry_t) instr_ref));
+            break;
 
         case KEFIR_IR_TYPE_STRUCT:
         case KEFIR_IR_TYPE_ARRAY:
@@ -215,6 +213,9 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
                 case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD:
+                case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
+                case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
+                case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
                 case KEFIR_OPT_OPCODE_BITINT_LOAD:
                     REQUIRE_OK(
                         kefir_opt_code_instruction_is_control_flow(&state->func->code, instr_ref, &is_control_flow));
@@ -240,6 +241,9 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
                 case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+                case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+                case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+                case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
                 case KEFIR_OPT_OPCODE_BITINT_STORE: {
                     REQUIRE_OK(
                         kefir_opt_code_instruction_is_control_flow(&state->func->code, instr_ref, &is_control_flow));
@@ -421,9 +425,19 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
         } break;
 
         case KEFIR_IR_TYPE_DECIMAL32:
+            REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(state->mem, &state->func->code, source_block_ref,
+                                                                   kefir_dfp_decimal32_from_int64(0), instr_ref));
+            break;
+
         case KEFIR_IR_TYPE_DECIMAL64:
+            REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(state->mem, &state->func->code, source_block_ref,
+                                                                   kefir_dfp_decimal64_from_int64(0), instr_ref));
+            break;
+
         case KEFIR_IR_TYPE_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point values in mem2reg are not supported yet");
+            REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(state->mem, &state->func->code, source_block_ref,
+                                                                   kefir_dfp_decimal128_from_int64(0), instr_ref));
+            break;
 
         case KEFIR_IR_TYPE_STRUCT:
         case KEFIR_IR_TYPE_ARRAY:
@@ -491,6 +505,9 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
                 case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD:
+                case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
+                case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
+                case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
                 case KEFIR_OPT_OPCODE_BITINT_LOAD:
                     REQUIRE_OK(kefir_opt_code_container_instr(
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
@@ -668,6 +685,9 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
                 case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+                case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+                case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+                case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
                 case KEFIR_OPT_OPCODE_BITINT_STORE:
                     REQUIRE_OK(kefir_opt_code_container_instr(
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
@@ -785,9 +805,22 @@ static kefir_result_t mem2reg_load_local_variable(struct mem2reg_state *state,
             break;
 
         case KEFIR_IR_TYPE_DECIMAL32:
+            REQUIRE_OK(kefir_opt_code_builder_decimal32_load(
+                state->mem, &state->func->code, source_block_ref, addr_instr_ref,
+                &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
+            break;
+
         case KEFIR_IR_TYPE_DECIMAL64:
+            REQUIRE_OK(kefir_opt_code_builder_decimal64_load(
+                state->mem, &state->func->code, source_block_ref, addr_instr_ref,
+                &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
+            break;
+
         case KEFIR_IR_TYPE_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point values in mem2reg are not supported yet");
+            REQUIRE_OK(kefir_opt_code_builder_decimal128_load(
+                state->mem, &state->func->code, source_block_ref, addr_instr_ref,
+                &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type");
@@ -913,9 +946,22 @@ static kefir_result_t mem2reg_generate_store(struct mem2reg_state *state, kefir_
             break;
 
         case KEFIR_IR_TYPE_DECIMAL32:
+            REQUIRE_OK(kefir_opt_code_builder_decimal32_store(
+                state->mem, &state->func->code, block_id, instr_ref, output_ref,
+                &(const struct kefir_opt_memory_access_flags) {0}, &store_instr_ref));
+            break;
+
         case KEFIR_IR_TYPE_DECIMAL64:
+            REQUIRE_OK(kefir_opt_code_builder_decimal64_store(
+                state->mem, &state->func->code, block_id, instr_ref, output_ref,
+                &(const struct kefir_opt_memory_access_flags) {0}, &store_instr_ref));
+            break;
+
         case KEFIR_IR_TYPE_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point values in mem2reg are not supported yet");
+            REQUIRE_OK(kefir_opt_code_builder_decimal128_store(
+                state->mem, &state->func->code, block_id, instr_ref, output_ref,
+                &(const struct kefir_opt_memory_access_flags) {0}, &store_instr_ref));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type");

@@ -715,6 +715,37 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
                     kefir_asm_amd64_xasmgen_operand_immu(&func->codegen->xasmgen_helpers.operands[0], value.u64[1])));
             } break;
 
+            case KEFIR_OPT_OPCODE_DECIMAL32_CONST: {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 4));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, func->codegen->config->symbol_prefix, ir_identifier->symbol,
+                                                     constant_label));
+
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &func->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+                    kefir_asm_amd64_xasmgen_operand_immu(&func->codegen->xasmgen_helpers.operands[0], instr->operation.parameters.imm.decimal32.uvalue)));
+            } break;
+
+            case KEFIR_OPT_OPCODE_DECIMAL64_CONST: {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 8));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, func->codegen->config->symbol_prefix, ir_identifier->symbol,
+                                                     constant_label));
+
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &func->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_immu(&func->codegen->xasmgen_helpers.operands[0], instr->operation.parameters.imm.decimal64.uvalue)));
+            } break;
+
+            case KEFIR_OPT_OPCODE_DECIMAL128_CONST: {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 16));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, func->codegen->config->symbol_prefix, ir_identifier->symbol,
+                                                     constant_label));
+
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &func->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                    kefir_asm_amd64_xasmgen_operand_immu(&func->codegen->xasmgen_helpers.operands[0], instr->operation.parameters.imm.decimal128.uvalue[0]),
+                    kefir_asm_amd64_xasmgen_operand_immu(&func->codegen->xasmgen_helpers.operands[1], instr->operation.parameters.imm.decimal128.uvalue[1])));
+            } break;
+
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
         }

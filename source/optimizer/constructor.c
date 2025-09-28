@@ -486,6 +486,24 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
+        case KEFIR_IR_OPCODE_DECIMAL32_CONST:
+            REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(mem, code, current_block_id, (kefir_dfp_decimal32_t){instr->arg.u32[0]},
+                                                                   &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IR_OPCODE_DECIMAL64_CONST:
+            REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, code, current_block_id, (kefir_dfp_decimal64_t){instr->arg.u64},
+                                                                   &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IR_OPCODE_DECIMAL128_CONST:
+            REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(mem, code, current_block_id, (kefir_dfp_decimal128_t){{instr->arg.u64_2[0], instr->arg.u64_2[1]}},
+                                                                   &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
         case KEFIR_IR_OPCODE_STRING_REF:
             REQUIRE_OK(
                 kefir_opt_code_builder_string_reference(mem, code, current_block_id, instr->arg.u64, &instr_ref));
@@ -1233,6 +1251,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             LOAD_OP(int32_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT32_LOAD)
             LOAD_OP(int64_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT64_LOAD)
             LOAD_OP(long_double_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_LONG_DOUBLE_LOAD)
+            LOAD_OP(decimal32_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_DECIMAL32_LOAD)
+            LOAD_OP(decimal64_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_DECIMAL64_LOAD)
+            LOAD_OP(decimal128_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_DECIMAL128_LOAD)
             LOAD_OP(complex_float32_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_LOAD)
             LOAD_OP(complex_float64_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_LOAD)
             LOAD_OP(complex_long_double_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_LOAD)
@@ -1397,6 +1418,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             STORE_OP(int32_store, KEFIR_IR_OPCODE_INT32_STORE)
             STORE_OP(int64_store, KEFIR_IR_OPCODE_INT64_STORE)
             STORE_OP(long_double_store, KEFIR_IR_OPCODE_LONG_DOUBLE_STORE)
+            STORE_OP(decimal32_store, KEFIR_IR_OPCODE_DECIMAL32_STORE)
+            STORE_OP(decimal64_store, KEFIR_IR_OPCODE_DECIMAL64_STORE)
+            STORE_OP(decimal128_store, KEFIR_IR_OPCODE_DECIMAL128_STORE)
             STORE_OP(complex_float32_store, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_STORE)
             STORE_OP(complex_float64_store, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_STORE)
             STORE_OP(complex_long_double_store, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_STORE)

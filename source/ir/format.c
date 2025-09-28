@@ -159,6 +159,24 @@ kefir_result_t kefir_ir_format_instr_immediate(struct kefir_json_output *json, c
             REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u64));
             break;
 
+        case KEFIR_IR_OPCODE_DECIMAL32_CONST: {
+            char buf[128];
+            kefir_dfp_decimal32_format(buf, sizeof(buf), (kefir_dfp_decimal32_t){instr->arg.u32[0]});
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
+        case KEFIR_IR_OPCODE_DECIMAL64_CONST: {
+            char buf[128];
+            kefir_dfp_decimal64_format(buf, sizeof(buf), (kefir_dfp_decimal64_t){instr->arg.u64});
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
+        case KEFIR_IR_OPCODE_DECIMAL128_CONST: {
+            char buf[128];
+            kefir_dfp_decimal128_format(buf, sizeof(buf), (kefir_dfp_decimal128_t){{instr->arg.u64_2[0], instr->arg.u64_2[1]}});
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
         case KEFIR_IR_OPCODE_BITINT_SIGNED_CONST:
         case KEFIR_IR_OPCODE_BITINT_UNSIGNED_CONST: {
             const struct kefir_bigint *bigint;

@@ -346,6 +346,48 @@ kefir_result_t kefir_opt_code_builder_long_double_constant(struct kefir_mem *mem
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_builder_decimal32_constant(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                           kefir_opt_block_id_t block_id, kefir_dfp_decimal32_t value,
+                                                           kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_DECIMAL32_CONST,
+                                       .parameters.imm.decimal32 = value},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_decimal64_constant(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                           kefir_opt_block_id_t block_id, kefir_dfp_decimal64_t value,
+                                                           kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_DECIMAL64_CONST,
+                                       .parameters.imm.decimal64 = value},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_decimal128_constant(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                           kefir_opt_block_id_t block_id, kefir_dfp_decimal128_t value,
+                                                           kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_DECIMAL128_CONST,
+                                       .parameters.imm.decimal128 = value},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_builder_string_reference(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                        kefir_opt_block_id_t block_id, kefir_id_t ref,
                                                        kefir_opt_instruction_ref_t *instr_id_ptr) {
@@ -1177,6 +1219,9 @@ LOAD_OP(int16_load, KEFIR_OPT_OPCODE_INT16_LOAD)
 LOAD_OP(int32_load, KEFIR_OPT_OPCODE_INT32_LOAD)
 LOAD_OP(int64_load, KEFIR_OPT_OPCODE_INT64_LOAD)
 LOAD_OP(long_double_load, KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD)
+LOAD_OP(decimal32_load, KEFIR_OPT_OPCODE_DECIMAL32_LOAD)
+LOAD_OP(decimal64_load, KEFIR_OPT_OPCODE_DECIMAL64_LOAD)
+LOAD_OP(decimal128_load, KEFIR_OPT_OPCODE_DECIMAL128_LOAD)
 LOAD_OP(complex_float32_load, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD)
 LOAD_OP(complex_float64_load, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD)
 LOAD_OP(complex_long_double_load, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD)
@@ -1381,6 +1426,9 @@ STORE_OP(int16_store, KEFIR_OPT_OPCODE_INT16_STORE)
 STORE_OP(int32_store, KEFIR_OPT_OPCODE_INT32_STORE)
 STORE_OP(int64_store, KEFIR_OPT_OPCODE_INT64_STORE)
 STORE_OP(long_double_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE)
+STORE_OP(decimal32_store, KEFIR_OPT_OPCODE_DECIMAL32_STORE)
+STORE_OP(decimal64_store, KEFIR_OPT_OPCODE_DECIMAL64_STORE)
+STORE_OP(decimal128_store, KEFIR_OPT_OPCODE_DECIMAL128_STORE)
 STORE_OP(complex_float32_store, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE)
 STORE_OP(complex_float64_store, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE)
 STORE_OP(complex_long_double_store, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE)

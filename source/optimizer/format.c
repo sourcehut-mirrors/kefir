@@ -1040,6 +1040,24 @@ static kefir_result_t format_operation_immediate(struct kefir_json_output *json,
             REQUIRE_OK(kefir_json_output_long_double(json, oper->parameters.imm.long_double));
             break;
 
+        case KEFIR_OPT_OPCODE_DECIMAL32_CONST: {
+            char buf[128];
+            kefir_dfp_decimal32_format(buf, sizeof(buf), oper->parameters.imm.decimal32);
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL64_CONST: {
+            char buf[128];
+            kefir_dfp_decimal64_format(buf, sizeof(buf), oper->parameters.imm.decimal64);
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL128_CONST: {
+            char buf[128];
+            kefir_dfp_decimal128_format(buf, sizeof(buf), oper->parameters.imm.decimal128);
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
         case KEFIR_OPT_OPCODE_STRING_REF:
             REQUIRE_OK(id_format(json, oper->parameters.imm.string_ref));
             break;

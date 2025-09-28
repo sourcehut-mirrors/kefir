@@ -348,7 +348,17 @@
     OPCODE(BITINT_BUILTIN_CTZ, "bitint_builtin_ctz", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_BUILTIN_CLRSB, "bitint_builtin_clrsb", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_BUILTIN_POPCOUNT, "bitint_builtin_popcount", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_BUILTIN_PARITY, "bitint_builtin_parity", bitint_ref1)
+    OPCODE(BITINT_BUILTIN_PARITY, "bitint_builtin_parity", bitint_ref1) SEPARATOR \
+    /* Decimal floating-point */ \
+    OPCODE(DECIMAL32_CONST, "decimal32_const", immediate) SEPARATOR \
+    OPCODE(DECIMAL64_CONST, "decimal64_const", immediate) SEPARATOR \
+    OPCODE(DECIMAL128_CONST, "decimal128_const", immediate) SEPARATOR \
+    OPCODE(DECIMAL32_LOAD, "decimal32_load", load_mem) SEPARATOR \
+    OPCODE(DECIMAL64_LOAD, "decimal64_load", load_mem) SEPARATOR \
+    OPCODE(DECIMAL128_LOAD, "decimal128_load", load_mem) SEPARATOR \
+    OPCODE(DECIMAL32_STORE, "decimal32_store", store_mem) SEPARATOR \
+    OPCODE(DECIMAL64_STORE, "decimal64_store", store_mem) SEPARATOR \
+    OPCODE(DECIMAL128_STORE, "decimal128_store", store_mem)
 
 // clang-format on
 

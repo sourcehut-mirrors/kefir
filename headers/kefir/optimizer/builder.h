@@ -78,6 +78,15 @@ kefir_result_t kefir_opt_code_builder_float64_constant(struct kefir_mem *, struc
 kefir_result_t kefir_opt_code_builder_long_double_constant(struct kefir_mem *, struct kefir_opt_code_container *,
                                                            kefir_opt_block_id_t, kefir_long_double_t,
                                                            kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_decimal32_constant(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                           kefir_opt_block_id_t, kefir_dfp_decimal32_t,
+                                                           kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_decimal64_constant(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                           kefir_opt_block_id_t, kefir_dfp_decimal64_t,
+                                                           kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_decimal128_constant(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                           kefir_opt_block_id_t, kefir_dfp_decimal128_t,
+                                                           kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_string_reference(struct kefir_mem *, struct kefir_opt_code_container *,
                                                        kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_block_label(struct kefir_mem *, struct kefir_opt_code_container *,
@@ -494,6 +503,10 @@ LOAD_OP(int32_load);
 LOAD_OP(int64_load);
 LOAD_OP(long_double_load);
 
+LOAD_OP(decimal32_load);
+LOAD_OP(decimal64_load);
+LOAD_OP(decimal128_load);
+
 LOAD_OP(complex_float32_load);
 LOAD_OP(complex_float64_load);
 LOAD_OP(complex_long_double_load);
@@ -576,6 +589,10 @@ STORE_OP(int16_store);
 STORE_OP(int32_store);
 STORE_OP(int64_store);
 STORE_OP(long_double_store);
+
+STORE_OP(decimal32_store);
+STORE_OP(decimal64_store);
+STORE_OP(decimal128_store);
 
 STORE_OP(complex_float32_store);
 STORE_OP(complex_float64_store);

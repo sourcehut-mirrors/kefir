@@ -25,6 +25,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/core/hashtreeset.h"
+#include "kefir/util/dfp.h"
 
 typedef struct kefir_opt_code_container kefir_opt_code_container_t;  // Forward declaration
 
@@ -241,6 +242,9 @@ typedef struct kefir_opt_operation_parameters {
             kefir_long_double_t long_double;
             kefir_id_t string_ref;
             kefir_opt_block_id_t block_ref;
+            kefir_dfp_decimal32_t decimal32;
+            kefir_dfp_decimal64_t decimal64;
+            kefir_dfp_decimal128_t decimal128;
         } imm;
 
         struct {

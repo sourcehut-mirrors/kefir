@@ -408,6 +408,15 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY) _separator \
+    _def(decimal_const, KEFIR_OPT_OPCODE_DECIMAL32_CONST) _separator \
+    _def(decimal_const, KEFIR_OPT_OPCODE_DECIMAL64_CONST) _separator \
+    _def(decimal_const, KEFIR_OPT_OPCODE_DECIMAL128_CONST) _separator \
+    _def(decimal_load, KEFIR_OPT_OPCODE_DECIMAL32_LOAD) _separator \
+    _def(decimal_load, KEFIR_OPT_OPCODE_DECIMAL64_LOAD) _separator \
+    _def(decimal_load, KEFIR_OPT_OPCODE_DECIMAL128_LOAD) _separator \
+    _def(decimal_store, KEFIR_OPT_OPCODE_DECIMAL32_STORE) _separator \
+    _def(decimal_store, KEFIR_OPT_OPCODE_DECIMAL64_STORE) _separator \
+    _def(decimal_store, KEFIR_OPT_OPCODE_DECIMAL128_STORE) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
