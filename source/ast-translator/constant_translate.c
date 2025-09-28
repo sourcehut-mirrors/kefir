@@ -103,7 +103,38 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating point constant translation is not implemented yet");
+            switch (unqualified_type->tag) {
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+                    if (builder != NULL) {
+                        kefir_dfp_decimal32_t dec32 = kefir_dfp_decimal32_from_decimal128(value->decimal);
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_DECIMAL32_CONST,
+                                                                   dec32.uvalue, 0));
+                    }
+                    *success_ptr = true;
+                    break;
+
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+                    if (builder != NULL) {
+                        kefir_dfp_decimal64_t dec64 = kefir_dfp_decimal64_from_decimal128(value->decimal);
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_CONST,
+                                                                   dec64.uvalue));
+                    }
+                    *success_ptr = true;
+                    break;
+
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                    if (builder != NULL) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST,
+                                                                   value->decimal.uvalue[0], value->decimal.uvalue[1]));
+                    }
+                    *success_ptr = true;
+                    break;
+
+                default:
+                    // Intentionally left blank
+                    break;
+            }
+            break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
             switch (unqualified_type->tag) {
