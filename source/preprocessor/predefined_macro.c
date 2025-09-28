@@ -876,7 +876,7 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefir_decimal_support,
                                                     "__KEFIRCC_DECIMAL_SUPPORT__", macro_produce_one_apply));
     }
-    if (preprocessor->context->environment.kefir_decimal_support) {
+    if (preprocessor->context->environment.kefir_decimal_bitint_conv_support) {
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefir_decimal_bitint_conv_support,
                                                     "__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__", macro_produce_one_apply));
     }
