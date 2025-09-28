@@ -24,3 +24,11 @@ require_asmgen_decimal_support () {
         exit 0
     fi
 }
+
+require_asmgen_decimal_bitint_conv_support () {
+    if [[ "x$(echo '__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__' | $KEFIRCC -E -o- -)" != "x1" ]]; then
+        cp "${SRC_FILE/.kefir.asmgen.c/.asmgen.expected}" "$DST_FILE"
+        echo "Skipping end2end test $SCRIPT due to missing conversion between decimal and bit-pricese integers support"
+        exit 0
+    fi
+}

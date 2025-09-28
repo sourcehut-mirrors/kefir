@@ -75,6 +75,7 @@ typedef struct kefir_preprocessor_environment {
     kefir_bool_t stdc_no_threads;
     kefir_bool_t stdc_no_vla;
     kefir_bool_t kefir_decimal_support;
+    kefir_bool_t kefir_decimal_bitint_conv_support;
     const struct kefir_data_model_descriptor *data_model;
     struct kefir_hashtree supported_std_attributes;
     struct kefir_hashtreeset supported_gnu_attributes;

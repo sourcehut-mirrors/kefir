@@ -244,6 +244,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                     kefir_bool_t signed_type;
                     REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_destination_type, &signed_type));
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_destination_type)) {
+                        REQUIRE(kefir_dfp_bitint_conv_is_supported(), KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Conversions between decimal floating-point values and bit-precise integers are not implemented on this host platform"));
                         REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                         REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, unqualified_destination_type->bitprecise.width));
                         if (signed_type) {
@@ -322,6 +323,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 kefir_bool_t signed_type;
                 REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_type));
                 if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_source_type)) {
+                    REQUIRE(kefir_dfp_bitint_conv_is_supported(), KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Conversions between decimal floating-point values and bit-precise integers are not implemented on this host platform"));
                     if (signed_type) {
                         value->decimal = kefir_dfp_decimal128_from_signed_bitint(source->bitprecise);
                     } else {

@@ -20,7 +20,7 @@
 
 #line __LINE__ "decimal_const_eval_cast4"
 
-#ifdef __KEFIRCC_DECIMAL_SUPPORT__
+#if defined(__KEFIRCC_DECIMAL_SUPPORT__) && defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)
 _BitInt(25) a[] = {
     3.15159df,
     -2.718df,

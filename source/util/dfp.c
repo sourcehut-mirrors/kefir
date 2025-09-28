@@ -32,6 +32,10 @@ kefir_bool_t kefir_dfp_is_supported(void) {
     return false;
 }
 
+kefir_bool_t kefir_dfp_bitint_conv_is_supported(void) {
+    return false;
+}
+
 #define FAIL_NOT_SUPPORTED \
     do { \
         KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Decimal floatig-point is not supported on this platform"); \
@@ -1292,9 +1296,14 @@ void kefir_dfp_decimal128_format(char *str, kefir_size_t len, kefir_dfp_decimal1
 
 #undef PRINT_DECIMAL_IMPL
 
+#if __GNUC__ >= 14
 extern _Decimal32 __bid_floatbitintsd(const kefir_uint64_t *, kefir_int64_t);
 extern _Decimal64 __bid_floatbitintdd(const kefir_uint64_t *, kefir_int64_t);
 extern _Decimal128 __bid_floatbitinttd(const kefir_uint64_t *, kefir_int64_t);
+
+kefir_bool_t kefir_dfp_bitint_conv_is_supported(void) {
+    return true;
+}
 
 kefir_dfp_decimal32_t kefir_dfp_decimal32_from_signed_bitint(const struct kefir_bigint *value) {
     union decimal32_view view = {
@@ -1383,6 +1392,87 @@ void kefir_dfp_decimal128_to_unsigned_bitint(const struct kefir_bigint *value, k
     };
     __bid_fixtdbitint((kefir_uint64_t *) value->digits, (kefir_int64_t) value->bitwidth, view.decimal);
 }
+
+#else
+#define FAIL_NOT_SUPPORTED \
+    do { \
+        KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Decimal floatig-point conversion to/from bit-precise integers is not supported on this platform"); \
+        kefir_format_error_tabular(stderr, kefir_current_error()); \
+        exit(EXIT_FAILURE); \
+    } while (0)
+
+kefir_bool_t kefir_dfp_bitint_conv_is_supported(void) {
+    return false;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_signed_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_unsigned_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_signed_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_unsigned_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_signed_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_unsigned_bitint(const struct kefir_bigint *value) {
+    UNUSED(value);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal32_to_signed_bitint(const struct kefir_bigint *value, kefir_dfp_decimal32_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal32_to_unsigned_bitint(const struct kefir_bigint *value, kefir_dfp_decimal32_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal64_to_signed_bitint(const struct kefir_bigint *value, kefir_dfp_decimal64_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal64_to_unsigned_bitint(const struct kefir_bigint *value, kefir_dfp_decimal64_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal128_to_signed_bitint(const struct kefir_bigint *value, kefir_dfp_decimal128_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+void kefir_dfp_decimal128_to_unsigned_bitint(const struct kefir_bigint *value, kefir_dfp_decimal128_t decimal) {
+    UNUSED(value);
+    UNUSED(decimal);
+    FAIL_NOT_SUPPORTED;
+}
+
+#undef FAIL_NOT_SUPPORTED
+#endif
 
 kefir_bool_t kefir_dfp_decimal32_isnan(kefir_dfp_decimal32_t x) {
     union decimal32_view view = {
