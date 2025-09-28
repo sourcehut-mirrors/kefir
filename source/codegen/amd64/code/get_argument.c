@@ -76,6 +76,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
             REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
             break;
 
+        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSEUP_REGISTER:
+            // Intentionally left blank
+            break;
+
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS: {
             const struct kefir_ir_typeentry *typeentry =
                 kefir_ir_type_at(function->function->ir_func->declaration->params, param_type_index);
@@ -147,7 +151,19 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                                                                              function->argument_touch_instr, arg_vreg,
                                                                              &function->argument_touch_instr));
 
-                        if (complex_float32_multireg) {
+                        struct kefir_abi_amd64_function_parameter next_subparam;
+                        if (i + 1 < qwords) {
+                            REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(&function_parameter, i + 1, &next_subparam));
+                        }
+
+                        if (i + 1 < qwords && next_subparam.location == KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSEUP_REGISTER) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, i * KEFIR_AMD64_ABI_QWORD,
+                                                                    KEFIR_ASMCMP_OPERAND_VARIANT_128BIT),
+                                &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), NULL));
+                            i++;
+                        } else if (complex_float32_multireg) {
                             REQUIRE(i == 0,
                                     KEFIR_SET_ERROR(
                                         KEFIR_INVALID_STATE,
@@ -200,6 +216,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
 
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSEUP_REGISTER:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_COMPLEX_X87:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY:

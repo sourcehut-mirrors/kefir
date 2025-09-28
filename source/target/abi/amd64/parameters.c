@@ -468,6 +468,10 @@ kefir_result_t kefir_abi_amd64_function_parameter_multireg_at(
                     }
                     break;
 
+                case KEFIR_AMD64_SYSV_PARAM_SSEUP:
+                    param_ptr->location = KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSEUP_REGISTER;
+                    break;
+
                 case KEFIR_AMD64_SYSV_PARAM_X87:
                     param_ptr->location = KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87;
                     break;

@@ -53,6 +53,51 @@ _Decimal32 arg32x(int, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal3
 _Decimal64 arg64x(int, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64);
 _Decimal128 arg128x(int, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128);
 
+struct struct32 {
+    _Decimal32 x;
+    _Decimal32 y;
+    _Decimal32 z;
+    _Decimal32 w;
+    _Decimal32 a;
+    _Decimal32 b;
+    _Decimal32 c;
+    _Decimal32 d;
+    _Decimal32 e;
+    _Decimal32 f;
+    _Decimal32 g;
+    _Decimal32 h;
+};
+
+struct struct64 {
+    _Decimal64 x;
+    _Decimal64 y;
+    _Decimal64 z;
+    _Decimal64 w;
+    _Decimal64 a;
+    _Decimal64 b;
+    _Decimal64 c;
+    _Decimal64 d;
+    _Decimal64 e;
+    _Decimal64 f;
+    _Decimal64 g;
+    _Decimal64 h;
+};
+
+struct struct128 {
+    _Decimal128 x;
+    _Decimal128 y;
+    _Decimal128 z;
+    _Decimal128 w;
+    _Decimal128 a;
+    _Decimal128 b;
+    _Decimal128 c;
+    _Decimal128 d;
+    _Decimal128 e;
+    _Decimal128 f;
+    _Decimal128 g;
+    _Decimal128 h;
+};
+
 _Decimal32 load32(_Decimal32 *);
 _Decimal64 load64(_Decimal64 *);
 _Decimal128 load128(_Decimal128 *);
@@ -60,6 +105,30 @@ _Decimal128 load128(_Decimal128 *);
 void store32(_Decimal32 *, _Decimal32);
 void store64(_Decimal64 *, _Decimal64);
 void store128(_Decimal128 *, _Decimal128);
+
+struct struct32 ret32(_Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32);
+struct struct64 ret64(_Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64);
+struct struct128 ret128(_Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128);
+
+
+struct struct32_2 {
+    _Decimal32 a;
+    _Decimal32 b;
+};
+
+struct struct64_2 {
+    _Decimal64 a;
+    _Decimal64 b;
+};
+
+struct struct128_2 {
+    _Decimal128 a;
+    _Decimal128 b;
+};
+
+struct struct32_2 swap32(struct struct32_2);
+struct struct64_2 swap64(struct struct64_2);
+struct struct128_2 swap128(struct struct128_2);
 #endif
 
 int main(void) {
@@ -107,6 +176,60 @@ int main(void) {
         assert(decimal32_eq(target32, args32[i]));
         assert(decimal64_eq(target64, args32[i]));
         assert(decimal128_eq(target128, args32[i]));
+
+        struct struct32 s32 = ret32(args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6], args32[7], args32[8], args32[9], args32[10], args32[11]);
+        assert(decimal32_eq(s32.x, args32[0]));
+        assert(decimal32_eq(s32.y, args32[1]));
+        assert(decimal32_eq(s32.z, args32[2]));
+        assert(decimal32_eq(s32.w, args32[3]));
+        assert(decimal32_eq(s32.a, args32[4]));
+        assert(decimal32_eq(s32.b, args32[5]));
+        assert(decimal32_eq(s32.c, args32[6]));
+        assert(decimal32_eq(s32.d, args32[7]));
+        assert(decimal32_eq(s32.e, args32[8]));
+        assert(decimal32_eq(s32.f, args32[9]));
+        assert(decimal32_eq(s32.g, args32[10]));
+        assert(decimal32_eq(s32.h, args32[11]));
+
+        struct struct64 s64 = ret64(args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6], args32[7], args32[8], args32[9], args32[10], args32[11]);
+        assert(decimal64_eq(s64.x, args32[0]));
+        assert(decimal64_eq(s64.y, args32[1]));
+        assert(decimal64_eq(s64.z, args32[2]));
+        assert(decimal64_eq(s64.w, args32[3]));
+        assert(decimal64_eq(s64.a, args32[4]));
+        assert(decimal64_eq(s64.b, args32[5]));
+        assert(decimal64_eq(s64.c, args32[6]));
+        assert(decimal64_eq(s64.d, args32[7]));
+        assert(decimal64_eq(s64.e, args32[8]));
+        assert(decimal64_eq(s64.f, args32[9]));
+        assert(decimal64_eq(s64.g, args32[10]));
+        assert(decimal64_eq(s64.h, args32[11]));
+
+        struct struct128 s128 = ret128(args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6], args32[7], args32[8], args32[9], args32[10], args32[11]);
+        assert(decimal128_eq(s128.x, args32[0]));
+        assert(decimal128_eq(s128.y, args32[1]));
+        assert(decimal128_eq(s128.z, args32[2]));
+        assert(decimal128_eq(s128.w, args32[3]));
+        assert(decimal128_eq(s128.a, args32[4]));
+        assert(decimal128_eq(s128.b, args32[5]));
+        assert(decimal128_eq(s128.c, args32[6]));
+        assert(decimal128_eq(s128.d, args32[7]));
+        assert(decimal128_eq(s128.e, args32[8]));
+        assert(decimal128_eq(s128.f, args32[9]));
+        assert(decimal128_eq(s128.g, args32[10]));
+        assert(decimal128_eq(s128.h, args32[11]));
+
+        struct struct32_2 s32_2 = swap32((struct struct32_2){4482.317, -381.47});
+        assert(decimal32_eq(s32_2.a, -381.47));
+        assert(decimal32_eq(s32_2.b, 4482.317));
+
+        struct struct64_2 s64_2 = swap64((struct struct64_2){4482.31217, -381.3247});
+        assert(decimal64_eq(s64_2.a, -381.3247));
+        assert(decimal64_eq(s64_2.b, 4482.31217));
+
+        struct struct128_2 s128_2 = swap128((struct struct128_2){449082.31217, -34281.3247});
+        assert(decimal128_eq(s128_2.a, -34281.3247));
+        assert(decimal128_eq(s128_2.b, 449082.31217));
     }
 #endif
     return EXIT_SUCCESS;

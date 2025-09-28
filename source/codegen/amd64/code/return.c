@@ -84,6 +84,10 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                 }
                 break;
 
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSEUP_REGISTER:
+                // Intentionally left blank
+                break;
+
             case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS: {
                 kefir_bool_t complex_float32_return = false;
                 kefir_bool_t complex_float64_return = false;
@@ -142,7 +146,20 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                             REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, vreg,
                                                                                           subparam.direct_reg));
                             if (return_vreg != KEFIR_ID_NONE) {
-                                if (complex_float32_return) {
+                                struct kefir_abi_amd64_function_parameter next_subparam;
+                                if (i + 1 < length) {
+                                    REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(&function_return, i + 1, &next_subparam));
+                                }
+
+                                if (i + 1 < length && next_subparam.location == KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSEUP_REGISTER) {
+                                    REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        &KEFIR_ASMCMP_MAKE_VREG(vreg),
+                                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(return_vreg, i * KEFIR_AMD64_ABI_QWORD,
+                                                                            KEFIR_ASMCMP_OPERAND_VARIANT_128BIT),
+                                        NULL));
+                                    i++;
+                                } else if (complex_float32_return) {
                                     REQUIRE(i == 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                                                     "Unexpected length of multiple-register complex "
                                                                     "floating-point return value"));
@@ -227,6 +244,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                             }
                             break;
 
+                        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSEUP_REGISTER:
                         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
                         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY:
                         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS:
