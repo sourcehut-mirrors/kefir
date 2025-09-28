@@ -200,16 +200,14 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                     case KEFIR_IR_TYPE_FLOAT64:
                     case KEFIR_IR_TYPE_BITFIELD:
                     case KEFIR_IR_TYPE_LONG_DOUBLE:
+                    case KEFIR_IR_TYPE_DECIMAL32:
+                    case KEFIR_IR_TYPE_DECIMAL64:
+                    case KEFIR_IR_TYPE_DECIMAL128:
                     case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                     case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
                     case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
                         // Intentionally left blank
                         break;
-
-                    case KEFIR_IR_TYPE_DECIMAL32:
-                    case KEFIR_IR_TYPE_DECIMAL64:
-                    case KEFIR_IR_TYPE_DECIMAL128:
-                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point function arguments are not implemented yet");
 
                     case KEFIR_IR_TYPE_NONE:
                     case KEFIR_IR_TYPE_COUNT:
@@ -556,9 +554,28 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                         break;
 
                     case KEFIR_IR_TYPE_DECIMAL32:
+                        REQUIRE_OK(kefir_asmcmp_amd64_movd(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(argument_placement_vreg, 0,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            &KEFIR_ASMCMP_MAKE_VREG(argument_vreg), NULL));
+                        break;
+
                     case KEFIR_IR_TYPE_DECIMAL64:
+                        REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(argument_placement_vreg, 0,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            &KEFIR_ASMCMP_MAKE_VREG(argument_vreg), NULL));
+                        break;
+
                     case KEFIR_IR_TYPE_DECIMAL128:
-                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point function arguments are not implemented yet");
+                        REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(argument_placement_vreg, 0,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            &KEFIR_ASMCMP_MAKE_VREG(argument_vreg), NULL));
+                        break;
 
                     case KEFIR_IR_TYPE_BITFIELD:
                     case KEFIR_IR_TYPE_NONE:

@@ -1,0 +1,74 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern fn1
+.extern fn3
+.extern fn5
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global test6
+.type test6, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    movd (%rdi), %xmm0
+    add $4, %rdi
+    movd (%rdi), %xmm1
+    jmp fn1@PLT
+__kefir_text_func_test1_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    movd (%rsi), %xmm0
+    add $4, %rsi
+    movd (%rsi), %xmm1
+    mov %rdi, %rax
+    jmp *%rax
+__kefir_text_func_test2_end:
+
+test3:
+__kefir_text_func_test3_begin:
+    movq (%rdi), %xmm0
+    add $8, %rdi
+    movq (%rdi), %xmm1
+    jmp fn3@PLT
+__kefir_text_func_test3_end:
+
+test4:
+__kefir_text_func_test4_begin:
+    movq (%rsi), %xmm0
+    add $8, %rsi
+    movq (%rsi), %xmm1
+    mov %rdi, %rax
+    jmp *%rax
+__kefir_text_func_test4_end:
+
+test5:
+__kefir_text_func_test5_begin:
+    movdqu (%rdi), %xmm0
+    add $16, %rdi
+    movdqu (%rdi), %xmm1
+    jmp fn5@PLT
+__kefir_text_func_test5_end:
+
+test6:
+__kefir_text_func_test6_begin:
+    movdqu (%rsi), %xmm0
+    add $16, %rsi
+    movdqu (%rsi), %xmm1
+    mov %rdi, %rax
+    jmp *%rax
+__kefir_text_func_test6_end:
+
+__kefir_text_section_end:
+
