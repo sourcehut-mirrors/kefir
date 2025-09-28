@@ -200,6 +200,7 @@ static kefir_result_t output_compiler_config(FILE *output,
     FEATURE(va_args_concat, "va-args-comma-concat")
     FEATURE(switch_case_ranges, "switch-case-ranges")
     FEATURE(designator_subscript_ranges, "designator-subscript-ranges")
+    FEATURE(imprecise_decimal_bitint_conv, "imprecise-decimal-bitint-conv")
 #undef FEATURE
 
 #define CODEGEN(_id, _name)                         \

@@ -57,6 +57,7 @@ typedef struct kefir_ast_context_configuration {
         kefir_bool_t missing_braces_subobj;
         kefir_bool_t int_to_pointer;
         kefir_bool_t enable_thread_local_common;
+        kefir_bool_t imprecise_decimal_bitint_conv;
         kefir_ast_context_tentative_definition_placement_t tentative_definition_placement;
         kefir_ast_declarator_visibility_attr_t symbol_visibility;
     } analysis;

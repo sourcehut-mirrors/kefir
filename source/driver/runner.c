@@ -205,6 +205,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.preprocessor_configuration.va_args_concat = options->features.va_args_concat;
     compiler.preprocessor_configuration.standard_version = options->standard_version;
     compiler.preprocessor_context.environment.stdc_no_atomics = !options->features.declare_atomic_support;
+    compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support = compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support || !options->features.imprecise_decimal_bitint_conv;
     for (const char **attribute = KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES; *attribute != NULL; ++attribute) {
         REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler.preprocessor_context.environment.supported_gnu_attributes,
                                          (kefir_hashtreeset_entry_t) *attribute));
@@ -247,6 +248,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.ast_global_context.configuration.analysis.tentative_definition_placement =
         options->codegen.tentative_definition_placement;
     compiler.ast_global_context.configuration.analysis.symbol_visibility = options->codegen.symbol_visibility;
+    compiler.ast_global_context.configuration.analysis.imprecise_decimal_bitint_conv = options->features.imprecise_decimal_bitint_conv;
 
     compiler.translator_configuration.empty_structs = options->features.empty_structs;
     compiler.translator_configuration.precise_bitfield_load_store = options->features.precise_bitfield_load_store;
