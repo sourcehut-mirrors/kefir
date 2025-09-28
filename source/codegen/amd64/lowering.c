@@ -90,6 +90,19 @@ struct lowering_param {
         kefir_id_t softfloat_complex_float_div;
         kefir_id_t softfloat_complex_double_div;
         kefir_id_t softfloat_complex_long_double_div;
+
+        kefir_id_t libgcc_bid_addsd3;
+        kefir_id_t libgcc_bid_adddd3;
+        kefir_id_t libgcc_bid_addtd3;
+        kefir_id_t libgcc_bid_subsd3;
+        kefir_id_t libgcc_bid_subdd3;
+        kefir_id_t libgcc_bid_subtd3;
+        kefir_id_t libgcc_bid_mulsd3;
+        kefir_id_t libgcc_bid_muldd3;
+        kefir_id_t libgcc_bid_multd3;
+        kefir_id_t libgcc_bid_divsd3;
+        kefir_id_t libgcc_bid_divdd3;
+        kefir_id_t libgcc_bid_divtd3;
     } runtime_fn;
 };
 
@@ -472,6 +485,66 @@ DECL_RUNTIME_FN(softfloat_complex_long_double_div, KEFIR_SOFTFLOAT_COMPLEX_LONG_
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_addsd3, LIBGCC_BID_ADDSD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_adddd3, LIBGCC_BID_ADDDD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_addtd3, LIBGCC_BID_ADDTD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_subsd3, LIBGCC_BID_SUBSD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_subdd3, LIBGCC_BID_SUBDD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_subtd3, LIBGCC_BID_SUBTD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_mulsd3, LIBGCC_BID_MULSD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_muldd3, LIBGCC_BID_MULDD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_multd3, LIBGCC_BID_MULTD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_divsd3, LIBGCC_BID_DIVSD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_divdd3, LIBGCC_BID_DIVDD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_divtd3, LIBGCC_BID_DIVTD3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
 })
 
 static kefir_result_t new_bitint_type(struct kefir_mem *mem, struct kefir_opt_module *module, kefir_size_t width,
@@ -3223,6 +3296,71 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             }
         } break;
 
+#define BINARY_OP(_fn) \
+        do { \
+            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0]; \
+            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1]; \
+ \
+            kefir_id_t func_decl_id = KEFIR_ID_NONE; \
+            REQUIRE_OK(_fn(mem, module, param, &func_decl_id)); \
+ \
+            kefir_opt_call_id_t call_node_id; \
+            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, \
+                                                        KEFIR_ID_NONE, &call_node_id, replacement_ref)); \
+            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_ref)); \
+            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg2_ref)); \
+        } while (0)
+
+        case KEFIR_OPT_OPCODE_DECIMAL32_ADD:
+            BINARY_OP(get_libgcc_bid_addsd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL64_ADD:
+            BINARY_OP(get_libgcc_bid_adddd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL128_ADD:
+            BINARY_OP(get_libgcc_bid_addtd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL32_SUB:
+            BINARY_OP(get_libgcc_bid_subsd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL64_SUB:
+            BINARY_OP(get_libgcc_bid_subdd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL128_SUB:
+            BINARY_OP(get_libgcc_bid_subtd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL32_MUL:
+            BINARY_OP(get_libgcc_bid_mulsd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL64_MUL:
+            BINARY_OP(get_libgcc_bid_muldd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL128_MUL:
+            BINARY_OP(get_libgcc_bid_multd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL32_DIV:
+            BINARY_OP(get_libgcc_bid_divsd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL64_DIV:
+            BINARY_OP(get_libgcc_bid_divdd3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL128_DIV:
+            BINARY_OP(get_libgcc_bid_divtd3_function_decl_id);
+            break;
+
+#undef BINARY_OP
+
         default:
             // Intentionally left blank
             break;
@@ -3337,7 +3475,19 @@ kefir_result_t kefir_codegen_amd64_lower_function(struct kefir_mem *mem, struct 
                                                   .softfloat_complex_long_double_mul = KEFIR_ID_NONE,
                                                   .softfloat_complex_float_div = KEFIR_ID_NONE,
                                                   .softfloat_complex_double_div = KEFIR_ID_NONE,
-                                                  .softfloat_complex_long_double_div = KEFIR_ID_NONE}};
+                                                  .softfloat_complex_long_double_div = KEFIR_ID_NONE,
+                                                .libgcc_bid_addsd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_adddd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_addtd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_subsd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_subdd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_subtd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_mulsd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_muldd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_multd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_divsd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_divdd3 = KEFIR_ID_NONE,
+                                                .libgcc_bid_divtd3 = KEFIR_ID_NONE}};
     REQUIRE_OK(lower_function(mem, module, func, &param));
     return KEFIR_OK;
 }

@@ -358,7 +358,19 @@
     OPCODE(DECIMAL128_LOAD, "decimal128_load", load_mem) SEPARATOR \
     OPCODE(DECIMAL32_STORE, "decimal32_store", store_mem) SEPARATOR \
     OPCODE(DECIMAL64_STORE, "decimal64_store", store_mem) SEPARATOR \
-    OPCODE(DECIMAL128_STORE, "decimal128_store", store_mem)
+    OPCODE(DECIMAL128_STORE, "decimal128_store", store_mem) SEPARATOR \
+    OPCODE(DECIMAL32_ADD, "decimal32_add", ref2) SEPARATOR \
+    OPCODE(DECIMAL64_ADD, "decimal64_add", ref2) SEPARATOR \
+    OPCODE(DECIMAL128_ADD, "decimal128_add", ref2) SEPARATOR \
+    OPCODE(DECIMAL32_SUB, "decimal32_sub", ref2) SEPARATOR \
+    OPCODE(DECIMAL64_SUB, "decimal64_sub", ref2) SEPARATOR \
+    OPCODE(DECIMAL128_SUB, "decimal128_sub", ref2) SEPARATOR \
+    OPCODE(DECIMAL32_MUL, "decimal32_mul", ref2) SEPARATOR \
+    OPCODE(DECIMAL64_MUL, "decimal64_mul", ref2) SEPARATOR \
+    OPCODE(DECIMAL128_MUL, "decimal128_mul", ref2) SEPARATOR \
+    OPCODE(DECIMAL32_DIV, "decimal32_div", ref2) SEPARATOR \
+    OPCODE(DECIMAL64_DIV, "decimal64_div", ref2) SEPARATOR \
+    OPCODE(DECIMAL128_DIV, "decimal128_div", ref2)
 
 // clang-format on
 

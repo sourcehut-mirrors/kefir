@@ -417,6 +417,18 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(decimal_store, KEFIR_OPT_OPCODE_DECIMAL32_STORE) _separator \
     _def(decimal_store, KEFIR_OPT_OPCODE_DECIMAL64_STORE) _separator \
     _def(decimal_store, KEFIR_OPT_OPCODE_DECIMAL128_STORE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_ADD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_ADD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_ADD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_SUB) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_SUB) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_SUB) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_MUL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_MUL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_MUL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_DIV) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_DIV) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_DIV) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -607,6 +619,19 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define KEFIR_SOFTFLOAT_COMPLEX_FLOAT_DIV "__kefir_softfloat_complex_float_div"
 #define KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_DIV "__kefir_softfloat_complex_double_div"
 #define KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_DIV "__kefir_softfloat_complex_long_double_div"
+
+#define LIBGCC_BID_ADDSD3 "__bid_addsd3"
+#define LIBGCC_BID_ADDDD3 "__bid_adddd3"
+#define LIBGCC_BID_ADDTD3 "__bid_addtd3"
+#define LIBGCC_BID_SUBSD3 "__bid_subsd3"
+#define LIBGCC_BID_SUBDD3 "__bid_subdd3"
+#define LIBGCC_BID_SUBTD3 "__bid_subtd3"
+#define LIBGCC_BID_MULSD3 "__bid_mulsd3"
+#define LIBGCC_BID_MULDD3 "__bid_muldd3"
+#define LIBGCC_BID_MULTD3 "__bid_multd3"
+#define LIBGCC_BID_DIVSD3 "__bid_divsd3"
+#define LIBGCC_BID_DIVDD3 "__bid_divdd3"
+#define LIBGCC_BID_DIVTD3 "__bid_divtd3"
 
 #define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||                                           \

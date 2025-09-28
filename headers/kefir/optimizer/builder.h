@@ -395,6 +395,19 @@ BINARY_OP(long_double_sub);
 BINARY_OP(long_double_mul);
 BINARY_OP(long_double_div);
 
+BINARY_OP(decimal32_add);
+BINARY_OP(decimal64_add);
+BINARY_OP(decimal128_add);
+BINARY_OP(decimal32_sub);
+BINARY_OP(decimal64_sub);
+BINARY_OP(decimal128_sub);
+BINARY_OP(decimal32_mul);
+BINARY_OP(decimal64_mul);
+BINARY_OP(decimal128_mul);
+BINARY_OP(decimal32_div);
+BINARY_OP(decimal64_div);
+BINARY_OP(decimal128_div);
+
 BINARY_OP(complex_float32_from);
 BINARY_OP(complex_float64_from);
 BINARY_OP(complex_long_double_from);
