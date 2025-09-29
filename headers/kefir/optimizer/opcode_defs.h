@@ -370,7 +370,10 @@
     OPCODE(DECIMAL128_MUL, "decimal128_mul", ref2) SEPARATOR \
     OPCODE(DECIMAL32_DIV, "decimal32_div", ref2) SEPARATOR \
     OPCODE(DECIMAL64_DIV, "decimal64_div", ref2) SEPARATOR \
-    OPCODE(DECIMAL128_DIV, "decimal128_div", ref2)
+    OPCODE(DECIMAL128_DIV, "decimal128_div", ref2) SEPARATOR \
+    OPCODE(DECIMAL32_NEG, "decimal32_neg", ref1) SEPARATOR \
+    OPCODE(DECIMAL64_NEG, "decimal64_neg", ref1) SEPARATOR \
+    OPCODE(DECIMAL128_NEG, "decimal128_neg", ref1)
 
 // clang-format on
 

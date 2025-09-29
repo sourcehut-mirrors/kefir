@@ -224,6 +224,10 @@ UNARY_OP(float32_neg);
 UNARY_OP(float64_neg);
 UNARY_OP(long_double_neg);
 
+UNARY_OP(decimal32_neg);
+UNARY_OP(decimal64_neg);
+UNARY_OP(decimal128_neg);
+
 UNARY_OP(float32_to_int);
 UNARY_OP(float64_to_int);
 UNARY_OP(float32_to_uint);

@@ -126,10 +126,46 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+            switch (node->type) {
+                case KEFIR_AST_OPERATION_PLUS:
+                    break;
+
+                case KEFIR_AST_OPERATION_NEGATE:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_NEG, 0));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected unary operator");
+            }
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+            switch (node->type) {
+                case KEFIR_AST_OPERATION_PLUS:
+                    break;
+
+                case KEFIR_AST_OPERATION_NEGATE:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_NEG, 0));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected unary operator");
+            }
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                            "Unary operations are not implemented for decimal floating-point values yet");
+            switch (node->type) {
+                case KEFIR_AST_OPERATION_PLUS:
+                    break;
+
+                case KEFIR_AST_OPERATION_NEGATE:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_NEG, 0));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected unary operator");
+            }
+            break;
 
         default:
             REQUIRE(

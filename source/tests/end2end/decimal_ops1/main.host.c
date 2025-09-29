@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <math.h>
 #include "./definitions.h"
 
 #if defined(__GNUC__) && !defined(__clang__)
@@ -53,6 +54,9 @@ _Decimal128 mul128(_Decimal128, _Decimal128);
 _Decimal32 div32(_Decimal32, _Decimal32);
 _Decimal64 div64(_Decimal64, _Decimal64);
 _Decimal128 div128(_Decimal128, _Decimal128);
+_Decimal32 neg32(_Decimal32);
+_Decimal64 neg64(_Decimal64);
+_Decimal128 neg128(_Decimal128);
 #endif
 
 int main(void) {
@@ -72,6 +76,13 @@ int main(void) {
     assert(decimal32_eq(div32(3.14159, 2.71828), 3.14159 / 2.71828));
     assert(decimal64_eq(div64(3.14159, 2.71828), 3.14159 / 2.71828));
     assert(decimal128_eq(div128(3.14159, 2.71828), 3.14159 / 2.71828));
+
+    assert(decimal32_eq(neg32(3.14159), -3.14159));
+    assert(decimal64_eq(neg64(3.14159), -3.14159));
+    assert(decimal128_eq(neg128(3.14159), -3.14159));
+    assert(decimal32_eq(neg32(-3.14159), 3.14159));
+    assert(decimal64_eq(neg64(-3.14159), 3.14159));
+    assert(decimal128_eq(neg128(-3.14159), 3.14159));
 #endif
     return EXIT_SUCCESS;
 }

@@ -58,7 +58,9 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                     }
                     instr->args[1] = KEFIR_ASMCMP_MAKE_PHREG(phreg);
                 } else if (instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
+                    !kefir_asm_amd64_xasmgen_register_is_floating_point(instr->args[0].phreg) &&
                     instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
+                    !kefir_asm_amd64_xasmgen_register_is_floating_point(instr->args[1].phreg) &&
                     next_instr_index != KEFIR_ASMCMP_INDEX_NONE &&
                     kefir_asmcmp_context_instr_label_head(context, next_instr_index) == KEFIR_ASMCMP_INDEX_NONE) {
                     struct kefir_asmcmp_instruction *next_instr = NULL;

@@ -13,6 +13,10 @@
 .type mul32, @function
 .global mul64
 .type mul64, @function
+.global neg32
+.type neg32, @function
+.global neg64
+.type neg64, @function
 .global sub32
 .type sub32, @function
 .global sub64
@@ -23,6 +27,8 @@
 .type div128, @function
 .global mul128
 .type mul128, @function
+.global neg128
+.type neg128, @function
 .global sub128
 .type sub128, @function
 .extern __bid_adddd3
@@ -94,6 +100,22 @@ __kefir_text_func_mul64_begin:
     ret
 __kefir_text_func_mul64_end:
 
+neg32:
+__kefir_text_func_neg32_begin:
+    movq %xmm0, %rax
+    add $-2147483648, %eax
+    movq %rax, %xmm0
+    ret
+__kefir_text_func_neg32_end:
+
+neg64:
+__kefir_text_func_neg64_begin:
+    movq %xmm0, %rax
+    btc $63, %rax
+    movq %rax, %xmm0
+    ret
+__kefir_text_func_neg64_end:
+
 sub32:
 __kefir_text_func_sub32_begin:
     push %rbp
@@ -138,6 +160,21 @@ __kefir_text_func_mul128_begin:
     pop %rbp
     ret
 __kefir_text_func_mul128_end:
+
+neg128:
+__kefir_text_func_neg128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movdqu %xmm0, -16(%rbp)
+    mov -8(%rbp), %rax
+    btc $63, %rax
+    mov %rax, -8(%rbp)
+    movdqu -16(%rbp), %xmm0
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_neg128_end:
 
 sub128:
 __kefir_text_func_sub128_begin:

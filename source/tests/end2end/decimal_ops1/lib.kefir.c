@@ -68,4 +68,16 @@ _Decimal64 div64(_Decimal64 x, _Decimal64 y) {
 _Decimal128 div128(_Decimal128 x, _Decimal128 y) {
     return x / y;
 }
+
+_Decimal32 neg32(_Decimal32 x) {
+    return -x;
+}
+
+_Decimal64 neg64(_Decimal64 x) {
+    return -x;
+}
+
+_Decimal128 neg128(_Decimal128 x) {
+    return -x;
+}
 #endif
