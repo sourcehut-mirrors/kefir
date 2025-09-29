@@ -432,6 +432,15 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(decimal_neg32, KEFIR_OPT_OPCODE_DECIMAL32_NEG) _separator \
     _def(decimal_neg64, KEFIR_OPT_OPCODE_DECIMAL64_NEG) _separator \
     _def(decimal_neg128, KEFIR_OPT_OPCODE_DECIMAL128_NEG) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_EQUAL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_EQUAL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_EQUAL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_GREATER) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_GREATER) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_GREATER) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_LESS) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_LESS) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_LESS) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -635,6 +644,15 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define LIBGCC_BID_DIVSD3 "__bid_divsd3"
 #define LIBGCC_BID_DIVDD3 "__bid_divdd3"
 #define LIBGCC_BID_DIVTD3 "__bid_divtd3"
+#define LIBGCC_BID_EQSD3 "__bid_eqsd2"
+#define LIBGCC_BID_EQDD3 "__bid_eqdd2"
+#define LIBGCC_BID_EQTD3 "__bid_eqtd2"
+#define LIBGCC_BID_GTSD3 "__bid_gtsd2"
+#define LIBGCC_BID_GTDD3 "__bid_gtdd2"
+#define LIBGCC_BID_GTTD3 "__bid_gttd2"
+#define LIBGCC_BID_LTSD3 "__bid_ltsd2"
+#define LIBGCC_BID_LTDD3 "__bid_ltdd2"
+#define LIBGCC_BID_LTTD3 "__bid_lttd2"
 
 #define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||                                           \

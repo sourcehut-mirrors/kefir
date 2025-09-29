@@ -80,4 +80,40 @@ _Decimal64 neg64(_Decimal64 x) {
 _Decimal128 neg128(_Decimal128 x) {
     return -x;
 }
+
+int eq32(_Decimal32 x, _Decimal32 y) {
+    return x == y;
+}
+
+int eq64(_Decimal64 x, _Decimal64 y) {
+    return x == y;
+}
+
+int eq128(_Decimal128 x, _Decimal128 y) {
+    return x == y;
+}
+
+int gt32(_Decimal32 x, _Decimal32 y) {
+    return x > y;
+}
+
+int gt64(_Decimal64 x, _Decimal64 y) {
+    return x > y;
+}
+
+int gt128(_Decimal128 x, _Decimal128 y) {
+    return x > y;
+}
+
+int lt32(_Decimal32 x, _Decimal32 y) {
+    return x < y;
+}
+
+int lt64(_Decimal64 x, _Decimal64 y) {
+    return x < y;
+}
+
+int lt128(_Decimal128 x, _Decimal128 y) {
+    return x < y;
+}
 #endif

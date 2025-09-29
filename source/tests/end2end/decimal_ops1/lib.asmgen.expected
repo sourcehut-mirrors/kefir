@@ -1,6 +1,18 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.global eq32
+.type eq32, @function
+.global eq64
+.type eq64, @function
+.global gt32
+.type gt32, @function
+.global gt64
+.type gt64, @function
+.global lt32
+.type lt32, @function
+.global lt64
+.type lt64, @function
 .global add32
 .type add32, @function
 .global add64
@@ -9,6 +21,12 @@
 .type div32, @function
 .global div64
 .type div64, @function
+.global eq128
+.type eq128, @function
+.global gt128
+.type gt128, @function
+.global lt128
+.type lt128, @function
 .global mul32
 .type mul32, @function
 .global mul64
@@ -31,6 +49,15 @@
 .type neg128, @function
 .global sub128
 .type sub128, @function
+.extern __bid_eqdd2
+.extern __bid_eqsd2
+.extern __bid_eqtd2
+.extern __bid_gtdd2
+.extern __bid_gtsd2
+.extern __bid_gttd2
+.extern __bid_ltdd2
+.extern __bid_ltsd2
+.extern __bid_lttd2
 .extern __bid_adddd3
 .extern __bid_addsd3
 .extern __bid_addtd3
@@ -46,6 +73,84 @@
 
 .section .text
 __kefir_text_section_begin:
+eq32:
+__kefir_text_func_eq32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_eqsd2@PLT
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
+    mov %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_eq32_end:
+
+eq64:
+__kefir_text_func_eq64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_eqdd2@PLT
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
+    mov %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_eq64_end:
+
+gt32:
+__kefir_text_func_gt32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_gtsd2@PLT
+    xor %ecx, %ecx
+    cmp $0, %eax
+    setg %cl
+    mov %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_gt32_end:
+
+gt64:
+__kefir_text_func_gt64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_gtdd2@PLT
+    xor %ecx, %ecx
+    cmp $0, %eax
+    setg %cl
+    mov %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_gt64_end:
+
+lt32:
+__kefir_text_func_lt32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_ltsd2@PLT
+    xor %ecx, %ecx
+    cmp $0, %eax
+    setl %cl
+    mov %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_lt32_end:
+
+lt64:
+__kefir_text_func_lt64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_ltdd2@PLT
+    xor %ecx, %ecx
+    cmp $0, %eax
+    setl %cl
+    mov %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_lt64_end:
+
 add32:
 __kefir_text_func_add32_begin:
     push %rbp
@@ -81,6 +186,45 @@ __kefir_text_func_div64_begin:
     pop %rbp
     ret
 __kefir_text_func_div64_end:
+
+eq128:
+__kefir_text_func_eq128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_eqtd2@PLT
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
+    mov %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_eq128_end:
+
+gt128:
+__kefir_text_func_gt128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_gttd2@PLT
+    xor %ecx, %ecx
+    cmp $0, %eax
+    setg %cl
+    mov %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_gt128_end:
+
+lt128:
+__kefir_text_func_lt128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_lttd2@PLT
+    xor %ecx, %ecx
+    cmp $0, %eax
+    setl %cl
+    mov %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_lt128_end:
 
 mul32:
 __kefir_text_func_mul32_begin:

@@ -411,6 +411,15 @@ BINARY_OP(decimal128_mul);
 BINARY_OP(decimal32_div);
 BINARY_OP(decimal64_div);
 BINARY_OP(decimal128_div);
+BINARY_OP(decimal32_equal);
+BINARY_OP(decimal64_equal);
+BINARY_OP(decimal128_equal);
+BINARY_OP(decimal32_greater);
+BINARY_OP(decimal64_greater);
+BINARY_OP(decimal128_greater);
+BINARY_OP(decimal32_less);
+BINARY_OP(decimal64_less);
+BINARY_OP(decimal128_less);
 
 BINARY_OP(complex_float32_from);
 BINARY_OP(complex_float64_from);

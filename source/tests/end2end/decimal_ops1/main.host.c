@@ -57,6 +57,15 @@ _Decimal128 div128(_Decimal128, _Decimal128);
 _Decimal32 neg32(_Decimal32);
 _Decimal64 neg64(_Decimal64);
 _Decimal128 neg128(_Decimal128);
+int eq32(_Decimal32, _Decimal32);
+int eq64(_Decimal64, _Decimal64);
+int eq128(_Decimal128, _Decimal128);
+int gt32(_Decimal32, _Decimal32);
+int gt64(_Decimal64, _Decimal64);
+int gt128(_Decimal128, _Decimal128);
+int lt32(_Decimal32, _Decimal32);
+int lt64(_Decimal64, _Decimal64);
+int lt128(_Decimal128, _Decimal128);
 #endif
 
 int main(void) {
@@ -83,6 +92,81 @@ int main(void) {
     assert(decimal32_eq(neg32(-3.14159), 3.14159));
     assert(decimal64_eq(neg64(-3.14159), 3.14159));
     assert(decimal128_eq(neg128(-3.14159), 3.14159));
+
+    _Decimal32 d32[] = {
+        3.14159, 2.71828
+    };
+    _Decimal64 d64[] = {
+        3.14159, 2.71828
+    };
+    _Decimal128 d128[] = {
+        3.14159, 2.71828
+    };
+    assert(eq32(d32[0], d32[0]));
+    assert(eq32(d32[1], d32[1]));
+    assert(!eq32(d32[0], d32[1]));
+    assert(!eq32(d32[1], d32[0]));
+
+    assert(eq64(d64[0], d64[0]));
+    assert(eq64(d64[1], d64[1]));
+    assert(!eq64(d64[0], d64[1]));
+    assert(!eq64(d64[1], d64[0]));
+
+    assert(eq128(d128[0], d128[0]));
+    assert(eq128(d128[1], d128[1]));
+    assert(!eq128(d128[0], d128[1]));
+    assert(!eq128(d128[1], d128[0]));
+
+    assert(!gt32(d32[0], d32[0]));
+    assert(gt32(d32[0], d32[1]));
+    assert(!gt32(d32[1], d32[0]));
+    assert(gt32(d32[1], -d32[0]));
+    assert(!gt32(d32[1], d32[1]));
+    assert(gt32(d32[0], -d32[0]));
+
+    assert(!gt64(d64[0], d64[0]));
+    assert(gt64(d64[0], d64[1]));
+    assert(!gt64(d64[1], d64[0]));
+    assert(gt64(d64[1], -d64[0]));
+    assert(!gt64(d64[1], d64[1]));
+    assert(gt64(d64[0], -d64[0]));
+
+    assert(!gt128(d128[0], d128[0]));
+    assert(gt128(d128[0], d128[1]));
+    assert(!gt128(d128[1], d128[0]));
+    assert(gt128(d128[1], -d128[0]));
+    assert(!gt128(d128[1], d128[1]));
+    assert(gt128(d128[0], -d128[0]));
+
+    assert(!lt32(d32[0], d32[0]));
+    assert(!lt32(d32[0], d32[1]));
+    assert(lt32(d32[1], d32[0]));
+    assert(!lt32(d32[1], -d32[0]));
+    assert(!lt32(d32[1], d32[1]));
+    assert(!lt32(d32[0], -d32[0]));
+    assert(lt32(-d32[0], d32[1]));
+    assert(lt32(-d32[0], -d32[1]));
+    assert(lt32(-d32[1], d32[0]));
+
+    assert(!lt64(d64[0], d64[0]));
+    assert(!lt64(d64[0], d64[1]));
+    assert(lt64(d64[1], d64[0]));
+    assert(!lt64(d64[1], -d64[0]));
+    assert(!lt64(d64[1], d64[1]));
+    assert(!lt64(d64[0], -d64[0]));
+    assert(lt64(-d64[0], d64[1]));
+    assert(lt64(-d64[0], -d64[1]));
+    assert(lt64(-d64[1], d64[0]));
+
+    assert(!lt128(d128[0], d128[0]));
+    assert(!lt128(d128[0], d128[1]));
+    assert(lt128(d128[1], d128[0]));
+    assert(!lt128(d128[1], -d128[0]));
+    assert(!lt128(d128[1], d128[1]));
+    assert(!lt128(d128[0], -d128[0]));
+    assert(lt128(-d128[0], d128[1]));
+    assert(lt128(-d128[0], -d128[1]));
+    assert(lt128(-d128[1], d128[0]));
 #endif
     return EXIT_SUCCESS;
 }

@@ -823,9 +823,16 @@ static kefir_result_t translate_relational_equals(const struct kefir_ast_type_tr
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_EQUAL, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_EQUAL, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_EQUAL, 0));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of a scalar type");
@@ -919,9 +926,16 @@ static kefir_result_t translate_relational_less(const struct kefir_ast_type_trai
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_LESS, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_LESS, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_LESS, 0));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of a scalar type");
@@ -1007,9 +1021,16 @@ static kefir_result_t translate_relational_greater(const struct kefir_ast_type_t
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_GREATER, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_GREATER, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_GREATER, 0));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of a scalar type");

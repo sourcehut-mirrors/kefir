@@ -373,7 +373,16 @@
     OPCODE(DECIMAL128_DIV, "decimal128_div", ref2) SEPARATOR \
     OPCODE(DECIMAL32_NEG, "decimal32_neg", ref1) SEPARATOR \
     OPCODE(DECIMAL64_NEG, "decimal64_neg", ref1) SEPARATOR \
-    OPCODE(DECIMAL128_NEG, "decimal128_neg", ref1)
+    OPCODE(DECIMAL128_NEG, "decimal128_neg", ref1) SEPARATOR \
+    OPCODE(DECIMAL32_EQUAL, "decimal32_equal", ref2) SEPARATOR \
+    OPCODE(DECIMAL64_EQUAL, "decimal64_equal", ref2) SEPARATOR \
+    OPCODE(DECIMAL128_EQUAL, "decimal128_equal", ref2) SEPARATOR \
+    OPCODE(DECIMAL32_GREATER, "decimal32_greater", ref2) SEPARATOR \
+    OPCODE(DECIMAL64_GREATER, "decimal64_greater", ref2) SEPARATOR \
+    OPCODE(DECIMAL128_GREATER, "decimal128_greater", ref2) SEPARATOR \
+    OPCODE(DECIMAL32_LESS, "decimal32_less", ref2) SEPARATOR \
+    OPCODE(DECIMAL64_LESS, "decimal64_less", ref2) SEPARATOR \
+    OPCODE(DECIMAL128_LESS, "decimal128_less", ref2)
 
 // clang-format on
 
