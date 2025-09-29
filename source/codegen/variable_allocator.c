@@ -53,6 +53,7 @@ static kefir_result_t do_allocate_var(struct allocator_state *state, kefir_opt_i
     REQUIRE_OK(state->hooks->type_layout(instr->operation.parameters.type.type_id,
                                          instr->operation.parameters.type.type_index, &size, &alignment,
                                          state->hooks->payload));
+    size = MAX(size, 1);
 
     kefir_size_t candidate_offset = 0;
     struct kefir_hashtree_node *node = NULL;

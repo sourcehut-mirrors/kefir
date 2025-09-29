@@ -739,6 +739,7 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
         return res;
     });
 
+    total_size = MAX(total_size, 1);
     if (param.offset < total_size) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ZERODATA(&codegen->xasmgen, total_size - param.offset));
     }
@@ -772,6 +773,7 @@ kefir_result_t kefir_codegen_amd64_static_data_uninit(struct kefir_mem *mem, str
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, "%s", identifier));
     }
 
+    total_size = MAX(total_size, 1);
     if (total_size > 0) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_UNINITDATA(&codegen->xasmgen, total_size));
     }

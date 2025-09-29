@@ -1,0 +1,30 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global s0
+.type s0, @object
+.global get
+.type get, @function
+
+.section .text
+__kefir_text_section_begin:
+get:
+__kefir_text_func_get_begin:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_get_label0:
+    lea s0a(%rip), %rax
+    pop %rbp
+    ret
+__kefir_text_func_get_end:
+
+__kefir_text_section_end:
+
+.section .bss
+s0:
+    .skip 1
+
+.section .bss
+s0a:
+    .skip 1
+

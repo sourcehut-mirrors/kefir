@@ -160,6 +160,7 @@ kefir_result_t kefir_codegen_amd64_zero_memory(struct kefir_mem *mem, struct kef
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(target_vreg != KEFIR_ASMCMP_INDEX_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid target virtual register"));
+    REQUIRE(size > 0, KEFIR_OK);
 
     if (size <= COPY_UNROLL_LIMIT) {
         REQUIRE_OK(unrolled_zero(mem, function, target_vreg, size));
