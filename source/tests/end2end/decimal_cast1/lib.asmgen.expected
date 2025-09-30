@@ -1,0 +1,326 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global d32_to_d64
+.type d32_to_d64, @function
+.global d32_to_f32
+.type d32_to_f32, @function
+.global d32_to_f64
+.type d32_to_f64, @function
+.global d32_to_f80
+.type d32_to_f80, @function
+.global d64_to_d32
+.type d64_to_d32, @function
+.global d64_to_f32
+.type d64_to_f32, @function
+.global d64_to_f64
+.type d64_to_f64, @function
+.global d64_to_f80
+.type d64_to_f80, @function
+.global f32_to_d32
+.type f32_to_d32, @function
+.global f32_to_d64
+.type f32_to_d64, @function
+.global f64_to_d32
+.type f64_to_d32, @function
+.global f64_to_d64
+.type f64_to_d64, @function
+.global f80_to_d32
+.type f80_to_d32, @function
+.global f80_to_d64
+.type f80_to_d64, @function
+.global d128_to_d32
+.type d128_to_d32, @function
+.global d128_to_d64
+.type d128_to_d64, @function
+.global d128_to_f32
+.type d128_to_f32, @function
+.global d128_to_f64
+.type d128_to_f64, @function
+.global d128_to_f80
+.type d128_to_f80, @function
+.global d32_to_d128
+.type d32_to_d128, @function
+.global d64_to_d128
+.type d64_to_d128, @function
+.global f32_to_d128
+.type f32_to_d128, @function
+.global f64_to_d128
+.type f64_to_d128, @function
+.global f80_to_d128
+.type f80_to_d128, @function
+.extern __bid_extendddtd2
+.extern __bid_extendsddd2
+.extern __bid_extendsdtd2
+.extern __bid_extendddxf
+.extern __bid_extenddfdd
+.extern __bid_extenddftd
+.extern __bid_extendsddf
+.extern __bid_extendsdxf
+.extern __bid_extendsfdd
+.extern __bid_extendsfsd
+.extern __bid_extendsftd
+.extern __bid_extendxftd
+.extern __bid_truncddsd2
+.extern __bid_trunctddd2
+.extern __bid_trunctdsd2
+.extern __bid_truncdddf
+.extern __bid_truncddsf
+.extern __bid_truncdfsd
+.extern __bid_truncsdsf
+.extern __bid_trunctddf
+.extern __bid_trunctdsf
+.extern __bid_trunctdxf
+.extern __bid_truncxfdd
+.extern __bid_truncxfsd
+
+.section .text
+__kefir_text_section_begin:
+d32_to_d64:
+__kefir_text_func_d32_to_d64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendsddd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d32_to_d64_end:
+
+d32_to_f32:
+__kefir_text_func_d32_to_f32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_truncsdsf@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d32_to_f32_end:
+
+d32_to_f64:
+__kefir_text_func_d32_to_f64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendsddf@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d32_to_f64_end:
+
+d32_to_f80:
+__kefir_text_func_d32_to_f80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendsdxf@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d32_to_f80_end:
+
+d64_to_d32:
+__kefir_text_func_d64_to_d32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_truncddsd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d64_to_d32_end:
+
+d64_to_f32:
+__kefir_text_func_d64_to_f32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_truncddsf@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d64_to_f32_end:
+
+d64_to_f64:
+__kefir_text_func_d64_to_f64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_truncdddf@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d64_to_f64_end:
+
+d64_to_f80:
+__kefir_text_func_d64_to_f80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendddxf@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d64_to_f80_end:
+
+f32_to_d32:
+__kefir_text_func_f32_to_d32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendsfsd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_f32_to_d32_end:
+
+f32_to_d64:
+__kefir_text_func_f32_to_d64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendsfdd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_f32_to_d64_end:
+
+f64_to_d32:
+__kefir_text_func_f64_to_d32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_truncdfsd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_f64_to_d32_end:
+
+f64_to_d64:
+__kefir_text_func_f64_to_d64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extenddfdd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_f64_to_d64_end:
+
+f80_to_d32:
+__kefir_text_func_f80_to_d32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fstpt -32(%rbp)
+    sub $16, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    call __bid_truncxfsd@PLT
+    add $16, %rsp
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_f80_to_d32_end:
+
+f80_to_d64:
+__kefir_text_func_f80_to_d64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fstpt -32(%rbp)
+    sub $16, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    call __bid_truncxfdd@PLT
+    add $16, %rsp
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_f80_to_d64_end:
+
+d128_to_d32:
+__kefir_text_func_d128_to_d32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_trunctdsd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d128_to_d32_end:
+
+d128_to_d64:
+__kefir_text_func_d128_to_d64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_trunctddd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d128_to_d64_end:
+
+d128_to_f32:
+__kefir_text_func_d128_to_f32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_trunctdsf@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d128_to_f32_end:
+
+d128_to_f64:
+__kefir_text_func_d128_to_f64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_trunctddf@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d128_to_f64_end:
+
+d128_to_f80:
+__kefir_text_func_d128_to_f80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_trunctdxf@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d128_to_f80_end:
+
+d32_to_d128:
+__kefir_text_func_d32_to_d128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendsdtd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d32_to_d128_end:
+
+d64_to_d128:
+__kefir_text_func_d64_to_d128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendddtd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d64_to_d128_end:
+
+f32_to_d128:
+__kefir_text_func_f32_to_d128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendsftd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_f32_to_d128_end:
+
+f64_to_d128:
+__kefir_text_func_f64_to_d128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extenddftd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_f64_to_d128_end:
+
+f80_to_d128:
+__kefir_text_func_f80_to_d128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fstpt -32(%rbp)
+    sub $16, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    call __bid_extendxftd@PLT
+    add $16, %rsp
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_f80_to_d128_end:
+
+__kefir_text_section_end:
+

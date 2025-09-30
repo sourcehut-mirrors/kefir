@@ -441,6 +441,30 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_LESS) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_LESS) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_LESS) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_TO_FLOAT32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_TO_FLOAT64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_TO_LONG_DOUBLE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_TO_FLOAT32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_TO_FLOAT64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_TO_LONG_DOUBLE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_TO_FLOAT32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_TO_FLOAT64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_TO_LONG_DOUBLE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL128) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -653,6 +677,37 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define LIBGCC_BID_LTSD3 "__bid_ltsd2"
 #define LIBGCC_BID_LTDD3 "__bid_ltdd2"
 #define LIBGCC_BID_LTTD3 "__bid_lttd2"
+// Decimal to decimal
+#define LIBGCC_BID_EXTENDSDDD2 "__bid_extendsddd2"
+#define LIBGCC_BID_EXTENDSDTD2 "__bid_extendsdtd2"
+#define LIBGCC_BID_EXTENDDDTD2 "__bid_extendddtd2"
+#define LIBGCC_BID_TRUNCDDSD2 "__bid_truncddsd2"
+#define LIBGCC_BID_TRUNCTDSD2 "__bid_trunctdsd2"
+#define LIBGCC_BID_TRUNCTDDD2 "__bid_trunctddd2"
+// Decimal32 to ...
+#define LIBGCC_BID_TRUNCSDSF "__bid_truncsdsf"
+#define LIBGCC_BID_EXTENDSDDF "__bid_extendsddf"
+#define LIBGCC_BID_EXTENDSDXF "__bid_extendsdxf"
+// Decimal64 to ...
+#define LIBGCC_BID_TRUNCDDSF "__bid_truncddsf"
+#define LIBGCC_BID_TRUNCDDDF "__bid_truncdddf"
+#define LIBGCC_BID_EXTENDDDXF "__bid_extendddxf"
+// Decimal128 to ...
+#define LIBGCC_BID_TRUNCTDSF "__bid_trunctdsf"
+#define LIBGCC_BID_TRUNCTDDF "__bid_trunctddf"
+#define LIBGCC_BID_TRUNCTDXF "__bid_trunctdxf"
+// Decimal32 from ...
+#define LIBGCC_BID_EXTENDSFSD "__bid_extendsfsd"
+#define LIBGCC_BID_TRUNCDFSD "__bid_truncdfsd"
+#define LIBGCC_BID_TRUNCXFSD "__bid_truncxfsd"
+// Decimal64 from ...
+#define LIBGCC_BID_EXTENDSFDD "__bid_extendsfdd"
+#define LIBGCC_BID_EXTENDDFDD "__bid_extenddfdd"
+#define LIBGCC_BID_TRUNCXFDD "__bid_truncxfdd"
+// Decimal128 from ...
+#define LIBGCC_BID_EXTENDSFTD "__bid_extendsftd"
+#define LIBGCC_BID_EXTENDDFTD "__bid_extenddftd"
+#define LIBGCC_BID_EXTENDXFTD "__bid_extendxftd"
 
 #define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||                                           \

@@ -451,10 +451,29 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
                                                            normalized_type->bitprecise.width));
                 break;
 
-            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
-            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
-            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32: {
+                kefir_dfp_decimal32_t d32 = kefir_dfp_decimal32_from_int64(diff);
+                REQUIRE(KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(normalized_type),
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type"));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_DECIMAL32_CONST, d32.uvalue, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_ADD, 0));
+            } break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64: {
+                kefir_dfp_decimal64_t d64 = kefir_dfp_decimal64_from_int64(diff);
+                REQUIRE(KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(normalized_type),
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type"));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_CONST, d64.uvalue));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_ADD, 0));
+            } break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128: {
+                kefir_dfp_decimal128_t d128 = kefir_dfp_decimal128_from_int64(diff);
+                REQUIRE(KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(normalized_type),
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type"));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST, d128.uvalue[0], d128.uvalue[1]));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_ADD, 0));
+            } break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");

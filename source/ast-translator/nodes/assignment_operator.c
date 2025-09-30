@@ -181,9 +181,16 @@ static kefir_result_t generate_multiplication_op(const struct generate_op_parame
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IR_OPCODE_DECIMAL32_MUL, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IR_OPCODE_DECIMAL64_MUL, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IR_OPCODE_DECIMAL128_MUL, 0));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -407,9 +414,16 @@ static kefir_result_t generate_division_op(const struct generate_op_parameters *
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_DECIMAL32_DIV, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_DECIMAL64_DIV, 0));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_DECIMAL128_DIV, 0));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -812,9 +826,16 @@ static kefir_result_t generate_add(const struct generate_op_parameters *params) 
                 break;
 
             case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_DECIMAL32_ADD, 0));
+                break;
+
             case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_DECIMAL64_ADD, 0));
+                break;
+
             case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_DECIMAL128_ADD, 0));
+                break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -910,9 +931,16 @@ static kefir_result_t generate_sub(const struct generate_op_parameters *params) 
                 break;
 
             case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_DECIMAL32_SUB, 0));
+                break;
+
             case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_DECIMAL64_SUB, 0));
+                break;
+
             case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Operations on decimal floating-point types are not supported yet");
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_DECIMAL128_SUB, 0));
+                break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");

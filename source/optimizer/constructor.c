@@ -856,6 +856,31 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(complex_float64_neg, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_NEG)
             UNARY_OP(complex_long_double_neg, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_NEG)
 
+            UNARY_OP(decimal32_to_decimal64, KEFIR_IR_OPCODE_DECIMAL32_TO_DECIMAL64);
+            UNARY_OP(decimal32_to_decimal128, KEFIR_IR_OPCODE_DECIMAL32_TO_DECIMAL128);
+            UNARY_OP(decimal64_to_decimal32, KEFIR_IR_OPCODE_DECIMAL64_TO_DECIMAL32);
+            UNARY_OP(decimal64_to_decimal128, KEFIR_IR_OPCODE_DECIMAL64_TO_DECIMAL128);
+            UNARY_OP(decimal128_to_decimal32, KEFIR_IR_OPCODE_DECIMAL128_TO_DECIMAL32);
+            UNARY_OP(decimal128_to_decimal64, KEFIR_IR_OPCODE_DECIMAL128_TO_DECIMAL64);
+            UNARY_OP(decimal32_to_float32, KEFIR_IR_OPCODE_DECIMAL32_TO_FLOAT32);
+            UNARY_OP(decimal32_to_float64, KEFIR_IR_OPCODE_DECIMAL32_TO_FLOAT64);
+            UNARY_OP(decimal32_to_long_double, KEFIR_IR_OPCODE_DECIMAL32_TO_LONG_DOUBLE);
+            UNARY_OP(decimal64_to_float32, KEFIR_IR_OPCODE_DECIMAL64_TO_FLOAT32);
+            UNARY_OP(decimal64_to_float64, KEFIR_IR_OPCODE_DECIMAL64_TO_FLOAT64);
+            UNARY_OP(decimal64_to_long_double, KEFIR_IR_OPCODE_DECIMAL64_TO_LONG_DOUBLE);
+            UNARY_OP(decimal128_to_float32, KEFIR_IR_OPCODE_DECIMAL128_TO_FLOAT32);
+            UNARY_OP(decimal128_to_float64, KEFIR_IR_OPCODE_DECIMAL128_TO_FLOAT64);
+            UNARY_OP(decimal128_to_long_double, KEFIR_IR_OPCODE_DECIMAL128_TO_LONG_DOUBLE);
+            UNARY_OP(float32_to_decimal32, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL32);
+            UNARY_OP(float64_to_decimal32, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL32);
+            UNARY_OP(long_double_to_decimal32, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_DECIMAL32);
+            UNARY_OP(float32_to_decimal64, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL64);
+            UNARY_OP(float64_to_decimal64, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL64);
+            UNARY_OP(long_double_to_decimal64, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_DECIMAL64);
+            UNARY_OP(float32_to_decimal128, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL128);
+            UNARY_OP(float64_to_decimal128, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL128);
+            UNARY_OP(long_double_to_decimal128, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_DECIMAL128);
+
 #undef UNARY_OP
 
 #define BITINT_UNARY_OP(_id, _opcode)                                                                                  \
