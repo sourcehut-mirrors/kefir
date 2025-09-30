@@ -465,6 +465,18 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL128) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL128) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_TO_INT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_TO_UINT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_TO_INT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_TO_UINT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_TO_INT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_TO_UINT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_UINT_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_UINT_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_UINT_TO_DECIMAL128) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -708,6 +720,22 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define LIBGCC_BID_EXTENDSFTD "__bid_extendsftd"
 #define LIBGCC_BID_EXTENDDFTD "__bid_extenddftd"
 #define LIBGCC_BID_EXTENDXFTD "__bid_extendxftd"
+// ... to long
+#define LIBGCC_BID_FIXSDDI "__bid_fixsddi"
+#define LIBGCC_BID_FIXDDDI "__bid_fixdddi"
+#define LIBGCC_BID_FIXTDDI "__bid_fixtddi"
+// ... to unsigned long
+#define LIBGCC_BID_FIXUNSSDDI "__bid_fixunssddi"
+#define LIBGCC_BID_FIXUNSDDDI "__bid_fixunsdddi"
+#define LIBGCC_BID_FIXUNSTDDI "__bid_fixunstddi"
+// long from ...
+#define LIBGCC_BID_FLOATDISD "__bid_floatdisd"
+#define LIBGCC_BID_FLOATDIDD "__bid_floatdidd"
+#define LIBGCC_BID_FLOATDITD "__bid_floatditd"
+// unsigned  long from ...
+#define LIBGCC_BID_FLOATUNSDISD "__bid_floatunsdisd"
+#define LIBGCC_BID_FLOATUNSDIDD "__bid_floatunsdidd"
+#define LIBGCC_BID_FLOATUNSDITD "__bid_floatunsditd"
 
 #define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||                                           \

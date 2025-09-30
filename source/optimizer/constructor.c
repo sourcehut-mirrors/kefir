@@ -881,6 +881,19 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(float64_to_decimal128, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL128);
             UNARY_OP(long_double_to_decimal128, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_DECIMAL128);
 
+            UNARY_OP(decimal32_to_int, KEFIR_IR_OPCODE_DECIMAL32_TO_INT);
+            UNARY_OP(decimal32_to_uint, KEFIR_IR_OPCODE_DECIMAL32_TO_UINT);
+            UNARY_OP(decimal64_to_int, KEFIR_IR_OPCODE_DECIMAL64_TO_INT);
+            UNARY_OP(decimal64_to_uint, KEFIR_IR_OPCODE_DECIMAL64_TO_UINT);
+            UNARY_OP(decimal128_to_int, KEFIR_IR_OPCODE_DECIMAL128_TO_INT);
+            UNARY_OP(decimal128_to_uint, KEFIR_IR_OPCODE_DECIMAL128_TO_UINT);
+            UNARY_OP(int_to_decimal32, KEFIR_IR_OPCODE_INT_TO_DECIMAL32);
+            UNARY_OP(uint_to_decimal32, KEFIR_IR_OPCODE_UINT_TO_DECIMAL32);
+            UNARY_OP(int_to_decimal64, KEFIR_IR_OPCODE_INT_TO_DECIMAL64);
+            UNARY_OP(uint_to_decimal64, KEFIR_IR_OPCODE_UINT_TO_DECIMAL64);
+            UNARY_OP(int_to_decimal128, KEFIR_IR_OPCODE_INT_TO_DECIMAL128);
+            UNARY_OP(uint_to_decimal128, KEFIR_IR_OPCODE_UINT_TO_DECIMAL128);
+
 #undef UNARY_OP
 
 #define BITINT_UNARY_OP(_id, _opcode)                                                                                  \

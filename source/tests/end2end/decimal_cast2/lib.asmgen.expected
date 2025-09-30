@@ -1,0 +1,215 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global d32_to_int
+.type d32_to_int, @function
+.global d64_to_int
+.type d64_to_int, @function
+.global int_to_d32
+.type int_to_d32, @function
+.global int_to_d64
+.type int_to_d64, @function
+.extern __bid_eqdd2
+.extern __bid_eqsd2
+.extern __bid_eqtd2
+.global d128_to_int
+.type d128_to_int, @function
+.global d32_to_bool
+.type d32_to_bool, @function
+.global d32_to_uint
+.type d32_to_uint, @function
+.global d64_to_bool
+.type d64_to_bool, @function
+.global d64_to_uint
+.type d64_to_uint, @function
+.global int_to_d128
+.type int_to_d128, @function
+.global uint_to_d32
+.type uint_to_d32, @function
+.global uint_to_d64
+.type uint_to_d64, @function
+.global d128_to_bool
+.type d128_to_bool, @function
+.global d128_to_uint
+.type d128_to_uint, @function
+.extern __bid_fixdddi
+.extern __bid_fixsddi
+.extern __bid_fixtddi
+.global uint_to_d128
+.type uint_to_d128, @function
+.extern __bid_fixunsdddi
+.extern __bid_fixunssddi
+.extern __bid_fixunstddi
+.extern __bid_floatdidd
+.extern __bid_floatdisd
+.extern __bid_floatditd
+.extern __bid_floatunsdidd
+.extern __bid_floatunsdisd
+.extern __bid_floatunsditd
+
+.section .text
+__kefir_text_section_begin:
+d32_to_int:
+__kefir_text_func_d32_to_int_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_fixsddi@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d32_to_int_end:
+
+d64_to_int:
+__kefir_text_func_d64_to_int_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_fixdddi@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d64_to_int_end:
+
+int_to_d32:
+__kefir_text_func_int_to_d32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_floatdisd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_int_to_d32_end:
+
+int_to_d64:
+__kefir_text_func_int_to_d64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_floatdidd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_int_to_d64_end:
+
+d128_to_int:
+__kefir_text_func_d128_to_int_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_fixtddi@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d128_to_int_end:
+
+d32_to_bool:
+__kefir_text_func_d32_to_bool_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movd __kefir_func_d32_to_bool_label1(%rip), %xmm1
+    call __bid_eqsd2@PLT
+    test %eax, %eax
+    setne %al
+    movzx %al, %rax
+    pop %rbp
+    ret
+__kefir_text_func_d32_to_bool_end:
+.section .rodata
+    .align 4
+__kefir_func_d32_to_bool_label1:
+    .long 847249408
+.section .text
+
+d32_to_uint:
+__kefir_text_func_d32_to_uint_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_fixunssddi@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d32_to_uint_end:
+
+d64_to_bool:
+__kefir_text_func_d64_to_bool_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movq __kefir_func_d64_to_bool_label1(%rip), %xmm1
+    call __bid_eqdd2@PLT
+    test %eax, %eax
+    setne %al
+    movzx %al, %rax
+    pop %rbp
+    ret
+__kefir_text_func_d64_to_bool_end:
+.section .rodata
+    .align 8
+__kefir_func_d64_to_bool_label1:
+    .quad 3584865303386914816
+.section .text
+
+d64_to_uint:
+__kefir_text_func_d64_to_uint_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_fixunsdddi@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d64_to_uint_end:
+
+int_to_d128:
+__kefir_text_func_int_to_d128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_floatditd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_int_to_d128_end:
+
+uint_to_d32:
+__kefir_text_func_uint_to_d32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_floatunsdisd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_uint_to_d32_end:
+
+uint_to_d64:
+__kefir_text_func_uint_to_d64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_floatunsdidd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_uint_to_d64_end:
+
+d128_to_bool:
+__kefir_text_func_d128_to_bool_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movdqu __kefir_func_d128_to_bool_label1(%rip), %xmm1
+    call __bid_eqtd2@PLT
+    test %eax, %eax
+    setne %al
+    movzx %al, %rax
+    pop %rbp
+    ret
+__kefir_text_func_d128_to_bool_end:
+.section .rodata
+    .align 16
+__kefir_func_d128_to_bool_label1:
+    .quad 0, 3476778912330022912
+.section .text
+
+d128_to_uint:
+__kefir_text_func_d128_to_uint_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_fixunstddi@PLT
+    pop %rbp
+    ret
+__kefir_text_func_d128_to_uint_end:
+
+uint_to_d128:
+__kefir_text_func_uint_to_d128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_floatunsditd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_uint_to_d128_end:
+
+__kefir_text_section_end:
+

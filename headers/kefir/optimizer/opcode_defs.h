@@ -406,7 +406,19 @@
     OPCODE(FLOAT64_TO_DECIMAL128, "float64_to_decimal128", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_DECIMAL32, "long_double_to_decimal32", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_DECIMAL64, "long_double_to_decimal64", ref1) SEPARATOR \
-    OPCODE(LONG_DOUBLE_TO_DECIMAL128, "long_double_to_decimal128", ref1)
+    OPCODE(LONG_DOUBLE_TO_DECIMAL128, "long_double_to_decimal128", ref1) SEPARATOR \
+    OPCODE(DECIMAL32_TO_INT, "decimal32_to_int", ref1) SEPARATOR \
+    OPCODE(DECIMAL32_TO_UINT, "decimal32_to_uint", ref1) SEPARATOR \
+    OPCODE(DECIMAL64_TO_INT, "decimal64_to_int", ref1) SEPARATOR \
+    OPCODE(DECIMAL64_TO_UINT, "decimal64_to_uint", ref1) SEPARATOR \
+    OPCODE(DECIMAL128_TO_INT, "decimal128_to_int", ref1) SEPARATOR \
+    OPCODE(DECIMAL128_TO_UINT, "decimal128_to_uint", ref1) SEPARATOR \
+    OPCODE(INT_TO_DECIMAL32, "int_to_decimal32", ref1) SEPARATOR \
+    OPCODE(UINT_TO_DECIMAL32, "uint_to_decimal32", ref1) SEPARATOR \
+    OPCODE(INT_TO_DECIMAL64, "int_to_decimal64", ref1) SEPARATOR \
+    OPCODE(UINT_TO_DECIMAL64, "uint_to_decimal64", ref1) SEPARATOR \
+    OPCODE(INT_TO_DECIMAL128, "int_to_decimal128", ref1) SEPARATOR \
+    OPCODE(UINT_TO_DECIMAL128, "uint_to_decimal128", ref1)
 
 // clang-format on
 
