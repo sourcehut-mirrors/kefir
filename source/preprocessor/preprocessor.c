@@ -873,7 +873,8 @@ static kefir_result_t evaluate_pp_tokens_as_bool(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating point conversion to boolean is not implemented yet");
+            *result = kefir_dfp_decimal128_to_bool(expr_value.decimal);
+            break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
             *result = expr_value.complex_floating_point.real != 0 || expr_value.complex_floating_point.imaginary != 0;
