@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__) && !defined(__NetBSD__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__) && !defined(__NetBSD__) && __GNUC__ >= 14
 #pragma GCC diagnostic ignored "-Wpedantic"
 #define ENABLE_DECIMAL_TEST
 _Bool decimal32_eq(_Decimal32 a, _Decimal32 b) {

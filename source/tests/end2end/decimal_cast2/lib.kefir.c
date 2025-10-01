@@ -20,7 +20,7 @@
 
 #line __LINE__ "decimal_cast2"
 
-#ifdef __KEFIRCC_DECIMAL_SUPPORT__
+#if defined(__KEFIRCC_DECIMAL_SUPPORT__) && defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)
 _Decimal32 int_to_d32(long x) {
     return x;
 }
