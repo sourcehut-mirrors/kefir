@@ -938,6 +938,18 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BITINT_UNARY_OP(bitint_builtin_clrsb, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLRSB)
             BITINT_UNARY_OP(bitint_builtin_popcount, KEFIR_IR_OPCODE_BITINT_BUILTIN_POPCOUNT)
             BITINT_UNARY_OP(bitint_builtin_parity, KEFIR_IR_OPCODE_BITINT_BUILTIN_PARITY)
+            BITINT_UNARY_OP(decimal32_to_bitint_signed, KEFIR_IR_OPCODE_DECIMAL32_TO_BITINT_SIGNED)
+            BITINT_UNARY_OP(decimal32_to_bitint_unsigned, KEFIR_IR_OPCODE_DECIMAL32_TO_BITINT_UNSIGNED)
+            BITINT_UNARY_OP(decimal64_to_bitint_signed, KEFIR_IR_OPCODE_DECIMAL64_TO_BITINT_SIGNED)
+            BITINT_UNARY_OP(decimal64_to_bitint_unsigned, KEFIR_IR_OPCODE_DECIMAL64_TO_BITINT_UNSIGNED)
+            BITINT_UNARY_OP(decimal128_to_bitint_signed, KEFIR_IR_OPCODE_DECIMAL128_TO_BITINT_SIGNED)
+            BITINT_UNARY_OP(decimal128_to_bitint_unsigned, KEFIR_IR_OPCODE_DECIMAL128_TO_BITINT_UNSIGNED)
+            BITINT_UNARY_OP(bitint_signed_to_decimal32, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_DECIMAL32)
+            BITINT_UNARY_OP(bitint_unsigned_to_decimal32, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_DECIMAL32)
+            BITINT_UNARY_OP(bitint_signed_to_decimal64, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_DECIMAL64)
+            BITINT_UNARY_OP(bitint_unsigned_to_decimal64, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_DECIMAL64)
+            BITINT_UNARY_OP(bitint_signed_to_decimal128, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_DECIMAL128)
+            BITINT_UNARY_OP(bitint_unsigned_to_decimal128, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_DECIMAL128)
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP

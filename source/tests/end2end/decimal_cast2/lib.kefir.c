@@ -80,4 +80,100 @@ _Bool d64_to_bool(_Decimal64 x) {
 _Bool d128_to_bool(_Decimal128 x) {
     return x;
 }
+
+_Decimal32 bitint24_to_d32(_BitInt(24) x) {
+    return x;
+}
+
+_Decimal32 bitint180_to_d32(_BitInt(180) x) {
+    return x;
+}
+
+_Decimal64 bitint24_to_d64(_BitInt(24) x) {
+    return x;
+}
+
+_Decimal64 bitint180_to_d64(_BitInt(180) x) {
+    return x;
+}
+
+_Decimal128 bitint24_to_d128(_BitInt(24) x) {
+    return x;
+}
+
+_Decimal128 bitint180_to_d128(_BitInt(180) x) {
+    return x;
+}
+
+_Decimal32 ubitint24_to_d32(unsigned _BitInt(24) x) {
+    return x;
+}
+
+_Decimal32 ubitint180_to_d32(unsigned _BitInt(180) x) {
+    return x;
+}
+
+_Decimal64 ubitint24_to_d64(unsigned _BitInt(24) x) {
+    return x;
+}
+
+_Decimal64 ubitint180_to_d64(unsigned _BitInt(180) x) {
+    return x;
+}
+
+_Decimal128 ubitint24_to_d128(unsigned _BitInt(24) x) {
+    return x;
+}
+
+_Decimal128 ubitint180_to_d128(unsigned _BitInt(180) x) {
+    return x;
+}
+
+_BitInt(24) d32_to_bitint24(_Decimal32 x) {
+    return x;
+}
+
+unsigned _BitInt(24) d32_to_ubitint24(_Decimal32 x) {
+    return x;
+}
+
+_BitInt(24) d64_to_bitint24(_Decimal64 x) {
+    return x;
+}
+
+unsigned _BitInt(24) d64_to_ubitint24(_Decimal64 x) {
+    return x;
+}
+
+_BitInt(24) d128_to_bitint24(_Decimal128 x) {
+    return x;
+}
+
+unsigned _BitInt(24) d128_to_ubitint24(_Decimal128 x) {
+    return x;
+}
+
+_BitInt(180) d32_to_bitint180(_Decimal32 x) {
+    return x;
+}
+
+unsigned _BitInt(180) d32_to_ubitint180(_Decimal32 x) {
+    return x;
+}
+
+_BitInt(180) d64_to_bitint180(_Decimal64 x) {
+    return x;
+}
+
+unsigned _BitInt(180) d64_to_ubitint180(_Decimal64 x) {
+    return x;
+}
+
+_BitInt(180) d128_to_bitint180(_Decimal128 x) {
+    return x;
+}
+
+unsigned _BitInt(180) d128_to_ubitint180(_Decimal128 x) {
+    return x;
+}
 #endif

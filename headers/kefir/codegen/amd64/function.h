@@ -477,6 +477,18 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(error_lowered, KEFIR_OPT_OPCODE_UINT_TO_DECIMAL64) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_INT_TO_DECIMAL128) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_UINT_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_TO_BITINT_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_TO_BITINT_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_TO_BITINT_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_TO_BITINT_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_TO_BITINT_SIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_TO_BITINT_UNSIGNED) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL128) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -736,6 +748,14 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define LIBGCC_BID_FLOATUNSDISD "__bid_floatunsdisd"
 #define LIBGCC_BID_FLOATUNSDIDD "__bid_floatunsdidd"
 #define LIBGCC_BID_FLOATUNSDITD "__bid_floatunsditd"
+
+#define LIBGCC_BID_FLOATBITINTSD "__bid_floatbitintsd"
+#define LIBGCC_BID_FLOATBITINTDD "__bid_floatbitintdd"
+#define LIBGCC_BID_FLOATBITINTTD "__bid_floatbitinttd"
+
+#define LIBGCC_BID_FIXSDBITINT "__bid_fixsdbitint"
+#define LIBGCC_BID_FIXDDBITINT "__bid_fixddbitint"
+#define LIBGCC_BID_FIXTDBITINT "__bid_fixtdbitint"
 
 #define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||                                           \

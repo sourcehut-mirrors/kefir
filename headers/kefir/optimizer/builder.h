@@ -331,6 +331,18 @@ BITINT_UNARY_OP(double_to_bitint_unsigned);
 BITINT_UNARY_OP(long_double_to_bitint_signed);
 BITINT_UNARY_OP(long_double_to_bitint_unsigned);
 BITINT_UNARY_OP(bitint_to_bool);
+BITINT_UNARY_OP(decimal32_to_bitint_signed);
+BITINT_UNARY_OP(decimal32_to_bitint_unsigned);
+BITINT_UNARY_OP(decimal64_to_bitint_signed);
+BITINT_UNARY_OP(decimal64_to_bitint_unsigned);
+BITINT_UNARY_OP(decimal128_to_bitint_signed);
+BITINT_UNARY_OP(decimal128_to_bitint_unsigned);
+BITINT_UNARY_OP(bitint_signed_to_decimal32);
+BITINT_UNARY_OP(bitint_unsigned_to_decimal32);
+BITINT_UNARY_OP(bitint_signed_to_decimal64);
+BITINT_UNARY_OP(bitint_unsigned_to_decimal64);
+BITINT_UNARY_OP(bitint_signed_to_decimal128);
+BITINT_UNARY_OP(bitint_unsigned_to_decimal128);
 
 BITINT_UNARY_OP(bitint_negate);
 BITINT_UNARY_OP(bitint_invert);

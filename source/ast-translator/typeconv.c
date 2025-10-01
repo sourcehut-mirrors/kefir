@@ -195,9 +195,9 @@ static kefir_result_t cast_to_decimal32(struct kefir_mem *mem, struct kefir_ir_m
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
 
         if (origin_sign) {
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integral casts to decimal floating-point are not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_DECIMAL32, origin->bitprecise.width));
         } else {
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integral casts to decimal floating-point are not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_DECIMAL32, origin->bitprecise.width));
         }
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
@@ -241,9 +241,9 @@ static kefir_result_t cast_to_decimal64(struct kefir_mem *mem, struct kefir_ir_m
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
 
         if (origin_sign) {
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integral casts to decimal floating-point are not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_DECIMAL64, origin->bitprecise.width));
         } else {
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integral casts to decimal floating-point are not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_DECIMAL64, origin->bitprecise.width));
         }
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
@@ -287,9 +287,9 @@ static kefir_result_t cast_to_decimal128(struct kefir_mem *mem, struct kefir_ir_
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
 
         if (origin_sign) {
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integral casts to decimal floating-point are not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_DECIMAL128, origin->bitprecise.width));
         } else {
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integral casts to decimal floating-point are not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_DECIMAL128, origin->bitprecise.width));
         }
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
@@ -510,22 +510,46 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_UINT, 0));
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32) {
-        if (target_sign) {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_INT, 0));
+        if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
+            if (target_sign) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_BITINT_SIGNED, target->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_BITINT_UNSIGNED, target->bitprecise.width));
+            }
         } else {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_UINT, 0));
+            if (target_sign) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_INT, 0));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_UINT, 0));
+            }
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64) {
-        if (target_sign) {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_INT, 0));
+        if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
+            if (target_sign) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_BITINT_SIGNED, target->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_BITINT_UNSIGNED, target->bitprecise.width));
+            }
         } else {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_UINT, 0));
+            if (target_sign) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_INT, 0));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_UINT, 0));
+            }
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
-        if (target_sign) {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_INT, 0));
+        if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
+            if (target_sign) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_BITINT_SIGNED, target->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_BITINT_UNSIGNED, target->bitprecise.width));
+            }
         } else {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_UINT, 0));
+            if (target_sign) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_INT, 0));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_UINT, 0));
+            }
         }
     }
 

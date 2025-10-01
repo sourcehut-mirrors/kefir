@@ -418,7 +418,19 @@
     OPCODE(INT_TO_DECIMAL64, "int_to_decimal64", ref1) SEPARATOR \
     OPCODE(UINT_TO_DECIMAL64, "uint_to_decimal64", ref1) SEPARATOR \
     OPCODE(INT_TO_DECIMAL128, "int_to_decimal128", ref1) SEPARATOR \
-    OPCODE(UINT_TO_DECIMAL128, "uint_to_decimal128", ref1)
+    OPCODE(UINT_TO_DECIMAL128, "uint_to_decimal128", ref1) SEPARATOR \
+    OPCODE(DECIMAL32_TO_BITINT_SIGNED, "decimal32_to_bitint_signed", bitint_ref1) SEPARATOR \
+    OPCODE(DECIMAL32_TO_BITINT_UNSIGNED, "decimal32_to_bitint_unsigned", bitint_ref1) SEPARATOR \
+    OPCODE(DECIMAL64_TO_BITINT_SIGNED, "decimal64_to_bitint_signed", bitint_ref1) SEPARATOR \
+    OPCODE(DECIMAL64_TO_BITINT_UNSIGNED, "decimal64_to_bitint_unsigned", bitint_ref1) SEPARATOR \
+    OPCODE(DECIMAL128_TO_BITINT_SIGNED, "decimal128_to_bitint_signed", bitint_ref1) SEPARATOR \
+    OPCODE(DECIMAL128_TO_BITINT_UNSIGNED, "decimal128_to_bitint_unsigned", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_SIGNED_TO_DECIMAL32, "bitint_signed_to_decimal32", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_TO_DECIMAL32, "bitint_unsigned_to_decimal32", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_SIGNED_TO_DECIMAL64, "bitint_signed_to_decimal64", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_TO_DECIMAL64, "bitint_unsigned_to_decimal64", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_SIGNED_TO_DECIMAL128, "bitint_signed_to_decimal128", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_TO_DECIMAL128, "bitint_unsigned_to_decimal128", bitint_ref1)
 
 // clang-format on
 
