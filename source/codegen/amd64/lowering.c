@@ -4005,6 +4005,65 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
 #undef DEC_TO_BITINT
 
+        case KEFIR_OPT_OPCODE_DECIMAL32_ATOMIC_LOAD:
+            REQUIRE_OK(kefir_opt_code_builder_atomic_load32(mem, &func->code, block_id, instr->operation.parameters.refs[0], instr->operation.parameters.atomic_op.model,
+                                                            replacement_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL64_ATOMIC_LOAD:
+            REQUIRE_OK(kefir_opt_code_builder_atomic_load64(mem, &func->code, block_id, instr->operation.parameters.refs[0], instr->operation.parameters.atomic_op.model,
+                                                            replacement_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL128_ATOMIC_LOAD: {
+            kefir_opt_instruction_ref_t instr_id = instr->id;
+
+            kefir_id_t type_id;
+            struct kefir_ir_type *type = kefir_ir_module_new_type(mem, module->ir_module, 1, &type_id);
+            REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+            REQUIRE_OK(kefir_irbuilder_type_append(mem, type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+
+            kefir_opt_instruction_ref_t value_ref, copy_ref, pair_ref;
+            REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD, 2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
+            REQUIRE_OK(kefir_opt_code_builder_atomic_copy_memory_from(
+                mem, &func->code, block_id, value_ref, instr->operation.parameters.refs[0], instr->operation.parameters.atomic_op.model, type_id, 0, &copy_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, &pair_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_decimal128_load(mem, &func->code, block_id, pair_ref, &(struct kefir_opt_memory_access_flags){0}, replacement_ref));
+
+            REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, copy_ref));
+            REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
+        } break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL32_ATOMIC_STORE:
+            REQUIRE_OK(kefir_opt_code_builder_atomic_store32(mem, &func->code, block_id, instr->operation.parameters.refs[0], instr->operation.parameters.refs[1], instr->operation.parameters.atomic_op.model,
+                                                            replacement_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL64_ATOMIC_STORE:
+            REQUIRE_OK(kefir_opt_code_builder_atomic_store64(mem, &func->code, block_id, instr->operation.parameters.refs[0], instr->operation.parameters.refs[1], instr->operation.parameters.atomic_op.model,
+                                                            replacement_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL128_ATOMIC_STORE: {
+            kefir_id_t type_id;
+            struct kefir_ir_type *type = kefir_ir_module_new_type(mem, module->ir_module, 1, &type_id);
+            REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+            REQUIRE_OK(kefir_irbuilder_type_append(mem, type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+
+            kefir_opt_instruction_ref_t value_ref, copy_ref, pair_ref;
+            REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD, 2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_decimal128_store(mem, &func->code, block_id, value_ref, instr->operation.parameters.refs[1], &(struct kefir_opt_memory_access_flags){0}, &copy_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, &pair_ref));
+            REQUIRE_OK(kefir_opt_code_builder_atomic_copy_memory_to(
+                mem, &func->code, block_id, instr->operation.parameters.refs[0], pair_ref, instr->operation.parameters.atomic_op.model, type_id, 0, replacement_ref));
+        } break;
+
         default:
             // Intentionally left blank
             break;

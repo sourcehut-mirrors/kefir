@@ -1156,6 +1156,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_LOAD_OP(atomic_load_complex_float32, KEFIR_IR_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32)
             ATOMIC_LOAD_OP(atomic_load_complex_float64, KEFIR_IR_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT64)
             ATOMIC_LOAD_OP(atomic_load_complex_long_double, KEFIR_IR_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE)
+            ATOMIC_LOAD_OP(atomic_load_decimal32, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_LOAD)
+            ATOMIC_LOAD_OP(atomic_load_decimal64, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_LOAD)
+            ATOMIC_LOAD_OP(atomic_load_decimal128, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_LOAD)
 
 #undef ATOMIC_LOAD_OP
 
@@ -1185,6 +1188,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_STORE_OP(atomic_store_complex_float32, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT32)
             ATOMIC_STORE_OP(atomic_store_complex_float64, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT64)
             ATOMIC_STORE_OP(atomic_store_complex_long_double, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_LONG_DOUBLE)
+            ATOMIC_STORE_OP(atomic_store_decimal32, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_STORE)
+            ATOMIC_STORE_OP(atomic_store_decimal64, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_STORE)
+            ATOMIC_STORE_OP(atomic_store_decimal128, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_STORE)
 
 #undef ATOMIC_STORE_OP
 

@@ -532,6 +532,9 @@ ATOMIC_LOAD_OP(atomic_load_long_double);
 ATOMIC_LOAD_OP(atomic_load_complex_float32);
 ATOMIC_LOAD_OP(atomic_load_complex_float64);
 ATOMIC_LOAD_OP(atomic_load_complex_long_double);
+ATOMIC_LOAD_OP(atomic_load_decimal32);
+ATOMIC_LOAD_OP(atomic_load_decimal64);
+ATOMIC_LOAD_OP(atomic_load_decimal128);
 
 #undef ATOMIC_LOAD_OP
 
@@ -547,6 +550,9 @@ ATOMIC_STORE_OP(atomic_store_long_double);
 ATOMIC_STORE_OP(atomic_store_complex_float32);
 ATOMIC_STORE_OP(atomic_store_complex_float64);
 ATOMIC_STORE_OP(atomic_store_complex_long_double);
+ATOMIC_STORE_OP(atomic_store_decimal32);
+ATOMIC_STORE_OP(atomic_store_decimal64);
+ATOMIC_STORE_OP(atomic_store_decimal128);
 
 #undef ATOMIC_STORE_OP
 

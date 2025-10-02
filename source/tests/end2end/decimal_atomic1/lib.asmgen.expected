@@ -1,0 +1,82 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global load32
+.type load32, @function
+.global load64
+.type load64, @function
+.global load128
+.type load128, @function
+.global store32
+.type store32, @function
+.global store64
+.type store64, @function
+.global store128
+.type store128, @function
+
+.section .text
+__kefir_text_section_begin:
+load32:
+__kefir_text_func_load32_begin:
+    movl (%rdi), %eax
+    movq %rax, %xmm0
+    ret
+__kefir_text_func_load32_end:
+
+load64:
+__kefir_text_func_load64_begin:
+    movq (%rdi), %rax
+    movq %rax, %xmm0
+    ret
+__kefir_text_func_load64_end:
+
+load128:
+__kefir_text_func_load128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    leaq -16(%rbp), %rcx
+    mov %rcx, %rdx
+    mov %rdi, %rsi
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movdqu -16(%rbp), %xmm0
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_load128_end:
+
+store32:
+__kefir_text_func_store32_begin:
+    movq %xmm0, %rax
+    xchgl (%rdi), %eax
+    ret
+__kefir_text_func_store32_end:
+
+store64:
+__kefir_text_func_store64_begin:
+    movq %xmm0, %rax
+    xchgq (%rdi), %rax
+    ret
+__kefir_text_func_store64_end:
+
+store128:
+__kefir_text_func_store128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movdqu %xmm0, -16(%rbp)
+    mov %rdi, %rsi
+    leaq -16(%rbp), %rcx
+    mov %rcx, %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_store128_end:
+
+__kefir_text_section_end:
+

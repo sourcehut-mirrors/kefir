@@ -430,7 +430,13 @@
     OPCODE(BITINT_SIGNED_TO_DECIMAL64, "bitint_signed_to_decimal64", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_UNSIGNED_TO_DECIMAL64, "bitint_unsigned_to_decimal64", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_SIGNED_TO_DECIMAL128, "bitint_signed_to_decimal128", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_UNSIGNED_TO_DECIMAL128, "bitint_unsigned_to_decimal128", bitint_ref1)
+    OPCODE(BITINT_UNSIGNED_TO_DECIMAL128, "bitint_unsigned_to_decimal128", bitint_ref1) SEPARATOR \
+    OPCODE(DECIMAL32_ATOMIC_LOAD, "decimal32_atomic_load", atomic_op) SEPARATOR \
+    OPCODE(DECIMAL64_ATOMIC_LOAD, "decimal64_atomic_load", atomic_op) SEPARATOR \
+    OPCODE(DECIMAL128_ATOMIC_LOAD, "decimal128_atomic_load", atomic_op) SEPARATOR \
+    OPCODE(DECIMAL32_ATOMIC_STORE, "decimal32_atomic_store", atomic_op) SEPARATOR \
+    OPCODE(DECIMAL64_ATOMIC_STORE, "decimal64_atomic_store", atomic_op) SEPARATOR \
+    OPCODE(DECIMAL128_ATOMIC_STORE, "decimal128_atomic_store", atomic_op)
 
 // clang-format on
 
