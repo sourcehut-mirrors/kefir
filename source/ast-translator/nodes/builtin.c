@@ -1392,10 +1392,16 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL32_ISNAN, 0));
+                    break;
+
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_ISNAN, 0));
+                    break;
+
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
-                                                  "__builtin_isnan is not implemented for decimal floating-point values yet");
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL128_ISNAN, 0));
+                    break;
 
                 default:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,

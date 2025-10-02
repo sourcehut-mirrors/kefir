@@ -167,6 +167,10 @@ struct lowering_param {
         kefir_id_t libgcc_bid_fixsdbitint;
         kefir_id_t libgcc_bid_fixddbitint;
         kefir_id_t libgcc_bid_fixtdbitint;
+
+        kefir_id_t libgcc_bid_unordsd2;
+        kefir_id_t libgcc_bid_unorddd2;
+        kefir_id_t libgcc_bid_unordtd2;
     } runtime_fn;
 };
 
@@ -839,6 +843,21 @@ DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixtdbitint, LIBGCC_BID_FIXTDBITINT, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_unordsd2, LIBGCC_BIG_UNORDSD2, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_unorddd2, LIBGCC_BIG_UNORDDD2, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_bid_unordtd2, LIBGCC_BIG_UNORDTD2, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
 
 static kefir_result_t new_bitint_type(struct kefir_mem *mem, struct kefir_opt_module *module, kefir_size_t width,
@@ -4112,6 +4131,34 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 type_id, 0, replacement_ref));
         } break;
 
+#define ISNAN_IMPL(_fn) \
+        do { \
+            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0]; \
+ \
+            kefir_id_t func_decl_id = KEFIR_ID_NONE; \
+            REQUIRE_OK(_fn(mem, module, param, &func_decl_id)); \
+ \
+            kefir_opt_call_id_t call_node_id; \
+            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, \
+                                                        KEFIR_ID_NONE, &call_node_id, replacement_ref)); \
+            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_ref)); \
+            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_ref)); \
+        } while (0)
+
+        case KEFIR_OPT_OPCODE_DECIMAL32_ISNAN:
+            ISNAN_IMPL(get_libgcc_bid_unordsd2_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL64_ISNAN:
+            ISNAN_IMPL(get_libgcc_bid_unorddd2_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL128_ISNAN:
+            ISNAN_IMPL(get_libgcc_bid_unordtd2_function_decl_id);
+            break;
+
+#undef ISNAN_IMPL
+
         default:
             // Intentionally left blank
             break;
@@ -4301,7 +4348,11 @@ kefir_result_t kefir_codegen_amd64_lower_function(struct kefir_mem *mem, struct 
                                                 .libgcc_bid_floatbitinttd = KEFIR_ID_NONE,
                                                 .libgcc_bid_fixsdbitint = KEFIR_ID_NONE,
                                                 .libgcc_bid_fixddbitint = KEFIR_ID_NONE,
-                                                .libgcc_bid_fixtdbitint = KEFIR_ID_NONE}};
+                                                .libgcc_bid_fixtdbitint = KEFIR_ID_NONE,
+                                            
+                                                .libgcc_bid_unordsd2 = KEFIR_ID_NONE,
+                                                .libgcc_bid_unorddd2 = KEFIR_ID_NONE,
+                                                .libgcc_bid_unordtd2 = KEFIR_ID_NONE}};
     REQUIRE_OK(lower_function(mem, module, func, &param));
     return KEFIR_OK;
 }

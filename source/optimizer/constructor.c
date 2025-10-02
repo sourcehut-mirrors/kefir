@@ -880,6 +880,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(float32_to_decimal128, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL128);
             UNARY_OP(float64_to_decimal128, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL128);
             UNARY_OP(long_double_to_decimal128, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_DECIMAL128);
+            UNARY_OP(decimal32_isnan, KEFIR_IR_OPCODE_DECIMAL32_ISNAN);
+            UNARY_OP(decimal64_isnan, KEFIR_IR_OPCODE_DECIMAL64_ISNAN);
+            UNARY_OP(decimal128_isnan, KEFIR_IR_OPCODE_DECIMAL128_ISNAN);
 
             UNARY_OP(decimal32_to_int, KEFIR_IR_OPCODE_DECIMAL32_TO_INT);
             UNARY_OP(decimal32_to_uint, KEFIR_IR_OPCODE_DECIMAL32_TO_UINT);

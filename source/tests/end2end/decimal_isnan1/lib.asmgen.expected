@@ -1,0 +1,50 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global dec32_isnan
+.type dec32_isnan, @function
+.global dec64_isnan
+.type dec64_isnan, @function
+.extern __bid_unorddd2
+.extern __bid_unordsd2
+.extern __bid_unordtd2
+.global dec128_isnan
+.type dec128_isnan, @function
+
+.section .text
+__kefir_text_section_begin:
+dec32_isnan:
+__kefir_text_func_dec32_isnan_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movaps %xmm0, %xmm1
+    movaps %xmm1, %xmm0
+    call __bid_unordsd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_dec32_isnan_end:
+
+dec64_isnan:
+__kefir_text_func_dec64_isnan_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movaps %xmm0, %xmm1
+    movaps %xmm1, %xmm0
+    call __bid_unorddd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_dec64_isnan_end:
+
+dec128_isnan:
+__kefir_text_func_dec128_isnan_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movaps %xmm0, %xmm1
+    movaps %xmm1, %xmm0
+    call __bid_unordtd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_dec128_isnan_end:
+
+__kefir_text_section_end:
+

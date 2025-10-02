@@ -280,6 +280,9 @@ UNARY_OP(int_to_decimal64);
 UNARY_OP(uint_to_decimal64);
 UNARY_OP(int_to_decimal128);
 UNARY_OP(uint_to_decimal128);
+UNARY_OP(decimal32_isnan);
+UNARY_OP(decimal64_isnan);
+UNARY_OP(decimal128_isnan);
 
 UNARY_OP(int_to_long_double);
 UNARY_OP(uint_to_long_double);
