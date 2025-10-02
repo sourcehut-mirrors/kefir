@@ -781,9 +781,19 @@ static kefir_result_t generate_placeholder(struct do_inline_param *param, kefir_
             break;
 
         case KEFIR_IR_TYPE_DECIMAL32:
+            REQUIRE_OK(
+                kefir_opt_code_builder_decimal32_constant(param->mem, param->dst_code, block_id, kefir_dfp_decimal32_from_int64(0), instr_ref_ptr));
+            break;
+
         case KEFIR_IR_TYPE_DECIMAL64:
+            REQUIRE_OK(
+                kefir_opt_code_builder_decimal64_constant(param->mem, param->dst_code, block_id, kefir_dfp_decimal64_from_int64(0), instr_ref_ptr));
+            break;
+
         case KEFIR_IR_TYPE_DECIMAL128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Decimal floating-point placeholder generation is not supported yet");
+            REQUIRE_OK(
+                kefir_opt_code_builder_decimal128_constant(param->mem, param->dst_code, block_id, kefir_dfp_decimal128_from_int64(0), instr_ref_ptr));
+            break;
 
         default: {
             const struct kefir_opt_call_node *original_call;
