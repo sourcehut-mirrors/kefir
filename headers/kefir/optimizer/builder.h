@@ -570,6 +570,9 @@ ATOMIC_CMPXCHG_OP(atomic_compare_exchange_long_double);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange_complex_float32);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange_complex_float64);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange_complex_long_double);
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal32);
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal64);
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal128);
 
 #undef ATOMIC_CMPXCHG_OP
 

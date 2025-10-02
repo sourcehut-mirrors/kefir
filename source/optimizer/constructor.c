@@ -1219,6 +1219,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_CMPXCHG_OP(atomic_compare_exchange32, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG32)
             ATOMIC_CMPXCHG_OP(atomic_compare_exchange64, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG64)
             ATOMIC_CMPXCHG_OP(atomic_compare_exchange_long_double, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal32, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_CMPXCHG)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal64, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_CMPXCHG)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal128, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_CMPXCHG)
 
 #undef ATOMIC_CMPXCHG_OP
 

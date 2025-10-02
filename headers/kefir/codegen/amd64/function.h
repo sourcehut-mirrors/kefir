@@ -495,6 +495,9 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_ATOMIC_STORE) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_ATOMIC_STORE) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_ATOMIC_STORE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_ATOMIC_CMPXCHG) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_ATOMIC_CMPXCHG) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_ATOMIC_CMPXCHG) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

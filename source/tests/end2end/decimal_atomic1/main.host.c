@@ -49,6 +49,10 @@ _Decimal128 load128(_Atomic _Decimal128 *);
 void store32(_Atomic _Decimal32 *, _Decimal32);
 void store64(_Atomic _Decimal64 *, _Decimal64);
 void store128(_Atomic _Decimal128 *, _Decimal128);
+
+_Decimal32 add32(_Atomic _Decimal32 *, _Decimal32);
+_Decimal64 add64(_Atomic _Decimal64 *, _Decimal64);
+_Decimal128 add128(_Atomic _Decimal128 *, _Decimal128);
 #endif
 
 int main(void) {
@@ -70,6 +74,15 @@ int main(void) {
 
     store128(&x128, -832919.31891);
     assert(decimal128_eq(x128, -832919.31891));
+
+    x32 = 4.1326;
+    assert(decimal32_eq(add32(&x32, -6.42), 4.1326 - 6.42));
+
+    x64 = 4.1326;
+    assert(decimal64_eq(add64(&x64, -6.42), 4.1326 - 6.42));
+
+    x128 = 4.1326;
+    assert(decimal128_eq(add128(&x128, -6.42), 4.1326 - 6.42));
 #endif
     return EXIT_SUCCESS;
 }

@@ -436,7 +436,10 @@
     OPCODE(DECIMAL128_ATOMIC_LOAD, "decimal128_atomic_load", atomic_op) SEPARATOR \
     OPCODE(DECIMAL32_ATOMIC_STORE, "decimal32_atomic_store", atomic_op) SEPARATOR \
     OPCODE(DECIMAL64_ATOMIC_STORE, "decimal64_atomic_store", atomic_op) SEPARATOR \
-    OPCODE(DECIMAL128_ATOMIC_STORE, "decimal128_atomic_store", atomic_op)
+    OPCODE(DECIMAL128_ATOMIC_STORE, "decimal128_atomic_store", atomic_op) SEPARATOR \
+    OPCODE(DECIMAL32_ATOMIC_CMPXCHG, "decimal32_atomic_cmpxchg", atomic_op) SEPARATOR \
+    OPCODE(DECIMAL64_ATOMIC_CMPXCHG, "decimal64_atomic_cmpxchg", atomic_op) SEPARATOR \
+    OPCODE(DECIMAL128_ATOMIC_CMPXCHG, "decimal128_atomic_cmpxchg", atomic_op)
 
 // clang-format on
 

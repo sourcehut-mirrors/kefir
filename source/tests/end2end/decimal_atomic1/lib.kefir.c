@@ -44,4 +44,16 @@ void store64(_Atomic _Decimal64 *ptr, _Decimal64 value) {
 void store128(_Atomic _Decimal128 *ptr, _Decimal128 value) {
     *ptr = value;
 }
+
+_Decimal32 add32(_Atomic _Decimal32 *ptr, _Decimal32 value) {
+    return *ptr += value;
+}
+
+_Decimal64 add64(_Atomic _Decimal64 *ptr, _Decimal64 value) {
+    return *ptr += value;
+}
+
+_Decimal128 add128(_Atomic _Decimal128 *ptr, _Decimal128 value) {
+    return *ptr += value;
+}
 #endif

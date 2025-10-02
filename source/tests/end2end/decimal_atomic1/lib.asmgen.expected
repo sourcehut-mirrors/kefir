@@ -1,6 +1,12 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.global add32
+.type add32, @function
+.global add64
+.type add64, @function
+.global add128
+.type add128, @function
 .global load32
 .type load32, @function
 .global load64
@@ -13,9 +19,166 @@
 .type store64, @function
 .global store128
 .type store128, @function
+.extern __bid_adddd3
+.extern __bid_addsd3
+.extern __bid_addtd3
 
 .section .text
 __kefir_text_section_begin:
+add32:
+__kefir_text_func_add32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $80, %rsp
+    movaps %xmm0, %xmm2
+    fnstenv -72(%rbp)
+    stmxcsr -44(%rbp)
+    fnclex
+__kefir_func_add32_label1:
+    movl (%rdi), %eax
+    movq %rax, -40(%rbp)
+    movdqu %xmm2, -32(%rbp)
+    movq %rdi, -16(%rbp)
+    movq %rax, %xmm0
+    movaps %xmm2, %xmm1
+    call __bid_addsd3@PLT
+    movq -40(%rbp), %rax
+    movdqu -32(%rbp), %xmm2
+    movq -16(%rbp), %rdi
+    mov %rdi, %rdx
+    movq %xmm0, %rcx
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    test %al, %al
+    jz __kefir_func_add32_label3
+    stmxcsr -80(%rbp)
+    mov -80(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -72(%rbp)
+    ldmxcsr -44(%rbp)
+    stmxcsr -80(%rbp)
+    orl %eax, -80(%rbp)
+    ldmxcsr -80(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_add32_label3:
+    fnclex
+    jmp __kefir_func_add32_label1
+__kefir_text_func_add32_end:
+
+add64:
+__kefir_text_func_add64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $80, %rsp
+    movaps %xmm0, %xmm2
+    fnstenv -72(%rbp)
+    stmxcsr -44(%rbp)
+    fnclex
+__kefir_func_add64_label1:
+    movq (%rdi), %rax
+    movq %rax, -40(%rbp)
+    movdqu %xmm2, -32(%rbp)
+    movq %rdi, -16(%rbp)
+    movq %rax, %xmm0
+    movaps %xmm2, %xmm1
+    call __bid_adddd3@PLT
+    movq -40(%rbp), %rax
+    movdqu -32(%rbp), %xmm2
+    movq -16(%rbp), %rdi
+    mov %rdi, %rdx
+    movq %xmm0, %rcx
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    test %al, %al
+    jz __kefir_func_add64_label3
+    stmxcsr -80(%rbp)
+    mov -80(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -72(%rbp)
+    ldmxcsr -44(%rbp)
+    stmxcsr -80(%rbp)
+    orl %eax, -80(%rbp)
+    ldmxcsr -80(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_add64_label3:
+    fnclex
+    jmp __kefir_func_add64_label1
+__kefir_text_func_add64_end:
+
+add128:
+__kefir_text_func_add128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $128, %rsp
+    movaps %xmm0, %xmm2
+    mov %rdi, %r10
+    fnstenv -80(%rbp)
+    stmxcsr -52(%rbp)
+    fnclex
+__kefir_func_add128_label1:
+    movdqu %xmm2, -112(%rbp)
+    movq %r10, -96(%rbp)
+    leaq -128(%rbp), %rax
+    mov %rax, %rdx
+    mov %r10, %rsi
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movdqu -112(%rbp), %xmm2
+    movq -96(%rbp), %r10
+    movdqu -128(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movdqu %xmm2, -112(%rbp)
+    movq %r10, -96(%rbp)
+    movaps %xmm2, %xmm1
+    call __bid_addtd3@PLT
+    movdqu -112(%rbp), %xmm2
+    movq -96(%rbp), %r10
+    movdqu %xmm0, -112(%rbp)
+    movdqu %xmm2, -48(%rbp)
+    movdqu %xmm0, -32(%rbp)
+    movq %r10, -16(%rbp)
+    movdqu -128(%rbp), %xmm1
+    movdqu %xmm1, -96(%rbp)
+    mov %r10, %rsi
+    mov $5, %r8
+    mov $5, %r9
+    mov $16, %rdi
+    lea -96(%rbp), %rdx
+    leaq -112(%rbp), %rax
+    mov %rax, %rcx
+    call __atomic_compare_exchange@PLT
+    movdqu -48(%rbp), %xmm2
+    movdqu -32(%rbp), %xmm0
+    movq -16(%rbp), %r10
+    test %al, %al
+    jz __kefir_func_add128_label3
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -80(%rbp)
+    ldmxcsr -52(%rbp)
+    stmxcsr -128(%rbp)
+    orl %eax, -128(%rbp)
+    ldmxcsr -128(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_add128_label3:
+    fnclex
+    jmp __kefir_func_add128_label1
+__kefir_text_func_add128_end:
+
 load32:
 __kefir_text_func_load32_begin:
     movl (%rdi), %eax
