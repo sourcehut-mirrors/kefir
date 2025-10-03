@@ -62,6 +62,27 @@ int b[] = {
     __builtin_isinf_sign(1.0dl / 0.0dl),
     __builtin_isinf_sign(-1.0dl / 0.0dl)
 };
+
+int c[] = {
+    __builtin_isfinite(1.0df),
+    __builtin_isfinite(1.0df / 2.0df),
+    __builtin_isfinite(0.0df / 0.0df),
+    __builtin_isfinite(-0.0df / 0.0df),
+    __builtin_isfinite(1.0df / 0.0df),
+    __builtin_isfinite(-1.0df / 0.0df),
+    __builtin_isfinite(1.0dd),
+    __builtin_isfinite(1.0dd / 2.0dd),
+    __builtin_isfinite(0.0dd / 0.0dd),
+    __builtin_isfinite(-0.0dd / 0.0dd),
+    __builtin_isfinite(1.0dd / 0.0dd),
+    __builtin_isfinite(-1.0dd / 0.0dd),
+    __builtin_isfinite(1.0dl),
+    __builtin_isfinite(1.0dl / 2.0dl),
+    __builtin_isfinite(0.0dl / 0.0dl),
+    __builtin_isfinite(-0.0dl / 0.0dl),
+    __builtin_isfinite(1.0dl / 0.0dl),
+    __builtin_isfinite(-1.0dl / 0.0dl)
+};
 #else
 int a[] = {
     0,
@@ -107,5 +128,28 @@ int b[] = {
     0,
     1,
     1
+};
+
+int c[] = {
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+
+    1,
+    1,
+    0,
+    0,
+    0,
+    0
 };
 #endif

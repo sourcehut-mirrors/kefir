@@ -65,5 +65,25 @@ int main(void) {
     assert(!b[i++]);
     assert(b[i++]);
     assert(b[i++]);
+
+    i = 0;
+    assert(c[i++] == 1);
+    assert(c[i++] == 1);
+    assert(c[i++] == 0);
+    assert(c[i++] == 0);
+    assert(c[i++] == 0);
+    assert(c[i++] == 0);
+    assert(c[i++] == 1);
+    assert(c[i++] == 1);
+    assert(c[i++] == 0);
+    assert(c[i++] == 0);
+    assert(c[i++] == 0);
+    assert(c[i++] == 0);
+    assert(c[i++] == 1);
+    assert(c[i++] == 1);
+    assert(c[i++] == 0);
+    assert(c[i++] == 0);
+    assert(c[i++] == 0);
+    assert(c[i++] == 0);
     return EXIT_SUCCESS;
 }

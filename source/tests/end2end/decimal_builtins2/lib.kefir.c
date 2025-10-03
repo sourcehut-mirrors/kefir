@@ -32,4 +32,16 @@ int dec64_isinf(_Decimal64 x) {
 int dec128_isinf(_Decimal128 x) {
     return __builtin_isinf_sign(x);
 }
+
+int dec32_isfinite(_Decimal32 x) {
+    return __builtin_isfinite(x);
+}
+
+int dec64_isfinite(_Decimal64 x) {
+    return __builtin_isfinite(x);
+}
+
+int dec128_isfinite(_Decimal128 x) {
+    return __builtin_isfinite(x);
+}
 #endif
