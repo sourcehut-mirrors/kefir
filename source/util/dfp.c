@@ -1316,7 +1316,7 @@ void kefir_dfp_decimal128_format(char *str, kefir_size_t len, kefir_dfp_decimal1
 
 #undef PRINT_DECIMAL_IMPL
 
-#if __GNUC__ >= 14
+#ifdef KEFIR_PLATFORM_HAS_DECIMAL_FP_BITINT_CONV
 extern _Decimal32 __bid_floatbitintsd(const kefir_uint64_t *, kefir_int64_t);
 extern _Decimal64 __bid_floatbitintdd(const kefir_uint64_t *, kefir_int64_t);
 extern _Decimal128 __bid_floatbitinttd(const kefir_uint64_t *, kefir_int64_t);
