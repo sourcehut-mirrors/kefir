@@ -1595,6 +1595,31 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             }
 #undef DEF_BUILTIN
         } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_INFD32: {
+            kefir_dfp_decimal32_t value = kefir_dfp_decimal32_inf();
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_DECIMAL32_CONST, value.uvalue, 0));
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NAND32: {
+            kefir_dfp_decimal32_t value = kefir_dfp_decimal32_nan();
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_DECIMAL32_CONST, value.uvalue, 0));
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD32: {
+            kefir_dfp_decimal32_t value = kefir_dfp_decimal32_snan();
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_DECIMAL32_CONST, value.uvalue, 0));
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD64: {
+            kefir_dfp_decimal64_t value = kefir_dfp_decimal64_snan();
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_CONST, value.uvalue));
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD128: {
+            kefir_dfp_decimal128_t value = kefir_dfp_decimal128_snan();
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST, value.uvalue[0], value.uvalue[1]));
+        } break;
     }
     return KEFIR_OK;
 }

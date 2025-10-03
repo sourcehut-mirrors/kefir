@@ -65,6 +65,11 @@
 #define KEFIR_PARSER_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE "__kefir_builtin_construct_complex_double"
 #define KEFIR_PARSER_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE "__kefir_builtin_construct_complex_long_double"
 #define KEFIR_PARSER_BUILTIN_KEFIR_ISFINITE "__kefir_builtin_isfinite"
+#define KEFIR_PARSER_BUILTIN_KEFIR_INFD32 "__kefir_builtin_infd32"
+#define KEFIR_PARSER_BUILTIN_KEFIR_NAND32 "__kefir_builtin_nand32"
+#define KEFIR_PARSER_BUILTIN_KEFIR_NANSD32 "__kefir_builtin_nansd32"
+#define KEFIR_PARSER_BUILTIN_KEFIR_NANSD64 "__kefir_builtin_nansd64"
+#define KEFIR_PARSER_BUILTIN_KEFIR_NANSD128 "__kefir_builtin_nansd128"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 

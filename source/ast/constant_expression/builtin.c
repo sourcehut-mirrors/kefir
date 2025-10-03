@@ -806,6 +806,31 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             }
         } break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_INFD32:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+            value->decimal = kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_inf());
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NAND32:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+            value->decimal = kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_nan());
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD32:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+            value->decimal = kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_snan());
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD64:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+            value->decimal = kefir_dfp_decimal128_from_decimal64(kefir_dfp_decimal64_snan());
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD128:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
+            value->decimal = kefir_dfp_decimal128_snan();
+            break;
+
         case KEFIR_AST_BUILTIN_VA_START:
         case KEFIR_AST_BUILTIN_VA_END:
         case KEFIR_AST_BUILTIN_VA_ARG:

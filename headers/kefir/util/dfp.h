@@ -129,5 +129,10 @@ kefir_bool_t kefir_dfp_decimal128_isnan(kefir_dfp_decimal128_t);
 kefir_bool_t kefir_dfp_decimal32_isinf(kefir_dfp_decimal32_t);
 kefir_bool_t kefir_dfp_decimal64_isinf(kefir_dfp_decimal64_t);
 kefir_bool_t kefir_dfp_decimal128_isinf(kefir_dfp_decimal128_t);
+kefir_dfp_decimal32_t kefir_dfp_decimal32_inf(void);
+kefir_dfp_decimal32_t kefir_dfp_decimal32_nan(void);
+kefir_dfp_decimal32_t kefir_dfp_decimal32_snan(void);
+kefir_dfp_decimal64_t kefir_dfp_decimal64_snan(void);
+kefir_dfp_decimal128_t kefir_dfp_decimal128_snan(void);
 
 #endif

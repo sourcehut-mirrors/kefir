@@ -535,6 +535,26 @@ kefir_bool_t kefir_dfp_decimal128_isinf(kefir_dfp_decimal128_t x) {
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_dfp_decimal32_t kefir_dfp_decimal32_inf(void) {
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_nan(void) {
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_snan(void) {
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_snan(void) {
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_snan(void) {
+    FAIL_NOT_SUPPORTED;
+}
+
 #else
 #include <stdio.h>
 #include <math.h>
@@ -1517,6 +1537,26 @@ kefir_bool_t kefir_dfp_decimal128_isinf(kefir_dfp_decimal128_t x) {
     };
     _Decimal128 positive_inf = 1.0dl / 0.0dl;
     return view.decimal == positive_inf || view.decimal == -positive_inf;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_inf(void) {
+    return (kefir_dfp_decimal32_t){0x78000000u};
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_nan(void) {
+    return (kefir_dfp_decimal32_t){0x7c000000u};
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_snan(void) {
+    return (kefir_dfp_decimal32_t){0x7e000000u};
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_snan(void) {
+    return (kefir_dfp_decimal64_t){0x7e000000ull << 32};
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_snan(void) {
+    return (kefir_dfp_decimal128_t){{0, 0x7e000000ull << 32}};
 }
 
 #pragma GCC diagnostic pop

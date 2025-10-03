@@ -1,0 +1,198 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global d32_inf
+.type d32_inf, @object
+.global d32_nan
+.type d32_nan, @object
+.global d64_inf
+.type d64_inf, @object
+.global d64_nan
+.type d64_nan, @object
+.global d128_inf
+.type d128_inf, @object
+.global d128_nan
+.type d128_nan, @object
+.global d32_snan
+.type d32_snan, @object
+.global d64_snan
+.type d64_snan, @object
+.global d128_snan
+.type d128_snan, @object
+.global get_d32_inf
+.type get_d32_inf, @function
+.global get_d32_nan
+.type get_d32_nan, @function
+.global get_d64_inf
+.type get_d64_inf, @function
+.global get_d64_nan
+.type get_d64_nan, @function
+.extern __bid_extendsddd2
+.extern __bid_extendsdtd2
+.global get_d128_inf
+.type get_d128_inf, @function
+.global get_d128_nan
+.type get_d128_nan, @function
+.global get_d32_snan
+.type get_d32_snan, @function
+.global get_d64_snan
+.type get_d64_snan, @function
+.global get_d128_snan
+.type get_d128_snan, @function
+
+.section .text
+__kefir_text_section_begin:
+get_d32_inf:
+__kefir_text_func_get_d32_inf_begin:
+    movd __kefir_func_get_d32_inf_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get_d32_inf_end:
+.section .rodata
+    .align 4
+__kefir_func_get_d32_inf_label1:
+    .long 2013265920
+.section .text
+
+get_d32_nan:
+__kefir_text_func_get_d32_nan_begin:
+    movd __kefir_func_get_d32_nan_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get_d32_nan_end:
+.section .rodata
+    .align 4
+__kefir_func_get_d32_nan_label1:
+    .long 2080374784
+.section .text
+
+get_d64_inf:
+__kefir_text_func_get_d64_inf_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movd __kefir_func_get_d64_inf_label1(%rip), %xmm0
+    call __bid_extendsddd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_get_d64_inf_end:
+.section .rodata
+    .align 4
+__kefir_func_get_d64_inf_label1:
+    .long 2013265920
+.section .text
+
+get_d64_nan:
+__kefir_text_func_get_d64_nan_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movd __kefir_func_get_d64_nan_label1(%rip), %xmm0
+    call __bid_extendsddd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_get_d64_nan_end:
+.section .rodata
+    .align 4
+__kefir_func_get_d64_nan_label1:
+    .long 2080374784
+.section .text
+
+get_d128_inf:
+__kefir_text_func_get_d128_inf_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movd __kefir_func_get_d128_inf_label1(%rip), %xmm0
+    call __bid_extendsdtd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_get_d128_inf_end:
+.section .rodata
+    .align 4
+__kefir_func_get_d128_inf_label1:
+    .long 2013265920
+.section .text
+
+get_d128_nan:
+__kefir_text_func_get_d128_nan_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movd __kefir_func_get_d128_nan_label1(%rip), %xmm0
+    call __bid_extendsdtd2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_get_d128_nan_end:
+.section .rodata
+    .align 4
+__kefir_func_get_d128_nan_label1:
+    .long 2080374784
+.section .text
+
+get_d32_snan:
+__kefir_text_func_get_d32_snan_begin:
+    movd __kefir_func_get_d32_snan_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get_d32_snan_end:
+.section .rodata
+    .align 4
+__kefir_func_get_d32_snan_label1:
+    .long 2113929216
+.section .text
+
+get_d64_snan:
+__kefir_text_func_get_d64_snan_begin:
+    movq __kefir_func_get_d64_snan_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get_d64_snan_end:
+.section .rodata
+    .align 8
+__kefir_func_get_d64_snan_label1:
+    .quad 9079256848778919936
+.section .text
+
+get_d128_snan:
+__kefir_text_func_get_d128_snan_begin:
+    movdqu __kefir_func_get_d128_snan_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get_d128_snan_end:
+.section .rodata
+    .align 16
+__kefir_func_get_d128_snan_label1:
+    .quad 0, 9079256848778919936
+.section .text
+
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+d32_inf:
+    .long 2013265920
+
+    .align 4
+d32_nan:
+    .long 2080374784
+
+    .align 8
+d64_inf:
+    .quad 8646911284551352320
+
+    .align 8
+d64_nan:
+    .quad 8935141660703064064
+
+    .align 16
+d128_inf:
+    .quad 0, 8646911284551352320
+
+    .align 16
+d128_nan:
+    .quad 0, 8935141660703064064
+
+    .align 4
+d32_snan:
+    .long 2080374784
+
+    .align 8
+d64_snan:
+    .quad 8935141660703064064
+
+    .align 16
+d128_snan:
+    .quad 0, 9079256848778919936
+

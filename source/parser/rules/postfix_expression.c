@@ -175,6 +175,10 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE:
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE:
         case KEFIR_AST_BUILTIN_KEFIR_ISFINITE:
+        case KEFIR_AST_BUILTIN_KEFIR_NAND32:
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD32:
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD64:
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD128:
             while (!PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
                 res =
                     kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, type_name), NULL);
@@ -203,6 +207,7 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
         case KEFIR_AST_BUILTIN_INFINITY_FLOAT64:
         case KEFIR_AST_BUILTIN_INFINITY_FLOAT32:
         case KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE:
+        case KEFIR_AST_BUILTIN_KEFIR_INFD32:
             // Intentionally left blank
             break;
     }

@@ -545,6 +545,26 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_KEFIR_ISFINITE:
             REQUIRE_OK(kefir_json_output_string(json, "kefir_isfinite"));
             break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_INFD32:
+            REQUIRE_OK(kefir_json_output_string(json, "inf_decimal32"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NAND32:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_decimal32"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD32:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_sign_decimal32"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD64:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_sign_decimal64"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD128:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_sign_decimal128"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

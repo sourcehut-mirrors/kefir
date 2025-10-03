@@ -682,6 +682,62 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
 
             base->properties.type = kefir_ast_type_signed_int();
         } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_INFD32: {
+            REQUIRE(kefir_list_length(&node->arguments) == 0,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "infd32 builtin invocations should have zero parameters"));
+
+            base->properties.type = kefir_ast_type_decimal32();
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NAND32: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nand32 builtin invocations should have zero parameters"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+
+            base->properties.type = kefir_ast_type_decimal32();
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD32: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nansd32 builtin invocations should have zero parameters"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+
+            base->properties.type = kefir_ast_type_decimal32();
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD64: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nansd32 builtin invocations should have zero parameters"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+
+            base->properties.type = kefir_ast_type_decimal64();
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSD128: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nansd32 builtin invocations should have zero parameters"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+
+            base->properties.type = kefir_ast_type_decimal128();
+        } break;
     }
     return KEFIR_OK;
 }

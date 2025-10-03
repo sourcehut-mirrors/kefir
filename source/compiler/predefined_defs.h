@@ -879,4 +879,10 @@ int __kefir_builtin_isfinitel(long double);
 #define __builtin_sub_overflow_p(_arg1, _arg2, _res) __kefir_builtin_overflow_p_base(sub, (_arg1), (_arg2), (_res))
 #define __builtin_mul_overflow_p(_arg1, _arg2, _res) __kefir_builtin_overflow_p_base(mul, (_arg1), (_arg2), (_res))
 
+#define __builtin_infd32() __kefir_builtin_infd32()
+#define __builtin_nand32(...) __kefir_builtin_nand32(__VA_ARGS__)
+#define __builtin_nansd32(...) __kefir_builtin_nansd32(__VA_ARGS__)
+#define __builtin_nansd64(...) __kefir_builtin_nansd64(__VA_ARGS__)
+#define __builtin_nansd128(...) __kefir_builtin_nansd128(__VA_ARGS__)
+
 #undef __KEFIR_PREDEFINED_AREA__
