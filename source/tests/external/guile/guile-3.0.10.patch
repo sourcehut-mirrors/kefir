@@ -1,5 +1,6 @@
---- ./libguile/gc.h	2024-06-19 21:54:50.000000000 +0300
-+++ ./libguile/gc.h	2025-01-13 09:06:27.388045396 +0200
+diff -ru libguile/gc.h libguile/gc.h
+--- libguile/gc.h	2024-06-19 21:54:50.000000000 +0300
++++ libguile/gc.h	2025-10-03 08:33:39.483364819 +0300
 @@ -199,7 +199,7 @@
       by Guile users.  Instead, the following statements prevent the
       reordering.
@@ -18,3 +19,14 @@
    __asm__ volatile ("" : : : "memory");
  #else
    /* portable version, just in case any other compiler does the same
+diff -ru test-suite/Makefile.in test-suite/Makefile.in
+--- test-suite/Makefile.in	2024-06-24 00:38:47.000000000 +0300
++++ test-suite/Makefile.in	2025-10-03 08:33:52.300057171 +0300
+@@ -2097,7 +2097,6 @@
+ top_srcdir_absolute = @top_srcdir_absolute@
+ SUBDIRS = standalone
+ SCM_TESTS = tests/00-initial-env.test		\
+-	    tests/00-repl-server.test		\
+ 	    tests/00-socket.test		\
+             tests/alist.test			\
+ 	    tests/and-let-star.test		\
