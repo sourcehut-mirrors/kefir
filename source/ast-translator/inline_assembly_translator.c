@@ -259,11 +259,15 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &param->parameter->source_location,
                                            "Unable to evaluate constant expression"));
             if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter,
-                                                         KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) ||
-                KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
+                                                         KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER)) {
                 imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
                 param_value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->integer;
-                // TODO Decimal KEFIR_NOT_IMPLEMENTED
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
+                imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
+                param_value = (kefir_int64_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->floating_point;
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
+                param_value = kefir_dfp_decimal128_to_int64(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->decimal);
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
                 switch (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.type) {
