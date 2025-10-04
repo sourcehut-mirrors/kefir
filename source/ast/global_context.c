@@ -480,6 +480,15 @@ static kefir_result_t context_collect_pragma_state(struct kefir_mem *mem, const 
     return KEFIR_OK;
 }
 
+static kefir_result_t context_reset_pragma_state(struct kefir_mem *mem, const struct kefir_ast_context *context) {
+    UNUSED(mem);
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+
+    ASSIGN_DECL_CAST(struct kefir_ast_global_context *, global_ctx, context->payload);
+    REQUIRE_OK(kefir_ast_pragma_state_init(&global_ctx->pragmas));
+    return KEFIR_OK;
+}
+
 static kefir_result_t free_owned_object(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
                                         kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
@@ -551,6 +560,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->context.current_flow_control_point = context_current_flow_control_point;
     context->context.update_pragma_state = context_update_pragma_state;
     context->context.collect_pragma_state = context_collect_pragma_state;
+    context->context.reset_pragma_state = context_reset_pragma_state;
     context->context.symbols = &context->symbols;
     context->context.type_bundle = &context->type_bundle;
     context->context.cache = &context->cache;

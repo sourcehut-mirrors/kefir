@@ -132,6 +132,7 @@ typedef struct kefir_ast_context {
                                           const struct kefir_ast_pragma_state *);
     kefir_result_t (*collect_pragma_state)(struct kefir_mem *, const struct kefir_ast_context *,
                                            struct kefir_ast_pragma_state *);
+    kefir_result_t (*reset_pragma_state)(struct kefir_mem *, const struct kefir_ast_context *);
 
     struct kefir_string_pool *symbols;
     const struct kefir_ast_type_traits *type_traits;

@@ -68,7 +68,7 @@ kefir_result_t kefir_ast_analyze_compound_statement_node(struct kefir_mem *mem, 
     REQUIRE_OK(context->pop_block(mem, context));
 
     if (empty_current_pragma_state) {
-        // TODO
+        REQUIRE_OK(context->reset_pragma_state(mem, context));
     }
     return KEFIR_OK;
 }

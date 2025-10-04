@@ -203,6 +203,16 @@ static kefir_result_t context_collect_pragma_state(struct kefir_mem *mem, const 
     return KEFIR_OK;
 }
 
+static kefir_result_t context_reset_pragma_state(struct kefir_mem *mem, const struct kefir_ast_context *context) {
+    UNUSED(mem);
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context,
+        context->payload);
+    REQUIRE_OK(kefir_ast_pragma_state_init(&ast_context->pragma_state));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
                                                    struct kefir_preprocessor_ast_context *context,
                                                    struct kefir_string_pool *symbols,
@@ -232,6 +242,7 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.current_flow_control_point = context_current_flow_control_point;
     context->context.update_pragma_state = context_update_pragma_state;
     context->context.collect_pragma_state = context_collect_pragma_state;
+    context->context.reset_pragma_state = context_reset_pragma_state;
 
     context->context.symbols = symbols;
     context->context.type_traits = type_traits;

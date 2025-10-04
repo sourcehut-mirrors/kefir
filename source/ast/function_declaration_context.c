@@ -467,6 +467,12 @@ static kefir_result_t context_collect_pragma_state(struct kefir_mem *mem, const 
     return KEFIR_OK;
 }
 
+static kefir_result_t context_reset_pragma_state(struct kefir_mem *mem, const struct kefir_ast_context *context) {
+    UNUSED(mem);
+    UNUSED(context);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem,
                                                            const struct kefir_ast_context *parent,
                                                            kefir_bool_t function_definition_context,
@@ -503,6 +509,7 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     context->context.current_flow_control_point = context_current_flow_control_point;
     context->context.update_pragma_state = context_update_pragma_state;
     context->context.collect_pragma_state = context_collect_pragma_state;
+    context->context.reset_pragma_state = context_reset_pragma_state;
     context->context.symbols = parent->symbols;
     context->context.type_bundle = parent->type_bundle;
     context->context.cache = &context->cache;

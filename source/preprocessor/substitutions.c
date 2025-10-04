@@ -472,7 +472,6 @@ static kefir_result_t run_pragma_operator(struct kefir_mem *mem, struct kefir_pr
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Expected string literal"));
     REQUIRE(current_token->klass == KEFIR_TOKEN_STRING_LITERAL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &current_token->source_location, "Expected string literal"));
-    // TODO Implement STDC pragmas
 
     REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, NULL, NULL));
     REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, &current_token, NULL));
