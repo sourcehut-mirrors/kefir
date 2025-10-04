@@ -21,6 +21,6 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-extern int a[], b[], c[];
+extern int a[], b[], c[], d[];
 
 #endif

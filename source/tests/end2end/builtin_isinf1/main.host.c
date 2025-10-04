@@ -18,42 +18,31 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#line __LINE__ "decimal_builtins2"
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <math.h>
+#include "./definitions.h"
 
-#ifdef __KEFIRCC_DECIMAL_SUPPORT__
-int dec32_isinf_sign(_Decimal32 x) {
-    return __builtin_isinf_sign(x);
-}
+int main(void) {
+    assert(f32[0] == 1);
+    assert(f32[1] == 1);
+    assert(f32[2] == 0);
+    assert(f64[0] == 1);
+    assert(f64[1] == 1);
+    assert(f64[2] == 0);
+    assert(f80[0] == 1);
+    assert(f80[1] == 1);
+    assert(f80[2] == 0);
 
-int dec64_isinf_sign(_Decimal64 x) {
-    return __builtin_isinf_sign(x);
+    assert(is_inf_f32(INFINITY) == 1);
+    assert(is_inf_f32(-INFINITY) == 1);
+    assert(is_inf_f32(3.14f) == 0);
+    assert(is_inf_f64(INFINITY) == 1);
+    assert(is_inf_f64(-INFINITY) == 1);
+    assert(is_inf_f64(3.14) == 0);
+    assert(is_inf_f80(INFINITY) == 1);
+    assert(is_inf_f80(-INFINITY) == 1);
+    assert(is_inf_f80(3.14) == 0);
+    return EXIT_SUCCESS;
 }
-
-int dec128_isinf_sign(_Decimal128 x) {
-    return __builtin_isinf_sign(x);
-}
-
-int dec32_isinf(_Decimal32 x) {
-    return __builtin_isinf(x);
-}
-
-int dec64_isinf(_Decimal64 x) {
-    return __builtin_isinf(x);
-}
-
-int dec128_isinf(_Decimal128 x) {
-    return __builtin_isinf(x);
-}
-
-int dec32_isfinite(_Decimal32 x) {
-    return __builtin_isfinite(x);
-}
-
-int dec64_isfinite(_Decimal64 x) {
-    return __builtin_isfinite(x);
-}
-
-int dec128_isfinite(_Decimal128 x) {
-    return __builtin_isfinite(x);
-}
-#endif

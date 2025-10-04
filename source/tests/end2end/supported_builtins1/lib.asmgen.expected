@@ -144,6 +144,7 @@ __builtin_clrsb
 __builtin_clzll
 __builtin_ctzll
 __builtin_ffsll
+__builtin_isinf
 __builtin_isnan
 __atomic_store_n
 __builtin_umulll_overflow

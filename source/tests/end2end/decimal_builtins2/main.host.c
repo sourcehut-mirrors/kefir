@@ -27,6 +27,10 @@
 #if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__)
 #pragma GCC diagnostic ignored "-Wpedantic"
 #define ENABLE_DECIMAL_TEST
+int dec32_isinf_sign(_Decimal32);
+int dec64_isinf_sign(_Decimal64);
+int dec128_isinf_sign(_Decimal128);
+
 int dec32_isinf(_Decimal32);
 int dec64_isinf(_Decimal64);
 int dec128_isinf(_Decimal128);
@@ -38,24 +42,48 @@ int dec128_isfinite(_Decimal128);
 
 int main(void) {
 #ifdef ENABLE_DECIMAL_TEST
-    assert(dec32_isinf(1.0df / 0.0df));
-    assert(dec32_isinf(-1.0df / 0.0df));
+    assert(dec32_isinf_sign(1.0df / 0.0df) > 0);
+    assert(dec32_isinf_sign(-1.0df / 0.0df) < 0);
+    assert(!dec32_isinf_sign(0.0df));
+    assert(!dec32_isinf_sign(1.0df));
+    assert(!dec32_isinf_sign(-1.0df));
+    assert(!dec32_isinf_sign(0.0df / 0.0df));
+    assert(!dec32_isinf_sign(-0.0df / 0.0df));
+
+    assert(dec64_isinf_sign(1.0df / 0.0df) > 0);
+    assert(dec64_isinf_sign(-1.0df / 0.0df) < 0);
+    assert(!dec64_isinf_sign(0.0df));
+    assert(!dec64_isinf_sign(1.0df));
+    assert(!dec64_isinf_sign(-1.0df));
+    assert(!dec64_isinf_sign(0.0df / 0.0df));
+    assert(!dec64_isinf_sign(-0.0df / 0.0df));
+
+    assert(dec128_isinf_sign(1.0df / 0.0df) > 0);
+    assert(dec128_isinf_sign(-1.0df / 0.0df) < 0);
+    assert(!dec128_isinf_sign(0.0df));
+    assert(!dec128_isinf_sign(1.0df));
+    assert(!dec128_isinf_sign(-1.0df));
+    assert(!dec128_isinf_sign(0.0df / 0.0df));
+    assert(!dec128_isinf_sign(-0.0df / 0.0df));
+
+    assert(dec32_isinf(1.0df / 0.0df) == 1);
+    assert(dec32_isinf(-1.0df / 0.0df) == 1);
     assert(!dec32_isinf(0.0df));
     assert(!dec32_isinf(1.0df));
     assert(!dec32_isinf(-1.0df));
     assert(!dec32_isinf(0.0df / 0.0df));
     assert(!dec32_isinf(-0.0df / 0.0df));
 
-    assert(dec64_isinf(1.0df / 0.0df));
-    assert(dec64_isinf(-1.0df / 0.0df));
+    assert(dec64_isinf(1.0df / 0.0df) == 1);
+    assert(dec64_isinf(-1.0df / 0.0df) == 1);
     assert(!dec64_isinf(0.0df));
     assert(!dec64_isinf(1.0df));
     assert(!dec64_isinf(-1.0df));
     assert(!dec64_isinf(0.0df / 0.0df));
     assert(!dec64_isinf(-0.0df / 0.0df));
 
-    assert(dec128_isinf(1.0df / 0.0df));
-    assert(dec128_isinf(-1.0df / 0.0df));
+    assert(dec128_isinf(1.0df / 0.0df) == 1);
+    assert(dec128_isinf(-1.0df / 0.0df) == 1);
     assert(!dec128_isinf(0.0df));
     assert(!dec128_isinf(1.0df));
     assert(!dec128_isinf(-1.0df));

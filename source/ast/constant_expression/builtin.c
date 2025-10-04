@@ -309,7 +309,13 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
                             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                                 "Expected floating-point constant expression"));
-                    value->integer = (_Bool) kefir_dfp_decimal128_isinf(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->decimal);
+                    if (kefir_dfp_decimal128_isinf(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->decimal)) {
+                        value->integer = kefir_dfp_decimal128_less(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->decimal, kefir_dfp_decimal128_from_int64(0))
+                            ? -1
+                            : 1;
+                    } else {
+                        value->integer = 0;
+                    }
                     break;
 
                 default:

@@ -51,20 +51,20 @@ int main(void) {
     assert(!b[i++]);
     assert(!b[i++]);
     assert(!b[i++]);
-    assert(b[i++]);
-    assert(b[i++]);
+    assert(b[i++] > 0);
+    assert(b[i++] < 0);
     assert(!b[i++]);
     assert(!b[i++]);
     assert(!b[i++]);
     assert(!b[i++]);
-    assert(b[i++]);
-    assert(b[i++]);
+    assert(b[i++] > 0);
+    assert(b[i++] < 0);
     assert(!b[i++]);
     assert(!b[i++]);
     assert(!b[i++]);
     assert(!b[i++]);
-    assert(b[i++]);
-    assert(b[i++]);
+    assert(b[i++] > 0);
+    assert(b[i++] < 0);
 
     i = 0;
     assert(c[i++] == 1);
@@ -85,5 +85,25 @@ int main(void) {
     assert(c[i++] == 0);
     assert(c[i++] == 0);
     assert(c[i++] == 0);
+
+    i = 0;
+    assert(!d[i++]);
+    assert(!d[i++]);
+    assert(!d[i++]);
+    assert(!d[i++]);
+    assert(d[i++] == 1);
+    assert(d[i++] == 1);
+    assert(!d[i++]);
+    assert(!d[i++]);
+    assert(!d[i++]);
+    assert(!d[i++]);
+    assert(d[i++] == 1);
+    assert(d[i++] == 1);
+    assert(!d[i++]);
+    assert(!d[i++]);
+    assert(!d[i++]);
+    assert(!d[i++]);
+    assert(d[i++] == 1);
+    assert(d[i++] == 1);
     return EXIT_SUCCESS;
 }

@@ -18,42 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#line __LINE__ "decimal_builtins2"
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
 
-#ifdef __KEFIRCC_DECIMAL_SUPPORT__
-int dec32_isinf_sign(_Decimal32 x) {
-    return __builtin_isinf_sign(x);
-}
+extern int f32[3];
+extern int f64[3];
+extern int f80[3];
 
-int dec64_isinf_sign(_Decimal64 x) {
-    return __builtin_isinf_sign(x);
-}
+extern int is_inf_f32(float);
+extern int is_inf_f64(double);
+extern int is_inf_f80(long double);
 
-int dec128_isinf_sign(_Decimal128 x) {
-    return __builtin_isinf_sign(x);
-}
-
-int dec32_isinf(_Decimal32 x) {
-    return __builtin_isinf(x);
-}
-
-int dec64_isinf(_Decimal64 x) {
-    return __builtin_isinf(x);
-}
-
-int dec128_isinf(_Decimal128 x) {
-    return __builtin_isinf(x);
-}
-
-int dec32_isfinite(_Decimal32 x) {
-    return __builtin_isfinite(x);
-}
-
-int dec64_isfinite(_Decimal64 x) {
-    return __builtin_isfinite(x);
-}
-
-int dec128_isfinite(_Decimal128 x) {
-    return __builtin_isfinite(x);
-}
 #endif

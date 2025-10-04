@@ -769,6 +769,8 @@ int __kefir_builtin_isfinitel(long double);
 #define __builtin_isinf_sign(...) __kefir_builtin_isinf(__VA_ARGS__)
 #define __builtin_isfinite(...) __kefir_builtin_isfinite(__VA_ARGS__)
 
+#define __builtin_isinf(...) (__builtin_isinf_sign(__VA_ARGS__) != 0)
+
 #define __kefir_builtin_isgreater_nonconst(_x, _y)                                                   \
     ({                                                                                               \
         typedef __typeof_unqual__((_x) + (_y)) __common_type_t;                                      \
