@@ -137,11 +137,13 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             break;
 
         case KEFIR_AST_DECIMAL32_CONSTANT:
+            REQUIRE_OK(kefir_dfp_require_supported(&node->base.source_location));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
             value->decimal = kefir_dfp_decimal128_from_decimal32(node->value.decimal32);
             break;
 
         case KEFIR_AST_DECIMAL64_CONSTANT:
+            REQUIRE_OK(kefir_dfp_require_supported(&node->base.source_location));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
             value->decimal = kefir_dfp_decimal128_from_decimal64(node->value.decimal64);
             break;

@@ -118,7 +118,7 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *me
     visitor.comma_operator = evaluate_comma_operator;
     visitor.function_call = evaluate_function_call;
     visitor.extension_node = evaluate_extension_node;
-    
+
     struct kefir_ast_pragma_state pragma_state;
     REQUIRE_OK(context->collect_pragma_state(mem, context, &pragma_state));
 
@@ -204,6 +204,7 @@ kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+            REQUIRE_OK(kefir_dfp_require_supported(NULL));
             *boolean = kefir_dfp_decimal128_to_bool(value->decimal);
             break;
 
@@ -334,6 +335,7 @@ kefir_result_t kefir_ast_constant_expression_value_equal(const struct kefir_ast_
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+            REQUIRE_OK(kefir_dfp_require_supported(NULL));
             *equal_ptr = kefir_dfp_decimal128_equals(lhs_value->decimal, rhs_value->decimal);
             break;
 

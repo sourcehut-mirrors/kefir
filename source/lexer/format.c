@@ -658,6 +658,7 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
             REQUIRE_OK(kefir_json_output_string(json, "decimal32"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
             char buf[128] = {0};
+            REQUIRE_OK(kefir_dfp_require_supported(NULL));
             kefir_dfp_decimal32_format(buf, sizeof(buf), constant->decimal32);
             REQUIRE_OK(kefir_json_output_string(json, buf));
         } break;
@@ -666,6 +667,7 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
             REQUIRE_OK(kefir_json_output_string(json, "decimal64"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
             char buf[128] = {0};
+            REQUIRE_OK(kefir_dfp_require_supported(NULL));
             kefir_dfp_decimal64_format(buf, sizeof(buf), constant->decimal64);
             REQUIRE_OK(kefir_json_output_string(json, buf));
         } break;
@@ -674,6 +676,7 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
             REQUIRE_OK(kefir_json_output_string(json, "decimal128"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
             char buf[128] = {0};
+            REQUIRE_OK(kefir_dfp_require_supported(NULL));
             kefir_dfp_decimal128_format(buf, sizeof(buf), constant->decimal128);
             REQUIRE_OK(kefir_json_output_string(json, buf));
         } break;

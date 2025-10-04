@@ -873,6 +873,7 @@ static kefir_result_t evaluate_pp_tokens_as_bool(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+            REQUIRE_OK(kefir_dfp_require_supported(&expression->source_location));
             *result = kefir_dfp_decimal128_to_bool(expr_value.decimal);
             break;
 
@@ -1072,10 +1073,12 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
 
                 struct kefir_ast_pragma_state pragma_state;
                 REQUIRE_OK(kefir_ast_pragma_state_init(&pragma_state));
-                kefir_result_t res = kefir_parser_scan_pragma(&pragma_state, pragma_type, pragma_param, &token->source_location);
+                kefir_result_t res =
+                    kefir_parser_scan_pragma(&pragma_state, pragma_type, pragma_param, &token->source_location);
                 if (res != KEFIR_NO_MATCH) {
                     REQUIRE_OK(res);
-                    REQUIRE_OK(preprocessor->context->ast_context->update_pragma_state(mem, preprocessor->context->ast_context, &pragma_state));
+                    REQUIRE_OK(preprocessor->context->ast_context->update_pragma_state(
+                        mem, preprocessor->context->ast_context, &pragma_state));
                 }
             }
         }

@@ -99,7 +99,14 @@ static kefir_result_t match_exponent(struct kefir_mem *mem, struct kefir_lexer_s
     return KEFIR_OK;
 }
 
-enum fp_constant_type { FLOAT_CONSTANT = 0, DOUBLE_CONSTANT, LONG_DOUBLE_CONSTANT, DECIMAL32_CONSTANT, DECIMAL64_CONSTANT, DECIMAL128_CONSTANT };
+enum fp_constant_type {
+    FLOAT_CONSTANT = 0,
+    DOUBLE_CONSTANT,
+    LONG_DOUBLE_CONSTANT,
+    DECIMAL32_CONSTANT,
+    DECIMAL64_CONSTANT,
+    DECIMAL128_CONSTANT
+};
 
 static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enum fp_constant_type *constant_type,
                                    kefir_bool_t *imaginary) {
@@ -193,17 +200,17 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
             break;
 
         case DECIMAL32_CONSTANT:
-            REQUIRE(kefir_dfp_is_supported(), KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_SUPPORTED, &cursor->location, "Decimal floating-point support is not available in current environment"));
+            REQUIRE_OK(kefir_dfp_require_supported(&cursor->location));
             REQUIRE_OK(kefir_token_new_constant_decimal32(kefir_dfp_decimal32_scan(literal), token));
             break;
 
         case DECIMAL64_CONSTANT:
-            REQUIRE(kefir_dfp_is_supported(), KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_SUPPORTED, &cursor->location, "Decimal floating-point support is not available in current environment"));
+            REQUIRE_OK(kefir_dfp_require_supported(&cursor->location));
             REQUIRE_OK(kefir_token_new_constant_decimal64(kefir_dfp_decimal64_scan(literal), token));
             break;
 
         case DECIMAL128_CONSTANT:
-            REQUIRE(kefir_dfp_is_supported(), KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_SUPPORTED, &cursor->location, "Decimal floating-point support is not available in current environment"));
+            REQUIRE_OK(kefir_dfp_require_supported(&cursor->location));
             REQUIRE_OK(kefir_token_new_constant_decimal128(kefir_dfp_decimal128_scan(literal), token));
             break;
     }
@@ -352,7 +359,8 @@ static kefir_result_t match_hexadecimal_impl(struct kefir_mem *mem, struct kefir
         case DECIMAL32_CONSTANT:
         case DECIMAL64_CONSTANT:
         case DECIMAL128_CONSTANT:
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor->location, "Decimal floating-point values cannot have hexadecimal format");
+            return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor->location,
+                                          "Decimal floating-point values cannot have hexadecimal format");
     }
     return KEFIR_OK;
 }

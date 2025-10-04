@@ -262,12 +262,17 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                                          KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER)) {
                 imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
                 param_value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->integer;
-            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter,
+                                                                KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
-                param_value = (kefir_int64_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->floating_point;
-            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                param_value =
+                    (kefir_int64_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->floating_point;
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter,
+                                                                KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
+                REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
                 imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
-                param_value = kefir_dfp_decimal128_to_int64(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->decimal);
+                param_value =
+                    kefir_dfp_decimal128_to_int64(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->decimal);
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
                 switch (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.type) {
@@ -348,7 +353,8 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
         });
         REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder));
 
-        if (ir_inline_asm_param == NULL && (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ || klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD)) {
+        if (ir_inline_asm_param == NULL &&
+            (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ || klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD)) {
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
                                                               klass, &constraints, ir_type, ir_type_id, 0, param_value,
                                                               &ir_inline_asm_param));

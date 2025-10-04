@@ -425,18 +425,21 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
         } break;
 
         case KEFIR_IR_TYPE_DECIMAL32:
+            REQUIRE_OK(kefir_dfp_require_supported(NULL));
             REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(state->mem, &state->func->code, source_block_ref,
-                                                                   kefir_dfp_decimal32_from_int64(0), instr_ref));
+                                                                 kefir_dfp_decimal32_from_int64(0), instr_ref));
             break;
 
         case KEFIR_IR_TYPE_DECIMAL64:
+            REQUIRE_OK(kefir_dfp_require_supported(NULL));
             REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(state->mem, &state->func->code, source_block_ref,
-                                                                   kefir_dfp_decimal64_from_int64(0), instr_ref));
+                                                                 kefir_dfp_decimal64_from_int64(0), instr_ref));
             break;
 
         case KEFIR_IR_TYPE_DECIMAL128:
+            REQUIRE_OK(kefir_dfp_require_supported(NULL));
             REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(state->mem, &state->func->code, source_block_ref,
-                                                                   kefir_dfp_decimal128_from_int64(0), instr_ref));
+                                                                  kefir_dfp_decimal128_from_int64(0), instr_ref));
             break;
 
         case KEFIR_IR_TYPE_STRUCT:
@@ -539,7 +542,8 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                                       (kefir_hashtreeset_entry_t) block_id)) {
                                 replacement_ref = instr_id;
                                 kefir_bool_t insert_input = true;
-                                res = kefir_hashtree_at(&reg_state->block_inputs, (kefir_hashtree_key_t) block_id, &node);
+                                res =
+                                    kefir_hashtree_at(&reg_state->block_inputs, (kefir_hashtree_key_t) block_id, &node);
                                 if (res != KEFIR_NOT_FOUND) {
                                     REQUIRE_OK(res);
                                     REQUIRE(node->value == (kefir_hashtree_value_t) KEFIR_ID_NONE,
@@ -548,8 +552,8 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                 }
                                 if (insert_input) {
                                     REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
-                                                                    (kefir_hashtree_key_t) block_id,
-                                                                    (kefir_hashtree_value_t) KEFIR_ID_NONE));
+                                                                     (kefir_hashtree_key_t) block_id,
+                                                                     (kefir_hashtree_value_t) KEFIR_ID_NONE));
                                 }
                             } else if (block_id != state->func->code.entry_point) {
                                 kefir_opt_phi_id_t phi_ref;
@@ -1003,8 +1007,8 @@ static kefir_result_t mem2reg_link_blocks(struct mem2reg_state *state, kefir_opt
             }
             if (insert_input) {
                 REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
-                                                (kefir_hashtree_key_t) source_block_ref,
-                                                (kefir_hashtree_value_t) KEFIR_ID_NONE));
+                                                 (kefir_hashtree_key_t) source_block_ref,
+                                                 (kefir_hashtree_value_t) KEFIR_ID_NONE));
             }
             REQUIRE_OK(kefir_list_insert_after(state->mem, &state->block_queue, kefir_list_tail(&state->block_queue),
                                                (void *) (kefir_uptr_t) source_block_ref));
