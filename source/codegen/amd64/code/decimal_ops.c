@@ -256,14 +256,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(decimal_neg128)(
     REQUIRE_OK(kefir_asmcmp_amd64_mov(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp2_vreg, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_128BIT), NULL));
+        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp2_vreg, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_btc(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
         &KEFIR_ASMCMP_MAKE_INT(63), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_mov(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp2_vreg, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_128BIT),
+        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp2_vreg, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
         &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
