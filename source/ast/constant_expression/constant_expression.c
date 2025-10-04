@@ -154,6 +154,7 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *me
                 break;
         }
     }
+    // TODO Implement FE_DEC_ROUND control once fe_dec_setround is available
     kefir_result_t res = KEFIR_AST_NODE_VISIT(&visitor, node, &param);
     fesetround(current_rounding_mode);
     return res;
