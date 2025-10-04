@@ -121,6 +121,30 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __DBL_DENORM_MIN__ ((double) 4.94065645841246544176568792868221372e-324L)
 #define __LDBL_DENORM_MIN__ 3.64519953188247460252840593361941982e-4951L
 
+// Decimal floating-point
+#define __DEC32_EPSILON__ 1E-6DF
+#define __DEC32_MAX__ 9.999999E96DF
+#define __DEC32_MIN_EXP__ (-94)
+#define __DEC32_MIN__ 1E-95DF
+#define __DEC32_SUBNORMAL_MIN__ 0.000001E-95DF
+#define __DEC32_MAX_EXP__ 97
+#define __DEC32_MANT_DIG__ 7
+#define __DEC64_MAX_EXP__ 385
+#define __DEC64_MIN_EXP__ (-382)
+#define __DEC64_EPSILON__ 1E-15DD
+#define __DEC64_MAX__ 9.999999999999999E384DD
+#define __DEC64_MANT_DIG__ 16
+#define __DEC64_MIN__ 1E-383DD
+#define __DEC64_SUBNORMAL_MIN__ 0.000000000000001E-383DD
+#define __DEC128_EPSILON__ 1E-33DL
+#define __DEC128_MIN__ 1E-6143DL
+#define __DEC128_MIN_EXP__ (-6142)
+#define __DEC128_MAX__ 9.999999999999999999999999999999999E6144DL
+#define __DEC128_MAX_EXP__ 6145
+#define __DEC128_SUBNORMAL_MIN__ 0.000000000000000000000000000000001E-6143DL
+#define __DEC128_MANT_DIG__ 34
+#define __DEC_EVAL_METHOD__ 2
+
 // Type width
 #ifdef __LP64__
 #define __PTRDIFF_WIDTH__ __LONG_WIDTH__
