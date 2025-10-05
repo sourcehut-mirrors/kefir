@@ -11,7 +11,7 @@ KEFIR_EXTERNAL_TEST_GIT_ARCHIVE_SHA256 := 3d531799d2cf2cac8e294ec6e3229e07bfca60
 $(KEFIR_EXTERNAL_TEST_GIT_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_GIT_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GIT_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GIT_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GIT_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

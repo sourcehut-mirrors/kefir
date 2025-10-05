@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_CSP_ARCHIVE_SHA256 := 24f19b8c2fb7b5b2848ad703905bc5410960d1
 $(KEFIR_EXTERNAL_TEST_CSP_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_CSP_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CSP_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CSP_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CSP_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_MUON_ARCHIVE_SHA256 := 24aa4d29ed272893f6e6d355b1ec4ef206474
 $(KEFIR_EXTERNAL_TEST_MUON_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_MUON_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_MUON_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_MUON_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_MUON_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

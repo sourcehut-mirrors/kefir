@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_REDIS_ARCHIVE_SHA256 := c64219bdcba407d18c8dde1fb87b86945aeb
 $(KEFIR_EXTERNAL_TEST_REDIS_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_REDIS_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_REDIS_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_REDIS_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_REDIS_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

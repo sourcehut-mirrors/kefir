@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_GZIP_ARCHIVE_SHA256 := 613d6ea44f1248d7370c7ccdeee0dd0017a09
 $(KEFIR_EXTERNAL_TEST_GZIP_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_GZIP_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GZIP_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GZIP_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GZIP_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

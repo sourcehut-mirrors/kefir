@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_SDL2_ARCHIVE_SHA256 := 0ca83e9c9b31e18288c7ec811108e58bac1f1
 $(KEFIR_EXTERNAL_TEST_SDL2_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_SDL2_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SDL2_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SDL2_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SDL2_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

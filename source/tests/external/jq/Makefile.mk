@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_SHA256 := 2be64e7129cecb11d5906290eba10af694fb9e3
 $(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_JQ_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_JQ_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_JQ_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

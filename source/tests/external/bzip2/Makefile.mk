@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_BZIP2_ARCHIVE_SHA256 := ab5a03176ee106d3f0fa90e381da478ddae4
 $(KEFIR_EXTERNAL_TEST_BZIP2_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_BZIP2_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_BZIP2_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_BZIP2_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_BZIP2_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

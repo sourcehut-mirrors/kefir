@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_CPIO_ARCHIVE_SHA256 := efa50ef983137eefc0a02fdb51509d624b5e3
 $(KEFIR_EXTERNAL_TEST_CPIO_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_CPIO_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CPIO_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CPIO_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CPIO_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

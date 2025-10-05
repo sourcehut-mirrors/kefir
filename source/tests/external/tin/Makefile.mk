@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_TIN_ARCHIVE_SHA256 := 525ade9e66aecfa0a9883d35f2cf4cdcc8e24b
 $(KEFIR_EXTERNAL_TEST_TIN_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_TIN_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_TIN_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_TIN_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_TIN_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

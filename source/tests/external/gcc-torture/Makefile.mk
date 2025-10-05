@@ -14,7 +14,7 @@ KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS := -O1 -fPIC -pie -g
 $(KEFIR_EXTERNAL_TEST_GCC_ARCHIVE):
 	@mkdir -p "$(dir $@)"
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_GCC_ARCHIVE_FILENAME)..."
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GCC_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GCC_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GCC_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

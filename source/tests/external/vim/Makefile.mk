@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_VIM_ARCHIVE_SHA256 := ad9c65b4020b6f9a7640b9df1a86945884ded1
 $(KEFIR_EXTERNAL_TEST_VIM_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_VIM_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_VIM_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_VIM_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_VIM_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

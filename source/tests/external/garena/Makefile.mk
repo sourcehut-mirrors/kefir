@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_GARENA_ARCHIVE_SHA256 := d4f0b45e0130d22f20ea4e932dcabdfdcc5
 $(KEFIR_EXTERNAL_TEST_GARENA_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_GARENA_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GARENA_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GARENA_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GARENA_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

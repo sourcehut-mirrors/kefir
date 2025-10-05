@@ -18,6 +18,7 @@ STRIP?=strip
 EMCC?=emcc
 GZIP?=gzip
 GCOVR?=gcovr
+WGET?=wget
 CSMITH?=
 
 # Platform-dependent tools

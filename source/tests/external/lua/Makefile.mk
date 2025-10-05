@@ -17,14 +17,14 @@ KEFIR_EXTERNAL_TEST_LUA_CFLAGS := -O1 -fPIC -pie
 $(KEFIR_EXTERNAL_TEST_LUA_DIR)/$(KEFIR_EXTERNAL_TEST_LUA_ARCHIVE):
 	@mkdir -p $(shell dirname $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_LUA_URL)..."
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LUA_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LUA_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LUA_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TEST_LUA_DIR)/$(KEFIR_EXTERNAL_TEST_LUA_TESTS_ARCHIVE):
 	@mkdir -p $(shell dirname $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_LUA_TESTS_URL)..."
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LUA_TESTS_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LUA_TESTS_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LUA_TESTS_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

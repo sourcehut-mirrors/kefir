@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_ZLIB_ARCHIVE_SHA256 := 9a93b2b7dfdac77ceba5a558a580e74667dd6
 $(KEFIR_EXTERNAL_TEST_ZLIB_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_ZLIB_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_ZLIB_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_ZLIB_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_ZLIB_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

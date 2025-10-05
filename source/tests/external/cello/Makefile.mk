@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_CELLO_ARCHIVE_SHA256 := e95b2e3bba45ca97c70b412939fb3bac8a40
 $(KEFIR_EXTERNAL_TEST_CELLO_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_CELLO_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CELLO_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CELLO_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CELLO_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

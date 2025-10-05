@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_YASM_ARCHIVE_SHA256 := 3dce6601b495f5b3d45b59f7d2492a340ee7e
 $(KEFIR_EXTERNAL_TEST_YASM_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_YASM_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_YASM_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_YASM_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_YASM_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

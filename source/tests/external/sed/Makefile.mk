@@ -12,7 +12,7 @@ KEFIR_EXTERNAL_TEST_SED_ARCHIVE_SHA256 := d1478a18f033a73ac16822901f6533d30b6be5
 $(KEFIR_EXTERNAL_TEST_SED_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_SED_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SED_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SED_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SED_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 

@@ -18,14 +18,14 @@ KEFIR_EXTERNAL_TEST_CGIT_GIT_ARCHIVE_SHA256 := 7cb9a19f08b44935fc0b6afc6fef1ae17
 $(KEFIR_EXTERNAL_TEST_CGIT_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_CGIT_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CGIT_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CGIT_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CGIT_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TEST_CGIT_GIT_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_CGIT_GIT_URL)"
-	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CGIT_GIT_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CGIT_GIT_URL)"
 	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_CGIT_GIT_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 
