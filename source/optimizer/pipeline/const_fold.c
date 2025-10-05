@@ -2208,6 +2208,66 @@ static kefir_result_t const_fold_decimal_unary(struct kefir_mem *mem,
         arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_CONST) {
         kefir_dfp_decimal64_t value = kefir_dfp_decimal64_from_decimal128(arg1_instr->operation.parameters.imm.decimal128);
         REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT_TO_DECIMAL32 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+        kefir_dfp_decimal32_t value = kefir_dfp_decimal32_from_int64(arg1_instr->operation.parameters.imm.integer);
+        REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_TO_DECIMAL32 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+        kefir_dfp_decimal32_t value = kefir_dfp_decimal32_from_uint64(arg1_instr->operation.parameters.imm.uinteger);
+        REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL32 &&
+        arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST) {
+        kefir_dfp_decimal32_t value = kefir_dfp_decimal32_from_float(arg1_instr->operation.parameters.imm.float32);
+        REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL32 &&
+        arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
+        kefir_dfp_decimal32_t value = kefir_dfp_decimal32_from_double(arg1_instr->operation.parameters.imm.float64);
+        REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL32 &&
+        arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST) {
+        kefir_dfp_decimal32_t value = kefir_dfp_decimal32_from_double(arg1_instr->operation.parameters.imm.long_double);
+        REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT_TO_DECIMAL64 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+        kefir_dfp_decimal64_t value = kefir_dfp_decimal64_from_int64(arg1_instr->operation.parameters.imm.integer);
+        REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_TO_DECIMAL64 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+        kefir_dfp_decimal64_t value = kefir_dfp_decimal64_from_uint64(arg1_instr->operation.parameters.imm.uinteger);
+        REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL64 &&
+        arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST) {
+        kefir_dfp_decimal64_t value = kefir_dfp_decimal64_from_float(arg1_instr->operation.parameters.imm.float32);
+        REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL64 &&
+        arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
+        kefir_dfp_decimal64_t value = kefir_dfp_decimal64_from_double(arg1_instr->operation.parameters.imm.float64);
+        REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL64 &&
+        arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST) {
+        kefir_dfp_decimal64_t value = kefir_dfp_decimal64_from_double(arg1_instr->operation.parameters.imm.long_double);
+        REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT_TO_DECIMAL128 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+        kefir_dfp_decimal128_t value = kefir_dfp_decimal128_from_int64(arg1_instr->operation.parameters.imm.integer);
+        REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_TO_DECIMAL128 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+        kefir_dfp_decimal128_t value = kefir_dfp_decimal128_from_uint64(arg1_instr->operation.parameters.imm.uinteger);
+        REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL128 &&
+        arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST) {
+        kefir_dfp_decimal128_t value = kefir_dfp_decimal128_from_float(arg1_instr->operation.parameters.imm.float32);
+        REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL128 &&
+        arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
+        kefir_dfp_decimal128_t value = kefir_dfp_decimal128_from_double(arg1_instr->operation.parameters.imm.float64);
+        REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL128 &&
+        arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST) {
+        kefir_dfp_decimal128_t value = kefir_dfp_decimal128_from_double(arg1_instr->operation.parameters.imm.long_double);
+        REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(mem, &func->code, block_id, value, replacement_ref));
     }
 
     return KEFIR_OK;
@@ -2611,6 +2671,21 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, struct kefir_opt_m
                 case KEFIR_OPT_OPCODE_DECIMAL128_TO_UINT:
                 case KEFIR_OPT_OPCODE_DECIMAL128_TO_DECIMAL32:
                 case KEFIR_OPT_OPCODE_DECIMAL128_TO_DECIMAL64:
+                case KEFIR_OPT_OPCODE_INT_TO_DECIMAL32:
+                case KEFIR_OPT_OPCODE_UINT_TO_DECIMAL32:
+                case KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL32:
+                case KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL32:
+                case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL32:
+                case KEFIR_OPT_OPCODE_INT_TO_DECIMAL64:
+                case KEFIR_OPT_OPCODE_UINT_TO_DECIMAL64:
+                case KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL64:
+                case KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL64:
+                case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL64:
+                case KEFIR_OPT_OPCODE_INT_TO_DECIMAL128:
+                case KEFIR_OPT_OPCODE_UINT_TO_DECIMAL128:
+                case KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL128:
+                case KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL128:
+                case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL128:
                     if (permit_floating_point_optimization) {
                         REQUIRE_OK(const_fold_decimal_unary(mem, func, instr, &replacement_ref));
                     }

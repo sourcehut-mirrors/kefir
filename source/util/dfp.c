@@ -85,12 +85,42 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_from_uint64(kefir_uint64_t x) {
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_float(kefir_float32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_double(kefir_float64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
 kefir_dfp_decimal32_t kefir_dfp_decimal32_from_long_double(kefir_long_double_t x) {
     UNUSED(x);
     FAIL_NOT_SUPPORTED;
 }
 
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_float(kefir_float32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_double(kefir_float64_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
 kefir_dfp_decimal64_t kefir_dfp_decimal64_from_long_double(kefir_long_double_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_float(kefir_float32_t x) {
+    UNUSED(x);
+    FAIL_NOT_SUPPORTED;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_double(kefir_float64_t x) {
     UNUSED(x);
     FAIL_NOT_SUPPORTED;
 }
@@ -623,13 +653,43 @@ kefir_dfp_decimal128_t kefir_dfp_decimal128_from_uint64(kefir_uint64_t x) {
     return view.shim;
 }
 
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_float(kefir_float32_t x) {
+    union decimal32_view view = {.decimal = (_Decimal32) x};
+    return view.shim;
+}
+
+kefir_dfp_decimal32_t kefir_dfp_decimal32_from_double(kefir_float64_t x) {
+    union decimal32_view view = {.decimal = (_Decimal32) x};
+    return view.shim;
+}
+
 kefir_dfp_decimal32_t kefir_dfp_decimal32_from_long_double(kefir_long_double_t x) {
     union decimal32_view view = {.decimal = (_Decimal32) x};
     return view.shim;
 }
 
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_float(kefir_float32_t x) {
+    union decimal64_view view = {.decimal = (_Decimal64) x};
+    return view.shim;
+}
+
+kefir_dfp_decimal64_t kefir_dfp_decimal64_from_double(kefir_float64_t x) {
+    union decimal64_view view = {.decimal = (_Decimal64) x};
+    return view.shim;
+}
+
 kefir_dfp_decimal64_t kefir_dfp_decimal64_from_long_double(kefir_long_double_t x) {
     union decimal64_view view = {.decimal = (_Decimal64) x};
+    return view.shim;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_float(kefir_float32_t x) {
+    union decimal128_view view = {.decimal = (_Decimal128) x};
+    return view.shim;
+}
+
+kefir_dfp_decimal128_t kefir_dfp_decimal128_from_double(kefir_float64_t x) {
+    union decimal128_view view = {.decimal = (_Decimal128) x};
     return view.shim;
 }
 
