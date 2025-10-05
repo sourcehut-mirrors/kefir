@@ -165,6 +165,12 @@ static kefir_result_t output_compiler_config(FILE *output,
         fprintf(output, " --no-declare-atomic-support");
     }
 
+    if (configuration->features.declare_decimal_support) {
+        fprintf(output, " --declare-decimal-support");
+    } else {
+        fprintf(output, " --no-declare-decimal-support");
+    }
+
     if (configuration->optimizer.disable_lowering) {
         fprintf(output, " --disable-lowering");
     }

@@ -466,6 +466,13 @@ Declare support of atomics (might require explicit linking of software atomic li
 .It Fl \-no-declare-atomic-support
 Declare the absence of atomic support via defining __STDC_NO_ATOMICS__ macro.
 .\"
+.It Fl \-declare-decimal-support
+Declare support of decimal floating-point (might require explicit linking of libgcc); has effect only is kefir has been built with
+decimal-capable compiler.
+.\"
+.It Fl \-no-declare-decimal-support
+Do not declare support of decimal floating-point; suppresses definitions of kefir-specific support macros.
+.\"
 .It Fl \-optimize-stack-frame
 Optimize stack frame layout by reusing space for variables for disjoint lifetimes. Might increase compilation time and memory
 use on very large functions. [default: on].

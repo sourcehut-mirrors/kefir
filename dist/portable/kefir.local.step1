@@ -1,4 +1,4 @@
-export KEFIR_EXTRAARGS="--target host-musl"
+export KEFIR_EXTRAARGS="--target host-musl -Wno-declare-decimal-support"
 
 if [ -z "$KEFIR_MUSL_INCLUDE" ]; then
     export KEFIR_MUSL_INCLUDE="$SCRIPT_DIR/../include"
