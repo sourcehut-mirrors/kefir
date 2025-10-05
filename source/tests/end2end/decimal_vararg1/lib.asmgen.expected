@@ -9,8 +9,6 @@
 .type sum128, @function
 .global sum128_2
 .type sum128_2, @function
-.extern __bid_extendsddd2
-.extern __bid_extendsdtd2
 .extern __bid_adddd3
 .extern __bid_addsd3
 .extern __bid_addtd3
@@ -118,10 +116,7 @@ __kefir_func_sum64_label7:
     movq %rax, -24(%rbp)
     lea -240(%rbp), %rax
     movq %rax, -16(%rbp)
-    movd __kefir_func_sum64_label4(%rip), %xmm0
-    movq %rdi, -64(%rbp)
-    call __bid_extendsddd2@PLT
-    movq -64(%rbp), %rdi
+    movq __kefir_func_sum64_label4(%rip), %xmm0
     movaps %xmm0, %xmm2
 __kefir_func_sum64_label1:
     mov %rdi, %rcx
@@ -148,20 +143,20 @@ __kefir_func_sum64_label5:
     mov %rax, -24(%rbp)
     movq -8(%rax), %xmm1
 __kefir_func_sum64_label6:
+    movq %rcx, -64(%rbp)
     movdqu %xmm2, -56(%rbp)
-    movq %rcx, -40(%rbp)
     movaps %xmm2, %xmm0
     call __bid_adddd3@PLT
+    movq -64(%rbp), %rcx
     movdqu -56(%rbp), %xmm2
-    movq -40(%rbp), %rcx
     mov %rcx, %rdi
     movaps %xmm0, %xmm2
     jmp __kefir_func_sum64_label1
 __kefir_text_func_sum64_end:
 .section .rodata
-    .align 4
+    .align 8
 __kefir_func_sum64_label4:
-    .long 847249408
+    .quad 3584865303386914816
 .section .text
 
 sum128:
@@ -193,10 +188,7 @@ __kefir_func_sum128_label7:
     movq %rax, -24(%rbp)
     lea -240(%rbp), %rax
     movq %rax, -16(%rbp)
-    movd __kefir_func_sum128_label4(%rip), %xmm0
-    movq %rdi, -64(%rbp)
-    call __bid_extendsdtd2@PLT
-    movq -64(%rbp), %rdi
+    movdqu __kefir_func_sum128_label4(%rip), %xmm0
     movaps %xmm0, %xmm2
 __kefir_func_sum128_label1:
     mov %rdi, %rcx
@@ -225,20 +217,20 @@ __kefir_func_sum128_label5:
     mov %rax, -24(%rbp)
     movdqu -16(%rax), %xmm1
 __kefir_func_sum128_label6:
+    movq %rcx, -64(%rbp)
     movdqu %xmm2, -56(%rbp)
-    movq %rcx, -40(%rbp)
     movaps %xmm2, %xmm0
     call __bid_addtd3@PLT
+    movq -64(%rbp), %rcx
     movdqu -56(%rbp), %xmm2
-    movq -40(%rbp), %rcx
     mov %rcx, %rdi
     movaps %xmm0, %xmm2
     jmp __kefir_func_sum128_label1
 __kefir_text_func_sum128_end:
 .section .rodata
-    .align 4
+    .align 16
 __kefir_func_sum128_label4:
-    .long 847249408
+    .quad 0, 3476778912330022912
 .section .text
 
 sum128_2:
@@ -270,10 +262,7 @@ __kefir_func_sum128_2_label9:
     movq %rax, -24(%rbp)
     lea -240(%rbp), %rax
     movq %rax, -16(%rbp)
-    movd __kefir_func_sum128_2_label4(%rip), %xmm0
-    movq %rdi, -64(%rbp)
-    call __bid_extendsdtd2@PLT
-    movq -64(%rbp), %rdi
+    movdqu __kefir_func_sum128_2_label4(%rip), %xmm0
     mov %rdi, %rax
     movaps %xmm0, %xmm3
 __kefir_func_sum128_2_label1:
@@ -317,20 +306,20 @@ __kefir_func_sum128_2_label7:
     mov %rax, -24(%rbp)
     movq -8(%rax), %xmm2
 __kefir_func_sum128_2_label8:
+    movq %rdi, -64(%rbp)
     movdqu %xmm3, -56(%rbp)
-    movq %rdi, -40(%rbp)
     movaps %xmm3, %xmm0
     call __bid_addtd3@PLT
+    movq -64(%rbp), %rdi
     movdqu -56(%rbp), %xmm3
-    movq -40(%rbp), %rdi
     mov %rdi, %rax
     movaps %xmm0, %xmm3
     jmp __kefir_func_sum128_2_label1
 __kefir_text_func_sum128_2_end:
 .section .rodata
-    .align 4
+    .align 16
 __kefir_func_sum128_2_label4:
-    .long 847249408
+    .quad 0, 3476778912330022912
 .section .text
 
 __kefir_text_section_end:

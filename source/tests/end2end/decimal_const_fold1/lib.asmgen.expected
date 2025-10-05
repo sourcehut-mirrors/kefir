@@ -79,15 +79,6 @@
 .type isnan128_1, @function
 .global isnan128_2
 .type isnan128_2, @function
-.extern __bid_eqdd2
-.extern __bid_eqsd2
-.extern __bid_eqtd2
-.extern __bid_gtdd2
-.extern __bid_gtsd2
-.extern __bid_gttd2
-.extern __bid_ltdd2
-.extern __bid_ltsd2
-.extern __bid_lttd2
 
 .section .text
 __kefir_text_section_begin:
@@ -225,279 +216,75 @@ __kefir_func_div128_label1:
 
 eq32_1:
 __kefir_text_func_eq32_1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_eq32_1_label1(%rip), %xmm0
-    movd __kefir_func_eq32_1_label2(%rip), %xmm1
-    call __bid_eqsd2@PLT
-    xor %ecx, %ecx
-    test %eax, %eax
-    sete %cl
-    mov %rcx, %rax
-    pop %rbp
+    xor %eax, %eax
     ret
 __kefir_text_func_eq32_1_end:
-.section .rodata
-    .align 4
-__kefir_func_eq32_1_label1:
-    .long 822090012
-    .align 4
-__kefir_func_eq32_1_label2:
-    .long 838879711
-.section .text
 
 eq32_2:
 __kefir_text_func_eq32_2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_eq32_2_label1(%rip), %xmm0
-    movd __kefir_func_eq32_2_label2(%rip), %xmm1
-    call __bid_eqsd2@PLT
-    xor %ecx, %ecx
-    test %eax, %eax
-    sete %cl
-    mov %rcx, %rax
-    pop %rbp
+    mov $1, %rax
     ret
 __kefir_text_func_eq32_2_end:
-.section .rodata
-    .align 4
-__kefir_func_eq32_2_label1:
-    .long 822090012
-    .align 4
-__kefir_func_eq32_2_label2:
-    .long 822090012
-.section .text
 
 eq64_1:
 __kefir_text_func_eq64_1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movq __kefir_func_eq64_1_label1(%rip), %xmm0
-    movq __kefir_func_eq64_1_label2(%rip), %xmm1
-    call __bid_eqdd2@PLT
-    xor %ecx, %ecx
-    test %eax, %eax
-    sete %cl
-    mov %rcx, %rax
-    pop %rbp
+    xor %eax, %eax
     ret
 __kefir_text_func_eq64_1_end:
-.section .rodata
-    .align 8
-__kefir_func_eq64_1_label1:
-    .quad 3566850904886861974
-    .align 8
-__kefir_func_eq64_1_label2:
-    .quad 3566850904878343146
-.section .text
 
 eq64_2:
 __kefir_text_func_eq64_2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movq __kefir_func_eq64_2_label1(%rip), %xmm0
-    movq __kefir_func_eq64_2_label2(%rip), %xmm1
-    call __bid_eqdd2@PLT
-    xor %ecx, %ecx
-    test %eax, %eax
-    sete %cl
-    mov %rcx, %rax
-    pop %rbp
+    mov $1, %rax
     ret
 __kefir_text_func_eq64_2_end:
-.section .rodata
-    .align 8
-__kefir_func_eq64_2_label1:
-    .quad 3566850904886861974
-    .align 8
-__kefir_func_eq64_2_label2:
-    .quad 3566850904886861974
-.section .text
 
 gt32_1:
 __kefir_text_func_gt32_1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_gt32_1_label1(%rip), %xmm0
-    movd __kefir_func_gt32_1_label2(%rip), %xmm1
-    call __bid_gtsd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setg %cl
-    mov %rcx, %rax
-    pop %rbp
+    xor %eax, %eax
     ret
 __kefir_text_func_gt32_1_end:
-.section .rodata
-    .align 4
-__kefir_func_gt32_1_label1:
-    .long 822090012
-    .align 4
-__kefir_func_gt32_1_label2:
-    .long 838879711
-.section .text
 
 gt32_2:
 __kefir_text_func_gt32_2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_gt32_2_label1(%rip), %xmm0
-    movd __kefir_func_gt32_2_label2(%rip), %xmm1
-    call __bid_gtsd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setg %cl
-    mov %rcx, %rax
-    pop %rbp
+    mov $1, %rax
     ret
 __kefir_text_func_gt32_2_end:
-.section .rodata
-    .align 4
-__kefir_func_gt32_2_label1:
-    .long 838879711
-    .align 4
-__kefir_func_gt32_2_label2:
-    .long 822090012
-.section .text
 
 gt64_1:
 __kefir_text_func_gt64_1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movq __kefir_func_gt64_1_label1(%rip), %xmm0
-    movq __kefir_func_gt64_1_label2(%rip), %xmm1
-    call __bid_gtdd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setg %cl
-    mov %rcx, %rax
-    pop %rbp
+    mov $1, %rax
     ret
 __kefir_text_func_gt64_1_end:
-.section .rodata
-    .align 8
-__kefir_func_gt64_1_label1:
-    .quad 3566850904886861974
-    .align 8
-__kefir_func_gt64_1_label2:
-    .quad 3566850904878343146
-.section .text
 
 gt64_2:
 __kefir_text_func_gt64_2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movq __kefir_func_gt64_2_label1(%rip), %xmm0
-    movq __kefir_func_gt64_2_label2(%rip), %xmm1
-    call __bid_gtdd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setg %cl
-    mov %rcx, %rax
-    pop %rbp
+    xor %eax, %eax
     ret
 __kefir_text_func_gt64_2_end:
-.section .rodata
-    .align 8
-__kefir_func_gt64_2_label1:
-    .quad 3566850904886861974
-    .align 8
-__kefir_func_gt64_2_label2:
-    .quad 3566850904886861974
-.section .text
 
 lt32_1:
 __kefir_text_func_lt32_1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_lt32_1_label1(%rip), %xmm0
-    movd __kefir_func_lt32_1_label2(%rip), %xmm1
-    call __bid_ltsd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setl %cl
-    mov %rcx, %rax
-    pop %rbp
+    mov $1, %rax
     ret
 __kefir_text_func_lt32_1_end:
-.section .rodata
-    .align 4
-__kefir_func_lt32_1_label1:
-    .long 822090012
-    .align 4
-__kefir_func_lt32_1_label2:
-    .long 838879711
-.section .text
 
 lt32_2:
 __kefir_text_func_lt32_2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_lt32_2_label1(%rip), %xmm0
-    movd __kefir_func_lt32_2_label2(%rip), %xmm1
-    call __bid_ltsd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setl %cl
-    mov %rcx, %rax
-    pop %rbp
+    xor %eax, %eax
     ret
 __kefir_text_func_lt32_2_end:
-.section .rodata
-    .align 4
-__kefir_func_lt32_2_label1:
-    .long 838879711
-    .align 4
-__kefir_func_lt32_2_label2:
-    .long 822090012
-.section .text
 
 lt64_1:
 __kefir_text_func_lt64_1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movq __kefir_func_lt64_1_label1(%rip), %xmm0
-    movq __kefir_func_lt64_1_label2(%rip), %xmm1
-    call __bid_ltdd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setl %cl
-    mov %rcx, %rax
-    pop %rbp
+    xor %eax, %eax
     ret
 __kefir_text_func_lt64_1_end:
-.section .rodata
-    .align 8
-__kefir_func_lt64_1_label1:
-    .quad 3566850904886861974
-    .align 8
-__kefir_func_lt64_1_label2:
-    .quad 3566850904878343146
-.section .text
 
 lt64_2:
 __kefir_text_func_lt64_2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movq __kefir_func_lt64_2_label1(%rip), %xmm0
-    movq __kefir_func_lt64_2_label2(%rip), %xmm1
-    call __bid_ltdd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setl %cl
-    mov %rcx, %rax
-    pop %rbp
+    mov $1, %rax
     ret
 __kefir_text_func_lt64_2_end:
-.section .rodata
-    .align 8
-__kefir_func_lt64_2_label1:
-    .quad 3566850904878343146
-    .align 8
-__kefir_func_lt64_2_label2:
-    .quad 3566850904886861974
-.section .text
 
 mul128:
 __kefir_text_func_mul128_begin:
@@ -534,141 +321,39 @@ __kefir_func_sub128_label1:
 
 eq128_1:
 __kefir_text_func_eq128_1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movdqu __kefir_func_eq128_1_label1(%rip), %xmm0
-    movdqu __kefir_func_eq128_1_label2(%rip), %xmm1
-    call __bid_eqtd2@PLT
-    xor %ecx, %ecx
-    test %eax, %eax
-    sete %cl
-    mov %rcx, %rax
-    pop %rbp
+    xor %eax, %eax
     ret
 __kefir_text_func_eq128_1_end:
-.section .rodata
-    .align 16
-__kefir_func_eq128_1_label1:
-    .quad 842419931, 3475090062469758976
-    .align 16
-__kefir_func_eq128_1_label2:
-    .quad 39103193, 3475090062469758976
-.section .text
 
 eq128_2:
 __kefir_text_func_eq128_2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movdqu __kefir_func_eq128_2_label1(%rip), %xmm0
-    movdqu __kefir_func_eq128_2_label2(%rip), %xmm1
-    call __bid_eqtd2@PLT
-    xor %ecx, %ecx
-    test %eax, %eax
-    sete %cl
-    mov %rcx, %rax
-    pop %rbp
+    mov $1, %rax
     ret
 __kefir_text_func_eq128_2_end:
-.section .rodata
-    .align 16
-__kefir_func_eq128_2_label1:
-    .quad 842419931, 3475090062469758976
-    .align 16
-__kefir_func_eq128_2_label2:
-    .quad 842419931, 3475090062469758976
-.section .text
 
 gt128_1:
 __kefir_text_func_gt128_1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movdqu __kefir_func_gt128_1_label1(%rip), %xmm0
-    movdqu __kefir_func_gt128_1_label2(%rip), %xmm1
-    call __bid_gttd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setg %cl
-    mov %rcx, %rax
-    pop %rbp
+    mov $1, %rax
     ret
 __kefir_text_func_gt128_1_end:
-.section .rodata
-    .align 16
-__kefir_func_gt128_1_label1:
-    .quad 842419931, 3475090062469758976
-    .align 16
-__kefir_func_gt128_1_label2:
-    .quad 39103193, 3475090062469758976
-.section .text
 
 gt128_2:
 __kefir_text_func_gt128_2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movdqu __kefir_func_gt128_2_label1(%rip), %xmm0
-    movdqu __kefir_func_gt128_2_label2(%rip), %xmm1
-    call __bid_gttd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setg %cl
-    mov %rcx, %rax
-    pop %rbp
+    xor %eax, %eax
     ret
 __kefir_text_func_gt128_2_end:
-.section .rodata
-    .align 16
-__kefir_func_gt128_2_label1:
-    .quad 842419931, 3475090062469758976
-    .align 16
-__kefir_func_gt128_2_label2:
-    .quad 842419931, 3475090062469758976
-.section .text
 
 lt128_1:
 __kefir_text_func_lt128_1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movdqu __kefir_func_lt128_1_label1(%rip), %xmm0
-    movdqu __kefir_func_lt128_1_label2(%rip), %xmm1
-    call __bid_lttd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setl %cl
-    mov %rcx, %rax
-    pop %rbp
+    xor %eax, %eax
     ret
 __kefir_text_func_lt128_1_end:
-.section .rodata
-    .align 16
-__kefir_func_lt128_1_label1:
-    .quad 842419931, 3475090062469758976
-    .align 16
-__kefir_func_lt128_1_label2:
-    .quad 39103193, 3475090062469758976
-.section .text
 
 lt128_2:
 __kefir_text_func_lt128_2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movdqu __kefir_func_lt128_2_label1(%rip), %xmm0
-    movdqu __kefir_func_lt128_2_label2(%rip), %xmm1
-    call __bid_lttd2@PLT
-    xor %ecx, %ecx
-    cmp $0, %eax
-    setl %cl
-    mov %rcx, %rax
-    pop %rbp
+    mov $1, %rax
     ret
 __kefir_text_func_lt128_2_end:
-.section .rodata
-    .align 16
-__kefir_func_lt128_2_label1:
-    .quad 39103193, 3475090062469758976
-    .align 16
-__kefir_func_lt128_2_label2:
-    .quad 842419931, 3475090062469758976
-.section .text
 
 isnan32_1:
 __kefir_text_func_isnan32_1_begin:

@@ -27,8 +27,6 @@
 .type get_d64_inf, @function
 .global get_d64_nan
 .type get_d64_nan, @function
-.extern __bid_extendsddd2
-.extern __bid_extendsdtd2
 .global get_d128_inf
 .type get_d128_inf, @function
 .global get_d128_nan
@@ -66,62 +64,46 @@ __kefir_func_get_d32_nan_label1:
 
 get_d64_inf:
 __kefir_text_func_get_d64_inf_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_get_d64_inf_label1(%rip), %xmm0
-    call __bid_extendsddd2@PLT
-    pop %rbp
+    movq __kefir_func_get_d64_inf_label1(%rip), %xmm0
     ret
 __kefir_text_func_get_d64_inf_end:
 .section .rodata
-    .align 4
+    .align 8
 __kefir_func_get_d64_inf_label1:
-    .long 2013265920
+    .quad 8646911284551352320
 .section .text
 
 get_d64_nan:
 __kefir_text_func_get_d64_nan_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_get_d64_nan_label1(%rip), %xmm0
-    call __bid_extendsddd2@PLT
-    pop %rbp
+    movq __kefir_func_get_d64_nan_label1(%rip), %xmm0
     ret
 __kefir_text_func_get_d64_nan_end:
 .section .rodata
-    .align 4
+    .align 8
 __kefir_func_get_d64_nan_label1:
-    .long 2080374784
+    .quad 8935141660703064064
 .section .text
 
 get_d128_inf:
 __kefir_text_func_get_d128_inf_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_get_d128_inf_label1(%rip), %xmm0
-    call __bid_extendsdtd2@PLT
-    pop %rbp
+    movdqu __kefir_func_get_d128_inf_label1(%rip), %xmm0
     ret
 __kefir_text_func_get_d128_inf_end:
 .section .rodata
-    .align 4
+    .align 16
 __kefir_func_get_d128_inf_label1:
-    .long 2013265920
+    .quad 0, 8646911284551352320
 .section .text
 
 get_d128_nan:
 __kefir_text_func_get_d128_nan_begin:
-    push %rbp
-    mov %rsp, %rbp
-    movd __kefir_func_get_d128_nan_label1(%rip), %xmm0
-    call __bid_extendsdtd2@PLT
-    pop %rbp
+    movdqu __kefir_func_get_d128_nan_label1(%rip), %xmm0
     ret
 __kefir_text_func_get_d128_nan_end:
 .section .rodata
-    .align 4
+    .align 16
 __kefir_func_get_d128_nan_label1:
-    .long 2080374784
+    .quad 0, 8935141660703064064
 .section .text
 
 get_d32_snan:
