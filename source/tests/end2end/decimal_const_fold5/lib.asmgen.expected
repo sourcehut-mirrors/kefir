@@ -1,0 +1,86 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global dec128_from_unsigned
+.type dec128_from_unsigned, @function
+.global dec32_from_signed
+.type dec32_from_signed, @function
+.global dec64_from_signed
+.type dec64_from_signed, @function
+.global dec32_from_unsigned
+.type dec32_from_unsigned, @function
+.global dec128_from_signed
+.type dec128_from_signed, @function
+.global dec64_from_unsigned
+.type dec64_from_unsigned, @function
+
+.section .text
+__kefir_text_section_begin:
+dec128_from_unsigned:
+__kefir_text_func_dec128_from_unsigned_begin:
+    movdqu __kefir_func_dec128_from_unsigned_label1(%rip), %xmm0
+    ret
+__kefir_text_func_dec128_from_unsigned_end:
+.section .rodata
+    .align 16
+__kefir_func_dec128_from_unsigned_label1:
+    .quad 16358600140547686400, 3476995752764520012
+.section .text
+
+dec32_from_signed:
+__kefir_text_func_dec32_from_signed_begin:
+    movd __kefir_func_dec32_from_signed_label1(%rip), %xmm0
+    ret
+__kefir_text_func_dec32_from_signed_end:
+.section .rodata
+    .align 4
+__kefir_func_dec32_from_signed_label1:
+    .long 3213836864
+.section .text
+
+dec64_from_signed:
+__kefir_text_func_dec64_from_signed_begin:
+    movq __kefir_func_dec64_from_signed_label1(%rip), %xmm0
+    ret
+__kefir_text_func_dec64_from_signed_end:
+.section .rodata
+    .align 8
+__kefir_func_dec64_from_signed_label1:
+    .quad 12969359727572287488
+.section .text
+
+dec32_from_unsigned:
+__kefir_text_func_dec32_from_unsigned_begin:
+    movd __kefir_func_dec32_from_unsigned_label1(%rip), %xmm0
+    ret
+__kefir_text_func_dec32_from_unsigned_end:
+.section .rodata
+    .align 4
+__kefir_func_dec32_from_unsigned_label1:
+    .long 1067353216
+.section .text
+
+dec128_from_signed:
+__kefir_text_func_dec128_from_signed_begin:
+    movdqu __kefir_func_dec128_from_signed_label1(%rip), %xmm0
+    ret
+__kefir_text_func_dec128_from_signed_end:
+.section .rodata
+    .align 16
+__kefir_func_dec128_from_signed_label1:
+    .quad 3271720028109537280, 12700194317271698140
+.section .text
+
+dec64_from_unsigned:
+__kefir_text_func_dec64_from_unsigned_begin:
+    movq __kefir_func_dec64_from_unsigned_label1(%rip), %xmm0
+    ret
+__kefir_text_func_dec64_from_unsigned_end:
+.section .rodata
+    .align 8
+__kefir_func_dec64_from_unsigned_label1:
+    .quad 3750994889972252672
+.section .text
+
+__kefir_text_section_end:
+

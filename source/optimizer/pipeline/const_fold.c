@@ -2273,6 +2273,127 @@ static kefir_result_t const_fold_decimal_unary(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+static kefir_result_t const_fold_decimal_to_bitint_conv(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                                 struct kefir_opt_function *func,
+                                                 const struct kefir_opt_instruction *instr,
+                                                 kefir_opt_instruction_ref_t *replacement_ref) {
+    const kefir_opt_block_id_t block_id = instr->block_id;
+    const struct kefir_opt_instruction *arg1_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0],
+                                              &arg1_instr));
+
+    kefir_bool_t signed_bitint = false;
+
+    kefir_bool_t ready = false;
+    struct kefir_bigint bigint;
+    kefir_result_t res = KEFIR_OK;
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL32_TO_BITINT_SIGNED && arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL32_CONST) {
+        REQUIRE_OK(kefir_bigint_init(&bigint));
+        ready = true;
+        res = kefir_bigint_resize_nocast(mem, &bigint, instr->operation.parameters.bitwidth);
+        kefir_dfp_decimal32_to_signed_bitint(&bigint, arg1_instr->operation.parameters.imm.decimal32);
+        signed_bitint = true;
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL32_TO_BITINT_UNSIGNED && arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL32_CONST) {
+        REQUIRE_OK(kefir_bigint_init(&bigint));
+        ready = true;
+        res = kefir_bigint_resize_nocast(mem, &bigint, instr->operation.parameters.bitwidth);
+        kefir_dfp_decimal32_to_unsigned_bitint(&bigint, arg1_instr->operation.parameters.imm.decimal32);
+        signed_bitint = false;
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL64_TO_BITINT_SIGNED && arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL64_CONST) {
+        REQUIRE_OK(kefir_bigint_init(&bigint));
+        ready = true;
+        res = kefir_bigint_resize_nocast(mem, &bigint, instr->operation.parameters.bitwidth);
+        kefir_dfp_decimal64_to_signed_bitint(&bigint, arg1_instr->operation.parameters.imm.decimal64);
+        signed_bitint = true;
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL64_TO_BITINT_UNSIGNED && arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL64_CONST) {
+        REQUIRE_OK(kefir_bigint_init(&bigint));
+        ready = true;
+        res = kefir_bigint_resize_nocast(mem, &bigint, instr->operation.parameters.bitwidth);
+        kefir_dfp_decimal64_to_unsigned_bitint(&bigint, arg1_instr->operation.parameters.imm.decimal64);
+        signed_bitint = false;
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_TO_BITINT_SIGNED && arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_CONST) {
+        REQUIRE_OK(kefir_bigint_init(&bigint));
+        ready = true;
+        res = kefir_bigint_resize_nocast(mem, &bigint, instr->operation.parameters.bitwidth);
+        kefir_dfp_decimal128_to_signed_bitint(&bigint, arg1_instr->operation.parameters.imm.decimal128);
+        signed_bitint = true;
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_TO_BITINT_UNSIGNED && arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_CONST) {
+        REQUIRE_OK(kefir_bigint_init(&bigint));
+        ready = true;
+        res = kefir_bigint_resize_nocast(mem, &bigint, instr->operation.parameters.bitwidth);
+        kefir_dfp_decimal128_to_unsigned_bitint(&bigint, arg1_instr->operation.parameters.imm.decimal128);
+        signed_bitint = false;
+    }
+
+    if (ready) {
+        kefir_id_t bigint_id;
+        REQUIRE_CHAIN(&res, kefir_ir_module_new_bigint(mem, module->ir_module, &bigint, &bigint_id));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_bigint_free(mem, &bigint);
+            return res;
+        });
+        REQUIRE_OK(kefir_bigint_free(mem, &bigint));
+
+        if (signed_bitint) {
+            REQUIRE_OK(kefir_opt_code_builder_bitint_signed_constant(mem, &func->code, block_id,
+                                                                     bigint_id, replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_bitint_unsigned_constant(mem, &func->code, block_id,
+                                                                       bigint_id, replacement_ref));
+        }
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t const_fold_decimal_from_bitint_conv(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                                 struct kefir_opt_function *func,
+                                                 const struct kefir_opt_instruction *instr,
+                                                 kefir_opt_instruction_ref_t *replacement_ref) {
+    const kefir_opt_block_id_t block_id = instr->block_id;
+    const struct kefir_opt_instruction *arg1_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0],
+                                              &arg1_instr));
+
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL32 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST)) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref, &bigint));
+        kefir_dfp_decimal32_t value = kefir_dfp_decimal32_from_signed_bitint(bigint);
+        REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL32 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST)) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref, &bigint));
+        kefir_dfp_decimal32_t value = kefir_dfp_decimal32_from_unsigned_bitint(bigint);
+        REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL64 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST)) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref, &bigint));
+        kefir_dfp_decimal64_t value = kefir_dfp_decimal64_from_signed_bitint(bigint);
+        REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL64 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST)) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref, &bigint));
+        kefir_dfp_decimal64_t value = kefir_dfp_decimal64_from_unsigned_bitint(bigint);
+        REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL128 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST)) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref, &bigint));
+        kefir_dfp_decimal128_t value = kefir_dfp_decimal128_from_signed_bitint(bigint);
+        REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(mem, &func->code, block_id, value, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL128 &&
+        (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST)) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref, &bigint));
+        kefir_dfp_decimal128_t value = kefir_dfp_decimal128_from_unsigned_bitint(bigint);
+        REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(mem, &func->code, block_id, value, replacement_ref));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t const_fold_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
                                        struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
                                        const struct kefir_optimizer_configuration *config) {
@@ -2690,6 +2811,27 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, struct kefir_opt_m
                         REQUIRE_OK(const_fold_decimal_unary(mem, func, instr, &replacement_ref));
                     }
                     break;
+
+                case KEFIR_OPT_OPCODE_DECIMAL32_TO_BITINT_SIGNED:
+                case KEFIR_OPT_OPCODE_DECIMAL32_TO_BITINT_UNSIGNED:
+                case KEFIR_OPT_OPCODE_DECIMAL64_TO_BITINT_SIGNED:
+                case KEFIR_OPT_OPCODE_DECIMAL64_TO_BITINT_UNSIGNED:
+                case KEFIR_OPT_OPCODE_DECIMAL128_TO_BITINT_SIGNED:
+                case KEFIR_OPT_OPCODE_DECIMAL128_TO_BITINT_UNSIGNED:
+                    if (permit_floating_point_optimization && kefir_dfp_bitint_conv_is_supported()) {
+                        REQUIRE_OK(const_fold_decimal_to_bitint_conv(mem, module, func, instr, &replacement_ref));
+                    }
+                    break;
+
+                case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL32:
+                case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL32:
+                case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL64:
+                case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL64:
+                case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL128:
+                case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL128:
+                    if (permit_floating_point_optimization && kefir_dfp_bitint_conv_is_supported()) {
+                        REQUIRE_OK(const_fold_decimal_from_bitint_conv(mem, module, func, instr, &replacement_ref));
+                    }
 
                 default:
                     // Intentionally left blank

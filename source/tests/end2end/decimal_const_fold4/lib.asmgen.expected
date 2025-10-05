@@ -1,0 +1,116 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global dec32_to_unsigned
+.type dec32_to_unsigned, @function
+.global dec64_to_unsigned
+.type dec64_to_unsigned, @function
+.global dec32_to_signed
+.type dec32_to_signed, @function
+.global dec64_to_signed
+.type dec64_to_signed, @function
+.global dec128_to_unsigned
+.type dec128_to_unsigned, @function
+.global dec128_to_signed
+.type dec128_to_signed, @function
+
+.section .text
+__kefir_text_section_begin:
+dec32_to_unsigned:
+__kefir_text_func_dec32_to_unsigned_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $9013, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_dec32_to_unsigned_end:
+
+dec64_to_unsigned:
+__kefir_text_func_dec64_to_unsigned_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $13819, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_dec64_to_unsigned_end:
+
+dec32_to_signed:
+__kefir_text_func_dec32_to_signed_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $4294960591, -16(%rbp)
+    movl $4294967295, -12(%rbp)
+    movl $4294967295, -8(%rbp)
+    movl $16777215, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_dec32_to_signed_end:
+
+dec64_to_signed:
+__kefir_text_func_dec64_to_signed_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $1910, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_dec64_to_signed_end:
+
+dec128_to_unsigned:
+__kefir_text_func_dec128_to_unsigned_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $38194, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_dec128_to_unsigned_end:
+
+dec128_to_signed:
+__kefir_text_func_dec128_to_signed_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $3301248477, -16(%rbp)
+    movl $4294967295, -12(%rbp)
+    movl $4294967295, -8(%rbp)
+    movl $16777215, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_dec128_to_signed_end:
+
+__kefir_text_section_end:
+
