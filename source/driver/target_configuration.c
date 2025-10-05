@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
+#include <unistd.h>
 
 static kefir_result_t match_backend(kefir_driver_target_backend_t backend, const char **target_profile) {
     switch (backend) {
@@ -103,6 +104,25 @@ static kefir_result_t add_library_paths(struct kefir_mem *mem, struct kefir_driv
         REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, buffer));
     }
     return KEFIR_OK;
+}
+
+static kefir_bool_t is_file_readable(const char *paths, const char *filename) {
+    struct kefir_filesystem_path_list_iter iter;
+    kefir_size_t length;
+    char buffer[PATH_MAX + 1];
+    for (const char *path = kefir_filesystem_path_list_iter_init(&iter, paths, ';', &length); path != NULL;
+         path = kefir_filesystem_path_list_iter_next(&iter, &length)) {
+
+        if (length == 0) {
+            continue;
+        }
+        length = MIN(length, PATH_MAX);
+        snprintf(buffer, PATH_MAX, "%.*s/%s", (int) length, path, filename);
+        if (access(buffer, R_OK | F_OK) == 0) {
+            return true;
+        }
+    }
+    return false;
 }
 
 kefir_result_t kefir_driver_apply_target_compiler_configuration(
@@ -430,6 +450,16 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
     return KEFIR_OK;
 }
 
+static kefir_result_t link_libgcc(struct kefir_mem *mem, struct kefir_driver_linker_configuration *linker_config, const char *library_path) {
+    if (is_file_readable(library_path, "libgcc.a")) {
+        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc"));
+    }
+    if (is_file_readable(library_path, "libgcc_eh.a")) {
+        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc_eh"));
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_driver_apply_target_linker_final_configuration(
     struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_driver_external_resources *externals,
     const struct kefir_driver_configuration *driver_config, struct kefir_driver_linker_configuration *linker_config,
@@ -457,8 +487,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             REQUIRE_OK(add_library_paths(mem, linker_config, externals->gnu.library_path));
 
             if (linker_config->flags.link_default_libs) {
-                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc"));
-                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc_eh"));
+                REQUIRE_OK(link_libgcc(mem, linker_config, externals->gnu.library_path));
                 if (linker_config->flags.link_libc) {
                     REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
                     REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
@@ -492,8 +521,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             REQUIRE_OK(add_library_paths(mem, linker_config, externals->musl.library_path));
 
             if (linker_config->flags.link_default_libs) {
-                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc"));
-                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc_eh"));
+                REQUIRE_OK(link_libgcc(mem, linker_config, externals->musl.library_path));
                 if (linker_config->flags.link_libc) {
                     LINK_FILE(externals->musl.library_path, "libc.a");
                 }
