@@ -5,6 +5,7 @@ include source/tests/Makefile.mk
 include source/cc1/Makefile.mk
 include source/driver/Makefile.mk
 include source/web/Makefile.mk
+include dist/libgcc/Makefile.mk
 include docs/man/Makefile.mk
 include install.mk
 
