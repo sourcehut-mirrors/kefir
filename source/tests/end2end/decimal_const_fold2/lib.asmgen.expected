@@ -15,10 +15,6 @@
 .type dec64_to_float, @function
 .global dec64_to_ulong
 .type dec64_to_ulong, @function
-.global dec128_to_long_double
-.type dec128_to_long_double, @function
-.global dec64_to_long_double
-.type dec64_to_long_double, @function
 .global dec32_to_long
 .type dec32_to_long, @function
 .global dec64_to_long
@@ -41,8 +37,6 @@
 .type dec64_to_double, @function
 .global dec128_to_double
 .type dec128_to_double, @function
-.global dec32_to_long_double
-.type dec32_to_long_double, @function
 
 .section .text
 __kefir_text_section_begin:
@@ -107,30 +101,6 @@ __kefir_text_func_dec64_to_ulong_begin:
     mov $1234, %rax
     ret
 __kefir_text_func_dec64_to_ulong_end:
-
-dec128_to_long_double:
-__kefir_text_func_dec128_to_long_double_begin:
-    fldt __kefir_func_dec128_to_long_double_label1(%rip)
-    ret
-__kefir_text_func_dec128_to_long_double_end:
-.section .rodata
-    .align 8
-__kefir_func_dec128_to_long_double_label1:
-    .quad 9836057582832946428
-    .quad 49154
-.section .text
-
-dec64_to_long_double:
-__kefir_text_func_dec64_to_long_double_begin:
-    fldt __kefir_func_dec64_to_long_double_label1(%rip)
-    ret
-__kefir_text_func_dec64_to_long_double_end:
-.section .rodata
-    .align 8
-__kefir_func_dec64_to_long_double_label1:
-    .quad 9836057582832946428
-    .quad 49154
-.section .text
 
 dec32_to_long:
 __kefir_text_func_dec32_to_long_begin:
@@ -236,18 +206,6 @@ __kefir_text_func_dec128_to_double_end:
     .align 8
 __kefir_func_dec128_to_double_label1:
     .quad 4612087469298171710
-.section .text
-
-dec32_to_long_double:
-__kefir_text_func_dec32_to_long_double_begin:
-    fldt __kefir_func_dec32_to_long_double_label1(%rip)
-    ret
-__kefir_text_func_dec32_to_long_double_end:
-.section .rodata
-    .align 8
-__kefir_func_dec32_to_long_double_label1:
-    .quad 9836057582832946428
-    .quad 49154
 .section .text
 
 __kefir_text_section_end:

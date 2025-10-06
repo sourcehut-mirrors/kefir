@@ -29,9 +29,11 @@ double dec32_to_double(void) {
     return 2.17828df;
 }
 
+#ifndef SKIP_LONG_DOUBLE
 long double dec32_to_long_double(void) {
     return -8.53142df;
 }
+#endif
 
 long dec32_to_long(void) {
     return -58.4e3df;
@@ -57,9 +59,11 @@ double dec64_to_double(void) {
     return 2.17828dd;
 }
 
+#ifndef SKIP_LONG_DOUBLE
 long double dec64_to_long_double(void) {
     return -8.53142dd;
 }
+#endif
 
 long dec64_to_long(void) {
     return -58.4e3dd;
@@ -85,9 +89,11 @@ double dec128_to_double(void) {
     return 2.17828dl;
 }
 
+#ifndef SKIP_LONG_DOUBLE
 long double dec128_to_long_double(void) {
     return -8.53142dl;
 }
+#endif
 
 long dec128_to_long(void) {
     return -58.4e3dl;
