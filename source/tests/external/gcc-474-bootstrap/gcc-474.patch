@@ -1,0 +1,109 @@
+diff -ru gcc/doc/gcc.texi gcc/doc/gcc.texi
+--- gcc/doc/gcc.texi	2010-06-10 02:46:33.000000000 +0300
++++ gcc/doc/gcc.texi	2025-10-07 14:50:51.320620231 +0300
+@@ -84,11 +84,11 @@
+ Published by:
+ @multitable @columnfractions 0.5 0.5
+ @item GNU Press
+-@tab Website: www.gnupress.org
++@tab Website: @uref{http://www.gnupress.org}
+ @item a division of the
+-@tab General: @tex press@@gnu.org @end tex
++@tab General: @email{press@@gnu.org}
+ @item Free Software Foundation
+-@tab Orders:  @tex sales@@gnu.org @end tex
++@tab Orders:  @email{sales@@gnu.org}
+ @item 51 Franklin Street, Fifth Floor
+ @tab Tel 617-542-5942
+ @item Boston, MA 02110-1301 USA
+@@ -141,7 +141,7 @@
+ * Gcov::            @command{gcov}---a test coverage program.
+ * Trouble::         If you have trouble using GCC.
+ * Bugs::            How, why and where to report bugs.
+-* Service::         How to find suppliers of support for GCC.
++* Service::         How To Get Help with GCC
+ * Contributing::    How to contribute to testing and developing GCC.
+ 
+ * Funding::         How to help assure funding for free software.
+diff -ru gcc/doc/invoke.texi gcc/doc/invoke.texi
+--- gcc/doc/invoke.texi	2014-04-01 11:26:10.000000000 +0300
++++ gcc/doc/invoke.texi	2025-10-07 14:51:26.340797780 +0300
+@@ -11362,7 +11362,7 @@
+ zero in case the ISR code might (implicitly) use it.
+ 
+ @item
+-RAM larger than 64@tie{KiB} is not supported by GCC for AVR targets.
++RAM larger than 64@tie{}KiB is not supported by GCC for AVR targets.
+ If you use inline assembler to read from locations outside the
+ 16-bit address range and change one of the @code{RAMP} registers,
+ you must reset it to zero after the access.
+diff -ru gcc/doc/sourcebuild.texi gcc/doc/sourcebuild.texi
+--- gcc/doc/sourcebuild.texi	2011-07-25 19:44:22.000000000 +0300
++++ gcc/doc/sourcebuild.texi	2025-10-07 14:51:19.157428023 +0300
+@@ -676,7 +676,7 @@
+ @code{lang_checks}.
+ 
+ @table @code
+-@itemx all.cross
++@item all.cross
+ @itemx start.encap
+ @itemx rest.encap
+ FIXME: exactly what goes in each of these targets?
+diff -ru gcc/doc/tm.texi gcc/doc/tm.texi
+--- gcc/doc/tm.texi	2013-09-01 22:21:33.000000000 +0300
++++ gcc/doc/tm.texi	2025-10-07 14:51:04.210685585 +0300
+@@ -11364,7 +11364,8 @@
+ value of @code{TARGET_CONST_ANCHOR} is a power of 2.  For example, on
+ MIPS, where add-immediate takes a 16-bit signed value,
+ @code{TARGET_CONST_ANCHOR} is set to @samp{0x8000}.  The default value
+-is zero, which disables this optimization.  @end deftypevr
++is zero, which disables this optimization.
++@end deftypevr
+ 
+ @deftypevr {Target Hook} {unsigned char} TARGET_ATOMIC_TEST_AND_SET_TRUEVAL
+ This value should be set if the result written by @code{atomic_test_and_set} is not exactly 1, i.e. the @code{bool} @code{true}.
+diff -ru gcc/doc/tm.texi.in gcc/doc/tm.texi.in
+--- gcc/doc/tm.texi.in	2013-09-01 22:21:33.000000000 +0300
++++ gcc/doc/tm.texi.in	2025-10-07 14:51:08.084038554 +0300
+@@ -11230,6 +11230,7 @@
+ value of @code{TARGET_CONST_ANCHOR} is a power of 2.  For example, on
+ MIPS, where add-immediate takes a 16-bit signed value,
+ @code{TARGET_CONST_ANCHOR} is set to @samp{0x8000}.  The default value
+-is zero, which disables this optimization.  @end deftypevr
++is zero, which disables this optimization.
++@end deftypevr
+ 
+ @hook TARGET_ATOMIC_TEST_AND_SET_TRUEVAL
+diff -ru gcc/Makefile.in gcc/Makefile.in
+--- gcc/Makefile.in	2013-07-08 12:15:35.000000000 +0300
++++ gcc/Makefile.in	2025-10-07 13:46:02.030901265 +0300
+@@ -1724,7 +1724,7 @@
+ quickstrap: all
+ 	cd $(toplevel_builddir) && $(MAKE) all-target-libgcc
+ 
+-all.internal: start.encap rest.encap doc
++all.internal: start.encap rest.encap
+ # This is what to compile if making a cross-compiler.
+ all.cross: native gcc-cross$(exeext) cpp$(exeext) specs \
+ 	libgcc-support lang.all.cross doc @GENINSRC@ srcextra
+diff -ru libgcc/config/i386/linux-unwind.h ./libgcc/config/i386/linux-unwind.h
+--- libgcc/config/i386/linux-unwind.h	2012-04-20 10:51:30.000000000 +0300
++++ ./libgcc/config/i386/linux-unwind.h	2025-10-07 13:46:02.030901265 +0300
+@@ -53,7 +53,7 @@
+   if (*(unsigned char *)(pc+0) == 0x48
+       && *(unsigned long long *)(pc+1) == RT_SIGRETURN_SYSCALL)
+     {
+-      struct ucontext *uc_ = context->cfa;
++      ucontext_t *uc_ = context->cfa;
+       /* The void * cast is necessary to avoid an aliasing warning.
+          The aliasing warning is correct, but should not be a problem
+          because it does not alias anything.  */
+@@ -142,7 +142,7 @@
+ 	siginfo_t *pinfo;
+ 	void *puc;
+ 	siginfo_t info;
+-	struct ucontext uc;
++	ucontext_t uc;
+       } *rt_ = context->cfa;
+       /* The void * cast is necessary to avoid an aliasing warning.
+          The aliasing warning is correct, but should not be a problem

@@ -120,6 +120,7 @@ BOOTSTRAP_TEST :=
 WEB :=
 WEBAPP :=
 MAN_PAGES :=
+BOOTSTRAP_LIBGCC_474 :=
 
 $(KEFIR_HOST_ENV_CONFIG_HEADER):
 	@mkdir -p $(shell dirname "$@")
