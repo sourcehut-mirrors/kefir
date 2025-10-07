@@ -48,3 +48,14 @@ _Bool test_and_set(_Bool *ptr) {
 void clear(_Bool *ptr) {
     __atomic_clear(ptr, __ATOMIC_SEQ_CST);
 }
+
+_Static_assert(__atomic_always_lock_free(sizeof(_Bool), (_Bool *) 0));
+_Static_assert(__atomic_always_lock_free(sizeof(char), (char *) 0));
+_Static_assert(__atomic_always_lock_free(sizeof(__CHAR16_TYPE__), (__CHAR16_TYPE__ *) 0));
+_Static_assert(__atomic_always_lock_free(sizeof(__CHAR32_TYPE__), (__CHAR32_TYPE__ *) 0));
+_Static_assert(__atomic_always_lock_free(sizeof(__WCHAR_TYPE__), (__WCHAR_TYPE__ *) 0));
+_Static_assert(__atomic_always_lock_free(sizeof(short), (short *) 0));
+_Static_assert(__atomic_always_lock_free(sizeof(int), (int *) 0));
+_Static_assert(__atomic_always_lock_free(sizeof(long), (long *) 0));
+_Static_assert(__atomic_always_lock_free(sizeof(long long), (long long *) 0));
+_Static_assert(__atomic_always_lock_free(sizeof(void *), (void **) 0));

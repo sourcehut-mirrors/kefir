@@ -71,6 +71,7 @@ __builtin_isgreater
 __builtin_popcountg
 __builtin_popcountl
 __builtin_saddl_overflow
+__atomic_always_lock_free
 __kefir_builtin_is_unsigned
 __kefir_builtin_unreachable
 __builtin_assoc_barrier
