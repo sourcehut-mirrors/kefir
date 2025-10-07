@@ -2,6 +2,7 @@ CC=cc
 LD=ld
 CCLD=$(CC)
 AS=as
+BUILD_LIBATOMIC=yes
 ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))/../..
 WORK_DIR=$(ROOT_DIR)/bin/portable/work
 TARGET_DIR=$(ROOT_DIR)/bin/portable/target
@@ -84,8 +85,14 @@ $(TARGET_DIR)/bin/ld: $(BINUTILS_ARCHIVE) $(TARGET_DIR)/lib/libc.a
 	@install "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)/COPYING.LIB" "$(TARGET_DIR)/share/licenses/binutils"
 	@install "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)/COPYING3.LIB" "$(TARGET_DIR)/share/licenses/binutils"
 	@cat "$(ROOT_DIR)/dist/portable/kefir.local.step2" >> "$(TARGET_DIR)/etc/kefir.local"
+
+$(TARGET_DIR)/lib/libatomic.so: $(TARGET_DIR)/bin/kefir
+	@$(MAKE) -f "$(ROOT_DIR)/Makefile" ROOT="$(ROOT_DIR)" KEFIR_BIN_DIR="$(WORK_DIR)/kefir" CC="$(CC)" AS="$(AS)" CCLD="$(CCLD)" PROFILE="release" USE_SHARED=no EXTRA_LDFLAGS="-static" build_libatomic
+	@mkdir -p "$(TARGET_DIR)/share/licenses/compiler_rt"
+	@install "$(WORK_DIR)/kefir/libatomic/libatomic.so" "$@"
+	@install "$(WORK_DIR)/kefir/libatomic/compiler-rt-21.1.2.src/LICENSE.TXT" "$(TARGET_DIR)/share/licenses/compiler_rt"
 	
-all: $(TARGET_DIR)/bin/kefir $(TARGET_DIR)/lib/libc.a $(TARGET_DIR)/bin/ld
+all: $(TARGET_DIR)/bin/kefir $(TARGET_DIR)/lib/libc.a $(TARGET_DIR)/bin/ld $(TARGET_DIR)/lib/libatomic.so
 	@install "$(ROOT_DIR)/dist/portable/README" "$(TARGET_DIR)"
 
 clean:
