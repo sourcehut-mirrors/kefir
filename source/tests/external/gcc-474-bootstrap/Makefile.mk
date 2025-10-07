@@ -39,21 +39,12 @@ $(KEFIR_EXTERNAL_TEST_GCC_474_BUILD_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_GCC_474
 		KEFIR_AS=$(AS) \
 		KEFIR_LD=$(LD) \
 		$(realpath $(KEFIR_EXTERNAL_TEST_GCC_474_SOURCE_DIR))/configure --enable-languages=c \
-			--disable-multilib \
 			--prefix=$(realpath $(KEFIR_EXTERNAL_TEST_GCC_474_INSTALL_DIR)) \
+			--enable-languages=c,c++ \
 			--disable-build-poststage1-with-cxx \
 			--disable-build-with-cxx \
-			--disable-cloog-version-check \
-			--disable-libitm \
-			--disable-libmudflap \
-			--disable-libquadmath \
-			--disable-libssp \
-			--disable-libstdcxx-pch \
-			--disable-libunwind-exceptions \
 			--disable-multilib \
-			--enable-clocale='gnu' \
-			--enable-cloog-backend='isl' \
-			--enable-libstdcxx-time
+			--enable-cloog-backend='isl'
 
 $(KEFIR_EXTERNAL_TEST_GCC_474_BUILD_DIR)/gcc/xgcc: $(KEFIR_EXTERNAL_TEST_GCC_474_BUILD_DIR)/Makefile
 	@echo "Building gcc $(KEFIR_EXTERNAL_TEST_GCC_474_VERSION)..."
@@ -82,8 +73,16 @@ $(KEFIR_EXTERNAL_TEST_GCC_474_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_GCC_474_INSTA
 	@diff "$@.tmp" "$(SOURCE_DIR)/tests/external/gcc-474-bootstrap/test.log.expected"
 	@mv "$@.tmp" "$@"
 
-$(KEFIR_EXTERNAL_TESTS_DIR)/gcc-474-bootstrap.test.done: $(KEFIR_EXTERNAL_TEST_GCC_474_DIR)/test.log
+$(KEFIR_EXTERNAL_TEST_GCC_474_DIR)/test.cxx.log: $(KEFIR_EXTERNAL_TEST_GCC_474_INSTALL_DIR)/bin/gcc
+	@echo "Validating g++ $(KEFIR_EXTERNAL_TEST_GCC_474_VERSION)..."
+	@"$(KEFIR_EXTERNAL_TEST_GCC_474_INSTALL_DIR)/bin/g++" \
+		-O2 "$(SOURCE_DIR)/tests/external/gcc-474-bootstrap/test.cpp" -o "$(KEFIR_EXTERNAL_TEST_GCC_474_DIR)/test.cxx"
+	@cd "$(KEFIR_EXTERNAL_TEST_GCC_474_DIR)" && ./test.cxx "test case" | tee "test.cxx.log.tmp"
+	@diff "$@.tmp" "$(SOURCE_DIR)/tests/external/gcc-474-bootstrap/test.cxx.log.expected"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/gcc-474-bootstrap.test.done: $(KEFIR_EXTERNAL_TEST_GCC_474_DIR)/test.log $(KEFIR_EXTERNAL_TEST_GCC_474_DIR)/test.cxx.log
 	@touch "$@"
 	@echo "Successfully validated gcc $(KEFIR_EXTERNAL_TEST_GCC_474_VERSION)"
 
-EXTERNAL_TESTS_EXTRA_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/gcc-474-bootstrap.test.done
+EXTERNAL_TESTS_SLOW_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/gcc-474-bootstrap.test.done
