@@ -23,6 +23,7 @@
 
 #include "kefir/core/mem.h"
 #include "kefir/core/string_pool.h"
+#include "kefir/core/hashset.h"
 #include "kefir/ast/scope.h"
 #include "kefir/ast/context.h"
 
@@ -50,6 +51,7 @@ typedef struct kefir_ast_global_context {
     struct kefir_ast_pragma_state pragmas;
 
     struct kefir_hashtree owned_objects;
+    struct kefir_hashset analyzed_types;
 
     struct {
         kefir_id_t next_id;

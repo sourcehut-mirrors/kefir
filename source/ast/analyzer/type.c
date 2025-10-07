@@ -180,6 +180,12 @@ kefir_result_t kefir_ast_analyze_type(struct kefir_mem *mem, const struct kefir_
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
 
+    kefir_bool_t do_analyze = true;
+    if (analysis_context == KEFIR_AST_TYPE_ANALYSIS_DEFAULT) {
+        REQUIRE_OK(context->before_type_analyze(mem, context, type, &do_analyze));
+    }
+    REQUIRE(do_analyze, KEFIR_OK);
+
     switch (type->tag) {
         case KEFIR_AST_TYPE_VOID:
         case KEFIR_AST_TYPE_SCALAR_BOOL:
@@ -236,6 +242,8 @@ kefir_result_t kefir_ast_analyze_type(struct kefir_mem *mem, const struct kefir_
             REQUIRE_OK(kefir_ast_analyze_type(mem, context, analysis_context, type->qualified_type.type, location));
             break;
     }
+
+    REQUIRE_OK(context->type_analyze_success(mem, context, type));
 
     return KEFIR_OK;
 }

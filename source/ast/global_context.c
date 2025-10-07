@@ -503,6 +503,26 @@ static kefir_result_t free_owned_object(struct kefir_mem *mem, struct kefir_hash
     return KEFIR_OK;
 }
 
+static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type, kefir_bool_t *analyze_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+
+    ASSIGN_DECL_CAST(struct kefir_ast_global_context *, global_ctx, context->payload);
+    ASSIGN_PTR(analyze_ptr, !kefir_hashset_has(&global_ctx->analyzed_types, (kefir_hashset_key_t) type));
+    return KEFIR_OK;
+}
+
+static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+
+    ASSIGN_DECL_CAST(struct kefir_ast_global_context *, global_ctx, context->payload);
+    REQUIRE_OK(kefir_hashset_add(mem, &global_ctx->analyzed_types, (kefir_hashset_key_t) type));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct kefir_ast_type_traits *type_traits,
                                              const struct kefir_ast_target_environment *target_env,
                                              struct kefir_ast_global_context *context,
@@ -540,6 +560,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     REQUIRE_OK(kefir_hashtree_init(&context->owned_objects, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&context->owned_objects, free_owned_object, NULL));
     REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));
+    REQUIRE_OK(kefir_hashset_init(&context->analyzed_types, &kefir_hashtable_uint_ops));
 
     REQUIRE_OK(kefir_ast_pragma_state_init(&context->pragmas));
 
@@ -561,6 +582,8 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->context.update_pragma_state = context_update_pragma_state;
     context->context.collect_pragma_state = context_collect_pragma_state;
     context->context.reset_pragma_state = context_reset_pragma_state;
+    context->context.before_type_analyze = before_type_analyze;
+    context->context.type_analyze_success = type_analyze_success;
     context->context.symbols = &context->symbols;
     context->context.type_bundle = &context->type_bundle;
     context->context.cache = &context->cache;
@@ -594,6 +617,7 @@ kefir_result_t kefir_ast_global_context_free(struct kefir_mem *mem, struct kefir
     context->context.extensions = NULL;
     context->context.extensions_payload = NULL;
 
+    REQUIRE_OK(kefir_hashset_free(mem, &context->analyzed_types));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->tag_scope));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->ordinary_scope));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->constant_identifiers));

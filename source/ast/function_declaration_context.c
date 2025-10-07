@@ -24,6 +24,7 @@
 #include "kefir/ast/context_impl.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/ast/analyzer/initializer.h"
+#include "kefir/ast/global_context.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -473,6 +474,18 @@ static kefir_result_t context_reset_pragma_state(struct kefir_mem *mem, const st
     return KEFIR_OK;
 }
 
+static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type, kefir_bool_t *analyze_ptr) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE_OK(context->global_context->context.before_type_analyze(mem, &context->global_context->context, type, analyze_ptr));
+    return KEFIR_OK;
+}
+
+static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE_OK(context->global_context->context.type_analyze_success(mem, &context->global_context->context, type));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem,
                                                            const struct kefir_ast_context *parent,
                                                            kefir_bool_t function_definition_context,
@@ -510,6 +523,8 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     context->context.update_pragma_state = context_update_pragma_state;
     context->context.collect_pragma_state = context_collect_pragma_state;
     context->context.reset_pragma_state = context_reset_pragma_state;
+    context->context.before_type_analyze = before_type_analyze;
+    context->context.type_analyze_success = type_analyze_success;
     context->context.symbols = parent->symbols;
     context->context.type_bundle = parent->type_bundle;
     context->context.cache = &context->cache;

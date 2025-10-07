@@ -107,9 +107,9 @@ kefir_ast_function_specifier_t kefir_ast_context_merge_function_specifiers(kefir
 
 kefir_bool_t kefir_ast_function_specifier_is_inline(kefir_ast_function_specifier_t);
 
-#define KEFIR_AST_TYPE_SAME(type1, type2) ((type1)->ops.same((type1), (type2)))
+#define KEFIR_AST_TYPE_SAME(type1, type2) ((type1) == (type2) || (type1)->ops.same((type1), (type2)))
 #define KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1, type2)                   \
-    (KEFIR_AST_TYPE_SAME((type1), (kefir_ast_zero_unqualified_type(type2))) || \
+    ((type1) == (type2) || KEFIR_AST_TYPE_SAME((type1), (kefir_ast_zero_unqualified_type(type2))) || \
      (type1)->ops.compatible((type_traits), (type1), (kefir_ast_zero_unqualified_type(type2))))
 #define KEFIR_AST_TYPE_COMPOSITE(mem, type_bundle, type_traits, type1, type2) \
     ((type1)->ops.composite((mem), (type_bundle), (type_traits), (type1), (type2)))
