@@ -57,11 +57,11 @@ bootstrap_test: .BOOTSTRAP_TEST
 
 portable:
 	@mkdir -p "$(KEFIR_BIN_DIR)"
-	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=no  BIN_DIR=$$($(REALPATH) $(KEFIR_BIN_DIR)) all
+	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=no BUILD_LIBGCC=$(PORTABLE_BOOTSTRAP_BUILD_LIBGCC) BIN_DIR=$$($(REALPATH) $(KEFIR_BIN_DIR)) all
 
 portable_bootstrap:
 	@mkdir -p "$(KEFIR_BIN_DIR)"
-	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=yes BIN_DIR=$$($(REALPATH) $(KEFIR_BIN_DIR)) all
+	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=yes BUILD_LIBGCC=$(PORTABLE_BOOTSTRAP_BUILD_LIBGCC) BIN_DIR=$$($(REALPATH) $(KEFIR_BIN_DIR)) all
 
 web: .WEB
 

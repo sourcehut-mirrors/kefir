@@ -6,6 +6,7 @@ USE_VALGRIND=no
 USE_GCOV=no
 USE_EXTENSION_SUPPORT=no
 USE_GEN_COMPILE_COMMANDS?=no
+PORTABLE_BOOTSTRAP_BUILD_LIBGCC=no
 PLATFORM := $(shell uname | tr '[:upper:]' '[:lower:]')
 
 # Tools
