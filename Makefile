@@ -6,6 +6,7 @@ include source/cc1/Makefile.mk
 include source/driver/Makefile.mk
 include source/web/Makefile.mk
 include dist/libgcc/Makefile.mk
+include dist/libatomic/Makefile.mk
 include docs/man/Makefile.mk
 include install.mk
 
@@ -78,10 +79,11 @@ help:
 compile_commands: $(COMPILE_COMMANDS_JSON)
 
 bootstrap_libgcc474: .BOOTSTRAP_LIBGCC_474
+build_libatomic: $(KEFIR_DIST_LIBATOMIC_SO)
 
 .NOTPARALLEL: .EXTERNAL_TESTS_SUITE .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE $(EXTERNAL_TESTS_BASE_SUITE) $(EXTERNAL_TESTS_FAST_SUITE) $(EXTERNAL_TESTS_SLOW_SUITE) $(EXTERNAL_TESTS_EXTRA_SUITE)
 
-.PHONY: all test generate_test_artifacts bootstrap_test web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap compile_commands bootstrap_libgcc474 \
+.PHONY: all test generate_test_artifacts bootstrap_test web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap compile_commands bootstrap_libgcc474 build_libatomic \
         .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE .EXTERNAL_TESTS_SUITE .BOOTSTRAP .MAN_PAGES .BOOTSTRAP_LIBGCC_474
 
 .DEFAULT_GOAL := all

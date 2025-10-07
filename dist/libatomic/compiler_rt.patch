@@ -1,0 +1,119 @@
+diff -ru lib/builtins/atomic.c lib/builtins/atomic.c
+--- lib/builtins/atomic.c	2025-09-23 22:22:24.000000000 +0300
++++ lib/builtins/atomic.c	2025-10-07 19:26:56.867943181 +0300
+@@ -29,10 +29,6 @@
+ 
+ #include "assembly.h"
+ 
+-// We use __builtin_mem* here to avoid dependencies on libc-provided headers.
+-#define memcpy __builtin_memcpy
+-#define memcmp __builtin_memcmp
+-
+ // Clang objects if you redefine a builtin.  This little hack allows us to
+ // define a function with the same name as an intrinsic.
+ #pragma redefine_extname __atomic_load_c SYMBOL_NAME(__atomic_load)
+@@ -176,7 +172,7 @@
+   } while (0)
+ 
+ /// Whether atomic operations for the given size (and alignment) are lock-free.
+-bool __atomic_is_lock_free_c(size_t size, void *ptr) {
++bool __atomic_is_lock_free_c(size_t size, void *ptr) asm("__atomic_is_lock_free") {
+ #define LOCK_FREE_ACTION(type) return true;
+   LOCK_FREE_CASES(ptr);
+ #undef LOCK_FREE_ACTION
+@@ -185,7 +181,7 @@
+ 
+ /// An atomic load operation.  This is atomic with respect to the source
+ /// pointer only.
+-void __atomic_load_c(int size, void *src, void *dest, int model) {
++void __atomic_load_c(int size, void *src, void *dest, int model) asm("__atomic_load") {
+ #define LOCK_FREE_ACTION(type)                                                 \
+   *((type *)dest) = __c11_atomic_load((_Atomic(type) *)src, model);            \
+   return;
+@@ -199,7 +195,7 @@
+ 
+ /// An atomic store operation.  This is atomic with respect to the destination
+ /// pointer only.
+-void __atomic_store_c(int size, void *dest, void *src, int model) {
++void __atomic_store_c(int size, void *dest, void *src, int model) asm("__atomic_store") {
+ #define LOCK_FREE_ACTION(type)                                                 \
+   __c11_atomic_store((_Atomic(type) *)dest, *(type *)src, model);              \
+   return;
+@@ -217,7 +213,7 @@
+ ///
+ /// This function returns 1 if the exchange takes place or 0 if it fails.
+ int __atomic_compare_exchange_c(int size, void *ptr, void *expected,
+-                                void *desired, int success, int failure) {
++                                void *desired, int success, int failure) asm("__atomic_compare_exchange") {
+ #define LOCK_FREE_ACTION(type)                                                 \
+   return __c11_atomic_compare_exchange_strong(                                 \
+       (_Atomic(type) *)ptr, (type *)expected, *(type *)desired, success,       \
+@@ -238,7 +234,7 @@
+ 
+ /// Performs an atomic exchange operation between two pointers.  This is atomic
+ /// with respect to the target address.
+-void __atomic_exchange_c(int size, void *ptr, void *val, void *old, int model) {
++void __atomic_exchange_c(int size, void *ptr, void *val, void *old, int model) asm("__atomic_exchange") {
+ #define LOCK_FREE_ACTION(type)                                                 \
+   *(type *)old =                                                               \
+       __c11_atomic_exchange((_Atomic(type) *)ptr, *(type *)val, model);        \
+diff -ru lib/builtins/atomic_flag_clear.c lib/builtins/atomic_flag_clear.c
+--- lib/builtins/atomic_flag_clear.c	2025-09-23 22:22:24.000000000 +0300
++++ lib/builtins/atomic_flag_clear.c	2025-10-07 19:19:38.469053741 +0300
+@@ -19,7 +19,11 @@
+ #include <stdatomic.h>
+ #undef atomic_flag_clear
+ void atomic_flag_clear(volatile atomic_flag *object) {
++#ifdef __CLANG_STDATOMIC_H
+   __c11_atomic_store(&(object)->_Value, 0, __ATOMIC_SEQ_CST);
++#else
++  __c11_atomic_store(&(object)->__val, 0, __ATOMIC_SEQ_CST);
++#endif
+ }
+ 
+ #endif
+diff -ru lib/builtins/atomic_flag_clear_explicit.c lib/builtins/atomic_flag_clear_explicit.c
+--- lib/builtins/atomic_flag_clear_explicit.c	2025-09-23 22:22:24.000000000 +0300
++++ lib/builtins/atomic_flag_clear_explicit.c	2025-10-07 19:19:38.469053741 +0300
+@@ -20,7 +20,11 @@
+ #undef atomic_flag_clear_explicit
+ void atomic_flag_clear_explicit(volatile atomic_flag *object,
+                                 memory_order order) {
++#ifdef __CLANG_STDATOMIC_H
+   __c11_atomic_store(&(object)->_Value, 0, order);
++#else
++  __c11_atomic_store(&(object)->__val, 0, order);
++#endif
+ }
+ 
+ #endif
+diff -ru lib/builtins/atomic_flag_test_and_set.c lib/builtins/atomic_flag_test_and_set.c
+--- lib/builtins/atomic_flag_test_and_set.c	2025-09-23 22:22:24.000000000 +0300
++++ lib/builtins/atomic_flag_test_and_set.c	2025-10-07 19:19:38.469053741 +0300
+@@ -19,7 +19,11 @@
+ #include <stdatomic.h>
+ #undef atomic_flag_test_and_set
+ _Bool atomic_flag_test_and_set(volatile atomic_flag *object) {
++#ifdef __CLANG_STDATOMIC_H
+   return __c11_atomic_exchange(&(object)->_Value, 1, __ATOMIC_SEQ_CST);
++#else
++  return __c11_atomic_exchange(&(object)->__val, 1, __ATOMIC_SEQ_CST);
++#endif
+ }
+ 
+ #endif
+diff -ru lib/builtins/atomic_flag_test_and_set_explicit.c lib/builtins/atomic_flag_test_and_set_explicit.c
+--- lib/builtins/atomic_flag_test_and_set_explicit.c	2025-09-23 22:22:24.000000000 +0300
++++ lib/builtins/atomic_flag_test_and_set_explicit.c	2025-10-07 19:19:38.472387091 +0300
+@@ -20,7 +20,11 @@
+ #undef atomic_flag_test_and_set_explicit
+ _Bool atomic_flag_test_and_set_explicit(volatile atomic_flag *object,
+                                         memory_order order) {
++#ifdef __CLANG_STDATOMIC_H
+   return __c11_atomic_exchange(&(object)->_Value, 1, order);
++#else
++  return __c11_atomic_exchange(&(object)->__val, 1, order);
++#endif
+ }
+ 
+ #endif
