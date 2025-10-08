@@ -71,7 +71,7 @@ static kefir_result_t cast_to_float32(struct kefir_mem *mem, struct kefir_ir_mod
                                                     kefir_ast_type_unsigned_long_long()));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT_TO_FLOAT32, 0));
         }
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         // Intentionally left blank
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_FLOAT32, 0));
@@ -119,7 +119,7 @@ static kefir_result_t cast_to_float64(struct kefir_mem *mem, struct kefir_ir_mod
                                                     kefir_ast_type_unsigned_long_long()));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT_TO_FLOAT64, 0));
         }
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_FLOAT64, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
         // Intentionally left blank
@@ -166,7 +166,7 @@ static kefir_result_t cast_to_long_double(struct kefir_mem *mem, struct kefir_ir
                                                     kefir_ast_type_signed_long_long()));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT_TO_LONG_DOUBLE, 0));
         }
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_LONG_DOUBLE, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_LONG_DOUBLE, 0));
@@ -214,7 +214,7 @@ static kefir_result_t cast_to_decimal32(struct kefir_mem *mem, struct kefir_ir_m
                                                     kefir_ast_type_unsigned_long_long()));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT_TO_DECIMAL32, 0));
         }
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL32, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL32, 0));
@@ -262,7 +262,7 @@ static kefir_result_t cast_to_decimal64(struct kefir_mem *mem, struct kefir_ir_m
                                                     kefir_ast_type_unsigned_long_long()));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT_TO_DECIMAL64, 0));
         }
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL64, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL64, 0));
@@ -310,7 +310,7 @@ static kefir_result_t cast_to_decimal128(struct kefir_mem *mem, struct kefir_ir_
                                                     kefir_ast_type_unsigned_long_long()));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT_TO_DECIMAL128, 0));
         }
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL128, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL128, 0));
@@ -473,7 +473,7 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, target, &target_sign));
 
     REQUIRE_OK(obtain_real_part(builder, &origin));
-    if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+    if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
             if (target_sign) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT_TO_BITINT_SIGNED,
@@ -811,7 +811,7 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(const struct kefir_ast_type_
         REQUIRE_OK(
             KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_FLOAT64_EQUALS));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST, 0.0f, 0.0f));
         REQUIRE_OK(
             KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_FLOAT32_EQUALS));
@@ -934,6 +934,7 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
             REQUIRE_OK(cast_to_float32(mem, module, builder, type_traits, normalized_origin));
             break;
 

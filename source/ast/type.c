@@ -427,9 +427,7 @@ kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *type, kefir_
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_BOOLEAN_TYPE_CLASS;
     } else if (type->tag == KEFIR_AST_TYPE_SCALAR_POINTER || type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_POINTER_TYPE_CLASS;
-    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE ||
-               type->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE || type->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32 ||
-                type->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64 || type->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
+    } else if (KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(type)) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_REAL_TYPE_CLASS;
     } else if (type->tag == KEFIR_AST_TYPE_FUNCTION) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_FUNCTION_TYPE_CLASS;
@@ -510,6 +508,7 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
             *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_FLOAT;
             break;
 

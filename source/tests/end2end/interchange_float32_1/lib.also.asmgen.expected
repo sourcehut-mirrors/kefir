@@ -1,0 +1,255 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global f32
+.type f32, @object
+.global add32
+.type add32, @function
+.global conv1
+.type conv1, @function
+.global conv2
+.type conv2, @function
+.global conv3
+.type conv3, @function
+.global conv4
+.type conv4, @function
+.global conv5
+.type conv5, @function
+.global div32
+.type div32, @function
+.global mul32
+.type mul32, @function
+.global neg32
+.type neg32, @function
+.global sub32
+.type sub32, @function
+.global get32_1
+.type get32_1, @function
+.global get32_2
+.type get32_2, @function
+.global f32_size
+.type f32_size, @object
+.global f32_compat
+.type f32_compat, @object
+.global f32_alignment
+.type f32_alignment, @object
+.global f32_const_ptr
+.type f32_const_ptr, @object
+
+.section .text
+__kefir_text_section_begin:
+add32:
+__kefir_text_func_add32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    addss %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_add32_end:
+
+conv1:
+__kefir_text_func_conv1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    cvtsi2ss %rdi, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv1_end:
+
+conv2:
+__kefir_text_func_conv2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    pxor %xmm0, %xmm0
+    test %rdi, %rdi
+    js __kefir_func_conv2_label1
+    cvtsi2ss %rdi, %xmm0
+    jmp __kefir_func_conv2_label2
+__kefir_func_conv2_label1:
+    mov %rdi, %rax
+    and $1, %rax
+    shr $1, %rdi
+    or %rdi, %rax
+    cvtsi2ss %rax, %xmm0
+    addss %xmm0, %xmm0
+__kefir_func_conv2_label2:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv2_end:
+
+conv3:
+__kefir_text_func_conv3_begin:
+    ret
+__kefir_text_func_conv3_end:
+
+conv4:
+__kefir_text_func_conv4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    cvtsd2ss %xmm0, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv4_end:
+
+conv5:
+__kefir_text_func_conv5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
+    fldt 16(%rbp)
+    fstps -4(%rsp)
+    movd -4(%rsp), %xmm0
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv5_end:
+
+div32:
+__kefir_text_func_div32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    divss %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_div32_end:
+
+mul32:
+__kefir_text_func_mul32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    mulss %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_mul32_end:
+
+neg32:
+__kefir_text_func_neg32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    xorps __kefir_constant_float32_neg(%rip), %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_neg32_end:
+
+sub32:
+__kefir_text_func_sub32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    subss %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_sub32_end:
+
+get32_1:
+__kefir_text_func_get32_1_begin:
+    movd __kefir_func_get32_1_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get32_1_end:
+.section .rodata
+    .align 4
+__kefir_func_get32_1_label1:
+    .long 1085125165
+.section .text
+
+get32_2:
+__kefir_text_func_get32_2_begin:
+    movd __kefir_func_get32_2_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get32_2_end:
+.section .rodata
+    .align 4
+__kefir_func_get32_2_label1:
+    .long 1076754509
+.section .text
+
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+f32:
+    .long 1078530000
+    .long 3303918125
+    .long 1158150627
+    .long 3301679252
+    .long 1224596463
+    .long 1041440101
+    .long 1158150627
+    .long 3301679252
+    .long 1224596463
+    .long 1041440101
+    .long 1158150627
+    .long 3301679252
+    .long 1224596463
+    .long 1041440101
+
+    .align 4
+f32_size:
+    .long 4
+
+    .align 16
+f32_compat:
+    .long 4294967295
+    .long 4294967295
+    .long 4294967295
+    .long 2
+    .long 3
+    .long 4294967295
+    .long 2
+    .long 3
+
+    .align 4
+f32_alignment:
+    .long 4
+
+    .align 8
+f32_const_ptr:
+    .quad f32_const
+
+.section .rodata
+    .align 4
+f32_const:
+    .long 1076754509
+
+.section .rodata
+    .align 16
+__kefir_constant_float32_neg:
+    .long 2147483648
+    .long 0
+    .long 0
+    .long 0

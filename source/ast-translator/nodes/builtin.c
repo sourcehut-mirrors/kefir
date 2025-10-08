@@ -1377,6 +1377,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
     } while (0)
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
                     DEF_BUILTIN("__kefir_builtin_isnanf32", KEFIR_IR_TYPE_FLOAT32);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
@@ -1418,6 +1419,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             const struct kefir_ir_function_decl *ir_decl;
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
                     DEF_BUILTIN("__kefir_builtin_isinff32", KEFIR_IR_TYPE_FLOAT32);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
@@ -1619,6 +1621,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
     } while (0)
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
                     DEF_BUILTIN("__kefir_builtin_isfinitef32", KEFIR_IR_TYPE_FLOAT32);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;

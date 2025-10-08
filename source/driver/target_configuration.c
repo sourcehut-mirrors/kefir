@@ -181,6 +181,12 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
             REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, buffer));
         }
 
+        if (driver_config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX &&
+            driver_config->target.variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
+            snprintf(buffer, PATH_MAX, "%s/linux-gnu", externals->runtime_include);
+            REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, buffer));
+        }
+
         snprintf(buffer, PATH_MAX, "%s/common", externals->runtime_include);
         REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, buffer));
     }

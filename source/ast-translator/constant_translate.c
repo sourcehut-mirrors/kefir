@@ -73,6 +73,7 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
                     if (builder != NULL) {
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
                                                                    (kefir_float32_t) value->floating_point, 0.0f));

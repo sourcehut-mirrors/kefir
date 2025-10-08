@@ -122,6 +122,7 @@ SCALAR_TYPE(signed_long_long, KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG)
 SCALAR_TYPE(float, KEFIR_AST_TYPE_SCALAR_FLOAT)
 SCALAR_TYPE(double, KEFIR_AST_TYPE_SCALAR_DOUBLE)
 SCALAR_TYPE(long_double, KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)
+SCALAR_TYPE(interchange_float32, KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32)
 SCALAR_TYPE(decimal32, KEFIR_AST_TYPE_SCALAR_DECIMAL32)
 SCALAR_TYPE(decimal64, KEFIR_AST_TYPE_SCALAR_DECIMAL64)
 SCALAR_TYPE(decimal128, KEFIR_AST_TYPE_SCALAR_DECIMAL128)
@@ -299,6 +300,10 @@ const struct kefir_ast_type *kefir_ast_type_corresponding_complex_type(const str
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
             return kefir_ast_type_complex_long_double();
+
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
+            // KEFIR_NOT_IMPLEMENTED
+            return NULL;
 
         default:
             if (KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type)) {

@@ -259,6 +259,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
                     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
                             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                                    "Expected floating-point constant expression"));
@@ -290,7 +291,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-                case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE: {
+                case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32: {
                     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
                             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                                    "Expected floating-point constant expression"));
@@ -375,6 +377,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             switch (arg1_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
                     REQUIRE(
                         KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg1_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg1_node->source_location,
