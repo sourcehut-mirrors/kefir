@@ -180,6 +180,10 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal32(struct
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal64(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal128(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float32(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float64(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float80(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float32x(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float64x(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_atomic(struct kefir_mem *,
                                                                        struct kefir_ast_node_base *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_struct(struct kefir_mem *,

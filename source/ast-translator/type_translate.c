@@ -81,10 +81,14 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
             typeentry->typecode = KEFIR_IR_TYPE_FLOAT64;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
             typeentry->typecode = KEFIR_IR_TYPE_LONG_DOUBLE;
             break;
 
@@ -458,6 +462,10 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:

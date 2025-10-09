@@ -366,6 +366,38 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                              (kefir_hashtree_value_t) *entry_id_ptr));
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT,
+                                                entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Float64")));
+            REQUIRE_OK(
+                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
+                                             (kefir_hashtree_value_t) *entry_id_ptr));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
+            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT,
+                                                entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Float32x")));
+            REQUIRE_OK(
+                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
+                                             (kefir_hashtree_value_t) *entry_id_ptr));
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
             REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
             REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT,
@@ -373,6 +405,40 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
             REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
                                                           *entry_id_ptr,
                                                           &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("long double")));
+            REQUIRE_OK(
+                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
+                                             (kefir_hashtree_value_t) *entry_id_ptr));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT,
+                                                entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr,
+                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Float80")));
+            REQUIRE_OK(
+                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
+                                             (kefir_hashtree_value_t) *entry_id_ptr));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
+            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT,
+                                                entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr,
+                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Float64x")));
             REQUIRE_OK(
                 kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
                                                    &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));

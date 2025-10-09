@@ -513,10 +513,14 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
             *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_DOUBLE;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
             *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE;
             break;
 

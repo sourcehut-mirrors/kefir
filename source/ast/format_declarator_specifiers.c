@@ -249,6 +249,22 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                     REQUIRE_OK(kefir_json_output_string(json, "float32"));
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_FLOAT64:
+                    REQUIRE_OK(kefir_json_output_string(json, "float64"));
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_FLOAT80:
+                    REQUIRE_OK(kefir_json_output_string(json, "float80"));
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_FLOAT32X:
+                    REQUIRE_OK(kefir_json_output_string(json, "float32x"));
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_FLOAT64X:
+                    REQUIRE_OK(kefir_json_output_string(json, "float64x"));
+                    break;
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type specifier");
             }

@@ -333,7 +333,7 @@ kefir_result_t kefir_ast_translate_default_initializer(struct kefir_mem *mem,
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_PLACEHOLDER, 0));
         REQUIRE_OK(kefir_ast_translator_store_value(mem, type, context, builder, source_location));
-    } else if (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_PLACEHOLDER, 0));
         REQUIRE_OK(kefir_ast_translator_store_value(mem, type, context, builder, source_location));

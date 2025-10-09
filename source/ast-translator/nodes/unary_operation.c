@@ -84,6 +84,8 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
             switch (node->type) {
                 case KEFIR_AST_OPERATION_PLUS:
                     break;
@@ -98,6 +100,8 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
             switch (node->type) {
                 case KEFIR_AST_OPERATION_PLUS:
                     break;
@@ -112,7 +116,7 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
             switch (node->type) {
                 case KEFIR_AST_OPERATION_PLUS:
                     break;

@@ -82,6 +82,8 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
                     if (builder != NULL) {
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
                                                                    (kefir_float64_t) value->floating_point));
@@ -90,6 +92,8 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
                     if (builder != NULL) {
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
                                                                             value->floating_point));

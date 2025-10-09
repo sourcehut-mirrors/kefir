@@ -47,6 +47,10 @@ SCALAR_TYPE(float);
 SCALAR_TYPE(double);
 SCALAR_TYPE(long_double);
 SCALAR_TYPE(interchange_float32);
+SCALAR_TYPE(interchange_float64);
+SCALAR_TYPE(interchange_float80);
+SCALAR_TYPE(extended_float32);
+SCALAR_TYPE(extended_float64);
 SCALAR_TYPE(decimal32);
 SCALAR_TYPE(decimal64);
 SCALAR_TYPE(decimal128);
@@ -87,13 +91,12 @@ const struct kefir_ast_type *kefir_ast_type_unsigned_bitprecise(struct kefir_mem
 #define KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(base)                                               \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || (base)->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)
-#define KEFIR_AST_TYPE_IS_INTERCHANGE_FLOATING_POINT(base)                                               \
-    ((base)->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32)
 #define KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(base)                                               \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32 || (base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64 || \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128)
 #define KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(base)                                               \
-    (KEFIR_AST_TYPE_IS_INTERCHANGE_FLOATING_POINT((base)))
+    ((base)->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32 || (base)->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || (base)->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || \
+    (base)->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32 || (base)->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64)
 #define KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base)                                               \
     (KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(base) || KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(base) || KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(base))
 #define KEFIR_AST_TYPE_IS_LONG_DOUBLE(base) ((base)->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)

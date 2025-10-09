@@ -47,6 +47,7 @@
 #define __HAVE_FLOAT32 1
 #define __HAVE_FLOAT64 1
 #define __HAVE_FLOAT32X 1
+#define __HAVE_FLOAT64X 1
 #define __HAVE_FLOAT128X 0
 
 #define __HAVE_DISTINCT_FLOAT16 0
@@ -72,7 +73,6 @@
 
 #if __HAVE_FLOAT64
 #define __f64(x) x
-typedef double _Float64;
 #define __CFLOAT64 _Complex float
 
 #define __builtin_huge_valf64() (__builtin_huge_val())
@@ -83,7 +83,6 @@ typedef double _Float64;
 
 #if __HAVE_FLOAT32X
 #define __f32x(x) x
-typedef double _Float32x;
 #define __CFLOAT32X _Complex double
 
 #define __builtin_huge_valf32x() (__builtin_huge_val())
@@ -94,7 +93,6 @@ typedef double _Float32x;
 
 #if __HAVE_FLOAT64X
 #define __f64x(x) x##l
-typedef long double _Float64x;
 #define __CFLOAT64X _Complex long double
 
 #define __builtin_huge_valf64x() (__builtin_huge_vall())

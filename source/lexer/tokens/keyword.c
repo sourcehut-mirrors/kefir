@@ -112,7 +112,11 @@ static const struct KeywordEntry {
                 {U"_Decimal32", KEFIR_KEYWORD_DECIMAL32, KEFIR_C17_STANDARD_VERSION},
                 {U"_Decimal64", KEFIR_KEYWORD_DECIMAL64, KEFIR_C17_STANDARD_VERSION},
                 {U"_Decimal128", KEFIR_KEYWORD_DECIMAL128, KEFIR_C17_STANDARD_VERSION},
-                {U"_Float32", KEFIR_KEYWORD_FLOAT32, KEFIR_C17_STANDARD_VERSION}};
+                {U"_Float32", KEFIR_KEYWORD_FLOAT32, KEFIR_C17_STANDARD_VERSION},
+                {U"_Float64", KEFIR_KEYWORD_FLOAT64, KEFIR_C17_STANDARD_VERSION},
+                {U"_Float80", KEFIR_KEYWORD_FLOAT80, KEFIR_C17_STANDARD_VERSION},
+                {U"_Float32x", KEFIR_KEYWORD_FLOAT32X, KEFIR_C17_STANDARD_VERSION},
+                {U"_Float64x", KEFIR_KEYWORD_FLOAT64X, KEFIR_C17_STANDARD_VERSION}};
 static const kefir_size_t KEYWORDS_LENGTH = sizeof(KEYWORDS) / sizeof(KEYWORDS[0]);
 
 #define KEYWORD_NONE (~((kefir_trie_value_t) 0))

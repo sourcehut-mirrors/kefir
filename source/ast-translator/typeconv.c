@@ -73,9 +73,9 @@ static kefir_result_t cast_to_float32(struct kefir_mem *mem, struct kefir_ir_mod
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         // Intentionally left blank
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_FLOAT32, 0));
-    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
+    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_FLOAT32, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_FLOAT32, 0));
@@ -121,9 +121,9 @@ static kefir_result_t cast_to_float64(struct kefir_mem *mem, struct kefir_ir_mod
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_FLOAT64, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32) {
         // Intentionally left blank
-    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
+    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_FLOAT64, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_FLOAT64, 0));
@@ -168,9 +168,9 @@ static kefir_result_t cast_to_long_double(struct kefir_mem *mem, struct kefir_ir
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_LONG_DOUBLE, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_LONG_DOUBLE, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64) {
         // Intentionally left blank
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_LONG_DOUBLE, 0));
@@ -216,9 +216,9 @@ static kefir_result_t cast_to_decimal32(struct kefir_mem *mem, struct kefir_ir_m
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL32, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL32, 0));
-    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
+    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_DECIMAL32, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32) {
         // Intentionally left blank
@@ -264,9 +264,9 @@ static kefir_result_t cast_to_decimal64(struct kefir_mem *mem, struct kefir_ir_m
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL64, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL64, 0));
-    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
+    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_DECIMAL64, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_DECIMAL64, 0));
@@ -312,9 +312,9 @@ static kefir_result_t cast_to_decimal128(struct kefir_mem *mem, struct kefir_ir_
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_DECIMAL128, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_DECIMAL128, 0));
-    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
+    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_DECIMAL128, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_DECIMAL128, 0));
@@ -487,7 +487,7 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
         } else {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_UINT, 0));
         }
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32) {
         if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
             if (target_sign) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DOUBLE_TO_BITINT_SIGNED,
@@ -501,7 +501,7 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
         } else {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_UINT, 0));
         }
-    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
+    } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64) {
         if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
             if (target_sign) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED,
@@ -802,11 +802,11 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(const struct kefir_ast_type_
 
     origin = kefir_ast_translator_normalize_type(origin);
 
-    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
+    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST, 0.0L));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_EQUALS, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || origin->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST, 0.0));
         REQUIRE_OK(
             KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_FLOAT64_EQUALS));
@@ -939,10 +939,14 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
             REQUIRE_OK(cast_to_float64(mem, module, builder, type_traits, normalized_origin));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
             REQUIRE_OK(cast_to_long_double(mem, module, builder, type_traits, normalized_origin));
             break;
 

@@ -1383,11 +1383,15 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
                     DEF_BUILTIN("__kefir_builtin_isnanf64", KEFIR_IR_TYPE_FLOAT64);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
                     DEF_BUILTIN("__kefir_builtin_isnanl", KEFIR_IR_TYPE_LONG_DOUBLE);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
@@ -1425,11 +1429,15 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
                     DEF_BUILTIN("__kefir_builtin_isinff64", KEFIR_IR_TYPE_FLOAT64);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
                     DEF_BUILTIN("__kefir_builtin_isinfl", KEFIR_IR_TYPE_LONG_DOUBLE);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
@@ -1627,11 +1635,15 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
                     DEF_BUILTIN("__kefir_builtin_isfinitef64", KEFIR_IR_TYPE_FLOAT64);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
                     DEF_BUILTIN("__kefir_builtin_isfinitel", KEFIR_IR_TYPE_LONG_DOUBLE);
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                     break;
