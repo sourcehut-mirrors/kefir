@@ -265,6 +265,10 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                     REQUIRE_OK(kefir_json_output_string(json, "float64x"));
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_DECIMAL64X:
+                    REQUIRE_OK(kefir_json_output_string(json, "decimal64x"));
+                    break;
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type specifier");
             }

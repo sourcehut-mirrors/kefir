@@ -81,7 +81,7 @@ static kefir_result_t cast_to_float32(struct kefir_mem *mem, struct kefir_ir_mod
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_FLOAT32, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_FLOAT32, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_FLOAT32, 0));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast pointers to floating-point values");
@@ -129,7 +129,7 @@ static kefir_result_t cast_to_float64(struct kefir_mem *mem, struct kefir_ir_mod
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_FLOAT64, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_FLOAT64, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_FLOAT64, 0));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast pointers to floating-point values");
@@ -176,7 +176,7 @@ static kefir_result_t cast_to_long_double(struct kefir_mem *mem, struct kefir_ir
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_LONG_DOUBLE, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_LONG_DOUBLE, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_LONG_DOUBLE, 0));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast pointers to floating-point values");
@@ -224,7 +224,7 @@ static kefir_result_t cast_to_decimal32(struct kefir_mem *mem, struct kefir_ir_m
         // Intentionally left blank
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_DECIMAL32, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_DECIMAL32, 0));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast pointers to decimal floating-point values");
@@ -272,7 +272,7 @@ static kefir_result_t cast_to_decimal64(struct kefir_mem *mem, struct kefir_ir_m
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_DECIMAL64, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64) {
         // Intentionally left blank
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_DECIMAL64, 0));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast pointers to decimal floating-point values");
@@ -320,7 +320,7 @@ static kefir_result_t cast_to_decimal128(struct kefir_mem *mem, struct kefir_ir_
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL32_TO_DECIMAL128, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_DECIMAL128, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64) {
         // Intentionally left blank
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast pointers to decimal floating-point values");
@@ -547,7 +547,7 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DECIMAL64_TO_UINT, 0));
             }
         }
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64) {
         if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
             if (target_sign) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL128_TO_BITINT_SIGNED,
@@ -834,7 +834,7 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(const struct kefir_ast_type_
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_CONST, dec64.uvalue));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_EQUAL, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT32_BOOL_NOT, 0));
-    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128) {
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128 || origin->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64) {
         REQUIRE_OK(kefir_dfp_require_supported(NULL));
         kefir_dfp_decimal128_t dec128 = kefir_dfp_decimal128_from_int64(0);
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST, dec128.uvalue[0],
@@ -971,6 +971,7 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
             REQUIRE_OK(cast_to_decimal128(mem, module, builder, type_traits, normalized_origin));
             break;
 

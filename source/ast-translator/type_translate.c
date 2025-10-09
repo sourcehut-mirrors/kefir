@@ -107,6 +107,7 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
             typeentry->typecode = KEFIR_IR_TYPE_DECIMAL128;
             break;
 
@@ -469,6 +470,7 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
             REQUIRE_OK(translate_scalar_type(mem, context, type, alignment, builder, layout_ptr));

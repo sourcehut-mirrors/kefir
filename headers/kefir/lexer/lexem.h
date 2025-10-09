@@ -114,6 +114,7 @@ typedef enum kefir_keyword_token {
     KEFIR_KEYWORD_FLOAT80,
     KEFIR_KEYWORD_FLOAT32X,
     KEFIR_KEYWORD_FLOAT64X,
+    KEFIR_KEYWORD_DECIMAL64X,
 
     // Extensions
     KEFIR_KEYWORD_ATTRIBUTE,

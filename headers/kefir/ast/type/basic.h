@@ -54,6 +54,7 @@ SCALAR_TYPE(extended_float64);
 SCALAR_TYPE(decimal32);
 SCALAR_TYPE(decimal64);
 SCALAR_TYPE(decimal128);
+SCALAR_TYPE(extended_decimal64);
 SCALAR_TYPE(nullptr);
 #undef SCALAR_TYPE
 
@@ -93,7 +94,7 @@ const struct kefir_ast_type *kefir_ast_type_unsigned_bitprecise(struct kefir_mem
      (base)->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)
 #define KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(base)                                               \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32 || (base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL64 || \
-     (base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128)
+     (base)->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL128 || (base)->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64)
 #define KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(base)                                               \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32 || (base)->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64 || (base)->tag == KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80 || \
     (base)->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32 || (base)->tag == KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64)

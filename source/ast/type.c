@@ -533,6 +533,7 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
             *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128;
             break;
 

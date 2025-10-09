@@ -277,6 +277,10 @@ static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keywo
         case KEFIR_KEYWORD_FLOAT64X:
             REQUIRE_OK(kefir_json_output_string(json, "_Float64x"));
             break;
+
+        case KEFIR_KEYWORD_DECIMAL64X:
+            REQUIRE_OK(kefir_json_output_string(json, "_Decimal64x"));
+            break;
     }
     if (spelling) {
         REQUIRE_OK(kefir_json_output_object_key(json, "spelling"));

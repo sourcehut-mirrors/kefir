@@ -603,6 +603,7 @@ TYPE_SPECIFIER(float64, KEFIR_AST_TYPE_SPECIFIER_FLOAT64)
 TYPE_SPECIFIER(float80, KEFIR_AST_TYPE_SPECIFIER_FLOAT80)
 TYPE_SPECIFIER(float32x, KEFIR_AST_TYPE_SPECIFIER_FLOAT32X)
 TYPE_SPECIFIER(float64x, KEFIR_AST_TYPE_SPECIFIER_FLOAT64X)
+TYPE_SPECIFIER(decimal64x, KEFIR_AST_TYPE_SPECIFIER_DECIMAL64X)
 
 #undef TYPE_SPECIFIER
 
@@ -952,6 +953,10 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
 
                 case KEFIR_AST_TYPE_SPECIFIER_FLOAT64X:
                     clone = kefir_ast_type_specifier_float64x(mem);
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_DECIMAL64X:
+                    clone = kefir_ast_type_specifier_decimal64x(mem);
                     break;
 
                 case KEFIR_AST_TYPE_SPECIFIER_ATOMIC:

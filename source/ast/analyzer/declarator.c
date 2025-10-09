@@ -951,6 +951,16 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
+        case KEFIR_AST_TYPE_SPECIFIER_DECIMAL64X:
+            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                                               "Float64 type specifier cannot be combined with others")); // KEFIR_NOT_IMPLEMENTED
+            REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine type specifiers with referenced type definition"));
+            *base_type = kefir_ast_type_extended_decimal64();
+            *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
+            break;
+
         case KEFIR_AST_TYPE_SPECIFIER_SIGNED:
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
@@ -1176,6 +1186,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
                 case KEFIR_AST_TYPE_COMPLEX_FLOAT:
                 case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
                 case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
@@ -1244,6 +1255,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
                 case KEFIR_AST_TYPE_COMPLEX_FLOAT:
                 case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
                 case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:

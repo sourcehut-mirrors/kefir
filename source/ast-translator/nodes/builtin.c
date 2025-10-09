@@ -1405,6 +1405,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL128_ISNAN, 0));
                     break;
 
@@ -1479,7 +1480,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT32_OR, 0));
                 } break;
 
-                case KEFIR_AST_TYPE_SCALAR_DECIMAL128: {
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64: {
                     REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
                     kefir_dfp_decimal128_t pos_inf = kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_inf());
                     kefir_dfp_decimal128_t neg_inf =
@@ -1689,7 +1691,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
                 } break;
 
-                case KEFIR_AST_TYPE_SCALAR_DECIMAL128: {
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64: {
                     REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
                     kefir_dfp_decimal128_t pos_inf = kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_inf());
                     kefir_dfp_decimal128_t neg_inf =

@@ -213,6 +213,7 @@ kefir_result_t kefir_ast_analyze_type(struct kefir_mem *mem, const struct kefir_
         case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
         case KEFIR_AST_TYPE_COMPLEX_FLOAT:
         case KEFIR_AST_TYPE_COMPLEX_DOUBLE:

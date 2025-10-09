@@ -130,6 +130,7 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
                     if (builder != NULL) {
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST,
                                                                      value->decimal.uvalue[0],

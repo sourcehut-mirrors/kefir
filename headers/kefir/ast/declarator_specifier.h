@@ -184,6 +184,7 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float64(struct k
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float80(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float32x(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float64x(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal64x(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_atomic(struct kefir_mem *,
                                                                        struct kefir_ast_node_base *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_struct(struct kefir_mem *,

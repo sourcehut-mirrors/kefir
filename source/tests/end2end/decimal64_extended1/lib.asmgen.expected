@@ -1,0 +1,225 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global d64x
+.type d64x, @object
+.global conv1
+.type conv1, @function
+.global conv2
+.type conv2, @function
+.global conv3
+.type conv3, @function
+.global conv4
+.type conv4, @function
+.global conv5
+.type conv5, @function
+.global add32x
+.type add32x, @function
+.global div32x
+.type div32x, @function
+.global mul32x
+.type mul32x, @function
+.global neg32x
+.type neg32x, @function
+.global sub32x
+.type sub32x, @function
+.global get32x_1
+.type get32x_1, @function
+.global get32x_2
+.type get32x_2, @function
+.global d64x_size
+.type d64x_size, @object
+.global d64x_compat
+.type d64x_compat, @object
+.extern __bid_addtd3
+.extern __bid_divtd3
+.extern __bid_multd3
+.extern __bid_subtd3
+.extern __bid_extenddftd
+.extern __bid_extendsftd
+.extern __bid_extendxftd
+.extern __bid_floatditd
+.extern __bid_floatunsditd
+.global d64x_alignment
+.type d64x_alignment, @object
+.global d64x_const_ptr
+.type d64x_const_ptr, @object
+
+.section .text
+__kefir_text_section_begin:
+conv1:
+__kefir_text_func_conv1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_floatditd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_conv1_end:
+
+conv2:
+__kefir_text_func_conv2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_floatunsditd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_conv2_end:
+
+conv3:
+__kefir_text_func_conv3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extendsftd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_conv3_end:
+
+conv4:
+__kefir_text_func_conv4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_extenddftd@PLT
+    pop %rbp
+    ret
+__kefir_text_func_conv4_end:
+
+conv5:
+__kefir_text_func_conv5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fstpt -32(%rbp)
+    sub $16, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    call __bid_extendxftd@PLT
+    add $16, %rsp
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv5_end:
+
+add32x:
+__kefir_text_func_add32x_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_addtd3@PLT
+    pop %rbp
+    ret
+__kefir_text_func_add32x_end:
+
+div32x:
+__kefir_text_func_div32x_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_divtd3@PLT
+    pop %rbp
+    ret
+__kefir_text_func_div32x_end:
+
+mul32x:
+__kefir_text_func_mul32x_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_multd3@PLT
+    pop %rbp
+    ret
+__kefir_text_func_mul32x_end:
+
+neg32x:
+__kefir_text_func_neg32x_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movdqu %xmm0, -16(%rbp)
+    mov -8(%rbp), %rax
+    btc $63, %rax
+    mov %rax, -8(%rbp)
+    movdqu -16(%rbp), %xmm0
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_neg32x_end:
+
+sub32x:
+__kefir_text_func_sub32x_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __bid_subtd3@PLT
+    pop %rbp
+    ret
+__kefir_text_func_sub32x_end:
+
+get32x_1:
+__kefir_text_func_get32x_1_begin:
+    movdqu __kefir_func_get32x_1_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get32x_1_end:
+.section .rodata
+    .align 16
+__kefir_func_get32x_1_label1:
+    .quad 4657215626510965521, 3464956963308175654
+.section .text
+
+get32x_2:
+__kefir_text_func_get32x_2_begin:
+    movdqu __kefir_func_get32x_2_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get32x_2_end:
+.section .rodata
+    .align 16
+__kefir_func_get32x_2_label1:
+    .quad 15702718261525870664, 3458348922121190810
+.section .text
+
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+d64x:
+    .quad 3141590118408203125, 3466645813168439296
+    .quad 19023179931640625, 12692832599790321664
+    .quad 217561798095703125, 3468897612982124544
+    .quad 162901800537109375, 12692269649836900352
+    .quad 14255581059206668667, 3461607447612006076
+    .quad 3974114921817300075, 3457716495856036596
+    .quad 217561798095703125, 3468897612982124544
+    .quad 162901800537109375, 12692269649836900352
+    .quad 14255581059206668667, 3461607447612006076
+    .quad 3974114921817300075, 3457716495856036596
+    .quad 217561798095703125, 3468897612982124544
+    .quad 162901800537109375, 12692269649836900352
+    .quad 14255581059206668667, 3461607447612006076
+    .quad 3974114921817300075, 3457716495856036596
+
+    .align 4
+d64x_size:
+    .long 16
+
+    .align 16
+d64x_compat:
+    .long 4294967295
+    .long 4294967295
+    .long 4294967295
+    .long 4294967295
+    .long 6
+    .long 4294967295
+    .long 4294967295
+    .long 6
+
+    .align 4
+d64x_alignment:
+    .long 16
+
+    .align 8
+d64x_const_ptr:
+    .quad d64x_const
+
+.section .rodata
+    .align 16
+d64x_const:
+    .quad 15702718261525870664, 3458348922121190810
+

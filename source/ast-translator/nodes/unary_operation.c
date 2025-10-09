@@ -159,6 +159,7 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
             switch (node->type) {
                 case KEFIR_AST_OPERATION_PLUS:
                     break;

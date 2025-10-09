@@ -273,6 +273,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
                     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
                             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                                    "Expected floating-point constant expression"));
@@ -318,6 +319,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
                     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
                             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                                    "Expected floating-point constant expression"));
@@ -425,7 +427,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
-                case KEFIR_AST_TYPE_SCALAR_DECIMAL128: {
+                case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+                case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64: {
                     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg1_node,
                                                                      KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
                             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg1_node->source_location,

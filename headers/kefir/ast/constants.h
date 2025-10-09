@@ -251,6 +251,7 @@ typedef enum kefir_ast_type_specifier_type {
     KEFIR_AST_TYPE_SPECIFIER_FLOAT80,
     KEFIR_AST_TYPE_SPECIFIER_FLOAT32X,
     KEFIR_AST_TYPE_SPECIFIER_FLOAT64X,
+    KEFIR_AST_TYPE_SPECIFIER_DECIMAL64X,
     // Special value
     KEFIR_AST_TYPE_SPECIFIER_COUNT
 } kefir_ast_type_specifier_type_t;
