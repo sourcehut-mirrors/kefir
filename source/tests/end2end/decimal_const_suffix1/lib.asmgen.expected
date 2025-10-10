@@ -1,0 +1,66 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global mygeta
+.type mygeta, @function
+.global mygetb
+.type mygetb, @function
+.global mygetc
+.type mygetc, @function
+
+.section .text
+__kefir_text_section_begin:
+mygeta:
+__kefir_text_func_mygeta_begin:
+    movd __kefir_func_mygeta_label1(%rip), %xmm0
+    ret
+__kefir_text_func_mygeta_end:
+.section .rodata
+    .align 4
+__kefir_func_mygeta_label1:
+    .long 805620497
+.section .text
+
+mygetb:
+__kefir_text_func_mygetb_begin:
+    movq __kefir_func_mygetb_label1(%rip), %xmm0
+    ret
+__kefir_text_func_mygetb_end:
+.section .rodata
+    .align 8
+__kefir_func_mygetb_label1:
+    .quad 12763201343968257492
+.section .text
+
+mygetc:
+__kefir_text_func_mygetc_begin:
+    movdqu __kefir_func_mygetc_label1(%rip), %xmm0
+    ret
+__kefir_text_func_mygetc_end:
+.section .rodata
+    .align 16
+__kefir_func_mygetc_label1:
+    .quad 319371938, 3474527112516337664
+.section .text
+
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+a:
+    .long 805620497
+
+    .align 8
+b:
+    .quad 12763201343968257492
+
+    .align 16
+c:
+    .quad 319371938, 3474527112516337664
+

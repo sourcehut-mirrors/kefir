@@ -161,6 +161,8 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
         case U'd':
         case U'D': {
             kefir_char32_t chr2 = kefir_lexer_source_cursor_at(cursor, 1);
+            kefir_char32_t chr3 = kefir_lexer_source_cursor_at(cursor, 2);
+            kefir_char32_t chr4 = kefir_lexer_source_cursor_at(cursor, 3);
             if (chr2 == U'f' || chr2 == U'F') {
                 *constant_type = DECIMAL32_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
@@ -170,6 +172,15 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
             } else if (chr2 == U'l' || chr2 == U'L') {
                 *constant_type = DECIMAL128_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
+            } else if (chr2 == U'3' && chr3 == U'2') {
+                *constant_type = DECIMAL32_CONSTANT;
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
+            } else if (chr2 == U'6' && chr3 == U'4') {
+                *constant_type = DECIMAL64_CONSTANT;
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
+            } else if (chr2 == U'1' && chr3 == U'2' && chr4 == U'8') {
+                *constant_type = DECIMAL128_CONSTANT;
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 4));
             }
         } break;
 
