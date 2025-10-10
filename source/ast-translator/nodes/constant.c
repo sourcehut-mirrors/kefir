@@ -110,15 +110,20 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
         } break;
 
         case KEFIR_AST_FLOAT_CONSTANT:
+        case KEFIR_AST_FLOAT32_CONSTANT:
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST, node->value.float32, 0.0f));
             break;
 
         case KEFIR_AST_DOUBLE_CONSTANT:
+        case KEFIR_AST_FLOAT32X_CONSTANT:
+        case KEFIR_AST_FLOAT64_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST, node->value.float64));
             break;
 
         case KEFIR_AST_LONG_DOUBLE_CONSTANT:
+        case KEFIR_AST_FLOAT64X_CONSTANT:
+        case KEFIR_AST_FLOAT80_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
                                                                 node->value.long_double));
             break;

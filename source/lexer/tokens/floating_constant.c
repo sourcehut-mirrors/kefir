@@ -101,8 +101,13 @@ static kefir_result_t match_exponent(struct kefir_mem *mem, struct kefir_lexer_s
 
 enum fp_constant_type {
     FLOAT_CONSTANT = 0,
+    FLOAT32_CONSTANT,
+    FLOAT32X_CONSTANT,
     DOUBLE_CONSTANT,
+    FLOAT64_CONSTANT,
+    FLOAT64X_CONSTANT,
     LONG_DOUBLE_CONSTANT,
+    FLOAT80_CONSTANT,
     DECIMAL32_CONSTANT,
     DECIMAL64_CONSTANT,
     DECIMAL128_CONSTANT
@@ -128,8 +133,29 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
 
         case U'f':
         case U'F':
-            *constant_type = FLOAT_CONSTANT;
-            REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+            if (kefir_lexer_source_cursor_at(cursor, 1) == U'3' && kefir_lexer_source_cursor_at(cursor, 2) == U'2') {
+                if (kefir_lexer_source_cursor_at(cursor, 3) == U'x') {
+                    *constant_type = FLOAT32X_CONSTANT;
+                    REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 4));
+                } else {
+                    *constant_type = FLOAT32_CONSTANT;
+                    REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
+                }
+            } else if (kefir_lexer_source_cursor_at(cursor, 1) == U'6' && kefir_lexer_source_cursor_at(cursor, 2) == U'4') {
+                if (kefir_lexer_source_cursor_at(cursor, 3) == U'x') {
+                    *constant_type = FLOAT64X_CONSTANT;
+                    REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 4));
+                } else {
+                    *constant_type = FLOAT64_CONSTANT;
+                    REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
+                }
+            } else if (kefir_lexer_source_cursor_at(cursor, 1) == U'8' && kefir_lexer_source_cursor_at(cursor, 2) == U'0') {
+                *constant_type = FLOAT80_CONSTANT;
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
+            } else {
+                *constant_type = FLOAT_CONSTANT;
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+            }
             break;
 
         case U'd':
@@ -183,6 +209,22 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
             }
             break;
 
+        case FLOAT32_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_float(0.0f, strtof(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float32(strtof(literal, NULL), token));
+            }
+            break;
+
+        case FLOAT32X_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_float(0.0f, strtof(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float32x(strtod(literal, NULL), token));
+            }
+            break;
+
         case DOUBLE_CONSTANT:
             if (imaginary) {
                 REQUIRE_OK(kefir_token_new_constant_complex_double(0.0, strtod(literal, NULL), token));
@@ -191,11 +233,35 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
             }
             break;
 
+        case FLOAT64_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_double(0.0f, strtod(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float64(strtod(literal, NULL), token));
+            }
+            break;
+
+        case FLOAT64X_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_double(0.0f, strtod(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float64x(strtold(literal, NULL), token));
+            }
+            break;
+
         case LONG_DOUBLE_CONSTANT:
             if (imaginary) {
                 REQUIRE_OK(kefir_token_new_constant_complex_long_double(0.0L, strtold(literal, NULL), token));
             } else {
                 REQUIRE_OK(kefir_token_new_constant_long_double(strtold(literal, NULL), token));
+            }
+            break;
+
+        case FLOAT80_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_double(0.0f, strtod(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float80(strtold(literal, NULL), token));
             }
             break;
 
@@ -340,6 +406,22 @@ static kefir_result_t match_hexadecimal_impl(struct kefir_mem *mem, struct kefir
             }
             break;
 
+        case FLOAT32_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_float(0.0f, strtof(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float32(strtof(literal, NULL), token));
+            }
+            break;
+
+        case FLOAT32X_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_float(0.0f, strtof(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float32x(strtod(literal, NULL), token));
+            }
+            break;
+
         case DOUBLE_CONSTANT:
             if (imaginary) {
                 REQUIRE_OK(kefir_token_new_constant_complex_double(0.0, strtod(literal, NULL), token));
@@ -348,11 +430,35 @@ static kefir_result_t match_hexadecimal_impl(struct kefir_mem *mem, struct kefir
             }
             break;
 
+        case FLOAT64_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_double(0.0, strtod(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float64(strtod(literal, NULL), token));
+            }
+            break;
+
+        case FLOAT64X_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_double(0.0, strtod(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float64x(strtold(literal, NULL), token));
+            }
+            break;
+
         case LONG_DOUBLE_CONSTANT:
             if (imaginary) {
                 REQUIRE_OK(kefir_token_new_constant_complex_long_double(0.0L, strtold(literal, NULL), token));
             } else {
                 REQUIRE_OK(kefir_token_new_constant_long_double(strtold(literal, NULL), token));
+            }
+            break;
+
+        case FLOAT80_CONSTANT:
+            if (imaginary) {
+                REQUIRE_OK(kefir_token_new_constant_complex_long_double(0.0L, strtold(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+            } else {
+                REQUIRE_OK(kefir_token_new_constant_float80(strtold(literal, NULL), token));
             }
             break;
 

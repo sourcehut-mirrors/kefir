@@ -200,14 +200,44 @@ static kefir_result_t visit_constant(const struct kefir_ast_visitor *visitor, co
             REQUIRE_OK(kefir_json_output_float(json, node->value.float32));
             break;
 
+        case KEFIR_AST_FLOAT32_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "float32"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.float32));
+            break;
+
+        case KEFIR_AST_FLOAT32X_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "float32x"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.float64));
+            break;
+
         case KEFIR_AST_DOUBLE_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "double"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
             REQUIRE_OK(kefir_json_output_float(json, node->value.float64));
             break;
 
+        case KEFIR_AST_FLOAT64_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "float64"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.float64));
+            break;
+
+        case KEFIR_AST_FLOAT64X_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "float64x"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(kefir_json_output_long_double(json, node->value.long_double));
+            break;
+
         case KEFIR_AST_LONG_DOUBLE_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "long_double"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(kefir_json_output_long_double(json, node->value.long_double));
+            break;
+
+        case KEFIR_AST_FLOAT80_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "float80"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
             REQUIRE_OK(kefir_json_output_long_double(json, node->value.long_double));
             break;
