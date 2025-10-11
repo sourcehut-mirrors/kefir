@@ -19,6 +19,8 @@
 .type d64_snan, @object
 .global d128_snan
 .type d128_snan, @object
+.global d64x_snan
+.type d64x_snan, @object
 .global get_d32_inf
 .type get_d32_inf, @function
 .global get_d32_nan
@@ -37,6 +39,8 @@
 .type get_d64_snan, @function
 .global get_d128_snan
 .type get_d128_snan, @function
+.global get_d64x_snan
+.type get_d64x_snan, @function
 
 .section .text
 __kefir_text_section_begin:
@@ -139,6 +143,17 @@ __kefir_func_get_d128_snan_label1:
     .quad 0, 9079256848778919936
 .section .text
 
+get_d64x_snan:
+__kefir_text_func_get_d64x_snan_begin:
+    movdqu __kefir_func_get_d64x_snan_label1(%rip), %xmm0
+    ret
+__kefir_text_func_get_d64x_snan_end:
+.section .rodata
+    .align 16
+__kefir_func_get_d64x_snan_label1:
+    .quad 0, 9079256848778919936
+.section .text
+
 __kefir_text_section_end:
 
 .section .data
@@ -176,5 +191,9 @@ d64_snan:
 
     .align 16
 d128_snan:
+    .quad 0, 9079256848778919936
+
+    .align 16
+d64x_snan:
     .quad 0, 9079256848778919936
 

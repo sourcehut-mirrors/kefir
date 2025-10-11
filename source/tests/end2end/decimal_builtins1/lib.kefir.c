@@ -32,6 +32,7 @@ _Decimal128 d128_nan = __builtin_nand32("");
 _Decimal32 d32_snan = __builtin_nansd32("");
 _Decimal64 d64_snan = __builtin_nansd64("");
 _Decimal128 d128_snan = __builtin_nansd128("");
+_Decimal64x d64x_snan = __builtin_nansd64x("");
 
 _Decimal32 get_d32_inf(void) {
     return __builtin_infd32();
@@ -68,5 +69,9 @@ _Decimal64 get_d64_snan(void) {
 
 _Decimal128 get_d128_snan(void) {
     return __builtin_nansd128("");
+}
+
+_Decimal64x get_d64x_snan(void) {
+    return __builtin_nansd64x("");
 }
 #endif

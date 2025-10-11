@@ -143,6 +143,13 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __DEC128_MAX_EXP__ 6145
 #define __DEC128_SUBNORMAL_MIN__ 0.000000000000000000000000000000001E-6143DL
 #define __DEC128_MANT_DIG__ 34
+#define __DEC64X_MAX_EXP__ 6145
+#define __DEC64X_MAX__ 9.999999999999999999999999999999999E6144D64x
+#define __DEC64X_MIN__ 1E-6143D64x
+#define __DEC64X_MANT_DIG__ 34
+#define __DEC64X_EPSILON__ 1E-33D64x
+#define __DEC64X_SUBNORMAL_MIN__ 0.000000000000000000000000000000001E-6143D64x
+#define __DEC64X_MIN_EXP__ (-6142)
 #define __DEC_EVAL_METHOD__ 2
 
 // Type width
@@ -914,5 +921,6 @@ int __kefir_builtin_isfinitel(long double);
 #define __builtin_nansd32(...) __kefir_builtin_nansd32(__VA_ARGS__)
 #define __builtin_nansd64(...) __kefir_builtin_nansd64(__VA_ARGS__)
 #define __builtin_nansd128(...) __kefir_builtin_nansd128(__VA_ARGS__)
+#define __builtin_nansd64x(...) ((_Decimal64x) __builtin_nansd128(__VA_ARGS__))
 
 #undef __KEFIR_PREDEFINED_AREA__

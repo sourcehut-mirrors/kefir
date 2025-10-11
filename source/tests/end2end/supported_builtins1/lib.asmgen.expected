@@ -123,6 +123,7 @@ __builtin_copysign
 __builtin_huge_val
 __builtin_isfinite
 __builtin_nansd128
+__builtin_nansd64x
 __builtin_offsetof
 __builtin_parityll
 __builtin_popcount

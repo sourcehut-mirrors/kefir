@@ -55,6 +55,7 @@ extern _Decimal128 d128_nan;
 extern _Decimal32 d32_snan;
 extern _Decimal64 d64_snan;
 extern _Decimal128 d128_snan;
+extern _Decimal128 d64x_snan;
 
 _Decimal32 get_d32_inf(void);
 _Decimal64 get_d64_inf(void);
@@ -67,6 +68,7 @@ _Decimal128 get_d128_nan(void);
 _Decimal32 get_d32_snan(void);
 _Decimal64 get_d64_snan(void);
 _Decimal128 get_d128_snan(void);
+_Decimal128 get_d64x_snan(void);
 #endif
 
 int main(void) {
@@ -82,6 +84,7 @@ int main(void) {
     assert(d32_snan != d32_snan);
     assert(d64_snan != d64_snan);
     assert(d128_snan != d128_snan);
+    assert(d64x_snan != d64x_snan);
 
     assert(get_d32_inf() == 1.0df / 0.0df);
     assert(get_d64_inf() == 1.0dd / 0.0dd);
@@ -103,6 +106,9 @@ int main(void) {
     assert(res64 != res64);
 
     res128 = get_d128_snan();
+    assert(res128 != res128);
+
+    res128 = get_d64x_snan();
     assert(res128 != res128);
 #endif
     return EXIT_SUCCESS;
