@@ -110,7 +110,8 @@ enum fp_constant_type {
     FLOAT80_CONSTANT,
     DECIMAL32_CONSTANT,
     DECIMAL64_CONSTANT,
-    DECIMAL128_CONSTANT
+    DECIMAL128_CONSTANT,
+    DECIMAL64X_CONSTANT
 };
 
 static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enum fp_constant_type *constant_type,
@@ -175,6 +176,9 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
             } else if (chr2 == U'3' && chr3 == U'2') {
                 *constant_type = DECIMAL32_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
+            } else if (chr2 == U'6' && chr3 == U'4' && chr4 == 'x') {
+                *constant_type = DECIMAL64X_CONSTANT;
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 4));
             } else if (chr2 == U'6' && chr3 == U'4') {
                 *constant_type = DECIMAL64_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
@@ -289,6 +293,11 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
         case DECIMAL128_CONSTANT:
             REQUIRE_OK(kefir_dfp_require_supported(&cursor->location));
             REQUIRE_OK(kefir_token_new_constant_decimal128(kefir_dfp_decimal128_scan(literal), token));
+            break;
+
+        case DECIMAL64X_CONSTANT:
+            REQUIRE_OK(kefir_dfp_require_supported(&cursor->location));
+            REQUIRE_OK(kefir_token_new_constant_decimal64x(kefir_dfp_decimal128_scan(literal), token));
             break;
     }
     return KEFIR_OK;
@@ -476,6 +485,7 @@ static kefir_result_t match_hexadecimal_impl(struct kefir_mem *mem, struct kefir
         case DECIMAL32_CONSTANT:
         case DECIMAL64_CONSTANT:
         case DECIMAL128_CONSTANT:
+        case DECIMAL64X_CONSTANT:
             return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor->location,
                                           "Decimal floating-point values cannot have hexadecimal format");
     }

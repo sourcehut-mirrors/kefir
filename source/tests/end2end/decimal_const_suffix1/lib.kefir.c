@@ -25,6 +25,7 @@
 _Decimal32 a = 3.14129d32;
 _Decimal64 b = -2.71828d64;
 _Decimal128 c = 0.319371938e5d128;
+_Decimal64x d = -7536.4252d64x;
 
 _Decimal32 mygeta(void) {
     return 3.14129d32;
@@ -36,6 +37,10 @@ _Decimal64 mygetb(void) {
 
 _Decimal128 mygetc(void) {
     return 0.319371938e5d128;
+}
+
+_Decimal64x mygetd(void) {
+    return d;
 }
 
 #endif

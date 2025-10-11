@@ -735,6 +735,15 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
             REQUIRE_OK(kefir_json_output_string(json, buf));
         } break;
 
+        case KEFIR_CONSTANT_TOKEN_DECIMAL64X: {
+            REQUIRE_OK(kefir_json_output_string(json, "decimal64x"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            char buf[128] = {0};
+            REQUIRE_OK(kefir_dfp_require_supported(NULL));
+            kefir_dfp_decimal128_format(buf, sizeof(buf), constant->decimal128);
+            REQUIRE_OK(kefir_json_output_string(json, buf));
+        } break;
+
         case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT:
             REQUIRE_OK(kefir_json_output_string(json, "complex_float"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));

@@ -45,21 +45,25 @@ _Bool decimal128_eq(_Decimal128 a, _Decimal128 b) {
 extern _Decimal32 a;
 extern _Decimal64 b;
 extern _Decimal128 c;
+extern _Decimal128 d;
 
 _Decimal32 mygeta(void);
 _Decimal64 mygetb(void);
 _Decimal128 mygetc(void);
+_Decimal128 mygetd(void);
 #endif
 
 int main(void) {
 #ifdef ENABLE_DECIMAL_TEST
     assert(decimal32_eq(a, 3.14129df));
     assert(decimal64_eq(b, -2.71828dd));
-    assert(decimal64_eq(c, 0.319371938e5dl));
+    assert(decimal128_eq(c, 0.319371938e5dl));
+    assert(decimal128_eq(d, -7536.4252dl));
 
     assert(decimal32_eq(mygeta(), 3.14129df));
     assert(decimal64_eq(mygetb(), -2.71828dd));
     assert(decimal64_eq(mygetc(), 0.319371938e5dl));
+    assert(decimal128_eq(mygetd(), -7536.4252dl));
 #endif
     return EXIT_SUCCESS;
 }

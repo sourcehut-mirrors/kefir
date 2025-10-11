@@ -219,6 +219,12 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
                 result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal128(mem, token->constant.decimal128)),
                 "Failed to allocate AST constant");
             break;
+
+        case KEFIR_CONSTANT_TOKEN_DECIMAL64X:
+            REQUIRE_ALLOC(
+                result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64x(mem, token->constant.decimal128)),
+                "Failed to allocate AST constant");
+            break;
     }
     REQUIRE_OK(PARSER_SHIFT(parser));
     return KEFIR_OK;

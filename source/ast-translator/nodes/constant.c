@@ -161,6 +161,7 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_DECIMAL128_CONSTANT:
+        case KEFIR_AST_DECIMAL64X_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST, node->value.decimal128.uvalue[0], node->value.decimal128.uvalue[1]));
             break;
 

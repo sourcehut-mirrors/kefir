@@ -102,6 +102,42 @@
             ]
         },
         {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "decimal64x",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "d",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "negate",
+                            "argument": {
+                                "class": "constant",
+                                "type": "decimal64x",
+                                "value": "7.5364252e3"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
             "class": "function_definition",
             "specifiers": {
                 "list": [
@@ -443,6 +479,120 @@
                             "class": "constant",
                             "type": "decimal128",
                             "value": "3.19371938e4"
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "decimal64x",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "mygetd",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "void",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "mygetd\u0000",
+                                        "length": 7
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "d"
                         },
                         "attributes": []
                     }

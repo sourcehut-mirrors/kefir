@@ -7,12 +7,16 @@
 .type b, @object
 .global c
 .type c, @object
+.global d
+.type d, @object
 .global mygeta
 .type mygeta, @function
 .global mygetb
 .type mygetb, @function
 .global mygetc
 .type mygetc, @function
+.global mygetd
+.type mygetd, @function
 
 .section .text
 __kefir_text_section_begin:
@@ -49,6 +53,13 @@ __kefir_func_mygetc_label1:
     .quad 319371938, 3474527112516337664
 .section .text
 
+mygetd:
+__kefir_text_func_mygetd_begin:
+    movq d@GOTPCREL(%rip), %rax
+    movdqu (%rax), %xmm0
+    ret
+__kefir_text_func_mygetd_end:
+
 __kefir_text_section_end:
 
 .section .data
@@ -63,4 +74,8 @@ b:
     .align 16
 c:
     .quad 319371938, 3474527112516337664
+
+    .align 16
+d:
+    .quad 75364252, 12697899149371113472
 

@@ -144,6 +144,7 @@ typedef enum kefir_constant_token_type {
     KEFIR_CONSTANT_TOKEN_DECIMAL32,
     KEFIR_CONSTANT_TOKEN_DECIMAL64,
     KEFIR_CONSTANT_TOKEN_DECIMAL128,
+    KEFIR_CONSTANT_TOKEN_DECIMAL64X,
     KEFIR_CONSTANT_TOKEN_CHAR,
     KEFIR_CONSTANT_TOKEN_WIDE_CHAR,
     KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR,
@@ -379,6 +380,7 @@ kefir_result_t kefir_token_new_constant_complex_long_double(kefir_long_double_t,
 kefir_result_t kefir_token_new_constant_decimal32(kefir_dfp_decimal32_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_decimal64(kefir_dfp_decimal64_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_decimal128(kefir_dfp_decimal128_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_decimal64x(kefir_dfp_decimal128_t, struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_multibyte(struct kefir_mem *, const char *, kefir_size_t,
                                                         struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_unicode8(struct kefir_mem *, const char *, kefir_size_t,

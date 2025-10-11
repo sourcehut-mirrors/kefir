@@ -375,6 +375,16 @@ kefir_result_t kefir_token_new_constant_decimal128(kefir_dfp_decimal128_t value,
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_token_new_constant_decimal64x(kefir_dfp_decimal128_t value, struct kefir_token *token) {
+    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
+    REQUIRE_OK(kefir_source_location_empty(&token->source_location));
+    token->klass = KEFIR_TOKEN_CONSTANT;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_DECIMAL64X;
+    token->constant.decimal128 = value;
+    token->macro_expansions = NULL;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_token_new_constant_complex_float(kefir_float32_t real_value, kefir_float32_t imaginary_value,
                                                       struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));

@@ -329,6 +329,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_float80(struct kefir_mem *, ke
 struct kefir_ast_constant *kefir_ast_new_constant_decimal32(struct kefir_mem *, kefir_dfp_decimal32_t);
 struct kefir_ast_constant *kefir_ast_new_constant_decimal64(struct kefir_mem *, kefir_dfp_decimal64_t);
 struct kefir_ast_constant *kefir_ast_new_constant_decimal128(struct kefir_mem *, kefir_dfp_decimal128_t);
+struct kefir_ast_constant *kefir_ast_new_constant_decimal64x(struct kefir_mem *, kefir_dfp_decimal128_t);
 struct kefir_ast_constant *kefir_ast_new_constant_complex_float(struct kefir_mem *, kefir_float32_t, kefir_float32_t);
 struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_mem *, kefir_float64_t, kefir_float64_t);
 struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kefir_mem *, kefir_long_double_t,

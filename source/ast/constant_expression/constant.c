@@ -154,6 +154,7 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             break;
 
         case KEFIR_AST_DECIMAL128_CONSTANT:
+        case KEFIR_AST_DECIMAL64X_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
             value->decimal = node->value.decimal128;
             break;
