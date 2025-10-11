@@ -179,6 +179,9 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
         case KEFIR_AST_BUILTIN_KEFIR_NANSD32:
         case KEFIR_AST_BUILTIN_KEFIR_NANSD64:
         case KEFIR_AST_BUILTIN_KEFIR_NANSD128:
+        case KEFIR_AST_BUILTIN_KEFIR_NANS:
+        case KEFIR_AST_BUILTIN_KEFIR_NANSF:
+        case KEFIR_AST_BUILTIN_KEFIR_NANSL:
             while (!PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
                 res =
                     kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, type_name), NULL);

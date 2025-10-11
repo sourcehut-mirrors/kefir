@@ -367,7 +367,10 @@ typedef enum kefir_ast_builtin_operator {
     KEFIR_AST_BUILTIN_KEFIR_NAND32,
     KEFIR_AST_BUILTIN_KEFIR_NANSD32,
     KEFIR_AST_BUILTIN_KEFIR_NANSD64,
-    KEFIR_AST_BUILTIN_KEFIR_NANSD128
+    KEFIR_AST_BUILTIN_KEFIR_NANSD128,
+    KEFIR_AST_BUILTIN_KEFIR_NANS,
+    KEFIR_AST_BUILTIN_KEFIR_NANSF,
+    KEFIR_AST_BUILTIN_KEFIR_NANSL
 } kefir_ast_builtin_operator_t;
 
 typedef enum kefir_ast_declarator_visibility_attr {

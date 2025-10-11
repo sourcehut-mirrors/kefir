@@ -61,6 +61,9 @@ const char *KEFIR_PARSER_SUPPORTED_BUILTINS[] = {KEFIR_PARSER_BUILTIN_VA_START,
                                                  KEFIR_PARSER_BUILTIN_KEFIR_NANSD32,
                                                  KEFIR_PARSER_BUILTIN_KEFIR_NANSD64,
                                                  KEFIR_PARSER_BUILTIN_KEFIR_NANSD128,
+                                                 KEFIR_PARSER_KEFIR_BUILTIN_NANS,
+                                                 KEFIR_PARSER_KEFIR_BUILTIN_NANSF,
+                                                 KEFIR_PARSER_KEFIR_BUILTIN_NANSL,
                                                  NULL};
 
 static const struct {
@@ -112,7 +115,10 @@ static const struct {
     {KEFIR_PARSER_BUILTIN_KEFIR_NAND32, KEFIR_AST_BUILTIN_KEFIR_NAND32},
     {KEFIR_PARSER_BUILTIN_KEFIR_NANSD32, KEFIR_AST_BUILTIN_KEFIR_NANSD32},
     {KEFIR_PARSER_BUILTIN_KEFIR_NANSD64, KEFIR_AST_BUILTIN_KEFIR_NANSD64},
-    {KEFIR_PARSER_BUILTIN_KEFIR_NANSD128, KEFIR_AST_BUILTIN_KEFIR_NANSD128}};
+    {KEFIR_PARSER_BUILTIN_KEFIR_NANSD128, KEFIR_AST_BUILTIN_KEFIR_NANSD128},
+    {KEFIR_PARSER_KEFIR_BUILTIN_NANS, KEFIR_AST_BUILTIN_KEFIR_NANS},
+    {KEFIR_PARSER_KEFIR_BUILTIN_NANSF, KEFIR_AST_BUILTIN_KEFIR_NANSF},
+    {KEFIR_PARSER_KEFIR_BUILTIN_NANSL, KEFIR_AST_BUILTIN_KEFIR_NANSL}};
 static const kefir_size_t BUILTIN_COUNT = sizeof(BUILTINS) / sizeof(BUILTINS[0]);
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *identifier, kefir_ast_builtin_operator_t *builtin_op) {

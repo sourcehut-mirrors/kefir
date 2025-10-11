@@ -1750,6 +1750,44 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST, value.uvalue[0],
                                                          value.uvalue[1]));
         } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANS: {
+            static const union {
+                kefir_float64_t value;
+                kefir_uint32_t parts[2];
+            } val = {
+                .parts = {
+                    0,
+                    2146697216u
+                }
+            };
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST, val.value));
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSF: {
+            static const union {
+                kefir_float32_t value;
+                kefir_uint32_t part;
+            } val = {
+                .part = 2141192192u
+            };
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST, val.value, 0.0f));
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSL: {
+            static const union {
+                kefir_long_double_t value;
+                kefir_uint32_t parts[4];
+            } val = {
+                .parts = {
+                    0,
+                    -1610612736,
+                    32767,
+                    0
+                }
+            };
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST, val.value));
+        } break;
     }
     return KEFIR_OK;
 }

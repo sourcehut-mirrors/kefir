@@ -706,7 +706,7 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_BUILTIN_KEFIR_NANSD32: {
             REQUIRE(kefir_list_length(&node->arguments) == 1,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
-                                           "nansd32 builtin invocations should have zero parameters"));
+                                           "nansd32 builtin invocations should have one parameter"));
 
             const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
@@ -718,7 +718,7 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_BUILTIN_KEFIR_NANSD64: {
             REQUIRE(kefir_list_length(&node->arguments) == 1,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
-                                           "nansd32 builtin invocations should have zero parameters"));
+                                           "nansd32 builtin invocations should have one parameter"));
 
             const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
@@ -730,13 +730,49 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_BUILTIN_KEFIR_NANSD128: {
             REQUIRE(kefir_list_length(&node->arguments) == 1,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
-                                           "nansd32 builtin invocations should have zero parameters"));
+                                           "nansd32 builtin invocations should have one parameter"));
 
             const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
 
             base->properties.type = kefir_ast_type_decimal128();
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANS: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nans builtin invocations should have one parameter"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+
+            base->properties.type = kefir_ast_type_double();
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSF: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nans builtin invocations should have one parameter"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+
+            base->properties.type = kefir_ast_type_float();
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSL: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nans builtin invocations should have one parameter"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+
+            base->properties.type = kefir_ast_type_long_double();
         } break;
     }
     return KEFIR_OK;

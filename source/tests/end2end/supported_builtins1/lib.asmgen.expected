@@ -23,6 +23,8 @@ __atomic_exchange
 __atomic_fetch_or
 __atomic_or_fetch
 __kefir_builtin_isnan
+__kefir_builtin_nansf
+__kefir_builtin_nansl
 __builtin_uaddll_overflow
 __builtin_sub_overflow_p
 __builtin_uadd_overflow
@@ -58,6 +60,7 @@ __builtin_inff
 __builtin_infl
 __builtin_nanf
 __builtin_nanl
+__builtin_nans
 __builtin_trap
 __builtin_stdc_count_ones
 __builtin_stdc_first_leading_one
@@ -148,11 +151,14 @@ __builtin_ctzll
 __builtin_ffsll
 __builtin_isinf
 __builtin_isnan
+__builtin_nansf
+__builtin_nansl
 __atomic_store_n
 __builtin_umulll_overflow
 __builtin_stdc_count_zeros
 __builtin_stdc_rotate_left
 __atomic_is_lock_free
+__kefir_builtin_nans
 __builtin_stdc_first_leading_zero
 __atomic_signal_fence
 __atomic_test_and_set

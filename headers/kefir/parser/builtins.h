@@ -70,6 +70,9 @@
 #define KEFIR_PARSER_BUILTIN_KEFIR_NANSD32 "__kefir_builtin_nansd32"
 #define KEFIR_PARSER_BUILTIN_KEFIR_NANSD64 "__kefir_builtin_nansd64"
 #define KEFIR_PARSER_BUILTIN_KEFIR_NANSD128 "__kefir_builtin_nansd128"
+#define KEFIR_PARSER_KEFIR_BUILTIN_NANS "__kefir_builtin_nans"
+#define KEFIR_PARSER_KEFIR_BUILTIN_NANSF "__kefir_builtin_nansf"
+#define KEFIR_PARSER_KEFIR_BUILTIN_NANSL "__kefir_builtin_nansl"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 

@@ -895,6 +895,24 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             value->decimal = kefir_dfp_decimal128_snan();
             break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_NANS:
+        case KEFIR_AST_BUILTIN_KEFIR_NANSF:
+        case KEFIR_AST_BUILTIN_KEFIR_NANSL: {
+            static const union {
+                kefir_long_double_t value;
+                kefir_uint32_t parts[4];
+            } val = {
+                .parts = {
+                    0,
+                    -1610612736,
+                    32767,
+                    0
+                }
+            };
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
+            value->floating_point = val.value;
+        } break;
+
         case KEFIR_AST_BUILTIN_VA_START:
         case KEFIR_AST_BUILTIN_VA_END:
         case KEFIR_AST_BUILTIN_VA_ARG:

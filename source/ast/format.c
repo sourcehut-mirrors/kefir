@@ -607,6 +607,18 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_KEFIR_NANSD128:
             REQUIRE_OK(kefir_json_output_string(json, "nan_sign_decimal128"));
             break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANS:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_sign"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSF:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_sign_float"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_NANSL:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_sign_long"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
