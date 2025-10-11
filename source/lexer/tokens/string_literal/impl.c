@@ -59,7 +59,7 @@ static kefir_result_t kefir_lexer_next_string_literal_impl(struct kefir_mem *mem
             if (hex_oct_sequence) {
                 kefir_result_t res = kefir_string_buffer_append_literal(mem, buffer, result);
                 if (res == KEFIR_OUT_OF_BOUNDS) {
-                    kefir_clear_error();
+                    kefir_pop_error(KEFIR_OUT_OF_BOUNDS);
                     res = KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &char_location,
                                                  "Escape sequence exceeded maximum character value");
                 }

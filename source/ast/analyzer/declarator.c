@@ -1513,7 +1513,7 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
         case KEFIR_AST_DECLARATOR_ARRAY_BOUNDED: {
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, declarator->array.length));
             if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(declarator->array.length)) {
-                kefir_clear_error();
+                kefir_pop_error(KEFIR_NOT_CONSTANT);
                 REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(
                             kefir_ast_unqualified_type(declarator->array.length->properties.type)),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array.length->source_location,

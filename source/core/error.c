@@ -38,6 +38,13 @@ void kefir_clear_error(void) {
     next_error_index = 0;
 }
 
+void kefir_pop_error(kefir_result_t res) {
+    if (next_error_index > 0 &&
+        error_stack[next_error_index - 1].code == res) {
+        next_error_index--;
+    }
+}
+
 void kefir_clear_warnings(void) {
     if (next_error_index > 0 &&
         kefir_result_get_category(error_stack[next_error_index - 1].code) == KEFIR_RESULT_CATEGORY_WARNING) {

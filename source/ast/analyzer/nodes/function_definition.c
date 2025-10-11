@@ -327,19 +327,26 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
             break;
     }
 
+    kefir_bool_t has_analysis_errors = false;
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->body->block_items); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
-        REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context->context, item));
-        REQUIRE(item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+        res = kefir_ast_analyze_node(mem, &local_context->context, item);
+        REQUIRE_CHAIN_SET(&res, item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
                     item->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
                     item->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR ||
                     item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &item->source_location,
                                        "Compound statement items shall be either statements or declarations"));
+        if (res == KEFIR_ANALYSIS_ERROR) {
+            has_analysis_errors = true;
+        } else {
+            REQUIRE_OK(res);
+        }
     }
     REQUIRE_OK(kefir_ast_flow_control_tree_pop(local_context->context.flow_control_tree));
     REQUIRE_OK(local_context->context.pop_block(mem, &local_context->context));
+    REQUIRE(!has_analysis_errors, KEFIR_ANALYSIS_ERROR);
 
     if (local_context->vl_arrays.next_id > 0) {
         const struct kefir_ast_type *array_type = kefir_ast_type_array(

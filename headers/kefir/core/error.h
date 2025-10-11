@@ -48,6 +48,7 @@ typedef struct kefir_error {
 
 const struct kefir_error *kefir_current_error(void);
 void kefir_clear_error(void);
+void kefir_pop_error(kefir_result_t);
 void kefir_clear_warnings(void);
 kefir_result_t kefir_set_error(kefir_result_t, const char *, const char *, unsigned int, struct kefir_error **);
 

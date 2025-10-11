@@ -159,10 +159,11 @@ kefir_result_t kefir_ast_analyze_node(struct kefir_mem *mem, const struct kefir_
             REQUIRE_OK(res);
             base->properties.expression_props.constant_expression = true;
         } else {
-            kefir_clear_error();
+            kefir_pop_error(KEFIR_NOT_CONSTANT);
             base->properties.expression_props.constant_expression = false;
         }
     }
+    kefir_clear_warnings();
 
     KEFIR_RUN_EXTENSION(&res, mem, context, after_node_analysis, base);
     REQUIRE_OK(res);

@@ -1,0 +1,8 @@
+Failed to compile! Error stack:
+No.  Message                                                                                                                               Class          Subclass   Compiler ref.
+  0| source/tests/end2end/analyzer_error_recovery1/lib.kefir.asmgen.c@33:17 Expected pointer type on the left side of arrow operator |     Error|         Analysis|  source/ast/analyzer/nodes/struct_member.c:50
+  1| source/tests/end2end/analyzer_error_recovery1/lib.kefir.asmgen.c@30:17 Expected pointer type on the left side of arrow operator |     Error|         Analysis|  source/ast/analyzer/nodes/struct_member.c:50
+  2| source/tests/end2end/analyzer_error_recovery1/lib.kefir.asmgen.c@28:13 Expected pointer type on the left side of arrow operator |     Error|         Analysis|  source/ast/analyzer/nodes/struct_member.c:50
+  3| source/tests/end2end/analyzer_error_recovery1/lib.kefir.asmgen.c@26:13 Expected pointer type on the left side of arrow operator |     Error|         Analysis|  source/ast/analyzer/nodes/struct_member.c:50
+  4| source/tests/end2end/analyzer_error_recovery1/lib.kefir.asmgen.c@23:9 Expected pointer type on the left side of arrow operator  |     Error|         Analysis|  source/ast/analyzer/nodes/struct_member.c:50
+  5| source/tests/end2end/analyzer_error_recovery1/lib.kefir.asmgen.c@21:9 Expected pointer type on the left side of arrow operator  |     Error|         Analysis|  source/ast/analyzer/nodes/struct_member.c:50

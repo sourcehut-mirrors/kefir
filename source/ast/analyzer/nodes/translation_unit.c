@@ -38,19 +38,25 @@ kefir_result_t kefir_ast_analyze_translation_unit_node(struct kefir_mem *mem, co
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_TRANSLATION_UNIT;
 
+    kefir_bool_t has_analysis_errors = false;
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->external_definitions); iter != NULL;
          kefir_list_next(&iter)) {
 
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, entry, iter->value);
-        REQUIRE_OK(kefir_ast_analyze_node(mem, context, entry));
-        REQUIRE(entry->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
+        kefir_result_t res = kefir_ast_analyze_node(mem, context, entry);
+        REQUIRE_CHAIN_SET(&res, entry->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
                     entry->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR ||
                     entry->properties.category == KEFIR_AST_NODE_CATEGORY_FUNCTION_DEFINITION ||
                     entry->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
                 KEFIR_SET_SOURCE_ERROR(
                     KEFIR_ANALYSIS_ERROR, &entry->source_location,
                     "AST Translation unit must contain exclusively declarations and function definitions"));
+        if (res != KEFIR_ANALYSIS_ERROR) {
+            REQUIRE_OK(res);
+        } else {
+            has_analysis_errors = true;
+        }
     }
 
-    return KEFIR_OK;
+    return has_analysis_errors ? KEFIR_ANALYSIS_ERROR : KEFIR_OK;
 }

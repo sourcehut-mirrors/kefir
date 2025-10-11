@@ -50,16 +50,22 @@ kefir_result_t kefir_ast_analyze_statement_expression_node(struct kefir_mem *mem
                                                 &associated_scopes,
                                                 &base->properties.expression_props.flow_control_statement));
 
+    kefir_bool_t has_analysis_errors = false;
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->block_items); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
-        REQUIRE_OK(kefir_ast_analyze_node(mem, context, item));
-        REQUIRE(item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+        kefir_result_t res = kefir_ast_analyze_node(mem, context, item);
+        REQUIRE_CHAIN_SET(&res, item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
                     item->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
                     item->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR ||
                     item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &item->source_location,
                                        "Compound statement items shall be either statements or declarations"));
+        if (res == KEFIR_ANALYSIS_ERROR) {
+            has_analysis_errors = true;
+        } else {
+            REQUIRE_OK(res);
+        }
     }
 
     if (node->result != NULL) {
@@ -80,5 +86,5 @@ kefir_result_t kefir_ast_analyze_statement_expression_node(struct kefir_mem *mem
 
     REQUIRE_OK(context->pop_block(mem, context));
     REQUIRE_OK(kefir_ast_flow_control_tree_pop(context->flow_control_tree));
-    return KEFIR_OK;
+    return has_analysis_errors ? KEFIR_ANALYSIS_ERROR : KEFIR_OK;
 }

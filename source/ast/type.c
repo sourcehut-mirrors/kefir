@@ -330,7 +330,7 @@ const struct kefir_ast_node_base *kefir_ast_type_get_top_variable_modificator(co
     REQUIRE(type != NULL, NULL);
     const struct kefir_ast_node_base *node = NULL;
     kefir_ast_type_list_variable_modificators(type, list_vl_modifiers, &node);
-    kefir_clear_error();
+    kefir_pop_error(KEFIR_NOT_CONSTANT);
     return node;
 }
 
