@@ -317,6 +317,8 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
            features.optimize_stack_frame),
     SIMPLE(0, "no-optimize-stack-frame", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
            features.optimize_stack_frame),
+    SIMPLE(0, "max-parser-errors", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0,
+           features.max_parser_errors),
 
     CODEGEN("emulated-tls", codegen.emulated_tls),
     CODEGEN("tls-common", codegen.tls_common),

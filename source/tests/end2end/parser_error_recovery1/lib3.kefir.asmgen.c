@@ -18,33 +18,4 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#line 0 "lib.kefir.asmgen.c"
-
-int a = ;
-int b = 100;
-int c[] = {
-    0,
-    +,
-    1,
-    (((-))),
-    2
-};
-
-int fn1(void) {
-    return 1;
-}
-
-int fn2(void) {
-    int a = ;
-    a = 1;
-    ({
-        +;
-        2;
-        -;
-    });
-    fn(1, -, 3, +);
-    --;
-    return 0;
-}
-
-int d[] = {0};
+#include "./lib.kefir.asmgen.c"

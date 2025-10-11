@@ -113,6 +113,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t preprocessor_linemarkers;
         kefir_bool_t optimize_stack_frame;
         kefir_bool_t imprecise_decimal_bitint_conv;
+        kefir_uint32_t max_parser_errors;
     } features;
 
     struct {

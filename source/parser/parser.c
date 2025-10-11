@@ -32,7 +32,8 @@ static const struct kefir_parser_configuration DefaultConfiguration = {.fail_on_
                                                                        .omitted_conditional_operand = false,
                                                                        .fail_on_assembly = false,
                                                                        .switch_case_ranges = false,
-                                                                       .designator_subscript_ranges = false};
+                                                                       .designator_subscript_ranges = false,
+                                                                        .max_errors = (kefir_uint32_t) -1};
 
 kefir_result_t kefir_parser_configuration_default(struct kefir_parser_configuration *config) {
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to parser configuration"));
@@ -56,6 +57,7 @@ kefir_result_t kefir_parser_init(struct kefir_mem *mem, struct kefir_parser *par
     parser->extensions = extensions;
     parser->extension_payload = NULL;
     parser->configuration = &DefaultConfiguration;
+    parser->encountered_errors = 0;
 
     REQUIRE_OK(kefir_parser_pragmas_init(&parser->pragmas));
 

@@ -40,6 +40,7 @@ typedef struct kefir_parser_configuration {
     kefir_bool_t fail_on_assembly;
     kefir_bool_t switch_case_ranges;
     kefir_bool_t designator_subscript_ranges;
+    kefir_uint32_t max_errors;
 } kefir_parser_configuration_t;
 
 kefir_result_t kefir_parser_configuration_default(struct kefir_parser_configuration *);
@@ -59,6 +60,7 @@ typedef struct kefir_parser {
     struct kefir_parser_scope local_scope;
     struct kefir_parser_scope *scope;
     struct kefir_parser_pragmas pragmas;
+    kefir_uint32_t encountered_errors;
 
     const struct kefir_parser_extensions *extensions;
     void *extension_payload;
@@ -88,5 +90,7 @@ kefir_result_t kefir_parser_set_scope(struct kefir_parser *, struct kefir_parser
     KEFIR_PARSER_RULE_APPLY((_mem), (_parser), statement, (_result))
 #define KEFIR_PARSER_NEXT_TRANSLATION_UNIT(_mem, _parser, _result) \
     KEFIR_PARSER_RULE_APPLY((_mem), (_parser), translation_unit, (_result))
+
+#define KEFIR_PARSER_DO_ERROR_RECOVERY(_parser) ((_parser)->configuration->max_errors == ((kefir_uint32_t) -1) || (_parser)->encountered_errors + 1 < (_parser)->configuration->max_errors)
 
 #endif

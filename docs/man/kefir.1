@@ -577,6 +577,10 @@ Enable support for ranges in designator subscripts [default: on]
 .It Ar imprecise-decimal-bitint-conv
 Enable imprecise conversions between bit-precise integers and decimal floating-point values
 if precise native routines are not available [default: off]
+.\"
+.It Ar max-parser-errors [num]
+Set maximum number of parser errors produced; use -1 for unbounded number of errors.
+Note that printed error list is non-exhaustive irrespective of the setting. [default: 24]
 .El
 .\"
 .Ss CODEGEN

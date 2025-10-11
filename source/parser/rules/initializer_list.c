@@ -69,8 +69,9 @@ static kefir_result_t scan_initializer_list(struct kefir_mem *mem, struct kefir_
         });
 
         res = scan_initializer(mem, parser, *initializer);
-        if (res == KEFIR_SYNTAX_ERROR) {
+        if (res == KEFIR_SYNTAX_ERROR && KEFIR_PARSER_DO_ERROR_RECOVERY(parser)) {
             has_syntax_errors = true;
+            parser->encountered_errors++;
             res = kefir_parser_token_cursor_restore(parser->cursor, cursor_state);
             REQUIRE_CHAIN(&res, kefir_parser_error_recovery_skip_garbage(parser, &(struct kefir_parser_error_recovery_context) {
                 .sync_points = {

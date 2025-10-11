@@ -1,0 +1,3 @@
+Failed to compile! Error stack:
+No.  Message                                                                                 Class          Subclass   Compiler ref.
+  0| lib.kefir.asmgen.c@1:9 Expected either initializer list, or assignment expression |     Error|           Parser|  source/parser/rules/initializer.c:34

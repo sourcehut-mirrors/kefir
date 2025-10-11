@@ -181,8 +181,9 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
                 res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
                                                     "Expected declaration or function definition");
             }
-            if (res == KEFIR_SYNTAX_ERROR) {
+            if (res == KEFIR_SYNTAX_ERROR && KEFIR_PARSER_DO_ERROR_RECOVERY(builder->parser)) {
                 has_syntax_errors = true;
+                builder->parser->encountered_errors++;
                 REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
                 REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(builder->parser, &(struct kefir_parser_error_recovery_context) {
                     .sync_points.semicolon = true

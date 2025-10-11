@@ -61,8 +61,9 @@ static kefir_result_t parse_compound_statement(struct kefir_mem *mem, struct kef
                                           "Expected either declaration or statement");
         }
 
-        if (res == KEFIR_SYNTAX_ERROR) {
+        if (res == KEFIR_SYNTAX_ERROR && KEFIR_PARSER_DO_ERROR_RECOVERY(parser)) {
             has_syntax_errors = true;
+            parser->encountered_errors++;
             REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
             REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(builder->parser, &(struct kefir_parser_error_recovery_context) {
                 .sync_points.semicolon = true
