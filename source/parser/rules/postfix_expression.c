@@ -38,14 +38,34 @@ static kefir_result_t scan_subscript(struct kefir_mem *mem, struct kefir_parser_
 
 static kefir_result_t scan_argument_list(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {
     REQUIRE_OK(PARSER_SHIFT(builder->parser));
+    kefir_bool_t has_syntax_errors = false;
     while (!PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
+        kefir_size_t cursor_state;
+        REQUIRE_OK(kefir_parser_token_cursor_save(builder->parser->cursor, &cursor_state));
+
         kefir_result_t res;
-        REQUIRE_MATCH_OK(&res,
-                         kefir_parser_ast_builder_scan(
-                             mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, assignment_expression), NULL),
-                         KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
-                                                "Expected assignment expresion"));
-        REQUIRE_OK(kefir_parser_ast_builder_function_call_append(mem, builder));
+        res = kefir_parser_ast_builder_scan(
+                             mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, assignment_expression), NULL);
+        if (res == KEFIR_NO_MATCH) {
+            REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+            res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                                "Expected assignment expresion");
+        }
+        if (res == KEFIR_SYNTAX_ERROR) {
+            has_syntax_errors = true;
+            REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+            REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(builder->parser, &(struct kefir_parser_error_recovery_context) {
+                .sync_points = {
+                    .semicolon = true,
+                    .comma = true,
+                    .parenhtheses = true,
+                    .brackets = true
+                }
+            }));
+        } else {
+            REQUIRE_OK(res);
+            REQUIRE_OK(kefir_parser_ast_builder_function_call_append(mem, builder));
+        }
 
         if (PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
             REQUIRE_OK(PARSER_SHIFT(builder->parser));
@@ -56,7 +76,7 @@ static kefir_result_t scan_argument_list(struct kefir_mem *mem, struct kefir_par
         }
     }
     REQUIRE_OK(PARSER_SHIFT(builder->parser));
-    return KEFIR_OK;
+    return has_syntax_errors ? KEFIR_SYNTAX_ERROR : KEFIR_OK;
 }
 
 static kefir_result_t scan_member(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {

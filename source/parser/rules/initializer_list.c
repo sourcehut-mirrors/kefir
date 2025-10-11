@@ -58,13 +58,38 @@ static kefir_result_t scan_initializer_list(struct kefir_mem *mem, struct kefir_
     REQUIRE(initializer != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocae AST initializer list"));
     (*initializer)->source_location = *PARSER_TOKEN_LOCATION(parser, 0);
 
+    kefir_bool_t has_syntax_errors = false;
     kefir_bool_t scan_initializers = !PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0);
     while (scan_initializers) {
-        kefir_result_t res = scan_initializer(mem, parser, *initializer);
+        kefir_size_t cursor_state;
+        kefir_result_t res = kefir_parser_token_cursor_save(parser->cursor, &cursor_state);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_initializer_free(mem, *initializer);
             return res;
         });
+
+        res = scan_initializer(mem, parser, *initializer);
+        if (res == KEFIR_SYNTAX_ERROR) {
+            has_syntax_errors = true;
+            res = kefir_parser_token_cursor_restore(parser->cursor, cursor_state);
+            REQUIRE_CHAIN(&res, kefir_parser_error_recovery_skip_garbage(parser, &(struct kefir_parser_error_recovery_context) {
+                .sync_points = {
+                    .semicolon = true,
+                    .comma = true,
+                    .parenhtheses = true,
+                    .brackets = true
+                }
+            }));
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_ast_initializer_free(mem, *initializer);
+                return res;
+            });
+        } else {
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_ast_initializer_free(mem, *initializer);
+                return res;
+            });
+        }
         if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
             res = PARSER_SHIFT(parser);
             REQUIRE_ELSE(res == KEFIR_OK, {
@@ -88,7 +113,7 @@ static kefir_result_t scan_initializer_list(struct kefir_mem *mem, struct kefir_
         *initializer = NULL;
         return res;
     });
-    return KEFIR_OK;
+    return has_syntax_errors ? KEFIR_SYNTAX_ERROR : KEFIR_OK;
 }
 
 kefir_result_t kefir_parser_scan_initializer_list(struct kefir_mem *mem, struct kefir_parser *parser,

@@ -19,6 +19,7 @@
 */
 
 #include "kefir/parser/parser.h"
+#include "kefir/parser/rule_helpers.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/extensions.h"
@@ -130,6 +131,58 @@ kefir_result_t kefir_parser_set_scope(struct kefir_parser *parser, struct kefir_
         parser->scope = scope;
     } else {
         parser->scope = &parser->local_scope;
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_error_recovery_skip_garbage(struct kefir_parser *parser, const struct kefir_parser_error_recovery_context *context) {
+    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser error recovery context"));
+
+    kefir_uint64_t open_braces = 0, open_parens = 0, open_brackets = 0;
+    kefir_bool_t first_step = true;
+
+    while (!PARSER_TOKEN_IS_SENTINEL(parser, 0)) {
+        if (PARSER_TOKEN_IS_LEFT_BRACE(parser, 0)) {
+            open_braces++;
+        } else if (PARSER_TOKEN_IS_LEFT_BRACKET(parser, 0) && context->sync_points.brackets) {
+            open_brackets++;
+        } else if (PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE, false) && context->sync_points.parenhtheses) {
+            open_parens++;
+        } else if (PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0)) {
+            if (open_braces > 1) {
+                open_braces--;
+            } else if (open_braces == 1) {
+                PARSER_SHIFT_EXT(parser, false);
+                break;
+            } else if (open_braces == 0 && !first_step) {
+                break;
+            }
+        } else if (PARSER_TOKEN_IS_RIGHT_BRACKET(parser, 0) && context->sync_points.brackets) {
+            if (open_brackets > 1) {
+                open_brackets--;
+            } else if (open_brackets == 1) {
+                PARSER_SHIFT_EXT(parser, false);
+                break;
+            } else if (open_brackets == 0 && !first_step) {
+                break;
+            }
+        } else if (PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE, false) && context->sync_points.parenhtheses) {
+            if (open_parens > 1) {
+                open_parens--;
+            } else if (open_parens == 1) {
+                PARSER_SHIFT_EXT(parser, false);
+                break;
+            } else if (open_parens == 0 && !first_step) {
+                break;
+            }
+        } else if (((PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON, false) && context->sync_points.semicolon) ||
+                    (PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_COMMA, false) && context->sync_points.comma) ||
+                    PARSER_TOKEN_IS_PRAGMA(parser, 0)) && open_braces == 0 && (open_brackets == 0 || !context->sync_points.brackets) && (open_parens == 0 || !context->sync_points.parenhtheses) && !first_step) {
+            break;
+        }
+        PARSER_SHIFT_EXT(parser, false);
+        first_step = false;
     }
     return KEFIR_OK;
 }

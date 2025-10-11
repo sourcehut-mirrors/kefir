@@ -52,10 +52,18 @@ else
     STDERR_REDIRECTION=""
 fi
 
-set -e
-
-if [[ "x$USE_VALGRIND" == "xyes" ]]; then
-    eval valgrind $VALGRIND_TEST_OPTIONS "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" $OUTPUT_ARG $STDERR_REDIRECTION
+if [[ "x$IGNORE_ERRCODE" == "xyes" ]]; then
+    if [[ "x$USE_VALGRIND" == "xyes" ]]; then
+        sh -c "valgrind $VALGRIND_TEST_OPTIONS '$KEFIRCC' $KEFIR_CFLAGS '$SRC_FILE' $OUTPUT_ARG $STDERR_REDIRECTION"
+    else
+        sh -c "'$KEFIRCC' $KEFIR_CFLAGS '$SRC_FILE' $OUTPUT_ARG $STDERR_REDIRECTION"
+    fi
+    true
 else
-    eval "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" $OUTPUT_ARG $STDERR_REDIRECTION
+    set -e
+    if [[ "x$USE_VALGRIND" == "xyes" ]]; then
+        eval valgrind $VALGRIND_TEST_OPTIONS "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" $OUTPUT_ARG $STDERR_REDIRECTION
+    else
+        eval "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" $OUTPUT_ARG $STDERR_REDIRECTION
+    fi
 fi

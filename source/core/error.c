@@ -38,6 +38,14 @@ void kefir_clear_error(void) {
     next_error_index = 0;
 }
 
+void kefir_clear_warnings(void) {
+    if (next_error_index > 0 &&
+        kefir_result_get_category(error_stack[next_error_index - 1].code) == KEFIR_RESULT_CATEGORY_WARNING) {
+        // Override warning
+        next_error_index--;
+    }
+}
+
 kefir_result_t kefir_set_error(kefir_result_t code, const char *message, const char *file, unsigned int line,
                                struct kefir_error **error_ptr) {
     if (next_error_index == KEFIR_ERROR_STACK_SIZE || kefir_result_get_category(code) == KEFIR_RESULT_CATEGORY_NORMAL) {

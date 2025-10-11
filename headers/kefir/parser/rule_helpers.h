@@ -112,4 +112,14 @@
 kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem, struct kefir_parser *parser,
                                                           struct kefir_ast_declaration *);
 
+typedef struct kefir_parser_error_recovery_context {
+    struct {
+        kefir_bool_t parenhtheses;
+        kefir_bool_t brackets;
+        kefir_bool_t semicolon;
+        kefir_bool_t comma;
+    } sync_points;
+} kefir_parser_error_recovery_context_t;
+kefir_result_t kefir_parser_error_recovery_skip_garbage(struct kefir_parser *, const struct kefir_parser_error_recovery_context *);
+
 #endif

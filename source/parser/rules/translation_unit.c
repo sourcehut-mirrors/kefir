@@ -154,8 +154,12 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 
     REQUIRE_OK(kefir_parser_ast_builder_translation_unit(mem, builder));
 
+    kefir_bool_t has_syntax_errors = false;
     kefir_result_t res;
     while (!PARSER_TOKEN_IS_SENTINEL(builder->parser, 0)) {
+        kefir_size_t cursor_state;
+        REQUIRE_OK(kefir_parser_token_cursor_save(builder->parser->cursor, &cursor_state));
+
         while (PARSER_TOKEN_IS_PUNCTUATOR_EXT(builder->parser, 0, KEFIR_PUNCTUATOR_SEMICOLON, false)) {
             PARSER_SHIFT(builder->parser);
         }
@@ -170,15 +174,29 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
             continue;
         }
         if (!PARSER_TOKEN_IS_SENTINEL(builder->parser, 0)) {
-            REQUIRE_MATCH_OK(&res,
-                             kefir_parser_ast_builder_scan(
-                                 mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, external_declaration), NULL),
-                             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
-                                                    "Expected declaration or function definition"));
-            REQUIRE_OK(kefir_parser_ast_builder_translation_unit_append(mem, builder));
+            res = kefir_parser_ast_builder_scan(
+                                 mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, external_declaration), NULL);
+            if (res == KEFIR_NO_MATCH) {
+                REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+                res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                                    "Expected declaration or function definition");
+            }
+            if (res == KEFIR_SYNTAX_ERROR) {
+                has_syntax_errors = true;
+                REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+                REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(builder->parser, &(struct kefir_parser_error_recovery_context) {
+                    .sync_points.semicolon = true
+                }));
+            } else {
+                REQUIRE_OK(res);
+                REQUIRE_OK(kefir_parser_ast_builder_translation_unit_append(mem, builder));
+            }
         }
     }
-    return KEFIR_OK;
+    if (has_syntax_errors) {
+        kefir_clear_warnings();
+    }
+    return has_syntax_errors ? KEFIR_SYNTAX_ERROR : KEFIR_OK;
 }
 
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(translation_unit)(struct kefir_mem *mem, struct kefir_parser *parser,

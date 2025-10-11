@@ -35,7 +35,11 @@ static kefir_result_t parse_statement_expression(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_parser_ast_builder_statement_expression(mem, builder, attributes));
     REQUIRE_OK(kefir_parser_scope_push_block(mem, parser->scope));
 
+    kefir_bool_t has_syntax_errors = false;
     while (!PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0)) {
+        kefir_size_t cursor_state;
+        REQUIRE_OK(kefir_parser_token_cursor_save(builder->parser->cursor, &cursor_state));
+
         kefir_result_t res =
             kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, declaration), NULL);
         if (res == KEFIR_NO_MATCH) {
@@ -43,12 +47,21 @@ static kefir_result_t parse_statement_expression(struct kefir_mem *mem, struct k
         }
 
         if (res == KEFIR_NO_MATCH) {
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+            REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+            res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                           "Expected either declaration or statement");
+        }
+        
+        if (res == KEFIR_SYNTAX_ERROR) {
+            has_syntax_errors = true;
+            REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+            REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(builder->parser, &(struct kefir_parser_error_recovery_context) {
+                .sync_points.semicolon = true
+            }));
         } else {
             REQUIRE_OK(res);
+            REQUIRE_OK(kefir_parser_ast_builder_statement_expression_append(mem, builder));
         }
-        REQUIRE_OK(kefir_parser_ast_builder_statement_expression_append(mem, builder));
     }
 
     REQUIRE(PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0) &&
@@ -59,7 +72,7 @@ static kefir_result_t parse_statement_expression(struct kefir_mem *mem, struct k
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE_OK(kefir_parser_scope_pop_block(mem, parser->scope));
 
-    return KEFIR_OK;
+    return has_syntax_errors ? KEFIR_SYNTAX_ERROR : KEFIR_OK;
 }
 
 static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder, void *payload) {
