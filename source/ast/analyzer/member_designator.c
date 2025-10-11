@@ -28,7 +28,11 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor,
 
     REQUIRE(param->type->tag == KEFIR_AST_TYPE_STRUCTURE || param->type->tag == KEFIR_AST_TYPE_UNION,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &identifier->base.source_location,
-                                   "Expected designation for AST structure or union type"));
+                                   "Expected designation for complete AST structure or union type"));
+
+    REQUIRE(param->type->structure_type.complete,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &identifier->base.source_location,
+                                   "Expected designation for complete AST structure or union type"));
 
     const struct kefir_ast_struct_field *field = NULL;
     kefir_result_t res =

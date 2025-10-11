@@ -132,6 +132,7 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
             struct kefir_ast_identifier *identifier =
                 kefir_ast_new_identifier(mem, parser->symbols, PARSER_CURSOR(parser, 0)->identifier);
             REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate identifier"));
+            identifier->base.source_location = *PARSER_TOKEN_LOCATION(parser, 0);
             REQUIRE_OK(kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(identifier)));
             REQUIRE_OK(PARSER_SHIFT(builder->parser));
             REQUIRE_OK(scan_postfixes(mem, builder));
