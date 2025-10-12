@@ -537,17 +537,26 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
             *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128;
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT;
-            break;
+        case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT: {
+            kefir_ast_type_data_model_classification_t real_classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, type->complex.real_type, &real_classification));
+            switch (real_classification) {
+                case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
+                    *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT;
+                    break;
 
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE;
-            break;
+                case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
+                    *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE;
+                    break;
 
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE;
-            break;
+                case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
+                    *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE;
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected data model for complex floating-point real type");
+            }
+        } break;
 
         case KEFIR_AST_TYPE_SCALAR_POINTER:
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:

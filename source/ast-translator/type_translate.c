@@ -136,21 +136,23 @@ static kefir_result_t translate_scalar_type(struct kefir_mem *mem, const struct 
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_complex_type(struct kefir_mem *mem, const struct kefir_ast_type *type,
+static kefir_result_t translate_complex_type(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type,
                                              kefir_size_t alignment, struct kefir_irbuilder_type *builder,
                                              struct kefir_ast_type_layout **layout_ptr) {
     kefir_size_t type_index = kefir_ir_type_length(builder->type);
 
-    switch (type->tag) {
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+    kefir_ast_type_data_model_classification_t classification;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, type, &classification));
+    switch (classification) {
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_COMPLEX_FLOAT32, 0, 0));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_COMPLEX_FLOAT64, 0, 0));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE, 0, 0));
             break;
 
@@ -476,10 +478,8 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
             REQUIRE_OK(translate_scalar_type(mem, context, type, alignment, builder, layout_ptr));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-            REQUIRE_OK(translate_complex_type(mem, type, alignment, builder, layout_ptr));
+        case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT:
+            REQUIRE_OK(translate_complex_type(mem, context, type, alignment, builder, layout_ptr));
             break;
 
         case KEFIR_AST_TYPE_ENUMERATION:

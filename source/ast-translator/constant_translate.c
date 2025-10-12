@@ -146,22 +146,21 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-            switch (unqualified_type->tag) {
-                case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-                    if (builder != NULL) {
+            if (builder != NULL) {
+                kefir_ast_type_data_model_classification_t classification;
+                REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type, &classification));
+                switch (classification) {
+                    case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
-                                                                   (kefir_float32_t) value->complex_floating_point.real,
-                                                                   0.0f));
+                                                                (kefir_float32_t) value->complex_floating_point.real,
+                                                                0.0f));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(
                             builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
                             (kefir_float32_t) value->complex_floating_point.imaginary, 0.0f));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
-                    }
-                    *success_ptr = true;
-                    break;
+                        break;
 
-                case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-                    if (builder != NULL) {
+                    case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
                         REQUIRE_OK(
                             KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
                                                             (kefir_float64_t) value->complex_floating_point.real));
@@ -169,25 +168,21 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                             KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
                                                             (kefir_float64_t) value->complex_floating_point.imaginary));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
-                    }
-                    *success_ptr = true;
-                    break;
+                        break;
 
-                case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-                    if (builder != NULL) {
+                    case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
                                                                             value->complex_floating_point.real));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
                                                                             value->complex_floating_point.imaginary));
                         REQUIRE_OK(
                             KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
-                    }
-                    *success_ptr = true;
-                    break;
+                        break;
 
-                default:
-                    // Intentionally left blank
-                    break;
+                    default:
+                        // Intentionally left blank
+                        break;
+                }
             }
             *success_ptr = true;
             break;

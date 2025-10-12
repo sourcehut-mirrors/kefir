@@ -786,7 +786,7 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                 *base_type = kefir_ast_type_signed_long_long();
             } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
                 *base_type = kefir_ast_type_long_double();
-            } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_COMPLEX_DOUBLE) {
+            } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT && (*base_type)->complex.real_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
                 *base_type = kefir_ast_type_complex_long_double();
             } else if (*base_type == NULL && *real_class == REAL_COMPLEX) {
                 *real_class = REAL_COMPLEX_LONG;
@@ -1187,9 +1187,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
-                case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-                case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-                case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT:
                 case KEFIR_AST_TYPE_SCALAR_POINTER:
                 case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
                 case KEFIR_AST_TYPE_ENUMERATION:
@@ -1256,9 +1254,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
-                case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-                case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-                case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT:
                 case KEFIR_AST_TYPE_SCALAR_POINTER:
                 case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
                 case KEFIR_AST_TYPE_ENUMERATION:

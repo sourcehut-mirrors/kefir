@@ -28,6 +28,10 @@ typedef struct kefir_ast_type_bit_precise_integer {
     const struct kefir_ast_type *flipped_sign_type;
 } kefir_ast_type_bit_precise_integer_t;
 
+typedef struct kefir_ast_type_complex {
+    const struct kefir_ast_type *real_type;
+} kefir_ast_type_complex_t;
+
 #define SCALAR_TYPE(id) const struct kefir_ast_type *kefir_ast_type_##id(void)
 SCALAR_TYPE(void);
 SCALAR_TYPE(auto);
@@ -104,8 +108,7 @@ const struct kefir_ast_type *kefir_ast_type_unsigned_bitprecise(struct kefir_mem
 #define KEFIR_AST_TYPE_IS_REAL_TYPE(base) \
     (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base))
 #define KEFIR_AST_TYPE_IS_COMPLEX_TYPE(base)                                                        \
-    ((base)->tag == KEFIR_AST_TYPE_COMPLEX_FLOAT || (base)->tag == KEFIR_AST_TYPE_COMPLEX_DOUBLE || \
-     (base)->tag == KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE)
+    ((base)->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT)
 #define KEFIR_AST_TYPE_IS_FLOATING_POINT(base) \
     (KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(base))
 #define KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(base) \

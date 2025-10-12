@@ -517,47 +517,34 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                              (kefir_hashtree_value_t) *entry_id_ptr));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+        case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT: {
             REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
             REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
                                                 KEFIR_IR_DEBUG_ENTRY_TYPE_COMPLEX_FLOAT, entry_id_ptr));
-            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                          *entry_id_ptr,
-                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex float")));
-            REQUIRE_OK(
-                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
-                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
-            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
-                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
-                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
-            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
-                                             (kefir_hashtree_value_t) *entry_id_ptr));
-            break;
+            kefir_ast_type_data_model_classification_t classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, type, &classification));
+            switch (classification) {
+                case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                                *entry_id_ptr,
+                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex float")));
+                    break;
 
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
-            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
-                                                KEFIR_IR_DEBUG_ENTRY_TYPE_COMPLEX_FLOAT, entry_id_ptr));
-            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                          *entry_id_ptr,
-                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex double")));
-            REQUIRE_OK(
-                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
-                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
-            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
-                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
-                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
-            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
-                                             (kefir_hashtree_value_t) *entry_id_ptr));
-            break;
+                case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                                *entry_id_ptr,
+                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex double")));
+                    break;
 
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
-            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
-                                                KEFIR_IR_DEBUG_ENTRY_TYPE_COMPLEX_FLOAT, entry_id_ptr));
-            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                          *entry_id_ptr,
-                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex long double")));
+                case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                                *entry_id_ptr,
+                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex long double")));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected complex floating-point real type");
+            }
             REQUIRE_OK(
                 kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
                                                    &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
@@ -566,7 +553,7 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                 &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
             REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
                                              (kefir_hashtree_value_t) *entry_id_ptr));
-            break;
+        } break;
 
         case KEFIR_AST_TYPE_SCALAR_POINTER: {
             REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
