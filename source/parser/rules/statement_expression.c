@@ -57,7 +57,10 @@ static kefir_result_t parse_statement_expression(struct kefir_mem *mem, struct k
             builder->parser->encountered_errors++;
             REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
             REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(builder->parser, &(struct kefir_parser_error_recovery_context) {
-                .sync_points.semicolon = true
+                .sync_points = {
+                    .semicolon = true,
+                    .pragmas = true
+                }
             }));
         } else {
             REQUIRE_OK(res);

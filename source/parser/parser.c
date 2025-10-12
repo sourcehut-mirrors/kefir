@@ -149,7 +149,7 @@ kefir_result_t kefir_parser_error_recovery_skip_garbage(struct kefir_parser *par
             open_braces++;
         } else if (PARSER_TOKEN_IS_LEFT_BRACKET(parser, 0) && context->sync_points.brackets) {
             open_brackets++;
-        } else if (PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE, false) && context->sync_points.parenhtheses) {
+        } else if (PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE, false) && context->sync_points.parentheses) {
             open_parens++;
         } else if (PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0)) {
             if (open_braces > 1) {
@@ -169,7 +169,7 @@ kefir_result_t kefir_parser_error_recovery_skip_garbage(struct kefir_parser *par
             } else if (open_brackets == 0 && !first_step) {
                 break;
             }
-        } else if (PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE, false) && context->sync_points.parenhtheses) {
+        } else if (PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE, false) && context->sync_points.parentheses) {
             if (open_parens > 1) {
                 open_parens--;
             } else if (open_parens == 1) {
@@ -180,7 +180,7 @@ kefir_result_t kefir_parser_error_recovery_skip_garbage(struct kefir_parser *par
             }
         } else if (((PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON, false) && context->sync_points.semicolon) ||
                     (PARSER_TOKEN_IS_PUNCTUATOR_EXT(parser, 0, KEFIR_PUNCTUATOR_COMMA, false) && context->sync_points.comma) ||
-                    PARSER_TOKEN_IS_PRAGMA(parser, 0)) && open_braces == 0 && (open_brackets == 0 || !context->sync_points.brackets) && (open_parens == 0 || !context->sync_points.parenhtheses) && !first_step) {
+                    (PARSER_TOKEN_IS_PRAGMA(parser, 0) && context->sync_points.pragmas)) && open_braces == 0 && (open_brackets == 0 || !context->sync_points.brackets) && (open_parens == 0 || !context->sync_points.parentheses) && !first_step) {
             break;
         }
         PARSER_SHIFT_EXT(parser, false);

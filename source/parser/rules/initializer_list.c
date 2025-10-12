@@ -77,7 +77,7 @@ static kefir_result_t scan_initializer_list(struct kefir_mem *mem, struct kefir_
                 .sync_points = {
                     .semicolon = true,
                     .comma = true,
-                    .parenhtheses = true,
+                    .parentheses = true,
                     .brackets = true
                 }
             }));

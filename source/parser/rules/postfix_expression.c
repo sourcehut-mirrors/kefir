@@ -59,7 +59,7 @@ static kefir_result_t scan_argument_list(struct kefir_mem *mem, struct kefir_par
                 .sync_points = {
                     .semicolon = true,
                     .comma = true,
-                    .parenhtheses = true,
+                    .parentheses = true,
                     .brackets = true
                 }
             }));
