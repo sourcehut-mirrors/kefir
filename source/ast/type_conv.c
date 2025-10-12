@@ -114,9 +114,9 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
         REQUIRE(type2 != NULL, NULL);
     }
 
-    if (ANY_OF(type1, type2, kefir_ast_type_interchange_float80()) && !complex_type /* KEFIR_NOT_IMPLEMENTED */) {
+    if (ANY_OF(type1, type2, kefir_ast_type_interchange_float80())) {
         if (complex_type) {
-            return kefir_ast_type_complex_long_double();
+            return kefir_ast_type_complex_interchange_float80();
         } else {
             return kefir_ast_type_interchange_float80();
         }
@@ -128,16 +128,16 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
             return kefir_ast_type_long_double();
         }
     }
-    if (ANY_OF(type1, type2, kefir_ast_type_extended_float64()) && !complex_type /* KEFIR_NOT_IMPLEMENTED */) {
+    if (ANY_OF(type1, type2, kefir_ast_type_extended_float64())) {
         if (complex_type) {
-            return kefir_ast_type_complex_long_double();
+            return kefir_ast_type_complex_extended_float64();
         } else {
             return kefir_ast_type_extended_float64();
         }
     }
-    if (ANY_OF(type1, type2, kefir_ast_type_interchange_float64()) && !complex_type /* KEFIR_NOT_IMPLEMENTED */) {
+    if (ANY_OF(type1, type2, kefir_ast_type_interchange_float64())) {
         if (complex_type) {
-            return kefir_ast_type_complex_double();
+            return kefir_ast_type_complex_interchange_float64();
         } else {
             return kefir_ast_type_interchange_float64();
         }
@@ -149,16 +149,16 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
             return kefir_ast_type_double();
         }
     }
-    if (ANY_OF(type1, type2, kefir_ast_type_extended_float32()) && !complex_type /* KEFIR_NOT_IMPLEMENTED */) {
+    if (ANY_OF(type1, type2, kefir_ast_type_extended_float32())) {
         if (complex_type) {
-            return kefir_ast_type_complex_double();
+            return kefir_ast_type_complex_extended_float32();
         } else {
             return kefir_ast_type_extended_float32();
         }
     }
-    if (ANY_OF(type1, type2, kefir_ast_type_interchange_float32()) && !complex_type /* KEFIR_NOT_IMPLEMENTED */) {
+    if (ANY_OF(type1, type2, kefir_ast_type_interchange_float32())) {
         if (complex_type) {
-            return kefir_ast_type_complex_float();
+            return kefir_ast_type_complex_interchange_float32();
         } else {
             return kefir_ast_type_interchange_float32();
         }

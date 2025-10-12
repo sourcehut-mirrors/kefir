@@ -902,52 +902,92 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT32:
-            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float32 type specifier cannot be combined with others")); // KEFIR_NOT_IMPLEMENTED
+            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                                               "Float32 type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
-            *base_type = kefir_ast_type_interchange_float32();
+            if (*real_class == REAL_SCALAR) {
+                *base_type = kefir_ast_type_interchange_float32();
+            } else {
+                REQUIRE(*real_class == REAL_COMPLEX,
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Long and complex type specifiers cannot be combined with float type specifier"));
+                *base_type = kefir_ast_type_complex_interchange_float32();
+            }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT64:
-            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float64 type specifier cannot be combined with others")); // KEFIR_NOT_IMPLEMENTED
+            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                                               "Float64 type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
-            *base_type = kefir_ast_type_interchange_float64();
+            if (*real_class == REAL_SCALAR) {
+                *base_type = kefir_ast_type_interchange_float64();
+            } else {
+                REQUIRE(*real_class == REAL_COMPLEX,
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Long and complex type specifiers cannot be combined with float type specifier"));
+                *base_type = kefir_ast_type_complex_interchange_float64();
+            }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT80:
-            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float80 type specifier cannot be combined with others")); // KEFIR_NOT_IMPLEMENTED
+            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                                               "Float80 type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
-            *base_type = kefir_ast_type_interchange_float80();
+            if (*real_class == REAL_SCALAR) {
+                *base_type = kefir_ast_type_interchange_float80();
+            } else {
+                REQUIRE(*real_class == REAL_COMPLEX,
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Long and complex type specifiers cannot be combined with float type specifier"));
+                *base_type = kefir_ast_type_complex_interchange_float80();
+            }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT32X:
-            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float32 type specifier cannot be combined with others")); // KEFIR_NOT_IMPLEMENTED
+            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                                               "Float32x type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
-            *base_type = kefir_ast_type_extended_float32();
+            if (*real_class == REAL_SCALAR) {
+                *base_type = kefir_ast_type_extended_float32();
+            } else {
+                REQUIRE(*real_class == REAL_COMPLEX,
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Long and complex type specifiers cannot be combined with float type specifier"));
+                *base_type = kefir_ast_type_complex_extended_float32();
+            }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT64X:
-            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float64 type specifier cannot be combined with others")); // KEFIR_NOT_IMPLEMENTED
+            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                                               "Float64x type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
-            *base_type = kefir_ast_type_extended_float64();
+            if (*real_class == REAL_SCALAR) {
+                *base_type = kefir_ast_type_extended_float64();
+            } else {
+                REQUIRE(*real_class == REAL_COMPLEX,
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Long and complex type specifiers cannot be combined with float type specifier"));
+                *base_type = kefir_ast_type_complex_extended_float64();
+            }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 

@@ -63,7 +63,7 @@
 
 #if __HAVE_FLOAT32
 #define __f32(x) x##f
-#define __CFLOAT32 _Complex float
+#define __CFLOAT32 _Complex _Float32
 
 #define __builtin_huge_valf32() (__builtin_huge_valf())
 #define __builtin_inff32() (__builtin_inff())
@@ -73,7 +73,7 @@
 
 #if __HAVE_FLOAT64
 #define __f64(x) x
-#define __CFLOAT64 _Complex float
+#define __CFLOAT64 _Complex _Float64
 
 #define __builtin_huge_valf64() (__builtin_huge_val())
 #define __builtin_inff64() (__builtin_inf())
@@ -83,7 +83,7 @@
 
 #if __HAVE_FLOAT32X
 #define __f32x(x) x
-#define __CFLOAT32X _Complex double
+#define __CFLOAT32X _Complex _Float32x
 
 #define __builtin_huge_valf32x() (__builtin_huge_val())
 #define __builtin_inff32x() (__builtin_inf())
@@ -93,7 +93,7 @@
 
 #if __HAVE_FLOAT64X
 #define __f64x(x) x##l
-#define __CFLOAT64X _Complex long double
+#define __CFLOAT64X _Complex _Float64x
 
 #define __builtin_huge_valf64x() (__builtin_huge_vall())
 #define __builtin_inff64x() (__builtin_infl())

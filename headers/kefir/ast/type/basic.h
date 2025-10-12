@@ -66,6 +66,11 @@ SCALAR_TYPE(nullptr);
 COMPLEX_TYPE(float);
 COMPLEX_TYPE(double);
 COMPLEX_TYPE(long_double);
+COMPLEX_TYPE(interchange_float32);
+COMPLEX_TYPE(interchange_float64);
+COMPLEX_TYPE(interchange_float80);
+COMPLEX_TYPE(extended_float32);
+COMPLEX_TYPE(extended_float64);
 #undef COMPLEX_TYPE
 
 const struct kefir_ast_type *kefir_ast_type_signed_bitprecise(struct kefir_mem *, struct kefir_ast_type_bundle *,
