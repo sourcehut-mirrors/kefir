@@ -1,3 +1,3 @@
 Failed to compile! Error stack:
-No.  Message                                                                                                                                                               Class          Subclass
-  0| /home/jprotopopov/Projects/kefir/source/tests/end2end/analyzer_error_recovery1/lib.kefir.asmgen.c@21:9 Expected pointer type on the left side of arrow operator |     Error|         Analysis
+No.  Message                                                                               Class          Subclass
+  0| lib.kefir.asmgen.c@1:9 Expected pointer type on the left side of arrow operator |     Error|         Analysis

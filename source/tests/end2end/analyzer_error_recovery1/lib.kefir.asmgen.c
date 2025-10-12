@@ -18,6 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#line 0 "lib.kefir.asmgen.c"
+
 int a = 1->a;
 int b = 2;
 int c = 2->b;
