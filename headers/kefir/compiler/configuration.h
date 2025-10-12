@@ -114,6 +114,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t optimize_stack_frame;
         kefir_bool_t imprecise_decimal_bitint_conv;
         kefir_uint32_t max_parser_errors;
+        kefir_uint32_t max_analyzer_errors;
         kefir_bool_t error_compiler_ref;
     } features;
 

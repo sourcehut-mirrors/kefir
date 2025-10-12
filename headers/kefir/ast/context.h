@@ -60,10 +60,13 @@ typedef struct kefir_ast_context_configuration {
         kefir_bool_t imprecise_decimal_bitint_conv;
         kefir_ast_context_tentative_definition_placement_t tentative_definition_placement;
         kefir_ast_declarator_visibility_attr_t symbol_visibility;
+        kefir_uint32_t max_errors;
     } analysis;
 
     FILE *warning_output;
 } kefir_ast_context_configuration_t;
+
+#define KEFIR_AST_CONTEXT_DO_ERROR_RECOVERY(_context, _errors) ((_context)->configuration->analysis.max_errors == (kefir_uint32_t) -1 || (_errors) + 1 < (_context)->configuration->analysis.max_errors)
 
 kefir_result_t kefir_ast_context_configuration_defaults(struct kefir_ast_context_configuration *);
 

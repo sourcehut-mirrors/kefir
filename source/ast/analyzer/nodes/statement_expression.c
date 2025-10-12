@@ -23,6 +23,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/analyzer/declarator.h"
 #include "kefir/ast/analyzer/analyzer.h"
+#include "kefir/ast/global_context.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -61,8 +62,9 @@ kefir_result_t kefir_ast_analyze_statement_expression_node(struct kefir_mem *mem
                     item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &item->source_location,
                                        "Compound statement items shall be either statements or declarations"));
-        if (res == KEFIR_ANALYSIS_ERROR) {
+        if (res == KEFIR_ANALYSIS_ERROR && KEFIR_AST_CONTEXT_DO_ERROR_RECOVERY(context, context->global_context->encountered_errors)) {
             has_analysis_errors = true;
+            context->global_context->encountered_errors++;
         } else {
             REQUIRE_OK(res);
         }

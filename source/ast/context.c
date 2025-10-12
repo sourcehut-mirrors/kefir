@@ -13,7 +13,7 @@ kefir_result_t kefir_ast_context_configuration_defaults(struct kefir_ast_context
                                                                     .enable_thread_local_common = false,
                                                                     .imprecise_decimal_bitint_conv = false,
                                                                 .tentative_definition_placement = KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON,
-                                                            .symbol_visibility = KEFIR_AST_DECLARATOR_VISIBILITY_UNSET},
+                                                            .symbol_visibility = KEFIR_AST_DECLARATOR_VISIBILITY_UNSET, .max_errors = (kefir_uint32_t) -1},
                                                         .standard_version = KEFIR_DEFAULT_STANDARD_VERSION,
                                                         .warning_output = stderr};
     return KEFIR_OK;

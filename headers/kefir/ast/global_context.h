@@ -52,6 +52,7 @@ typedef struct kefir_ast_global_context {
 
     struct kefir_hashtree owned_objects;
     struct kefir_hashset analyzed_types;
+    kefir_uint64_t encountered_errors;
 
     struct {
         kefir_id_t next_id;
