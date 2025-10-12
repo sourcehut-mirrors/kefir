@@ -473,6 +473,13 @@ decimal-capable compiler.
 .It Fl \-no-declare-decimal-support
 Do not declare support of decimal floating-point; suppresses definitions of kefir-specific support macros.
 .\"
+.It Fl \-declare-decimal-bitint-conv-support
+Declare support of decimal floating-point conversion to/from bit-precise integers (requires linking with recent libgcc >=14);
+has effect only is kefir has been built with decimal-capable compiler.
+.\"
+.It Fl \-no-declare-decimal-support
+Do not declare support of decimal floating-point conversion to/from bit-precise integers; suppresses definitions of kefir-specific support macros.
+.\"
 .It Fl \-optimize-stack-frame
 Optimize stack frame layout by reusing space for variables for disjoint lifetimes. Might increase compilation time and memory
 use on very large functions. [default: on].

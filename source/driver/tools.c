@@ -171,6 +171,12 @@ static kefir_result_t output_compiler_config(FILE *output,
         fprintf(output, " --no-declare-decimal-support");
     }
 
+    if (configuration->features.declare_decimal_bitint_conv_support) {
+        fprintf(output, " --declare-decimal-bitint-conv-support");
+    } else {
+        fprintf(output, " --no-declare-decimal-bitint-conv-support");
+    }
+
     if (configuration->optimizer.disable_lowering) {
         fprintf(output, " --disable-lowering");
     }
