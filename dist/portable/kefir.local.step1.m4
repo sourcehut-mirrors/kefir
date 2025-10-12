@@ -1,4 +1,5 @@
-export KEFIR_EXTRAARGS="--target host-musl -Wno-declare-decimal-support"
+ifdef(`extraargs', , `define(extraargs, -Wno-declare-decimal-support)')dnl
+export KEFIR_EXTRAARGS="--target host-musl extraargs"
 
 if [ -z "$KEFIR_MUSL_INCLUDE" ]; then
     export KEFIR_MUSL_INCLUDE="$SCRIPT_DIR/../include"

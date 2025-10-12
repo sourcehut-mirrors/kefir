@@ -2,7 +2,7 @@ CC=cc
 LD=ld
 CCLD=$(CC)
 AS=as
-BUILD_LIBATOMIC=yes
+LIBGCC_DIR=
 ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))/../..
 WORK_DIR=$(ROOT_DIR)/bin/portable/work
 TARGET_DIR=$(ROOT_DIR)/bin/portable/target
@@ -18,6 +18,21 @@ BINUTILS_ARCHIVE_FILENAME := binutils-$(BINUTILS_VERSION).tar.gz
 BINUTILS_ARCHIVE := $(WORK_DIR)/$(BINUTILS_ARCHIVE_FILENAME)
 BINUTILS_URL := https://sourceware.org/pub/binutils/releases/binutils-$(BINUTILS_VERSION).tar.gz
 BINUTILS_ARCHIVE_SHA256 := 8a3eb4b10e7053312790f21ee1a38f7e2bbd6f4096abb590d3429e5119592d96
+
+EXTRAARGS=-Wno-declare-decimal-bitint-conv-support
+ifneq ($(LIBGCC_DIR),)
+$(TARGET_DIR)/lib/libgcc.a:
+	@mkdir -p "$(TARGET_DIR)/lib"
+	@install "$(LIBGCC_DIR)/libgcc.a" "$@"
+
+$(TARGET_DIR)/lib/libgcc_eh.a:
+	@mkdir -p "$(TARGET_DIR)/lib"
+	@install "$(LIBGCC_DIR)/libgcc_eh.a" "$@"
+LIBGCC_DEP=$(TARGET_DIR)/lib/libgcc.a $(TARGET_DIR)/lib/libgcc_eh.a
+else
+LIBGCC_DEP=
+EXTRAARGS += -Wno-declare-decimal-support
+endif
 
 $(TARGET_DIR)/bin/kefir:
 	@mkdir -p "$(TARGET_DIR)"
@@ -54,7 +69,7 @@ $(TARGET_DIR)/lib/libc.a: $(MUSL_ARCHIVE) $(TARGET_DIR)/bin/kefir
 	@ln -sf libc.so $(TARGET_DIR)/lib/ld-musl-x86_64.so.1
 	@mkdir -p "$(TARGET_DIR)/share/licenses/musl"
 	@install "$(WORK_DIR)/musl-$(MUSL_VERSION)/COPYRIGHT" "$(TARGET_DIR)/share/licenses/musl"
-	@cat "$(ROOT_DIR)/dist/portable/kefir.local.step1" > "$(TARGET_DIR)/etc/kefir.local"
+	@m4 -Dextraargs="$(EXTRAARGS)" "$(ROOT_DIR)/dist/portable/kefir.local.step1.m4" > "$(TARGET_DIR)/etc/kefir.local"
 
 $(TARGET_DIR)/bin/ld: $(BINUTILS_ARCHIVE) $(TARGET_DIR)/lib/libc.a
 	@cd "$(WORK_DIR)" && tar xvfz "$(BINUTILS_ARCHIVE_FILENAME)"
@@ -92,7 +107,7 @@ $(TARGET_DIR)/lib/libatomic.so: $(TARGET_DIR)/bin/kefir
 	@install "$(WORK_DIR)/kefir/libatomic/libatomic.so" "$@"
 	@install "$(WORK_DIR)/kefir/libatomic/compiler-rt-21.1.2.src/LICENSE.TXT" "$(TARGET_DIR)/share/licenses/compiler_rt"
 	
-all: $(TARGET_DIR)/bin/kefir $(TARGET_DIR)/lib/libc.a $(TARGET_DIR)/bin/ld $(TARGET_DIR)/lib/libatomic.so
+all: $(TARGET_DIR)/bin/kefir $(TARGET_DIR)/lib/libc.a $(TARGET_DIR)/bin/ld $(TARGET_DIR)/lib/libatomic.so $(LIBGCC_DEP)
 	@install "$(ROOT_DIR)/dist/portable/README" "$(TARGET_DIR)"
 
 clean:
