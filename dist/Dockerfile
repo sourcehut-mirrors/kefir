@@ -74,7 +74,7 @@ RUN apt install -y nasm yacc libncurses-dev zlib1g-dev gettext file openssl \
     libinotifytools0-dev libtool pkg-config libsqlite3-dev flex libreadline-dev \
     libfont-ttf-perl libsort-versions-perl fonts-liberation libtool-bin libunistring-dev \
     libgc-dev libglib2.0-dev-bin dejagnu locales rake python3-dev libyaml-dev libgtest-dev \
-    libevent-dev libtommath-dev libpsl-dev
+    libevent-dev libtommath-dev libpsl-dev libgmp-dev libmpfr-dev libmpc-dev
 
 # Locales
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
@@ -83,5 +83,7 @@ RUN echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen
 RUN echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen  
 RUN locale-gen
 
+# Alias for gcc 4.7.4 bootstrap
+RUN ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/libstdc++.so
 # Alias for pre-release script
 RUN ln -sf /usr/bin/clang-16 /usr/bin/clang
