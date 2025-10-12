@@ -730,15 +730,15 @@ kefir_result_t kefir_run_compiler(struct kefir_mem *mem, const struct kefir_comp
     return KEFIR_OK;
 }
 
-kefir_bool_t kefir_report_error(FILE *output, kefir_result_t res, kefir_bool_t print_json) {
+kefir_bool_t kefir_report_error(FILE *output, kefir_result_t res, kefir_bool_t print_json, kefir_bool_t print_compiler_ref) {
     if (res == KEFIR_OK) {
         return true;
     } else {
         if (!print_json) {
             fprintf(output, "Failed to compile! Error stack:\n");
-            kefir_format_error_tabular(output, kefir_current_error());
+            kefir_format_error_tabular(output, kefir_current_error(), print_compiler_ref);
         } else {
-            kefir_format_error_json(output, kefir_current_error());
+            kefir_format_error_json(output, kefir_current_error(), print_compiler_ref);
         }
         return false;
     }

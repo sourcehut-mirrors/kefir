@@ -24,14 +24,16 @@
 #include "kefir/core/source_error.h"
 #include <string.h>
 
-void kefir_format_error_tabular(FILE *out, const struct kefir_error *error) {
+void kefir_format_error_tabular(FILE *out, const struct kefir_error *error, kefir_bool_t output_compiler_ref) {
     if (out == NULL || error == NULL) {
         return;
     }
 
     const char *const OVERFLOW_MSG = "[Error stack overflow. Skipping entries]";
     const char *const HEADER_FMT = "%3s  %*s   %9s  %16s   %s\n";
+    const char *const HEADER_FMT_WO_COMPREF = "%3s  %*s   %9s  %16s\n";
     const char *const ROW_FMT = "%3zu| %*s | %9s| %16s|  %s:%u\n";
+    const char *const ROW_FMT_WO_COMPREF = "%3zu| %*s | %9s| %16s\n";
     kefir_int_t max_msg_length = 0;
     for (const struct kefir_error *iter = error; iter != NULL; iter = iter->prev_error) {
         kefir_int_t length = strlen(iter->message);
@@ -43,7 +45,11 @@ void kefir_format_error_tabular(FILE *out, const struct kefir_error *error) {
         }
     }
 
-    fprintf(out, HEADER_FMT, "No.", -max_msg_length, "Message", "Class", "Subclass", "Compiler ref.");
+    if (output_compiler_ref) {
+        fprintf(out, HEADER_FMT, "No.", -max_msg_length, "Message", "Class", "Subclass", "Compiler ref.");
+    } else {
+        fprintf(out, HEADER_FMT_WO_COMPREF, "No.", -max_msg_length, "Message", "Class", "Subclass");
+    }
     for (kefir_size_t i = 0; error != NULL; error = error->prev_error, i++) {
         if (error->error_overflow) {
             fprintf(out, "%3s| %*s | %9s| %16s|\n", "-", -max_msg_length, OVERFLOW_MSG, "", "");
@@ -198,11 +204,15 @@ void kefir_format_error_tabular(FILE *out, const struct kefir_error *error) {
                 break;
         }
 
-        fprintf(out, ROW_FMT, i, -max_msg_length, error->message, class, subclass, error->file, error->line);
+        if (output_compiler_ref) {
+            fprintf(out, ROW_FMT, i, -max_msg_length, error->message, class, subclass, error->file, error->line);
+        } else {
+            fprintf(out, ROW_FMT_WO_COMPREF, i, -max_msg_length, error->message, class, subclass);
+        }
     }
 }
 
-static kefir_result_t format_json(FILE *out, const struct kefir_error *error) {
+static kefir_result_t format_json(FILE *out, const struct kefir_error *error, kefir_bool_t output_compiler_ref) {
     struct kefir_json_output json;
     REQUIRE_OK(kefir_json_output_init(&json, out, 4));
     REQUIRE_OK(kefir_json_output_array_begin(&json));
@@ -332,13 +342,15 @@ static kefir_result_t format_json(FILE *out, const struct kefir_error *error) {
 
         REQUIRE_OK(kefir_json_output_object_key(&json, "message"));
         REQUIRE_OK(kefir_json_output_string(&json, error->message));
-        REQUIRE_OK(kefir_json_output_object_key(&json, "origin"));
-        REQUIRE_OK(kefir_json_output_object_begin(&json));
-        REQUIRE_OK(kefir_json_output_object_key(&json, "file"));
-        REQUIRE_OK(kefir_json_output_string(&json, error->file));
-        REQUIRE_OK(kefir_json_output_object_key(&json, "line"));
-        REQUIRE_OK(kefir_json_output_uinteger(&json, error->line));
-        REQUIRE_OK(kefir_json_output_object_end(&json));
+        if (output_compiler_ref) {
+            REQUIRE_OK(kefir_json_output_object_key(&json, "origin"));
+            REQUIRE_OK(kefir_json_output_object_begin(&json));
+            REQUIRE_OK(kefir_json_output_object_key(&json, "file"));
+            REQUIRE_OK(kefir_json_output_string(&json, error->file));
+            REQUIRE_OK(kefir_json_output_object_key(&json, "line"));
+            REQUIRE_OK(kefir_json_output_uinteger(&json, error->line));
+            REQUIRE_OK(kefir_json_output_object_end(&json));
+        }
 
         REQUIRE_OK(kefir_json_output_object_key(&json, "source_location"));
         if (error->payload_type == KEFIR_ERROR_PAYLOAD_SOURCE_LOCATION) {
@@ -367,9 +379,9 @@ static kefir_result_t format_json(FILE *out, const struct kefir_error *error) {
     return KEFIR_OK;
 }
 
-void kefir_format_error_json(FILE *out, const struct kefir_error *error) {
+void kefir_format_error_json(FILE *out, const struct kefir_error *error, kefir_bool_t output_compiler_ref) {
     if (out == NULL || error == NULL) {
         return;
     }
-    format_json(out, error);
+    format_json(out, error, output_compiler_ref);
 }

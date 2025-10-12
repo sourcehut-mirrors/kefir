@@ -282,6 +282,12 @@ if precise native routines are not available [default: off]
 .It Ar max-parser-errors [num]
 Set maximum number of parser errors produced; use -1 for unbounded number of errors.
 Note that printed error list is non-exhaustive irrespective of the setting. [default: 24]
+.\"
+.It Ar Werror-compiler-ref
+Include compiler source code references into reported errors [default: on].
+.\"
+.It Ar Wno-error-compiler-ref
+Exclude compiler source code references from reported errors [default: off].
 .El
 .\"
 .Ss CODEGEN

@@ -51,7 +51,7 @@ kefir_bool_t kefir_dfp_bitint_conv_is_supported(void) {
 #define FAIL_NOT_SUPPORTED                                                                                \
     do {                                                                                                  \
         KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Decimal floating-point is not supported on this platform"); \
-        kefir_format_error_tabular(stderr, kefir_current_error());                                        \
+        kefir_format_error_tabular(stderr, kefir_current_error(), true);                                        \
         exit(EXIT_FAILURE);                                                                               \
     } while (0)
 
@@ -1353,7 +1353,7 @@ void kefir_dfp_decimal128_to_unsigned_bitint(const struct kefir_bigint *value, k
         KEFIR_SET_ERROR(                                                                                        \
             KEFIR_NOT_SUPPORTED,                                                                                \
             "Decimal floatig-point conversion to/from bit-precise integers is not supported on this platform"); \
-        kefir_format_error_tabular(stderr, kefir_current_error());                                              \
+        kefir_format_error_tabular(stderr, kefir_current_error(), true);                                              \
         exit(EXIT_FAILURE);                                                                                     \
     } while (0)
 

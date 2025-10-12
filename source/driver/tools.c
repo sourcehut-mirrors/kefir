@@ -289,7 +289,7 @@ static int run_compiler(void *payload) {
     configure_compiler_signals();
     ASSIGN_DECL_CAST(const struct kefir_compiler_runner_configuration *, configuration, payload);
     kefir_result_t res = kefir_run_compiler(kefir_system_memalloc(), configuration);
-    return kefir_report_error(stderr, res, configuration->error_report_type == KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON)
+    return kefir_report_error(stderr, res, configuration->error_report_type == KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON, configuration->features.error_compiler_ref)
                ? EXIT_SUCCESS
                : EXIT_FAILURE;
 }

@@ -51,7 +51,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
         .verbose = false,
         .preprocessor_assembly_mode = false,
         .standard_version = KEFIR_DEFAULT_STANDARD_VERSION,
-        .features = {false, .precise_bitfield_load_store = true, .declare_atomic_support = true, .declare_decimal_support = true, .preprocessor_linemarkers = false, .optimize_stack_frame = true, .imprecise_decimal_bitint_conv = false, .max_parser_errors = 24},
+        .features = {false, .precise_bitfield_load_store = true, .declare_atomic_support = true, .declare_decimal_support = true, .preprocessor_linemarkers = false, .optimize_stack_frame = true, .imprecise_decimal_bitint_conv = false, .max_parser_errors = 24, .error_compiler_ref = true},
         .codegen = {.emulated_tls = false,
                     .tls_common = true,
                     .position_independent_code = false,

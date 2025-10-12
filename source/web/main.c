@@ -75,5 +75,5 @@ int kefir_run_with_args(int argc, char *const *argv) {
 
     REQUIRE_CHAIN(&res, kefir_driver_configuration_free(mem, &driver_config));
     REQUIRE_CHAIN(&res, kefir_string_pool_free(mem, &symbols));
-    return kefir_report_error(stderr, res, false) ? exit_code : EXIT_FAILURE;
+    return kefir_report_error(stderr, res, false, true) ? exit_code : EXIT_FAILURE;
 }

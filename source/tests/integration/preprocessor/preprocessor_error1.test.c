@@ -57,8 +57,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT) - 1, "fileName"));
     REQUIRE_OK(kefir_preprocessor_init(mem, &preprocessor, &symbols, &cursor, &parser_context, &context, NULL, NULL));
     kefir_preprocessor_run(mem, &preprocessor, &token_allocator, &tokens);
-    kefir_format_error_tabular(stdout, kefir_current_error());
-    kefir_format_error_json(stdout, kefir_current_error());
+    kefir_format_error_tabular(stdout, kefir_current_error(), false);
+    kefir_format_error_json(stdout, kefir_current_error(), false);
 
     REQUIRE_OK(kefir_preprocessor_free(mem, &preprocessor));
     REQUIRE_OK(kefir_preprocessor_context_free(mem, &context));
