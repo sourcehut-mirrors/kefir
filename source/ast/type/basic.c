@@ -31,6 +31,8 @@ static kefir_bool_t same_basic_type(const struct kefir_ast_type *type1, const st
         REQUIRE(type1->bitprecise.width == type2->bitprecise.width, false);
     } else if (type1->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT) {
         REQUIRE(KEFIR_AST_TYPE_SAME(type1->complex.real_type, type2->complex.real_type), false);
+    } else if (type1->tag == KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT) {
+        REQUIRE(KEFIR_AST_TYPE_SAME(type1->imaginary.real_type, type2->imaginary.real_type), false);
     }
     return true;
 }
@@ -53,6 +55,8 @@ static kefir_bool_t compatible_basic_types(const struct kefir_ast_type_traits *t
         REQUIRE(type1->bitprecise.width == type2->bitprecise.width, false);
     } else if (type1->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT) {
         REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1->complex.real_type, type2->complex.real_type), false);
+    } else if (type1->tag == KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT) {
+        REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1->imaginary.real_type, type2->imaginary.real_type), false);
     }
     return true;
 }
@@ -159,6 +163,24 @@ COMPLEX_TYPE(interchange_float64, &DEFAULT_SCALAR_interchange_float64)
 COMPLEX_TYPE(interchange_float80, &DEFAULT_SCALAR_interchange_float80)
 COMPLEX_TYPE(extended_float32, &DEFAULT_SCALAR_extended_float32)
 COMPLEX_TYPE(extended_float64, &DEFAULT_SCALAR_extended_float64)
+
+#undef COMPLEX_TYPE
+
+#define IMAGINARY_TYPE(id, _real_type)                                                                               \
+    static const struct kefir_ast_type DEFAULT_IMAGINARY_##id = {.tag = KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT,                                \
+                                                                .imaginary.real_type = (_real_type), \
+                                                               .ops = {.same = same_basic_type,              \
+                                                                       .compatible = compatible_basic_types, \
+                                                                       .composite = composite_basic_types,   \
+                                                                       .free = free_nothing}};               \
+                                                                                                             \
+    const struct kefir_ast_type *kefir_ast_type_imaginary_##id(void) {                                         \
+        return &DEFAULT_IMAGINARY_##id;                                                                        \
+    }
+
+IMAGINARY_TYPE(float, &DEFAULT_SCALAR_float)
+IMAGINARY_TYPE(double, &DEFAULT_SCALAR_double)
+IMAGINARY_TYPE(long_double, &DEFAULT_SCALAR_long_double)
 
 #undef COMPLEX_TYPE
 
@@ -288,9 +310,11 @@ const struct kefir_ast_type *kefir_ast_type_flip_integer_singedness(const struct
 const struct kefir_ast_type *kefir_ast_type_corresponding_real_type(const struct kefir_ast_type *type) {
     if (KEFIR_AST_TYPE_IS_REAL_TYPE(type)) {
         return type;
-    } else {
-        REQUIRE(type->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT, NULL);
+    } else if (type->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT) {
         return type->complex.real_type;
+    } else {
+        REQUIRE(type->tag == KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT, NULL);
+        return type->imaginary.real_type;
     }
 }
 
@@ -322,6 +346,33 @@ const struct kefir_ast_type *kefir_ast_type_corresponding_complex_type(const str
 
         default:
             if (KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type)) {
+                return type;
+            } else {
+                return NULL;
+            }
+    }
+}
+
+const struct kefir_ast_type *kefir_ast_type_corresponding_imaginary_type(const struct kefir_ast_type *type) {
+    switch (type->tag) {
+        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+            return kefir_ast_type_imaginary_float();
+
+        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+            return kefir_ast_type_imaginary_double();
+
+        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            return kefir_ast_type_imaginary_long_double();
+
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+        case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
+        case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
+            return NULL; // KEFIR_NOT_IMPLEMENTED
+
+        default:
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type)) {
                 return type;
             } else {
                 return NULL;

@@ -595,6 +595,7 @@ TYPE_SPECIFIER(unsigned, KEFIR_AST_TYPE_SPECIFIER_UNSIGNED)
 TYPE_SPECIFIER(unsigned_override, KEFIR_AST_TYPE_SPECIFIER_UNSIGNED_OVERRIDE)
 TYPE_SPECIFIER(boolean, KEFIR_AST_TYPE_SPECIFIER_BOOL)
 TYPE_SPECIFIER(complex, KEFIR_AST_TYPE_SPECIFIER_COMPLEX)
+TYPE_SPECIFIER(imaginary, KEFIR_AST_TYPE_SPECIFIER_IMAGINARY)
 TYPE_SPECIFIER(decimal32, KEFIR_AST_TYPE_SPECIFIER_DECIMAL32)
 TYPE_SPECIFIER(decimal64, KEFIR_AST_TYPE_SPECIFIER_DECIMAL64)
 TYPE_SPECIFIER(decimal128, KEFIR_AST_TYPE_SPECIFIER_DECIMAL128)
@@ -921,6 +922,10 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
 
                 case KEFIR_AST_TYPE_SPECIFIER_COMPLEX:
                     clone = kefir_ast_type_specifier_complex(mem);
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_IMAGINARY:
+                    clone = kefir_ast_type_specifier_imaginary(mem);
                     break;
 
                 case KEFIR_AST_TYPE_SPECIFIER_DECIMAL32:

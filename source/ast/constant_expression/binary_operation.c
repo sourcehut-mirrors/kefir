@@ -137,6 +137,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
     const struct kefir_ast_type *common_arith_type = kefir_ast_type_common_arithmetic(
         context->type_traits, arg1_normalized_type, node->arg1->properties.expression_props.bitfield_props,
         arg2_normalized_type, node->arg2->properties.expression_props.bitfield_props);
+    
     kefir_bool_t common_type_signed_integer = false;
     if (common_arith_type != NULL && KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(common_arith_type)) {
         REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, common_arith_type, &common_type_signed_integer));

@@ -32,6 +32,10 @@ typedef struct kefir_ast_type_complex {
     const struct kefir_ast_type *real_type;
 } kefir_ast_type_complex_t;
 
+typedef struct kefir_ast_type_imaginary {
+    const struct kefir_ast_type *real_type;
+} kefir_ast_type_imaginary_t;
+
 #define SCALAR_TYPE(id) const struct kefir_ast_type *kefir_ast_type_##id(void)
 SCALAR_TYPE(void);
 SCALAR_TYPE(auto);
@@ -72,6 +76,12 @@ COMPLEX_TYPE(interchange_float80);
 COMPLEX_TYPE(extended_float32);
 COMPLEX_TYPE(extended_float64);
 #undef COMPLEX_TYPE
+
+#define IMAGINARY_TYPE(id) const struct kefir_ast_type *kefir_ast_type_imaginary_##id(void)
+IMAGINARY_TYPE(float);
+IMAGINARY_TYPE(double);
+IMAGINARY_TYPE(long_double);
+#undef IMAGINARY_TYPE
 
 const struct kefir_ast_type *kefir_ast_type_signed_bitprecise(struct kefir_mem *, struct kefir_ast_type_bundle *,
                                                               kefir_size_t);
@@ -114,8 +124,10 @@ const struct kefir_ast_type *kefir_ast_type_unsigned_bitprecise(struct kefir_mem
     (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base))
 #define KEFIR_AST_TYPE_IS_COMPLEX_TYPE(base)                                                        \
     ((base)->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT)
+#define KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(base)                                                        \
+    ((base)->tag == KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT)
 #define KEFIR_AST_TYPE_IS_FLOATING_POINT(base) \
-    (KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(base))
+    (KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(base) || KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(base))
 #define KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(base) \
     (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) || KEFIR_AST_TYPE_IS_FLOATING_POINT(base))
 #define KEFIR_AST_TYPE_IS_SCALAR_TYPE(base)                                                     \
@@ -128,6 +140,7 @@ const struct kefir_ast_type *kefir_ast_type_flip_integer_singedness(const struct
                                                                     const struct kefir_ast_type *);
 const struct kefir_ast_type *kefir_ast_type_corresponding_real_type(const struct kefir_ast_type *);
 const struct kefir_ast_type *kefir_ast_type_corresponding_complex_type(const struct kefir_ast_type *);
+const struct kefir_ast_type *kefir_ast_type_corresponding_imaginary_type(const struct kefir_ast_type *);
 
 kefir_result_t kefir_ast_type_is_signed(const struct kefir_ast_type_traits *, const struct kefir_ast_type *,
                                         kefir_bool_t *);

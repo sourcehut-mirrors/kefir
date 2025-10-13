@@ -555,6 +555,44 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                              (kefir_hashtree_value_t) *entry_id_ptr));
         } break;
 
+        case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT: {
+            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
+                                                KEFIR_IR_DEBUG_ENTRY_TYPE_COMPLEX_FLOAT, entry_id_ptr));
+            kefir_ast_type_data_model_classification_t classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, type, &classification));
+            switch (classification) {
+                case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                                *entry_id_ptr,
+                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Imaginary float")));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                                *entry_id_ptr,
+                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Imaginary double")));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                                *entry_id_ptr,
+                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Imaginary long double")));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected imaginary floating-point real type");
+            }
+            REQUIRE_OK(
+                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
+                                             (kefir_hashtree_value_t) *entry_id_ptr));
+        } break;
+
         case KEFIR_AST_TYPE_SCALAR_POINTER: {
             REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
             REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_POINTER,

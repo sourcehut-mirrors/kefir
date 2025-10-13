@@ -25,31 +25,58 @@
 #include "kefir/core/error.h"
 
 static kefir_result_t obtain_real_part(const struct kefir_ast_type_traits *type_traits, struct kefir_irbuilder_block *builder, const struct kefir_ast_type **origin) {
-
     kefir_ast_type_data_model_classification_t classification;
     REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, *origin, &classification));
-    switch (classification) {
-        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:{
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_REAL, 0));
-            *origin = kefir_ast_type_corresponding_real_type(*origin);
-            REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
-        } break;
+    if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(*origin)) {
+        kefir_ast_type_data_model_classification_t classification;
+        REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, *origin, &classification));
+        switch (classification) {
+            case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:{
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST, 0.0f, 0.0f));
+                *origin = kefir_ast_type_corresponding_real_type(*origin);
+                REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
+            } break;
 
-        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE: {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_REAL, 0));
-            *origin = kefir_ast_type_corresponding_real_type(*origin);
-            REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
-        } break;
+            case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE: {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST, 0.0));
+                *origin = kefir_ast_type_corresponding_real_type(*origin);
+                REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
+            } break;
 
-        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:{
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_LOAD, 0));
-            *origin = kefir_ast_type_corresponding_real_type(*origin);
-            REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
-        } break;
+            case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:{
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST, 0.0));
+                *origin = kefir_ast_type_corresponding_real_type(*origin);
+                REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
+            } break;
 
-        default:
-            // Intentionally left blank
-            break;
+            default:
+                // Intentionally left blank
+                break;
+        }
+    } else {
+        switch (classification) {
+            case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:{
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_REAL, 0));
+                *origin = kefir_ast_type_corresponding_real_type(*origin);
+                REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
+            } break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE: {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_REAL, 0));
+                *origin = kefir_ast_type_corresponding_real_type(*origin);
+                REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
+            } break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:{
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_LOAD, 0));
+                *origin = kefir_ast_type_corresponding_real_type(*origin);
+                REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
+            } break;
+
+            default:
+                // Intentionally left blank
+                break;
+        }
     }
     return KEFIR_OK;
 }
@@ -379,11 +406,18 @@ static kefir_result_t cast_to_complex_float(struct kefir_mem *mem, struct kefir_
             break;
 
         default:
-            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(origin),
-                    KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast non-arithmetic types to complex float"));
-            REQUIRE_OK(cast_to_float32(mem, module, builder, type_traits, origin));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST, 0.0f, 0.0f));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_FROM, 0));
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(origin)) {
+                REQUIRE_OK(cast_to_float32(mem, module, builder, type_traits, origin->imaginary.real_type));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST, 0.0f, 0.0f));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_FROM, 0));
+            } else {
+                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(origin),
+                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast non-arithmetic types to complex float"));
+                REQUIRE_OK(cast_to_float32(mem, module, builder, type_traits, origin));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST, 0.0f, 0.0f));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_FROM, 0));
+            }
             break;
     }
     return KEFIR_OK;
@@ -427,11 +461,18 @@ static kefir_result_t cast_to_complex_double(struct kefir_mem *mem, struct kefir
             break;
 
         default:
-            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(origin),
-                    KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast non-arithmetic types to complex float"));
-            REQUIRE_OK(cast_to_float64(mem, module, builder, type_traits, origin));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST, 0.0));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(origin)) {
+                REQUIRE_OK(cast_to_float64(mem, module, builder, type_traits, origin->imaginary.real_type));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST, 0.0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
+            } else {
+                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(origin),
+                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast non-arithmetic types to complex float"));
+                REQUIRE_OK(cast_to_float64(mem, module, builder, type_traits, origin));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST, 0.0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
+            }
             break;
     }
     return KEFIR_OK;
@@ -475,11 +516,120 @@ static kefir_result_t cast_to_complex_long_double(struct kefir_mem *mem, struct 
             break;
 
         default:
-            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(origin),
-                    KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast non-arithmetic types to complex float"));
-            REQUIRE_OK(cast_to_long_double(mem, module, builder, type_traits, origin));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST, 0.0L));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(origin)) {
+                REQUIRE_OK(cast_to_long_double(mem, module, builder, type_traits, origin->imaginary.real_type));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST, 0.0L));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
+            } else {
+                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(origin),
+                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast non-arithmetic types to complex float"));
+                REQUIRE_OK(cast_to_long_double(mem, module, builder, type_traits, origin));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST, 0.0L));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
+            }
+            break;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t cast_to_imaginary_float(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                            struct kefir_irbuilder_block *builder,
+                                            const struct kefir_ast_type_traits *type_traits,
+                                            const struct kefir_ast_type *origin) {
+    kefir_ast_type_data_model_classification_t classification;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, origin, &classification));
+    switch (classification) {
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_IMAGINARY, 0));
+            break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_IMAGINARY, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_FLOAT32, 0));
+            break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_FLOAT32, 0));
+            break;
+
+        default:
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(origin)) {
+                REQUIRE_OK(cast_to_float32(mem, module, builder, type_traits, origin->imaginary.real_type));
+            } else {
+                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(origin),
+                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast non-arithmetic types to imaginary float"));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST, 0.0f, 0.0f));
+            }
+            break;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t cast_to_imaginary_double(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                            struct kefir_irbuilder_block *builder,
+                                            const struct kefir_ast_type_traits *type_traits,
+                                            const struct kefir_ast_type *origin) {
+    kefir_ast_type_data_model_classification_t classification;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, origin, &classification));
+    switch (classification) {
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_IMAGINARY, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_FLOAT64, 0));
+            break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_IMAGINARY, 0));
+            break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_FLOAT64, 0));
+            break;
+
+        default:
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(origin)) {
+                REQUIRE_OK(cast_to_float64(mem, module, builder, type_traits, origin->imaginary.real_type));
+            } else {
+                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(origin),
+                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast non-arithmetic types to imaginary double"));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST, 0.0));
+            }
+            break;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t cast_to_imaginary_long_double(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                            struct kefir_irbuilder_block *builder,
+                                            const struct kefir_ast_type_traits *type_traits,
+                                            const struct kefir_ast_type *origin) {
+    kefir_ast_type_data_model_classification_t classification;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, origin, &classification));
+    switch (classification) {
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_IMAGINARY, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_LONG_DOUBLE, 0));
+            break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_IMAGINARY, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_LONG_DOUBLE, 0));
+            break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY, 0));
+            break;
+
+        default:
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(origin)) {
+                REQUIRE_OK(cast_to_long_double(mem, module, builder, type_traits, origin->imaginary.real_type));
+            } else {
+                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(origin),
+                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot cast non-arithmetic types to imaginary long double"));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST, 0.0));
+            }
             break;
     }
     return KEFIR_OK;
@@ -854,6 +1004,8 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(const struct kefir_ast_type_
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected complex floating-point real type");
         }
+    } else if (origin->tag == KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32) {
         REQUIRE_OK(kefir_dfp_require_supported(NULL));
         kefir_dfp_decimal32_t dec32 = kefir_dfp_decimal32_from_int64(0);
@@ -996,6 +1148,27 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
 
                 case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
                     REQUIRE_OK(cast_to_complex_long_double(mem, module, builder, type_traits, normalized_origin));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected complex floating-point real type");
+            }
+        } break;
+
+        case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT: {
+            kefir_ast_type_data_model_classification_t classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, normalized_destination, &classification));
+            switch (classification) {
+                case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
+                    REQUIRE_OK(cast_to_imaginary_float(mem, module, builder, type_traits, normalized_origin));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
+                    REQUIRE_OK(cast_to_imaginary_double(mem, module, builder, type_traits, normalized_origin));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
+                    REQUIRE_OK(cast_to_imaginary_long_double(mem, module, builder, type_traits, normalized_origin));
                     break;
 
                 default:

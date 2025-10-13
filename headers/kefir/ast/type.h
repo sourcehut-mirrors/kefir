@@ -54,6 +54,7 @@ typedef struct kefir_ast_type {
     union {
         struct kefir_ast_type_bit_precise_integer bitprecise;
         struct kefir_ast_type_complex complex;
+        struct kefir_ast_type_imaginary imaginary;
         const struct kefir_ast_type *referenced_type;
         struct kefir_ast_enum_type enumeration_type;
         struct kefir_ast_struct_type structure_type;

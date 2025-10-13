@@ -66,7 +66,9 @@ static kefir_result_t analyze_muldiv(struct kefir_mem *mem, const struct kefir_a
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location2,
                                    "Both multiply/divide operands shall have arithmetic type"));
     REQUIRE_OK(ensure_decimal_floating_point_types(type1, location1, type2, location2));
-    base->properties.type = kefir_ast_type_common_arithmetic(context->type_traits, type1, bitfield1, type2, bitfield2);
+    type1 = kefir_ast_unqualified_type(type1);
+    type2 = kefir_ast_unqualified_type(type2);
+    base->properties.type = kefir_ast_type_multiplicative_common_arithmetic(context->type_traits, type1, bitfield1, type2, bitfield2);
     REQUIRE(base->properties.type != NULL,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to determine common AST arithmetic type"));
     return KEFIR_OK;

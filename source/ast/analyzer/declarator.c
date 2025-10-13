@@ -53,7 +53,7 @@ const struct kefir_declarator_analyzer_std_attribute_descriptor KEFIR_DECLARATOR
 
 enum signedness { SIGNEDNESS_DEFAULT, SIGNEDNESS_SIGNED, SIGNEDNESS_UNSIGNED };
 
-enum real_class { REAL_SCALAR, REAL_COMPLEX, REAL_COMPLEX_LONG };
+enum real_class { REAL_SCALAR, REAL_COMPLEX, REAL_IMAGINARY, REAL_IMAGINARY_LONG, REAL_COMPLEX_LONG };
 
 static kefir_result_t analyze_declaration_specifiers_impl(struct kefir_mem *, const struct kefir_ast_context *,
                                                           const struct kefir_ast_declarator_specifier_list *,
@@ -788,8 +788,12 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                 *base_type = kefir_ast_type_long_double();
             } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT && (*base_type)->complex.real_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
                 *base_type = kefir_ast_type_complex_long_double();
+            } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT && (*base_type)->complex.real_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+                *base_type = kefir_ast_type_imaginary_long_double();
             } else if (*base_type == NULL && *real_class == REAL_COMPLEX) {
                 *real_class = REAL_COMPLEX_LONG;
+            } else if (*base_type == NULL && *real_class == REAL_IMAGINARY) {
+                *real_class = REAL_IMAGINARY_LONG;
             } else {
                 REQUIRE(*real_class == REAL_SCALAR,
                         KEFIR_SET_SOURCE_ERROR(
@@ -834,12 +838,18 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                                            "Cannot combine type specifiers with referenced type definition"));
             if (*real_class == REAL_SCALAR) {
                 *base_type = kefir_ast_type_float();
-            } else {
+            } else if (*real_class == REAL_COMPLEX) {
                 REQUIRE(*real_class == REAL_COMPLEX,
                         KEFIR_SET_SOURCE_ERROR(
                             KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                            "Long and complex type specifiers cannot be combined with float type specifier"));
+                            "Long and complex/imaginary type specifiers cannot be combined with float type specifier"));
                 *base_type = kefir_ast_type_complex_float();
+            } else {
+                REQUIRE(*real_class == REAL_IMAGINARY,
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Long and complex/imaginary type specifiers cannot be combined with float type specifier"));
+                *base_type = kefir_ast_type_imaginary_float();
             }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -852,6 +862,14 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                 switch (*real_class) {
                     case REAL_SCALAR:
                         *base_type = kefir_ast_type_double();
+                        break;
+
+                    case REAL_IMAGINARY:
+                        *base_type = kefir_ast_type_imaginary_double();
+                        break;
+
+                    case REAL_IMAGINARY_LONG:
+                        *base_type = kefir_ast_type_imaginary_long_double();
                         break;
 
                     case REAL_COMPLEX:
@@ -1081,6 +1099,35 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             }
             break;
 
+        case KEFIR_AST_TYPE_SPECIFIER_IMAGINARY:
+            REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine type specifiers with referenced type definition"));
+            REQUIRE(
+                *signedness == SIGNEDNESS_DEFAULT,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                       "Imaginary type specifier cannot be combined with other signedness specifiers"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Duplicate imaginary type specifier"));
+
+            if (*base_type == NULL) {
+                *real_class = REAL_IMAGINARY;
+            } else if ((*base_type)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG) {
+                *real_class = REAL_IMAGINARY_LONG;
+                *base_type = NULL;
+            } else {
+                REQUIRE(
+                    KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(*base_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Imaginary type specifier cannot be combined with non-floating-point type"));
+                *real_class = REAL_IMAGINARY;
+                *base_type = kefir_ast_type_corresponding_imaginary_type(*base_type);
+                REQUIRE(*base_type != NULL,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding imaginary type"));
+            }
+            break;
+
         case KEFIR_AST_TYPE_SPECIFIER_ATOMIC: {
             REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
@@ -1228,6 +1275,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
                 case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT:
+                case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT:
                 case KEFIR_AST_TYPE_SCALAR_POINTER:
                 case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
                 case KEFIR_AST_TYPE_ENUMERATION:
@@ -1295,6 +1343,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
                 case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT:
+                case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT:
                 case KEFIR_AST_TYPE_SCALAR_POINTER:
                 case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
                 case KEFIR_AST_TYPE_ENUMERATION:

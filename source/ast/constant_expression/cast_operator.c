@@ -211,6 +211,8 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
                 if (unqualified_destination_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
                     value->integer = (kefir_bool_t) source->floating_point;
+                } else if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
+                    value->integer = 0;
                 } else {
                     REQUIRE_OK(cast_integral_type_from_float(mem, context, unqualified_destination_type, value,
                                                              source->floating_point, &node->source_location));
@@ -310,7 +312,11 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
-                value->floating_point = source->floating_point;
+                if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
+                    value->floating_point = 0.0;
+                } else {
+                    value->floating_point = source->floating_point;
+                }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
@@ -320,6 +326,39 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
                 REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
                 value->floating_point = kefir_dfp_decimal128_to_long_double(source->decimal);
+                break;
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                                              "Address to floating point cast is not a constant expression");
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
+                return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
+        }
+    } else if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_destination_type)) {
+        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
+        switch (source->klass) {
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+                value->floating_point = 0.0;
+                break;
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+                if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
+                    value->floating_point = source->floating_point;
+                } else {
+                    value->floating_point = 0.0;
+                }
+                break;
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+                value->floating_point = source->complex_floating_point.imaginary;
+                break;
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
+                value->floating_point = 0.0;
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
@@ -434,8 +473,13 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
-                value->complex_floating_point.real = source->floating_point;
-                value->complex_floating_point.imaginary = 0.0;
+                if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
+                    value->complex_floating_point.real = 0.0;
+                    value->complex_floating_point.imaginary = source->floating_point;
+                } else {
+                    value->complex_floating_point.real = source->floating_point;
+                    value->complex_floating_point.imaginary = 0.0;
+                }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:

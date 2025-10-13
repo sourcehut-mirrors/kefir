@@ -68,6 +68,34 @@ const struct kefir_ast_type *kefir_ast_type_int_promotion(const struct kefir_ast
 
 #define ANY_OF(x, y, z) (KEFIR_AST_TYPE_SAME((x), (z)) || KEFIR_AST_TYPE_SAME((y), (z)))
 
+const struct kefir_ast_type *kefir_ast_type_multiplicative_common_arithmetic(const struct kefir_ast_type_traits *type_traits,
+                                                              const struct kefir_ast_type *type1,
+                                                              struct kefir_ast_bitfield_properties bitfield1,
+                                                              const struct kefir_ast_type *type2,
+                                                              struct kefir_ast_bitfield_properties bitfield2) {
+    if (KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2)) {
+        return kefir_ast_type_common_arithmetic(
+            type_traits, type1, bitfield1,
+            type2, bitfield2);
+    } else if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type1) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type2)) {
+        return kefir_ast_type_common_arithmetic(
+            type_traits, type1->imaginary.real_type, bitfield1,
+            type2->imaginary.real_type, bitfield2);
+    } else if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type1)) {
+        return kefir_ast_type_corresponding_imaginary_type(kefir_ast_type_common_arithmetic(
+            type_traits, type1->imaginary.real_type, bitfield1,
+            type2, bitfield2));
+    } else if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type2)) {
+        return kefir_ast_type_corresponding_imaginary_type(kefir_ast_type_common_arithmetic(
+            type_traits, type1, bitfield1,
+            type2->imaginary.real_type, bitfield2));
+    } else {
+        return kefir_ast_type_common_arithmetic(
+            type_traits, type1, bitfield1,
+            type2, bitfield2);
+    }
+}
+
 const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir_ast_type_traits *type_traits,
                                                               const struct kefir_ast_type *type1,
                                                               struct kefir_ast_bitfield_properties bitfield1,
@@ -114,9 +142,28 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
         REQUIRE(type2 != NULL, NULL);
     }
 
+    kefir_bool_t imaginary_type1 = false, imaginary_type2 = false, imaginary_type = false;
+    if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type1)) {
+        imaginary_type1 = true;
+        type1 = kefir_ast_type_corresponding_real_type(type1);
+        REQUIRE(type1 != NULL, NULL);
+    }
+    if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type2)) {
+        imaginary_type2 = true;
+        type2 = kefir_ast_type_corresponding_real_type(type2);
+        REQUIRE(type2 != NULL, NULL);
+    }
+    if (imaginary_type1 && imaginary_type2) {
+        imaginary_type = true;
+    } else if (imaginary_type1 || imaginary_type2) {
+        complex_type = true;
+    }
+
     if (ANY_OF(type1, type2, kefir_ast_type_interchange_float80())) {
         if (complex_type) {
             return kefir_ast_type_complex_interchange_float80();
+        } else if (imaginary_type) {
+            return kefir_ast_type_imaginary_long_double(); // KEFIR_NOT_IMPLEMENTED
         } else {
             return kefir_ast_type_interchange_float80();
         }
@@ -124,6 +171,8 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     if (ANY_OF(type1, type2, kefir_ast_type_long_double())) {
         if (complex_type) {
             return kefir_ast_type_complex_long_double();
+        } else if (imaginary_type) {
+            return kefir_ast_type_imaginary_long_double();
         } else {
             return kefir_ast_type_long_double();
         }
@@ -131,6 +180,8 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     if (ANY_OF(type1, type2, kefir_ast_type_extended_float64())) {
         if (complex_type) {
             return kefir_ast_type_complex_extended_float64();
+        } else if (imaginary_type) {
+            return kefir_ast_type_imaginary_long_double(); // KEFIR_NOT_IMPLEMENTED
         } else {
             return kefir_ast_type_extended_float64();
         }
@@ -138,6 +189,8 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     if (ANY_OF(type1, type2, kefir_ast_type_interchange_float64())) {
         if (complex_type) {
             return kefir_ast_type_complex_interchange_float64();
+        } else if (imaginary_type) {
+            return kefir_ast_type_imaginary_double(); // KEFIR_NOT_IMPLEMENTED
         } else {
             return kefir_ast_type_interchange_float64();
         }
@@ -145,6 +198,8 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     if (ANY_OF(type1, type2, kefir_ast_type_double())) {
         if (complex_type) {
             return kefir_ast_type_complex_double();
+        } else if (imaginary_type) {
+            return kefir_ast_type_imaginary_double();
         } else {
             return kefir_ast_type_double();
         }
@@ -152,6 +207,8 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     if (ANY_OF(type1, type2, kefir_ast_type_extended_float32())) {
         if (complex_type) {
             return kefir_ast_type_complex_extended_float32();
+        } else if (imaginary_type) {
+            return kefir_ast_type_imaginary_double(); // KEFIR_NOT_IMPLEMENTED
         } else {
             return kefir_ast_type_extended_float32();
         }
@@ -159,6 +216,8 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     if (ANY_OF(type1, type2, kefir_ast_type_interchange_float32())) {
         if (complex_type) {
             return kefir_ast_type_complex_interchange_float32();
+        } else if (imaginary_type) {
+            return kefir_ast_type_imaginary_float(); // KEFIR_NOT_IMPLEMENTED
         } else {
             return kefir_ast_type_interchange_float32();
         }
@@ -166,11 +225,14 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     if (ANY_OF(type1, type2, kefir_ast_type_float())) {
         if (complex_type) {
             return kefir_ast_type_complex_float();
+        } else if (imaginary_type) {
+            return kefir_ast_type_imaginary_float();
         } else {
             return kefir_ast_type_float();
         }
     }
     REQUIRE(!complex_type, NULL);
+    REQUIRE(!imaginary_type, NULL);
     type1 = kefir_ast_type_int_promotion(type_traits, type1, bitfield1);
     type2 = kefir_ast_type_int_promotion(type_traits, type2, bitfield2);
     REQUIRE(type1 != NULL, NULL);

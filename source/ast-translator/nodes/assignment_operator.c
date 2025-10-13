@@ -214,10 +214,17 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
     const struct kefir_ast_type *operation_type = NULL;
     if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(target_normalized_type) &&
         KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(value_normalized_type)) {
-        common_type = kefir_ast_type_common_arithmetic(context->ast_context->type_traits, target_normalized_type,
-                                                       node->target->properties.expression_props.bitfield_props,
-                                                       value_normalized_type,
-                                                       node->value->properties.expression_props.bitfield_props);
+        if (node->operation == KEFIR_AST_ASSIGNMENT_MULTIPLY || node->operation == KEFIR_AST_ASSIGNMENT_DIVIDE) {
+            common_type = kefir_ast_type_multiplicative_common_arithmetic(context->ast_context->type_traits, target_normalized_type,
+                                                        node->target->properties.expression_props.bitfield_props,
+                                                        value_normalized_type,
+                                                        node->value->properties.expression_props.bitfield_props);
+        } else {
+            common_type = kefir_ast_type_common_arithmetic(context->ast_context->type_traits, target_normalized_type,
+                                                        node->target->properties.expression_props.bitfield_props,
+                                                        value_normalized_type,
+                                                        node->value->properties.expression_props.bitfield_props);
+        }
         REQUIRE(common_type != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to determine common arithmetic type"));
         if (node->operation != KEFIR_AST_ASSIGNMENT_SHIFT_LEFT && node->operation != KEFIR_AST_ASSIGNMENT_SHIFT_RIGHT) {

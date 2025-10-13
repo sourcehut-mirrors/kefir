@@ -558,6 +558,10 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
             }
         } break;
 
+        case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT:
+            REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, type->imaginary.real_type, classification_ptr));
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_POINTER:
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
             REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, type_traits->uintptr_type, classification_ptr));

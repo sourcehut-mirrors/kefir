@@ -191,6 +191,10 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                     REQUIRE_OK(kefir_json_output_string(json, "complex"));
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_IMAGINARY:
+                    REQUIRE_OK(kefir_json_output_string(json, "imaginary"));
+                    break;
+
                 case KEFIR_AST_TYPE_SPECIFIER_ATOMIC:
                     REQUIRE_OK(kefir_json_output_string(json, "atomic"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "atomic"));

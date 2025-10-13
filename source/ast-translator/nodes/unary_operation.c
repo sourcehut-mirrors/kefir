@@ -72,6 +72,37 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
             }
         } break;
 
+        case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT: {
+            kefir_ast_type_data_model_classification_t classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalized_type, &classification));
+            switch (node->type) {
+                case KEFIR_AST_OPERATION_PLUS:
+                    break;
+
+                case KEFIR_AST_OPERATION_NEGATE:
+                    switch (classification) {
+                        case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_NEG, 0));
+                            break;
+
+                        case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_NEG, 0));
+                            break;
+
+                        case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_NEG, 0));
+                            break;
+
+                        default:
+                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected complex floating-point real type");
+                    }
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected unary operator");
+            }
+        } break;
+
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
         case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:

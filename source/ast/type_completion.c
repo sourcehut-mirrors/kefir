@@ -94,6 +94,7 @@ kefir_result_t kefir_ast_type_completion(struct kefir_mem *mem, const struct kef
         case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
         case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT:
+        case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT:
         case KEFIR_AST_TYPE_ENUMERATION:
         case KEFIR_AST_TYPE_FUNCTION:
             *dst = type;

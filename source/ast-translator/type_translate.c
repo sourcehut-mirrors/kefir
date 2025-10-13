@@ -111,6 +111,10 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
             typeentry->typecode = KEFIR_IR_TYPE_DECIMAL128;
             break;
 
+        case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT:
+            REQUIRE_OK(scalar_typeentry(context, type->imaginary.real_type, alignment, typeentry));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Not a scalar type");
     }
@@ -469,6 +473,7 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
         case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
         case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
+        case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
         case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
