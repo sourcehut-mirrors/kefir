@@ -76,6 +76,7 @@ _Imaginary float f32_arr[] = {
     (_Decimal64x) -18813.42d64x,
     (_Decimal128) -4829.41dl,
 #else
+    ,
     0.0if,
     0.0if,
     0.0if,
