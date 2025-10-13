@@ -582,7 +582,7 @@ Enable support for ranges in switch cases [default: on]
 Enable support for ranges in designator subscripts [default: on]
 .\"
 .It Ar imprecise-decimal-bitint-conv
-Enable imprecise conversions between bit-precise integers and decimal floating-point values
+Enable imprecise conversions between bit-precise integers and decimal floating-point values during constant evaluation
 if precise native routines are not available [default: off]
 .\"
 .It Ar max-parser-errors [num]
@@ -622,6 +622,9 @@ Omit frame pointer in leaf function that do not need it
 .\"
 .It Ar valgrind-compatible-x87
 Replace x87 opcodes not supported by Valgrind by more expensive alternatives [default: on]
+.\"
+.It Ar imprecise-decimal-bitint-conv
+Use imprecise conversions between bit-precise integers and decimal floating-point values in generated code [default: off]
 .\"
 .It Ar syntax=SYNTAX
 Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default), x86_64-yasm].

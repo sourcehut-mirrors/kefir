@@ -29,6 +29,7 @@ typedef struct kefir_optimizer_configuration {
     kefir_bool_t debug_info;
     kefir_size_t max_inline_depth;
     kefir_size_t max_inlines_per_function;
+    kefir_size_t imprecise_decimal_bitint_conv;
     const struct kefir_optimizer_target_lowering *target_lowering;
 } kefir_optimizer_configuration_t;
 

@@ -335,6 +335,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     CODEGEN("pic", codegen.position_independent_code),
     CODEGEN("omit-frame-pointer", codegen.omit_frame_pointer),
     CODEGEN("valgrind-compatible-x87", codegen.valgrind_compatible_x87),
+    CODEGEN("imprecise-decimal-bitint-conv", codegen.imprecise_decimal_bitint_conv),
     SIMPLE(0, "codegen-tentative-common", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_COMMON,
            codegen.tentative_definition_placement),
     SIMPLE(0, "codegen-tentative-no-common", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON,

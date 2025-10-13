@@ -18,13 +18,4 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_AMD64_LOWERING_H_
-#define KEFIR_CODEGEN_AMD64_LOWERING_H_
-
-#include "kefir/optimizer/module.h"
-#include "kefir/optimizer/configuration.h"
-
-kefir_result_t kefir_codegen_amd64_lower_function(struct kefir_mem *, struct kefir_opt_module *,
-                                                  struct kefir_opt_function *, const struct kefir_optimizer_configuration *);
-
-#endif
+#include "./lib.kefir.c"

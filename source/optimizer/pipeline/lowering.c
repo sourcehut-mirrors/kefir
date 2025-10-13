@@ -32,7 +32,7 @@ static kefir_result_t lowering_apply(struct kefir_mem *mem, struct kefir_opt_mod
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
     REQUIRE(config != NULL && config->target_lowering != NULL, KEFIR_OK);
 
-    REQUIRE_OK(config->target_lowering->lower(mem, module, func, config->target_lowering->payload));
+    REQUIRE_OK(config->target_lowering->lower(mem, module, func, config, config->target_lowering->payload));
     return KEFIR_OK;
 }
 

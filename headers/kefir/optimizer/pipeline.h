@@ -27,7 +27,7 @@
 typedef struct kefir_optimizer_configuration kefir_optimizer_configuration_t;  // Forward declaration
 
 typedef struct kefir_optimizer_target_lowering {
-    kefir_result_t (*lower)(struct kefir_mem *, struct kefir_opt_module *, struct kefir_opt_function *, void *);
+    kefir_result_t (*lower)(struct kefir_mem *, struct kefir_opt_module *, struct kefir_opt_function *, const struct kefir_optimizer_configuration *, void *);
     void *payload;
 } kefir_optimizer_target_lowering_t;
 
