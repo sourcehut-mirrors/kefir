@@ -224,3 +224,196 @@ _Imaginary float f32_ops[] = {
     -((_Imaginary float) 3.0if),
 +((_Imaginary float) -9.0if)
 };
+
+float f32_ops2[] = {
+    ((_Imaginary float) 3.0if) + ((_Imaginary float) 9.0if),
+    ((_Imaginary float) 3.0if) + ((float) 9.0f),
+    ((float) 3.0f) + ((_Imaginary float) 9.0if),
+    ((_Imaginary float) 3.0if) + ((_Complex float) 6.0f + 9.0if),
+    ((_Complex float) 6.0f + 9.0if) + ((_Imaginary float) -3.0if),
+    ((_Imaginary float) 3.1if) + (long) -5000,
+    ((_Imaginary float) 3.2if) + (unsigned long) 5000,
+    ((long) -5000) + ((_Imaginary float) 3.4if),
+    ((unsigned long) 5000) + ((_Imaginary float) 3.5if),
+
+    ((_Imaginary float) 3.0if) - ((_Imaginary float) 9.0if),
+    ((_Imaginary float) 3.0if) - ((float) 9.0f),
+    ((float) 3.0f) - ((_Imaginary float) 9.0if),
+    ((_Imaginary float) 3.0if) - ((_Complex float) 6.0f + 9.0if),
+    ((_Complex float) 6.0f + 9.0if) - ((_Imaginary float) -3.0if),
+    ((_Imaginary float) 3.1if) - (long) -5000,
+    ((_Imaginary float) 3.2if) - (unsigned long) 5000,
+    ((long) -5000) - ((_Imaginary float) 3.4if),
+    ((unsigned long) 5000) - ((_Imaginary float) 3.5if),
+
+    ((_Imaginary float) 3.0if) * ((_Imaginary float) 9.0if),
+    ((_Imaginary float) 3.0if) * ((float) 9.0f),
+    ((float) 3.0f) * ((_Imaginary float) 9.0if),
+    ((_Imaginary float) 3.0if) * ((_Complex float) 6.0f + 9.0if),
+    ((_Complex float) 6.0f + 9.0if) * ((_Imaginary float) -3.0if),
+    ((_Imaginary float) 3.1if) * (long) -5000,
+    ((_Imaginary float) 3.2if) * (unsigned long) 5000,
+    ((long) -5000) * ((_Imaginary float) 3.4if),
+    ((unsigned long) 5000) * ((_Imaginary float) 3.5if),
+
+    ((_Imaginary float) 3.0if) / ((_Imaginary float) 9.0if),
+    ((_Imaginary float) 3.0if) / ((float) 9.0f),
+    ((float) 3.0f) / ((_Imaginary float) 9.0if),
+    ((_Imaginary float) 3.0if) / ((_Complex float) 6.0f + 9.0if),
+    ((_Complex float) 6.0f + 9.0if) / ((_Imaginary float) -3.0if),
+    ((_Imaginary float) 3.1if) / (long) -5000,
+    ((_Imaginary float) 3.2if) / (unsigned long) 5000,
+    ((long) -5000) / ((_Imaginary float) 3.4if),
+    ((unsigned long) 5000) / ((_Imaginary float) 3.5if),
+
+    -((_Imaginary float) 3.0if),
+    +((_Imaginary float) -9.0if)
+};
+
+float fi32_to_f32(_Imaginary float x) {
+    return x;
+}
+
+double fi32_to_f64(_Imaginary float x) {
+    return x;
+}
+
+long double fi32_to_f80(_Imaginary float x) {
+    return x;
+}
+
+_Imaginary float fi32_to_fi32(_Imaginary float x) {
+    return x;
+}
+
+_Imaginary double fi32_to_fi64(_Imaginary float x) {
+    return x;
+}
+
+_Imaginary long double fi32_to_fi80(_Imaginary float x) {
+    return x;
+}
+
+_Imaginary float f32_to_fi32(float x) {
+    return x;
+}
+
+_Imaginary double f32_to_fi64(float x) {
+    return x;
+}
+
+_Imaginary long double f32_to_fi80(float x) {
+    return x;
+}
+
+_Complex float fi32_to_cf32(_Imaginary float x) {
+    return x;
+}
+
+_Complex double fi32_to_cf64(_Imaginary float x) {
+    return x;
+}
+
+_Complex long double fi32_to_cf80(_Imaginary float x) {
+    return x;
+}
+
+long fi32_to_i64(_Imaginary float x) {
+    return x;
+}
+
+unsigned long fi32_to_u64(_Imaginary float x) {
+    return x;
+}
+
+_Imaginary float i64_to_fi32(long x) {
+    return x;
+}
+
+_Imaginary float u64_to_fi32(unsigned long x) {
+    return x;
+}
+
+_Imaginary float fi32_neg(_Imaginary float x) {
+    return -x;
+}
+
+_Imaginary float fi32_add(_Imaginary float x, _Imaginary float y) {
+    return x + y;
+}
+
+_Imaginary float fi32_sub(_Imaginary float x, _Imaginary float y) {
+    return x - y;
+}
+
+float fi32_mul(_Imaginary float x, _Imaginary float y) {
+    return x * y;
+}
+
+float fi32_div(_Imaginary float x, _Imaginary float y) {
+    return x / y;
+}
+
+_Complex float fi32_f32_add(_Imaginary float x, float y) {
+    return x + y;
+}
+
+_Complex float fi32_f32_sub(_Imaginary float x, float y) {
+    return x - y;
+}
+
+_Imaginary float fi32_f32_mul(_Imaginary float x, float y) {
+    return x * y;
+}
+
+_Imaginary float fi32_f32_div(_Imaginary float x, float y) {
+    return x / y;
+}
+
+_Complex float f32_fi32_add(float x, _Imaginary float y) {
+    return x + y;
+}
+
+_Complex float f32_fi32_sub(float x, _Imaginary float y) {
+    return x - y;
+}
+
+_Imaginary float f32_fi32_mul(float x, _Imaginary float y) {
+    return x * y;
+}
+
+_Imaginary float f32_fi32_div(float x, _Imaginary float y) {
+    return x / y;
+}
+
+_Complex float cf32_fi32_add(_Complex float x, _Imaginary float y) {
+    return x + y;
+}
+
+_Complex float cf32_fi32_sub(_Complex float x, _Imaginary float y) {
+    return x - y;
+}
+
+_Complex float cf32_fi32_mul(_Complex float x, _Imaginary float y) {
+    return x * y;
+}
+
+_Complex float cf32_fi32_div(_Complex float x, _Imaginary float y) {
+    return x / y;
+}
+
+_Complex float fi32_cf32_add(_Imaginary float x, _Complex float y) {
+    return x + y;
+}
+
+_Complex float fi32_cf32_sub(_Imaginary float x, _Complex float y) {
+    return x - y;
+}
+
+_Complex float fi32_cf32_mul(_Imaginary float x, _Complex float y) {
+    return x * y;
+}
+
+_Complex float fi32_cf32_div(_Imaginary float x, _Complex float y) {
+    return x / y;
+}

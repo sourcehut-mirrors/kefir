@@ -25,26 +25,6 @@
 #include <complex.h>
 #include "./definitions.h"
 
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__)
-#pragma GCC diagnostic ignored "-Wpedantic"
-#define ENABLE_DECIMAL_TEST
-_Bool decimal32_eq(_Decimal32 a, _Decimal32 b) {
-    _Decimal32 diff = (a - b) * 10000;
-    return diff < 1 && diff > -1;
-}
-
-_Bool decimal64_eq(_Decimal64 a, _Decimal64 b) {
-    _Decimal64 diff = (a - b) * 100000;
-    return diff < 1 && diff > -1;
-}
-
-_Bool decimal128_eq(_Decimal128 a, _Decimal128 b) {
-    _Decimal128 diff = (a - b) * 1000000;
-    return diff < 1 && diff > -1;
-}
-
-#endif
-
 int main(void) {
     assert(f32_size == sizeof(float));
     assert(f32_alignment == _Alignof(float));
@@ -238,5 +218,305 @@ int main(void) {
 
     assert(fabs(f32_ops[i++] + 3.0) < 1e-6);
     assert(fabs(f32_ops[i++] + 9.0) < 1e-6);
+
+    i = 0;
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 9.0) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 3.0) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 6.0) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 6.0) < 1e-6);
+    assert(fabs(f32_ops2[i++] + 5000) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 5000) < 1e-6);
+    assert(fabs(f32_ops2[i++] + 5000) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 5000) < 1e-6);
+
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    assert(fabs(f32_ops2[i++] + 9.0) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 3.0) < 1e-6);
+    assert(fabs(f32_ops2[i++] + 6.0) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 6.0) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 5000) < 1e-6);
+    assert(fabs(f32_ops2[i++] + 5000) < 1e-6);
+    assert(fabs(f32_ops2[i++] + 5000) < 1e-6);
+    assert(fabs(f32_ops2[i++] - 5000) < 1e-6);
+
+    assert(fabs(f32_ops2[i++] + 27.0) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    exp = (6.0f + 9.0f * I) * (3.0f * I);
+    assert(fabs(f32_ops2[i++] - creal(exp)) < 1e-6);
+    exp = (6.0f + 9.0f * I) * (-3.0f * I);
+    assert(fabs(f32_ops2[i++] - creal(exp)) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+
+    assert(fabs(f32_ops2[i++] - 1.0 / 3) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    exp = (3.0f) / (9.0f * I);
+    assert(fabs(f32_ops2[i++] - creal(exp)) < 1e-6);
+    exp = (3.0f * I) / (6.0f + 9.0f * I);
+    assert(fabs(f32_ops2[i++] - creal(exp)) < 1e-6);
+    exp = (6.0f + 9.0f * I) / (-3.0f * I);
+    assert(fabs(f32_ops2[i++] - creal(exp)) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    exp = (-5000) / (3.4f * I);
+    assert(fabs(f32_ops2[i++] - creal(exp)) < 1e-3);
+    exp = (5000u) / (3.5f * I);
+    assert(fabs(f32_ops2[i++] - creal(exp)) < 1e-3);
+
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+    assert(fabs(f32_ops2[i++]) < 1e-6);
+
+    assert(fabs(fi32_to_f32(4.14159)) < 1e-6);
+    assert(fabs(fi32_to_f64(5.14159)) < 1e-6);
+    assert(fabsl(fi32_to_f80(6.14159)) < 1e-6);
+
+    assert(fabs(fi32_to_fi32(3.14159) - 3.14159) < 1e-6);
+    assert(fabs(fi32_to_fi64(-3.14159) + 3.14159) < 1e-6);
+    assert(fabsl(fi32_to_fi80(-3.64159) + 3.64159) < 1e-6);
+
+    assert(fabs(f32_to_fi32(3.14159)) < 1e-6);
+    assert(fabs(f32_to_fi64(3.14859)) < 1e-6);
+    assert(fabsl(f32_to_fi80(3.54159)) < 1e-6);
+
+    _Complex float res = fi32_to_cf32(7.632);
+    assert(fabs(creal(res)) < 1e-6);
+    assert(fabs(cimag(res) - 7.632) < 1e-6);
+    _Complex double res64 = fi32_to_cf64(8.632);
+    assert(fabs(creal(res64)) < 1e-6);
+    assert(fabs(cimag(res64) - 8.632) < 1e-6);
+    _Complex long double res80 = fi32_to_cf80(9.632);
+    assert(fabsl(creall(res80)) < 1e-6);
+    assert(fabsl(cimagl(res80) - 9.632) < 1e-6);
+
+    assert(fi32_to_i64(-901.42) == 0);
+    assert(fi32_to_u64(901.42) == 0);
+    assert(fabs(i64_to_fi32(-94242)) < 1e-6);
+    assert(fabs(u64_to_fi32(94722)) < 1e-6);
+
+    assert(fabs(fi32_neg(2.71828) + 2.71828) < 1e-6);
+    assert(fabs(fi32_neg(-2.71828) - 2.71828) < 1e-6);
+    assert(fabs(fi32_add(-2.71828, 10.9918) - (-2.71828 + 10.9918)) < 1e-6);
+    assert(fabs(fi32_add(2.71828, -10.9918) - (2.71828 - 10.9918)) < 1e-6);
+    assert(fabs(fi32_sub(-2.71828, 10.9918) - (-2.71828 - 10.9918)) < 1e-6);
+    assert(fabs(fi32_sub(2.71828, -10.9918) - (2.71828 + 10.9918)) < 1e-6);
+    assert(fabs(fi32_mul(-2.71828, 10.9918) + (-2.71828 * 10.9918)) < 1e-4);
+    assert(fabs(fi32_mul(-2.71828, -10.9918) + (-2.71828 * -10.9918)) < 1e-4);
+    assert(fabs(fi32_mul(2.71828, -10.9918) + (2.71828 * -10.9918)) < 1e-4);
+    assert(fabs(fi32_mul(2.71828, 10.9918) + (2.71828 * 10.9918)) < 1e-4);
+    assert(fabs(fi32_div(-2.71828, 10.9918) - (-2.71828 / 10.9918)) < 1e-4);
+    assert(fabs(fi32_div(-2.71828, -10.9918) - (-2.71828 / -10.9918)) < 1e-4);
+    assert(fabs(fi32_div(2.71828, -10.9918) - (2.71828 / -10.9918)) < 1e-4);
+    assert(fabs(fi32_div(2.71828, 10.9918) - (2.71828 / 10.9918)) < 1e-4);
+
+    res = fi32_f32_add(3.14159, -2.7182);
+    assert(fabs(creal(res) + 2.7182) < 1e-6);
+    assert(fabs(cimag(res) - 3.14159) < 1e-6);
+    res = fi32_f32_add(3.14159, 2.7182);
+    assert(fabs(creal(res) - 2.7182) < 1e-6);
+    assert(fabs(cimag(res) - 3.14159) < 1e-6);
+    res = fi32_f32_add(-3.14159, -2.7182);
+    assert(fabs(creal(res) + 2.7182) < 1e-6);
+    assert(fabs(cimag(res) + 3.14159) < 1e-6);
+    res = fi32_f32_add(-3.14159, 2.7182);
+    assert(fabs(creal(res) - 2.7182) < 1e-6);
+    assert(fabs(cimag(res) + 3.14159) < 1e-6);
+    res = fi32_f32_sub(-3.14159, -2.7182);
+    assert(fabs(creal(res) - 2.7182) < 1e-6);
+    assert(fabs(cimag(res) + 3.14159) < 1e-6);
+    res = fi32_f32_sub(-3.14159, 2.7182);
+    assert(fabs(creal(res) + 2.7182) < 1e-6);
+    assert(fabs(cimag(res) + 3.14159) < 1e-6);
+    res = fi32_f32_sub(3.14159, 2.7182);
+    assert(fabs(creal(res) + 2.7182) < 1e-6);
+    assert(fabs(cimag(res) - 3.14159) < 1e-6);
+    assert(fabs(fi32_f32_mul(-3.14159, -2.7182) - (-3.14159 * -2.7182)) < 1e-6);
+    assert(fabs(fi32_f32_mul(3.14159, -2.7182) - (3.14159 * -2.7182)) < 1e-6);
+    assert(fabs(fi32_f32_mul(3.14159, 2.7182) - (3.14159 * 2.7182)) < 1e-6);
+    assert(fabs(fi32_f32_mul(-3.14159, 2.7182) - (-3.14159 * 2.7182)) < 1e-6);
+    assert(fabs(fi32_f32_div(3.14159, 2.7182) - (3.14159 / 2.7182)) < 1e-6);
+    assert(fabs(fi32_f32_div(3.14159, -2.7182) - (3.14159 / -2.7182)) < 1e-6);
+    assert(fabs(fi32_f32_div(-3.14159, -2.7182) - (-3.14159 / -2.7182)) < 1e-6);
+    assert(fabs(fi32_f32_div(-3.14159, 2.7182) - (-3.14159 / 2.7182)) < 1e-6);
+
+    res = f32_fi32_add(3.14159, -2.7182);
+    assert(fabs(creal(res) - 3.14159) < 1e-6);
+    assert(fabs(cimag(res) + 2.7182) < 1e-6);
+    res = f32_fi32_add(3.14159, 2.7182);
+    assert(fabs(creal(res) - 3.14159) < 1e-6);
+    assert(fabs(cimag(res) - 2.7182) < 1e-6);
+    res = f32_fi32_add(-3.14159, 2.7182);
+    assert(fabs(creal(res) + 3.14159) < 1e-6);
+    assert(fabs(cimag(res) - 2.7182) < 1e-6);
+    res = f32_fi32_add(-3.14159, -2.7182);
+    assert(fabs(creal(res) + 3.14159) < 1e-6);
+    assert(fabs(cimag(res) + 2.7182) < 1e-6);
+    res = f32_fi32_sub(3.14159, -2.7182);
+    assert(fabs(creal(res) - 3.14159) < 1e-6);
+    assert(fabs(cimag(res) - 2.7182) < 1e-6);
+    res = f32_fi32_sub(3.14159, 2.7182);
+    assert(fabs(creal(res) - 3.14159) < 1e-6);
+    assert(fabs(cimag(res) + 2.7182) < 1e-6);
+    res = f32_fi32_sub(-3.14159, 2.7182);
+    assert(fabs(creal(res) + 3.14159) < 1e-6);
+    assert(fabs(cimag(res) + 2.7182) < 1e-6);
+    res = f32_fi32_sub(-3.14159, -2.7182);
+    assert(fabs(creal(res) + 3.14159) < 1e-6);
+    assert(fabs(cimag(res) - 2.7182) < 1e-6);
+    assert(fabs(f32_fi32_mul(-3.14159, -2.7182) - (-3.14159 * -2.7182)) < 1e-6);
+    assert(fabs(f32_fi32_mul(-3.14159, 2.7182) - (-3.14159 * 2.7182)) < 1e-6);
+    assert(fabs(f32_fi32_mul(3.14159, 2.7182) - (3.14159 * 2.7182)) < 1e-6);
+    assert(fabs(f32_fi32_mul(3.14159, -2.7182) - (3.14159 * -2.7182)) < 1e-6);
+    assert(fabs(f32_fi32_div(3.14159, 2.7182) - (-3.14159 / 2.7182)) < 1e-6);
+    assert(fabs(f32_fi32_div(3.14159, -2.7182) - (-3.14159 / -2.7182)) < 1e-6);
+    assert(fabs(f32_fi32_div(-3.14159, -2.7182) - (3.14159 / -2.7182)) < 1e-6);
+    assert(fabs(f32_fi32_div(-3.14159, 2.7182) - (3.14159 / 2.7182)) < 1e-6);
+
+    exp = (3.14159 + 2.8847 * I) + (1.4 * I);
+    res = cf32_fi32_add(3.14159 + 2.8847 * I, 1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (3.14159 - 2.8847 * I) + (1.4 * I);
+    res = cf32_fi32_add(3.14159 - 2.8847 * I, 1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (3.14159 + 2.8847 * I) + (-1.4 * I);
+    res = cf32_fi32_add(3.14159 + 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-3.14159 - 2.8847 * I) + (-1.4 * I);
+    res = cf32_fi32_add(-3.14159 - 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+
+    exp = (3.14159 + 2.8847 * I) - (1.4 * I);
+    res = cf32_fi32_sub(3.14159 + 2.8847 * I, 1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (3.14159 - 2.8847 * I) - (1.4 * I);
+    res = cf32_fi32_sub(3.14159 - 2.8847 * I, 1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (3.14159 + 2.8847 * I) - (-1.4 * I);
+    res = cf32_fi32_sub(3.14159 + 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-3.14159 - 2.8847 * I) - (-1.4 * I);
+    res = cf32_fi32_sub(-3.14159 - 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+
+    exp = (3.14159 + 2.8847 * I) * (1.4 * I);
+    res = cf32_fi32_mul(3.14159 + 2.8847 * I, 1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (3.14159 + 2.8847 * I) * (-1.4 * I);
+    res = cf32_fi32_mul(3.14159 + 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (3.14159 - 2.8847 * I) * (1.4 * I);
+    res = cf32_fi32_mul(3.14159 - 2.8847 * I, 1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-3.14159 + 2.8847 * I) * (-1.4 * I);
+    res = cf32_fi32_mul(-3.14159 + 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-3.14159 - 2.8847 * I) * (-1.4 * I);
+    res = cf32_fi32_mul(-3.14159 - 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+
+    exp = (3.14159 + 2.8847 * I) / (1.4 * I);
+    res = cf32_fi32_div(3.14159 + 2.8847 * I, 1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (3.14159 + 2.8847 * I) / (-1.4 * I);
+    res = cf32_fi32_div(3.14159 + 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (3.14159 - 2.8847 * I) / (1.4 * I);
+    res = cf32_fi32_div(3.14159 - 2.8847 * I, 1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-3.14159 + 2.8847 * I) / (-1.4 * I);
+    res = cf32_fi32_div(-3.14159 + 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-3.14159 - 2.8847 * I) / (-1.4 * I);
+    res = cf32_fi32_div(-3.14159 - 2.8847 * I, -1.4);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+
+    exp = (1.4 * I) + (3.14159 + 2.8847 * I);
+    res = fi32_cf32_add(1.4, 3.14159 + 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (1.4 * I) + (3.14159 - 2.8847 * I);
+    res = fi32_cf32_add(1.4, 3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-1.4 * I) + (3.14159 - 2.8847 * I);
+    res = fi32_cf32_add(-1.4, 3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-1.4 * I) + (-3.14159 - 2.8847 * I);
+    res = fi32_cf32_add(-1.4, -3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+
+    exp = (1.4 * I) - (3.14159 + 2.8847 * I);
+    res = fi32_cf32_sub(1.4, 3.14159 + 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (1.4 * I) - (3.14159 - 2.8847 * I);
+    res = fi32_cf32_sub(1.4, 3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-1.4 * I) - (3.14159 - 2.8847 * I);
+    res = fi32_cf32_sub(-1.4, 3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-1.4 * I) - (-3.14159 - 2.8847 * I);
+    res = fi32_cf32_sub(-1.4, -3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+
+    exp = (1.4 * I) * (3.14159 + 2.8847 * I);
+    res = fi32_cf32_mul(1.4, 3.14159 + 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (1.4 * I) * (3.14159 - 2.8847 * I);
+    res = fi32_cf32_mul(1.4, 3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-1.4 * I) * (3.14159 - 2.8847 * I);
+    res = fi32_cf32_mul(-1.4, 3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-1.4 * I) * (-3.14159 - 2.8847 * I);
+    res = fi32_cf32_mul(-1.4, -3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+
+    exp = (1.4 * I) / (3.14159 + 2.8847 * I);
+    res = fi32_cf32_div(1.4, 3.14159 + 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (1.4 * I) / (3.14159 - 2.8847 * I);
+    res = fi32_cf32_div(1.4, 3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-1.4 * I) / (3.14159 - 2.8847 * I);
+    res = fi32_cf32_div(-1.4, 3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+    exp = (-1.4 * I) / (-3.14159 - 2.8847 * I);
+    res = fi32_cf32_div(-1.4, -3.14159 - 2.8847 * I);
+    assert(fabs(creal(res) - creal(exp)) < 1e-6);
+    assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
     return EXIT_SUCCESS;
 }

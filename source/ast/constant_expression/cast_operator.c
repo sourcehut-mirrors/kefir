@@ -418,7 +418,11 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
             } break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
-                value->decimal = kefir_dfp_decimal128_from_long_double(source->floating_point);
+                if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
+                    value->decimal = kefir_dfp_decimal128_from_long_double(0.0L);
+                } else {
+                    value->decimal = kefir_dfp_decimal128_from_long_double(source->floating_point);
+                }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
