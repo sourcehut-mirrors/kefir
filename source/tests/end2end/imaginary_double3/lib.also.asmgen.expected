@@ -1,0 +1,94 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+
+.section .text
+__kefir_text_section_begin:
+test:
+__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $240, %rsp
+    stmxcsr -8(%rbp)
+    test %al, %al
+    je __kefir_func_test_label7
+    movdqu %xmm0, -192(%rbp)
+    movdqu %xmm1, -176(%rbp)
+    movdqu %xmm2, -160(%rbp)
+    movdqu %xmm3, -144(%rbp)
+    movdqu %xmm4, -128(%rbp)
+    movdqu %xmm5, -112(%rbp)
+    movdqu %xmm6, -96(%rbp)
+    movdqu %xmm7, -80(%rbp)
+__kefir_func_test_label7:
+    mov %rdi, -240(%rbp)
+    mov %rsi, -232(%rbp)
+    mov %rdx, -224(%rbp)
+    mov %rcx, -216(%rbp)
+    mov %r8, -208(%rbp)
+    mov %r9, -200(%rbp)
+    movl $8, -64(%rbp)
+    movl $48, -60(%rbp)
+    lea 16(%rbp), %rax
+    movq %rax, -56(%rbp)
+    lea -240(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq __kefir_func_test_label4(%rip), %xmm0
+    mov %rdi, %rax
+    movaps %xmm0, %xmm2
+__kefir_func_test_label1:
+    mov %rax, %rdi
+    add $-1, %edi
+    test %eax, %eax
+    jnz __kefir_func_test_label3
+    movaps %xmm2, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_test_label3:
+    movl -64(%rbp), %eax
+    cmp $48, %rax
+    ja __kefir_func_test_label5
+    movl -60(%rbp), %eax
+    add $32, %rax
+    cmp $176, %rax
+    ja __kefir_func_test_label5
+    leaq -40(%rbp), %rcx
+    movq -48(%rbp), %rax
+    movl -60(%rbp), %edx
+    add %rdx, %rax
+    movq (%rax), %rdx
+    movq %rdx, (%rcx)
+    movq 16(%rax), %rdx
+    movq %rdx, 8(%rcx)
+    addl $32, -60(%rbp)
+    jmp __kefir_func_test_label6
+__kefir_func_test_label5:
+    movq -56(%rbp), %rcx
+    lea 16(%rcx), %rax
+    movq %rax, -56(%rbp)
+__kefir_func_test_label6:
+    movdqu (%rcx), %xmm1
+    movdqu %xmm1, -24(%rbp)
+    movq -24(%rbp), %rax
+    movq -16(%rbp), %rcx
+    movq %rax, %xmm1
+    movq %rcx, %xmm0
+    subsd %xmm0, %xmm1
+    movaps %xmm2, %xmm0
+    addsd %xmm1, %xmm0
+    mov %rdi, %rax
+    movaps %xmm0, %xmm2
+    jmp __kefir_func_test_label1
+__kefir_text_func_test_end:
+.section .rodata
+    .align 8
+__kefir_func_test_label4:
+    .quad 0
+.section .text
+
+__kefir_text_section_end:
+
