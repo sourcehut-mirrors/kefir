@@ -345,12 +345,12 @@ __kefir_text_func_fi64_f64_add_begin:
     stmxcsr -8(%rbp)
     movq __kefir_func_fi64_f64_add_label1(%rip), %xmm2
     addsd %xmm1, %xmm2
-    cvtsd2ss %xmm2, %xmm1
-    movq __kefir_func_fi64_f64_add_label2(%rip), %xmm2
-    addsd %xmm2, %xmm0
-    cvtsd2ss %xmm0, %xmm2
+    movq __kefir_func_fi64_f64_add_label2(%rip), %xmm1
+    addsd %xmm1, %xmm0
+    movaps %xmm2, %xmm1
+    movaps %xmm0, %xmm2
     movaps %xmm1, %xmm0
-    insertps $16, %xmm2, %xmm0
+    movaps %xmm2, %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -399,12 +399,12 @@ __kefir_text_func_fi64_f64_sub_begin:
     stmxcsr -8(%rbp)
     movq __kefir_func_fi64_f64_sub_label1(%rip), %xmm2
     subsd %xmm1, %xmm2
-    cvtsd2ss %xmm2, %xmm1
-    movq __kefir_func_fi64_f64_sub_label2(%rip), %xmm2
-    subsd %xmm2, %xmm0
-    cvtsd2ss %xmm0, %xmm2
+    movq __kefir_func_fi64_f64_sub_label2(%rip), %xmm1
+    subsd %xmm1, %xmm0
+    movaps %xmm2, %xmm1
+    movaps %xmm0, %xmm2
     movaps %xmm1, %xmm0
-    insertps $16, %xmm2, %xmm0
+    movaps %xmm2, %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -526,10 +526,7 @@ __kefir_text_func_cf64_fi64_add_begin:
     stmxcsr -8(%rbp)
     movq __kefir_func_cf64_fi64_add_label1(%rip), %xmm3
     addsd %xmm3, %xmm0
-    cvtsd2ss %xmm0, %xmm0
     addsd %xmm2, %xmm1
-    cvtsd2ss %xmm1, %xmm1
-    insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -550,9 +547,6 @@ __kefir_text_func_cf64_fi64_div_begin:
     movaps %xmm2, %xmm3
     movq __kefir_func_cf64_fi64_div_label1(%rip), %xmm2
     call __kefir_softfloat_complex_double_div
-    cvtsd2ss %xmm0, %xmm0
-    cvtsd2ss %xmm1, %xmm1
-    insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -573,9 +567,6 @@ __kefir_text_func_cf64_fi64_mul_begin:
     movaps %xmm2, %xmm3
     movq __kefir_func_cf64_fi64_mul_label1(%rip), %xmm2
     call __kefir_softfloat_complex_double_mul
-    cvtsd2ss %xmm0, %xmm0
-    cvtsd2ss %xmm1, %xmm1
-    insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -595,10 +586,7 @@ __kefir_text_func_cf64_fi64_sub_begin:
     stmxcsr -8(%rbp)
     movq __kefir_func_cf64_fi64_sub_label1(%rip), %xmm3
     subsd %xmm3, %xmm0
-    cvtsd2ss %xmm0, %xmm0
     subsd %xmm2, %xmm1
-    cvtsd2ss %xmm1, %xmm1
-    insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -618,11 +606,11 @@ __kefir_text_func_fi64_cf64_add_begin:
     stmxcsr -8(%rbp)
     movq __kefir_func_fi64_cf64_add_label1(%rip), %xmm3
     addsd %xmm1, %xmm3
-    cvtsd2ss %xmm3, %xmm1
     addsd %xmm2, %xmm0
-    cvtsd2ss %xmm0, %xmm2
+    movaps %xmm3, %xmm1
+    movaps %xmm0, %xmm2
     movaps %xmm1, %xmm0
-    insertps $16, %xmm2, %xmm0
+    movaps %xmm2, %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -648,9 +636,6 @@ __kefir_text_func_fi64_cf64_div_begin:
     movaps %xmm4, %xmm2
     movaps %xmm5, %xmm3
     call __kefir_softfloat_complex_double_div
-    cvtsd2ss %xmm0, %xmm0
-    cvtsd2ss %xmm1, %xmm1
-    insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -676,9 +661,6 @@ __kefir_text_func_fi64_cf64_mul_begin:
     movaps %xmm4, %xmm2
     movaps %xmm5, %xmm3
     call __kefir_softfloat_complex_double_mul
-    cvtsd2ss %xmm0, %xmm0
-    cvtsd2ss %xmm1, %xmm1
-    insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -698,11 +680,11 @@ __kefir_text_func_fi64_cf64_sub_begin:
     stmxcsr -8(%rbp)
     movq __kefir_func_fi64_cf64_sub_label1(%rip), %xmm3
     subsd %xmm1, %xmm3
-    cvtsd2ss %xmm3, %xmm1
     subsd %xmm2, %xmm0
-    cvtsd2ss %xmm0, %xmm2
+    movaps %xmm3, %xmm1
+    movaps %xmm0, %xmm2
     movaps %xmm1, %xmm0
-    insertps $16, %xmm2, %xmm0
+    movaps %xmm2, %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

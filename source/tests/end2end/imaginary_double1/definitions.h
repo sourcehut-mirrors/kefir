@@ -52,8 +52,8 @@ double fi64_sub(double, double);
 double fi64_mul(double, double);
 double fi64_div(double, double);
 
-_Complex float fi64_f64_add(double, double);
-_Complex float fi64_f64_sub(double, double);
+_Complex double fi64_f64_add(double, double);
+_Complex double fi64_f64_sub(double, double);
 double fi64_f64_mul(double, double);
 double fi64_f64_div(double, double);
 
@@ -62,14 +62,14 @@ _Complex double f64_fi64_sub(double, double);
 double f64_fi64_mul(double, double);
 double f64_fi64_div(double, double);
 
-_Complex float cf64_fi64_add(_Complex double, double);
-_Complex float cf64_fi64_sub(_Complex double, double);
-_Complex float cf64_fi64_mul(_Complex double, double);
-_Complex float cf64_fi64_div(_Complex double, double);
+_Complex double cf64_fi64_add(_Complex double, double);
+_Complex double cf64_fi64_sub(_Complex double, double);
+_Complex double cf64_fi64_mul(_Complex double, double);
+_Complex double cf64_fi64_div(_Complex double, double);
 
-_Complex float fi64_cf64_add(double, _Complex double);
-_Complex float fi64_cf64_sub(double, _Complex double);
-_Complex float fi64_cf64_mul(double, _Complex double);
-_Complex float fi64_cf64_div(double, _Complex double);
+_Complex double fi64_cf64_add(double, _Complex double);
+_Complex double fi64_cf64_sub(double, _Complex double);
+_Complex double fi64_cf64_mul(double, _Complex double);
+_Complex double fi64_cf64_div(double, _Complex double);
 
 #endif

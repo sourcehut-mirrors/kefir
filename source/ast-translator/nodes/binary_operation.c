@@ -46,11 +46,6 @@ static kefir_result_t binary_prologue(struct kefir_mem *mem, struct kefir_ast_tr
     const struct kefir_ast_type *result_normalized_type =
         kefir_ast_translator_normalize_type(node->base.properties.type);
 
-    REQUIRE(!KEFIR_AST_TYPE_IS_LONG_DOUBLE(result_normalized_type) ||
-                (KEFIR_AST_TYPE_IS_LONG_DOUBLE(arg1_normalized_type) ||
-                 KEFIR_AST_TYPE_IS_LONG_DOUBLE(arg2_init_normalized_type)),
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected conversion to long double"));
-
     const kefir_bool_t multiplicative_op = node->type == KEFIR_AST_OPERATION_MULTIPLY || node->type == KEFIR_AST_OPERATION_DIVIDE;
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
     if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
