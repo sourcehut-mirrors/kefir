@@ -81,6 +81,11 @@ COMPLEX_TYPE(extended_float64);
 IMAGINARY_TYPE(float);
 IMAGINARY_TYPE(double);
 IMAGINARY_TYPE(long_double);
+IMAGINARY_TYPE(interchange_float32);
+IMAGINARY_TYPE(interchange_float64);
+IMAGINARY_TYPE(interchange_float80);
+IMAGINARY_TYPE(extended_float32);
+IMAGINARY_TYPE(extended_float64);
 #undef IMAGINARY_TYPE
 
 const struct kefir_ast_type *kefir_ast_type_signed_bitprecise(struct kefir_mem *, struct kefir_ast_type_bundle *,

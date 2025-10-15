@@ -927,12 +927,14 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                                            "Cannot combine type specifiers with referenced type definition"));
             if (*real_class == REAL_SCALAR) {
                 *base_type = kefir_ast_type_interchange_float32();
+            } else if (*real_class == REAL_COMPLEX) {
+                *base_type = kefir_ast_type_complex_interchange_float32();
             } else {
-                REQUIRE(*real_class == REAL_COMPLEX,
+                REQUIRE(*real_class == REAL_IMAGINARY,
                         KEFIR_SET_SOURCE_ERROR(
                             KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                            "Long and complex type specifiers cannot be combined with float type specifier"));
-                *base_type = kefir_ast_type_complex_interchange_float32();
+                            "Long and complex/imaginary type specifiers cannot be combined with float type specifier"));
+                *base_type = kefir_ast_type_imaginary_interchange_float32();
             }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -945,12 +947,14 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                                            "Cannot combine type specifiers with referenced type definition"));
             if (*real_class == REAL_SCALAR) {
                 *base_type = kefir_ast_type_interchange_float64();
+            } else if (*real_class == REAL_COMPLEX) {
+                *base_type = kefir_ast_type_complex_interchange_float64();
             } else {
-                REQUIRE(*real_class == REAL_COMPLEX,
+                REQUIRE(*real_class == REAL_IMAGINARY,
                         KEFIR_SET_SOURCE_ERROR(
                             KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                            "Long and complex type specifiers cannot be combined with float type specifier"));
-                *base_type = kefir_ast_type_complex_interchange_float64();
+                            "Long and complex type specifiers cannot be combined with float64 type specifier"));
+                *base_type = kefir_ast_type_imaginary_interchange_float64();
             }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -963,12 +967,14 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                                            "Cannot combine type specifiers with referenced type definition"));
             if (*real_class == REAL_SCALAR) {
                 *base_type = kefir_ast_type_interchange_float80();
+            } else if (*real_class == REAL_COMPLEX) {
+                *base_type = kefir_ast_type_complex_interchange_float80();
             } else {
-                REQUIRE(*real_class == REAL_COMPLEX,
+                REQUIRE(*real_class == REAL_IMAGINARY,
                         KEFIR_SET_SOURCE_ERROR(
                             KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                            "Long and complex type specifiers cannot be combined with float type specifier"));
-                *base_type = kefir_ast_type_complex_interchange_float80();
+                            "Long and complex type specifiers cannot be combined with float80 type specifier"));
+                *base_type = kefir_ast_type_imaginary_interchange_float80();
             }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -981,12 +987,14 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                                            "Cannot combine type specifiers with referenced type definition"));
             if (*real_class == REAL_SCALAR) {
                 *base_type = kefir_ast_type_extended_float32();
+            } else if (*real_class == REAL_COMPLEX) {
+                *base_type = kefir_ast_type_complex_extended_float32();
             } else {
-                REQUIRE(*real_class == REAL_COMPLEX,
+                REQUIRE(*real_class == REAL_IMAGINARY,
                         KEFIR_SET_SOURCE_ERROR(
                             KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                            "Long and complex type specifiers cannot be combined with float type specifier"));
-                *base_type = kefir_ast_type_complex_extended_float32();
+                            "Long and complex type specifiers cannot be combined with float32x type specifier"));
+                *base_type = kefir_ast_type_imaginary_extended_float32();
             }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -999,12 +1007,14 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                                            "Cannot combine type specifiers with referenced type definition"));
             if (*real_class == REAL_SCALAR) {
                 *base_type = kefir_ast_type_extended_float64();
+            } else if (*real_class == REAL_COMPLEX) {
+                *base_type = kefir_ast_type_complex_extended_float64();
             } else {
-                REQUIRE(*real_class == REAL_COMPLEX,
+                REQUIRE(*real_class == REAL_IMAGINARY,
                         KEFIR_SET_SOURCE_ERROR(
                             KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                            "Long and complex type specifiers cannot be combined with float type specifier"));
-                *base_type = kefir_ast_type_complex_extended_float64();
+                            "Long and complex type specifiers cannot be combined with float64x type specifier"));
+                *base_type = kefir_ast_type_imaginary_extended_float64();
             }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;

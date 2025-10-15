@@ -181,6 +181,11 @@ COMPLEX_TYPE(extended_float64, &DEFAULT_SCALAR_extended_float64)
 IMAGINARY_TYPE(float, &DEFAULT_SCALAR_float)
 IMAGINARY_TYPE(double, &DEFAULT_SCALAR_double)
 IMAGINARY_TYPE(long_double, &DEFAULT_SCALAR_long_double)
+IMAGINARY_TYPE(interchange_float32, &DEFAULT_SCALAR_interchange_float32)
+IMAGINARY_TYPE(interchange_float64, &DEFAULT_SCALAR_interchange_float64)
+IMAGINARY_TYPE(interchange_float80, &DEFAULT_SCALAR_interchange_float80)
+IMAGINARY_TYPE(extended_float32, &DEFAULT_SCALAR_extended_float32)
+IMAGINARY_TYPE(extended_float64, &DEFAULT_SCALAR_extended_float64)
 
 #undef COMPLEX_TYPE
 
@@ -365,11 +370,19 @@ const struct kefir_ast_type *kefir_ast_type_corresponding_imaginary_type(const s
             return kefir_ast_type_imaginary_long_double();
 
         case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
+            return kefir_ast_type_imaginary_interchange_float32();
+
         case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+            return kefir_ast_type_imaginary_interchange_float64();
+
         case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+            return kefir_ast_type_imaginary_interchange_float80();
+
         case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
+            return kefir_ast_type_imaginary_extended_float32();
+
         case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
-            return NULL; // KEFIR_NOT_IMPLEMENTED
+            return kefir_ast_type_imaginary_extended_float64();
 
         default:
             if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type)) {
