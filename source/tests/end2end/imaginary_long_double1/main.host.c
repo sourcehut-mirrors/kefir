@@ -53,6 +53,12 @@ int main(void) {
     assert(f80_compat[i++] == 3);
     assert(f80_compat[i++] == 3);
 
+    assert(f80_iarr[0] == 0);
+    assert(f80_iarr[1] == 0);
+    assert(f80_iarr[2] == 1);
+    assert(f80_iarr[3] == 0);
+    assert(f80_iarr[4] == 0);
+
 i = 0;
 assert(fabsl(f80_arr[i++] - 3.14159f) < 1e-6);
 assert(fabsl(f80_arr[i++]) < 1e-6);
@@ -430,5 +436,10 @@ exp = (-1.4 * I) / (-3.14159 - 2.8847 * I);
 res = fi80_cf80_div(-1.4, -3.14159 - 2.8847 * I);
 assert(fabsl(creal(res) - creal(exp)) < 1e-6);
 assert(fabsl(cimag(res) - cimag(exp)) < 1e-6);
+
+    assert(fi80_to_bool(3.14159));
+    assert(!fi80_to_bool(0.0));
+    assert(fi80_to_bool(nan("")));
+    assert(fi80_to_bool(INFINITY));
     return EXIT_SUCCESS;
 }

@@ -5,6 +5,8 @@
 .type f64_arr, @object
 .global f64_ops
 .type f64_ops, @object
+.global f64_iarr
+.type f64_iarr, @object
 .global f64_ops2
 .type f64_ops2, @object
 .global f64_size
@@ -57,6 +59,8 @@
 .type fi64_f64_mul, @function
 .global fi64_f64_sub
 .type fi64_f64_sub, @function
+.global fi64_to_bool
+.type fi64_to_bool, @function
 .global fi64_to_cf32
 .type fi64_to_cf32, @function
 .global fi64_to_cf64
@@ -419,6 +423,28 @@ __kefir_func_fi64_f64_sub_label2:
     .quad 0
 .section .text
 
+fi64_to_bool:
+__kefir_text_func_fi64_to_bool_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    mov $1, %rcx
+    xor %eax, %eax
+    ucomisd __kefir_func_fi64_to_bool_label1(%rip), %xmm0
+    setp %al
+    cmovne %rcx, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_fi64_to_bool_end:
+.section .rodata
+    .align 8
+__kefir_func_fi64_to_bool_label1:
+    .quad 0
+.section .text
+
 fi64_to_cf32:
 __kefir_text_func_fi64_to_cf32_begin:
     push %rbp
@@ -767,6 +793,14 @@ f64_ops:
     .quad 13877369775888419109
     .quad 13837309855095848960
     .quad 13844628204490326016
+
+    .align 16
+f64_iarr:
+    .quad 0
+    .quad 0
+    .quad 1
+    .quad 0
+    .quad 0
 
     .align 16
 f64_ops2:

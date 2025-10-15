@@ -221,7 +221,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
                 if (unqualified_destination_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
-                    value->integer = (kefir_bool_t) source->complex_floating_point.real;
+                    value->integer = (kefir_bool_t) source->complex_floating_point.real || (kefir_bool_t) source->complex_floating_point.imaginary;
                 } else {
                     REQUIRE_OK(cast_integral_type_from_float(mem, context, unqualified_destination_type, value,
                                                              source->complex_floating_point.real,

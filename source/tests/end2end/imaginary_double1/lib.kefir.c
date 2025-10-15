@@ -47,6 +47,14 @@ int f64_compat[] = {
     CLASSIFY(((_Imaginary double) 1.0if) / (_Complex double) 2.0if)
 };
 
+extern long f64_iarr[] = {
+    (_Imaginary double) 54.241if,
+    (_Bool) (_Imaginary double) 0.0if,
+    (_Bool) (_Imaginary double) 9.4929if,
+    (long) (_Imaginary double) -9.4929if,
+    (unsigned long) (_Imaginary double) 109.49if
+};
+
 _Imaginary double f64_arr[] = {
     (_Imaginary double) 3.14159if,
     (float) 3.14159f,
@@ -320,4 +328,8 @@ _Complex double fi64_cf64_mul(_Imaginary double x, _Complex double y) {
 
 _Complex double fi64_cf64_div(_Imaginary double x, _Complex double y) {
     return x / y;
+}
+
+_Bool fi64_to_bool(_Imaginary double x) {
+    return x;
 }

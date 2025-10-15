@@ -25,6 +25,7 @@ extern int f80_alignment;
 extern const long double *f80_const_ptr;
 extern int f80_compat[];
 
+extern long f80_iarr[];
 extern long double f80_arr[];
 extern long double f80_ops[];
 extern double f80_ops2[];
@@ -72,5 +73,7 @@ _Complex long double fi80_cf80_add(long double, _Complex double);
 _Complex long double fi80_cf80_sub(long double, _Complex double);
 _Complex long double fi80_cf80_mul(long double, _Complex double);
 _Complex long double fi80_cf80_div(long double, _Complex double);
+
+_Bool fi80_to_bool(long double);
 
 #endif

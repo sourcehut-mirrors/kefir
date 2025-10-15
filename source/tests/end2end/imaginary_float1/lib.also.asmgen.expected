@@ -13,6 +13,8 @@
 .type f32_arr4, @object
 .global f32_arr5
 .type f32_arr5, @object
+.global f32_iarr
+.type f32_iarr, @object
 .global f32_ops2
 .type f32_ops2, @object
 .global f32_size
@@ -89,6 +91,8 @@
 .type fi32_f32_mul, @function
 .global fi32_f32_sub
 .type fi32_f32_sub, @function
+.global fi32_to_bool
+.type fi32_to_bool, @function
 .global fi32_to_cf32
 .type fi32_to_cf32, @function
 .global fi32_to_cf64
@@ -448,6 +452,28 @@ __kefir_func_fi32_f32_sub_label1:
     .long 0
     .align 4
 __kefir_func_fi32_f32_sub_label2:
+    .long 0
+.section .text
+
+fi32_to_bool:
+__kefir_text_func_fi32_to_bool_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    mov $1, %rcx
+    xor %eax, %eax
+    ucomiss __kefir_func_fi32_to_bool_label1(%rip), %xmm0
+    setp %al
+    cmovne %rcx, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_fi32_to_bool_end:
+.section .rodata
+    .align 4
+__kefir_func_fi32_to_bool_label1:
     .long 0
 .section .text
 
@@ -848,6 +874,14 @@ f32_arr5:
     .long 0, 1167297946
     .long 0, 3314781594
     .long 0, 1167379866
+
+    .align 16
+f32_iarr:
+    .quad 0
+    .quad 0
+    .quad 1
+    .quad 0
+    .quad 0
 
     .align 16
 f32_ops2:

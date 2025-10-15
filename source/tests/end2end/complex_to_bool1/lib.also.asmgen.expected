@@ -1,0 +1,300 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global b32
+.type b32, @object
+.global b64
+.type b64, @object
+.global b80
+.type b80, @object
+.global b32_2
+.type b32_2, @object
+.global b64_2
+.type b64_2, @object
+.global b64_3
+.type b64_3, @object
+.global b80_2
+.type b80_2, @object
+.global b80_3
+.type b80_3, @object
+.global c32_to_bool
+.type c32_to_bool, @function
+.global c64_to_bool
+.type c64_to_bool, @function
+.global c80_to_bool
+.type c80_to_bool, @function
+.global c32_to_bool2
+.type c32_to_bool2, @function
+.global c64_to_bool2
+.type c64_to_bool2, @function
+.global c64_to_bool3
+.type c64_to_bool3, @function
+.global c80_to_bool2
+.type c80_to_bool2, @function
+.global c80_to_bool3
+.type c80_to_bool3, @function
+
+.section .text
+__kefir_text_section_begin:
+c32_to_bool:
+__kefir_text_func_c32_to_bool_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movaps %xmm0, %xmm1
+    shufps $1, %xmm1, %xmm1
+    pxor %xmm2, %xmm2
+    cmpneqps %xmm2, %xmm0
+    cmpneqps %xmm2, %xmm1
+    orps %xmm1, %xmm0
+    movd %xmm0, %eax
+    and $1, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_c32_to_bool_end:
+
+c64_to_bool:
+__kefir_text_func_c64_to_bool_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+    pxor %xmm2, %xmm2
+    cmpneqpd %xmm2, %xmm0
+    cmpneqpd %xmm2, %xmm1
+    orpd %xmm1, %xmm0
+    movd %xmm0, %eax
+    and $1, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_c64_to_bool_end:
+
+c80_to_bool:
+__kefir_text_func_c80_to_bool_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    fldt (%rax)
+    fldt 16(%rax)
+    fldz
+    fucomi %st(1)
+    fstp %st(0)
+    setp %cl
+    setne %dl
+    or %cl, %dl
+    fxch %st(1)
+    fldz
+    fucomi %st(1)
+    fstp %st(0)
+    setp %cl
+    setne %al
+    or %cl, %al
+    or %dl, %al
+    fstp %st(0)
+    fstp %st(0)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_c80_to_bool_end:
+
+c32_to_bool2:
+__kefir_text_func_c32_to_bool2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movaps %xmm0, %xmm1
+    shufps $1, %xmm1, %xmm1
+    pxor %xmm2, %xmm2
+    cmpneqps %xmm2, %xmm0
+    cmpneqps %xmm2, %xmm1
+    orps %xmm1, %xmm0
+    movd %xmm0, %eax
+    and $1, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_c32_to_bool2_end:
+
+c64_to_bool2:
+__kefir_text_func_c64_to_bool2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+    pxor %xmm2, %xmm2
+    cmpneqpd %xmm2, %xmm0
+    cmpneqpd %xmm2, %xmm1
+    orpd %xmm1, %xmm0
+    movd %xmm0, %eax
+    and $1, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_c64_to_bool2_end:
+
+c64_to_bool3:
+__kefir_text_func_c64_to_bool3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+    pxor %xmm2, %xmm2
+    cmpneqpd %xmm2, %xmm0
+    cmpneqpd %xmm2, %xmm1
+    orpd %xmm1, %xmm0
+    movd %xmm0, %eax
+    and $1, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_c64_to_bool3_end:
+
+c80_to_bool2:
+__kefir_text_func_c80_to_bool2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    fldt (%rax)
+    fldt 16(%rax)
+    fldz
+    fucomi %st(1)
+    fstp %st(0)
+    setp %cl
+    setne %dl
+    or %cl, %dl
+    fxch %st(1)
+    fldz
+    fucomi %st(1)
+    fstp %st(0)
+    setp %cl
+    setne %al
+    or %cl, %al
+    or %dl, %al
+    fstp %st(0)
+    fstp %st(0)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_c80_to_bool2_end:
+
+c80_to_bool3:
+__kefir_text_func_c80_to_bool3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    fldt (%rax)
+    fldt 16(%rax)
+    fldz
+    fucomi %st(1)
+    fstp %st(0)
+    setp %cl
+    setne %dl
+    or %cl, %dl
+    fxch %st(1)
+    fldz
+    fucomi %st(1)
+    fstp %st(0)
+    setp %cl
+    setne %al
+    or %cl, %al
+    or %dl, %al
+    fstp %st(0)
+    fstp %st(0)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_c80_to_bool3_end:
+
+__kefir_text_section_end:
+
+.section .data
+b32:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 1
+    .byte 1
+    .byte 1
+    .byte 1
+
+b64:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 1
+    .byte 1
+    .byte 1
+    .byte 1
+
+b80:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 1
+    .byte 1
+    .byte 1
+    .byte 1
+
+b32_2:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 1
+    .byte 1
+    .byte 1
+    .byte 1
+
+b64_2:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 1
+    .byte 1
+    .byte 1
+    .byte 1
+
+b64_3:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 1
+    .byte 1
+    .byte 1
+    .byte 1
+
+b80_2:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 1
+    .byte 1
+    .byte 1
+    .byte 1
+
+b80_3:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 1
+    .byte 1
+    .byte 1
+    .byte 1
+

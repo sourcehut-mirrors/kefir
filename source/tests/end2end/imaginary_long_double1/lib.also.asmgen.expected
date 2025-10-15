@@ -5,6 +5,8 @@
 .type f80_arr, @object
 .global f80_ops
 .type f80_ops, @object
+.global f80_iarr
+.type f80_iarr, @object
 .global f80_ops2
 .type f80_ops2, @object
 .global f80_size
@@ -57,6 +59,8 @@
 .type fi80_f80_mul, @function
 .global fi80_f80_sub
 .type fi80_f80_sub, @function
+.global fi80_to_bool
+.type fi80_to_bool, @function
 .global fi80_to_cf32
 .type fi80_to_cf32, @function
 .global fi80_to_cf64
@@ -484,6 +488,36 @@ __kefir_func_fi80_f80_sub_label1:
     .quad 0
     .align 8
 __kefir_func_fi80_f80_sub_label2:
+    .quad 0
+    .quad 0
+.section .text
+
+fi80_to_bool:
+__kefir_text_func_fi80_to_bool_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fldt __kefir_func_fi80_to_bool_label1(%rip)
+    fxch %st(1)
+    xor %ecx, %ecx
+    xor %eax, %eax
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %cl
+    cmovne %rax, %rcx
+    xor %eax, %eax
+    test %cl, %cl
+    sete %al
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_fi80_to_bool_end:
+.section .rodata
+    .align 8
+__kefir_func_fi80_to_bool_label1:
     .quad 0
     .quad 0
 .section .text
@@ -996,6 +1030,14 @@ f80_ops:
     .quad 12867427506772845714, 49161
     .quad 13835058055282163712, 49152
     .quad 10376293541461622784, 49154
+
+    .align 16
+f80_iarr:
+    .quad 0
+    .quad 0
+    .quad 1
+    .quad 0
+    .quad 0
 
     .align 16
 f80_ops2:

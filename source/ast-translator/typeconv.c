@@ -1005,7 +1005,33 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(const struct kefir_ast_type_
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected complex floating-point real type");
         }
     } else if (origin->tag == KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
+        kefir_ast_type_data_model_classification_t classification;
+        REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, origin, &classification));
+        switch (classification) {
+            case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST, 0.0f, 0.0f));
+                REQUIRE_OK(
+                    KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_FLOAT32_EQUALS));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
+                break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST, 0.0));
+                REQUIRE_OK(
+                    KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_FLOAT64_EQUALS));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
+                break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST, 0.0));
+                REQUIRE_OK(
+                    KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_EQUALS, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected imaginary floating-point real type");
+        }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DECIMAL32) {
         REQUIRE_OK(kefir_dfp_require_supported(NULL));
         kefir_dfp_decimal32_t dec32 = kefir_dfp_decimal32_from_int64(0);

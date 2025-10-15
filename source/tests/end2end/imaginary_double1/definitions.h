@@ -25,6 +25,7 @@ extern int f64_alignment;
 extern const double *f64_const_ptr;
 extern int f64_compat[];
 
+extern long f64_iarr[];
 extern double f64_arr[];
 extern double f64_ops[];
 extern double f64_ops2[];
@@ -71,5 +72,7 @@ _Complex double fi64_cf64_add(double, _Complex double);
 _Complex double fi64_cf64_sub(double, _Complex double);
 _Complex double fi64_cf64_mul(double, _Complex double);
 _Complex double fi64_cf64_div(double, _Complex double);
+
+_Bool fi64_to_bool(double);
 
 #endif

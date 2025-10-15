@@ -53,6 +53,12 @@ int main(void) {
     assert(f32_compat[i++] == 3);
     assert(f32_compat[i++] == 3);
 
+    assert(f32_iarr[0] == 0);
+    assert(f32_iarr[1] == 0);
+    assert(f32_iarr[2] == 1);
+    assert(f32_iarr[3] == 0);
+    assert(f32_iarr[4] == 0);
+
     i = 0;
     assert(fabs(f32_arr[i++] - 3.14159f) < 1e-6);
     assert(fabs(f32_arr[i++]) < 1e-6);
@@ -518,5 +524,10 @@ int main(void) {
     res = fi32_cf32_div(-1.4, -3.14159 - 2.8847 * I);
     assert(fabs(creal(res) - creal(exp)) < 1e-6);
     assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+
+    assert(fi32_to_bool(3.14159f));
+    assert(!fi32_to_bool(0.0));
+    assert(fi32_to_bool(nan("")));
+    assert(fi32_to_bool(INFINITY));
     return EXIT_SUCCESS;
 }

@@ -47,6 +47,14 @@ int f32_compat[] = {
     CLASSIFY(((_Imaginary float) 1.0if) / (_Complex float) 2.0if)
 };
 
+extern long f32_iarr[] = {
+    (_Imaginary float) 54.241if,
+    (_Bool) (_Imaginary float) 0.0if,
+    (_Bool) (_Imaginary float) 9.4929if,
+    (long) (_Imaginary float) -9.4929if,
+    (unsigned long) (_Imaginary float) 109.49if
+};
+
 _Imaginary float f32_arr[] = {
     (_Imaginary float) 3.14159if,
     (float) 3.14159f,
@@ -416,4 +424,8 @@ _Complex float fi32_cf32_mul(_Imaginary float x, _Complex float y) {
 
 _Complex float fi32_cf32_div(_Imaginary float x, _Complex float y) {
     return x / y;
+}
+
+_Bool fi32_to_bool(_Imaginary float x) {
+    return x;
 }

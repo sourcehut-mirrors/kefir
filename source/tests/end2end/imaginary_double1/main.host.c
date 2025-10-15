@@ -53,6 +53,12 @@ int main(void) {
     assert(f64_compat[i++] == 3);
     assert(f64_compat[i++] == 3);
 
+    assert(f64_iarr[0] == 0);
+    assert(f64_iarr[1] == 0);
+    assert(f64_iarr[2] == 1);
+    assert(f64_iarr[3] == 0);
+    assert(f64_iarr[4] == 0);
+
     i = 0;
     assert(fabs(f64_arr[i++] - 3.14159f) < 1e-6);
     assert(fabs(f64_arr[i++]) < 1e-6);
@@ -430,5 +436,10 @@ int main(void) {
     res = fi64_cf64_div(-1.4, -3.14159 - 2.8847 * I);
     assert(fabs(creal(res) - creal(exp)) < 1e-6);
     assert(fabs(cimag(res) - cimag(exp)) < 1e-6);
+
+    assert(fi64_to_bool(3.14159));
+    assert(!fi64_to_bool(0.0));
+    assert(fi64_to_bool(nan("")));
+    assert(fi64_to_bool(INFINITY));
     return EXIT_SUCCESS;
 }

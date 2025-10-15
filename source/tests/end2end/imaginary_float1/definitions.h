@@ -25,6 +25,7 @@ extern int f32_size;
 extern int f32_alignment;
 extern const float *f32_const_ptr;
 extern int f32_compat[];
+extern long f32_iarr[];
 extern float f32_arr[];
 extern float f32_arr2[];
 extern _Complex float f32_arr3[];
@@ -89,5 +90,7 @@ _Complex float fi32_cf32_add(float, _Complex float);
 _Complex float fi32_cf32_sub(float, _Complex float);
 _Complex float fi32_cf32_mul(float, _Complex float);
 _Complex float fi32_cf32_div(float, _Complex float);
+
+_Bool fi32_to_bool(float);
 
 #endif

@@ -47,6 +47,14 @@ int f80_compat[] = {
     CLASSIFY(((_Imaginary long double) 1.0if) / (_Complex long double) 2.0if)
 };
 
+extern long f80_iarr[] = {
+    (_Imaginary long double) 54.241if,
+    (_Bool) (_Imaginary long double) 0.0if,
+    (_Bool) (_Imaginary long double) 9.4929if,
+    (long) (_Imaginary long double) -9.4929if,
+    (unsigned long) (_Imaginary long double) 109.49if
+};
+
 _Imaginary long double f80_arr[] = {
     (_Imaginary long double) 3.14159if,
     (float) 3.14159f,
@@ -320,4 +328,8 @@ _Complex long double fi80_cf80_mul(_Imaginary long double x, _Complex double y) 
 
 _Complex long double fi80_cf80_div(_Imaginary long double x, _Complex double y) {
     return x / y;
+}
+
+_Bool fi80_to_bool(_Imaginary long double x) {
+    return x;
 }
