@@ -1,6 +1,8 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.global b0
+.type b0, @object
 .global b32
 .type b32, @object
 .global b64
@@ -226,6 +228,10 @@ __kefir_text_func_c80_to_bool3_end:
 __kefir_text_section_end:
 
 .section .data
+b0:
+    .byte 1
+    .byte 0
+
 b32:
     .byte 0
     .byte 0

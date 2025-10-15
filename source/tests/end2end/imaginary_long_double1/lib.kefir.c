@@ -333,3 +333,15 @@ _Complex long double fi80_cf80_div(_Imaginary long double x, _Complex double y) 
 _Bool fi80_to_bool(_Imaginary long double x) {
     return x;
 }
+
+_Imaginary long double cf32_to_fi80(_Complex float x) {
+    return x;
+}
+
+_Imaginary long double cf64_to_fi80(_Complex double x) {
+    return x;
+}
+
+_Imaginary long double cf80_to_fi80(_Complex long double x) {
+    return x;
+}

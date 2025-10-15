@@ -18,6 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+_Bool b0[] = {
+    3.14129f,
+    0.0f
+};
+
 _Bool b32[] = {
     (_Complex float) (0.0f),
     (_Complex float) (0.0f + 0.0if),

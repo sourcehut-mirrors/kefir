@@ -21,7 +21,7 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-extern _Bool b32[], b32_2[], b64[], b64_2[], b64_3[], b80[], b80_2[], b80_3[];
+extern _Bool b0[], b32[], b32_2[], b64[], b64_2[], b64_3[], b80[], b80_2[], b80_3[];
 
 _Bool c32_to_bool(_Complex float);
 _Bool c32_to_bool2(_Complex float);

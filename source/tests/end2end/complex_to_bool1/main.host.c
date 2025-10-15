@@ -28,6 +28,9 @@
 int main(void) {
     int i;
 
+    assert(b0[0]);
+    assert(!b0[1]);
+
     i = 0;
     assert(!b32[i++]);
     assert(!b32[i++]);

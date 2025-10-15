@@ -93,4 +93,8 @@ _Complex float fi32_cf32_div(float, _Complex float);
 
 _Bool fi32_to_bool(float);
 
+float cf32_to_fi32(_Complex float);
+float cf64_to_fi32(_Complex double);
+float cf80_to_fi32(_Complex long double);
+
 #endif

@@ -75,4 +75,8 @@ _Complex double fi64_cf64_div(double, _Complex double);
 
 _Bool fi64_to_bool(double);
 
+double cf32_to_fi64(_Complex float);
+double cf64_to_fi64(_Complex double);
+double cf80_to_fi64(_Complex long double);
+
 #endif

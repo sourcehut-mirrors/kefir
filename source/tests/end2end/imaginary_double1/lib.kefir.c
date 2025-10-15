@@ -333,3 +333,15 @@ _Complex double fi64_cf64_div(_Imaginary double x, _Complex double y) {
 _Bool fi64_to_bool(_Imaginary double x) {
     return x;
 }
+
+_Imaginary double cf32_to_fi64(_Complex float x) {
+    return x;
+}
+
+_Imaginary double cf64_to_fi64(_Complex double x) {
+    return x;
+}
+
+_Imaginary double cf80_to_fi64(_Complex long double x) {
+    return x;
+}

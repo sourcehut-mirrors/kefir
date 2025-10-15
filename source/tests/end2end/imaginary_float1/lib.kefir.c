@@ -429,3 +429,15 @@ _Complex float fi32_cf32_div(_Imaginary float x, _Complex float y) {
 _Bool fi32_to_bool(_Imaginary float x) {
     return x;
 }
+
+_Imaginary float cf32_to_fi32(_Complex float x) {
+    return x;
+}
+
+_Imaginary float cf64_to_fi32(_Complex double x) {
+    return x;
+}
+
+_Imaginary float cf80_to_fi32(_Complex long double x) {
+    return x;
+}

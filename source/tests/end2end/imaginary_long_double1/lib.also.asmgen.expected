@@ -43,6 +43,12 @@
 .type i64_to_fi80, @function
 .global u64_to_fi80
 .type u64_to_fi80, @function
+.global cf32_to_fi80
+.type cf32_to_fi80, @function
+.global cf64_to_fi80
+.type cf64_to_fi80, @function
+.global cf80_to_fi80
+.type cf80_to_fi80, @function
 .global f80_fi80_add
 .type f80_fi80_add, @function
 .global f80_fi80_div
@@ -282,6 +288,54 @@ __kefir_func_u64_to_fi80_label1:
     .quad 0
     .quad 0
 .section .text
+
+cf32_to_fi80:
+__kefir_text_func_cf32_to_fi80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
+    movaps %xmm0, %xmm1
+    shufps $1, %xmm1, %xmm1
+    movq %xmm1, -24(%rbp)
+    flds -24(%rbp)
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_cf32_to_fi80_end:
+
+cf64_to_fi80:
+__kefir_text_func_cf64_to_fi80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
+    movq %xmm1, -32(%rbp)
+    fldl -32(%rbp)
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_cf64_to_fi80_end:
+
+cf80_to_fi80:
+__kefir_text_func_cf80_to_fi80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    fldt 16(%rax)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_cf80_to_fi80_end:
 
 f80_fi80_add:
 __kefir_text_func_f80_fi80_add_begin:

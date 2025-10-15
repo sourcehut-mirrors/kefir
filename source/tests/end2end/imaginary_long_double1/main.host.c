@@ -441,5 +441,23 @@ assert(fabsl(cimag(res) - cimag(exp)) < 1e-6);
     assert(!fi80_to_bool(0.0));
     assert(fi80_to_bool(nan("")));
     assert(fi80_to_bool(INFINITY));
+
+    assert(fabsl(cf32_to_fi80(3.0f)) < 1e-6);
+    assert(fabsl(cf32_to_fi80(3.0f * I) - 3.0f) < 1e-6);
+    assert(fabsl(cf32_to_fi80(-3.0f * I) + 3.0f) < 1e-6);
+    assert(fabsl(cf32_to_fi80(3.0f + 1.0 * I) - 1.0f) < 1e-6);
+    assert(fabsl(cf32_to_fi80(3.0f - 10.0 * I) + 10.0f) < 1e-6);
+
+    assert(fabsl(cf64_to_fi80(3.0f)) < 1e-6);
+    assert(fabsl(cf64_to_fi80(3.0f * I) - 3.0f) < 1e-6);
+    assert(fabsl(cf64_to_fi80(-3.0f * I) + 3.0f) < 1e-6);
+    assert(fabsl(cf64_to_fi80(3.0f + 1.0 * I) - 1.0f) < 1e-6);
+    assert(fabsl(cf64_to_fi80(3.0f - 10.0 * I) + 10.0f) < 1e-6);
+
+    assert(fabsl(cf80_to_fi80(3.0f)) < 1e-6);
+    assert(fabsl(cf80_to_fi80(3.0f * I) - 3.0f) < 1e-6);
+    assert(fabsl(cf80_to_fi80(-3.0f * I) + 3.0f) < 1e-6);
+    assert(fabsl(cf80_to_fi80(3.0f + 1.0 * I) - 1.0f) < 1e-6);
+    assert(fabsl(cf80_to_fi80(3.0f - 10.0 * I) + 10.0f) < 1e-6);
     return EXIT_SUCCESS;
 }
