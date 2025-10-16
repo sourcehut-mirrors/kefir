@@ -226,7 +226,7 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
 
         case FLOAT32_CONSTANT:
             if (imaginary) {
-                REQUIRE_OK(kefir_token_new_constant_complex_float(0.0f, strtof(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+                REQUIRE_OK(kefir_token_new_constant_complex_float32(0.0f, strtof(literal, NULL), token));
             } else {
                 REQUIRE_OK(kefir_token_new_constant_float32(strtof(literal, NULL), token));
             }
@@ -234,7 +234,7 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
 
         case FLOAT32X_CONSTANT:
             if (imaginary) {
-                REQUIRE_OK(kefir_token_new_constant_complex_float(0.0f, strtof(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+                REQUIRE_OK(kefir_token_new_constant_complex_float32x(0.0f, strtod(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
             } else {
                 REQUIRE_OK(kefir_token_new_constant_float32x(strtod(literal, NULL), token));
             }
@@ -250,7 +250,7 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
 
         case FLOAT64_CONSTANT:
             if (imaginary) {
-                REQUIRE_OK(kefir_token_new_constant_complex_double(0.0f, strtod(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+                REQUIRE_OK(kefir_token_new_constant_complex_float64(0.0f, strtod(literal, NULL), token));
             } else {
                 REQUIRE_OK(kefir_token_new_constant_float64(strtod(literal, NULL), token));
             }
@@ -258,7 +258,7 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
 
         case FLOAT64X_CONSTANT:
             if (imaginary) {
-                REQUIRE_OK(kefir_token_new_constant_complex_double(0.0f, strtod(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+                REQUIRE_OK(kefir_token_new_constant_complex_float64x(0.0f, strtold(literal, NULL), token));
             } else {
                 REQUIRE_OK(kefir_token_new_constant_float64x(strtold(literal, NULL), token));
             }
@@ -274,7 +274,7 @@ static kefir_result_t match_decimal_impl(struct kefir_mem *mem, struct kefir_lex
 
         case FLOAT80_CONSTANT:
             if (imaginary) {
-                REQUIRE_OK(kefir_token_new_constant_complex_double(0.0f, strtod(literal, NULL), token)); // KEFIR_NOT_IMPLEMENTED
+                REQUIRE_OK(kefir_token_new_constant_complex_float80(0.0f, strtold(literal, NULL), token));
             } else {
                 REQUIRE_OK(kefir_token_new_constant_float80(strtold(literal, NULL), token));
             }

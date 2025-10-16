@@ -129,6 +129,7 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT32_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
                                                        node->value.complex_float32.real, 0.0f));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
@@ -137,6 +138,8 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_COMPLEX_DOUBLE_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT64_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
                                                        node->value.complex_float64.real));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
@@ -145,6 +148,8 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
                                                                 node->value.complex_long_double.real));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,

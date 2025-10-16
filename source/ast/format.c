@@ -286,6 +286,14 @@ static kefir_result_t visit_constant(const struct kefir_ast_visitor *visitor, co
             REQUIRE_OK(kefir_json_output_float(json, node->value.complex_float32.imaginary));
             break;
 
+        case KEFIR_AST_COMPLEX_FLOAT32_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "complex_float32"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_float32.real));
+            REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_float32.imaginary));
+            break;
+
         case KEFIR_AST_COMPLEX_DOUBLE_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "complex_double"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
@@ -294,8 +302,40 @@ static kefir_result_t visit_constant(const struct kefir_ast_visitor *visitor, co
             REQUIRE_OK(kefir_json_output_float(json, node->value.complex_float64.imaginary));
             break;
 
+        case KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "complex_float32x"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_float64.real));
+            REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_float64.imaginary));
+            break;
+
+        case KEFIR_AST_COMPLEX_FLOAT64_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "complex_float64"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_float64.real));
+            REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_float64.imaginary));
+            break;
+
         case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "complex_long_double"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_long_double.real));
+            REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_long_double.imaginary));
+            break;
+
+        case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "complex_float64x"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_long_double.real));
+            REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
+            REQUIRE_OK(kefir_json_output_float(json, node->value.complex_long_double.imaginary));
+            break;
+
+        case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "complex_float80"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
             REQUIRE_OK(kefir_json_output_float(json, node->value.complex_long_double.real));
             REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));

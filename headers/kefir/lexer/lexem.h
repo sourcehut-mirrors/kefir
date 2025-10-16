@@ -141,6 +141,11 @@ typedef enum kefir_constant_token_type {
     KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT,
     KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE,
     KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE,
+    KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32,
+    KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32X,
+    KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64,
+    KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64X,
+    KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT80,
     KEFIR_CONSTANT_TOKEN_DECIMAL32,
     KEFIR_CONSTANT_TOKEN_DECIMAL64,
     KEFIR_CONSTANT_TOKEN_DECIMAL128,
@@ -374,8 +379,15 @@ kefir_result_t kefir_token_new_constant_float64x(kefir_long_double_t, struct kef
 kefir_result_t kefir_token_new_constant_long_double(kefir_long_double_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_float80(kefir_long_double_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_complex_float(kefir_float32_t, kefir_float32_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float32(kefir_float32_t, kefir_float32_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_complex_double(kefir_float64_t, kefir_float64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float32x(kefir_float64_t, kefir_float64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float64(kefir_float64_t, kefir_float64_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_complex_long_double(kefir_long_double_t, kefir_long_double_t,
+                                                            struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float64x(kefir_long_double_t, kefir_long_double_t,
+                                                            struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float80(kefir_long_double_t, kefir_long_double_t,
                                                             struct kefir_token *);
 kefir_result_t kefir_token_new_constant_decimal32(kefir_dfp_decimal32_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_decimal64(kefir_dfp_decimal64_t, struct kefir_token *);

@@ -160,18 +160,23 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             break;
 
         case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT32_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
             value->complex_floating_point.real = node->value.complex_float32.real;
             value->complex_floating_point.imaginary = node->value.complex_float32.imaginary;
             break;
 
         case KEFIR_AST_COMPLEX_DOUBLE_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT64_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
             value->complex_floating_point.real = node->value.complex_float64.real;
             value->complex_floating_point.imaginary = node->value.complex_float64.imaginary;
             break;
 
         case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
             value->complex_floating_point.real = node->value.complex_long_double.real;
             value->complex_floating_point.imaginary = node->value.complex_long_double.imaginary;

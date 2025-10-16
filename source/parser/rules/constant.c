@@ -159,6 +159,43 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
                           "Failed to allocate AST constant");
             break;
 
+        case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32:
+            REQUIRE_ALLOC(result,
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float32(
+                              mem, token->constant.complex_float32.real, token->constant.complex_float32.imaginary)),
+                          "Failed to allocate AST constant");
+            break;
+
+        case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32X:
+            REQUIRE_ALLOC(result,
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float32x(
+                              mem, token->constant.complex_float64.real, token->constant.complex_float64.imaginary)),
+                          "Failed to allocate AST constant");
+            break;
+
+        case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64:
+            REQUIRE_ALLOC(result,
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float64(
+                              mem, token->constant.complex_float64.real, token->constant.complex_float64.imaginary)),
+                          "Failed to allocate AST constant");
+            break;
+
+        case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64X:
+            REQUIRE_ALLOC(
+                result,
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float64x(
+                    mem, token->constant.complex_long_double.real, token->constant.complex_long_double.imaginary)),
+                "Failed to allocate AST constant");
+            break;
+
+        case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT80:
+            REQUIRE_ALLOC(
+                result,
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float80(
+                    mem, token->constant.complex_long_double.real, token->constant.complex_long_double.imaginary)),
+                "Failed to allocate AST constant");
+            break;
+
         case KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE:
             REQUIRE_ALLOC(result,
                           KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_double(

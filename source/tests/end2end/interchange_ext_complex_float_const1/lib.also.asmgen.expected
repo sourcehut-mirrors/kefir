@@ -1,0 +1,174 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global d
+.type d, @object
+.global e
+.type e, @object
+.global mygeta
+.type mygeta, @function
+.global mygetb
+.type mygetb, @function
+.global mygetc
+.type mygetc, @function
+.global mygetd
+.type mygetd, @function
+.global mygete
+.type mygete, @function
+
+.section .text
+__kefir_text_section_begin:
+mygeta:
+__kefir_text_func_mygeta_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movd __kefir_func_mygeta_label1(%rip), %xmm0
+    movd __kefir_func_mygeta_label2(%rip), %xmm1
+    insertps $16, %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_mygeta_end:
+.section .rodata
+    .align 4
+__kefir_func_mygeta_label1:
+    .long 0
+    .align 4
+__kefir_func_mygeta_label2:
+    .long 1078530000
+.section .text
+
+mygetb:
+__kefir_text_func_mygetb_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movq __kefir_func_mygetb_label1(%rip), %xmm0
+    movq __kefir_func_mygetb_label2(%rip), %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_mygetb_end:
+.section .rodata
+    .align 8
+__kefir_func_mygetb_label1:
+    .quad 0
+    .align 8
+__kefir_func_mygetb_label2:
+    .quad 4613303441197561744
+.section .text
+
+mygetc:
+__kefir_text_func_mygetc_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movq __kefir_func_mygetc_label1(%rip), %xmm0
+    movq __kefir_func_mygetc_label2(%rip), %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_mygetc_end:
+.section .rodata
+    .align 8
+__kefir_func_mygetc_label1:
+    .quad 0
+    .align 8
+__kefir_func_mygetc_label2:
+    .quad 4614256650576692846
+.section .text
+
+mygetd:
+__kefir_text_func_mygetd_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    fldt __kefir_func_mygetd_label1(%rip)
+    fldt __kefir_func_mygetd_label2(%rip)
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_mygetd_end:
+.section .rodata
+    .align 8
+__kefir_func_mygetd_label1:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_mygetd_label2:
+    .quad 12535853870170799992
+    .quad 16384
+.section .text
+
+mygete:
+__kefir_text_func_mygete_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    fldt __kefir_func_mygete_label1(%rip)
+    fldt __kefir_func_mygete_label2(%rip)
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_mygete_end:
+.section .rodata
+    .align 8
+__kefir_func_mygete_label1:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_mygete_label2:
+    .quad 14488026678631297565
+    .quad 16384
+.section .text
+
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+a:
+    .long 0, 1078530000
+
+    .align 8
+b:
+    .quad 0, 4613303441197561744
+
+    .align 8
+c:
+    .quad 0, 4614256650576692846
+
+    .align 16
+d:
+    .quad 0, 0
+    .quad 12535853870170799992, 16384
+
+    .align 16
+e:
+    .quad 0, 0
+    .quad 14488026678631297565, 16384
+

@@ -146,12 +146,32 @@ kefir_result_t kefir_ast_analyze_constant_node(struct kefir_mem *mem, const stru
             base->properties.type = kefir_ast_type_complex_float();
             break;
 
+        case KEFIR_AST_COMPLEX_FLOAT32_CONSTANT:
+            base->properties.type = kefir_ast_type_complex_interchange_float32();
+            break;
+
         case KEFIR_AST_COMPLEX_DOUBLE_CONSTANT:
             base->properties.type = kefir_ast_type_complex_double();
             break;
 
+        case KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT:
+            base->properties.type = kefir_ast_type_complex_extended_float32();
+            break;
+
+        case KEFIR_AST_COMPLEX_FLOAT64_CONSTANT:
+            base->properties.type = kefir_ast_type_complex_interchange_float64();
+            break;
+
         case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
             base->properties.type = kefir_ast_type_complex_long_double();
+            break;
+
+        case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
+            base->properties.type = kefir_ast_type_complex_extended_float64();
+            break;
+
+        case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
+            base->properties.type = kefir_ast_type_complex_interchange_float80();
             break;
     }
     return KEFIR_OK;
