@@ -165,6 +165,12 @@ external_test_suite () {
     unbuffer make .EXTERNAL_TESTS_SUITE KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc) 2>&1 | tee "$OUTDIR/external/uncaptured.log"
 }
 
+fuzz_test () {
+    mkdir -p "$OUTDIR/fuzz"
+
+    unbuffer make csmith_random_test CSMITH_RANDOM_TESTS=20000 KEFIR_BIN_DIR="$ROOT_DIR/bin/fuzz" -j$(nproc) 2>&1 | tee "$OUTDIR/fuzz/csmith.log"
+}
+
 webapp_build () {
     log "Building webapp"
     make KEFIR_BIN_DIR="$ROOT_DIR/bin/webapp" webapp -j$(nproc)
@@ -183,6 +189,7 @@ main () {
     bootstrap_test
     portable_bootstrap_test
     external_test_suite
+    fuzz_test
     webapp_build
     log "End of Kefir pre-release test"
 }
