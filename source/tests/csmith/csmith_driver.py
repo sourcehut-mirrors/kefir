@@ -29,6 +29,7 @@ import stat
 import signal
 import ctypes
 import time
+import re
 import multiprocessing as mp
 from typing import Optional, Tuple
 from dataclasses import dataclass
@@ -114,11 +115,14 @@ class ExecutableRunner:
 class TestResult:
     worker_id: int
     test_index: int
+    seed: int
     timestamp: int
     test_code: Optional[str]
     success: bool
 
 class TestDriver:
+    SEED_REGEX = re.compile(r'Seed:\s*([0-9]+)')
+
     def __init__(self, csmith: CSmith, kefir: Kefir, cc: CC, timeout: int, parallel_jobs: int = 1):
         self._csmith = csmith
         self._kefir = kefir
@@ -163,7 +167,7 @@ class TestDriver:
                     out.write(result.test_code)
             if not result.success:
                 num_failed += 1
-            print(f'[{int(result.timestamp - begin_time) / 1000:12.3f}] total={num_of_results}; failed={num_failed}', file=sys.stderr)
+            print(f'[{int(result.timestamp - begin_time) / 1000:12.3f}] total={num_of_results}; failed={num_failed}; seed={result.seed}', file=sys.stderr)
 
         for worker in workers:
             worker.wait()
@@ -194,6 +198,7 @@ class TestDriver:
             test_code = None
             try:
                 test_code = csmith()
+                test_seed = TestDriver._get_test_seed(test_code)
                 kefir_exe = ExecutableRunner(kefir(tmpdir, test_code))
                 cc_exe = ExecutableRunner(cc(tmpdir, test_code))
                 kefir_finished, kefir_result = kefir_exe(tmpdir, timeout)
@@ -202,10 +207,13 @@ class TestDriver:
                 cc_finished, cc_result = cc_exe(tmpdir, timeout)
                 if not cc_finished:
                     continue
-                return TestResult(worker_id=worker_id, test_index=test_index, timestamp=time.time() * 1000, test_code=test_code, success=(kefir_result == cc_result))
+                return TestResult(worker_id=worker_id, test_index=test_index, seed=test_seed, timestamp=time.time() * 1000, test_code=test_code, success=(kefir_result == cc_result))
             except:
                 traceback.print_exc()
-                return TestResult(worker_id=worker_id, test_index=test_index, timestamp=time.time() * 1000, test_code=test_code, success=False)
+                return TestResult(worker_id=worker_id, test_index=test_index, seed=test_seed, timestamp=time.time() * 1000, test_code=test_code, success=False)
+
+    def _get_test_seed(code: str) -> int:
+        return int(TestDriver.SEED_REGEX.search(code).group(1))
     
     def __enter__(self, *args, **kwargs):
         self._pool = mp.Pool(self._parallel_jobs, TestDriver._init_worker)
