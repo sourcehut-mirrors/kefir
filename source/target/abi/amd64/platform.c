@@ -218,7 +218,8 @@ static const struct kefir_data_model_descriptor AMD64_SYSV_DATA_MODEL_DESCRIPTOR
                      .long_long_bits = 64,
                      .float_bits = 32,
                      .double_bits = 64,
-                     .long_double_bits = 128}};
+                     .long_double_bits = 128},
+    .decimal_encoding = KEFIR_DECIMAL_ENCODING_BID};
 
 kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant,
                                                struct kefir_ir_target_platform *platform) {

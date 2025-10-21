@@ -511,6 +511,17 @@ Make all symbols protected unless an attribute specifies otherwise.
 .\"
 .It Fl \-codegen-visibility-internal
 Make all symbols internal unless an attribute specifies otherwise.
+.\"
+.It Fl \-codegen-decimal-default
+Use platform-native decimal number encoding [default].
+.\"
+.It Fl \-codegen-decimal-bid
+Use decimal number BID encoding. Requires kefir to be compiled with BID-enabled compiler to
+provide correct encoding of static data.
+.\"
+.It Fl \-codegen-decimal-dpd
+Use decimal number DPD encoding. Requires kefir to be compiled with DPD-enabled compiler to
+provide correct encoding of static data.
 .El
 .\"
 .Ss FEATURES

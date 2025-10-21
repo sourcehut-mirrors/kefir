@@ -22,6 +22,7 @@
 #define KEFIR_OPTIMIZER_CONFIGURATION_H_
 
 #include "kefir/optimizer/pipeline.h"
+#include "kefir/core/data_model.h"
 
 typedef struct kefir_optimizer_configuration {
     struct kefir_optimizer_pipeline pipeline;
@@ -30,6 +31,7 @@ typedef struct kefir_optimizer_configuration {
     kefir_size_t max_inline_depth;
     kefir_size_t max_inlines_per_function;
     kefir_size_t imprecise_decimal_bitint_conv;
+    kefir_data_model_decimal_encoding_t decimal_encoding;
     const struct kefir_optimizer_target_lowering *target_lowering;
 } kefir_optimizer_configuration_t;
 

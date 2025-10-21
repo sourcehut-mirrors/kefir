@@ -39,6 +39,11 @@ typedef enum kefir_data_model_tag {
     KEFIR_DATA_MODEL_SILP64
 } kefir_data_model_tag_t;
 
+typedef enum kefir_data_model_decimal_encoding {
+    KEFIR_DECIMAL_ENCODING_BID,
+    KEFIR_DECIMAL_ENCODING_DPD
+} kefir_data_model_decimal_encoding_t;
+
 typedef struct kefir_data_model_descriptor {
     kefir_data_model_tag_t model;
     kefir_byte_order_t byte_order;
@@ -53,6 +58,7 @@ typedef struct kefir_data_model_descriptor {
         kefir_size_t double_bits;
         kefir_size_t long_double_bits;
     } scalar_width;
+    kefir_data_model_decimal_encoding_t decimal_encoding;
 } kefir_data_model_descriptor_t;
 
 #define DECL_MIN_MAX(_name)                                                                                     \

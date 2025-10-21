@@ -44,6 +44,12 @@ typedef enum kefir_compiler_runner_error_report_type {
     KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON
 } kefir_compiler_runner_error_report_type_t;
 
+typedef enum kefir_compiler_runner_decimal_encoding {
+    KEFIR_COMPILER_RUNNER_DECIMAL_ENCODING_DEFAULT,
+    KEFIR_COMPILER_RUNNER_DECIMAL_ENCODING_BID,
+    KEFIR_COMPILER_RUNNER_DECIMAL_ENCODING_DPD
+} kefir_compiler_runner_decimal_encoding_t;
+
 typedef struct kefir_compiler_runner_configuration {
     kefir_compiler_runner_action_t action;
     const char *input_filepath;
@@ -128,6 +134,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t imprecise_decimal_bitint_conv;
         kefir_ast_context_tentative_definition_placement_t tentative_definition_placement;
         kefir_ast_declarator_visibility_attr_t symbol_visibility;
+        kefir_compiler_runner_decimal_encoding_t decimal_encoding;
         const char *syntax;
         const char *print_details;
         const char *pipeline_spec;

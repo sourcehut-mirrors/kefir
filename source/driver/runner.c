@@ -275,6 +275,19 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.optimizer_configuration.debug_info = options->debug_info;
     compiler.optimizer_configuration.max_inline_depth = options->optimizer.max_inline_depth;
     compiler.optimizer_configuration.max_inlines_per_function = options->optimizer.max_inlines_per_function;
+    switch (options->codegen.decimal_encoding) {
+        case KEFIR_COMPILER_RUNNER_DECIMAL_ENCODING_DEFAULT:
+            compiler.optimizer_configuration.decimal_encoding = profile.type_traits.data_model->decimal_encoding;
+            break;
+
+        case KEFIR_COMPILER_RUNNER_DECIMAL_ENCODING_BID:
+            compiler.optimizer_configuration.decimal_encoding = KEFIR_DECIMAL_ENCODING_BID;
+            break;
+
+        case KEFIR_COMPILER_RUNNER_DECIMAL_ENCODING_DPD:
+            compiler.optimizer_configuration.decimal_encoding = KEFIR_DECIMAL_ENCODING_DPD;
+            break;
+    }
     if (!options->optimizer.disable_lowering) {
         compiler.optimizer_configuration.target_lowering = profile.lowering;
     }

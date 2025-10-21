@@ -3658,7 +3658,11 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1]; \
  \
             kefir_id_t func_decl_id = KEFIR_ID_NONE; \
-            REQUIRE_OK(_fn(mem, module, param, &func_decl_id)); \
+            if (configuration->decimal_encoding == KEFIR_DECIMAL_ENCODING_BID) { \
+                REQUIRE_OK(get_libgcc_bid_##_fn(mem, module, param, &func_decl_id)); \
+            } else { \
+                REQUIRE_OK(get_libgcc_dpd_##_fn(mem, module, param, &func_decl_id)); \
+            } \
  \
             kefir_opt_call_id_t call_node_id; \
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, \
@@ -3668,106 +3672,106 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
         } while (0)
 
         case KEFIR_OPT_OPCODE_DECIMAL32_ADD:
-            BINARY_OP(get_libgcc_bid_addsd3_function_decl_id);
+            BINARY_OP(addsd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_ADD:
-            BINARY_OP(get_libgcc_bid_adddd3_function_decl_id);
+            BINARY_OP(adddd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_ADD:
-            BINARY_OP(get_libgcc_bid_addtd3_function_decl_id);
+            BINARY_OP(addtd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_SUB:
-            BINARY_OP(get_libgcc_bid_subsd3_function_decl_id);
+            BINARY_OP(subsd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_SUB:
-            BINARY_OP(get_libgcc_bid_subdd3_function_decl_id);
+            BINARY_OP(subdd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_SUB:
-            BINARY_OP(get_libgcc_bid_subtd3_function_decl_id);
+            BINARY_OP(subtd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_MUL:
-            BINARY_OP(get_libgcc_bid_mulsd3_function_decl_id);
+            BINARY_OP(mulsd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_MUL:
-            BINARY_OP(get_libgcc_bid_muldd3_function_decl_id);
+            BINARY_OP(muldd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_MUL:
-            BINARY_OP(get_libgcc_bid_multd3_function_decl_id);
+            BINARY_OP(multd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_DIV:
-            BINARY_OP(get_libgcc_bid_divsd3_function_decl_id);
+            BINARY_OP(divsd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_DIV:
-            BINARY_OP(get_libgcc_bid_divdd3_function_decl_id);
+            BINARY_OP(divdd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_DIV:
-            BINARY_OP(get_libgcc_bid_divtd3_function_decl_id);
+            BINARY_OP(divtd3_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_EQUAL:
-            BINARY_OP(get_libgcc_bid_eqsd3_function_decl_id);
+            BINARY_OP(eqsd3_function_decl_id);
             REQUIRE_OK(kefir_opt_code_builder_int32_bool_not(mem, &func->code, block_id, *replacement_ref, replacement_ref));
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_EQUAL:
-            BINARY_OP(get_libgcc_bid_eqdd3_function_decl_id);
+            BINARY_OP(eqdd3_function_decl_id);
             REQUIRE_OK(kefir_opt_code_builder_int32_bool_not(mem, &func->code, block_id, *replacement_ref, replacement_ref));
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_EQUAL:
-            BINARY_OP(get_libgcc_bid_eqtd3_function_decl_id);
+            BINARY_OP(eqtd3_function_decl_id);
             REQUIRE_OK(kefir_opt_code_builder_int32_bool_not(mem, &func->code, block_id, *replacement_ref, replacement_ref));
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_GREATER: {
             kefir_opt_instruction_ref_t zero_ref;
-            BINARY_OP(get_libgcc_bid_gtsd3_function_decl_id);
+            BINARY_OP(gtsd3_function_decl_id);
             REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0, &zero_ref));
             REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, KEFIR_OPT_COMPARISON_INT32_GREATER, *replacement_ref, zero_ref, replacement_ref));
         } break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_GREATER: {
             kefir_opt_instruction_ref_t zero_ref;
-            BINARY_OP(get_libgcc_bid_gtdd3_function_decl_id);
+            BINARY_OP(gtdd3_function_decl_id);
             REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0, &zero_ref));
             REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, KEFIR_OPT_COMPARISON_INT32_GREATER, *replacement_ref, zero_ref, replacement_ref));
         } break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_GREATER: {
             kefir_opt_instruction_ref_t zero_ref;
-            BINARY_OP(get_libgcc_bid_gttd3_function_decl_id);
+            BINARY_OP(gttd3_function_decl_id);
             REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0, &zero_ref));
             REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, KEFIR_OPT_COMPARISON_INT32_GREATER, *replacement_ref, zero_ref, replacement_ref));
         } break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_LESS: {
             kefir_opt_instruction_ref_t zero_ref;
-            BINARY_OP(get_libgcc_bid_ltsd3_function_decl_id);
+            BINARY_OP(ltsd3_function_decl_id);
             REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0, &zero_ref));
             REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, KEFIR_OPT_COMPARISON_INT32_LESSER, *replacement_ref, zero_ref, replacement_ref));
         } break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_LESS: {
             kefir_opt_instruction_ref_t zero_ref;
-            BINARY_OP(get_libgcc_bid_ltdd3_function_decl_id);
+            BINARY_OP(ltdd3_function_decl_id);
             REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0, &zero_ref));
             REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, KEFIR_OPT_COMPARISON_INT32_LESSER, *replacement_ref, zero_ref, replacement_ref));
         } break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_LESS: {
             kefir_opt_instruction_ref_t zero_ref;
-            BINARY_OP(get_libgcc_bid_lttd3_function_decl_id);
+            BINARY_OP(lttd3_function_decl_id);
             REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0, &zero_ref));
             REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, KEFIR_OPT_COMPARISON_INT32_LESSER, *replacement_ref, zero_ref, replacement_ref));
         } break;
@@ -3779,7 +3783,12 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0]; \
  \
             kefir_id_t func_decl_id = KEFIR_ID_NONE; \
-            REQUIRE_OK(_fn(mem, module, param, &func_decl_id)); \
+            if (configuration->decimal_encoding == KEFIR_DECIMAL_ENCODING_BID) { \
+                REQUIRE_OK(get_libgcc_bid_##_fn(mem, module, param, &func_decl_id)); \
+            } else { \
+                REQUIRE_OK(get_libgcc_dpd_##_fn(mem, module, param, &func_decl_id)); \
+            } \
+ \
  \
             kefir_opt_call_id_t call_node_id; \
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 1, \
@@ -3789,157 +3798,157 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         // Decimal to decimal
         case KEFIR_OPT_OPCODE_DECIMAL32_TO_DECIMAL64:
-            UNARY_OP(get_libgcc_bid_extendsddd2_function_decl_id);
+            UNARY_OP(extendsddd2_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_TO_DECIMAL128:
-            UNARY_OP(get_libgcc_bid_extendsdtd2_function_decl_id);
+            UNARY_OP(extendsdtd2_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_TO_DECIMAL128:
-            UNARY_OP(get_libgcc_bid_extendddtd2_function_decl_id);
+            UNARY_OP(extendddtd2_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_TO_DECIMAL32:
-            UNARY_OP(get_libgcc_bid_truncddsd2_function_decl_id);
+            UNARY_OP(truncddsd2_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_TO_DECIMAL32:
-            UNARY_OP(get_libgcc_bid_trunctdsd2_function_decl_id);
+            UNARY_OP(trunctdsd2_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_TO_DECIMAL64:
-            UNARY_OP(get_libgcc_bid_trunctddd2_function_decl_id);
+            UNARY_OP(trunctddd2_function_decl_id);
             break;
 
         // Decimal32 to ...
         case KEFIR_OPT_OPCODE_DECIMAL32_TO_FLOAT32:
-            UNARY_OP(get_libgcc_bid_truncsdsf_function_decl_id);
+            UNARY_OP(truncsdsf_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_TO_FLOAT64:
-            UNARY_OP(get_libgcc_bid_extendsddf_function_decl_id);
+            UNARY_OP(extendsddf_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_TO_LONG_DOUBLE:
-            UNARY_OP(get_libgcc_bid_extendsdxf_function_decl_id);
+            UNARY_OP(extendsdxf_function_decl_id);
             break;
 
         // Decimal64 to ...
         case KEFIR_OPT_OPCODE_DECIMAL64_TO_FLOAT32:
-            UNARY_OP(get_libgcc_bid_truncddsf_function_decl_id);
+            UNARY_OP(truncddsf_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_TO_FLOAT64:
-            UNARY_OP(get_libgcc_bid_truncdddf_function_decl_id);
+            UNARY_OP(truncdddf_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_TO_LONG_DOUBLE:
-            UNARY_OP(get_libgcc_bid_extendddxf_function_decl_id);
+            UNARY_OP(extendddxf_function_decl_id);
             break;
 
         // Decimal128 to ...
         case KEFIR_OPT_OPCODE_DECIMAL128_TO_FLOAT32:
-            UNARY_OP(get_libgcc_bid_trunctdsf_function_decl_id);
+            UNARY_OP(trunctdsf_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_TO_FLOAT64:
-            UNARY_OP(get_libgcc_bid_trunctddf_function_decl_id);
+            UNARY_OP(trunctddf_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_TO_LONG_DOUBLE:
-            UNARY_OP(get_libgcc_bid_trunctdxf_function_decl_id);
+            UNARY_OP(trunctdxf_function_decl_id);
             break;
             
         // Decimal32 from ...
         case KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL32:
-            UNARY_OP(get_libgcc_bid_extendsfsd_function_decl_id);
+            UNARY_OP(extendsfsd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL32:
-            UNARY_OP(get_libgcc_bid_truncdfsd_function_decl_id);
+            UNARY_OP(truncdfsd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL32:
-            UNARY_OP(get_libgcc_bid_truncxfsd_function_decl_id);
+            UNARY_OP(truncxfsd_function_decl_id);
             break;
 
         // Decimal64 from ...
         case KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL64:
-            UNARY_OP(get_libgcc_bid_extendsfdd_function_decl_id);
+            UNARY_OP(extendsfdd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL64:
-            UNARY_OP(get_libgcc_bid_extenddfdd_function_decl_id);
+            UNARY_OP(extenddfdd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL64:
-            UNARY_OP(get_libgcc_bid_truncxfdd_function_decl_id);
+            UNARY_OP(truncxfdd_function_decl_id);
             break;
 
         // Decimal128 from ...
         case KEFIR_OPT_OPCODE_FLOAT32_TO_DECIMAL128:
-            UNARY_OP(get_libgcc_bid_extendsftd_function_decl_id);
+            UNARY_OP(extendsftd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_TO_DECIMAL128:
-            UNARY_OP(get_libgcc_bid_extenddftd_function_decl_id);
+            UNARY_OP(extenddftd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_DECIMAL128:
-            UNARY_OP(get_libgcc_bid_extendxftd_function_decl_id);
+            UNARY_OP(extendxftd_function_decl_id);
             break;
 
         // ... to long
         case KEFIR_OPT_OPCODE_DECIMAL32_TO_INT:
-            UNARY_OP(get_libgcc_bid_fixsddi_function_decl_id);
+            UNARY_OP(fixsddi_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_TO_INT:
-            UNARY_OP(get_libgcc_bid_fixdddi_function_decl_id);
+            UNARY_OP(fixdddi_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_TO_INT:
-            UNARY_OP(get_libgcc_bid_fixtddi_function_decl_id);
+            UNARY_OP(fixtddi_function_decl_id);
             break;
 
         // ... to unsigned long
         case KEFIR_OPT_OPCODE_DECIMAL32_TO_UINT:
-            UNARY_OP(get_libgcc_bid_fixunssddi_function_decl_id);
+            UNARY_OP(fixunssddi_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_TO_UINT:
-            UNARY_OP(get_libgcc_bid_fixunsdddi_function_decl_id);
+            UNARY_OP(fixunsdddi_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_TO_UINT:
-            UNARY_OP(get_libgcc_bid_fixunstddi_function_decl_id);
+            UNARY_OP(fixunstddi_function_decl_id);
             break;
 
         // long from ...
         case KEFIR_OPT_OPCODE_INT_TO_DECIMAL32:
-            UNARY_OP(get_libgcc_bid_floatdisd_function_decl_id);
+            UNARY_OP(floatdisd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_INT_TO_DECIMAL64:
-            UNARY_OP(get_libgcc_bid_floatdidd_function_decl_id);
+            UNARY_OP(floatdidd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_INT_TO_DECIMAL128:
-            UNARY_OP(get_libgcc_bid_floatditd_function_decl_id);
+            UNARY_OP(floatditd_function_decl_id);
             break;
 
         // unsigned  long from ...
         case KEFIR_OPT_OPCODE_UINT_TO_DECIMAL32:
-            UNARY_OP(get_libgcc_bid_floatunsdisd_function_decl_id);
+            UNARY_OP(floatunsdisd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_UINT_TO_DECIMAL64:
-            UNARY_OP(get_libgcc_bid_floatunsdidd_function_decl_id);
+            UNARY_OP(floatunsdidd_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_UINT_TO_DECIMAL128:
-            UNARY_OP(get_libgcc_bid_floatunsditd_function_decl_id);
+            UNARY_OP(floatunsditd_function_decl_id);
             break;
 
 #undef UNARY_OP
@@ -3958,7 +3967,11 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, value_store_ref, &value_pair_ref)); \
  \
             kefir_id_t func_decl_id = KEFIR_ID_NONE; \
-            REQUIRE_OK(_fn(mem, module, param, &func_decl_id)); \
+            if (configuration->decimal_encoding == KEFIR_DECIMAL_ENCODING_BID) { \
+                REQUIRE_OK(get_libgcc_bid_##_fn(mem, module, param, &func_decl_id)); \
+            } else { \
+                REQUIRE_OK(get_libgcc_dpd_##_fn(mem, module, param, &func_decl_id)); \
+            } \
  \
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, \
                                                             KEFIR_ID_NONE, &call_node_id, replacement_ref)); \
@@ -3968,7 +3981,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL32:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                BITINT_TO_DEC(get_libgcc_bid_floatbitintsd_function_decl_id, -1);
+                BITINT_TO_DEC(floatbitintsd_function_decl_id, -1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 REQUIRE_OK(kefir_opt_code_builder_bitint_signed_to_long_double(mem, &func->code, block_id, instr->operation.parameters.bitwidth, instr->operation.parameters.refs[0], &long_double_ref));
@@ -3978,7 +3991,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL32:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                BITINT_TO_DEC(get_libgcc_bid_floatbitintsd_function_decl_id, 1);
+                BITINT_TO_DEC(floatbitintsd_function_decl_id, 1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 REQUIRE_OK(kefir_opt_code_builder_bitint_unsigned_to_long_double(mem, &func->code, block_id, instr->operation.parameters.bitwidth, instr->operation.parameters.refs[0], &long_double_ref));
@@ -3988,7 +4001,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL64:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                BITINT_TO_DEC(get_libgcc_bid_floatbitintdd_function_decl_id, -1);
+                BITINT_TO_DEC(floatbitintdd_function_decl_id, -1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 REQUIRE_OK(kefir_opt_code_builder_bitint_signed_to_long_double(mem, &func->code, block_id, instr->operation.parameters.bitwidth, instr->operation.parameters.refs[0], &long_double_ref));
@@ -3998,7 +4011,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL64:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                BITINT_TO_DEC(get_libgcc_bid_floatbitintdd_function_decl_id, 1);
+                BITINT_TO_DEC(floatbitintdd_function_decl_id, 1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 REQUIRE_OK(kefir_opt_code_builder_bitint_unsigned_to_long_double(mem, &func->code, block_id, instr->operation.parameters.bitwidth, instr->operation.parameters.refs[0], &long_double_ref));
@@ -4008,7 +4021,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DECIMAL128:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                BITINT_TO_DEC(get_libgcc_bid_floatbitinttd_function_decl_id, -1);
+                BITINT_TO_DEC(floatbitinttd_function_decl_id, -1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 REQUIRE_OK(kefir_opt_code_builder_bitint_signed_to_long_double(mem, &func->code, block_id, instr->operation.parameters.bitwidth, instr->operation.parameters.refs[0], &long_double_ref));
@@ -4018,7 +4031,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DECIMAL128:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                BITINT_TO_DEC(get_libgcc_bid_floatbitinttd_function_decl_id, 1);
+                BITINT_TO_DEC(floatbitinttd_function_decl_id, 1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 REQUIRE_OK(kefir_opt_code_builder_bitint_unsigned_to_long_double(mem, &func->code, block_id, instr->operation.parameters.bitwidth, instr->operation.parameters.refs[0], &long_double_ref));
@@ -4040,7 +4053,12 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, block_id, bitwidth * (_sign), &bitwidth_ref)); \
  \
             kefir_id_t func_decl_id = KEFIR_ID_NONE; \
-            REQUIRE_OK(_fn(mem, module, param, &func_decl_id)); \
+            if (configuration->decimal_encoding == KEFIR_DECIMAL_ENCODING_BID) { \
+                REQUIRE_OK(get_libgcc_bid_##_fn(mem, module, param, &func_decl_id)); \
+            } else { \
+                REQUIRE_OK(get_libgcc_dpd_##_fn(mem, module, param, &func_decl_id)); \
+            } \
+ \
  \
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 3, \
                                                             KEFIR_ID_NONE, &call_node_id, &call_ref)); \
@@ -4054,7 +4072,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_DECIMAL32_TO_BITINT_SIGNED:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                DEC_TO_BITINT(get_libgcc_bid_fixsdbitint_function_decl_id, -1);
+                DEC_TO_BITINT(fixsdbitint_function_decl_id, -1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
@@ -4065,7 +4083,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_DECIMAL32_TO_BITINT_UNSIGNED:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                DEC_TO_BITINT(get_libgcc_bid_fixsdbitint_function_decl_id, 1);
+                DEC_TO_BITINT(fixsdbitint_function_decl_id, 1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
@@ -4076,7 +4094,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_DECIMAL64_TO_BITINT_SIGNED:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                DEC_TO_BITINT(get_libgcc_bid_fixddbitint_function_decl_id, -1);
+                DEC_TO_BITINT(fixddbitint_function_decl_id, -1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
@@ -4087,7 +4105,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_DECIMAL64_TO_BITINT_UNSIGNED:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                DEC_TO_BITINT(get_libgcc_bid_fixddbitint_function_decl_id, 1);
+                DEC_TO_BITINT(fixddbitint_function_decl_id, 1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
@@ -4098,7 +4116,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_DECIMAL128_TO_BITINT_SIGNED:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                DEC_TO_BITINT(get_libgcc_bid_fixtdbitint_function_decl_id, -1);
+                DEC_TO_BITINT(fixtdbitint_function_decl_id, -1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
@@ -4109,7 +4127,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
         case KEFIR_OPT_OPCODE_DECIMAL128_TO_BITINT_UNSIGNED:
             if (!configuration->imprecise_decimal_bitint_conv) {
-                DEC_TO_BITINT(get_libgcc_bid_fixtdbitint_function_decl_id, 1);
+                DEC_TO_BITINT(fixtdbitint_function_decl_id, 1);
             } else {
                 kefir_opt_instruction_ref_t long_double_ref;
                 kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
@@ -4232,7 +4250,12 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0]; \
  \
             kefir_id_t func_decl_id = KEFIR_ID_NONE; \
-            REQUIRE_OK(_fn(mem, module, param, &func_decl_id)); \
+            if (configuration->decimal_encoding == KEFIR_DECIMAL_ENCODING_BID) { \
+                REQUIRE_OK(get_libgcc_bid_##_fn(mem, module, param, &func_decl_id)); \
+            } else { \
+                REQUIRE_OK(get_libgcc_dpd_##_fn(mem, module, param, &func_decl_id)); \
+            } \
+ \
  \
             kefir_opt_call_id_t call_node_id; \
             REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, \
@@ -4242,15 +4265,15 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
         } while (0)
 
         case KEFIR_OPT_OPCODE_DECIMAL32_ISNAN:
-            ISNAN_IMPL(get_libgcc_bid_unordsd2_function_decl_id);
+            ISNAN_IMPL(unordsd2_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL64_ISNAN:
-            ISNAN_IMPL(get_libgcc_bid_unorddd2_function_decl_id);
+            ISNAN_IMPL(unorddd2_function_decl_id);
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL128_ISNAN:
-            ISNAN_IMPL(get_libgcc_bid_unordtd2_function_decl_id);
+            ISNAN_IMPL(unordtd2_function_decl_id);
             break;
 
 #undef ISNAN_IMPL
