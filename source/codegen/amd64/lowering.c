@@ -91,86 +91,91 @@ struct lowering_param {
         kefir_id_t sofxfloat_complex_double_div;
         kefir_id_t sofxfloat_complex_long_double_div;
 
-        kefir_id_t libgcc_bid_addsd3;
-        kefir_id_t libgcc_bid_adddd3;
-        kefir_id_t libgcc_bid_addtd3;
-        kefir_id_t libgcc_bid_subsd3;
-        kefir_id_t libgcc_bid_subdd3;
-        kefir_id_t libgcc_bid_subtd3;
-        kefir_id_t libgcc_bid_mulsd3;
-        kefir_id_t libgcc_bid_muldd3;
-        kefir_id_t libgcc_bid_multd3;
-        kefir_id_t libgcc_bid_divsd3;
-        kefir_id_t libgcc_bid_divdd3;
-        kefir_id_t libgcc_bid_divtd3;
-        kefir_id_t libgcc_bid_eqsd3;
-        kefir_id_t libgcc_bid_eqdd3;
-        kefir_id_t libgcc_bid_eqtd3;
-        kefir_id_t libgcc_bid_gtsd3;
-        kefir_id_t libgcc_bid_gtdd3;
-        kefir_id_t libgcc_bid_gttd3;
-        kefir_id_t libgcc_bid_ltsd3;
-        kefir_id_t libgcc_bid_ltdd3;
-        kefir_id_t libgcc_bid_lttd3;
-        // Decimal to decimal
-        kefir_id_t libgcc_bid_extendsddd2;
-        kefir_id_t libgcc_bid_extendsdtd2;
-        kefir_id_t libgcc_bid_extendddtd2;
-        kefir_id_t libgcc_bid_truncddsd2;
-        kefir_id_t libgcc_bid_trunctdsd2;
-        kefir_id_t libgcc_bid_trunctddd2;
-        // Decimal32 to ...
-        kefir_id_t libgcc_bid_truncsdsf;
-        kefir_id_t libgcc_bid_extendsddf;
-        kefir_id_t libgcc_bid_extendsdxf;
-        // Decimal64 to ...
-        kefir_id_t libgcc_bid_truncddsf;
-        kefir_id_t libgcc_bid_truncdddf;
-        kefir_id_t libgcc_bid_extendddxf;
-        // Decimal128 to ...
-        kefir_id_t libgcc_bid_trunctdsf;
-        kefir_id_t libgcc_bid_trunctddf;
-        kefir_id_t libgcc_bid_trunctdxf;
-        // Decimal32 from ...
-        kefir_id_t libgcc_bid_extendsfsd;
-        kefir_id_t libgcc_bid_truncdfsd;
-        kefir_id_t libgcc_bid_truncxfsd;
-        // Decimal64 from ...
-        kefir_id_t libgcc_bid_extendsfdd;
-        kefir_id_t libgcc_bid_extenddfdd;
-        kefir_id_t libgcc_bid_truncxfdd;
-        // Decimal128 from ...
-        kefir_id_t libgcc_bid_extendsftd;
-        kefir_id_t libgcc_bid_extenddftd;
-        kefir_id_t libgcc_bid_extendxftd;
-        // ... to long
-        kefir_id_t libgcc_bid_fixsddi;
-        kefir_id_t libgcc_bid_fixdddi;
-        kefir_id_t libgcc_bid_fixtddi;
-        // ... to unsigned long
-        kefir_id_t libgcc_bid_fixunssddi;
-        kefir_id_t libgcc_bid_fixunsdddi;
-        kefir_id_t libgcc_bid_fixunstddi;
-        // long from ...
-        kefir_id_t libgcc_bid_floatdisd;
-        kefir_id_t libgcc_bid_floatdidd;
-        kefir_id_t libgcc_bid_floatditd;
-        // unsigned  long from ...
-        kefir_id_t libgcc_bid_floatunsdisd;
-        kefir_id_t libgcc_bid_floatunsdidd;
-        kefir_id_t libgcc_bid_floatunsditd;
+#define DECL_DECIMAL_FNS(_prefix) \
+        kefir_id_t _prefix##_addsd3; \
+        kefir_id_t _prefix##_adddd3; \
+        kefir_id_t _prefix##_addtd3; \
+        kefir_id_t _prefix##_subsd3; \
+        kefir_id_t _prefix##_subdd3; \
+        kefir_id_t _prefix##_subtd3; \
+        kefir_id_t _prefix##_mulsd3; \
+        kefir_id_t _prefix##_muldd3; \
+        kefir_id_t _prefix##_multd3; \
+        kefir_id_t _prefix##_divsd3; \
+        kefir_id_t _prefix##_divdd3; \
+        kefir_id_t _prefix##_divtd3; \
+        kefir_id_t _prefix##_eqsd3; \
+        kefir_id_t _prefix##_eqdd3; \
+        kefir_id_t _prefix##_eqtd3; \
+        kefir_id_t _prefix##_gtsd3; \
+        kefir_id_t _prefix##_gtdd3; \
+        kefir_id_t _prefix##_gttd3; \
+        kefir_id_t _prefix##_ltsd3; \
+        kefir_id_t _prefix##_ltdd3; \
+        kefir_id_t _prefix##_lttd3; \
+        /* Decimal to decimal */ \
+        kefir_id_t _prefix##_extendsddd2; \
+        kefir_id_t _prefix##_extendsdtd2; \
+        kefir_id_t _prefix##_extendddtd2; \
+        kefir_id_t _prefix##_truncddsd2; \
+        kefir_id_t _prefix##_trunctdsd2; \
+        kefir_id_t _prefix##_trunctddd2; \
+        /* Decimal32 to ... */ \
+        kefir_id_t _prefix##_truncsdsf; \
+        kefir_id_t _prefix##_extendsddf; \
+        kefir_id_t _prefix##_extendsdxf; \
+        /* Decimal64 to ... */ \
+        kefir_id_t _prefix##_truncddsf; \
+        kefir_id_t _prefix##_truncdddf; \
+        kefir_id_t _prefix##_extendddxf; \
+        /* Decimal128 to ... */ \
+        kefir_id_t _prefix##_trunctdsf; \
+        kefir_id_t _prefix##_trunctddf; \
+        kefir_id_t _prefix##_trunctdxf; \
+        /* Decimal32 from ... */ \
+        kefir_id_t _prefix##_extendsfsd; \
+        kefir_id_t _prefix##_truncdfsd; \
+        kefir_id_t _prefix##_truncxfsd; \
+        /* Decimal64 from ... */ \
+        kefir_id_t _prefix##_extendsfdd; \
+        kefir_id_t _prefix##_extenddfdd; \
+        kefir_id_t _prefix##_truncxfdd; \
+        /* Decimal128 from ... */ \
+        kefir_id_t _prefix##_extendsftd; \
+        kefir_id_t _prefix##_extenddftd; \
+        kefir_id_t _prefix##_extendxftd; \
+        /* ... to long */ \
+        kefir_id_t _prefix##_fixsddi; \
+        kefir_id_t _prefix##_fixdddi; \
+        kefir_id_t _prefix##_fixtddi; \
+        /* ... to unsigned long */ \
+        kefir_id_t _prefix##_fixunssddi; \
+        kefir_id_t _prefix##_fixunsdddi; \
+        kefir_id_t _prefix##_fixunstddi; \
+        /* long from ... */ \
+        kefir_id_t _prefix##_floatdisd; \
+        kefir_id_t _prefix##_floatdidd; \
+        kefir_id_t _prefix##_floatditd; \
+        /* unsigned  long from ... */ \
+        kefir_id_t _prefix##_floatunsdisd; \
+        kefir_id_t _prefix##_floatunsdidd; \
+        kefir_id_t _prefix##_floatunsditd; \
+ \
+        kefir_id_t _prefix##_floatbitintsd; \
+        kefir_id_t _prefix##_floatbitintdd; \
+        kefir_id_t _prefix##_floatbitinttd; \
+ \
+        kefir_id_t _prefix##_fixsdbitint; \
+        kefir_id_t _prefix##_fixddbitint; \
+        kefir_id_t _prefix##_fixtdbitint; \
+ \
+        kefir_id_t _prefix##_unordsd2; \
+        kefir_id_t _prefix##_unorddd2; \
+        kefir_id_t _prefix##_unordtd2
 
-        kefir_id_t libgcc_bid_floatbitintsd;
-        kefir_id_t libgcc_bid_floatbitintdd;
-        kefir_id_t libgcc_bid_floatbitinttd;
-
-        kefir_id_t libgcc_bid_fixsdbitint;
-        kefir_id_t libgcc_bid_fixddbitint;
-        kefir_id_t libgcc_bid_fixtdbitint;
-
-        kefir_id_t libgcc_bid_unordsd2;
-        kefir_id_t libgcc_bid_unorddd2;
-        kefir_id_t libgcc_bid_unordtd2;
+        DECL_DECIMAL_FNS(libgcc_bid);
+        DECL_DECIMAL_FNS(libgcc_dpd);
+#undef DECL_DECIMAL_FNS
     } runtime_fn;
 };
 
@@ -554,311 +559,324 @@ DECL_RUNTIME_FN(sofxfloat_complex_long_double_div, KEFIR_SOFTFLOAT_COMPLEX_LONG_
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE, 0, 0));
 })
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_addsd3, LIBGCC_BID_ADDSD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_adddd3, LIBGCC_BID_ADDDD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_addtd3, LIBGCC_BID_ADDTD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_subsd3, LIBGCC_BID_SUBSD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_subdd3, LIBGCC_BID_SUBDD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_subtd3, LIBGCC_BID_SUBTD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_mulsd3, LIBGCC_BID_MULSD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_muldd3, LIBGCC_BID_MULDD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_multd3, LIBGCC_BID_MULTD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_divsd3, LIBGCC_BID_DIVSD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_divdd3, LIBGCC_BID_DIVDD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_divtd3, LIBGCC_BID_DIVTD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_eqsd3, LIBGCC_BID_EQSD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_eqdd3, LIBGCC_BID_EQDD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_eqtd3, LIBGCC_BID_EQTD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_gtsd3, LIBGCC_BID_GTSD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_gtdd3, LIBGCC_BID_GTDD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_gttd3, LIBGCC_BID_GTTD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_ltsd3, LIBGCC_BID_LTSD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_ltdd3, LIBGCC_BID_LTDD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_lttd3, LIBGCC_BID_LTTD3, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-// Decimal to decimal
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendsddd2, LIBGCC_BID_EXTENDSDDD2, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendsdtd2, LIBGCC_BID_EXTENDSDTD2, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendddtd2, LIBGCC_BID_EXTENDDDTD2, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_truncddsd2, LIBGCC_BID_TRUNCDDSD2, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_trunctdsd2, LIBGCC_BID_TRUNCTDSD2, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_trunctddd2, LIBGCC_BID_TRUNCTDDD2, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-// Decimal32 to ...
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_truncsdsf, LIBGCC_BID_TRUNCSDSF, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendsddf, LIBGCC_BID_EXTENDSDDF, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendsdxf, LIBGCC_BID_EXTENDSDXF, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
-})
-// Decimal64 to ...
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_truncddsf, LIBGCC_BID_TRUNCDDSF, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_truncdddf, LIBGCC_BID_TRUNCDDDF, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendddxf, LIBGCC_BID_EXTENDDDXF, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
-})
-// Decimal128 to ...
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_trunctdsf, LIBGCC_BID_TRUNCTDSF, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_trunctddf, LIBGCC_BID_TRUNCTDDF, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_trunctdxf, LIBGCC_BID_TRUNCTDXF, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
-})
-// Decimal32 from ...
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendsfsd, LIBGCC_BID_EXTENDSFSD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_truncdfsd, LIBGCC_BID_TRUNCDFSD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_truncxfsd, LIBGCC_BID_TRUNCXFSD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-// Decimal64 from ...
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendsfdd, LIBGCC_BID_EXTENDSFDD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extenddfdd, LIBGCC_BID_EXTENDDFDD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_truncxfdd, LIBGCC_BID_TRUNCXFDD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-// Decimal128 from ...
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendsftd, LIBGCC_BID_EXTENDSFTD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extenddftd, LIBGCC_BID_EXTENDDFTD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_extendxftd, LIBGCC_BID_EXTENDXFTD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-// ... to long
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixsddi, LIBGCC_BID_FIXSDDI, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixdddi, LIBGCC_BID_FIXDDDI, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixtddi, LIBGCC_BID_FIXTDDI, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0));
-})
-// ... to unsigned long
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixunssddi, LIBGCC_BID_FIXUNSSDDI, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixunsdddi, LIBGCC_BID_FIXUNSDDDI, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixunstddi, LIBGCC_BID_FIXUNSTDDI, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0));
-})
-// long from ...
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_floatdisd, LIBGCC_BID_FLOATDISD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_floatdidd, LIBGCC_BID_FLOATDIDD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_floatditd, LIBGCC_BID_FLOATDITD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-// unsigned long from ...
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_floatunsdisd, LIBGCC_BID_FLOATUNSDISD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_floatunsdidd, LIBGCC_BID_FLOATUNSDIDD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_floatunsditd, LIBGCC_BID_FLOATUNSDITD, 1, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_floatbitintsd, LIBGCC_BID_FLOATBITINTSD, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_floatbitintdd, LIBGCC_BID_FLOATBITINTDD, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_floatbitinttd, LIBGCC_BID_FLOATBITINTTD, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixsdbitint, LIBGCC_BID_FIXSDBITINT, 3, 0, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixddbitint, LIBGCC_BID_FIXDDBITINT, 3, 0, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_fixtdbitint, LIBGCC_BID_FIXTDBITINT, 3, 0, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_unordsd2, LIBGCC_BIG_UNORDSD2, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_unorddd2, LIBGCC_BIG_UNORDDD2, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
-DECL_BUILTIN_RUNTIME_FN(libgcc_bid_unordtd2, LIBGCC_BIG_UNORDTD2, 2, 1, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
-})
+#define DECL_DECIMAL_FNS(_prefix, _encoding) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_addsd3, LIBGCC_DECIMAL_ADDSD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_adddd3, LIBGCC_DECIMAL_ADDDD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_addtd3, LIBGCC_DECIMAL_ADDTD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_subsd3, LIBGCC_DECIMAL_SUBSD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_subdd3, LIBGCC_DECIMAL_SUBDD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_subtd3, LIBGCC_DECIMAL_SUBTD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_mulsd3, LIBGCC_DECIMAL_MULSD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_muldd3, LIBGCC_DECIMAL_MULDD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_multd3, LIBGCC_DECIMAL_MULTD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_divsd3, LIBGCC_DECIMAL_DIVSD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_divdd3, LIBGCC_DECIMAL_DIVDD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_divtd3, LIBGCC_DECIMAL_DIVTD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_eqsd3, LIBGCC_DECIMAL_EQSD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_eqdd3, LIBGCC_DECIMAL_EQDD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_eqtd3, LIBGCC_DECIMAL_EQTD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_gtsd3, LIBGCC_DECIMAL_GTSD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_gtdd3, LIBGCC_DECIMAL_GTDD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_gttd3, LIBGCC_DECIMAL_GTTD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_ltsd3, LIBGCC_DECIMAL_LTSD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_ltdd3, LIBGCC_DECIMAL_LTDD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_lttd3, LIBGCC_DECIMAL_LTTD3(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+/* Decimal to decimal */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendsddd2, LIBGCC_DECIMAL_EXTENDSDDD2(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendsdtd2, LIBGCC_DECIMAL_EXTENDSDTD2(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendddtd2, LIBGCC_DECIMAL_EXTENDDDTD2(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_truncddsd2, LIBGCC_DECIMAL_TRUNCDDSD2(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_trunctdsd2, LIBGCC_DECIMAL_TRUNCTDSD2(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_trunctddd2, LIBGCC_DECIMAL_TRUNCTDDD2(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+/* Decimal32 to ... */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_truncsdsf, LIBGCC_DECIMAL_TRUNCSDSF(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendsddf, LIBGCC_DECIMAL_EXTENDSDDF(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendsdxf, LIBGCC_DECIMAL_EXTENDSDXF(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0)); \
+}) \
+/* Decimal64 to ... */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_truncddsf, LIBGCC_DECIMAL_TRUNCDDSF(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_truncdddf, LIBGCC_DECIMAL_TRUNCDDDF(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendddxf, LIBGCC_DECIMAL_EXTENDDDXF(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0)); \
+}) \
+/* Decimal128 to ... */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_trunctdsf, LIBGCC_DECIMAL_TRUNCTDSF(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_trunctddf, LIBGCC_DECIMAL_TRUNCTDDF(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_FLOAT64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_trunctdxf, LIBGCC_DECIMAL_TRUNCTDXF(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0)); \
+}) \
+/* Decimal32 from ... */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendsfsd, LIBGCC_DECIMAL_EXTENDSFSD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_truncdfsd, LIBGCC_DECIMAL_TRUNCDFSD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_truncxfsd, LIBGCC_DECIMAL_TRUNCXFSD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+/* Decimal64 from ... */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendsfdd, LIBGCC_DECIMAL_EXTENDSFDD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extenddfdd, LIBGCC_DECIMAL_EXTENDDFDD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_truncxfdd, LIBGCC_DECIMAL_TRUNCXFDD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+/* Decimal128 from ... */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendsftd, LIBGCC_DECIMAL_EXTENDSFTD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extenddftd, LIBGCC_DECIMAL_EXTENDDFTD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_extendxftd, LIBGCC_DECIMAL_EXTENDXFTD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+/* ... to long */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixsddi, LIBGCC_DECIMAL_FIXSDDI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixdddi, LIBGCC_DECIMAL_FIXDDDI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixtddi, LIBGCC_DECIMAL_FIXTDDI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+}) \
+/* ... to unsigned long */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixunssddi, LIBGCC_DECIMAL_FIXUNSSDDI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixunsdddi, LIBGCC_DECIMAL_FIXUNSDDDI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixunstddi, LIBGCC_DECIMAL_FIXUNSTDDI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+}) \
+/* long from ... */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_floatdisd, LIBGCC_DECIMAL_FLOATDISD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_floatdidd, LIBGCC_DECIMAL_FLOATDIDD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_floatditd, LIBGCC_DECIMAL_FLOATDITD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+/* unsigned long from ... */ \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_floatunsdisd, LIBGCC_DECIMAL_FLOATUNSDISD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_floatunsdidd, LIBGCC_DECIMAL_FLOATUNSDIDD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_floatunsditd, LIBGCC_DECIMAL_FLOATUNSDITD(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_floatbitintsd, LIBGCC_DECIMAL_FLOATBITINTSD(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_floatbitintdd, LIBGCC_DECIMAL_FLOATBITINTDD(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_floatbitinttd, LIBGCC_DECIMAL_FLOATBITINTTD(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixsdbitint, LIBGCC_DECIMAL_FIXSDBITINT(_encoding), 3, 0, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixddbitint, LIBGCC_DECIMAL_FIXDDBITINT(_encoding), 3, 0, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixtdbitint, LIBGCC_DECIMAL_FIXTDBITINT(_encoding), 3, 0, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_unordsd2, LIBGCC_DECIMAL_UNORDSD2(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_unorddd2, LIBGCC_DECIMAL_UNORDDD2(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_unordtd2, LIBGCC_DECIMAL_UNORDTD2(_encoding), 2, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0)); \
+})
+
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
+#endif
+DECL_DECIMAL_FNS(libgcc_bid, LIBGCC_DECIMAL_BID)
+DECL_DECIMAL_FNS(libgcc_dpd, LIBGCC_DECIMAL_DPD)
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
+
+#undef DECL_DECIMAL_FNS
 
 static kefir_result_t new_bitint_type(struct kefir_mem *mem, struct kefir_opt_module *module, kefir_size_t width,
                                       struct kefir_ir_type **type_ptr, kefir_id_t *type_id_ptr) {
@@ -4353,85 +4371,88 @@ kefir_result_t kefir_codegen_amd64_lower_function(struct kefir_mem *mem, struct 
                                                   .sofxfloat_complex_float_div = KEFIR_ID_NONE,
                                                   .sofxfloat_complex_double_div = KEFIR_ID_NONE,
                                                   .sofxfloat_complex_long_double_div = KEFIR_ID_NONE,
-                                                .libgcc_bid_addsd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_adddd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_addtd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_subsd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_subdd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_subtd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_mulsd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_muldd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_multd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_divsd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_divdd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_divtd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_eqsd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_eqdd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_eqtd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_gtsd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_gtdd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_gttd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_ltsd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_ltdd3 = KEFIR_ID_NONE,
-                                                .libgcc_bid_lttd3 = KEFIR_ID_NONE,
-                                                // Decimal to decimal
-                                                .libgcc_bid_extendsddd2 = KEFIR_ID_NONE,
-                                                .libgcc_bid_extendsdtd2 = KEFIR_ID_NONE,
-                                                .libgcc_bid_extendddtd2 = KEFIR_ID_NONE,
-                                                .libgcc_bid_truncddsd2 = KEFIR_ID_NONE,
-                                                .libgcc_bid_trunctdsd2 = KEFIR_ID_NONE,
-                                                .libgcc_bid_trunctddd2 = KEFIR_ID_NONE,
-                                                // Decimal32 to ...
-                                                .libgcc_bid_truncsdsf = KEFIR_ID_NONE,
-                                                .libgcc_bid_extendsddf = KEFIR_ID_NONE,
-                                                .libgcc_bid_extendsdxf = KEFIR_ID_NONE,
-                                                // Decimal64 to ...
-                                                .libgcc_bid_truncddsf = KEFIR_ID_NONE,
-                                                .libgcc_bid_truncdddf = KEFIR_ID_NONE,
-                                                .libgcc_bid_extendddxf = KEFIR_ID_NONE,
-                                                // Decimal128 to ...
-                                                .libgcc_bid_trunctdsf = KEFIR_ID_NONE,
-                                                .libgcc_bid_trunctddf = KEFIR_ID_NONE,
-                                                .libgcc_bid_trunctdxf = KEFIR_ID_NONE,
-                                                // Decimal32 from ...
-                                                .libgcc_bid_extendsfsd = KEFIR_ID_NONE,
-                                                .libgcc_bid_truncdfsd = KEFIR_ID_NONE,
-                                                .libgcc_bid_truncxfsd = KEFIR_ID_NONE,
-                                                // Decimal64 from ...
-                                                .libgcc_bid_extendsfdd = KEFIR_ID_NONE,
-                                                .libgcc_bid_extenddfdd = KEFIR_ID_NONE,
-                                                .libgcc_bid_truncxfdd = KEFIR_ID_NONE,
-                                                // Decimal128 from ...
-                                                .libgcc_bid_extendsftd = KEFIR_ID_NONE,
-                                                .libgcc_bid_extenddftd = KEFIR_ID_NONE,
-                                                .libgcc_bid_extendxftd = KEFIR_ID_NONE,
-                                                // ... to long
-                                                .libgcc_bid_fixsddi = KEFIR_ID_NONE,
-                                                .libgcc_bid_fixdddi = KEFIR_ID_NONE,
-                                                .libgcc_bid_fixtddi = KEFIR_ID_NONE,
-                                                // ... to unsigned long
-                                                .libgcc_bid_fixunssddi = KEFIR_ID_NONE,
-                                                .libgcc_bid_fixunsdddi = KEFIR_ID_NONE,
-                                                .libgcc_bid_fixunstddi = KEFIR_ID_NONE,
-                                                // long from ...
-                                                .libgcc_bid_floatdisd = KEFIR_ID_NONE,
-                                                .libgcc_bid_floatdidd = KEFIR_ID_NONE,
-                                                .libgcc_bid_floatditd = KEFIR_ID_NONE,
-                                                // unsigned  long from ...
-                                                .libgcc_bid_floatunsdisd = KEFIR_ID_NONE,
-                                                .libgcc_bid_floatunsdidd = KEFIR_ID_NONE,
-                                                .libgcc_bid_floatunsditd = KEFIR_ID_NONE,
-                                            
-                                                .libgcc_bid_floatbitintsd = KEFIR_ID_NONE,
-                                                .libgcc_bid_floatbitintdd = KEFIR_ID_NONE,
-                                                .libgcc_bid_floatbitinttd = KEFIR_ID_NONE,
-                                                .libgcc_bid_fixsdbitint = KEFIR_ID_NONE,
-                                                .libgcc_bid_fixddbitint = KEFIR_ID_NONE,
-                                                .libgcc_bid_fixtdbitint = KEFIR_ID_NONE,
-                                            
-                                                .libgcc_bid_unordsd2 = KEFIR_ID_NONE,
-                                                .libgcc_bid_unorddd2 = KEFIR_ID_NONE,
-                                                .libgcc_bid_unordtd2 = KEFIR_ID_NONE}};
+#define INIT_DECIMAL_FNS(_prefix) \
+                                                ._prefix##_addsd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_adddd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_addtd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_subsd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_subdd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_subtd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_mulsd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_muldd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_multd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_divsd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_divdd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_divtd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_eqsd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_eqdd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_eqtd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_gtsd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_gtdd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_gttd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_ltsd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_ltdd3 = KEFIR_ID_NONE, \
+                                                ._prefix##_lttd3 = KEFIR_ID_NONE, \
+                                                /* Decimal to decimal */ \
+                                                ._prefix##_extendsddd2 = KEFIR_ID_NONE, \
+                                                ._prefix##_extendsdtd2 = KEFIR_ID_NONE, \
+                                                ._prefix##_extendddtd2 = KEFIR_ID_NONE, \
+                                                ._prefix##_truncddsd2 = KEFIR_ID_NONE, \
+                                                ._prefix##_trunctdsd2 = KEFIR_ID_NONE, \
+                                                ._prefix##_trunctddd2 = KEFIR_ID_NONE, \
+                                                /* Decimal32 to ... */ \
+                                                ._prefix##_truncsdsf = KEFIR_ID_NONE, \
+                                                ._prefix##_extendsddf = KEFIR_ID_NONE, \
+                                                ._prefix##_extendsdxf = KEFIR_ID_NONE, \
+                                                /* Decimal64 to ... */ \
+                                                ._prefix##_truncddsf = KEFIR_ID_NONE, \
+                                                ._prefix##_truncdddf = KEFIR_ID_NONE, \
+                                                ._prefix##_extendddxf = KEFIR_ID_NONE, \
+                                                /* Decimal128 to ... */ \
+                                                ._prefix##_trunctdsf = KEFIR_ID_NONE, \
+                                                ._prefix##_trunctddf = KEFIR_ID_NONE, \
+                                                ._prefix##_trunctdxf = KEFIR_ID_NONE, \
+                                                /* Decimal32 from ... */ \
+                                                ._prefix##_extendsfsd = KEFIR_ID_NONE, \
+                                                ._prefix##_truncdfsd = KEFIR_ID_NONE, \
+                                                ._prefix##_truncxfsd = KEFIR_ID_NONE, \
+                                                /* Decimal64 from ... */ \
+                                                ._prefix##_extendsfdd = KEFIR_ID_NONE, \
+                                                ._prefix##_extenddfdd = KEFIR_ID_NONE, \
+                                                ._prefix##_truncxfdd = KEFIR_ID_NONE, \
+                                                /* Decimal128 from ... */ \
+                                                ._prefix##_extendsftd = KEFIR_ID_NONE, \
+                                                ._prefix##_extenddftd = KEFIR_ID_NONE, \
+                                                ._prefix##_extendxftd = KEFIR_ID_NONE, \
+                                                /* ... to long */ \
+                                                ._prefix##_fixsddi = KEFIR_ID_NONE, \
+                                                ._prefix##_fixdddi = KEFIR_ID_NONE, \
+                                                ._prefix##_fixtddi = KEFIR_ID_NONE, \
+                                                /* ... to unsigned long */ \
+                                                ._prefix##_fixunssddi = KEFIR_ID_NONE, \
+                                                ._prefix##_fixunsdddi = KEFIR_ID_NONE, \
+                                                ._prefix##_fixunstddi = KEFIR_ID_NONE, \
+                                                /* long from ... */ \
+                                                ._prefix##_floatdisd = KEFIR_ID_NONE, \
+                                                ._prefix##_floatdidd = KEFIR_ID_NONE, \
+                                                ._prefix##_floatditd = KEFIR_ID_NONE, \
+                                                /* unsigned  long from ... */ \
+                                                ._prefix##_floatunsdisd = KEFIR_ID_NONE, \
+                                                ._prefix##_floatunsdidd = KEFIR_ID_NONE, \
+                                                ._prefix##_floatunsditd = KEFIR_ID_NONE, \
+                                                ._prefix##_floatbitintsd = KEFIR_ID_NONE, \
+                                                ._prefix##_floatbitintdd = KEFIR_ID_NONE, \
+                                                ._prefix##_floatbitinttd = KEFIR_ID_NONE, \
+                                                ._prefix##_fixsdbitint = KEFIR_ID_NONE, \
+                                                ._prefix##_fixddbitint = KEFIR_ID_NONE, \
+                                                ._prefix##_fixtdbitint = KEFIR_ID_NONE, \
+                                                ._prefix##_unordsd2 = KEFIR_ID_NONE, \
+                                                ._prefix##_unorddd2 = KEFIR_ID_NONE, \
+                                                ._prefix##_unordtd2 = KEFIR_ID_NONE
+                                                INIT_DECIMAL_FNS(libgcc_bid),
+                                                INIT_DECIMAL_FNS(libgcc_dpd)
+#undef INIT_DECIMAL_FNS
+                                            }};
     REQUIRE_OK(lower_function(mem, module, func, configuration, &param));
     return KEFIR_OK;
 }
