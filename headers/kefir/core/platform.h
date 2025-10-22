@@ -39,7 +39,12 @@
 
 #if (defined(__STDC_IEC_60559_DFP__) || (defined(__GNUC__) && !defined (__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(KEFIR_NETBSD_HOST_PLATFORM)
 #define KEFIR_PLATFORM_HAS_DECIMAL_FP
-#if __GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)
+
+#if !defined(KEFIR_PLATFORM_DECIMAL_BID) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
+#define KEFIR_PLATFORM_DECIMAL_BID
+#endif
+
+#if (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && defined(KEFIR_PLATFORM_DECIMAL_BID)
 #define KEFIR_PLATFORM_HAS_DECIMAL_FP_BITINT_CONV
 #endif
 #endif

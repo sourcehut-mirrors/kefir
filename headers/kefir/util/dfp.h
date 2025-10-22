@@ -24,6 +24,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/source_location.h"
 #include "kefir/core/mem.h"
+#include "kefir/core/data_model.h"
 #include "kefir/util/bigint.h"
 
 typedef struct kefir_dfp_decimal32 {
@@ -42,6 +43,7 @@ kefir_result_t kefir_dfp_require_supported(const struct kefir_source_location *)
 
 kefir_bool_t kefir_dfp_is_supported(void);
 kefir_bool_t kefir_dfp_bitint_conv_is_supported(void);
+kefir_data_model_decimal_encoding_t kefir_dfp_native_encoding(void);
 kefir_dfp_decimal32_t kefir_dfp_decimal32_from_int64(kefir_int64_t);
 kefir_dfp_decimal32_t kefir_dfp_decimal32_from_uint64(kefir_uint64_t);
 kefir_dfp_decimal64_t kefir_dfp_decimal64_from_int64(kefir_int64_t);

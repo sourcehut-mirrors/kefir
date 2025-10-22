@@ -24,6 +24,7 @@
 #include "./definitions.h"
 
 int main(void) {
+#ifndef KEFIR_PLATFORM_DECIMAL_DPD
     assert(x == 823317928ll);
     assert(y[0] == 767246825ll);
     assert(y[1] == 819142904ll);
@@ -31,5 +32,14 @@ int main(void) {
     assert(z[1] == -405455524ll);
     assert(z[2] == -558933437ll);
     assert(z[3] == 808212005ll);
+#else
+    assert(x == 639947204ll);
+    assert(y[0] == 586063529ll);
+    assert(y[1] == 907659869ll);
+    assert(z[0] == 903657129ll);
+    assert(z[1] == 1421595223ll);
+    assert(z[2] == -1362380053ll);
+    assert(z[3] == 637910133ll);
+#endif
     return EXIT_SUCCESS;
 }

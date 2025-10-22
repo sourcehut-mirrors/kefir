@@ -59,6 +59,12 @@ typedef struct kefir_preprocessor_context_extensions {
     void *payload;
 } kefir_preprocessor_context_extensions_t;
 
+typedef enum kefir_preprocessor_environment_decimal_support {
+    KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_NO_SUPPORT,
+    KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_BID,
+    KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_DPD
+} kefir_preprocessor_environment_decimal_support_t;
+
 typedef struct kefir_preprocessor_environment {
     time_t timestamp;
     kefir_bool_t hosted;
@@ -74,7 +80,7 @@ typedef struct kefir_preprocessor_environment {
     kefir_bool_t stdc_no_complex;
     kefir_bool_t stdc_no_threads;
     kefir_bool_t stdc_no_vla;
-    kefir_bool_t kefir_decimal_support;
+    kefir_preprocessor_environment_decimal_support_t kefir_decimal_support;
     kefir_bool_t kefir_decimal_bitint_conv_support;
     const struct kefir_data_model_descriptor *data_model;
     struct kefir_hashtree supported_std_attributes;

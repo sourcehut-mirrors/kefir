@@ -96,7 +96,13 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     context->environment.stdc_no_complex = false;
     context->environment.stdc_no_threads = false;
     context->environment.stdc_no_vla = false;
-    context->environment.kefir_decimal_support = kefir_dfp_is_supported();
+    if (kefir_dfp_is_supported()) {
+        context->environment.kefir_decimal_support = kefir_dfp_native_encoding() == KEFIR_DECIMAL_ENCODING_BID
+            ? KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_BID
+            : KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_DPD;
+    } else {
+        context->environment.kefir_decimal_support = KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_NO_SUPPORT;
+    }
     context->environment.kefir_decimal_bitint_conv_support = kefir_dfp_bitint_conv_is_supported();
 
     context->preprocessor_config = &DefaultConfiguration;

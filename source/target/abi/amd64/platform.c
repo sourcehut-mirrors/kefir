@@ -219,7 +219,14 @@ static const struct kefir_data_model_descriptor AMD64_SYSV_DATA_MODEL_DESCRIPTOR
                      .float_bits = 32,
                      .double_bits = 64,
                      .long_double_bits = 128},
-    .decimal_encoding = KEFIR_DECIMAL_ENCODING_BID};
+#if defined(KEFIR_PLATFORM_DECIMAL_BID) || !defined(KEFIR_PLATFORM_HAS_DECIMAL_FP)
+    .decimal_encoding = KEFIR_DECIMAL_ENCODING_BID
+#elif defined(KEFIR_PLATFORM_DECIMAL_DPD)
+    .decimal_encoding = KEFIR_DECIMAL_ENCODING_DPD
+#else
+#error "Expected either KEFIR_PLATFORM_DECIMAL_BID or KEFIR_PLATFORM_DECIMAL_DPD to be defined"
+#endif
+};
 
 kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant,
                                                struct kefir_ir_target_platform *platform) {

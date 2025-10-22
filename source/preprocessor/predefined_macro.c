@@ -222,6 +222,7 @@ MACRO_PP_NUMBER_FMT(stdc_iso_10646, 64, "%" KEFIR_ULONG_FMT "L",
 MACRO_PP_NUMBER_FMT(stdc_lib_ext1, 64, "%" KEFIR_ULONG_FMT "L",
                     macro_payload->scope->preprocessor->context->environment.stdc_lib_ext1)
 MACRO_PP_NUMBER_FMT(produce_one, 64, "%" KEFIR_INT_FMT, 1)
+MACRO_PP_NUMBER_FMT(produce_two, 64, "%" KEFIR_INT_FMT, 2)
 MACRO_PP_NUMBER_FMT(big_endian, 64, "%" KEFIR_INT_FMT, 4321)
 MACRO_PP_NUMBER_FMT(little_endian, 64, "%" KEFIR_INT_FMT, 1234)
 MACRO_PP_NUMBER_FMT(pdp_endian, 64, "%" KEFIR_INT_FMT, 3412)
@@ -872,9 +873,20 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_no_vla,
                                                     "__STDC_NO_VLA__", macro_produce_one_apply));
     }
-    if (preprocessor->context->environment.kefir_decimal_support) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefir_decimal_support,
-                                                    "__KEFIRCC_DECIMAL_SUPPORT__", macro_produce_one_apply));
+    switch (preprocessor->context->environment.kefir_decimal_support) {
+        case KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_NO_SUPPORT:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_BID:
+            REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefir_decimal_support,
+                                                        "__KEFIRCC_DECIMAL_SUPPORT__", macro_produce_one_apply));
+            break;
+
+        case KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_DPD:
+            REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefir_decimal_support,
+                                                        "__KEFIRCC_DECIMAL_SUPPORT__", macro_produce_two_apply));
+            break;
     }
     if (preprocessor->context->environment.kefir_decimal_bitint_conv_support) {
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefir_decimal_bitint_conv_support,

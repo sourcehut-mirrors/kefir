@@ -208,7 +208,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     if (options->features.declare_decimal_support) {
         compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support = options->features.declare_decimal_bitint_conv_support && (compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support || options->features.imprecise_decimal_bitint_conv);
     } else {
-        compiler.preprocessor_context.environment.kefir_decimal_support = false;
+        compiler.preprocessor_context.environment.kefir_decimal_support = KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_NO_SUPPORT;
         compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support = false;
     }
     for (const char **attribute = KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES; *attribute != NULL; ++attribute) {

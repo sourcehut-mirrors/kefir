@@ -25,6 +25,7 @@
 
 int main(void) {
     int i = 0;
+#ifndef KEFIR_PLATFORM_DECIMAL_DPD
     assert(a[i++] == -1341863151);
     assert(a[i++] == 805620497);
     assert(a[i++] == 805620497);
@@ -109,5 +110,91 @@ int main(void) {
     assert(c[i++] == 3479593662097129472ull);
     assert(c[i++] == 0);
     assert(c[i++] == 8646911284551352320ul);
+#else
+    assert(a[i++] == (int) 2718322857ll);
+    assert(a[i++] == (int) 570839209ll);
+    assert(a[i++] == (int) 570839209ll);
+    assert(a[i++] == (int) 2718322857ll);
+    assert(a[i++] == (int) 2723151872ll);
+    assert(a[i++] == (int) 575668224ll);
+    assert(a[i++] == (int) 575668224ll);
+    assert(a[i++] == (int) 2723151872ll);
+    assert(a[i++] == (int) 571158415ll);
+    assert(a[i++] == (int) 570803502ll);
+    assert(a[i++] == (int) 570839257ll);
+    assert(a[i++] == (int) 570493361ll);
+    assert(a[i++] == (int) 2718287150ll);
+    assert(a[i++] == (int) 570839257ll);
+    assert(a[i++] == (int) 1778050977ll);
+    assert(a[i++] == (int) 570425344ll);
+    assert(a[i++] == (int) 570425344ll);
+    assert(a[i++] == (int) 636704679ll);
+    assert(a[i++] == (int) 580911104ll);
+    assert(a[i++] == (int) 2013265920ll);
+
+    i = 0;
+    assert(b[i++] == 11683463333306323113ull);
+    assert(b[i++] == 2460091296451547305ull);
+    assert(b[i++] == 2460091296451547305ull);
+    assert(b[i++] == 11683463333306323113ull);
+    assert(b[i++] == 11689092832840122368ull);
+    assert(b[i++] == 2465720795985346560ull);
+    assert(b[i++] == 2465720795985346560ull);
+    assert(b[i++] == 11689092832840122368ull);
+    assert(b[i++] == 2460091296451866511ull);
+    assert(b[i++] == 2460091296451511598ull);
+    assert(b[i++] == 2460091296451547353ull);
+    assert(b[i++] == 2460091296451201457ull);
+    assert(b[i++] == 11683463333306287406ull);
+    assert(b[i++] == 2460091296451547353ull);
+    assert(b[i++] == 2454461877979466578ull);
+    assert(b[i++] == 2460091296451133440ull);
+    assert(b[i++] == 2460091296451133440ull);
+    assert(b[i++] == 2737297873678269113ull);
+    assert(b[i++] == 2471350295519559680ull);
+    assert(b[i++] == 8646911284551352320ull);
+
+    i = 0;
+    assert(c[i++] == 413865ull);
+    assert(c[i++] == 11675230190237122560ull);
+    assert(c[i++] == 413865ull);
+    assert(c[i++] == 2451858153382346752ull);
+    assert(c[i++] == 413865ull);
+    assert(c[i++] == 2451858153382346752ull);
+    assert(c[i++] == 413865ull);
+    assert(c[i++] == 11675230190237122560ull);
+    assert(c[i++] == 0ull);
+    assert(c[i++] == 11675582033958010880ull);
+    assert(c[i++] == 0ull);
+    assert(c[i++] == 2452209997103235072ull);
+    assert(c[i++] == 0ull);
+    assert(c[i++] == 2452209997103235072ull);
+    assert(c[i++] == 0ull);
+    assert(c[i++] == 11675582033958010880ull);
+    assert(c[i++] == 733071ull);
+    assert(c[i++] == 2451858153382346752ull);
+    assert(c[i++] == 378158ull);
+    assert(c[i++] == 2451858153382346752ull);
+    assert(c[i++] == 413913ull);
+    assert(c[i++] == 2451858153382346752ull);
+    assert(c[i++] == 68017ull);
+    assert(c[i++] == 2451858153382346752ull);
+    assert(c[i++] == 378158ull);
+    assert(c[i++] == 11675230190237122560ull);
+    assert(c[i++] == 413913ull);
+    assert(c[i++] == 2451858153382346752ull);
+    assert(c[i++] == 81062546258ull);
+    assert(c[i++] == 2451506309661458432ull);
+    assert(c[i++] == 0ull);
+    assert(c[i++] == 2451858153382346752ull);
+    assert(c[i++] == 0ull);
+    assert(c[i++] == 2451858153382346752ull);
+    assert(c[i++] == 10916334982645736225ull);
+    assert(c[i++] == 2738132904706074539ull);
+    assert(c[i++] == 0ull);
+    assert(c[i++] == 2452561840824123392ull);
+    assert(c[i++] == 0ull);
+    assert(c[i++] == 8646911284551352320ull);
+#endif
     return EXIT_SUCCESS;
 }
