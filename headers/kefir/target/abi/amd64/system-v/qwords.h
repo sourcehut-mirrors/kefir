@@ -78,4 +78,6 @@ kefir_result_t kefir_abi_amd64_sysv_qwords_max_position(const struct kefir_abi_a
                                                         const struct kefir_abi_amd64_sysv_qword_position *,
                                                         struct kefir_abi_amd64_sysv_qword_position *);
 
+kefir_size_t kefir_abi_amd64_sysv_qwords_current_offset(const struct kefir_abi_amd64_sysv_qwords *);
+
 #endif

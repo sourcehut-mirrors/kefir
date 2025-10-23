@@ -103,14 +103,28 @@ static kefir_abi_amd64_sysv_data_class_t derive_dataclass(kefir_abi_amd64_sysv_d
 
 static struct kefir_abi_amd64_sysv_qword *next_qword(struct kefir_abi_amd64_sysv_qwords *qwords,
                                                      kefir_size_t alignment) {
-    ASSIGN_DECL_CAST(struct kefir_abi_amd64_sysv_qword *, qword, kefir_vector_at(&qwords->qwords, qwords->current));
-    kefir_size_t unalign = qword->current_offset % alignment;
-    kefir_size_t pad = unalign > 0 ? alignment - unalign : 0;
-    if (alignment == 0 || qword->current_offset + pad >= KEFIR_AMD64_ABI_QWORD) {
+    struct kefir_abi_amd64_sysv_qword *qword = kefir_vector_at(&qwords->qwords, qwords->current);
+    REQUIRE(qword != NULL, NULL);
+    kefir_size_t current_offset = qwords->current * KEFIR_AMD64_ABI_QWORD + qword->current_offset;
+    kefir_size_t aligned_offset = (current_offset + alignment - 1) / alignment * alignment;
+    for (; current_offset != aligned_offset;) {
+        qword = kefir_vector_at(&qwords->qwords, qwords->current);
+
+        kefir_size_t pad = aligned_offset - current_offset;
+        if (pad >= KEFIR_AMD64_ABI_QWORD - qword->current_offset) {
+            qwords->current++;
+            qword = (struct kefir_abi_amd64_sysv_qword *) kefir_vector_at(&qwords->qwords, qwords->current);
+            REQUIRE(qword != NULL, NULL);
+        } else {
+            qword->current_offset += pad;
+        }
+
+        current_offset = qwords->current * KEFIR_AMD64_ABI_QWORD + qword->current_offset;
+    }
+
+    if (qword->current_offset == KEFIR_AMD64_ABI_QWORD) {
         qwords->current++;
         qword = (struct kefir_abi_amd64_sysv_qword *) kefir_vector_at(&qwords->qwords, qwords->current);
-    } else {
-        qword->current_offset += pad;
     }
     return qword;
 }
@@ -194,7 +208,7 @@ kefir_result_t kefir_abi_amd64_sysv_qwords_save_position(const struct kefir_abi_
     REQUIRE(position != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid QWord position"));
     position->index = qwords->current;
     ASSIGN_DECL_CAST(struct kefir_abi_amd64_sysv_qword *, qword, kefir_vector_at(&qwords->qwords, qwords->current));
-    position->offset = qword->current_offset;
+    position->offset = qword != NULL ? qword->current_offset : 0;
     return KEFIR_OK;
 }
 
@@ -231,4 +245,11 @@ kefir_result_t kefir_abi_amd64_sysv_qwords_max_position(const struct kefir_abi_a
         *result = *second;
     }
     return KEFIR_OK;
+}
+
+kefir_size_t kefir_abi_amd64_sysv_qwords_current_offset(const struct kefir_abi_amd64_sysv_qwords *qwords) {
+    REQUIRE(qwords != NULL, 0);
+
+    struct kefir_abi_amd64_sysv_qword *qword = kefir_vector_at(&qwords->qwords, qwords->current);
+    return qwords->current * KEFIR_AMD64_ABI_QWORD + (qword != NULL ? qword->current_offset : 0);
 }
