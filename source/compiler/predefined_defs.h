@@ -152,6 +152,9 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __DEC64X_MIN_EXP__ (-6142)
 #define __DEC_EVAL_METHOD__ 2
 
+#define __KEFIRCC_DECIMAL_SUPPORT_BID__ 1
+#define __KEFIRCC_DECIMAL_SUPPORT_DPD__ 2
+
 // Type width
 #ifdef __LP64__
 #define __PTRDIFF_WIDTH__ __LONG_WIDTH__
