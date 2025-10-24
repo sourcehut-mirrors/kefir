@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: GPL-3.0
+# 
+# Copyright (C) 2020-2025  Jevgenijs Protopopovs
+# 
+# This file is part of Kefir project.
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3.
+# # 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# kefir-full-env base image as specified in sibling Dockerfile
+ARG BASE_IMAGE=kefir-full-env
+FROM ${BASE_IMAGE}
+
+RUN mkdir -p /opt/gcc-15.2.0-tmp/build
+RUN wget -O /opt/gcc-15.2.0-tmp/gcc-15.2.0.tar.gz https://mirror.csclub.uwaterloo.ca/gnu/gcc/gcc-15.2.0/gcc-15.2.0.tar.gz
+RUN cd /opt/gcc-15.2.0-tmp && tar xvf gcc-15.2.0.tar.gz
+RUN cd /opt/gcc-15.2.0-tmp/build && ../gcc-15.2.0/configure --prefix=/opt/gcc-15.2.0 --enable-decimal-float=dpd --disable-multilib --enable-languages=c
+RUN cd /opt/gcc-15.2.0-tmp/build && make -j$(nproc)
+RUN cd /opt/gcc-15.2.0-tmp/build && make install
+RUN rm -rf /opt/gcc-15.2.0-tmp
+
+ADD ./dist/kefir_extra_env.sh /opt/kefir_extra_env.sh
+RUN echo "source /opt/kefir_extra_env.sh" >> /etc/profile
+RUN echo "source /opt/kefir_extra_env.sh" >> /etc/bash.bashrc

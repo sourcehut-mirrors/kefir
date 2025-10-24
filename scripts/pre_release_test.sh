@@ -116,6 +116,11 @@ own_test_suite () {
     make CC=musl-gcc USE_SHARED=no KEFIR_BIN_DIR="$ROOT_DIR/bin/kefir-musl-host-stage1" -j$(nproc)
     make install KEFIR_BIN_DIR="$ROOT_DIR/bin/kefir-musl-host-stage1" prefix="$ROOT_DIR/bin/kefir-musl-host-install"
     make test KEFIR_BIN_DIR="$ROOT_DIR/bin/kefir-musl-host-stage2" PROFILE=release KEFIR_TEST_USE_MUSL=yes USE_SHARED=no CC="$ROOT_DIR/bin/kefir-musl-host-install/bin/kefir" -j$(nproc) 2>&1 | tee "$OUTDIR/own/kefir-musl-host.log"
+
+    if [[ "x$DPD_GCC" != "x" ]]; then
+        log "Own test suite with GCC (DPD decimals) host compiler"
+        make test KEFIR_BIN_DIR="$ROOT_DIR/bin/own-gcc-dpd-host" EXTRA_CFLAGS="-DKEFIR_PLATFORM_DECIMAL_DPD" USE_EXTENSION_SUPPORT=yes PROFILE=reldebug KEFIR_END2END_SELECTIVE_VALGRIND=yes CC="$DPD_GCC" -j$(nproc)  2>&1 | tee "$OUTDIR/own/gcc-dpd-host.log"
+    fi
 }
 
 bootstrap_test () {
@@ -132,6 +137,11 @@ bootstrap_test () {
 
     log "Reproducible bootstrap test with musl & Yasm"
     make bootstrap_test KEFIR_BIN_DIR="$ROOT_DIR/bin/bootstrap-musl-yasm" BOOTSTRAP_EXTRA_CFLAGS="-O1 -masm=x86_64-yasm"  CC=musl-gcc USE_SHARED=no AS=yasm -j$(nproc) 2>&1 | tee "$OUTDIR/bootstrap/bootstap-musl-yasm.log"
+
+    if [[ "x$DPD_GCC" != "x" ]]; then
+        log "Reproducible bootstrap test with DPD decimals"
+        make bootstrap_test KEFIR_BIN_DIR="$ROOT_DIR/bin/bootstrap-dpd" BOOTSTRAP_EXTRA_CFLAGS="-O1 -g -DKEFIR_PLATFORM_DECIMAL_DPD" EXTRA_CFLAGS="-DKEFIR_PLATFORM_DECIMAL_DPD" CC="$DPD_GCC" -j$(nproc) 2>&1 | tee "$OUTDIR/bootstrap/bootstap-dpd.log"
+    fi
 }
 
 portable_bootstrap_test () {
@@ -153,6 +163,7 @@ print_make_deps () {
 
 external_test_suite () {
     mkdir -p "$OUTDIR/external"
+    mkdir -p "$OUTDIR/external-dpd"
 
     log "External tests"
     make KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc)
@@ -163,6 +174,11 @@ external_test_suite () {
 
     log "Uncaptured external tests"
     unbuffer make .EXTERNAL_TESTS_SUITE KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc) 2>&1 | tee "$OUTDIR/external/uncaptured.log"
+
+    if [[ "x$DPD_GCC" != "x" ]]; then
+        log "Torture test suite with DPD decimals"
+        unbuffer make torture_test KEFIR_BIN_DIR="$ROOT_DIR/bin/external-dpd" EXTRA_CFLAGS="-DKEFIR_PLATFORM_DECIMAL_DPD" CC="$DPD_GCC" -j$(nproc) 2>&1 | tee "$OUTDIR/external/torture-dpd.log"
+    fi
 }
 
 fuzz_test () {
