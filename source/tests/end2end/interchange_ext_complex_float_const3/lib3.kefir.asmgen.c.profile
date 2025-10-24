@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS --print-tokens -DNO_LONG_DOUBLE"

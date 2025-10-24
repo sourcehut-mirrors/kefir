@@ -1021,7 +1021,7 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
 
         case KEFIR_AST_TYPE_SPECIFIER_DECIMAL64X:
             REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float64 type specifier cannot be combined with others")); // KEFIR_NOT_IMPLEMENTED
+                                                               "Decimal64x type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
