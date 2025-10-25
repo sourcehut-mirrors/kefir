@@ -396,17 +396,17 @@ static kefir_result_t print_target_environment_header(FILE *out, const struct ke
                             STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD));
                     fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n",
                             STRINGIFY(KEFIR_DRIVER_TARGET_VARIANT_SYSTEM));
-                    if (externals->netbsd.include_path != NULL) {
+                    if (externals->dragonflybsd.include_path != NULL) {
                         fprintf(out, "#define KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_INCLUDE_PATH \"%s\"\n",
-                                externals->netbsd.include_path);
+                                externals->dragonflybsd.include_path);
                     }
-                    if (externals->netbsd.library_path != NULL) {
+                    if (externals->dragonflybsd.library_path != NULL) {
                         fprintf(out, "#define KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_LIBRARY_PATH \"%s\"\n",
-                                externals->netbsd.library_path);
+                                externals->dragonflybsd.library_path);
                     }
-                    if (externals->netbsd.dynamic_linker != NULL) {
+                    if (externals->dragonflybsd.dynamic_linker != NULL) {
                         fprintf(out, "#define KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_DYNAMIC_LINKER \"%s\"\n",
-                                externals->netbsd.dynamic_linker);
+                                externals->dragonflybsd.dynamic_linker);
                     }
                     break;
             }
