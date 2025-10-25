@@ -1561,17 +1561,17 @@ static kefir_result_t simplify_int_add(struct kefir_mem *mem, struct kefir_opt_f
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
         REQUIRE_OK(kefir_opt_code_builder_ref_local(
-            mem, &func->code, block_id, arg1->operation.parameters.refs[0],
+            mem, &func->code, block_id, arg1->id,
             arg1->operation.parameters.offset + arg2->operation.parameters.imm.uinteger, replacement_ref));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&
                arg2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
         REQUIRE_OK(kefir_opt_code_builder_ref_local(
-            mem, &func->code, block_id, arg2->operation.parameters.refs[0],
+            mem, &func->code, block_id, arg2->id,
             arg2->operation.parameters.offset + arg1->operation.parameters.imm.integer, replacement_ref));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
                arg2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
         REQUIRE_OK(kefir_opt_code_builder_ref_local(
-            mem, &func->code, block_id, arg2->operation.parameters.refs[0],
+            mem, &func->code, block_id, arg2->id,
             arg2->operation.parameters.offset + arg1->operation.parameters.imm.uinteger, replacement_ref));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL &&
                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {
@@ -3701,6 +3701,15 @@ static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct k
             if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
                 REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, use_instr->id));
                 REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, use_instr->id));
+                res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, source_instr_ref, &use_iter);
+            } else if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+                kefir_opt_block_id_t block_id = use_instr->block_id;
+                kefir_opt_instruction_ref_t offset_ref, replacement_ref;
+                REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, block_id, use_instr->operation.parameters.offset, &offset_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int64_add(mem, &func->code, block_id, source_instr_ref, offset_ref, &replacement_ref));
+                REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, use_iter.use_instr_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, use_iter.use_instr_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, use_iter.use_instr_ref));
                 res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, source_instr_ref, &use_iter);
             } else {
                 res = kefir_opt_code_container_instruction_use_next(&use_iter);
