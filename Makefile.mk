@@ -37,6 +37,10 @@ ifeq ($(PLATFORM),netbsd)
 MDOC_CONV=mandoc -mdoc
 REALPATH=grealpath
 endif
+ifeq ($(PLATFORM),dragonfly)
+MDOC_CONV=mandoc -mdoc
+REALPATH=grealpath
+endif
 
 # Build flags
 CFLAGS=-std=c11 -fno-common

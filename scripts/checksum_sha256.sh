@@ -25,6 +25,10 @@ cksum_sha256_checksum () {
     fi
 }
 
+dfly_sha256_checksum () {
+	sha256  "$1" | cut -d' ' -f4
+}
+
 host=`uname | tr '[:upper:]' '[:lower:]'`
 case "$host" in
     "linux")
@@ -41,6 +45,10 @@ case "$host" in
 
     "netbsd")
         cksum_sha256_checksum "$1" "$2"
+        ;;
+
+    "dragonfly")
+        dfly_sha256_checksum "$1"
         ;;
     
     *)

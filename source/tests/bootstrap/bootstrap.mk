@@ -17,6 +17,8 @@ else ifeq ($(PLATFORM),openbsd)
 BOOTSTRAP_CFLAGS += --target hostcpu-openbsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap_include/openbsd.h
 else ifeq ($(PLATFORM),netbsd)
 BOOTSTRAP_CFLAGS += --target hostcpu-netbsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap_include/netbsd.h
+else ifeq ($(PLATFORM),dragonfly)
+BOOTSTRAP_CFLAGS += --target hostcpu-dragonflybsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap_include/dragonflybsd.h
 else
 BOOTSTRAP_CFLAGS += --target hostcpu-linux
 endif
@@ -117,7 +119,7 @@ include source/binary_headers.mk
 $(BOOTSTRAP)/libkefir.so: $(KEFIR_LIB_ASM_FILES)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Linking $@"
-	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) -shared -Wl,--build-id=none -Wl,--discard-all $^ -o $@
+	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) -shared -Wl,--build-id=none -Wl,--discard-all -Wl,-soname=libkefir.so $^ -o $@
 
 ifeq ($(USE_SHARED),yes)
 $(BOOTSTRAP)/kefir: $(KEFIR_DRIVER_ASM_FILES) $(BOOTSTRAP)/libkefir.so

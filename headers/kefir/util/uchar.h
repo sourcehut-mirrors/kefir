@@ -23,7 +23,7 @@
 
 #include "kefir/core/platform.h"
 
-#if !(defined(KEFIR_OPENBSD_HOST_PLATFORM) || defined(KEFIR_NETBSD_HOST_PLATFORM))
+#if !(defined(KEFIR_OPENBSD_HOST_PLATFORM) || defined(KEFIR_NETBSD_HOST_PLATFORM) || defined(KEFIR_DRAGONFLYBSD_HOST_PLATFORM))
 #include <uchar.h>
 #else
 #ifdef KEFIR_OPENBSD_HOST_PLATFORM

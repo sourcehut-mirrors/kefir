@@ -69,6 +69,8 @@ static kefir_result_t select_host_platform(struct kefir_driver_target *target) {
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD;
 #elif defined(KEFIR_NETBSD_HOST_PLATFORM)
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_NETBSD;
+#elif defined(KEFIR_DRAGONFLYBSD_HOST_PLATFORM)
+    target->platform = KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD;
 #elif defined(KEFIR_EMSCRIPTEN_HOST_PLATFORM)
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_LINUX;
 #endif
@@ -81,6 +83,7 @@ static kefir_result_t match_platform(const char *spec, struct kefir_driver_targe
     static const char spec_freebsd[] = "freebsd";
     static const char spec_openbsd[] = "openbsd";
     static const char spec_netbsd[] = "netbsd";
+    static const char spec_dragonflybsd[] = "dragonflybsd";
     static const char spec_hostos[] = "hostos";
     static const char spec_host[] = "host";
 
@@ -97,6 +100,8 @@ static kefir_result_t match_platform(const char *spec, struct kefir_driver_targe
         target->platform = KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD;
     } else if (strncmp(spec, spec_netbsd, sizeof(spec_netbsd) - 1) == 0) {
         target->platform = KEFIR_DRIVER_TARGET_PLATFORM_NETBSD;
+    } else if (strncmp(spec, spec_dragonflybsd, sizeof(spec_dragonflybsd) - 1) == 0) {
+        target->platform = KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD;
     } else if (strncmp(spec, spec_hostos, sizeof(spec_hostos) - 1) == 0 ||
                strncmp(spec, spec_host, sizeof(spec_host) - 1) == 0) {
         REQUIRE_OK(select_host_platform(target));

@@ -146,7 +146,7 @@ kefir_result_t kefir_tempfile_manager_create_file(struct kefir_mem *mem, struct 
     REQUIRE(result != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to generated tempfile name"));
 
-#ifndef KEFIR_NETBSD_HOST_PLATFORM
+#if !defined(KEFIR_NETBSD_HOST_PLATFORM) && !defined(KEFIR_DRAGONFLYBSD_HOST_PLATFORM)
     REQUIRE_OK(init_tempfile_manager(mem, mgr));
     static const char FILEPATH_TEMPLATE[] = "%s/%s.%" KEFIR_SIZE_FMT ".XXXXXX";
 

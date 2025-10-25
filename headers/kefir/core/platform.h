@@ -33,11 +33,13 @@
 #define KEFIR_OPENBSD_HOST_PLATFORM
 #elif defined(__NetBSD__)
 #define KEFIR_NETBSD_HOST_PLATFORM
+#elif defined(__DragonFly__)
+#define KEFIR_DRAGONFLYBSD_HOST_PLATFORM
 #elif defined(__unix__)
 #define KEFIR_UNIX_HOST_PLATFORM
 #endif
 
-#if (defined(__STDC_IEC_60559_DFP__) || (defined(__GNUC__) && !defined (__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(KEFIR_NETBSD_HOST_PLATFORM)
+#if (defined(__STDC_IEC_60559_DFP__) || (defined(__GNUC__) && !defined (__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(KEFIR_NETBSD_HOST_PLATFORM) && !defined(KEFIR_DRAGONFLYBSD_HOST_PLATFORM)
 #define KEFIR_PLATFORM_HAS_DECIMAL_FP
 
 #if !defined(KEFIR_PLATFORM_DECIMAL_BID) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)

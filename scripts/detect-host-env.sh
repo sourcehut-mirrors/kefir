@@ -79,7 +79,7 @@ EOF
         host_cc='gcc'
     else
         log "failed to detect host compiler"
-        exit -1
+        exit 255
     fi
 
     log "$host_cc"
@@ -98,9 +98,11 @@ detect_host_os () {
         host_os='openbsd'
     elif [ "$os" = 'NetBSD' ]; then
         host_os='netbsd'
+    elif [ "$os" = 'DragonFly' ]; then
+        host_os='dragonflybsd'
     else
         log "failed to detect host OS"
-        exit -1
+        exit 255
     fi
 
     log "$host_os"
@@ -125,9 +127,11 @@ detect_host_env () {
         host_env="openbsd-system"
     elif [ "$host_os" = "netbsd" ]; then
         host_env="netbsd-system"
+    elif [ "$host_os" = "dragonflybsd" ]; then
+        host_env="dragonflybsd-system"
     else
         log "failed to detect host environment"
-        exit -1
+        exit 255
     fi
 
     log "$host_env"
@@ -138,7 +142,7 @@ detect_clang_candidate_gcc () {
 
     if [ "x$clang_candidate_gcc" = "x" ]; then
         log "Clang compiler without a candidate GCC installation on Linux cannot be used as host environment provider due to header file incompatibility. Please use GCC for host environment configuration."
-        exit -1
+        exit 255
     else
         log "Using Clang selected candidate GCC installation: $clang_candidate_gcc"
     fi
@@ -302,6 +306,18 @@ EOF
 #define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER "$dynamic_linker"
 EOF
             ;;
+
+        "dragonflybsd-system")
+            cat <<EOF
+#define KEFIR_CONFIG_HOST_AS "as"
+#define KEFIR_CONFIG_HOST_LD "ld"
+#define KEFIR_CONFIG_HOST_PLATFORM KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD
+#define KEFIR_CONFIG_HOST_VARIANT KEFIR_DRIVER_TARGET_VARIANT_SYSTEM
+#define KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_INCLUDE_PATH "$include_path"
+#define KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_LIBRARY_PATH "$library_path"
+#define KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_DYNAMIC_LINKER "$dynamic_linker"
+EOF
+            ;;
     esac
 
     log "done"
@@ -384,6 +400,16 @@ export KEFIR_NETBSD_LIB="$library_path"
 export KEFIR_NETBSD_DYNAMIC_LINKER="$dynamic_linker"
 EOF
             ;;
+
+        "dragonflybsd-system")
+            cat <<EOF
+export KEFIR_AS="as"
+export KEFIR_LD="ld"
+export KEFIR_DRAGONFLYBSD_INCLUDE="$include_path"
+export KEFIR_DRAGONFLYBSD_LIB="$library_path"
+export KEFIR_DRAGONFLYBSD_DYNAMIC_LINKER="$dynamic_linker"
+EOF
+            ;;
     esac
 
     log "done"
@@ -421,7 +447,7 @@ for ARG in "$@"; do
 
         *)
             log "Unknown option $ARG. Usage: $0 --header | --environment | --help"
-            exit -1
+            exit 255
             ;;
     esac
 

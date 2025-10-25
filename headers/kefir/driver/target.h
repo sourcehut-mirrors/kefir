@@ -31,7 +31,8 @@ typedef enum kefir_driver_target_platform {
     KEFIR_DRIVER_TARGET_PLATFORM_LINUX,
     KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD,
     KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD,
-    KEFIR_DRIVER_TARGET_PLATFORM_NETBSD
+    KEFIR_DRIVER_TARGET_PLATFORM_NETBSD,
+    KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD
 } kefir_driver_target_platform_t;
 
 typedef enum kefir_driver_target_variant {

@@ -13,9 +13,12 @@ sha256_checksum () {
 	sha256sum "$1" | cut -d' ' -f1
 }
 
-
 cksum_sha256_checksum () {
 	cksum -a sha256  "$1" | cut -d' ' -f4
+}
+
+dfly_sha256_checksum () {
+	sha256  "$1" | cut -d' ' -f4
 }
 
 function do_sha256_checksum () {
@@ -35,6 +38,10 @@ function do_sha256_checksum () {
 
         "netbsd")
             cksum_sha256_checksum "$1"
+            ;;
+
+        "dragonfly")
+            dfly_sha256_checksum "$1"
             ;;
         
         *)

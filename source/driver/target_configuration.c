@@ -45,7 +45,8 @@ kefir_result_t kefir_driver_apply_target_profile_configuration(
     if (compiler_config != NULL && target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
         if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX ||
             target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD ||
-            target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD) {
+            target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD ||
+            target->platform == KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD) {
             REQUIRE_OK(match_backend(target->backend, &compiler_config->target_profile));
             compiler_config->codegen.emulated_tls = false;
         } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
@@ -53,7 +54,9 @@ kefir_result_t kefir_driver_apply_target_profile_configuration(
             compiler_config->codegen.emulated_tls = true;
         }
 
-        compiler_config->codegen.tls_common = target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX || target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD;
+        compiler_config->codegen.tls_common = target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX ||
+            target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD ||
+            target->platform == KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD;
     }
 
     return KEFIR_OK;
@@ -266,6 +269,19 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
 
             REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->netbsd.include_path, false));
         }
+    } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD) {
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__DragonFly__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__ELF__", "1"));
+        if (driver_config->flags.include_stdinc && target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
+            REQUIRE(externals->dragonflybsd.include_path != NULL,
+                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_DRAGONFLYBSD_INCLUDE "
+                                                    "environment variable for selected target"));
+
+            REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->dragonflybsd.include_path, false));
+        }
     }
     return KEFIR_OK;
 }
@@ -451,6 +467,33 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
             REQUIRE_OK(
                 kefir_driver_linker_configuration_add_argument(mem, linker_config, externals->netbsd.dynamic_linker));
         }
+    } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD &&
+               target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
+        REQUIRE(externals->dragonflybsd.library_path != NULL,
+                KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_DRAGONFLYBSD_LIB "
+                                                "environment variable for selected target"));
+
+        if (linker_config->flags.link_start_files) {
+            if (linker_config->flags.pie_linking) {
+                LINK_FILE(externals->dragonflybsd.library_path, "Scrt1.o");
+            } else if (!linker_config->flags.shared_linking) {
+                LINK_FILE(externals->dragonflybsd.library_path, "crt1.o");
+            }
+            LINK_FILE(externals->dragonflybsd.library_path, "crti.o");
+            if (linker_config->flags.static_linking) {
+                LINK_FILE(externals->dragonflybsd.library_path, "crtbeginT.o");
+            } else if (position_independent) {
+                LINK_FILE(externals->dragonflybsd.library_path, "crtbeginS.o");
+            } else {
+                LINK_FILE(externals->dragonflybsd.library_path, "crtbegin.o");
+            }
+        }
+
+        if (externals->dragonflybsd.dynamic_linker != NULL) {
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--dynamic-linker"));
+            REQUIRE_OK(
+                kefir_driver_linker_configuration_add_argument(mem, linker_config, externals->dragonflybsd.dynamic_linker));
+        }
     }
 
     return KEFIR_OK;
@@ -630,6 +673,31 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
                 LINK_FILE(externals->netbsd.library_path, "crtend.o");
             }
             LINK_FILE(externals->netbsd.library_path, "crtn.o");
+        }
+    } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD &&
+               target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
+        REQUIRE(externals->dragonflybsd.library_path != NULL,
+                KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_DRAGONFLYBSD_LIB "
+                                                "environment variable for selected target"));
+
+        REQUIRE_OK(add_library_paths(mem, linker_config, externals->dragonflybsd.library_path));
+
+        if (linker_config->flags.link_default_libs) {
+            if (linker_config->flags.link_libc) {
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
+            }
+        }
+
+        if (linker_config->flags.link_start_files) {
+            if (linker_config->flags.static_linking) {
+                LINK_FILE(externals->dragonflybsd.library_path, "crtend.o");
+            } else if (position_independent) {
+                LINK_FILE(externals->dragonflybsd.library_path, "crtendS.o");
+            } else {
+                LINK_FILE(externals->dragonflybsd.library_path, "crtend.o");
+            }
+            LINK_FILE(externals->dragonflybsd.library_path, "crtn.o");
         }
     }
     return KEFIR_OK;

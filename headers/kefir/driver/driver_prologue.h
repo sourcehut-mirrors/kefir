@@ -184,6 +184,10 @@ static kefir_result_t print_target(FILE *out, const struct kefir_driver_target *
         case KEFIR_DRIVER_TARGET_PLATFORM_NETBSD:
             fprintf(out, "netbsd-");
             break;
+
+        case KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD:
+            fprintf(out, "dragonflybsd-");
+            break;
     }
 
     switch (target->variant) {
@@ -221,6 +225,7 @@ static kefir_result_t print_environment(FILE *out, const struct kefir_driver_tar
     REQUIRE_OK(print_toolchain_env(out, "FREEBSD", &externals->freebsd));
     REQUIRE_OK(print_toolchain_env(out, "OPENBSD", &externals->openbsd));
     REQUIRE_OK(print_toolchain_env(out, "NETBSD", &externals->netbsd));
+    REQUIRE_OK(print_toolchain_env(out, "DRAGONFLYBSD", &externals->dragonflybsd));
     return KEFIR_OK;
 }
 
@@ -369,6 +374,38 @@ static kefir_result_t print_target_environment_header(FILE *out, const struct ke
                     }
                     if (externals->netbsd.dynamic_linker != NULL) {
                         fprintf(out, "#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER \"%s\"\n",
+                                externals->netbsd.dynamic_linker);
+                    }
+                    break;
+            }
+            break;
+
+        case KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD:
+            switch (target->variant) {
+                case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"x86_64-%s\"\n", "netbsd-none");
+                    break;
+
+                case KEFIR_DRIVER_TARGET_VARIANT_GNU:
+                case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
+                    break;
+
+                case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"x86_64-%s\"\n", "dragonflybsd-system");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD));
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_VARIANT_SYSTEM));
+                    if (externals->netbsd.include_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_INCLUDE_PATH \"%s\"\n",
+                                externals->netbsd.include_path);
+                    }
+                    if (externals->netbsd.library_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_LIBRARY_PATH \"%s\"\n",
+                                externals->netbsd.library_path);
+                    }
+                    if (externals->netbsd.dynamic_linker != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_DYNAMIC_LINKER \"%s\"\n",
                                 externals->netbsd.dynamic_linker);
                     }
                     break;

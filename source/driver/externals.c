@@ -102,6 +102,9 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     externals->netbsd.include_path = getenv_nonzero("KEFIR_NETBSD_INCLUDE");
     externals->netbsd.library_path = getenv_nonzero("KEFIR_NETBSD_LIB");
     externals->netbsd.dynamic_linker = getenv_nonzero("KEFIR_NETBSD_DYNAMIC_LINKER");
+    externals->dragonflybsd.include_path = getenv_nonzero("KEFIR_DRAGONFLYBSD_INCLUDE");
+    externals->dragonflybsd.library_path = getenv_nonzero("KEFIR_DRAGONFLYBSD_LIB");
+    externals->dragonflybsd.dynamic_linker = getenv_nonzero("KEFIR_DRAGONFLYBSD_DYNAMIC_LINKER");
 
     UNUSED(set_if_null);
 
@@ -167,6 +170,18 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
 
 #ifdef KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER
     set_if_null(&externals->netbsd.dynamic_linker, KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_INCLUDE_PATH
+    set_if_null(&externals->dragonflybsd.include_path, KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_INCLUDE_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_LIBRARY_PATH
+    set_if_null(&externals->dragonflybsd.library_path, KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_LIBRARY_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_DYNAMIC_LINKER
+    set_if_null(&externals->dragonflybsd.dynamic_linker, KEFIR_CONFIG_HOST_DRAGONFLYBSD_SYSTEM_DYNAMIC_LINKER);
 #endif
 
     static const char *SOURCE_FILE_SUFFIXES[] = {".c", ".h", NULL};
