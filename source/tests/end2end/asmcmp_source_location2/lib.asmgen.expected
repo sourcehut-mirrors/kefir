@@ -1052,6 +1052,22 @@ factorial:
 #                }
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 20,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 31,
+#                    "column": 5
+#                }
+#            },
+#            {
 #                "opcode": "virtual_block_end",
 #                "args": [],
 #                "labels": [],
@@ -1460,6 +1476,22 @@ factorial:
 #                }
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 28,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 25,
+#                    "column": 9
+#                }
+#            },
+#            {
 #                "opcode": "virtual_block_end",
 #                "args": [],
 #                "labels": [],
@@ -1536,6 +1568,22 @@ factorial:
 #            {
 #                "opcode": "ret",
 #                "args": [],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 23,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 30,
+#                        "variant": "default"
+#                    }
+#                ],
 #                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",

@@ -480,6 +480,17 @@ test1:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "virtual_block_end",
 #                "args": [],
 #                "labels": []
@@ -948,6 +959,17 @@ __kefir_bigint_invert:
 #            {
 #                "opcode": "ret",
 #                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
 #                "labels": []
 #            },
 #            {

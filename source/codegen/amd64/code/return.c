@@ -24,10 +24,11 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
+static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir_mem *mem,
                                                         struct kefir_codegen_amd64_function *function,
                                                         kefir_opt_instruction_ref_t result_instr_ref,
-                                                        kefir_asmcmp_virtual_register_index_t return_vreg) {
+                                                        kefir_asmcmp_virtual_register_index_t return_vreg,
+                                                        struct kefir_list *touch_vregs) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
 
@@ -56,6 +57,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                                                              KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
                 REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, vreg,
                                                                               function_return.direct_reg));
+                REQUIRE_OK(kefir_list_insert_after(mem, touch_vregs, kefir_list_tail(touch_vregs), (void *) (kefir_uptr_t) vreg));
                 if (return_vreg != KEFIR_ID_NONE) {
                     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg,
@@ -73,6 +75,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                                                              KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &vreg));
                 REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, vreg,
                                                                               function_return.direct_reg));
+                REQUIRE_OK(kefir_list_insert_after(mem, touch_vregs, kefir_list_tail(touch_vregs), (void *) (kefir_uptr_t) vreg));
                 if (return_vreg != KEFIR_ID_NONE) {
                     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg,
@@ -126,6 +129,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                                 mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
                             REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, vreg,
                                                                                           subparam.direct_reg));
+                            REQUIRE_OK(kefir_list_insert_after(mem, touch_vregs, kefir_list_tail(touch_vregs), (void *) (kefir_uptr_t) vreg));
                             if (return_vreg != KEFIR_ID_NONE) {
                                 REQUIRE_OK(kefir_asmcmp_amd64_mov(
                                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -145,6 +149,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                                 mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &vreg));
                             REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, vreg,
                                                                                           subparam.direct_reg));
+                            REQUIRE_OK(kefir_list_insert_after(mem, touch_vregs, kefir_list_tail(touch_vregs), (void *) (kefir_uptr_t) vreg));
                             if (return_vreg != KEFIR_ID_NONE) {
                                 struct kefir_abi_amd64_function_parameter next_subparam;
                                 if (i + 1 < length) {
@@ -260,6 +265,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                                                              KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
                 REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, vreg,
                                                                               KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+                REQUIRE_OK(kefir_list_insert_after(mem, touch_vregs, kefir_list_tail(touch_vregs), (void *) (kefir_uptr_t) vreg));
                 REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg,
                     function->stack_frame.return_space_vreg, NULL));
@@ -397,6 +403,33 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
     }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
+                                                        struct kefir_codegen_amd64_function *function,
+                                                        kefir_opt_instruction_ref_t result_instr_ref,
+                                                        kefir_asmcmp_virtual_register_index_t return_vreg) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+
+    struct kefir_list touch_vregs;
+    REQUIRE_OK(kefir_list_init(&touch_vregs));
+    kefir_result_t res = kefir_codegen_amd64_return_from_function_impl(mem, function, result_instr_ref, return_vreg, &touch_vregs);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&touch_vregs);
+        iter != NULL && res == KEFIR_OK;
+        kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg,
+            (kefir_uptr_t) iter->value);
+        REQUIRE_CHAIN(&res, kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
+    }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &touch_vregs);
+        return res;
+    });
+    REQUIRE_OK(kefir_list_free(mem, &touch_vregs));
 
     return KEFIR_OK;
 }

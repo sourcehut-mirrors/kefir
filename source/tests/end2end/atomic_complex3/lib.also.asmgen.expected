@@ -185,8 +185,8 @@ __kefir_text_func_divide_f32_begin:
     shufps $1, %xmm8, %xmm8
     movaps %xmm0, %xmm7
     mov %rdi, %r10
-    fnstenv -160(%rbp)
-    stmxcsr -132(%rbp)
+    fnstenv -152(%rbp)
+    stmxcsr -124(%rbp)
     fnclex
 __kefir_func_divide_f32_label1:
     movq %r10, -120(%rbp)
@@ -254,8 +254,8 @@ __kefir_func_divide_f32_label1:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -160(%rbp)
-    ldmxcsr -132(%rbp)
+    fldenv -152(%rbp)
+    ldmxcsr -124(%rbp)
     stmxcsr -176(%rbp)
     orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)

@@ -24,19 +24,21 @@ __kefir_func_factorial_label1:
     cmp $2, %edi
     jle __kefir_func_factorial_label6
 __kefir_func_factorial_label2:
-    mov $1, %rax
+    mov %rdi, %rcx
+    mov $1, %rdx
 __kefir_func_factorial_label3:
-    cmp $1, %edi
+    cmp $1, %ecx
     jg __kefir_func_factorial_label5
 __kefir_func_factorial_label4:
+    mov %rdx, %rax
     ret
 __kefir_func_factorial_label5:
-    mov %rdi, %rcx
-    add $-1, %ecx
-    mov %rax, %rdx
-    imul %edi, %edx
     mov %rcx, %rdi
+    add $-1, %edi
     mov %rdx, %rax
+    imul %ecx, %eax
+    mov %rdi, %rcx
+    mov %rax, %rdx
     jmp __kefir_func_factorial_label3
 __kefir_func_factorial_label6:
     mov %rdi, %rax
