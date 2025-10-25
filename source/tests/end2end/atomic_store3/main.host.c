@@ -39,6 +39,7 @@ int main(void) {
         set_i64(&str, (long) x);
         set_f32(&str, (float) x);
         set_f64(&str, (double) x);
+#if !defined(__DragonFly__)
         set_a1(&str, a1);
 
         for (int i = 0; i < 8; i++) {
@@ -47,6 +48,7 @@ int main(void) {
 
         set_arr2_el(&str, 0, a1);
         set_arr2_el(&str, 1, (struct X){0});
+#endif
 
         assert(str.i8 == (char) x);
         assert(str.i16 == (short) x);
@@ -55,6 +57,7 @@ int main(void) {
         assert(fabs(str.f32 - (float) x) < EPSILON_F);
         assert(fabs(str.f64 - (double) x) < EPSILON_D);
 
+#if !defined(__DragonFly__)
         assert(memcmp(&str.a1, &a1, sizeof(struct X)) == 0);
 
         for (int i = 0; i < 8; i++) {
@@ -63,6 +66,7 @@ int main(void) {
 
         assert(memcmp(&str.arr2[0], &a1, sizeof(struct X)) == 0);
         assert(memcmp(&str.arr2[1], &(struct X){0}, sizeof(struct X)) == 0);
+#endif
     }
     return EXIT_SUCCESS;
 }

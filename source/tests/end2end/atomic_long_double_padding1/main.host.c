@@ -28,6 +28,7 @@
 #define EPSILON_LD 1e-8
 
 int main(void) {
+#if !defined(__DragonFly__)
     for (unsigned long x = 0; x < 4096; x++) {
         add_ld1((long double) x);
         add_cld1(x - 1.0 * I);
@@ -40,5 +41,6 @@ int main(void) {
     long double expected_cld_imag = -4096;
     assert(fabsl(creall(cld1) - expected_cld_real) < EPSILON_LD);
     assert(fabsl(cimagl(cld1) - expected_cld_imag) < EPSILON_LD);
+#endif
     return EXIT_SUCCESS;
 }

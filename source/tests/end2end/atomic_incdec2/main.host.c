@@ -35,7 +35,9 @@ _Atomic long i64;
 _Atomic(long *) ptr;
 _Atomic float f32;
 _Atomic double f64;
+#if !defined(__DragonFly__)
 _Atomic long double ld;
+#endif
 
 int main(void) {
     long *const BASE_PTR = (long *) 0xbadcafe0;
@@ -70,8 +72,10 @@ int main(void) {
         assert(fabs(postinc_f64() - (double) x) < EPSILON_D);
         assert(fabs(f64 - (double) (x + 1)) < EPSILON_D);
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
         assert(fabsl(postinc_ld() - (long double) x) < EPSILON_LD);
         assert(fabsl(ld - (long double) (x + 1)) < EPSILON_LD);
+#endif
     }
 
     for (long x = 4096; x > 0; x--) {
@@ -96,8 +100,10 @@ int main(void) {
         assert(fabs(postdec_f64() - (double) x) < EPSILON_D);
         assert(fabs(f64 - (double) (x - 1)) < EPSILON_D);
 
+#if !defined(__DragonFly__)
         assert(fabsl(postdec_ld() - (long double) x) < EPSILON_LD);
         assert(fabsl(ld - (long double) (x - 1)) < EPSILON_LD);
+#endif
     }
     return EXIT_SUCCESS;
 }

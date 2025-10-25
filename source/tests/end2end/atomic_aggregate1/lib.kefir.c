@@ -20,6 +20,7 @@
 
 #include "./definitions.h"
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 void store_buffer(const struct Buffer *value) {
     buf = *value;
 }
@@ -27,3 +28,4 @@ void store_buffer(const struct Buffer *value) {
 struct Buffer load_buffer(void) {
     return buf;
 }
+#endif

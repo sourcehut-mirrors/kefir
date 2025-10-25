@@ -20,6 +20,7 @@
 
 #include "./definitions.h"
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 #define DEF(_op, _sz, _type, _oper)                \
     _type _op##_##_sz(_Atomic _type *a, _type b) { \
         return (*a) _oper## = b;                   \
@@ -55,3 +56,4 @@ int *add_ptr(_Atomic(int *) *ptr, long value) {
 int *subtract_ptr(_Atomic(int *) *ptr, long value) {
     return (*ptr) -= value;
 }
+#endif

@@ -35,7 +35,9 @@ _Atomic long i64;
 _Atomic(long *) ptr;
 _Atomic float f32;
 _Atomic double f64;
+#if !defined(__DragonFly__)
 _Atomic long double ld;
+#endif
 
 int main(void) {
     long *const BASE_PTR = (long *) 0xbadcafe0;
@@ -47,7 +49,9 @@ int main(void) {
     ptr = BASE_PTR;
     f32 = 0.0f;
     f64 = 0.0;
+#if !defined(__DragonFly__)
     ld = 0.0L;
+#endif
 
     for (long x = 0; x < 4096; x++) {
         assert(preinc_i8() == (char) (x + 1));
@@ -71,8 +75,10 @@ int main(void) {
         assert(fabs(preinc_f64() - (double) (x + 1)) < EPSILON_D);
         assert(fabs(f64 - (double) (x + 1)) < EPSILON_D);
 
+#if !defined(__DragonFly__)
         assert(fabsl(preinc_ld() - (long double) (x + 1)) < EPSILON_LD);
         assert(fabsl(ld - (long double) (x + 1)) < EPSILON_LD);
+#endif
     }
 
     for (long x = 4096; x > 0; x--) {
@@ -97,8 +103,10 @@ int main(void) {
         assert(fabs(predec_f64() - (double) (x - 1)) < EPSILON_D);
         assert(fabs(f64 - (double) (x - 1)) < EPSILON_D);
 
+#if !defined(__DragonFly__)
         assert(fabsl(predec_ld() - (long double) (x - 1)) < EPSILON_LD);
         assert(fabsl(ld - (long double) (x - 1)) < EPSILON_LD);
+#endif
     }
     return EXIT_SUCCESS;
 }

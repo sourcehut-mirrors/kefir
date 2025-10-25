@@ -22,8 +22,10 @@ extern _Atomic signed _BitInt(6) a;
 extern _Atomic signed _BitInt(13) b;
 extern _Atomic signed _BitInt(27) c;
 extern _Atomic signed _BitInt(50) d;
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 extern _Atomic signed _BitInt(111) e;
 extern _Atomic signed _BitInt(366) f;
+#endif
 
 void set1(void) {
     a = 14wb;
@@ -41,6 +43,7 @@ void set4(void) {
     d = 0xb0adc0ffewb;
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 void set5(void) {
     e = 0x6473646eddacdeb32ebdwb;
 }
@@ -49,3 +52,4 @@ void set6(void) {
     f = 0x12345678987654323456789edcbdecd456765434567765456wb;
     ;
 }
+#endif

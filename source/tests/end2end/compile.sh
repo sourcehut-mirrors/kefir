@@ -35,7 +35,7 @@ KEFIR_CFLAGS=" --target host-none -fPIC -pie -I \"$(dirname $SRC_FILE)\" -I \"$(
 source "$(dirname $SCRIPT)/common.sh"
 
 if [[ "x$ASMGEN" == "xyes" ]]; then
-    KEFIR_CFLAGS="$KEFIR_CFLAGS -Wno-codegen-emulated-tls -S"
+    KEFIR_CFLAGS="$KEFIR_CFLAGS -Wno-codegen-emulated-tls -S -DKEFIR_END2END_ASMGEN"
     OUTPUT_ARG="-o- >$DST_FILE"
 else
     KEFIR_CFLAGS="$KEFIR_CFLAGS -c"

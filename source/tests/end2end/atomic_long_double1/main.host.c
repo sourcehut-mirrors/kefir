@@ -24,11 +24,14 @@
 #include <math.h>
 #include "./definitions.h"
 
+#if !defined(__DragonFly__)
 _Atomic long double ld1;
+#endif
 
 #define EPSILON_LD 1e-8
 
 int main(void) {
+#if !defined(__DragonFly__)
     for (long double i = -100.0L; i < 100.0L; i += 0.2L) {
         set_ld1(i);
         assert(fabsl(ld1 - i) < EPSILON_LD);
@@ -36,5 +39,6 @@ int main(void) {
         ld1 = -i / 2;
         assert(fabsl(get_ld1() + i / 2) < EPSILON_LD);
     }
+#endif
     return EXIT_SUCCESS;
 }

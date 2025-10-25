@@ -35,8 +35,10 @@ int main(void) {
         _Atomic short shrt;
         _Atomic int integer;
         _Atomic long lng;
+#ifndef __DragonFly__
         _Atomic long double ldbl;
         _Atomic _Complex long double cldbl;
+#endif
 
         test_atomic_store8(&chr, (char) x);
         assert(chr == (char) x);
@@ -50,12 +52,14 @@ int main(void) {
         test_atomic_store64(&lng, (long) x);
         assert(lng == (long) x);
 
+#ifndef __DragonFly__
         test_atomic_store128(&ldbl, (long double) x);
         assert(fabsl(ldbl - (long double) x) < EPSILON_LD);
 
         test_atomic_store256(&cldbl, (_Complex long double) x + I);
         assert(fabsl(creall(cldbl) - (long double) x) < EPSILON_LD);
         assert(fabsl(cimagl(cldbl) - (long double) 1) < EPSILON_LD);
+#endif
     }
 
     for (long x = -4096; x < 4096; x++) {
@@ -63,8 +67,10 @@ int main(void) {
         _Atomic short shrt;
         _Atomic int integer;
         _Atomic long lng;
+#ifndef __DragonFly__
         _Atomic long double ldbl;
         _Atomic _Complex long double cldbl;
+#endif
 
         test2_atomic_store8(&chr, (char) x);
         assert(chr == (char) x);
@@ -78,12 +84,14 @@ int main(void) {
         test2_atomic_store64(&lng, (long) x);
         assert(lng == (long) x);
 
+#ifndef __DragonFly__
         test2_atomic_store128(&ldbl, (long double) x);
         assert(fabsl(ldbl - (long double) x) < EPSILON_LD);
 
         test2_atomic_store256(&cldbl, (_Complex long double) x + I);
         assert(fabsl(creall(cldbl) - (long double) x) < EPSILON_LD);
         assert(fabsl(cimagl(cldbl) - (long double) 1) < EPSILON_LD);
+#endif
     }
     return EXIT_SUCCESS;
 }

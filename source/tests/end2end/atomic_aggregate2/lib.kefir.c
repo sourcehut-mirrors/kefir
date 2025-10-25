@@ -20,6 +20,7 @@
 
 #include "./definitions.h"
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 void store_buffer(_Atomic struct Buffer *dst, const struct Buffer *src) {
     *dst = *src;
 }
@@ -27,3 +28,4 @@ void store_buffer(_Atomic struct Buffer *dst, const struct Buffer *src) {
 struct Buffer load_buffer(_Atomic const struct Buffer *src) {
     return *src;
 }
+#endif

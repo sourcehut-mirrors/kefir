@@ -48,9 +48,11 @@ double postinc_f64(void) {
     return f64++;
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 long double postinc_ld(void) {
     return ld++;
 }
+#endif
 
 char postdec_i8(void) {
     return i8--;
@@ -80,6 +82,8 @@ double postdec_f64(void) {
     return f64--;
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 long double postdec_ld(void) {
     return ld--;
 }
+#endif

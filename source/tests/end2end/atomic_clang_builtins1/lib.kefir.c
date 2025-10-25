@@ -98,6 +98,7 @@ void test_atomic_signal_fence(void) {
     __c11_atomic_signal_fence(__ATOMIC_SEQ_CST);
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 _Bool test_is_lock_free(void) {
     return __c11_atomic_is_lock_free((_Bool *) 0) == __CLANG_ATOMIC_BOOL_LOCK_FREE &&
            __c11_atomic_is_lock_free((char *) 0) == __CLANG_ATOMIC_CHAR_LOCK_FREE &&
@@ -110,4 +111,4 @@ _Bool test_is_lock_free(void) {
            __c11_atomic_is_lock_free((long long *) 0) == __CLANG_ATOMIC_LLONG_LOCK_FREE &&
            __c11_atomic_is_lock_free((void **) 0) == __CLANG_ATOMIC_POINTER_LOCK_FREE;
 }
-
+#endif

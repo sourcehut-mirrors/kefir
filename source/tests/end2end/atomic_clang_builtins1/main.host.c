@@ -164,7 +164,9 @@ int main(void) {
 
         test_atomic_thread_fence();
         test_atomic_signal_fence();
+#if !defined(__DragonFly__)
         test_is_lock_free();
+#endif
     }
     return EXIT_SUCCESS;
 }

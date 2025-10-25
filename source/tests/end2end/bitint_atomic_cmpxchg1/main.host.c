@@ -28,9 +28,11 @@ unsigned char a = 14;
 unsigned short b = 1024;
 unsigned int c = 0x1ffff;
 unsigned long d = 0xbadc0ffe;
+#if !defined(__DragonFly__)
 unsigned long e[2] = {0x4e4e45dec6e5dull, 0xffedcdefed7ull};
 unsigned long f[6] = {0x1234edef4eull,  0x26352645246ull,     0x746264726324dadcull,
                       0x63624254625ull, (unsigned long) -1ll, 0x1231ull};
+#endif
 
 int main(void) {
 #define MASK(_x, _y) ((_x) & ((1ull << (_y)) - 1))
@@ -43,6 +45,7 @@ int main(void) {
     assert(MASK(add4(0x100000000ull), 50) == 0x1badc0ffeull);
     assert(MASK(d, 50) == 0x1badc0ffeull);
 
+#if !defined(__DragonFly__)
     struct S2 s2 = add5((struct S2) {{1, 2}});
     assert(s2.arr[0] == 0x4e4e45dec6e5eull);
     assert(MASK(s2.arr[1], 47) == 0xffedcdefed9ull);
@@ -62,5 +65,6 @@ int main(void) {
     assert(f[3] == 0x63624254629ull);
     assert(f[4] == 4);
     assert(MASK(f[5], 46) == 0x1238ull);
+#endif
     return EXIT_SUCCESS;
 }

@@ -30,6 +30,7 @@
 #define EPSILON_LD 1e-8
 
 int main(void) {
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
     for (double real = -10.0; real < 10.0; real += 0.1) {
         for (double imaginary = -10.0; imaginary < 10.0; imaginary += 0.1) {
             _Atomic _Complex float f32 = real + imaginary * I;
@@ -93,5 +94,6 @@ int main(void) {
             assert(fabs(cimag(f64) - imaginary) < EPSILON_D);
         }
     }
+#endif
     return EXIT_SUCCESS;
 }

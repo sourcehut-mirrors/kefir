@@ -36,6 +36,7 @@ void test_atomic_store64(_Atomic long *ptr, long val) {
     __atomic_store(ptr, &val, __ATOMIC_SEQ_CST);
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 void test_atomic_store128(_Atomic long double *ptr, long double val) {
     __atomic_store(ptr, &val, __ATOMIC_SEQ_CST);
 }
@@ -43,6 +44,7 @@ void test_atomic_store128(_Atomic long double *ptr, long double val) {
 void test_atomic_store256(_Atomic _Complex long double *ptr, _Complex long double val) {
     __atomic_store(ptr, &val, __ATOMIC_SEQ_CST);
 }
+#endif
 
 void test2_atomic_store8(_Atomic char *ptr, char val) {
     __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
@@ -60,6 +62,7 @@ void test2_atomic_store64(_Atomic long *ptr, long val) {
     __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 void test2_atomic_store128(_Atomic long double *ptr, long double val) {
     __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
 }
@@ -67,3 +70,4 @@ void test2_atomic_store128(_Atomic long double *ptr, long double val) {
 void test2_atomic_store256(_Atomic _Complex long double *ptr, _Complex long double val) {
     __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
 }
+#endif

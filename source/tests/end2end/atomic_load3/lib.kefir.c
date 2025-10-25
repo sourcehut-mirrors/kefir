@@ -44,6 +44,7 @@ double get_f64(const struct S *str) {
     return str->f64;
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 struct X get_a1(const struct S *str) {
     return str->a1;
 }
@@ -55,3 +56,4 @@ long get_arr1_el(const struct S *str, int idx) {
 struct X get_arr2_el(const struct S *str, int idx) {
     return str->arr2[idx];
 }
+#endif

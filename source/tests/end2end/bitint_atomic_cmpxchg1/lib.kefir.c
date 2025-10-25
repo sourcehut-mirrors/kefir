@@ -22,8 +22,10 @@ extern _Atomic _BitInt(6) a;
 extern _Atomic _BitInt(13) b;
 extern _Atomic _BitInt(27) c;
 extern _Atomic _BitInt(50) d;
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 extern _Atomic _BitInt(111) e;
 extern _Atomic _BitInt(366) f;
+#endif
 
 _BitInt(6) add1(_BitInt(6) arg) {
     return a += arg;
@@ -41,6 +43,7 @@ _BitInt(50) add4(_BitInt(50) arg) {
     return d += arg;
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 _BitInt(111) add5(_BitInt(111) arg) {
     return e += arg;
 }
@@ -48,3 +51,4 @@ _BitInt(111) add5(_BitInt(111) arg) {
 _BitInt(366) add6(_BitInt(366) arg) {
     return f += arg;
 }
+#endif

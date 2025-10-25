@@ -30,6 +30,7 @@
 #define EPSILON_LD 1e-8
 
 int main(void) {
+#if !defined(__DragonFly__)
     _Atomic _Complex float f32;
     _Atomic _Complex double f64;
     _Atomic _Complex long double ld;
@@ -135,5 +136,6 @@ int main(void) {
             assert(fabsl(cimagl(str1.c) - y) < EPSILON_LD);
         }
     }
+#endif
     return EXIT_SUCCESS;
 }

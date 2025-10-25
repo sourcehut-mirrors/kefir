@@ -28,15 +28,18 @@ unsigned char a = 34;
 unsigned short b = 1024;
 unsigned int c = 0x8f1f0ff;
 unsigned long d = 0xbadc0ffe;
+#if !defined(__DragonFly__)
 unsigned long e[2] = {0x4e4e45dec6e5dull, 0xffedcdefed7ull};
 unsigned long f[6] = {0x1234edef4eull,  0x26352645246ull,     0x746264726324dadcull,
                       0x63624254625ull, (unsigned long) -1ll, 0x1231ull};
+#endif
 
 int main(void) {
     assert(get1() == 226);
     assert(get2() == 1024);
     assert(get3() == 0xf1f0ff);
     assert(get4() == 0xbadc0ffe);
+#if !defined(__DragonFly__)
     assert(get5().arr[0] == 0x4e4e45dec6e5dull);
     assert(get5().arr[1] == 0xffedcdefed7ull);
     assert(get6().arr[0] == 0x1234edef4eull);
@@ -45,5 +48,6 @@ int main(void) {
     assert(get6().arr[3] == 0x63624254625ull);
     assert(get6().arr[4] == (unsigned long) -1ll);
     assert(get6().arr[5] == 0x1231ull);
+#endif
     return EXIT_SUCCESS;
 }

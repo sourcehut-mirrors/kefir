@@ -20,6 +20,7 @@
 
 #include "./definitions.h"
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 _Complex float add_f32(_Atomic const _Complex float *ptr) {
     return f32_1 + *ptr;
 }
@@ -79,3 +80,4 @@ _Complex long double div_ld(_Atomic const _Complex long double *ptr) {
 _Complex long double neg_ld(void) {
     return -ld_1;
 }
+#endif

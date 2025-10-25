@@ -20,6 +20,7 @@
 
 #include "./definitions.h"
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 _Atomic long double ld1 = 0.0L;
 _Atomic _Complex long double cld1 = 0.0L;
 
@@ -34,3 +35,4 @@ void add_cld1(_Complex long double x) {
     while (!__atomic_compare_exchange_n(&cld1, &current, current + x, 0, __ATOMIC_SEQ_CST, __ATOMIC_ACQUIRE))
         ;
 }
+#endif

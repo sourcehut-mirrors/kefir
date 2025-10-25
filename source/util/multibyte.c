@@ -39,6 +39,11 @@
 #define UTF16_SURROGATE_LOW_END 0xe000u
 
 size_t c32rtomb(char *restrict mbstr, char32_t chr32, mbstate_t *restrict state) {
+#ifdef KEFIR_DRAGONFLYBSD_HOST_PLATFORM
+    if (((kefir_int32_t) chr32) < 0) {
+        return RESULT_ENCODING_ERROR;
+    }
+#endif
     return wcrtomb(mbstr, chr32, state);
 }
 

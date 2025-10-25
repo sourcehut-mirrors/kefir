@@ -20,6 +20,7 @@
 
 #include "./definitions.h"
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 _Complex float f32_load(_Atomic const _Complex float *ptr) {
     return *ptr;
 }
@@ -91,3 +92,4 @@ void str1_set_b(struct Str1 *str, _Complex double value) {
 void str1_set_c(struct Str1 *str, _Complex long double value) {
     str->c = value;
 }
+#endif

@@ -44,6 +44,7 @@ long test_atomic_load64(_Atomic long *ptr) {
     return value;
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 long double test_atomic_load128(_Atomic long double *ptr) {
     __typeof_unqual__(*ptr) value;
     __atomic_load(ptr, &value, __ATOMIC_SEQ_CST);
@@ -55,6 +56,7 @@ _Complex long double test_atomic_load256(_Atomic _Complex long double *ptr) {
     __atomic_load(ptr, &value, __ATOMIC_SEQ_CST);
     return value;
 }
+#endif
 
 char test2_atomic_load8(_Atomic char *ptr) {
     return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
@@ -72,6 +74,7 @@ long test2_atomic_load64(_Atomic long *ptr) {
     return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 long double test2_atomic_load128(_Atomic long double *ptr) {
     return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
 }
@@ -79,3 +82,4 @@ long double test2_atomic_load128(_Atomic long double *ptr) {
 _Complex long double test2_atomic_load256(_Atomic _Complex long double *ptr) {
     return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
 }
+#endif

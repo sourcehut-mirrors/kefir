@@ -22,8 +22,10 @@ extern _Atomic signed _BitInt(6) a;
 extern _Atomic signed _BitInt(13) b;
 extern _Atomic signed _BitInt(27) c;
 extern _Atomic signed _BitInt(50) d;
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 extern _Atomic signed _BitInt(111) e;
 extern _Atomic signed _BitInt(366) f;
+#endif
 
 signed _BitInt(6) get1(void) {
     return a;
@@ -41,6 +43,7 @@ signed _BitInt(50) get4(void) {
     return d;
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 signed _BitInt(111) get5(void) {
     return e;
 }
@@ -48,3 +51,4 @@ signed _BitInt(111) get5(void) {
 signed _BitInt(366) get6(void) {
     return f;
 }
+#endif

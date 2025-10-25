@@ -20,6 +20,7 @@
 
 #include "./definitions.h"
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 _Complex float f32_preinc(_Atomic _Complex float *ptr) {
     return ++(*ptr);
 }
@@ -51,3 +52,4 @@ _Complex float f32_postdec(_Atomic _Complex float *ptr) {
 _Complex double f64_postdec(_Atomic _Complex double *ptr) {
     return (*ptr)--;
 }
+#endif

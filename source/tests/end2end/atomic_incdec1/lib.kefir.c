@@ -48,9 +48,11 @@ double preinc_f64(void) {
     return ++f64;
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 long double preinc_ld(void) {
     return ++ld;
 }
+#endif
 
 char predec_i8(void) {
     return --i8;
@@ -80,6 +82,8 @@ double predec_f64(void) {
     return --f64;
 }
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 long double predec_ld(void) {
     return --ld;
 }
+#endif

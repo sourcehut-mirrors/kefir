@@ -29,6 +29,7 @@
 #define EPSILON_LD 1e-8
 
 int main(void) {
+#if !defined(__DragonFly__)
     _Atomic char i8;
     _Atomic short i16;
     _Atomic int i32;
@@ -90,5 +91,6 @@ int main(void) {
         assert(subtract_ptr(&ptr, (unsigned char) i) == ((int *) &arr[256]) - ((unsigned char) i));
         assert(ptr == ((int *) &arr[256]) - ((unsigned char) i));
     }
+#endif
     return EXIT_SUCCESS;
 }

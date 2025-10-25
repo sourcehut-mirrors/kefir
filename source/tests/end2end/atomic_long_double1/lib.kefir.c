@@ -20,6 +20,7 @@
 
 #include "./definitions.h"
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 long double get_ld1(void) {
     return ld1;
 }
@@ -27,3 +28,4 @@ long double get_ld1(void) {
 void set_ld1(long double x) {
     ld1 = x;
 }
+#endif

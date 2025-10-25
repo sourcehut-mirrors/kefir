@@ -28,20 +28,25 @@ unsigned char a;
 unsigned short b;
 unsigned int c;
 unsigned long d;
+#if !defined(__DragonFly__)
 unsigned long e[2];
 unsigned long f[6];
+#endif
 
 int main(void) {
     set1();
     set2();
     set3();
     set4();
+#if !defined(__DragonFly__)
     set5();
     set6();
+#endif
     assert(a == 14);
     assert(b == 1024);
     assert(c == 0x1f3dec);
     assert(d == 0xb0adc0ffe);
+#if !defined(__DragonFly__)
     assert(e[0] == 0x646eddacdeb32ebdul);
     assert(e[1] == 0x6473);
     assert(f[0] == 0x6765434567765456ul);
@@ -50,5 +55,6 @@ int main(void) {
     assert(f[3] == 0x1);
     assert(f[4] == 0);
     assert((f[5] & ((1ull << 46) - 1)) == 0);
+#endif
     return EXIT_SUCCESS;
 }

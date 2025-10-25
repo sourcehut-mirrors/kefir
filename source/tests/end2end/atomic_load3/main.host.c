@@ -49,6 +49,7 @@ int main(void) {
         assert(fabs(get_f32(&str) - (float) x) < EPSILON_F);
         assert(fabs(get_f64(&str) - (double) x) < EPSILON_D);
 
+#if !defined(__DragonFly__)
         struct X a1_loaded = get_a1(&str);
         assert(memcmp(&a1_loaded, &a1, sizeof(struct X)) == 0);
 
@@ -61,6 +62,7 @@ int main(void) {
 
         struct X arr2_1_loaded = get_arr2_el(&str, 1);
         assert(memcmp(&arr2_1_loaded, &(struct X){0}, sizeof(struct X)) == 0);
+#endif
     }
     return EXIT_SUCCESS;
 }

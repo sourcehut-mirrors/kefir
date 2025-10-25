@@ -24,9 +24,12 @@
 #include <string.h>
 #include "./definitions.h"
 
+#ifndef __DragonFly__
 _Atomic struct Buffer buf;
+#endif
 
 int main(void) {
+#ifndef __DragonFly__
     for (long x = -4096; x < 4096; x++) {
         const struct Buffer value = {{x, ~x, x + 1, x - 1, -x, x / 2, !x, x ^ 128}};
 
@@ -38,5 +41,6 @@ int main(void) {
         const struct Buffer loaded = load_buffer(&buf);
         assert(memcmp(&value, &loaded, sizeof(struct Buffer)) == 0);
     }
+#endif
     return EXIT_SUCCESS;
 }

@@ -31,10 +31,13 @@ DEF(i32, int)
 DEF(i64, long)
 DEF(f32, float)
 DEF(f64, double)
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 DEF(a1, struct X)
+#endif
 
 #undef DEF
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 void set_arr1_el(struct S *str, int idx, long value) {
     str->arr1[idx] = value;
 }
@@ -42,3 +45,4 @@ void set_arr1_el(struct S *str, int idx, long value) {
 void set_arr2_el(struct S *str, int idx, struct X value) {
     str->arr2[idx] = value;
 }
+#endif
