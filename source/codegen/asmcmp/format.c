@@ -22,14 +22,18 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t variant_format(struct kefir_json_output *json, kefir_asmcmp_operand_variant_t variant) {
+static kefir_result_t variant_format(struct kefir_json_output *json, kefir_asmcmp_operand_variant_t variant, kefir_bool_t high_half) {
     switch (variant) {
         case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
             REQUIRE_OK(kefir_json_output_string(json, "default"));
             break;
 
         case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
-            REQUIRE_OK(kefir_json_output_string(json, "8bit"));
+            if (high_half) {
+                REQUIRE_OK(kefir_json_output_string(json, "8bit_high"));
+            } else {
+                REQUIRE_OK(kefir_json_output_string(json, "8bit"));
+            }
             break;
 
         case KEFIR_ASMCMP_OPERAND_VARIANT_16BIT:
@@ -139,7 +143,7 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_object_key(json, "index"));
             REQUIRE_OK(kefir_json_output_uinteger(json, value->vreg.index));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
-            REQUIRE_OK(variant_format(json, value->vreg.variant));
+            REQUIRE_OK(variant_format(json, value->vreg.variant, value->vreg.high_half));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
@@ -198,7 +202,7 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
             REQUIRE_OK(kefir_json_output_integer(json, value->indirect.offset));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
-            REQUIRE_OK(variant_format(json, value->indirect.variant));
+            REQUIRE_OK(variant_format(json, value->indirect.variant, false));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
@@ -211,7 +215,7 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_object_key(json, "base"));
             REQUIRE_OK(kefir_json_output_uinteger(json, value->rip_indirection.internal));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
-            REQUIRE_OK(variant_format(json, value->rip_indirection.variant));
+            REQUIRE_OK(variant_format(json, value->rip_indirection.variant, false));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
@@ -224,7 +228,7 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_object_key(json, "base"));
             REQUIRE_OK(kefir_json_output_string(json, value->rip_indirection.external));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
-            REQUIRE_OK(variant_format(json, value->rip_indirection.variant));
+            REQUIRE_OK(variant_format(json, value->rip_indirection.variant, false));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 

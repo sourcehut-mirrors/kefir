@@ -121,6 +121,7 @@ typedef struct kefir_asmcmp_value {
         struct {
             kefir_asmcmp_virtual_register_index_t index;
             kefir_asmcmp_operand_variant_t variant;
+            kefir_bool_t high_half;
         } vreg;
         kefir_asmcmp_physical_register_index_t phreg;
         struct {
@@ -185,6 +186,9 @@ typedef struct kefir_asmcmp_inline_assembly_fragment {
 #define KEFIR_ASMCMP_MAKE_VREG8(_vreg)                                              \
     ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                   .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_8BIT}})
+#define KEFIR_ASMCMP_MAKE_VREG8_HIGH(_vreg)                                              \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
+                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_8BIT, .high_half = true}})
 #define KEFIR_ASMCMP_MAKE_VREG16(_vreg)                                             \
     ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                   .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_16BIT}})

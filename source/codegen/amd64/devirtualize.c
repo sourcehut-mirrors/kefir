@@ -457,7 +457,11 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
                     switch (value->vreg.variant) {
                         case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
-                            REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(reg_alloc->direct_reg, &phreg));
+                            if (value->vreg.high_half) {
+                                REQUIRE_OK(kefir_asm_amd64_xasmgen_register8_high(reg_alloc->direct_reg, &phreg));
+                            } else {
+                                REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(reg_alloc->direct_reg, &phreg));
+                            }
                             break;
 
                         case KEFIR_ASMCMP_OPERAND_VARIANT_16BIT:
@@ -559,7 +563,11 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
 
                     switch (value->vreg.variant) {
                         case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
-                            REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(phreg, &phreg));
+                            if (value->vreg.high_half) {
+                                REQUIRE_OK(kefir_asm_amd64_xasmgen_register8_high(phreg, &phreg));
+                            } else {
+                                REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(phreg, &phreg));
+                            }
                             break;
 
                         case KEFIR_ASMCMP_OPERAND_VARIANT_16BIT:
@@ -823,6 +831,8 @@ static kefir_result_t devirtualize_instr_arg(struct kefir_mem *mem, struct devir
                     REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(tmp_reg, &phreg));
                 } else if (original_instr->args[arg_idx].vreg.variant == KEFIR_ASMCMP_OPERAND_VARIANT_16BIT) {
                     REQUIRE_OK(kefir_asm_amd64_xasmgen_register16(tmp_reg, &phreg));
+                } else if (original_instr->args[arg_idx].vreg.variant == KEFIR_ASMCMP_OPERAND_VARIANT_8BIT && original_instr->args[arg_idx].vreg.high_half) {
+                    REQUIRE_OK(kefir_asm_amd64_xasmgen_register8_high(tmp_reg, &phreg));
                 } else if (original_instr->args[arg_idx].vreg.variant == KEFIR_ASMCMP_OPERAND_VARIANT_8BIT) {
                     REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(tmp_reg, &phreg));
                 } else if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_GP_REGISTER64)) {

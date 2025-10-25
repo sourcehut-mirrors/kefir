@@ -44,6 +44,7 @@ typedef struct kefir_ir_inline_assembly_parameter_constraints {
     kefir_bool_t memory_location;
     kefir_bool_t immediate;
     kefir_bool_t strict_immediate;
+    kefir_bool_t x86_rh_reg;
 
     const char *explicit_register;
 } kefir_ir_inline_assembly_parameter_constraints_t;

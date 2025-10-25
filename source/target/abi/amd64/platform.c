@@ -134,6 +134,10 @@ static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(
                 decoded_constraints->general_purpose_register = true;
                 break;
 
+            case 'Q':
+                decoded_constraints->x86_rh_reg = true;
+                break;
+
             case 'x':
                 decoded_constraints->floating_point_register = true;
                 break;

@@ -121,6 +121,8 @@ typedef enum kefir_asm_amd64_xasmgen_register {
 
 kefir_result_t kefir_asm_amd64_xasmgen_register8(kefir_asm_amd64_xasmgen_register_t,
                                                  kefir_asm_amd64_xasmgen_register_t *);
+kefir_result_t kefir_asm_amd64_xasmgen_register8_high(kefir_asm_amd64_xasmgen_register_t,
+                                                 kefir_asm_amd64_xasmgen_register_t *);
 kefir_result_t kefir_asm_amd64_xasmgen_register16(kefir_asm_amd64_xasmgen_register_t,
                                                   kefir_asm_amd64_xasmgen_register_t *);
 kefir_result_t kefir_asm_amd64_xasmgen_register32(kefir_asm_amd64_xasmgen_register_t,
