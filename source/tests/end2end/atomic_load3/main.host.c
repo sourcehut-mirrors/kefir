@@ -37,10 +37,14 @@ int main(void) {
             .i32 = (int) x,
             .i64 = (long) x,
             .f32 = (float) x,
-            .f64 = (double) x,
+            .f64 = (double) x
+#if !defined(__DragonFly__)
+            ,
             .a1 = a1,
             .arr1 = {~a1.buf[0], ~a1.buf[1], ~a1.buf[2], ~a1.buf[3], ~a1.buf[4], ~a1.buf[5], ~a1.buf[6], ~a1.buf[7]},
-            .arr2 = {a1}};
+            .arr2 = {a1}
+#endif
+        };
 
         assert(get_i8(&str) == (char) x);
         assert(get_i16(&str) == (short) x);
