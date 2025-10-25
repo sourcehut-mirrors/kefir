@@ -29,10 +29,14 @@ fi
 
 KEFIRFLAGS="-include $(dirname $0)/torture.h --target host -g $KEFIR_EXTRAFLAGS"
 SKIP_LIST="$(dirname $0)/torture.skip"
-TIMEOUT=10
+TIMEOUT="timeout 10"
 SKIPPED_TESTS=0
 FAILED_TESTS=0
 TOTAL_TESTS=0
+
+if [[ `uname` == "DragonFly" ]]; then
+  TIMEOUT="gtimeout 10"
+fi
 
 ulimit -s 64000 # Stack size=64M
 
@@ -43,10 +47,10 @@ function is_test_skipped {
 function run_test {(
     set -e
     if [[ "x$2" == "xexecute" ]]; then
-      timeout $TIMEOUT $KEFIRCC $KEFIRFLAGS -o test.bin "$1"
-      timeout $TIMEOUT ./test.bin
+      $TIMEOUT $KEFIRCC $KEFIRFLAGS -o test.bin "$1"
+      $TIMEOUT ./test.bin
     else
-      timeout $TIMEOUT $KEFIRCC $KEFIRFLAGS -S -o test.s "$1"
+      $TIMEOUT $KEFIRCC $KEFIRFLAGS -S -o test.s "$1"
     fi
     rm -rf test.s test.bin
 )}
