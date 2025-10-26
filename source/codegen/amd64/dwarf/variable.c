@@ -601,7 +601,8 @@ static kefir_result_t generate_location_of_virtual_register(struct kefir_codegen
                     break;
 
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
-                case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE: {
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERAL_PURPOSE: {
                     const kefir_size_t piece_size =
                         asmcmp_vreg->parameters.pair.type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE
                             ? KEFIR_AMD64_ABI_QWORD / 2

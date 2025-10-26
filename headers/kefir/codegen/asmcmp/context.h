@@ -59,7 +59,8 @@ typedef enum kefir_asmcmp_virtual_register_type {
 typedef enum kefir_asmcmp_virtual_register_pair_type {
     KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE,
-    KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE
+    KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE,
+    KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERAL_PURPOSE
 } kefir_asmcmp_virtual_register_pair_type_t;
 
 typedef enum kefir_asmcmp_operand_variant {

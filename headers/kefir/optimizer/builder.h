@@ -216,6 +216,11 @@ UNARY_OP(int64_sign_extend_8bits);
 UNARY_OP(int64_sign_extend_16bits);
 UNARY_OP(int64_sign_extend_32bits);
 
+UNARY_OP(int128_to_bool);
+UNARY_OP(int128_truncate_int64);
+UNARY_OP(int128_zero_extend_64bits);
+UNARY_OP(int128_sign_extend_64bits);
+
 UNARY_OP(vararg_start);
 UNARY_OP(vararg_end);
 UNARY_OP(scope_pop);
@@ -588,6 +593,7 @@ LOAD_OP(int8_load);
 LOAD_OP(int16_load);
 LOAD_OP(int32_load);
 LOAD_OP(int64_load);
+LOAD_OP(int128_load);
 LOAD_OP(long_double_load);
 
 LOAD_OP(decimal32_load);
@@ -675,6 +681,7 @@ STORE_OP(int8_store);
 STORE_OP(int16_store);
 STORE_OP(int32_store);
 STORE_OP(int64_store);
+STORE_OP(int128_store);
 STORE_OP(long_double_store);
 
 STORE_OP(decimal32_store);

@@ -501,6 +501,12 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL32_ISNAN) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL64_ISNAN) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_DECIMAL128_ISNAN) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_TO_BOOL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_TRUNCATE_INT64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_ZERO_EXTEND_64BITS) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_SIGN_EXTEND_64BITS) _separator \
+    _def(int128_load, KEFIR_OPT_OPCODE_INT128_LOAD) _separator \
+    _def(int128_store, KEFIR_OPT_OPCODE_INT128_STORE) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

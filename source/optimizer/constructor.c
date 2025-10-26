@@ -813,6 +813,11 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(int64_zero_extend_16bits, KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_16BITS)
             UNARY_OP(int64_zero_extend_32bits, KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_32BITS)
 
+            UNARY_OP(int128_to_bool, KEFIR_IR_OPCODE_INT128_TO_BOOL)
+            UNARY_OP(int128_truncate_int64, KEFIR_IR_OPCODE_INT128_TRUNCATE_INT64)
+            UNARY_OP(int128_zero_extend_64bits, KEFIR_IR_OPCODE_INT128_ZERO_EXTEND_64BITS)
+            UNARY_OP(int128_sign_extend_64bits, KEFIR_IR_OPCODE_INT128_SIGN_EXTEND_64BITS)
+
             UNARY_OP(float32_neg, KEFIR_IR_OPCODE_FLOAT32_NEG)
             UNARY_OP(float64_neg, KEFIR_IR_OPCODE_FLOAT64_NEG)
 
@@ -1338,6 +1343,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             LOAD_OP(int16_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT16_LOAD)
             LOAD_OP(int32_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT32_LOAD)
             LOAD_OP(int64_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT64_LOAD)
+            LOAD_OP(int128_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT128_LOAD)
             LOAD_OP(long_double_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_LONG_DOUBLE_LOAD)
             LOAD_OP(decimal32_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_DECIMAL32_LOAD)
             LOAD_OP(decimal64_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_DECIMAL64_LOAD)
@@ -1505,6 +1511,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             STORE_OP(int16_store, KEFIR_IR_OPCODE_INT16_STORE)
             STORE_OP(int32_store, KEFIR_IR_OPCODE_INT32_STORE)
             STORE_OP(int64_store, KEFIR_IR_OPCODE_INT64_STORE)
+            STORE_OP(int128_store, KEFIR_IR_OPCODE_INT128_STORE)
             STORE_OP(long_double_store, KEFIR_IR_OPCODE_LONG_DOUBLE_STORE)
             STORE_OP(decimal32_store, KEFIR_IR_OPCODE_DECIMAL32_STORE)
             STORE_OP(decimal64_store, KEFIR_IR_OPCODE_DECIMAL64_STORE)

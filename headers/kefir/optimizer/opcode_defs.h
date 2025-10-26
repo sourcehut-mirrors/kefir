@@ -442,7 +442,14 @@
     OPCODE(DECIMAL128_ATOMIC_CMPXCHG, "decimal128_atomic_cmpxchg", atomic_op) SEPARATOR \
     OPCODE(DECIMAL32_ISNAN, "decimal32_isnan", ref1) SEPARATOR \
     OPCODE(DECIMAL64_ISNAN, "decimal64_isnan", ref1) SEPARATOR \
-    OPCODE(DECIMAL128_ISNAN, "decimal128_isnan", ref1)
+    OPCODE(DECIMAL128_ISNAN, "decimal128_isnan", ref1) SEPARATOR \
+    /* Int128 */ \
+    OPCODE(INT128_TO_BOOL, "int128_to_bool", ref1) SEPARATOR \
+    OPCODE(INT128_TRUNCATE_INT64, "int128_trunacate_int64", ref1) SEPARATOR \
+    OPCODE(INT128_ZERO_EXTEND_64BITS, "int128_zero_extend_64bits", ref1) SEPARATOR \
+    OPCODE(INT128_SIGN_EXTEND_64BITS, "int128_sign_extend_64bits", ref1) SEPARATOR \
+    OPCODE(INT128_LOAD, "int128_load", load_mem) SEPARATOR \
+    OPCODE(INT128_STORE, "int128_store", store_mem)
 
 // clang-format on
 

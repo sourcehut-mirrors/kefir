@@ -928,6 +928,15 @@ kefir_result_t kefir_asmcmp_virtual_register_new_pair(struct kefir_mem *mem, str
                                     "Expected floating-point virtual register as floating-point pair element"));
             break;
 
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERAL_PURPOSE:
+            REQUIRE(vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                    "Expected general-purpose virtual register as general-purpose pair element"));
+            REQUIRE(vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                    "Expected general-purpose virtual register as general-purpose pair element"));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected virtual register pair type");
     }
