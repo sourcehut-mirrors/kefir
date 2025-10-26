@@ -324,6 +324,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
                     break;
 
+                case KEFIR_IR_TYPE_INT128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
                 case KEFIR_IR_TYPE_FLOAT32:
                 case KEFIR_IR_TYPE_FLOAT64:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,

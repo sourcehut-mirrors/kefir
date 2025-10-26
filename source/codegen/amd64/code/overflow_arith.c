@@ -73,6 +73,9 @@ static kefir_result_t expand_arg(struct kefir_mem *mem, struct kefir_codegen_amd
             *ulong = !signed_type;
             break;
 
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected overflow arithmetics argument type");
     }
@@ -127,6 +130,9 @@ static kefir_result_t save_result(struct kefir_mem *mem, struct kefir_codegen_am
         case KEFIR_IR_TYPE_INT64:
             result_64bit = true;
             break;
+
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected overflow arithmetics argument type");
@@ -209,6 +215,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(add_overflow)(struct kefir_m
     REQUIRE_OK(expand_arg(mem, function, arg1_type, arg1_signed, arg1_expanded_vreg, arg1_vreg, &left_ulong));
     REQUIRE_OK(expand_arg(mem, function, arg2_type, arg2_signed, arg2_expanded_vreg, arg2_vreg, &right_ulong));
 
+    REQUIRE(result_type != KEFIR_IR_TYPE_INT128,
+        KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet"));
     const kefir_bool_t result_64bit = result_type == KEFIR_IR_TYPE_INT64;
     if (result_signed || !result_64bit) {
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
@@ -398,6 +406,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(sub_overflow)(struct kefir_m
     REQUIRE_OK(expand_arg(mem, function, arg1_type, arg1_signed, arg1_expanded_vreg, arg1_vreg, &left_ulong));
     REQUIRE_OK(expand_arg(mem, function, arg2_type, arg2_signed, arg2_expanded_vreg, arg2_vreg, &right_ulong));
 
+    REQUIRE(result_type != KEFIR_IR_TYPE_INT128,
+        KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet"));
     const kefir_bool_t result_64bit = result_type == KEFIR_IR_TYPE_INT64;
     if (result_signed || !result_64bit) {
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
@@ -600,6 +610,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(mul_overflow)(struct kefir_m
     REQUIRE_OK(expand_arg(mem, function, arg1_type, arg1_signed, arg1_expanded_vreg, arg1_vreg, &left_ulong));
     REQUIRE_OK(expand_arg(mem, function, arg2_type, arg2_signed, arg2_expanded_vreg, arg2_vreg, &right_ulong));
 
+    REQUIRE(result_type != KEFIR_IR_TYPE_INT128,
+        KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet"));
     const kefir_bool_t result_64bit = result_type == KEFIR_IR_TYPE_INT64;
     if (result_signed || !result_64bit) {
         if (left_ulong && right_ulong) {

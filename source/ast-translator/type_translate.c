@@ -69,9 +69,7 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
                     break;
                 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    typeentry->typecode = KEFIR_IR_TYPE_BITINT;
-                    typeentry->param = context->type_traits->data_model->scalar_width.int128_bits;
-                    typeentry->alignment = 16;
+                    typeentry->typecode = KEFIR_IR_TYPE_INT128;
                     break;
 
                 default:

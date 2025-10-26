@@ -58,6 +58,11 @@ static kefir_result_t kefir_amd64_sysv_scalar_type_layout(const struct kefir_ir_
             *alignment_ptr = 8;
             break;
 
+        case KEFIR_IR_TYPE_INT128:
+            *size_ptr = 16;
+            *alignment_ptr = 16;
+            break;
+
         case KEFIR_IR_TYPE_BITINT:
             if (typeentry->param <= 8) {
                 *size_ptr = 1;

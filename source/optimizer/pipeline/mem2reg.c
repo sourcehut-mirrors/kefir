@@ -150,6 +150,7 @@ static kefir_result_t mark_scalar_candidate(struct mem2reg_state *state, kefir_o
         case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
+        case KEFIR_IR_TYPE_INT128: // KEFIR_NOT_IMPLEMENTED
             // Intentionally left blank
             break;
     }
@@ -446,6 +447,7 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
         case KEFIR_IR_TYPE_ARRAY:
         case KEFIR_IR_TYPE_UNION:
         case KEFIR_IR_TYPE_BITFIELD:
+        case KEFIR_IR_TYPE_INT128: // KEFIR_NOT_IMPLEMENTED
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected local IR type");
@@ -659,6 +661,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                     }
                                     break;
 
+                                case KEFIR_IR_TYPE_INT128: // KEFIR_NOT_IMPLEMENTED
                                 default:
                                     // Intentionally left blank
                                     break;
@@ -777,6 +780,9 @@ static kefir_result_t mem2reg_load_local_variable(struct mem2reg_state *state,
                 kefir_opt_code_builder_int64_load(state->mem, &state->func->code, source_block_ref, addr_instr_ref,
                                                   &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
             break;
+
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
         case KEFIR_IR_TYPE_BITINT:
             REQUIRE_OK(kefir_opt_code_builder_bitint_load(
@@ -918,6 +924,9 @@ static kefir_result_t mem2reg_generate_store(struct mem2reg_state *state, kefir_
                                                           output_ref, &(const struct kefir_opt_memory_access_flags) {0},
                                                           &store_instr_ref));
             break;
+
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
         case KEFIR_IR_TYPE_BITINT:
             REQUIRE_OK(kefir_opt_code_builder_bitint_store(

@@ -276,8 +276,38 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_INT,
+                                                entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr,
+                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("unsigned __int128")));
+            REQUIRE_OK(
+                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
+                                             (kefir_hashtree_value_t) *entry_id_ptr));
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 type has not been implemented yet");
+            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_INT,
+                                                entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr,
+                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("signed __int128")));
+            REQUIRE_OK(
+                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
+                                             (kefir_hashtree_value_t) *entry_id_ptr));
+            break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE: {
             char buf[256];

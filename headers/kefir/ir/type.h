@@ -35,6 +35,7 @@ typedef enum kefir_ir_typecode {
     KEFIR_IR_TYPE_INT16,
     KEFIR_IR_TYPE_INT32,
     KEFIR_IR_TYPE_INT64,
+    KEFIR_IR_TYPE_INT128,
     KEFIR_IR_TYPE_FLOAT32,
     KEFIR_IR_TYPE_FLOAT64,
     KEFIR_IR_TYPE_LONG_DOUBLE,
@@ -108,6 +109,7 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *, co
         (visitor)->visit[KEFIR_IR_TYPE_INT16] = (callback);    \
         (visitor)->visit[KEFIR_IR_TYPE_INT32] = (callback);    \
         (visitor)->visit[KEFIR_IR_TYPE_INT64] = (callback);    \
+        (visitor)->visit[KEFIR_IR_TYPE_INT128] = (callback);    \
         (visitor)->visit[KEFIR_IR_TYPE_BITINT] = (callback);   \
         (visitor)->visit[KEFIR_IR_TYPE_BITFIELD] = (callback); \
     } while (0)

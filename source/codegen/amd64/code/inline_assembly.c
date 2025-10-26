@@ -327,6 +327,9 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
             }
             break;
 
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
@@ -573,6 +576,9 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
 
     struct kefir_asmcmp_value vreg_variant_value;
     switch (param_type->typecode) {
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         case KEFIR_IR_TYPE_BITINT:
             if (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT) {
                 return KEFIR_OK;
@@ -939,6 +945,9 @@ static kefir_result_t read_x87_input(struct kefir_mem *mem, struct kefir_codegen
 
     kefir_asmcmp_virtual_register_index_t tmp_vreg;
     switch (param_type->typecode) {
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         case KEFIR_IR_TYPE_FLOAT32:
             if (entry->direct_value) {
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
@@ -1620,6 +1629,9 @@ static kefir_result_t store_x87_output(struct kefir_mem *mem, struct kefir_codeg
     kefir_asmcmp_virtual_register_index_t load_store_vreg;
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->load_store_ref, &load_store_vreg));
     switch (param_type->typecode) {
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         case KEFIR_IR_TYPE_FLOAT32:
             REQUIRE_OK(kefir_asmcmp_amd64_fstp(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -1691,6 +1703,9 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
         kefir_asmcmp_virtual_register_index_t load_store_vreg;
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->load_store_ref, &load_store_vreg));
         switch (param_type->typecode) {
+            case KEFIR_IR_TYPE_INT128:
+                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
             case KEFIR_IR_TYPE_BITINT:
                 if (param_type->param > 64) {
                     REQUIRE(

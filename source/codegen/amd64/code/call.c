@@ -209,6 +209,9 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                         // Intentionally left blank
                         break;
 
+                    case KEFIR_IR_TYPE_INT128:
+                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
                     case KEFIR_IR_TYPE_NONE:
                     case KEFIR_IR_TYPE_COUNT:
                         return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type code");
@@ -484,6 +487,9 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                                                 KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
                             &KEFIR_ASMCMP_MAKE_VREG64(argument_vreg), NULL));
                         break;
+
+                    case KEFIR_IR_TYPE_INT128:
+                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                     case KEFIR_IR_TYPE_FLOAT64:
                         REQUIRE_OK(kefir_asmcmp_amd64_movq(

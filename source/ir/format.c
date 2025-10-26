@@ -715,6 +715,9 @@ static const char *typecode_to_string(kefir_ir_typecode_t typecode) {
         case KEFIR_IR_TYPE_INT64:
             return "int64";
 
+        case KEFIR_IR_TYPE_INT128:
+            return "int128";
+
         case KEFIR_IR_TYPE_FLOAT32:
             return "float";
 
@@ -775,6 +778,7 @@ static kefir_result_t format_type_default(const struct kefir_ir_type *type, kefi
         case KEFIR_IR_TYPE_INT16:
         case KEFIR_IR_TYPE_INT32:
         case KEFIR_IR_TYPE_INT64:
+        case KEFIR_IR_TYPE_INT128:
         case KEFIR_IR_TYPE_FLOAT32:
         case KEFIR_IR_TYPE_FLOAT64:
         case KEFIR_IR_TYPE_LONG_DOUBLE:

@@ -198,6 +198,9 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                                              &param->codegen->xasmgen_helpers.operands[0], (kefir_uint64_t) value)));
             break;
 
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         case KEFIR_IR_TYPE_BITINT:
             if (typeentry->param <= 8) {
                 REQUIRE_OK(generate_bits(param, entry, 1, value));

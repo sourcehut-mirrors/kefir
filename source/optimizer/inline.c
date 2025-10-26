@@ -798,6 +798,9 @@ static kefir_result_t generate_placeholder(struct do_inline_param *param, kefir_
                                                                   kefir_dfp_decimal128_from_int64(0), instr_ref_ptr));
             break;
 
+        case KEFIR_IR_TYPE_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         default: {
             const struct kefir_opt_call_node *original_call;
             REQUIRE_OK(

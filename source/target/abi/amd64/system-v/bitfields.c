@@ -71,6 +71,11 @@ static kefir_result_t amd64_sysv_bitfield_props(kefir_ir_typecode_t typecode, ke
             ASSIGN_PTR(alignment, 64);
             break;
 
+        case KEFIR_IR_TYPE_INT128:
+            ASSIGN_PTR(size, 128);
+            ASSIGN_PTR(alignment, 128);
+            break;
+
         case KEFIR_IR_TYPE_BITINT:
             if (typeparam <= 8) {
                 ASSIGN_PTR(size, 8);
