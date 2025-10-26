@@ -45,6 +45,8 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER: {
             kefir_ast_type_data_model_classification_t classification;
@@ -67,7 +69,10 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
                     break;
                 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                    typeentry->typecode = KEFIR_IR_TYPE_BITINT;
+                    typeentry->param = context->type_traits->data_model->scalar_width.int128_bits;
+                    typeentry->alignment = 16;
+                    break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type classification");
@@ -466,6 +471,8 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
         case KEFIR_AST_TYPE_SCALAR_FLOAT:

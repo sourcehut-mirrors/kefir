@@ -1,0 +1,388 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "storage_class",
+                        "storage": "extern",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "i128_size",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                },
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "int128_alignment",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "storage_class",
+                        "storage": "extern",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "si128_size",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                },
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "sint128_alignment",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "storage_class",
+                        "storage": "extern",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "ui128_size",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                },
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "uint128_alignment",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "i128_size",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "sizeof",
+                            "argument": {
+                                "class": "type_name",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int128",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "int128_alignment",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "alignof",
+                            "argument": {
+                                "class": "type_name",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int128",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "si128_size",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "sizeof",
+                            "argument": {
+                                "class": "type_name",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "signed",
+                                            "attributes": []
+                                        },
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int128",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "sint128_alignment",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "alignof",
+                            "argument": {
+                                "class": "type_name",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "signed",
+                                            "attributes": []
+                                        },
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int128",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "ui128_size",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "sizeof",
+                            "argument": {
+                                "class": "type_name",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "unsigned",
+                                            "attributes": []
+                                        },
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int128",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "uint128_alignment",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "alignof",
+                            "argument": {
+                                "class": "type_name",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "unsigned",
+                                            "attributes": []
+                                        },
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int128",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -528,7 +528,7 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
-            MATCH_BITS(data_model->scalar_width.long_long_bits, classification_ptr);
+            MATCH_BITS(data_model->scalar_width.int128_bits, classification_ptr);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:

@@ -1,0 +1,366 @@
+[
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "extern",
+        "spelling": "extern"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int",
+        "spelling": "int"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "i128_size"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ","
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "int128_alignment"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "extern",
+        "spelling": "extern"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int",
+        "spelling": "int"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "si128_size"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ","
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "sint128_alignment"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "extern",
+        "spelling": "extern"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int",
+        "spelling": "int"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "ui128_size"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ","
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "uint128_alignment"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int",
+        "spelling": "int"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "i128_size"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "sizeof",
+        "spelling": "sizeof"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "__int128",
+        "spelling": "__int128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ","
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "int128_alignment"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "alignof",
+        "spelling": "_Alignof"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "__int128",
+        "spelling": "__int128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int",
+        "spelling": "int"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "si128_size"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "sizeof",
+        "spelling": "sizeof"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "signed",
+        "spelling": "signed"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "__int128",
+        "spelling": "__int128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ","
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "sint128_alignment"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "alignof",
+        "spelling": "_Alignof"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "signed",
+        "spelling": "signed"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "__int128",
+        "spelling": "__int128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int",
+        "spelling": "int"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "ui128_size"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "sizeof",
+        "spelling": "sizeof"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned",
+        "spelling": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "__int128",
+        "spelling": "__int128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ","
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "uint128_alignment"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "alignof",
+        "spelling": "_Alignof"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned",
+        "spelling": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "__int128",
+        "spelling": "__int128"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false
+    }
+]

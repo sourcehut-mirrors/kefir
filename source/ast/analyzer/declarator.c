@@ -1029,6 +1029,17 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
+        case KEFIR_AST_TYPE_SPECIFIER_INT128:
+            REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine type specifiers with referenced type definition"));
+            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Int128 type specifier cannot be combined with complex type specifier"));
+            *base_type = kefir_ast_type_signed_int128();
+            *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
+            break;
+
         case KEFIR_AST_TYPE_SPECIFIER_SIGNED:
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
