@@ -65,6 +65,9 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     typeentry->typecode = KEFIR_IR_TYPE_INT64;
                     break;
+                
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type classification");

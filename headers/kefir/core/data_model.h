@@ -54,6 +54,7 @@ typedef struct kefir_data_model_descriptor {
         kefir_size_t int_bits;
         kefir_size_t long_bits;
         kefir_size_t long_long_bits;
+        kefir_size_t int128_bits;
         kefir_size_t float_bits;
         kefir_size_t double_bits;
         kefir_size_t long_double_bits;

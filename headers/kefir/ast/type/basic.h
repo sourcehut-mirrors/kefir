@@ -51,6 +51,8 @@ SCALAR_TYPE(unsigned_long);
 SCALAR_TYPE(signed_long);
 SCALAR_TYPE(unsigned_long_long);
 SCALAR_TYPE(signed_long_long);
+SCALAR_TYPE(unsigned_int128);
+SCALAR_TYPE(signed_int128);
 SCALAR_TYPE(float);
 SCALAR_TYPE(double);
 SCALAR_TYPE(long_double);
@@ -96,15 +98,21 @@ const struct kefir_ast_type *kefir_ast_type_unsigned_bitprecise(struct kefir_mem
 #define KEFIR_AST_TYPE_IS_CHARACTER(base)                                                             \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_CHAR || (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR || \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR)
+#define KEFIR_AST_TYPE_IS_EXTENDED_SIGNED_INTEGER(_base) \
+    ((_base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT128)
+#define KEFIR_AST_TYPE_IS_EXTENDED_UNSIGNED_INTEGER(_base) \
+    ((_base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128)
+#define KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(_base) \
+    (KEFIR_AST_TYPE_IS_EXTENDED_UNSIGNED_INTEGER(_base) || KEFIR_AST_TYPE_IS_EXTENDED_SIGNED_INTEGER(_base))
 #define KEFIR_INTERNAL_AST_TYPE_IS_SIGNED_INTEGER(base)                                                       \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR || (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT || \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT || (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG ||   \
-     (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG || (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE)
+     (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG || (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE || KEFIR_AST_TYPE_IS_EXTENDED_SIGNED_INTEGER(base))
 #define KEFIR_INTERNAL_AST_TYPE_IS_UNSIGNED_INTEGER(base)                                                             \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_BOOL || (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR ||               \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT || (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT ||      \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG || (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG || \
-     (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE)
+     (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE || KEFIR_AST_TYPE_IS_EXTENDED_UNSIGNED_INTEGER(base))
 #define KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(base)       \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE || \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE)

@@ -430,6 +430,9 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_LOAD, mem_flags));
             break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_LOAD, mem_flags));
             break;
@@ -529,6 +532,9 @@ kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_typ
         case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD64, atomic_memory_order));
             break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(
@@ -644,6 +650,9 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE64, atomic_memory_order));
             break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE_LONG_DOUBLE,
                                                        atomic_memory_order));
@@ -747,6 +756,9 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_STORE, mem_flags));
             break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_STORE, mem_flags));
             break;
@@ -837,6 +849,9 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
         case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG64, atomic_memory_order));
             break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE,

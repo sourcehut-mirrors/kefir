@@ -166,7 +166,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "_REENTRANT", "1"));
     }
 
-    struct kefir_compiler_profile profile;
+    struct kefir_compiler_profile profile = {0};
     REQUIRE_OK(
         kefir_compiler_profile(mem, &profile, compiler_config->target_profile, &compiler_config->target_profile_config));
     if (!profile.type_traits.character_type_signedness) {

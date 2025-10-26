@@ -1257,6 +1257,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+                case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
                     // Nothing to be done
                     break;
@@ -1267,6 +1268,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+                case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
                     return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected AST type");
 
@@ -1325,6 +1327,10 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                     (*base_type) = kefir_ast_type_unsigned_long_long();
                     break;
 
+                case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+                    (*base_type) = kefir_ast_type_unsigned_int128();
+                    break;
+
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
                     (*base_type) = (*base_type)->bitprecise.flipped_sign_type;
                     break;
@@ -1334,6 +1340,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+                case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
                     // Intentionally left blank
                     break;

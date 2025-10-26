@@ -603,7 +603,7 @@ DEFINE_CASE(parser_lexem_copy, "Parser - copying tokens") {
     struct kefir_string_pool symbols;
     ASSERT_OK(kefir_string_pool_init(&symbols));
 
-    struct kefir_token src, dst;
+    struct kefir_token src = {0}, dst = {0};
     ASSERT_NOK(kefir_token_copy(&kft_mem, NULL, NULL));
     ASSERT_NOK(kefir_token_copy(&kft_mem, &dst, NULL));
     ASSERT_NOK(kefir_token_copy(&kft_mem, NULL, &src));

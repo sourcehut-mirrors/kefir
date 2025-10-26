@@ -220,6 +220,7 @@ static const struct kefir_data_model_descriptor AMD64_SYSV_DATA_MODEL_DESCRIPTOR
                      .int_bits = 32,
                      .long_bits = 64,
                      .long_long_bits = 64,
+                     .int128_bits = 128,
                      .float_bits = 32,
                      .double_bits = 64,
                      .long_double_bits = 128},

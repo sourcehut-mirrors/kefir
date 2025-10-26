@@ -154,7 +154,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     FILE *output;
     struct kefir_cli_input input;
     struct kefir_string_pool symbols;
-    struct kefir_compiler_profile profile;
+    struct kefir_compiler_profile profile = {0};
     struct kefir_compiler_context compiler;
     struct kefir_preprocessor_filesystem_source_locator filesystem_source_locator;
     struct kefir_preprocessor_dependencies_source_locator dependencies_source_locator;

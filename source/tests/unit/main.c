@@ -530,7 +530,8 @@
     _separator _case(ast_decimal_types1)\
     _separator _case(ast_decimal_types2) \
     _separator _case(ast_interchange_float_types1) \
-    _separator _case(ast_interchange_float_types2)
+    _separator _case(ast_interchange_float_types2) \
+    _separator _case(ast_int128_type1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id

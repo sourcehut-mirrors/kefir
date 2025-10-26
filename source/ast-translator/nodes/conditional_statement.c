@@ -79,6 +79,9 @@ kefir_result_t kefir_ast_translate_conditional_statement_node(struct kefir_mem *
             case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_NOT, 0));
                 break;
+            
+            case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
             case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_BOOL_NOT,

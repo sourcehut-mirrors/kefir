@@ -275,6 +275,10 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                              (kefir_hashtree_value_t) *entry_id_ptr));
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 type has not been implemented yet");
+
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE: {
             char buf[256];
             snprintf(buf, sizeof(buf) - 1, "unsigned _BitInt(%" KEFIR_SIZE_FMT ")", type->bitprecise.width);

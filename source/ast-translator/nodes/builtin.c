@@ -314,6 +314,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                         result_width = 64;
                         break;
+    
+                    case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                     case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                         result_width = result_type->bitprecise.width;
@@ -560,6 +563,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                unqualified_type->bitprecise.width));
                     break;
 
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd ffsg builtin argument type");
             }
@@ -752,6 +758,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                             KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
                     }
                 } break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     kefir_size_t jmpIndex = 0;
@@ -981,6 +990,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     }
                 } break;
 
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     kefir_size_t jmpIndex = 0;
                     if (default_value_node != NULL) {
@@ -1108,6 +1120,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                 } break;
 
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLRSB,
                                                                unqualified_type->bitprecise.width));
@@ -1196,6 +1211,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                 } break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_POPCOUNT,
@@ -1286,6 +1304,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                 } break;
 
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_PARITY,
                                                                unqualified_type->bitprecise.width));
@@ -1320,6 +1341,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 64));
                     break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST,
