@@ -922,11 +922,11 @@
                     },
                     {
                         "tag": "source_location",
-                        "value": "\/home\/jprotopopov\/Projects\/kefir\/source\/tests\/end2end\/int128_type2\/lib.kefir.asmgen.c"
+                        "value": "lib.kefir.asmgen.c"
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 21
+                        "value": 1
                     },
                     {
                         "tag": "source_location_column",
@@ -980,11 +980,11 @@
                     },
                     {
                         "tag": "source_location",
-                        "value": "\/home\/jprotopopov\/Projects\/kefir\/source\/tests\/end2end\/int128_type2\/lib.kefir.asmgen.c"
+                        "value": "lib.kefir.asmgen.c"
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 22
+                        "value": 2
                     },
                     {
                         "tag": "source_location_column",

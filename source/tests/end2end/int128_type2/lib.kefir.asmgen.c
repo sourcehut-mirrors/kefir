@@ -18,5 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#line 0 "lib.kefir.asmgen.c"
+
 __int128 i128;
 unsigned __int128 u128;

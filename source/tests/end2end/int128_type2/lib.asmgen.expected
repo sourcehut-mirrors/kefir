@@ -104,8 +104,8 @@ __kefir_debug_info_section_entry_2:
     .quad i128
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
     .ascii "i128\000"
-    .ascii "source/tests/end2end/int128_type2/lib.kefir.asmgen.c\000"
-    .quad 21
+    .ascii "lib.kefir.asmgen.c\000"
+    .quad 1
     .quad 10
 __kefir_debug_info_section_entry_4:
     .byte 3
@@ -117,8 +117,8 @@ __kefir_debug_info_section_entry_4:
     .quad u128
     .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
     .ascii "u128\000"
-    .ascii "source/tests/end2end/int128_type2/lib.kefir.asmgen.c\000"
-    .quad 22
+    .ascii "lib.kefir.asmgen.c\000"
+    .quad 2
     .quad 19
 __kefir_debug_info_section_entry_3:
     .byte 2
