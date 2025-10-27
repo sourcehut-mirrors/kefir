@@ -19,3 +19,4 @@
 */
 
 #define __int128_t _BitInt(128)
+#define __int128 _BitInt(128)
