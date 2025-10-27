@@ -156,7 +156,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                 REQUIRE_OK(
                     get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
                 if (type_signed_integer) {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(node->base.properties.type)) {
                         REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                         REQUIRE_OK(kefir_bigint_copy_resize(
                             mem, value->bitprecise, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise));
@@ -167,7 +167,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                                               KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
                     }
                 } else {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(node->base.properties.type)) {
                         REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                         REQUIRE_OK(kefir_bigint_copy_resize(
                             mem, value->bitprecise, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise));
@@ -206,7 +206,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                 REQUIRE_OK(
                     get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
                 if (type_signed_integer) {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(node->base.properties.type)) {
                         REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                         REQUIRE_OK(kefir_bigint_copy_resize(
                             mem, value->bitprecise, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise));
@@ -217,7 +217,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                                               KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
                     }
                 } else {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(node->base.properties.type)) {
                         REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                         REQUIRE_OK(kefir_bigint_copy_resize(
                             mem, value->bitprecise, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise));
@@ -240,7 +240,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                 struct kefir_ast_target_environment_object_info type_info;
                 REQUIRE_OK(
                     get_type_info(mem, context, node->arg->properties.type, &node->base.source_location, &type_info));
-                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->arg->properties.type)) {
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->arg->properties.type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(node->base.properties.type)) {
                     kefir_bool_t is_zero = false;
                     REQUIRE_OK(kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise,
                                                     &is_zero));

@@ -1,0 +1,25 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2025  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include "definitions.h"
+
+int bools[] = {((unsigned __int128) 0x1000000000000000000000000000uwb) ? 1 : 0, ((unsigned __int128) 0x0) ? 1 : 0,
+               ((signed __int128) -01) ? 1 : 0, ((signed __int128) -0xfffffffffffffffffffffffffffffwb) ? 1 : 0,
+               ((unsigned __int128) ~0xfffffffffffffffffffffffffffffffuwb) ? 1 : 0};
