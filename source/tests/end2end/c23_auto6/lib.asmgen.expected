@@ -61,12 +61,5 @@ c:
 .section .tdata
     .align 8
 b:
-    .byte 1
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 1
 

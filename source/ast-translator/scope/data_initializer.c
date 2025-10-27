@@ -225,6 +225,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_INT64:
                 case KEFIR_IR_TYPE_BITINT:
                 case KEFIR_IR_TYPE_BITFIELD:
+                case KEFIR_IR_TYPE_INT128:
                     if (value.bitprecise != NULL) {
                         kefir_size_t bitwidth = value.bitprecise->bitwidth;
                         if (resolved_layout->bitfield) {
@@ -250,9 +251,6 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                         REQUIRE_OK(kefir_ir_data_set_integer(param->mem, param->data, slot, value.integer));
                     }
                     break;
-
-                case KEFIR_IR_TYPE_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                 case KEFIR_IR_TYPE_FLOAT32:
                     REQUIRE_OK(
@@ -301,9 +299,6 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                     REQUIRE_OK(
                         kefir_ir_data_set_integer(param->mem, param->data, slot, (kefir_int64_t) value.floating_point));
                     break;
-
-                case KEFIR_IR_TYPE_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                 case KEFIR_IR_TYPE_FLOAT32:
                     REQUIRE_OK(kefir_ir_data_set_float32(param->mem, param->data, slot, value.floating_point));
@@ -365,9 +360,6 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                     REQUIRE_OK(kefir_ir_data_set_integer(param->mem, param->data, slot,
                                                          kefir_dfp_decimal128_to_int64(value.decimal)));
                     break;
-
-                case KEFIR_IR_TYPE_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                 case KEFIR_IR_TYPE_FLOAT32:
                     REQUIRE_OK(kefir_dfp_require_supported(NULL));
@@ -435,9 +427,6 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                     REQUIRE_OK(kefir_ir_data_set_integer(param->mem, param->data, slot,
                                                          (kefir_int64_t) value.complex_floating_point.real));
                     break;
-
-                case KEFIR_IR_TYPE_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                 case KEFIR_IR_TYPE_FLOAT32:
                     REQUIRE_OK(

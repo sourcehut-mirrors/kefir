@@ -73,20 +73,36 @@ static kefir_result_t trailing_padding(kefir_size_t start_offset, const struct k
 
 static kefir_result_t generate_bits(struct static_data_param *param, const struct kefir_ir_data_value *entry,
                                     kefir_size_t bytes, kefir_int64_t value) {
-    for (kefir_size_t i = 0; i < bytes; i++) {
-        const kefir_size_t qword_container_idx = i / sizeof(kefir_uint64_t);
-        const kefir_size_t qword_offset = i % sizeof(kefir_uint64_t);
-        kefir_uint64_t qword_container;
-        if (entry->type == KEFIR_IR_DATA_VALUE_BITS) {
-            qword_container =
-                qword_container_idx < entry->value.bits.length ? entry->value.bits.bits[qword_container_idx] : 0;
-        } else {
-            qword_container = qword_container_idx == 0 ? value : 0;
+    if (bytes % KEFIR_AMD64_ABI_QWORD == 0) {
+        for (kefir_size_t i = 0; i < bytes / KEFIR_AMD64_ABI_QWORD; i++) {
+            kefir_uint64_t qword_container;
+            if (entry->type == KEFIR_IR_DATA_VALUE_BITS) {
+                qword_container =
+                    i < entry->value.bits.length ? entry->value.bits.bits[i] : 0;
+            } else {
+                qword_container = i == 0 ? value : 0;
+            }
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
+                                                    qword_container)));
         }
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-            &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
-            kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
-                                                 (kefir_uint8_t) ((qword_container >> (qword_offset << 3)) & 0xff))));
+    } else {
+        for (kefir_size_t i = 0; i < bytes; i++) {
+            const kefir_size_t qword_container_idx = i / sizeof(kefir_uint64_t);
+            const kefir_size_t qword_offset = i % sizeof(kefir_uint64_t);
+            kefir_uint64_t qword_container;
+            if (entry->type == KEFIR_IR_DATA_VALUE_BITS) {
+                qword_container =
+                    qword_container_idx < entry->value.bits.length ? entry->value.bits.bits[qword_container_idx] : 0;
+            } else {
+                qword_container = qword_container_idx == 0 ? value : 0;
+            }
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
+                                                    (kefir_uint8_t) ((qword_container >> (qword_offset << 3)) & 0xff))));
+        }
     }
 
     return KEFIR_OK;
@@ -112,7 +128,7 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             break;
 
         case KEFIR_IR_DATA_VALUE_POINTER: {
-            REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_INT64,
+            REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_INT64 || typeentry->typecode == KEFIR_IR_TYPE_INT128,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to store pointer in requested location"));
 
             const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
@@ -129,6 +145,12 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                     kefir_asm_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
                                                           KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, ir_identifier->symbol),
                     entry->value.pointer.offset)));
+            if (typeentry->typecode == KEFIR_IR_TYPE_INT128) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_imm(
+                        &param->codegen->xasmgen_helpers.operands[0], 0)));
+            }
 
             param->offset += layout->size;
             return KEFIR_OK;
@@ -199,7 +221,8 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             break;
 
         case KEFIR_IR_TYPE_INT128:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+            REQUIRE_OK(generate_bits(param, entry, KEFIR_AMD64_ABI_QWORD * 2, value));
+            break;
 
         case KEFIR_IR_TYPE_BITINT:
             if (typeentry->param <= 8) {

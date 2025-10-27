@@ -29,141 +29,36 @@ __kefir_text_section_end:
 .section .data
     .align 8
 a:
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
+    .quad 71777214294589695
+    .quad 71777214294589695
 
     .align 8
 b:
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 1
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 71777214294589695
+    .quad 71777214294589695
+    .quad 1
 
     .align 8
 c:
-    .byte 1
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 0
+    .quad 18374966859414961921
+    .quad 280379743338240
 
     .align 8
 d:
-    .byte 1
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 1
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 18374966859414961921
+    .quad 18374966859414961920
+    .quad 1
 
     .align 8
 e:
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
+    .quad 18374966859414961920
+    .quad 18374966859414961920
 
     .align 8
 f:
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 255
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 18374966859414961920
+    .quad 18374966859414961920
+    .quad 0
 
 g:
     .byte 0

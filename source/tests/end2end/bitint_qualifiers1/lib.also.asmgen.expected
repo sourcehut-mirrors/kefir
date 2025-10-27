@@ -47,12 +47,5 @@ __kefir_text_section_end:
 .section .data
     .align 8
 value:
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 0
 

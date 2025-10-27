@@ -102,6 +102,8 @@ const struct kefir_ast_type *kefir_ast_type_unsigned_bitprecise(struct kefir_mem
     ((_base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT128)
 #define KEFIR_AST_TYPE_IS_EXTENDED_UNSIGNED_INTEGER(_base) \
     ((_base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128)
+#define KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(_base) \
+    ((_base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT128 || (_base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128)
 #define KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(_base) \
     (KEFIR_AST_TYPE_IS_EXTENDED_UNSIGNED_INTEGER(_base) || KEFIR_AST_TYPE_IS_EXTENDED_SIGNED_INTEGER(_base))
 #define KEFIR_INTERNAL_AST_TYPE_IS_SIGNED_INTEGER(base)                                                       \

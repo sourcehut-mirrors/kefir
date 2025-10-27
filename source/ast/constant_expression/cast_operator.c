@@ -82,27 +82,34 @@ static kefir_result_t cast_integral_type(struct kefir_mem *mem, const struct kef
         }
     }
 
+#define DO_SET_BITPRECISE(_width) \
+    do { \
+        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise)); \
+        if (signed_source_integer) { \
+            if (source_bitprecise) { \
+                REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, source_bitprecise)); \
+                REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, value->bitprecise, (_width))); \
+            } else { \
+                REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, (_width))); \
+                REQUIRE_OK(kefir_bigint_set_signed_value(value->bitprecise, value->integer)); \
+            } \
+        } else { \
+            if (source_bitprecise) { \
+                REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, source_bitprecise)); \
+                REQUIRE_OK( \
+                    kefir_bigint_resize_cast_unsigned(mem, value->bitprecise, (_width))); \
+            } else { \
+                REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, (_width))); \
+                REQUIRE_OK(kefir_bigint_set_unsigned_value(value->bitprecise, value->integer)); \
+            } \
+        } \
+    } while (0)
     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(destination_type)) {
-        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
-        if (signed_source_integer) {
-            if (source_bitprecise) {
-                REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, source_bitprecise));
-                REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, value->bitprecise, destination_type->bitprecise.width));
-            } else {
-                REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, destination_type->bitprecise.width));
-                REQUIRE_OK(kefir_bigint_set_signed_value(value->bitprecise, value->integer));
-            }
-        } else {
-            if (source_bitprecise) {
-                REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, source_bitprecise));
-                REQUIRE_OK(
-                    kefir_bigint_resize_cast_unsigned(mem, value->bitprecise, destination_type->bitprecise.width));
-            } else {
-                REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, destination_type->bitprecise.width));
-                REQUIRE_OK(kefir_bigint_set_unsigned_value(value->bitprecise, value->integer));
-            }
-        }
+        DO_SET_BITPRECISE(destination_type->bitprecise.width);
+    } else if (KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(destination_type)) {
+        DO_SET_BITPRECISE(context->type_traits->data_model->scalar_width.int128_bits);
     }
+#undef DO_SET_BITPRECISE
     return KEFIR_OK;
 }
 
@@ -141,15 +148,22 @@ static kefir_result_t cast_integral_type_from_float(struct kefir_mem *mem, const
                 break;
         }
 
+#define DO_CONV_FROM_FLOAT(_width) \
+        do { \
+            REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise)); \
+            REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, (_width))); \
+            if (signed_integer) { \
+                REQUIRE_OK(kefir_bigint_signed_from_long_double(value->bitprecise, source)); \
+            } else { \
+                REQUIRE_OK(kefir_bigint_unsigned_from_long_double(value->bitprecise, source)); \
+            } \
+        } while (0)
         if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(type)) {
-            REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
-            REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, type->bitprecise.width));
-            if (signed_integer) {
-                REQUIRE_OK(kefir_bigint_signed_from_long_double(value->bitprecise, source));
-            } else {
-                REQUIRE_OK(kefir_bigint_unsigned_from_long_double(value->bitprecise, source));
-            }
+            DO_CONV_FROM_FLOAT(type->bitprecise.width);
+        } else if (KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(type)) {
+            DO_CONV_FROM_FLOAT(context->type_traits->data_model->scalar_width.int128_bits);
         }
+#undef DO_CONV_FROM_FLOAT
     } else {
         switch (type_info.size) {
             case 1:
@@ -170,11 +184,18 @@ static kefir_result_t cast_integral_type_from_float(struct kefir_mem *mem, const
                 break;
         }
 
+#define DO_CONV_FROM_FLOAT(_width) \
+        do { \
+            REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise)); \
+            REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, (_width))); \
+            REQUIRE_OK(kefir_bigint_unsigned_from_long_double(value->bitprecise, source)); \
+        } while (0)
         if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(type)) {
-            REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
-            REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, type->bitprecise.width));
-            REQUIRE_OK(kefir_bigint_unsigned_from_long_double(value->bitprecise, source));
+            DO_CONV_FROM_FLOAT(type->bitprecise.width);
+        } else if (KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(type)) {
+            DO_CONV_FROM_FLOAT(context->type_traits->data_model->scalar_width.int128_bits);
         }
+#undef DO_CONV_FROM_FLOAT
     }
     return KEFIR_OK;
 }
@@ -247,28 +268,35 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                     kefir_bool_t signed_type;
                     REQUIRE_OK(
                         kefir_ast_type_is_signed(context->type_traits, unqualified_destination_type, &signed_type));
+#define DO_CONV_FROM_DECIMAL(_width) \
+                    do { \
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise)); \
+                        REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, \
+                                                              (_width))); \
+                        if (kefir_dfp_bitint_conv_is_supported()) { \
+                            if (signed_type) { \
+                                kefir_dfp_decimal128_to_signed_bitint(value->bitprecise, source->decimal); \
+                            } else { \
+                                kefir_dfp_decimal128_to_unsigned_bitint(value->bitprecise, source->decimal); \
+                            } \
+                        } else { \
+                            REQUIRE(context->configuration->analysis.imprecise_decimal_bitint_conv, \
+                                    KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, \
+                                                    "Conversions between decimal floating-point values and bit-precise " \
+                                                    "integers are not implemented on this host platform")); \
+                            kefir_long_double_t binary_fp_value = kefir_dfp_decimal128_to_long_double(value->decimal); \
+                            if (signed_type) { \
+                                REQUIRE_OK(kefir_bigint_signed_from_long_double(value->bitprecise, binary_fp_value)); \
+                            } else { \
+                                REQUIRE_OK(kefir_bigint_unsigned_from_long_double(value->bitprecise, binary_fp_value)); \
+                            } \
+                        } \
+                    } while (0)
                     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_destination_type)) {
-                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
-                        REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise,
-                                                              unqualified_destination_type->bitprecise.width));
-                        if (kefir_dfp_bitint_conv_is_supported()) {
-                            if (signed_type) {
-                                kefir_dfp_decimal128_to_signed_bitint(value->bitprecise, source->decimal);
-                            } else {
-                                kefir_dfp_decimal128_to_unsigned_bitint(value->bitprecise, source->decimal);
-                            }
-                        } else {
-                            REQUIRE(context->configuration->analysis.imprecise_decimal_bitint_conv,
-                                    KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
-                                                    "Conversions between decimal floating-point values and bit-precise "
-                                                    "integers are not implemented on this host platform"));
-                            kefir_long_double_t binary_fp_value = kefir_dfp_decimal128_to_long_double(value->decimal);
-                            if (signed_type) {
-                                REQUIRE_OK(kefir_bigint_signed_from_long_double(value->bitprecise, binary_fp_value));
-                            } else {
-                                REQUIRE_OK(kefir_bigint_unsigned_from_long_double(value->bitprecise, binary_fp_value));
-                            }
-                        }
+                        DO_CONV_FROM_DECIMAL(unqualified_destination_type->bitprecise.width);
+                    } else if (KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_destination_type)) {
+                        DO_CONV_FROM_DECIMAL(context->type_traits->data_model->scalar_width.int128_bits);
+#undef DO_CONV_FROM_DECIMAL
                     } else if (signed_type) {
                         value->integer = kefir_dfp_decimal128_to_int64(source->decimal);
                     } else {
@@ -287,25 +315,32 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
         switch (source->klass) {
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+#define DO_CONV_TO_FLOAT(_width) \
+                do { \
+                    struct kefir_bigint *tmp_bigint, *tmp2_bigint; \
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp_bigint)); \
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp2_bigint)); \
+                    REQUIRE_OK(kefir_bigint_resize_nocast( \
+                        mem, tmp2_bigint, MAX((_width), sizeof(kefir_long_double_t) * CHAR_BIT))); \
+                    REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, source->bitprecise)); \
+ \
+                    kefir_bool_t signed_integer = false; \
+                    REQUIRE_OK( \
+                        kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_integer)); \
+                    if (signed_integer) { \
+                        REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, tmp_bigint, tmp2_bigint->bitwidth)); \
+                        REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &value->floating_point)); \
+                    } else { \
+                        REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, tmp_bigint, tmp2_bigint->bitwidth)); \
+                        REQUIRE_OK( \
+                            kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &value->floating_point)); \
+                    } \
+                } while (0)
                 if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_source_type)) {
-                    struct kefir_bigint *tmp_bigint, *tmp2_bigint;
-                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp_bigint));
-                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp2_bigint));
-                    REQUIRE_OK(kefir_bigint_resize_nocast(
-                        mem, tmp2_bigint, MAX(source->bitprecise->bitwidth, sizeof(kefir_long_double_t) * CHAR_BIT)));
-                    REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, source->bitprecise));
-
-                    kefir_bool_t signed_integer = false;
-                    REQUIRE_OK(
-                        kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_integer));
-                    if (signed_integer) {
-                        REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, tmp_bigint, tmp2_bigint->bitwidth));
-                        REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &value->floating_point));
-                    } else {
-                        REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, tmp_bigint, tmp2_bigint->bitwidth));
-                        REQUIRE_OK(
-                            kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &value->floating_point));
-                    }
+                    DO_CONV_TO_FLOAT(source->bitprecise->bitwidth);
+                } else if (KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_source_type)) {
+                    DO_CONV_TO_FLOAT(context->type_traits->data_model->scalar_width.int128_bits);
+#undef DO_CONV_TO_FLOAT
                 } else {
                     value->floating_point = (kefir_ast_constant_expression_float_t) source->integer;
                 }
@@ -378,38 +413,45 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 kefir_bool_t signed_type;
                 REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_type));
                 REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
+#define DO_CONV_TO_DECIMAL(_width) \
+                do { \
+                    if (kefir_dfp_bitint_conv_is_supported()) { \
+                        if (signed_type) { \
+                            value->decimal = kefir_dfp_decimal128_from_signed_bitint(source->bitprecise); \
+                        } else { \
+                            value->decimal = kefir_dfp_decimal128_from_unsigned_bitint(source->bitprecise); \
+                        } \
+                    } else { \
+                        REQUIRE(context->configuration->analysis.imprecise_decimal_bitint_conv, \
+                                KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, \
+                                                "Conversions between decimal floating-point values and bit-precise " \
+                                                "integers are not implemented on this host platform")); \
+                        kefir_long_double_t binary_fp_value = 0.0L; \
+ \
+                        struct kefir_bigint *tmp_bigint, *tmp2_bigint; \
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp_bigint)); \
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp2_bigint)); \
+                        REQUIRE_OK(kefir_bigint_resize_nocast( \
+                            mem, tmp2_bigint, \
+                            MAX((_width), sizeof(kefir_long_double_t) * CHAR_BIT))); \
+                        REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, source->bitprecise)); \
+ \
+                        if (signed_type) { \
+                            REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, tmp_bigint, tmp2_bigint->bitwidth)); \
+                            REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &binary_fp_value)); \
+                        } else { \
+                            REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, tmp_bigint, tmp2_bigint->bitwidth)); \
+                            REQUIRE_OK(kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &binary_fp_value)); \
+                        } \
+ \
+                        value->decimal = kefir_dfp_decimal128_from_long_double(binary_fp_value); \
+                    } \
+                } while (0)
                 if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_source_type)) {
-                    if (kefir_dfp_bitint_conv_is_supported()) {
-                        if (signed_type) {
-                            value->decimal = kefir_dfp_decimal128_from_signed_bitint(source->bitprecise);
-                        } else {
-                            value->decimal = kefir_dfp_decimal128_from_unsigned_bitint(source->bitprecise);
-                        }
-                    } else {
-                        REQUIRE(context->configuration->analysis.imprecise_decimal_bitint_conv,
-                                KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
-                                                "Conversions between decimal floating-point values and bit-precise "
-                                                "integers are not implemented on this host platform"));
-                        kefir_long_double_t binary_fp_value = 0.0L;
-
-                        struct kefir_bigint *tmp_bigint, *tmp2_bigint;
-                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp_bigint));
-                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp2_bigint));
-                        REQUIRE_OK(kefir_bigint_resize_nocast(
-                            mem, tmp2_bigint,
-                            MAX(source->bitprecise->bitwidth, sizeof(kefir_long_double_t) * CHAR_BIT)));
-                        REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, source->bitprecise));
-
-                        if (signed_type) {
-                            REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, tmp_bigint, tmp2_bigint->bitwidth));
-                            REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &binary_fp_value));
-                        } else {
-                            REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, tmp_bigint, tmp2_bigint->bitwidth));
-                            REQUIRE_OK(kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &binary_fp_value));
-                        }
-
-                        value->decimal = kefir_dfp_decimal128_from_long_double(binary_fp_value);
-                    }
+                    DO_CONV_TO_DECIMAL(source->bitprecise->bitwidth);
+                } else if (KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_source_type)) {
+                    DO_CONV_TO_DECIMAL(context->type_traits->data_model->scalar_width.int128_bits);
+#undef DO_CONV_TO_DECIMAL
                 } else if (signed_type) {
                     value->decimal = kefir_dfp_decimal128_from_int64(source->integer);
                 } else {
@@ -447,29 +489,36 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
         switch (source->klass) {
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+#define DO_CONV_TO_COMPLEX(_width) \
+                do { \
+                    struct kefir_bigint *tmp_bigint, *tmp2_bigint; \
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp_bigint)); \
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp2_bigint)); \
+                    REQUIRE_OK(kefir_bigint_resize_nocast( \
+                        mem, tmp_bigint, MAX((_width), sizeof(kefir_long_double_t) * CHAR_BIT))); \
+                    REQUIRE_OK(kefir_bigint_resize_nocast(mem, tmp2_bigint, tmp_bigint->bitwidth)); \
+                    REQUIRE_OK(kefir_bigint_copy(tmp_bigint, source->bitprecise)); \
+ \
+                    kefir_bool_t signed_integer = false; \
+                    REQUIRE_OK( \
+                        kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_integer)); \
+                    if (signed_integer) { \
+                        REQUIRE_OK( \
+                            kefir_bigint_cast_signed(tmp_bigint, (_width), tmp_bigint->bitwidth)); \
+                        REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, \
+                                                                      &value->complex_floating_point.real)); \
+                    } else { \
+                        REQUIRE_OK( \
+                            kefir_bigint_cast_unsigned(tmp_bigint, (_width), tmp_bigint->bitwidth)); \
+                        REQUIRE_OK(kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, \
+                                                                        &value->complex_floating_point.real)); \
+                    } \
+                } while (0)
                 if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_source_type)) {
-                    struct kefir_bigint *tmp_bigint, *tmp2_bigint;
-                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp_bigint));
-                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp2_bigint));
-                    REQUIRE_OK(kefir_bigint_resize_nocast(
-                        mem, tmp_bigint, MAX(source->bitprecise->bitwidth, sizeof(kefir_long_double_t) * CHAR_BIT)));
-                    REQUIRE_OK(kefir_bigint_resize_nocast(mem, tmp2_bigint, tmp_bigint->bitwidth));
-                    REQUIRE_OK(kefir_bigint_copy(tmp_bigint, source->bitprecise));
-
-                    kefir_bool_t signed_integer = false;
-                    REQUIRE_OK(
-                        kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_integer));
-                    if (signed_integer) {
-                        REQUIRE_OK(
-                            kefir_bigint_cast_signed(tmp_bigint, source->bitprecise->bitwidth, tmp_bigint->bitwidth));
-                        REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint,
-                                                                      &value->complex_floating_point.real));
-                    } else {
-                        REQUIRE_OK(
-                            kefir_bigint_cast_unsigned(tmp_bigint, source->bitprecise->bitwidth, tmp_bigint->bitwidth));
-                        REQUIRE_OK(kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint,
-                                                                        &value->complex_floating_point.real));
-                    }
+                    DO_CONV_TO_COMPLEX(source->bitprecise->bitwidth);
+                } else if (KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_source_type)) {
+                    DO_CONV_TO_COMPLEX(context->type_traits->data_model->scalar_width.int128_bits);
+#undef DO_CONV_TO_COMPLEX
                 } else {
                     value->complex_floating_point.real = (kefir_ast_constant_expression_float_t) source->integer;
                 }

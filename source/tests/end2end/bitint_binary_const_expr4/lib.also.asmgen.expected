@@ -27,172 +27,46 @@ __kefir_text_section_end:
 .section .data
     .align 8
 a:
-    .byte 16
-    .byte 7
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 1808
+    .quad 0
 
     .align 8
 b:
-    .byte 69
-    .byte 36
-    .byte 1
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 74821
+    .quad 0
 
     .align 8
 c:
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 0
+    .quad 0
 
     .align 8
 d:
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 0
+    .quad 0
 
     .align 8
 e:
-    .byte 87
-    .byte 195
-    .byte 194
-    .byte 230
-    .byte 223
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
+    .quad 18446743935847154519
+    .quad 18446744073709551615
 
     .align 8
 f:
-    .byte 218
-    .byte 128
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
+    .quad 18446744073709519066
+    .quad 18446744073709551615
 
     .align 8
 g:
-    .byte 38
-    .byte 127
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 32550
+    .quad 0
 
     .align 8
 h:
-    .byte 112
-    .byte 126
-    .byte 86
-    .byte 159
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
-    .byte 255
+    .quad 18446744072087830128
+    .quad 18446744073709551615
 
     .align 8
 i:
-    .byte 205
-    .byte 228
-    .byte 214
-    .byte 207
-    .byte 61
-    .byte 246
-    .byte 227
-    .byte 5
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 424453535243363533
+    .quad 0
 

@@ -117,81 +117,18 @@ __kefir_text_section_end:
 .section .data
     .align 16
 arr:
-    .byte 116
-    .byte 140
-    .byte 250
-    .byte 190
-    .byte 47
-    .byte 15
-    .byte 249
-    .byte 246
-    .byte 174
-    .byte 137
-    .byte 109
-    .byte 149
-    .byte 2
-    .byte 40
-    .byte 3
-    .byte 113
-    .byte 122
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 140
-    .byte 115
-    .byte 5
-    .byte 65
-    .byte 208
-    .byte 240
-    .byte 6
-    .byte 9
-    .byte 81
-    .byte 118
-    .byte 146
-    .byte 106
-    .byte 253
-    .byte 215
-    .byte 252
-    .byte 142
-    .byte 5
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 17796272100273196148
+    .quad 8143396542778018222
+    .quad 122
+    .quad 650471973436355468
+    .quad 10303347530931533393
+    .quad 5
 
     .align 16
 uarr:
-    .byte 140
-    .byte 115
-    .byte 5
-    .byte 65
-    .byte 208
-    .byte 240
-    .byte 6
-    .byte 9
-    .byte 81
-    .byte 118
-    .byte 146
-    .byte 106
-    .byte 253
-    .byte 215
-    .byte 252
-    .byte 142
-    .byte 5
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .quad 650471973436355468
+    .quad 10303347530931533393
+    .quad 5
 
 .att_syntax
 .section .note.GNU-stack,"",%progbits
