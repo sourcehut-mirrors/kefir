@@ -479,8 +479,6 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
                 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
-
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
@@ -553,8 +551,6 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
                 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
-
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
@@ -633,8 +629,6 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
                 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
-
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
@@ -695,8 +689,6 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
                 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
-
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
@@ -751,8 +743,6 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
                 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
-
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
@@ -807,8 +797,6 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
                 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
-
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
@@ -853,7 +841,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
                 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                    value->integer = 128;
+                    break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     value->integer = unqualified_type->bitprecise.width;
