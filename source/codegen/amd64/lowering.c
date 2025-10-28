@@ -91,6 +91,11 @@ struct lowering_param {
         kefir_id_t sofxfloat_complex_double_div;
         kefir_id_t sofxfloat_complex_long_double_div;
 
+        kefir_id_t libgcc_udivti3;
+        kefir_id_t libgcc_divti3;
+        kefir_id_t libgcc_umodti3;
+        kefir_id_t libgcc_modti3;
+
 #define DECL_DECIMAL_FNS(_prefix) \
         kefir_id_t _prefix##_addsd3; \
         kefir_id_t _prefix##_adddd3; \
@@ -558,6 +563,26 @@ DECL_RUNTIME_FN(sofxfloat_complex_long_double_div, KEFIR_SOFTFLOAT_COMPLEX_LONG_
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_divti3, LIBGCC_DIVTI3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_udivti3, LIBGCC_UDIVTI3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_modti3, LIBGCC_MODTI3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_umodti3, LIBGCC_UMODTI3, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
 })
 #define DECL_DECIMAL_FNS(_prefix, _encoding) \
 DECL_BUILTIN_RUNTIME_FN(_prefix##_addsd3, LIBGCC_DECIMAL_ADDSD3(_encoding), 2, 1, { \
@@ -4278,6 +4303,44 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
 #undef ISNAN_IMPL
 
+#define INT128_BIN_OP(_fn) \
+        do { \
+            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0]; \
+            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1]; \
+ \
+            kefir_id_t func_decl_id = KEFIR_ID_NONE; \
+            if (configuration->decimal_encoding == KEFIR_DECIMAL_ENCODING_BID) { \
+                REQUIRE_OK(get_libgcc_##_fn(mem, module, param, &func_decl_id)); \
+            } else { \
+                REQUIRE_OK(get_libgcc_##_fn(mem, module, param, &func_decl_id)); \
+            } \
+ \
+ \
+            kefir_opt_call_id_t call_node_id; \
+            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, \
+                                                        KEFIR_ID_NONE, &call_node_id, replacement_ref)); \
+            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_ref)); \
+            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg2_ref)); \
+        } while (0)
+
+        case KEFIR_OPT_OPCODE_INT128_IDIV:
+            INT128_BIN_OP(divti3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_UDIV:
+            INT128_BIN_OP(udivti3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_IMOD:
+            INT128_BIN_OP(modti3_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_UMOD:
+            INT128_BIN_OP(umodti3_function_decl_id);
+            break;
+
+#undef INT128_BIN_OP
+
         default:
             // Intentionally left blank
             break;
@@ -4394,6 +4457,11 @@ kefir_result_t kefir_codegen_amd64_lower_function(struct kefir_mem *mem, struct 
                                                   .sofxfloat_complex_float_div = KEFIR_ID_NONE,
                                                   .sofxfloat_complex_double_div = KEFIR_ID_NONE,
                                                   .sofxfloat_complex_long_double_div = KEFIR_ID_NONE,
+
+                                                  .libgcc_udivti3 = KEFIR_ID_NONE,
+                                                  .libgcc_divti3 = KEFIR_ID_NONE,
+                                                  .libgcc_umodti3 = KEFIR_ID_NONE,
+                                                  .libgcc_modti3 = KEFIR_ID_NONE,
 #define INIT_DECIMAL_FNS(_prefix) \
                                                 ._prefix##_addsd3 = KEFIR_ID_NONE, \
                                                 ._prefix##_adddd3 = KEFIR_ID_NONE, \

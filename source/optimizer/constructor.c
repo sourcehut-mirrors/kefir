@@ -1047,6 +1047,18 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(int32_bool_or, KEFIR_IR_OPCODE_INT32_BOOL_OR)
             BINARY_OP(int64_bool_or, KEFIR_IR_OPCODE_INT64_BOOL_OR)
 
+            BINARY_OP(int128_add, KEFIR_IR_OPCODE_INT128_ADD)
+            BINARY_OP(int128_sub, KEFIR_IR_OPCODE_INT128_SUB)
+            BINARY_OP(int128_imul, KEFIR_IR_OPCODE_INT128_IMUL)
+            BINARY_OP(int128_umul, KEFIR_IR_OPCODE_INT128_UMUL)
+            BINARY_OP(int128_idiv, KEFIR_IR_OPCODE_INT128_IDIV)
+            BINARY_OP(int128_udiv, KEFIR_IR_OPCODE_INT128_UDIV)
+            BINARY_OP(int128_imod, KEFIR_IR_OPCODE_INT128_IMOD)
+            BINARY_OP(int128_umod, KEFIR_IR_OPCODE_INT128_UMOD)
+            BINARY_OP(int128_and, KEFIR_IR_OPCODE_INT128_AND)
+            BINARY_OP(int128_or, KEFIR_IR_OPCODE_INT128_OR)
+            BINARY_OP(int128_xor, KEFIR_IR_OPCODE_INT128_XOR)
+
             BINARY_OP(float32_add, KEFIR_IR_OPCODE_FLOAT32_ADD)
             BINARY_OP(float32_sub, KEFIR_IR_OPCODE_FLOAT32_SUB)
             BINARY_OP(float32_mul, KEFIR_IR_OPCODE_FLOAT32_MUL)

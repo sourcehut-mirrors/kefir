@@ -507,6 +507,17 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(int128_sign_extend_64bits, KEFIR_OPT_OPCODE_INT128_SIGN_EXTEND_64BITS) _separator \
     _def(int128_load, KEFIR_OPT_OPCODE_INT128_LOAD) _separator \
     _def(int128_store, KEFIR_OPT_OPCODE_INT128_STORE) _separator \
+    _def(int128_add, KEFIR_OPT_OPCODE_INT128_ADD) _separator \
+    _def(int128_sub, KEFIR_OPT_OPCODE_INT128_SUB) _separator \
+    _def(int128_mul, KEFIR_OPT_OPCODE_INT128_IMUL) _separator \
+    _def(int128_mul, KEFIR_OPT_OPCODE_INT128_UMUL) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_IDIV) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UDIV) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_IMOD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UMOD) _separator \
+    _def(int128_and, KEFIR_OPT_OPCODE_INT128_AND) _separator \
+    _def(int128_or, KEFIR_OPT_OPCODE_INT128_OR) _separator \
+    _def(int128_xor, KEFIR_OPT_OPCODE_INT128_XOR) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -697,6 +708,11 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define KEFIR_SOFTFLOAT_COMPLEX_FLOAT_DIV "__kefir_softfloat_complex_float_div"
 #define KEFIR_SOFTFLOAT_COMPLEX_DOUBLE_DIV "__kefir_softfloat_complex_double_div"
 #define KEFIR_SOFTFLOAT_COMPLEX_LONG_DOUBLE_DIV "__kefir_softfloat_complex_long_double_div"
+
+#define LIBGCC_UDIVTI3 "__udivti3"
+#define LIBGCC_DIVTI3 "__divti3"
+#define LIBGCC_UMODTI3 "__umodti3"
+#define LIBGCC_MODTI3 "__modti3"
 
 #define LIBGCC_DECIMAL_BID "__bid"
 #define LIBGCC_DECIMAL_DPD "__dpd"

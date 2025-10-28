@@ -436,6 +436,18 @@ BINARY_OP(int16_bool_or);
 BINARY_OP(int32_bool_or);
 BINARY_OP(int64_bool_or);
 
+BINARY_OP(int128_add);
+BINARY_OP(int128_sub);
+BINARY_OP(int128_imul);
+BINARY_OP(int128_umul);
+BINARY_OP(int128_idiv);
+BINARY_OP(int128_udiv);
+BINARY_OP(int128_imod);
+BINARY_OP(int128_umod);
+BINARY_OP(int128_and);
+BINARY_OP(int128_or);
+BINARY_OP(int128_xor);
+
 BINARY_OP(vararg_copy);
 
 BINARY_OP(float32_add);

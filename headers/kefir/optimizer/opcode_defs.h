@@ -449,7 +449,18 @@
     OPCODE(INT128_ZERO_EXTEND_64BITS, "int128_zero_extend_64bits", ref1) SEPARATOR \
     OPCODE(INT128_SIGN_EXTEND_64BITS, "int128_sign_extend_64bits", ref1) SEPARATOR \
     OPCODE(INT128_LOAD, "int128_load", load_mem) SEPARATOR \
-    OPCODE(INT128_STORE, "int128_store", store_mem)
+    OPCODE(INT128_STORE, "int128_store", store_mem) SEPARATOR \
+    OPCODE(INT128_ADD, "int128_add", ref2) SEPARATOR \
+    OPCODE(INT128_SUB, "int128_sub", ref2) SEPARATOR \
+    OPCODE(INT128_IMUL, "int128_imul", ref2) SEPARATOR \
+    OPCODE(INT128_UMUL, "int128_umul", ref2) SEPARATOR \
+    OPCODE(INT128_IDIV, "int128_idiv", ref2) SEPARATOR \
+    OPCODE(INT128_UDIV, "int128_udiv", ref2) SEPARATOR \
+    OPCODE(INT128_IMOD, "int128_imod", ref2) SEPARATOR \
+    OPCODE(INT128_UMOD, "int128_umod", ref2) SEPARATOR \
+    OPCODE(INT128_AND, "int128_and", ref2) SEPARATOR \
+    OPCODE(INT128_OR, "int128_or", ref2) SEPARATOR \
+    OPCODE(INT128_XOR, "int128_xor", ref2)
 
 // clang-format on
 

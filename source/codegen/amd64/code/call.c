@@ -283,6 +283,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                 REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch IR type entry"));
                 kefir_bool_t complex_float32_multireg = false;
                 kefir_bool_t complex_float64_multireg = false;
+                kefir_bool_t int128_multireg = false;
                 switch (typeentry->typecode) {
                     case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                         complex_float32_multireg = true;
@@ -290,6 +291,10 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
 
                     case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
                         complex_float64_multireg = true;
+                        break;
+
+                    case KEFIR_IR_TYPE_INT128:
+                        int128_multireg = true;
                         break;
 
                     default:
@@ -314,7 +319,15 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                                                          &argument_placement_vreg));
                             REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(
                                 mem, &function->code, argument_placement_vreg, subparam.direct_reg));
-                            if (i + 1 == multireg_length) {
+                            if (int128_multireg) {
+                                kefir_asmcmp_virtual_register_index_t half_vreg;
+                                REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, argument_vreg, i, &half_vreg));
+                                REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                    argument_placement_vreg,
+                                    half_vreg,
+                                    NULL));
+                            } else if (i + 1 == multireg_length) {
                                 kefir_size_t load_size = parameter_layout->size % KEFIR_AMD64_ABI_QWORD;
                                 if (load_size == 0) {
                                     load_size = KEFIR_AMD64_ABI_QWORD;
@@ -746,6 +759,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
 
             kefir_bool_t complex_float32_multireg_return = false;
             kefir_bool_t complex_float64_multireg_return = false;
+            kefir_bool_t int128_multireg_return = false;
             switch (return_typeentry->typecode) {
                 case KEFIR_IR_TYPE_STRUCT:
                 case KEFIR_IR_TYPE_ARRAY:
@@ -792,6 +806,18 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                                                                       real_vreg, imag_vreg, &return_vreg));
                 } break;
 
+                case KEFIR_IR_TYPE_INT128: {
+                    int128_multireg_return = true;
+                    kefir_asmcmp_virtual_register_index_t lower_half_vreg, upper_half_vreg;
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &lower_half_vreg));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &upper_half_vreg));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context,
+                                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERAL_PURPOSE,
+                                                                      lower_half_vreg, upper_half_vreg, &return_vreg));
+                } break;
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected function return IR type");
             }
@@ -814,21 +840,30 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                                                                      &return_placement_vreg));
                         REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(
                             mem, &function->code, return_placement_vreg, subparam.direct_reg));
-                        if (i + 1 == multireg_length) {
-                            kefir_size_t store_bytes = return_layout->size % KEFIR_AMD64_ABI_QWORD;
-                            if (store_bytes == 0) {
-                                store_bytes = KEFIR_AMD64_ABI_QWORD;
-                            }
-                            REQUIRE_OK(kefir_codegen_amd64_store_general_purpose_register(
-                                mem, function, return_vreg, return_placement_vreg, store_bytes, result_offset));
-                            result_offset += store_bytes;
-                        } else {
-                            REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                        if (int128_multireg_return) {
+                            kefir_asmcmp_virtual_register_index_t half_vreg;
+                            REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, return_vreg, i, &half_vreg));
+                            REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(return_vreg, result_offset,
-                                                                    KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                                &KEFIR_ASMCMP_MAKE_VREG64(return_placement_vreg), NULL));
-                            result_offset += KEFIR_AMD64_ABI_QWORD;
+                                half_vreg,
+                                return_placement_vreg, NULL));
+                        } else {
+                            if (i + 1 == multireg_length) {
+                                kefir_size_t store_bytes = return_layout->size % KEFIR_AMD64_ABI_QWORD;
+                                if (store_bytes == 0) {
+                                    store_bytes = KEFIR_AMD64_ABI_QWORD;
+                                }
+                                REQUIRE_OK(kefir_codegen_amd64_store_general_purpose_register(
+                                    mem, function, return_vreg, return_placement_vreg, store_bytes, result_offset));
+                                result_offset += store_bytes;
+                            } else {
+                                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(return_vreg, result_offset,
+                                                                        KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                                    &KEFIR_ASMCMP_MAKE_VREG64(return_placement_vreg), NULL));
+                                result_offset += KEFIR_AMD64_ABI_QWORD;
+                            }
                         }
                         break;
 
