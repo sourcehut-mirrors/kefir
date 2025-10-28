@@ -63,7 +63,7 @@ int main(void) {
     assert(fabs(c[0] - 1029) < 1e-6);
     assert(fabs(c[1] + 99182) < 1e-6);
     assert(fabs(c[2] - 991918) < 1e-6);
-    assert(fabs(c[3] - 4276685308) < 1e-6);
+    assert(fabs(c[3] - 4276685312) < 1e-6);
 
     assert(fabs(d[0] - 1029) < 1e-8);
     assert(fabs(d[1] + 99182) < 1e-8);
