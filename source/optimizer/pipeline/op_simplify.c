@@ -3224,9 +3224,39 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
                arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
-        kefir_bool_t condition = arg1->operation.parameters.imm.integer != 0;
-        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_NEGATED(instr->operation.parameters.branch.condition_variant)) {
-            condition = !condition;
+        kefir_bool_t condition = true;
+        switch (instr->operation.parameters.branch.condition_variant) {
+            case KEFIR_OPT_BRANCH_CONDITION_8BIT:
+                condition = ((kefir_uint8_t) arg1->operation.parameters.imm.integer) != 0;
+                break;
+
+            case KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT:
+                condition = ((kefir_uint8_t) arg1->operation.parameters.imm.integer) == 0;
+                break;
+                
+            case KEFIR_OPT_BRANCH_CONDITION_16BIT:
+                condition = ((kefir_uint16_t) arg1->operation.parameters.imm.integer) != 0;
+                break;
+
+            case KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT:
+                condition = ((kefir_uint16_t) arg1->operation.parameters.imm.integer) == 0;
+                break;
+
+            case KEFIR_OPT_BRANCH_CONDITION_32BIT:
+                condition = ((kefir_uint32_t) arg1->operation.parameters.imm.integer) != 0;
+                break;
+
+            case KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT:
+                condition = ((kefir_uint32_t) arg1->operation.parameters.imm.integer) == 0;
+                break;
+
+            case KEFIR_OPT_BRANCH_CONDITION_64BIT:
+                condition = ((kefir_uint64_t) arg1->operation.parameters.imm.integer) != 0;
+                break;
+
+            case KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT:
+                condition = ((kefir_uint64_t) arg1->operation.parameters.imm.integer) == 0;
+                break;
         }
 
         const kefir_opt_instruction_ref_t instr_ref = instr->id;
