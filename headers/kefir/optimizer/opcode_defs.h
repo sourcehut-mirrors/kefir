@@ -458,6 +458,14 @@
     OPCODE(INT128_UDIV, "int128_udiv", ref2) SEPARATOR \
     OPCODE(INT128_IMOD, "int128_imod", ref2) SEPARATOR \
     OPCODE(INT128_UMOD, "int128_umod", ref2) SEPARATOR \
+    OPCODE(INT128_LSHIFT, "int128_lshift", ref2) SEPARATOR \
+    OPCODE(INT128_ARSHIFT, "int128_arshift", ref2) SEPARATOR \
+    OPCODE(INT128_RSHIFT, "int128_rshift", ref2) SEPARATOR \
+    OPCODE(INT128_EQUAL, "int128_equal", ref2) SEPARATOR \
+    OPCODE(INT128_GREATER, "int128_greater", ref2) SEPARATOR \
+    OPCODE(INT128_LESS, "int128_less", ref2) SEPARATOR \
+    OPCODE(INT128_ABOVE, "int128_above", ref2) SEPARATOR \
+    OPCODE(INT128_BELOW, "int128_below", ref2) SEPARATOR \
     OPCODE(INT128_AND, "int128_and", ref2) SEPARATOR \
     OPCODE(INT128_OR, "int128_or", ref2) SEPARATOR \
     OPCODE(INT128_XOR, "int128_xor", ref2)

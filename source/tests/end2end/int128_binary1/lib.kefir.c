@@ -81,3 +81,67 @@ __int128 i128_mod(__int128 a, __int128 b) {
 unsigned __int128 u128_mod(unsigned __int128 a, unsigned __int128 b) {
     return a % b;
 }
+
+__int128 i128_shl(__int128 a, __int128 b) {
+    return a << b;
+}
+
+unsigned __int128 u128_shl(unsigned __int128 a, unsigned __int128 b) {
+    return a << b;
+}
+
+__int128 i128_shr(__int128 a, __int128 b) {
+    return a >> b;
+}
+
+unsigned __int128 u128_shr(unsigned __int128 a, unsigned __int128 b) {
+    return a >> b;
+}
+
+int i128_eq(__int128 a, __int128 b) {
+    return a == b;
+}
+
+int u128_eq(unsigned __int128 a, unsigned __int128 b) {
+    return a == b;
+}
+
+int i128_neq(__int128 a, __int128 b) {
+    return a != b;
+}
+
+int u128_neq(unsigned __int128 a, unsigned __int128 b) {
+    return a != b;
+}
+
+int i128_greater(__int128 a, __int128 b) {
+    return a > b;
+}
+
+int i128_less(__int128 a, __int128 b) {
+    return a < b;
+}
+
+int i128_above(unsigned __int128 a, unsigned __int128 b) {
+    return a > b;
+}
+
+int i128_below(unsigned __int128 a, unsigned __int128 b) {
+    return a < b;
+}
+
+int i128_greater_eq(__int128 a, __int128 b) {
+    return a >= b;
+}
+
+int i128_less_eq(__int128 a, __int128 b) {
+    return a <= b;
+}
+
+int i128_above_eq(unsigned __int128 a, unsigned __int128 b) {
+    return a >= b;
+}
+
+int i128_below_eq(unsigned __int128 a, unsigned __int128 b) {
+    return a <= b;
+}

@@ -1,8 +1,12 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.global i128_eq
+.type i128_eq, @function
 .global i128_or
 .type i128_or, @function
+.global u128_eq
+.type u128_eq, @function
 .global u128_or
 .type u128_or, @function
 .extern __divti3
@@ -17,6 +21,12 @@
 .type i128_mod, @function
 .global i128_mul
 .type i128_mul, @function
+.global i128_neq
+.type i128_neq, @function
+.global i128_shl
+.type i128_shl, @function
+.global i128_shr
+.type i128_shr, @function
 .global i128_sub
 .type i128_sub, @function
 .global i128_xor
@@ -31,15 +41,52 @@
 .type u128_mod, @function
 .global u128_mul
 .type u128_mul, @function
+.global u128_neq
+.type u128_neq, @function
+.global u128_shl
+.type u128_shl, @function
+.global u128_shr
+.type u128_shr, @function
 .global u128_sub
 .type u128_sub, @function
 .global u128_xor
 .type u128_xor, @function
 .extern __udivti3
 .extern __umodti3
+.global i128_less
+.type i128_less, @function
+.global i128_above
+.type i128_above, @function
+.global i128_below
+.type i128_below, @function
+.global i128_greater_eq
+.type i128_greater_eq, @function
+.global i128_greater
+.type i128_greater, @function
+.global i128_less_eq
+.type i128_less_eq, @function
+.global i128_above_eq
+.type i128_above_eq, @function
+.global i128_below_eq
+.type i128_below_eq, @function
 
 .section .text
 __kefir_text_section_begin:
+i128_eq:
+__kefir_text_func_i128_eq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    xor %rdx, %rdi
+    xor %rcx, %rsi
+    xor %eax, %eax
+    or %rsi, %rdi
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_eq_end:
+
 i128_or:
 __kefir_text_func_i128_or_begin:
     push %rbp
@@ -53,6 +100,21 @@ __kefir_text_func_i128_or_begin:
     pop %rbp
     ret
 __kefir_text_func_i128_or_end:
+
+u128_eq:
+__kefir_text_func_u128_eq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    xor %rdx, %rdi
+    xor %rcx, %rsi
+    xor %eax, %eax
+    or %rsi, %rdi
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_u128_eq_end:
 
 u128_or:
 __kefir_text_func_u128_or_begin:
@@ -134,6 +196,63 @@ __kefir_text_func_i128_mul_begin:
     pop %rbp
     ret
 __kefir_text_func_i128_mul_end:
+
+i128_neq:
+__kefir_text_func_i128_neq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    xor %rdx, %rdi
+    xor %rcx, %rsi
+    xor %ecx, %ecx
+    or %rsi, %rdi
+    sete %cl
+    xor %eax, %eax
+    test %cl, %cl
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_neq_end:
+
+i128_shl:
+__kefir_text_func_i128_shl_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rdx, %rcx
+    mov %rdi, %rdx
+    shld %cl, %rdi, %rsi
+    shl %cl, %rdx
+    xor %eax, %eax
+    test $64, %cl
+    cmovne %rdx, %rsi
+    cmove %rdx, %rax
+    mov %rsi, %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_shl_end:
+
+i128_shr:
+__kefir_text_func_i128_shr_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rdx, %rcx
+    mov %rsi, %rdx
+    mov %rsi, %rax
+    shrd %cl, %rsi, %rdi
+    sar %cl, %rdx
+    sar $63, %rax
+    test $64, %cl
+    cmovne %rdx, %rdi
+    cmovne %rax, %rdx
+    mov %rdi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_shr_end:
 
 i128_sub:
 __kefir_text_func_i128_sub_begin:
@@ -230,6 +349,62 @@ __kefir_text_func_u128_mul_begin:
     ret
 __kefir_text_func_u128_mul_end:
 
+u128_neq:
+__kefir_text_func_u128_neq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    xor %rdx, %rdi
+    xor %rcx, %rsi
+    xor %ecx, %ecx
+    or %rsi, %rdi
+    sete %cl
+    xor %eax, %eax
+    test %cl, %cl
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_u128_neq_end:
+
+u128_shl:
+__kefir_text_func_u128_shl_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rdx, %rcx
+    mov %rdi, %rdx
+    shld %cl, %rdi, %rsi
+    shl %cl, %rdx
+    xor %eax, %eax
+    test $64, %cl
+    cmovne %rdx, %rsi
+    cmove %rdx, %rax
+    mov %rsi, %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_u128_shl_end:
+
+u128_shr:
+__kefir_text_func_u128_shr_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rdx, %rcx
+    mov %rsi, %rax
+    shrd %cl, %rsi, %rdi
+    shr %cl, %rax
+    xor %edx, %edx
+    test $64, %cl
+    cmovne %rax, %rdi
+    cmove %rax, %rdx
+    mov %rdi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_u128_shr_end:
+
 u128_sub:
 __kefir_text_func_u128_sub_begin:
     push %rbp
@@ -257,6 +432,154 @@ __kefir_text_func_u128_xor_begin:
     pop %rbp
     ret
 __kefir_text_func_u128_xor_end:
+
+i128_less:
+__kefir_text_func_i128_less_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    cmp %rdx, %rdi
+    sbb %rcx, %rsi
+    setl %al
+    movzx %al, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_less_end:
+
+i128_above:
+__kefir_text_func_i128_above_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    cmp %rdi, %rdx
+    sbb %rsi, %rcx
+    setb %al
+    movzx %al, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_above_end:
+
+i128_below:
+__kefir_text_func_i128_below_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    cmp %rdx, %rdi
+    sbb %rcx, %rsi
+    setb %al
+    movzx %al, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_below_end:
+
+i128_greater_eq:
+__kefir_text_func_i128_greater_eq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rcx, %rax
+    cmp %rdi, %rdx
+    sbb %rsi, %rax
+    setl %al
+    movzx %al, %rax
+    xor %rdi, %rdx
+    xor %rsi, %rcx
+    xor %esi, %esi
+    or %rcx, %rdx
+    sete %sil
+    or %rsi, %rax
+    setne %al
+    movzx %al, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_greater_eq_end:
+
+i128_greater:
+__kefir_text_func_i128_greater_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    cmp %rdi, %rdx
+    sbb %rsi, %rcx
+    setl %al
+    movzx %al, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_greater_end:
+
+i128_less_eq:
+__kefir_text_func_i128_less_eq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rsi, %rax
+    cmp %rdx, %rdi
+    sbb %rcx, %rax
+    setl %al
+    movzx %al, %rax
+    xor %rdi, %rdx
+    xor %rsi, %rcx
+    xor %esi, %esi
+    or %rcx, %rdx
+    sete %sil
+    or %rsi, %rax
+    setne %al
+    movzx %al, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_less_eq_end:
+
+i128_above_eq:
+__kefir_text_func_i128_above_eq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rcx, %rax
+    cmp %rdi, %rdx
+    sbb %rsi, %rax
+    setb %al
+    movzx %al, %rax
+    xor %rdi, %rdx
+    xor %rsi, %rcx
+    xor %esi, %esi
+    or %rcx, %rdx
+    sete %sil
+    or %rsi, %rax
+    setne %al
+    movzx %al, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_above_eq_end:
+
+i128_below_eq:
+__kefir_text_func_i128_below_eq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rsi, %rax
+    cmp %rdx, %rdi
+    sbb %rcx, %rax
+    setb %al
+    movzx %al, %rax
+    xor %rdi, %rdx
+    xor %rsi, %rcx
+    xor %esi, %esi
+    or %rcx, %rdx
+    sete %sil
+    or %rsi, %rax
+    setne %al
+    movzx %al, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_below_eq_end:
 
 __kefir_text_section_end:
 

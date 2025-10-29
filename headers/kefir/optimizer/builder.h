@@ -444,9 +444,17 @@ BINARY_OP(int128_idiv);
 BINARY_OP(int128_udiv);
 BINARY_OP(int128_imod);
 BINARY_OP(int128_umod);
+BINARY_OP(int128_lshift);
+BINARY_OP(int128_arshift);
+BINARY_OP(int128_rshift);
 BINARY_OP(int128_and);
 BINARY_OP(int128_or);
 BINARY_OP(int128_xor);
+BINARY_OP(int128_equal);
+BINARY_OP(int128_greater);
+BINARY_OP(int128_less);
+BINARY_OP(int128_above);
+BINARY_OP(int128_below);
 
 BINARY_OP(vararg_copy);
 

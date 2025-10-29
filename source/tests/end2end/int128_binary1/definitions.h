@@ -41,5 +41,21 @@ struct i128 i128_div(struct i128, struct i128);
 struct i128 u128_div(struct i128, struct i128);
 struct i128 i128_mod(struct i128, struct i128);
 struct i128 u128_mod(struct i128, struct i128);
+struct i128 i128_shl(struct i128, struct i128);
+struct i128 u128_shl(struct i128, struct i128);
+struct i128 i128_shr(struct i128, struct i128);
+struct i128 u128_shr(struct i128, struct i128);
+int i128_eq(struct i128, struct i128);
+int u128_eq(struct i128, struct i128);
+int i128_neq(struct i128, struct i128);
+int u128_neq(struct i128, struct i128);
+int i128_greater(struct i128, struct i128);
+int i128_less(struct i128, struct i128);
+int i128_above(struct i128, struct i128);
+int i128_below(struct i128, struct i128);
+int i128_greater_eq(struct i128, struct i128);
+int i128_less_eq(struct i128, struct i128);
+int i128_above_eq(struct i128, struct i128);
+int i128_below_eq(struct i128, struct i128);
 
 #endif

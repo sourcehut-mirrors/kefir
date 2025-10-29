@@ -515,9 +515,17 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UDIV) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_INT128_IMOD) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UMOD) _separator \
+    _def(int128_lshift, KEFIR_OPT_OPCODE_INT128_LSHIFT) _separator \
+    _def(int128_rshift, KEFIR_OPT_OPCODE_INT128_RSHIFT) _separator \
+    _def(int128_arshift, KEFIR_OPT_OPCODE_INT128_ARSHIFT) _separator \
     _def(int128_and, KEFIR_OPT_OPCODE_INT128_AND) _separator \
     _def(int128_or, KEFIR_OPT_OPCODE_INT128_OR) _separator \
     _def(int128_xor, KEFIR_OPT_OPCODE_INT128_XOR) _separator \
+    _def(int128_equal, KEFIR_OPT_OPCODE_INT128_EQUAL) _separator \
+    _def(int128_greater, KEFIR_OPT_OPCODE_INT128_GREATER) _separator \
+    _def(int128_less, KEFIR_OPT_OPCODE_INT128_LESS) _separator \
+    _def(int128_above, KEFIR_OPT_OPCODE_INT128_ABOVE) _separator \
+    _def(int128_below, KEFIR_OPT_OPCODE_INT128_BELOW) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
