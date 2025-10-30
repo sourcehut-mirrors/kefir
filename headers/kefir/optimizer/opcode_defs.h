@@ -468,7 +468,10 @@
     OPCODE(INT128_BELOW, "int128_below", ref2) SEPARATOR \
     OPCODE(INT128_AND, "int128_and", ref2) SEPARATOR \
     OPCODE(INT128_OR, "int128_or", ref2) SEPARATOR \
-    OPCODE(INT128_XOR, "int128_xor", ref2)
+    OPCODE(INT128_XOR, "int128_xor", ref2) SEPARATOR \
+    OPCODE(INT128_NEG, "int128_neg", ref1) SEPARATOR \
+    OPCODE(INT128_NOT, "int128_not", ref1) SEPARATOR \
+    OPCODE(INT128_BOOL_NOT, "int128_bool_not", ref1)
 
 // clang-format on
 

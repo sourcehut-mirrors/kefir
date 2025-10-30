@@ -220,6 +220,9 @@ UNARY_OP(int128_to_bool);
 UNARY_OP(int128_truncate_int64);
 UNARY_OP(int128_zero_extend_64bits);
 UNARY_OP(int128_sign_extend_64bits);
+UNARY_OP(int128_neg);
+UNARY_OP(int128_not);
+UNARY_OP(int128_bool_not);
 
 UNARY_OP(vararg_start);
 UNARY_OP(vararg_end);

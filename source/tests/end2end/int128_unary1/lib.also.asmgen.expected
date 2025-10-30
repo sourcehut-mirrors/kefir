@@ -1,0 +1,240 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global i128_neg
+.type i128_neg, @function
+.global i128_not
+.type i128_not, @function
+.global u128_neg
+.type u128_neg, @function
+.global u128_not
+.type u128_not, @function
+.global i128_bnot
+.type i128_bnot, @function
+.global u128_bnot
+.type u128_bnot, @function
+.global i128_predec
+.type i128_predec, @function
+.global i128_preinc
+.type i128_preinc, @function
+.global u128_predec
+.type u128_predec, @function
+.global u128_preinc
+.type u128_preinc, @function
+.global i128_postdec
+.type i128_postdec, @function
+.global i128_postinc
+.type i128_postinc, @function
+.global u128_postdec
+.type u128_postdec, @function
+.global u128_postinc
+.type u128_postinc, @function
+
+.section .text
+__kefir_text_section_begin:
+i128_neg:
+__kefir_text_func_i128_neg_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    xor %edx, %edx
+    neg %rdi
+    sbb %rsi, %rdx
+    mov %rdi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_neg_end:
+
+i128_not:
+__kefir_text_func_i128_not_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    not %rdi
+    not %rsi
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_not_end:
+
+u128_neg:
+__kefir_text_func_u128_neg_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    xor %edx, %edx
+    neg %rdi
+    sbb %rsi, %rdx
+    mov %rdi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_u128_neg_end:
+
+u128_not:
+__kefir_text_func_u128_not_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    not %rdi
+    not %rsi
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_u128_not_end:
+
+i128_bnot:
+__kefir_text_func_i128_bnot_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    or %rsi, %rdi
+    sete %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_i128_bnot_end:
+
+u128_bnot:
+__kefir_text_func_u128_bnot_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    or %rsi, %rdi
+    sete %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_u128_bnot_end:
+
+i128_predec:
+__kefir_text_func_i128_predec_begin:
+    mov (%rdi), %rax
+    mov 8(%rdi), %rdx
+    mov $-1, %rcx
+    mov $-1, %rsi
+    sar $63, %rsi
+    add %rcx, %rax
+    adc %rsi, %rdx
+    mov %rax, (%rdi)
+    mov %rdx, 8(%rdi)
+    ret
+__kefir_text_func_i128_predec_end:
+
+i128_preinc:
+__kefir_text_func_i128_preinc_begin:
+    mov (%rdi), %rax
+    mov 8(%rdi), %rdx
+    mov $1, %rcx
+    mov $1, %rsi
+    sar $63, %rsi
+    add %rcx, %rax
+    adc %rsi, %rdx
+    mov %rax, (%rdi)
+    mov %rdx, 8(%rdi)
+    ret
+__kefir_text_func_i128_preinc_end:
+
+u128_predec:
+__kefir_text_func_u128_predec_begin:
+    mov (%rdi), %rax
+    mov 8(%rdi), %rdx
+    mov $-1, %rcx
+    mov $-1, %rsi
+    sar $63, %rsi
+    add %rcx, %rax
+    adc %rsi, %rdx
+    mov %rax, (%rdi)
+    mov %rdx, 8(%rdi)
+    ret
+__kefir_text_func_u128_predec_end:
+
+u128_preinc:
+__kefir_text_func_u128_preinc_begin:
+    mov (%rdi), %rax
+    mov 8(%rdi), %rdx
+    mov $1, %rcx
+    mov $1, %rsi
+    sar $63, %rsi
+    add %rcx, %rax
+    adc %rsi, %rdx
+    mov %rax, (%rdi)
+    mov %rdx, 8(%rdi)
+    ret
+__kefir_text_func_u128_preinc_end:
+
+i128_postdec:
+__kefir_text_func_i128_postdec_begin:
+    mov (%rdi), %rax
+    mov 8(%rdi), %rdx
+    mov $-1, %rcx
+    mov $-1, %rsi
+    sar $63, %rsi
+    mov %rax, %r8
+    mov %rdx, %r9
+    add %rcx, %r8
+    adc %rsi, %r9
+    mov %r8, (%rdi)
+    mov %r9, 8(%rdi)
+    ret
+__kefir_text_func_i128_postdec_end:
+
+i128_postinc:
+__kefir_text_func_i128_postinc_begin:
+    mov (%rdi), %rax
+    mov 8(%rdi), %rdx
+    mov $1, %rcx
+    mov $1, %rsi
+    sar $63, %rsi
+    mov %rax, %r8
+    mov %rdx, %r9
+    add %rcx, %r8
+    adc %rsi, %r9
+    mov %r8, (%rdi)
+    mov %r9, 8(%rdi)
+    ret
+__kefir_text_func_i128_postinc_end:
+
+u128_postdec:
+__kefir_text_func_u128_postdec_begin:
+    mov (%rdi), %rax
+    mov 8(%rdi), %rdx
+    mov $-1, %rcx
+    mov $-1, %rsi
+    sar $63, %rsi
+    mov %rax, %r8
+    mov %rdx, %r9
+    add %rcx, %r8
+    adc %rsi, %r9
+    mov %r8, (%rdi)
+    mov %r9, 8(%rdi)
+    ret
+__kefir_text_func_u128_postdec_end:
+
+u128_postinc:
+__kefir_text_func_u128_postinc_begin:
+    mov (%rdi), %rax
+    mov 8(%rdi), %rdx
+    mov $1, %rcx
+    mov $1, %rsi
+    sar $63, %rsi
+    mov %rax, %r8
+    mov %rdx, %r9
+    add %rcx, %r8
+    adc %rsi, %r9
+    mov %r8, (%rdi)
+    mov %r9, 8(%rdi)
+    ret
+__kefir_text_func_u128_postinc_end:
+
+__kefir_text_section_end:
+

@@ -817,6 +817,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(int128_truncate_int64, KEFIR_IR_OPCODE_INT128_TRUNCATE_INT64)
             UNARY_OP(int128_zero_extend_64bits, KEFIR_IR_OPCODE_INT128_ZERO_EXTEND_64BITS)
             UNARY_OP(int128_sign_extend_64bits, KEFIR_IR_OPCODE_INT128_SIGN_EXTEND_64BITS)
+            UNARY_OP(int128_neg, KEFIR_IR_OPCODE_INT128_NEG)
+            UNARY_OP(int128_not, KEFIR_IR_OPCODE_INT128_NOT)
+            UNARY_OP(int128_bool_not, KEFIR_IR_OPCODE_INT128_BOOL_NOT)
 
             UNARY_OP(float32_neg, KEFIR_IR_OPCODE_FLOAT32_NEG)
             UNARY_OP(float64_neg, KEFIR_IR_OPCODE_FLOAT64_NEG)
