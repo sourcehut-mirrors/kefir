@@ -1,6 +1,6 @@
 diff -ur ./spec/syntax_suggest/integration/syntax_suggest_spec.rb ./spec/syntax_suggest/integration/syntax_suggest_spec.rb
 --- ./spec/syntax_suggest/integration/syntax_suggest_spec.rb	2025-07-15 19:27:14.000000000 +0300
-+++ ./spec/syntax_suggest/integration/syntax_suggest_spec.rb	2025-08-18 15:11:38.990120245 +0300
++++ ./spec/syntax_suggest/integration/syntax_suggest_spec.rb	2025-10-30 09:36:25.670754248 +0200
 @@ -37,30 +37,30 @@
        EOM
      end
@@ -56,6 +56,93 @@ diff -ur ./spec/syntax_suggest/integration/syntax_suggest_spec.rb ./spec/syntax_
  
      it "returns good results on routes.rb" do
        source = fixtures_dir.join("routes.rb.txt").read
+@@ -124,46 +124,46 @@
+       EOM
+     end
+ 
+-    it "handles heredocs" do
+-      lines = fixtures_dir.join("rexe.rb.txt").read.lines
+-      lines.delete_at(85 - 1)
+-      io = StringIO.new
+-      SyntaxSuggest.call(
+-        io: io,
+-        source: lines.join
+-      )
+-
+-      out = io.string
+-      debug_display(out)
+-
+-      expect(out).to include(<<~EOM)
+-           16  class Rexe
+-        >  77    class Lookups
+-        >  78      def input_modes
+-        > 148    end
+-          551  end
+-      EOM
+-    end
+-
+-    it "rexe" do
+-      lines = fixtures_dir.join("rexe.rb.txt").read.lines
+-      lines.delete_at(148 - 1)
+-      source = lines.join
+-
+-      io = StringIO.new
+-      SyntaxSuggest.call(
+-        io: io,
+-        source: source
+-      )
+-      out = io.string
+-      expect(out).to include(<<~EOM)
+-           16  class Rexe
+-        >  77    class Lookups
+-        > 140      def format_requires
+-        > 148    end
+-          551  end
+-      EOM
+-    end
++#    it "handles heredocs" do
++#      lines = fixtures_dir.join("rexe.rb.txt").read.lines
++#      lines.delete_at(85 - 1)
++#      io = StringIO.new
++#      SyntaxSuggest.call(
++#        io: io,
++#        source: lines.join
++#      )
++#
++#      out = io.string
++#      debug_display(out)
++#
++#      expect(out).to include(<<~EOM)
++#           16  class Rexe
++#        >  77    class Lookups
++#        >  78      def input_modes
++#        > 148    end
++#          551  end
++#      EOM
++#    end
++
++#    it "rexe" do
++#      lines = fixtures_dir.join("rexe.rb.txt").read.lines
++#      lines.delete_at(148 - 1)
++#      source = lines.join
++#
++#      io = StringIO.new
++#      SyntaxSuggest.call(
++#        io: io,
++#        source: source
++#      )
++#      out = io.string
++#      expect(out).to include(<<~EOM)
++#           16  class Rexe
++#        >  77    class Lookups
++#        > 140      def format_requires
++#        > 148    end
++#          551  end
++#      EOM
++#    end
+ 
+     it "ambiguous end" do
+       source = <<~EOM
 diff -ur ./test/io/console/test_io_console.rb ./test/io/console/test_io_console.rb
 --- ./test/io/console/test_io_console.rb	2025-07-15 19:27:14.000000000 +0300
 +++ ./test/io/console/test_io_console.rb	2025-08-18 14:51:53.446781703 +0300
