@@ -25,7 +25,7 @@ define(libdir, ../lib)dnl
 define(includedir, ../include)dnl
 define(sysconfdir, ../etc)dnl
 
-export LD_LIBRARY_PATH="$SCRIPT_DIR/libdir:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$SCRIPT_DIR/libdir:${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 if [ -z "$KEFIR_RTINC" ]; then
     export KEFIR_RTINC="$SCRIPT_DIR/includedir/kefir/runtime"
 fi
