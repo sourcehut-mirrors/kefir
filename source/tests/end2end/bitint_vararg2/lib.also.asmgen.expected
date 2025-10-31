@@ -52,10 +52,8 @@ __kefir_func_test1_label1:
     jmp __kefir_func_test1_label3
 __kefir_func_test1_label4:
     movq -24(%rbp), %rax
-    leaq -256(%rbp), %rdx
-    add $7, %rdx
-    leaq -256(%rbp), %rdx
-    and $-8, %rdx
+    add $7, %rax
+    and $-8, %rax
     lea 16(%rax), %rcx
     movq %rcx, -24(%rbp)
     movq (%rax), %rcx
