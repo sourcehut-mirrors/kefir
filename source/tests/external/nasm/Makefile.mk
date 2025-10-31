@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_NASM_AR
 $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring nasm $(KEFIR_EXTERNAL_TEST_NASM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_NASM_SOUR
 $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/nasm: $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/Makefile
 	@echo "Building nasm $(KEFIR_EXTERNAL_TEST_NASM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE) everything
@@ -40,7 +40,7 @@ $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/nasm: $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_D
 $(KEFIR_EXTERNAL_TEST_NASM_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/nasm
 	@echo "Testing nasm $(KEFIR_EXTERNAL_TEST_NASM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) -C test golden test diff -j1 | tee "$(shell realpath $@.tmp)"'

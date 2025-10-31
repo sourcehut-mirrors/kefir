@@ -26,7 +26,7 @@ $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_PERL_AR
 $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring perl $(KEFIR_EXTERNAL_TEST_PERL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure.gnu
@@ -34,14 +34,14 @@ $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_PERL_SOUR
 $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/perl: $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/Makefile
 	@echo "Building perl $(KEFIR_EXTERNAL_TEST_PERL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE)
 
 $(KEFIR_EXTERNAL_TEST_PERL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/perl
 	@echo "Testing perl $(KEFIR_EXTERNAL_TEST_PERL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		bash -c 'set -o pipefail; $(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"

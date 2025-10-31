@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_PFORTH_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_PFORT
 $(KEFIR_EXTERNAL_TEST_PFORTH_SOURCE_DIR)/platforms/unix/pforth_standalone: $(KEFIR_EXTERNAL_TEST_PFORTH_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring pforth $(KEFIR_EXTERNAL_TEST_PFORTH_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_PFORTH_SOURCE_DIR)/platforms/unix" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_PFORTH_SOURCE_DIR)/platforms/unix/pforth_standalone: $(KEF
 $(KEFIR_EXTERNAL_TEST_PFORTH_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_PFORTH_SOURCE_DIR)/platforms/unix/pforth_standalone
 	@echo "Testing pforth $(KEFIR_EXTERNAL_TEST_PFORTH_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_PFORTH_SOURCE_DIR)/platforms/unix" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) test | tee "$(shell realpath $@.tmp)"'

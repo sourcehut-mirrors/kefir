@@ -26,7 +26,7 @@ $(KEFIR_EXTERNAL_TEST_MBEDTLS_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_MBED
 $(KEFIR_EXTERNAL_TEST_MBEDTLS_SOURCE_DIR)/library/libmbedtls.a: $(KEFIR_EXTERNAL_TEST_MBEDTLS_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Building mbedtls $(KEFIR_EXTERNAL_TEST_MBEDTLS_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MBEDTLS_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE) CC="$(realpath $(KEFIR_EXE))"
@@ -34,7 +34,7 @@ $(KEFIR_EXTERNAL_TEST_MBEDTLS_SOURCE_DIR)/library/libmbedtls.a: $(KEFIR_EXTERNAL
 $(KEFIR_EXTERNAL_TEST_MBEDTLS_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_MBEDTLS_SOURCE_DIR)/library/libmbedtls.a
 	@echo "Testing mbedtls $(KEFIR_EXTERNAL_TEST_MBEDTLS_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MBEDTLS_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) CC="$(realpath $(KEFIR_EXE))" test 2>&1 | tee "$(shell realpath "$@.tmp")"'

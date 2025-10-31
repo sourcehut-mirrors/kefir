@@ -2,7 +2,7 @@ KEFIR_BUILD_TIMESTAMP := $(shell date +%s)
 
 $(BOOTSTRAP_DIR)/stage1/kefir: $(KEFIR_BIN_DIR)/kefir
 	@echo "Bootstrapping $@"
-	@LD_LIBRARY_PATH=$(KEFIR_BIN_DIR)/libs:$$LD_LIBRARY_PATH \
+	@LD_LIBRARY_PATH=$(KEFIR_BIN_DIR)/libs$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH)) \
 		KEFIR_RTINC=$(HEADERS_DIR)/kefir/runtime \
 		$(MAKE) -f $(SOURCE_DIR)/tests/bootstrap/bootstrap.mk bootstrap \
 		ROOT=$(ROOT) \
@@ -17,7 +17,7 @@ $(BOOTSTRAP_DIR)/stage1/kefir: $(KEFIR_BIN_DIR)/kefir
 
 $(BOOTSTRAP_DIR)/stage2/kefir: $(BOOTSTRAP_DIR)/stage1/kefir
 	@echo "Bootstrapping $@"
-	@LD_LIBRARY_PATH=$(BOOTSTRAP_DIR)/stage1:$$LD_LIBRARY_PATH \
+	@LD_LIBRARY_PATH=$(BOOTSTRAP_DIR)/stage1$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH)) \
 		KEFIR_RTINC=$(HEADERS_DIR)/kefir/runtime \
 		$(MAKE) -f $(SOURCE_DIR)/tests/bootstrap/bootstrap.mk bootstrap \
 		ROOT=$(ROOT) \

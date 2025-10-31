@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_GZIP_AR
 $(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring gzip $(KEFIR_EXTERNAL_TEST_GZIP_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_GZIP_SOUR
 $(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)/gzip: $(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)/Makefile
 	@echo "Building gzip $(KEFIR_EXTERNAL_TEST_GZIP_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -40,7 +40,7 @@ $(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)/gzip: $(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_D
 $(KEFIR_EXTERNAL_TEST_GZIP_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)/gzip
 	@echo "Testing gzip $(KEFIR_EXTERNAL_TEST_GZIP_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GZIP_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'

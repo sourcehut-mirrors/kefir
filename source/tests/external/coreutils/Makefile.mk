@@ -47,7 +47,7 @@ $(KEFIR_EXTERNAL_TEST_GNULIB_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_COREU
 $(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_GNULIB_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Bootstrapping coreutils $(KEFIR_EXTERNAL_TEST_COREUTILS_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./bootstrap --no-git --gnulib-srcdir=$$PWD/gnulib-$(KEFIR_EXTERNAL_TEST_GNULIB_VERSION)
@@ -55,7 +55,7 @@ $(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_GNU
 $(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)/configure
 	@echo "Configuring coreutils $(KEFIR_EXTERNAL_TEST_COREUTILS_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -63,7 +63,7 @@ $(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_CORE
 $(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)/.done: $(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)/Makefile
 	@echo "Building coreutils $(KEFIR_EXTERNAL_TEST_COREUTILS_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -72,7 +72,7 @@ $(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)/.done: $(KEFIR_EXTERNAL_TEST_COREUTI
 $(KEFIR_EXTERNAL_TEST_COREUTILS_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)/.done
 	@echo "Testing coreutils $(KEFIR_EXTERNAL_TEST_COREUTILS_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_COREUTILS_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check -j1 2>&1 | tee "$(shell realpath $@.tmp)"'

@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_BASH_AR
 $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring bash $(KEFIR_EXTERNAL_TEST_BASH_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
@@ -33,14 +33,14 @@ $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BASH_SOUR
 $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/bash: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/Makefile
 	@echo "Building bash $(KEFIR_EXTERNAL_TEST_BASH_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE) all
 
 $(KEFIR_EXTERNAL_TEST_BASH_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/bash
 	@echo "Testing bash $(KEFIR_EXTERNAL_TEST_BASH_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		$(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"

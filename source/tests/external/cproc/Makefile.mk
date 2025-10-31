@@ -26,7 +26,7 @@ $(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_CPROC_
 $(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)/config.h: $(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring cproc $(KEFIR_EXTERNAL_TEST_CPROC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure --host=$(shell $(CC) -dumpmachine)
@@ -34,7 +34,7 @@ $(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)/config.h: $(KEFIR_EXTERNAL_TEST_CPROC_SO
 $(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)/cproc-qbe: $(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)/config.h
 	@echo "Building cproc $(KEFIR_EXTERNAL_TEST_CPROC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -42,7 +42,7 @@ $(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)/cproc-qbe: $(KEFIR_EXTERNAL_TEST_CPROC_S
 $(KEFIR_EXTERNAL_TEST_CPROC_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)/cproc-qbe
 	@echo "Testing cproc $(KEFIR_EXTERNAL_TEST_CPROC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CPROC_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check | tee "$(shell realpath $@.tmp)"'

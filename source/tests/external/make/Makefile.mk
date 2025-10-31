@@ -18,7 +18,7 @@ $(KEFIR_EXTERNAL_TEST_MAKE_ARCHIVE):
 
 $(KEFIR_EXTERNAL_TEST_MAKE_DIR)/kefir-wrapper: $(KEFIR_EXE)
 	@mkdir -p $(dir $@)
-	@echo 'export LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH"' > "$@.tmp"
+	@echo 'export LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))"' > "$@.tmp"
 	@echo 'export KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime"' >> "$@.tmp"
 	@echo 'exec $(realpath $(KEFIR_EXE)) $$@' >> "$@.tmp"
 	@chmod +x "$@.tmp"

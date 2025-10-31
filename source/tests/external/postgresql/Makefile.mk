@@ -26,7 +26,7 @@ $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_P
 $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring PostgreSQL $(KEFIR_EXTERNAL_TEST_POSTGRESQL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/postgresql/include -O1 -g -fPIC" \
@@ -36,7 +36,7 @@ $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_P
 $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/src/bin/psql: $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/config.log
 	@echo "Building PostgreSQL $(KEFIR_EXTERNAL_TEST_POSTGRESQL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/postgresql/include -O1 -g -fPIC" \
@@ -46,7 +46,7 @@ $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/src/bin/psql: $(KEFIR_EXTERNAL_TEST
 $(KEFIR_EXTERNAL_TEST_POSTGRESQL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/src/bin/psql
 	@echo "Testing PostgreSQL $(KEFIR_EXTERNAL_TEST_POSTGRESQL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/postgresql/include -O1 -g -fPIC" \

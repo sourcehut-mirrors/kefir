@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_SQLIT
 $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring sqlite $(KEFIR_EXTERNAL_TEST_SQLITE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -32,14 +32,14 @@ $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_SQLITE_
 $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/sqlite3: $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/Makefile
 	@echo "Building sqlite $(KEFIR_EXTERNAL_TEST_SQLITE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE)
 
 $(KEFIR_EXTERNAL_TEST_SQLITE_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/sqlite3
 	@echo "Testing sqlite $(KEFIR_EXTERNAL_TEST_SQLITE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		bash -c 'set -o pipefail; $(MAKE) tcltest | tee "../$(notdir $@)"'
 

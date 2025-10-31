@@ -26,7 +26,7 @@ $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_GUILE_
 $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring guile $(KEFIR_EXTERNAL_TEST_GUILE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -34,7 +34,7 @@ $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_GUILE_SO
 $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/libguile/.libs/guile: $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/Makefile
 	@echo "Building guile $(KEFIR_EXTERNAL_TEST_GUILE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -42,7 +42,7 @@ $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/libguile/.libs/guile: $(KEFIR_EXTERNAL_T
 $(KEFIR_EXTERNAL_TEST_GUILE_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/libguile/.libs/guile
 	@echo "Testing guile $(KEFIR_EXTERNAL_TEST_GUILE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'

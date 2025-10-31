@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_CELLO_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_CELLO_
 $(KEFIR_EXTERNAL_TEST_CELLO_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_CELLO_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Building cello $(KEFIR_EXTERNAL_TEST_CELLO_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CELLO_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check | tee "$(shell realpath $@.tmp)"'

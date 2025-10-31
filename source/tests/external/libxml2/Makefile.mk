@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_LIBX
 $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/ltmain.sh: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Libtoolize libxml2 $(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		libtoolize
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/ltmain.sh: $(KEFIR_EXTERNAL_TEST_LIBXM
 $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/ltmain.sh
 	@echo "Configuring libxml2 $(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libxml2/include" \
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_LIBXML
 $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/libxml2.la: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/Makefile
 	@echo "Building libxml2 $(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libxml2/include" \
@@ -50,7 +50,7 @@ $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/libxml2.la: $(KEFIR_EXTERNAL_TEST_LIBX
 $(KEFIR_EXTERNAL_TEST_LIBXML2_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/libxml2.la
 	@echo "Testing libxml2 $(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libxml2/include" \

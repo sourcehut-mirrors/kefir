@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_BDWGC_
 $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Build bdwgc $(KEFIR_EXTERNAL_TEST_BDWGC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
  		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/bdwgc/include.h" \
@@ -33,7 +33,7 @@ $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BDWGC_SO
 $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/libgc.la: $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/Makefile
 	@echo "Build bdwgc $(KEFIR_EXTERNAL_TEST_BDWGC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
  		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/bdwgc/include.h" \
@@ -42,7 +42,7 @@ $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/libgc.la: $(KEFIR_EXTERNAL_TEST_BDWGC_SO
 $(KEFIR_EXTERNAL_TEST_BDWGC_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/libgc.la
 	@echo "Testing bdwgc $(KEFIR_EXTERNAL_TEST_BDWGC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'

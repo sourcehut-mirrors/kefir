@@ -26,7 +26,7 @@ $(KEFIR_EXTERNAL_TEST_PUREDOOM_SOURCE_DIR)/examples/Tests/build/Makefile: $(KEFI
 	@echo "Configuring PureDOOM $(KEFIR_EXTERNAL_TEST_PUREDOOM_VERSION) tests..."
 	@mkdir -p "$(dir $@)"
 	@cd "$(dir $@)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ..
@@ -34,7 +34,7 @@ $(KEFIR_EXTERNAL_TEST_PUREDOOM_SOURCE_DIR)/examples/Tests/build/Makefile: $(KEFI
 $(KEFIR_EXTERNAL_TEST_PUREDOOM_SOURCE_DIR)/examples/Tests/build/pd_tests: $(KEFIR_EXTERNAL_TEST_PUREDOOM_SOURCE_DIR)/examples/Tests/build/Makefile
 	@echo "Building PureDOOM $(KEFIR_EXTERNAL_TEST_PUREDOOM_VERSION) tests..."
 	@cd "$(dir $@)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)

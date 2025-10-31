@@ -26,14 +26,14 @@ $(KEFIR_EXTERNAL_TEST_ZIG_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_ZIG_ARCH
 $(KEFIR_EXTERNAL_TEST_ZIG_SOURCE_DIR)/bootstrap: $(KEFIR_EXTERNAL_TEST_ZIG_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Building zig $(KEFIR_EXTERNAL_TEST_ZIG_VERSION) bootstrap..."
 	@cd "$(KEFIR_EXTERNAL_TEST_ZIG_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		"$(realpath $(KEFIR_EXE))" -O2 -fPIC -o bootstrap bootstrap.c
 
 $(KEFIR_EXTERNAL_TEST_ZIG_SOURCE_DIR)/zig2: $(KEFIR_EXTERNAL_TEST_ZIG_SOURCE_DIR)/bootstrap
 	@echo "Bootstrapping zig $(KEFIR_EXTERNAL_TEST_ZIG_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_ZIG_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c "ulimit -s unlimited && ./bootstrap"

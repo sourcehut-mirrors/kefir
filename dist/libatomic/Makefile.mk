@@ -41,7 +41,7 @@ $(KEFIR_DIST_LIBATOMIC_DIR)/.extracted: $(KEFIR_DIST_COMPILER_RT_ARCHIVE)
 $(KEFIR_DIST_LIBATOMIC_SO): $(KEFIR_DIST_LIBATOMIC_DIR)/.extracted $(KEFIR_EXE)
 	@mkdir -p "$(shell dirname $@)"
 	@echo "Building $@"
-	@LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+	@LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(KEFIR_EXE) $(KEFIR_DIST_LIBATOMIC_CFLAGS) -shared -o "$@" $(KEFIR_DIST_COMPILER_RT_LIBATOMIC_SOURCE)
 

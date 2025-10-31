@@ -28,7 +28,7 @@ $(KEFIR_EXTERNAL_TEST_C23DOKU_SOURCE_DIR)/test_kefir.sh: $(KEFIR_EXTERNAL_TEST_C
 $(KEFIR_EXTERNAL_TEST_C23DOKU_SOURCE_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_C23DOKU_SOURCE_DIR)/test_kefir.sh $(KEFIR_EXE)
 	@echo "Testing c23doku $(KEFIR_EXTERNAL_TEST_C23DOKU_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_C23DOKU_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; ./test_kefir.sh | tee test.log.tmp'

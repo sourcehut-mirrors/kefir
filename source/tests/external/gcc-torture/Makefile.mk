@@ -31,7 +31,7 @@ $(KEFIR_EXTERNAL_TEST_GCC_TORTURE_DIR)/torture.log: $(KEFIR_EXTERNAL_TEST_GCC_DI
 	@echo "Running GCC $(KEFIR_EXTERNAL_TEST_GCC_TORTURE_VERSION) torture test suite..."
 	@TORTURE="$(KEFIR_EXTERNAL_TEST_GCC_DIR)/gcc/testsuite/gcc.c-torture" \
 		KEFIRCC="$(realpath $(KEFIR_EXE))" \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR)/kefir/runtime)" \
 		KEFIR_EXTRAFLAGS="$(KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS)" \
 		"$(SOURCE_DIR)/tests/external/gcc-torture/runner.sh" "$@"

@@ -25,7 +25,7 @@ $(KEFIR_EXTERNAL_TEST_PCRE2_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_PCRE2_SO
 	@echo "Configure pcre2 $(KEFIR_EXTERNAL_TEST_PCRE2_VERSION)..."
 	@mkdir -p "$(shell dirname $@)"
 	@cd "$(KEFIR_EXTERNAL_TEST_PCRE2_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -33,7 +33,7 @@ $(KEFIR_EXTERNAL_TEST_PCRE2_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_PCRE2_SO
 $(KEFIR_EXTERNAL_TEST_PCRE2_SOURCE_DIR)/libpcre2-8.la: $(KEFIR_EXTERNAL_TEST_PCRE2_SOURCE_DIR)/Makefile
 	@echo "Building pcre2 $(KEFIR_EXTERNAL_TEST_PCRE2_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_PCRE2_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_PCRE2_SOURCE_DIR)/libpcre2-8.la: $(KEFIR_EXTERNAL_TEST_PCR
 $(KEFIR_EXTERNAL_TEST_PCRE2_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_PCRE2_SOURCE_DIR)/libpcre2-8.la
 	@echo "Testing pcre2 $(KEFIR_EXTERNAL_TEST_PCRE2_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_PCRE2_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'

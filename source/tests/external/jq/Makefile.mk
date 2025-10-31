@@ -26,7 +26,7 @@ $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_JQ_ARCHIV
 $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Building jq $(KEFIR_EXTERNAL_TEST_JQ_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -34,7 +34,7 @@ $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_D
 $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/jq: $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/Makefile
 	@echo "Building jq $(KEFIR_EXTERNAL_TEST_JQ_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -42,7 +42,7 @@ $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/jq: $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/Ma
 $(KEFIR_EXTERNAL_TEST_JQ_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/jq
 	@echo "Testing jq $(KEFIR_EXTERNAL_TEST_JQ_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'

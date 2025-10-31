@@ -25,7 +25,7 @@ $(KEFIR_EXTERNAL_TEST_MIMALLOC_SOURCE_DIR)/build/Makefile: $(KEFIR_EXTERNAL_TEST
 	@echo "Configure mimalloc $(KEFIR_EXTERNAL_TEST_MIMALLOC_VERSION)..."
 	@mkdir -p "$(shell dirname $@)"
 	@cd "$(KEFIR_EXTERNAL_TEST_MIMALLOC_SOURCE_DIR)/build" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		cmake -DCMAKE_C_COMPILER="$(realpath $(KEFIR_EXE))" ..
@@ -33,7 +33,7 @@ $(KEFIR_EXTERNAL_TEST_MIMALLOC_SOURCE_DIR)/build/Makefile: $(KEFIR_EXTERNAL_TEST
 $(KEFIR_EXTERNAL_TEST_MIMALLOC_SOURCE_DIR)/build/libmimalloc.a: $(KEFIR_EXTERNAL_TEST_MIMALLOC_SOURCE_DIR)/build/Makefile
 	@echo "Building mimalloc $(KEFIR_EXTERNAL_TEST_MIMALLOC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MIMALLOC_SOURCE_DIR)/build" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_MIMALLOC_SOURCE_DIR)/build/libmimalloc.a: $(KEFIR_EXTERNAL
 $(KEFIR_EXTERNAL_TEST_MIMALLOC_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_MIMALLOC_SOURCE_DIR)/build/libmimalloc.a
 	@echo "Testing mimalloc $(KEFIR_EXTERNAL_TEST_MIMALLOC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MIMALLOC_SOURCE_DIR)/build" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"'

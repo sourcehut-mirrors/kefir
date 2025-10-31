@@ -25,7 +25,7 @@ $(KEFIR_EXTERNAL_TEST_MSGPACK_SOURCE_DIR)/build/Makefile: $(KEFIR_EXTERNAL_TEST_
 	@echo "Building msgpack $(KEFIR_EXTERNAL_TEST_MSGPACK_VERSION)..."
 	@mkdir -p "$(shell dirname $@)"
 	@cd "$(KEFIR_EXTERNAL_TEST_MSGPACK_SOURCE_DIR)/build" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		cmake -DCMAKE_C_COMPILER="$(realpath $(KEFIR_EXE))" -DMSGPACK_BUILD_TESTS=ON ..
@@ -33,7 +33,7 @@ $(KEFIR_EXTERNAL_TEST_MSGPACK_SOURCE_DIR)/build/Makefile: $(KEFIR_EXTERNAL_TEST_
 $(KEFIR_EXTERNAL_TEST_MSGPACK_SOURCE_DIR)/build/libmsgpack-c.so: $(KEFIR_EXTERNAL_TEST_MSGPACK_SOURCE_DIR)/build/Makefile
 	@echo "Building msgpack $(KEFIR_EXTERNAL_TEST_MSGPACK_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MSGPACK_SOURCE_DIR)/build" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE) CC="$(realpath $(KEFIR_EXE))"
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_MSGPACK_SOURCE_DIR)/build/libmsgpack-c.so: $(KEFIR_EXTERNA
 $(KEFIR_EXTERNAL_TEST_MSGPACK_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_MSGPACK_SOURCE_DIR)/build/libmsgpack-c.so
 	@echo "Testing msgpack $(KEFIR_EXTERNAL_TEST_MSGPACK_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MSGPACK_SOURCE_DIR)/build" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) test CC="$(realpath $(KEFIR_EXE))" 2>&1 | tee "$(shell realpath "$@.tmp")"'

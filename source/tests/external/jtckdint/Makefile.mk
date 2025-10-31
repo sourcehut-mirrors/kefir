@@ -26,11 +26,11 @@ $(KEFIR_EXTERNAL_TEST_JTCKDINT_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_JTC
 $(KEFIR_EXTERNAL_TESTS_DIR)/jtckdint.test.done: $(KEFIR_EXTERNAL_TEST_JTCKDINT_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Testing jtckdint $(KEFIR_EXTERNAL_TEST_JTCKDINT_VERSION)..."
 	cd "$(KEFIR_EXTERNAL_TEST_JTCKDINT_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(realpath $(KEFIR_EXE)) -c -o test.o test.c -D__STRICT_ANSI__=1 "-D__ckd_intmax=long long" -O0
 	@cd "$(KEFIR_EXTERNAL_TEST_JTCKDINT_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)

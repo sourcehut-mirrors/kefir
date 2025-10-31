@@ -28,7 +28,7 @@ $(KEFIR_EXTERNAL_TEST_GCC_MISC_TESTS_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TE
 $(KEFIR_EXTERNAL_TEST_GCC_MISC_TESTS_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_GCC_MISC_TESTS_SOURCE_DIR)/.extracted $(KEFIR_EXE) $(SOURCE_DIR)/tests/external/gcc-misc-tests/tests.lst
 	@echo "Running parts of GCC $(KEFIR_EXTERNAL_TEST_GCC_MISC_TESTS_VERSION) test suite..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GCC_MISC_TESTS_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/gcc-torture/torture.h -O1 -g -fPIC -std=c23" \

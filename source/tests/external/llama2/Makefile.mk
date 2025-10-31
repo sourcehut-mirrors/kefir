@@ -37,14 +37,14 @@ $(KEFIR_EXTERNAL_TEST_LLAMA2_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_LLAMA
 $(KEFIR_EXTERNAL_TEST_LLAMA2_SOURCE_DIR)/run: $(KEFIR_EXTERNAL_TEST_LLAMA2_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Building llama2.c $(KEFIR_EXTERNAL_TEST_LLAMA2_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LLAMA2_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE) CC="$(realpath $(KEFIR_EXE))"
 
 $(KEFIR_EXTERNAL_TEST_LLAMA2_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LLAMA2_SOURCE_DIR)/run $(KEFIR_EXTERNAL_TEST_LLAMA2_STORIES15M_FILEPATH)
 	@echo "Testing llama2.c $(KEFIR_EXTERNAL_TEST_LLAMA2_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LLAMA2_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		bash -c 'set -o pipefail; ./run $(realpath $(KEFIR_EXTERNAL_TEST_LLAMA2_STORIES15M_FILEPATH)) -t 0.0 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"

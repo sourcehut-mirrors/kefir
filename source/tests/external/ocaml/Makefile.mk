@@ -23,7 +23,7 @@ $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_OCAML_
 $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring ocaml $(KEFIR_EXTERNAL_TEST_OCAML_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure CC="$(realpath $(KEFIR_EXE))" --enable-ocamltest --disable-ocamldoc --disable-debugger --disable-native-compiler
@@ -31,7 +31,7 @@ $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_OCAML_
 $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/ocaml: $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/config.log
 	@echo "Building ocaml $(KEFIR_EXTERNAL_TEST_OCAML_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -39,7 +39,7 @@ $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/ocaml: $(KEFIR_EXTERNAL_TEST_OCAML_SOURC
 $(KEFIR_EXTERNAL_TEST_OCAML_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/ocaml
 	@echo "Testing ocaml $(KEFIR_EXTERNAL_TEST_OCAML_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		KEFIR_DRIVER_CLI_QUIET=yes \

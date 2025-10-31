@@ -25,7 +25,7 @@ $(KEFIR_EXTERNAL_TEST_XZ_SOURCE_DIR)/build/Makefile: $(KEFIR_EXTERNAL_TEST_XZ_SO
 	@echo "Configure xz $(KEFIR_EXTERNAL_TEST_XZ_VERSION)..."
 	@mkdir -p "$(shell dirname $@)"
 	@cd "$(KEFIR_EXTERNAL_TEST_XZ_SOURCE_DIR)/build" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		cmake -DCMAKE_C_COMPILER="$(realpath $(KEFIR_EXE))" ..
@@ -33,7 +33,7 @@ $(KEFIR_EXTERNAL_TEST_XZ_SOURCE_DIR)/build/Makefile: $(KEFIR_EXTERNAL_TEST_XZ_SO
 $(KEFIR_EXTERNAL_TEST_XZ_SOURCE_DIR)/build/xz: $(KEFIR_EXTERNAL_TEST_XZ_SOURCE_DIR)/build/Makefile
 	@echo "Building xz $(KEFIR_EXTERNAL_TEST_XZ_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_XZ_SOURCE_DIR)/build" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_XZ_SOURCE_DIR)/build/xz: $(KEFIR_EXTERNAL_TEST_XZ_SOURCE_D
 $(KEFIR_EXTERNAL_TEST_XZ_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_XZ_SOURCE_DIR)/build/xz
 	@echo "Testing xz $(KEFIR_EXTERNAL_TEST_XZ_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_XZ_SOURCE_DIR)/build" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"'

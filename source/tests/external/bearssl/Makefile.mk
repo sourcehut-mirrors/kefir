@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_BEAR
 $(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR)/build/libbearssl.so: $(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Build bearssl $(KEFIR_EXTERNAL_TEST_BEARSSL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		KEFIR_LD="$(LD)" \
@@ -33,12 +33,12 @@ $(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR)/build/libbearssl.so: $(KEFIR_EXTERNAL_
 $(KEFIR_EXTERNAL_TEST_BEARSSL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR)/build/libbearssl.so
 	@echo "Testing bearssl $(KEFIR_EXTERNAL_TEST_BEARSSL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(realpath $(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR))/build/testcrypto all 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@cd "$(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(realpath $(KEFIR_EXTERNAL_TEST_BEARSSL_SOURCE_DIR))/build/testx509 2>&1 | tee -a "$(shell realpath "$@.tmp")"'

@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_LZ4_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_LZ4_ARCH
 $(KEFIR_EXTERNAL_TEST_LZ4_SOURCE_DIR)/lz4: $(KEFIR_EXTERNAL_TEST_LZ4_SOURCE_DIR)/.extracted
 	@echo "Building lz4 $(KEFIR_EXTERNAL_TEST_LZ4_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LZ4_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_LZ4_SOURCE_DIR)/lz4: $(KEFIR_EXTERNAL_TEST_LZ4_SOURCE_DIR)
 $(KEFIR_EXTERNAL_TEST_LZ4_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LZ4_SOURCE_DIR)/lz4
 	@echo "Testing lz4 $(KEFIR_EXTERNAL_TEST_LZ4_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LZ4_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'

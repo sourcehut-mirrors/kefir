@@ -27,7 +27,7 @@ $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_VIM_ARCH
 $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/src/auto/config.h: $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring vim $(KEFIR_EXTERNAL_TEST_VIM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure --with-features=normal
@@ -35,7 +35,7 @@ $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/src/auto/config.h: $(KEFIR_EXTERNAL_TEST_V
 $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/src/vim: $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/src/auto/config.h
 	@echo "Building vim $(KEFIR_EXTERNAL_TEST_VIM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -43,7 +43,7 @@ $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/src/vim: $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_
 $(KEFIR_EXTERNAL_TESTS_DIR)/vim.test.done: $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/src/vim
 	@echo "Testing vim $(KEFIR_EXTERNAL_TEST_VIM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE) test -j1

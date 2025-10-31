@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_MUON_AR
 $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/build/muon-bootstrap: $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Bootstrapping muon $(KEFIR_EXTERNAL_TEST_MUON_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./bootstrap.sh build
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/build/muon-bootstrap: $(KEFIR_EXTERNAL_TE
 $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/build2/build.ninja: $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/build/muon-bootstrap
 	@echo "Setting muon $(KEFIR_EXTERNAL_TEST_MUON_VERSION) up..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		build/muon-bootstrap setup build2
@@ -40,7 +40,7 @@ $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/build2/build.ninja: $(KEFIR_EXTERNAL_TEST
 $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/build2/muon: $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/build2/build.ninja
 	@echo "Building muon $(KEFIR_EXTERNAL_TEST_MUON_VERSION) up..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		build/muon-bootstrap -C build2 samu

@@ -26,14 +26,14 @@ $(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_TOYBO
 $(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)/generated/config.h: $(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring toybox $(KEFIR_EXTERNAL_TEST_TOYBOX_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE) CC="$(realpath $(KEFIR_EXE))" HOSTCC="$(realpath $(KEFIR_EXE))" defconfig
 
 $(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)/toybox: $(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)/generated/config.h
 	@echo "Building toybox $(KEFIR_EXTERNAL_TEST_TOYBOX_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE) CC="$(realpath $(KEFIR_EXE))" HOSTCC="$(realpath $(KEFIR_EXE))"
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)/toybox: $(KEFIR_EXTERNAL_TEST_TOYBOX_SO
 $(KEFIR_EXTERNAL_TEST_TOYBOX_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)/toybox
 	@echo "Testing toybox $(KEFIR_EXTERNAL_TEST_TOYBOX_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_TOYBOX_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) CC="$(realpath $(KEFIR_EXE))" HOSTCC="$(realpath $(KEFIR_EXE))" tests | tee "$(shell realpath $@.tmp)"'

@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_BISON_
 $(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring GNU Bison $(KEFIR_EXTERNAL_TEST_BISON_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/bison/include" \
@@ -34,7 +34,7 @@ $(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BISON_SO
 $(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)/src/bison: $(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)/Makefile
 	@echo "Building GNU Bison $(KEFIR_EXTERNAL_TEST_BISON_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/bison/include" \
@@ -44,7 +44,7 @@ $(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)/src/bison: $(KEFIR_EXTERNAL_TEST_BISON_S
 $(KEFIR_EXTERNAL_TEST_BISON_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)/src/bison
 	@echo "Testing GNU Bison $(KEFIR_EXTERNAL_TEST_BISON_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BISON_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/bison/include" \

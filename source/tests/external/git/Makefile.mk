@@ -26,7 +26,7 @@ $(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_GIT_ARCH
 $(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring git $(KEFIR_EXTERNAL_TEST_GIT_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
@@ -35,14 +35,14 @@ $(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_GIT_SOUR
 $(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)/git: $(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)/config.log
 	@echo "Building git $(KEFIR_EXTERNAL_TEST_GIT_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE) all
 
 $(KEFIR_EXTERNAL_TEST_GIT_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)/git
 	@echo "Testing Git $(KEFIR_EXTERNAL_TEST_GIT_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GIT_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		bash -c 'set -o pipefail; $(MAKE) test 2>&1 | tee "$(shell realpath $@.tmp)"'
 	@mv "$@.tmp" "$@"

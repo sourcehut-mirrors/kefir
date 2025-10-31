@@ -29,7 +29,7 @@ $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat/configure: $(KEFIR_EXTERNAL_TES
 	@echo "Buildconf libexpat $(KEFIR_EXTERNAL_TEST_LIBEXPAT_VERSION)..."
 	@mkdir -p "$(shell dirname $@)"
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./buildconf.sh
@@ -38,7 +38,7 @@ $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat/Makefile: $(KEFIR_EXTERNAL_TEST
 	@echo "Configure libexpat $(KEFIR_EXTERNAL_TEST_LIBEXPAT_VERSION)..."
 	@mkdir -p "$(shell dirname $@)"
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -46,7 +46,7 @@ $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat/Makefile: $(KEFIR_EXTERNAL_TEST
 $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat/lib/libexpat.la: $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat/Makefile
 	@echo "Building libexpat $(KEFIR_EXTERNAL_TEST_LIBEXPAT_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -54,7 +54,7 @@ $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat/lib/libexpat.la: $(KEFIR_EXTERN
 $(KEFIR_EXTERNAL_TEST_LIBEXPAT_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat/lib/libexpat.la
 	@echo "Testing libexpat $(KEFIR_EXTERNAL_TEST_LIBEXPAT_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'

@@ -27,7 +27,7 @@ $(KEFIR_EXTERNAL_TEST_CSP_SOURCE_DIR)/build/libcsp.so: $(KEFIR_EXTERNAL_TEST_CSP
 	@echo "Building $@..."
 	@mkdir -p "$(shell dirname $@)"
 	@cd "$(KEFIR_EXTERNAL_TEST_CSP_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		"$(realpath $(KEFIR_EXE))" -std=c23 -shared -fPIC -O1 -g -I ./include ./src/*.c -o build/libcsp.so
 
@@ -35,7 +35,7 @@ $(KEFIR_EXTERNAL_TEST_CSP_SOURCE_DIR)/build/unique_ptr/%: $(KEFIR_EXTERNAL_TEST_
 	@echo "Building $@..."
 	@mkdir -p "$(shell dirname $@)"
 	@cd "$(KEFIR_EXTERNAL_TEST_CSP_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		"$(realpath $(KEFIR_EXE))" -std=c23 -fPIC -O1 -g -I ./include ./test/unique_ptr/$(shell basename $@).c -o build/unique_ptr/$(shell basename $@) -Lbuild -lcsp
 

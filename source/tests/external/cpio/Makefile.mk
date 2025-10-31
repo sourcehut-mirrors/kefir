@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_CPIO_AR
 $(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Building cpio $(KEFIR_EXTERNAL_TEST_CPIO_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_CPIO_SOUR
 $(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)/src/cpio: $(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)/Makefile
 	@echo "Building cpio $(KEFIR_EXTERNAL_TEST_CPIO_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -40,7 +40,7 @@ $(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)/src/cpio: $(KEFIR_EXTERNAL_TEST_CPIO_SOUR
 $(KEFIR_EXTERNAL_TEST_CPIO_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)/src/cpio
 	@echo "Testing cpio $(KEFIR_EXTERNAL_TEST_CPIO_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CPIO_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"

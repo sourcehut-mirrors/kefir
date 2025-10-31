@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_TCL_ARCH
 $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/Makefile: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring tcl $(KEFIR_EXTERNAL_TEST_TCL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie -g -DMP_64BIT -isystem $(realpath $(SOURCE_DIR))/tests/external/tcl/include" \
@@ -33,14 +33,14 @@ $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/Makefile: $(KEFIR_EXTERNAL_TEST_TCL_S
 $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/tclsh: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/Makefile
 	@echo "Building tcl $(KEFIR_EXTERNAL_TEST_TCL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE) all
 
 $(KEFIR_EXTERNAL_TEST_TCL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/tclsh
 	@echo "Testing tcl $(KEFIR_EXTERNAL_TEST_TCL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		bash -c 'set -o pipefail; $(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"

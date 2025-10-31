@@ -30,7 +30,7 @@ $(KEFIR_EXTERNAL_TEST_SLIMCC_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_SLIMC
 $(KEFIR_EXTERNAL_TEST_SLIMCC_SOURCE_DIR)/slimcc: $(KEFIR_EXTERNAL_TEST_SLIMCC_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Building slimcc $(KEFIR_EXTERNAL_TEST_SLIMCC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_SLIMCC_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -38,7 +38,7 @@ $(KEFIR_EXTERNAL_TEST_SLIMCC_SOURCE_DIR)/slimcc: $(KEFIR_EXTERNAL_TEST_SLIMCC_SO
 $(KEFIR_EXTERNAL_TEST_SLIMCC_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_SLIMCC_SOURCE_DIR)/slimcc
 	@echo "Testing slimcc $(KEFIR_EXTERNAL_TEST_SLIMCC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_SLIMCC_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) test | tee "$(shell realpath $@.tmp)"'

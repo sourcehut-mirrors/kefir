@@ -23,7 +23,7 @@ $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_CURL_AR
 $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring curl $(KEFIR_EXTERNAL_TEST_CURL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_CURL_SO
 $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/src/curl: $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/config.log
 	@echo "Building curl $(KEFIR_EXTERNAL_TEST_CURL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		$(MAKE)
@@ -40,7 +40,7 @@ $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/src/curl: $(KEFIR_EXTERNAL_TEST_CURL_SOUR
 $(KEFIR_EXTERNAL_TEST_CURL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/src/curl
 	@echo "Testing curl $(KEFIR_EXTERNAL_TEST_CURL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		bash -c 'set -o pipefail; $(MAKE) test TFLAGS="!165 !433 !537 !962 !963 !964 !965 !966 !967 !1448 !1560 !2046 !2047 $(shell echo $(MAKEFLAGS) | grep -Eo "\-j[0-9]+" || true)" 2>&1 | tee "$(shell realpath $@.tmp)"'

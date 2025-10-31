@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_OPEN
 $(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring openssl $(KEFIR_EXTERNAL_TEST_OPENSSL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./Configure
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_OPENSS
 $(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)/libssl.so.3: $(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)/Makefile
 	@echo "Building openssl $(KEFIR_EXTERNAL_TEST_OPENSSL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -40,7 +40,7 @@ $(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)/libssl.so.3: $(KEFIR_EXTERNAL_TEST_OPE
 $(KEFIR_EXTERNAL_TEST_OPENSSL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)/libssl.so.3
 	@echo "Testing openssl $(KEFIR_EXTERNAL_TEST_OPENSSL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_OPENSSL_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"'

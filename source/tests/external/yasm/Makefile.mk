@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_YASM_AR
 $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring yasm $(KEFIR_EXTERNAL_TEST_YASM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
@@ -33,7 +33,7 @@ $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_YASM_SO
 $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/yasm: $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/config.log
 	@echo "Building yasm $(KEFIR_EXTERNAL_TEST_YASM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE) all
 
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/yasm: $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_D
 $(KEFIR_EXTERNAL_TEST_YASM_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/yasm
 	@echo "Building yasm $(KEFIR_EXTERNAL_TEST_YASM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check -j1 | tee "$(shell realpath $@.tmp)"'

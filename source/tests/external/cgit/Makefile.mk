@@ -43,7 +43,7 @@ $(KEFIR_EXTERNAL_TEST_CGIT_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_CGIT_AR
 $(KEFIR_EXTERNAL_TEST_CGIT_SOURCE_DIR)/cgit: $(KEFIR_EXTERNAL_TEST_CGIT_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Building cgit $(KEFIR_EXTERNAL_TEST_CGIT_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CGIT_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE) CC="$(realpath $(KEFIR_EXE))" all
@@ -51,7 +51,7 @@ $(KEFIR_EXTERNAL_TEST_CGIT_SOURCE_DIR)/cgit: $(KEFIR_EXTERNAL_TEST_CGIT_SOURCE_D
 $(KEFIR_EXTERNAL_TEST_CGIT_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_CGIT_SOURCE_DIR)/cgit
 	@echo "Testing cgit $(KEFIR_EXTERNAL_TEST_CGIT_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CGIT_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) CC="$(realpath $(KEFIR_EXE))" test | tee "$(shell realpath $@.tmp)"'

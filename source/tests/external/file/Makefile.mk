@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_FILE_AR
 $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/ltmain.sh: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Libtoolize file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		libtoolize
@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/ltmain.sh: $(KEFIR_EXTERNAL_TEST_FILE_SOU
 $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/ltmain.sh
 	@echo "Autoconf file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		autoreconf -if
@@ -40,7 +40,7 @@ $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_FILE_SOU
 $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/configure
 	@echo "Configuring file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -48,7 +48,7 @@ $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_FILE_SOUR
 $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/src/file: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/Makefile
 	@echo "Building file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -56,7 +56,7 @@ $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/src/file: $(KEFIR_EXTERNAL_TEST_FILE_SOUR
 $(KEFIR_EXTERNAL_TEST_FILE_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/src/file
 	@echo "Testing file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'

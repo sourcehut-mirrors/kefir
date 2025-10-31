@@ -24,7 +24,7 @@ $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_ZLIB_AR
 $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)/configure.log: $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring zlib $(KEFIR_EXTERNAL_TEST_ZLIB_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
@@ -33,21 +33,21 @@ $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)/configure.log: $(KEFIR_EXTERNAL_TEST_ZLIB
 $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)/libz.a: $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)/configure.log
 	@echo "Building zlib $(KEFIR_EXTERNAL_TEST_ZLIB_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE) all
 
 $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)/.t: $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)/configure.log
 	@echo "Building zlib $(KEFIR_EXTERNAL_TEST_ZLIB_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE) all
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/zlib.test.done: $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)/libz.a
 	@echo "Testing zlib $(KEFIR_EXTERNAL_TEST_ZLIB_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		$(MAKE) test
 	@cd "$(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)" && ./example

@@ -25,7 +25,7 @@ $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_IM
 	@echo "Configure ImageMagick $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_VERSION)..."
 	@mkdir -p "$(shell dirname $@)"
 	@cd "$(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		./configure
@@ -33,7 +33,7 @@ $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_IM
 $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_SOURCE_DIR)/MagickCore/libMagickCore-7.Q16HDRI.la: $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_SOURCE_DIR)/Makefile
 	@echo "Building ImageMagick $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		$(MAKE)
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_SOURCE_DIR)/MagickCore/libMagickCore-7.Q16HDRI
 $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_SOURCE_DIR)/MagickCore/libMagickCore-7.Q16HDRI.la
 	@echo "Testing ImageMagick $(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_IMAGEMAGICK_SOURCE_DIR)" && \
-		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
