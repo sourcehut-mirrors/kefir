@@ -196,6 +196,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                     case KEFIR_IR_TYPE_INT16:
                     case KEFIR_IR_TYPE_INT32:
                     case KEFIR_IR_TYPE_INT64:
+                    case KEFIR_IR_TYPE_INT128:
                     case KEFIR_IR_TYPE_FLOAT32:
                     case KEFIR_IR_TYPE_FLOAT64:
                     case KEFIR_IR_TYPE_BITFIELD:
@@ -208,9 +209,6 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                     case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
                         // Intentionally left blank
                         break;
-
-                    case KEFIR_IR_TYPE_INT128:
-                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
 
                     case KEFIR_IR_TYPE_NONE:
                     case KEFIR_IR_TYPE_COUNT:
@@ -501,8 +499,22 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                             &KEFIR_ASMCMP_MAKE_VREG64(argument_vreg), NULL));
                         break;
 
-                    case KEFIR_IR_TYPE_INT128:
-                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                    case KEFIR_IR_TYPE_INT128: {
+                        kefir_asmcmp_virtual_register_index_t upper_half_vreg, lower_half_vreg;
+                        REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, argument_vreg, 0, &lower_half_vreg));
+                        REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, argument_vreg, 1, &upper_half_vreg));
+
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(argument_placement_vreg, 0,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                            &KEFIR_ASMCMP_MAKE_VREG64(lower_half_vreg), NULL));
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(argument_placement_vreg, KEFIR_AMD64_ABI_QWORD,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                            &KEFIR_ASMCMP_MAKE_VREG64(upper_half_vreg), NULL));
+                    } break;
 
                     case KEFIR_IR_TYPE_FLOAT64:
                         REQUIRE_OK(kefir_asmcmp_amd64_movq(
