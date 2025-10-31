@@ -118,7 +118,9 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     break;
             
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
+                        builder, KEFIR_IR_OPCODE_INT128_EQUAL, 0));
+                    break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
@@ -249,7 +251,28 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     break;
             
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
+                        builder,
+                        signed_controlling_expr ? KEFIR_IR_OPCODE_INT128_GREATER : KEFIR_IR_OPCODE_INT128_ABOVE, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_EQUAL,
+                                                               0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
+
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
+                    REQUIRE_OK(kefir_ast_translate_expression(mem, range_end_node, builder, context));
+                    REQUIRE_OK(kefir_ast_translate_typeconv(
+                        mem, context->module, builder, context->ast_context->type_traits,
+                        range_end_node->properties.type,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
+                        builder,
+                        signed_controlling_expr ? KEFIR_IR_OPCODE_INT128_LESS : KEFIR_IR_OPCODE_INT128_BELOW, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_EQUAL, 0));
+                    break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
