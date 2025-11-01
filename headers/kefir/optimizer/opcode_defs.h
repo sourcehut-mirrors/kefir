@@ -471,7 +471,10 @@
     OPCODE(INT128_XOR, "int128_xor", ref2) SEPARATOR \
     OPCODE(INT128_NEG, "int128_neg", ref1) SEPARATOR \
     OPCODE(INT128_NOT, "int128_not", ref1) SEPARATOR \
-    OPCODE(INT128_BOOL_NOT, "int128_bool_not", ref1)
+    OPCODE(INT128_BOOL_NOT, "int128_bool_not", ref1) SEPARATOR \
+    OPCODE(INT128_ATOMIC_LOAD, "int128_atomic_load", atomic_op) SEPARATOR \
+    OPCODE(INT128_ATOMIC_STORE, "int128_atomic_store", atomic_op) SEPARATOR \
+    OPCODE(INT128_ATOMIC_CMPXCHG, "int128_atomic_cmpxchg", atomic_op)
 
 // clang-format on
 

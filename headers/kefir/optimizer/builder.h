@@ -566,6 +566,7 @@ ATOMIC_LOAD_OP(atomic_load_complex_long_double);
 ATOMIC_LOAD_OP(atomic_load_decimal32);
 ATOMIC_LOAD_OP(atomic_load_decimal64);
 ATOMIC_LOAD_OP(atomic_load_decimal128);
+ATOMIC_LOAD_OP(atomic_load_int128);
 
 #undef ATOMIC_LOAD_OP
 
@@ -584,6 +585,7 @@ ATOMIC_STORE_OP(atomic_store_complex_long_double);
 ATOMIC_STORE_OP(atomic_store_decimal32);
 ATOMIC_STORE_OP(atomic_store_decimal64);
 ATOMIC_STORE_OP(atomic_store_decimal128);
+ATOMIC_STORE_OP(atomic_store_int128);
 
 #undef ATOMIC_STORE_OP
 
@@ -604,6 +606,7 @@ ATOMIC_CMPXCHG_OP(atomic_compare_exchange_complex_long_double);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal32);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal64);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal128);
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange_int128);
 
 #undef ATOMIC_CMPXCHG_OP
 

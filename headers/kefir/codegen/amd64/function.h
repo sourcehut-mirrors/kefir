@@ -529,6 +529,9 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(int128_neg, KEFIR_OPT_OPCODE_INT128_NEG) _separator \
     _def(int128_not, KEFIR_OPT_OPCODE_INT128_NOT) _separator \
     _def(int128_bool_not, KEFIR_OPT_OPCODE_INT128_BOOL_NOT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_ATOMIC_LOAD) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_ATOMIC_STORE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_ATOMIC_CMPXCHG) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

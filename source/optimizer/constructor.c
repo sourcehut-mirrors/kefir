@@ -1190,6 +1190,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_LOAD_OP(atomic_load_decimal32, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_LOAD)
             ATOMIC_LOAD_OP(atomic_load_decimal64, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_LOAD)
             ATOMIC_LOAD_OP(atomic_load_decimal128, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_LOAD)
+            ATOMIC_LOAD_OP(atomic_load_int128, KEFIR_IR_OPCODE_INT128_ATOMIC_LOAD)
 
 #undef ATOMIC_LOAD_OP
 
@@ -1222,6 +1223,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_STORE_OP(atomic_store_decimal32, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_STORE)
             ATOMIC_STORE_OP(atomic_store_decimal64, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_STORE)
             ATOMIC_STORE_OP(atomic_store_decimal128, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_STORE)
+            ATOMIC_STORE_OP(atomic_store_int128, KEFIR_IR_OPCODE_INT128_ATOMIC_STORE)
 
 #undef ATOMIC_STORE_OP
 
@@ -1253,6 +1255,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal32, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_CMPXCHG)
             ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal64, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_CMPXCHG)
             ATOMIC_CMPXCHG_OP(atomic_compare_exchange_decimal128, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_CMPXCHG)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange_int128, KEFIR_IR_OPCODE_INT128_ATOMIC_CMPXCHG)
 
 #undef ATOMIC_CMPXCHG_OP
 
