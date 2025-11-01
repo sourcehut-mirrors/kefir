@@ -50,9 +50,3 @@ skip execute/20230630-4.c
 
 # Decimal -- skipped because only certain Kefir builds support the feature
 skip execute/pr80692.c
-
-# int128
-skip compile/pr93335.c
-skip compile/pr99822.c
-skip execute/pr84748.c
-skip execute/pr93213.c
