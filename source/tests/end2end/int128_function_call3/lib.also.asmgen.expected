@@ -1,0 +1,124 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %r9
+    mov %rsi, %r10
+    mov $1, %rax
+    mov $1, %rcx
+    sar $63, %rcx
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rax, %rdi
+    adc %rcx, %rsi
+    mov %r9, %rax
+    mov %r10, %rcx
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $2, %rdx
+    mov $2, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $3, %rdx
+    mov $3, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $4, %rdx
+    mov $4, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $5, %rdx
+    mov $5, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $6, %rdx
+    mov $6, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $7, %rdx
+    mov $7, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $8, %rdx
+    mov $8, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $9, %rdx
+    mov $9, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $10, %rdx
+    mov $10, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov $11, %rdx
+    mov $11, %r8
+    sar $63, %r8
+    mov %r9, %rdi
+    mov %r10, %rsi
+    add %rdx, %rdi
+    adc %r8, %rsi
+    xor %rdi, %rax
+    xor %rsi, %rcx
+    mov %rcx, %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+
