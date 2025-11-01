@@ -265,6 +265,9 @@ MACRO_PP_NUMBER_FMT(long_sizeof, 64, "%" KEFIR_UINT64_FMT,
 MACRO_PP_NUMBER_FMT(long_long_sizeof, 64, "%" KEFIR_UINT64_FMT,
                     (kefir_uint64_t) preprocessor->context->environment.data_model->scalar_width.long_long_bits /
                         preprocessor->context->environment.data_model->scalar_width.char_bits)
+MACRO_PP_NUMBER_FMT(int128_sizeof, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->scalar_width.int128_bits /
+                        preprocessor->context->environment.data_model->scalar_width.char_bits)
 MACRO_PP_NUMBER_FMT(float_sizeof, 64, "%" KEFIR_UINT64_FMT,
                     (kefir_uint64_t) preprocessor->context->environment.data_model->scalar_width.float_bits /
                         preprocessor->context->environment.data_model->scalar_width.char_bits)
@@ -1006,6 +1009,9 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.long_long_sizeof,
                                                     "__SIZEOF_LONG_LONG__", macro_long_long_sizeof_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.int128_sizeof,
+                                                    "__SIZEOF_INT128__", macro_int128_sizeof_apply));
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.float_sizeof,
                                                     "__SIZEOF_FLOAT__", macro_float_sizeof_apply));

@@ -95,6 +95,7 @@ typedef struct kefir_preprocessor_predefined_macro_scope {
             struct kefir_preprocessor_macro int_sizeof;
             struct kefir_preprocessor_macro long_sizeof;
             struct kefir_preprocessor_macro long_long_sizeof;
+            struct kefir_preprocessor_macro int128_sizeof;
             struct kefir_preprocessor_macro float_sizeof;
             struct kefir_preprocessor_macro double_sizeof;
             struct kefir_preprocessor_macro long_double_sizeof;
