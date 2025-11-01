@@ -224,6 +224,21 @@ UNARY_OP(int128_neg);
 UNARY_OP(int128_not);
 UNARY_OP(int128_bool_not);
 
+UNARY_OP(int128_signed_to_float32);
+UNARY_OP(int128_signed_to_float64);
+UNARY_OP(int128_signed_to_long_double);
+UNARY_OP(int128_signed_to_decimal32);
+UNARY_OP(int128_signed_to_decimal64);
+UNARY_OP(int128_signed_to_decimal128);
+UNARY_OP(int128_unsigned_to_float32);
+UNARY_OP(int128_unsigned_to_float64);
+UNARY_OP(int128_unsigned_to_long_double);
+UNARY_OP(int128_unsigned_to_decimal32);
+UNARY_OP(int128_unsigned_to_decimal64);
+UNARY_OP(int128_unsigned_to_decimal128);
+UNARY_OP(int128_lower_half);
+UNARY_OP(int128_upper_half);
+
 UNARY_OP(vararg_start);
 UNARY_OP(vararg_end);
 UNARY_OP(scope_pop);
@@ -365,6 +380,9 @@ BITINT_UNARY_OP(bitint_builtin_ctz);
 BITINT_UNARY_OP(bitint_builtin_clrsb);
 BITINT_UNARY_OP(bitint_builtin_popcount);
 BITINT_UNARY_OP(bitint_builtin_parity);
+
+BITINT_UNARY_OP(int128_signed_to_bitint);
+BITINT_UNARY_OP(int128_unsigned_to_bitint);
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP

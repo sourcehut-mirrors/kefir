@@ -99,7 +99,20 @@ static kefir_result_t cast_to_float32(struct kefir_mem *mem, struct kefir_ir_mod
                                                        origin->bitprecise.width));
         }
     } else if (KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(origin)) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+        switch (origin->tag) {
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_FLOAT32,
+                                                        origin->bitprecise.width));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_FLOAT32,
+                                                        origin->bitprecise.width));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST type");
+        }
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
@@ -149,7 +162,20 @@ static kefir_result_t cast_to_float64(struct kefir_mem *mem, struct kefir_ir_mod
                                                        origin->bitprecise.width));
         }
     } else if (KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(origin)) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+        switch (origin->tag) {
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_FLOAT64,
+                                                        origin->bitprecise.width));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_FLOAT64,
+                                                        origin->bitprecise.width));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST type");
+        }
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_sign));
@@ -198,7 +224,20 @@ static kefir_result_t cast_to_long_double(struct kefir_mem *mem, struct kefir_ir
                                                        origin->bitprecise.width));
         }
     } else if (KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(origin)) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+        switch (origin->tag) {
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_LONG_DOUBLE,
+                                                        origin->bitprecise.width));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_LONG_DOUBLE,
+                                                        origin->bitprecise.width));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST type");
+        }
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_sign));
@@ -248,7 +287,20 @@ static kefir_result_t cast_to_decimal32(struct kefir_mem *mem, struct kefir_ir_m
                                                        origin->bitprecise.width));
         }
     } else if (KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(origin)) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+        switch (origin->tag) {
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_DECIMAL32,
+                                                        origin->bitprecise.width));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_DECIMAL32,
+                                                        origin->bitprecise.width));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST type");
+        }
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
@@ -298,7 +350,20 @@ static kefir_result_t cast_to_decimal64(struct kefir_mem *mem, struct kefir_ir_m
                                                        origin->bitprecise.width));
         }
     } else if (KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(origin)) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+        switch (origin->tag) {
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_DECIMAL64,
+                                                        origin->bitprecise.width));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_DECIMAL64,
+                                                        origin->bitprecise.width));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST type");
+        }
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
@@ -348,7 +413,20 @@ static kefir_result_t cast_to_decimal128(struct kefir_mem *mem, struct kefir_ir_
                                                        origin->bitprecise.width));
         }
     } else if (KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(origin)) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+        switch (origin->tag) {
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_DECIMAL128,
+                                                        origin->bitprecise.width));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_DECIMAL128,
+                                                        origin->bitprecise.width));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST type");
+        }
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
@@ -1047,7 +1125,15 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                     break;
  
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_BITINT,
+                                                                   target->bitprecise.width));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT,
+                                                                   target->bitprecise.width));
+                    }
+                    break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));

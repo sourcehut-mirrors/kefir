@@ -532,6 +532,22 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(error_lowered, KEFIR_OPT_OPCODE_INT128_ATOMIC_LOAD) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_INT128_ATOMIC_STORE) _separator \
     _def(error_lowered, KEFIR_OPT_OPCODE_INT128_ATOMIC_CMPXCHG) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_SIGNED_TO_FLOAT32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_SIGNED_TO_FLOAT64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_SIGNED_TO_LONG_DOUBLE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_SIGNED_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_SIGNED_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_SIGNED_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_SIGNED_TO_BITINT) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UNSIGNED_TO_FLOAT32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UNSIGNED_TO_FLOAT64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UNSIGNED_TO_LONG_DOUBLE) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UNSIGNED_TO_DECIMAL32) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UNSIGNED_TO_DECIMAL64) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UNSIGNED_TO_DECIMAL128) _separator \
+    _def(error_lowered, KEFIR_OPT_OPCODE_INT128_UNSIGNED_TO_BITINT) _separator \
+    _def(int128_lower_half, KEFIR_OPT_OPCODE_INT128_LOWER_HALF) _separator \
+    _def(int128_upper_half, KEFIR_OPT_OPCODE_INT128_UPPER_HALF) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -728,6 +744,13 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define LIBGCC_UMODTI3 "__umodti3"
 #define LIBGCC_MODTI3 "__modti3"
 
+#define LIBGCC_FLOATTISF "__floattisf"
+#define LIBGCC_FLOATTIDF "__floattidf"
+#define LIBGCC_FLOATTIXF "__floattixf"
+#define LIBGCC_FLOATUNTISF "__floatuntisf"
+#define LIBGCC_FLOATUNTIDF "__floatuntidf"
+#define LIBGCC_FLOATUNTIXF "__floatuntixf"
+
 #define LIBGCC_DECIMAL_BID "__bid"
 #define LIBGCC_DECIMAL_DPD "__dpd"
 #define LIBGCC_DECIMAL_ADDSD3(_encoding) _encoding "_addsd3"
@@ -810,6 +833,13 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define LIBGCC_DECIMAL_UNORDSD2(_encoding) _encoding "_unordsd2"
 #define LIBGCC_DECIMAL_UNORDDD2(_encoding) _encoding "_unorddd2"
 #define LIBGCC_DECIMAL_UNORDTD2(_encoding) _encoding "_unordtd2"
+
+#define LIBGCC_DECIMAL_FLOATTISD(_encoding) _encoding "_floattisd"
+#define LIBGCC_DECIMAL_FLOATTIDD(_encoding) _encoding "_floattidd"
+#define LIBGCC_DECIMAL_FLOATTITD(_encoding) _encoding "_floattitd"
+#define LIBGCC_DECIMAL_FLOATUNSTISD(_encoding) _encoding "_floatunstisd"
+#define LIBGCC_DECIMAL_FLOATUNSTIDD(_encoding) _encoding "_floatunstidd"
+#define LIBGCC_DECIMAL_FLOATUNSTITD(_encoding) _encoding "_floatunstitd"
 
 #define KEFIR_AMD64_CODEGEN_INSTR_CONSUMES_8BIT_BOOL(_instr, _consumed_ref)                                    \
     ((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||                                           \

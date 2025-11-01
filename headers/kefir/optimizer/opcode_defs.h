@@ -474,7 +474,23 @@
     OPCODE(INT128_BOOL_NOT, "int128_bool_not", ref1) SEPARATOR \
     OPCODE(INT128_ATOMIC_LOAD, "int128_atomic_load", atomic_op) SEPARATOR \
     OPCODE(INT128_ATOMIC_STORE, "int128_atomic_store", atomic_op) SEPARATOR \
-    OPCODE(INT128_ATOMIC_CMPXCHG, "int128_atomic_cmpxchg", atomic_op)
+    OPCODE(INT128_ATOMIC_CMPXCHG, "int128_atomic_cmpxchg", atomic_op) SEPARATOR \
+    OPCODE(INT128_SIGNED_TO_FLOAT32, "int128_signed_to_float32", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_TO_FLOAT32, "int128_usigned_to_float32", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_TO_FLOAT64, "int128_signed_to_float64", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_TO_FLOAT64, "int128_unsigned_to_float64", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_TO_LONG_DOUBLE, "int128_signed_to_long_double", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_TO_LONG_DOUBLE, "int128_unsigned_to_long_double", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_TO_DECIMAL32, "int128_signed_to_decimal32", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_TO_DECIMAL32, "int128_unsigned_to_decimal32", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_TO_DECIMAL64, "int128_signed_to_decimal64", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_TO_DECIMAL64, "int128_unsigned_to_decimal64", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_TO_DECIMAL128, "int128_signed_to_decimal128", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_TO_DECIMAL128, "int128_unsigned_to_decimal128", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_TO_BITINT, "int128_signed_to_bitint", bitint_ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_TO_BITINT, "int128_unsigned_to_bitint", bitint_ref1) SEPARATOR \
+    OPCODE(INT128_LOWER_HALF, "int128_lower_half", ref1) SEPARATOR \
+    OPCODE(INT128_UPPER_HALF, "int128_upper_half", ref1)
 
 // clang-format on
 

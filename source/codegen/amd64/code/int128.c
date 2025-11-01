@@ -748,3 +748,33 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int128_bool_not)(struct kefi
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;
 }
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int128_lower_half)(struct kefir_mem *mem,
+                                                                      struct kefir_codegen_amd64_function *function,
+                                                                      const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    kefir_asmcmp_virtual_register_index_t value_vreg, lower_half_vreg;
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &value_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, value_vreg, 0, &lower_half_vreg));
+ 
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, lower_half_vreg));
+    return KEFIR_OK;
+}
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int128_upper_half)(struct kefir_mem *mem,
+                                                                      struct kefir_codegen_amd64_function *function,
+                                                                      const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    kefir_asmcmp_virtual_register_index_t value_vreg, upper_half_vreg;
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &value_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, value_vreg, 1, &upper_half_vreg));
+ 
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, upper_half_vreg));
+    return KEFIR_OK;
+}
