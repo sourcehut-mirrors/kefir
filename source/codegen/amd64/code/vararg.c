@@ -545,11 +545,11 @@ static kefir_result_t vararg_visit_int128(const struct kefir_ir_type *type, kefi
 
     REQUIRE_OK(kefir_asmcmp_amd64_add(
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), &KEFIR_ASMCMP_MAKE_INT(KEFIR_AMD64_ABI_QWORD - 1), NULL));
+        &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), &KEFIR_ASMCMP_MAKE_INT(2 * KEFIR_AMD64_ABI_QWORD - 1), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_and(
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), &KEFIR_ASMCMP_MAKE_INT(-KEFIR_AMD64_ABI_QWORD), NULL));
+        &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), &KEFIR_ASMCMP_MAKE_INT(-2 * KEFIR_AMD64_ABI_QWORD), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_lea(param->mem, &param->function->code,
                                         kefir_asmcmp_context_instr_tail(&param->function->code.context),

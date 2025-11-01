@@ -67,8 +67,8 @@ __kefir_func_sum_label3:
     jmp __kefir_func_sum_label4
 __kefir_func_sum_label5:
     movq -24(%rbp), %rax
-    add $7, %rax
-    and $-8, %rax
+    add $15, %rax
+    and $-16, %rax
     lea 16(%rax), %rcx
     movq %rcx, -24(%rbp)
     movq (%rax), %rcx
@@ -145,8 +145,8 @@ __kefir_func_sum2_label3:
     jmp __kefir_func_sum2_label4
 __kefir_func_sum2_label5:
     movq -24(%rbp), %rax
-    add $7, %rax
-    and $-8, %rax
+    add $15, %rax
+    and $-16, %rax
     lea 16(%rax), %rcx
     movq %rcx, -24(%rbp)
     movq (%rax), %rcx

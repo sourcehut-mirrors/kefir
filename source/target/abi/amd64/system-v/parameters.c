@@ -793,7 +793,7 @@ static kefir_result_t integer_allocate(const struct kefir_ir_type *type, kefir_s
             if (alloc->type == KEFIR_AMD64_SYSV_INPUT_PARAM_OWNING_CONTAINER) {
                 REQUIRE_OK(aggregate_disown(state->mem, alloc));
             }
-            const kefir_size_t alignment = MAX(layout->alignment, KEFIR_AMD64_ABI_QWORD);
+            const kefir_size_t alignment = MAX(layout->alignment, 2 * KEFIR_AMD64_ABI_QWORD);
             state->current->stack_offset = kefir_target_abi_pad_aligned(state->current->stack_offset, alignment);
             alloc->location.stack_offset = state->current->stack_offset;
             state->current->stack_offset += layout->size;
