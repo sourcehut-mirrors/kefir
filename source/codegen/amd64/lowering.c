@@ -102,6 +102,13 @@ struct lowering_param {
         kefir_id_t libgcc_floatuntidf;
         kefir_id_t libgcc_floatuntixf;
 
+        kefir_id_t libgcc_fixsfti;
+        kefir_id_t libgcc_fixdfti;
+        kefir_id_t libgcc_fixxfti;
+        kefir_id_t libgcc_fixunssfti;
+        kefir_id_t libgcc_fixunsdfti;
+        kefir_id_t libgcc_fixunsxfti;
+
 #define DECL_DECIMAL_FNS(_prefix) \
         kefir_id_t _prefix##_addsd3; \
         kefir_id_t _prefix##_adddd3; \
@@ -189,7 +196,13 @@ struct lowering_param {
         kefir_id_t _prefix##_floattitd; \
         kefir_id_t _prefix##_floatunstisd; \
         kefir_id_t _prefix##_floatunstidd; \
-        kefir_id_t _prefix##_floatunstitd
+        kefir_id_t _prefix##_floatunstitd; \
+        kefir_id_t _prefix##_fixsdti; \
+        kefir_id_t _prefix##_fixddti; \
+        kefir_id_t _prefix##_fixtdti; \
+        kefir_id_t _prefix##_fixunssdti; \
+        kefir_id_t _prefix##_fixunsddti; \
+        kefir_id_t _prefix##_fixunstdti
 
         DECL_DECIMAL_FNS(libgcc_bid);
         DECL_DECIMAL_FNS(libgcc_dpd);
@@ -621,6 +634,30 @@ DECL_BUILTIN_RUNTIME_FN(libgcc_floatuntixf, LIBGCC_FLOATUNTIXF, 1, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
 })
+DECL_BUILTIN_RUNTIME_FN(libgcc_fixsfti, LIBGCC_FIXSFTI, 1, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_fixdfti, LIBGCC_FIXDFTI, 1, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_fixxfti, LIBGCC_FIXXFTI, 1, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_fixunssfti, LIBGCC_FIXUNSSFTI, 1, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_fixunsdfti, LIBGCC_FIXUNSDFTI, 1, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(libgcc_fixunsxfti, LIBGCC_FIXUNSXFTI, 1, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0));
+})
 #define DECL_DECIMAL_FNS(_prefix, _encoding) \
 DECL_BUILTIN_RUNTIME_FN(_prefix##_addsd3, LIBGCC_DECIMAL_ADDSD3(_encoding), 2, 1, { \
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
@@ -950,6 +987,30 @@ DECL_BUILTIN_RUNTIME_FN(_prefix##_floatunstidd, LIBGCC_DECIMAL_FLOATUNSTIDD(_enc
 DECL_BUILTIN_RUNTIME_FN(_prefix##_floatunstitd, LIBGCC_DECIMAL_FLOATUNSTITD(_encoding), 1, 1, { \
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT128, 0, 0)); \
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixsdti, LIBGCC_DECIMAL_FIXSDTI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixddti, LIBGCC_DECIMAL_FIXDDTI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixtdti, LIBGCC_DECIMAL_FIXTDTI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixunssdti, LIBGCC_DECIMAL_FIXUNSSDTI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL32, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixunsddti, LIBGCC_DECIMAL_FIXUNSDDTI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL64, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0)); \
+}) \
+DECL_BUILTIN_RUNTIME_FN(_prefix##_fixunstdti, LIBGCC_DECIMAL_FIXUNSTDTI(_encoding), 1, 1, { \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_DECIMAL128, 0, 0)); \
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT128, 0, 0)); \
 })
 
 #if defined(__GNUC__) || defined(__clang__)
@@ -4061,6 +4122,30 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             UNARY_OP(floatunstitd_function_decl_id);
             break;
 
+        case KEFIR_OPT_OPCODE_INT128_SIGNED_FROM_DECIMAL32:
+            UNARY_OP(fixsdti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_SIGNED_FROM_DECIMAL64:
+            UNARY_OP(fixddti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_SIGNED_FROM_DECIMAL128:
+            UNARY_OP(fixtdti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_UNSIGNED_FROM_DECIMAL32:
+            UNARY_OP(fixunssdti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_UNSIGNED_FROM_DECIMAL64:
+            UNARY_OP(fixunsddti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_UNSIGNED_FROM_DECIMAL128:
+            UNARY_OP(fixunstdti_function_decl_id);
+            break;
+
 #undef UNARY_OP
 
 #define BITINT_TO_DEC(_fn, _sign) \
@@ -4460,6 +4545,30 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             INT128_UN_OP(floatuntixf_function_decl_id);
             break;
 
+        case KEFIR_OPT_OPCODE_INT128_SIGNED_FROM_FLOAT32:
+            INT128_UN_OP(fixsfti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_SIGNED_FROM_FLOAT64:
+            INT128_UN_OP(fixdfti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_SIGNED_FROM_LONG_DOUBLE:
+            INT128_UN_OP(fixxfti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_UNSIGNED_FROM_FLOAT32:
+            INT128_UN_OP(fixunssfti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_UNSIGNED_FROM_FLOAT64:
+            INT128_UN_OP(fixunsdfti_function_decl_id);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_UNSIGNED_FROM_LONG_DOUBLE:
+            INT128_UN_OP(fixunsxfti_function_decl_id);
+            break;
+
 #undef INT128_UN_OP
 
         case KEFIR_OPT_OPCODE_INT128_ATOMIC_LOAD: {
@@ -4543,12 +4652,9 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
             const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
 
-            if (bitwidth < 8 * KEFIR_AMD64_ABI_QWORD) {
+            if (bitwidth <= 8 * KEFIR_AMD64_ABI_QWORD) {
                 REQUIRE_OK(kefir_opt_code_builder_int128_lower_half(mem, &func->code, block_id, arg_ref, replacement_ref));
             } else {
-                kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_set_signed_function_decl_id(mem, module, param, &func_decl_id));
-
                 kefir_opt_instruction_ref_t value_ref, value_store_ref, value_store_pair_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD, 2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
@@ -4562,18 +4668,45 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
             const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
 
-            if (bitwidth < 8 * KEFIR_AMD64_ABI_QWORD) {
+            if (bitwidth <= 8 * KEFIR_AMD64_ABI_QWORD) {
                 REQUIRE_OK(kefir_opt_code_builder_int128_lower_half(mem, &func->code, block_id, arg_ref, replacement_ref));
             } else {
-                kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_set_signed_function_decl_id(mem, module, param, &func_decl_id));
-
                 kefir_opt_instruction_ref_t value_ref, value_store_ref, value_store_pair_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD, 2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_int128_store(mem, &func->code, block_id, value_ref, arg_ref, &(struct kefir_opt_memory_access_flags){0}, &value_store_ref));
                 REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, value_store_ref, &value_store_pair_ref));
                 REQUIRE_OK(kefir_opt_code_builder_bitint_cast_unsigned(mem, &func->code, block_id, bitwidth, 2 * 8 * KEFIR_AMD64_ABI_QWORD, value_store_pair_ref, replacement_ref));
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_INT128_FROM_BITINT_SIGNED: {
+            const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth < 8 * KEFIR_AMD64_ABI_QWORD) {
+                kefir_opt_instruction_ref_t int64_ref;
+                REQUIRE_OK(kefir_opt_code_builder_bitint_get_signed(mem, &func->code, block_id, bitwidth, arg_ref, &int64_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int128_sign_extend_64bits(mem, &func->code, block_id, int64_ref, replacement_ref));
+            } else {
+                kefir_opt_instruction_ref_t int128_ref;
+                REQUIRE_OK(kefir_opt_code_builder_bitint_cast_signed(mem, &func->code, block_id, bitwidth, 2 * 8 * KEFIR_AMD64_ABI_QWORD, arg_ref, &int128_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int128_load(mem, &func->code, block_id, int128_ref, &(struct kefir_opt_memory_access_flags){0}, replacement_ref));
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_INT128_FROM_BITINT_UNSIGNED: {
+            const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth < 8 * KEFIR_AMD64_ABI_QWORD) {
+                kefir_opt_instruction_ref_t int64_ref;
+                REQUIRE_OK(kefir_opt_code_builder_bitint_get_unsigned(mem, &func->code, block_id, bitwidth, arg_ref, &int64_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int128_zero_extend_64bits(mem, &func->code, block_id, int64_ref, replacement_ref));
+            } else {
+                kefir_opt_instruction_ref_t int128_ref;
+                REQUIRE_OK(kefir_opt_code_builder_bitint_cast_unsigned(mem, &func->code, block_id, bitwidth, 2 * 8 * KEFIR_AMD64_ABI_QWORD, arg_ref, &int128_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int128_load(mem, &func->code, block_id, int128_ref, &(struct kefir_opt_memory_access_flags){0}, replacement_ref));
             }
         } break;
 
@@ -4705,6 +4838,14 @@ kefir_result_t kefir_codegen_amd64_lower_function(struct kefir_mem *mem, struct 
                                                   .libgcc_floatuntisf = KEFIR_ID_NONE,
                                                   .libgcc_floatuntidf = KEFIR_ID_NONE,
                                                   .libgcc_floatuntixf = KEFIR_ID_NONE,
+
+                                                  .libgcc_fixsfti = KEFIR_ID_NONE,
+                                                  .libgcc_fixdfti = KEFIR_ID_NONE,
+                                                  .libgcc_fixxfti = KEFIR_ID_NONE,
+                                                  .libgcc_fixunssfti = KEFIR_ID_NONE,
+                                                  .libgcc_fixunsdfti = KEFIR_ID_NONE,
+                                                  .libgcc_fixunsxfti = KEFIR_ID_NONE,
+
 #define INIT_DECIMAL_FNS(_prefix) \
                                                 ._prefix##_addsd3 = KEFIR_ID_NONE, \
                                                 ._prefix##_adddd3 = KEFIR_ID_NONE, \
@@ -4788,7 +4929,13 @@ kefir_result_t kefir_codegen_amd64_lower_function(struct kefir_mem *mem, struct 
                                                 ._prefix##_floattitd = KEFIR_ID_NONE, \
                                                 ._prefix##_floatunstisd = KEFIR_ID_NONE, \
                                                 ._prefix##_floatunstidd = KEFIR_ID_NONE, \
-                                                ._prefix##_floatunstitd = KEFIR_ID_NONE
+                                                ._prefix##_floatunstitd = KEFIR_ID_NONE, \
+                                                ._prefix##_fixsdti = KEFIR_ID_NONE, \
+                                                ._prefix##_fixddti = KEFIR_ID_NONE, \
+                                                ._prefix##_fixtdti = KEFIR_ID_NONE, \
+                                                ._prefix##_fixunssdti = KEFIR_ID_NONE, \
+                                                ._prefix##_fixunsddti = KEFIR_ID_NONE, \
+                                                ._prefix##_fixunstdti = KEFIR_ID_NONE
                                                 INIT_DECIMAL_FNS(libgcc_bid),
                                                 INIT_DECIMAL_FNS(libgcc_dpd)
 #undef INIT_DECIMAL_FNS

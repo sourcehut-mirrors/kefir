@@ -236,6 +236,18 @@ UNARY_OP(int128_unsigned_to_long_double);
 UNARY_OP(int128_unsigned_to_decimal32);
 UNARY_OP(int128_unsigned_to_decimal64);
 UNARY_OP(int128_unsigned_to_decimal128);
+UNARY_OP(int128_signed_from_float32);
+UNARY_OP(int128_signed_from_float64);
+UNARY_OP(int128_signed_from_long_double);
+UNARY_OP(int128_signed_from_decimal32);
+UNARY_OP(int128_signed_from_decimal64);
+UNARY_OP(int128_signed_from_decimal128);
+UNARY_OP(int128_unsigned_from_float32);
+UNARY_OP(int128_unsigned_from_float64);
+UNARY_OP(int128_unsigned_from_long_double);
+UNARY_OP(int128_unsigned_from_decimal32);
+UNARY_OP(int128_unsigned_from_decimal64);
+UNARY_OP(int128_unsigned_from_decimal128);
 UNARY_OP(int128_lower_half);
 UNARY_OP(int128_upper_half);
 
@@ -383,6 +395,8 @@ BITINT_UNARY_OP(bitint_builtin_parity);
 
 BITINT_UNARY_OP(int128_signed_to_bitint);
 BITINT_UNARY_OP(int128_unsigned_to_bitint);
+BITINT_UNARY_OP(int128_from_bitint_signed);
+BITINT_UNARY_OP(int128_from_bitint_unsigned);
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP

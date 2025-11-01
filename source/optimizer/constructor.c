@@ -833,6 +833,18 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(int128_unsigned_to_decimal32, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_DECIMAL32)
             UNARY_OP(int128_unsigned_to_decimal64, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_DECIMAL64)
             UNARY_OP(int128_unsigned_to_decimal128, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_DECIMAL128)
+            UNARY_OP(int128_signed_from_float32, KEFIR_IR_OPCODE_INT128_SIGNED_FROM_FLOAT32)
+            UNARY_OP(int128_signed_from_float64, KEFIR_IR_OPCODE_INT128_SIGNED_FROM_FLOAT64)
+            UNARY_OP(int128_signed_from_long_double, KEFIR_IR_OPCODE_INT128_SIGNED_FROM_LONG_DOUBLE)
+            UNARY_OP(int128_signed_from_decimal32, KEFIR_IR_OPCODE_INT128_SIGNED_FROM_DECIMAL32)
+            UNARY_OP(int128_signed_from_decimal64, KEFIR_IR_OPCODE_INT128_SIGNED_FROM_DECIMAL64)
+            UNARY_OP(int128_signed_from_decimal128, KEFIR_IR_OPCODE_INT128_SIGNED_FROM_DECIMAL128)
+            UNARY_OP(int128_unsigned_from_float32, KEFIR_IR_OPCODE_INT128_UNSIGNED_FROM_FLOAT32)
+            UNARY_OP(int128_unsigned_from_float64, KEFIR_IR_OPCODE_INT128_UNSIGNED_FROM_FLOAT64)
+            UNARY_OP(int128_unsigned_from_long_double, KEFIR_IR_OPCODE_INT128_UNSIGNED_FROM_LONG_DOUBLE)
+            UNARY_OP(int128_unsigned_from_decimal32, KEFIR_IR_OPCODE_INT128_UNSIGNED_FROM_DECIMAL32)
+            UNARY_OP(int128_unsigned_from_decimal64, KEFIR_IR_OPCODE_INT128_UNSIGNED_FROM_DECIMAL64)
+            UNARY_OP(int128_unsigned_from_decimal128, KEFIR_IR_OPCODE_INT128_UNSIGNED_FROM_DECIMAL128)
             UNARY_OP(int128_lower_half, KEFIR_IR_OPCODE_INT128_LOWER_HALF)
             UNARY_OP(int128_upper_half, KEFIR_IR_OPCODE_INT128_UPPER_HALF)
 
@@ -979,6 +991,8 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
             BITINT_UNARY_OP(int128_signed_to_bitint, KEFIR_IR_OPCODE_INT128_SIGNED_TO_BITINT)
             BITINT_UNARY_OP(int128_unsigned_to_bitint, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT)
+            BITINT_UNARY_OP(int128_from_bitint_signed, KEFIR_IR_OPCODE_INT128_FROM_BITINT_SIGNED)
+            BITINT_UNARY_OP(int128_from_bitint_unsigned, KEFIR_IR_OPCODE_INT128_FROM_BITINT_UNSIGNED)
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP

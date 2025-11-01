@@ -1,260 +1,234 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
-.global i128_to_i9
-.type i128_to_i9, @function
-.global i128_to_u9
-.type i128_to_u9, @function
-.global u128_to_i9
-.type u128_to_i9, @function
-.global u128_to_u9
-.type u128_to_u9, @function
-.extern __floattidf
-.extern __floattisf
-.extern __floattixf
-.global i128_to_f32
-.type i128_to_f32, @function
-.global i128_to_f64
-.type i128_to_f64, @function
-.global i128_to_f80
-.type i128_to_f80, @function
-.global u128_to_f32
-.type u128_to_f32, @function
-.global u128_to_f64
-.type u128_to_f64, @function
-.global u128_to_f80
-.type u128_to_f80, @function
-.global i128_to_i256
-.type i128_to_i256, @function
-.global i128_to_u256
-.type i128_to_u256, @function
-.extern __floatuntidf
-.extern __floatuntisf
-.extern __floatuntixf
-.global u128_to_i256
-.type u128_to_i256, @function
-.global u128_to_u256
-.type u128_to_u256, @function
+.extern __fixdfti
+.extern __fixsfti
+.extern __fixxfti
+.global u128_from_i256
+.type u128_from_i256, @function
+.global u128_from_u256
+.type u128_from_u256, @function
+.global u128_from_f32
+.type u128_from_f32, @function
+.global u128_from_f64
+.type u128_from_f64, @function
+.global u128_from_f80
+.type u128_from_f80, @function
+.global i128_from_i256
+.type i128_from_i256, @function
+.global i128_from_u256
+.type i128_from_u256, @function
+.extern __fixunsdfti
+.extern __fixunssfti
+.extern __fixunsxfti
+.global i128_from_i9
+.type i128_from_i9, @function
+.global i128_from_u9
+.type i128_from_u9, @function
+.global u128_from_i9
+.type u128_from_i9, @function
+.global u128_from_u9
+.type u128_from_u9, @function
+.global i128_from_f32
+.type i128_from_f32, @function
+.global i128_from_f64
+.type i128_from_f64, @function
+.global i128_from_f80
+.type i128_from_f80, @function
 
 .section .text
 __kefir_text_section_begin:
-i128_to_i9:
-__kefir_text_func_i128_to_i9_begin:
+u128_from_i256:
+__kefir_text_func_u128_from_i256_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_i128_to_i9_end:
-
-i128_to_u9:
-__kefir_text_func_i128_to_u9_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_i128_to_u9_end:
-
-u128_to_i9:
-__kefir_text_func_u128_to_i9_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_u128_to_i9_end:
-
-u128_to_u9:
-__kefir_text_func_u128_to_u9_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_u128_to_u9_end:
-
-i128_to_f32:
-__kefir_text_func_i128_to_f32_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    call __floattisf@PLT
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_i128_to_f32_end:
-
-i128_to_f64:
-__kefir_text_func_i128_to_f64_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    call __floattidf@PLT
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_i128_to_f64_end:
-
-i128_to_f80:
-__kefir_text_func_i128_to_f80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    call __floattixf@PLT
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_i128_to_f80_end:
-
-u128_to_f32:
-__kefir_text_func_u128_to_f32_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    call __floatuntisf@PLT
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_u128_to_f32_end:
-
-u128_to_f64:
-__kefir_text_func_u128_to_f64_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    call __floatuntidf@PLT
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_u128_to_f64_end:
-
-u128_to_f80:
-__kefir_text_func_u128_to_f80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    call __floatuntixf@PLT
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_u128_to_f80_end:
-
-i128_to_i256:
-__kefir_text_func_i128_to_i256_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
-    mov %rsi, -64(%rbp)
-    mov %rdx, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -48(%rbp)
-    movq %rcx, -64(%rbp)
-    leaq -48(%rbp), %rax
+    sub $32, %rsp
+    lea 16(%rbp), %rax
+    movdqu (%rax), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
     mov $128, %rsi
     mov $256, %rdx
     call __kefir_bigint_cast_signed
-    movq -64(%rbp), %rcx
-    mov %rcx, %rax
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
+    mov -32(%rbp), %rax
+    mov -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_i128_to_i256_end:
+__kefir_text_func_u128_from_i256_end:
 
-i128_to_u256:
-__kefir_text_func_i128_to_u256_begin:
+u128_from_u256:
+__kefir_text_func_u128_from_u256_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
-    mov %rsi, -64(%rbp)
-    mov %rdx, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -48(%rbp)
-    movq %rcx, -64(%rbp)
-    leaq -48(%rbp), %rax
+    sub $32, %rsp
+    lea 16(%rbp), %rax
+    movdqu (%rax), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    leaq -32(%rbp), %rax
+    mov %rax, %rdi
+    mov $128, %rsi
+    mov $256, %rdx
+    call __kefir_bigint_cast_unsigned
+    mov -32(%rbp), %rax
+    mov -24(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_u128_from_u256_end:
+
+u128_from_f32:
+__kefir_text_func_u128_from_f32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __fixunssfti@PLT
+    pop %rbp
+    ret
+__kefir_text_func_u128_from_f32_end:
+
+u128_from_f64:
+__kefir_text_func_u128_from_f64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __fixunsdfti@PLT
+    pop %rbp
+    ret
+__kefir_text_func_u128_from_f64_end:
+
+u128_from_f80:
+__kefir_text_func_u128_from_f80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fstpt -32(%rbp)
+    sub $16, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    call __fixunsxfti@PLT
+    add $16, %rsp
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_u128_from_f80_end:
+
+i128_from_i256:
+__kefir_text_func_i128_from_i256_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    lea 16(%rbp), %rax
+    movdqu (%rax), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
     mov $128, %rsi
     mov $256, %rdx
     call __kefir_bigint_cast_signed
-    movq -64(%rbp), %rcx
-    mov %rcx, %rax
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
+    mov -32(%rbp), %rax
+    mov -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_i128_to_u256_end:
+__kefir_text_func_i128_from_i256_end:
 
-u128_to_i256:
-__kefir_text_func_u128_to_i256_begin:
+i128_from_u256:
+__kefir_text_func_i128_from_u256_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
-    mov %rsi, -64(%rbp)
-    mov %rdx, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -48(%rbp)
-    movq %rcx, -64(%rbp)
-    leaq -48(%rbp), %rax
+    sub $32, %rsp
+    lea 16(%rbp), %rax
+    movdqu (%rax), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
     mov $128, %rsi
     mov $256, %rdx
     call __kefir_bigint_cast_unsigned
-    movq -64(%rbp), %rcx
-    mov %rcx, %rax
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
+    mov -32(%rbp), %rax
+    mov -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_u128_to_i256_end:
+__kefir_text_func_i128_from_u256_end:
 
-u128_to_u256:
-__kefir_text_func_u128_to_u256_begin:
+i128_from_i9:
+__kefir_text_func_i128_from_i9_begin:
+    shl $55, %rdi
+    sar $55, %rdi
+    mov %rdi, %rax
+    sar $63, %rdi
+    mov %rdi, %rdx
+    ret
+__kefir_text_func_i128_from_i9_end:
+
+i128_from_u9:
+__kefir_text_func_i128_from_u9_begin:
+    shl $55, %rdi
+    shr $55, %rdi
+    xor %edx, %edx
+    mov %rdi, %rax
+    ret
+__kefir_text_func_i128_from_u9_end:
+
+u128_from_i9:
+__kefir_text_func_u128_from_i9_begin:
+    shl $55, %rdi
+    sar $55, %rdi
+    mov %rdi, %rax
+    sar $63, %rdi
+    mov %rdi, %rdx
+    ret
+__kefir_text_func_u128_from_i9_end:
+
+u128_from_u9:
+__kefir_text_func_u128_from_u9_begin:
+    shl $55, %rdi
+    shr $55, %rdi
+    xor %edx, %edx
+    mov %rdi, %rax
+    ret
+__kefir_text_func_u128_from_u9_end:
+
+i128_from_f32:
+__kefir_text_func_i128_from_f32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
-    mov %rsi, -64(%rbp)
-    mov %rdx, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -48(%rbp)
-    movq %rcx, -64(%rbp)
-    leaq -48(%rbp), %rax
-    mov %rax, %rdi
-    mov $128, %rsi
-    mov $256, %rdx
-    call __kefir_bigint_cast_unsigned
-    movq -64(%rbp), %rcx
-    mov %rcx, %rax
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
+    call __fixsfti@PLT
+    pop %rbp
+    ret
+__kefir_text_func_i128_from_f32_end:
+
+i128_from_f64:
+__kefir_text_func_i128_from_f64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call __fixdfti@PLT
+    pop %rbp
+    ret
+__kefir_text_func_i128_from_f64_end:
+
+i128_from_f80:
+__kefir_text_func_i128_from_f80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fstpt -32(%rbp)
+    sub $16, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    call __fixxfti@PLT
+    add $16, %rsp
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_u128_to_u256_end:
+__kefir_text_func_i128_from_f80_end:
 
 __kefir_text_section_end:
 

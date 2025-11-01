@@ -489,6 +489,20 @@
     OPCODE(INT128_UNSIGNED_TO_DECIMAL128, "int128_unsigned_to_decimal128", ref1) SEPARATOR \
     OPCODE(INT128_SIGNED_TO_BITINT, "int128_signed_to_bitint", bitint_ref1) SEPARATOR \
     OPCODE(INT128_UNSIGNED_TO_BITINT, "int128_unsigned_to_bitint", bitint_ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_FROM_FLOAT32, "int128_signed_from_float32", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_FROM_FLOAT32, "int128_usigned_from_float32", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_FROM_FLOAT64, "int128_signed_from_float64", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_FROM_FLOAT64, "int128_unsigned_from_float64", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_FROM_LONG_DOUBLE, "int128_signed_from_long_double", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_FROM_LONG_DOUBLE, "int128_unsigned_from_long_double", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_FROM_DECIMAL32, "int128_signed_from_decimal32", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_FROM_DECIMAL32, "int128_unsigned_from_decimal32", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_FROM_DECIMAL64, "int128_signed_from_decimal64", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_FROM_DECIMAL64, "int128_unsigned_from_decimal64", ref1) SEPARATOR \
+    OPCODE(INT128_SIGNED_FROM_DECIMAL128, "int128_signed_from_decimal128", ref1) SEPARATOR \
+    OPCODE(INT128_UNSIGNED_FROM_DECIMAL128, "int128_unsigned_from_decimal128", ref1) SEPARATOR \
+    OPCODE(INT128_FROM_BITINT_SIGNED, "int128_from_bitint_signed", bitint_ref1) SEPARATOR \
+    OPCODE(INT128_FROM_BITINT_UNSIGNED, "int128_from_bitint_unsigned", bitint_ref1) SEPARATOR \
     OPCODE(INT128_LOWER_HALF, "int128_lower_half", ref1) SEPARATOR \
     OPCODE(INT128_UPPER_HALF, "int128_upper_half", ref1)
 
