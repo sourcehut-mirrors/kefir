@@ -31,7 +31,7 @@ $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_RUBY_SOU
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/ruby/include/kefir_builtins.h -isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
 		sh autogen.sh
 
 $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/configure
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_RUBY_SOUR
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/ruby/include/kefir_builtins.h -isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
 		./configure --disable-install-rdoc
 
 $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/ruby: $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/Makefile
@@ -51,7 +51,7 @@ $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/ruby: $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_D
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/ruby/include/kefir_builtins.h -isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
 		$(MAKE)
 
 $(KEFIR_EXTERNAL_TEST_RUBY_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/ruby
@@ -61,7 +61,7 @@ $(KEFIR_EXTERNAL_TEST_RUBY_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/ruby/include/kefir_builtins.h -isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 

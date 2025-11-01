@@ -27,7 +27,6 @@ $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BDWGC_SO
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
- 		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/bdwgc/include.h" \
 		./configure
 
 $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/libgc.la: $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/Makefile
@@ -36,7 +35,6 @@ $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/libgc.la: $(KEFIR_EXTERNAL_TEST_BDWGC_SO
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
- 		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/bdwgc/include.h" \
 		$(MAKE)
 
 $(KEFIR_EXTERNAL_TEST_BDWGC_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/libgc.la
