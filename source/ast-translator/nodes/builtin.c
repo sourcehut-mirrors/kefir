@@ -280,7 +280,10 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
             if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(arg1_type) ||
                 KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(arg2_type) ||
-                KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(result_type)) {
+                KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(result_type) ||
+                KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(arg1_type) ||
+                KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(arg2_type) ||
+                KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(result_type)) {
                 const struct kefir_ast_type *common_type = kefir_ast_type_common_arithmetic(
                     context->ast_context->type_traits, arg1_type, arg1_node->properties.expression_props.bitfield_props,
                     arg2_type, arg2_node->properties.expression_props.bitfield_props);
@@ -316,7 +319,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                         break;
     
                     case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                        result_width = 128;
+                        break;
 
                     case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                         result_width = result_type->bitprecise.width;
@@ -563,8 +567,17 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                unqualified_type->bitprecise.width));
                     break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128: {
+                    kefir_bool_t is_signed;
+                    REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, unqualified_type, &is_signed));
+                    if (is_signed) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    }
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_FFS,
+                                                               context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                } break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd ffsg builtin argument type");
@@ -759,47 +772,61 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     }
                 } break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+#define CLZ_IMPL(_width) \
+                do { \
+                    kefir_size_t jmpIndex = 0; \
+                    if (default_value_node != NULL) { \
+                        struct kefir_bigint *bigint; \
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->ast_context->bigint_pool, &bigint)); \
+                        REQUIRE_OK(kefir_bigint_resize_nocast(mem, bigint, (_width))); \
+                        REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0)); \
+ \
+                        kefir_id_t bigint_id; \
+                        REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, bigint, &bigint_id)); \
+ \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0)); \
+                        REQUIRE_OK( \
+                            KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_CONST, bigint_id)); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_EQUAL, \
+                                                                   (_width))); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0)); \
+                        kefir_size_t branchIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, \
+                                                                     KEFIR_IR_BRANCH_CONDITION_8BIT)); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0)); \
+                        REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context)); \
+                        REQUIRE_OK(kefir_ast_translate_typeconv( \
+                            mem, context->module, builder, context->ast_context->type_traits, \
+                            default_value_node->properties.type, kefir_ast_type_signed_int())); \
+                        jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0)); \
+                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 = \
+                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder); \
+                    } \
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLZ, \
+                                                               (_width))); \
+ \
+                    if (default_value_node != NULL) { \
+                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 = \
+                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder); \
+                    } \
+                } while (0)
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
-                    kefir_size_t jmpIndex = 0;
-                    if (default_value_node != NULL) {
-                        struct kefir_bigint *bigint;
-                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->ast_context->bigint_pool, &bigint));
-                        REQUIRE_OK(kefir_bigint_resize_nocast(mem, bigint, unqualified_type->bitprecise.width));
-                        REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0));
-
-                        kefir_id_t bigint_id;
-                        REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, bigint, &bigint_id));
-
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
-                        REQUIRE_OK(
-                            KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_CONST, bigint_id));
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
-                                                                   unqualified_type->bitprecise.width));
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
-                        kefir_size_t branchIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0,
-                                                                     KEFIR_IR_BRANCH_CONDITION_8BIT));
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
-                        REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
-                        REQUIRE_OK(kefir_ast_translate_typeconv(
-                            mem, context->module, builder, context->ast_context->type_traits,
-                            default_value_node->properties.type, kefir_ast_type_signed_int()));
-                        jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
-                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
-                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128: {
+                    kefir_bool_t is_signed;
+                    REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, unqualified_type, &is_signed));
+                    if (is_signed) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
                     }
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLZ,
-                                                               unqualified_type->bitprecise.width));
-
-                    if (default_value_node != NULL) {
-                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 =
-                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-                    }
+                    CLZ_IMPL(context->ast_context->type_traits->data_model->scalar_width.int128_bits);
                 } break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    CLZ_IMPL(unqualified_type->bitprecise.width);
+                    break;
+#undef CLZ_IMPL
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd clzg builtin argument type");
@@ -990,47 +1017,62 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     }
                 } break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+#define CTZ_IMPL(_width) \
+                do { \
+                    kefir_size_t jmpIndex = 0; \
+                    if (default_value_node != NULL) { \
+                        struct kefir_bigint *bigint; \
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->ast_context->bigint_pool, &bigint)); \
+                        REQUIRE_OK(kefir_bigint_resize_nocast(mem, bigint, (_width))); \
+                        REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0)); \
+ \
+                        kefir_id_t bigint_id; \
+                        REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, bigint, &bigint_id)); \
+ \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0)); \
+                        REQUIRE_OK( \
+                            KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_CONST, bigint_id)); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_EQUAL, \
+                                                                   (_width))); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0)); \
+                        kefir_size_t branchIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, \
+                                                                     KEFIR_IR_BRANCH_CONDITION_8BIT)); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0)); \
+                        REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context)); \
+                        REQUIRE_OK(kefir_ast_translate_typeconv( \
+                            mem, context->module, builder, context->ast_context->type_traits, \
+                            default_value_node->properties.type, kefir_ast_type_signed_int())); \
+                        jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder); \
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0)); \
+                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 = \
+                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder); \
+                    } \
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CTZ, \
+                                                               (_width))); \
+ \
+                    if (default_value_node != NULL) { \
+                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 = \
+                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder); \
+                    } \
+                } while (0)
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
-                    kefir_size_t jmpIndex = 0;
-                    if (default_value_node != NULL) {
-                        struct kefir_bigint *bigint;
-                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->ast_context->bigint_pool, &bigint));
-                        REQUIRE_OK(kefir_bigint_resize_nocast(mem, bigint, unqualified_type->bitprecise.width));
-                        REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0));
-
-                        kefir_id_t bigint_id;
-                        REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, bigint, &bigint_id));
-
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
-                        REQUIRE_OK(
-                            KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_CONST, bigint_id));
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
-                                                                   unqualified_type->bitprecise.width));
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
-                        kefir_size_t branchIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0,
-                                                                     KEFIR_IR_BRANCH_CONDITION_8BIT));
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
-                        REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
-                        REQUIRE_OK(kefir_ast_translate_typeconv(
-                            mem, context->module, builder, context->ast_context->type_traits,
-                            default_value_node->properties.type, kefir_ast_type_signed_int()));
-                        jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
-                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
-                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128: {
+                    kefir_bool_t is_signed;
+                    REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, unqualified_type, &is_signed));
+                    if (is_signed) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
                     }
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CTZ,
-                                                               unqualified_type->bitprecise.width));
-
-                    if (default_value_node != NULL) {
-                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 =
-                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-                    }
+                    CTZ_IMPL(context->ast_context->type_traits->data_model->scalar_width.int128_bits);
                 } break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    CTZ_IMPL(unqualified_type->bitprecise.width);
+                    break;
+
+#undef CTZ_IMPL
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd ctzg builtin argument type");
@@ -1120,8 +1162,17 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                 } break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128: {
+                    kefir_bool_t is_signed;
+                    REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, unqualified_type, &is_signed));
+                    if (is_signed) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    }
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLRSB,
+                                                               context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                } break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLRSB,
@@ -1212,8 +1263,17 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                 } break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128: {
+                    kefir_bool_t is_signed;
+                    REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, unqualified_type, &is_signed));
+                    if (is_signed) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    }
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_POPCOUNT,
+                                                               context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                } break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_POPCOUNT,
@@ -1304,8 +1364,17 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                 } break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_INT128: {
+                    kefir_bool_t is_signed;
+                    REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, unqualified_type, &is_signed));
+                    if (is_signed) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_SIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT, context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                    }
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_PARITY,
+                                                               context->ast_context->type_traits->data_model->scalar_width.int128_bits));
+                } break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_PARITY,
@@ -1343,7 +1412,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Support for int128 has not been implemented yet");
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 128));
+                    break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST,
