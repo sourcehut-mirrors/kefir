@@ -504,7 +504,8 @@
     OPCODE(INT128_FROM_BITINT_SIGNED, "int128_from_bitint_signed", bitint_ref1) SEPARATOR \
     OPCODE(INT128_FROM_BITINT_UNSIGNED, "int128_from_bitint_unsigned", bitint_ref1) SEPARATOR \
     OPCODE(INT128_LOWER_HALF, "int128_lower_half", ref1) SEPARATOR \
-    OPCODE(INT128_UPPER_HALF, "int128_upper_half", ref1)
+    OPCODE(INT128_UPPER_HALF, "int128_upper_half", ref1) SEPARATOR \
+    OPCODE(INT128_FROM, "int128_from", ref2)
 
 // clang-format on
 

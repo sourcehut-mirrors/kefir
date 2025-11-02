@@ -3876,6 +3876,24 @@ static kefir_result_t simplify_complex_float_part(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
+static kefir_result_t simplify_int128_part(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                           const struct kefir_opt_instruction *instr,
+                                           kefir_opt_instruction_ref_t *replacement_ref) {
+    UNUSED(mem);
+    const struct kefir_opt_instruction *arg1;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
+
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT128_LOWER_HALF &&
+        arg1->operation.opcode == KEFIR_OPT_OPCODE_INT128_FROM) {
+        *replacement_ref = arg1->operation.parameters.refs[0];
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT128_UPPER_HALF &&
+        arg1->operation.opcode == KEFIR_OPT_OPCODE_INT128_FROM) {
+        *replacement_ref = arg1->operation.parameters.refs[1];
+    }
+    return KEFIR_OK;
+}
+
+
 static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                              struct kefir_opt_function *func,
                                              struct kefir_opt_code_structure *structure) {
@@ -4088,6 +4106,11 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_REAL:
                     case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY:
                         REQUIRE_OK(simplify_complex_float_part(mem, func, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_INT128_LOWER_HALF:
+                    case KEFIR_OPT_OPCODE_INT128_UPPER_HALF:
+                        REQUIRE_OK(simplify_int128_part(mem, func, instr, &replacement_ref));
                         break;
 
                     default:

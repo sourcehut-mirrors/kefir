@@ -490,6 +490,7 @@ BINARY_OP(int128_greater);
 BINARY_OP(int128_less);
 BINARY_OP(int128_above);
 BINARY_OP(int128_below);
+BINARY_OP(int128_from);
 
 BINARY_OP(vararg_copy);
 

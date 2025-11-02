@@ -562,6 +562,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(error_lowered, KEFIR_OPT_OPCODE_INT128_FROM_BITINT_UNSIGNED) _separator \
     _def(int128_lower_half, KEFIR_OPT_OPCODE_INT128_LOWER_HALF) _separator \
     _def(int128_upper_half, KEFIR_OPT_OPCODE_INT128_UPPER_HALF) _separator \
+    _def(int128_from, KEFIR_OPT_OPCODE_INT128_FROM) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

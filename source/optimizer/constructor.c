@@ -1101,6 +1101,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(int128_less, KEFIR_IR_OPCODE_INT128_LESS)
             BINARY_OP(int128_above, KEFIR_IR_OPCODE_INT128_ABOVE)
             BINARY_OP(int128_below, KEFIR_IR_OPCODE_INT128_BELOW)
+            BINARY_OP(int128_from, KEFIR_IR_OPCODE_INT128_FROM)
 
             BINARY_OP(float32_add, KEFIR_IR_OPCODE_FLOAT32_ADD)
             BINARY_OP(float32_sub, KEFIR_IR_OPCODE_FLOAT32_SUB)
