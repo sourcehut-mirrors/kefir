@@ -1465,156 +1465,393 @@ static kefir_result_t do_link_virtual_registers(struct kefir_mem *mem, struct de
 
     if (reg_alloc1->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR &&
         reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT) {
-        struct kefir_asmcmp_instruction link_part_instr[2];
+        struct kefir_asmcmp_instruction link_part_instr[3];
+        kefir_size_t num_of_links = 2;
+        kefir_uint64_t op_flags = KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY | KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL;
+
+        const struct kefir_codegen_amd64_register_allocation *vreg_part1_alloc;
+        REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, vreg->parameters.pair.virtual_registers[1], &vreg_part1_alloc));
+        const kefir_bool_t alias = vreg_part1_alloc->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT &&
+                vreg_part1_alloc->spill_area.index == reg_alloc2->spill_area.index;
         switch (vreg->parameters.pair.type) {
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to link generic pair of virtual registers");
 
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
-                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
-                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
-                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
-                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
-                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                if (alias) {
+                    kefir_asm_amd64_xasmgen_register_t tmp_reg;
+                    REQUIRE_OK(obtain_temporary_register(mem, state, *tail_idx, &tmp_reg, TEMPORARY_REGISTER_SSE));
 
-                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
-                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
-                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
-                    reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2, KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
-                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2, KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[2].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[2].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[2].args[1] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[2].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 3;
+                } else {
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2, KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                }
                 break;
 
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
-                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
-                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
-                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
-                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
-                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                if (alias) {
+                    kefir_asm_amd64_xasmgen_register_t tmp_reg;
+                    REQUIRE_OK(obtain_temporary_register(mem, state, *tail_idx, &tmp_reg, TEMPORARY_REGISTER_SSE));
 
-                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
-                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
-                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
-                    reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
-                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[2].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[2].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[2].args[1] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[2].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 3;
+                } else {
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                }
                 break;
 
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERAL_PURPOSE:
-                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
-                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
-                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
-                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
-                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                if (alias) {
+                    kefir_asm_amd64_xasmgen_register_t tmp_reg;
+                    REQUIRE_OK(obtain_temporary_register(mem, state, *tail_idx, &tmp_reg, TEMPORARY_REGISTER_GP));
 
-                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
-                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
-                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
-                    reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
-                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[2].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[2].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[2].args[1] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[2].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                } else {
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                }
+                op_flags = KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY;
                 break;
         }
-        REQUIRE_OK(devirtualize_instr2(
-            mem, state, instr_idx, &link_part_instr[0], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
-            KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL,
-            KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL | KEFIR_AMD64_INSTRDB_IMMEDIATE));
-        REQUIRE_OK(devirtualize_instr2(
-            mem, state, instr_idx, &link_part_instr[1], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
-            KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL,
-            KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL | KEFIR_AMD64_INSTRDB_IMMEDIATE));
-
-        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[0],
-                                                           tail_idx));
-        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[1],
-                                                           tail_idx));
+        for (kefir_size_t i = 0; i < num_of_links; i++) {
+            REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[i],
+                                                            tail_idx));
+            kefir_asmcmp_instruction_index_t virtual_instr_idx = *tail_idx;
+            REQUIRE_OK(devirtualize_instr2(
+                mem, state, *tail_idx, &link_part_instr[i], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
+                op_flags,
+                op_flags | KEFIR_AMD64_INSTRDB_IMMEDIATE));
+            REQUIRE_OK(kefir_asmcmp_context_instr_replace(&state->target->context, virtual_instr_idx, &link_part_instr[i]));
+        }
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(noop);
     } else if (reg_alloc1->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT &&
                reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR) {
-        struct kefir_asmcmp_instruction link_part_instr[2];
+        struct kefir_asmcmp_instruction link_part_instr[3];
+        kefir_size_t num_of_links = 2;
+        kefir_uint64_t op_flags = KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY | KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL;
+
+        const struct kefir_codegen_amd64_register_allocation *vreg2_part1_alloc;
+        REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, vreg2->parameters.pair.virtual_registers[1], &vreg2_part1_alloc));
+        const kefir_bool_t alias = vreg2_part1_alloc->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT &&
+                vreg2_part1_alloc->spill_area.index == reg_alloc1->spill_area.index;
         switch (vreg->parameters.pair.type) {
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to link generic pair of virtual registers");
 
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
-                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
-                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
-                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
-                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
-                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                if (alias) {
+                    kefir_asm_amd64_xasmgen_register_t tmp_reg;
+                    REQUIRE_OK(obtain_temporary_register(mem, state, *tail_idx, &tmp_reg, TEMPORARY_REGISTER_SSE));
 
-                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
-                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
-                    reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2, KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
-                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
-                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2, KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[2].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[2].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                    link_part_instr[2].args[1] = KEFIR_ASMCMP_MAKE_VREG(tmp_reg);
+                    link_part_instr[2].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 3;
+                } else {
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2, KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 2;
+                }
                 break;
 
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
-                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
-                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
-                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
-                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
-                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                if (alias) {
+                    kefir_asm_amd64_xasmgen_register_t tmp_reg;
+                    REQUIRE_OK(obtain_temporary_register(mem, state, *tail_idx, &tmp_reg, TEMPORARY_REGISTER_SSE));
+                    
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
 
-                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
-                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
-                    reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
-                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
-                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[2].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[2].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                    link_part_instr[2].args[1] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[2].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 3;
+                } else {
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 2;
+                }
+
+                op_flags = KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY;
                 break;
 
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERAL_PURPOSE:
-                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
-                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
-                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
-                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
-                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                if (alias) {
+                    kefir_asm_amd64_xasmgen_register_t tmp_reg;
+                    REQUIRE_OK(obtain_temporary_register(mem, state, *tail_idx, &tmp_reg, TEMPORARY_REGISTER_GP));
 
-                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
-                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
-                    reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
-                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
-                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[2].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[2].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                    link_part_instr[2].args[1] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[2].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 3;
+                } else {
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                        reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 2;
+                }
                 break;
         }
-        REQUIRE_OK(devirtualize_instr2(
-            mem, state, instr_idx, &link_part_instr[0], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
-            KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL,
-            KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL | KEFIR_AMD64_INSTRDB_IMMEDIATE));
-        REQUIRE_OK(devirtualize_instr2(
-            mem, state, instr_idx, &link_part_instr[1], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
-            KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL,
-            KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL | KEFIR_AMD64_INSTRDB_IMMEDIATE));
 
-        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[0],
-                                                           tail_idx));
-        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[1],
-                                                           tail_idx));
+        for (kefir_size_t i = 0; i < num_of_links; i++) {
+            REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[i],
+                                                            tail_idx));
+            kefir_asmcmp_instruction_index_t virtual_instr_idx = *tail_idx;
+            REQUIRE_OK(devirtualize_instr2(
+                mem, state, *tail_idx, &link_part_instr[i], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
+                op_flags,
+            op_flags | KEFIR_AMD64_INSTRDB_IMMEDIATE));
+            REQUIRE_OK(kefir_asmcmp_context_instr_replace(&state->target->context, virtual_instr_idx, &link_part_instr[i]));
+        }
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(noop);
     } else if (reg_alloc1->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR &&
                reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR) {
-        struct kefir_asmcmp_instruction link_part_instr[2];
-        link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
-        link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
-        link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
-        link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
-        link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
-        link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
-        link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
-        link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
-        REQUIRE_OK(link_virtual_registers(mem, state, instr_idx, &link_part_instr[0], original_instr, tail_idx));
-        REQUIRE_OK(link_virtual_registers(mem, state, instr_idx, &link_part_instr[1], original_instr, tail_idx));
+        struct kefir_asmcmp_instruction link_part_instr[3];
+        kefir_asm_amd64_xasmgen_register_t tmp_reg;
+        kefir_size_t num_of_links = 3;
+        kefir_uint64_t op_flags = KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY | KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL;
 
-        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[0],
-                                                           tail_idx));
-        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[1],
-                                                           tail_idx));
+        const struct kefir_codegen_amd64_register_allocation *vreg_part0_alloc, *vreg2_part1_alloc;
+        REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, vreg->parameters.pair.virtual_registers[0], &vreg_part0_alloc));
+        REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, vreg2->parameters.pair.virtual_registers[1], &vreg2_part1_alloc));
+        kefir_bool_t alias = vreg_part0_alloc->type == vreg2_part1_alloc->type;
+        if (vreg_part0_alloc->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER &&
+            vreg2_part1_alloc->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER &&
+            vreg_part0_alloc->direct_reg != vreg2_part1_alloc->direct_reg) {
+            alias = false;
+        } else if (vreg_part0_alloc->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT &&
+                vreg2_part1_alloc->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT &&
+                vreg_part0_alloc->spill_area.index != vreg2_part1_alloc->spill_area.index) {
+            alias = false;
+        }
+
+        switch (vreg->parameters.pair.type) {
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register pair type");
+
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE: {
+                if (alias) {
+                    REQUIRE_OK(obtain_temporary_register(mem, state, *tail_idx, &tmp_reg, TEMPORARY_REGISTER_SSE));
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movdqu);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movdqu);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[2].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movdqu);
+                    link_part_instr[2].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[2].args[1] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[2].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 3;
+                } else {
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 2;
+                }
+                op_flags = KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY | KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL;
+            } break;
+
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERAL_PURPOSE: {
+                if (alias) {
+                    REQUIRE_OK(obtain_temporary_register(mem, state, *tail_idx, &tmp_reg, TEMPORARY_REGISTER_GP));
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[2].opcode = KEFIR_ASMCMP_AMD64_OPCODE(mov);
+                    link_part_instr[2].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[2].args[1] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                    link_part_instr[2].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 3;
+                } else {
+                    link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
+                    link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                    link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                    link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
+                    link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                    link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                    num_of_links = 2;
+                }
+
+                op_flags = KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY;
+            } break;
+        }
+
+        for (kefir_size_t i = 0; i < num_of_links; i++) {
+            REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[i],
+                                                            tail_idx));
+            kefir_asmcmp_instruction_index_t virtual_instr_idx = *tail_idx;
+            REQUIRE_OK(devirtualize_instr2(
+                mem, state, *tail_idx, &link_part_instr[i], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
+                op_flags,
+                op_flags | KEFIR_AMD64_INSTRDB_IMMEDIATE));
+            REQUIRE_OK(kefir_asmcmp_context_instr_replace(&state->target->context, virtual_instr_idx, &link_part_instr[i]));
+        }
+
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(noop);
     } else {
         REQUIRE(reg_alloc1->type != KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR,

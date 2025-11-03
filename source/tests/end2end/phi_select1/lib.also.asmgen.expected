@@ -93,8 +93,8 @@ __kefir_text_func_select6_begin:
     shufps $1, %xmm3, %xmm3
     test %edi, %edi
     jnz __kefir_func_select6_label1
-    movaps %xmm1, %xmm0
-    movaps %xmm2, %xmm3
+    movq %xmm1, %xmm0
+    movq %xmm2, %xmm3
 __kefir_func_select6_label1:
     insertps $16, %xmm3, %xmm0
     lea (%rbp), %rsp
@@ -109,8 +109,8 @@ __kefir_text_func_select7_begin:
     sub $32, %rsp
     test %edi, %edi
     jnz __kefir_func_select7_label1
-    movaps %xmm2, %xmm0
-    movaps %xmm3, %xmm1
+    movq %xmm2, %xmm0
+    movq %xmm3, %xmm1
 __kefir_func_select7_label1:
     lea (%rbp), %rsp
     pop %rbp
