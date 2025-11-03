@@ -1,6 +1,7 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.extern __atomic_load
 .global test_fetch_add_short
 .type test_fetch_add_short, @function
 .global test_fetch_and_short
@@ -9,8 +10,16 @@
 .type test_fetch_sub_short, @function
 .global test_fetch_xor_short
 .type test_fetch_xor_short, @function
+.global test_fetch_add128
+.type test_fetch_add128, @function
+.global test_fetch_and128
+.type test_fetch_and128, @function
 .global test_fetch_or_int
 .type test_fetch_or_int, @function
+.global test_fetch_sub128
+.type test_fetch_sub128, @function
+.global test_fetch_xor128
+.type test_fetch_xor128, @function
 .global test_fetch_add_char
 .type test_fetch_add_char, @function
 .global test_fetch_add_long
@@ -29,6 +38,9 @@
 .type test_fetch_xor_char, @function
 .global test_fetch_xor_long
 .type test_fetch_xor_long, @function
+.global test_fetch_or128
+.type test_fetch_or128, @function
+.extern __atomic_compare_exchange
 .global test_fetch_add_int
 .type test_fetch_add_int, @function
 .global test_fetch_and_int
@@ -115,6 +127,108 @@ __kefir_func_test_fetch_xor_short_label2:
     ret
 __kefir_text_func_test_fetch_xor_short_end:
 
+test_fetch_add128:
+__kefir_text_func_test_fetch_add128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $72, %rsp
+    mov %rsi, %r10
+    mov %rdx, %r11
+    mov %rdi, %rbx
+    movq %r11, -64(%rbp)
+    movq %r10, -56(%rbp)
+    mov $16, %rdi
+    mov %rbx, %rsi
+    leaq -32(%rbp), %rdx
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -64(%rbp), %r11
+    movq -56(%rbp), %r10
+    mov -32(%rbp), %rax
+    mov -24(%rbp), %rcx
+    mov %rax, -48(%rbp)
+    mov %rcx, -40(%rbp)
+__kefir_func_test_fetch_add128_label1:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rcx
+    add %r10, %rax
+    adc %r11, %rcx
+    mov %rax, -32(%rbp)
+    mov %rcx, -24(%rbp)
+    movq %r11, -64(%rbp)
+    movq %r10, -56(%rbp)
+    mov $16, %rdi
+    mov %rbx, %rsi
+    leaq -48(%rbp), %rdx
+    leaq -32(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
+    call __atomic_compare_exchange@PLT
+    movq -64(%rbp), %r11
+    movq -56(%rbp), %r10
+    test %al, %al
+    jz __kefir_func_test_fetch_add128_label1
+__kefir_func_test_fetch_add128_label2:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rdx
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test_fetch_add128_end:
+
+test_fetch_and128:
+__kefir_text_func_test_fetch_and128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $72, %rsp
+    mov %rsi, %r10
+    mov %rdx, %r11
+    mov %rdi, %rbx
+    movq %r11, -64(%rbp)
+    movq %r10, -56(%rbp)
+    mov $16, %rdi
+    mov %rbx, %rsi
+    leaq -32(%rbp), %rdx
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -64(%rbp), %r11
+    movq -56(%rbp), %r10
+    mov -32(%rbp), %rax
+    mov -24(%rbp), %rcx
+    mov %rax, -48(%rbp)
+    mov %rcx, -40(%rbp)
+__kefir_func_test_fetch_and128_label1:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rcx
+    and %r10, %rax
+    and %r11, %rcx
+    mov %rax, -32(%rbp)
+    mov %rcx, -24(%rbp)
+    movq %r11, -64(%rbp)
+    movq %r10, -56(%rbp)
+    mov $16, %rdi
+    mov %rbx, %rsi
+    leaq -48(%rbp), %rdx
+    leaq -32(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
+    call __atomic_compare_exchange@PLT
+    movq -64(%rbp), %r11
+    movq -56(%rbp), %r10
+    test %al, %al
+    jz __kefir_func_test_fetch_and128_label1
+__kefir_func_test_fetch_and128_label2:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rdx
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test_fetch_and128_end:
+
 test_fetch_or_int:
 __kefir_text_func_test_fetch_or_int_begin:
     push %rbp
@@ -140,6 +254,114 @@ __kefir_func_test_fetch_or_int_label2:
     pop %rbp
     ret
 __kefir_text_func_test_fetch_or_int_end:
+
+test_fetch_sub128:
+__kefir_text_func_test_fetch_sub128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $88, %rsp
+    mov %rsi, %rax
+    mov %rdx, %r8
+    mov %rdi, %r10
+    movq %r10, -80(%rbp)
+    movq %r8, -72(%rbp)
+    movq %rax, -64(%rbp)
+    mov $16, %rdi
+    mov %r10, %rsi
+    leaq -32(%rbp), %rdx
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -72(%rbp), %r8
+    movq -80(%rbp), %r10
+    movq -64(%rbp), %rax
+    mov -32(%rbp), %rcx
+    mov -24(%rbp), %rdx
+    mov %rcx, -48(%rbp)
+    mov %rdx, -40(%rbp)
+    mov %rax, %r11
+    xor %ebx, %ebx
+    neg %r11
+    sbb %r8, %rbx
+__kefir_func_test_fetch_sub128_label1:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rcx
+    add %r11, %rax
+    adc %rbx, %rcx
+    mov %rax, -32(%rbp)
+    mov %rcx, -24(%rbp)
+    movq %r10, -80(%rbp)
+    movq %r11, -72(%rbp)
+    mov $16, %rdi
+    mov %r10, %rsi
+    leaq -48(%rbp), %rdx
+    leaq -32(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
+    call __atomic_compare_exchange@PLT
+    movq -72(%rbp), %r11
+    movq -80(%rbp), %r10
+    test %al, %al
+    jz __kefir_func_test_fetch_sub128_label1
+__kefir_func_test_fetch_sub128_label2:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rdx
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test_fetch_sub128_end:
+
+test_fetch_xor128:
+__kefir_text_func_test_fetch_xor128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $72, %rsp
+    mov %rsi, %r10
+    mov %rdx, %r11
+    mov %rdi, %rbx
+    movq %r11, -64(%rbp)
+    movq %r10, -56(%rbp)
+    mov $16, %rdi
+    mov %rbx, %rsi
+    leaq -32(%rbp), %rdx
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -64(%rbp), %r11
+    movq -56(%rbp), %r10
+    mov -32(%rbp), %rax
+    mov -24(%rbp), %rcx
+    mov %rax, -48(%rbp)
+    mov %rcx, -40(%rbp)
+__kefir_func_test_fetch_xor128_label1:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rcx
+    xor %r10, %rax
+    xor %r11, %rcx
+    mov %rax, -32(%rbp)
+    mov %rcx, -24(%rbp)
+    movq %r11, -64(%rbp)
+    movq %r10, -56(%rbp)
+    mov $16, %rdi
+    mov %rbx, %rsi
+    leaq -48(%rbp), %rdx
+    leaq -32(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
+    call __atomic_compare_exchange@PLT
+    movq -64(%rbp), %r11
+    movq -56(%rbp), %r10
+    test %al, %al
+    jz __kefir_func_test_fetch_xor128_label1
+__kefir_func_test_fetch_xor128_label2:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rdx
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test_fetch_xor128_end:
 
 test_fetch_add_char:
 __kefir_text_func_test_fetch_add_char_begin:
@@ -307,6 +529,57 @@ __kefir_func_test_fetch_xor_long_label2:
     pop %rbp
     ret
 __kefir_text_func_test_fetch_xor_long_end:
+
+test_fetch_or128:
+__kefir_text_func_test_fetch_or128_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $72, %rsp
+    mov %rsi, %r10
+    mov %rdx, %r11
+    mov %rdi, %rbx
+    movq %r11, -64(%rbp)
+    movq %r10, -56(%rbp)
+    mov $16, %rdi
+    mov %rbx, %rsi
+    leaq -32(%rbp), %rdx
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -64(%rbp), %r11
+    movq -56(%rbp), %r10
+    mov -32(%rbp), %rax
+    mov -24(%rbp), %rcx
+    mov %rax, -48(%rbp)
+    mov %rcx, -40(%rbp)
+__kefir_func_test_fetch_or128_label1:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rcx
+    or %r10, %rax
+    or %r11, %rcx
+    mov %rax, -32(%rbp)
+    mov %rcx, -24(%rbp)
+    movq %r11, -64(%rbp)
+    movq %r10, -56(%rbp)
+    mov $16, %rdi
+    mov %rbx, %rsi
+    leaq -48(%rbp), %rdx
+    leaq -32(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
+    call __atomic_compare_exchange@PLT
+    movq -64(%rbp), %r11
+    movq -56(%rbp), %r10
+    test %al, %al
+    jz __kefir_func_test_fetch_or128_label1
+__kefir_func_test_fetch_or128_label2:
+    mov -48(%rbp), %rax
+    mov -40(%rbp), %rdx
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test_fetch_or128_end:
 
 test_fetch_add_int:
 __kefir_text_func_test_fetch_add_int_begin:

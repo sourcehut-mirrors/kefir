@@ -21,32 +21,41 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+struct i128 {
+    unsigned long arr[2];
+};
+
 #define DECL_FETCH(_id, _type) _type test_fetch_##_id(_Atomic _type *, _type)
 
 DECL_FETCH(add_char, char);
 DECL_FETCH(add_short, short);
 DECL_FETCH(add_int, int);
 DECL_FETCH(add_long, long);
+DECL_FETCH(add128, struct i128);
 
 DECL_FETCH(sub_char, char);
 DECL_FETCH(sub_short, short);
 DECL_FETCH(sub_int, int);
 DECL_FETCH(sub_long, long);
+DECL_FETCH(sub128, struct i128);
 
 DECL_FETCH(or_char, char);
 DECL_FETCH(or_short, short);
 DECL_FETCH(or_int, int);
 DECL_FETCH(or_long, long);
+DECL_FETCH(or128, struct i128);
 
 DECL_FETCH(and_char, char);
 DECL_FETCH(and_short, short);
 DECL_FETCH(and_int, int);
 DECL_FETCH(and_long, long);
+DECL_FETCH(and128, struct i128);
 
 DECL_FETCH(xor_char, char);
 DECL_FETCH(xor_short, short);
 DECL_FETCH(xor_int, int);
 DECL_FETCH(xor_long, long);
+DECL_FETCH(xor128, struct i128);
 
 #undef DECL_FETCH
 

@@ -345,6 +345,33 @@ typedef unsigned __int128 __uint128_t;
                                   (_failure_memorder));                                                     \
     })
 
+#define __kefir_atomic_fetch_op_impl(_ptr, _val, _memorder, _op)                                                 \
+    ({                                                                                                           \
+        typedef __typeof_unqual__((void) 0, *(_ptr)) __result_t;                                                 \
+        __result_t *const __ptr = (__result_t *) (_ptr);                                                         \
+        __result_t const __val = (__result_t) (_val);                                                            \
+        const int __memorder = (_memorder);                                                                      \
+        __result_t __new_value, __current_value = __atomic_load_n(__ptr, __memorder);                            \
+        do {                                                                                                     \
+            __new_value = _op(__current_value, __val);                                                           \
+        } while (!__atomic_compare_exchange_n(__ptr, &__current_value, __new_value, 0, __memorder, __memorder)); \
+        __current_value;                                                                                         \
+    })
+
+#define __kefir_atomic_fetch_op_add(_arg1, _arg2) ((_arg1) + (_arg2))
+#define __kefir_atomic_fetch_op_or(_arg1, _arg2) ((_arg1) | (_arg2))
+#define __kefir_atomic_fetch_op_xor(_arg1, _arg2) ((_arg1) ^ (_arg2))
+#define __kefir_atomic_fetch_op_and(_arg1, _arg2) ((_arg1) & (_arg2))
+#define __kefir_atomic_fetch_op_nand(_arg1, _arg2) (!((_arg1) & (_arg2)))
+#define __atomic_fetch_or(_ptr, _val, _memorder) \
+    __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_or)
+#define __atomic_fetch_xor(_ptr, _val, _memorder) \
+    __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_xor)
+#define __atomic_fetch_and(_ptr, _val, _memorder) \
+    __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_and)
+#define __atomic_fetch_nand(_ptr, _val, _memorder) \
+    __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_nand)
+
 #define __atomic_fetch_add(_ptr, _val, _memorder)                                                                   \
     ({                                                                                                              \
         typedef __typeof__((void) 0, *(_ptr)) __result_t;                                                           \
@@ -364,36 +391,10 @@ typedef unsigned __int128 __uint128_t;
                     __builtin_choose_expr(                                                                          \
                         sizeof(__result_t) == 8,                                                                    \
                         __kefir_builtin_atomic_fetch_add64((void *) (_ptr), (__UINT64_TYPE__) (_val), (_memorder)), \
-                        ({ _Static_assert(0, "Atomic fetch operation of specified size is not supported"); })))));  \
+                        __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_add)))));  \
     })
 
 #define __atomic_fetch_sub(_ptr, _val, _memorder) __atomic_fetch_add((_ptr), -(_val), (_memorder))
-
-#define __kefir_atomic_fetch_op_impl(_ptr, _val, _memorder, _op)                                                 \
-    ({                                                                                                           \
-        typedef __typeof_unqual__((void) 0, *(_ptr)) __result_t;                                                 \
-        __result_t *const __ptr = (__result_t *) (_ptr);                                                         \
-        __result_t const __val = (__result_t) (_val);                                                            \
-        const int __memorder = (_memorder);                                                                      \
-        __result_t __new_value, __current_value = __atomic_load_n(__ptr, __memorder);                            \
-        do {                                                                                                     \
-            __new_value = _op(__current_value, __val);                                                           \
-        } while (!__atomic_compare_exchange_n(__ptr, &__current_value, __new_value, 0, __memorder, __memorder)); \
-        __current_value;                                                                                         \
-    })
-
-#define __kefir_atomic_fetch_op_or(_arg1, _arg2) ((_arg1) | (_arg2))
-#define __kefir_atomic_fetch_op_xor(_arg1, _arg2) ((_arg1) ^ (_arg2))
-#define __kefir_atomic_fetch_op_and(_arg1, _arg2) ((_arg1) & (_arg2))
-#define __kefir_atomic_fetch_op_nand(_arg1, _arg2) (!((_arg1) & (_arg2)))
-#define __atomic_fetch_or(_ptr, _val, _memorder) \
-    __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_or)
-#define __atomic_fetch_xor(_ptr, _val, _memorder) \
-    __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_xor)
-#define __atomic_fetch_and(_ptr, _val, _memorder) \
-    __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_and)
-#define __atomic_fetch_nand(_ptr, _val, _memorder) \
-    __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_nand)
 
 #define __kefir_atomic_op_fetch(_op, _ptr, _val, _memorder)          \
     ({                                                               \
