@@ -255,64 +255,8 @@ static kefir_result_t resolve_bitfield(struct kefir_mem *mem, struct kefir_ast_t
     return KEFIR_OK;
 }
 
-static kefir_result_t store_bitfield(struct kefir_irbuilder_block *builder, const struct kefir_ir_type *ir_type,
-                                     struct kefir_ast_type_layout *member_layout,
-                                     const struct kefir_ast_translator_configuration *configuration) {
-    const kefir_uint64_t mem_flags = retrieve_memflags(member_layout->qualified_type);
-    const struct kefir_ir_typeentry *typeentry = NULL;
-
-    kefir_size_t byte_offset = member_layout->bitfield_props.offset / 8;
-    kefir_size_t bit_offset = member_layout->bitfield_props.offset % 8;
-    kefir_size_t bits = bit_offset + member_layout->bitfield_props.width;
-    kefir_size_t bits_rounded = (bits + 7) / 8 * 8;
-
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
-    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(member_layout->type)) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, byte_offset));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_LOAD_PRECISE, bits_rounded, false,
-                                                     mem_flags, 0));
-    } else {
-        REQUIRE_OK(load_bitfield(builder, member_layout, ir_type, configuration, &typeentry));
-    }
-
-    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(member_layout->type)) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITINT_CAST_UNSIGNED, bits_rounded,
-                                                   member_layout->type->bitprecise.width));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_INSERT, bits_rounded, bit_offset,
-                                                     member_layout->bitfield_props.width, 0));
-    } else if (KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(member_layout->type)) {
-        switch (member_layout->type->tag) {
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT, bits_rounded));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UNSIGNED_TO_BITINT, bits_rounded));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_INSERT, bits_rounded, bit_offset,
-                                                            member_layout->bitfield_props.width, 0));
-                break;
-
-            default:
-                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST type");
-        }
-    } else {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITS_INSERT, bit_offset,
-                                                   member_layout->bitfield_props.width));
-    }
-
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, byte_offset));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
-
-    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(member_layout->type) || KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(member_layout->type)) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_STORE_PRECISE, bits_rounded, false,
-                                                     mem_flags, 0));
-    } else if (bits <= 8) {
+static kefir_result_t store_native_bitfield(struct kefir_irbuilder_block *builder, kefir_size_t bits, kefir_size_t mem_flags) {
+    if (bits <= 8) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_STORE, mem_flags));
     } else if (bits <= 16) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT16_STORE, mem_flags));
@@ -370,6 +314,101 @@ static kefir_result_t store_bitfield(struct kefir_irbuilder_block *builder, cons
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_STORE, mem_flags));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Bit-field exceeds storage unit width");
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t store_bitfield(struct kefir_irbuilder_block *builder, const struct kefir_ir_type *ir_type,
+                                     struct kefir_ast_type_layout *member_layout,
+                                     const struct kefir_ast_translator_configuration *configuration) {
+    const kefir_uint64_t mem_flags = retrieve_memflags(member_layout->qualified_type);
+    const struct kefir_ir_typeentry *typeentry = NULL;
+
+    kefir_size_t byte_offset = member_layout->bitfield_props.offset / 8;
+    kefir_size_t bit_offset = member_layout->bitfield_props.offset % 8;
+    kefir_size_t bits = bit_offset + member_layout->bitfield_props.width;
+    kefir_size_t bits_rounded = (bits + 7) / 8 * 8;
+
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(member_layout->type)) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, byte_offset));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_LOAD_PRECISE, bits_rounded, false,
+                                                     mem_flags, 0));
+    } else {
+        REQUIRE_OK(load_bitfield(builder, member_layout, ir_type, configuration, &typeentry));
+    }
+
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(member_layout->type)) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITINT_CAST_UNSIGNED, bits_rounded,
+                                                   member_layout->type->bitprecise.width));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_INSERT, bits_rounded, bit_offset,
+                                                     member_layout->bitfield_props.width, 0));
+    } else if (KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(member_layout->type)) {
+        switch (member_layout->type->tag) {
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ZERO_EXTEND_64BITS, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, member_layout->bitfield_props.width));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_LSHIFT, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ZERO_EXTEND_64BITS, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_SUB, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_AND, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, bit_offset));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_LSHIFT, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, bit_offset));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_LSHIFT, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_NOT, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_AND, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_OR, 0));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST type");
+        }
+    } else {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITS_INSERT, bit_offset,
+                                                   member_layout->bitfield_props.width));
+    }
+
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, byte_offset));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(member_layout->type)) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_STORE_PRECISE, bits_rounded, false,
+                                                     mem_flags, 0));
+    } else if (KEFIR_AST_TYPE_IS_EXTENDED_INTEGER(member_layout->type)) {
+        if (bits_rounded <= 64) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_LOWER_HALF, 0));
+            REQUIRE_OK(store_native_bitfield(builder, bits, mem_flags));
+        } else {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_LOWER_HALF, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 2));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+            REQUIRE_OK(store_native_bitfield(builder, 64, mem_flags));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_UPPER_HALF, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, 8));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+            REQUIRE_OK(store_native_bitfield(builder, bits - 64, mem_flags));
+        }
+    } else {
+        REQUIRE_OK(store_native_bitfield(builder, bits, mem_flags));
     }
     return KEFIR_OK;
 }
