@@ -78,6 +78,9 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 } __builtin_va_list[1];
 #endif
 
+typedef __int128 __int128_t;
+typedef unsigned __int128 __uint128_t;
+
 // Floating-point
 #define __FLOAT_WORD_ORDER__ __BYTE_ORDER__
 #define __FLT_RADIX__ 2
