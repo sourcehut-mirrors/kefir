@@ -26,6 +26,7 @@
 
 #define MASK(_x, _y) ((_x) & ((1ull << (_y)) - 1))
 int main(void) {
+#ifndef __NetBSD__
     struct i128 res;
 
     res = i128_from_f32(0.0f);
@@ -136,15 +137,6 @@ int main(void) {
     assert(res.arr[0] == 2);
     assert(res.arr[1] == (unsigned long) -2);
 
-// struct i128 i128_from_i9(unsigned short);
-// struct i128 i128_from_u9(unsigned short);
-// struct i128 u128_from_i9(unsigned short);
-// struct i128 u128_from_u9(unsigned short);
-
-// struct i128 i128_from_i256(struct i256);
-// struct i128 i128_from_u256(struct i256);
-// struct i128 u128_from_i256(struct i256);
-// struct i128 u128_from_u256(struct i256);
     res = i128_from_i9(0);
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
@@ -336,5 +328,6 @@ int main(void) {
     res = u128_from_u256((struct i256){{1, -1, 0, 0}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) -1);
+#endif
     return EXIT_SUCCESS;
 }

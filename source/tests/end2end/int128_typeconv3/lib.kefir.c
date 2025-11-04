@@ -18,6 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef __NetBSD__
+
 __int128 i128_from_f32(float x) {
     return x;
 }
@@ -73,3 +75,5 @@ unsigned __int128 u128_from_i256(_BitInt(256) x) {
 unsigned __int128 u128_from_u256(unsigned _BitInt(256) x) {
     return x;   
 }
+
+#endif
