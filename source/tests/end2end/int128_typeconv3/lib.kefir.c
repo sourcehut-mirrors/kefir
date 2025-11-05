@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __NetBSD__
+#if !defined(__NetBSD__) || defined(KEFIR_END2END_ASMGEN)
 
 __int128 i128_from_f32(float x) {
     return x;

@@ -31,7 +31,7 @@ unsigned long int128_truncate_int64(void) {
 }
 
 _Bool int128_to_bool(void) {
-    return (__int128) (~0ull << 64);
+    return (__int128) (~0ull << 63);
 }
 
 _Bool int128_bool_not(void) {
