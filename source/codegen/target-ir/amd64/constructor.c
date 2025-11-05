@@ -22,26 +22,6 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t amd64_opcode_mnemonic(kefir_asmcmp_instruction_opcode_t asmcmp_opcode, kefir_codegen_target_ir_opcode_t *opcode_ptr, void *payload) {
-    UNUSED(payload);
-    REQUIRE(opcode_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR opcode"));
-
-    switch (asmcmp_opcode) {
-#define CASE(_opcode, _mnemonic, ...)        \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
-        *opcode_ptr = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode);            \
-        break;
-
-        KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODES(CASE, )
-        KEFIR_AMD64_INSTRUCTION_DATABASE(CASE, CASE, CASE, CASE, )
-#undef CASE
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown amd64 opcode");
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t amd64_is_jump(kefir_asmcmp_instruction_opcode_t asmcmp_opcode, kefir_bool_t *is_jump_ptr, void *payload) {
     UNUSED(payload);
     REQUIRE(is_jump_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
@@ -68,8 +48,92 @@ static kefir_result_t amd64_is_jump(kefir_asmcmp_instruction_opcode_t asmcmp_opc
     return KEFIR_OK;
 }
 
+static kefir_result_t amd64_classify_instruction(const struct kefir_asmcmp_instruction *instruction,
+    struct kefir_codegen_target_ir_asmcmp_instruction_classification *classification, void *payload) {
+    UNUSED(payload);
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp instruction"));
+    REQUIRE(classification != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp instruction"));
+
+    classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SPECIAL_NONE;
+    for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
+        classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE;
+    }
+    classification->modifies_flags = false;
+
+    if (instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link)) {
+        classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_LINK;
+        classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+        classification->operands[0].index = 0;
+        classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+        classification->operands[1].index = 1;
+        return KEFIR_OK;
+    }
+
+    if (instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register) ||
+        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin) ||
+        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end) ||
+        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(noop)) {
+        classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SKIP;
+        return KEFIR_OK;
+    }
+
+#define CLASSIFY_OP(_op, _index) \
+    do { \
+        if (((_op) & KEFIR_AMD64_INSTRDB_READ) && ((_op) & KEFIR_AMD64_INSTRDB_WRITE)) { \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE; \
+            classification->operands[(_index)].index = (_index); \
+        } else if ((_op) & KEFIR_AMD64_INSTRDB_READ) { \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ; \
+            classification->operands[(_index)].index = (_index); \
+        } else if ((_op) & KEFIR_AMD64_INSTRDB_WRITE) { \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE; \
+            classification->operands[(_index)].index = (_index); \
+        } \
+    } while (0)
+
+    switch (instruction->opcode) {
+#define INSTR0(_opcode, _mnemonic, _variant, _flags)        \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode);            \
+        break;
+
+#define INSTR1(_opcode, _mnemonic, _variant, _flags, _op1)        \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode);            \
+        CLASSIFY_OP(_op1, 0); \
+        break;
+
+#define INSTR2(_opcode, _mnemonic, _variant, _flags, _op1, _op2)        \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode);            \
+        CLASSIFY_OP(_op1, 0); \
+        CLASSIFY_OP(_op2, 1); \
+        break;
+
+#define INSTR3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)        \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode);            \
+        CLASSIFY_OP(_op1, 0); \
+        CLASSIFY_OP(_op2, 1); \
+        CLASSIFY_OP(_op2, 2); \
+        break;
+
+        KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODES(INSTR0, )
+        KEFIR_AMD64_INSTRUCTION_DATABASE(INSTR0, INSTR1, INSTR2, INSTR3, )
+#undef INSTR0
+#undef INSTR1
+#undef INSTR2
+#undef INSTR3
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown amd64 opcode");
+    }
+
+    return KEFIR_OK;
+}
+
 const struct kefir_codegen_target_ir_code_constructor_class KEFIR_TARGET_AMD64_CODE_CONSTRUCTOR_CLASS = {
-    .map_opcode = amd64_opcode_mnemonic,
     .is_jump = amd64_is_jump,
+    .classify_instruction = amd64_classify_instruction,
     .payload = NULL
 };

@@ -24,9 +24,43 @@
 #include "kefir/codegen/target-ir/code.h"
 #include "kefir/codegen/asmcmp/context.h"
 
+#define KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_IMPLICIT ((kefir_size_t) ~0ull)
+
+typedef enum kefir_codegen_target_ir_asmcmp_operand_class {
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE
+} kefir_codegen_target_ir_asmcmp_operand_class_t;
+
+typedef struct kefir_codegen_target_ir_asmcmp_operand_classification {
+    kefir_codegen_target_ir_asmcmp_operand_class_t class;
+    kefir_size_t index;
+    
+    union {
+        struct {
+            kefir_codegen_target_ir_physical_register_t phreg;
+        } implicit_parameter;
+    };
+} kefir_codegen_target_ir_asmcmp_operand_classification_t;
+
+typedef enum kefir_codegen_target_ir_asmcmp_special_instruction {
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SPECIAL_NONE,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_LINK,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SKIP
+} kefir_codegen_target_ir_asmcmp_special_instruction_t;
+
+typedef struct kefir_codegen_target_ir_asmcmp_instruction_classification {
+    kefir_codegen_target_ir_opcode_t opcode;
+    kefir_codegen_target_ir_asmcmp_special_instruction_t special;
+    struct kefir_codegen_target_ir_asmcmp_operand_classification operands[KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS];
+    kefir_bool_t modifies_flags;
+} kefir_codegen_target_ir_asmcmp_instruction_classification_t;
+
 typedef struct kefir_codegen_target_ir_code_constructor_class {
     kefir_result_t (*map_opcode)(kefir_asmcmp_instruction_opcode_t, kefir_codegen_target_ir_opcode_t *, void *);
     kefir_result_t (*is_jump)(kefir_asmcmp_instruction_opcode_t, kefir_bool_t *, void *);
+    kefir_result_t (*classify_instruction)(const struct kefir_asmcmp_instruction *, struct kefir_codegen_target_ir_asmcmp_instruction_classification *, void *);
     void *payload;
 } kefir_codegen_target_ir_code_constructor_class_t;
 

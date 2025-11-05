@@ -14,29 +14,27 @@ factorial:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 0,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 0,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
+#                    "instr_ref": 64,
+#                    "opcode": "placeholder",
+#                    "parameters": []
 #                },
 #                {
-#                    "instr_ref": 1,
+#                    "instr_ref": 62,
+#                    "opcode": "placeholder",
+#                    "parameters": []
+#                },
+#                {
+#                    "instr_ref": 0,
 #                    "opcode": "function_prologue",
 #                    "parameters": []
 #                },
 #                {
-#                    "instr_ref": 2,
-#                    "opcode": "virtual_block_begin",
+#                    "instr_ref": 1,
+#                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
-#                            "type": "uinteger",
-#                            "value": 0
+#                            "type": "block_ref",
+#                            "block_ref": 1
 #                        }
 #                    ]
 #                }
@@ -46,20 +44,55 @@ factorial:
 #            "block_ref": 1,
 #            "code": [
 #                {
+#                    "instr_ref": 63,
+#                    "opcode": "phi",
+#                    "parameters": [],
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 64,
+#                                "aspect": {
+#                                    "type": "phi"
+#                                }
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 2,
+#                    "opcode": "phi",
+#                    "parameters": [],
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 62,
+#                                "aspect": {
+#                                    "type": "phi"
+#                                }
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
 #                    "instr_ref": 3,
-#                    "opcode": "virtual_register_link",
+#                    "opcode": "mov",
 #                    "parameters": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 1,
-#                            "aspect": 0,
-#                            "variant": "8bit"
+#                            "type": "indirect",
+#                            "basis": "local_var",
+#                            "identifier": 0,
+#                            "offset": 0,
+#                            "variant": "32bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 0,
-#                            "aspect": 0,
-#                            "variant": "8bit"
+#                            "instr_ref": 2,
+#                            "aspect": {
+#                                "type": "phi"
+#                            },
+#                            "variant": "32bit"
 #                        }
 #                    ]
 #                },
@@ -73,12 +106,6 @@ factorial:
 #                            "identifier": 0,
 #                            "offset": 0,
 #                            "variant": "32bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 1,
-#                            "aspect": 0,
-#                            "variant": "32bit"
 #                        }
 #                    ]
 #                },
@@ -87,29 +114,23 @@ factorial:
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 3,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
-#                        {
-#                            "type": "indirect",
-#                            "basis": "local_var",
-#                            "identifier": 0,
-#                            "offset": 0,
-#                            "variant": "32bit"
+#                            "type": "integer",
+#                            "value": 0
 #                        }
 #                    ]
 #                },
 #                {
 #                    "instr_ref": 6,
-#                    "opcode": "mov",
+#                    "opcode": "cmp",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 6,
-#                            "aspect": 0,
-#                            "variant": "64bit"
+#                            "instr_ref": 4,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "32bit"
 #                        },
 #                        {
 #                            "type": "integer",
@@ -119,78 +140,58 @@ factorial:
 #                },
 #                {
 #                    "instr_ref": 7,
-#                    "opcode": "cmp",
+#                    "opcode": "setl",
+#                    "parameters": []
+#                },
+#                {
+#                    "instr_ref": 8,
+#                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 3,
-#                            "aspect": 0,
+#                            "instr_ref": 7,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 5,
-#                            "aspect": 0,
+#                            "instr_ref": 7,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 8,
-#                    "opcode": "setl",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 6,
-#                            "aspect": 0,
-#                            "variant": "8bit"
 #                        }
 #                    ]
 #                },
 #                {
 #                    "instr_ref": 9,
-#                    "opcode": "test",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 6,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 6,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        }
-#                    ]
+#                    "opcode": "sete",
+#                    "parameters": []
 #                },
 #                {
 #                    "instr_ref": 10,
-#                    "opcode": "sete",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 7,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 11,
 #                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 7,
-#                            "aspect": 0,
+#                            "instr_ref": 9,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "8bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 7,
-#                            "aspect": 0,
+#                            "instr_ref": 9,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "8bit"
 #                        }
 #                    ]
@@ -202,6 +203,10 @@ factorial:
 #                        {
 #                            "type": "block_ref",
 #                            "block_ref": 14
+#                        },
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 2
 #                        }
 #                    ]
 #                }
@@ -212,40 +217,11 @@ factorial:
 #            "code": [
 #                {
 #                    "instr_ref": 13,
-#                    "opcode": "touch_virtual_register",
+#                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 14,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 15,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": []
-#                },
-#                {
-#                    "instr_ref": 16,
-#                    "opcode": "virtual_block_begin",
-#                    "parameters": [
-#                        {
-#                            "type": "uinteger",
-#                            "value": 1
+#                            "type": "block_ref",
+#                            "block_ref": 3
 #                        }
 #                    ]
 #                }
@@ -255,39 +231,9 @@ factorial:
 #            "block_ref": 3,
 #            "code": [
 #                {
-#                    "instr_ref": 17,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 18,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 19,
+#                    "instr_ref": 14,
 #                    "opcode": "mov",
 #                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 8,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
@@ -298,15 +244,9 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 20,
+#                    "instr_ref": 15,
 #                    "opcode": "mov",
 #                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 10,
-#                            "aspect": 0,
-#                            "variant": "64bit"
-#                        },
 #                        {
 #                            "type": "integer",
 #                            "value": 0
@@ -314,65 +254,127 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 21,
+#                    "instr_ref": 16,
 #                    "opcode": "cmp",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 8,
-#                            "aspect": 0,
+#                            "instr_ref": 14,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        },
 #                        {
+#                            "type": "integer",
+#                            "value": 2
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 17,
+#                    "opcode": "setl",
+#                    "parameters": []
+#                },
+#                {
+#                    "instr_ref": 18,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "integer",
+#                            "value": 0
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 19,
+#                    "opcode": "cmp",
+#                    "parameters": [
+#                        {
+#                            "type": "integer",
+#                            "value": 2
+#                        },
+#                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 9,
-#                            "aspect": 0,
+#                            "instr_ref": 14,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 20,
+#                    "opcode": "sete",
+#                    "parameters": []
+#                },
+#                {
+#                    "instr_ref": 21,
+#                    "opcode": "or",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 17,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "64bit"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 20,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "64bit"
 #                        }
 #                    ]
 #                },
 #                {
 #                    "instr_ref": 22,
-#                    "opcode": "setl",
+#                    "opcode": "setne",
+#                    "parameters": []
+#                },
+#                {
+#                    "instr_ref": 23,
+#                    "opcode": "movzx",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 10,
-#                            "aspect": 0,
+#                            "instr_ref": 22,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "8bit"
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 23,
-#                    "opcode": "mov",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 11,
-#                            "aspect": 0,
-#                            "variant": "64bit"
-#                        },
-#                        {
-#                            "type": "integer",
-#                            "value": 0
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 24,
-#                    "opcode": "cmp",
+#                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 9,
-#                            "aspect": 0,
+#                            "instr_ref": 23,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 8,
-#                            "aspect": 0,
+#                            "instr_ref": 23,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        }
 #                    ]
@@ -380,136 +382,43 @@ factorial:
 #                {
 #                    "instr_ref": 25,
 #                    "opcode": "sete",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 11,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
+#                    "parameters": []
 #                },
 #                {
 #                    "instr_ref": 26,
-#                    "opcode": "virtual_register_link",
+#                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 12,
-#                            "aspect": 0,
+#                            "instr_ref": 25,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "8bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 10,
-#                            "aspect": 0,
+#                            "instr_ref": 25,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 27,
-#                    "opcode": "or",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 12,
-#                            "aspect": 0,
-#                            "variant": "64bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 11,
-#                            "aspect": 0,
-#                            "variant": "64bit"
 #                        }
 #                    ]
 #                },
 #                {
 #                    "instr_ref": 28,
-#                    "opcode": "setne",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 12,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 29,
-#                    "opcode": "movzx",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 12,
-#                            "aspect": 0,
-#                            "variant": "64bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 12,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 30,
-#                    "opcode": "test",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 12,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 12,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 31,
-#                    "opcode": "sete",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 13,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 32,
-#                    "opcode": "test",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 13,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 13,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 33,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
 #                            "block_ref": 12
+#                        },
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 4
 #                        }
 #                    ]
 #                }
@@ -519,41 +428,12 @@ factorial:
 #            "block_ref": 4,
 #            "code": [
 #                {
-#                    "instr_ref": 34,
-#                    "opcode": "touch_virtual_register",
+#                    "instr_ref": 29,
+#                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 35,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 36,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": []
-#                },
-#                {
-#                    "instr_ref": 37,
-#                    "opcode": "virtual_block_begin",
-#                    "parameters": [
-#                        {
-#                            "type": "uinteger",
-#                            "value": 3
+#                            "type": "block_ref",
+#                            "block_ref": 5
 #                        }
 #                    ]
 #                }
@@ -563,31 +443,7 @@ factorial:
 #            "block_ref": 5,
 #            "code": [
 #                {
-#                    "instr_ref": 38,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 39,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 40,
+#                    "instr_ref": 30,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -598,49 +454,18 @@ factorial:
 #                            "variant": "32bit"
 #                        },
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 14,
-#                            "aspect": 0,
-#                            "variant": "32bit"
+#                            "type": "integer",
+#                            "value": 1
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 41,
-#                    "opcode": "touch_virtual_register",
+#                    "instr_ref": 31,
+#                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 42,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 43,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": []
-#                },
-#                {
-#                    "instr_ref": 44,
-#                    "opcode": "virtual_block_begin",
-#                    "parameters": [
-#                        {
-#                            "type": "uinteger",
-#                            "value": 7
+#                            "type": "block_ref",
+#                            "block_ref": 6
 #                        }
 #                    ]
 #                }
@@ -650,39 +475,9 @@ factorial:
 #            "block_ref": 6,
 #            "code": [
 #                {
-#                    "instr_ref": 45,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 46,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 47,
+#                    "instr_ref": 32,
 #                    "opcode": "mov",
 #                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 15,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
@@ -693,15 +488,9 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 48,
+#                    "instr_ref": 33,
 #                    "opcode": "mov",
 #                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 17,
-#                            "aspect": 0,
-#                            "variant": "64bit"
-#                        },
 #                        {
 #                            "type": "integer",
 #                            "value": 0
@@ -709,86 +498,147 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 49,
+#                    "instr_ref": 34,
 #                    "opcode": "cmp",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 15,
-#                            "aspect": 0,
+#                            "instr_ref": 32,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        },
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 16,
-#                            "aspect": 0,
-#                            "variant": "32bit"
+#                            "type": "integer",
+#                            "value": 1
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 50,
+#                    "instr_ref": 35,
 #                    "opcode": "setg",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 17,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
+#                    "parameters": []
 #                },
 #                {
-#                    "instr_ref": 51,
+#                    "instr_ref": 36,
 #                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 17,
-#                            "aspect": 0,
+#                            "instr_ref": 35,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 17,
-#                            "aspect": 0,
+#                            "instr_ref": 35,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 52,
+#                    "instr_ref": 37,
 #                    "opcode": "sete",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 18,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
+#                    "parameters": []
 #                },
 #                {
-#                    "instr_ref": 53,
+#                    "instr_ref": 38,
 #                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 18,
-#                            "aspect": 0,
+#                            "instr_ref": 37,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "8bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 18,
-#                            "aspect": 0,
+#                            "instr_ref": 37,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "8bit"
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 54,
+#                    "instr_ref": 40,
 #                    "opcode": "jz",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 10
+#                        },
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 7
+#                        }
+#                    ]
+#                }
+#            ]
+#        },
+#        {
+#            "block_ref": 7,
+#            "code": [
+#                {
+#                    "instr_ref": 41,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 8
+#                        }
+#                    ]
+#                }
+#            ]
+#        },
+#        {
+#            "block_ref": 8,
+#            "code": [
+#                {
+#                    "instr_ref": 42,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "local_var",
+#                            "identifier": 2,
+#                            "offset": 0,
+#                            "variant": "32bit"
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 43,
+#                    "opcode": "function_epilogue",
+#                    "parameters": []
+#                },
+#                {
+#                    "instr_ref": 44,
+#                    "opcode": "ret",
+#                    "parameters": []
+#                }
+#            ]
+#        },
+#        {
+#            "block_ref": 9,
+#            "code": [
+#                {
+#                    "instr_ref": 45,
+#                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
@@ -799,206 +649,12 @@ factorial:
 #            ]
 #        },
 #        {
-#            "block_ref": 7,
-#            "code": [
-#                {
-#                    "instr_ref": 55,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 56,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 57,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": []
-#                },
-#                {
-#                    "instr_ref": 58,
-#                    "opcode": "virtual_block_begin",
-#                    "parameters": [
-#                        {
-#                            "type": "uinteger",
-#                            "value": 5
-#                        }
-#                    ]
-#                }
-#            ]
-#        },
-#        {
-#            "block_ref": 8,
-#            "code": [
-#                {
-#                    "instr_ref": 59,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 60,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 61,
-#                    "opcode": "mov",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 19,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
-#                        {
-#                            "type": "indirect",
-#                            "basis": "local_var",
-#                            "identifier": 2,
-#                            "offset": 0,
-#                            "variant": "32bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 62,
-#                    "opcode": "virtual_register_link",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 20,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 19,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 63,
-#                    "opcode": "function_epilogue",
-#                    "parameters": []
-#                },
-#                {
-#                    "instr_ref": 64,
-#                    "opcode": "ret",
-#                    "parameters": []
-#                }
-#            ]
-#        },
-#        {
-#            "block_ref": 9,
-#            "code": [
-#                {
-#                    "instr_ref": 65,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 20,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 66,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 20,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 67,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": []
-#                },
-#                {
-#                    "instr_ref": 68,
-#                    "opcode": "virtual_block_begin",
-#                    "parameters": [
-#                        {
-#                            "type": "uinteger",
-#                            "value": 6
-#                        }
-#                    ]
-#                }
-#            ]
-#        },
-#        {
 #            "block_ref": 10,
 #            "code": [
 #                {
-#                    "instr_ref": 69,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 70,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 71,
+#                    "instr_ref": 46,
 #                    "opcode": "mov",
 #                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 21,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
@@ -1009,15 +665,9 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 72,
+#                    "instr_ref": 47,
 #                    "opcode": "mov",
 #                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 22,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
@@ -1028,43 +678,31 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 73,
-#                    "opcode": "virtual_register_link",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 23,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 22,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 74,
+#                    "instr_ref": 48,
 #                    "opcode": "imul",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 23,
-#                            "aspect": 0,
+#                            "instr_ref": 47,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 21,
-#                            "aspect": 0,
+#                            "instr_ref": 46,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 75,
+#                    "instr_ref": 49,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -1076,22 +714,19 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 23,
-#                            "aspect": 0,
+#                            "instr_ref": 48,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 76,
+#                    "instr_ref": 50,
 #                    "opcode": "mov",
 #                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 24,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
@@ -1102,43 +737,26 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 77,
-#                    "opcode": "virtual_register_link",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 26,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 24,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 78,
+#                    "instr_ref": 51,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 26,
-#                            "aspect": 0,
+#                            "instr_ref": 50,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        },
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 25,
-#                            "aspect": 0,
-#                            "variant": "32bit"
+#                            "type": "integer",
+#                            "value": -1
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 79,
+#                    "instr_ref": 52,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -1150,14 +768,17 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 26,
-#                            "aspect": 0,
+#                            "instr_ref": 51,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
 #                            "variant": "32bit"
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 80,
+#                    "instr_ref": 53,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -1172,41 +793,12 @@ factorial:
 #            "block_ref": 11,
 #            "code": [
 #                {
-#                    "instr_ref": 81,
-#                    "opcode": "touch_virtual_register",
+#                    "instr_ref": 54,
+#                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 82,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 83,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": []
-#                },
-#                {
-#                    "instr_ref": 84,
-#                    "opcode": "virtual_block_begin",
-#                    "parameters": [
-#                        {
-#                            "type": "uinteger",
-#                            "value": 4
+#                            "type": "block_ref",
+#                            "block_ref": 12
 #                        }
 #                    ]
 #                }
@@ -1216,39 +808,9 @@ factorial:
 #            "block_ref": 12,
 #            "code": [
 #                {
-#                    "instr_ref": 85,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 86,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 87,
+#                    "instr_ref": 55,
 #                    "opcode": "mov",
 #                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 27,
-#                            "aspect": 0,
-#                            "variant": "32bit"
-#                        },
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
@@ -1259,30 +821,12 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 88,
-#                    "opcode": "virtual_register_link",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 28,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 27,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 89,
+#                    "instr_ref": 56,
 #                    "opcode": "function_epilogue",
 #                    "parameters": []
 #                },
 #                {
-#                    "instr_ref": 90,
+#                    "instr_ref": 57,
 #                    "opcode": "ret",
 #                    "parameters": []
 #                }
@@ -1292,41 +836,18 @@ factorial:
 #            "block_ref": 13,
 #            "code": [
 #                {
-#                    "instr_ref": 91,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 28,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
+#                    "instr_ref": 65,
+#                    "opcode": "phi",
+#                    "parameters": [],
+#                    "phi_links": []
 #                },
 #                {
-#                    "instr_ref": 92,
-#                    "opcode": "touch_virtual_register",
+#                    "instr_ref": 58,
+#                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 28,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 93,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": []
-#                },
-#                {
-#                    "instr_ref": 94,
-#                    "opcode": "virtual_block_begin",
-#                    "parameters": [
-#                        {
-#                            "type": "uinteger",
-#                            "value": 2
+#                            "type": "block_ref",
+#                            "block_ref": 14
 #                        }
 #                    ]
 #                }
@@ -1336,54 +857,37 @@ factorial:
 #            "block_ref": 14,
 #            "code": [
 #                {
-#                    "instr_ref": 95,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
+#                    "instr_ref": 59,
+#                    "opcode": "phi",
+#                    "parameters": [],
+#                    "phi_links": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 2,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 96,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 4,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 97,
-#                    "opcode": "virtual_register_link",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 30,
-#                            "aspect": 0,
-#                            "variant": "8bit"
+#                            "block_ref": 1,
+#                            "value_ref": {
+#                                "instr_ref": 63,
+#                                "aspect": {
+#                                    "type": "phi"
+#                                }
+#                            }
 #                        },
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 29,
-#                            "aspect": 0,
-#                            "variant": "8bit"
+#                            "block_ref": 13,
+#                            "value_ref": {
+#                                "instr_ref": 65,
+#                                "aspect": {
+#                                    "type": "phi"
+#                                }
+#                            }
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 98,
+#                    "instr_ref": 60,
 #                    "opcode": "function_epilogue",
 #                    "parameters": []
 #                },
 #                {
-#                    "instr_ref": 99,
+#                    "instr_ref": 61,
 #                    "opcode": "ret",
 #                    "parameters": []
 #                }
@@ -1391,42 +895,7 @@ factorial:
 #        },
 #        {
 #            "block_ref": 15,
-#            "code": [
-#                {
-#                    "instr_ref": 100,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 30,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 101,
-#                    "opcode": "touch_virtual_register",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 30,
-#                            "aspect": 0,
-#                            "variant": "8bit"
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 102,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": []
-#                },
-#                {
-#                    "instr_ref": 103,
-#                    "opcode": "noop",
-#                    "parameters": []
-#                }
-#            ]
+#            "code": []
 #        }
 #    ]
 #}

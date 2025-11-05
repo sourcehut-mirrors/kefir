@@ -27,13 +27,14 @@ static kefir_result_t amd64_opcode_mnemonic(kefir_target_ir_amd64_opcode_t opcod
     REQUIRE(mnemonic_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to mnemonic"));
 
     switch (opcode) {
-#define CASE(_opcode, _mnemonic, ...)        \
+#define CASE(_opcode, ...)        \
     case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
         *mnemonic_ptr = #_opcode;            \
         break;
 
         KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODES(CASE, )
         KEFIR_AMD64_INSTRUCTION_DATABASE(CASE, CASE, CASE, CASE, )
+        KEFIR_CODEGEN_TARGET_IR_SPECIAL_OPCODES(CASE, )
 #undef CASE
 
         default:
@@ -53,8 +54,89 @@ static kefir_result_t register_mnemonic(kefir_asmcmp_physical_register_index_t r
     return KEFIR_OK;
 }
 
+static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_instruction *instruction, struct kefir_codegen_target_ir_block_terminator_props *props, void *payload) {
+    UNUSED(payload);
+    REQUIRE(instruction != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
+    REQUIRE(props != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR block terminator props"));
+
+    props->block_terminator = false;
+    props->function_terminator = false;
+    props->fallthrough = false;
+    props->undefined_target = false;
+    props->target_block_refs[0] = KEFIR_ID_NONE;
+    props->target_block_refs[1] = KEFIR_ID_NONE;
+
+    switch (instruction->operation.opcode) {
+#define DEF_OPCODE_NOOP(...)
+#define DEF_OPCODE1(_opcode, _mnemonic, _branch, ...) CASE_IS_##_branch(_opcode)
+#define CASE_IS_BRANCH(_opcode) \
+        case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+            if (KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(call)) { \
+                props->block_terminator = true; \
+                props->fallthrough = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(jmp) && \
+                    instruction->operation.parameters[1].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF; \
+                if (instruction->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) { \
+                    props->target_block_refs[0] = instruction->operation.parameters[0].block_ref; \
+                    if (instruction->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) { \
+                        props->target_block_refs[1] = instruction->operation.parameters[1].block_ref; \
+                    } \
+                } else { \
+                    props->undefined_target = true; \
+                } \
+            } \
+            break;
+#define CASE_IS_(...)
+
+        KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE_NOOP, DEF_OPCODE1, DEF_OPCODE_NOOP, DEF_OPCODE_NOOP,)
+#undef DEF_OPCODE_NOOP
+#undef DEF_OPCODE1
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(ret):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(ud2):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(tail_call):
+            props->block_terminator = true;
+            props->function_terminator = true;
+            break;
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t make_unconditional_jump(kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_codegen_target_ir_operation *operation_ptr, void *payload) {
+    UNUSED(payload);
+    REQUIRE(operation_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR operation"));
+
+    operation_ptr->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jmp);
+    operation_ptr->parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF;
+    operation_ptr->parameters[0].block_ref = block_ref;
+    operation_ptr->parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
+    operation_ptr->parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
+    return KEFIR_OK;
+}
+
+static kefir_result_t finalize_conditional_jump(const struct kefir_codegen_target_ir_operation *operation, kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_codegen_target_ir_operation *operation_ptr, void *payload) {
+    UNUSED(payload);
+    REQUIRE(operation != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR operation"));
+    REQUIRE(operation_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR operation"));
+
+    *operation_ptr = *operation;
+    operation_ptr->parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF;
+    operation_ptr->parameters[1].block_ref = block_ref;
+    return KEFIR_OK;
+}
+
 const struct kefir_codegen_target_ir_code_class KEFIR_TARGET_AMD64_CODE_CLASS = {
     .opcode_mnemonic = amd64_opcode_mnemonic,
     .register_mnemonic = register_mnemonic,
+    .is_block_terminator = is_block_terminator,
+    .make_unconditional_jump = make_unconditional_jump,
+    .finalize_conditional_jump = finalize_conditional_jump,
+    .phi_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(phi),
+    .placeholder_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(placeholder),
     .payload = NULL
 };
