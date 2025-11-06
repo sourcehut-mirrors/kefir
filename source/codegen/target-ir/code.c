@@ -23,20 +23,6 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static  kefir_result_t free_phi_node(struct kefir_mem *mem, struct kefir_hashtable *table, kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
-    UNUSED(table);
-    UNUSED(key);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_phi_node *, phi_node, 
-        value);
-    REQUIRE(phi_node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR phi node"));
-
-    REQUIRE_OK(kefir_hashtree_free(mem, &phi_node->links));
-    KEFIR_FREE(mem, phi_node);
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_code_class *klass) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR code"));
     REQUIRE(klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR code class"));
@@ -49,9 +35,6 @@ kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_
     code->blocks_capacity = 0;
     code->entry_block = KEFIR_ID_NONE;
     code->klass = klass;
-
-    REQUIRE_OK(kefir_hashtable_init(&code->phis, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashtable_on_removal(&code->phis, free_phi_node, NULL));
     return KEFIR_OK;
 }
 
@@ -59,7 +42,11 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
 
-    REQUIRE_OK(kefir_hashtable_free(mem, &code->phis));
+    for (kefir_size_t i = 0; i < code->code_length; i++) {
+        if (code->code[i].operation.opcode == code->klass->phi_opcode) {
+            REQUIRE_OK(kefir_hashtable_free(mem, &code->code[i].operation.phi_node.links));
+        }
+    }
     KEFIR_FREE(mem, code->blocks);
     KEFIR_FREE(mem, code->code);
     memset(code, 0, sizeof(struct kefir_codegen_target_ir_code));
@@ -160,15 +147,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
     instr->operation = *operation;
 
     if (instr->operation.opcode == code->klass->phi_opcode) {
-        struct kefir_codegen_target_ir_phi_node *phi_node = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_phi_node));
-        REQUIRE(phi_node != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR phi node"));
-        phi_node->instr_ref = instr->instr_ref;
-        kefir_result_t res = kefir_hashtree_init(&phi_node->links, &kefir_hashtree_uint_ops);
-        REQUIRE_CHAIN(&res, kefir_hashtable_insert(mem, &code->phis, (kefir_hashtable_key_t) instr->instr_ref, (kefir_hashtable_value_t) phi_node));
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_FREE(mem, phi_node);
-            return res;
-        });
+        REQUIRE_OK(kefir_hashtable_init(&instr->operation.phi_node.links, &kefir_hashtable_uint_ops));
     }
 
     if (after_instr == NULL) {
@@ -256,34 +235,24 @@ kefir_codegen_target_ir_instruction_ref_t kefir_codegen_target_ir_code_phi_attac
     kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_codegen_target_ir_value_ref linked_value_ref) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
     REQUIRE(block_ref < code->blocks_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR block reference"));
     REQUIRE(linked_value_ref.instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
     
-    kefir_hashtable_value_t value;
-    kefir_result_t res = kefir_hashtable_at(&code->phis, (kefir_hashtable_value_t) instr_ref, &value);
-    if (res == KEFIR_NOT_FOUND) {
-        res = KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to attach a link to non-phi target IR instruction");
-    }
-    REQUIRE_OK(res);
+    struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
+    REQUIRE(instr->operation.opcode == code->klass->phi_opcode, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to attach a link to non-phi target IR instruction"));
 
-    kefir_hashtree_value_t value_ref_encoded = (((kefir_uint64_t) linked_value_ref.instr_ref) << 32) | (kefir_uint32_t) linked_value_ref.aspect;
-    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_phi_node *, phi_node,
-        value);
+    kefir_hashtable_value_t value_ref_encoded = (((kefir_uint64_t) linked_value_ref.instr_ref) << 32) | (kefir_uint32_t) linked_value_ref.aspect;
 
-    struct kefir_hashtree_node *node;
-    res = kefir_hashtree_at(&phi_node->links, (kefir_hashtree_key_t) block_ref, &node);
+    kefir_hashtable_value_t *current_value;
+    kefir_result_t res = kefir_hashtable_at_mut(&instr->operation.phi_node.links, (kefir_hashtable_key_t) block_ref, &current_value);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
-        if (value_ref_encoded == node->value) {
-            return KEFIR_OK;
-        }
+        REQUIRE(value_ref_encoded == *current_value,
+            KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Target IR link for provided block reference already exists"));
+        return KEFIR_OK;
     }
 
-    res = kefir_hashtree_insert(mem, &phi_node->links, (kefir_hashtree_key_t) block_ref, (kefir_hashtree_value_t) value_ref_encoded);
-    if (res == KEFIR_ALREADY_EXISTS) {
-        res = KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Target IR link for provided block reference already exists");
-    }
-    REQUIRE_OK(res);
-    
+    REQUIRE_OK(kefir_hashtable_insert(mem, &instr->operation.phi_node.links, (kefir_hashtable_key_t) block_ref, (kefir_hashtable_value_t) value_ref_encoded));
     return KEFIR_OK;
 }

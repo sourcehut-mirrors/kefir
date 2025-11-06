@@ -23,4 +23,8 @@ kefir_result_t kefir_codegen_target_ir_control_flow_free(struct kefir_mem *, str
 kefir_result_t kefir_codegen_target_ir_control_flow_find_dominators(struct kefir_mem *mem,
                                                         struct kefir_codegen_target_ir_control_flow *);
 
+kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct kefir_codegen_target_ir_control_flow *,
+                                                     kefir_codegen_target_ir_block_ref_t,
+                                                     kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);
+
 #endif

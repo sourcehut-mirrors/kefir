@@ -112,8 +112,7 @@ typedef struct kefir_codegen_target_ir_value_ref {
 } kefir_codegen_target_ir_value_ref_t;
 
 typedef struct kefir_codegen_target_ir_phi_node {
-    kefir_codegen_target_ir_instruction_ref_t instr_ref;
-    struct kefir_hashtree links;
+    struct kefir_hashtable links;
 } kefir_codegen_target_ir_phi_node_t;
 
 typedef struct kefir_codegen_target_ir_operand {
@@ -173,7 +172,10 @@ typedef struct kefir_codegen_target_ir_operand {
 
 typedef struct kefir_codegen_target_ir_operation {
     kefir_codegen_target_ir_opcode_t opcode;
-    struct kefir_codegen_target_ir_operand parameters[KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS];
+    union {
+        struct kefir_codegen_target_ir_operand parameters[KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS];
+        struct kefir_codegen_target_ir_phi_node phi_node;
+    };
 } kefir_codegen_target_ir_operation_t;
 
 typedef struct kefir_codegen_target_ir_instruction {
@@ -225,8 +227,6 @@ typedef struct kefir_codegen_target_ir_code {
     struct kefir_codegen_target_ir_block *blocks;
     kefir_size_t blocks_length;
     kefir_size_t blocks_capacity;
-
-    struct kefir_hashtable phis;
 
     kefir_codegen_target_ir_block_ref_t entry_block;
 

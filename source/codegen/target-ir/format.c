@@ -385,24 +385,27 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
             if (instr->operation.opcode == code->klass->phi_opcode) {
                 REQUIRE_OK(kefir_json_output_object_key(json, "phi_links"));
                 REQUIRE_OK(kefir_json_output_array_begin(json));
+                kefir_hashtable_key_t key;
                 kefir_hashtable_value_t value;
-                REQUIRE_OK(kefir_hashtable_at(&code->phis, (kefir_hashtable_key_t) instr->instr_ref, &value));
-                ASSIGN_DECL_CAST(const struct kefir_codegen_target_ir_phi_node *, phi_node,
-                    value);
-                struct kefir_hashtree_node *link_node;
-                REQUIRE_OK(kefir_hashtree_min(&phi_node->links, &link_node));
-                for (; link_node != NULL; link_node = kefir_hashtree_next_node(&phi_node->links, link_node)) {
+                struct kefir_hashtable_iterator iter;
+                kefir_result_t res;
+                for (res = kefir_hashtable_iter(&instr->operation.phi_node.links, &iter, &key, &value);
+                    res == KEFIR_OK;
+                    res = kefir_hashtable_next(&iter, &key, &value)) {
                     REQUIRE_OK(kefir_json_output_object_begin(json));
                     REQUIRE_OK(kefir_json_output_object_key(json, "block_ref"));
-                    REQUIRE_OK(id_format(json, link_node->key));
+                    REQUIRE_OK(id_format(json, key));
                     REQUIRE_OK(kefir_json_output_object_key(json, "value_ref"));
                     REQUIRE_OK(kefir_json_output_object_begin(json));
                     REQUIRE_OK(kefir_json_output_object_key(json, "instr_ref"));
-                    REQUIRE_OK(id_format(json, ((kefir_uint64_t) link_node->value) >> 32));
+                    REQUIRE_OK(id_format(json, ((kefir_uint64_t) value) >> 32));
                     REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
-                    REQUIRE_OK(aspect_format(json, (kefir_uint32_t) link_node->value));
+                    REQUIRE_OK(aspect_format(json, (kefir_uint32_t) value));
                     REQUIRE_OK(kefir_json_output_object_end(json));
                     REQUIRE_OK(kefir_json_output_object_end(json));
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_OK(res);
                 }
                 REQUIRE_OK(kefir_json_output_array_end(json));
             }

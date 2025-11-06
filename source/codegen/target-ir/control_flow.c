@@ -164,3 +164,20 @@ kefir_result_t kefir_codegen_target_ir_control_flow_free(struct kefir_mem *mem, 
     control_flow->code = NULL;
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct kefir_codegen_target_ir_control_flow *structure,
+                                                     kefir_codegen_target_ir_block_ref_t dominated_block,
+                                                     kefir_codegen_target_ir_block_ref_t dominator_block, kefir_bool_t *result_ptr) {
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    if (dominated_block == dominator_block) {
+        *result_ptr = true;
+    } else if (structure->blocks[dominated_block].immediate_dominator != KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_codegen_target_ir_control_flow_is_dominator(
+            structure, structure->blocks[dominated_block].immediate_dominator, dominator_block, result_ptr));
+    } else {
+        *result_ptr = false;
+    }
+    return KEFIR_OK;
+}

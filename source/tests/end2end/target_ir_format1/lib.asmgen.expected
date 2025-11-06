@@ -14,11 +14,6 @@ factorial:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 64,
-#                    "opcode": "placeholder",
-#                    "parameters": []
-#                },
-#                {
 #                    "instr_ref": 62,
 #                    "opcode": "placeholder",
 #                    "parameters": []
@@ -45,19 +40,8 @@ factorial:
 #            "code": [
 #                {
 #                    "instr_ref": 63,
-#                    "opcode": "phi",
-#                    "parameters": [],
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 64,
-#                                "aspect": {
-#                                    "type": "phi"
-#                                }
-#                            }
-#                        }
-#                    ]
+#                    "opcode": "placeholder",
+#                    "parameters": []
 #                },
 #                {
 #                    "instr_ref": 2,
@@ -836,7 +820,7 @@ factorial:
 #            "block_ref": 13,
 #            "code": [
 #                {
-#                    "instr_ref": 65,
+#                    "instr_ref": 64,
 #                    "opcode": "phi",
 #                    "parameters": [],
 #                    "phi_links": []
@@ -873,7 +857,7 @@ factorial:
 #                        {
 #                            "block_ref": 13,
 #                            "value_ref": {
-#                                "instr_ref": 65,
+#                                "instr_ref": 64,
 #                                "aspect": {
 #                                    "type": "phi"
 #                                }
