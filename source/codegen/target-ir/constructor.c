@@ -37,6 +37,9 @@ struct asmcmp_instr_state {
 };
 
 struct asmcmp_vreg_state {
+    struct {
+        kefir_codegen_target_ir_block_ref_t block_ref;
+    } dominator;
     struct kefir_hashtable block_lifetimes;
 };
 
@@ -532,21 +535,31 @@ static kefir_result_t resolve_phi(struct constructor_state *state, struct code_b
         return KEFIR_OK;
     }
 
-    kefir_bool_t use_dominator = true;
     struct asmcmp_vreg_state *vreg_state = &state->asmcmp_vregs[vreg_idx];
-    kefir_hashtable_key_t key;
-    struct kefir_hashtable_iterator iter;
-    for (res = kefir_hashtable_iter(&vreg_state->block_lifetimes, &iter, &key, NULL);
-        res == KEFIR_OK && use_dominator;
-        res = kefir_hashtable_next(&iter, &key, NULL)) {
-        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, use_block_ref,
-            key);
-        
-        REQUIRE_OK(kefir_codegen_target_ir_control_flow_is_dominator(&state->control_flow, use_block_ref, block_state->block_ref, &use_dominator));
+    if (vreg_state->dominator.block_ref == KEFIR_ID_NONE) {
+        kefir_hashtable_key_t key;
+        struct kefir_hashtable_iterator iter;
+        for (res = kefir_hashtable_iter(&vreg_state->block_lifetimes, &iter, &key, NULL);
+            res == KEFIR_OK;
+            res = kefir_hashtable_next(&iter, &key, NULL)) {
+            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, use_block_ref,
+                key);
+            if (use_block_ref != state->code->entry_block && state->control_flow.blocks[use_block_ref].immediate_dominator == KEFIR_ID_NONE) {
+                continue;
+            }
+            
+            REQUIRE_OK(kefir_codegen_target_ir_control_flow_find_closest_common_dominator(&state->control_flow, use_block_ref, vreg_state->dominator.block_ref, &vreg_state->dominator.block_ref));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+
+        REQUIRE(vreg_state->dominator.block_ref != KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to compute block dominating virtual register uses"));
     }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
+
+    kefir_bool_t use_dominator = true;
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_is_dominator(&state->control_flow, vreg_state->dominator.block_ref, block_state->block_ref, &use_dominator));
 
     if (use_dominator) {
         struct kefir_codegen_target_ir_operation operation = {
@@ -561,6 +574,24 @@ static kefir_result_t resolve_phi(struct constructor_state *state, struct code_b
         value_ref->aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_PHI;
         REQUIRE_OK(store_virtual_reigster_output(state, block_state, vreg_idx, *value_ref));
     } else {
+        struct kefir_hashtreeset_iterator iter;
+        kefir_result_t res = kefir_hashtreeset_iter(&state->control_flow.blocks[block_state->block_ref].predecessors, &iter);
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, predecessor_block_ref,
+                iter.entry);
+            res = kefir_hashtreeset_next(&iter);
+            if (res == KEFIR_ITERATOR_END) {
+                struct kefir_hashtree_node *node;
+                REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) predecessor_block_ref, &node));
+                ASSIGN_DECL_CAST(struct code_block_state *, predecessor_block_state,
+                    node->value);
+                return resolve_phi(state, predecessor_block_state, vreg_idx, value_ref);
+            } else {
+                REQUIRE_OK(res);
+            }
+        }
+
         kefir_codegen_target_ir_instruction_ref_t own_phi_instr_ref;
         struct kefir_codegen_target_ir_operation operation = {
             .opcode = state->code->klass->phi_opcode,
@@ -616,6 +647,10 @@ static kefir_result_t link_phis(struct constructor_state *state) {
     for (; block_node != NULL; block_node = kefir_hashtree_next_node(&state->blocks, block_node)) {
         ASSIGN_DECL_CAST(struct code_block_state *, block_state,
             block_node->value);
+        if (block_state->block_ref != state->code->entry_block && state->control_flow.blocks[block_state->block_ref].immediate_dominator == KEFIR_ID_NONE) {
+            continue;
+        }
+        
         kefir_hashtable_key_t key;
         kefir_hashtable_value_t value;
         struct kefir_hashtable_iterator iter;
@@ -698,6 +733,8 @@ kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *mem, str
             }
             return res;
         });
+
+        state.asmcmp_vregs[i].dominator.block_ref = KEFIR_ID_NONE;
     }
 
     REQUIRE_CHAIN(&res, code_construct(&state));

@@ -168,7 +168,7 @@ kefir_result_t kefir_codegen_target_ir_control_flow_free(struct kefir_mem *mem, 
 kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct kefir_codegen_target_ir_control_flow *structure,
                                                      kefir_codegen_target_ir_block_ref_t dominated_block,
                                                      kefir_codegen_target_ir_block_ref_t dominator_block, kefir_bool_t *result_ptr) {
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
     REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     if (dominated_block == dominator_block) {
@@ -179,5 +179,41 @@ kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct ke
     } else {
         *result_ptr = false;
     }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_control_flow_find_closest_common_dominator(const struct kefir_codegen_target_ir_control_flow *control_flow,
+                                                       kefir_codegen_target_ir_block_ref_t block_ref,
+                                                       kefir_codegen_target_ir_block_ref_t other_block_ref,
+                                                       kefir_codegen_target_ir_block_ref_t *common_dominator_block_id) {
+    REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
+    REQUIRE(common_dominator_block_id != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR block reference"));
+
+    if (block_ref == KEFIR_ID_NONE) {
+        *common_dominator_block_id = other_block_ref;
+        return KEFIR_OK;
+    }
+    if (other_block_ref == KEFIR_ID_NONE) {
+        *common_dominator_block_id = block_ref;
+        return KEFIR_OK;
+    }
+
+    kefir_bool_t is_dominator;
+    kefir_codegen_target_ir_block_ref_t dominator_block_ref = other_block_ref;
+    do {
+        if (dominator_block_ref == KEFIR_ID_NONE) {
+            break;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_control_flow_is_dominator(control_flow, block_ref, dominator_block_ref, &is_dominator));
+        if (is_dominator) {
+            *common_dominator_block_id = dominator_block_ref;
+            return KEFIR_OK;
+        } else {
+            dominator_block_ref = control_flow->blocks[dominator_block_ref].immediate_dominator;
+        }
+    } while (!is_dominator);
+
+    *common_dominator_block_id = KEFIR_ID_NONE;
     return KEFIR_OK;
 }
