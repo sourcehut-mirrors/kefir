@@ -1057,8 +1057,41 @@ static kefir_result_t variable_allocator_type_layout(kefir_id_t type_id, kefir_s
     return KEFIR_OK;
 }
 
+static kefir_result_t construct_target_ir_get_allocation_constraint(kefir_asmcmp_virtual_register_index_t vreg_idx, struct kefir_codegen_target_ir_allocation_constraint *constraint, void *payload) {
+    REQUIRE(constraint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR allocation constraint"));
+    ASSIGN_DECL_CAST(struct kefir_codegen_amd64_function *, func,
+        payload);
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
+
+    const struct kefir_asmcmp_amd64_register_preallocation *preallocation;
+    REQUIRE_OK(kefir_asmcmp_amd64_get_register_preallocation(&func->code, vreg_idx, &preallocation));
+    REQUIRE(preallocation != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find preallocation constraint for the virtual register"));
+
+    switch (preallocation->type) {
+        case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT:
+            constraint->type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT;
+            constraint->physical_register = preallocation->reg;
+            break;
+
+        case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT:
+            constraint->type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT;
+            constraint->physical_register = preallocation->reg;
+            break;
+
+        case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS:
+            // TODO KEFIR_NOT_IMPLEMENTED
+            return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find preallocation constraint for the virtual register");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_function *func, struct kefir_codegen_target_ir_code *code) {
-    REQUIRE_OK(kefir_codegen_target_ir_code_construct(mem, code, &func->code.context, &KEFIR_TARGET_AMD64_CODE_CONSTRUCTOR_CLASS));
+    struct kefir_codegen_target_ir_code_constructor_parameters params = {
+        .klass = &KEFIR_TARGET_AMD64_CODE_CONSTRUCTOR_CLASS,
+        .get_allocation_constraint = construct_target_ir_get_allocation_constraint,
+        .payload = func
+    };
+    REQUIRE_OK(kefir_codegen_target_ir_code_construct(mem, code, &func->code.context, &params));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "target_ir") == 0) {
         const char *comment_prefix;

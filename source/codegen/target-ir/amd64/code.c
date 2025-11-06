@@ -136,6 +136,7 @@ const struct kefir_codegen_target_ir_code_class KEFIR_TARGET_AMD64_CODE_CLASS = 
     .is_block_terminator = is_block_terminator,
     .make_unconditional_jump = make_unconditional_jump,
     .finalize_conditional_jump = finalize_conditional_jump,
+    .assign_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(assign),
     .phi_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(phi),
     .placeholder_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(placeholder),
     .payload = NULL

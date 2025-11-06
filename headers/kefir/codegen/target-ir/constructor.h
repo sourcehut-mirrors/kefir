@@ -64,6 +64,12 @@ typedef struct kefir_codegen_target_ir_code_constructor_class {
     void *payload;
 } kefir_codegen_target_ir_code_constructor_class_t;
 
-kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_asmcmp_context *, const struct kefir_codegen_target_ir_code_constructor_class *);
+typedef struct kefir_codegen_target_ir_code_constructor_parameters {
+    const struct kefir_codegen_target_ir_code_constructor_class *klass;
+    kefir_result_t (*get_allocation_constraint)(kefir_asmcmp_virtual_register_index_t, struct kefir_codegen_target_ir_allocation_constraint *, void *);
+    void *payload;
+} kefir_codegen_target_ir_code_constructor_parameters_t;
+
+kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_asmcmp_context *, const struct kefir_codegen_target_ir_code_constructor_parameters *);
 
 #endif

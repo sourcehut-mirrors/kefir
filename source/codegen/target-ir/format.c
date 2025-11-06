@@ -39,11 +39,6 @@ static kefir_result_t aspect_format(struct kefir_json_output *json, kefir_uint32
         REQUIRE_OK(kefir_json_output_object_key(json, "type"));
         REQUIRE_OK(kefir_json_output_string(json, "flags"));
         REQUIRE_OK(kefir_json_output_object_end(json));
-    } else if (aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_PHI) {
-        REQUIRE_OK(kefir_json_output_object_begin(json));
-        REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-        REQUIRE_OK(kefir_json_output_string(json, "phi"));
-        REQUIRE_OK(kefir_json_output_object_end(json));
     } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_OUTPUT_REGISTER(aspect)) {
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "type"));
@@ -382,13 +377,13 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
             }
             REQUIRE_OK(kefir_json_output_array_end(json));
 
+            kefir_result_t res;
             if (instr->operation.opcode == code->klass->phi_opcode) {
                 REQUIRE_OK(kefir_json_output_object_key(json, "phi_links"));
                 REQUIRE_OK(kefir_json_output_array_begin(json));
                 kefir_hashtable_key_t key;
                 kefir_hashtable_value_t value;
                 struct kefir_hashtable_iterator iter;
-                kefir_result_t res;
                 for (res = kefir_hashtable_iter(&instr->operation.phi_node.links, &iter, &key, &value);
                     res == KEFIR_OK;
                     res = kefir_hashtable_next(&iter, &key, &value)) {
@@ -409,6 +404,108 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                 }
                 REQUIRE_OK(kefir_json_output_array_end(json));
             }
+
+            REQUIRE_OK(kefir_json_output_object_key(json, "values"));
+            REQUIRE_OK(kefir_json_output_array_begin(json));
+            struct kefir_codegen_target_ir_value_iterator value_iter;
+            struct kefir_codegen_target_ir_value_ref value_ref;
+            const struct kefir_codegen_target_ir_value_type *value_type;
+            for (res = kefir_codegen_target_ir_code_value_iter(code, &value_iter, instr_ref, &value_ref, &value_type);
+                res == KEFIR_OK;
+                res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, &value_type)) {
+                REQUIRE_OK(kefir_json_output_object_begin(json));
+                REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
+                REQUIRE_OK(aspect_format(json, value_ref.aspect));
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_object_begin(json));
+                REQUIRE_OK(kefir_json_output_object_key(json, "kind"));
+                switch (value_type->kind) {
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
+                        REQUIRE_OK(kefir_json_output_string(json, "unspecified"));
+                        break;
+
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE:
+                        REQUIRE_OK(kefir_json_output_string(json, "general_purpose"));
+                        break;
+
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT:
+                        REQUIRE_OK(kefir_json_output_string(json, "floating_point"));
+                        break;
+
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_SPILL_SPACE:
+                        REQUIRE_OK(kefir_json_output_string(json, "spill_space"));
+                        REQUIRE_OK(kefir_json_output_object_key(json, "alignment"));
+                        REQUIRE_OK(kefir_json_output_uinteger(json, value_type->parameters.spill_space_allocation.alignment));
+                        REQUIRE_OK(kefir_json_output_object_key(json, "length"));
+                        REQUIRE_OK(kefir_json_output_uinteger(json, value_type->parameters.spill_space_allocation.length));
+                        break;
+
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE:
+                        REQUIRE_OK(kefir_json_output_string(json, "local_variable"));
+                        REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
+                        REQUIRE_OK(id_format(json, value_type->parameters.local_variable.identifier));
+                        REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
+                        REQUIRE_OK(kefir_json_output_uinteger(json, value_type->parameters.local_variable.offset));
+                        break;
+
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_PAIR:
+                        REQUIRE_OK(kefir_json_output_string(json, "pair"));
+                        break;
+
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_IMMEDIATE_INT:
+                        REQUIRE_OK(kefir_json_output_string(json, "immediate_int"));
+                        REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                        REQUIRE_OK(kefir_json_output_integer(json, value_type->parameters.immediate_int));
+                        break;
+
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY: {
+                        const char *mnemonic;
+                        REQUIRE_OK(code->klass->register_mnemonic(value_type->parameters.memory.base_reg, &mnemonic, code->klass->payload));
+                        REQUIRE_OK(kefir_json_output_string(json, "external_memory"));
+                        REQUIRE_OK(kefir_json_output_object_key(json, "base_reg"));
+                        REQUIRE_OK(kefir_json_output_string(json, mnemonic));
+                        REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
+                        REQUIRE_OK(kefir_json_output_uinteger(json, value_type->parameters.memory.offset));
+                    } break;
+                }
+                REQUIRE_OK(kefir_json_output_object_end(json));
+
+                const struct kefir_codegen_target_ir_allocation_constraint *constraint = NULL;
+                REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, NULL, &constraint));
+                if (constraint != NULL) {
+                    REQUIRE_OK(kefir_json_output_object_key(json, "constraint"));
+                    REQUIRE_OK(kefir_json_output_object_begin(json));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                    switch (constraint->type) {
+                        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT: {
+                            REQUIRE_OK(kefir_json_output_string(json, "requirement"));
+                            const char *mnemonic;
+                            REQUIRE_OK(code->klass->register_mnemonic(constraint->physical_register, &mnemonic, code->klass->payload));
+                            REQUIRE_OK(kefir_json_output_object_key(json, "register"));
+                            REQUIRE_OK(kefir_json_output_string(json, mnemonic));
+                        } break;
+
+                        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT: {
+                            REQUIRE_OK(kefir_json_output_string(json, "hint"));
+                            const char *mnemonic;
+                            REQUIRE_OK(code->klass->register_mnemonic(constraint->physical_register, &mnemonic, code->klass->payload));
+                            REQUIRE_OK(kefir_json_output_object_key(json, "register"));
+                            REQUIRE_OK(kefir_json_output_string(json, mnemonic));
+                        } break;
+
+                        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS:
+                            REQUIRE_OK(kefir_json_output_string(json, "same_as"));
+                            // TODO KEFIR_NOT_IMPLEMENTED
+                            break;
+                    }
+                    REQUIRE_OK(kefir_json_output_object_end(json));
+                }
+                REQUIRE_OK(kefir_json_output_object_end(json));
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+            REQUIRE_OK(kefir_json_output_array_end(json));
             REQUIRE_OK(kefir_json_output_object_end(json));
         }
         REQUIRE_OK(kefir_json_output_array_end(json));
