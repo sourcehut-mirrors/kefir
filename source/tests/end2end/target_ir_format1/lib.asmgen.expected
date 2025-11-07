@@ -62,7 +62,6 @@ factorial:
 #                {
 #                    "instr_ref": 10,
 #                    "opcode": "phi",
-#                    "parameters": [],
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 0,
@@ -90,7 +89,6 @@ factorial:
 #                {
 #                    "instr_ref": 2,
 #                    "opcode": "phi",
-#                    "parameters": [],
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 0,
@@ -378,7 +376,6 @@ factorial:
 #                {
 #                    "instr_ref": 28,
 #                    "opcode": "phi",
-#                    "parameters": [],
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 2,
@@ -823,7 +820,6 @@ factorial:
 #                {
 #                    "instr_ref": 41,
 #                    "opcode": "phi",
-#                    "parameters": [],
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 5,

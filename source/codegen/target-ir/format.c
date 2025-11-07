@@ -370,37 +370,38 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
             REQUIRE_OK(code->klass->opcode_mnemonic(instr->operation.opcode, &mnemonic, code->klass->payload));
             REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
             REQUIRE_OK(kefir_json_output_string(json, mnemonic));
-            REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));
-            REQUIRE_OK(kefir_json_output_array_begin(json));
-            for (kefir_size_t j = 0; j < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; j++) {
-                REQUIRE_OK(operand_format(json, code, &instr->operation.parameters[j]));
-            }
-            REQUIRE_OK(kefir_json_output_array_end(json));
 
             kefir_result_t res;
             if (instr->operation.opcode == code->klass->phi_opcode) {
                 REQUIRE_OK(kefir_json_output_object_key(json, "phi_links"));
                 REQUIRE_OK(kefir_json_output_array_begin(json));
-                kefir_hashtable_key_t key;
-                kefir_hashtable_value_t value;
-                struct kefir_hashtable_iterator iter;
-                for (res = kefir_hashtable_iter(&instr->operation.phi_node.links, &iter, &key, &value);
+                struct kefir_codegen_target_ir_value_phi_node_iterator iter;
+                kefir_codegen_target_ir_block_ref_t link_block_ref;
+                struct kefir_codegen_target_ir_value_ref link_value_ref;
+                for (res = kefir_codegen_target_ir_code_phi_link_iter(code, &iter, instr_ref, &link_block_ref, &link_value_ref);
                     res == KEFIR_OK;
-                    res = kefir_hashtable_next(&iter, &key, &value)) {
+                    res = kefir_codegen_target_ir_code_phi_link_next(&iter, &link_block_ref, &link_value_ref)) {
                     REQUIRE_OK(kefir_json_output_object_begin(json));
                     REQUIRE_OK(kefir_json_output_object_key(json, "block_ref"));
-                    REQUIRE_OK(id_format(json, key));
+                    REQUIRE_OK(id_format(json, link_block_ref));
                     REQUIRE_OK(kefir_json_output_object_key(json, "value_ref"));
                     REQUIRE_OK(kefir_json_output_object_begin(json));
                     REQUIRE_OK(kefir_json_output_object_key(json, "instr_ref"));
-                    REQUIRE_OK(id_format(json, ((kefir_uint64_t) value) >> 32));
+                    REQUIRE_OK(id_format(json, link_value_ref.instr_ref));
                     REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
-                    REQUIRE_OK(aspect_format(json, (kefir_uint32_t) value));
+                    REQUIRE_OK(aspect_format(json, link_value_ref.aspect));
                     REQUIRE_OK(kefir_json_output_object_end(json));
                     REQUIRE_OK(kefir_json_output_object_end(json));
                 }
                 if (res != KEFIR_ITERATOR_END) {
                     REQUIRE_OK(res);
+                }
+                REQUIRE_OK(kefir_json_output_array_end(json));
+            } else {
+                REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));
+                REQUIRE_OK(kefir_json_output_array_begin(json));
+                for (kefir_size_t j = 0; j < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; j++) {
+                    REQUIRE_OK(operand_format(json, code, &instr->operation.parameters[j]));
                 }
                 REQUIRE_OK(kefir_json_output_array_end(json));
             }

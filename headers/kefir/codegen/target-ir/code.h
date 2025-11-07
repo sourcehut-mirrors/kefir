@@ -136,6 +136,10 @@ typedef struct kefir_codegen_target_ir_value_type {
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_REGISTER(_aspect) ((kefir_uint16_t) (_aspect))
 
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(_value_ref) ((((kefir_uint64_t) (_value_ref)->instr_ref) << 32) | (kefir_uint32_t) (_value_ref)->aspect)
+#define KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(_encoded) ((struct kefir_codegen_target_ir_value_ref) { \
+        .instr_ref = ((kefir_uint64_t) (_encoded)) >> 32, \
+        .aspect = (kefir_uint32_t) (_encoded) \
+    })
 
 typedef struct kefir_codegen_target_ir_value_ref {
     kefir_codegen_target_ir_instruction_ref_t instr_ref;
@@ -304,6 +308,13 @@ kefir_result_t kefir_codegen_target_ir_code_drop_instruction(struct kefir_mem *,
 kefir_result_t kefir_codegen_target_ir_code_phi_attach(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,
     kefir_codegen_target_ir_block_ref_t, struct kefir_codegen_target_ir_value_ref);
 
+typedef struct kefir_codegen_target_ir_value_phi_node_iterator {
+    struct kefir_hashtable_iterator iter;
+} kefir_codegen_target_ir_value_phi_node_iterator_t;
+
+kefir_result_t kefir_codegen_target_ir_code_phi_link_iter(const struct kefir_codegen_target_ir_code *, struct kefir_codegen_target_ir_value_phi_node_iterator *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_block_ref_t *, struct kefir_codegen_target_ir_value_ref *);
+kefir_result_t kefir_codegen_target_ir_code_phi_link_next(struct kefir_codegen_target_ir_value_phi_node_iterator *, kefir_codegen_target_ir_block_ref_t *, struct kefir_codegen_target_ir_value_ref *);
+
 kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type *);
 kefir_result_t kefir_codegen_target_ir_code_add_constraint(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_allocation_constraint *);
 kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type **, const struct kefir_codegen_target_ir_allocation_constraint **);
@@ -313,6 +324,7 @@ typedef struct kefir_codegen_target_ir_value_iterator {
     struct kefir_hashtable_iterator iter;
     kefir_codegen_target_ir_instruction_ref_t instr_ref;
 } kefir_codegen_target_ir_code_value_iterator_t;
+
 kefir_result_t kefir_codegen_target_ir_code_value_iter(const struct kefir_codegen_target_ir_code *, struct kefir_codegen_target_ir_value_iterator *, kefir_codegen_target_ir_instruction_ref_t, struct kefir_codegen_target_ir_value_ref *, const struct kefir_codegen_target_ir_value_type **);
 kefir_result_t kefir_codegen_target_ir_code_value_next(struct kefir_codegen_target_ir_value_iterator *, struct kefir_codegen_target_ir_value_ref *, const struct kefir_codegen_target_ir_value_type **);
 
