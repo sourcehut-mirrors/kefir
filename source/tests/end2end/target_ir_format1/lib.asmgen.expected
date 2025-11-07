@@ -14,40 +14,28 @@ factorial:
 #            "block_ref": 0,
 #            "code": [
 #                {
+#                    "instr_ref": 74,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 73,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
 #                    "instr_ref": 72,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdi"
-#                            }
-#                        }
-#                    ]
+#                    "values": []
 #                },
 #                {
 #                    "instr_ref": 71,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
+#                    "values": []
 #                },
 #                {
 #                    "instr_ref": 0,
@@ -371,22 +359,6 @@ factorial:
 #        {
 #            "block_ref": 2,
 #            "code": [
-#                {
-#                    "instr_ref": 73,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
 #                {
 #                    "instr_ref": 15,
 #                    "opcode": "jmp",
@@ -815,22 +787,6 @@ factorial:
 #            "block_ref": 5,
 #            "code": [
 #                {
-#                    "instr_ref": 74,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 34,
 #                    "opcode": "mov",
 #                    "parameters": [
@@ -882,7 +838,7 @@ factorial:
 #                        {
 #                            "block_ref": 10,
 #                            "value_ref": {
-#                                "instr_ref": 75,
+#                                "instr_ref": 42,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1181,23 +1137,6 @@ factorial:
 #            "block_ref": 9,
 #            "code": [
 #                {
-#                    "instr_ref": 76,
-#                    "opcode": "phi",
-#                    "parameters": [],
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 51,
 #                    "opcode": "jmp",
 #                    "parameters": [
@@ -1213,44 +1152,6 @@ factorial:
 #        {
 #            "block_ref": 10,
 #            "code": [
-#                {
-#                    "instr_ref": 75,
-#                    "opcode": "phi",
-#                    "parameters": [],
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 6,
-#                            "value_ref": {
-#                                "instr_ref": 42,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 9,
-#                            "value_ref": {
-#                                "instr_ref": 76,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
 #                {
 #                    "instr_ref": 52,
 #                    "opcode": "mov",
