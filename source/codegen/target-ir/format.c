@@ -429,6 +429,10 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                         REQUIRE_OK(kefir_json_output_string(json, "general_purpose"));
                         break;
 
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+                        REQUIRE_OK(kefir_json_output_string(json, "flags"));
+                        break;
+
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT:
                         REQUIRE_OK(kefir_json_output_string(json, "floating_point"));
                         break;

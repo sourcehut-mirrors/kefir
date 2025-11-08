@@ -24,7 +24,9 @@
 #include "kefir/codegen/target-ir/code.h"
 #include "kefir/codegen/asmcmp/context.h"
 
-#define KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_IMPLICIT ((kefir_size_t) ~0ull)
+#define KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_NONE (0ull)
+#define KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_CONSUMES_FLAGS (1ull)
+#define KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_PRODUCES_FLAGS (1ull << 1)
 
 typedef enum kefir_codegen_target_ir_asmcmp_operand_class {
     KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE,
@@ -59,10 +61,10 @@ typedef struct kefir_codegen_target_ir_asmcmp_instruction_classification {
     union {
         struct {
             struct kefir_codegen_target_ir_asmcmp_operand_classification operands[KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS];
-            kefir_bool_t modifies_flags;
         };
         kefir_codegen_target_ir_native_id_t attribute;
     };
+    kefir_uint64_t extra_flags;
 } kefir_codegen_target_ir_asmcmp_instruction_classification_t;
 
 typedef struct kefir_codegen_target_ir_code_constructor_class {

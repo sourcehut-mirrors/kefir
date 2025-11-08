@@ -139,6 +139,7 @@ static kefir_result_t make_unconditional_jump(kefir_codegen_target_ir_block_ref_
     operation_ptr->parameters[0].block_ref = block_ref;
     operation_ptr->parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
     operation_ptr->parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
+    operation_ptr->parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
     return KEFIR_OK;
 }
 
@@ -150,6 +151,7 @@ static kefir_result_t finalize_conditional_jump(const struct kefir_codegen_targe
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR operation"));
 
     *operation_ptr = *operation;
+    operation_ptr->parameters[2] = operation_ptr->parameters[1];
     operation_ptr->parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF;
     operation_ptr->parameters[1].block_ref = block_ref;
     return KEFIR_OK;

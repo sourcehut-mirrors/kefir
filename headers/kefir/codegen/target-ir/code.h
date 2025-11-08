@@ -26,7 +26,7 @@
 #include "kefir/core/hashtable.h"
 #include "kefir/core/hashset.h"
 
-#define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 3
+#define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 4
 
 typedef kefir_id_t kefir_codegen_target_ir_block_ref_t;
 typedef kefir_id_t kefir_codegen_target_ir_instruction_ref_t;
@@ -103,6 +103,7 @@ typedef enum kefir_codegen_target_ir_value_aspect {
 typedef enum kefir_codegen_target_ir_value_type_kind {
     KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED,
     KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE,
+    KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS,
     KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT,
     KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_SPILL_SPACE,
     KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE,
