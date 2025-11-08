@@ -42,4 +42,4 @@ if __name__ == '__main__':
         alts.get(arg, arg)
         for arg in sys.argv[1:]
     )
-    os.execvp(WGET_CMD, [WGET_CMD, *args])
+    os.execvp(WGET_CMD, [WGET_CMD, '--tries=0', '--retry-connrefused', '--waitretry=10', '--timeout=30', *args])
