@@ -1054,8 +1054,7 @@ static kefir_result_t devirtualize_instr2(struct kefir_mem *mem, struct devirtua
 
     REQUIRE_OK(devirtualize_instr_arg(mem, state, instr_idx, instr, original_instr, 0, tail_instr_idx, instr_flags,
                                       op1_flags,
-                                      !DEVIRT_HAS_FLAG(instr_flags, KEFIR_AMD64_INSTRDB_BOTH_MEMORY) &&
-                                          (instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT ||
+                                      (instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT ||
                                            instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL ||
                                            instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL)));
     REQUIRE_OK(devirtualize_instr_arg(mem, state, instr_idx, instr, original_instr, 1, tail_instr_idx, instr_flags,
@@ -1077,8 +1076,7 @@ static kefir_result_t devirtualize_instr3(struct kefir_mem *mem, struct devirtua
 
     REQUIRE_OK(devirtualize_instr_arg(mem, state, instr_idx, instr, original_instr, 0, tail_instr_idx, instr_flags,
                                       op1_flags,
-                                      !DEVIRT_HAS_FLAG(instr_flags, KEFIR_AMD64_INSTRDB_BOTH_MEMORY) &&
-                                          (instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT ||
+                                      (instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT ||
                                            instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL ||
                                            instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL)));
     REQUIRE_OK(devirtualize_instr_arg(mem, state, instr_idx, instr, original_instr, 1, tail_instr_idx, instr_flags,
@@ -1952,7 +1950,7 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
 
             case KEFIR_ASMCMP_AMD64_OPCODE(tail_call):
                 REQUIRE_OK(devirtualize_instr1(mem, state, idx, &devirtualized_instr, &original_instr, &tail_idx,
-                                               KEFIR_AMD64_INSTRDB_NONE, KEFIR_AMD64_INSTRDB_BRANCH_TAGET));
+                                               KEFIR_AMD64_INSTRDB_NONE, KEFIR_AMD64_INSTRDB_BRANCH_TARGET));
                 break;
 
             case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):

@@ -70,12 +70,19 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_i
 
     switch (instruction->operation.opcode) {
 #define DEF_OPCODE_NOOP(...)
-#define DEF_OPCODE1(_opcode, _mnemonic, _branch, ...) CASE_IS_##_branch(_opcode)
-#define CASE_IS_BRANCH(_opcode) \
+#define DEF_OPCODE0(_opcode, _mnemonic, _branch, _flags) \
+        case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+            if ((_flags) & KEFIR_AMD64_INSTRDB_CONTROL_FLOW_TERMINATE_CONTROL_FLOW) { \
+                props->block_terminator = true; \
+                props->function_terminator = true; \
+            } \
+            break;
+#define DEF_OPCODE1(_opcode, _mnemonic, _branch, _flags, ...) CASE_IS_##_branch(_opcode, _flags)
+#define CASE_IS_BRANCH(_opcode, _flags) \
         case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
             if (KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(call)) { \
                 props->block_terminator = true; \
-                props->fallthrough = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(jmp) && \
+                props->fallthrough = ((_flags) & KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP_FALLTHROUGH) != 0 && \
                     instruction->operation.parameters[1].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF; \
                 if (instruction->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) { \
                     props->target_block_refs[0] = instruction->operation.parameters[0].block_ref; \
@@ -89,12 +96,11 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_i
             break;
 #define CASE_IS_(...)
 
-        KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE_NOOP, DEF_OPCODE1, DEF_OPCODE_NOOP, DEF_OPCODE_NOOP,)
+        KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE0, DEF_OPCODE1, DEF_OPCODE_NOOP, DEF_OPCODE_NOOP,)
 #undef DEF_OPCODE_NOOP
 #undef DEF_OPCODE1
+#undef DEF_OPCODE0
 
-        case KEFIR_TARGET_IR_AMD64_OPCODE(ret):
-        case KEFIR_TARGET_IR_AMD64_OPCODE(ud2):
         case KEFIR_TARGET_IR_AMD64_OPCODE(tail_call):
             props->block_terminator = true;
             props->function_terminator = true;

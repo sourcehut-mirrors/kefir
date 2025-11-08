@@ -28,22 +28,14 @@ static kefir_result_t amd64_is_jump(kefir_asmcmp_instruction_opcode_t asmcmp_opc
 
     *is_jump_ptr = false;
     switch (asmcmp_opcode){
-#define DEF_OPCODE_NOOP(...)
-#define DEF_OPCODE1(_opcode, _mnemonic, _branch, ...) CASE_IS_##_branch(_opcode)
-#define CASE_IS_BRANCH(_opcode) \
+#define DEF_OPCODE0(_opcode, _mnemonic, _variant, _flags) \
         case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
-            *is_jump_ptr = KEFIR_ASMCMP_AMD64_OPCODE(_opcode) != KEFIR_ASMCMP_AMD64_OPCODE(call); \
+            *is_jump_ptr = ((_flags) & (KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP | KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP_FALLTHROUGH | KEFIR_AMD64_INSTRDB_CONTROL_FLOW_TERMINATE_CONTROL_FLOW)) != 0; \
             break;
-#define CASE_IS_(...)
-
-        KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE_NOOP, DEF_OPCODE1, DEF_OPCODE_NOOP, DEF_OPCODE_NOOP,)
-#undef DEF_OPCODE_NOOP
-#undef DEF_OPCODE1
-
-        case KEFIR_ASMCMP_AMD64_OPCODE(ret):
-        case KEFIR_ASMCMP_AMD64_OPCODE(ud2):
-            *is_jump_ptr = true;
-            break;
+#define DEF_OPCODE(_opcode, _mnemonic, _variant, _flags, ...) DEF_OPCODE0(_opcode, _mnemonic, _variant, _flags)
+        KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE0, DEF_OPCODE, DEF_OPCODE, DEF_OPCODE,)
+#undef DEF_OPCODE
+#undef DEF_OPCODE0
     }
     return KEFIR_OK;
 }
