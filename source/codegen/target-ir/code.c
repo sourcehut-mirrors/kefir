@@ -21,8 +21,12 @@
 #include "kefir/codegen//target-ir/code.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include "kefir/core/hashset.h"
 #include <string.h>
 
+struct instruction_attributes {
+    struct kefir_hashset attributes;
+};
 
 static kefir_result_t free_constraint(struct kefir_mem *mem, struct kefir_hashtable *table,
                                                           kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
@@ -35,6 +39,21 @@ static kefir_result_t free_constraint(struct kefir_mem *mem, struct kefir_hashta
     REQUIRE(constraint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR allocation constraint"));
 
     KEFIR_FREE(mem, constraint);
+    return KEFIR_OK;
+}
+
+static kefir_result_t free_attributes(struct kefir_mem *mem, struct kefir_hashtable *table,
+                                                          kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct instruction_attributes *, attributes,
+        value);
+    REQUIRE(attributes != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR attributes"));
+
+    REQUIRE_OK(kefir_hashset_free(mem, &attributes->attributes));
+    KEFIR_FREE(mem, attributes);
     return KEFIR_OK;
 }
 
@@ -56,6 +75,8 @@ kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_
 
     REQUIRE_OK(kefir_hashtable_init(&code->constraints, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&code->constraints, free_constraint, NULL));
+    REQUIRE_OK(kefir_hashtable_init(&code->attributes, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&code->attributes, free_attributes, NULL));
     return KEFIR_OK;
 }
 
@@ -69,6 +90,7 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
         }
         REQUIRE_OK(kefir_hashtable_free(mem, &code->code[i].aspects));
     }
+    REQUIRE_OK(kefir_hashtable_free(mem, &code->attributes));
     REQUIRE_OK(kefir_hashtable_free(mem, &code->constraints));
     KEFIR_FREE(mem, code->value_types);
     KEFIR_FREE(mem, code->blocks);
@@ -395,6 +417,32 @@ kefir_result_t kefir_codegen_target_ir_code_add_constraint(struct kefir_mem *mem
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_code_add_instruction_attribute(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_native_id_t attribute) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr_ref != KEFIR_ID_NONE && instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction reference"));
+
+    struct instruction_attributes *attrs = NULL;
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&code->attributes, (kefir_hashtable_key_t) instr_ref, &table_value);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        attrs = (struct instruction_attributes *) table_value;
+    } else {
+        attrs = KEFIR_MALLOC(mem, sizeof(struct instruction_attributes));
+        REQUIRE(attrs != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR instruction attriubutes"));
+        res = kefir_hashset_init(&attrs->attributes, &kefir_hashtable_uint_ops);
+        REQUIRE_CHAIN(&res, kefir_hashtable_insert(mem, &code->attributes, (kefir_hashtable_key_t) instr_ref, (kefir_hashtable_value_t) attrs));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, attrs);
+            return res;
+        });
+    }
+
+    REQUIRE_OK(kefir_hashset_add(mem, &attrs->attributes, (kefir_hashset_key_t) attribute));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, const struct kefir_codegen_target_ir_value_type **value_type_ptr, const struct kefir_codegen_target_ir_allocation_constraint **constraint_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE && value_ref.instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR value reference"));
@@ -450,5 +498,48 @@ kefir_result_t kefir_codegen_target_ir_code_value_next(struct kefir_codegen_targ
     };
     ASSIGN_PTR(value_ref_ptr, value_ref);
     ASSIGN_PTR(value_type_ptr, &iter->code->value_types[(kefir_size_t) table_value]);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_instruction_attribute_iter(const struct kefir_codegen_target_ir_code *code,
+    struct kefir_codegen_target_ir_code_attribute_iterator *iter,
+    kefir_codegen_target_ir_instruction_ref_t instr_ref,
+    kefir_codegen_target_ir_native_id_t *attribute_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR instruction attribute iterator"));
+    REQUIRE(instr_ref != KEFIR_ID_NONE && instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction reference"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&code->attributes, (kefir_hashtable_key_t) instr_ref, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR instruction iterator");
+    }
+    REQUIRE_OK(res);
+    ASSIGN_DECL_CAST(const struct instruction_attributes *, attributes,
+        table_value);
+
+    kefir_hashset_key_t table_key;
+    res = kefir_hashset_iter(&attributes->attributes, &iter->iter, &table_key);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR instruction iterator");
+    }
+    REQUIRE_OK(res);
+    
+    ASSIGN_PTR(attribute_ptr, table_key);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_instruction_attribute_next(struct kefir_codegen_target_ir_code_attribute_iterator *iter,
+    kefir_codegen_target_ir_native_id_t *attribute_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction attribute iterator"));
+
+    kefir_hashset_key_t table_key;
+    kefir_result_t res = kefir_hashset_next(&iter->iter, &table_key);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR instruction iterator");
+    }
+    REQUIRE_OK(res);
+    
+    ASSIGN_PTR(attribute_ptr, table_key);
     return KEFIR_OK;
 }

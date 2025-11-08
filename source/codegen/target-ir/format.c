@@ -507,6 +507,29 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                 REQUIRE_OK(res);
             }
             REQUIRE_OK(kefir_json_output_array_end(json));
+
+            kefir_bool_t has_attributes = false;
+            kefir_codegen_target_ir_native_id_t attribute;
+            struct kefir_codegen_target_ir_code_attribute_iterator attr_iter;
+            for (res = kefir_codegen_target_ir_code_instruction_attribute_iter(code, &attr_iter, instr_ref, &attribute);
+                res == KEFIR_OK;
+                res = kefir_codegen_target_ir_code_instruction_attribute_next(&attr_iter, &attribute)) {
+                if (!has_attributes) {
+                    REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
+                    REQUIRE_OK(kefir_json_output_array_begin(json));
+                    has_attributes = true;
+                }
+
+                const char *mnemonic;
+                REQUIRE_OK(code->klass->attribute_mnemonic(attribute, &mnemonic, code->klass->payload));
+                REQUIRE_OK(kefir_json_output_string(json, mnemonic));
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+            if (has_attributes) {
+                REQUIRE_OK(kefir_json_output_array_end(json));
+            }
             REQUIRE_OK(kefir_json_output_object_end(json));
         }
         REQUIRE_OK(kefir_json_output_array_end(json));

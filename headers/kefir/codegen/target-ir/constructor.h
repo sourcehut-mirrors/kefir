@@ -49,14 +49,20 @@ typedef struct kefir_codegen_target_ir_asmcmp_operand_classification {
 typedef enum kefir_codegen_target_ir_asmcmp_special_instruction {
     KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SPECIAL_NONE,
     KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_LINK,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE,
     KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SKIP
 } kefir_codegen_target_ir_asmcmp_special_instruction_t;
 
 typedef struct kefir_codegen_target_ir_asmcmp_instruction_classification {
     kefir_codegen_target_ir_opcode_t opcode;
     kefir_codegen_target_ir_asmcmp_special_instruction_t special;
-    struct kefir_codegen_target_ir_asmcmp_operand_classification operands[KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS];
-    kefir_bool_t modifies_flags;
+    union {
+        struct {
+            struct kefir_codegen_target_ir_asmcmp_operand_classification operands[KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS];
+            kefir_bool_t modifies_flags;
+        };
+        kefir_codegen_target_ir_native_id_t attribute;
+    };
 } kefir_codegen_target_ir_asmcmp_instruction_classification_t;
 
 typedef struct kefir_codegen_target_ir_code_constructor_class {

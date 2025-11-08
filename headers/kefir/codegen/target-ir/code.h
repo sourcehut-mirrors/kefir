@@ -24,7 +24,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/hashtable.h"
-#include "kefir/core/hashtree.h"
+#include "kefir/core/hashset.h"
 
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 3
 
@@ -35,6 +35,7 @@ typedef kefir_size_t kefir_codegen_target_ir_physical_register_t;
 typedef kefir_size_t kefir_codegen_target_ir_asmcmp_label_t;
 typedef kefir_size_t kefir_codegen_target_ir_stash_index_t;
 typedef kefir_size_t kefir_codegen_target_ir_inline_assembly_index_t;
+typedef kefir_uint64_t kefir_codegen_target_ir_native_id_t;
 
 // clang-format off
 #define KEFIR_CODEGEN_TARGET_IR_SPECIAL_OPCODES(_instr, _separator) \
@@ -261,6 +262,7 @@ typedef struct kefir_codegen_target_ir_block_terminator_props {
 typedef struct kefir_codegen_target_ir_code_class {
     kefir_result_t (*opcode_mnemonic)(kefir_codegen_target_ir_opcode_t, const char **, void *);
     kefir_result_t (*register_mnemonic)(kefir_codegen_target_ir_physical_register_t, const char **, void *);
+    kefir_result_t (*attribute_mnemonic)(kefir_codegen_target_ir_native_id_t, const char **, void *);
     kefir_result_t (*is_block_terminator)(const struct kefir_codegen_target_ir_instruction *, struct kefir_codegen_target_ir_block_terminator_props *, void *);
     kefir_result_t (*make_unconditional_jump)(kefir_codegen_target_ir_block_ref_t, struct kefir_codegen_target_ir_operation *, void *);
     kefir_result_t (*finalize_conditional_jump)(const struct kefir_codegen_target_ir_operation *, kefir_codegen_target_ir_block_ref_t, struct kefir_codegen_target_ir_operation *, void *);
@@ -280,6 +282,7 @@ typedef struct kefir_codegen_target_ir_code {
     kefir_size_t blocks_length;
     kefir_size_t blocks_capacity;
 
+    struct kefir_hashtable attributes;
     struct kefir_hashtable constraints;
     struct kefir_codegen_target_ir_value_type *value_types;
     kefir_size_t value_types_length;
@@ -317,6 +320,7 @@ kefir_result_t kefir_codegen_target_ir_code_phi_link_next(struct kefir_codegen_t
 
 kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type *);
 kefir_result_t kefir_codegen_target_ir_code_add_constraint(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_allocation_constraint *);
+kefir_result_t kefir_codegen_target_ir_code_add_instruction_attribute(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_native_id_t);
 kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type **, const struct kefir_codegen_target_ir_allocation_constraint **);
 
 typedef struct kefir_codegen_target_ir_value_iterator {
@@ -327,6 +331,13 @@ typedef struct kefir_codegen_target_ir_value_iterator {
 
 kefir_result_t kefir_codegen_target_ir_code_value_iter(const struct kefir_codegen_target_ir_code *, struct kefir_codegen_target_ir_value_iterator *, kefir_codegen_target_ir_instruction_ref_t, struct kefir_codegen_target_ir_value_ref *, const struct kefir_codegen_target_ir_value_type **);
 kefir_result_t kefir_codegen_target_ir_code_value_next(struct kefir_codegen_target_ir_value_iterator *, struct kefir_codegen_target_ir_value_ref *, const struct kefir_codegen_target_ir_value_type **);
+
+typedef struct kefir_codegen_target_ir_code_attribute_iterator {
+    struct kefir_hashset_iterator iter;
+} kefir_codegen_target_ir_code_attribute_iterator_t;
+
+kefir_result_t kefir_codegen_target_ir_code_instruction_attribute_iter(const struct kefir_codegen_target_ir_code *, struct kefir_codegen_target_ir_code_attribute_iterator *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_native_id_t *);
+kefir_result_t kefir_codegen_target_ir_code_instruction_attribute_next(struct kefir_codegen_target_ir_code_attribute_iterator *, kefir_codegen_target_ir_native_id_t *);
 
 
 #endif

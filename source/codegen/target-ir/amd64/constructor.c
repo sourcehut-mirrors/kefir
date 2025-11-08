@@ -70,6 +70,14 @@ static kefir_result_t amd64_classify_instruction(const struct kefir_asmcmp_instr
         return KEFIR_OK;
     }
 
+    if (instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(rexW) ||
+        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(data16) ||
+        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(lock)) {
+        classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE;
+        classification->attribute = instruction->opcode;
+        return KEFIR_OK;
+    }
+
 #define CLASSIFY_OP(_op, _index) \
     do { \
         if (((_op) & KEFIR_AMD64_INSTRDB_READ) && ((_op) & KEFIR_AMD64_INSTRDB_WRITE)) { \

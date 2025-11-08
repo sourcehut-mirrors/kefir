@@ -669,12 +669,6 @@ test2:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 49,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
 #                    "instr_ref": 48,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
@@ -682,6 +676,12 @@ test2:
 #                },
 #                {
 #                    "instr_ref": 47,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 46,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
@@ -715,7 +715,7 @@ test2:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 48,
+#                                "instr_ref": 47,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -746,7 +746,7 @@ test2:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 47,
+#                                "instr_ref": 46,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1001,13 +1001,13 @@ test2:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 25,
+#                    "instr_ref": 24,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 1,
 #                            "value_ref": {
-#                                "instr_ref": 49,
+#                                "instr_ref": 48,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1017,7 +1017,7 @@ test2:
 #                        {
 #                            "block_ref": 8,
 #                            "value_ref": {
-#                                "instr_ref": 26,
+#                                "instr_ref": 25,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1054,7 +1054,7 @@ test2:
 #                        {
 #                            "block_ref": 8,
 #                            "value_ref": {
-#                                "instr_ref": 45,
+#                                "instr_ref": 44,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1091,7 +1091,7 @@ test2:
 #                        {
 #                            "block_ref": 8,
 #                            "value_ref": {
-#                                "instr_ref": 43,
+#                                "instr_ref": 42,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1368,12 +1368,6 @@ test2:
 #                },
 #                {
 #                    "instr_ref": 23,
-#                    "opcode": "lock",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 24,
 #                    "opcode": "cmpxchg",
 #                    "parameters": [
 #                        {
@@ -1406,15 +1400,18 @@ test2:
 #                            "variant": "32bit"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "attributes": [
+#                        "lock"
+#                    ]
 #                },
 #                {
-#                    "instr_ref": 26,
+#                    "instr_ref": 25,
 #                    "opcode": "sete",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 25,
+#                            "instr_ref": 24,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1435,12 +1432,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 27,
+#                    "instr_ref": 26,
 #                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 26,
+#                            "instr_ref": 25,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1449,7 +1446,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 26,
+#                            "instr_ref": 25,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1460,7 +1457,7 @@ test2:
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 29,
+#                    "instr_ref": 28,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -1480,7 +1477,7 @@ test2:
 #            "block_ref": 3,
 #            "code": [
 #                {
-#                    "instr_ref": 30,
+#                    "instr_ref": 29,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -1496,7 +1493,7 @@ test2:
 #            "block_ref": 4,
 #            "code": [
 #                {
-#                    "instr_ref": 33,
+#                    "instr_ref": 32,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
@@ -1523,7 +1520,7 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 31,
+#                    "instr_ref": 30,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
@@ -1554,12 +1551,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 32,
+#                    "instr_ref": 31,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 31,
+#                            "instr_ref": 30,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1584,12 +1581,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 34,
+#                    "instr_ref": 33,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 33,
+#                            "instr_ref": 32,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1610,7 +1607,7 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 35,
+#                    "instr_ref": 34,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -1626,7 +1623,7 @@ test2:
 #            "block_ref": 5,
 #            "code": [
 #                {
-#                    "instr_ref": 36,
+#                    "instr_ref": 35,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -1642,7 +1639,7 @@ test2:
 #            "block_ref": 6,
 #            "code": [
 #                {
-#                    "instr_ref": 37,
+#                    "instr_ref": 36,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
@@ -1673,12 +1670,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 38,
+#                    "instr_ref": 37,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 37,
+#                            "instr_ref": 36,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1703,13 +1700,13 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 39,
+#                    "instr_ref": 38,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 40,
+#                    "instr_ref": 39,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": []
@@ -1720,7 +1717,7 @@ test2:
 #            "block_ref": 7,
 #            "code": [
 #                {
-#                    "instr_ref": 41,
+#                    "instr_ref": 40,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -1736,13 +1733,13 @@ test2:
 #            "block_ref": 8,
 #            "code": [
 #                {
-#                    "instr_ref": 44,
+#                    "instr_ref": 43,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 4,
 #                            "value_ref": {
-#                                "instr_ref": 34,
+#                                "instr_ref": 33,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1758,48 +1755,48 @@ test2:
 #                            },
 #                            "type": {
 #                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 41,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 4,
+#                            "value_ref": {
+#                                "instr_ref": 31,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rdx"
 #                            }
 #                        }
 #                    ]
 #                },
 #                {
 #                    "instr_ref": 42,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 4,
-#                            "value_ref": {
-#                                "instr_ref": 32,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 43,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 42,
+#                            "instr_ref": 41,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1819,38 +1816,38 @@ test2:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 44,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 43,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
 #                            }
 #                        }
 #                    ]
 #                },
 #                {
 #                    "instr_ref": 45,
-#                    "opcode": "assign",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 44,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 46,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {

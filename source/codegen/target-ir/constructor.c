@@ -55,7 +55,7 @@ struct constructor_state {
     struct kefir_hashtable block_head_instr;
     struct kefir_hashtable label_blocks;
     struct kefir_list queue;
-    struct kefir_hashset visited;
+    struct kefir_hashset auxiliarry_set;
 };
 
 static kefir_result_t mark_vreg_liveness(struct constructor_state *state, struct code_block_state *block_state, kefir_size_t linear_index, kefir_asmcmp_virtual_register_index_t vreg_idx) {
@@ -594,6 +594,7 @@ static kefir_result_t match_implicit_parameter_to_vreg(struct constructor_state 
 }
 
 static kefir_result_t scan_instructions(struct constructor_state *state) {    
+    REQUIRE_OK(kefir_hashset_clear(state->mem, &state->auxiliarry_set));
     struct code_block_state *current_block_state = NULL;
     for (kefir_asmcmp_instruction_index_t instr_idx = kefir_asmcmp_context_instr_head(state->asmcmp_ctx);
         instr_idx != KEFIR_ASMCMP_INDEX_NONE;
@@ -632,6 +633,9 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                 .instr_ref = instr_ref,
                 .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_OUTPUT_REGISTER(0)
             }));
+            continue;
+        } else if (classification.special == KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE) {
+            REQUIRE_OK(kefir_hashset_add(state->mem, &state->auxiliarry_set, (kefir_hashset_key_t) classification.attribute));
             continue;
         }
 
@@ -682,6 +686,18 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                 .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_OUTPUT_REGISTER(i)
             }));
         }
+
+        struct kefir_hashset_iterator iter;
+        kefir_hashset_key_t entry;
+        for (res = kefir_hashset_iter(&state->auxiliarry_set, &iter, &entry); res == KEFIR_OK;
+            res = kefir_hashset_next(&iter, &entry)) {
+            ASSIGN_DECL_CAST(kefir_codegen_target_ir_native_id_t, attribute, entry);
+            REQUIRE_OK(kefir_codegen_target_ir_code_add_instruction_attribute(state->mem, state->code, instr_ref, attribute));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+        REQUIRE_OK(kefir_hashset_clear(state->mem, &state->auxiliarry_set));
     }
 
     return KEFIR_OK;
@@ -709,10 +725,10 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref,
             (kefir_uptr_t) head->value);
         REQUIRE_OK(kefir_list_pop(state->mem, &state->queue, head));
-        if (kefir_hashset_has(&state->visited, (kefir_hashset_key_t) block_ref)) {
+        if (kefir_hashset_has(&state->auxiliarry_set, (kefir_hashset_key_t) block_ref)) {
             continue;
         }
-        REQUIRE_OK(kefir_hashset_add(state->mem, &state->visited, (kefir_hashset_key_t) block_ref));
+        REQUIRE_OK(kefir_hashset_add(state->mem, &state->auxiliarry_set, (kefir_hashset_key_t) block_ref));
 
         struct kefir_hashtree_node *node;
         REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) block_ref, &node));
@@ -767,7 +783,7 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
 static kefir_result_t insert_phis(struct constructor_state *state) {
     for (kefir_size_t i = 0; i < state->asmcmp_ctx->virtual_register_length; i++) {
         REQUIRE_OK(kefir_list_clear(state->mem, &state->queue));
-        REQUIRE_OK(kefir_hashset_clear(state->mem, &state->visited));
+        REQUIRE_OK(kefir_hashset_clear(state->mem, &state->auxiliarry_set));
         REQUIRE_OK(insert_vreg_phis(state, i));
     }
     return KEFIR_OK;
@@ -973,7 +989,7 @@ kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *mem, str
     REQUIRE_OK(kefir_hashtable_init(&state.label_blocks, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&state.control_flow, code));
     REQUIRE_OK(kefir_list_init(&state.queue));
-    REQUIRE_OK(kefir_hashset_init(&state.visited, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&state.auxiliarry_set, &kefir_hashtable_uint_ops));
 
     kefir_result_t res = KEFIR_OK;
     state.asmcmp_instrs = KEFIR_MALLOC(mem, sizeof(struct asmcmp_instr_state) * asmcmp_ctx->code_length);
@@ -1003,7 +1019,7 @@ kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *mem, str
         REQUIRE_CHAIN(&res, kefir_hashtable_free(mem, &state.asmcmp_vregs[i].block_lifetimes));
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_list_free(mem, &state.queue);
-            kefir_hashset_free(mem, &state.visited);
+            kefir_hashset_free(mem, &state.auxiliarry_set);
             kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
             KEFIR_FREE(mem, state.asmcmp_instrs);
             KEFIR_FREE(mem, state.asmcmp_vregs);
@@ -1015,7 +1031,7 @@ kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *mem, str
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.queue);
-        kefir_hashset_free(mem, &state.visited);
+        kefir_hashset_free(mem, &state.auxiliarry_set);
         kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         KEFIR_FREE(mem, state.asmcmp_instrs);
         KEFIR_FREE(mem, state.asmcmp_vregs);
@@ -1026,7 +1042,7 @@ kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *mem, str
     }); 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.queue);
-        kefir_hashset_free(mem, &state.visited);
+        kefir_hashset_free(mem, &state.auxiliarry_set);
         kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         KEFIR_FREE(mem, state.asmcmp_instrs);
         KEFIR_FREE(mem, state.asmcmp_vregs);
@@ -1037,7 +1053,7 @@ kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *mem, str
     }); 
     res = kefir_list_free(mem, &state.queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashset_free(mem, &state.visited);
+        kefir_hashset_free(mem, &state.auxiliarry_set);
         kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         KEFIR_FREE(mem, state.asmcmp_instrs);
         KEFIR_FREE(mem, state.asmcmp_vregs);
@@ -1046,7 +1062,7 @@ kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *mem, str
         kefir_hashtable_free(mem, &state.label_blocks);
         return res;
     }); 
-    res = kefir_hashset_free(mem, &state.visited);
+    res = kefir_hashset_free(mem, &state.auxiliarry_set);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         KEFIR_FREE(mem, state.asmcmp_instrs);
