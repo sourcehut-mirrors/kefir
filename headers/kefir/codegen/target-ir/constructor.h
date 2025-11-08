@@ -36,10 +36,12 @@ typedef enum kefir_codegen_target_ir_asmcmp_operand_class {
 typedef struct kefir_codegen_target_ir_asmcmp_operand_classification {
     kefir_codegen_target_ir_asmcmp_operand_class_t class;
     kefir_size_t index;
+    kefir_bool_t implicit;
     
     union {
         struct {
             kefir_codegen_target_ir_physical_register_t phreg;
+            kefir_codegen_target_ir_operand_variant_t variant;
         } implicit_parameter;
     };
 } kefir_codegen_target_ir_asmcmp_operand_classification_t;
@@ -67,6 +69,7 @@ typedef struct kefir_codegen_target_ir_code_constructor_class {
 typedef struct kefir_codegen_target_ir_code_constructor_parameters {
     const struct kefir_codegen_target_ir_code_constructor_class *klass;
     kefir_result_t (*get_allocation_constraint)(kefir_asmcmp_virtual_register_index_t, struct kefir_codegen_target_ir_allocation_constraint *, void *);
+    kefir_result_t (*is_preallocation_match)(kefir_asmcmp_virtual_register_index_t, kefir_codegen_target_ir_physical_register_t, void *);
     void *payload;
 } kefir_codegen_target_ir_code_constructor_parameters_t;
 
