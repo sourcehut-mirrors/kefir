@@ -108,7 +108,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 1,
@@ -497,7 +499,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 2,
@@ -615,7 +619,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 3,
@@ -1239,7 +1245,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 4,
@@ -1357,7 +1365,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 5,
@@ -1525,7 +1535,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 6,
@@ -1959,7 +1971,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 7,
@@ -2077,7 +2091,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 8,
@@ -2242,7 +2258,9 @@ factorial:
 #                    "parameters": [],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 9,
@@ -2322,7 +2340,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 10,
@@ -2711,7 +2731,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 11,
@@ -2807,7 +2829,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 12,
@@ -2972,7 +2996,9 @@ factorial:
 #                    "parameters": [],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 13,
@@ -3052,7 +3078,9 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 14,
@@ -3184,7 +3212,9 @@ factorial:
 #                    "parameters": [],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 15,
@@ -3258,11 +3288,15 @@ factorial:
 #                    ],
 #                    "values": []
 #                }
-#            ]
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        },
 #        {
 #            "block_ref": 16,
-#            "code": []
+#            "code": [],
+#            "externally_visible": false,
+#            "public_labels": []
 #        }
 #    ]
 #}

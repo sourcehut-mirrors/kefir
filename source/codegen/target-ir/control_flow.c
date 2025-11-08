@@ -114,7 +114,7 @@ static kefir_result_t find_dominance_frontier(struct kefir_mem *mem, struct kefi
     REQUIRE_OK(kefir_list_init(&queue));
     REQUIRE_OK(kefir_hashset_init(&visited, &kefir_hashtable_uint_ops));
     for (kefir_size_t i = 0; i < control_flow->code->blocks_length; i++) {
-        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_at(control_flow->code, i);
+        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(control_flow->code, i);
         if (block_ref != control_flow->code->entry_block && control_flow->blocks[block_ref].immediate_dominator == KEFIR_ID_NONE) {
             continue;
         }
@@ -141,7 +141,7 @@ static kefir_result_t find_dominance_frontier(struct kefir_mem *mem, struct kefi
 
 static kefir_result_t build_dominance_tree(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow) {
     for (kefir_size_t i = 0; i < control_flow->code->blocks_length; i++) {
-        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_at(control_flow->code, i);
+        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(control_flow->code, i);
         kefir_codegen_target_ir_block_ref_t immediate_dominator_ref = control_flow->blocks[block_ref].immediate_dominator;
         if (immediate_dominator_ref == KEFIR_ID_NONE) {
             continue;
@@ -188,7 +188,7 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
     }
 
     for (kefir_size_t i = 0; i < control_flow->code->blocks_length; i++) {
-        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_at(control_flow->code, i);
+        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(control_flow->code, i);
         kefir_codegen_target_ir_instruction_ref_t current_block_tail_ref = kefir_codegen_target_ir_code_block_control_tail(control_flow->code, block_ref);
         if (current_block_tail_ref == KEFIR_ID_NONE) {
             continue;

@@ -352,7 +352,7 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
     REQUIRE_OK(kefir_json_output_object_key(json, "blocks"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {
-        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_at(code, i);
+        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "block_ref"));
         REQUIRE_OK(id_format(json, block_ref));
@@ -525,6 +525,23 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                 REQUIRE_OK(kefir_json_output_array_end(json));
             }
             REQUIRE_OK(kefir_json_output_object_end(json));
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
+        const struct kefir_codegen_target_ir_block *block = kefir_codegen_target_ir_code_block_at(code, block_ref);
+        REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve target IR block"));
+        REQUIRE_OK(kefir_json_output_object_key(json, "externally_visible"));
+        REQUIRE_OK(kefir_json_output_boolean(json, block->externally_visible));
+        REQUIRE_OK(kefir_json_output_object_key(json, "public_labels"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        struct kefir_hashtreeset_iterator iter;
+        kefir_result_t res;
+        for (res = kefir_hashtreeset_iter(&block->public_labels, &iter); res == KEFIR_OK;
+            res = kefir_hashtreeset_next(&iter)) {
+            ASSIGN_DECL_CAST(const char *, public_label, iter.entry);
+            REQUIRE_OK(kefir_json_output_string(json, public_label));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
         }
         REQUIRE_OK(kefir_json_output_array_end(json));
         REQUIRE_OK(kefir_json_output_object_end(json));

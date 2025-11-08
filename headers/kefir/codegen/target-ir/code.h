@@ -25,6 +25,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/hashtable.h"
 #include "kefir/core/hashset.h"
+#include "kefir/core/hashtreeset.h"
 
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 4
 
@@ -235,6 +236,9 @@ typedef struct kefir_codegen_target_ir_block {
         kefir_codegen_target_ir_instruction_ref_t head;
         kefir_codegen_target_ir_instruction_ref_t tail;
     } control_flow;
+
+    kefir_bool_t externally_visible;
+    struct kefir_hashtreeset public_labels;
 } kefir_codegen_target_ir_block_t;
 
 typedef enum kefir_codegen_target_ir_allocation_constraint_type {
@@ -299,7 +303,10 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *, struct kefi
 
 kefir_result_t kefir_codegen_target_ir_code_new_block(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t *);
 kefir_size_t kefir_codegen_target_ir_code_block_count(const struct kefir_codegen_target_ir_code *);
-kefir_codegen_target_ir_block_ref_t kefir_codegen_target_ir_code_block_at(const struct kefir_codegen_target_ir_code *, kefir_size_t);
+kefir_codegen_target_ir_block_ref_t kefir_codegen_target_ir_code_block_by_index(const struct kefir_codegen_target_ir_code *, kefir_size_t);
+const struct kefir_codegen_target_ir_block *kefir_codegen_target_ir_code_block_at(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t);
+kefir_result_t kefir_codegen_target_ir_code_block_mark_externally_visible(struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t);
+kefir_result_t kefir_codegen_target_ir_code_block_add_public_label(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t, const char *);
 kefir_codegen_target_ir_instruction_ref_t kefir_codegen_target_ir_code_block_control_head(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t);
 kefir_codegen_target_ir_instruction_ref_t kefir_codegen_target_ir_code_block_control_tail(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t);
 

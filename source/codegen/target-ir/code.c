@@ -90,6 +90,9 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
         }
         REQUIRE_OK(kefir_hashtable_free(mem, &code->code[i].aspects));
     }
+    for (kefir_size_t i = 0; i < code->blocks_length; i++) {
+        REQUIRE_OK(kefir_hashtreeset_free(mem, &code->blocks[i].public_labels));
+    }
     REQUIRE_OK(kefir_hashtable_free(mem, &code->attributes));
     REQUIRE_OK(kefir_hashtable_free(mem, &code->constraints));
     KEFIR_FREE(mem, code->value_types);
@@ -116,6 +119,8 @@ kefir_result_t kefir_codegen_target_ir_code_new_block(struct kefir_mem *mem, str
     block->block_ref = code->blocks_length;
     block->control_flow.head = KEFIR_ID_NONE;
     block->control_flow.tail = KEFIR_ID_NONE;
+    block->externally_visible = false;
+    REQUIRE_OK(kefir_hashtreeset_init(&block->public_labels, &kefir_hashtree_str_ops));
     code->blocks_length++;
 
     if (code->entry_block == KEFIR_ID_NONE) {
@@ -131,11 +136,38 @@ kefir_size_t kefir_codegen_target_ir_code_block_count(const struct kefir_codegen
     return code->blocks_length;;
 }
 
-kefir_codegen_target_ir_block_ref_t kefir_codegen_target_ir_code_block_at(const struct kefir_codegen_target_ir_code *code, kefir_size_t index) {
+kefir_codegen_target_ir_block_ref_t kefir_codegen_target_ir_code_block_by_index(const struct kefir_codegen_target_ir_code *code, kefir_size_t index) {
     REQUIRE(code != NULL, KEFIR_ID_NONE);
     REQUIRE(index < code->blocks_length, KEFIR_ID_NONE);
 
     return code->blocks[index].block_ref;
+}
+
+const struct kefir_codegen_target_ir_block *kefir_codegen_target_ir_code_block_at(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref) {
+    REQUIRE(code != NULL, NULL);
+    REQUIRE(block_ref != KEFIR_ID_NONE && block_ref < code->blocks_length, NULL);
+
+    return &code->blocks[block_ref];
+}
+
+kefir_result_t kefir_codegen_target_ir_code_block_mark_externally_visible(struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(block_ref != KEFIR_ID_NONE && block_ref < code->blocks_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR block reference"));
+
+    struct kefir_codegen_target_ir_block *block = &code->blocks[block_ref];
+    block->externally_visible = true;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_block_add_public_label(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref, const char *public_label) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(block_ref != KEFIR_ID_NONE && block_ref < code->blocks_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR block reference"));
+    REQUIRE(public_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR block public label"));
+
+    struct kefir_codegen_target_ir_block *block = &code->blocks[block_ref];
+    REQUIRE_OK(kefir_hashtreeset_add(mem, &block->public_labels, (kefir_hashtreeset_entry_t) public_label));
+    return KEFIR_OK;
 }
 
 kefir_codegen_target_ir_instruction_ref_t kefir_codegen_target_ir_code_block_control_head(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref) {

@@ -166,6 +166,21 @@ static kefir_result_t init_code_blocks(struct constructor_state *state) {
             REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->block_head_instr, (kefir_hashtable_key_t) instr_idx, (kefir_hashtable_value_t) block_ref));
         }
         for (; label_idx != KEFIR_ASMCMP_INDEX_NONE; label_idx = kefir_asmcmp_context_instr_label_next(state->asmcmp_ctx, label_idx)) {
+            const struct kefir_asmcmp_label *label;
+            REQUIRE_OK(kefir_asmcmp_context_get_label(state->asmcmp_ctx, label_idx, &label));
+            if (label->external_dependencies) {
+                REQUIRE_OK(kefir_codegen_target_ir_code_block_mark_externally_visible(state->code, block_state->block_ref));
+            }
+            kefir_result_t res;
+            struct kefir_hashtreeset_iterator iter;
+            for (res = kefir_hashtreeset_iter(&label->public_labels, &iter); res == KEFIR_OK;
+                res = kefir_hashtreeset_next(&iter)) {
+                ASSIGN_DECL_CAST(const char *, public_label, (kefir_uptr_t) iter.entry);
+                REQUIRE_OK(kefir_codegen_target_ir_code_block_add_public_label(state->mem, state->code, block_state->block_ref, public_label));
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
             REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->label_blocks, (kefir_hashtable_key_t) label_idx, (kefir_hashtable_value_t) block_state->block_ref));
         }
 

@@ -29,3 +29,11 @@ int test2(_Atomic int *x, int y) {
 __int128 test3(__int128 x, __int128 y) {
     return x + y;
 }
+
+int test4(int x) {
+    static void *arr[] = {&&label1, &&label2};
+label1:
+    goto *arr[x];
+label2:
+    return 10;
+}
