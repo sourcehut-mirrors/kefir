@@ -453,12 +453,6 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                         REQUIRE_OK(kefir_json_output_uinteger(json, value_type->parameters.local_variable.offset));
                         break;
 
-                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_IMMEDIATE_INT:
-                        REQUIRE_OK(kefir_json_output_string(json, "immediate_int"));
-                        REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-                        REQUIRE_OK(kefir_json_output_integer(json, value_type->parameters.immediate_int));
-                        break;
-
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY: {
                         const char *mnemonic;
                         REQUIRE_OK(code->klass->register_mnemonic(value_type->parameters.memory.base_reg, &mnemonic, code->klass->payload));

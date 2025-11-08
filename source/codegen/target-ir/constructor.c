@@ -316,10 +316,9 @@ static kefir_result_t store_virtual_reigster_output(struct constructor_state *st
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER:
-            REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(state->mem, state->code, value_ref, &(struct kefir_codegen_target_ir_value_type) {
-                .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_IMMEDIATE_INT,
-                .parameters.immediate_int = virtual_register->parameters.immediate_int
-            }));
+            // Intentionally left blank
+            // Virtual registers of immediate integral types are converted into integral parameters upon
+            // use
             break;
     }
 
