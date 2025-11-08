@@ -51,6 +51,7 @@ typedef struct kefir_codegen_target_ir_asmcmp_operand_classification {
 typedef enum kefir_codegen_target_ir_asmcmp_special_instruction {
     KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SPECIAL_NONE,
     KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_LINK,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_TOUCH,
     KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE,
     KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SKIP
 } kefir_codegen_target_ir_asmcmp_special_instruction_t;

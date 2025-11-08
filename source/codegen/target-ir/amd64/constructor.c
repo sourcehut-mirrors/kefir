@@ -53,29 +53,41 @@ static kefir_result_t amd64_classify_instruction(const struct kefir_asmcmp_instr
     }
     classification->extra_flags = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_NONE;
 
-    if (instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link)) {
-        classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_LINK;
-        classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
-        classification->operands[0].index = 0;
-        classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
-        classification->operands[1].index = 1;
-        return KEFIR_OK;
-    }
+    switch (instruction->opcode) {
+        case KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link):
+            classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_LINK;
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+            classification->operands[0].index = 0;
+            classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[1].index = 1;
+            return KEFIR_OK;
 
-    if (instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register) ||
-        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin) ||
-        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end) ||
-        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(noop)) {
-        classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SKIP;
-        return KEFIR_OK;
-    }
+        case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
+            classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_TOUCH;
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[0].index = 0;
+            return KEFIR_OK;
 
-    if (instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(rexW) ||
-        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(data16) ||
-        instruction->opcode == KEFIR_ASMCMP_AMD64_OPCODE(lock)) {
-        classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE;
-        classification->attribute = instruction->opcode;
-        return KEFIR_OK;
+        case KEFIR_ASMCMP_AMD64_OPCODE(noop):
+            classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SKIP;
+            return KEFIR_OK;
+
+        case KEFIR_ASMCMP_AMD64_OPCODE(tail_call):
+            classification->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(tail_call);
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[0].index = 0;
+            return KEFIR_OK;
+
+        case KEFIR_ASMCMP_AMD64_OPCODE(rexW):
+        case KEFIR_ASMCMP_AMD64_OPCODE(data16):
+        case KEFIR_ASMCMP_AMD64_OPCODE(lock):
+            classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE;
+            classification->attribute = instruction->opcode;
+            return KEFIR_OK;
+
+        default:
+            // Intentionally left blank
+            break;
     }
 
 #define CLASSIFY_OP(_op, _index) \

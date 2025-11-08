@@ -671,6 +671,32 @@ static kefir_result_t link_vregs_impl(struct constructor_state *state, struct co
     return KEFIR_OK;
 }
 
+static kefir_result_t touch_vreg_impl(struct constructor_state *state, struct code_block_state *current_block_state, kefir_asmcmp_virtual_register_index_t vreg1_idx) {
+    const struct kefir_asmcmp_virtual_register *vreg1;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(state->asmcmp_ctx, vreg1_idx, &vreg1));
+
+    if (vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR) {
+        REQUIRE_OK(touch_vreg_impl(state, current_block_state, vreg1->parameters.pair.virtual_registers[0]));
+        REQUIRE_OK(touch_vreg_impl(state, current_block_state, vreg1->parameters.pair.virtual_registers[1]));
+    } else {
+        REQUIRE(vreg1->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected linking virtual register pair"));
+        struct kefir_codegen_target_ir_operation operation = {
+            .opcode = state->code->klass->touch_opcode,
+            .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
+            .parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
+            .parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
+            .parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE
+        };
+
+        operation.parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
+        REQUIRE_OK(resolve_input_virtual_register(state, current_block_state, vreg1_idx, &operation.parameters[0].direct.value_ref));
+        operation.parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
+        kefir_codegen_target_ir_instruction_ref_t instr_ref;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, current_block_state->block_ref, kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), &operation, &instr_ref));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t scan_instructions(struct constructor_state *state) {    
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->auxiliarry_set));
     struct code_block_state *current_block_state = NULL;
@@ -702,6 +728,9 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
             continue;
         } else if (classification.special == KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE) {
             REQUIRE_OK(kefir_hashset_add(state->mem, &state->auxiliarry_set, (kefir_hashset_key_t) classification.attribute));
+            continue;
+        } else if (classification.special == KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_TOUCH) {
+            REQUIRE_OK(touch_vreg_impl(state, current_block_state, asmcmp_instr->args[0].vreg.index));
             continue;
         }
 

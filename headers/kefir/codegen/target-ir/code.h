@@ -40,6 +40,7 @@ typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_inline_assem
 // clang-format off
 #define KEFIR_CODEGEN_TARGET_IR_SPECIAL_OPCODES(_instr, _separator) \
     _instr(assign, "assign") _separator \
+    _instr(touch, "touch") _separator \
     _instr(phi, "phi") _separator \
     _instr(placeholder, "placeholder")
 // clang-format on
@@ -267,6 +268,7 @@ typedef struct kefir_codegen_target_ir_code_class {
     kefir_result_t (*finalize_conditional_jump)(const struct kefir_codegen_target_ir_operation *, kefir_codegen_target_ir_block_ref_t, struct kefir_codegen_target_ir_operation *, void *);
 
     kefir_codegen_target_ir_opcode_t assign_opcode;
+    kefir_codegen_target_ir_opcode_t touch_opcode;
     kefir_codegen_target_ir_opcode_t phi_opcode;
     kefir_codegen_target_ir_opcode_t placeholder_opcode;
     void *payload;

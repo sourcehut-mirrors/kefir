@@ -63,7 +63,6 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, virtual_register_link) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, touch_virtual_register) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, preserve_active_virtual_registers) _separator \
-    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, load_local_var_address) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, function_prologue) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, function_epilogue) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, tail_call) _separator \
