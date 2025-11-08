@@ -25,3 +25,7 @@ int test1(char x, char y) {
 int test2(_Atomic int *x, int y) {
     return *x += y;
 }
+
+__int128 test3(__int128 x, __int128 y) {
+    return x + y;
+}

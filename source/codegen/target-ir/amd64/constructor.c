@@ -335,8 +335,30 @@ static kefir_result_t amd64_classify_instruction(const struct kefir_asmcmp_instr
     return KEFIR_OK;
 }
 
+static kefir_result_t vreg_pair_part_spill_offset(kefir_asmcmp_virtual_register_pair_type_t pair_type, kefir_size_t index, kefir_size_t *offset_ptr, void *payload) {
+    UNUSED(payload);
+    REQUIRE(offset_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to offset"));
+    REQUIRE(index <= 1, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid index of virtual register pair components"));
+
+    switch (pair_type) {
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to calculate spil area offset for component of generic pair");
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+            *offset_ptr = index * 4;
+            break;
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERAL_PURPOSE:
+            *offset_ptr = index * 8;
+            break;
+    }
+    return KEFIR_OK;
+}
+
 const struct kefir_codegen_target_ir_code_constructor_class KEFIR_TARGET_AMD64_CODE_CONSTRUCTOR_CLASS = {
     .is_jump = amd64_is_jump,
     .classify_instruction = amd64_classify_instruction,
+    .vreg_pair_part_spill_offset = vreg_pair_part_spill_offset,
     .payload = NULL
 };

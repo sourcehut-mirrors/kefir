@@ -5,6 +5,8 @@
 .type test1, @function
 .global test2
 .type test2, @function
+.global test3
+.type test3, @function
 
 .section .text
 __kefir_text_section_begin:
@@ -2074,6 +2076,893 @@ __kefir_func_test2_label6:
     jmp __kefir_func_test2_label2
 __kefir_func_test2_label7:
 __kefir_text_func_test2_end:
+
+test3:
+#{
+#    "entry_point": 0,
+#    "blocks": [
+#        {
+#            "block_ref": 0,
+#            "code": [
+#                {
+#                    "instr_ref": 35,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 34,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 33,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 32,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 31,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 30,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 29,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 0,
+#                    "opcode": "function_prologue",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 1,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 1
+#                        }
+#                    ],
+#                    "values": []
+#                }
+#            ]
+#        },
+#        {
+#            "block_ref": 1,
+#            "code": [
+#                {
+#                    "instr_ref": 22,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 35,
+#                                "aspect": {
+#                                    "type": "flags"
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 13,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 34,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "local_variable",
+#                                "identifier": 0,
+#                                "offset": 0
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 10,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 29,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "local_variable",
+#                                "identifier": 2,
+#                                "offset": 0
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 8,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 33,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rsi"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 6,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 30,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rdi"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 4,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 32,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rcx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 2,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 31,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rdx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 3,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 2,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rdx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 5,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 4,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rcx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 7,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 6,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rdi"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 9,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 8,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rsi"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 11,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 10,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "offset": 0,
+#                            "variant": "default"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 3,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 12,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 10,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "offset": 8,
+#                            "variant": "default"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 5,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 14,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 13,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "offset": 0,
+#                            "variant": "default"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 7,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 15,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 13,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "offset": 8,
+#                            "variant": "default"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 9,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 16,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 13,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "offset": 0,
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rax"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 17,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 13,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "offset": 8,
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rdx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 18,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 10,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "offset": 0,
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 19,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 10,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "offset": 8,
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 20,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 16,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rax"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 21,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 17,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rdx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 23,
+#                    "opcode": "add",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 20,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 18,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 22,
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "kind": "flags"
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rax"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 24,
+#                    "opcode": "adc",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 21,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 19,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 23,
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "kind": "flags"
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rdx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 25,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 23,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rax"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 26,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 24,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rdx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 27,
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 28,
+#                    "opcode": "ret",
+#                    "parameters": [],
+#                    "values": []
+#                }
+#            ]
+#        },
+#        {
+#            "block_ref": 2,
+#            "code": []
+#        }
+#    ]
+#}
+__kefir_text_func_test3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+__kefir_func_test3_label0:
+    mov %rdx, -16(%rbp)
+    mov %rcx, -8(%rbp)
+    mov %rdi, -32(%rbp)
+    mov %rsi, -24(%rbp)
+    mov -32(%rbp), %rax
+    mov -24(%rbp), %rdx
+    mov -16(%rbp), %rcx
+    mov -8(%rbp), %rsi
+    add %rcx, %rax
+    adc %rsi, %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test3_end:
 
 __kefir_text_section_end:
 
