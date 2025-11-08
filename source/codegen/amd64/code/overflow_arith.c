@@ -622,6 +622,12 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(mul_overflow)(struct kefir_m
             REQUIRE_OK(kefir_asmcmp_amd64_mul(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_VREG64(arg2_expanded_vreg), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                tmp_vreg, NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                overflow_flag_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_seto(mem, &function->code,
                                                kefir_asmcmp_context_instr_tail(&function->code.context),
                                                &KEFIR_ASMCMP_MAKE_VREG8(arg2_expanded_vreg), NULL));
@@ -799,11 +805,17 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(mul_overflow)(struct kefir_m
             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg,
                 arg1_expanded_vreg, NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_mul(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_VREG64(arg2_expanded_vreg), NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_seto(mem, &function->code,
                                                kefir_asmcmp_context_instr_tail(&function->code.context),
                                                &KEFIR_ASMCMP_MAKE_VREG8(overflow_flag_vreg), NULL));
@@ -973,9 +985,21 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(mul_overflow)(struct kefir_m
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(label_single_sign), NULL));
 
             REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, label_multiply));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                tmp_vreg, NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                result_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_mul(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_VREG64(arg2_expanded_vreg), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                tmp_vreg, NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                result_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_jo(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(label_set_sign), NULL));

@@ -14,6 +14,12 @@ factorial:
 #            "block_ref": 0,
 #            "code": [
 #                {
+#                    "instr_ref": 75,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
 #                    "instr_ref": 74,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
@@ -27,12 +33,6 @@ factorial:
 #                },
 #                {
 #                    "instr_ref": 72,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 71,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
@@ -66,7 +66,7 @@ factorial:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 71,
+#                                "instr_ref": 72,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -93,7 +93,7 @@ factorial:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 72,
+#                                "instr_ref": 73,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -380,7 +380,7 @@ factorial:
 #                        {
 #                            "block_ref": 2,
 #                            "value_ref": {
-#                                "instr_ref": 73,
+#                                "instr_ref": 74,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -824,7 +824,7 @@ factorial:
 #                        {
 #                            "block_ref": 5,
 #                            "value_ref": {
-#                                "instr_ref": 74,
+#                                "instr_ref": 75,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1547,6 +1547,22 @@ factorial:
 #        },
 #        {
 #            "block_ref": 15,
+#            "code": [
+#                {
+#                    "instr_ref": 71,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 16
+#                        }
+#                    ],
+#                    "values": []
+#                }
+#            ]
+#        },
+#        {
+#            "block_ref": 16,
 #            "code": []
 #        }
 #    ]
@@ -1564,8 +1580,9 @@ __kefir_func_factorial_label0:
     test %ecx, %ecx
     sete %al
     test %al, %al
-    jz __kefir_func_factorial_label7
+    jz __kefir_func_factorial_label14
 __kefir_func_factorial_label1:
+__kefir_func_factorial_label2:
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $2, %eax
@@ -1580,10 +1597,12 @@ __kefir_func_factorial_label1:
     test %ecx, %ecx
     sete %al
     test %al, %al
-    jz __kefir_func_factorial_label6
-__kefir_func_factorial_label2:
-    movl $1, -4(%rbp)
+    jz __kefir_func_factorial_label12
 __kefir_func_factorial_label3:
+__kefir_func_factorial_label4:
+    movl $1, -4(%rbp)
+__kefir_func_factorial_label5:
+__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $1, %eax
@@ -1591,13 +1610,15 @@ __kefir_func_factorial_label3:
     test %ecx, %ecx
     sete %al
     test %al, %al
-    jz __kefir_func_factorial_label5
-__kefir_func_factorial_label4:
+    jz __kefir_func_factorial_label10
+__kefir_func_factorial_label7:
+__kefir_func_factorial_label8:
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_factorial_label5:
+__kefir_func_factorial_label9:
+__kefir_func_factorial_label10:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     imul %eax, %ecx
@@ -1605,17 +1626,20 @@ __kefir_func_factorial_label5:
     movl -8(%rbp), %eax
     add $-1, %eax
     movl %eax, -8(%rbp)
-    jmp __kefir_func_factorial_label3
-__kefir_func_factorial_label6:
+    jmp __kefir_func_factorial_label6
+__kefir_func_factorial_label11:
+__kefir_func_factorial_label12:
     movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_factorial_label7:
+__kefir_func_factorial_label13:
+__kefir_func_factorial_label14:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_factorial_label15:
 __kefir_text_func_factorial_end:
 
 __kefir_text_section_end:

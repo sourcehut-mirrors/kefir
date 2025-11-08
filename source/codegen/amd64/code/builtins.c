@@ -300,6 +300,9 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_8BIT),
                 &KEFIR_ASMCMP_MAKE_VREG8(desired_placement_vreg), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+                                                                kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                                expected_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(equal_label), NULL));
@@ -320,6 +323,9 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_16BIT),
                 &KEFIR_ASMCMP_MAKE_VREG16(desired_placement_vreg), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+                                                                kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                                expected_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(equal_label), NULL));
@@ -340,6 +346,9 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
                 &KEFIR_ASMCMP_MAKE_VREG32(desired_placement_vreg), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+                                                                kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                                expected_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(equal_label), NULL));
@@ -360,6 +369,9 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
                 &KEFIR_ASMCMP_MAKE_VREG64(desired_placement_vreg), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+                                                                kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                                expected_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(equal_label), NULL));
