@@ -20,31 +20,25 @@ test1:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 41,
+#                    "instr_ref": 35,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 40,
+#                    "instr_ref": 34,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 39,
+#                    "instr_ref": 33,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 38,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 37,
+#                    "instr_ref": 32,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
@@ -152,13 +146,13 @@ test1:
 #            "block_ref": 1,
 #            "code": [
 #                {
-#                    "instr_ref": 27,
+#                    "instr_ref": 23,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 39,
+#                                "instr_ref": 34,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -183,13 +177,13 @@ test1:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 23,
+#                    "instr_ref": 21,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 41,
+#                                "instr_ref": 35,
 #                                "aspect": {
 #                                    "type": "flags"
 #                                }
@@ -199,44 +193,13 @@ test1:
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 20,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 40,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 15,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 38,
+#                                "instr_ref": 33,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -263,7 +226,7 @@ test1:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 37,
+#                                "instr_ref": 32,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -604,23 +567,7 @@ test1:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 21,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 20,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 22,
+#                    "instr_ref": 20,
 #                    "opcode": "cdq",
 #                    "parameters": [
 #                        {
@@ -650,7 +597,7 @@ test1:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 24,
+#                    "instr_ref": 22,
 #                    "opcode": "idiv",
 #                    "parameters": [
 #                        {
@@ -673,7 +620,7 @@ test1:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 22,
+#                            "instr_ref": 20,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -682,7 +629,7 @@ test1:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 23,
+#                            "instr_ref": 21,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -727,44 +674,12 @@ test1:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 25,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 24,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 1
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 26,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 24,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 28,
+#                    "instr_ref": 24,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 27,
+#                            "instr_ref": 23,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -789,12 +704,12 @@ test1:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 29,
+#                    "instr_ref": 25,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 28,
+#                            "instr_ref": 24,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -819,13 +734,45 @@ test1:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 30,
+#                    "instr_ref": 26,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 31,
+#                    "instr_ref": 27,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 25,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 28,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 25,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 29,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": []
@@ -838,65 +785,13 @@ test1:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 32,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rax"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 33,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 32,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 34,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 32,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 35,
+#                    "instr_ref": 30,
 #                    "opcode": "virtual_block_end",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 36,
+#                    "instr_ref": 31,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -945,25 +840,13 @@ test2:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 109,
+#                    "instr_ref": 63,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 108,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 107,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 106,
+#                    "instr_ref": 62,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
@@ -1070,64 +953,6 @@ test2:
 #        {
 #            "block_ref": 1,
 #            "code": [
-#                {
-#                    "instr_ref": 21,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 107,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 2,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 19,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 106,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
 #                {
 #                    "instr_ref": 9,
 #                    "opcode": "phi",
@@ -1406,82 +1231,18 @@ test2:
 #                },
 #                {
 #                    "instr_ref": 17,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 15,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 18,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 16,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 20,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 19,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 22,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 21,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 23,
 #                    "opcode": "virtual_block_end",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 24,
+#                    "instr_ref": 18,
 #                    "opcode": "virtual_block_begin",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 25,
+#                    "instr_ref": 19,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -1499,13 +1260,13 @@ test2:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 47,
+#                    "instr_ref": 32,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 1,
 #                            "value_ref": {
-#                                "instr_ref": 108,
+#                                "instr_ref": 62,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1515,7 +1276,7 @@ test2:
 #                        {
 #                            "block_ref": 8,
 #                            "value_ref": {
-#                                "instr_ref": 48,
+#                                "instr_ref": 33,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1536,13 +1297,13 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 40,
+#                    "instr_ref": 26,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 1,
 #                            "value_ref": {
-#                                "instr_ref": 109,
+#                                "instr_ref": 63,
 #                                "aspect": {
 #                                    "type": "flags"
 #                                }
@@ -1551,7 +1312,7 @@ test2:
 #                        {
 #                            "block_ref": 8,
 #                            "value_ref": {
-#                                "instr_ref": 49,
+#                                "instr_ref": 34,
 #                                "aspect": {
 #                                    "type": "flags"
 #                                }
@@ -1561,13 +1322,13 @@ test2:
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 32,
+#                    "instr_ref": 25,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 1,
 #                            "value_ref": {
-#                                "instr_ref": 21,
+#                                "instr_ref": 16,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1577,7 +1338,7 @@ test2:
 #                        {
 #                            "block_ref": 8,
 #                            "value_ref": {
-#                                "instr_ref": 91,
+#                                "instr_ref": 58,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1592,15 +1353,13 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 2,
-#                                "offset": 0
+#                                "kind": "general_purpose"
 #                            }
 #                        }
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 30,
+#                    "instr_ref": 20,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
@@ -1616,7 +1375,7 @@ test2:
 #                        {
 #                            "block_ref": 8,
 #                            "value_ref": {
-#                                "instr_ref": 95,
+#                                "instr_ref": 56,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -1641,169 +1400,13 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 28,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 1,
-#                            "value_ref": {
-#                                "instr_ref": 19,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 8,
-#                            "value_ref": {
-#                                "instr_ref": 85,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 26,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 1,
-#                            "value_ref": {
-#                                "instr_ref": 16,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 8,
-#                            "value_ref": {
-#                                "instr_ref": 96,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 27,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 26,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 29,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 28,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 31,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 30,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 33,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 32,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 34,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 30,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 35,
+#                    "instr_ref": 21,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 30,
+#                            "instr_ref": 20,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1829,12 +1432,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 36,
+#                    "instr_ref": 22,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 35,
+#                            "instr_ref": 21,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1859,12 +1462,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 37,
+#                    "instr_ref": 23,
 #                    "opcode": "movsx",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 36,
+#                            "instr_ref": 22,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1889,28 +1492,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 38,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 26,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 39,
+#                    "instr_ref": 24,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 37,
+#                            "instr_ref": 23,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1935,12 +1522,21 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 41,
+#                    "instr_ref": 27,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 39,
+#                            "instr_ref": 24,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "32bit"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 25,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -1950,15 +1546,6 @@ test2:
 #                        {
 #                            "type": "value_ref",
 #                            "instr_ref": 26,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "32bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 40,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -1990,12 +1577,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 42,
+#                    "instr_ref": 28,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 30,
+#                            "instr_ref": 20,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2020,12 +1607,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 43,
+#                    "instr_ref": 29,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 41,
+#                            "instr_ref": 27,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2050,12 +1637,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 44,
+#                    "instr_ref": 30,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 37,
+#                            "instr_ref": 23,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2080,13 +1667,13 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 45,
+#                    "instr_ref": 31,
 #                    "opcode": "cmpxchg",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 42,
+#                            "instr_ref": 28,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2096,7 +1683,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 43,
+#                            "instr_ref": 29,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2105,7 +1692,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 44,
+#                            "instr_ref": 30,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2114,7 +1701,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 41,
+#                            "instr_ref": 27,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -2136,28 +1723,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 46,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 44,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 48,
+#                    "instr_ref": 33,
 #                    "opcode": "sete",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 47,
+#                            "instr_ref": 32,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2166,7 +1737,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 45,
+#                            "instr_ref": 31,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -2186,12 +1757,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 49,
+#                    "instr_ref": 34,
 #                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 48,
+#                            "instr_ref": 33,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2200,7 +1771,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 48,
+#                            "instr_ref": 33,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2209,7 +1780,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 45,
+#                            "instr_ref": 31,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -2228,7 +1799,7 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 51,
+#                    "instr_ref": 36,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -2241,7 +1812,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 49,
+#                            "instr_ref": 34,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -2258,13 +1829,193 @@ test2:
 #            "block_ref": 3,
 #            "code": [
 #                {
-#                    "instr_ref": 52,
+#                    "instr_ref": 37,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 6
+#                        }
+#                    ],
+#                    "values": []
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 4,
+#            "code": [
+#                {
+#                    "instr_ref": 40,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 2,
 #                            "value_ref": {
-#                                "instr_ref": 41,
+#                                "instr_ref": 25,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 38,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 2,
+#                            "value_ref": {
+#                                "instr_ref": 20,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rdx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 39,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 38,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "hint",
+#                                "register": "rdx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 41,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 40,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 42,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 8
+#                        }
+#                    ],
+#                    "values": []
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 5,
+#            "code": [
+#                {
+#                    "instr_ref": 43,
+#                    "opcode": "virtual_block_end",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 44,
+#                    "opcode": "virtual_block_begin",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 45,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 6
+#                        }
+#                    ],
+#                    "values": []
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 6,
+#            "code": [
+#                {
+#                    "instr_ref": 46,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 3,
+#                            "value_ref": {
+#                                "instr_ref": 27,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -2289,12 +2040,48 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 53,
+#                    "instr_ref": 47,
+#                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 46,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rax"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 48,
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 49,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 52,
+#                            "instr_ref": 47,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -2305,12 +2092,53 @@ test2:
 #                    "values": []
 #                },
 #                {
+#                    "instr_ref": 50,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 47,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 51,
+#                    "opcode": "ret",
+#                    "parameters": [],
+#                    "values": []
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 7,
+#            "code": [
+#                {
+#                    "instr_ref": 52,
+#                    "opcode": "virtual_block_end",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 53,
+#                    "opcode": "virtual_block_begin",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
 #                    "instr_ref": 54,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 6
+#                            "block_ref": 8
 #                        }
 #                    ],
 #                    "values": []
@@ -2320,16 +2148,16 @@ test2:
 #            "public_labels": []
 #        },
 #        {
-#            "block_ref": 4,
+#            "block_ref": 8,
 #            "code": [
 #                {
 #                    "instr_ref": 57,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
-#                            "block_ref": 2,
+#                            "block_ref": 4,
 #                            "value_ref": {
-#                                "instr_ref": 26,
+#                                "instr_ref": 41,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -2354,9 +2182,9 @@ test2:
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
-#                            "block_ref": 2,
+#                            "block_ref": 4,
 #                            "value_ref": {
-#                                "instr_ref": 30,
+#                                "instr_ref": 39,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -2438,738 +2266,6 @@ test2:
 #                },
 #                {
 #                    "instr_ref": 59,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 56,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 60,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 58,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 61,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 8
-#                        }
-#                    ],
-#                    "values": []
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 5,
-#            "code": [
-#                {
-#                    "instr_ref": 64,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 2,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 62,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 63,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 62,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 65,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 64,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 66,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 67,
-#                    "opcode": "virtual_block_begin",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 68,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 6
-#                        }
-#                    ],
-#                    "values": []
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 6,
-#            "code": [
-#                {
-#                    "instr_ref": 73,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 3,
-#                            "value_ref": {
-#                                "instr_ref": 32,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 2,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 71,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 3,
-#                            "value_ref": {
-#                                "instr_ref": 52,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rcx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 69,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 3,
-#                            "value_ref": {
-#                                "instr_ref": 28,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 70,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 69,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 72,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 71,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 74,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 73,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 75,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 71,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 76,
-#                    "opcode": "assign",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 71,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rax"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 77,
-#                    "opcode": "function_epilogue",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 78,
-#                    "opcode": "ret",
-#                    "parameters": [],
-#                    "values": []
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 7,
-#            "code": [
-#                {
-#                    "instr_ref": 79,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rax"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 80,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 79,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 81,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 79,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 82,
-#                    "opcode": "virtual_block_end",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 83,
-#                    "opcode": "virtual_block_begin",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 84,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 8
-#                        }
-#                    ],
-#                    "values": []
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 8,
-#            "code": [
-#                {
-#                    "instr_ref": 91,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 4,
-#                            "value_ref": {
-#                                "instr_ref": 32,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 2,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 89,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 4,
-#                            "value_ref": {
-#                                "instr_ref": 56,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 87,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 4,
-#                            "value_ref": {
-#                                "instr_ref": 58,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 85,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 4,
-#                            "value_ref": {
-#                                "instr_ref": 28,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 86,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 85,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 88,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 87,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 90,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 89,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 92,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 91,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 93,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 89,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 94,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 87,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 95,
-#                    "opcode": "assign",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 89,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 96,
-#                    "opcode": "assign",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 87,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 97,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 95,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 98,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 96,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 99,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3187,81 +2283,13 @@ test2:
 #            "block_ref": 9,
 #            "code": [
 #                {
-#                    "instr_ref": 102,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 2,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 100,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 101,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 100,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 103,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 102,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 104,
+#                    "instr_ref": 60,
 #                    "opcode": "virtual_block_end",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 105,
+#                    "instr_ref": 61,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3333,19 +2361,19 @@ test3:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 55,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 54,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
 #                    "instr_ref": 53,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 52,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 51,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
@@ -3599,7 +2627,7 @@ test3:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 55,
+#                                "instr_ref": 53,
 #                                "aspect": {
 #                                    "type": "flags"
 #                                }
@@ -3615,7 +2643,7 @@ test3:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 53,
+#                                "instr_ref": 51,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -3644,7 +2672,7 @@ test3:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 54,
+#                                "instr_ref": 52,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -4376,6 +3404,54 @@ test3:
 #                },
 #                {
 #                    "instr_ref": 41,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 39,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 42,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 38,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 43,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 39,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 44,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": []
@@ -4388,101 +3464,13 @@ test3:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 44,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rax"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 42,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 43,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 42,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
 #                    "instr_ref": 45,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 44,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 46,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 42,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 47,
 #                    "opcode": "virtual_block_end",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 48,
+#                    "instr_ref": 46,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -4499,24 +3487,6 @@ test3:
 #        {
 #            "block_ref": 3,
 #            "code": [
-#                {
-#                    "instr_ref": 51,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "spill_space",
-#                                "alignment": 1,
-#                                "length": 2
-#                            }
-#                        }
-#                    ]
-#                },
 #                {
 #                    "instr_ref": 49,
 #                    "opcode": "phi",
@@ -4536,12 +3506,30 @@ test3:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 50,
+#                    "instr_ref": 47,
+#                    "opcode": "phi",
+#                    "phi_links": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "spill_space",
+#                                "alignment": 1,
+#                                "length": 2
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 48,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 49,
+#                            "instr_ref": 47,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -4552,12 +3540,12 @@ test3:
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 52,
+#                    "instr_ref": 50,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 51,
+#                            "instr_ref": 49,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -4602,13 +3590,7 @@ test4:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 40,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 39,
+#                    "instr_ref": 30,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
@@ -4679,35 +3661,6 @@ test4:
 #        {
 #            "block_ref": 1,
 #            "code": [
-#                {
-#                    "instr_ref": 8,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 39,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
 #                {
 #                    "instr_ref": 5,
 #                    "opcode": "phi",
@@ -4793,35 +3746,19 @@ test4:
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 9,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 8,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 10,
+#                    "instr_ref": 8,
 #                    "opcode": "virtual_block_end",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 11,
+#                    "instr_ref": 9,
 #                    "opcode": "virtual_block_begin",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 12,
+#                    "instr_ref": 10,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -4839,87 +3776,32 @@ test4:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 18,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 1,
-#                            "value_ref": {
-#                                "instr_ref": 40,
-#                                "aspect": {
-#                                    "type": "flags"
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 2,
-#                            "value_ref": {
-#                                "instr_ref": 21,
-#                                "aspect": {
-#                                    "type": "flags"
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 13,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 1,
-#                            "value_ref": {
-#                                "instr_ref": 8,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 2,
-#                            "value_ref": {
-#                                "instr_ref": 13,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 14,
-#                    "opcode": "touch",
-#                    "parameters": [
+#                    "opcode": "phi",
+#                    "phi_links": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 13,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
+#                            "block_ref": 1,
+#                            "value_ref": {
+#                                "instr_ref": 30,
+#                                "aspect": {
+#                                    "type": "flags"
+#                                }
+#                            }
+#                        },
+#                        {
+#                            "block_ref": 2,
+#                            "value_ref": {
+#                                "instr_ref": 17,
+#                                "aspect": {
+#                                    "type": "flags"
+#                                }
+#                            }
 #                        }
 #                    ],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 15,
+#                    "instr_ref": 11,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -4943,7 +3825,7 @@ test4:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 16,
+#                    "instr_ref": 12,
 #                    "opcode": "lea",
 #                    "parameters": [],
 #                    "values": [
@@ -4959,12 +3841,12 @@ test4:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 17,
+#                    "instr_ref": 13,
 #                    "opcode": "movsx",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 15,
+#                            "instr_ref": 11,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -4985,12 +3867,12 @@ test4:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 19,
+#                    "instr_ref": 15,
 #                    "opcode": "imul3",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 17,
+#                            "instr_ref": 13,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -5003,7 +3885,7 @@ test4:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 18,
+#                            "instr_ref": 14,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -5031,8 +3913,34 @@ test4:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 20,
+#                    "instr_ref": 16,
 #                    "opcode": "assign",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 12,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 17,
+#                    "opcode": "add",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
@@ -5041,28 +3949,11 @@ test4:
 #                                "type": "output_reg",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 21,
-#                    "opcode": "add",
-#                    "parameters": [
+#                            "variant": "64bit"
+#                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 20,
+#                            "instr_ref": 15,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -5071,16 +3962,7 @@ test4:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 19,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "64bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 19,
+#                            "instr_ref": 15,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -5108,13 +3990,13 @@ test4:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 22,
+#                    "instr_ref": 18,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 21,
+#                            "instr_ref": 17,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -5136,12 +4018,12 @@ test4:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 23,
+#                    "instr_ref": 19,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 22,
+#                            "instr_ref": 18,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -5161,53 +4043,19 @@ test4:
 #            "block_ref": 3,
 #            "code": [
 #                {
-#                    "instr_ref": 24,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 25,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 24,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 26,
+#                    "instr_ref": 20,
 #                    "opcode": "virtual_block_end",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 27,
+#                    "instr_ref": 21,
 #                    "opcode": "virtual_block_begin",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 28,
+#                    "instr_ref": 22,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -5225,41 +4073,7 @@ test4:
 #            "block_ref": 4,
 #            "code": [
 #                {
-#                    "instr_ref": 29,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 30,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 29,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 31,
+#                    "instr_ref": 23,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -5284,13 +4098,45 @@ test4:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 32,
+#                    "instr_ref": 24,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 33,
+#                    "instr_ref": 25,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 23,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 26,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 23,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 27,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": []
@@ -5305,65 +4151,13 @@ test4:
 #            "block_ref": 5,
 #            "code": [
 #                {
-#                    "instr_ref": 34,
-#                    "opcode": "phi",
-#                    "phi_links": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rax"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 35,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 34,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 36,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 34,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 37,
+#                    "instr_ref": 28,
 #                    "opcode": "virtual_block_end",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 38,
+#                    "instr_ref": 29,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {

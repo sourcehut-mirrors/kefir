@@ -413,13 +413,20 @@ static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir
     REQUIRE_OK(kefir_asmcmp_amd64_function_epilogue(mem, &function->code,
                                                     kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
 
-    REQUIRE_OK(
-        kefir_asmcmp_amd64_ret(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
-
     if (vreg != KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
     }
+    for (const struct kefir_list_entry *iter = kefir_list_head(touch_vregs);
+        iter != NULL;
+        kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg,
+            (kefir_uptr_t) iter->value);
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
+    }
+    REQUIRE_OK(
+        kefir_asmcmp_amd64_ret(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
 
     return KEFIR_OK;
 }
@@ -434,14 +441,6 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
     struct kefir_list touch_vregs;
     REQUIRE_OK(kefir_list_init(&touch_vregs));
     kefir_result_t res = kefir_codegen_amd64_return_from_function_impl(mem, function, result_instr_ref, return_vreg, &touch_vregs);
-    for (const struct kefir_list_entry *iter = kefir_list_head(&touch_vregs);
-        iter != NULL && res == KEFIR_OK;
-        kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg,
-            (kefir_uptr_t) iter->value);
-        REQUIRE_CHAIN(&res, kefir_asmcmp_amd64_touch_virtual_register(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
-    }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &touch_vregs);
         return res;

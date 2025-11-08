@@ -300,7 +300,7 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_8BIT),
                 &KEFIR_ASMCMP_MAKE_VREG8(desired_placement_vreg), NULL));
-            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+            REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(mem, &function->code,
                                                                 kefir_asmcmp_context_instr_tail(&function->code.context),
                                                                 expected_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
@@ -323,7 +323,7 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_16BIT),
                 &KEFIR_ASMCMP_MAKE_VREG16(desired_placement_vreg), NULL));
-            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+            REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(mem, &function->code,
                                                                 kefir_asmcmp_context_instr_tail(&function->code.context),
                                                                 expected_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
@@ -346,7 +346,7 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
                 &KEFIR_ASMCMP_MAKE_VREG32(desired_placement_vreg), NULL));
-            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+            REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(mem, &function->code,
                                                                 kefir_asmcmp_context_instr_tail(&function->code.context),
                                                                 expected_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
@@ -369,7 +369,7 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
                 &KEFIR_ASMCMP_MAKE_VREG64(desired_placement_vreg), NULL));
-            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+            REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(mem, &function->code,
                                                                 kefir_asmcmp_context_instr_tail(&function->code.context),
                                                                 expected_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
@@ -901,7 +901,7 @@ static kefir_result_t translate_ctzl(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(kefir_asmcmp_amd64_xor(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_VREG32(result_vreg),
                                       NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+    REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_bsf2_rep(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

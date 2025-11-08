@@ -41,6 +41,7 @@ static kefir_result_t drop_virtual_apply(struct kefir_mem *mem, struct kefir_asm
         kefir_bool_t drop_instr = false;
         switch (instr->opcode) {
             case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
+            case KEFIR_ASMCMP_AMD64_OPCODE(weak_touch_virtual_register):
             case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin):
             case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end):
             case KEFIR_ASMCMP_AMD64_OPCODE(noop):

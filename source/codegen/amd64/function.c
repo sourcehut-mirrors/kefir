@@ -578,7 +578,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
                 continue;
             }
 
-            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(
                 mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
         }
 
@@ -629,7 +629,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
                 }
             }
             if (preserve_vreg) {
-                REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(
                     mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
             }
         }

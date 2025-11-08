@@ -827,7 +827,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange)(
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unepected optimizer instruction opcode");
     }
-    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+    REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          expected_value_placement_vreg, NULL));
 
