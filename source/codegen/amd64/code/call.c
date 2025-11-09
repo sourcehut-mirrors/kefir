@@ -666,7 +666,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                                    const struct kefir_opt_call_node *call_node,
                                    struct kefir_abi_amd64_function_decl *abi_func_decl,
                                    kefir_asmcmp_virtual_register_index_t return_space_vreg,
-                                   kefir_asmcmp_virtual_register_index_t *result_vreg) {
+                                   kefir_asmcmp_virtual_register_index_t *result_vreg, struct kefir_hashtree *multireg_parts) {
     const struct kefir_abi_amd64_function_parameters *return_parameters;
     REQUIRE_OK(kefir_abi_amd64_function_decl_returns(abi_func_decl, &return_parameters));
 
@@ -797,6 +797,49 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
             kefir_size_t multireg_length;
             REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&return_parameter, &multireg_length));
             kefir_size_t result_offset = 0;
+
+            for (kefir_size_t i = 0; i < multireg_length; i++) {
+                struct kefir_abi_amd64_function_parameter subparam;
+                REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(&return_parameter, i, &subparam));
+
+                switch (subparam.location) {
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
+                        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                                                                     &return_placement_vreg));
+                        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(
+                            mem, &function->code, return_placement_vreg, subparam.direct_reg));
+                        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            return_placement_vreg, NULL));
+                        REQUIRE_OK(kefir_hashtree_insert(mem, multireg_parts, (kefir_hashtree_key_t) i, return_placement_vreg));
+                        break;
+
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
+                        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
+                                                                     &return_placement_vreg));
+                        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(
+                            mem, &function->code, return_placement_vreg, subparam.direct_reg));
+                        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            return_placement_vreg, NULL));
+                        REQUIRE_OK(kefir_hashtree_insert(mem, multireg_parts, (kefir_hashtree_key_t) i, return_placement_vreg));
+                        break;
+
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NONE:
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS:
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY:
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSEUP_REGISTER:
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_COMPLEX_X87:
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NESTED:
+                        // Intentionally left blank
+                        break;
+                }
+            }
+
             for (kefir_size_t i = 0; i < multireg_length; i++) {
                 struct kefir_abi_amd64_function_parameter subparam;
                 REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(&return_parameter, i, &subparam));
@@ -806,12 +849,11 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                         // Intentionally left blank
                         break;
 
-                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
-                        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
-                                                                     &return_placement_vreg));
-                        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(
-                            mem, &function->code, return_placement_vreg, subparam.direct_reg));
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER: {
+                        struct kefir_hashtree_node *node;
+                        REQUIRE_OK(kefir_hashtree_at(multireg_parts, (kefir_hashtree_key_t) i, &node));
+                        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, return_placement_vreg,
+                            node->value);
                         if (int128_multireg_return) {
                             kefir_asmcmp_virtual_register_index_t half_vreg;
                             REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, return_vreg, i, &half_vreg));
@@ -837,14 +879,13 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                                 result_offset += KEFIR_AMD64_ABI_QWORD;
                             }
                         }
-                        break;
+                    } break;
 
-                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
-                        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
-                                                                     &return_placement_vreg));
-                        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(
-                            mem, &function->code, return_placement_vreg, subparam.direct_reg));
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER: {
+                        struct kefir_hashtree_node *node;
+                        REQUIRE_OK(kefir_hashtree_at(multireg_parts, (kefir_hashtree_key_t) i, &node));
+                        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, return_placement_vreg,
+                            node->value);
                         if (complex_float32_multireg_return) {
                             REQUIRE(i == 0,
                                     KEFIR_SET_ERROR(
@@ -906,7 +947,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                                 result_offset += KEFIR_AMD64_ABI_QWORD;
                             }
                         }
-                        break;
+                    } break;
 
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
                         REQUIRE(i + 1 < multireg_length,
@@ -1228,8 +1269,15 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
 
     if (!ir_func_decl->no_return) {
         if (kefir_ir_type_length(ir_func_decl->result) > 0) {
-            REQUIRE_OK(save_returns(mem, function, instruction, call_node, abi_func_decl, return_space_vreg,
-                                    result_vreg));
+            struct kefir_hashtree multireg_parts;
+            REQUIRE_OK(kefir_hashtree_init(&multireg_parts, &kefir_hashtree_uint_ops));
+            kefir_result_t res = save_returns(mem, function, instruction, call_node, abi_func_decl, return_space_vreg,
+                                    result_vreg, &multireg_parts);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_hashtree_free(mem, &multireg_parts);
+                return res;
+            });
+            REQUIRE_OK(kefir_hashtree_free(mem, &multireg_parts));
         }
         if (stack_increment > 0) {
             REQUIRE_OK(kefir_asmcmp_amd64_add(mem, &function->code,
