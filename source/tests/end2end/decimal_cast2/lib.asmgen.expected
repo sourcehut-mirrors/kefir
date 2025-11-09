@@ -233,28 +233,28 @@ d64_to_bitint180:
 __kefir_text_func_d64_to_bitint180_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    mov %rdi, %rdx
-    movq %rdx, -24(%rbp)
-    leaq -48(%rbp), %rax
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
+    leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $-180, %rsi
     call __bid_fixddbitint@PLT
-    movq -24(%rbp), %rdx
-    movq -48(%rbp), %rax
-    movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -16(%rbp)
+    movq %rax, -64(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -8(%rbp)
-    mov %rdx, %rax
-    movq -24(%rbp), %rcx
+    movq %rax, -56(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -48(%rbp)
+    mov %rbx, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -16(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -8(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_d64_to_bitint180_end:
@@ -278,28 +278,28 @@ d64_to_ubitint180:
 __kefir_text_func_d64_to_ubitint180_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    mov %rdi, %rdx
-    movq %rdx, -24(%rbp)
-    leaq -48(%rbp), %rax
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
+    leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $180, %rsi
     call __bid_fixddbitint@PLT
-    movq -24(%rbp), %rdx
-    movq -48(%rbp), %rax
-    movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -16(%rbp)
+    movq %rax, -64(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -8(%rbp)
-    mov %rdx, %rax
-    movq -24(%rbp), %rcx
+    movq %rax, -56(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -48(%rbp)
+    mov %rbx, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -16(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -8(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_d64_to_ubitint180_end:
@@ -329,28 +329,28 @@ d128_to_bitint180:
 __kefir_text_func_d128_to_bitint180_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    mov %rdi, %rdx
-    movq %rdx, -24(%rbp)
-    leaq -48(%rbp), %rax
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
+    leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $-180, %rsi
     call __bid_fixtdbitint@PLT
-    movq -24(%rbp), %rdx
-    movq -48(%rbp), %rax
-    movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -16(%rbp)
+    movq %rax, -64(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -8(%rbp)
-    mov %rdx, %rax
-    movq -24(%rbp), %rcx
+    movq %rax, -56(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -48(%rbp)
+    mov %rbx, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -16(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -8(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_d128_to_bitint180_end:
@@ -418,8 +418,8 @@ __kefir_text_func_ubitint24_to_d128_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rsi
-    mov %rsi, %rdi
+    leaq -16(%rbp), %rax
+    mov %rax, %rdi
     mov $24, %rsi
     call __bid_floatbitinttd@PLT
     lea (%rbp), %rsp
@@ -431,28 +431,28 @@ d32_to_bitint180:
 __kefir_text_func_d32_to_bitint180_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    mov %rdi, %rdx
-    movq %rdx, -24(%rbp)
-    leaq -48(%rbp), %rax
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
+    leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $-180, %rsi
     call __bid_fixsdbitint@PLT
-    movq -24(%rbp), %rdx
-    movq -48(%rbp), %rax
-    movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -16(%rbp)
+    movq %rax, -64(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -8(%rbp)
-    mov %rdx, %rax
-    movq -24(%rbp), %rcx
+    movq %rax, -56(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -48(%rbp)
+    mov %rbx, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -16(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -8(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_d32_to_bitint180_end:
@@ -529,8 +529,8 @@ __kefir_text_func_ubitint24_to_d32_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rsi
-    mov %rsi, %rdi
+    leaq -16(%rbp), %rax
+    mov %rax, %rdi
     mov $24, %rsi
     call __bid_floatbitintsd@PLT
     lea (%rbp), %rsp
@@ -544,8 +544,8 @@ __kefir_text_func_ubitint24_to_d64_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rsi
-    mov %rsi, %rdi
+    leaq -16(%rbp), %rax
+    mov %rax, %rdi
     mov $24, %rsi
     call __bid_floatbitintdd@PLT
     lea (%rbp), %rsp
@@ -610,8 +610,8 @@ __kefir_text_func_bitint24_to_d32_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rsi
-    mov %rsi, %rdi
+    leaq -16(%rbp), %rax
+    mov %rax, %rdi
     mov $-24, %rsi
     call __bid_floatbitintsd@PLT
     lea (%rbp), %rsp
@@ -625,8 +625,8 @@ __kefir_text_func_bitint24_to_d64_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rsi
-    mov %rsi, %rdi
+    leaq -16(%rbp), %rax
+    mov %rax, %rdi
     mov $-24, %rsi
     call __bid_floatbitintdd@PLT
     lea (%rbp), %rsp
@@ -638,28 +638,28 @@ d128_to_ubitint180:
 __kefir_text_func_d128_to_ubitint180_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    mov %rdi, %rdx
-    movq %rdx, -24(%rbp)
-    leaq -48(%rbp), %rax
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
+    leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $180, %rsi
     call __bid_fixtdbitint@PLT
-    movq -24(%rbp), %rdx
-    movq -48(%rbp), %rax
-    movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -16(%rbp)
+    movq %rax, -64(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -8(%rbp)
-    mov %rdx, %rax
-    movq -24(%rbp), %rcx
+    movq %rax, -56(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -48(%rbp)
+    mov %rbx, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -16(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -8(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_d128_to_ubitint180_end:
@@ -712,8 +712,8 @@ __kefir_text_func_bitint24_to_d128_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rsi
-    mov %rsi, %rdi
+    leaq -16(%rbp), %rax
+    mov %rax, %rdi
     mov $-24, %rsi
     call __bid_floatbitinttd@PLT
     lea (%rbp), %rsp
@@ -725,28 +725,28 @@ d32_to_ubitint180:
 __kefir_text_func_d32_to_ubitint180_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    mov %rdi, %rdx
-    movq %rdx, -24(%rbp)
-    leaq -48(%rbp), %rax
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
+    leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $180, %rsi
     call __bid_fixsdbitint@PLT
-    movq -24(%rbp), %rdx
-    movq -48(%rbp), %rax
-    movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -16(%rbp)
+    movq %rax, -64(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -8(%rbp)
-    mov %rdx, %rax
-    movq -24(%rbp), %rcx
+    movq %rax, -56(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -48(%rbp)
+    mov %rbx, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -16(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -8(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_d32_to_ubitint180_end:

@@ -136,9 +136,9 @@ __kefir_func_mul5_label0:
     movdqu %xmm0, -112(%rbp)
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
-    leaq -128(%rbp), %rax
-    mov %rax, %rdi
     leaq -80(%rbp), %rax
+    mov %rax, %rdi
+    leaq -128(%rbp), %rax
     mov %rax, %rsi
     leaq -96(%rbp), %rax
     mov %rax, %rdx
@@ -147,8 +147,8 @@ __kefir_func_mul5_label0:
     mov $120, %r8
     mov $120, %r9
     call __kefir_bigint_signed_multiply
-    movq -128(%rbp), %rax
-    movq -120(%rbp), %rdx
+    movq -80(%rbp), %rax
+    movq -72(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -159,51 +159,52 @@ mul6:
 __kefir_text_func_mul6_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $256, %rsp
-    mov %rdi, %r10
+    push %rbx
+    sub $248, %rsp
+    mov %rdi, %rbx
 __kefir_func_mul6_label0:
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
     movq (%rax), %rdx
-    movq %rdx, -40(%rbp)
+    movq %rdx, -48(%rbp)
     movq 8(%rax), %rdx
-    movq %rdx, -32(%rbp)
+    movq %rdx, -40(%rbp)
     movq 16(%rax), %rdx
-    movq %rdx, -24(%rbp)
+    movq %rdx, -32(%rbp)
     movq 24(%rax), %rdx
-    movq %rdx, -16(%rbp)
+    movq %rdx, -24(%rbp)
     movq 32(%rax), %rdx
-    movq %rdx, -8(%rbp)
+    movq %rdx, -16(%rbp)
     movq (%rcx), %rax
-    movq %rax, -80(%rbp)
+    movq %rax, -88(%rbp)
     movq 8(%rcx), %rax
-    movq %rax, -72(%rbp)
+    movq %rax, -80(%rbp)
     movq 16(%rcx), %rax
-    movq %rax, -64(%rbp)
+    movq %rax, -72(%rbp)
     movq 24(%rcx), %rax
-    movq %rax, -56(%rbp)
+    movq %rax, -64(%rbp)
     movq 32(%rcx), %rax
-    movq %rax, -48(%rbp)
-    movq -80(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq -88(%rbp), %rax
     movq %rax, -216(%rbp)
-    movq -72(%rbp), %rax
+    movq -80(%rbp), %rax
     movq %rax, -208(%rbp)
-    movq -64(%rbp), %rax
+    movq -72(%rbp), %rax
     movq %rax, -200(%rbp)
-    movq -56(%rbp), %rax
+    movq -64(%rbp), %rax
     movq %rax, -192(%rbp)
-    movq -48(%rbp), %rax
+    movq -56(%rbp), %rax
     movq %rax, -184(%rbp)
+    movq -48(%rbp), %rax
+    movq %rax, -176(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -136(%rbp)
+    movq %rax, -168(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -128(%rbp)
+    movq %rax, -160(%rbp)
     movq -24(%rbp), %rax
-    movq %rax, -120(%rbp)
+    movq %rax, -152(%rbp)
     movq -16(%rbp), %rax
-    movq %rax, -112(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -104(%rbp)
+    movq %rax, -144(%rbp)
     movq -216(%rbp), %rax
     movq %rax, -256(%rbp)
     movq -208(%rbp), %rax
@@ -214,31 +215,30 @@ __kefir_func_mul6_label0:
     movq %rax, -232(%rbp)
     movq -184(%rbp), %rax
     movq %rax, -224(%rbp)
-    movq %r10, -96(%rbp)
-    leaq -216(%rbp), %rax
+    leaq -136(%rbp), %rax
     mov %rax, %rdi
-    leaq -176(%rbp), %rax
+    leaq -216(%rbp), %rax
     mov %rax, %rsi
     leaq -256(%rbp), %rax
     mov %rax, %rdx
-    leaq -136(%rbp), %rax
+    leaq -176(%rbp), %rax
     mov %rax, %rcx
     mov $310, %r8
     mov $310, %r9
     call __kefir_bigint_signed_multiply
-    movq -96(%rbp), %r10
-    mov %r10, %rax
-    movq -216(%rbp), %rcx
+    mov %rbx, %rax
+    movq -136(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -208(%rbp), %rcx
+    movq -128(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -200(%rbp), %rcx
+    movq -120(%rbp), %rcx
     movq %rcx, 16(%rax)
-    movq -192(%rbp), %rcx
+    movq -112(%rbp), %rcx
     movq %rcx, 24(%rax)
-    movq -184(%rbp), %rcx
+    movq -104(%rbp), %rcx
     movq %rcx, 32(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_mul6_label1:

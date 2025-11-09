@@ -11,19 +11,18 @@ test2:
 __kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $144, %rsp
+    push %rbx
+    sub $136, %rsp
 __kefir_func_test2_label0:
-    movl %edi, -4(%rbp)
-    movl -4(%rbp), %eax
+    movl %edi, -12(%rbp)
+    movl -12(%rbp), %eax
     mov $0, %rcx
-    movsx %ecx, %r8
+    movsx %ecx, %rbx
     movsx %eax, %rdx
-    movq %r8, -16(%rbp)
     leaq -144(%rbp), %rax
     mov %rax, %rdi
     mov $1023, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -16(%rbp), %r8
     sub $128, %rsp
     lea (%rsp), %rdi
     leaq -144(%rbp), %rax
@@ -31,10 +30,11 @@ __kefir_func_test2_label0:
     cld
     mov $16, %rcx
     rep movsq
-    mov %r8, %rdi
+    mov %rbx, %rdi
     call test1@PLT
     add $128, %rsp
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_test2_label1:

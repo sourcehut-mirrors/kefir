@@ -86,38 +86,36 @@ test5:
 __kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    mov %rdx, %r8
+    push %rbx
+    push %r12
+    sub $32, %rsp
+    mov %rdx, %r12
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
     movl $0, -36(%rbp)
-    movq %r8, -16(%rbp)
     leaq -32(%rbp), %rax
     mov %rax, %rdi
     leaq -48(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -16(%rbp), %r8
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     cmp $0, %al
-    sete %cl
-    movq %rcx, -48(%rbp)
-    movq %r8, -40(%rbp)
+    sete %bl
     leaq -32(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    movq -48(%rbp), %rcx
-    movq -40(%rbp), %r8
-    mov %r8, %rdx
-    test %cl, %cl
+    mov %r12, %rdx
+    test %bl, %bl
     cmovnz %rdx, %rax
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_test5_end:
@@ -126,9 +124,12 @@ test6:
 __kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %r9
-    lea 16(%rbp), %rcx
+    push %rbx
+    push %r12
+    push %r13
+    sub $40, %rsp
+    mov %rdi, %r13
+    lea 16(%rbp), %rbx
     movl $0, -64(%rbp)
     movl $0, -60(%rbp)
     movl $0, -56(%rbp)
@@ -139,30 +140,25 @@ __kefir_text_func_test6_begin:
     movl $0, -36(%rbp)
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
-    movq %rcx, -24(%rbp)
-    movq %r9, -16(%rbp)
-    mov %rcx, %rdi
+    mov %rbx, %rdi
     leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $315, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -24(%rbp), %rcx
-    movq -16(%rbp), %r9
-    xor %r8d, %r8d
+    xor %r12d, %r12d
     cmp $0, %al
-    sete %r8b
-    movq %r9, -64(%rbp)
-    movq %r8, -56(%rbp)
-    mov %rcx, %rdi
+    sete %r12b
+    mov %rbx, %rdi
     mov $315, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    movq -64(%rbp), %r9
-    movq -56(%rbp), %r8
-    mov %r9, %rdi
-    test %r8b, %r8b
+    mov %r13, %rdi
+    test %r12b, %r12b
     cmovnz %rdi, %rax
-    lea (%rbp), %rsp
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_test6_end:

@@ -198,25 +198,25 @@ get11:
 __kefir_text_func_get11_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
 __kefir_func_get11_label0:
     movabs $1028332837181762172, %rdx
     neg %rdx
-    movq %rcx, -16(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $350, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -16(%rbp), %rcx
-    mov %rcx, %rax
+    mov %rbx, %rax
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_get11_label1:
@@ -226,24 +226,24 @@ get12:
 __kefir_text_func_get12_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
 __kefir_func_get12_label0:
     movabs $3991073699158421302, %rdx
-    movq %rcx, -16(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $350, %rsi
     call __kefir_bigint_set_unsigned_integer
-    movq -16(%rbp), %rcx
-    mov %rcx, %rax
+    mov %rbx, %rax
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_get12_label1:
@@ -327,24 +327,24 @@ get11a:
 __kefir_text_func_get11a_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
 __kefir_func_get11a_label0:
     movabs $1028332837181762172, %rdx
-    movq %rcx, -16(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $350, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -16(%rbp), %rcx
-    mov %rcx, %rax
+    mov %rbx, %rax
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_get11a_label1:

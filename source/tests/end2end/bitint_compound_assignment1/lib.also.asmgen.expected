@@ -38,59 +38,59 @@ or:
 __kefir_text_func_or_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $96, %rsp
-    mov %rdi, %r8
+    mov %rdi, %r12
 __kefir_func_or_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -24(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq x@GOTPCREL(%rip), %rcx
-    movq (%rcx), %rax
     movq %rax, -96(%rbp)
-    movq 8(%rcx), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -88(%rbp)
-    movq 16(%rcx), %rax
+    movq 8(%rbx), %rax
     movq %rax, -80(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -48(%rbp)
+    movq 16(%rbx), %rax
+    movq %rax, -72(%rbp)
     movq -88(%rbp), %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -64(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
-    leaq -48(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -48(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -72(%rbp), %rax
+    leaq -112(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_or
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -64(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -56(%rbp), %rax
+    movq %rax, 8(%rbx)
     movq -48(%rbp), %rax
-    movq %rax, (%rcx)
-    movq -40(%rbp), %rax
-    movq %rax, 8(%rcx)
-    movq -32(%rbp), %rax
-    movq %rax, 16(%rcx)
-    mov %r8, %rax
-    movq -48(%rbp), %rcx
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -40(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -32(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_or_label1:
@@ -100,59 +100,59 @@ add:
 __kefir_text_func_add_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $96, %rsp
-    mov %rdi, %r8
+    mov %rdi, %r12
 __kefir_func_add_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -24(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq x@GOTPCREL(%rip), %rcx
-    movq (%rcx), %rax
     movq %rax, -96(%rbp)
-    movq 8(%rcx), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -88(%rbp)
-    movq 16(%rcx), %rax
+    movq 8(%rbx), %rax
     movq %rax, -80(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -48(%rbp)
+    movq 16(%rbx), %rax
+    movq %rax, -72(%rbp)
     movq -88(%rbp), %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -64(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
-    leaq -48(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -48(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -72(%rbp), %rax
+    leaq -112(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_add
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -64(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -56(%rbp), %rax
+    movq %rax, 8(%rbx)
     movq -48(%rbp), %rax
-    movq %rax, (%rcx)
-    movq -40(%rbp), %rax
-    movq %rax, 8(%rcx)
-    movq -32(%rbp), %rax
-    movq %rax, 16(%rcx)
-    mov %r8, %rax
-    movq -48(%rbp), %rcx
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -40(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -32(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_add_label1:
@@ -162,59 +162,59 @@ and:
 __kefir_text_func_and_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $96, %rsp
-    mov %rdi, %r8
+    mov %rdi, %r12
 __kefir_func_and_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -24(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq x@GOTPCREL(%rip), %rcx
-    movq (%rcx), %rax
     movq %rax, -96(%rbp)
-    movq 8(%rcx), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -88(%rbp)
-    movq 16(%rcx), %rax
+    movq 8(%rbx), %rax
     movq %rax, -80(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -48(%rbp)
+    movq 16(%rbx), %rax
+    movq %rax, -72(%rbp)
     movq -88(%rbp), %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -64(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
-    leaq -48(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -48(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -72(%rbp), %rax
+    leaq -112(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_and
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -64(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -56(%rbp), %rax
+    movq %rax, 8(%rbx)
     movq -48(%rbp), %rax
-    movq %rax, (%rcx)
-    movq -40(%rbp), %rax
-    movq %rax, 8(%rcx)
-    movq -32(%rbp), %rax
-    movq %rax, 16(%rcx)
-    mov %r8, %rax
-    movq -48(%rbp), %rcx
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -40(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -32(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_and_label1:
@@ -224,59 +224,59 @@ sub:
 __kefir_text_func_sub_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $96, %rsp
-    mov %rdi, %r8
+    mov %rdi, %r12
 __kefir_func_sub_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -24(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq x@GOTPCREL(%rip), %rcx
-    movq (%rcx), %rax
     movq %rax, -96(%rbp)
-    movq 8(%rcx), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -88(%rbp)
-    movq 16(%rcx), %rax
+    movq 8(%rbx), %rax
     movq %rax, -80(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -48(%rbp)
+    movq 16(%rbx), %rax
+    movq %rax, -72(%rbp)
     movq -88(%rbp), %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -64(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
-    leaq -48(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -48(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -72(%rbp), %rax
+    leaq -112(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_subtract
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -64(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -56(%rbp), %rax
+    movq %rax, 8(%rbx)
     movq -48(%rbp), %rax
-    movq %rax, (%rcx)
-    movq -40(%rbp), %rax
-    movq %rax, 8(%rcx)
-    movq -32(%rbp), %rax
-    movq %rax, 16(%rcx)
-    mov %r8, %rax
-    movq -48(%rbp), %rcx
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -40(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -32(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_sub_label1:
@@ -286,59 +286,59 @@ xor:
 __kefir_text_func_xor_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $96, %rsp
-    mov %rdi, %r8
+    mov %rdi, %r12
 __kefir_func_xor_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -24(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq x@GOTPCREL(%rip), %rcx
-    movq (%rcx), %rax
     movq %rax, -96(%rbp)
-    movq 8(%rcx), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -88(%rbp)
-    movq 16(%rcx), %rax
+    movq 8(%rbx), %rax
     movq %rax, -80(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -48(%rbp)
+    movq 16(%rbx), %rax
+    movq %rax, -72(%rbp)
     movq -88(%rbp), %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -64(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
-    leaq -48(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -48(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -72(%rbp), %rax
+    leaq -112(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_xor
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -64(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -56(%rbp), %rax
+    movq %rax, 8(%rbx)
     movq -48(%rbp), %rax
-    movq %rax, (%rcx)
-    movq -40(%rbp), %rax
-    movq %rax, 8(%rcx)
-    movq -32(%rbp), %rax
-    movq %rax, 16(%rcx)
-    mov %r8, %rax
-    movq -48(%rbp), %rcx
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -40(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -32(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_xor_label1:
@@ -348,28 +348,30 @@ idiv:
 __kefir_text_func_idiv_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $144, %rsp
-    mov %rdi, %r10
+    push %rbx
+    push %r12
+    sub $128, %rsp
+    mov %rdi, %r12
 __kefir_func_idiv_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
-    movq -24(%rbp), %rax
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
     movq %rax, -120(%rbp)
-    movq -16(%rbp), %rax
+    movq -32(%rbp), %rax
     movq %rax, -112(%rbp)
-    movq -8(%rbp), %rax
+    movq -24(%rbp), %rax
     movq %rax, -104(%rbp)
-    movq x@GOTPCREL(%rip), %r9
-    movq (%r9), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -144(%rbp)
-    movq 8(%r9), %rax
+    movq 8(%rbx), %rax
     movq %rax, -136(%rbp)
-    movq 16(%r9), %rax
+    movq 16(%rbx), %rax
     movq %rax, -128(%rbp)
     movq -144(%rbp), %rax
     movq %rax, -80(%rbp)
@@ -377,23 +379,17 @@ __kefir_func_idiv_label0:
     movq %rax, -72(%rbp)
     movq -128(%rbp), %rax
     movq %rax, -64(%rbp)
-    movq %r10, -144(%rbp)
-    movq %r9, -136(%rbp)
     leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     mov $300, %rdx
     call __kefir_bigint_cast_signed
-    movq -144(%rbp), %r10
-    movq -136(%rbp), %r9
     movq -120(%rbp), %rax
     movq %rax, -144(%rbp)
     movq -112(%rbp), %rax
     movq %rax, -136(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -128(%rbp)
-    movq %r10, -40(%rbp)
-    movq %r9, -32(%rbp)
     leaq -80(%rbp), %rax
     mov %rax, %rdi
     leaq -120(%rbp), %rax
@@ -403,22 +399,22 @@ __kefir_func_idiv_label0:
     mov $300, %rcx
     mov $150, %r8
     call __kefir_bigint_signed_divide
-    movq -40(%rbp), %r10
-    movq -32(%rbp), %r9
     movq -80(%rbp), %rax
-    movq %rax, (%r9)
+    movq %rax, (%rbx)
     movq -72(%rbp), %rax
-    movq %rax, 8(%r9)
+    movq %rax, 8(%rbx)
     movq -64(%rbp), %rax
-    movq %rax, 16(%r9)
-    mov %r10, %rax
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
     movq -80(%rbp), %rcx
     movq %rcx, (%rax)
     movq -72(%rbp), %rcx
     movq %rcx, 8(%rax)
     movq -64(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_idiv_label1:
@@ -428,71 +424,67 @@ imod:
 __kefir_text_func_imod_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $160, %rsp
-    mov %rdi, %r10
+    mov %rdi, %r12
 __kefir_func_imod_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
-    movq -24(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -48(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -40(%rbp)
-    movq x@GOTPCREL(%rip), %r9
-    movq (%r9), %rax
-    movq %rax, -160(%rbp)
-    movq 8(%r9), %rax
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
     movq %rax, -152(%rbp)
-    movq 16(%r9), %rax
+    movq -32(%rbp), %rax
     movq %rax, -144(%rbp)
-    movq -160(%rbp), %rax
+    movq -24(%rbp), %rax
     movq %rax, -136(%rbp)
-    movq -152(%rbp), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
+    movq %rax, -176(%rbp)
+    movq 8(%rbx), %rax
+    movq %rax, -168(%rbp)
+    movq 16(%rbx), %rax
+    movq %rax, -160(%rbp)
+    movq -176(%rbp), %rax
     movq %rax, -128(%rbp)
-    movq -144(%rbp), %rax
+    movq -168(%rbp), %rax
     movq %rax, -120(%rbp)
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
-    leaq -136(%rbp), %rax
+    movq -160(%rbp), %rax
+    movq %rax, -112(%rbp)
+    leaq -128(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     mov $300, %rdx
     call __kefir_bigint_cast_signed
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
-    leaq -136(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rdi
-    leaq -96(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rsi
-    leaq -56(%rbp), %rax
+    leaq -152(%rbp), %rax
     mov %rax, %rdx
     mov $300, %rcx
     mov $150, %r8
     call __kefir_bigint_signed_divide
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
-    movq -96(%rbp), %rax
-    movq %rax, (%r9)
     movq -88(%rbp), %rax
-    movq %rax, 8(%r9)
+    movq %rax, (%rbx)
     movq -80(%rbp), %rax
-    movq %rax, 16(%r9)
-    mov %r10, %rax
-    movq -96(%rbp), %rcx
-    movq %rcx, (%rax)
+    movq %rax, 8(%rbx)
+    movq -72(%rbp), %rax
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
     movq -88(%rbp), %rcx
-    movq %rcx, 8(%rax)
+    movq %rcx, (%rax)
     movq -80(%rbp), %rcx
+    movq %rcx, 8(%rax)
+    movq -72(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_imod_label1:
@@ -502,28 +494,30 @@ imul:
 __kefir_text_func_imul_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $144, %rsp
-    mov %rdi, %r11
+    push %rbx
+    push %r12
+    sub $128, %rsp
+    mov %rdi, %r12
 __kefir_func_imul_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
-    movq -24(%rbp), %rax
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
     movq %rax, -96(%rbp)
-    movq -16(%rbp), %rax
+    movq -32(%rbp), %rax
     movq %rax, -88(%rbp)
-    movq -8(%rbp), %rax
+    movq -24(%rbp), %rax
     movq %rax, -80(%rbp)
-    movq x@GOTPCREL(%rip), %r10
-    movq (%r10), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -144(%rbp)
-    movq 8(%r10), %rax
+    movq 8(%rbx), %rax
     movq %rax, -136(%rbp)
-    movq 16(%r10), %rax
+    movq 16(%rbx), %rax
     movq %rax, -128(%rbp)
     movq -144(%rbp), %rax
     movq %rax, -120(%rbp)
@@ -531,8 +525,6 @@ __kefir_func_imul_label0:
     movq %rax, -112(%rbp)
     movq -128(%rbp), %rax
     movq %rax, -104(%rbp)
-    movq %r11, -48(%rbp)
-    movq %r10, -40(%rbp)
     leaq -72(%rbp), %rax
     mov %rax, %rdi
     leaq -144(%rbp), %rax
@@ -544,22 +536,22 @@ __kefir_func_imul_label0:
     mov $150, %r8
     mov $150, %r9
     call __kefir_bigint_signed_multiply
-    movq -48(%rbp), %r11
-    movq -40(%rbp), %r10
     movq -72(%rbp), %rax
-    movq %rax, (%r10)
+    movq %rax, (%rbx)
     movq -64(%rbp), %rax
-    movq %rax, 8(%r10)
+    movq %rax, 8(%rbx)
     movq -56(%rbp), %rax
-    movq %rax, 16(%r10)
-    mov %r11, %rax
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
     movq -72(%rbp), %rcx
     movq %rcx, (%rax)
     movq -64(%rbp), %rcx
     movq %rcx, 8(%rax)
     movq -56(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_imul_label1:
@@ -569,71 +561,67 @@ udiv:
 __kefir_text_func_udiv_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $160, %rsp
-    mov %rdi, %r10
+    mov %rdi, %r12
 __kefir_func_udiv_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -24(%rbp), %rax
     movq %rax, -96(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -88(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq y@GOTPCREL(%rip), %r9
-    movq (%r9), %rax
+    movq y@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
+    movq %rax, -176(%rbp)
+    movq 8(%rbx), %rax
+    movq %rax, -168(%rbp)
+    movq 16(%rbx), %rax
     movq %rax, -160(%rbp)
-    movq 8(%r9), %rax
-    movq %rax, -152(%rbp)
-    movq 16(%r9), %rax
-    movq %rax, -144(%rbp)
+    movq -176(%rbp), %rax
+    movq %rax, -88(%rbp)
+    movq -168(%rbp), %rax
+    movq %rax, -80(%rbp)
     movq -160(%rbp), %rax
     movq %rax, -72(%rbp)
-    movq -152(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -144(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
-    leaq -72(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     mov $300, %rdx
     call __kefir_bigint_cast_unsigned
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
-    leaq -72(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rdi
-    leaq -136(%rbp), %rax
+    leaq -152(%rbp), %rax
     mov %rax, %rsi
-    leaq -96(%rbp), %rax
+    leaq -112(%rbp), %rax
     mov %rax, %rdx
     mov $300, %rcx
     mov $150, %r8
     call __kefir_bigint_unsigned_divide
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
+    movq -88(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -80(%rbp), %rax
+    movq %rax, 8(%rbx)
     movq -72(%rbp), %rax
-    movq %rax, (%r9)
-    movq -64(%rbp), %rax
-    movq %rax, 8(%r9)
-    movq -56(%rbp), %rax
-    movq %rax, 16(%r9)
-    mov %r10, %rax
-    movq -72(%rbp), %rcx
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
+    movq -88(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -64(%rbp), %rcx
+    movq -80(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -56(%rbp), %rcx
+    movq -72(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_udiv_label1:
@@ -643,71 +631,67 @@ umod:
 __kefir_text_func_umod_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $160, %rsp
-    mov %rdi, %r10
+    mov %rdi, %r12
 __kefir_func_umod_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
-    movq -24(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -48(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -40(%rbp)
-    movq y@GOTPCREL(%rip), %r9
-    movq (%r9), %rax
-    movq %rax, -160(%rbp)
-    movq 8(%r9), %rax
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
     movq %rax, -152(%rbp)
-    movq 16(%r9), %rax
+    movq -32(%rbp), %rax
     movq %rax, -144(%rbp)
-    movq -160(%rbp), %rax
+    movq -24(%rbp), %rax
     movq %rax, -136(%rbp)
-    movq -152(%rbp), %rax
+    movq y@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
+    movq %rax, -176(%rbp)
+    movq 8(%rbx), %rax
+    movq %rax, -168(%rbp)
+    movq 16(%rbx), %rax
+    movq %rax, -160(%rbp)
+    movq -176(%rbp), %rax
     movq %rax, -128(%rbp)
-    movq -144(%rbp), %rax
+    movq -168(%rbp), %rax
     movq %rax, -120(%rbp)
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
-    leaq -136(%rbp), %rax
+    movq -160(%rbp), %rax
+    movq %rax, -112(%rbp)
+    leaq -128(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     mov $300, %rdx
     call __kefir_bigint_cast_unsigned
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
-    leaq -136(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rdi
-    leaq -96(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rsi
-    leaq -56(%rbp), %rax
+    leaq -152(%rbp), %rax
     mov %rax, %rdx
     mov $300, %rcx
     mov $150, %r8
     call __kefir_bigint_unsigned_divide
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
-    movq -96(%rbp), %rax
-    movq %rax, (%r9)
     movq -88(%rbp), %rax
-    movq %rax, 8(%r9)
+    movq %rax, (%rbx)
     movq -80(%rbp), %rax
-    movq %rax, 16(%r9)
-    mov %r10, %rax
-    movq -96(%rbp), %rcx
-    movq %rcx, (%rax)
+    movq %rax, 8(%rbx)
+    movq -72(%rbp), %rax
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
     movq -88(%rbp), %rcx
-    movq %rcx, 8(%rax)
+    movq %rcx, (%rax)
     movq -80(%rbp), %rcx
+    movq %rcx, 8(%rax)
+    movq -72(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_umod_label1:
@@ -717,31 +701,31 @@ umul:
 __kefir_text_func_umul_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
-    mov %rdi, %r10
+    push %rbx
+    push %r12
+    sub $96, %rsp
+    mov %rdi, %r12
 __kefir_func_umul_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
-    movq -24(%rbp), %rax
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
     movq %rax, -112(%rbp)
-    movq -16(%rbp), %rax
+    movq -32(%rbp), %rax
     movq %rax, -104(%rbp)
-    movq -8(%rbp), %rax
+    movq -24(%rbp), %rax
     movq %rax, -96(%rbp)
-    movq y@GOTPCREL(%rip), %r9
-    movq (%r9), %rax
+    movq y@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -88(%rbp)
-    movq 8(%r9), %rax
+    movq 8(%rbx), %rax
     movq %rax, -80(%rbp)
-    movq 16(%r9), %rax
+    movq 16(%rbx), %rax
     movq %rax, -72(%rbp)
-    movq %r10, -40(%rbp)
-    movq %r9, -32(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
     leaq -88(%rbp), %rax
@@ -751,22 +735,22 @@ __kefir_func_umul_label0:
     mov $150, %rcx
     mov $150, %r8
     call __kefir_bigint_unsigned_multiply
-    movq -40(%rbp), %r10
-    movq -32(%rbp), %r9
     movq -64(%rbp), %rax
-    movq %rax, (%r9)
+    movq %rax, (%rbx)
     movq -56(%rbp), %rax
-    movq %rax, 8(%r9)
+    movq %rax, 8(%rbx)
     movq -48(%rbp), %rax
-    movq %rax, 16(%r9)
-    mov %r10, %rax
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
     movq -64(%rbp), %rcx
     movq %rcx, (%rax)
     movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_umul_label1:
@@ -776,58 +760,58 @@ lshift:
 __kefir_text_func_lshift_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $96, %rsp
-    mov %rdi, %r8
+    mov %rdi, %r12
 __kefir_func_lshift_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -24(%rbp), %rax
     movq %rax, -96(%rbp)
-    movq -16(%rbp), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -88(%rbp)
-    movq -8(%rbp), %rax
+    movq 8(%rbx), %rax
     movq %rax, -80(%rbp)
-    movq x@GOTPCREL(%rip), %rcx
-    movq (%rcx), %rax
+    movq 16(%rbx), %rax
     movq %rax, -72(%rbp)
-    movq 8(%rcx), %rax
+    movq -88(%rbp), %rax
     movq %rax, -64(%rbp)
-    movq 16(%rcx), %rax
+    movq -80(%rbp), %rax
     movq %rax, -56(%rbp)
     movq -72(%rbp), %rax
     movq %rax, -48(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -40(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq -96(%rbp), %rsi
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
-    leaq -48(%rbp), %rax
+    movq -112(%rbp), %rsi
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rdx
     call __kefir_bigint_left_shift
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -64(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -56(%rbp), %rax
+    movq %rax, 8(%rbx)
     movq -48(%rbp), %rax
-    movq %rax, (%rcx)
-    movq -40(%rbp), %rax
-    movq %rax, 8(%rcx)
-    movq -32(%rbp), %rax
-    movq %rax, 16(%rcx)
-    mov %r8, %rax
-    movq -48(%rbp), %rcx
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -40(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -32(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_lshift_label1:
@@ -837,58 +821,58 @@ rshift:
 __kefir_text_func_rshift_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $96, %rsp
-    mov %rdi, %r8
+    mov %rdi, %r12
 __kefir_func_rshift_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -24(%rbp), %rax
     movq %rax, -96(%rbp)
-    movq -16(%rbp), %rax
+    movq y@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -88(%rbp)
-    movq -8(%rbp), %rax
+    movq 8(%rbx), %rax
     movq %rax, -80(%rbp)
-    movq y@GOTPCREL(%rip), %rcx
-    movq (%rcx), %rax
+    movq 16(%rbx), %rax
     movq %rax, -72(%rbp)
-    movq 8(%rcx), %rax
+    movq -88(%rbp), %rax
     movq %rax, -64(%rbp)
-    movq 16(%rcx), %rax
+    movq -80(%rbp), %rax
     movq %rax, -56(%rbp)
     movq -72(%rbp), %rax
     movq %rax, -48(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -40(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq -96(%rbp), %rsi
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
-    leaq -48(%rbp), %rax
+    movq -112(%rbp), %rsi
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rdx
     call __kefir_bigint_right_shift
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -64(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -56(%rbp), %rax
+    movq %rax, 8(%rbx)
     movq -48(%rbp), %rax
-    movq %rax, (%rcx)
-    movq -40(%rbp), %rax
-    movq %rax, 8(%rcx)
-    movq -32(%rbp), %rax
-    movq %rax, 16(%rcx)
-    mov %r8, %rax
-    movq -48(%rbp), %rcx
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -40(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -32(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_rshift_label1:
@@ -898,58 +882,58 @@ arshift:
 __kefir_text_func_arshift_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $96, %rsp
-    mov %rdi, %r8
+    mov %rdi, %r12
 __kefir_func_arshift_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
+    movq %rcx, -40(%rbp)
     movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
     movq 16(%rax), %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -24(%rbp), %rax
     movq %rax, -96(%rbp)
-    movq -16(%rbp), %rax
+    movq x@GOTPCREL(%rip), %rbx
+    movq (%rbx), %rax
     movq %rax, -88(%rbp)
-    movq -8(%rbp), %rax
+    movq 8(%rbx), %rax
     movq %rax, -80(%rbp)
-    movq x@GOTPCREL(%rip), %rcx
-    movq (%rcx), %rax
+    movq 16(%rbx), %rax
     movq %rax, -72(%rbp)
-    movq 8(%rcx), %rax
+    movq -88(%rbp), %rax
     movq %rax, -64(%rbp)
-    movq 16(%rcx), %rax
+    movq -80(%rbp), %rax
     movq %rax, -56(%rbp)
     movq -72(%rbp), %rax
     movq %rax, -48(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -40(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq -96(%rbp), %rsi
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
-    leaq -48(%rbp), %rax
+    movq -112(%rbp), %rsi
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rdx
     call __kefir_bigint_arithmetic_right_shift
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -64(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -56(%rbp), %rax
+    movq %rax, 8(%rbx)
     movq -48(%rbp), %rax
-    movq %rax, (%rcx)
-    movq -40(%rbp), %rax
-    movq %rax, 8(%rcx)
-    movq -32(%rbp), %rax
-    movq %rax, 16(%rcx)
-    mov %r8, %rax
-    movq -48(%rbp), %rcx
+    movq %rax, 16(%rbx)
+    mov %r12, %rax
+    movq -64(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -40(%rbp), %rcx
+    movq -56(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -32(%rbp), %rcx
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_arshift_label1:

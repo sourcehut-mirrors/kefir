@@ -26,25 +26,25 @@ get_a1:
 __kefir_text_func_get_a1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-    mov %rdi, %r8
+    push %rbx
+    sub $72, %rsp
+    mov %rdi, %rbx
     add $32, %rsi
-    movq %r8, -80(%rbp)
-    leaq -64(%rbp), %rdx
+    leaq -72(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %r8
-    mov %r8, %rax
-    movdqu -64(%rbp), %xmm0
+    mov %rbx, %rax
+    movdqu -72(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu -48(%rbp), %xmm0
+    movdqu -56(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
-    movdqu -32(%rbp), %xmm0
+    movdqu -40(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
-    movdqu -16(%rbp), %xmm0
+    movdqu -24(%rbp), %xmm0
     movdqu %xmm0, 48(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_get_a1_end:
@@ -109,28 +109,28 @@ get_arr2_el:
 __kefir_text_func_get_arr2_el_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-    mov %rdi, %r8
+    push %rbx
+    sub $72, %rsp
+    mov %rdi, %rbx
     add $160, %rsi
     movsx %edx, %rax
     imul $64, %rax, %rax
     add %rax, %rsi
-    movq %r8, -80(%rbp)
-    leaq -64(%rbp), %rdx
+    leaq -72(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %r8
-    mov %r8, %rax
-    movdqu -64(%rbp), %xmm0
+    mov %rbx, %rax
+    movdqu -72(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu -48(%rbp), %xmm0
+    movdqu -56(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
-    movdqu -32(%rbp), %xmm0
+    movdqu -40(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
-    movdqu -16(%rbp), %xmm0
+    movdqu -24(%rbp), %xmm0
     movdqu %xmm0, 48(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_get_arr2_el_end:

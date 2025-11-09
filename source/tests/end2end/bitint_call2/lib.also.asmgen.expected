@@ -87,22 +87,22 @@ test6:
 __kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
+    push %rbx
+    sub $56, %rsp
+    mov %rdi, %rbx
 __kefir_func_test6_label0:
-    movq %rcx, -16(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
     call fn6@PLT
-    movq -16(%rbp), %rcx
-    mov %rcx, %rax
+    mov %rbx, %rax
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_test6_label1:

@@ -101,9 +101,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_complex)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
     const char *atomic_memory_copy_fn_name = LIBATOMIC_LOAD;
-    kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_size_t total_size_qwords, total_alignment_qwords;
 
@@ -135,9 +134,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_complex)(
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unepected optimizer instruction opcode");
     }
-    kefir_asmcmp_external_label_relocation_t atomic_copy_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
 
     REQUIRE_OK(kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 3, &memorder_phreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -180,13 +176,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_complex)(
                                       &KEFIR_ASMCMP_MAKE_INT(memorder), NULL));
 
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_copy_fn_loction, atomic_memory_copy_fn_name, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, atomic_memory_copy_fn_name, &call_idx));
 
     switch (instruction->operation.opcode) {
         case KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32: {
@@ -329,8 +319,7 @@ static kefir_result_t size_of_memory_operand(struct kefir_mem *mem, struct kefir
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_copy_memory)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_size_t total_size = 0;
     REQUIRE_OK(size_of_memory_operand(mem, function, instruction, &total_size, NULL));
@@ -360,9 +349,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_copy_memory)(
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unepected optimizer instruction opcode");
     }
-    kefir_asmcmp_external_label_relocation_t atomic_copy_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
 
     REQUIRE_OK(kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 3, &memorder_phreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -404,13 +390,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_copy_memory)(
                                       &KEFIR_ASMCMP_MAKE_INT(memorder), NULL));
 
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_copy_fn_loction, atomic_memory_copy_fn_name, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, atomic_memory_copy_fn_name, &call_idx));
 
     return KEFIR_OK;
 }
@@ -418,9 +398,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_copy_memory)(
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_long_double)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, result_vreg, target_ptr_placement_vreg, source_ptr_vreg,
         source_ptr_placement_vreg, memorder_placement_vreg;
@@ -431,9 +410,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_long_double)(
     REQUIRE_OK(
         kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 2, &target_ptr_phreg));
 
-    kefir_asmcmp_external_label_relocation_t atomic_load_long_double_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
     REQUIRE_OK(kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 3, &memorder_phreg));
 
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -480,13 +456,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_long_double)(
                                       &KEFIR_ASMCMP_MAKE_INT(memorder), NULL));
 
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_load_long_double_fn_loction, LIBATOMIC_LOAD, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, LIBATOMIC_LOAD, &call_idx));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
 
@@ -496,8 +466,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_long_double)(
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_float)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, target_ptr_vreg, target_ptr_placement_vreg, source_vreg,
         source_real_vreg, source_imag_vreg, source_ptr_placement_vreg, tmp_spill_area, memorder_placement_vreg;
@@ -508,9 +477,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_float)(
     REQUIRE_OK(
         kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 2, &source_ptr_phreg));
 
-    kefir_asmcmp_external_label_relocation_t atomic_long_double_store_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
     REQUIRE_OK(kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 3, &memorder_phreg));
 
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -593,25 +559,17 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_float)(
                                       &KEFIR_ASMCMP_MAKE_INT(memorder), NULL));
 
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_long_double_store_fn_loction, LIBATOMIC_STORE, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, LIBATOMIC_STORE, &call_idx));
 
     REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_spill_area, NULL));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
-
     return KEFIR_OK;
 }
 
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_long_double)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     const kefir_size_t total_size =
         kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant) * KEFIR_AMD64_ABI_QWORD;
@@ -625,9 +583,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_long_do
         kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 1, &target_ptr_phreg));
     REQUIRE_OK(
         kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 2, &source_ptr_phreg));
-    kefir_asmcmp_external_label_relocation_t atomic_copy_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
 
     REQUIRE_OK(kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 3, &memorder_phreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -669,23 +624,15 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_long_do
                                       &KEFIR_ASMCMP_MAKE_INT(memorder), NULL));
 
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_copy_fn_loction, atomic_memory_copy_fn_name, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
-
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, atomic_memory_copy_fn_name, &call_idx));
     return KEFIR_OK;
 }
 
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_long_double)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, target_ptr_vreg, target_ptr_placement_vreg,
         source_ptr_vreg, source_ptr_placement_vreg, memorder_placement_vreg;
@@ -696,9 +643,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_long_double)(
     REQUIRE_OK(
         kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 2, &source_ptr_phreg));
 
-    kefir_asmcmp_external_label_relocation_t atomic_long_double_store_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
     REQUIRE_OK(kefir_abi_amd64_general_purpose_parameter_register(function->codegen->abi_variant, 3, &memorder_phreg));
 
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -744,14 +688,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_long_double)(
                                       &KEFIR_ASMCMP_MAKE_INT(memorder), NULL));
 
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_long_double_store_fn_loction, LIBATOMIC_STORE, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
-
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, LIBATOMIC_STORE, &call_idx));
     return KEFIR_OK;
 }
 
@@ -855,9 +792,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange)(
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_long_double)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, ptr_vreg, ptr_placement_vreg, expected_value_vreg,
         expected_value_location_vreg, expected_value_location_placement_vreg, desired_value_vreg,
@@ -983,15 +919,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_long
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          desired_value_location_vreg, NULL));
 
-    kefir_asmcmp_external_label_relocation_t atomic_cmpxchg_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
-
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_cmpxchg_fn_loction, LIBATOMIC_CMPXCHG, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, LIBATOMIC_CMPXCHG, &call_idx));
 
     REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_placement_vreg, NULL));
@@ -1000,18 +929,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_long
                                                          result_vreg, result_placement_vreg, NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
-
     return KEFIR_OK;
 }
 
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_complex_float)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_size_t total_size, total_alignment;
     switch (instruction->operation.opcode) {
@@ -1195,15 +1119,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          expected_value_location_vreg, NULL));
 
-    kefir_asmcmp_external_label_relocation_t atomic_cmpxchg_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
-
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_cmpxchg_fn_loction, LIBATOMIC_CMPXCHG, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, LIBATOMIC_CMPXCHG, &call_idx));
 
     REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_placement_vreg, NULL));
@@ -1218,19 +1135,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
                                                          result_vreg, result_placement_vreg, NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
-
     return KEFIR_OK;
 }
 
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_complex_long_double)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     const kefir_size_t total_size =
         kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant) * KEFIR_AMD64_ABI_QWORD;
@@ -1329,15 +1241,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          expected_value_location_vreg, NULL));
 
-    kefir_asmcmp_external_label_relocation_t atomic_cmpxchg_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
-
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_cmpxchg_fn_loction, LIBATOMIC_CMPXCHG, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, LIBATOMIC_CMPXCHG, &call_idx));
 
     REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_placement_vreg, NULL));
@@ -1349,18 +1254,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
                                                          result_vreg, result_placement_vreg, NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
-
     return KEFIR_OK;
 }
 
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memory)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_size_t total_size = 0, total_alignment = 0;
     REQUIRE_OK(size_of_memory_operand(mem, function, instruction, &total_size, &total_alignment));
@@ -1457,15 +1357,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          expected_value_location_vreg, NULL));
 
-    kefir_asmcmp_external_label_relocation_t atomic_cmpxchg_fn_loction =
-        function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
-                                                             : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
-
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_cmpxchg_fn_loction, LIBATOMIC_CMPXCHG, 0), &call_idx));
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
+    REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, LIBATOMIC_CMPXCHG, &call_idx));
 
     REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_placement_vreg, NULL));
@@ -1474,10 +1367,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
                                                          result_vreg, result_placement_vreg, NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
-
     return KEFIR_OK;
 }
 

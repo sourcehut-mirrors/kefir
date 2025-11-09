@@ -12,9 +12,11 @@ increment:
 __kefir_text_func_increment_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    fstcw -8(%rbp)
-    call *%rdi
+    push %rbx
+    sub $24, %rsp
+    fstcw -16(%rbp)
+    mov %rdi, %rbx
+    call *%rbx
     movq LAST_VALUE@GOTPCREL(%rip), %rax
     movq $0, 8(%rax)
     fld %st(0)
@@ -23,8 +25,9 @@ __kefir_text_func_increment_begin:
     fldt __kefir_func_increment_label2(%rip)
     fldt -32(%rbp)
     faddp
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
+    fldcw -16(%rbp)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_increment_end:

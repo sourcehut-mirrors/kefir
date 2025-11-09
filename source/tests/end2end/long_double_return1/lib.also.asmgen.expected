@@ -12,11 +12,19 @@ my_hypot:
 __kefir_text_func_my_hypot_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
+    fstpt -64(%rbp)
     fstpt -48(%rbp)
+    sub $32, %rsp
+    fldt -64(%rbp)
+    fstpt (%rsp)
+    fldt -64(%rbp)
+    fstpt 16(%rsp)
+    call mul@PLT
+    add $32, %rsp
     fstpt -32(%rbp)
     sub $32, %rsp
     fldt -48(%rbp)
@@ -25,24 +33,16 @@ __kefir_text_func_my_hypot_begin:
     fstpt 16(%rsp)
     call mul@PLT
     add $32, %rsp
-    fstpt -48(%rbp)
+    fstpt -64(%rbp)
     sub $32, %rsp
     fldt -32(%rbp)
     fstpt (%rsp)
-    fldt -32(%rbp)
-    fstpt 16(%rsp)
-    call mul@PLT
-    add $32, %rsp
-    fstpt -32(%rbp)
-    sub $32, %rsp
-    fldt -48(%rbp)
-    fstpt (%rsp)
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     fstpt 16(%rsp)
     call sum@PLT
-    fstpt -48(%rbp)
+    fstpt -64(%rbp)
     add $32, %rsp
-    fldt -48(%rbp)
+    fldt -64(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

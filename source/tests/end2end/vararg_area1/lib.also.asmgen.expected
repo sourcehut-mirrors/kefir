@@ -10,7 +10,9 @@ process:
 __kefir_text_func_process_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $256, %rsp
+    push %rbx
+    push %r12
+    sub $240, %rsp
     test %al, %al
     je __kefir_func_process_label14
     movdqu %xmm0, -208(%rbp)
@@ -28,17 +30,17 @@ __kefir_func_process_label14:
     mov %rcx, -232(%rbp)
     mov %r8, -224(%rbp)
     mov %r9, -216(%rbp)
-    mov $0, %r8
+    mov $0, %r12
 __kefir_func_process_label0:
-    movl %esi, -56(%rbp)
-    movq %rdi, -24(%rbp)
-    movl $16, -48(%rbp)
-    movl $48, -44(%rbp)
+    movl %esi, -72(%rbp)
+    movq %rdi, -40(%rbp)
+    movl $16, -64(%rbp)
+    movl $48, -60(%rbp)
     lea 16(%rbp), %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -56(%rbp)
     lea -256(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movl -56(%rbp), %eax
+    movq %rax, -48(%rbp)
+    movl -72(%rbp), %eax
     mov $0, %rcx
     cmp $0, %eax
     setg %cl
@@ -49,25 +51,27 @@ __kefir_func_process_label0:
 __kefir_func_process_label1:
 __kefir_func_process_label2:
     mov $0, %rax
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_process_label3:
 __kefir_func_process_label4:
-    mov %r8, %rax
+    mov %r12, %rax
     sub $16, %rsp
-    movq %r8, (%rsp)
-    mov %rsp, %r8
+    movq %r12, (%rsp)
+    mov %rsp, %r12
     mov $0, %rdx
     imul $8, %rdx, %rcx
-    leaq -64(%rbp), %rdx
+    leaq -80(%rbp), %rdx
     add %rcx, %rdx
     movq %rax, (%rdx)
-    movl -56(%rbp), %eax
+    movl -72(%rbp), %eax
     movsx %eax, %rax
     mov $4, %rcx
     imul %rax, %rcx
-    movq %rcx, -8(%rbp)
+    movq %rcx, -24(%rbp)
     sub %rcx, %rsp
     mov $16, %rax
     cmp $4, %rax
@@ -76,12 +80,12 @@ __kefir_func_process_label4:
     neg %rax
     and %rax, %rsp
     mov %rsp, %rax
-    movq %rax, -16(%rbp)
-    movl $0, -52(%rbp)
+    movq %rax, -32(%rbp)
+    movl $0, -68(%rbp)
 __kefir_func_process_label5:
 __kefir_func_process_label6:
-    movl -52(%rbp), %eax
-    movl -56(%rbp), %ecx
+    movl -68(%rbp), %eax
+    movl -72(%rbp), %ecx
     mov $0, %rdx
     cmp %ecx, %eax
     setl %dl
@@ -91,44 +95,44 @@ __kefir_func_process_label6:
     jz __kefir_func_process_label10
 __kefir_func_process_label7:
 __kefir_func_process_label8:
-    movq -24(%rbp), %rax
-    leaq -16(%rbp), %rcx
-    add $0, %rcx
-    movq (%rcx), %rdi
-    movl -56(%rbp), %esi
-    movq %r8, -80(%rbp)
-    call *%rax
-    movq -80(%rbp), %r8
-    lea (%rbp), %rsp
+    movq -40(%rbp), %rbx
+    leaq -32(%rbp), %rax
+    add $0, %rax
+    movq (%rax), %rdi
+    movl -72(%rbp), %esi
+    call *%rbx
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_process_label9:
 __kefir_func_process_label10:
-    movl -48(%rbp), %eax
+    movl -64(%rbp), %eax
     cmp $48, %eax
     jae __kefir_func_process_label12
     lea 8(%rax), %rax
-    movl %eax, -48(%rbp)
-    add -32(%rbp), %rax
+    movl %eax, -64(%rbp)
+    add -48(%rbp), %rax
     mov -8(%rax), %rax
     jmp __kefir_func_process_label13
 __kefir_func_process_label12:
-    mov -40(%rbp), %rax
+    mov -56(%rbp), %rax
     lea 8(%rax), %rax
-    mov %rax, -40(%rbp)
+    mov %rax, -56(%rbp)
     mov -8(%rax), %rax
 __kefir_func_process_label13:
-    leaq -16(%rbp), %rcx
+    leaq -32(%rbp), %rcx
     add $0, %rcx
     movq (%rcx), %rcx
-    movl -52(%rbp), %edx
+    movl -68(%rbp), %edx
     movsx %edx, %rdx
     imul $4, %rdx, %rdx
     add %rdx, %rcx
     movl %eax, (%rcx)
-    movl -52(%rbp), %eax
+    movl -68(%rbp), %eax
     add $1, %eax
-    movl %eax, -52(%rbp)
+    movl %eax, -68(%rbp)
     jmp __kefir_func_process_label6
 __kefir_func_process_label11:
 __kefir_text_func_process_end:

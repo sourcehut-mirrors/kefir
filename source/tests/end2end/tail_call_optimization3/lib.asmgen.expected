@@ -44,8 +44,8 @@ __kefir_text_func_test_begin:
     sub $16, %rsp
     movl %edi, -4(%rbp)
     movq someptr@GOTPCREL(%rip), %rax
-    lea -4(%rbp), %rdi
-    movq %rdi, (%rax)
+    lea -4(%rbp), %rcx
+    movq %rcx, (%rax)
     movl -4(%rbp), %edi
     add $1, %edi
     call test
@@ -158,19 +158,19 @@ test8:
 __kefir_text_func_test8_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    mov %rax, %rdi
-    xor %ecx, %ecx
-    cmp $0, %eax
-    cmovle %rcx, %rdi
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
+    mov %rbx, %rdi
+    xor %eax, %eax
+    cmp $0, %ebx
+    cmovle %rax, %rdi
     movsx %edi, %rdi
-    movq %rax, -16(%rbp)
     call somefn@PLT
-    movq -16(%rbp), %rax
-    mov %rax, %rdi
+    mov %rbx, %rdi
     add $1, %edi
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     jmp test8
 __kefir_text_func_test8_end:
@@ -179,17 +179,15 @@ test9:
 __kefir_text_func_test9_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rcx
-    movq %rcx, -16(%rbp)
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
     call somejmp@PLT
-    movq -16(%rbp), %rcx
-    mov %rcx, %rdi
+    mov %rbx, %rdi
     add $1, %edi
-    movq %rcx, -8(%rbp)
     call test9
-    movq -8(%rbp), %rcx
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_test9_end:
@@ -198,12 +196,14 @@ test10:
 __kefir_text_func_test10_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    movq %rdi, -16(%rbp)
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
     call somejmp2@PLT
-    movq -16(%rbp), %rdi
+    mov %rbx, %rdi
     add $1, %edi
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     jmp test10
 __kefir_text_func_test10_end:

@@ -120,19 +120,19 @@ i128_div:
 __kefir_text_func_i128_div_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    push %rbx
+    sub $24, %rsp
     mov %rsi, %rax
     mov %rdx, %rcx
-    mov %rdi, %r8
-    mov (%r8), %rdi
-    mov 8(%r8), %rsi
-    movq %r8, -16(%rbp)
+    mov %rdi, %rbx
+    mov (%rbx), %rdi
+    mov 8(%rbx), %rsi
     mov %rax, %rdx
     call __divti3@PLT
-    movq -16(%rbp), %r8
-    mov %rax, (%r8)
-    mov %rdx, 8(%r8)
-    lea (%rbp), %rsp
+    mov %rax, (%rbx)
+    mov %rdx, 8(%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_i128_div_end:
@@ -141,19 +141,19 @@ i128_mod:
 __kefir_text_func_i128_mod_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    push %rbx
+    sub $24, %rsp
     mov %rsi, %rax
     mov %rdx, %rcx
-    mov %rdi, %r8
-    mov (%r8), %rdi
-    mov 8(%r8), %rsi
-    movq %r8, -16(%rbp)
+    mov %rdi, %rbx
+    mov (%rbx), %rdi
+    mov 8(%rbx), %rsi
     mov %rax, %rdx
     call __modti3@PLT
-    movq -16(%rbp), %r8
-    mov %rax, (%r8)
-    mov %rdx, 8(%r8)
-    lea (%rbp), %rsp
+    mov %rax, (%rbx)
+    mov %rdx, 8(%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_i128_mod_end:
@@ -298,19 +298,19 @@ u128_div:
 __kefir_text_func_u128_div_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    push %rbx
+    sub $24, %rsp
     mov %rsi, %rax
     mov %rdx, %rcx
-    mov %rdi, %r8
-    mov (%r8), %rdi
-    mov 8(%r8), %rsi
-    movq %r8, -16(%rbp)
+    mov %rdi, %rbx
+    mov (%rbx), %rdi
+    mov 8(%rbx), %rsi
     mov %rax, %rdx
     call __udivti3@PLT
-    movq -16(%rbp), %r8
-    mov %rax, (%r8)
-    mov %rdx, 8(%r8)
-    lea (%rbp), %rsp
+    mov %rax, (%rbx)
+    mov %rdx, 8(%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_u128_div_end:
@@ -319,19 +319,19 @@ u128_mod:
 __kefir_text_func_u128_mod_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    push %rbx
+    sub $24, %rsp
     mov %rsi, %rax
     mov %rdx, %rcx
-    mov %rdi, %r8
-    mov (%r8), %rdi
-    mov 8(%r8), %rsi
-    movq %r8, -16(%rbp)
+    mov %rdi, %rbx
+    mov (%rbx), %rdi
+    mov 8(%rbx), %rsi
     mov %rax, %rdx
     call __umodti3@PLT
-    movq -16(%rbp), %r8
-    mov %rax, (%r8)
-    mov %rdx, 8(%r8)
-    lea (%rbp), %rsp
+    mov %rax, (%rbx)
+    mov %rdx, 8(%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_u128_mod_end:

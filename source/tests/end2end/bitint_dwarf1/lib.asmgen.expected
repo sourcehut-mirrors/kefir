@@ -58,7 +58,6 @@ __kefir_func_get_label4:
 __kefir_func_get_label5:
     shl $55, %rdx
     sar $55, %rdx
-.loc 0 30 5
 __kefir_func_get_label6:
     leaq -32(%rbp), %rax
 .loc 0 30 5
@@ -101,7 +100,6 @@ __kefir_func_get2_label4:
 __kefir_func_get2_label5:
     shl $55, %rdx
     shr $55, %rdx
-.loc 0 42 5
 __kefir_func_get2_label6:
     leaq -32(%rbp), %rax
 .loc 0 42 5

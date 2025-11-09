@@ -87,8 +87,8 @@ __kefir_func_test5_label0:
     movl $0, -20(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    leaq -16(%rbp), %rdx
-    mov %rdx, %rdi
+    leaq -16(%rbp), %rax
+    mov %rax, %rdi
     mov $81, %rsi
     mov $122, %rdx
     call __kefir_bigint_cast_signed

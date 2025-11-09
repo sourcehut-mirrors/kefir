@@ -170,91 +170,89 @@ mod6:
 __kefir_text_func_mod6_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $288, %rsp
-    mov %rdi, %r9
+    push %rbx
+    sub $328, %rsp
+    mov %rdi, %rbx
 __kefir_func_mod6_label0:
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
     movq (%rax), %rdx
-    movq %rdx, -40(%rbp)
+    movq %rdx, -48(%rbp)
     movq 8(%rax), %rdx
-    movq %rdx, -32(%rbp)
+    movq %rdx, -40(%rbp)
     movq 16(%rax), %rdx
-    movq %rdx, -24(%rbp)
+    movq %rdx, -32(%rbp)
     movq 24(%rax), %rdx
-    movq %rdx, -16(%rbp)
+    movq %rdx, -24(%rbp)
     movq 32(%rax), %rdx
-    movq %rdx, -8(%rbp)
+    movq %rdx, -16(%rbp)
     movq (%rcx), %rax
-    movq %rax, -80(%rbp)
+    movq %rax, -88(%rbp)
     movq 8(%rcx), %rax
-    movq %rax, -72(%rbp)
+    movq %rax, -80(%rbp)
     movq 16(%rcx), %rax
-    movq %rax, -64(%rbp)
+    movq %rax, -72(%rbp)
     movq 24(%rcx), %rax
-    movq %rax, -56(%rbp)
+    movq %rax, -64(%rbp)
     movq 32(%rcx), %rax
-    movq %rax, -48(%rbp)
+    movq %rax, -56(%rbp)
+    movq -88(%rbp), %rax
+    movq %rax, -336(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -288(%rbp)
+    movq %rax, -328(%rbp)
     movq -72(%rbp), %rax
-    movq %rax, -280(%rbp)
+    movq %rax, -320(%rbp)
     movq -64(%rbp), %rax
-    movq %rax, -272(%rbp)
+    movq %rax, -312(%rbp)
     movq -56(%rbp), %rax
-    movq %rax, -264(%rbp)
+    movq %rax, -304(%rbp)
     movq -48(%rbp), %rax
-    movq %rax, -256(%rbp)
+    movq %rax, -296(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -208(%rbp)
+    movq %rax, -288(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -200(%rbp)
+    movq %rax, -280(%rbp)
     movq -24(%rbp), %rax
-    movq %rax, -192(%rbp)
+    movq %rax, -272(%rbp)
     movq -16(%rbp), %rax
-    movq %rax, -184(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -176(%rbp)
-    movq -288(%rbp), %rax
-    movq %rax, -168(%rbp)
-    movq -280(%rbp), %rax
-    movq %rax, -160(%rbp)
-    movq -272(%rbp), %rax
-    movq %rax, -152(%rbp)
-    movq -264(%rbp), %rax
-    movq %rax, -144(%rbp)
-    movq -256(%rbp), %rax
-    movq %rax, -136(%rbp)
-    movq %r9, -288(%rbp)
-    leaq -168(%rbp), %rax
+    movq %rax, -264(%rbp)
+    movq -336(%rbp), %rax
+    movq %rax, -256(%rbp)
+    movq -328(%rbp), %rax
+    movq %rax, -248(%rbp)
+    movq -320(%rbp), %rax
+    movq %rax, -240(%rbp)
+    movq -312(%rbp), %rax
+    movq %rax, -232(%rbp)
+    movq -304(%rbp), %rax
+    movq %rax, -224(%rbp)
+    leaq -256(%rbp), %rax
     mov %rax, %rdi
     mov $310, %rsi
     mov $620, %rdx
     call __kefir_bigint_cast_signed
-    movq -288(%rbp), %r9
-    movq %r9, -88(%rbp)
-    leaq -168(%rbp), %rax
+    leaq -256(%rbp), %rax
     mov %rax, %rdi
-    leaq -288(%rbp), %rax
+    leaq -176(%rbp), %rax
     mov %rax, %rsi
-    leaq -208(%rbp), %rax
+    leaq -296(%rbp), %rax
     mov %rax, %rdx
     mov $620, %rcx
     mov $310, %r8
     call __kefir_bigint_signed_divide
-    movq -88(%rbp), %r9
-    mov %r9, %rax
-    movq -288(%rbp), %rcx
+    mov %rbx, %rax
+    movq -176(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -280(%rbp), %rcx
+    movq -168(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -272(%rbp), %rcx
+    movq -160(%rbp), %rcx
     movq %rcx, 16(%rax)
-    movq -264(%rbp), %rcx
+    movq -152(%rbp), %rcx
     movq %rcx, 24(%rax)
-    movq -256(%rbp), %rcx
+    movq -144(%rbp), %rcx
     movq %rcx, 32(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_mod6_label1:

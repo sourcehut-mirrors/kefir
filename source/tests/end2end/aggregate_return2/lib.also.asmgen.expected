@@ -18,19 +18,19 @@ __kefir_text_func_testlarge_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $520, %rsp
-    mov %rdi, %rcx
-    leaq -520(%rbp), %rbx
-    movq %rcx, -528(%rbp)
-    mov %rcx, %rsi
+    push %r12
+    sub $512, %rsp
+    mov %rdi, %r12
+    leaq -528(%rbp), %rbx
+    mov %r12, %rsi
     mov %rbx, %rdi
     call getlarge@PLT
-    movq -528(%rbp), %rcx
-    movsx %ecx, %rcx
+    movsx %r12d, %rcx
     imul $4, %rcx, %rcx
     add %rcx, %rax
     movl (%rax), %eax
-    lea -8(%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
     pop %rbx
     pop %rbp
     ret
@@ -41,30 +41,30 @@ __kefir_text_func_testsmall_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $56, %rsp
-    stmxcsr -16(%rbp)
-    mov %rdi, %rcx
+    push %r12
+    push %r13
+    sub $40, %rsp
+    stmxcsr -32(%rbp)
+    mov %rdi, %r12
+    leaq -64(%rbp), %rbx
+    mov %r12, %rdi
+    call getsmall@PLT
+    movq %rax, (%rbx)
+    movq %xmm0, 8(%rbx)
+    movq (%rbx), %r13
     leaq -48(%rbp), %rbx
-    movq %rcx, -64(%rbp)
-    mov %rcx, %rdi
+    mov %r12, %rdi
     call getsmall@PLT
     movq %rax, (%rbx)
     movq %xmm0, 8(%rbx)
-    movq -64(%rbp), %rcx
-    movq (%rbx), %rdx
-    leaq -32(%rbp), %rbx
-    movq %rdx, -64(%rbp)
-    mov %rcx, %rdi
-    call getsmall@PLT
-    movq %rax, (%rbx)
-    movq %xmm0, 8(%rbx)
-    movq -64(%rbp), %rdx
     movl 8(%rbx), %eax
-    cvtsi2ss %rdx, %xmm0
+    cvtsi2ss %r13, %xmm0
     movd %eax, %xmm1
     addss %xmm1, %xmm0
-    ldmxcsr -16(%rbp)
-    lea -8(%rbp), %rsp
+    ldmxcsr -32(%rbp)
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
     pop %rbx
     pop %rbp
     ret
@@ -75,23 +75,23 @@ __kefir_text_func_testlarge2_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $1032, %rsp
-    mov %rsi, %rcx
-    leaq -1032(%rbp), %rbx
-    movq %rcx, -1040(%rbp)
+    push %r12
+    sub $1024, %rsp
+    mov %rsi, %r12
+    leaq -1040(%rbp), %rbx
     mov %rdi, %rsi
     mov %rbx, %rdi
     call getlarge@PLT
-    movq -1040(%rbp), %rcx
-    leaq -520(%rbp), %rbx
-    mov %rcx, %rsi
+    leaq -528(%rbp), %rbx
+    mov %r12, %rsi
     mov %rbx, %rdi
     call getlarge@PLT
-    leaq -1032(%rbp), %rdi
-    leaq -520(%rbp), %rsi
+    leaq -1040(%rbp), %rdi
+    leaq -528(%rbp), %rsi
     mov $512, %rdx
     call my_memcmp@PLT
-    lea -8(%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
     pop %rbx
     pop %rbp
     ret

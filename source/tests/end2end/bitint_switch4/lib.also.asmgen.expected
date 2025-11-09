@@ -10,92 +10,84 @@ test1:
 __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $80, %rsp
 __kefir_func_test1_label0:
-    movq %rdi, -32(%rbp)
-    movq %rsi, -24(%rbp)
+    movq %rdi, -48(%rbp)
+    movq %rsi, -40(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -16(%rbp)
-    movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -48(%rbp)
-    movl $0, -80(%rbp)
-    movl $0, -76(%rbp)
-    movl $4096, -72(%rbp)
-    movl $0, -68(%rbp)
-    movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
-    leaq -64(%rbp), %rax
-    mov %rax, %rdi
-    mov $78, %rsi
-    call __kefir_bigint_negate
-    movdqu -64(%rbp), %xmm0
+    movl $0, -96(%rbp)
+    movl $0, -92(%rbp)
+    movl $4096, -88(%rbp)
+    movl $0, -84(%rbp)
+    movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
     leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $78, %rsi
+    call __kefir_bigint_negate
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    leaq -96(%rbp), %rax
+    mov %rax, %rdi
+    mov $78, %rsi
     mov $120, %rdx
     call __kefir_bigint_cast_signed
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -80(%rbp), %rax
+    leaq -96(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_signed_compare
-    mov $0, %rcx
+    mov $0, %rbx
     cmp $1, %al
-    sete %cl
-    movq %rcx, -64(%rbp)
-    leaq -80(%rbp), %rax
+    sete %bl
+    leaq -96(%rbp), %rax
     mov %rax, %rdi
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -64(%rbp), %rcx
-    mov $0, %rdx
+    mov $0, %rcx
     cmp $0, %al
-    sete %dl
-    mov %rcx, %r8
-    or %dl, %r8b
-    setne %r8b
+    sete %cl
+    mov %rbx, %r12
+    or %cl, %r12b
+    setne %r12b
     mov $1, %rdx
     neg %dl
     shl $62, %rdx
     sar $62, %rdx
-    movq %r8, -64(%rbp)
-    leaq -80(%rbp), %rax
+    leaq -96(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -64(%rbp), %r8
-    movq %r8, -64(%rbp)
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -80(%rbp), %rax
+    leaq -96(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_signed_compare
-    movq -64(%rbp), %r8
-    mov $0, %rcx
+    mov $0, %rbx
     cmp $-1, %al
-    sete %cl
-    movq %rcx, -64(%rbp)
-    movq %r8, -56(%rbp)
-    leaq -80(%rbp), %rax
+    sete %bl
+    leaq -96(%rbp), %rax
     mov %rax, %rdi
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -64(%rbp), %rcx
-    movq -56(%rbp), %r8
-    mov $0, %rdx
+    mov $0, %rcx
     cmp $0, %al
-    sete %dl
-    mov %rcx, %rax
-    or %dl, %al
+    sete %cl
+    mov %rbx, %rax
+    or %cl, %al
     setne %al
-    mov %r8, %rcx
+    mov %r12, %rcx
     and %al, %cl
     test %cl, %cl
     sete %al
@@ -106,74 +98,64 @@ __kefir_func_test1_label2:
     mov $1, %rdx
     shl $62, %rdx
     sar $62, %rdx
-    leaq -80(%rbp), %rax
+    leaq -96(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_set_signed_integer
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -80(%rbp), %rax
+    leaq -96(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_signed_compare
-    mov $0, %rcx
+    mov $0, %rbx
     cmp $1, %al
-    sete %cl
-    movq %rcx, -64(%rbp)
-    leaq -80(%rbp), %rax
+    sete %bl
+    leaq -96(%rbp), %rax
     mov %rax, %rdi
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -64(%rbp), %rcx
-    mov $0, %rdx
+    mov $0, %rcx
     cmp $0, %al
-    sete %dl
-    mov %rcx, %r8
-    or %dl, %r8b
-    setne %r8b
-    movl $0, -80(%rbp)
-    movl $0, -76(%rbp)
-    movl $4096, -72(%rbp)
-    movl $0, -68(%rbp)
-    movdqu -80(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
-    movq %r8, -80(%rbp)
-    leaq -64(%rbp), %rax
+    sete %cl
+    mov %rbx, %r12
+    or %cl, %r12b
+    setne %r12b
+    movl $0, -96(%rbp)
+    movl $0, -92(%rbp)
+    movl $4096, -88(%rbp)
+    movl $0, -84(%rbp)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $78, %rsi
     mov $120, %rdx
     call __kefir_bigint_cast_signed
-    movq -80(%rbp), %r8
-    movq %r8, -80(%rbp)
-    leaq -48(%rbp), %rax
-    mov %rax, %rdi
     leaq -64(%rbp), %rax
+    mov %rax, %rdi
+    leaq -80(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_signed_compare
-    movq -80(%rbp), %r8
-    mov $0, %rcx
+    mov $0, %rbx
     cmp $-1, %al
-    sete %cl
-    movq %rcx, -80(%rbp)
-    movq %r8, -72(%rbp)
-    leaq -64(%rbp), %rax
+    sete %bl
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -80(%rbp), %rcx
-    movq -72(%rbp), %r8
-    mov $0, %rdx
+    mov $0, %rcx
     cmp $0, %al
-    sete %dl
-    mov %rcx, %rax
-    or %dl, %al
+    sete %cl
+    mov %rbx, %rax
+    or %cl, %al
     setne %al
-    mov %r8, %rcx
+    mov %r12, %rcx
     and %al, %cl
     test %cl, %cl
     sete %al
@@ -184,7 +166,9 @@ __kefir_func_test1_label4:
 __kefir_func_test1_label5:
 __kefir_func_test1_label6:
     mov $0, %rax
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_test1_label7:
@@ -192,7 +176,9 @@ __kefir_func_test1_label8:
 __kefir_func_test1_label9:
 __kefir_func_test1_label10:
     mov $1, %rax
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_test1_label11:
@@ -201,7 +187,9 @@ __kefir_func_test1_label13:
 __kefir_func_test1_label14:
     mov $1, %rax
     neg %eax
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_test1_label15:

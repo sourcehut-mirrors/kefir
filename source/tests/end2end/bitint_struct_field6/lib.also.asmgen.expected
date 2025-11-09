@@ -22,73 +22,69 @@ get1:
 __kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
+    push %r12
     sub $48, %rsp
-    mov %rdi, %r8
+    mov %rdi, %r12
 __kefir_func_get1_label0:
-    movl %esi, -4(%rbp)
-    leaq (%r8), %rdi
+    movl %esi, -20(%rbp)
+    leaq (%r12), %rdi
     mov $0, %rax
     mov $9, %rcx
     rep stosq
-    movl -4(%rbp), %eax
+    movl -20(%rbp), %eax
     movsx %eax, %rax
     shl $58, %rax
     sar $58, %rax
-    movb %al, (%r8)
-    movl -4(%rbp), %eax
+    movb %al, (%r12)
+    movl -20(%rbp), %eax
     add $1, %eax
     movsx %eax, %rax
     shl $14, %rax
     sar $14, %rax
-    movq %rax, 8(%r8)
-    movl -4(%rbp), %eax
+    movq %rax, 8(%r12)
+    movl -20(%rbp), %eax
     add $2, %eax
     movsx %eax, %rax
     shl $50, %rax
     sar $50, %rax
-    movw %ax, 16(%r8)
-    movl -4(%rbp), %eax
-    leaq (%r8), %rcx
-    add $24, %rcx
+    movw %ax, 16(%r12)
+    movl -20(%rbp), %eax
+    leaq (%r12), %rbx
+    add $24, %rbx
     add $3, %eax
     movsx %eax, %rdx
-    movq %rcx, -24(%rbp)
-    movq %r8, -16(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -24(%rbp), %rcx
-    movq -16(%rbp), %r8
     movq -48(%rbp), %rax
-    movq %rax, (%rcx)
+    movq %rax, (%rbx)
     movq -40(%rbp), %rax
-    movq %rax, 8(%rcx)
+    movq %rax, 8(%rbx)
     movq -32(%rbp), %rax
-    movq %rax, 16(%rcx)
-    movl -4(%rbp), %eax
+    movq %rax, 16(%rbx)
+    movl -20(%rbp), %eax
     add $4, %eax
     movsx %eax, %rax
     shl $35, %rax
     sar $35, %rax
-    movl %eax, 48(%r8)
-    movl -4(%rbp), %eax
-    leaq (%r8), %rcx
-    add $56, %rcx
+    movl %eax, 48(%r12)
+    movl -20(%rbp), %eax
+    leaq (%r12), %rbx
+    add $56, %rbx
     add $5, %eax
     movsx %eax, %rdx
-    movq %rcx, -32(%rbp)
-    movq %r8, -24(%rbp)
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -32(%rbp), %rcx
-    movq -24(%rbp), %r8
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, (%rcx)
-    mov %r8, %rax
-    lea (%rbp), %rsp
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, (%rbx)
+    mov %r12, %rax
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_get1_label1:

@@ -23,14 +23,16 @@ __kefir_text_func_add_i128_begin:
     push %rbx
     push %r12
     push %r13
-    sub $88, %rsp
-    mov %rsi, %rbx
-    mov %rdx, %r12
-    mov %rdi, %r13
+    push %r14
+    push %r15
+    sub $72, %rsp
+    mov %rsi, %r13
+    mov %rdx, %r14
+    mov %rdi, %r15
 __kefir_func_add_i128_label2:
     leaq -112(%rbp), %rax
     mov %rax, %rdx
-    mov %r13, %rsi
+    mov %r15, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
@@ -38,17 +40,15 @@ __kefir_func_add_i128_label2:
     mov -104(%rbp), %rdx
     mov %rax, -112(%rbp)
     mov %rdx, -104(%rbp)
-    mov %rax, %r10
-    mov %rdx, %r11
-    add %rbx, %r10
-    adc %r12, %r11
-    mov %r10, -96(%rbp)
-    mov %r11, -88(%rbp)
-    movq %r10, -48(%rbp)
-    movq %r11, -40(%rbp)
+    mov %rax, %rbx
+    mov %rdx, %r12
+    add %r13, %rbx
+    adc %r14, %r12
+    mov %rbx, -96(%rbp)
+    mov %r12, -88(%rbp)
     movdqu -112(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
-    mov %r13, %rsi
+    mov %r15, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
@@ -56,13 +56,13 @@ __kefir_func_add_i128_label2:
     leaq -96(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    movq -40(%rbp), %r11
-    movq -48(%rbp), %r10
     test %al, %al
     jz __kefir_func_add_i128_label2
-    mov %r10, %rax
-    mov %r11, %rdx
-    lea -24(%rbp), %rsp
+    mov %rbx, %rax
+    mov %r12, %rdx
+    lea -40(%rbp), %rsp
+    pop %r15
+    pop %r14
     pop %r13
     pop %r12
     pop %rbx
@@ -77,14 +77,16 @@ __kefir_text_func_add_u128_begin:
     push %rbx
     push %r12
     push %r13
-    sub $88, %rsp
-    mov %rsi, %rbx
-    mov %rdx, %r12
-    mov %rdi, %r13
+    push %r14
+    push %r15
+    sub $72, %rsp
+    mov %rsi, %r13
+    mov %rdx, %r14
+    mov %rdi, %r15
 __kefir_func_add_u128_label2:
     leaq -112(%rbp), %rax
     mov %rax, %rdx
-    mov %r13, %rsi
+    mov %r15, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
@@ -92,17 +94,15 @@ __kefir_func_add_u128_label2:
     mov -104(%rbp), %rdx
     mov %rax, -112(%rbp)
     mov %rdx, -104(%rbp)
-    mov %rax, %r10
-    mov %rdx, %r11
-    add %rbx, %r10
-    adc %r12, %r11
-    mov %r10, -96(%rbp)
-    mov %r11, -88(%rbp)
-    movq %r10, -48(%rbp)
-    movq %r11, -40(%rbp)
+    mov %rax, %rbx
+    mov %rdx, %r12
+    add %r13, %rbx
+    adc %r14, %r12
+    mov %rbx, -96(%rbp)
+    mov %r12, -88(%rbp)
     movdqu -112(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
-    mov %r13, %rsi
+    mov %r15, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
@@ -110,13 +110,13 @@ __kefir_func_add_u128_label2:
     leaq -96(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    movq -40(%rbp), %r11
-    movq -48(%rbp), %r10
     test %al, %al
     jz __kefir_func_add_u128_label2
-    mov %r10, %rax
-    mov %r11, %rdx
-    lea -24(%rbp), %rsp
+    mov %rbx, %rax
+    mov %r12, %rdx
+    lea -40(%rbp), %rsp
+    pop %r15
+    pop %r14
     pop %r13
     pop %r12
     pop %rbx
@@ -165,11 +165,11 @@ __kefir_text_func_store_i128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, -16(%rbp)
-    mov %rdx, -8(%rbp)
+    mov %rsi, -32(%rbp)
+    mov %rdx, -24(%rbp)
     mov %rdi, %rsi
-    leaq -16(%rbp), %rcx
-    mov %rcx, %rdx
+    leaq -32(%rbp), %rax
+    mov %rax, %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -183,11 +183,11 @@ __kefir_text_func_store_u128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, -16(%rbp)
-    mov %rdx, -8(%rbp)
+    mov %rsi, -32(%rbp)
+    mov %rdx, -24(%rbp)
     mov %rdi, %rsi
-    leaq -16(%rbp), %rcx
-    mov %rcx, %rdx
+    leaq -32(%rbp), %rax
+    mov %rax, %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT

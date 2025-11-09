@@ -670,8 +670,10 @@ kefir_result_t kefir_codegen_amd64_get_atomic_memorder(kefir_opt_memory_order_t,
 kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem *,
                                                                struct kefir_codegen_amd64_function *,
                                                                const struct kefir_opt_call_node *,
-                                                               kefir_asmcmp_stash_index_t *,
                                                                kefir_asmcmp_virtual_register_index_t *);
+
+kefir_result_t kefir_codegen_amd64_do_call_direct(
+    struct kefir_mem *, struct kefir_codegen_amd64_function *, const char *, kefir_asmcmp_instruction_index_t *);
 
 #define BIGINT_GET_SET_SIGNED_INTEGER_FN "__kefir_bigint_set_signed_integer"
 #define BIGINT_GET_SET_UNSIGNED_INTEGER_FN "__kefir_bigint_set_unsigned_integer"

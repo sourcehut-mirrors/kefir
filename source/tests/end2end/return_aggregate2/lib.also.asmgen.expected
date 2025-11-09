@@ -13,23 +13,21 @@ __kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $24, %rsp
-    mov %rdi, %rcx
-    movb $0, -9(%rbp)
-    movq %rsi, -32(%rbp)
-    movq %rcx, -24(%rbp)
-    leaq -9(%rbp), %rdi
+    push %r12
+    sub $16, %rsp
+    mov %rdi, %r12
+    mov %rsi, %rbx
+    movb $0, -17(%rbp)
+    leaq -17(%rbp), %rdi
     call leak@PLT
-    movq -24(%rbp), %rcx
-    movq -32(%rbp), %rsi
+    mov %rbx, %rsi
     not %rsi
-    leaq (%rcx), %rbx
-    movq %rcx, -32(%rbp)
+    leaq (%r12), %rbx
     mov %rbx, %rdi
     call get@PLT
-    movq -32(%rbp), %rcx
-    mov %rcx, %rax
-    lea -8(%rbp), %rsp
+    mov %r12, %rax
+    lea -16(%rbp), %rsp
+    pop %r12
     pop %rbx
     pop %rbp
     ret

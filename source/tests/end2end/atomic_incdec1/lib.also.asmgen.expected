@@ -65,26 +65,24 @@ predec_ld:
 __kefir_text_func_predec_ld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
-    fstcw -8(%rbp)
+    push %rbx
+    sub $88, %rsp
+    fstcw -16(%rbp)
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movq ld@GOTPCREL(%rip), %r10
+    movq ld@GOTPCREL(%rip), %rbx
 __kefir_func_predec_ld_label2:
-    movq %r10, -80(%rbp)
     lea -96(%rbp), %rdx
-    mov %r10, %rsi
+    mov %rbx, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %r10
     fldt __kefir_func_predec_ld_label8(%rip)
     fldt -96(%rbp)
     faddp
     fstpt -64(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r10, %rsi
+    mov %rbx, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $10, %rdi
@@ -97,7 +95,6 @@ __kefir_func_predec_ld_label2:
     fstpt -80(%rbp)
     lea -80(%rbp), %rcx
     call __atomic_compare_exchange@PLT
-    movq -16(%rbp), %r10
     test %al, %al
     jz __kefir_func_predec_ld_label6
     stmxcsr -96(%rbp)
@@ -111,8 +108,9 @@ __kefir_func_predec_ld_label2:
     orl %eax, -96(%rbp)
     ldmxcsr -96(%rbp)
     fldt -64(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
+    fldcw -16(%rbp)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_predec_ld_label6:
@@ -147,26 +145,24 @@ preinc_ld:
 __kefir_text_func_preinc_ld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
-    fstcw -8(%rbp)
+    push %rbx
+    sub $88, %rsp
+    fstcw -16(%rbp)
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movq ld@GOTPCREL(%rip), %r10
+    movq ld@GOTPCREL(%rip), %rbx
 __kefir_func_preinc_ld_label2:
-    movq %r10, -80(%rbp)
     lea -96(%rbp), %rdx
-    mov %r10, %rsi
+    mov %rbx, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %r10
     fldt __kefir_func_preinc_ld_label8(%rip)
     fldt -96(%rbp)
     faddp
     fstpt -64(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r10, %rsi
+    mov %rbx, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $10, %rdi
@@ -179,7 +175,6 @@ __kefir_func_preinc_ld_label2:
     fstpt -80(%rbp)
     lea -80(%rbp), %rcx
     call __atomic_compare_exchange@PLT
-    movq -16(%rbp), %r10
     test %al, %al
     jz __kefir_func_preinc_ld_label6
     stmxcsr -96(%rbp)
@@ -193,8 +188,9 @@ __kefir_func_preinc_ld_label2:
     orl %eax, -96(%rbp)
     ldmxcsr -96(%rbp)
     fldt -64(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
+    fldcw -16(%rbp)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_preinc_ld_label6:

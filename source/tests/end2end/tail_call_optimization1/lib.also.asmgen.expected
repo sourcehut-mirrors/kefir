@@ -10,34 +10,36 @@ run_bf:
 __kefir_text_func_run_bf_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $5152, %rsp
+    push %rbx
+    sub $5144, %rsp
     mov %rdi, %rdx
-    leaq -5144(%rbp), %rdi
+    leaq -5152(%rbp), %rdi
     xor %eax, %eax
     mov $643, %rcx
     rep stosq
-    movq %rdx, -5144(%rbp)
-    movb $0, -5136(%rbp)
-    movq $0, -1040(%rbp)
-    movl $0, -16(%rbp)
-    movw $0, -12(%rbp)
-    movb $0, -10(%rbp)
-    movq %rsi, -8(%rbp)
-    movq -5144(%rbp), %rax
-    movl -16(%rbp), %ecx
+    movq %rdx, -5152(%rbp)
+    movb $0, -5144(%rbp)
+    movq $0, -1048(%rbp)
+    movl $0, -24(%rbp)
+    movw $0, -20(%rbp)
+    movb $0, -18(%rbp)
+    movq %rsi, -16(%rbp)
+    movq -5152(%rbp), %rax
+    movl -24(%rbp), %ecx
     mov %rcx, %rdx
     add $1, %edx
-    movl %edx, -16(%rbp)
+    movl %edx, -24(%rbp)
     mov %ecx, %ecx
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
     imul $8, %rax, %rax
     add %rax, %rcx
-    movq (%rcx), %rax
-    leaq -5144(%rbp), %rdi
-    call *%rax
-    lea (%rbp), %rsp
+    movq (%rcx), %rbx
+    leaq -5152(%rbp), %rdi
+    call *%rbx
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_run_bf_end:
@@ -132,30 +134,30 @@ op_print:
 __kefir_text_func_op_print_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rcx
-    movq 5136(%rcx), %rax
-    movzxw 5132(%rcx), %rdx
-    lea 8(%rcx), %rdi
-    add %rdx, %rdi
+    push %rbx
+    push %r12
+    mov %rdi, %r12
+    movq 5136(%r12), %rbx
+    movzxw 5132(%r12), %rax
+    lea 8(%r12), %rdi
+    add %rax, %rdi
     movb (%rdi), %dil
-    movq %rcx, -16(%rbp)
-    call *%rax
-    movq -16(%rbp), %rcx
-    movq (%rcx), %rax
-    movl 5128(%rcx), %edx
-    mov %rdx, %rsi
-    add $1, %esi
-    movl %esi, 5128(%rcx)
-    mov %edx, %edx
-    add %rdx, %rax
+    call *%rbx
+    movq (%r12), %rax
+    movl 5128(%r12), %ecx
+    mov %rcx, %rdx
+    add $1, %edx
+    movl %edx, 5128(%r12)
+    mov %ecx, %ecx
+    add %rcx, %rax
     movsxb (%rax), %rax
-    lea ops(%rip), %rdx
+    lea ops(%rip), %rcx
     imul $8, %rax, %rax
-    add %rax, %rdx
-    movq (%rdx), %rax
-    mov %rcx, %rdi
-    lea (%rbp), %rsp
+    add %rax, %rcx
+    movq (%rcx), %rax
+    mov %r12, %rdi
+    pop %r12
+    pop %rbx
     pop %rbp
     jmp *%rax
 __kefir_text_func_op_print_end:

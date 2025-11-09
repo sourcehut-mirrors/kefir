@@ -72,21 +72,11 @@ test1:
 #                ]
 #            },
 #            {
-#                "opcode": "stash_activate",
-#                "args": [
-#                    {
-#                        "type": "stash_index",
-#                        "index": 0
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 5,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -102,12 +92,23 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 6,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 5,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -130,6 +131,270 @@ test1:
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 7,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 11,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 16,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 17,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 19,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 20,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 21,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 22,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 23,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 24,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 25,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 26,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 27,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 28,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 29,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 30,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 31,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -148,100 +413,18 @@ test1:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "stash_deactivate",
-#                "args": [
-#                    {
-#                        "type": "stash_index",
-#                        "index": 0
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "movdqu",
+#                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 9,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "indirect",
-#                        "basis": "virtual_register",
-#                        "index": 4,
-#                        "offset": 0,
+#                        "index": 7,
 #                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "movdqu",
-#                "args": [
-#                    {
-#                        "type": "indirect",
-#                        "basis": "virtual_register",
-#                        "index": 8,
-#                        "offset": 0,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 9,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "movdqu",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 9,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "indirect",
-#                        "basis": "virtual_register",
-#                        "index": 4,
-#                        "offset": 16,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "movdqu",
-#                "args": [
-#                    {
-#                        "type": "indirect",
-#                        "basis": "virtual_register",
-#                        "index": 8,
-#                        "offset": 16,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 9,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
+#                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
@@ -252,39 +435,19 @@ test1:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "stash_activate",
-#                "args": [
-#                    {
-#                        "type": "stash_index",
-#                        "index": 1
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 9,
 #                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "touch_virtual_register",
 #                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 13,
-#                        "variant": "default"
-#                    },
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 10,
@@ -298,6 +461,17 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
+#                        "index": 11,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
 #                        "index": 12,
 #                        "variant": "default"
 #                    }
@@ -320,7 +494,628 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 16,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 17,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 19,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 20,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 21,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 22,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 23,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 24,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 25,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 26,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 27,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 28,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 29,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 30,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 31,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 33,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 4,
+#                        "offset": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 32,
+#                        "offset": 0,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 33,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 33,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 4,
+#                        "offset": 16,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 32,
+#                        "offset": 16,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 33,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "weak_touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "weak_touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 32,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 35,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 32,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 36,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 34,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 35,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 36,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 32,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 37,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 38,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 39,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 40,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 41,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 42,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 43,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 44,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 45,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 46,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 47,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 48,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 49,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 50,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 51,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 52,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 53,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 54,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 55,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 56,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 57,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 58,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 59,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 60,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 61,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -339,11 +1134,276 @@ test1:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "stash_deactivate",
+#                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
-#                        "type": "stash_index",
-#                        "index": 1
+#                        "type": "virtual_register",
+#                        "index": 37,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 38,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 39,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 40,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 41,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 42,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 43,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 44,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 45,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 46,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 47,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 48,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 49,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 50,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 51,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 52,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 53,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 54,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 55,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 56,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 57,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 58,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 59,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 60,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 61,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -353,7 +1413,7 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 14,
+#                        "index": 62,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -369,13 +1429,13 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 63,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 8,
+#                        "index": 32,
 #                        "offset": 0,
 #                        "variant": "default"
 #                    }
@@ -388,13 +1448,13 @@ test1:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 14,
+#                        "index": 62,
 #                        "offset": 0,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 63,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -405,13 +1465,13 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 63,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 8,
+#                        "index": 32,
 #                        "offset": 16,
 #                        "variant": "default"
 #                    }
@@ -424,13 +1484,13 @@ test1:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 14,
+#                        "index": 62,
 #                        "offset": 16,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 63,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -441,7 +1501,7 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 32,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -452,7 +1512,7 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 14,
+#                        "index": 62,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -468,7 +1528,7 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 14,
+#                        "index": 62,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -479,7 +1539,7 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 14,
+#                        "index": 62,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -519,29 +1579,27 @@ test1:
 __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
-    movq %rcx, -32(%rbp)
-    leaq -64(%rbp), %rax
+    push %rbx
+    sub $72, %rsp
+    mov %rdi, %rbx
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
     call get1@PLT
-    movq -32(%rbp), %rcx
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -16(%rbp)
-    movq %rcx, -64(%rbp)
-    leaq -32(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $250, %rsi
     call __kefir_bigint_invert
-    movq -64(%rbp), %rcx
-    mov %rcx, %rax
-    movdqu -32(%rbp), %xmm0
+    mov %rbx, %rax
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu -16(%rbp), %xmm0
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_test1_end:

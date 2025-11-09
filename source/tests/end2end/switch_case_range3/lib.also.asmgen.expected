@@ -185,77 +185,75 @@ test5:
 __kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    movq %rdi, -48(%rbp)
-    movq %rsi, -40(%rbp)
-    movl $4294967040, -64(%rbp)
-    movl $4294967295, -60(%rbp)
-    movl $0, -56(%rbp)
-    movl $0, -52(%rbp)
-    leaq -48(%rbp), %rax
+    push %rbx
+    push %r12
+    sub $32, %rsp
+    movq %rdi, -32(%rbp)
+    movq %rsi, -24(%rbp)
+    movl $4294967040, -48(%rbp)
+    movl $4294967295, -44(%rbp)
+    movl $0, -40(%rbp)
+    movl $0, -36(%rbp)
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    leaq -64(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     cmp $1, %al
-    sete %cl
-    movq %rcx, -32(%rbp)
-    leaq -64(%rbp), %rax
-    mov %rax, %rdi
+    sete %bl
     leaq -48(%rbp), %rax
+    mov %rax, %rdi
+    leaq -32(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -32(%rbp), %rcx
-    xor %edx, %edx
-    cmp $0, %al
-    sete %dl
-    mov %rcx, %r8
-    or %dl, %r8b
-    setne %r8b
-    movl $4294967295, -64(%rbp)
-    movl $4294967295, -60(%rbp)
-    movl $0, -56(%rbp)
-    movl $0, -52(%rbp)
-    movq %r8, -32(%rbp)
-    leaq -48(%rbp), %rax
-    mov %rax, %rdi
-    leaq -64(%rbp), %rax
-    mov %rax, %rsi
-    mov $120, %rdx
-    call __kefir_bigint_unsigned_compare
-    movq -32(%rbp), %r8
     xor %ecx, %ecx
-    cmp $-1, %al
+    cmp $0, %al
     sete %cl
-    movq %r8, -24(%rbp)
-    movq %rcx, -16(%rbp)
-    leaq -64(%rbp), %rax
+    mov %rbx, %r12
+    or %cl, %r12b
+    setne %r12b
+    movl $4294967295, -48(%rbp)
+    movl $4294967295, -44(%rbp)
+    movl $0, -40(%rbp)
+    movl $0, -36(%rbp)
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
     leaq -48(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -24(%rbp), %r8
-    movq -16(%rbp), %rcx
-    xor %edx, %edx
+    xor %ebx, %ebx
+    cmp $-1, %al
+    sete %bl
+    leaq -48(%rbp), %rax
+    mov %rax, %rdi
+    leaq -32(%rbp), %rax
+    mov %rax, %rsi
+    mov $120, %rdx
+    call __kefir_bigint_unsigned_compare
+    xor %ecx, %ecx
     cmp $0, %al
-    sete %dl
-    mov %rcx, %rax
-    or %dl, %al
+    sete %cl
+    mov %rbx, %rax
+    or %cl, %al
     setne %al
-    mov %r8, %rcx
+    mov %r12, %rcx
     and %al, %cl
     jnz __kefir_func_test5_label4
     mov $2, %rax
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_test5_label4:
     mov $1, %rax
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_test5_end:

@@ -22,14 +22,15 @@ add:
 __kefir_text_func_add_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16400, %rsp
+    push %rbx
+    sub $16392, %rsp
 __kefir_func_add_label0:
-    movl %edi, -4(%rbp)
-    movl -4(%rbp), %eax
-    movq value@GOTPCREL(%rip), %r8
+    movl %edi, -12(%rbp)
+    movl -12(%rbp), %eax
+    movq value@GOTPCREL(%rip), %rbx
     leaq -16400(%rbp), %rcx
     mov %rcx, %rdi
-    mov %r8, %rsi
+    mov %rbx, %rsi
     cld
     mov $1024, %rcx
     rep movsq
@@ -41,27 +42,24 @@ __kefir_func_add_label0:
     mov $1024, %rcx
     rep movsq
     movsx %eax, %rdx
-    movq %r8, -16(%rbp)
     leaq -16400(%rbp), %rax
     mov %rax, %rdi
     mov $65535, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -16(%rbp), %r8
-    movq %r8, -16(%rbp)
     leaq -8208(%rbp), %rax
     mov %rax, %rdi
     leaq -16400(%rbp), %rax
     mov %rax, %rsi
     mov $65535, %rdx
     call __kefir_bigint_add
-    movq -16(%rbp), %r8
-    mov %r8, %rdi
+    mov %rbx, %rdi
     leaq -8208(%rbp), %rax
     mov %rax, %rsi
     cld
     mov $1024, %rcx
     rep movsq
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_add_label1:
@@ -71,18 +69,19 @@ mul:
 __kefir_text_func_mul_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32784, %rsp
+    push %rbx
+    sub $32776, %rsp
 __kefir_func_mul_label0:
-    movl %edi, -4(%rbp)
-    movl -4(%rbp), %eax
-    movq value@GOTPCREL(%rip), %r10
+    movl %edi, -12(%rbp)
+    movl -12(%rbp), %eax
+    movq value@GOTPCREL(%rip), %rbx
     leaq -32784(%rbp), %rcx
     mov %rcx, %rdi
-    mov %r10, %rsi
+    mov %rbx, %rsi
     cld
     mov $1024, %rcx
     rep movsq
-    leaq -8208(%rbp), %rcx
+    leaq -24592(%rbp), %rcx
     mov %rcx, %rdi
     leaq -32784(%rbp), %rcx
     mov %rcx, %rsi
@@ -90,32 +89,29 @@ __kefir_func_mul_label0:
     mov $1024, %rcx
     rep movsq
     movsx %eax, %rdx
-    movq %r10, -24592(%rbp)
-    leaq -32784(%rbp), %rax
+    leaq -16400(%rbp), %rax
     mov %rax, %rdi
     mov $65535, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -24592(%rbp), %r10
-    movq %r10, -16(%rbp)
-    leaq -24592(%rbp), %rax
-    mov %rax, %rdi
-    leaq -16400(%rbp), %rax
-    mov %rax, %rsi
     leaq -8208(%rbp), %rax
-    mov %rax, %rdx
+    mov %rax, %rdi
     leaq -32784(%rbp), %rax
+    mov %rax, %rsi
+    leaq -24592(%rbp), %rax
+    mov %rax, %rdx
+    leaq -16400(%rbp), %rax
     mov %rax, %rcx
     mov $65535, %r8
     mov $65535, %r9
     call __kefir_bigint_signed_multiply
-    movq -16(%rbp), %r10
-    mov %r10, %rdi
-    leaq -24592(%rbp), %rax
+    mov %rbx, %rdi
+    leaq -8208(%rbp), %rax
     mov %rax, %rsi
     cld
     mov $1024, %rcx
     rep movsq
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_mul_label1:
@@ -125,24 +121,24 @@ init:
 __kefir_text_func_init_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $8208, %rsp
+    push %rbx
+    sub $8200, %rsp
 __kefir_func_init_label0:
-    movq value@GOTPCREL(%rip), %rax
-    mov $0, %rcx
-    movsx %ecx, %rdx
-    movq %rax, -16(%rbp)
-    leaq -8208(%rbp), %rcx
-    mov %rcx, %rdi
+    movq value@GOTPCREL(%rip), %rbx
+    mov $0, %rax
+    movsx %eax, %rdx
+    leaq -8208(%rbp), %rax
+    mov %rax, %rdi
     mov $65535, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -16(%rbp), %rax
-    mov %rax, %rdi
+    mov %rbx, %rdi
     leaq -8208(%rbp), %rax
     mov %rax, %rsi
     cld
     mov $1024, %rcx
     rep movsq
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_func_init_label1:

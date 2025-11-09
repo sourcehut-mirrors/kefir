@@ -20,102 +20,100 @@ __kefir_text_func_test1_begin:
     mov $1, %rax
     xor %ecx, %ecx
     mov %rdi, %rdx
-    mov %rsi, %r8
+    movq %rsi, -72(%rbp)
     add %rax, %rdx
-    adc %rcx, %r8
+    adc %rcx, -72(%rbp)
     mov $2, %rax
     xor %ecx, %ecx
-    mov %rdi, %r9
-    movq %rsi, -72(%rbp)
-    add %rax, %r9
-    adc %rcx, -72(%rbp)
+    mov %rdi, %r8
+    mov %rsi, %r9
+    add %rax, %r8
+    adc %rcx, %r9
     mov $3, %rax
-    xor %ecx, %ecx
-    mov %rdi, %rbx
-    mov %rsi, %r12
-    add %rax, %rbx
-    adc %rcx, %r12
-    mov $4, %rax
     xor %ecx, %ecx
     mov %rdi, %r13
     mov %rsi, %r14
     add %rax, %r13
     adc %rcx, %r14
-    mov $5, %rax
+    mov $4, %rax
     xor %ecx, %ecx
     mov %rdi, %r15
     movq %rsi, -160(%rbp)
     add %rax, %r15
     adc %rcx, -160(%rbp)
-    mov $6, %rax
+    mov $5, %rax
     xor %ecx, %ecx
     movq %rdi, -152(%rbp)
     movq %rsi, -144(%rbp)
     add %rax, -152(%rbp)
     adc %rcx, -144(%rbp)
-    mov $7, %rax
+    mov $6, %rax
     xor %ecx, %ecx
     movq %rdi, -136(%rbp)
     movq %rsi, -128(%rbp)
     add %rax, -136(%rbp)
     adc %rcx, -128(%rbp)
-    mov $8, %rax
+    mov $7, %rax
     xor %ecx, %ecx
     movq %rdi, -120(%rbp)
     movq %rsi, -112(%rbp)
     add %rax, -120(%rbp)
     adc %rcx, -112(%rbp)
-    mov $9, %rax
+    mov $8, %rax
     xor %ecx, %ecx
     movq %rdi, -104(%rbp)
     movq %rsi, -96(%rbp)
     add %rax, -104(%rbp)
     adc %rcx, -96(%rbp)
-    mov $10, %rax
+    mov $9, %rax
     xor %ecx, %ecx
     movq %rdi, -88(%rbp)
     movq %rsi, -80(%rbp)
     add %rax, -88(%rbp)
     adc %rcx, -80(%rbp)
-    mov $11, %rax
+    mov $10, %rax
     xor %ecx, %ecx
     mov %rdi, %r10
     mov %rsi, %r11
     add %rax, %r10
     adc %rcx, %r11
+    mov $11, %rax
+    xor %ecx, %ecx
+    mov %rdi, %rbx
+    mov %rsi, %r12
+    add %rax, %rbx
+    adc %rcx, %r12
     sub $144, %rsp
-    mov %r8, %rcx
-    mov %r9, %r8
-    movq -72(%rbp), %r9
-    movq %rbx, (%rsp)
-    movq %r12, 8(%rsp)
-    movq %r13, 16(%rsp)
-    movq %r14, 24(%rsp)
-    movq %r15, 32(%rsp)
+    movq -72(%rbp), %rcx
+    movq %r13, (%rsp)
+    movq %r14, 8(%rsp)
+    movq %r15, 16(%rsp)
     movq -160(%rbp), %rax
-    movq %rax, 40(%rsp)
+    movq %rax, 24(%rsp)
     movq -152(%rbp), %rax
-    movq %rax, 48(%rsp)
+    movq %rax, 32(%rsp)
     movq -144(%rbp), %rax
-    movq %rax, 56(%rsp)
+    movq %rax, 40(%rsp)
     movq -136(%rbp), %rax
-    movq %rax, 64(%rsp)
+    movq %rax, 48(%rsp)
     movq -128(%rbp), %rax
-    movq %rax, 72(%rsp)
+    movq %rax, 56(%rsp)
     movq -120(%rbp), %rax
-    movq %rax, 80(%rsp)
+    movq %rax, 64(%rsp)
     movq -112(%rbp), %rax
-    movq %rax, 88(%rsp)
+    movq %rax, 72(%rsp)
     movq -104(%rbp), %rax
-    movq %rax, 96(%rsp)
+    movq %rax, 80(%rsp)
     movq -96(%rbp), %rax
-    movq %rax, 104(%rsp)
+    movq %rax, 88(%rsp)
     movq -88(%rbp), %rax
-    movq %rax, 112(%rsp)
+    movq %rax, 96(%rsp)
     movq -80(%rbp), %rax
-    movq %rax, 120(%rsp)
-    movq %r10, 128(%rsp)
-    movq %r11, 136(%rsp)
+    movq %rax, 104(%rsp)
+    movq %r10, 112(%rsp)
+    movq %r11, 120(%rsp)
+    movq %rbx, 128(%rsp)
+    movq %r12, 136(%rsp)
     call somefn@PLT
     add $144, %rsp
     lea -40(%rbp), %rsp

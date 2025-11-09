@@ -20,47 +20,43 @@ int128_clz:
 __kefir_text_func_int128_clz_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdx, %r8
+    push %rbx
+    push %r12
+    sub $48, %rsp
+    mov %rdx, %r12
     mov %rdi, -64(%rbp)
     mov %rsi, -56(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movq %r8, -64(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $128, %rsi
     mov $128, %rdx
     call __kefir_bigint_cast_signed
-    movq -64(%rbp), %r8
     movl $0, -64(%rbp)
     movl $0, -60(%rbp)
     movl $0, -56(%rbp)
     movl $0, -52(%rbp)
-    movq %r8, -16(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $128, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -16(%rbp), %r8
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     cmp $0, %al
-    sete %cl
-    movq %rcx, -64(%rbp)
-    movq %r8, -56(%rbp)
+    sete %bl
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $128, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    movq -64(%rbp), %rcx
-    movq -56(%rbp), %r8
-    mov %r8, %rdx
-    test %cl, %cl
+    mov %r12, %rdx
+    test %bl, %bl
     cmovnz %rdx, %rax
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_int128_clz_end:
@@ -69,47 +65,43 @@ int128_ctz:
 __kefir_text_func_int128_ctz_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdx, %r8
+    push %rbx
+    push %r12
+    sub $48, %rsp
+    mov %rdx, %r12
     mov %rdi, -64(%rbp)
     mov %rsi, -56(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movq %r8, -64(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $128, %rsi
     mov $128, %rdx
     call __kefir_bigint_cast_signed
-    movq -64(%rbp), %r8
     movl $0, -64(%rbp)
     movl $0, -60(%rbp)
     movl $0, -56(%rbp)
     movl $0, -52(%rbp)
-    movq %r8, -16(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $128, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -16(%rbp), %r8
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     cmp $0, %al
-    sete %cl
-    movq %rcx, -64(%rbp)
-    movq %r8, -56(%rbp)
+    sete %bl
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $128, %rsi
     xor %edx, %edx
     call __kefir_bigint_trailing_zeros
-    movq -64(%rbp), %rcx
-    movq -56(%rbp), %r8
-    mov %r8, %rdx
-    test %cl, %cl
+    mov %r12, %rdx
+    test %bl, %bl
     cmovnz %rdx, %rax
-    lea (%rbp), %rsp
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_int128_ctz_end:
@@ -303,8 +295,8 @@ __kefir_runtime_text_func___kefir_bigint_parity_begin:
     mov %rsp, %rbp
     call __kefir_bigint_nonzero_count
     xor %edx, %edx
-    mov $2, %rsi
-    div %rsi
+    mov $2, %rcx
+    div %rcx
     mov %rdx, %rax
     pop %rbp
     ret

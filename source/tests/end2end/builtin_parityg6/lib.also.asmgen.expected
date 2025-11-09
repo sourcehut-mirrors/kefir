@@ -194,8 +194,8 @@ __kefir_runtime_text_func___kefir_bigint_parity_begin:
     mov %rsp, %rbp
     call __kefir_bigint_nonzero_count
     xor %edx, %edx
-    mov $2, %rsi
-    div %rsi
+    mov $2, %rcx
+    div %rcx
     mov %rdx, %rax
     pop %rbp
     ret

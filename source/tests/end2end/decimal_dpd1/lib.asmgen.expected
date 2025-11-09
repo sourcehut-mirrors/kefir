@@ -381,14 +381,15 @@ xadd32:
 __kefir_text_func_xadd32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movd (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movd (%rbx), %xmm0
     call __dpd_addsd3@PLT
-    movq -16(%rbp), %rdi
-    movd %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movd %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xadd32_end:
@@ -397,14 +398,15 @@ xadd64:
 __kefir_text_func_xadd64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movq (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movq (%rbx), %xmm0
     call __dpd_adddd3@PLT
-    movq -16(%rbp), %rdi
-    movq %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movq %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xadd64_end:
@@ -413,14 +415,15 @@ xdiv32:
 __kefir_text_func_xdiv32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movd (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movd (%rbx), %xmm0
     call __dpd_divsd3@PLT
-    movq -16(%rbp), %rdi
-    movd %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movd %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xdiv32_end:
@@ -429,14 +432,15 @@ xdiv64:
 __kefir_text_func_xdiv64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movq (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movq (%rbx), %xmm0
     call __dpd_divdd3@PLT
-    movq -16(%rbp), %rdi
-    movq %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movq %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xdiv64_end:
@@ -445,14 +449,15 @@ xmul32:
 __kefir_text_func_xmul32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movd (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movd (%rbx), %xmm0
     call __dpd_mulsd3@PLT
-    movq -16(%rbp), %rdi
-    movd %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movd %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xmul32_end:
@@ -461,14 +466,15 @@ xmul64:
 __kefir_text_func_xmul64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movq (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movq (%rbx), %xmm0
     call __dpd_muldd3@PLT
-    movq -16(%rbp), %rdi
-    movq %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movq %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xmul64_end:
@@ -477,14 +483,15 @@ xsub32:
 __kefir_text_func_xsub32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movd (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movd (%rbx), %xmm0
     call __dpd_subsd3@PLT
-    movq -16(%rbp), %rdi
-    movd %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movd %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xsub32_end:
@@ -493,14 +500,15 @@ xsub64:
 __kefir_text_func_xsub64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movq (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movq (%rbx), %xmm0
     call __dpd_subdd3@PLT
-    movq -16(%rbp), %rdi
-    movq %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movq %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xsub64_end:
@@ -509,14 +517,15 @@ xadd128:
 __kefir_text_func_xadd128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movdqu (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movdqu (%rbx), %xmm0
     call __dpd_addtd3@PLT
-    movq -16(%rbp), %rdi
-    movdqu %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xadd128_end:
@@ -525,14 +534,15 @@ xdiv128:
 __kefir_text_func_xdiv128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movdqu (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movdqu (%rbx), %xmm0
     call __dpd_divtd3@PLT
-    movq -16(%rbp), %rdi
-    movdqu %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xdiv128_end:
@@ -541,14 +551,15 @@ xmul128:
 __kefir_text_func_xmul128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movdqu (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movdqu (%rbx), %xmm0
     call __dpd_multd3@PLT
-    movq -16(%rbp), %rdi
-    movdqu %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xmul128_end:
@@ -557,14 +568,15 @@ xsub128:
 __kefir_text_func_xsub128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $8, %rsp
     movaps %xmm0, %xmm1
-    movdqu (%rdi), %xmm0
-    movq %rdi, -16(%rbp)
+    mov %rdi, %rbx
+    movdqu (%rbx), %xmm0
     call __dpd_subtd3@PLT
-    movq -16(%rbp), %rdi
-    movdqu %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_xsub128_end:
@@ -573,14 +585,15 @@ predec32:
 __kefir_text_func_predec32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    movd (%rdi), %xmm0
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
+    movd (%rbx), %xmm0
     movd __kefir_func_predec32_label2(%rip), %xmm1
-    movq %rdi, -16(%rbp)
     call __dpd_addsd3@PLT
-    movq -16(%rbp), %rdi
-    movd %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movd %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_predec32_end:
@@ -594,14 +607,15 @@ predec64:
 __kefir_text_func_predec64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    movq (%rdi), %xmm0
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
+    movq (%rbx), %xmm0
     movq __kefir_func_predec64_label2(%rip), %xmm1
-    movq %rdi, -16(%rbp)
     call __dpd_adddd3@PLT
-    movq -16(%rbp), %rdi
-    movq %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movq %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_predec64_end:
@@ -615,14 +629,15 @@ preinc32:
 __kefir_text_func_preinc32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    movd (%rdi), %xmm0
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
+    movd (%rbx), %xmm0
     movd __kefir_func_preinc32_label2(%rip), %xmm1
-    movq %rdi, -16(%rbp)
     call __dpd_addsd3@PLT
-    movq -16(%rbp), %rdi
-    movd %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movd %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_preinc32_end:
@@ -636,14 +651,15 @@ preinc64:
 __kefir_text_func_preinc64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    movq (%rdi), %xmm0
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
+    movq (%rbx), %xmm0
     movq __kefir_func_preinc64_label2(%rip), %xmm1
-    movq %rdi, -16(%rbp)
     call __dpd_adddd3@PLT
-    movq -16(%rbp), %rdi
-    movq %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movq %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_preinc64_end:
@@ -657,18 +673,18 @@ postdec32:
 __kefir_text_func_postdec32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    movd (%rdi), %xmm2
+    push %rbx
+    sub $24, %rsp
+    mov %rdi, %rbx
+    movd (%rbx), %xmm0
+    movd %xmm0, -32(%rbp)
     movd __kefir_func_postdec32_label2(%rip), %xmm1
-    movq %rdi, -32(%rbp)
-    movdqu %xmm2, -24(%rbp)
-    movaps %xmm2, %xmm0
+    movdqu -32(%rbp), %xmm0
     call __dpd_addsd3@PLT
-    movq -32(%rbp), %rdi
-    movdqu -24(%rbp), %xmm2
-    movd %xmm0, (%rdi)
-    movaps %xmm2, %xmm0
-    lea (%rbp), %rsp
+    movd %xmm0, (%rbx)
+    movdqu -32(%rbp), %xmm0
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_postdec32_end:
@@ -682,18 +698,18 @@ postdec64:
 __kefir_text_func_postdec64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    movq (%rdi), %xmm2
+    push %rbx
+    sub $24, %rsp
+    mov %rdi, %rbx
+    movq (%rbx), %xmm0
+    movq %xmm0, -32(%rbp)
     movq __kefir_func_postdec64_label2(%rip), %xmm1
-    movq %rdi, -32(%rbp)
-    movdqu %xmm2, -24(%rbp)
-    movaps %xmm2, %xmm0
+    movdqu -32(%rbp), %xmm0
     call __dpd_adddd3@PLT
-    movq -32(%rbp), %rdi
-    movdqu -24(%rbp), %xmm2
-    movq %xmm0, (%rdi)
-    movaps %xmm2, %xmm0
-    lea (%rbp), %rsp
+    movq %xmm0, (%rbx)
+    movdqu -32(%rbp), %xmm0
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_postdec64_end:
@@ -707,18 +723,18 @@ postinc32:
 __kefir_text_func_postinc32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    movd (%rdi), %xmm2
+    push %rbx
+    sub $24, %rsp
+    mov %rdi, %rbx
+    movd (%rbx), %xmm0
+    movd %xmm0, -32(%rbp)
     movd __kefir_func_postinc32_label2(%rip), %xmm1
-    movq %rdi, -32(%rbp)
-    movdqu %xmm2, -24(%rbp)
-    movaps %xmm2, %xmm0
+    movdqu -32(%rbp), %xmm0
     call __dpd_addsd3@PLT
-    movq -32(%rbp), %rdi
-    movdqu -24(%rbp), %xmm2
-    movd %xmm0, (%rdi)
-    movaps %xmm2, %xmm0
-    lea (%rbp), %rsp
+    movd %xmm0, (%rbx)
+    movdqu -32(%rbp), %xmm0
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_postinc32_end:
@@ -732,18 +748,18 @@ postinc64:
 __kefir_text_func_postinc64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    movq (%rdi), %xmm2
+    push %rbx
+    sub $24, %rsp
+    mov %rdi, %rbx
+    movq (%rbx), %xmm0
+    movq %xmm0, -32(%rbp)
     movq __kefir_func_postinc64_label2(%rip), %xmm1
-    movq %rdi, -32(%rbp)
-    movdqu %xmm2, -24(%rbp)
-    movaps %xmm2, %xmm0
+    movdqu -32(%rbp), %xmm0
     call __dpd_adddd3@PLT
-    movq -32(%rbp), %rdi
-    movdqu -24(%rbp), %xmm2
-    movq %xmm0, (%rdi)
-    movaps %xmm2, %xmm0
-    lea (%rbp), %rsp
+    movq %xmm0, (%rbx)
+    movdqu -32(%rbp), %xmm0
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_postinc64_end:
@@ -757,14 +773,15 @@ predec128:
 __kefir_text_func_predec128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    movdqu (%rdi), %xmm0
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
+    movdqu (%rbx), %xmm0
     movdqu __kefir_func_predec128_label2(%rip), %xmm1
-    movq %rdi, -16(%rbp)
     call __dpd_addtd3@PLT
-    movq -16(%rbp), %rdi
-    movdqu %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_predec128_end:
@@ -778,14 +795,15 @@ preinc128:
 __kefir_text_func_preinc128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    movdqu (%rdi), %xmm0
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
+    movdqu (%rbx), %xmm0
     movdqu __kefir_func_preinc128_label2(%rip), %xmm1
-    movq %rdi, -16(%rbp)
     call __dpd_addtd3@PLT
-    movq -16(%rbp), %rdi
-    movdqu %xmm0, (%rdi)
-    lea (%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_preinc128_end:
@@ -799,18 +817,18 @@ postdec128:
 __kefir_text_func_postdec128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    movdqu (%rdi), %xmm2
+    push %rbx
+    sub $24, %rsp
+    mov %rdi, %rbx
+    movdqu (%rbx), %xmm0
+    movdqu %xmm0, -32(%rbp)
     movdqu __kefir_func_postdec128_label2(%rip), %xmm1
-    movq %rdi, -32(%rbp)
-    movdqu %xmm2, -24(%rbp)
-    movaps %xmm2, %xmm0
+    movdqu -32(%rbp), %xmm0
     call __dpd_addtd3@PLT
-    movq -32(%rbp), %rdi
-    movdqu -24(%rbp), %xmm2
-    movdqu %xmm0, (%rdi)
-    movaps %xmm2, %xmm0
-    lea (%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    movdqu -32(%rbp), %xmm0
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_postdec128_end:
@@ -824,18 +842,18 @@ postinc128:
 __kefir_text_func_postinc128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    movdqu (%rdi), %xmm2
+    push %rbx
+    sub $24, %rsp
+    mov %rdi, %rbx
+    movdqu (%rbx), %xmm0
+    movdqu %xmm0, -32(%rbp)
     movdqu __kefir_func_postinc128_label2(%rip), %xmm1
-    movq %rdi, -32(%rbp)
-    movdqu %xmm2, -24(%rbp)
-    movaps %xmm2, %xmm0
+    movdqu -32(%rbp), %xmm0
     call __dpd_addtd3@PLT
-    movq -32(%rbp), %rdi
-    movdqu -24(%rbp), %xmm2
-    movdqu %xmm0, (%rdi)
-    movaps %xmm2, %xmm0
-    lea (%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    movdqu -32(%rbp), %xmm0
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_postinc128_end:
