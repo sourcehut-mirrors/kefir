@@ -26,6 +26,7 @@
 #include "kefir/core/hashtable.h"
 #include "kefir/core/hashset.h"
 #include "kefir/core/hashtreeset.h"
+#include "kefir/core/list.h"
 
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 4
 
@@ -35,7 +36,6 @@ typedef kefir_uint32_t kefir_codegen_target_ir_opcode_t;
 typedef kefir_uint64_t kefir_codegen_target_ir_native_id_t;
 typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_physical_register_t;
 typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_asmcmp_label_t;
-typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_inline_assembly_index_t;
 
 // clang-format off
 #define KEFIR_CODEGEN_TARGET_IR_SPECIAL_OPCODES(_instr, _separator) \
@@ -58,8 +58,7 @@ typedef enum kefir_codegen_target_ir_operand_type {
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_ASMCMP_LABEL,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_EXTERNAL_LABEL,
-    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87,
-    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INLINE_ASSEMBLY_INDEX
+    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87
 } kefir_codegen_target_ir_operand_type_t;
 
 typedef enum kefir_codegen_target_ir_operand_variant {
@@ -195,7 +194,6 @@ typedef struct kefir_codegen_target_ir_operand {
             kefir_int64_t offset;
         } external_label;
         kefir_size_t x87;
-        kefir_codegen_target_ir_inline_assembly_index_t inline_asm_idx;
     };
 
     struct {
@@ -204,11 +202,31 @@ typedef struct kefir_codegen_target_ir_operand {
     } segment;
 } kefir_codegen_target_ir_operand_t;
 
+typedef enum kefir_codegen_target_ir_inline_assembly_fragment_type {
+    KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT,
+    KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND
+} kefir_codegen_target_ir_inline_assembly_fragment_type_t;
+
+
+typedef struct kefir_codegen_target_ir_inline_assembly_fragment {
+    kefir_codegen_target_ir_inline_assembly_fragment_type_t type;
+    union {
+        const char *text;
+
+        struct kefir_codegen_target_ir_operand operand;
+    };
+} kefir_codegen_target_ir_inline_assembly_fragment_t;
+
+typedef struct kefir_codegen_target_ir_inline_assembly_node {
+    struct kefir_list fragments;
+} kefir_codegen_target_ir_inline_assembly_node_t;
+
 typedef struct kefir_codegen_target_ir_operation {
     kefir_codegen_target_ir_opcode_t opcode;
     union {
         struct kefir_codegen_target_ir_operand parameters[KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS];
         struct kefir_codegen_target_ir_phi_node phi_node;
+        struct kefir_codegen_target_ir_inline_assembly_node inline_asm_node;
     };
 } kefir_codegen_target_ir_operation_t;
 
@@ -272,6 +290,7 @@ typedef struct kefir_codegen_target_ir_code_class {
     kefir_codegen_target_ir_opcode_t touch_opcode;
     kefir_codegen_target_ir_opcode_t phi_opcode;
     kefir_codegen_target_ir_opcode_t placeholder_opcode;
+    kefir_codegen_target_ir_opcode_t inline_asm_opcode;
     void *payload;
 } kefir_codegen_target_ir_code_class_t;
 
@@ -328,6 +347,11 @@ kefir_result_t kefir_codegen_target_ir_code_add_constraint(struct kefir_mem *, s
 kefir_result_t kefir_codegen_target_ir_code_add_instruction_attribute(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_native_id_t);
 kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type **, const struct kefir_codegen_target_ir_allocation_constraint **);
 
+kefir_result_t kefir_codegen_target_ir_code_inline_assembly_text_fragment(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,
+    const char *);
+kefir_result_t kefir_codegen_target_ir_code_inline_assembly_operand_fragment(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,
+    const struct kefir_codegen_target_ir_operand *);
+
 typedef struct kefir_codegen_target_ir_value_iterator {
     const struct kefir_codegen_target_ir_code *code;
     struct kefir_hashtable_iterator iter;
@@ -343,6 +367,13 @@ typedef struct kefir_codegen_target_ir_code_attribute_iterator {
 
 kefir_result_t kefir_codegen_target_ir_code_instruction_attribute_iter(const struct kefir_codegen_target_ir_code *, struct kefir_codegen_target_ir_code_attribute_iterator *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_native_id_t *);
 kefir_result_t kefir_codegen_target_ir_code_instruction_attribute_next(struct kefir_codegen_target_ir_code_attribute_iterator *, kefir_codegen_target_ir_native_id_t *);
+
+typedef struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator {
+    const struct kefir_list_entry *iter;
+} kefir_codegen_target_ir_code_inline_assembly_fragment_iterator;
+
+kefir_result_t kefir_codegen_target_ir_code_inline_assembly_fragment_iter(const struct kefir_codegen_target_ir_code *, struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator *, kefir_codegen_target_ir_instruction_ref_t, const struct kefir_codegen_target_ir_inline_assembly_fragment **);
+kefir_result_t kefir_codegen_target_ir_code_inline_assembly_fragment_next(struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator *, const struct kefir_codegen_target_ir_inline_assembly_fragment **);
 
 
 #endif

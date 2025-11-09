@@ -37,3 +37,22 @@ label1:
 label2:
     return 10;
 }
+
+extern void init_array() {
+    static int array[10];
+    static int x;
+    asm("lea %1, %rax\n"
+        "mov %rax, (%0)\n"
+        "lea %3, %rax\n"
+        "mov %rax, (%2)\n"
+        "lea %5, %rax\n"
+        "mov %rax, (%4)\n"
+        "lea %7, %rax\n"
+        "mov %rax, (%6)\n"
+        "mov %9, %rax\n"
+        "mov %rax, (%8)"
+        :
+        : "i"(&array[0]), "i"(test4), "i"(&array[1]), "i"(&array[5]), "i"(&array[2]), "i"("Hello" + 2), "i"(&array[3]),
+          "i"(&x), "i"(&array[4]), "n"(4.21)
+        : "rax", "rbx");
+}

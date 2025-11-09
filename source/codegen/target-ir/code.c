@@ -87,6 +87,8 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
     for (kefir_size_t i = 0; i < code->code_length; i++) {
         if (code->code[i].operation.opcode == code->klass->phi_opcode) {
             REQUIRE_OK(kefir_hashtable_free(mem, &code->code[i].operation.phi_node.links));
+        } else if (code->code[i].operation.opcode == code->klass->inline_asm_opcode) {   
+            REQUIRE_OK(kefir_list_free(mem, &code->code[i].operation.inline_asm_node.fragments));
         }
         REQUIRE_OK(kefir_hashtable_free(mem, &code->code[i].aspects));
     }
@@ -194,6 +196,18 @@ kefir_result_t kefir_codegen_target_ir_code_instruction(const struct kefir_codeg
     return KEFIR_OK;
 }
 
+static kefir_result_t free_inline_asm_node(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry, void *payload) {
+    UNUSED(list);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(entry != NULL && entry->value, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR inline assembly fragment"));
+
+    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_inline_assembly_fragment *, fragment,
+        entry->value);
+    KEFIR_FREE(mem, fragment);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
     kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t after_instr_ref,
     const struct kefir_codegen_target_ir_operation *operation, kefir_codegen_target_ir_instruction_ref_t *instr_ref_ptr) {
@@ -226,6 +240,9 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
 
     if (instr->operation.opcode == code->klass->phi_opcode) {
         REQUIRE_OK(kefir_hashtable_init(&instr->operation.phi_node.links, &kefir_hashtable_uint_ops));
+    } else if (instr->operation.opcode == code->klass->inline_asm_opcode) {
+        REQUIRE_OK(kefir_list_init(&instr->operation.inline_asm_node.fragments));
+        REQUIRE_OK(kefir_list_on_remove(&instr->operation.inline_asm_node.fragments, free_inline_asm_node, NULL));
     }
     REQUIRE_OK(kefir_hashtable_init(&instr->aspects, &kefir_hashtable_uint_ops));
 
@@ -497,6 +514,54 @@ kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codeg
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_code_inline_assembly_text_fragment(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref,
+    const char *text) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
+    REQUIRE(text != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR inline assembly text"));
+    
+    struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
+    REQUIRE(instr->operation.opcode == code->klass->inline_asm_opcode, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to attach a link to non-inline assembly target IR instruction"));
+
+    struct kefir_codegen_target_ir_inline_assembly_fragment *fragment = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_inline_assembly_fragment));
+    REQUIRE(fragment != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR inline assembly fragment"));
+
+    fragment->type = KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT;
+    fragment->text = text;
+    kefir_result_t res = kefir_list_insert_after(mem, &instr->operation.inline_asm_node.fragments, kefir_list_tail(&instr->operation.inline_asm_node.fragments), fragment);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, fragment);
+        return res;
+    });
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_inline_assembly_operand_fragment(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref,
+    const struct kefir_codegen_target_ir_operand *operand) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
+    REQUIRE(operand != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR operand"));
+    
+    struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
+    REQUIRE(instr->operation.opcode == code->klass->inline_asm_opcode, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to attach a link to non-inline assembly target IR instruction"));
+
+    struct kefir_codegen_target_ir_inline_assembly_fragment *fragment = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_inline_assembly_fragment));
+    REQUIRE(fragment != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR inline assembly fragment"));
+
+    fragment->type = KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND;
+    fragment->operand = *operand;
+    kefir_result_t res = kefir_list_insert_after(mem, &instr->operation.inline_asm_node.fragments, kefir_list_tail(&instr->operation.inline_asm_node.fragments), fragment);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, fragment);
+        return res;
+    });
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_value_iter(const struct kefir_codegen_target_ir_code *code, struct kefir_codegen_target_ir_value_iterator *iter, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_value_ref_t *value_ref_ptr, const struct kefir_codegen_target_ir_value_type **value_type_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR value iterator"));
@@ -573,5 +638,33 @@ kefir_result_t kefir_codegen_target_ir_code_instruction_attribute_next(struct ke
     REQUIRE_OK(res);
     
     ASSIGN_PTR(attribute_ptr, table_key);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_inline_assembly_fragment_iter(const struct kefir_codegen_target_ir_code *code,
+    struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator *iter,
+    kefir_codegen_target_ir_instruction_ref_t instr_ref,
+    const struct kefir_codegen_target_ir_inline_assembly_fragment **fragment_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR inline assembly fragment iterator"));
+    REQUIRE(instr_ref != KEFIR_ID_NONE && instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction reference"));
+    
+    struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
+    REQUIRE(instr->operation.opcode == code->klass->inline_asm_opcode, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected target IR inline assembly node"));
+
+    iter->iter = kefir_list_head(&instr->operation.inline_asm_node.fragments);
+    REQUIRE(iter->iter != NULL, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR inline assembly fragment iterator"));
+
+    ASSIGN_PTR(fragment_ptr, iter->iter->value);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_inline_assembly_fragment_next(struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator *iter, const struct kefir_codegen_target_ir_inline_assembly_fragment **fragment_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR inline assembly fragment iterator"));
+
+    kefir_list_next(&iter->iter);
+    REQUIRE(iter->iter != NULL, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR inline assembly fragment iterator"));
+
+    ASSIGN_PTR(fragment_ptr, iter->iter->value);
     return KEFIR_OK;
 }

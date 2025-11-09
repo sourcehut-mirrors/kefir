@@ -9,6 +9,8 @@
 .type test3, @function
 .global test4
 .type test4, @function
+.global init_array
+.type init_array, @function
 
 .section .text
 __kefir_text_section_begin:
@@ -4205,6 +4207,453 @@ _kefir_local_public_label_test4_label2:
 __kefir_func_test4_label5:
 __kefir_text_func_test4_end:
 
+init_array:
+#{
+#    "entry_point": 0,
+#    "blocks": [
+#        {
+#            "block_ref": 0,
+#            "code": [
+#                {
+#                    "instr_ref": 14,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 13,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 0,
+#                    "opcode": "function_prologue",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 1,
+#                    "opcode": "virtual_block_begin",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 2,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 1
+#                        }
+#                    ],
+#                    "values": []
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 1,
+#            "code": [
+#                {
+#                    "instr_ref": 5,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 13,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rbx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 3,
+#                    "opcode": "phi",
+#                    "phi_links": [
+#                        {
+#                            "block_ref": 0,
+#                            "value_ref": {
+#                                "instr_ref": 14,
+#                                "aspect": {
+#                                    "type": "output_reg",
+#                                    "index": 0
+#                                }
+#                            }
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rax"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
+#                    "instr_ref": 4,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 3,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 6,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 5,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 7,
+#                    "opcode": "inline_assembly",
+#                    "fragments": [
+#                        {
+#                            "type": "text",
+#                            "text": "lea "
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "external_label",
+#                                "type": "absolute",
+#                                "label": "test4",
+#                                "offset": 0
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ", "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax\nmov "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax, ("
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "external_label",
+#                                "type": "absolute",
+#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "offset": 0
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ")\nlea "
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "external_label",
+#                                "type": "absolute",
+#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "offset": 20
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ", "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax\nmov "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax, ("
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "external_label",
+#                                "type": "absolute",
+#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "offset": 4
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ")\nlea "
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "external_label",
+#                                "type": "absolute",
+#                                "label": "__kefir_string_literal0",
+#                                "offset": 2
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ", "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax\nmov "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax, ("
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "external_label",
+#                                "type": "absolute",
+#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "offset": 8
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ")\nlea "
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "external_label",
+#                                "type": "absolute",
+#                                "label": "__kefir_function_init_array_static_x_12",
+#                                "offset": 0
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ", "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax\nmov "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax, ("
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "external_label",
+#                                "type": "absolute",
+#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "offset": 12
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ")\nmov "
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "integer",
+#                                "value": 4
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ", "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax\nmov "
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "%"
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": "rax, ("
+#                        },
+#                        {
+#                            "type": "operand",
+#                            "operand": {
+#                                "type": "external_label",
+#                                "type": "absolute",
+#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "offset": 16
+#                            }
+#                        },
+#                        {
+#                            "type": "text",
+#                            "text": ")"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 8,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 3,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 9,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 5,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 10,
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 11,
+#                    "opcode": "ret",
+#                    "parameters": [],
+#                    "values": []
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 2,
+#            "code": [
+#                {
+#                    "instr_ref": 12,
+#                    "opcode": "virtual_block_end",
+#                    "parameters": [],
+#                    "values": []
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        }
+#    ]
+#}
+__kefir_text_func_init_array_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $8, %rsp
+__kefir_func_init_array_label0:
+lea test4, %rax
+mov %rax, (__kefir_function_init_array_static_array_13)
+lea __kefir_function_init_array_static_array_13 + 20, %rax
+mov %rax, (__kefir_function_init_array_static_array_13 + 4)
+lea __kefir_string_literal0 + 2, %rax
+mov %rax, (__kefir_function_init_array_static_array_13 + 8)
+lea __kefir_function_init_array_static_x_12, %rax
+mov %rax, (__kefir_function_init_array_static_array_13 + 12)
+mov $4, %rax
+mov %rax, (__kefir_function_init_array_static_array_13 + 16)
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_init_array_end:
+
 __kefir_text_section_end:
 
 .section .data
@@ -4213,3 +4662,15 @@ __kefir_function_test4_static_arr_10:
     .quad _kefir_local_public_label_test4_label1
     .quad _kefir_local_public_label_test4_label2
 
+.section .bss
+    .align 4
+__kefir_function_init_array_static_x_12:
+    .skip 4
+
+    .align 16
+__kefir_function_init_array_static_array_13:
+    .skip 40
+
+.section .rodata
+__kefir_string_literal0:
+    .ascii "Hello\000"

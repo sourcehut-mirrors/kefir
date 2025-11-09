@@ -419,13 +419,12 @@ static kefir_result_t resolve_flags(struct constructor_state *state, struct code
     return KEFIR_OK;
 }
 
-static kefir_result_t init_operand(struct constructor_state *state, struct code_block_state *block_state, struct kefir_codegen_target_ir_operand *operand, const struct kefir_asmcmp_instruction *instr, const struct kefir_codegen_target_ir_asmcmp_operand_classification *classification, kefir_asmcmp_virtual_register_index_t *output_vreg) {
+static kefir_result_t init_operand(struct constructor_state *state, struct code_block_state *block_state, struct kefir_codegen_target_ir_operand *operand, const struct kefir_asmcmp_value *value, const struct kefir_codegen_target_ir_asmcmp_operand_classification *classification, kefir_asmcmp_virtual_register_index_t *output_vreg) {
     UNUSED(state);
     
     operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
     ASSIGN_PTR(output_vreg, KEFIR_ASMCMP_INDEX_NONE);
     REQUIRE(classification->class != KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE, KEFIR_OK);
-    const struct kefir_asmcmp_value *value = &instr->args[classification->index];
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected asmcmp value of none type");
@@ -560,9 +559,7 @@ static kefir_result_t init_operand(struct constructor_state *state, struct code_
             break;
             
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
-            operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INLINE_ASSEMBLY_INDEX;
-            operand->inline_asm_idx = value->inline_asm_idx;
-            break;
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual assembly value type");
     }
 
     return KEFIR_OK;
@@ -738,6 +735,44 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
             continue;
         }
 
+        if (classification.opcode == state->code->klass->inline_asm_opcode) {
+            REQUIRE(asmcmp_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected virtual assembly instruction with inline assembly parameter"));
+            kefir_codegen_target_ir_instruction_ref_t inline_asm_ref;
+            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, current_block_state->block_ref,
+                kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref),
+                &(struct kefir_codegen_target_ir_operation) {
+                    .opcode = classification.opcode
+                }, &inline_asm_ref));
+
+            struct kefir_asmcmp_inline_assembly_fragment_iterator iter;
+            for (res = kefir_asmcmp_inline_assembly_fragment_iter(state->asmcmp_ctx, asmcmp_instr->args[0].inline_asm_idx, &iter);
+                res == KEFIR_OK && iter.fragment != NULL; res = kefir_asmcmp_inline_assembly_fragment_next(&iter)) {
+
+                switch (iter.fragment->type) {
+                    case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                        REQUIRE_OK(kefir_codegen_target_ir_code_inline_assembly_text_fragment(state->mem, state->code, inline_asm_ref, iter.fragment->text));
+                        break;
+
+                    case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_VALUE: {
+                        struct kefir_codegen_target_ir_operand operand;
+                        REQUIRE_OK(init_operand(state, current_block_state, &operand, &iter.fragment->value,
+                            &(struct kefir_codegen_target_ir_asmcmp_operand_classification) {
+                                .class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ,
+                                .implicit = false,
+                                .index = 0
+                            }, NULL));
+                        REQUIRE_OK(kefir_codegen_target_ir_code_inline_assembly_operand_fragment(state->mem, state->code, inline_asm_ref, &operand));
+                    } break;
+                }
+
+                if (res != KEFIR_OK) {
+                    break;
+                }
+            }
+            continue;
+        }
+
         struct kefir_codegen_target_ir_operation operation = {
             .opcode = classification.opcode
         };
@@ -766,7 +801,7 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                     }
                 }
             } else {
-                REQUIRE_OK(init_operand(state, current_block_state, &operation.parameters[input_index], asmcmp_instr, &classification.operands[i], &output_vreg));
+                REQUIRE_OK(init_operand(state, current_block_state, &operation.parameters[input_index], &asmcmp_instr->args[classification.operands[i].index], &classification.operands[i], &output_vreg));
             }
             if (operation.parameters[input_index].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE) {
                 input_index++;

@@ -50,6 +50,7 @@ static kefir_result_t amd64_classify_instruction(const struct kefir_asmcmp_instr
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE;
         classification->operands[i].implicit = false;
+        classification->operands[i].index = 0;
     }
     classification->extra_flags = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_NONE;
 

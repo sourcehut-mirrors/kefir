@@ -320,15 +320,6 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_uinteger(json, operand->x87));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
-
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INLINE_ASSEMBLY_INDEX:
-            REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            REQUIRE_OK(kefir_json_output_string(json, "inline_asm_index"));
-            REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, operand->inline_asm_idx));
-            REQUIRE_OK(kefir_json_output_object_end(json));
-            break;
     }
     return KEFIR_OK;
 }
@@ -382,6 +373,35 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                     REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
                     REQUIRE_OK(aspect_format(json, link_value_ref.aspect));
                     REQUIRE_OK(kefir_json_output_object_end(json));
+                    REQUIRE_OK(kefir_json_output_object_end(json));
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_OK(res);
+                }
+                REQUIRE_OK(kefir_json_output_array_end(json));
+            } else if (instr->operation.opcode == code->klass->inline_asm_opcode) {
+                REQUIRE_OK(kefir_json_output_object_key(json, "fragments"));
+                REQUIRE_OK(kefir_json_output_array_begin(json));
+                struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
+                const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
+                for (res = kefir_codegen_target_ir_code_inline_assembly_fragment_iter(code, &iter, instr_ref, &fragment);
+                    res == KEFIR_OK;
+                    res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
+                    REQUIRE_OK(kefir_json_output_object_begin(json));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                    switch (fragment->type) {
+                        case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                            REQUIRE_OK(kefir_json_output_string(json, "text"));
+                            REQUIRE_OK(kefir_json_output_object_key(json, "text"));
+                            REQUIRE_OK(kefir_json_output_string(json, fragment->text));
+                            break;
+
+                        case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND:
+                            REQUIRE_OK(kefir_json_output_string(json, "operand"));
+                            REQUIRE_OK(kefir_json_output_object_key(json, "operand"));
+                            REQUIRE_OK(operand_format(json, code, &fragment->operand));
+                            break;
+                    }
                     REQUIRE_OK(kefir_json_output_object_end(json));
                 }
                 if (res != KEFIR_ITERATOR_END) {
