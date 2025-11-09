@@ -29,7 +29,6 @@ typedef kefir_size_t kefir_asmcmp_physical_register_index_t;
 typedef kefir_size_t kefir_asmcmp_instruction_opcode_t;
 typedef kefir_size_t kefir_asmcmp_instruction_index_t;
 typedef kefir_size_t kefir_asmcmp_label_index_t;
-typedef kefir_size_t kefir_asmcmp_stash_index_t;
 typedef kefir_size_t kefir_asmcmp_inline_assembly_index_t;
 typedef kefir_size_t kefir_asmcmp_lifetime_index_t;
 

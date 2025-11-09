@@ -35,7 +35,6 @@ typedef kefir_uint32_t kefir_codegen_target_ir_opcode_t;
 typedef kefir_uint64_t kefir_codegen_target_ir_native_id_t;
 typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_physical_register_t;
 typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_asmcmp_label_t;
-typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_stash_index_t;
 typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_inline_assembly_index_t;
 
 // clang-format off
@@ -60,7 +59,6 @@ typedef enum kefir_codegen_target_ir_operand_type {
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_ASMCMP_LABEL,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_EXTERNAL_LABEL,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87,
-    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_STASH_INDEX,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INLINE_ASSEMBLY_INDEX
 } kefir_codegen_target_ir_operand_type_t;
 
@@ -197,7 +195,6 @@ typedef struct kefir_codegen_target_ir_operand {
             kefir_int64_t offset;
         } external_label;
         kefir_size_t x87;
-        kefir_codegen_target_ir_stash_index_t stash_idx;
         kefir_codegen_target_ir_inline_assembly_index_t inline_asm_idx;
     };
 

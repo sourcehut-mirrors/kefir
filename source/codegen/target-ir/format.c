@@ -321,15 +321,6 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_STASH_INDEX:
-            REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            REQUIRE_OK(kefir_json_output_string(json, "stash_index"));
-            REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, operand->stash_idx));
-            REQUIRE_OK(kefir_json_output_object_end(json));
-            break;
-
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INLINE_ASSEMBLY_INDEX:
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));

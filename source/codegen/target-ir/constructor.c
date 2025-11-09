@@ -119,12 +119,6 @@ static kefir_result_t mark_value_liveness(struct constructor_state *state, struc
                     break;
             }
             break;
-
-        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX: {
-            kefir_asmcmp_virtual_register_index_t vreg_idx;
-            REQUIRE_OK(kefir_asmcmp_register_stash_vreg(state->asmcmp_ctx, value->stash_idx, &vreg_idx));
-            REQUIRE_OK(mark_vreg_liveness(state, block_state, linear_index, vreg_idx));
-        } break;
     }
 
     return KEFIR_OK;
@@ -564,12 +558,7 @@ static kefir_result_t init_operand(struct constructor_state *state, struct code_
             operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87;
             operand->x87 = value->x87;
             break;
-
-        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
-            operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_STASH_INDEX;
-            operand->stash_idx = value->stash_idx;
-            break;
-
+            
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
             operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INLINE_ASSEMBLY_INDEX;
             operand->inline_asm_idx = value->inline_asm_idx;

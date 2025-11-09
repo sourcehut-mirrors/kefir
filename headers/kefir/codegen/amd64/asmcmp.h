@@ -68,8 +68,6 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, function_epilogue) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, tail_call) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, noop) _separator \
-    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, stash_activate) _separator \
-    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, stash_deactivate) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, virtual_block_begin) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, virtual_block_end) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, inline_assembly) _separator \
@@ -183,13 +181,6 @@ kefir_result_t kefir_asmcmp_amd64_weak_touch_virtual_register(struct kefir_mem *
 kefir_result_t kefir_asmcmp_amd64_preserve_active_virtual_registers(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                                     kefir_asmcmp_instruction_index_t,
                                                                     kefir_asmcmp_instruction_index_t *);
-
-kefir_result_t kefir_asmcmp_amd64_activate_stash(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
-                                                 kefir_asmcmp_instruction_index_t, kefir_asmcmp_stash_index_t,
-                                                 kefir_asmcmp_instruction_index_t *);
-kefir_result_t kefir_asmcmp_amd64_deactivate_stash(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
-                                                   kefir_asmcmp_instruction_index_t, kefir_asmcmp_stash_index_t,
-                                                   kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_function_prologue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                     kefir_asmcmp_instruction_index_t,

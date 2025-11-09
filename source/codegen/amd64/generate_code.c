@@ -67,7 +67,6 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                                     kefir_asmcmp_operand_variant_t default_variant_override) {
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
-        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 asmcmp value type");
 
@@ -418,9 +417,6 @@ static kefir_bool_t same_operands(const struct kefir_asmcmp_value *arg1, const s
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
             return arg1->x87 == arg2->x87;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
-            return arg1->stash_idx == arg2->stash_idx;
-
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
             return arg1->inline_asm_idx == arg2->inline_asm_idx;
     }
@@ -563,10 +559,6 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
         case KEFIR_ASMCMP_AMD64_OPCODE(noop):
             // Intentionally left blank
             break;
-
-        case KEFIR_ASMCMP_AMD64_OPCODE(stash_activate):
-        case KEFIR_ASMCMP_AMD64_OPCODE(stash_deactivate):
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected stash (de-)activation instruction");
     }
 
     return KEFIR_OK;

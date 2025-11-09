@@ -263,15 +263,6 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
-            REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            REQUIRE_OK(kefir_json_output_string(json, "stash_index"));
-            REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, value->stash_idx));
-            REQUIRE_OK(kefir_json_output_object_end(json));
-            break;
-
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));

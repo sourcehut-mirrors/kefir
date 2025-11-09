@@ -61,7 +61,6 @@ static kefir_result_t collect_labels(struct kefir_mem *mem, const struct kefir_a
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
         case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
-        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
             // Intentionally left blank
             break;
