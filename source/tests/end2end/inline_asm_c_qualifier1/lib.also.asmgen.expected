@@ -12,8 +12,7 @@ __kefir_text_func_init_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 __kefir_func_init_label0:
-    mov %rdi, %rax
-    movq %rax, -8(%rbp)
+    movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
 movl $1, 0(%rax)
 movl $2, 16(%rax)

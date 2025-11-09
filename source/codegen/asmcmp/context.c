@@ -1278,7 +1278,7 @@ kefir_result_t kefir_asmcmp_inline_assembly_new(struct kefir_mem *mem, struct ke
 
     struct kefir_asmcmp_inline_assembly *inline_asm = KEFIR_MALLOC(mem, sizeof(struct kefir_asmcmp_inline_assembly));
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmcmp inline assembly"));
-    inline_asm->index = context->next_stash_idx;
+    inline_asm->index = context->next_inline_asm_idx;
     inline_asm->template = kefir_string_pool_insert(mem, &context->strings, template, NULL);
     REQUIRE_ELSE(inline_asm->template != NULL, {
         KEFIR_FREE(mem, inline_asm);

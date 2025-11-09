@@ -70,7 +70,6 @@ struct inline_assembly_context {
     const struct kefir_opt_instruction *instruction;
     const struct kefir_opt_inline_assembly_node *inline_assembly;
     const struct kefir_ir_inline_assembly *ir_inline_assembly;
-    kefir_asmcmp_stash_index_t stash_idx;
     kefir_bool_t dirty_cc;
     struct kefir_list available_gp_registers;
     struct kefir_list available_sse_registers;
@@ -79,13 +78,12 @@ struct inline_assembly_context {
     struct kefir_hashtree jump_trampolines;
     struct kefir_hashtree explicitly_allocated;
     struct kefir_hashtreeset directly_read_vregs;
+    struct kefir_hashtree cloberred_vregs;
     kefir_size_t x87_stack_index;
 };
 
 static kefir_result_t mark_clobbers(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                     struct inline_assembly_context *context) {
-    REQUIRE_OK(kefir_asmcmp_register_stash_new(mem, &function->code.context, &context->stash_idx));
-
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&context->ir_inline_assembly->clobbers, &iter);
          node != NULL; node = kefir_hashtree_next(&iter)) {
@@ -105,7 +103,7 @@ static kefir_result_t mark_clobbers(struct kefir_mem *mem, struct kefir_codegen_
         REQUIRE_OK(res);
         REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(dirty_reg, &dirty_reg));
 
-        REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, context->stash_idx, dirty_reg));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &context->cloberred_vregs, (kefir_hashtree_key_t) dirty_reg, (kefir_hashtree_value_t) KEFIR_ASMCMP_INDEX_NONE));
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, dirty_reg));
     }
 
@@ -120,9 +118,7 @@ static kefir_result_t init_available_regs(struct kefir_mem *mem, struct kefir_co
         REQUIRE_OK(kefir_abi_amd64_get_caller_preserved_general_purpose_register(function->codegen->abi_variant, i,
                                                                                  &candidate));
 
-        kefir_bool_t stashed;
-        REQUIRE_OK(kefir_asmcmp_register_stash_has(&function->code.context, context->stash_idx, candidate, &stashed));
-        if (stashed) {
+        if (kefir_hashtree_has(&context->cloberred_vregs, (kefir_hashtree_key_t) candidate)) {
             continue;
         }
 
@@ -137,9 +133,7 @@ static kefir_result_t init_available_regs(struct kefir_mem *mem, struct kefir_co
         REQUIRE_OK(kefir_abi_amd64_get_callee_preserved_general_purpose_register(function->codegen->abi_variant, i,
                                                                                  &candidate));
 
-        kefir_bool_t stashed;
-        REQUIRE_OK(kefir_asmcmp_register_stash_has(&function->code.context, context->stash_idx, candidate, &stashed));
-        if (stashed) {
+        if (kefir_hashtree_has(&context->cloberred_vregs, (kefir_hashtree_key_t) candidate)) {
             continue;
         }
 
@@ -153,9 +147,7 @@ static kefir_result_t init_available_regs(struct kefir_mem *mem, struct kefir_co
         kefir_asm_amd64_xasmgen_register_t candidate;
         REQUIRE_OK(kefir_abi_amd64_get_caller_preserved_sse_register(function->codegen->abi_variant, i, &candidate));
 
-        kefir_bool_t stashed;
-        REQUIRE_OK(kefir_asmcmp_register_stash_has(&function->code.context, context->stash_idx, candidate, &stashed));
-        if (stashed) {
+        if (kefir_hashtree_has(&context->cloberred_vregs, (kefir_hashtree_key_t) candidate)) {
             continue;
         }
 
@@ -175,7 +167,6 @@ static kefir_result_t obtain_available_gp_register(struct kefir_mem *mem, struct
         (kefir_asm_amd64_xasmgen_register_t) ((kefir_uptr_t) kefir_list_head(&context->available_gp_registers)->value);
     REQUIRE_OK(
         kefir_list_pop(mem, &context->available_gp_registers, kefir_list_head(&context->available_gp_registers)));
-    REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, context->stash_idx, *reg));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, *reg));
     return KEFIR_OK;
 }
@@ -190,7 +181,6 @@ static kefir_result_t obtain_available_sse_register(struct kefir_mem *mem,
         (kefir_asm_amd64_xasmgen_register_t) ((kefir_uptr_t) kefir_list_head(&context->available_sse_registers)->value);
     REQUIRE_OK(
         kefir_list_pop(mem, &context->available_sse_registers, kefir_list_head(&context->available_sse_registers)));
-    REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, context->stash_idx, *reg));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, *reg));
     return KEFIR_OK;
 }
@@ -204,7 +194,6 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
     kefir_asm_amd64_xasmgen_register_t reg = 0;
     if (entry->explicit_register_present) {
         reg = entry->explicit_register;
-        REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, context->stash_idx, reg));
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, reg));
 
         const inline_assembly_parameter_allocation_type_t allocation_type =
@@ -1106,9 +1095,6 @@ static kefir_result_t load_inputs(struct kefir_mem *mem, struct kefir_codegen_am
 static kefir_result_t prepare_state(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                     struct inline_assembly_context *context) {
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(kefir_asmcmp_amd64_activate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), context->stash_idx, NULL));
-
     if (context->dirty_cc) {
         REQUIRE_OK(kefir_asmcmp_amd64_pushfq(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
@@ -1552,22 +1538,36 @@ static kefir_result_t inline_assembly_build(struct kefir_mem *mem, struct kefir_
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
 
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
-        if (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER ||
+        if (ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE &&
+            (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER ||
             entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER ||
             entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT ||
-            entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY) {
+            entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY)) {
             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), entry->allocation_vreg,
                 NULL));
         }
     }
 
+    struct kefir_hashtree_node_iterator iter;
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&context->cloberred_vregs, &iter);
+        node != NULL;
+        node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, phreg,
+            node->key);
+
+        kefir_asmcmp_virtual_register_index_t vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, vreg,
+                                                                        phreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
+        node->value = (kefir_hashtree_value_t) vreg;
+    }
     kefir_asmcmp_instruction_index_t instr_idx;
     REQUIRE_OK(kefir_asmcmp_amd64_inline_assembly(mem, &function->code,
                                                   kefir_asmcmp_context_instr_tail(&function->code.context),
                                                   context->inline_asm_idx, &instr_idx));
-
-    REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, context->stash_idx, instr_idx));
 
     return KEFIR_OK;
 }
@@ -1822,8 +1822,15 @@ static kefir_result_t restore_state(struct kefir_mem *mem, struct kefir_codegen_
                                             kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
     }
 
-    REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), context->stash_idx, NULL));
+    struct kefir_hashtree_node_iterator iter;
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&context->cloberred_vregs, &iter);
+        node != NULL;
+        node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg,
+            node->value);
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
+    }
 
     return KEFIR_OK;
 }
@@ -1896,6 +1903,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
     REQUIRE_OK(kefir_hashtree_init(&context.jump_trampolines, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&context.explicitly_allocated, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&context.directly_read_vregs, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&context.cloberred_vregs, &kefir_hashtree_uint_ops));
     context.parameters = KEFIR_MALLOC(
         mem, sizeof(struct inline_assembly_parameter_allocation_entry) * context.inline_assembly->parameter_count);
     REQUIRE(context.parameters != NULL,
@@ -1914,6 +1922,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, context.parameters);
+        kefir_hashtree_free(mem, &context.cloberred_vregs);
         kefir_hashtree_free(mem, &context.explicitly_allocated);
         kefir_hashtreeset_free(mem, &context.directly_read_vregs);
         kefir_hashtree_free(mem, &context.jump_trampolines);
@@ -1925,6 +1934,15 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
     memset(context.parameters, 0,
            sizeof(struct inline_assembly_parameter_allocation_entry) * context.inline_assembly->parameter_count);
     KEFIR_FREE(mem, context.parameters);
+    res = kefir_hashtree_free(mem, &context.cloberred_vregs);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtree_free(mem, &context.explicitly_allocated);
+        kefir_hashtreeset_free(mem, &context.directly_read_vregs);
+        kefir_hashtree_free(mem, &context.jump_trampolines);
+        kefir_list_free(mem, &context.available_gp_registers);
+        kefir_list_free(mem, &context.available_sse_registers);
+        return res;
+    });
     res = kefir_hashtree_free(mem, &context.explicitly_allocated);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtreeset_free(mem, &context.directly_read_vregs);
