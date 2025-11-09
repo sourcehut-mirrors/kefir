@@ -22,7 +22,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t amd64_opcode_mnemonic(kefir_target_ir_amd64_opcode_t opcode, const char **mnemonic_ptr, void *payload) {
+static kefir_result_t amd64_opcode_mnemonic(kefir_codegen_target_ir_opcode_t opcode, const char **mnemonic_ptr, void *payload) {
     UNUSED(payload);
     REQUIRE(mnemonic_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to mnemonic"));
 
