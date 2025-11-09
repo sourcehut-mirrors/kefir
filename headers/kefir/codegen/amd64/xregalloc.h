@@ -80,6 +80,7 @@ typedef struct kefir_codegen_amd64_xregalloc {
     struct kefir_hashset used_registers;
     kefir_size_t used_slots;
     struct kefir_hashtable virtual_blocks;
+    struct kefir_hashtable vreg_lifetime_cache;
 } kefir_codegen_amd64_xregalloc_t;
 
 kefir_result_t kefir_codegen_amd64_xregalloc_init(struct kefir_codegen_amd64_xregalloc *);
@@ -96,7 +97,7 @@ kefir_result_t kefir_codegen_amd64_xregalloc_allocation_of(const struct kefir_co
 kefir_result_t kefir_codegen_amd64_xregalloc_linear_position_of(const struct kefir_codegen_amd64_xregalloc *,
                                                                 kefir_asmcmp_instruction_index_t, kefir_size_t *);
 
-kefir_result_t kefir_codegen_amd64_xregalloc_lifetime_of(const struct kefir_codegen_amd64_xregalloc *,
+kefir_result_t kefir_codegen_amd64_xregalloc_lifetime_of(struct kefir_mem *, struct kefir_codegen_amd64_xregalloc *,
                                                          kefir_asmcmp_virtual_register_index_t,
                                                          kefir_codegen_amd64_xregalloc_virtual_block_id_t,
                                                          kefir_size_t *, kefir_size_t *);

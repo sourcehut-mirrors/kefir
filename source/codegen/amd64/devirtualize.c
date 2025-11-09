@@ -68,7 +68,7 @@ static kefir_result_t mark_alive_virtual_reg(struct kefir_mem *mem, struct devir
         REQUIRE_OK(
             mark_alive_virtual_reg(mem, state, asmcmp_vreg->parameters.pair.virtual_registers[1], linear_position));
     }
-    REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
+    REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(mem, state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
                                                          &lifetime_begin, &lifetime_end));
     if (linear_position >= lifetime_begin && linear_position <= lifetime_end) {
         REQUIRE_OK(kefir_hashset_add(mem, &state->alive.virtual_regs, (kefir_hashset_key_t) vreg_idx));
@@ -103,7 +103,7 @@ static kefir_result_t update_live_virtual_reg(struct kefir_mem *mem, struct devi
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, vreg_idx, &reg_alloc));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_exists_in_block(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
                                                              &exists_in_block));
-    REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
+    REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(mem, state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
                                                          &lifetime_begin, &lifetime_end));
     if (exists_in_block && lifetime_begin != KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED &&
         lifetime_begin <= linear_position && lifetime_end >= linear_position) {
@@ -1136,7 +1136,7 @@ static kefir_result_t activate_stash(struct kefir_mem *mem, struct devirtualize_
         kefir_size_t liveness_begin, liveness_end;
         REQUIRE_OK(kefir_codegen_amd64_xregalloc_exists_in_block(state->xregalloc, vreg_idx,
                                                                  CURRENT_VIRTUAL_BLOCK(state), &exists_in_block));
-        REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
+        REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(mem, state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
                                                              &liveness_begin, &liveness_end));
         if (((liveness_instr_idx != KEFIR_ASMCMP_INDEX_NONE &&
               !(exists_in_block && liveness_begin != KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED &&
