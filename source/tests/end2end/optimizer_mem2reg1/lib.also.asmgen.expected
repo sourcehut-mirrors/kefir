@@ -129,9 +129,9 @@ __kefir_func_quad_equation_label0:
     mov $1, %rbx
     neg %ebx
     movdqu %xmm1, -64(%rbp)
-    movq -64(%rbp), %xmm0
+    movdqu -64(%rbp), %xmm0
     xorpd __kefir_constant_float64_neg(%rip), %xmm0
-    movq %xmm0, -64(%rbp)
+    movdqu %xmm0, -64(%rbp)
     test %r12d, %r12d
     jz __kefir_func_quad_equation_label6
 __kefir_func_quad_equation_label1:
