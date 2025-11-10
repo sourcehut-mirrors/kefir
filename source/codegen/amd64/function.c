@@ -24,6 +24,8 @@
 #include "kefir/codegen/target-ir/constructor.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
 #include "kefir/codegen/target-ir/amd64/constructor.h"
+#include "kefir/codegen/target-ir/rt_destructor.h"
+#include "kefir/codegen/target-ir/amd64/rt_destructor.h"
 #include "kefir/codegen/target-ir/format.h"
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
@@ -864,8 +866,8 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
     return KEFIR_OK;
 }
 
-static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_function *func,
-                                 kefir_bool_t reg_alloc, kefir_bool_t debug_info) {
+static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, const struct kefir_asmcmp_context *code,
+                                 const struct kefir_codegen_amd64_xregalloc *xregalloc, kefir_bool_t debug_info) {
     const char *comment_prefix;
     REQUIRE_OK(kefir_asm_amd64_xasmgen_line_comment_prefix(&codegen->xasmgen, &comment_prefix));
     FILE *output = kefir_asm_amd64_xasmgen_get_output(&codegen->xasmgen);
@@ -875,14 +877,14 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
     REQUIRE_OK(kefir_json_set_line_prefix(&json, comment_prefix));
     REQUIRE_OK(kefir_json_output_object_begin(&json));
     REQUIRE_OK(kefir_json_output_object_key(&json, "function"));
-    REQUIRE_OK(kefir_asmcmp_context_format(&json, &func->code.context, debug_info));
-    if (reg_alloc) {
+    REQUIRE_OK(kefir_asmcmp_context_format(&json, code, debug_info));
+    if (xregalloc != NULL) {
         REQUIRE_OK(kefir_json_output_object_key(&json, "register_allocation"));
         REQUIRE_OK(kefir_json_output_array_begin(&json));
-        for (kefir_size_t i = 0; i < func->xregalloc.virtual_register_length; i++) {
-            const struct kefir_codegen_amd64_register_allocation *ra = &func->xregalloc.virtual_registers[i].allocation;
+        for (kefir_size_t i = 0; i < xregalloc->virtual_register_length; i++) {
+            const struct kefir_codegen_amd64_register_allocation *ra = &xregalloc->virtual_registers[i].allocation;
             const struct kefir_asmcmp_virtual_register *vreg;
-            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&func->code.context, i, &vreg));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_get(code, i, &vreg));
             REQUIRE_OK(kefir_json_output_object_begin(&json));
             REQUIRE_OK(kefir_json_output_object_key(&json, "id"));
             REQUIRE_OK(kefir_json_output_uinteger(&json, i));
@@ -1085,7 +1087,6 @@ static kefir_result_t construct_target_ir_get_allocation_constraint(kefir_asmcmp
     return KEFIR_OK;
 }
 
-
 static kefir_result_t construct_target_ir_is_preallocation_match(kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_codegen_target_ir_physical_register_t physical_register, void *payload) {
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64_function *, func,
         payload);
@@ -1098,14 +1099,17 @@ static kefir_result_t construct_target_ir_is_preallocation_match(kefir_asmcmp_vi
     return KEFIR_OK;
 }
 
-static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_function *func, struct kefir_codegen_target_ir_code *code) {
+static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_function *func, struct kefir_codegen_target_ir_code *code, struct kefir_asmcmp_amd64 *asmcmp_code) {
     struct kefir_codegen_target_ir_code_constructor_parameters params = {
         .klass = &KEFIR_TARGET_AMD64_CODE_CONSTRUCTOR_CLASS,
         .get_allocation_constraint = construct_target_ir_get_allocation_constraint,
         .is_preallocation_match = construct_target_ir_is_preallocation_match,
         .payload = func
     };
+    struct kefir_codegen_target_ir_round_trip_destructor_parameter destructor_param;
+    REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_parameter_amd64_init(asmcmp_code, &destructor_param));
     REQUIRE_OK(kefir_codegen_target_ir_code_construct(mem, code, &func->code.context, &params));
+    REQUIRE_OK(kefir_codegen_target_ir_round_trip_destruct(mem, code, &asmcmp_code->context, &destructor_param));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "target_ir") == 0) {
         const char *comment_prefix;
@@ -1118,6 +1122,10 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
         REQUIRE_OK(kefir_codegen_target_ir_code_format(code, &json));
         REQUIRE_OK(kefir_json_output_finalize(&json));
         fprintf(output, "\n");
+    }
+
+    if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "rt_vasm") == 0) {
+        REQUIRE_OK(output_asm(codegen, &asmcmp_code->context, NULL, codegen->config->debug_info));
     }
 
     return KEFIR_OK;
@@ -1154,12 +1162,20 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
         kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_VIRTUAL, &func->code.context));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm") == 0) {
-        REQUIRE_OK(output_asm(codegen, func, false, codegen->config->debug_info));
+        REQUIRE_OK(output_asm(codegen, &func->code.context, NULL, codegen->config->debug_info));
     }
 
     struct kefir_codegen_target_ir_code target_ir_code;
+    struct kefir_asmcmp_amd64 asmcmp_code;
     REQUIRE_OK(kefir_codegen_target_ir_code_init(&target_ir_code, &KEFIR_TARGET_AMD64_CODE_CLASS));
-    kefir_result_t res = construct_target_ir(mem, codegen, func, &target_ir_code);
+    REQUIRE_OK(kefir_asmcmp_amd64_init(func->code.function_name, func->code.abi_variant, func->code.position_independent_code, &asmcmp_code));
+    kefir_result_t res = construct_target_ir(mem, codegen, func, &target_ir_code, &asmcmp_code);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_asmcmp_amd64_free(mem, &asmcmp_code);
+        kefir_codegen_target_ir_code_free(mem, &target_ir_code);
+        return res;
+    });
+    res = kefir_asmcmp_amd64_free(mem, &asmcmp_code);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_target_ir_code_free(mem, &target_ir_code);
         return res;
@@ -1168,7 +1184,7 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
 
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_run(mem, &func->code, &func->stack_frame, &func->xregalloc));
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm+regs") == 0) {
-        REQUIRE_OK(output_asm(codegen, func, true, codegen->config->debug_info));
+        REQUIRE_OK(output_asm(codegen, &func->code.context, &func->xregalloc, codegen->config->debug_info));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->xregalloc, &func->stack_frame));
@@ -1176,7 +1192,7 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
                                            &func->code.context));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "devasm") == 0) {
-        REQUIRE_OK(output_asm(codegen, func, false, codegen->config->debug_info));
+        REQUIRE_OK(output_asm(codegen, &func->code.context, NULL, codegen->config->debug_info));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, &func->stack_frame));

@@ -69,7 +69,6 @@ typedef struct kefir_codegen_target_ir_asmcmp_instruction_classification {
 } kefir_codegen_target_ir_asmcmp_instruction_classification_t;
 
 typedef struct kefir_codegen_target_ir_code_constructor_class {
-    kefir_result_t (*map_opcode)(kefir_asmcmp_instruction_opcode_t, kefir_codegen_target_ir_opcode_t *, void *);
     kefir_result_t (*is_jump)(kefir_asmcmp_instruction_opcode_t, kefir_bool_t *, void *);
     kefir_result_t (*classify_instruction)(const struct kefir_asmcmp_instruction *, struct kefir_codegen_target_ir_asmcmp_instruction_classification *, void *);
     kefir_result_t (*vreg_pair_part_spill_offset)(kefir_asmcmp_virtual_register_pair_type_t, kefir_size_t, kefir_size_t *, void *);

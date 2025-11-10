@@ -54,6 +54,7 @@ static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_codegen_t
 
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_PHYSICAL_BASIS:
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_IMMEDIATE_BASIS:
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_ASMCMP_LABEL_BASIS:
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS:
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_LOCAL_AREA_BASIS:

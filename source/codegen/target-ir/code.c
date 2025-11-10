@@ -91,6 +91,7 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
             REQUIRE_OK(kefir_list_free(mem, &code->code[i].operation.inline_asm_node.fragments));
         }
         REQUIRE_OK(kefir_hashtable_free(mem, &code->code[i].aspects));
+        REQUIRE_OK(kefir_list_free(mem, &code->code[i].aspect_order));
     }
     for (kefir_size_t i = 0; i < code->blocks_length; i++) {
         REQUIRE_OK(kefir_hashtreeset_free(mem, &code->blocks[i].public_labels));
@@ -245,6 +246,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
         REQUIRE_OK(kefir_list_on_remove(&instr->operation.inline_asm_node.fragments, free_inline_asm_node, NULL));
     }
     REQUIRE_OK(kefir_hashtable_init(&instr->aspects, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_list_init(&instr->aspect_order));
 
     if (after_instr == NULL) {
         if (block->control_flow.head != KEFIR_ID_NONE) {
@@ -416,6 +418,7 @@ kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *mem, st
         res = KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Target IR value aspect already exists");
     }
     REQUIRE_OK(res);
+    REQUIRE_OK(kefir_list_insert_after(mem, &code->code[value_ref.instr_ref].aspect_order, kefir_list_tail(&code->code[value_ref.instr_ref].aspect_order), (void *) (kefir_uptr_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
 
     code->value_types_length++;
     return KEFIR_OK;
@@ -567,16 +570,14 @@ kefir_result_t kefir_codegen_target_ir_code_value_iter(const struct kefir_codege
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR value iterator"));
     REQUIRE(instr_ref != KEFIR_ID_NONE && instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction reference"));
 
-    kefir_hashtable_key_t table_key;
     kefir_hashtable_value_t table_value;
-    REQUIRE_OK(kefir_hashtable_iter(&code->code[instr_ref].aspects, &iter->iter, &table_key, &table_value));
+    iter->iter = kefir_list_head(&code->code[instr_ref].aspect_order);
+    REQUIRE(iter->iter != NULL, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR value aspect iterator"));
     iter->code = code;
     iter->instr_ref = instr_ref;
 
-    struct kefir_codegen_target_ir_value_ref value_ref = {
-        .instr_ref = instr_ref,
-        .aspect = table_key
-    };
+    struct kefir_codegen_target_ir_value_ref value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM((kefir_uptr_t) iter->iter->value);
+    REQUIRE_OK(kefir_hashtable_at(&code->code[instr_ref].aspects, (kefir_hashtable_key_t) (kefir_uptr_t) value_ref.aspect, &table_value));
     ASSIGN_PTR(value_ref_ptr, value_ref);
     ASSIGN_PTR(value_type_ptr, &code->value_types[(kefir_size_t) table_value]);
     return KEFIR_OK;
@@ -585,14 +586,12 @@ kefir_result_t kefir_codegen_target_ir_code_value_iter(const struct kefir_codege
 kefir_result_t kefir_codegen_target_ir_code_value_next(struct kefir_codegen_target_ir_value_iterator *iter, struct kefir_codegen_target_ir_value_ref *value_ref_ptr, const struct kefir_codegen_target_ir_value_type **value_type_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR value iterator"));
 
-    kefir_hashtable_key_t table_key;
     kefir_hashtable_value_t table_value;
-    REQUIRE_OK(kefir_hashtable_next(&iter->iter, &table_key, &table_value));
+    kefir_list_next(&iter->iter);
+    REQUIRE(iter->iter != NULL, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR value aspect iterator"));
 
-    struct kefir_codegen_target_ir_value_ref value_ref = {
-        .instr_ref = iter->instr_ref,
-        .aspect = table_key
-    };
+    struct kefir_codegen_target_ir_value_ref value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM((kefir_uptr_t) iter->iter->value);
+    REQUIRE_OK(kefir_hashtable_at(&iter->code->code[iter->instr_ref].aspects, (kefir_hashtable_key_t) (kefir_uptr_t) value_ref.aspect, &table_value));
     ASSIGN_PTR(value_ref_ptr, value_ref);
     ASSIGN_PTR(value_type_ptr, &iter->code->value_types[(kefir_size_t) table_value]);
     return KEFIR_OK;

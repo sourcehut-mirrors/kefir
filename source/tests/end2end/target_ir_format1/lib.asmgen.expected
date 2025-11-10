@@ -48,6 +48,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -125,6 +126,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -168,6 +170,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -198,6 +201,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -228,7 +232,18 @@ factorial:
 #                            "variant": "32bit"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 8,
@@ -249,6 +264,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -270,6 +286,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -307,6 +324,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -341,6 +359,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -383,6 +402,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -417,6 +437,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -459,6 +480,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -546,6 +568,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -586,6 +609,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -607,6 +631,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -644,6 +669,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -678,6 +704,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -699,6 +726,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -736,6 +764,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -770,6 +799,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -796,6 +826,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -839,6 +870,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        },
@@ -847,6 +879,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -881,6 +914,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -907,6 +941,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -949,6 +984,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -983,6 +1019,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1025,6 +1062,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -1106,7 +1144,18 @@ factorial:
 #                            "value": 1
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 44,
@@ -1170,6 +1219,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1219,6 +1269,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1240,6 +1291,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1277,6 +1329,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -1311,6 +1364,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1353,6 +1407,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -1387,6 +1442,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1429,6 +1485,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -1513,6 +1570,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1543,6 +1601,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1668,6 +1727,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1692,6 +1752,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1718,6 +1779,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1761,6 +1823,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        },
@@ -1769,6 +1832,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -1795,7 +1859,18 @@ factorial:
 #                            "variant": "32bit"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 76,
@@ -1816,6 +1891,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1842,6 +1918,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1880,6 +1957,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        },
@@ -1888,6 +1966,7 @@ factorial:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -1914,7 +1993,18 @@ factorial:
 #                            "variant": "32bit"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 80,
@@ -1983,6 +2073,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2013,6 +2104,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2119,6 +2211,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {

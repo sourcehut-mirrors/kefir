@@ -31,27 +31,6 @@ static kefir_result_t id_format(struct kefir_json_output *json, kefir_id_t id) {
     return KEFIR_OK;
 }
 
-static kefir_result_t aspect_format(struct kefir_json_output *json, kefir_uint32_t aspect) {
-    if (aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
-        REQUIRE_OK(kefir_json_output_null(json));
-    } else if (aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
-        REQUIRE_OK(kefir_json_output_object_begin(json));
-        REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-        REQUIRE_OK(kefir_json_output_string(json, "flags"));
-        REQUIRE_OK(kefir_json_output_object_end(json));
-    } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_OUTPUT_REGISTER(aspect)) {
-        REQUIRE_OK(kefir_json_output_object_begin(json));
-        REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-        REQUIRE_OK(kefir_json_output_string(json, "output_reg"));
-        REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-        REQUIRE_OK(kefir_json_output_uinteger(json, KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_REGISTER(aspect)));
-        REQUIRE_OK(kefir_json_output_object_end(json));
-    } else {
-        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected target IR value aspect");
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t variant_format(struct kefir_json_output *json, kefir_codegen_target_ir_operand_variant_t variant) {
     switch (variant) {
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT:
@@ -93,6 +72,34 @@ static kefir_result_t variant_format(struct kefir_json_output *json, kefir_codeg
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_FP_DOUBLE:
             REQUIRE_OK(kefir_json_output_string(json, "fp_double"));
             break;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t aspect_format(struct kefir_json_output *json, kefir_uint32_t aspect) {
+    if (aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
+        REQUIRE_OK(kefir_json_output_null(json));
+    } else if (aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+        REQUIRE_OK(kefir_json_output_string(json, "flags"));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_OUTPUT_REGISTER(aspect)) {
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+        REQUIRE_OK(kefir_json_output_string(json, "output_reg"));
+        REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_REGISTER(aspect)));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT(aspect)) {
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+        REQUIRE_OK(kefir_json_output_string(json, "indirect"));
+        REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, KEFIR_CODEGEN_TARGET_IR_VALUE_GET_INDIRECT(aspect)));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    } else {
+        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected target IR value aspect");
     }
     return KEFIR_OK;
 }
@@ -196,6 +203,13 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
                     REQUIRE_OK(kefir_json_output_uinteger(json, operand->indirect.base.value_ref.instr_ref));
                     REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
                     REQUIRE_OK(aspect_format(json, operand->indirect.base.value_ref.aspect));
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_IMMEDIATE_BASIS:
+                    REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
+                    REQUIRE_OK(kefir_json_output_string(json, "immediate"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                    REQUIRE_OK(kefir_json_output_uinteger(json, operand->indirect.base.immediate));
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS:
@@ -430,6 +444,8 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                 REQUIRE_OK(aspect_format(json, value_ref.aspect));
                 REQUIRE_OK(kefir_json_output_object_key(json, "type"));
                 REQUIRE_OK(kefir_json_output_object_begin(json));
+                REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
+                REQUIRE_OK(variant_format(json, value_type->variant));
                 REQUIRE_OK(kefir_json_output_object_key(json, "kind"));
                 switch (value_type->kind) {
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
@@ -442,6 +458,10 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
 
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
                         REQUIRE_OK(kefir_json_output_string(json, "flags"));
+                        break;
+
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
+                        REQUIRE_OK(kefir_json_output_string(json, "indirect"));
                         break;
 
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT:

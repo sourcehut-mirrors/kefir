@@ -56,6 +56,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -76,6 +77,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -169,6 +171,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -216,6 +219,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -243,6 +247,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -270,6 +275,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -301,6 +307,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -331,6 +338,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -361,6 +369,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -391,7 +400,18 @@ test1:
 #                            "variant": "8bit"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 12,
@@ -414,7 +434,18 @@ test1:
 #                            "variant": "8bit"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 14,
@@ -444,6 +475,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -477,6 +509,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -503,6 +536,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -533,6 +567,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -559,6 +594,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -589,6 +625,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -645,6 +682,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -654,23 +692,25 @@ test1:
 #                        },
 #                        {
 #                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "kind": "flags"
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 1
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdx"
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
 #                            }
 #                        }
 #                    ]
@@ -696,6 +736,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -726,6 +767,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -864,6 +906,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -884,6 +927,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -977,6 +1021,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1008,6 +1053,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1038,6 +1084,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1068,6 +1115,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1098,7 +1146,18 @@ test2:
 #                            "variant": "32bit"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 12,
@@ -1121,7 +1180,18 @@ test2:
 #                            "variant": "64bit"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 13,
@@ -1142,6 +1212,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1166,6 +1237,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1196,6 +1268,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1226,6 +1299,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1293,6 +1367,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1355,6 +1430,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1392,6 +1468,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1424,6 +1501,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1454,6 +1532,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1484,6 +1563,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1514,6 +1594,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1561,6 +1642,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1573,6 +1655,7 @@ test2:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -1599,6 +1682,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1629,6 +1713,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1659,6 +1744,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1713,9 +1799,20 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -1753,6 +1850,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1795,6 +1893,7 @@ test2:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -1870,6 +1969,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1897,6 +1997,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1927,6 +2028,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1957,6 +2059,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -2032,6 +2135,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2062,6 +2166,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2174,6 +2279,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -2201,6 +2307,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2231,6 +2338,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2261,6 +2369,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -2391,6 +2500,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2411,6 +2521,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2431,6 +2542,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "spill_space",
 #                                "alignment": 1,
 #                                "length": 2
@@ -2449,6 +2561,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2469,6 +2582,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2489,6 +2603,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "spill_space",
 #                                "alignment": 1,
 #                                "length": 2
@@ -2660,6 +2775,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "local_variable",
 #                                "identifier": 0,
 #                                "offset": 0
@@ -2689,6 +2805,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "local_variable",
 #                                "identifier": 2,
 #                                "offset": 0
@@ -2718,6 +2835,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2749,6 +2867,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2780,6 +2899,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2811,6 +2931,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2841,6 +2962,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2871,6 +2993,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2901,6 +3024,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2931,6 +3055,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -2965,7 +3090,18 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 25,
@@ -2992,7 +3128,18 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 27,
@@ -3019,7 +3166,18 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 28,
@@ -3046,7 +3204,18 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 29,
@@ -3071,6 +3240,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3103,6 +3273,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3135,6 +3306,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -3163,6 +3335,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -3189,6 +3362,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3219,6 +3393,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3266,6 +3441,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3278,6 +3454,7 @@ test3:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -3321,6 +3498,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3333,6 +3511,7 @@ test3:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -3359,6 +3538,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3389,6 +3569,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3500,6 +3681,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "spill_space",
 #                                "alignment": 1,
 #                                "length": 2
@@ -3518,6 +3700,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "spill_space",
 #                                "alignment": 1,
 #                                "length": 2
@@ -3608,6 +3791,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3685,6 +3869,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3715,6 +3900,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -3745,7 +3931,18 @@ test4:
 #                            "variant": "32bit"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 8,
@@ -3821,6 +4018,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -3837,6 +4035,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -3863,6 +4062,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -3901,6 +4101,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        },
@@ -3909,6 +4110,7 @@ test4:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -3935,6 +4137,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -3978,6 +4181,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        },
@@ -3986,6 +4190,7 @@ test4:
 #                                "type": "flags"
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "flags"
 #                            }
 #                        }
@@ -4014,6 +4219,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -4090,6 +4296,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -4215,13 +4422,13 @@ init_array:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 14,
+#                    "instr_ref": 15,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 13,
+#                    "instr_ref": 14,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
@@ -4263,7 +4470,7 @@ init_array:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 13,
+#                                "instr_ref": 14,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -4278,6 +4485,7 @@ init_array:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -4294,7 +4502,7 @@ init_array:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 14,
+#                                "instr_ref": 15,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -4309,6 +4517,7 @@ init_array:
 #                                "index": 0
 #                            },
 #                            "type": {
+#                                "variant": "default",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -4625,8 +4834,25 @@ init_array:
 #                    "opcode": "virtual_block_end",
 #                    "parameters": [],
 #                    "values": []
+#                },
+#                {
+#                    "instr_ref": 13,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 3
+#                        }
+#                    ],
+#                    "values": []
 #                }
 #            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 3,
+#            "code": [],
 #            "externally_visible": false,
 #            "public_labels": []
 #        }
@@ -4652,6 +4878,7 @@ mov %rax, (__kefir_function_init_array_static_array_13 + 16)
     pop %rbx
     pop %rbp
     ret
+__kefir_func_init_array_label1:
 __kefir_text_func_init_array_end:
 
 __kefir_text_section_end:
