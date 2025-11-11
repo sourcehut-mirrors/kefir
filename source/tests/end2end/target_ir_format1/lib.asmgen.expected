@@ -311,7 +311,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -333,7 +333,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "64bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -406,7 +406,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "8bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -484,7 +484,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "8bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -654,7 +654,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -676,7 +676,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "64bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -749,7 +749,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "8bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -771,7 +771,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "64bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -844,7 +844,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "8bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -915,7 +915,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "64bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        },
@@ -959,7 +959,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "8bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -986,7 +986,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "64bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1064,7 +1064,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "8bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1300,7 +1300,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1322,7 +1322,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "64bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1395,7 +1395,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "8bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1473,7 +1473,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "8bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1589,7 +1589,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
@@ -1744,7 +1744,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1769,7 +1769,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1840,7 +1840,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        },
@@ -1908,7 +1908,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        }
@@ -1974,7 +1974,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            }
 #                        },
@@ -2078,7 +2078,7 @@ factorial:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            },
 #                            "constraint": {
