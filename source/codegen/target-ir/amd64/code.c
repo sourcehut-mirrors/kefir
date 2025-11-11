@@ -32,8 +32,8 @@ static kefir_result_t amd64_opcode_mnemonic(kefir_codegen_target_ir_opcode_t opc
         *mnemonic_ptr = #_opcode;            \
         break;
 
-        KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODES(CASE, )
         KEFIR_AMD64_INSTRUCTION_DATABASE(CASE, CASE, CASE, CASE, )
+        KEFIR_CODEGEN_TARGET_IR_AMD64_VIRTUAL_OPCODES(CASE, )
         KEFIR_CODEGEN_TARGET_IR_SPECIAL_OPCODES(CASE, )
 #undef CASE
 

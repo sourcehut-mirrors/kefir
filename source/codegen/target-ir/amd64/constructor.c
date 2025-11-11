@@ -19,6 +19,7 @@
 */
 
 #include "kefir/codegen/target-ir/amd64/constructor.h"
+#include "kefir/codegen/target-ir/amd64/code.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -71,6 +72,8 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
 
         case KEFIR_ASMCMP_AMD64_OPCODE(weak_touch_virtual_register):
         case KEFIR_ASMCMP_AMD64_OPCODE(noop):
+        case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin):
+        case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end):
             classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SKIP;
             return KEFIR_OK;
 
@@ -152,8 +155,14 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
         num_of_params = 3; \
         break;
 
-        KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODES(INSTR0, )
+#define INSTR0_VIRT(_opcode, _mnemonic)        \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode);            \
+        break;
+
+        KEFIR_CODEGEN_TARGET_IR_AMD64_VIRTUAL_OPCODES(INSTR0_VIRT, )
         KEFIR_AMD64_INSTRUCTION_DATABASE(INSTR0, INSTR1, INSTR2, INSTR3, )
+#undef INSTR0_VIRT
 #undef INSTR0
 #undef INSTR1
 #undef INSTR2

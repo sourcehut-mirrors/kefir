@@ -102,7 +102,12 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
         num_of_params = 3; \
         break;
 
-        KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODES(INSTR0, )
+#define INSTR0_VIRT(_opcode, _mnemonic)        \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode); \
+        break;
+
+        KEFIR_CODEGEN_TARGET_IR_AMD64_VIRTUAL_OPCODES(INSTR0_VIRT, )
         KEFIR_AMD64_INSTRUCTION_DATABASE(INSTR0, INSTR1, INSTR2, INSTR3, )
 #undef INSTR0
 #undef INSTR1

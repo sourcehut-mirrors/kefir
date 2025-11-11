@@ -29,11 +29,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_begin",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -192,18 +187,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [
-#                    2
-#                ]
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -211,7 +194,9 @@ factorial:
 #                        "label": 3
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    2
+#                ]
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -493,18 +478,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [
-#                    4
-#                ]
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -512,7 +485,9 @@ factorial:
 #                        "label": 5
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    4
+#                ]
 #            },
 #            {
 #                "opcode": "mov",
@@ -600,16 +575,6 @@ factorial:
 #                "labels": [
 #                    5
 #                ]
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [],
-#                "labels": []
 #            },
 #            {
 #                "opcode": "jmp",
@@ -736,18 +701,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [
-#                    7
-#                ]
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -755,7 +708,9 @@ factorial:
 #                        "label": 8
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    7
+#                ]
 #            },
 #            {
 #                "opcode": "mov",
