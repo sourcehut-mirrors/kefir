@@ -22,18 +22,6 @@ test1:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 35,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 34,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": []
-#                },
-#                {
 #                    "instr_ref": 33,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
@@ -41,6 +29,12 @@ test1:
 #                },
 #                {
 #                    "instr_ref": 32,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 31,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": []
@@ -150,45 +144,13 @@ test1:
 #            "block_ref": 1,
 #            "code": [
 #                {
-#                    "instr_ref": 23,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 34,
-#                                "aspect": {
-#                                    "type": "output_reg",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rax"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 21,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 35,
+#                                "instr_ref": 33,
 #                                "aspect": {
 #                                    "type": "flags"
 #                                }
@@ -204,7 +166,7 @@ test1:
 #                        {
 #                            "block_ref": 0,
 #                            "value_ref": {
-#                                "instr_ref": 33,
+#                                "instr_ref": 31,
 #                                "aspect": {
 #                                    "type": "output_reg",
 #                                    "index": 0
@@ -716,12 +678,12 @@ test1:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 24,
+#                    "instr_ref": 23,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 23,
+#                            "instr_ref": 22,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -747,12 +709,12 @@ test1:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 25,
+#                    "instr_ref": 24,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 24,
+#                            "instr_ref": 23,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -778,9 +740,25 @@ test1:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 26,
+#                    "instr_ref": 25,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
+#                    "values": []
+#                },
+#                {
+#                    "instr_ref": 26,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 24,
+#                            "aspect": {
+#                                "type": "output_reg",
+#                                "index": 0
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
 #                    "values": []
 #                },
 #                {
@@ -789,7 +767,7 @@ test1:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 25,
+#                            "instr_ref": 24,
 #                            "aspect": {
 #                                "type": "output_reg",
 #                                "index": 0
@@ -801,22 +779,6 @@ test1:
 #                },
 #                {
 #                    "instr_ref": 28,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 25,
-#                            "aspect": {
-#                                "type": "output_reg",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": []
-#                },
-#                {
-#                    "instr_ref": 29,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": []
@@ -829,13 +791,13 @@ test1:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 30,
+#                    "instr_ref": 29,
 #                    "opcode": "virtual_block_end",
 #                    "parameters": [],
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 31,
+#                    "instr_ref": 30,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
