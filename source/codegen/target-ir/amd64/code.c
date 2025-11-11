@@ -83,6 +83,7 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_i
     props->block_terminator = false;
     props->function_terminator = false;
     props->fallthrough = false;
+    props->branch = false;
     props->undefined_target = false;
     props->target_block_refs[0] = KEFIR_ID_NONE;
     props->target_block_refs[1] = KEFIR_ID_NONE;
@@ -101,6 +102,7 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_i
         case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
             if (KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(call)) { \
                 props->block_terminator = true; \
+                props->fallthrough = true; \
                 props->fallthrough = ((_flags) & KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP_FALLTHROUGH) != 0 && \
                     instruction->operation.parameters[1].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF; \
                 if (instruction->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) { \

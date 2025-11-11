@@ -20,6 +20,7 @@ struct rt_destructor_state {
 };
 
 struct block_state {
+    kefir_codegen_target_ir_block_ref_t block_ref;
     kefir_asmcmp_label_index_t asmcmp_label;
 };
 
@@ -51,6 +52,7 @@ static kefir_result_t map_block_labels(struct rt_destructor_state *state) {
         struct block_state *block_state = KEFIR_MALLOC(state->mem, sizeof(struct block_state));
         REQUIRE(block_state != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR block state"));
 
+        block_state->block_ref = block_ref;
         block_state->asmcmp_label = asmcmp_label;
         res = kefir_hashtable_insert(state->mem, &state->blocks, (kefir_hashtable_key_t) block_ref, (kefir_hashtable_value_t) block_state);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -405,20 +407,95 @@ static kefir_result_t load_virtual_register(struct rt_destructor_state *state, k
     return KEFIR_OK;
 }
 
+static kefir_result_t map_phis_unconditional(struct rt_destructor_state *state, struct block_state *block_state, kefir_codegen_target_ir_block_ref_t target_block_ref) {
+    kefir_result_t res;
+    struct kefir_codegen_target_ir_value_phi_node_iterator phi_node_iter;
+    kefir_codegen_target_ir_instruction_ref_t phi_ref;
+    for (res = kefir_codegen_target_ir_code_phi_node_iter(state->code, &phi_node_iter, target_block_ref, &phi_ref);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_phi_node_next(&phi_node_iter, &phi_ref)) {
+        kefir_codegen_target_ir_value_ref_t link_value_ref;
+        REQUIRE_OK(kefir_codegen_target_ir_code_phi_link_for(state->code, phi_ref, block_state->block_ref, &link_value_ref));
+
+        if (link_value_ref.aspect != KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
+            kefir_asmcmp_virtual_register_index_t src_vreg, dst_vreg;
+            REQUIRE_OK(resolve_value_virtual_register(state, link_value_ref, &src_vreg));
+            REQUIRE_OK(resolve_value_virtual_register(state, (kefir_codegen_target_ir_value_ref_t) {
+                .instr_ref = phi_ref,
+                .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
+            }, &dst_vreg));
+            REQUIRE_OK(link_virtual_registers(state, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx), dst_vreg, src_vreg, NULL));
+        } 
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_instruction(struct rt_destructor_state *state, struct block_state *block_state, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
     UNUSED(block_state);
     const struct kefir_codegen_target_ir_instruction *instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, instr_ref, &instr));
 
-    if (instr->operation.opcode == state->code->klass->placeholder_opcode) {
-        return KEFIR_OK;
-    }
-    if (instr->operation.opcode == state->code->klass->phi_opcode) {
+    if (instr->operation.opcode == state->code->klass->placeholder_opcode ||
+        instr->operation.opcode == state->code->klass->phi_opcode) {
         return KEFIR_OK;
     }
 
     struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification classification;
     REQUIRE_OK(state->parameter->classify_instruction(state->code, instr_ref, &classification, state->parameter->payload));
+
+    struct kefir_codegen_target_ir_block_terminator_props terminator_props;
+    REQUIRE_OK(state->code->klass->is_block_terminator(instr, &terminator_props, state->code->klass->payload));
+    if (terminator_props.block_terminator && !terminator_props.function_terminator) {
+        if (terminator_props.branch) {
+            // TODO
+            // REQUIRE_OK(map_phis_unconditional(state, block_state, terminator_props.target_block_refs[0]));
+            // REQUIRE_OK(map_phis_unconditional(state, block_state, terminator_props.target_block_refs[1]));
+            struct kefir_asmcmp_instruction asmcmp_instrs[2];
+            REQUIRE_OK(state->parameter->split_branch_instruction(state->mem, instr, asmcmp_instrs, state->parameter->payload));
+
+            kefir_asmcmp_label_index_t trampoline_label;
+            REQUIRE_OK(kefir_asmcmp_context_new_label(state->mem, state->asmcmp_ctx, KEFIR_ASMCMP_INDEX_NONE, &trampoline_label));
+
+            kefir_hashtable_value_t table_value;
+            REQUIRE_OK(kefir_hashtable_at(&state->blocks, (kefir_hashtable_key_t) terminator_props.target_block_refs[0], &table_value));
+            ASSIGN_DECL_CAST(struct block_state *, target_block_state,
+                table_value);
+            REQUIRE_OK(kefir_hashtable_at(&state->blocks, (kefir_hashtable_key_t) terminator_props.target_block_refs[1], &table_value));
+            ASSIGN_DECL_CAST(struct block_state *, alternative_block_state,
+                table_value);
+
+            asmcmp_instrs[0].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL;
+            asmcmp_instrs[0].args[0].internal_label = trampoline_label;
+            REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx),
+                &asmcmp_instrs[0], NULL));
+
+            REQUIRE_OK(map_phis_unconditional(state, block_state, terminator_props.target_block_refs[1]));
+            asmcmp_instrs[1].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL;
+            asmcmp_instrs[1].args[0].internal_label = alternative_block_state->asmcmp_label;
+            REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx),
+                &asmcmp_instrs[1], NULL));
+            
+            REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(state->mem, state->asmcmp_ctx, trampoline_label));
+            REQUIRE_OK(map_phis_unconditional(state, block_state, terminator_props.target_block_refs[0]));
+            asmcmp_instrs[1].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL;
+            asmcmp_instrs[1].args[0].internal_label = target_block_state->asmcmp_label;
+            REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx),
+                &asmcmp_instrs[1], NULL));
+            return KEFIR_OK;
+        } else if (!terminator_props.undefined_target) {
+            REQUIRE_OK(map_phis_unconditional(state, block_state, terminator_props.target_block_refs[0]));
+        } else {
+            struct kefir_hashtreeset_iterator iter;
+            kefir_result_t res = kefir_hashtreeset_iter(&state->control_flow.blocks[block_state->block_ref].successors, &iter);
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+                REQUIRE_OK(map_phis_unconditional(state, block_state, (kefir_codegen_target_ir_block_ref_t) iter.entry));
+            }
+        }
+    }
 
     struct kefir_asmcmp_instruction asmcmp_instruction = {
         .opcode = classification.opcode,

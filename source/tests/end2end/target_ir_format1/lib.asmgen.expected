@@ -17,25 +17,68 @@ factorial:
 #                    "instr_ref": 87,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 86,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 85,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 84,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 0,
@@ -140,7 +183,17 @@ factorial:
 #                            }
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 4,
@@ -570,7 +623,17 @@ factorial:
 #                            }
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 19,
@@ -1206,7 +1269,17 @@ factorial:
 #                            }
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 40,
@@ -1640,7 +1713,17 @@ factorial:
 #                            }
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 59,

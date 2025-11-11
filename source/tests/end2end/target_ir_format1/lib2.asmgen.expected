@@ -29,6 +29,38 @@ factorial:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -43,12 +75,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 1,
+#                        "index": 4,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 2,
+#                        "index": 3,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -68,7 +100,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 1,
+#                        "index": 4,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -79,7 +111,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 3,
+#                        "index": 5,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -97,7 +129,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 4,
+#                        "index": 6,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -112,7 +144,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 3,
+#                        "index": 5,
 #                        "variant": "32bit"
 #                    },
 #                    {
@@ -127,7 +159,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 5,
+#                        "index": 7,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -138,12 +170,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 5,
+#                        "index": 7,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 5,
+#                        "index": 7,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -154,7 +186,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 8,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -165,12 +197,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 8,
 #                        "variant": "8bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 8,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -187,11 +219,17 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "jmp",
+#                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
-#                        "type": "internal_label",
-#                        "label": 3
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
@@ -199,11 +237,21 @@ factorial:
 #                ]
 #            },
 #            {
+#                "opcode": "jmp",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 3
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 11,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -225,7 +273,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 11,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -236,7 +284,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 11,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -252,7 +300,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 12,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -272,7 +320,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 9,
+#                        "index": 13,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -287,7 +335,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 12,
 #                        "variant": "32bit"
 #                    },
 #                    {
@@ -302,7 +350,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 10,
+#                        "index": 14,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -313,7 +361,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 11,
+#                        "index": 15,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -332,7 +380,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 12,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -343,7 +391,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 16,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -354,28 +402,28 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 17,
 #                        "variant": "default"
 #                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_register_link",
-#                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 14,
 #                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 17,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -386,12 +434,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 14,
+#                        "index": 18,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 16,
 #                        "variant": "64bit"
 #                    }
 #                ],
@@ -402,7 +450,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 19,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -413,12 +461,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 16,
+#                        "index": 20,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 19,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -429,12 +477,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 16,
+#                        "index": 20,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 16,
+#                        "index": 20,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -445,7 +493,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 17,
+#                        "index": 21,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -456,12 +504,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 17,
+#                        "index": 21,
 #                        "variant": "8bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 17,
+#                        "index": 21,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -494,7 +542,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 18,
+#                        "index": 22,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -514,12 +562,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 19,
+#                        "index": 23,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 18,
+#                        "index": 22,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -535,7 +583,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 19,
+#                        "index": 23,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -546,7 +594,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 19,
+#                        "index": 23,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -577,6 +625,22 @@ factorial:
 #                ]
 #            },
 #            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 25,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 24,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -591,7 +655,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 20,
+#                        "index": 26,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -611,7 +675,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 21,
+#                        "index": 27,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -626,7 +690,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 20,
+#                        "index": 26,
 #                        "variant": "32bit"
 #                    },
 #                    {
@@ -641,7 +705,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 22,
+#                        "index": 28,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -652,12 +716,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 22,
+#                        "index": 28,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 22,
+#                        "index": 28,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -668,7 +732,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 23,
+#                        "index": 29,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -679,12 +743,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 23,
+#                        "index": 29,
 #                        "variant": "8bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 23,
+#                        "index": 29,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -717,7 +781,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 24,
+#                        "index": 30,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -737,7 +801,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 25,
+#                        "index": 31,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -755,12 +819,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 26,
+#                        "index": 32,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 25,
+#                        "index": 31,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -771,12 +835,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 27,
+#                        "index": 33,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 26,
+#                        "index": 32,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -787,12 +851,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 27,
+#                        "index": 33,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 24,
+#                        "index": 30,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -810,7 +874,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 27,
+#                        "index": 33,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -821,7 +885,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 28,
+#                        "index": 34,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -839,12 +903,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 29,
+#                        "index": 35,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 28,
+#                        "index": 34,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -855,12 +919,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 30,
+#                        "index": 36,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 29,
+#                        "index": 35,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -871,7 +935,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 30,
+#                        "index": 36,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -893,8 +957,24 @@ factorial:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 30,
+#                        "index": 36,
 #                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 25,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 29,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -914,7 +994,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 31,
+#                        "index": 37,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -934,12 +1014,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 32,
+#                        "index": 38,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 31,
+#                        "index": 37,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -955,7 +1035,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 32,
+#                        "index": 38,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -966,7 +1046,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 32,
+#                        "index": 38,
 #                        "variant": "default"
 #                    }
 #                ],

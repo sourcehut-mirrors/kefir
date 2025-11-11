@@ -371,7 +371,7 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
             if (instr->operation.opcode == code->klass->phi_opcode) {
                 REQUIRE_OK(kefir_json_output_object_key(json, "phi_links"));
                 REQUIRE_OK(kefir_json_output_array_begin(json));
-                struct kefir_codegen_target_ir_value_phi_node_iterator iter;
+                struct kefir_codegen_target_ir_value_phi_link_iterator iter;
                 kefir_codegen_target_ir_block_ref_t link_block_ref;
                 struct kefir_codegen_target_ir_value_ref link_value_ref;
                 for (res = kefir_codegen_target_ir_code_phi_link_iter(code, &iter, instr_ref, &link_block_ref, &link_value_ref);

@@ -260,15 +260,7 @@ static kefir_result_t init_variant(kefir_asmcmp_operand_variant_t asmcmp_variant
     return KEFIR_OK;
 }
 
-static kefir_result_t store_virtual_reigster_output(struct constructor_state *state, struct code_block_state *block_state, kefir_asmcmp_virtual_register_index_t vreg, kefir_codegen_target_ir_operand_variant_t variant, struct kefir_codegen_target_ir_value_ref value_ref) {
-    kefir_hashtable_value_t value_ref_encoded = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref);
-    kefir_hashtable_value_t *value;
-    kefir_result_t res = kefir_hashtable_at_mut(&block_state->virtual_register_refs, (kefir_hashtable_key_t) vreg, &value);
-    if (res != KEFIR_NOT_FOUND) {
-        *value = value_ref_encoded;
-    } else {
-        REQUIRE_OK(kefir_hashtable_insert(state->mem, &block_state->virtual_register_refs, (kefir_hashtable_key_t) vreg, value_ref_encoded));
-    }
+static kefir_asmcmp_virtual_register_index_t store_virtual_register_aspect(struct constructor_state *state, kefir_asmcmp_virtual_register_index_t vreg, kefir_codegen_target_ir_operand_variant_t variant, kefir_codegen_target_ir_value_ref_t value_ref) {
 
     const struct kefir_asmcmp_virtual_register *virtual_register;
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(state->asmcmp_ctx, vreg, &virtual_register));
@@ -336,6 +328,20 @@ static kefir_result_t store_virtual_reigster_output(struct constructor_state *st
             // use
             break;
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t store_virtual_reigster_output(struct constructor_state *state, struct code_block_state *block_state, kefir_asmcmp_virtual_register_index_t vreg, kefir_codegen_target_ir_operand_variant_t variant, struct kefir_codegen_target_ir_value_ref value_ref) {
+    kefir_hashtable_value_t value_ref_encoded = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref);
+    kefir_hashtable_value_t *value;
+    kefir_result_t res = kefir_hashtable_at_mut(&block_state->virtual_register_refs, (kefir_hashtable_key_t) vreg, &value);
+    if (res != KEFIR_NOT_FOUND) {
+        *value = value_ref_encoded;
+    } else {
+        REQUIRE_OK(kefir_hashtable_insert(state->mem, &block_state->virtual_register_refs, (kefir_hashtable_key_t) vreg, value_ref_encoded));
+    }
+
+    REQUIRE_OK(store_virtual_register_aspect(state, vreg, variant, value_ref));
 
     struct kefir_codegen_target_ir_allocation_constraint constraint;
     res = state->ops->get_allocation_constraint(vreg, &constraint, state->ops->payload);
@@ -405,6 +411,10 @@ static kefir_result_t resolve_flags(struct constructor_state *state, struct code
                 KEFIR_ID_NONE,
                 &operation, &value_ref->instr_ref));
             value_ref->aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS;
+            REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(state->mem, state->code, *value_ref, &(struct kefir_codegen_target_ir_value_type) {
+                .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS,
+                .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+            }));
             block_state->output_flags_ref = value_ref->instr_ref;
         } else {
             struct kefir_codegen_target_ir_operation operation = {
@@ -418,6 +428,10 @@ static kefir_result_t resolve_flags(struct constructor_state *state, struct code
                 KEFIR_ID_NONE,
                 &operation, &value_ref->instr_ref));
             value_ref->aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS;
+            REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(state->mem, state->code, *value_ref, &(struct kefir_codegen_target_ir_value_type) {
+                .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS,
+                .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+            }));
             block_state->output_flags_ref = value_ref->instr_ref;
             block_state->input_flags_ref = value_ref->instr_ref;
         }
@@ -1018,6 +1032,7 @@ static kefir_result_t find_link_for(struct constructor_state *state, struct phi_
             KEFIR_ID_NONE,
             &operation, &vreg_state->placeholder_value.instr_ref));
         vreg_state->placeholder_value.aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0);
+        REQUIRE_OK(store_virtual_register_aspect(state, vreg_idx, KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT, vreg_state->placeholder_value));
     }
     *value_ref = vreg_state->placeholder_value;
     return KEFIR_OK;

@@ -271,6 +271,42 @@ static kefir_result_t preallocation_hint(struct kefir_mem *mem, kefir_asmcmp_vir
     return KEFIR_OK;
 }
 
+static kefir_result_t split_branch_instruction(struct kefir_mem *mem, const struct kefir_codegen_target_ir_instruction *instruction, struct kefir_asmcmp_instruction asmcmp_instrs[2], void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops *, ops,
+        payload);
+    REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid target IR destructor amd64 ops"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid target IR instruction"));
+    
+    switch (instruction->operation.opcode) {
+#define DEF_OPCODE_NOOP(...)
+#define DEF_OPCODE1(_opcode, _mnemonic, _branch, _flags, ...) CASE_IS_##_branch(_opcode, _flags)
+#define CASE_IS_BRANCH(_opcode, _flags) \
+        case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+            REQUIRE(KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(call), KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 target IR branch instruction")); \
+            asmcmp_instrs[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode); \
+            asmcmp_instrs[0].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE; \
+            asmcmp_instrs[0].args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE; \
+            asmcmp_instrs[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE; \
+            asmcmp_instrs[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(jmp); \
+            asmcmp_instrs[1].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE; \
+            asmcmp_instrs[1].args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE; \
+            asmcmp_instrs[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE; \
+            break;
+#define CASE_IS_(...)
+
+        KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE_NOOP, DEF_OPCODE1, DEF_OPCODE_NOOP, DEF_OPCODE_NOOP,)
+#undef DEF_OPCODE_NOOP
+#undef DEF_OPCODE1
+#undef DEF_OPCODE0
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 target IR branch instruction");
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(const struct kefir_codegen_amd64_function *function, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops *ops) {
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 asmcmp code"));
@@ -284,6 +320,7 @@ kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(cons
     ops->ops.bind_native_id = bind_native_id;
     ops->ops.preallocation_requirement = preallocation_requirement;
     ops->ops.preallocation_hint = preallocation_hint;
+    ops->ops.split_branch_instruction = split_branch_instruction;
     ops->ops.payload = ops;
 
     REQUIRE_OK(kefir_hashtree_init(&ops->constants, &kefir_hashtree_uint_ops));
