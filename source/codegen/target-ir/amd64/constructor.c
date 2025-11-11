@@ -22,7 +22,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t amd64_is_jump(kefir_asmcmp_instruction_opcode_t asmcmp_opcode, kefir_bool_t *is_jump_ptr, void *payload) {
+static kefir_result_t is_jump(kefir_asmcmp_instruction_opcode_t asmcmp_opcode, kefir_bool_t *is_jump_ptr, void *payload) {
     UNUSED(payload);
     REQUIRE(is_jump_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
@@ -40,7 +40,7 @@ static kefir_result_t amd64_is_jump(kefir_asmcmp_instruction_opcode_t asmcmp_opc
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_classify_instruction(const struct kefir_asmcmp_instruction *instruction,
+static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction *instruction,
     struct kefir_codegen_target_ir_asmcmp_instruction_classification *classification, void *payload) {
     UNUSED(payload);
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp instruction"));
@@ -349,7 +349,7 @@ static kefir_result_t amd64_classify_instruction(const struct kefir_asmcmp_instr
     return KEFIR_OK;
 }
 
-static kefir_result_t vreg_pair_part_spill_offset(kefir_asmcmp_virtual_register_pair_type_t pair_type, kefir_size_t index, kefir_size_t *offset_ptr, void *payload) {
+static kefir_result_t compute_vreg_pair_part_spill_offset(kefir_asmcmp_virtual_register_pair_type_t pair_type, kefir_size_t index, kefir_size_t *offset_ptr, void *payload) {
     UNUSED(payload);
     REQUIRE(offset_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to offset"));
     REQUIRE(index <= 1, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid index of virtual register pair components"));
@@ -371,8 +371,8 @@ static kefir_result_t vreg_pair_part_spill_offset(kefir_asmcmp_virtual_register_
 }
 
 const struct kefir_codegen_target_ir_code_constructor_class KEFIR_TARGET_AMD64_CODE_CONSTRUCTOR_CLASS = {
-    .is_jump = amd64_is_jump,
-    .classify_instruction = amd64_classify_instruction,
-    .vreg_pair_part_spill_offset = vreg_pair_part_spill_offset,
+    .is_jump = is_jump,
+    .classify_instruction = classify_instruction,
+    .compute_vreg_pair_part_spill_offset = compute_vreg_pair_part_spill_offset,
     .payload = NULL
 };

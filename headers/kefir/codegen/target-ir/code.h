@@ -53,10 +53,10 @@ typedef enum kefir_codegen_target_ir_operand_type {
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF,
-    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_ASMCMP,
+    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_EXTERNAL,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF,
-    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_ASMCMP_LABEL,
+    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_EXTERNAL_LABEL,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87
 } kefir_codegen_target_ir_operand_type_t;
@@ -79,7 +79,7 @@ typedef enum kefir_codegen_target_ir_indirect_basis_type {
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS,
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_IMMEDIATE_BASIS,
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS,
-    KEFIR_CODEGEN_TARGET_IR_INDIRECT_ASMCMP_LABEL_BASIS,
+    KEFIR_CODEGEN_TARGET_IR_INDIRECT_NATIVE_LABEL_BASIS,
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS,
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_LOCAL_AREA_BASIS,
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS
@@ -96,9 +96,9 @@ typedef enum kefir_codegen_target_ir_external_label_relocation {
 
 typedef enum kefir_codegen_target_ir_value_aspect {
     KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_NONE,
-    KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_OUTPUT_REGISTER,
+    KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_DIRECT_OUTPUT,
     KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_FLAGS,
-    KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_INDIRECT
+    KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_INDIRECT_OUTPUT
 } kefir_codegen_target_ir_value_aspect_t;
 
 typedef enum kefir_codegen_target_ir_value_type_kind {
@@ -132,13 +132,12 @@ typedef struct kefir_codegen_target_ir_value_type {
 } kefir_codegen_target_ir_value_type_t;
 
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_NONE ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_NONE) << 16))
-#define KEFIR_CODEGEN_TARGET_IR_VALUE_OUTPUT_REGISTER(_idx) ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_OUTPUT_REGISTER) << 16) | (kefir_uint16_t) (_idx))
+#define KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(_idx) ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_DIRECT_OUTPUT) << 16) | (kefir_uint16_t) (_idx))
+#define KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(_idx) ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_INDIRECT_OUTPUT) << 16) | (kefir_uint16_t) (_idx))
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_FLAGS) << 16))
-#define KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT(_idx) ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_INDIRECT) << 16) | (kefir_uint16_t) (_idx))
-#define KEFIR_CODEGEN_TARGET_IR_VALUE_IS_OUTPUT_REGISTER(_aspect) (((_aspect) >> 16) == KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_OUTPUT_REGISTER)
-#define KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_REGISTER(_aspect) ((kefir_uint16_t) (_aspect))
-#define KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT(_aspect) (((_aspect) >> 16) == KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_INDIRECT)
-#define KEFIR_CODEGEN_TARGET_IR_VALUE_GET_INDIRECT(_aspect) ((kefir_uint16_t) (_aspect))
+#define KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(_aspect) (((_aspect) >> 16) == KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_DIRECT_OUTPUT)
+#define KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(_aspect) (((_aspect) >> 16) == KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_INDIRECT_OUTPUT)
+#define KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_INDEX(_aspect) ((kefir_uint16_t) (_aspect))
 
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(_value_ref) ((((kefir_uint64_t) (_value_ref)->instr_ref) << 32) | (kefir_uint32_t) (_value_ref)->aspect)
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(_encoded) ((struct kefir_codegen_target_ir_value_ref) { \
@@ -173,7 +172,7 @@ typedef struct kefir_codegen_target_ir_operand {
                 struct kefir_codegen_target_ir_value_ref value_ref;
                 kefir_uint64_t immediate;
                 kefir_codegen_target_ir_block_ref_t block_ref;
-                kefir_codegen_target_ir_asmcmp_label_t asmcmp_label;
+                kefir_codegen_target_ir_native_id_t native_id;
                 struct {
                     kefir_codegen_target_ir_external_label_relocation_t external_type;
                     const char *external_label;
@@ -188,13 +187,13 @@ typedef struct kefir_codegen_target_ir_operand {
             kefir_codegen_target_ir_external_label_relocation_t position;
             union {
                 kefir_codegen_target_ir_block_ref_t block_ref;
-                kefir_codegen_target_ir_asmcmp_label_t asmcmp_label;
+                kefir_codegen_target_ir_native_id_t native_id;
                 const char *external;
             };
             kefir_codegen_target_ir_operand_variant_t variant;
         } rip_indirection;
         kefir_codegen_target_ir_block_ref_t block_ref;
-        kefir_codegen_target_ir_asmcmp_label_t asmcmp_label;
+        kefir_codegen_target_ir_native_id_t native_id;
         struct {
             kefir_codegen_target_ir_external_label_relocation_t position;
             const char *symbolic;
@@ -249,7 +248,6 @@ typedef struct kefir_codegen_target_ir_instruction {
     } control_flow;
 
     struct kefir_hashtable aspects;
-    struct kefir_list aspect_order;
 } kefir_codegen_target_ir_instruction_t;
 
 typedef struct kefir_codegen_target_ir_block {
@@ -353,6 +351,7 @@ kefir_result_t kefir_codegen_target_ir_code_phi_link_next(struct kefir_codegen_t
 kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type *);
 kefir_result_t kefir_codegen_target_ir_code_add_constraint(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_allocation_constraint *);
 kefir_result_t kefir_codegen_target_ir_code_add_instruction_attribute(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_native_id_t);
+kefir_result_t kefir_codegen_target_ir_code_instruction_output(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, kefir_size_t, kefir_codegen_target_ir_value_ref_t *, const struct kefir_codegen_target_ir_value_type **);
 kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type **, const struct kefir_codegen_target_ir_allocation_constraint **);
 
 kefir_result_t kefir_codegen_target_ir_code_inline_assembly_text_fragment(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,
@@ -362,7 +361,7 @@ kefir_result_t kefir_codegen_target_ir_code_inline_assembly_operand_fragment(str
 
 typedef struct kefir_codegen_target_ir_value_iterator {
     const struct kefir_codegen_target_ir_code *code;
-    const struct kefir_list_entry *iter;
+    struct kefir_hashtable_iterator iter;
     kefir_codegen_target_ir_instruction_ref_t instr_ref;
 } kefir_codegen_target_ir_code_value_iterator_t;
 

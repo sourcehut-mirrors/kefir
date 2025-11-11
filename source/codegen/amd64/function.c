@@ -20,13 +20,6 @@
 
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/asmcmp/context.h"
-#include "kefir/codegen/target-ir/code.h"
-#include "kefir/codegen/target-ir/constructor.h"
-#include "kefir/codegen/target-ir/amd64/code.h"
-#include "kefir/codegen/target-ir/amd64/constructor.h"
-#include "kefir/codegen/target-ir/rt_destructor.h"
-#include "kefir/codegen/target-ir/amd64/rt_destructor.h"
-#include "kefir/codegen/target-ir/format.h"
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/module.h"
@@ -36,6 +29,13 @@
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/topological_schedule.h"
+#include "kefir/codegen/target-ir/code.h"
+#include "kefir/codegen/target-ir/constructor.h"
+#include "kefir/codegen/target-ir/amd64/code.h"
+#include "kefir/codegen/target-ir/amd64/constructor.h"
+#include "kefir/codegen/target-ir/rt_destructor.h"
+#include "kefir/codegen/target-ir/amd64/rt_destructor.h"
+#include "kefir/codegen/target-ir/format.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -1087,7 +1087,7 @@ static kefir_result_t construct_target_ir_get_allocation_constraint(kefir_asmcmp
     return KEFIR_OK;
 }
 
-static kefir_result_t construct_target_ir_is_preallocation_match(kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_codegen_target_ir_physical_register_t physical_register, void *payload) {
+static kefir_result_t construct_target_ir_preallocation_match(kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_codegen_target_ir_physical_register_t physical_register, void *payload) {
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64_function *, func,
         payload);
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
@@ -1099,17 +1099,41 @@ static kefir_result_t construct_target_ir_is_preallocation_match(kefir_asmcmp_vi
     return KEFIR_OK;
 }
 
+static kefir_result_t construct_target_ir_get_native_id_by_label(kefir_asmcmp_label_index_t label_idx, kefir_codegen_target_ir_native_id_t *native_id_ptr, void *payload) {
+    REQUIRE(native_id_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR native identifier"));
+    ASSIGN_DECL_CAST(struct kefir_codegen_amd64_function *, func,
+        payload);
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
+    
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&func->constants, (kefir_hashtree_key_t) label_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested target IR native identifier");
+    }
+    REQUIRE_OK(res);
+
+    *native_id_ptr = node->value;
+    return KEFIR_OK;
+}
+
 static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_function *func, struct kefir_codegen_target_ir_code *code, struct kefir_asmcmp_amd64 *asmcmp_code) {
-    struct kefir_codegen_target_ir_code_constructor_parameters params = {
+    struct kefir_codegen_target_ir_code_constructor_ops ops = {
         .klass = &KEFIR_TARGET_AMD64_CODE_CONSTRUCTOR_CLASS,
         .get_allocation_constraint = construct_target_ir_get_allocation_constraint,
-        .is_preallocation_match = construct_target_ir_is_preallocation_match,
+        .preallocation_match = construct_target_ir_preallocation_match,
+        .get_native_id_by_label = construct_target_ir_get_native_id_by_label,
         .payload = func
     };
-    struct kefir_codegen_target_ir_round_trip_destructor_parameter destructor_param;
-    REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_parameter_amd64_init(asmcmp_code, &destructor_param));
-    REQUIRE_OK(kefir_codegen_target_ir_code_construct(mem, code, &func->code.context, &params));
-    REQUIRE_OK(kefir_codegen_target_ir_round_trip_destruct(mem, code, &asmcmp_code->context, &destructor_param));
+    REQUIRE_OK(kefir_codegen_target_ir_code_construct(mem, code, &func->code.context, &ops));
+
+    struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops destructor_ops;
+    REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(func, asmcmp_code, &destructor_ops));
+    kefir_result_t res = kefir_codegen_target_ir_round_trip_destruct(mem, code, &asmcmp_code->context, &destructor_ops.ops);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_codegen_target_ir_round_trip_destructor_amd64_ops_free(mem, &destructor_ops);
+        return res;
+    });
+    REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_amd64_ops_free(mem, &destructor_ops));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "target_ir") == 0) {
         const char *comment_prefix;

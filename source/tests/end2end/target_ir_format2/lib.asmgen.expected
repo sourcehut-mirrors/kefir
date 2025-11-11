@@ -46,7 +46,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -67,7 +67,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -89,7 +89,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 0,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -105,7 +105,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 2,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -168,7 +168,7 @@ test1:
 #                            "value_ref": {
 #                                "instr_ref": 31,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -177,7 +177,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -196,7 +196,7 @@ test1:
 #                            "value_ref": {
 #                                "instr_ref": 32,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -205,7 +205,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -224,7 +224,7 @@ test1:
 #                            "value_ref": {
 #                                "instr_ref": 2,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -233,7 +233,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -256,7 +256,7 @@ test1:
 #                            "value_ref": {
 #                                "instr_ref": 0,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -265,7 +265,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -287,7 +287,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 7,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -296,7 +296,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -318,7 +318,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 9,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -327,7 +327,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -356,7 +356,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 8,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -365,7 +365,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -390,7 +390,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 10,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -399,7 +399,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -417,7 +417,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 13,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -433,7 +433,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -451,7 +451,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 15,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -467,7 +467,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -485,7 +485,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 14,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -494,7 +494,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -516,7 +516,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 16,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -525,7 +525,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -543,7 +543,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 17,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -552,7 +552,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -574,7 +574,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 19,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -583,7 +583,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -605,7 +605,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 18,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -614,7 +614,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 19,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -623,7 +623,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 20,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -640,7 +640,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -654,7 +654,16 @@ test1:
 #                        },
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
 #                                "index": 1
 #                            },
 #                            "type": {
@@ -664,15 +673,6 @@ test1:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdx"
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
 #                            }
 #                        }
 #                    ]
@@ -685,7 +685,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 22,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -694,7 +694,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -716,7 +716,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -725,7 +725,7 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -753,7 +753,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 24,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -769,7 +769,7 @@ test1:
 #                            "type": "value_ref",
 #                            "instr_ref": 24,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -864,7 +864,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -885,7 +885,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -907,7 +907,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 0,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -923,7 +923,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 2,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -970,7 +970,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 2,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -979,7 +979,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1002,7 +1002,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 0,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1011,7 +1011,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1033,7 +1033,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 7,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1042,7 +1042,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1064,7 +1064,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 9,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1073,7 +1073,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1102,7 +1102,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 8,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1111,7 +1111,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1136,7 +1136,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 10,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "64bit"
@@ -1145,7 +1145,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1170,7 +1170,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1195,7 +1195,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1217,7 +1217,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 14,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1226,7 +1226,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1248,7 +1248,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 13,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1257,7 +1257,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1306,7 +1306,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 62,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1316,7 +1316,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 33,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1325,7 +1325,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1369,7 +1369,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 16,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1379,7 +1379,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 58,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1388,7 +1388,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1407,7 +1407,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 15,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1417,7 +1417,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 56,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1426,7 +1426,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1449,7 +1449,7 @@ test2:
 #                            "basis": "value_ref",
 #                            "instr_ref": 20,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 0,
@@ -1459,7 +1459,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1481,7 +1481,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 21,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1490,7 +1490,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1512,7 +1512,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 22,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1521,7 +1521,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1543,7 +1543,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1552,7 +1552,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1574,7 +1574,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 24,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1583,7 +1583,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 25,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1600,7 +1600,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1631,7 +1631,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 20,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1640,7 +1640,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1662,7 +1662,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 27,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1671,7 +1671,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1693,7 +1693,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1702,7 +1702,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1725,7 +1725,7 @@ test2:
 #                            "basis": "value_ref",
 #                            "instr_ref": 28,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 0,
@@ -1735,7 +1735,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 29,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1744,7 +1744,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 30,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1761,21 +1761,21 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "indirect"
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
 #                                "type": "flags"
 #                            },
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "indirect_ouput",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
 #                            }
 #                        }
 #                    ],
@@ -1791,7 +1791,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 32,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1808,7 +1808,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1826,7 +1826,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 33,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1835,7 +1835,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 33,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1918,7 +1918,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 25,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1927,7 +1927,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1946,7 +1946,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 20,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1955,7 +1955,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1977,7 +1977,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 38,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1986,7 +1986,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2008,7 +2008,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 40,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2017,7 +2017,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2084,7 +2084,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 27,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -2093,7 +2093,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2115,7 +2115,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 46,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2124,7 +2124,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2152,7 +2152,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 47,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2168,7 +2168,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 47,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2228,7 +2228,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 41,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -2237,7 +2237,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2256,7 +2256,7 @@ test2:
 #                            "value_ref": {
 #                                "instr_ref": 39,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -2265,7 +2265,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2287,7 +2287,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 55,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2296,7 +2296,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2318,7 +2318,7 @@ test2:
 #                            "type": "value_ref",
 #                            "instr_ref": 57,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2327,7 +2327,7 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2458,7 +2458,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2479,7 +2479,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2500,7 +2500,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2519,7 +2519,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2540,7 +2540,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2561,7 +2561,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2581,7 +2581,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 0,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2597,7 +2597,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 2,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2613,7 +2613,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 4,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2629,7 +2629,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 6,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2645,7 +2645,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 8,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2661,7 +2661,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 10,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2724,7 +2724,7 @@ test3:
 #                            "value_ref": {
 #                                "instr_ref": 51,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -2733,7 +2733,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2754,7 +2754,7 @@ test3:
 #                            "value_ref": {
 #                                "instr_ref": 52,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -2763,7 +2763,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2784,7 +2784,7 @@ test3:
 #                            "value_ref": {
 #                                "instr_ref": 10,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -2793,7 +2793,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2816,7 +2816,7 @@ test3:
 #                            "value_ref": {
 #                                "instr_ref": 8,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -2825,7 +2825,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2848,7 +2848,7 @@ test3:
 #                            "value_ref": {
 #                                "instr_ref": 4,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -2857,7 +2857,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2880,7 +2880,7 @@ test3:
 #                            "value_ref": {
 #                                "instr_ref": 2,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -2889,7 +2889,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2911,7 +2911,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 15,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2920,7 +2920,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2942,7 +2942,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 17,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2951,7 +2951,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2973,7 +2973,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 19,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2982,7 +2982,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3004,7 +3004,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 21,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3013,7 +3013,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3036,7 +3036,7 @@ test3:
 #                            "basis": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 0,
@@ -3046,7 +3046,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 16,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3055,7 +3055,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3074,7 +3074,7 @@ test3:
 #                            "basis": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 8,
@@ -3084,7 +3084,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 18,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3093,7 +3093,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3112,7 +3112,7 @@ test3:
 #                            "basis": "value_ref",
 #                            "instr_ref": 26,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 0,
@@ -3122,7 +3122,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 20,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3131,7 +3131,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3150,7 +3150,7 @@ test3:
 #                            "basis": "value_ref",
 #                            "instr_ref": 26,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 8,
@@ -3160,7 +3160,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 22,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3169,7 +3169,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3188,7 +3188,7 @@ test3:
 #                            "basis": "value_ref",
 #                            "instr_ref": 26,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 0,
@@ -3198,7 +3198,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3221,7 +3221,7 @@ test3:
 #                            "basis": "value_ref",
 #                            "instr_ref": 26,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 8,
@@ -3231,7 +3231,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3254,7 +3254,7 @@ test3:
 #                            "basis": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 0,
@@ -3264,7 +3264,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3283,7 +3283,7 @@ test3:
 #                            "basis": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 8,
@@ -3293,7 +3293,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3311,7 +3311,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 29,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3320,7 +3320,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3342,7 +3342,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 30,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3351,7 +3351,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3373,7 +3373,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 33,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3382,7 +3382,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 31,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3399,7 +3399,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3430,7 +3430,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 34,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3439,7 +3439,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 32,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3456,7 +3456,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3487,7 +3487,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 36,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3496,7 +3496,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3518,7 +3518,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 37,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3527,7 +3527,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3555,7 +3555,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 39,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3571,7 +3571,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 38,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3587,7 +3587,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 39,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3639,7 +3639,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3658,7 +3658,7 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3678,7 +3678,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 47,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3694,7 +3694,7 @@ test3:
 #                            "type": "value_ref",
 #                            "instr_ref": 49,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3749,7 +3749,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3771,7 +3771,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 0,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3818,7 +3818,7 @@ test4:
 #                            "value_ref": {
 #                                "instr_ref": 0,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -3827,7 +3827,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3849,7 +3849,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 5,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -3858,7 +3858,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3887,7 +3887,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 6,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -3896,7 +3896,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3976,7 +3976,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -3993,7 +3993,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -4011,7 +4011,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 11,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -4020,7 +4020,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -4038,7 +4038,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 13,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "64bit"
@@ -4059,7 +4059,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -4086,7 +4086,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 12,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -4095,7 +4095,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -4113,7 +4113,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 16,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "64bit"
@@ -4122,7 +4122,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 15,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "64bit"
@@ -4139,7 +4139,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -4167,7 +4167,7 @@ test4:
 #                            "basis": "value_ref",
 #                            "instr_ref": 17,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "offset": 0,
@@ -4177,7 +4177,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -4195,7 +4195,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 18,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -4254,7 +4254,7 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -4282,7 +4282,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -4298,7 +4298,7 @@ test4:
 #                            "type": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -4434,7 +4434,7 @@ init_array:
 #                            "value_ref": {
 #                                "instr_ref": 14,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -4443,7 +4443,7 @@ init_array:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -4466,7 +4466,7 @@ init_array:
 #                            "value_ref": {
 #                                "instr_ref": 15,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -4475,7 +4475,7 @@ init_array:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -4497,7 +4497,7 @@ init_array:
 #                            "type": "value_ref",
 #                            "instr_ref": 3,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -4513,7 +4513,7 @@ init_array:
 #                            "type": "value_ref",
 #                            "instr_ref": 5,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -4748,7 +4748,7 @@ init_array:
 #                            "type": "value_ref",
 #                            "instr_ref": 3,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -4764,7 +4764,7 @@ init_array:
 #                            "type": "value_ref",
 #                            "instr_ref": 5,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"

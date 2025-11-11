@@ -44,7 +44,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -66,7 +66,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 0,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -113,7 +113,7 @@ factorial:
 #                            "value_ref": {
 #                                "instr_ref": 100,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -122,7 +122,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -157,7 +157,7 @@ factorial:
 #                            "value_ref": {
 #                                "instr_ref": 0,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -166,7 +166,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -188,7 +188,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 5,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -197,7 +197,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -226,7 +226,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 6,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -235,7 +235,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -260,7 +260,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -282,7 +282,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -300,7 +300,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 8,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -338,7 +338,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 9,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -355,7 +355,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -373,7 +373,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 12,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -382,7 +382,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 12,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -416,7 +416,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 14,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -433,7 +433,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -451,7 +451,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 15,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -460,7 +460,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 15,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -555,7 +555,7 @@ factorial:
 #                            "value_ref": {
 #                                "instr_ref": 102,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -564,7 +564,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -605,7 +605,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -627,7 +627,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -645,7 +645,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 22,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -683,7 +683,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 23,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -700,7 +700,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -722,7 +722,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -744,7 +744,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 22,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -778,7 +778,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 27,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -795,7 +795,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -813,7 +813,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 26,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -822,7 +822,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -840,7 +840,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 30,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "64bit"
@@ -849,7 +849,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 29,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "64bit"
@@ -866,7 +866,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -893,7 +893,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 31,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -910,7 +910,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -928,7 +928,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 32,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -937,7 +937,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -955,7 +955,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 33,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -964,7 +964,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 33,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -998,7 +998,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 35,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1015,7 +1015,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1033,7 +1033,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 36,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1042,7 +1042,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 36,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1147,7 +1147,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1196,7 +1196,7 @@ factorial:
 #                            "value_ref": {
 #                                "instr_ref": 103,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1206,7 +1206,7 @@ factorial:
 #                            "value_ref": {
 #                                "instr_ref": 54,
 #                                "aspect": {
-#                                    "type": "output_reg",
+#                                    "type": "direct_output",
 #                                    "index": 0
 #                                }
 #                            }
@@ -1215,7 +1215,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1265,7 +1265,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1287,7 +1287,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1305,7 +1305,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 47,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1343,7 +1343,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 48,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1360,7 +1360,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1378,7 +1378,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 51,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1387,7 +1387,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 51,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1421,7 +1421,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 53,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1438,7 +1438,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1456,7 +1456,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 54,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1465,7 +1465,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 54,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit"
@@ -1566,7 +1566,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1588,7 +1588,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 61,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1597,7 +1597,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1625,7 +1625,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 62,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1641,7 +1641,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 62,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1723,7 +1723,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1748,7 +1748,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1766,7 +1766,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 71,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1775,7 +1775,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1793,7 +1793,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 72,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1802,7 +1802,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 70,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1819,7 +1819,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1853,7 +1853,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 74,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1862,7 +1862,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1887,7 +1887,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1905,7 +1905,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 76,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -1914,7 +1914,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1932,7 +1932,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 77,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1953,7 +1953,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -1987,7 +1987,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 78,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "32bit"
@@ -1996,7 +1996,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "indirect",
+#                                "type": "indirect_ouput",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2069,7 +2069,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2091,7 +2091,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 84,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2100,7 +2100,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2128,7 +2128,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 85,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2144,7 +2144,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 85,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2207,7 +2207,7 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "type": {
@@ -2235,7 +2235,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 93,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"
@@ -2251,7 +2251,7 @@ factorial:
 #                            "type": "value_ref",
 #                            "instr_ref": 93,
 #                            "aspect": {
-#                                "type": "output_reg",
+#                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "default"

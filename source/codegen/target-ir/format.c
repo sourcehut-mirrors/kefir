@@ -84,19 +84,19 @@ static kefir_result_t aspect_format(struct kefir_json_output *json, kefir_uint32
         REQUIRE_OK(kefir_json_output_object_key(json, "type"));
         REQUIRE_OK(kefir_json_output_string(json, "flags"));
         REQUIRE_OK(kefir_json_output_object_end(json));
-    } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_OUTPUT_REGISTER(aspect)) {
+    } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(aspect)) {
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-        REQUIRE_OK(kefir_json_output_string(json, "output_reg"));
+        REQUIRE_OK(kefir_json_output_string(json, "direct_output"));
         REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-        REQUIRE_OK(kefir_json_output_uinteger(json, KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_REGISTER(aspect)));
+        REQUIRE_OK(kefir_json_output_uinteger(json, KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_INDEX(aspect)));
         REQUIRE_OK(kefir_json_output_object_end(json));
-    } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT(aspect)) {
+    } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(aspect)) {
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-        REQUIRE_OK(kefir_json_output_string(json, "indirect"));
+        REQUIRE_OK(kefir_json_output_string(json, "indirect_ouput"));
         REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-        REQUIRE_OK(kefir_json_output_uinteger(json, KEFIR_CODEGEN_TARGET_IR_VALUE_GET_INDIRECT(aspect)));
+        REQUIRE_OK(kefir_json_output_uinteger(json, KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_INDEX(aspect)));
         REQUIRE_OK(kefir_json_output_object_end(json));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected target IR value aspect");
@@ -219,11 +219,11 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
                     REQUIRE_OK(id_format(json, operand->indirect.base.block_ref));
                     break;
 
-                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_ASMCMP_LABEL_BASIS:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_NATIVE_LABEL_BASIS:
                     REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
-                    REQUIRE_OK(kefir_json_output_string(json, "asmcmp_label"));
+                    REQUIRE_OK(kefir_json_output_string(json, "native"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "block_ref"));
-                    REQUIRE_OK(id_format(json, operand->indirect.base.asmcmp_label));
+                    REQUIRE_OK(id_format(json, operand->indirect.base.native_id));
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS:
@@ -269,14 +269,14 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_ASMCMP:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE:
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            REQUIRE_OK(kefir_json_output_string(json, "rip_indirect_asmcmp"));
+            REQUIRE_OK(kefir_json_output_string(json, "rip_indirect_native"));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
             REQUIRE_OK(label_type_format(json, operand->rip_indirection.position));
             REQUIRE_OK(kefir_json_output_object_key(json, "base"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, operand->rip_indirection.asmcmp_label));
+            REQUIRE_OK(kefir_json_output_uinteger(json, operand->rip_indirection.native_id));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
             REQUIRE_OK(variant_format(json, operand->rip_indirection.variant));
             REQUIRE_OK(kefir_json_output_object_end(json));
@@ -304,12 +304,12 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_ASMCMP_LABEL:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL:
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            REQUIRE_OK(kefir_json_output_string(json, "asmcmp_label"));
+            REQUIRE_OK(kefir_json_output_string(json, "native"));
             REQUIRE_OK(kefir_json_output_object_key(json, "label"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, operand->asmcmp_label));
+            REQUIRE_OK(kefir_json_output_uinteger(json, operand->native_id));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
