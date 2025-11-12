@@ -530,44 +530,42 @@ __kefir_runtime_text_func___kefir_bigint_cast_signed_end:
 
 __kefir_bigint_least_significant_nonzero:
 __kefir_runtime_text_func___kefir_bigint_least_significant_nonzero_begin:
-    push %rbp
-    mov %rsp, %rbp
     push %rbx
     push %r12
     push %r13
-    sub $8, %rsp
-    mov %rdi, %r13
-    cmp $0, %rsi
+    push %r14
+    mov %rsi, %r13
+    mov %rdi, %r14
+    cmp $0, %r13
     je __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label18
+    mov %r13, %rsi
+    sub $-7, %rsi
     mov %rsi, %rax
-    sub $-7, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
     mov %rax, %rbx
-    mov %rbx, %rax
-    sub $1, %rax
-    imul $8, %rax, %rcx
-    mov %rsi, %rax
-    sub %rcx, %rax
     xor %r12d, %r12d
 __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4:
     cmp %rbx, %r12
     jb __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8
     xor %eax, %eax
-    lea -24(%rbp), %rsp
+    pop %r14
     pop %r13
     pop %r12
     pop %rbx
-    pop %rbp
     ret
 __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8:
-    mov %r13, %rdi
+    mov %r14, %rdi
     add %r12, %rdi
     movb (%rdi), %r10b
     lea 1(%r12), %rcx
+    mov %rbx, %rax
+    sub $1, %rax
+    imul $8, %rax, %rdx
+    mov %r13, %rsi
+    sub %rdx, %rsi
     mov $8, %rdx
-    mov %rax, %rsi
     cmp %rbx, %rcx
     cmovae %rsi, %rdx
     movzx %r10b, %rcx
@@ -595,19 +593,17 @@ __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label16:
     imul $8, %r12, %rax
     add %r11, %rax
     add $1, %rax
-    lea -24(%rbp), %rsp
+    pop %r14
     pop %r13
     pop %r12
     pop %rbx
-    pop %rbp
     ret
 __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label18:
     xor %eax, %eax
-    lea -24(%rbp), %rsp
+    pop %r14
     pop %r13
     pop %r12
     pop %rbx
-    pop %rbp
     ret
 __kefir_runtime_text_func___kefir_bigint_least_significant_nonzero_end:
 

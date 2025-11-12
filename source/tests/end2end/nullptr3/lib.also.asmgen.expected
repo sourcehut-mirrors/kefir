@@ -527,12 +527,6 @@ __kefir_debug_loclist_section_entry_5:
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 7
-    .quad __kefir_func_sum_label0
-    .quad __kefir_func_sum_label19
-    .byte 2
-    .byte 144
-    .byte 0
-    .byte 7
     .quad __kefir_func_sum_label4
     .quad __kefir_func_sum_label17
     .byte 2
@@ -550,6 +544,12 @@ __kefir_debug_loclist_section_entry_6:
     .byte 3
     .byte 158
     .byte 1
+    .byte 0
+    .byte 7
+    .quad __kefir_func_sum_label0
+    .quad __kefir_func_sum_label19
+    .byte 2
+    .byte 144
     .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_7:
