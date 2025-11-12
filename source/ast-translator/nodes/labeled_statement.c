@@ -21,7 +21,7 @@
 #include "kefir/ast-translator/translator_impl.h"
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/flow_control.h"
-#include "kefir/ast-translator/util.h"
+#include "kefir/ast-translator/misc.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
@@ -33,6 +33,9 @@ kefir_result_t kefir_ast_translate_labeled_statement_node(struct kefir_mem *mem,
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translation context"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST labeled statement node"));
+
+    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
+        mem, context, builder, node->base.properties.statement_props.target_flow_control_point->self->associated_scopes.ordinary_scope));
 
     if (node->base.properties.statement_props.scoped_id->label.public_label != NULL) {
         REQUIRE_OK(kefir_irblock_add_public_label(mem, builder->block, context->ast_context->symbols,
