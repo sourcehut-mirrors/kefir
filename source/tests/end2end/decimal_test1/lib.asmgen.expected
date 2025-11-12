@@ -34,20 +34,20 @@ __kefir_text_func_test_dec128_mean_squared_error_begin:
     push %r13
     push %r14
     sub $64, %rsp
-    movdqu %xmm1, -80(%rbp)
-    movdqu %xmm0, -64(%rbp)
-    mov %rsi, %r12
-    mov %rdi, %r13
-    movdqu __kefir_func_test_dec128_mean_squared_error_label8(%rip), %xmm0
-    xor %r14d, %r14d
+    movdqu %xmm1, -64(%rbp)
     movdqu %xmm0, -48(%rbp)
+    mov %rsi, %r13
+    mov %rdi, %r14
+    movdqu __kefir_func_test_dec128_mean_squared_error_label8(%rip), %xmm0
+    xor %r12d, %r12d
+    movdqu %xmm0, -80(%rbp)
 __kefir_func_test_dec128_mean_squared_error_label2:
-    cmp %r12, %r14
+    cmp %r13, %r12
     jb __kefir_func_test_dec128_mean_squared_error_label6
-    mov %r12, %rdi
+    mov %r13, %rdi
     call __bid_floatunsditd@PLT
     movaps %xmm0, %xmm1
-    movdqu -48(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm0
     call __bid_divtd3@PLT
     lea -32(%rbp), %rsp
     pop %r14
@@ -57,20 +57,20 @@ __kefir_func_test_dec128_mean_squared_error_label2:
     pop %rbp
     ret
 __kefir_func_test_dec128_mean_squared_error_label6:
-    imul $32, %r14, %rax
-    mov %r13, %rdi
+    imul $32, %r12, %rax
+    mov %r14, %rdi
     add %rax, %rdi
     add $16, %rdi
     movdqu (%rdi), %xmm0
     movdqu %xmm0, -96(%rbp)
-    imul $32, %r14, %rax
-    mov %r13, %rdi
+    imul $32, %r12, %rax
+    mov %r14, %rdi
     add %rax, %rdi
     movdqu (%rdi), %xmm1
-    lea 1(%r14), %rbx
-    movdqu -64(%rbp), %xmm0
+    lea 1(%r12), %rbx
+    movdqu -48(%rbp), %xmm0
     call __bid_multd3@PLT
-    movdqu -80(%rbp), %xmm1
+    movdqu -64(%rbp), %xmm1
     call __bid_addtd3@PLT
     movaps %xmm0, %xmm2
     movdqu -96(%rbp), %xmm0
@@ -81,11 +81,11 @@ __kefir_func_test_dec128_mean_squared_error_label6:
     movaps %xmm2, %xmm1
     call __bid_multd3@PLT
     movaps %xmm0, %xmm2
-    movdqu -48(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm0
     movaps %xmm2, %xmm1
     call __bid_addtd3@PLT
-    mov %rbx, %r14
-    movdqu %xmm0, -48(%rbp)
+    mov %rbx, %r12
+    movdqu %xmm0, -80(%rbp)
     jmp __kefir_func_test_dec128_mean_squared_error_label2
 __kefir_text_func_test_dec128_mean_squared_error_end:
 .section .rodata
@@ -241,20 +241,20 @@ __kefir_text_func_test_dec64_mean_squared_error_begin:
     push %r13
     push %r14
     sub $64, %rsp
-    movdqu %xmm1, -80(%rbp)
-    movdqu %xmm0, -64(%rbp)
-    mov %rsi, %r12
-    mov %rdi, %r13
-    movq __kefir_func_test_dec64_mean_squared_error_label8(%rip), %xmm0
-    xor %r14d, %r14d
+    movdqu %xmm1, -64(%rbp)
     movdqu %xmm0, -48(%rbp)
+    mov %rsi, %r13
+    mov %rdi, %r14
+    movq __kefir_func_test_dec64_mean_squared_error_label8(%rip), %xmm0
+    xor %r12d, %r12d
+    movdqu %xmm0, -80(%rbp)
 __kefir_func_test_dec64_mean_squared_error_label2:
-    cmp %r12, %r14
+    cmp %r13, %r12
     jb __kefir_func_test_dec64_mean_squared_error_label6
-    mov %r12, %rdi
+    mov %r13, %rdi
     call __bid_floatunsdidd@PLT
     movaps %xmm0, %xmm1
-    movdqu -48(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm0
     call __bid_divdd3@PLT
     lea -32(%rbp), %rsp
     pop %r14
@@ -264,20 +264,20 @@ __kefir_func_test_dec64_mean_squared_error_label2:
     pop %rbp
     ret
 __kefir_func_test_dec64_mean_squared_error_label6:
-    imul $16, %r14, %rax
-    mov %r13, %rdi
+    imul $16, %r12, %rax
+    mov %r14, %rdi
     add %rax, %rdi
     add $8, %rdi
     movq (%rdi), %xmm0
     movq %xmm0, -96(%rbp)
-    imul $16, %r14, %rax
-    mov %r13, %rdi
+    imul $16, %r12, %rax
+    mov %r14, %rdi
     add %rax, %rdi
     movq (%rdi), %xmm1
-    lea 1(%r14), %rbx
-    movdqu -64(%rbp), %xmm0
+    lea 1(%r12), %rbx
+    movdqu -48(%rbp), %xmm0
     call __bid_muldd3@PLT
-    movdqu -80(%rbp), %xmm1
+    movdqu -64(%rbp), %xmm1
     call __bid_adddd3@PLT
     movaps %xmm0, %xmm2
     movdqu -96(%rbp), %xmm0
@@ -288,11 +288,11 @@ __kefir_func_test_dec64_mean_squared_error_label6:
     movaps %xmm2, %xmm1
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm2
-    movdqu -48(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm0
     movaps %xmm2, %xmm1
     call __bid_adddd3@PLT
-    mov %rbx, %r14
-    movdqu %xmm0, -48(%rbp)
+    mov %rbx, %r12
+    movdqu %xmm0, -80(%rbp)
     jmp __kefir_func_test_dec64_mean_squared_error_label2
 __kefir_text_func_test_dec64_mean_squared_error_end:
 .section .rodata
@@ -416,20 +416,20 @@ __kefir_text_func_test_dec32_mean_squared_error_begin:
     push %r13
     push %r14
     sub $64, %rsp
-    movdqu %xmm1, -80(%rbp)
-    movdqu %xmm0, -64(%rbp)
-    mov %rsi, %r12
-    mov %rdi, %r13
-    movd __kefir_func_test_dec32_mean_squared_error_label8(%rip), %xmm0
-    xor %r14d, %r14d
+    movdqu %xmm1, -64(%rbp)
     movdqu %xmm0, -48(%rbp)
+    mov %rsi, %r13
+    mov %rdi, %r14
+    movd __kefir_func_test_dec32_mean_squared_error_label8(%rip), %xmm0
+    xor %r12d, %r12d
+    movdqu %xmm0, -80(%rbp)
 __kefir_func_test_dec32_mean_squared_error_label2:
-    cmp %r12, %r14
+    cmp %r13, %r12
     jb __kefir_func_test_dec32_mean_squared_error_label6
-    mov %r12, %rdi
+    mov %r13, %rdi
     call __bid_floatunsdisd@PLT
     movaps %xmm0, %xmm1
-    movdqu -48(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm0
     call __bid_divsd3@PLT
     lea -32(%rbp), %rsp
     pop %r14
@@ -439,20 +439,20 @@ __kefir_func_test_dec32_mean_squared_error_label2:
     pop %rbp
     ret
 __kefir_func_test_dec32_mean_squared_error_label6:
-    imul $8, %r14, %rax
-    mov %r13, %rdi
+    imul $8, %r12, %rax
+    mov %r14, %rdi
     add %rax, %rdi
     add $4, %rdi
     movd (%rdi), %xmm0
     movd %xmm0, -96(%rbp)
-    imul $8, %r14, %rax
-    mov %r13, %rdi
+    imul $8, %r12, %rax
+    mov %r14, %rdi
     add %rax, %rdi
     movd (%rdi), %xmm1
-    lea 1(%r14), %rbx
-    movdqu -64(%rbp), %xmm0
+    lea 1(%r12), %rbx
+    movdqu -48(%rbp), %xmm0
     call __bid_mulsd3@PLT
-    movdqu -80(%rbp), %xmm1
+    movdqu -64(%rbp), %xmm1
     call __bid_addsd3@PLT
     movaps %xmm0, %xmm2
     movdqu -96(%rbp), %xmm0
@@ -463,11 +463,11 @@ __kefir_func_test_dec32_mean_squared_error_label6:
     movaps %xmm2, %xmm1
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm2
-    movdqu -48(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm0
     movaps %xmm2, %xmm1
     call __bid_addsd3@PLT
-    mov %rbx, %r14
-    movdqu %xmm0, -48(%rbp)
+    mov %rbx, %r12
+    movdqu %xmm0, -80(%rbp)
     jmp __kefir_func_test_dec32_mean_squared_error_label2
 __kefir_text_func_test_dec32_mean_squared_error_end:
 .section .rodata

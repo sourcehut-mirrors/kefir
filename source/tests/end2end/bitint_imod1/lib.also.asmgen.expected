@@ -141,25 +141,25 @@ __kefir_func_mod5_label0:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -160(%rbp)
     movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -144(%rbp)
+    movdqu %xmm0, -112(%rbp)
     movdqu -160(%rbp), %xmm0
-    movdqu %xmm0, -128(%rbp)
-    leaq -128(%rbp), %rax
+    movdqu %xmm0, -96(%rbp)
+    leaq -96(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     mov $240, %rdx
     call __kefir_bigint_cast_signed
-    leaq -128(%rbp), %rax
-    mov %rax, %rdi
     leaq -96(%rbp), %rax
-    mov %rax, %rsi
+    mov %rax, %rdi
     leaq -144(%rbp), %rax
+    mov %rax, %rsi
+    leaq -112(%rbp), %rax
     mov %rax, %rdx
     mov $240, %rcx
     mov $120, %r8
     call __kefir_bigint_signed_divide
-    movq -96(%rbp), %rax
-    movq -88(%rbp), %rdx
+    movq -144(%rbp), %rax
+    movq -136(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

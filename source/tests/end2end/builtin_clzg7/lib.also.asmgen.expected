@@ -129,7 +129,7 @@ __kefir_text_func_test6_begin:
     push %r13
     sub $40, %rsp
     mov %rdi, %r13
-    lea 16(%rbp), %rbx
+    lea 16(%rbp), %r12
     movl $0, -64(%rbp)
     movl $0, -60(%rbp)
     movl $0, -56(%rbp)
@@ -140,20 +140,20 @@ __kefir_text_func_test6_begin:
     movl $0, -36(%rbp)
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
-    mov %rbx, %rdi
+    mov %r12, %rdi
     leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $315, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %r12d, %r12d
+    xor %ebx, %ebx
     cmp $0, %al
-    sete %r12b
-    mov %rbx, %rdi
+    sete %bl
+    mov %r12, %rdi
     mov $315, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
     mov %r13, %rdi
-    test %r12b, %r12b
+    test %bl, %bl
     cmovnz %rdi, %rax
     lea -24(%rbp), %rsp
     pop %r13

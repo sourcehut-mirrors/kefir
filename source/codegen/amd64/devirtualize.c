@@ -1900,6 +1900,7 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
                                                KEFIR_AMD64_INSTRDB_NONE, KEFIR_AMD64_INSTRDB_BRANCH_TARGET));
                 break;
 
+            case KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register):
             case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
             case KEFIR_ASMCMP_AMD64_OPCODE(weak_touch_virtual_register):
             case KEFIR_ASMCMP_AMD64_OPCODE(function_prologue):

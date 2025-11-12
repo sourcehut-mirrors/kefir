@@ -1823,7 +1823,7 @@ test2:
 #                        }
 #                    ],
 #                    "attributes": [
-#                        "placeholder"
+#                        "lock"
 #                    ]
 #                },
 #                {
@@ -4038,7 +4038,14 @@ test4:
 #                {
 #                    "instr_ref": 9,
 #                    "opcode": "lea",
-#                    "parameters": [],
+#                    "parameters": [
+#                        {
+#                            "type": "rip_indirect_external",
+#                            "type": "absolute",
+#                            "base": "__kefir_function_test4_static_arr_10",
+#                            "variant": "default"
+#                        }
+#                    ],
 #                    "values": [
 #                        {
 #                            "aspect": {

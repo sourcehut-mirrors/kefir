@@ -61,9 +61,9 @@ static kefir_result_t attribute_mnemonic(kefir_codegen_target_ir_native_id_t att
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to opcode mnemonic"));
 
     switch (attr) {
-        case KEFIR_ASMCMP_AMD64_OPCODE(rexW):
-        case KEFIR_ASMCMP_AMD64_OPCODE(data16):
-        case KEFIR_ASMCMP_AMD64_OPCODE(lock):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(rexW):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(data16):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(lock):
             REQUIRE_OK(amd64_opcode_mnemonic((kefir_target_ir_amd64_opcode_t) attr, mnemonic_ptr, payload));
             break;
 
@@ -102,6 +102,7 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_i
         case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
             if (KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(call)) { \
                 props->block_terminator = true; \
+                props->branch = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(jmp); \
                 props->fallthrough = true; \
                 props->fallthrough = ((_flags) & KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP_FALLTHROUGH) != 0 && \
                     instruction->operation.parameters[1].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF; \

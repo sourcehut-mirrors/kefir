@@ -64,6 +64,12 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
             classification->operands[1].index = 1;
             return KEFIR_OK;
 
+        case KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register):
+            classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_PRODUCE;
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+            classification->operands[0].index = 0;
+            return KEFIR_OK;
+
         case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
             classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_VIRTUAL_REGISTER_TOUCH;
             classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
@@ -84,10 +90,18 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
             return KEFIR_OK;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(rexW):
+            classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE;
+            classification->attribute = KEFIR_TARGET_IR_AMD64_OPCODE(rexW);
+            return KEFIR_OK;
+
         case KEFIR_ASMCMP_AMD64_OPCODE(data16):
+            classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE;
+            classification->attribute = KEFIR_TARGET_IR_AMD64_OPCODE(data16);
+            return KEFIR_OK;
+
         case KEFIR_ASMCMP_AMD64_OPCODE(lock):
             classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_ATTRIBUTE;
-            classification->attribute = instruction->opcode;
+            classification->attribute = KEFIR_TARGET_IR_AMD64_OPCODE(lock);
             return KEFIR_OK;
 
         default:

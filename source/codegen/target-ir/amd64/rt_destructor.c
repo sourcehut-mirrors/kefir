@@ -28,6 +28,12 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
             classification->operands[1].index = 1;
             return KEFIR_OK;
 
+        case KEFIR_TARGET_IR_AMD64_OPCODE(placeholder):
+            classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register);
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+            classification->operands[0].index = 0;
+            return KEFIR_OK;
+
         case KEFIR_TARGET_IR_AMD64_OPCODE(touch):
             classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register);
             classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
@@ -42,9 +48,6 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
 
         case KEFIR_TARGET_IR_AMD64_OPCODE(phi):
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to classify target IR phi node");
-
-        case KEFIR_TARGET_IR_AMD64_OPCODE(placeholder):
-            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to classify target IR placeholder instruction");
 
         default:
             // Intentionally left blank
@@ -116,6 +119,17 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown amd64 opcode");
+    }
+
+    kefir_size_t output_index = 0;
+    for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
+        if (classification->operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE) {
+            const struct kefir_codegen_target_ir_value_type *value_type;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr_ref, output_index++, NULL, &value_type));
+            if (value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT || value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) {
+                classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
+            }
+        }
     }
 
     switch (instruction->operation.opcode) {

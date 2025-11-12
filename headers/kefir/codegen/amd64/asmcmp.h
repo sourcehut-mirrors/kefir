@@ -63,6 +63,7 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, virtual_register_link) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, touch_virtual_register) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, weak_touch_virtual_register) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, produce_virtual_register) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, preserve_active_virtual_registers) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, function_prologue) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, function_epilogue) _separator \
@@ -169,6 +170,10 @@ kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *, str
                                                          kefir_asmcmp_virtual_register_index_t,
                                                          kefir_asmcmp_instruction_index_t *);
 
+kefir_result_t kefir_asmcmp_amd64_produce_virtual_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                         kefir_asmcmp_instruction_index_t,
+                                                         kefir_asmcmp_virtual_register_index_t,
+                                                         kefir_asmcmp_instruction_index_t *);
 kefir_result_t kefir_asmcmp_amd64_touch_virtual_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                          kefir_asmcmp_instruction_index_t,
                                                          kefir_asmcmp_virtual_register_index_t,

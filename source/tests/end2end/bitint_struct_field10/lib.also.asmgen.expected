@@ -505,18 +505,18 @@ __kefir_func_set7_label0:
     movq %rdi, -32(%rbp)
     movq -24(%rbp), %rdx
     movq -32(%rbp), %rax
-    mov %rax, %rbx
-    add $16, %rbx
-    mov %rbx, %rax
+    mov %rax, %r12
+    add $16, %r12
+    mov %r12, %rax
     add $1, %rax
     movb 2(%rax), %al
-    movw 1(%rbx), %cx
+    movw 1(%r12), %cx
     and $65535, %rcx
     shl $16, %rax
     or %rax, %rcx
-    mov %rcx, %r12
-    shl $40, %r12
-    shr $40, %r12
+    mov %rcx, %rbx
+    shl $40, %rbx
+    shr $40, %rbx
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
@@ -525,16 +525,16 @@ __kefir_func_set7_label0:
     shl $40, %rax
     shr $40, %rax
     movabs $18446744073701163008, %rdx
-    and %r12, %rdx
+    and %rbx, %rdx
     shl $41, %rax
     shr $41, %rax
     or %rdx, %rax
-    mov %rbx, %rcx
+    mov %r12, %rcx
     add $1, %rcx
     mov %rax, %rdx
     shr $16, %rdx
     movb %dl, 2(%rcx)
-    movw %ax, 1(%rbx)
+    movw %ax, 1(%r12)
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

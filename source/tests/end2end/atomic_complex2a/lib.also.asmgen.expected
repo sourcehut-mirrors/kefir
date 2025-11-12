@@ -167,9 +167,9 @@ __kefir_text_func_f32_store_begin:
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     mov %rdi, %rsi
-    movd %xmm0, -16(%rbp)
-    movd %xmm1, -12(%rbp)
-    lea -16(%rbp), %rdx
+    movd %xmm0, -8(%rbp)
+    movd %xmm1, -4(%rbp)
+    lea -8(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -184,9 +184,9 @@ __kefir_text_func_f64_store_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     mov %rdi, %rsi
-    movq %xmm0, -32(%rbp)
-    movq %xmm1, -24(%rbp)
-    lea -32(%rbp), %rdx
+    movq %xmm0, -16(%rbp)
+    movq %xmm1, -8(%rbp)
+    lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -203,9 +203,9 @@ __kefir_text_func_str1_set_a_begin:
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     mov %rdi, %rsi
-    movd %xmm0, -16(%rbp)
-    movd %xmm1, -12(%rbp)
-    lea -16(%rbp), %rdx
+    movd %xmm0, -8(%rbp)
+    movd %xmm1, -4(%rbp)
+    lea -8(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_store@PLT

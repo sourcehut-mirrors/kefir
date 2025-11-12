@@ -349,16 +349,16 @@ __kefir_runtime_text_func___kefir_bigint_set_signed_integer_begin:
     push %rbx
     sub $8, %rsp
     mov %rdx, %r8
-    mov %rsi, %rbx
-    mov %rdi, %r10
-    cmp $0, %rbx
+    mov %rsi, %r10
+    mov %rdi, %r11
+    cmp $0, %r10
     je __kefir_runtime_func___kefir_bigint_set_signed_integer_label14
-    mov %rbx, %rsi
+    mov %r10, %rsi
     mov $64, %rax
-    cmp $64, %rbx
+    cmp $64, %r10
     cmova %rax, %rsi
-    mov %rsi, %r11
-    mov %r11, %rsi
+    mov %rsi, %rbx
+    mov %rbx, %rsi
     sub $-7, %rsi
     mov %rsi, %rax
     xor %edx, %edx
@@ -368,7 +368,7 @@ __kefir_runtime_text_func___kefir_bigint_set_signed_integer_begin:
 __kefir_runtime_func___kefir_bigint_set_signed_integer_label4:
     cmp %rax, %r9
     jb __kefir_runtime_func___kefir_bigint_set_signed_integer_label12
-    cmp %rbx, %r11
+    cmp %r10, %rbx
     jb __kefir_runtime_func___kefir_bigint_set_signed_integer_label10
 __kefir_runtime_func___kefir_bigint_set_signed_integer_label8:
     xor %eax, %eax
@@ -377,13 +377,13 @@ __kefir_runtime_func___kefir_bigint_set_signed_integer_label8:
     pop %rbp
     ret
 __kefir_runtime_func___kefir_bigint_set_signed_integer_label10:
-    mov %r10, %rdi
-    mov %r11, %rsi
-    mov %rbx, %rdx
+    mov %r11, %rdi
+    mov %rbx, %rsi
+    mov %r10, %rdx
     call __kefir_bigint_cast_signed
     jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label8
 __kefir_runtime_func___kefir_bigint_set_signed_integer_label12:
-    mov %r10, %rdi
+    mov %r11, %rdi
     add %r9, %rdi
     movb %r8b, (%rdi)
     lea 1(%r9), %rcx

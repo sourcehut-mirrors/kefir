@@ -552,6 +552,7 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
             REQUIRE_OK(format_inline_assembly(mem, xasmgen, target, stack_frame, codegen_config, instr->args[0].inline_asm_idx));
             break;
 
+        case KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register):
         case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
         case KEFIR_ASMCMP_AMD64_OPCODE(weak_touch_virtual_register):
         case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin):

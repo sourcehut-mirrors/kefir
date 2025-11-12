@@ -24,7 +24,7 @@ __kefir_text_func_get1_begin:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $48, %rsp
+    sub $32, %rsp
     mov %rdi, %r12
 __kefir_func_get1_label0:
     movl %esi, -20(%rbp)
@@ -75,11 +75,11 @@ __kefir_func_get1_label0:
     add $56, %rbx
     add $5, %eax
     movsx %eax, %rdx
-    leaq -64(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_set_signed_integer
-    movdqu -64(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, (%rbx)
     mov %r12, %rax
     lea -16(%rbp), %rsp

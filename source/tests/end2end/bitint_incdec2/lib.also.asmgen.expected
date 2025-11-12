@@ -118,24 +118,24 @@ __kefir_func_postinc5_label0:
     movq %rdi, -16(%rbp)
     movq -16(%rbp), %rbx
     movdqu (%rbx), %xmm0
-    movdqu %xmm0, -32(%rbp)
-    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $119, %rsi
     mov $1, %rdx
     call __kefir_bigint_set_signed_integer
-    leaq -48(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
     leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $119, %rdx
     call __kefir_bigint_add
-    movdqu -48(%rbp), %xmm0
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, (%rbx)
-    movq -32(%rbp), %rax
-    movq -24(%rbp), %rdx
+    movq -48(%rbp), %rax
+    movq -40(%rbp), %rdx
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

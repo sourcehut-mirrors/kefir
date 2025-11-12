@@ -209,18 +209,18 @@ __kefir_text_func_add5_begin:
     push %rbx
     sub $104, %rsp
 __kefir_func_add5_label0:
-    movq %rdi, -64(%rbp)
-    movq %rsi, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
+    movq %rdi, -48(%rbp)
+    movq %rsi, -40(%rbp)
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -24(%rbp)
     movdqu -24(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
     movq e@GOTPCREL(%rip), %rsi
     mov %rsi, %rbx
     movq -112(%rbp), %rax
-    movq %rax, -48(%rbp)
+    movq %rax, -64(%rbp)
     movq -104(%rbp), %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -56(%rbp)
 __kefir_func_add5_label1:
 __kefir_func_add5_label2:
     leaq -96(%rbp), %rax
@@ -233,7 +233,7 @@ __kefir_func_add5_label2:
     movdqu %xmm0, -80(%rbp)
     leaq -80(%rbp), %rax
     mov %rax, %rdi
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $111, %rdx
     call __kefir_bigint_add
@@ -252,9 +252,9 @@ __kefir_func_add5_label2:
     jmp __kefir_func_add5_label4
 __kefir_func_add5_label8:
     mov %rbx, %rsi
-    movq -48(%rbp), %rax
+    movq -64(%rbp), %rax
     movq %rax, -112(%rbp)
-    movq -40(%rbp), %rax
+    movq -56(%rbp), %rax
     movq %rax, -104(%rbp)
     jmp __kefir_func_add5_label6
 __kefir_func_add5_label3:
@@ -269,9 +269,9 @@ __kefir_func_add5_label5:
 __kefir_func_add5_label6:
     mov %rsi, %rbx
     movq -112(%rbp), %rax
-    movq %rax, -48(%rbp)
+    movq %rax, -64(%rbp)
     movq -104(%rbp), %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -56(%rbp)
     jmp __kefir_func_add5_label2
 __kefir_func_add5_label7:
 __kefir_text_func_add5_end:
