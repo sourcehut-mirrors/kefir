@@ -246,10 +246,10 @@ static kefir_result_t resolve_operand(struct rt_destructor_state *state, const s
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER: {
             kefir_asmcmp_virtual_register_index_t vreg_idx;
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_immediate_integer(state->mem, state->asmcmp_ctx, operand->int_immediate, &vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_immediate_integer(state->mem, state->asmcmp_ctx, operand->immediate.int_immediate, &vreg_idx));
             value->type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER;
             value->vreg.index = vreg_idx;
-            value->vreg.variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT;
+            REQUIRE_OK(resolve_variant(operand->immediate.variant, &value->vreg.variant, &value->vreg.high_half));
         } break;
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_PHYSICAL_REGISTER:

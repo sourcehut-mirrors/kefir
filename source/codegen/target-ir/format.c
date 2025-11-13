@@ -144,7 +144,9 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
             REQUIRE_OK(kefir_json_output_string(json, "integer"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_integer(json, operand->int_immediate));
+            REQUIRE_OK(kefir_json_output_integer(json, operand->immediate.int_immediate));
+            REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
+            REQUIRE_OK(variant_format(json, operand->immediate.variant));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
@@ -153,7 +155,9 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
             REQUIRE_OK(kefir_json_output_string(json, "uinteger"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, operand->uint_immediate));
+            REQUIRE_OK(kefir_json_output_uinteger(json, operand->immediate.uint_immediate));
+            REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
+            REQUIRE_OK(variant_format(json, operand->immediate.variant));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 

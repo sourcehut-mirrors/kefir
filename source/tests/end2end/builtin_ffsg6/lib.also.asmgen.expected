@@ -96,20 +96,20 @@ __kefir_runtime_text_func___kefir_bigint_least_significant_nonzero_begin:
     push %r12
     push %r13
     push %r14
-    mov %rsi, %r13
-    mov %rdi, %r14
-    cmp $0, %r13
+    mov %rsi, %r12
+    mov %rdi, %r13
+    cmp $0, %r12
     je __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label18
-    mov %r13, %rsi
+    mov %r12, %rsi
     sub $-7, %rsi
     mov %rsi, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
     mov %rax, %rbx
-    xor %r12d, %r12d
+    xor %r14d, %r14d
 __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4:
-    cmp %rbx, %r12
+    cmp %rbx, %r14
     jb __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8
     xor %eax, %eax
     pop %r14
@@ -118,14 +118,14 @@ __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4:
     pop %rbx
     ret
 __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8:
-    mov %r14, %rdi
-    add %r12, %rdi
+    mov %r13, %rdi
+    add %r14, %rdi
     movb (%rdi), %r10b
-    lea 1(%r12), %rcx
+    lea 1(%r14), %rcx
     mov %rbx, %rax
     sub $1, %rax
     imul $8, %rax, %rdx
-    mov %r13, %rsi
+    mov %r12, %rsi
     sub %rdx, %rsi
     mov $8, %rdx
     cmp %rbx, %rcx
@@ -138,8 +138,8 @@ __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10:
     cmp %rdx, %r11
     jb __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label14
 __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12:
-    lea 1(%r12), %rcx
-    mov %rcx, %r12
+    lea 1(%r14), %rcx
+    mov %rcx, %r14
     jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4
 __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label14:
     lea 1(%r11), %r8
@@ -152,7 +152,7 @@ __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label14:
     mov %r8, %r11
     jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10
 __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label16:
-    imul $8, %r12, %rax
+    imul $8, %r14, %rax
     add %r11, %rax
     add $1, %rax
     pop %r14

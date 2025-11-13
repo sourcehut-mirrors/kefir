@@ -158,8 +158,13 @@ typedef struct kefir_codegen_target_ir_operand {
     kefir_codegen_target_ir_operand_type_t type;
 
     union {
-        kefir_int64_t int_immediate;
-        kefir_uint64_t uint_immediate;
+        struct {
+            union {
+                kefir_int64_t int_immediate;
+                kefir_uint64_t uint_immediate;
+            };
+            kefir_codegen_target_ir_operand_variant_t variant;
+        } immediate;
         struct {
             struct kefir_codegen_target_ir_value_ref value_ref;
             kefir_codegen_target_ir_operand_variant_t variant;

@@ -12,8 +12,7 @@ sum:
 __kefir_text_func_sum_begin:
     push %rbp
     mov %rsp, %rbp
-    push %rbx
-    sub $200, %rsp
+    sub $208, %rsp
     test %al, %al
     je __kefir_func_sum_label10
     movdqu %xmm0, -160(%rbp)
@@ -39,17 +38,17 @@ __kefir_func_sum_label10:
     movq %rax, -16(%rbp)
     xor %eax, %eax
     xor %edx, %edx
+    mov %rdi, %rcx
     mov %rax, %r10
     mov %rdx, %r11
 __kefir_func_sum_label2:
-    mov %rdi, %rbx
-    add $-1, %ebx
-    test %edi, %edi
+    mov %rcx, %rdi
+    add $-1, %edi
+    test %ecx, %ecx
     jnz __kefir_func_sum_label6
     mov %r10, %rax
     mov %r11, %rdx
-    lea -8(%rbp), %rsp
-    pop %rbx
+    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_func_sum_label6:
@@ -81,7 +80,7 @@ __kefir_func_sum_label8:
     mov %r11, %rdx
     add %r8, %rax
     adc %r9, %rdx
-    mov %rbx, %rdi
+    mov %rdi, %rcx
     mov %rax, %r10
     mov %rdx, %r11
     jmp __kefir_func_sum_label2
@@ -91,8 +90,7 @@ sum2:
 __kefir_text_func_sum2_begin:
     push %rbp
     mov %rsp, %rbp
-    push %rbx
-    sub $200, %rsp
+    sub $208, %rsp
     test %al, %al
     je __kefir_func_sum2_label10
     movdqu %xmm0, -160(%rbp)
@@ -118,17 +116,17 @@ __kefir_func_sum2_label10:
     movq %rax, -16(%rbp)
     xor %eax, %eax
     xor %edx, %edx
+    mov %rdi, %rcx
     mov %rax, %r10
     mov %rdx, %r11
 __kefir_func_sum2_label2:
-    mov %rdi, %rbx
-    add $-1, %ebx
-    test %edi, %edi
+    mov %rcx, %rdi
+    add $-1, %edi
+    test %ecx, %ecx
     jnz __kefir_func_sum2_label6
     mov %r10, %rax
     mov %r11, %rdx
-    lea -8(%rbp), %rsp
-    pop %rbx
+    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_func_sum2_label6:
@@ -160,7 +158,7 @@ __kefir_func_sum2_label8:
     mov %r11, %rdx
     add %r8, %rax
     adc %r9, %rdx
-    mov %rbx, %rdi
+    mov %rdi, %rcx
     mov %rax, %r10
     mov %rdx, %r11
     jmp __kefir_func_sum2_label2

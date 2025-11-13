@@ -65,8 +65,9 @@ __kefir_func_test1_label0:
     movaps %xmm1, %xmm7
     movq %r11, %xmm1
     divsd %xmm1, %xmm7
-    neg %rbx
-    cvtsi2sd %rbx, %xmm1
+    mov %rbx, %rax
+    neg %rax
+    cvtsi2sd %rax, %xmm1
     movq %r12, %xmm2
     subsd %xmm2, %xmm1
     mov %r13, %rax

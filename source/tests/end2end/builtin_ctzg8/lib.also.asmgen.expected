@@ -94,24 +94,24 @@ __kefir_runtime_text_func___kefir_bigint_trailing_zeros_begin:
     push %r14
     push %r15
     sub $24, %rsp
-    movq %rdx, -48(%rbp)
-    movq %rsi, -64(%rbp)
-    movq %rdi, -56(%rbp)
-    cmpq $0, -64(%rbp)
+    movq %rdx, -56(%rbp)
+    mov %rsi, %r14
+    mov %rdi, %r15
+    cmp $0, %r14
     je __kefir_runtime_func___kefir_bigint_trailing_zeros_label18
-    movq -64(%rbp), %rsi
+    mov %r14, %rsi
     sub $-7, %rsi
     mov %rsi, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    mov %rax, %r14
-    xor %r15d, %r15d
+    mov %rax, %rdx
+    movq $0, -64(%rbp)
     xor %r10d, %r10d
 __kefir_runtime_func___kefir_bigint_trailing_zeros_label4:
-    cmp %r14, %r15
+    cmpq %rdx, -64(%rbp)
     jb __kefir_runtime_func___kefir_bigint_trailing_zeros_label8
-    movq -48(%rbp), %rax
+    movq -56(%rbp), %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -121,17 +121,18 @@ __kefir_runtime_func___kefir_bigint_trailing_zeros_label4:
     pop %rbp
     ret
 __kefir_runtime_func___kefir_bigint_trailing_zeros_label8:
-    movq -56(%rbp), %rdi
-    add %r15, %rdi
+    mov %r15, %rdi
+    addq -64(%rbp), %rdi
     movb (%rdi), %r12b
-    lea 1(%r15), %rcx
-    mov %r14, %rax
+    movq -64(%rbp), %rcx
+    add $1, %rcx
+    mov %rdx, %rax
     sub $1, %rax
     imul $8, %rax, %r8
-    movq -64(%rbp), %rsi
+    mov %r14, %rsi
     sub %r8, %rsi
     mov $8, %r8
-    cmp %r14, %rcx
+    cmp %rdx, %rcx
     cmovae %rsi, %r8
     lea 8(%r10), %r9
     movzx %r12b, %rcx
@@ -145,8 +146,9 @@ __kefir_runtime_func___kefir_bigint_trailing_zeros_label10:
     jb __kefir_runtime_func___kefir_bigint_trailing_zeros_label14
     mov %r13, %r9
 __kefir_runtime_func___kefir_bigint_trailing_zeros_label12:
-    lea 1(%r15), %rcx
-    mov %rcx, %r15
+    movq -64(%rbp), %rcx
+    add $1, %rcx
+    movq %rcx, -64(%rbp)
     mov %r9, %r10
     jmp __kefir_runtime_func___kefir_bigint_trailing_zeros_label4
 __kefir_runtime_func___kefir_bigint_trailing_zeros_label14:
@@ -172,7 +174,7 @@ __kefir_runtime_func___kefir_bigint_trailing_zeros_label16:
     pop %rbp
     ret
 __kefir_runtime_func___kefir_bigint_trailing_zeros_label18:
-    movq -48(%rbp), %rax
+    movq -56(%rbp), %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

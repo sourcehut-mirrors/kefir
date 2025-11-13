@@ -99,7 +99,16 @@ static kefir_result_t find_block_dominance_frontier(struct kefir_mem *mem, struc
         kefir_bool_t is_dominator;
         REQUIRE_OK(kefir_codegen_target_ir_control_flow_is_dominator(control_flow, successor_block_ref, block_ref, &is_dominator));
         if (is_dominator) {
-            REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) successor_block_ref));
+            kefir_result_t res;
+            struct kefir_hashtreeset_iterator iter;
+            for (res = kefir_hashtreeset_iter(&control_flow->blocks[successor_block_ref].successors, &iter); res == KEFIR_OK;
+                res = kefir_hashtreeset_next(&iter)) {
+                ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, succ_block_ref, iter.entry);
+                REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) succ_block_ref));
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
         } else {
             REQUIRE_OK(kefir_hashset_add(mem, &control_flow->blocks[block_ref].dominance_frontier, (kefir_hashset_key_t) successor_block_ref));
         }

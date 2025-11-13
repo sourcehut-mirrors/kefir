@@ -26,6 +26,9 @@ __kefir_text_func_temp_begin:
 __kefir_func_temp_label0:
     call test1@PLT
 .loc 0 30 5
+__kefir_func_temp_label5:
+__kefir_func_temp_label4:
+__kefir_func_temp_label3:
 __kefir_func_temp_label2:
     mov $1, %rdi
     mov $2, %rsi
@@ -33,19 +36,21 @@ __kefir_func_temp_label2:
     xor %eax, %eax
     call test2@PLT
 .loc 0 31 5
-__kefir_func_temp_label3:
-    fldt __kefir_func_temp_label4(%rip)
-.loc 0 31 5
-__kefir_func_temp_label5:
-    fldt __kefir_func_temp_label6(%rip)
-.loc 0 31 5
+__kefir_func_temp_label8:
 __kefir_func_temp_label7:
+__kefir_func_temp_label6:
+    fldt __kefir_func_temp_label9(%rip)
+.loc 0 31 5
+__kefir_func_temp_label10:
+    fldt __kefir_func_temp_label11(%rip)
+.loc 0 31 5
+__kefir_func_temp_label12:
     fxch %st(1)
     fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 31 5
-__kefir_func_temp_label8:
+__kefir_func_temp_label13:
     sub $32, %rsp
     mov $3, %rdi
     mov $4, %rsi
@@ -56,7 +61,12 @@ __kefir_func_temp_label8:
     call test3@PLT
     add $32, %rsp
 .loc 0 32 5
-__kefir_func_temp_label9:
+__kefir_func_temp_label19:
+__kefir_func_temp_label18:
+__kefir_func_temp_label17:
+__kefir_func_temp_label16:
+__kefir_func_temp_label15:
+__kefir_func_temp_label14:
     mov $1, %rdi
     mov $2, %rsi
     mov $3, %rdx
@@ -65,23 +75,32 @@ __kefir_func_temp_label9:
     xor %eax, %eax
     call test4@PLT
 .loc 0 33 5
-__kefir_func_temp_label10:
+__kefir_func_temp_label23:
+__kefir_func_temp_label22:
+__kefir_func_temp_label21:
+__kefir_func_temp_label20:
     mov $1, %rdi
     mov $2, %rsi
     mov $3, %rdx
     call test5@PLT
 .loc 0 34 5
-__kefir_func_temp_label11:
-    movq __kefir_func_temp_label12(%rip), %xmm0
+__kefir_func_temp_label26:
+__kefir_func_temp_label25:
+__kefir_func_temp_label24:
+    movq __kefir_func_temp_label27(%rip), %xmm0
 .loc 0 34 5
-__kefir_func_temp_label13:
-    movd __kefir_func_temp_label14(%rip), %xmm1
+__kefir_func_temp_label28:
+    movd __kefir_func_temp_label29(%rip), %xmm1
 .loc 0 34 5
-__kefir_func_temp_label15:
-    movd __kefir_func_temp_label16(%rip), %xmm2
+__kefir_func_temp_label30:
+    movd __kefir_func_temp_label31(%rip), %xmm2
 .loc 0 34 5
-__kefir_func_temp_label18:
-__kefir_func_temp_label17:
+__kefir_func_temp_label37:
+__kefir_func_temp_label36:
+__kefir_func_temp_label35:
+__kefir_func_temp_label34:
+__kefir_func_temp_label33:
+__kefir_func_temp_label32:
     mov $1, %rdi
     mov $2, %rsi
     insertps $16, %xmm2, %xmm1
@@ -91,7 +110,8 @@ __kefir_func_temp_label17:
     mov $8, %r9
     mov $2, %rax
     call test6@PLT
-__kefir_func_temp_label19:
+__kefir_func_temp_label39:
+__kefir_func_temp_label38:
     mov $100, %rdi
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
@@ -99,25 +119,25 @@ __kefir_func_temp_label19:
     pop %rbp
     jmp test7@PLT
 __kefir_func_temp_label1:
-__kefir_func_temp_label20:
+__kefir_func_temp_label40:
 __kefir_text_func_temp_end:
 .section .rodata
     .align 8
-__kefir_func_temp_label4:
+__kefir_func_temp_label9:
     .quad 11529215046068469760
     .quad 16385
     .align 8
-__kefir_func_temp_label6:
+__kefir_func_temp_label11:
     .quad 0
     .quad 0
     .align 8
-__kefir_func_temp_label12:
+__kefir_func_temp_label27:
     .quad 4613937818241073152
     .align 4
-__kefir_func_temp_label14:
+__kefir_func_temp_label29:
     .long 1082130432
     .align 4
-__kefir_func_temp_label16:
+__kefir_func_temp_label31:
     .long 0
 .section .text
 

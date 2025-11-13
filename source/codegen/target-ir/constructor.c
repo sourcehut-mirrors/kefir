@@ -453,13 +453,15 @@ static kefir_result_t init_operand(struct constructor_state *state, struct code_
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
             REQUIRE(classification->class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected integral constant to have read operand class"));
             operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
-            operand->int_immediate = value->int_immediate;
+            operand->immediate.int_immediate = value->int_immediate;
+            operand->immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
             REQUIRE(classification->class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected integral constant to have read operand class"));
             operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER;
-            operand->uint_immediate = value->uint_immediate;
+            operand->immediate.uint_immediate = value->uint_immediate;
+            operand->immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
@@ -472,7 +474,8 @@ static kefir_result_t init_operand(struct constructor_state *state, struct code_
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(state->asmcmp_ctx, value->vreg.index, &vreg));
             if (vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
                 operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
-                operand->int_immediate = vreg->parameters.immediate_int;
+                operand->immediate.int_immediate = vreg->parameters.immediate_int;
+                REQUIRE_OK(init_variant(value->vreg.variant, value->vreg.high_half, &operand->immediate.variant));
             } else {
                 if (classification->class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ || classification->class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE) {
                     operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
@@ -687,7 +690,8 @@ static kefir_result_t link_vregs_impl(struct constructor_state *state, struct co
 
         if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
             operation.parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
-            operation.parameters[0].int_immediate = vreg2->parameters.immediate_int;
+            operation.parameters[0].immediate.int_immediate = vreg2->parameters.immediate_int;
+            operation.parameters[0].immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
         } else {
             operation.parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
             REQUIRE_OK(resolve_input_virtual_register(state, current_block_state, vreg2_idx, &operation.parameters[0].direct.value_ref));
@@ -837,7 +841,8 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                 REQUIRE_OK(kefir_asmcmp_virtual_register_get(state->asmcmp_ctx, vreg_idx, &vreg));
                 if (vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
                     operation.parameters[input_index].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
-                    operation.parameters[input_index].int_immediate = vreg->parameters.immediate_int;
+                    operation.parameters[input_index].immediate.int_immediate = vreg->parameters.immediate_int;
+                    operation.parameters[input_index].immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
                 } else {
                     if (classification.operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ || classification.operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE) {
                         operation.parameters[input_index].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
@@ -919,6 +924,10 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
     kefir_hashtable_key_t key;
     struct kefir_hashtable_iterator iter;
     struct asmcmp_vreg_state *vreg_state = &state->asmcmp_vregs[vreg_idx];
+    const struct kefir_asmcmp_virtual_register *vreg;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(state->asmcmp_ctx, vreg_idx, &vreg));
+    REQUIRE(vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER, KEFIR_OK);
+
     for (res = kefir_hashtable_iter(&vreg_state->block_lifetimes, &iter, &key, NULL);
         res == KEFIR_OK;
         res = kefir_hashtable_next(&iter, &key, NULL)) {
@@ -946,7 +955,7 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
         ASSIGN_DECL_CAST(struct code_block_state *, block_state,
             node->value);
 
-        if (!kefir_hashtable_has(&block_state->virtual_register_refs, (kefir_hashtree_key_t) block_ref)) {
+        if (!kefir_hashtable_has(&block_state->virtual_register_refs, (kefir_hashtree_key_t) vreg_idx)) {
             continue;
         }
         
@@ -1177,6 +1186,7 @@ static kefir_result_t free_link_phi_frame(struct kefir_mem *mem, struct kefir_li
 }
 
 static kefir_result_t link_phis(struct constructor_state *state) {      
+    REQUIRE_OK(kefir_list_clear(state->mem, &state->queue));
     REQUIRE_OK(kefir_list_on_remove(&state->queue, free_link_phi_frame, NULL));
     REQUIRE_OK(link_phis_impl(state));
     return KEFIR_OK;

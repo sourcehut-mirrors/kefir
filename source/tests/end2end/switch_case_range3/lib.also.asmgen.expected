@@ -271,19 +271,19 @@ __kefir_runtime_text_func___kefir_bigint_unsigned_compare_begin:
     push %r12
     push %r13
     push %r14
-    mov %rdx, %r12
-    mov %rsi, %r13
-    mov %rdi, %r14
-    mov %r12, %rdx
+    mov %rdx, %r11
+    mov %rsi, %rbx
+    mov %rdi, %r12
+    mov %r11, %rdx
     sub $-7, %rdx
     mov %rdx, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    mov %rax, %r11
-    mov %r11, %rbx
+    mov %rax, %r13
+    mov %r13, %r14
 __kefir_runtime_func___kefir_bigint_unsigned_compare_label2:
-    cmp $0, %rbx
+    cmp $0, %r14
     ja __kefir_runtime_func___kefir_bigint_unsigned_compare_label6
     xor %eax, %eax
     pop %r14
@@ -292,27 +292,27 @@ __kefir_runtime_func___kefir_bigint_unsigned_compare_label2:
     pop %rbx
     ret
 __kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
-    mov %rbx, %rax
+    mov %r14, %rax
     sub $1, %rax
-    mov %r14, %rdi
+    mov %r12, %rdi
     add %rax, %rdi
     movzxb (%rdi), %r10
-    mov %rbx, %rax
+    mov %r14, %rax
     sub $1, %rax
-    mov %r13, %rsi
+    mov %rbx, %rsi
     add %rax, %rsi
     movzxb (%rsi), %r9
-    cmp %r11, %rbx
+    cmp %r13, %r14
     je __kefir_runtime_func___kefir_bigint_unsigned_compare_label16
     mov %r10, %rcx
     mov %r9, %r8
 __kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     cmp %r8d, %ecx
     ja __kefir_runtime_func___kefir_bigint_unsigned_compare_label14
-    lea -1(%rbx), %rax
+    lea -1(%r14), %rax
     cmp %r8d, %ecx
     jb __kefir_runtime_func___kefir_bigint_unsigned_compare_label12
-    mov %rax, %rbx
+    mov %rax, %r14
     jmp __kefir_runtime_func___kefir_bigint_unsigned_compare_label2
 __kefir_runtime_func___kefir_bigint_unsigned_compare_label12:
     mov $-1, %rax
@@ -329,9 +329,9 @@ __kefir_runtime_func___kefir_bigint_unsigned_compare_label14:
     pop %rbx
     ret
 __kefir_runtime_func___kefir_bigint_unsigned_compare_label16:
-    mov %r12, %rcx
+    mov %r11, %rcx
     sub $1, %rcx
-    mov %r12, %rdx
+    mov %r11, %rdx
     sub $1, %rdx
     mov %rdx, %rax
     xor %edx, %edx

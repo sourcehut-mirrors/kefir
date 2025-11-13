@@ -227,17 +227,19 @@ __kefir_func_op_loop_begin_label2:
     add $1, %ecx
     movsx %al, %rdx
     cmp $91, %edx
-    je __kefir_func_op_loop_begin_label6
-    jmp __kefir_func_op_loop_begin_label4
+    jne __kefir_func_op_loop_begin_label4
+__kefir_func_op_loop_begin_label14:
+    mov %rcx, %rdx
+    jmp __kefir_func_op_loop_begin_label6
 __kefir_func_op_loop_begin_label4:
     movsx %al, %rax
     cmp $93, %eax
     je __kefir_func_op_loop_begin_label10
-    mov %rsi, %rcx
+    mov %rsi, %rdx
 __kefir_func_op_loop_begin_label6:
-    cmp $0, %ecx
+    cmp $0, %edx
     jbe __kefir_func_op_loop_begin_label8
-    mov %rcx, %rsi
+    mov %rdx, %rsi
     jmp __kefir_func_op_loop_begin_label2
 __kefir_func_op_loop_begin_label8:
     movq (%r8), %rax
@@ -258,7 +260,7 @@ __kefir_func_op_loop_begin_label8:
 __kefir_func_op_loop_begin_label10:
     mov %rsi, %rax
     add $-1, %eax
-    mov %rax, %rcx
+    mov %rax, %rdx
     jmp __kefir_func_op_loop_begin_label6
 __kefir_func_op_loop_begin_label12:
     lea 5128(%r8), %rdi
