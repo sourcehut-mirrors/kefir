@@ -10,6 +10,8 @@ typedef struct kefir_codegen_target_ir_block_control_flow {
     struct kefir_hashtreeset successors;
     kefir_codegen_target_ir_block_ref_t immediate_dominator;
     struct kefir_hashset dominance_frontier;
+    kefir_size_t linear_index;
+    kefir_size_t dominated_block_max_linear;
 } kefir_codegen_target_ir_block_control_flow_t;
 
 typedef struct kefir_codegen_target_ir_control_flow {
@@ -18,6 +20,7 @@ typedef struct kefir_codegen_target_ir_control_flow {
     struct kefir_hashtreeset indirect_jump_sources;
     struct kefir_hashtreeset indirect_jump_targets;
     struct kefir_hashtable dominator_tree;
+    struct kefir_hashtable dominator_cache;
 } kefir_codegen_target_ir_control_flow_t;
 
 kefir_result_t kefir_codegen_target_ir_control_flow_init(struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_code *);
@@ -29,7 +32,7 @@ kefir_result_t kefir_codegen_target_ir_control_flow_find_dominators(struct kefir
 kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct kefir_codegen_target_ir_control_flow *,
                                                      kefir_codegen_target_ir_block_ref_t,
                                                      kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);
-kefir_result_t kefir_codegen_target_ir_control_flow_find_closest_common_dominator(const struct kefir_codegen_target_ir_control_flow *,
+kefir_result_t kefir_codegen_target_ir_control_flow_find_closest_common_dominator(struct kefir_codegen_target_ir_control_flow *,
                                                        kefir_codegen_target_ir_block_ref_t,
                                                        kefir_codegen_target_ir_block_ref_t,
                                                        kefir_codegen_target_ir_block_ref_t *);

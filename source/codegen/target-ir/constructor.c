@@ -928,12 +928,14 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(state->asmcmp_ctx, vreg_idx, &vreg));
     REQUIRE(vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER, KEFIR_OK);
 
+    kefir_codegen_target_ir_block_ref_t use_dominator_block_ref = KEFIR_ID_NONE;
     for (res = kefir_hashtable_iter(&vreg_state->block_lifetimes, &iter, &key, NULL);
         res == KEFIR_OK;
         res = kefir_hashtable_next(&iter, &key, NULL)) {
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref,
             key);
         REQUIRE_OK(kefir_list_insert_after(state->mem, &state->queue, kefir_list_tail(&state->queue), (void *) (kefir_uptr_t) block_ref));
+        REQUIRE_OK(kefir_codegen_target_ir_control_flow_find_closest_common_dominator(&state->control_flow, use_dominator_block_ref, block_ref, &use_dominator_block_ref));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -968,6 +970,12 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
             REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) frontier_block_ref, &node));
             ASSIGN_DECL_CAST(struct code_block_state *, frontier_block_state,
                 node->value);
+
+            kefir_bool_t inside_of_use_region;
+            REQUIRE_OK(kefir_codegen_target_ir_control_flow_is_dominator(&state->control_flow, frontier_block_ref, use_dominator_block_ref, &inside_of_use_region));
+            if (!inside_of_use_region) {
+                continue;
+            }
             
             kefir_hashtable_value_t table_value;
             res = kefir_hashtable_at(&frontier_block_state->block_inputs, (kefir_hashtree_key_t) vreg_idx, &table_value);

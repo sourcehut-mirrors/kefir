@@ -14,7 +14,7 @@ factorial:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 103,
+#                    "instr_ref": 93,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -31,7 +31,7 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 102,
+#                    "instr_ref": 92,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -48,92 +48,7 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 101,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 100,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 99,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 98,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 97,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 96,
+#                    "instr_ref": 91,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -149,7 +64,7 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 95,
+#                    "instr_ref": 90,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -227,98 +142,12 @@ factorial:
 #            "block_ref": 1,
 #            "code": [
 #                {
-#                    "instr_ref": 14,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 95,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 10,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 96,
-#                                "aspect": {
-#                                    "type": "flags"
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 4,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 0,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdi"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 5,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 4,
+#                            "instr_ref": 0,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -451,7 +280,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 10,
+#                            "instr_ref": 91,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -554,7 +383,7 @@ factorial:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 14,
+#                            "instr_ref": 90,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -675,60 +504,6 @@ factorial:
 #            "block_ref": 3,
 #            "code": [
 #                {
-#                    "instr_ref": 34,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 2,
-#                            "value_ref": {
-#                                "instr_ref": 97,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 23,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 2,
-#                            "value_ref": {
-#                                "instr_ref": 16,
-#                                "aspect": {
-#                                    "type": "flags"
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 20,
 #                    "opcode": "mov",
 #                    "parameters": [
@@ -802,7 +577,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 23,
+#                            "instr_ref": 16,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -1144,7 +919,7 @@ factorial:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 34,
+#                            "instr_ref": 92,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1319,203 +1094,13 @@ factorial:
 #            "block_ref": 6,
 #            "code": [
 #                {
-#                    "instr_ref": 94,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 5,
-#                            "value_ref": {
-#                                "instr_ref": 101,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 10,
-#                            "value_ref": {
-#                                "instr_ref": 72,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 93,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 5,
-#                            "value_ref": {
-#                                "instr_ref": 100,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 10,
-#                            "value_ref": {
-#                                "instr_ref": 69,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 92,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 5,
-#                            "value_ref": {
-#                                "instr_ref": 103,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 10,
-#                            "value_ref": {
-#                                "instr_ref": 67,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 91,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 5,
-#                            "value_ref": {
-#                                "instr_ref": 99,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 10,
-#                            "value_ref": {
-#                                "instr_ref": 64,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 90,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 5,
-#                            "value_ref": {
-#                                "instr_ref": 102,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 10,
-#                            "value_ref": {
-#                                "instr_ref": 63,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 50,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 5,
 #                            "value_ref": {
-#                                "instr_ref": 98,
+#                                "instr_ref": 93,
 #                                "aspect": {
 #                                    "type": "direct_output",
 #                                    "index": 0
@@ -2008,32 +1593,6 @@ factorial:
 #            "block_ref": 10,
 #            "code": [
 #                {
-#                    "instr_ref": 66,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 6,
-#                            "value_ref": {
-#                                "instr_ref": 52,
-#                                "aspect": {
-#                                    "type": "flags"
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 63,
 #                    "opcode": "mov",
 #                    "parameters": [
@@ -2134,7 +1693,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 66,
+#                            "instr_ref": 52,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },

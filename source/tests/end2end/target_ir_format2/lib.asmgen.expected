@@ -170,158 +170,12 @@ test1:
 #            "block_ref": 1,
 #            "code": [
 #                {
-#                    "instr_ref": 20,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 31,
-#                                "aspect": {
-#                                    "type": "flags"
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 14,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 29,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 12,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 30,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 8,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 2,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdi"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 6,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 0,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rsi"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 7,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 6,
+#                            "instr_ref": 0,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -352,7 +206,7 @@ test1:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 8,
+#                            "instr_ref": 2,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -451,7 +305,7 @@ test1:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 12,
+#                            "instr_ref": 30,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -485,7 +339,7 @@ test1:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 14,
+#                            "instr_ref": 29,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -666,7 +520,7 @@ test1:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 20,
+#                            "instr_ref": 31,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -876,7 +730,7 @@ test2:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 59,
+#                    "instr_ref": 55,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -892,41 +746,7 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 58,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 57,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 56,
+#                    "instr_ref": 54,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -1041,76 +861,12 @@ test2:
 #            "block_ref": 1,
 #            "code": [
 #                {
-#                    "instr_ref": 8,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 2,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdi"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 6,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 0,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rsi"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 7,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 6,
+#                            "instr_ref": 0,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1141,7 +897,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 8,
+#                            "instr_ref": 2,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1365,93 +1121,13 @@ test2:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 55,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 1,
-#                            "value_ref": {
-#                                "instr_ref": 56,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 8,
-#                            "value_ref": {
-#                                "instr_ref": 50,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 54,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 1,
-#                            "value_ref": {
-#                                "instr_ref": 57,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        },
-#                        {
-#                            "block_ref": 8,
-#                            "value_ref": {
-#                                "instr_ref": 48,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 29,
 #                    "opcode": "phi",
 #                    "phi_links": [
 #                        {
 #                            "block_ref": 1,
 #                            "value_ref": {
-#                                "instr_ref": 58,
+#                                "instr_ref": 54,
 #                                "aspect": {
 #                                    "type": "direct_output",
 #                                    "index": 0
@@ -1489,7 +1165,7 @@ test2:
 #                        {
 #                            "block_ref": 1,
 #                            "value_ref": {
-#                                "instr_ref": 59,
+#                                "instr_ref": 55,
 #                                "aspect": {
 #                                    "type": "flags"
 #                                }
@@ -2067,72 +1743,12 @@ test2:
 #            "block_ref": 4,
 #            "code": [
 #                {
-#                    "instr_ref": 37,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 2,
-#                            "value_ref": {
-#                                "instr_ref": 22,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 35,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 2,
-#                            "value_ref": {
-#                                "instr_ref": 17,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 36,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 35,
+#                            "instr_ref": 17,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2163,7 +1779,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 37,
+#                            "instr_ref": 22,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2221,44 +1837,12 @@ test2:
 #            "block_ref": 6,
 #            "code": [
 #                {
-#                    "instr_ref": 41,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 3,
-#                            "value_ref": {
-#                                "instr_ref": 24,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rcx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 42,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 41,
+#                            "instr_ref": 24,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2353,72 +1937,12 @@ test2:
 #            "block_ref": 8,
 #            "code": [
 #                {
-#                    "instr_ref": 50,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 4,
-#                            "value_ref": {
-#                                "instr_ref": 38,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 48,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 4,
-#                            "value_ref": {
-#                                "instr_ref": 36,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 49,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 48,
+#                            "instr_ref": 36,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2449,7 +1973,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 50,
+#                            "instr_ref": 38,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2857,226 +2381,12 @@ test3:
 #            "block_ref": 1,
 #            "code": [
 #                {
-#                    "instr_ref": 34,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 51,
-#                                "aspect": {
-#                                    "type": "flags"
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 25,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 49,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 22,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 50,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "local_variable",
-#                                "identifier": 2,
-#                                "offset": 0
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 20,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 10,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rsi"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 18,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 8,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdi"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 16,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 4,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rcx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 14,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 2,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 15,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 14,
+#                            "instr_ref": 2,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3107,7 +2417,7 @@ test3:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 16,
+#                            "instr_ref": 4,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3138,7 +2448,7 @@ test3:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 18,
+#                            "instr_ref": 8,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3169,7 +2479,7 @@ test3:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 20,
+#                            "instr_ref": 10,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3201,7 +2511,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 22,
+#                            "instr_ref": 50,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3239,7 +2549,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 22,
+#                            "instr_ref": 50,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3277,7 +2587,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 25,
+#                            "instr_ref": 49,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3315,7 +2625,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 25,
+#                            "instr_ref": 49,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3353,7 +2663,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 25,
+#                            "instr_ref": 49,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3386,7 +2696,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 25,
+#                            "instr_ref": 49,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3419,7 +2729,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 22,
+#                            "instr_ref": 50,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3448,7 +2758,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 22,
+#                            "instr_ref": 50,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3556,7 +2866,7 @@ test3:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 34,
+#                            "instr_ref": 51,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -3975,44 +3285,12 @@ test4:
 #            "block_ref": 1,
 #            "code": [
 #                {
-#                    "instr_ref": 4,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 0,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdi"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 5,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 4,
+#                            "instr_ref": 0,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4608,76 +3886,12 @@ init_array:
 #            "block_ref": 1,
 #            "code": [
 #                {
-#                    "instr_ref": 4,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 12,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rbx"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 2,
-#                    "opcode": "phi",
-#                    "phi_links": [
-#                        {
-#                            "block_ref": 0,
-#                            "value_ref": {
-#                                "instr_ref": 13,
-#                                "aspect": {
-#                                    "type": "direct_output",
-#                                    "index": 0
-#                                }
-#                            }
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rax"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 3,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 2,
+#                            "instr_ref": 13,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4693,7 +3907,7 @@ init_array:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 4,
+#                            "instr_ref": 12,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4929,7 +4143,7 @@ init_array:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 2,
+#                            "instr_ref": 13,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4945,7 +4159,7 @@ init_array:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 4,
+#                            "instr_ref": 12,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
