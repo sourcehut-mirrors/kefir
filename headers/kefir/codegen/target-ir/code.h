@@ -112,6 +112,25 @@ typedef enum kefir_codegen_target_ir_value_type_kind {
     KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY
 } kefir_codegen_target_ir_value_type_kind_t;
 
+typedef struct kefir_codegen_target_ir_value_ref {
+    kefir_codegen_target_ir_instruction_ref_t instr_ref;
+    kefir_uint32_t aspect;
+} kefir_codegen_target_ir_value_ref_t;
+typedef enum kefir_codegen_target_ir_allocation_constraint_type {
+    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT,
+    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT,
+    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT,
+    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS
+} kefir_codegen_target_ir_allocation_constraint_type_t;
+
+typedef struct kefir_codegen_target_ir_allocation_constraint {
+    kefir_codegen_target_ir_allocation_constraint_type_t type;
+    union {
+        kefir_codegen_target_ir_physical_register_t physical_register;
+        struct kefir_codegen_target_ir_value_ref value_ref;
+    };
+} kefir_codegen_target_ir_allocation_constraint_t;
+
 typedef struct kefir_codegen_target_ir_value_type {
     kefir_codegen_target_ir_value_type_kind_t kind;
     kefir_codegen_target_ir_operand_variant_t variant;
@@ -129,6 +148,8 @@ typedef struct kefir_codegen_target_ir_value_type {
             kefir_int64_t offset;
         } local_variable;
     } parameters;
+
+    struct kefir_codegen_target_ir_allocation_constraint constraint;
 } kefir_codegen_target_ir_value_type_t;
 
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_NONE ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_NONE) << 16))
@@ -144,11 +165,6 @@ typedef struct kefir_codegen_target_ir_value_type {
         .instr_ref = ((kefir_uint64_t) (_encoded)) >> 32, \
         .aspect = (kefir_uint32_t) (_encoded) \
     })
-
-typedef struct kefir_codegen_target_ir_value_ref {
-    kefir_codegen_target_ir_instruction_ref_t instr_ref;
-    kefir_uint32_t aspect;
-} kefir_codegen_target_ir_value_ref_t;
 
 typedef struct kefir_codegen_target_ir_phi_node {
     struct kefir_hashtable links;
@@ -269,20 +285,6 @@ typedef struct kefir_codegen_target_ir_block {
     struct kefir_hashtreeset public_labels;
 } kefir_codegen_target_ir_block_t;
 
-typedef enum kefir_codegen_target_ir_allocation_constraint_type {
-    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT,
-    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT,
-    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS
-} kefir_codegen_target_ir_allocation_constraint_type_t;
-
-typedef struct kefir_codegen_target_ir_allocation_constraint {
-    kefir_codegen_target_ir_allocation_constraint_type_t type;
-    union {
-        kefir_codegen_target_ir_physical_register_t physical_register;
-        struct kefir_codegen_target_ir_value_ref value_ref;
-    };
-} kefir_codegen_target_ir_allocation_constraint_t;
-
 typedef struct kefir_codegen_target_ir_block_terminator_props {
     kefir_bool_t block_terminator;
     kefir_bool_t function_terminator;
@@ -318,7 +320,6 @@ typedef struct kefir_codegen_target_ir_code {
     kefir_size_t blocks_capacity;
 
     struct kefir_hashtable attributes;
-    struct kefir_hashtable constraints;
     struct kefir_codegen_target_ir_value_type *value_types;
     kefir_size_t value_types_length;
     kefir_size_t value_types_capacity;
@@ -376,7 +377,7 @@ kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *, struc
 kefir_result_t kefir_codegen_target_ir_code_add_constraint(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_allocation_constraint *);
 kefir_result_t kefir_codegen_target_ir_code_add_instruction_attribute(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_native_id_t);
 kefir_result_t kefir_codegen_target_ir_code_instruction_output(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, kefir_size_t, kefir_codegen_target_ir_value_ref_t *, const struct kefir_codegen_target_ir_value_type **);
-kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type **, const struct kefir_codegen_target_ir_allocation_constraint **);
+kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type **);
 kefir_result_t kefir_codegen_target_ir_code_replace_instruction(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_instruction_ref_t);
 
 kefir_result_t kefir_codegen_target_ir_code_inline_assembly_text_fragment(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,

@@ -28,20 +28,6 @@ struct instruction_attributes {
     struct kefir_hashset attributes;
 };
 
-static kefir_result_t free_constraint(struct kefir_mem *mem, struct kefir_hashtable *table,
-                                                          kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
-    UNUSED(table);
-    UNUSED(key);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_allocation_constraint *, constraint,
-        value);
-    REQUIRE(constraint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR allocation constraint"));
-
-    KEFIR_FREE(mem, constraint);
-    return KEFIR_OK;
-}
-
 static kefir_result_t free_attributes(struct kefir_mem *mem, struct kefir_hashtable *table,
                                                           kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
     UNUSED(table);
@@ -73,8 +59,6 @@ kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_
     code->entry_block = KEFIR_ID_NONE;
     code->klass = klass;
 
-    REQUIRE_OK(kefir_hashtable_init(&code->constraints, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashtable_on_removal(&code->constraints, free_constraint, NULL));
     REQUIRE_OK(kefir_hashtable_init(&code->attributes, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&code->attributes, free_attributes, NULL));
     return KEFIR_OK;
@@ -98,7 +82,6 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
         REQUIRE_OK(kefir_hashset_free(mem, &code->blocks[i].phi_refs));
     }
     REQUIRE_OK(kefir_hashtable_free(mem, &code->attributes));
-    REQUIRE_OK(kefir_hashtable_free(mem, &code->constraints));
     KEFIR_FREE(mem, code->value_types);
     KEFIR_FREE(mem, code->blocks);
     KEFIR_FREE(mem, code->code);
@@ -112,7 +95,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_block(struct kefir_mem *mem, str
     REQUIRE(block_ref_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR block reference"));
 
     if (code->blocks_length + 1 >= code->blocks_capacity) {
-        kefir_size_t new_capacity = MAX(code->blocks_capacity * 2, 32);
+        kefir_size_t new_capacity = MAX(code->blocks_capacity * 9 / 8, 32);
         struct kefir_codegen_target_ir_block *new_blocks = KEFIR_REALLOC(mem, code->blocks, sizeof(struct kefir_codegen_target_ir_block) * new_capacity);
         REQUIRE(new_blocks != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR code blocks"));
         code->blocks_capacity = new_capacity;
@@ -310,7 +293,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
     struct kefir_codegen_target_ir_instruction *after_instr = NULL, *instr = NULL;
 
     if (code->code_length + 1 >= code->code_capacity) {
-        kefir_size_t new_capacity = MAX(code->code_capacity * 2, 128);
+        kefir_size_t new_capacity = MAX(code->code_capacity * 9 / 8, 128);
         struct kefir_codegen_target_ir_instruction *new_code = KEFIR_REALLOC(mem, code->code, sizeof(struct kefir_codegen_target_ir_instruction) * new_capacity);
         REQUIRE(new_code != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR code"));
         code->code_capacity = new_capacity;
@@ -588,7 +571,7 @@ kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *mem, st
     REQUIRE(value_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR value type"));
 
     if (code->value_types_length >= code->value_types_capacity) {
-        kefir_size_t new_capacity = MAX(code->value_types_capacity * 2, 128);
+        kefir_size_t new_capacity = MAX(code->value_types_capacity * 9 / 8, 128);
         struct kefir_codegen_target_ir_value_type *new_types = KEFIR_REALLOC(mem, code->value_types, sizeof(struct kefir_codegen_target_ir_value_type) * new_capacity);
         REQUIRE(new_types != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR value type"));
         code->value_types = new_types;
@@ -609,45 +592,39 @@ kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *mem, st
 kefir_result_t kefir_codegen_target_ir_code_add_constraint(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, const struct kefir_codegen_target_ir_allocation_constraint *constraint) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE && value_ref.instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction reference"));
     REQUIRE(constraint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR allocation constraint"));
 
     kefir_hashtable_value_t table_value;
-    kefir_result_t res = kefir_hashtable_at(&code->constraints, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &table_value);
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
-        ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_allocation_constraint *, current_constraint,
-            table_value);
-
-        switch (current_constraint->type) {
-            case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT:
-                REQUIRE(constraint->type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT || current_constraint->physical_register == constraint->physical_register,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Conflicting target IR allocation constraints specified"));
-                break;
-
-            case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT:
-                if (constraint->type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS) {
-                    *current_constraint = *constraint;
-                }
-                break;
-
-            case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS:
-                if (constraint->type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS) {
-                    *current_constraint = *constraint;
-                }
-                break;
-        }
-        return KEFIR_OK;
+    kefir_result_t res = kefir_hashtable_at(&code->code[value_ref.instr_ref].aspects, (kefir_hashtable_key_t) value_ref.aspect, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find target IR value reference");
     }
+    REQUIRE_OK(res);
+    struct kefir_codegen_target_ir_value_type *value_type = &code->value_types[(kefir_size_t) table_value];
 
-    struct kefir_codegen_target_ir_allocation_constraint *constraint_copy = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_allocation_constraint));
-    REQUIRE(constraint_copy != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR allocation constraint"));
-    memcpy(constraint_copy, constraint, sizeof(struct kefir_codegen_target_ir_allocation_constraint));
+    switch (value_type->constraint.type) {
+        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT:
+            // Intentionally left blank
+            break;
 
-    res = kefir_hashtable_insert(mem, &code->constraints, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), (kefir_hashtable_value_t) constraint_copy);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, constraint_copy);
-        return res;
-    });
+        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT:
+            REQUIRE(constraint->type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT || value_type->constraint.physical_register == constraint->physical_register,
+                KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Conflicting target IR allocation constraints specified"));
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT:
+            if (constraint->type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS) {
+                value_type->constraint = *constraint;
+            }
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS:
+            if (constraint->type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS) {
+                value_type->constraint = *constraint;
+            }
+            break;
+    }
     return KEFIR_OK;
 }
 
@@ -686,10 +663,10 @@ kefir_result_t kefir_codegen_target_ir_code_instruction_output(const struct kefi
         .instr_ref = instr_ref,
         .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(output_index)
     };
-    kefir_result_t res = kefir_codegen_target_ir_code_value_props(code, output_value_ref, value_type_ptr, NULL);
+    kefir_result_t res = kefir_codegen_target_ir_code_value_props(code, output_value_ref, value_type_ptr);
     if (res == KEFIR_NOT_FOUND) {
         output_value_ref.aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(output_index);
-        res = kefir_codegen_target_ir_code_value_props(code, output_value_ref, value_type_ptr, NULL);
+        res = kefir_codegen_target_ir_code_value_props(code, output_value_ref, value_type_ptr);
         if (res == KEFIR_NOT_FOUND) {
             res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find specified target IR instruction output");
         }
@@ -700,7 +677,7 @@ kefir_result_t kefir_codegen_target_ir_code_instruction_output(const struct kefi
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, const struct kefir_codegen_target_ir_value_type **value_type_ptr, const struct kefir_codegen_target_ir_allocation_constraint **constraint_ptr) {
+kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, const struct kefir_codegen_target_ir_value_type **value_type_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE && value_ref.instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR value reference"));
 
@@ -711,14 +688,6 @@ kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codeg
     }
     REQUIRE_OK(res);
     ASSIGN_PTR(value_type_ptr, &code->value_types[(kefir_size_t) table_value]);
-
-    res = kefir_hashtable_at(&code->constraints, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &table_value);
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
-        ASSIGN_PTR(constraint_ptr, (const struct kefir_codegen_target_ir_allocation_constraint *) table_value);
-    } else {
-        ASSIGN_PTR(constraint_ptr, NULL);
-    }
     return KEFIR_OK;
 }
 
@@ -727,7 +696,7 @@ static kefir_result_t value_ref_repace_use(const struct kefir_codegen_target_ir_
         kefir_result_t res = kefir_codegen_target_ir_code_value_props(code, (kefir_codegen_target_ir_value_ref_t) {
             .instr_ref = to_instr_ref,
             .aspect = value_ref->aspect
-        }, NULL, NULL);
+        }, NULL);
         if (res == KEFIR_NOT_FOUND) {
             res = KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to replace target IR instruction use with missing value aspect");
         }
@@ -792,7 +761,7 @@ static kefir_result_t replace_uses(struct kefir_mem *mem, struct kefir_codegen_t
                 res = kefir_codegen_target_ir_code_value_props(code, (kefir_codegen_target_ir_value_ref_t) {
                     .instr_ref = to_instr_ref,
                     .aspect = value_ref.aspect
-                }, NULL, NULL);
+                }, NULL);
                 if (res == KEFIR_NOT_FOUND) {
                     res = KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to replace target IR instruction use with missing value aspect");
                 }

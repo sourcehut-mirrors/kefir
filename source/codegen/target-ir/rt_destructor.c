@@ -75,6 +75,7 @@ static kefir_result_t apply_virtual_register_constraint(struct rt_destructor_sta
                 break;
 
             case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS:
+            case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT:
                 // Intentionally left blank
                 break;
         }
@@ -128,8 +129,7 @@ static kefir_result_t allocate_value_virtual_register(struct rt_destructor_state
 
 static kefir_result_t resolve_value_virtual_register(struct rt_destructor_state *state, struct kefir_codegen_target_ir_value_ref value_ref, kefir_asmcmp_virtual_register_index_t *vreg_idx_ptr) {
     const struct kefir_codegen_target_ir_value_type *value_type;
-    const struct kefir_codegen_target_ir_allocation_constraint *allocation_constraint;
-    REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, value_ref, &value_type, &allocation_constraint));
+    REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, value_ref, &value_type));
     if (value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE) {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(state->mem, state->asmcmp_ctx, value_type->parameters.local_variable.identifier, value_type->parameters.local_variable.offset, vreg_idx_ptr));
         return KEFIR_OK;
@@ -141,7 +141,7 @@ static kefir_result_t resolve_value_virtual_register(struct rt_destructor_state 
         REQUIRE_OK(res);
         ASSIGN_PTR(vreg_idx_ptr, (kefir_asmcmp_virtual_register_index_t) table_value);
     } else {
-        REQUIRE_OK(allocate_value_virtual_register(state, value_ref, value_type, allocation_constraint, vreg_idx_ptr));
+        REQUIRE_OK(allocate_value_virtual_register(state, value_ref, value_type, &value_type->constraint, vreg_idx_ptr));
     }
 
     return KEFIR_OK;
@@ -423,7 +423,7 @@ static kefir_result_t map_phis_unconditional(struct rt_destructor_state *state, 
         REQUIRE_OK(kefir_codegen_target_ir_code_phi_link_for(state->code, phi_ref, block_state->block_ref, &link_value_ref));
 
         const struct kefir_codegen_target_ir_value_type *value_type;
-        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, link_value_ref, &value_type, NULL));
+        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, link_value_ref, &value_type));
         if (link_value_ref.aspect != KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS && value_type->kind != KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE) {
             kefir_asmcmp_virtual_register_index_t src_vreg, dst_vreg;
             REQUIRE_OK(resolve_value_virtual_register(state, link_value_ref, &src_vreg));
@@ -528,9 +528,9 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
                 } else {
                     kefir_asmcmp_virtual_register_index_t read_vreg = KEFIR_ASMCMP_INDEX_NONE;
                     if (instr->operation.parameters[input_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
-                        const struct kefir_codegen_target_ir_allocation_constraint *constraint;
-                        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, instr->operation.parameters[input_index].direct.value_ref, NULL, &constraint));
-                        if (constraint->type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT && constraint->physical_register == classification.operands[i].implicit_params.phreg) {
+                        const struct kefir_codegen_target_ir_value_type *value_type;
+                        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, instr->operation.parameters[input_index].direct.value_ref, &value_type));
+                        if (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT && value_type->constraint.physical_register == classification.operands[i].implicit_params.phreg) {
                             REQUIRE_OK(resolve_value_virtual_register(state, instr->operation.parameters[input_index].direct.value_ref, &read_vreg));
                         }
                     }

@@ -243,6 +243,8 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
         });
 
         control_flow->blocks[i].immediate_dominator = KEFIR_ID_NONE;
+        control_flow->blocks[i].linear_index = (kefir_size_t) -1ll;
+        control_flow->blocks[i].dominated_block_max_linear = (kefir_size_t) -1ll;
     }
 
     for (kefir_size_t i = 0; i < control_flow->code->blocks_length; i++) {
@@ -342,7 +344,13 @@ kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct ke
     if (dominated_block == dominator_block) {
         *result_ptr = true;
     } else if (dominated_block != KEFIR_ID_NONE && dominator_block != KEFIR_ID_NONE && structure->blocks[dominated_block].immediate_dominator != KEFIR_ID_NONE) {
-        *result_ptr = structure->blocks[dominator_block].linear_index < structure->blocks[dominated_block].linear_index && structure->blocks[dominated_block].linear_index < structure->blocks[dominator_block].linear_index;
+        kefir_size_t linear_index = structure->blocks[dominator_block].linear_index;
+        kefir_size_t dominated_block_max_linear = structure->blocks[dominator_block].dominated_block_max_linear;
+        kefir_size_t dominated_linear = structure->blocks[dominated_block].linear_index;
+        *result_ptr = linear_index != (kefir_size_t) -1ll &&
+            dominated_block_max_linear != (kefir_size_t) -1ll &&
+            linear_index < dominated_linear &&
+            dominated_linear < dominated_block_max_linear;
     } else {
         *result_ptr = false;
     }

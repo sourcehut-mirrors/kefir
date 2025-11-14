@@ -500,17 +500,19 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                 }
                 REQUIRE_OK(kefir_json_output_object_end(json));
 
-                const struct kefir_codegen_target_ir_allocation_constraint *constraint = NULL;
-                REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, NULL, &constraint));
-                if (constraint != NULL) {
+                if (value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT) {
                     REQUIRE_OK(kefir_json_output_object_key(json, "constraint"));
                     REQUIRE_OK(kefir_json_output_object_begin(json));
                     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-                    switch (constraint->type) {
+                    switch (value_type->constraint.type) {
+                        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT:
+                            // Intentionally left blank
+                            break;
+
                         case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT: {
                             REQUIRE_OK(kefir_json_output_string(json, "requirement"));
                             const char *mnemonic;
-                            REQUIRE_OK(code->klass->register_mnemonic(constraint->physical_register, &mnemonic, code->klass->payload));
+                            REQUIRE_OK(code->klass->register_mnemonic(value_type->constraint.physical_register, &mnemonic, code->klass->payload));
                             REQUIRE_OK(kefir_json_output_object_key(json, "register"));
                             REQUIRE_OK(kefir_json_output_string(json, mnemonic));
                         } break;
@@ -518,7 +520,7 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                         case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT: {
                             REQUIRE_OK(kefir_json_output_string(json, "hint"));
                             const char *mnemonic;
-                            REQUIRE_OK(code->klass->register_mnemonic(constraint->physical_register, &mnemonic, code->klass->payload));
+                            REQUIRE_OK(code->klass->register_mnemonic(value_type->constraint.physical_register, &mnemonic, code->klass->payload));
                             REQUIRE_OK(kefir_json_output_object_key(json, "register"));
                             REQUIRE_OK(kefir_json_output_string(json, mnemonic));
                         } break;
