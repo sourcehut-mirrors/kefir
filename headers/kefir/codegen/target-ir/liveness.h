@@ -4,8 +4,6 @@
 #include "kefir/codegen/target-ir/control_flow.h"
 
 typedef struct kefir_codegen_target_ir_block_liveness {
-    struct kefir_hashset use;
-    struct kefir_hashset def;
     struct kefir_hashset live_in;
     struct kefir_hashset live_out;
 } kefir_codegen_target_ir_block_liveness_t;

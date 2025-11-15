@@ -42,6 +42,7 @@ struct asmcmp_instr_state {
 struct asmcmp_vreg_state {
     struct kefir_codegen_target_ir_value_ref placeholder_value;
     struct kefir_hashtable block_lifetimes;
+    kefir_codegen_target_ir_block_ref_t use_dominator_block_ref;
 };
 
 struct constructor_state {
@@ -940,13 +941,15 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(state->asmcmp_ctx, vreg_idx, &vreg));
     REQUIRE(vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER, KEFIR_OK);
 
-    kefir_codegen_target_ir_block_ref_t use_dominator_block_ref = KEFIR_ID_NONE;
     for (res = kefir_hashtable_iter(&vreg_state->block_lifetimes, &iter, &key, NULL);
         res == KEFIR_OK;
         res = kefir_hashtable_next(&iter, &key, NULL)) {
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref,
             key);
-        REQUIRE_OK(kefir_codegen_target_ir_control_flow_find_closest_common_dominator(&state->control_flow, use_dominator_block_ref, block_ref, &use_dominator_block_ref));
+        if (block_ref != state->control_flow.code->entry_block && state->control_flow.blocks[block_ref].immediate_dominator == KEFIR_ID_NONE) {
+            continue;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_control_flow_find_closest_common_dominator(&state->control_flow, vreg_state->use_dominator_block_ref, block_ref, &vreg_state->use_dominator_block_ref));
 
         struct kefir_hashtree_node *node;
         REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) block_ref, &node));
@@ -991,7 +994,7 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
                 node->value);
 
             kefir_bool_t inside_of_use_region;
-            REQUIRE_OK(kefir_codegen_target_ir_control_flow_is_dominator(&state->control_flow, frontier_block_ref, use_dominator_block_ref, &inside_of_use_region));
+            REQUIRE_OK(kefir_codegen_target_ir_control_flow_is_dominator(&state->control_flow, frontier_block_ref, vreg_state->use_dominator_block_ref, &inside_of_use_region));
             if (!inside_of_use_region) {
                 continue;
             }
@@ -1059,7 +1062,6 @@ static kefir_result_t push_phi_link_frame(struct constructor_state *state, kefir
 }
 
 static kefir_result_t find_link_for(struct constructor_state *state, struct phi_link_frame *frame, kefir_asmcmp_virtual_register_index_t vreg_idx, struct kefir_codegen_target_ir_value_ref *value_ref) {
-
     for (; frame != NULL; frame = frame->parent) {
         kefir_hashtable_value_t table_value;
         kefir_result_t res = kefir_hashtable_at(&frame->content, (kefir_hashtable_key_t) vreg_idx, &table_value);
@@ -1080,7 +1082,7 @@ static kefir_result_t find_link_for(struct constructor_state *state, struct phi_
             .parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
             .parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE
         };
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, state->code->entry_block,
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, vreg_state->use_dominator_block_ref,
             KEFIR_ID_NONE,
             &operation, &vreg_state->placeholder_value.instr_ref));
         vreg_state->placeholder_value.aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0);
@@ -1298,6 +1300,7 @@ kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *mem, str
         });
 
         state.asmcmp_vregs[i].placeholder_value.instr_ref = KEFIR_ID_NONE;
+        state.asmcmp_vregs[i].use_dominator_block_ref = KEFIR_ID_NONE;
     }
 
     REQUIRE_CHAIN(&res, code_construct(&state));
