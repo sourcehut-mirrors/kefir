@@ -432,6 +432,8 @@ kefir_result_t kefir_codegen_target_ir_code_phi_attach(struct kefir_mem *mem, st
     }
 
     REQUIRE_OK(kefir_hashtable_insert(mem, &instr->operation.phi_node.links, (kefir_hashtable_key_t) block_ref, (kefir_hashtable_value_t) value_ref_encoded));
+
+    REQUIRE_OK(record_uses(mem, code, instr_ref, true));
     return KEFIR_OK;
 }
 

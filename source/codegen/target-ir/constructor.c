@@ -952,8 +952,7 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
         REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) block_ref, &node));
         ASSIGN_DECL_CAST(struct code_block_state *, block_state,
             node->value);
-        if (kefir_hashtable_has(&block_state->virtual_register_refs, (kefir_hashtable_key_t) vreg_idx) &&
-            !kefir_hashtable_has(&block_state->block_inputs, (kefir_hashtable_key_t) vreg_idx)) {
+        if (kefir_hashtable_has(&block_state->virtual_register_refs, (kefir_hashtable_key_t) vreg_idx)) {
             REQUIRE_OK(kefir_list_insert_after(state->mem, &state->queue, kefir_list_tail(&state->queue), (void *) (kefir_uptr_t) block_ref));
         }
     }
@@ -1117,20 +1116,7 @@ static kefir_result_t link_successor_phis(struct constructor_state *state, struc
             struct kefir_codegen_target_ir_value_ref value_ref;
             REQUIRE_OK(find_link_for(state, frame, vreg_idx, &value_ref));
             
-            struct kefir_hashtreeset_iterator pred_iter;
-            REQUIRE_OK(kefir_hashtreeset_iter(&state->control_flow.blocks[successor_block_ref].predecessors, &pred_iter));
-            res = kefir_hashtreeset_next(&pred_iter);
-            kefir_bool_t single_pred = true;
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-                single_pred = false;
-            }
-            if (single_pred) {
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(state->mem, state->code, value_ref.instr_ref, phi_instr_ref));
-                REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(state->mem, state->code, phi_instr_ref));
-            } else {
-                REQUIRE_OK(kefir_codegen_target_ir_code_phi_attach(state->mem, state->code, phi_instr_ref, block_ref, value_ref));
-            }
+            REQUIRE_OK(kefir_codegen_target_ir_code_phi_attach(state->mem, state->code, phi_instr_ref, block_ref, value_ref));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
