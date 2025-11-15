@@ -103,9 +103,7 @@ kefir_result_t kefir_hashset_clear(struct kefir_mem *mem, struct kefir_hashset *
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
 
-    for (kefir_size_t i = 0; i < hashset->capacity; i++) {
-        hashset->entries[i].state = KEFIR_HASHTABLE_ENTRY_EMPTY;
-    }
+    memset(hashset->entries, 0, sizeof(struct kefir_hashset_entry) * hashset->capacity);
     hashset->occupied = 0;
     return KEFIR_OK;
 }
