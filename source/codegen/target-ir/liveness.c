@@ -136,14 +136,14 @@ kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *mem, con
             kefir_result_t res = propagate_instr_liveness(mem, control_flow, liveness, instr_ref, &queue, &visited);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 kefir_list_free(mem, &queue);
-                kefir_hashset_clear(mem, &visited);
+                kefir_hashset_free(mem, &visited);
                 return res;
             });
         }
     }
-    kefir_result_t res = kefir_hashset_clear(mem, &visited);
+    kefir_result_t res = kefir_hashset_free(mem, &visited);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashset_clear(mem, &visited);
+        kefir_hashset_free(mem, &visited);
         return res;
     });
     REQUIRE_OK(kefir_list_free(mem, &queue));
