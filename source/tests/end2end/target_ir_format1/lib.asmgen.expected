@@ -14,7 +14,7 @@ factorial:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 161,
+#                    "instr_ref": 93,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -31,7 +31,7 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 160,
+#                    "instr_ref": 92,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -48,41 +48,7 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 159,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 158,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 157,
+#                    "instr_ref": 91,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -98,7 +64,7 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 156,
+#                    "instr_ref": 90,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -314,7 +280,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 157,
+#                            "instr_ref": 91,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -417,7 +383,7 @@ factorial:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 156,
+#                            "instr_ref": 90,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -953,7 +919,7 @@ factorial:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 158,
+#                            "instr_ref": 92,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1134,7 +1100,7 @@ factorial:
 #                        {
 #                            "block_ref": 5,
 #                            "value_ref": {
-#                                "instr_ref": 159,
+#                                "instr_ref": 93,
 #                                "aspect": {
 #                                    "type": "direct_output",
 #                                    "index": 0

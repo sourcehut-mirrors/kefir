@@ -85,38 +85,6 @@ static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_codegen_t
     return KEFIR_OK;
 }
 
-static kefir_result_t find_block_dominance_frontier(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow, kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_list *queue, struct kefir_hashset *visited) {
-    for (struct kefir_list_entry *head = kefir_list_head(queue);
-        head != NULL;
-        head = kefir_list_head(queue)) {
-        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref,
-            (kefir_uptr_t) head->value);
-        REQUIRE_OK(kefir_list_pop(mem, queue, head));
-        if (kefir_hashset_has(visited, (kefir_hashset_key_t) successor_block_ref)) {
-            continue;
-        }
-        REQUIRE_OK(kefir_hashset_add(mem, visited, (kefir_hashset_key_t) successor_block_ref));
-
-        kefir_bool_t is_dominator;
-        REQUIRE_OK(kefir_codegen_target_ir_control_flow_is_dominator(control_flow, successor_block_ref, block_ref, &is_dominator));
-        if (is_dominator) {
-            kefir_result_t res;
-            struct kefir_hashtreeset_iterator iter;
-            for (res = kefir_hashtreeset_iter(&control_flow->blocks[successor_block_ref].successors, &iter); res == KEFIR_OK;
-                res = kefir_hashtreeset_next(&iter)) {
-                ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, succ_block_ref, iter.entry);
-                REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) succ_block_ref));
-            }
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-            }
-        } else {
-            REQUIRE_OK(kefir_hashset_add(mem, &control_flow->blocks[block_ref].dominance_frontier, (kefir_hashset_key_t) successor_block_ref));
-        }
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t find_dominance_frontier(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow) {
     struct kefir_list queue;
     struct kefir_hashset visited;
@@ -128,15 +96,36 @@ static kefir_result_t find_dominance_frontier(struct kefir_mem *mem, struct kefi
             continue;
         }
 
-        kefir_result_t res = kefir_list_clear(mem, &queue);
-        REQUIRE_CHAIN(&res, kefir_hashset_clear(mem, &visited));
-        REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &queue, kefir_list_tail(&queue), (void *) (kefir_uptr_t) block_ref));
-        REQUIRE_CHAIN(&res, find_block_dominance_frontier(mem, control_flow, block_ref, &queue, &visited));
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_list_free(mem, &queue);
-            kefir_hashset_free(mem, &visited);
-            return res;
-        });
+
+        struct kefir_hashtreeset_iterator pred_iter;
+        kefir_result_t res = kefir_hashtreeset_iter(&control_flow->blocks[block_ref].predecessors, &pred_iter);
+        if (res == KEFIR_ITERATOR_END) {
+            continue;
+        }
+        res = kefir_hashtreeset_next(&pred_iter);
+        kefir_bool_t single_pred = true;
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+            single_pred = false;
+        }
+        if (single_pred) {
+            continue;
+        }
+
+        struct kefir_hashtreeset_iterator iter;
+        for (res = kefir_hashtreeset_iter(&control_flow->blocks[block_ref].predecessors, &iter); res == KEFIR_OK;
+            res = kefir_hashtreeset_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, iter_block_ref, iter.entry);
+            if (iter_block_ref != control_flow->code->entry_block && control_flow->blocks[iter_block_ref].immediate_dominator == KEFIR_ID_NONE) {
+                continue;
+            }
+            for (; iter_block_ref != control_flow->blocks[block_ref].immediate_dominator; iter_block_ref = control_flow->blocks[iter_block_ref].immediate_dominator) {
+                REQUIRE_OK(kefir_hashset_add(mem, &control_flow->blocks[iter_block_ref].dominance_frontier, (kefir_hashset_key_t) block_ref));
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
     }
     kefir_result_t res = kefir_list_free(mem, &queue);
     REQUIRE_ELSE(res == KEFIR_OK, {

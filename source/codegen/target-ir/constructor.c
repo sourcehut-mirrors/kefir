@@ -997,11 +997,8 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
                 continue;
             }
             
-            kefir_hashtable_value_t table_value;
-            res = kefir_hashtable_at(&frontier_block_state->block_inputs, (kefir_hashtree_key_t) vreg_idx, &table_value);
-            if (res != KEFIR_NOT_FOUND) {
-                REQUIRE_OK(res);
-            } else {
+            if (!kefir_hashtable_has(&frontier_block_state->block_inputs, (kefir_hashtree_key_t) vreg_idx) &&
+                !kefir_hashtable_has(&frontier_block_state->virtual_register_refs, (kefir_hashtree_key_t) vreg_idx)) {
                 kefir_codegen_target_ir_instruction_ref_t frontier_phi_instr_ref;
                 struct kefir_codegen_target_ir_operation operation = {
                     .opcode = state->code->klass->phi_opcode,
