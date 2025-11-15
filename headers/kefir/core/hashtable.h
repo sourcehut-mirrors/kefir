@@ -102,31 +102,43 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
 #define KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(_ops, _entries, _capacity, _key, _position_ptr, _collisions_ptr) \
     do {                                                                                                          \
         kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND((_ops)->hash((_key), (_ops)->payload), (_capacity));      \
-        if ((_entries)[index].state != KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
+        if ((_entries)[index].state == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                          \
             *(_position_ptr) = index;                                                                             \
             return KEFIR_OK;                                                                                      \
         }                                                                                                         \
                                                                                                                   \
-        kefir_bool_t equal = (_ops)->equal((_key), (_entries)[index].key, (_ops)->payload);                       \
-        if (equal) {                                                                                              \
-            *(_position_ptr) = index;                                                                             \
-            return KEFIR_OK;                                                                                      \
-        }                                                                                                         \
+        kefir_bool_t equal; \
+        if ((_entries)[index].state == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
+            equal = (_ops)->equal((_key), (_entries)[index].key, (_ops)->payload);                       \
+            if (equal) {                                                                                              \
+                *(_position_ptr) = index;                                                                             \
+                return KEFIR_OK;                                                                                      \
+            }                                                                                                         \
+        } \
                                                                                                                   \
+        kefir_size_t deleted_index = ~0ull; \
         for (kefir_size_t i = KEFIR_HASHTABLE_WRAPAROUND(index + 1, (_capacity)); i != index;                     \
              i = KEFIR_HASHTABLE_WRAPAROUND(i + 1, (_capacity))) {                                                \
             (*(_collisions_ptr))++;                                                                               \
-            if ((_entries)[i].state != KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
+            if ((_entries)[i].state == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                          \
                 *(_position_ptr) = i;                                                                             \
                 return KEFIR_OK;                                                                                  \
-            }                                                                                                     \
-                                                                                                                  \
-            equal = (_ops)->equal((_key), (_entries)[i].key, (_ops)->payload);                                    \
-            if (equal) {                                                                                          \
-                *(_position_ptr) = i;                                                                             \
-                return KEFIR_OK;                                                                                  \
-            }                                                                                                     \
+            } else if ((_entries)[i].state == KEFIR_HASHTABLE_ENTRY_DELETED) {                                          \
+                if (deleted_index == ~0ull) { \
+                    deleted_index = i; \
+                } \
+            } else if ((_entries)[i].state == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
+                equal = (_ops)->equal((_key), (_entries)[i].key, (_ops)->payload);                                    \
+                if (equal) {                                                                                          \
+                    *(_position_ptr) = i;                                                                             \
+                    return KEFIR_OK;                                                                                  \
+                }                                                                                                     \
+            } \
         }                                                                                                         \
+        if (deleted_index != ~0ull) { \
+            *(_position_ptr) = deleted_index;                                                                             \
+            return KEFIR_OK;                                                                                  \
+        } \
                                                                                                                   \
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to find position for element insertion");            \
     } while (0)
