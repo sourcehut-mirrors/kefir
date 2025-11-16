@@ -83,6 +83,13 @@ static kefir_result_t mark_vreg_liveness(struct constructor_state *state, struct
     } else {
         REQUIRE_OK(kefir_hashtable_insert(state->mem, &block_state->alive_vregs, (kefir_hashtable_key_t) vreg_idx, (kefir_hashtable_value_t) lifetime));
     }
+
+    const struct kefir_asmcmp_virtual_register *vreg;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(state->asmcmp_ctx, vreg_idx, &vreg));
+    if (vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR) {
+        REQUIRE_OK(mark_vreg_liveness(state, block_state, linear_index, vreg->parameters.pair.virtual_registers[0]));
+        REQUIRE_OK(mark_vreg_liveness(state, block_state, linear_index, vreg->parameters.pair.virtual_registers[1]));
+    }
     return KEFIR_OK;
 }
 
