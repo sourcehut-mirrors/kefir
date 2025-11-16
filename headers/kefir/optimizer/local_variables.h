@@ -24,12 +24,17 @@
 #include "kefir/optimizer/liveness.h"
 #include "kefir/core/hashset.h"
 
-typedef struct kefir_opt_code_variable_local_conflicts {
-    struct kefir_hashset local_conflicts;
-} kefir_opt_code_variable_local_conflicts_t;
+typedef struct kefir_opt_code_local_variable_occurences {
+    struct kefir_hashset occurences;
+} kefir_opt_code_local_variable_occurences_t;
+
+typedef struct kefir_opt_code_block_local_variables {
+    struct kefir_hashset variables;
+} kefir_opt_code_block_local_variables_t;
 
 typedef struct kefir_opt_code_variable_conflicts {
     struct kefir_hashset globally_alive;
+    struct kefir_hashtree block_alive_vars;
     struct kefir_hashtree locally_alive;
 } kefir_opt_code_variable_conflicts_t;
 
