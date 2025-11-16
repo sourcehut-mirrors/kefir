@@ -48,6 +48,9 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
     memset(visited_map, 0, sizeof(kefir_uint8_t) * kefir_codegen_target_ir_code_block_count(control_flow->code));
     const struct kefir_codegen_target_ir_instruction *instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, instr_ref, &instr));
+    if (instr->operation.opcode == control_flow->code->klass->placeholder_opcode) {
+        return KEFIR_OK;
+    }
 
     kefir_result_t res;
     struct kefir_codegen_target_ir_use_iterator use_iter;
