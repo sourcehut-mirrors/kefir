@@ -56,6 +56,9 @@ kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_
     code->value_types = NULL;
     code->value_types_length = 0;
     code->value_types_capacity = 0;
+    code->use_entries = NULL;
+    code->use_entries_length = 0;
+    code->use_entries_capacity = 0;
     code->entry_block = KEFIR_ID_NONE;
     code->klass = klass;
 
@@ -75,13 +78,13 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
             REQUIRE_OK(kefir_list_free(mem, &code->code[i].operation.inline_asm_node.fragments));
         }
         REQUIRE_OK(kefir_hashtable_free(mem, &code->code[i].aspects));
-        REQUIRE_OK(kefir_hashset_free(mem, &code->code[i].uses));
     }
     for (kefir_size_t i = 0; i < code->blocks_length; i++) {
         REQUIRE_OK(kefir_hashtreeset_free(mem, &code->blocks[i].public_labels));
         REQUIRE_OK(kefir_hashset_free(mem, &code->blocks[i].phi_refs));
     }
     REQUIRE_OK(kefir_hashtable_free(mem, &code->attributes));
+    KEFIR_FREE(mem, code->use_entries);
     KEFIR_FREE(mem, code->value_types);
     KEFIR_FREE(mem, code->blocks);
     KEFIR_FREE(mem, code->code);
@@ -197,9 +200,34 @@ static kefir_result_t free_inline_asm_node(struct kefir_mem *mem, struct kefir_l
 static kefir_result_t track_use_instr(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t user_instr_ref, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_bool_t add_use) {
     struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
     if (add_use) {
-        REQUIRE_OK(kefir_hashset_add(mem, &instr->uses, (kefir_hashset_key_t) user_instr_ref));
+        if (code->use_entries_length >= code->use_entries_capacity) {
+            kefir_size_t new_capacity = MAX(code->use_entries_capacity * 9 / 8, 128);
+            struct kefir_codegen_target_ir_use_entry *new_use_entries = KEFIR_REALLOC(mem, code->use_entries, sizeof(struct kefir_codegen_target_ir_use_entry) * new_capacity);
+            REQUIRE(new_use_entries != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR use entries"));
+            code->use_entries = new_use_entries;
+            code->use_entries_capacity = new_capacity;
+        }
+
+        code->use_entries[code->use_entries_length].next_entry = instr->use_entry_top;
+        code->use_entries[code->use_entries_length].user_instr_ref = user_instr_ref;
+        instr->use_entry_top = code->use_entries_length++;
     } else {
-        REQUIRE_OK(kefir_hashset_delete(&instr->uses, (kefir_hashset_key_t) user_instr_ref));
+        kefir_size_t prev_use_entry_idx = (kefir_size_t) ~0ull;
+        for (kefir_size_t use_entry_idx = instr->use_entry_top; use_entry_idx != (kefir_size_t) ~0ull;) {
+            struct kefir_codegen_target_ir_use_entry *use_entry = &code->use_entries[use_entry_idx];
+            kefir_size_t next_use_entry = use_entry->next_entry;
+            if (use_entry->user_instr_ref != user_instr_ref) {
+                prev_use_entry_idx = use_entry_idx;
+                use_entry_idx = next_use_entry;
+            } else if (prev_use_entry_idx != (kefir_size_t) ~0ull) {
+                struct kefir_codegen_target_ir_use_entry *prev_use_entry = &code->use_entries[prev_use_entry_idx];
+                prev_use_entry->next_entry = next_use_entry;
+                use_entry_idx = next_use_entry;
+            } else {
+                instr->use_entry_top = use_entry->next_entry;
+                use_entry_idx = next_use_entry;
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -319,7 +347,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
         REQUIRE_OK(kefir_list_on_remove(&instr->operation.inline_asm_node.fragments, free_inline_asm_node, NULL));
     }
     REQUIRE_OK(kefir_hashtable_init(&instr->aspects, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashset_init(&instr->uses, &kefir_hashtable_uint_ops));
+    instr->use_entry_top = (kefir_size_t) ~0ull;
 
     if (after_instr == NULL) {
         if (block->control_flow.head != KEFIR_ID_NONE) {
@@ -376,7 +404,7 @@ kefir_result_t kefir_codegen_target_ir_code_drop_instruction(struct kefir_mem *m
     struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
     REQUIRE(instr->block_ref != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested target IR instruction was previously dropped"));
-    REQUIRE(instr->uses.occupied == 0, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to drop target IR instruction with active uses"));
+    REQUIRE(instr->use_entry_top == (kefir_size_t) ~0ull, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to drop target IR instruction with active uses"));
 
     REQUIRE_OK(record_uses(mem, code, instr->instr_ref, false));
 
@@ -433,7 +461,7 @@ kefir_result_t kefir_codegen_target_ir_code_phi_attach(struct kefir_mem *mem, st
 
     REQUIRE_OK(kefir_hashtable_insert(mem, &instr->operation.phi_node.links, (kefir_hashtable_key_t) block_ref, (kefir_hashtable_value_t) value_ref_encoded));
 
-    REQUIRE_OK(record_uses(mem, code, instr_ref, true));
+    REQUIRE_OK(track_use_instr(mem, code, instr_ref, linked_value_ref.instr_ref, true));
     return KEFIR_OK;
 }
 
@@ -541,28 +569,24 @@ kefir_result_t kefir_codegen_target_ir_code_use_iter(const struct kefir_codegen_
 
     struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
 
-    kefir_hashset_key_t key;
-    kefir_result_t res = kefir_hashset_iter(&instr->uses, &iter->iter, &key);
-    if (res == KEFIR_ITERATOR_END) {
-        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR code use instruction reference iterator");
-    }
-    REQUIRE_OK(res);
-
-    ASSIGN_PTR(user_instr_ref_ptr, (kefir_codegen_target_ir_instruction_ref_t) key);
+    iter->code = code;
+    iter->use_entry_index = instr->use_entry_top;
+    REQUIRE(iter->use_entry_index != (kefir_size_t) ~0ull, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR code use instruction reference iterator"));
+    
+    const struct kefir_codegen_target_ir_use_entry *use_entry = &code->use_entries[iter->use_entry_index];
+    ASSIGN_PTR(user_instr_ref_ptr, use_entry->user_instr_ref);
     return KEFIR_OK; 
 }
 
 kefir_result_t kefir_codegen_target_ir_code_use_next(struct kefir_codegen_target_ir_use_iterator *iter, kefir_codegen_target_ir_instruction_ref_t *user_instr_ref_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code use instruction reference iterator"));
 
-    kefir_hashset_key_t key;
-    kefir_result_t res = kefir_hashset_next(&iter->iter, &key);
-    if (res == KEFIR_ITERATOR_END) {
-        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR code use instruction reference iterator");
-    }
-    REQUIRE_OK(res);
-
-    ASSIGN_PTR(user_instr_ref_ptr, (kefir_codegen_target_ir_instruction_ref_t) key);
+    const struct kefir_codegen_target_ir_use_entry *use_entry = &iter->code->use_entries[iter->use_entry_index];
+    iter->use_entry_index = use_entry->next_entry;
+    REQUIRE(iter->use_entry_index != (kefir_size_t) ~0ull, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR code use instruction reference iterator"));
+    
+    use_entry = &iter->code->use_entries[iter->use_entry_index];
+    ASSIGN_PTR(user_instr_ref_ptr, use_entry->user_instr_ref);
     return KEFIR_OK; 
 }
 
@@ -801,7 +825,8 @@ static kefir_result_t replace_uses(struct kefir_mem *mem, struct kefir_codegen_t
             REQUIRE_OK(operand_replace_uses(code, &user_instr->operation.parameters[i], to_instr_ref, from_instr_ref));
         }
     }
-    REQUIRE_OK(record_uses(mem, code, user_instr_ref, true));
+    REQUIRE_OK(track_use_instr(mem, code, user_instr_ref, from_instr_ref, false));
+    REQUIRE_OK(track_use_instr(mem, code, user_instr_ref, to_instr_ref, true));
     return KEFIR_OK;
 }
 
@@ -812,18 +837,10 @@ kefir_result_t kefir_codegen_target_ir_code_replace_instruction(struct kefir_mem
     REQUIRE(to_instr_ref != KEFIR_ID_NONE && to_instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
 
     struct kefir_codegen_target_ir_instruction *from_instr = &code->code[from_instr_ref];
-    kefir_result_t res;
-    struct kefir_hashset_iterator iter;
-    kefir_hashset_key_t entry;
-    for (res = kefir_hashset_iter(&from_instr->uses, &iter, &entry); res == KEFIR_OK;
-        res = kefir_hashset_next(&iter, &entry)) {
-        ASSIGN_DECL_CAST(kefir_codegen_target_ir_instruction_ref_t, user_instr_ref, entry);
-        REQUIRE_OK(replace_uses(mem, code, user_instr_ref, to_instr_ref, from_instr_ref));
+    for (kefir_size_t use_entry_index = from_instr->use_entry_top; use_entry_index != (kefir_size_t) ~0ull; use_entry_index = code->use_entries[use_entry_index].next_entry) {
+        REQUIRE_OK(replace_uses(mem, code, code->use_entries[use_entry_index].user_instr_ref, to_instr_ref, from_instr_ref));
     }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
-    REQUIRE_OK(kefir_hashset_clear(mem, &from_instr->uses));
+    from_instr->use_entry_top = (kefir_size_t) ~0ull;
     return KEFIR_OK;
 }
 

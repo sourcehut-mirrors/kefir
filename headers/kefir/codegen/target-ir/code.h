@@ -269,7 +269,7 @@ typedef struct kefir_codegen_target_ir_instruction {
     } control_flow;
 
     struct kefir_hashtable aspects;
-    struct kefir_hashset uses;
+    kefir_size_t use_entry_top;
 } kefir_codegen_target_ir_instruction_t;
 
 typedef struct kefir_codegen_target_ir_block {
@@ -284,6 +284,11 @@ typedef struct kefir_codegen_target_ir_block {
     kefir_bool_t externally_visible;
     struct kefir_hashtreeset public_labels;
 } kefir_codegen_target_ir_block_t;
+
+typedef struct kefir_codegen_target_ir_use_entry {
+    kefir_size_t next_entry;
+    kefir_codegen_target_ir_instruction_ref_t user_instr_ref;
+} kefir_codegen_target_ir_use_entry_t;
 
 typedef struct kefir_codegen_target_ir_block_terminator_props {
     kefir_bool_t block_terminator;
@@ -323,6 +328,10 @@ typedef struct kefir_codegen_target_ir_code {
     struct kefir_codegen_target_ir_value_type *value_types;
     kefir_size_t value_types_length;
     kefir_size_t value_types_capacity;
+
+    struct kefir_codegen_target_ir_use_entry *use_entries;
+    kefir_size_t use_entries_length;
+    kefir_size_t use_entries_capacity;
 
     kefir_codegen_target_ir_block_ref_t entry_block;
 
@@ -367,7 +376,8 @@ kefir_result_t kefir_codegen_target_ir_code_phi_node_iter(const struct kefir_cod
 kefir_result_t kefir_codegen_target_ir_code_phi_node_next(struct kefir_codegen_target_ir_value_phi_node_iterator *, kefir_codegen_target_ir_instruction_ref_t *);
 
 typedef struct kefir_codegen_target_ir_use_iterator {
-    struct kefir_hashset_iterator iter;
+    const struct kefir_codegen_target_ir_code *code;
+    kefir_size_t use_entry_index;
 } kefir_codegen_target_ir_use_iterator_t;
 
 kefir_result_t kefir_codegen_target_ir_code_use_iter(const struct kefir_codegen_target_ir_code *, struct kefir_codegen_target_ir_use_iterator *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_instruction_ref_t *);
