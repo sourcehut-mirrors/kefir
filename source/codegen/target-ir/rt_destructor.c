@@ -459,16 +459,10 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
     REQUIRE_OK(state->code->klass->is_block_terminator(instr, &terminator_props, state->code->klass->payload));
     if (terminator_props.block_terminator && !terminator_props.function_terminator) {
         kefir_result_t res;
-        struct kefir_hashset_iterator iter;
-        kefir_hashset_key_t entry;
-        for (res = kefir_hashset_iter(&state->liveness.blocks[block_state->block_ref].live_out, &iter, &entry); res == KEFIR_OK;
-                res = kefir_hashset_next(&iter, &entry)) {
-            ASSIGN_DECL_CAST(kefir_codegen_target_ir_instruction_ref_t, instr_ref,
-                entry);
-                
+        for (kefir_size_t live_out_idx = 0; live_out_idx < state->liveness.blocks[block_state->block_ref].live_out.length; live_out_idx++) {                        
             struct kefir_codegen_target_ir_value_iterator value_iter;
             struct kefir_codegen_target_ir_value_ref value_ref;
-            for (res = kefir_codegen_target_ir_code_value_iter(state->code, &value_iter, instr_ref, &value_ref, NULL);
+            for (res = kefir_codegen_target_ir_code_value_iter(state->code, &value_iter, state->liveness.blocks[block_state->block_ref].live_out.content[live_out_idx], &value_ref, NULL);
                 res == KEFIR_OK;
                 res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, NULL)) {
                 if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(value_ref.aspect) || KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(value_ref.aspect)) {
@@ -654,16 +648,10 @@ static kefir_result_t translate_block(struct rt_destructor_state *state, kefir_c
     REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(state->mem, state->asmcmp_ctx, block_state->asmcmp_label));
 
     kefir_result_t res;
-    struct kefir_hashset_iterator iter;
-    kefir_hashset_key_t entry;
-    for (res = kefir_hashset_iter(&state->liveness.blocks[block_state->block_ref].live_in, &iter, &entry); res == KEFIR_OK;
-            res = kefir_hashset_next(&iter, &entry)) {
-        ASSIGN_DECL_CAST(kefir_codegen_target_ir_instruction_ref_t, instr_ref,
-            entry);
-            
+    for (kefir_size_t live_in_idx = 0; live_in_idx < state->liveness.blocks[block_ref].live_in.length; live_in_idx++) {        
         struct kefir_codegen_target_ir_value_iterator value_iter;
         struct kefir_codegen_target_ir_value_ref value_ref;
-        for (res = kefir_codegen_target_ir_code_value_iter(state->code, &value_iter, instr_ref, &value_ref, NULL);
+        for (res = kefir_codegen_target_ir_code_value_iter(state->code, &value_iter, state->liveness.blocks[block_ref].live_in.content[live_in_idx], &value_ref, NULL);
             res == KEFIR_OK;
             res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, NULL)) {
             if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(value_ref.aspect) || KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(value_ref.aspect)) {

@@ -3,9 +3,15 @@
 
 #include "kefir/codegen/target-ir/control_flow.h"
 
+typedef struct kefir_codegen_target_ir_liveness_entry {
+    kefir_codegen_target_ir_instruction_ref_t *content;
+    kefir_size_t length;
+    kefir_size_t capacity;
+} kefir_codegen_target_ir_liveness_entry_t;
+
 typedef struct kefir_codegen_target_ir_block_liveness {
-    struct kefir_hashset live_in;
-    struct kefir_hashset live_out;
+    struct kefir_codegen_target_ir_liveness_entry live_in;
+    struct kefir_codegen_target_ir_liveness_entry live_out;
 } kefir_codegen_target_ir_block_liveness_t;
 
 typedef struct kefir_codegen_target_ir_liveness {
