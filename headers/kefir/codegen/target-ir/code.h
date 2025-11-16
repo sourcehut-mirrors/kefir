@@ -166,8 +166,15 @@ typedef struct kefir_codegen_target_ir_value_type {
         .aspect = (kefir_uint32_t) (_encoded) \
     })
 
+typedef struct kefir_codegen_target_ir_phi_link {
+    kefir_codegen_target_ir_block_ref_t link_block_ref;
+    kefir_codegen_target_ir_value_ref_t link_value_ref;
+} kefir_codegen_target_ir_phi_link_t;
+
 typedef struct kefir_codegen_target_ir_phi_node {
-    struct kefir_hashtable links;
+    struct kefir_codegen_target_ir_phi_link *links;
+    kefir_size_t links_length;
+    kefir_size_t links_capacity;
 } kefir_codegen_target_ir_phi_node_t;
 
 typedef struct kefir_codegen_target_ir_operand {
@@ -362,7 +369,8 @@ kefir_result_t kefir_codegen_target_ir_code_phi_link_for(const struct kefir_code
     kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_value_ref_t *);
 
 typedef struct kefir_codegen_target_ir_value_phi_link_iterator {
-    struct kefir_hashtable_iterator iter;
+    const struct kefir_codegen_target_ir_phi_node *phi_node;
+    kefir_size_t link_index;
 } kefir_codegen_target_ir_value_phi_link_iterator_t;
 
 kefir_result_t kefir_codegen_target_ir_code_phi_link_iter(const struct kefir_codegen_target_ir_code *, struct kefir_codegen_target_ir_value_phi_link_iterator *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_block_ref_t *, struct kefir_codegen_target_ir_value_ref *);
