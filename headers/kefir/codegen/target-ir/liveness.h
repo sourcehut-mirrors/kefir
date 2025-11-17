@@ -4,7 +4,7 @@
 #include "kefir/codegen/target-ir/control_flow.h"
 
 typedef struct kefir_codegen_target_ir_liveness_entry {
-    kefir_codegen_target_ir_instruction_ref_t *content;
+    kefir_codegen_target_ir_value_ref_t *content;
     kefir_size_t length;
     kefir_size_t capacity;
 } kefir_codegen_target_ir_liveness_entry_t;

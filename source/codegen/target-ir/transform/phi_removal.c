@@ -12,7 +12,7 @@ static kefir_result_t remove_unused_phis_from_block(struct kefir_mem *mem, struc
         res == KEFIR_OK;
         res = kefir_codegen_target_ir_code_phi_node_next(&phi_node_iter, &phi_ref)) {
         struct kefir_codegen_target_ir_use_iterator use_iter;
-        res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, phi_ref, NULL);
+        res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, phi_ref, NULL, NULL);
         if (res == KEFIR_ITERATOR_END) {
             REQUIRE_OK(kefir_hashset_add(mem, removal_set, (kefir_hashset_key_t) phi_ref));
             continue;
