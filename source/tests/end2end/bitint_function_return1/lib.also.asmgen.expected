@@ -72,6 +72,17 @@ test1:
 #                ]
 #            },
 #            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -957,6 +968,17 @@ test1:
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 31,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 32,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2101,6 +2123,17 @@ test1:
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 62,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
 #                        "variant": "default"
 #                    }
 #                ],

@@ -24,35 +24,35 @@ __kefir_text_func_sum32_begin:
     stmxcsr -16(%rbp)
     test %al, %al
     je __kefir_func_sum32_label11
-    movdqu %xmm0, -192(%rbp)
-    movdqu %xmm1, -176(%rbp)
-    movdqu %xmm2, -160(%rbp)
-    movdqu %xmm3, -144(%rbp)
-    movdqu %xmm4, -128(%rbp)
-    movdqu %xmm5, -112(%rbp)
-    movdqu %xmm6, -96(%rbp)
-    movdqu %xmm7, -80(%rbp)
+    movdqu %xmm0, -176(%rbp)
+    movdqu %xmm1, -160(%rbp)
+    movdqu %xmm2, -144(%rbp)
+    movdqu %xmm3, -128(%rbp)
+    movdqu %xmm4, -112(%rbp)
+    movdqu %xmm5, -96(%rbp)
+    movdqu %xmm6, -80(%rbp)
+    movdqu %xmm7, -64(%rbp)
 __kefir_func_sum32_label11:
-    mov %rdi, -240(%rbp)
-    mov %rsi, -232(%rbp)
-    mov %rdx, -224(%rbp)
-    mov %rcx, -216(%rbp)
-    mov %r8, -208(%rbp)
-    mov %r9, -200(%rbp)
+    mov %rdi, -224(%rbp)
+    mov %rsi, -216(%rbp)
+    mov %rdx, -208(%rbp)
+    mov %rcx, -200(%rbp)
+    mov %r8, -192(%rbp)
+    mov %r9, -184(%rbp)
     movl $8, -48(%rbp)
     movl $48, -44(%rbp)
     lea 16(%rbp), %rax
     movq %rax, -40(%rbp)
-    lea -240(%rbp), %rax
+    lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
     movd __kefir_func_sum32_label8(%rip), %xmm0
-    movdqu %xmm0, -64(%rbp)
+    movdqu %xmm0, -240(%rbp)
 __kefir_func_sum32_label2:
     mov %rdi, %rbx
     add $-1, %ebx
     test %edi, %edi
     jnz __kefir_func_sum32_label6
-    movdqu -64(%rbp), %xmm0
+    movdqu -240(%rbp), %xmm0
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -73,10 +73,10 @@ __kefir_func_sum32_label9:
     mov %rax, -40(%rbp)
     movq -8(%rax), %xmm1
 __kefir_func_sum32_label10:
-    movdqu -64(%rbp), %xmm0
+    movdqu -240(%rbp), %xmm0
     call __bid_addsd3@PLT
     mov %rbx, %rdi
-    movdqu %xmm0, -64(%rbp)
+    movdqu %xmm0, -240(%rbp)
     jmp __kefir_func_sum32_label2
 __kefir_text_func_sum32_end:
 .section .rodata
@@ -94,35 +94,35 @@ __kefir_text_func_sum64_begin:
     stmxcsr -16(%rbp)
     test %al, %al
     je __kefir_func_sum64_label11
-    movdqu %xmm0, -192(%rbp)
-    movdqu %xmm1, -176(%rbp)
-    movdqu %xmm2, -160(%rbp)
-    movdqu %xmm3, -144(%rbp)
-    movdqu %xmm4, -128(%rbp)
-    movdqu %xmm5, -112(%rbp)
-    movdqu %xmm6, -96(%rbp)
-    movdqu %xmm7, -80(%rbp)
+    movdqu %xmm0, -176(%rbp)
+    movdqu %xmm1, -160(%rbp)
+    movdqu %xmm2, -144(%rbp)
+    movdqu %xmm3, -128(%rbp)
+    movdqu %xmm4, -112(%rbp)
+    movdqu %xmm5, -96(%rbp)
+    movdqu %xmm6, -80(%rbp)
+    movdqu %xmm7, -64(%rbp)
 __kefir_func_sum64_label11:
-    mov %rdi, -240(%rbp)
-    mov %rsi, -232(%rbp)
-    mov %rdx, -224(%rbp)
-    mov %rcx, -216(%rbp)
-    mov %r8, -208(%rbp)
-    mov %r9, -200(%rbp)
+    mov %rdi, -224(%rbp)
+    mov %rsi, -216(%rbp)
+    mov %rdx, -208(%rbp)
+    mov %rcx, -200(%rbp)
+    mov %r8, -192(%rbp)
+    mov %r9, -184(%rbp)
     movl $8, -48(%rbp)
     movl $48, -44(%rbp)
     lea 16(%rbp), %rax
     movq %rax, -40(%rbp)
-    lea -240(%rbp), %rax
+    lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
     movq __kefir_func_sum64_label8(%rip), %xmm0
-    movdqu %xmm0, -64(%rbp)
+    movdqu %xmm0, -240(%rbp)
 __kefir_func_sum64_label2:
     mov %rdi, %rbx
     add $-1, %ebx
     test %edi, %edi
     jnz __kefir_func_sum64_label6
-    movdqu -64(%rbp), %xmm0
+    movdqu -240(%rbp), %xmm0
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -143,10 +143,10 @@ __kefir_func_sum64_label9:
     mov %rax, -40(%rbp)
     movq -8(%rax), %xmm1
 __kefir_func_sum64_label10:
-    movdqu -64(%rbp), %xmm0
+    movdqu -240(%rbp), %xmm0
     call __bid_adddd3@PLT
     mov %rbx, %rdi
-    movdqu %xmm0, -64(%rbp)
+    movdqu %xmm0, -240(%rbp)
     jmp __kefir_func_sum64_label2
 __kefir_text_func_sum64_end:
 .section .rodata

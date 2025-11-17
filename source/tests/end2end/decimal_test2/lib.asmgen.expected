@@ -2047,7 +2047,7 @@ __kefir_text_func_test_dec32_grav_accel_begin:
     movdqu %xmm0, -160(%rbp)
     movdqu -160(%rbp), %xmm0
     call test_dec32_sqrt_approx
-    movdqu %xmm0, -192(%rbp)
+    movdqu %xmm0, -176(%rbp)
     movd -60(%rbp), %xmm1
     movq -104(%rbp), %rax
     movq %rax, -24(%rbp)
@@ -2059,12 +2059,12 @@ __kefir_text_func_test_dec32_grav_accel_begin:
     call __bid_mulsd3@PLT
     movdqu %xmm0, -144(%rbp)
     movd __kefir_func_test_dec32_grav_accel_label3(%rip), %xmm0
-    movd %xmm0, -176(%rbp)
+    movd %xmm0, -192(%rbp)
     movdqu -160(%rbp), %xmm0
-    movdqu -192(%rbp), %xmm1
+    movdqu -176(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movdqu -176(%rbp), %xmm0
+    movdqu -192(%rbp), %xmm0
     call __bid_divsd3@PLT
     movaps %xmm0, %xmm1
     movdqu -144(%rbp), %xmm0
@@ -3118,7 +3118,7 @@ __kefir_text_func_test_dec64_grav_accel_begin:
     movdqu %xmm0, -256(%rbp)
     movdqu -256(%rbp), %xmm0
     call test_dec64_sqrt_approx
-    movdqu %xmm0, -288(%rbp)
+    movdqu %xmm0, -272(%rbp)
     movq -120(%rbp), %xmm1
     movdqu -208(%rbp), %xmm2
     movdqu %xmm2, -48(%rbp)
@@ -3130,12 +3130,12 @@ __kefir_text_func_test_dec64_grav_accel_begin:
     call __bid_muldd3@PLT
     movdqu %xmm0, -240(%rbp)
     movq __kefir_func_test_dec64_grav_accel_label3(%rip), %xmm0
-    movq %xmm0, -272(%rbp)
+    movq %xmm0, -288(%rbp)
     movdqu -256(%rbp), %xmm0
-    movdqu -288(%rbp), %xmm1
+    movdqu -272(%rbp), %xmm1
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movdqu -272(%rbp), %xmm0
+    movdqu -288(%rbp), %xmm0
     call __bid_divdd3@PLT
     movaps %xmm0, %xmm1
     movdqu -240(%rbp), %xmm0

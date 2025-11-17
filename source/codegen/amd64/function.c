@@ -661,6 +661,9 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(res);
     }
     if (func->vararg_area != KEFIR_ASMCMP_INDEX_NONE) {
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &func->code, after_prologue, func->vararg_area,
+            &after_prologue));
         kefir_asmcmp_label_index_t save_int_label;
         switch (func->codegen->abi_variant) {
             case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:

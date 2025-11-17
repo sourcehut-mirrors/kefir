@@ -369,6 +369,10 @@ static kefir_result_t scan_code(struct kefir_mem *mem, struct kefir_asmcmp_amd64
                                           (kefir_hashtree_value_t) state->current_virtual_block->virtual_block_id));
                 break;
 
+            case KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register):
+                // Intentionally left blank
+                break;
+
             default:
                 REQUIRE_OK(scan_virtual_register(mem, code, xregalloc, &instr->args[0], linear_index,
                                                  state->current_virtual_block));

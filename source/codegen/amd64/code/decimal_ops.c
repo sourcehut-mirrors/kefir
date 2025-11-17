@@ -249,6 +249,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(decimal_neg128)(
     REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, 2, 2, &tmp2_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        tmp2_vreg, NULL));
+
     REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp2_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_128BIT),

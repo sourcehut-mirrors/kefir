@@ -127,13 +127,13 @@ __kefir_text_func_div5_begin:
     mov %rsp, %rbp
     sub $160, %rsp
 __kefir_func_div5_label0:
-    movq %rdx, -64(%rbp)
-    movq %rcx, -56(%rbp)
-    movq %rdi, -48(%rbp)
-    movq %rsi, -40(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -16(%rbp)
+    movq %rdx, -48(%rbp)
+    movq %rcx, -40(%rbp)
+    movq %rdi, -64(%rbp)
+    movq %rsi, -56(%rbp)
     movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -160(%rbp)

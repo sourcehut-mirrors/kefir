@@ -315,6 +315,9 @@ static kefir_result_t vararg_visit_bitint(const struct kefir_ir_type *type, kefi
         const kefir_size_t qwords = (typeentry->param + KEFIR_AMD64_ABI_QWORD * 8 - 1) / (KEFIR_AMD64_ABI_QWORD * 8);
         REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(param->mem, &param->function->code.context, qwords, 1,
                                                                  &result_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+            result_vreg, NULL));
 
         kefir_asmcmp_virtual_register_index_t tmp_vreg, tmp2_vreg;
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
@@ -770,6 +773,9 @@ static kefir_result_t vararg_visit_long_double(const struct kefir_ir_type *type,
         kefir_abi_amd64_long_double_qword_alignment(param->function->codegen->abi_variant), &result_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(param->function, param->instruction->operation.parameters.refs[0],
                                                     &valist_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+            result_vreg, NULL));
 
     REQUIRE_OK(vararg_load_long_double(param->mem, param->function, param->instruction->id, valist_vreg, result_vreg));
 

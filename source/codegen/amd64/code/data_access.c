@@ -48,6 +48,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(temporary_object)(struct kef
         (instruction->operation.parameters.tmp_object.alignment + KEFIR_AMD64_ABI_QWORD - 1) / KEFIR_AMD64_ABI_QWORD;
     REQUIRE_OK(
         kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, size, alignemnt, &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        result_vreg, NULL));
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;
 }
@@ -114,6 +117,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(alloc_local)(struct kefir_me
 
     kefir_asmcmp_virtual_register_index_t vreg;
     REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context, variable_id, 0, &vreg));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        vreg, NULL));
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
 
     return KEFIR_OK;
@@ -133,6 +139,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ref_local)(struct kefir_mem 
     kefir_asmcmp_virtual_register_index_t vreg;
     REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context, variable_id,
                                                                 instruction->operation.parameters.offset, &vreg));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        vreg, NULL));
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
 
     return KEFIR_OK;

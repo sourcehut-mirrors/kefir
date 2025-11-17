@@ -231,6 +231,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_const)(
         mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
         kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        result_vreg, NULL));
+
     kefir_asmcmp_label_index_t label;
     REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));
 

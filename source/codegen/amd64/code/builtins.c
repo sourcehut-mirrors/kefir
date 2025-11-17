@@ -1160,6 +1160,10 @@ static kefir_result_t translate_flt_rounds(struct kefir_mem *mem, struct kefir_c
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, 1, 1, &tmp_area_vreg));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        tmp_area_vreg, NULL));
+
     REQUIRE_OK(kefir_asmcmp_amd64_stmxcsr(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_area_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
@@ -1892,6 +1896,10 @@ static kefir_result_t translate_copysignl(struct kefir_mem *mem, struct kefir_co
                                                                   KEFIR_AMD64_XASMGEN_REGISTER_RAX));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        result_vreg, NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[1]));
     REQUIRE_OK(kefir_asmcmp_amd64_fxam(

@@ -128,6 +128,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
             kefir_size_t qwords;
             REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&function_parameter, &qwords));
             REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, qwords, 1, &vreg));
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code, function->argument_touch_instr,
                                                                  vreg, &function->argument_touch_instr));
             REQUIRE_OK(kefir_hashtreeset_add(mem, &function->preserve_vregs, (kefir_hashtreeset_entry_t) vreg));
@@ -277,6 +280,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 mem, &function->code.context, (kefir_asmcmp_physical_register_index_t) base_reg, offset, &vreg));
             REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
 
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                vreg, NULL));
+
             const struct kefir_ir_typeentry *typeentry =
                 kefir_ir_type_at(function->function->ir_func->declaration->params, param_type_index);
             REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch IR type entry"));
@@ -298,6 +305,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                         mem, &function->code.context,
                         kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
                         kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &vreg2));
+                    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                        vreg2, NULL));
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
                     REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
                     REQUIRE_OK(kefir_asmcmp_amd64_fld(

@@ -81,6 +81,9 @@ static kefir_result_t new_virtual_register_of_type(struct kefir_mem *mem, struct
             REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                 mem, &function->code.context, vreg->parameters.spill_space_allocation.length,
                 vreg->parameters.spill_space_allocation.alignment, new_vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                *new_vreg_idx, NULL));
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE:
@@ -1039,6 +1042,15 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
         REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &result_vreg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &result_placement_vreg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &arg2_placement_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            result_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            result_placement_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            arg2_placement_vreg, NULL));
         use_conditional_mov = true;
     } else {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -1421,6 +1433,12 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
         const kefir_size_t max_alignment = MAX(arg1_asmcmp_vreg->parameters.spill_space_allocation.alignment, arg2_asmcmp_vreg->parameters.spill_space_allocation.alignment);
         REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &result_vreg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &arg2_placement_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            arg2_placement_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            result_vreg, NULL));
         use_conditional_mov = true;
     } else {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
