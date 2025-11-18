@@ -68,6 +68,9 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
         } else if ((_op) & KEFIR_AMD64_INSTRDB_WRITE) { \
             classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE; \
             classification->operands[(_index)].index = (_index); \
+        } else if ((_op) & KEFIR_AMD64_INSTRDB_FPU_STACK) { \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ; \
+            classification->operands[(_index)].index = (_index); \
         } \
     } while (0)
 
