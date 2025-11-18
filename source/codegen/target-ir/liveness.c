@@ -51,7 +51,11 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
     const struct kefir_codegen_target_ir_instruction *instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, value_ref.instr_ref, &instr));
     if (instr->operation.opcode == control_flow->code->klass->placeholder_opcode) {
-        return KEFIR_OK;
+        const struct kefir_codegen_target_ir_value_type *value_type;
+        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(control_flow->code, value_ref, &value_type));
+        if (value_type->kind != KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_SPILL_SPACE) {
+            return KEFIR_OK;
+        }
     }
 
     kefir_result_t res;

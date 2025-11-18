@@ -11,6 +11,18 @@ factorial:
 #    "function": {
 #        "code": [
 #            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": [
+#                    0
+#                ]
+#            },
+#            {
 #                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
@@ -19,9 +31,7 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": [
-#                    0
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "function_prologue",
@@ -39,6 +49,28 @@ factorial:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 1
+#                    }
+#                ],
+#                "labels": [
+#                    1
+#                ]
+#            },
+#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -52,9 +84,7 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": [
-#                    1
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "mov",
@@ -243,6 +273,28 @@ factorial:
 #                ]
 #            },
 #            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 1
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 2
+#                    }
+#                ],
+#                "labels": [
+#                    2
+#                ]
+#            },
+#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -250,8 +302,28 @@ factorial:
 #                        "label": 3
 #                    }
 #                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 2
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 14
+#                    }
+#                ],
 #                "labels": [
-#                    2
+#                    14
 #                ]
 #            },
 #            {
@@ -268,9 +340,7 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": [
-#                    14
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "function_epilogue",
@@ -305,6 +375,28 @@ factorial:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 14
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 3
+#                    }
+#                ],
+#                "labels": [
+#                    3
+#                ]
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -320,9 +412,7 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [
-#                    3
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "mov",
@@ -625,6 +715,28 @@ factorial:
 #                ]
 #            },
 #            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 3
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 4
+#                    }
+#                ],
+#                "labels": [
+#                    4
+#                ]
+#            },
+#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -632,8 +744,28 @@ factorial:
 #                        "label": 5
 #                    }
 #                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 4
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 12
+#                    }
+#                ],
 #                "labels": [
-#                    4
+#                    12
 #                ]
 #            },
 #            {
@@ -652,9 +784,7 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [
-#                    12
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -705,6 +835,28 @@ factorial:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 12
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 5
+#                    }
+#                ],
+#                "labels": [
+#                    5
+#                ]
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -720,9 +872,7 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [
-#                    5
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -751,6 +901,39 @@ factorial:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 5
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 6
+#                    }
+#                ],
+#                "labels": [
+#                    6
+#                ]
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 30,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -766,9 +949,7 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [
-#                    6
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "mov",
@@ -921,6 +1102,28 @@ factorial:
 #                ]
 #            },
 #            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 6
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 7
+#                    }
+#                ],
+#                "labels": [
+#                    7
+#                ]
+#            },
+#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -928,8 +1131,28 @@ factorial:
 #                        "label": 8
 #                    }
 #                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 7
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 10
+#                    }
+#                ],
 #                "labels": [
-#                    7
+#                    10
 #                ]
 #            },
 #            {
@@ -948,9 +1171,7 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [
-#                    10
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "mov",
@@ -1147,6 +1368,28 @@ factorial:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 10
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 8
+#                    }
+#                ],
+#                "labels": [
+#                    8
+#                ]
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -1162,9 +1405,7 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [
-#                    8
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -1212,6 +1453,16 @@ factorial:
 #            {
 #                "opcode": "ret",
 #                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 8
+#                    }
+#                ],
 #                "labels": []
 #            }
 #        ]

@@ -333,6 +333,8 @@ kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(cons
     ops->code = code;
     ops->ops.link_virtual_registers_opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
     ops->ops.touch_virtual_register_opcode = KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register);
+    ops->ops.virtual_block_begin_opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin);
+    ops->ops.virtual_block_end_opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end);
     ops->ops.classify_instruction = classify_instruction;
     ops->ops.bind_native_id = bind_native_id;
     ops->ops.preallocation_requirement = preallocation_requirement;
