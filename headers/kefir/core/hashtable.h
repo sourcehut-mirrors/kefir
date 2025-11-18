@@ -52,12 +52,12 @@ typedef struct kefir_hashtable_cleanup {
 } kefir_hashtable_cleanup_t;
 
 typedef struct kefir_hashtable_entry {
-    kefir_hashtable_entry_state_t state;
     kefir_hashtable_key_t key;
     kefir_hashtable_value_t value;
 } kefir_hashtable_entry_t;
 
 typedef struct kefir_hashtable {
+    kefir_uint8_t *entry_states;
     struct kefir_hashtable_entry *entries;
     kefir_size_t capacity;
     kefir_size_t occupied;
@@ -99,19 +99,19 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
 #define KEFIR_HASHTABLE_CAPACITY_GROW(_capacity) ((_capacity) == 0 ? 4 : (_capacity) * 2)
 #define KEFIR_HASHTABLE_WRAPAROUND(_index, _capacity) ((_index) & ((_capacity) - 1))
 
-#define KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(_ops, _entries, _capacity, _key, _position_ptr, _collisions_ptr) \
+#define KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(_ops, _entries, _entry_states, _capacity, _key, _position_ptr, _collisions_ptr) \
     do {                                                                                                          \
         kefir_uint64_t hash = (_ops)->hash((_key), (_ops)->payload); \
         kefir_uint32_t upper_part = hash >> 32; \
         kefir_uint32_t lower_part = (hash & ((1ull << 32) - 1)) | 1; \
         kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(upper_part, (_capacity));      \
-        if ((_entries)[index].state == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                          \
+        if ((_entry_states)[index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                          \
             *(_position_ptr) = index;                                                                             \
             return KEFIR_OK;                                                                                      \
         }                                                                                                         \
                                                                                                                   \
         kefir_bool_t equal; \
-        if ((_entries)[index].state == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
+        if ((_entry_states)[index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
             equal = (_ops)->equal((_key), (_entries)[index].key, (_ops)->payload);                       \
             if (equal) {                                                                                              \
                 *(_position_ptr) = index;                                                                             \
@@ -123,14 +123,14 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
         for (kefir_size_t i = 0; i < (_capacity); i++) {                                                \
             kefir_size_t current_index = KEFIR_HASHTABLE_WRAPAROUND(index + i * lower_part, (_capacity)); \
             (*(_collisions_ptr))++;                                                                               \
-            if ((_entries)[current_index].state == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                          \
+            if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                          \
                 *(_position_ptr) = current_index;                                                                             \
                 return KEFIR_OK;                                                                                  \
-            } else if ((_entries)[current_index].state == KEFIR_HASHTABLE_ENTRY_DELETED) {                                          \
+            } else if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_DELETED) {                                          \
                 if (deleted_index == ~0ull) { \
                     deleted_index = current_index; \
                 } \
-            } else if ((_entries)[current_index].state == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
+            } else if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
                 equal = (_ops)->equal((_key), (_entries)[current_index].key, (_ops)->payload);                                    \
                 if (equal) {                                                                                          \
                     *(_position_ptr) = current_index;                                                                             \
@@ -156,11 +156,11 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
                 upper_part, (_hashtable)->capacity);                    \
             for (kefir_size_t i = 0; i < (_hashtable)->capacity; i++) {                                                                                                      \
                 kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(base_index + i * lower_part, (_hashtable)->capacity);                                \
-                if ((_hashtable)->entries[index].state == KEFIR_HASHTABLE_ENTRY_EMPTY) {                              \
+                if ((_hashtable)->entry_states[index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                              \
                     break;                                                                                            \
                 }                                                                                                     \
                                                                                                                       \
-                if ((_hashtable)->entries[index].state == KEFIR_HASHTABLE_ENTRY_OCCUPIED &&                           \
+                if ((_hashtable)->entry_states[index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED &&                           \
                     (_hashtable)->ops->equal((_key), (_hashtable)->entries[index].key, (_hashtable)->ops->payload)) { \
                     on_found                                                                                          \
                 }                                                                                                     \
