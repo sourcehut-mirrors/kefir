@@ -39,6 +39,17 @@ factorial:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "jmp",
 #                "args": [
 #                    {
@@ -69,6 +80,17 @@ factorial:
 #                "labels": [
 #                    1
 #                ]
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
 #            },
 #            {
 #                "opcode": "virtual_register_link",
