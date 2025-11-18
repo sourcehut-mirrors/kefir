@@ -163,11 +163,11 @@ kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *mem, con
                 res == KEFIR_OK;
                 res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, NULL)) {
                 res = propagate_instr_liveness(mem, control_flow, liveness, value_ref, &queue, visited_map);
-                    REQUIRE_ELSE(res == KEFIR_OK, {
-                        KEFIR_FREE(mem, visited_map);
-                        kefir_list_free(mem, &queue);
-                        return res;
-                    });
+                REQUIRE_ELSE(res == KEFIR_OK, {
+                    KEFIR_FREE(mem, visited_map);
+                    kefir_list_free(mem, &queue);
+                    return res;
+                });
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
