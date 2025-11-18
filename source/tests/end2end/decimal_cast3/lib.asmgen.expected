@@ -782,15 +782,15 @@ __kefir_constant_uint_to_long_double:
 .section .text
 __kefir_bigint_is_zero:
 __kefir_runtime_text_func___kefir_bigint_is_zero_begin:
+    push %rbp
+    mov %rsp, %rbp
     push %rbx
-    push %r12
-    mov %rdi, %r11
-    cmp $0, %rsi
+    sub $8, %rsp
+    mov %rsi, %r11
+    mov %rdi, %rbx
+    cmp $0, %r11
     je __kefir_runtime_func___kefir_bigint_is_zero_label16
-    mov %rsi, %rbx
-    sub $1, %rbx
-    mov %rsi, %r12
-    sub $1, %r12
+    mov %r11, %rsi
     sub $-7, %rsi
     mov %rsi, %rax
     xor %edx, %edx
@@ -802,11 +802,12 @@ __kefir_runtime_func___kefir_bigint_is_zero_label4:
     cmp %r9, %r10
     jb __kefir_runtime_func___kefir_bigint_is_zero_label8
     mov $1, %rax
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
+    pop %rbp
     ret
 __kefir_runtime_func___kefir_bigint_is_zero_label8:
-    mov %r11, %rdi
+    mov %rbx, %rdi
     add %r10, %rdi
     movb (%rdi), %dl
     lea 1(%r10), %rcx
@@ -821,17 +822,21 @@ __kefir_runtime_func___kefir_bigint_is_zero_label10:
     jmp __kefir_runtime_func___kefir_bigint_is_zero_label4
 __kefir_runtime_func___kefir_bigint_is_zero_label12:
     xor %eax, %eax
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
+    pop %rbp
     ret
 __kefir_runtime_func___kefir_bigint_is_zero_label14:
     movzx %dl, %r8
-    mov %rbx, %rax
+    mov %r11, %rsi
+    sub $1, %rsi
+    mov %r11, %rdx
+    sub $1, %rdx
+    mov %rdx, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
     imul $8, %rax, %rdx
-    mov %r12, %rsi
     sub %rdx, %rsi
     add $1, %rsi
     mov $1, %rdx
@@ -842,8 +847,9 @@ __kefir_runtime_func___kefir_bigint_is_zero_label14:
     jmp __kefir_runtime_func___kefir_bigint_is_zero_label10
 __kefir_runtime_func___kefir_bigint_is_zero_label16:
     mov $1, %rax
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
+    pop %rbp
     ret
 __kefir_runtime_text_func___kefir_bigint_is_zero_end:
 

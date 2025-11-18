@@ -10,109 +10,100 @@
 __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
-    push %rbp
-    mov %rsp, %rbp
     push %rbx
     push %r12
     push %r13
-    sub $8, %rsp
-    mov %rdi, %rbx
+    push %r14
     mov %rcx, %r12
-    or %esi, %r12d
-    xor %r13d, %r13d
+    mov %rdi, %r13
+    xor %r14d, %r14d
 __kefir_func_test1_label2:
-    mov %r13, %r9
+    mov %r12, %r9
+    or %esi, %r9d
+    mov %r14, %r10
     mov %rdx, %rcx
-    shl %cl, %r9d
-    movsx %r13d, %rax
+    shl %cl, %r10d
+    movsx %r14d, %rax
     imul $40, %rax, %rax
-    mov %rbx, %r10
-    add %rax, %r10
-    cmp %esi, %r13d
+    mov %r13, %r11
+    add %rax, %r11
+    cmp %esi, %r14d
     jge __kefir_func_test1_label4
 __kefir_func_test1_label10:
-    xor %r11d, %r11d
+    xor %ebx, %ebx
     jmp __kefir_func_test1_label6
 __kefir_func_test1_label4:
-    lea -24(%rbp), %rsp
+    pop %r14
     pop %r13
     pop %r12
     pop %rbx
-    pop %rbp
     ret
 __kefir_func_test1_label6:
-    mov %r13, %rax
+    mov %r14, %rax
     add $1, %eax
-    cmp %edx, %r11d
+    cmp %edx, %ebx
     jl __kefir_func_test1_label8
-    mov %rax, %r13
+    mov %rax, %r14
     jmp __kefir_func_test1_label2
 __kefir_func_test1_label8:
-    movsx %r11d, %r8
+    movsx %ebx, %r8
     imul $4, %r8, %r8
-    mov %r10, %rdi
+    mov %r11, %rdi
     add %r8, %rdi
-    mov %r12, %rcx
-    sub %r11d, %ecx
-    add %r9d, %ecx
+    mov %r9, %rcx
+    sub %ebx, %ecx
+    add %r10d, %ecx
     movl %ecx, (%rdi)
-    mov %r11, %r8
+    mov %rbx, %r8
     add $1, %r8d
-    mov %r8, %r11
+    mov %r8, %rbx
     jmp __kefir_func_test1_label6
 __kefir_text_func_test1_end:
 
 test2:
 __kefir_text_func_test2_begin:
-    push %rbp
-    mov %rsp, %rbp
     push %rbx
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $8, %rsp
     mov %rcx, %r12
     mov %rdi, %r13
-    mov %r12, %r14
-    or %esi, %r14d
-    xor %r15d, %r15d
+    xor %r14d, %r14d
 __kefir_func_test2_label2:
-    movsx %r15d, %rax
+    movsx %r14d, %rax
     imul $40, %rax, %rax
     mov %r13, %r9
     add %rax, %r9
-    mov %r15, %r10
+    mov %r12, %r10
+    or %esi, %r10d
+    mov %r14, %r11
     mov %rdx, %rcx
-    shl %cl, %r10d
-    cmp %esi, %r15d
+    shl %cl, %r11d
+    cmp %esi, %r14d
     jl __kefir_func_test2_label16
     xor %ebx, %ebx
     jmp __kefir_func_test2_label4
 __kefir_func_test2_label16:
-    xor %r11d, %r11d
+    xor %ebx, %ebx
     jmp __kefir_func_test2_label12
 __kefir_func_test2_label4:
-    mov %r12, %r9
-    mov %rbx, %rcx
-    shl %cl, %r9d
     movsx %ebx, %rax
     imul $40, %rax, %rax
-    mov %r13, %r10
-    add %rax, %r10
+    mov %r13, %r9
+    add %rax, %r9
+    mov %r12, %r10
+    mov %rbx, %rcx
+    shl %cl, %r10d
     cmp %esi, %ebx
     jge __kefir_func_test2_label6
 __kefir_func_test2_label17:
     xor %r11d, %r11d
     jmp __kefir_func_test2_label8
 __kefir_func_test2_label6:
-    lea -40(%rbp), %rsp
-    pop %r15
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
-    pop %rbp
     ret
 __kefir_func_test2_label8:
     mov %rbx, %rcx
@@ -124,10 +115,10 @@ __kefir_func_test2_label8:
 __kefir_func_test2_label10:
     movsx %r11d, %rax
     imul $4, %rax, %rax
-    mov %r10, %rdi
+    mov %r9, %rdi
     add %rax, %rdi
     movl (%rdi), %eax
-    mov %r9, %r8
+    mov %r10, %r8
     mov %r11, %rcx
     sar %cl, %r8d
     xor %r8d, %eax
@@ -137,24 +128,24 @@ __kefir_func_test2_label10:
     mov %rcx, %r11
     jmp __kefir_func_test2_label8
 __kefir_func_test2_label12:
-    mov %r15, %rax
+    mov %r14, %rax
     add $1, %eax
-    cmp %edx, %r11d
+    cmp %edx, %ebx
     jl __kefir_func_test2_label14
-    mov %rax, %r15
+    mov %rax, %r14
     jmp __kefir_func_test2_label2
 __kefir_func_test2_label14:
-    movsx %r11d, %r8
+    movsx %ebx, %r8
     imul $4, %r8, %r8
     mov %r9, %rdi
     add %r8, %rdi
-    mov %r14, %rcx
-    sub %r11d, %ecx
-    add %r10d, %ecx
+    mov %r10, %rcx
+    sub %ebx, %ecx
+    add %r11d, %ecx
     movl %ecx, (%rdi)
-    mov %r11, %r8
+    mov %rbx, %r8
     add $1, %r8d
-    mov %r8, %r11
+    mov %r8, %rbx
     jmp __kefir_func_test2_label12
 __kefir_text_func_test2_end:
 
