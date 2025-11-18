@@ -79,16 +79,16 @@ __kefir_func_test1_label0:
     mov $0, %rcx
     cmp $-1, %al
     sete %cl
-    movq %r8, -64(%rbp)
-    movq %rcx, -56(%rbp)
+    movq %rcx, -64(%rbp)
+    movq %r8, -56(%rbp)
     leaq -80(%rbp), %rax
     mov %rax, %rdi
     leaq -48(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -64(%rbp), %r8
-    movq -56(%rbp), %rcx
+    movq -64(%rbp), %rcx
+    movq -56(%rbp), %r8
     mov $0, %rdx
     cmp $0, %al
     sete %dl

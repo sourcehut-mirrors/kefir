@@ -20,15 +20,15 @@ __kefir_text_func_sub1_begin:
     mov %rdi, %rcx
     shl $46, %rcx
     sar $46, %rcx
-    movq %r8, -32(%rbp)
-    movq %rax, -24(%rbp)
+    movq %rax, -32(%rbp)
+    movq %r8, -24(%rbp)
     leaq -48(%rbp), %rdx
     mov %rdx, %rdi
     mov $66, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_set_signed_integer
-    movq -32(%rbp), %r8
-    movq -24(%rbp), %rax
+    movq -32(%rbp), %rax
+    movq -24(%rbp), %r8
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     shl $33, %rax
@@ -74,15 +74,15 @@ __kefir_text_func_sub2_begin:
     mov %rdi, %rcx
     shl $14, %rcx
     sar $14, %rcx
-    movq %r8, -32(%rbp)
-    movq %rax, -24(%rbp)
+    movq %rax, -32(%rbp)
+    movq %r8, -24(%rbp)
     leaq -48(%rbp), %rdx
     mov %rdx, %rdi
     mov $66, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_set_signed_integer
-    movq -32(%rbp), %r8
-    movq -24(%rbp), %rax
+    movq -32(%rbp), %rax
+    movq -24(%rbp), %r8
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     shl $3, %rax
@@ -419,11 +419,13 @@ __kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_begin:
     push %r14
     push %r15
     sub $24, %rsp
+    mov %rsi, %r8
     movq %rdi, -48(%rbp)
-    cmp $0, %rsi
+    cmp $0, %r8
     je __kefir_runtime_func___kefir_bigint_redundant_sign_bits_label8
+    mov %r8, %rsi
+    sub $-7, %rsi
     mov %rsi, %rax
-    sub $-7, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
@@ -433,11 +435,7 @@ __kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_begin:
     movq -48(%rbp), %rdi
     add %rax, %rdi
     movzxb (%rdi), %rcx
-    mov %r15, %rdx
-    sub $1, %rdx
-    imul $8, %rdx, %rdx
-    movq %rsi, -64(%rbp)
-    subq %rdx, -64(%rbp)
+    mov %r8, %rsi
     sub $1, %rsi
     imul $8, %rax, %rdx
     sub %rdx, %rsi
@@ -445,6 +443,11 @@ __kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_begin:
     mov %rsi, %rcx
     sar %cl, %edx
     and $1, %edx
+    mov %r15, %rax
+    sub $1, %rax
+    imul $8, %rax, %rcx
+    movq %r8, -64(%rbp)
+    subq %rcx, -64(%rbp)
     movq $0, -56(%rbp)
     xor %r11d, %r11d
 __kefir_runtime_func___kefir_bigint_redundant_sign_bits_label2:

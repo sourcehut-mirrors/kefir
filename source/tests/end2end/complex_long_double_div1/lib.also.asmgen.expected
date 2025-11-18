@@ -656,14 +656,14 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_div_label27:
     mov %rcx, %rax
     neg %eax
     sub $16, %rsp
-    movq %rax, -208(%rbp)
-    movq %rcx, -200(%rbp)
+    movq %rcx, -208(%rbp)
+    movq %rax, -200(%rbp)
     fldt -176(%rbp)
     fstpt (%rsp)
     mov %rax, %rdi
     call __kefir_softfloat_scalbnl
-    movq -208(%rbp), %rax
-    movq -200(%rbp), %rcx
+    movq -208(%rbp), %rcx
+    movq -200(%rbp), %rax
     add $16, %rsp
     fstpt -208(%rbp)
     sub $16, %rsp

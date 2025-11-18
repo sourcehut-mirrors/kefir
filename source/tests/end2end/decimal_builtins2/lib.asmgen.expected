@@ -121,21 +121,21 @@ __kefir_text_func_dec32_isfinite_begin:
     movdqu -48(%rbp), %xmm2
     test %eax, %eax
     sete %cl
-    movdqu %xmm2, -32(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
+    movdqu %xmm2, -24(%rbp)
     movaps %xmm2, %xmm0
     movaps %xmm2, %xmm1
     call __bid_unordsd2@PLT
     mov %rax, %rdx
-    movdqu -32(%rbp), %xmm2
-    movq -16(%rbp), %rcx
+    movq -32(%rbp), %rcx
+    movdqu -24(%rbp), %xmm2
     movd __kefir_func_dec32_isfinite_label2(%rip), %xmm1
-    movq %rdx, -48(%rbp)
-    movq %rcx, -40(%rbp)
+    movq %rcx, -48(%rbp)
+    movq %rdx, -40(%rbp)
     movaps %xmm2, %xmm0
     call __bid_eqsd2@PLT
-    movq -48(%rbp), %rdx
-    movq -40(%rbp), %rcx
+    movq -48(%rbp), %rcx
+    movq -40(%rbp), %rdx
     test %eax, %eax
     sete %sil
     mov %rdx, %rax
@@ -172,21 +172,21 @@ __kefir_text_func_dec64_isfinite_begin:
     movdqu -48(%rbp), %xmm2
     test %eax, %eax
     sete %cl
-    movdqu %xmm2, -32(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
+    movdqu %xmm2, -24(%rbp)
     movaps %xmm2, %xmm0
     movaps %xmm2, %xmm1
     call __bid_unorddd2@PLT
     mov %rax, %rdx
-    movdqu -32(%rbp), %xmm2
-    movq -16(%rbp), %rcx
+    movq -32(%rbp), %rcx
+    movdqu -24(%rbp), %xmm2
     movq __kefir_func_dec64_isfinite_label2(%rip), %xmm1
-    movq %rdx, -48(%rbp)
-    movq %rcx, -40(%rbp)
+    movq %rcx, -48(%rbp)
+    movq %rdx, -40(%rbp)
     movaps %xmm2, %xmm0
     call __bid_eqdd2@PLT
-    movq -48(%rbp), %rdx
-    movq -40(%rbp), %rcx
+    movq -48(%rbp), %rcx
+    movq -40(%rbp), %rdx
     test %eax, %eax
     sete %sil
     mov %rdx, %rax
@@ -339,21 +339,21 @@ __kefir_text_func_dec128_isfinite_begin:
     movdqu -48(%rbp), %xmm2
     test %eax, %eax
     sete %cl
-    movdqu %xmm2, -32(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %rcx, -32(%rbp)
+    movdqu %xmm2, -24(%rbp)
     movaps %xmm2, %xmm0
     movaps %xmm2, %xmm1
     call __bid_unordtd2@PLT
     mov %rax, %rdx
-    movdqu -32(%rbp), %xmm2
-    movq -16(%rbp), %rcx
+    movq -32(%rbp), %rcx
+    movdqu -24(%rbp), %xmm2
     movdqu __kefir_func_dec128_isfinite_label2(%rip), %xmm1
-    movq %rdx, -48(%rbp)
-    movq %rcx, -40(%rbp)
+    movq %rcx, -48(%rbp)
+    movq %rdx, -40(%rbp)
     movaps %xmm2, %xmm0
     call __bid_eqtd2@PLT
-    movq -48(%rbp), %rdx
-    movq -40(%rbp), %rcx
+    movq -48(%rbp), %rcx
+    movq -40(%rbp), %rdx
     test %eax, %eax
     sete %sil
     mov %rdx, %rax

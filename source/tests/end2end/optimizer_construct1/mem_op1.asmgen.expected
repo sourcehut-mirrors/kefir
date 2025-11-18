@@ -123,18 +123,18 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                6,
-                                1,
-                                9,
-                                10,
-                                4,
-                                3,
-                                2,
-                                0,
                                 8,
                                 7,
+                                3,
                                 5,
-                                11
+                                4,
+                                0,
+                                6,
+                                2,
+                                1,
+                                11,
+                                9,
+                                10
                             ]
                         }
                     }
@@ -267,18 +267,18 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                6,
-                                1,
-                                9,
-                                10,
-                                4,
-                                3,
-                                2,
-                                0,
                                 8,
                                 7,
+                                3,
                                 5,
-                                11
+                                4,
+                                0,
+                                6,
+                                2,
+                                1,
+                                11,
+                                9,
+                                10
                             ]
                         }
                     }
@@ -485,26 +485,26 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                6,
-                                1,
-                                12,
-                                19,
-                                15,
-                                16,
-                                4,
-                                10,
-                                2,
-                                7,
-                                5,
-                                11,
-                                17,
                                 9,
                                 3,
-                                0,
+                                15,
+                                10,
+                                5,
+                                1,
                                 18,
-                                8,
+                                11,
+                                19,
+                                17,
                                 14,
-                                13
+                                8,
+                                13,
+                                0,
+                                6,
+                                7,
+                                16,
+                                4,
+                                2,
+                                12
                             ]
                         }
                     }

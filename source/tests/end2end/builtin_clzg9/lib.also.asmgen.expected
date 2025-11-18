@@ -105,15 +105,15 @@ __kefir_text_func_test5_begin:
     xor %ecx, %ecx
     cmp $0, %al
     sete %cl
-    movq %r8, -48(%rbp)
-    movq %rcx, -40(%rbp)
+    movq %rcx, -48(%rbp)
+    movq %r8, -40(%rbp)
     leaq -32(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    movq -48(%rbp), %r8
-    movq -40(%rbp), %rcx
+    movq -48(%rbp), %rcx
+    movq -40(%rbp), %r8
     mov %r8, %rdx
     test %cl, %cl
     cmovnz %rdx, %rax
@@ -139,15 +139,15 @@ __kefir_text_func_test6_begin:
     movl $0, -36(%rbp)
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
-    movq %r9, -24(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %rcx, -24(%rbp)
+    movq %r9, -16(%rbp)
     mov %rcx, %rdi
     leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $315, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rcx
+    movq -16(%rbp), %r9
     xor %r8d, %r8d
     cmp $0, %al
     sete %r8b

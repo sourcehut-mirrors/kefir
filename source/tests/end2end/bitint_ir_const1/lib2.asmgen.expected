@@ -37,8 +37,8 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 1,
-                                2,
-                                0
+                                0,
+                                2
                             ]
                         }
                     }

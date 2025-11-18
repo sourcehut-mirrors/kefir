@@ -98,8 +98,6 @@ __kefir_text_func_quad_equation_begin:
     stmxcsr -8(%rbp)
 __kefir_func_quad_equation_label0:
     movaps %xmm0, %xmm5
-    movaps %xmm1, %xmm6
-    xorpd __kefir_constant_float64_neg(%rip), %xmm6
     movaps %xmm1, %xmm3
     mulsd %xmm1, %xmm3
     mov $4, %rcx
@@ -107,31 +105,30 @@ __kefir_func_quad_equation_label0:
     cvtsi2sd %rax, %xmm4
     mulsd %xmm5, %xmm4
     mulsd %xmm2, %xmm4
-    movaps %xmm3, %xmm1
-    subsd %xmm4, %xmm1
+    movaps %xmm3, %xmm0
+    subsd %xmm4, %xmm0
     mov $1, %rcx
     neg %ecx
+    xorpd __kefir_constant_float64_neg(%rip), %xmm1
     test %edi, %edi
     jz __kefir_func_quad_equation_label3
 __kefir_func_quad_equation_label1:
 __kefir_func_quad_equation_label2:
-    movq %rdi, -80(%rbp)
-    movq %rcx, -72(%rbp)
-    movdqu %xmm6, -64(%rbp)
-    movdqu %xmm5, -48(%rbp)
-    movaps %xmm1, %xmm0
+    movdqu %xmm1, -80(%rbp)
+    movq %rcx, -64(%rbp)
+    movdqu %xmm5, -56(%rbp)
+    movq %rdi, -40(%rbp)
     call sqrt@PLT
-    movq -80(%rbp), %rdi
-    movq -72(%rbp), %rcx
-    movdqu -64(%rbp), %xmm6
-    movdqu -48(%rbp), %xmm5
+    movdqu -80(%rbp), %xmm1
+    movq -64(%rbp), %rcx
+    movdqu -56(%rbp), %xmm5
+    movq -40(%rbp), %rdi
     mov $1, %rax
     test %edi, %edi
     cmovz %rcx, %rax
     movsx %eax, %rax
     cvtsi2sd %rax, %xmm2
     mulsd %xmm0, %xmm2
-    movaps %xmm6, %xmm1
     addsd %xmm2, %xmm1
     mov $2, %rcx
     movsx %ecx, %rax

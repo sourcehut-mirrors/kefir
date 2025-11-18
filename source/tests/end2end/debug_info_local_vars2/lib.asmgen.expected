@@ -40,16 +40,16 @@ __kefir_func_test1_label5:
 __kefir_func_test1_label6:
     movl (%rax), %esi
 __kefir_func_test1_label7:
-    movq %rdx, -40(%rbp)
-    movq %rcx, -32(%rbp)
+    movq %rcx, -40(%rbp)
+    movq %rdx, -32(%rbp)
     movq %rsi, -24(%rbp)
 .loc 0 26 25
     data16     lea __kefir_function_test1_static_w_2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movq -40(%rbp), %rdx
-    movq -32(%rbp), %rcx
     movq -24(%rbp), %rsi
+    movq -32(%rbp), %rdx
+    movq -40(%rbp), %rcx
 .loc 0 26 25
 __kefir_func_test1_label8:
     movq (%rax), %rax

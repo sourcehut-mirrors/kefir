@@ -164,9 +164,9 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label3:
     and $32767, %ecx
     shr $15, %rax
     or $1, %eax
-    xor %r10d, %r10d
+    xor %r12d, %r12d
     or %rdx, %rcx
-    cmove %eax, %r10d
+    cmove %eax, %r12d
     movsxw -136(%rbp), %rax
     mov %rax, %rcx
     not %ecx
@@ -175,15 +175,15 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label3:
     and $32767, %ecx
     shr $15, %rax
     or $1, %eax
-    xor %r11d, %r11d
+    xor %r10d, %r10d
     or %rdx, %rcx
-    cmove %eax, %r11d
+    cmove %eax, %r10d
+    test %r12d, %r12d
+    setne %r11b
+    movzx %r11b, %r11
     test %r10d, %r10d
     setne %bl
     movzx %bl, %rbx
-    test %r11d, %r11d
-    setne %r12b
-    movzx %r12b, %r12
     test %edi, %edi
     setne %r9b
     movzx %r9b, %r9
@@ -213,8 +213,8 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label3:
     movq %rax, -264(%rbp)
     xor %edi, %edi
 __kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label4:
-    mov %r10, %rax
-    or %r11d, %eax
+    mov %r12, %rax
+    or %r10d, %eax
     setne %al
     test %al, %al
     jnz __kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label26
@@ -532,7 +532,7 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label26:
     movq __kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label44(%rip), %xmm1
     movq %xmm0, %rax
     movq %xmm1, %rcx
-    test %bl, %bl
+    test %r11b, %r11b
     cmovz %rcx, %rax
     mov %rax, -304(%rbp)
     fldl -304(%rbp)
@@ -550,7 +550,7 @@ __kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label26:
     movq __kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label46(%rip), %xmm1
     movq %xmm0, %rax
     movq %xmm1, %rcx
-    test %r12b, %r12b
+    test %bl, %bl
     cmovz %rcx, %rax
     mov %rax, -304(%rbp)
     fldl -304(%rbp)

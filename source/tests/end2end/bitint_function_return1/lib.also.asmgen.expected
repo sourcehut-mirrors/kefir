@@ -818,7 +818,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 3,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -831,7 +831,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 10,
+#                        "index": 12,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -842,7 +842,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 3,
+#                        "index": 10,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -890,6 +890,17 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
 #                        "index": 12,
 #                        "variant": "default"
 #                    }
@@ -902,17 +913,6 @@ __kefir_bigint_invert:
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 10,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
 #                        "variant": "default"
 #                    }
 #                ],

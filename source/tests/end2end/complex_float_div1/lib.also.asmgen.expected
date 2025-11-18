@@ -45,51 +45,51 @@ __kefir_runtime_text_func___kefir_softfloat_complex_float_div_begin:
     stmxcsr -16(%rbp)
     movaps %xmm1, %xmm10
     movaps %xmm0, %xmm11
-    movdqu %xmm3, -168(%rbp)
+    movdqu %xmm2, -168(%rbp)
     movdqu %xmm11, -152(%rbp)
     movdqu %xmm10, -136(%rbp)
-    movdqu %xmm2, -120(%rbp)
+    movdqu %xmm3, -120(%rbp)
     movaps %xmm2, %xmm0
     call __kefir_softfloat_fabsf
     movaps %xmm0, %xmm4
-    movdqu -168(%rbp), %xmm3
+    movdqu -168(%rbp), %xmm2
     movdqu -152(%rbp), %xmm11
     movdqu -136(%rbp), %xmm10
-    movdqu -120(%rbp), %xmm2
-    movdqu %xmm3, -104(%rbp)
+    movdqu -120(%rbp), %xmm3
+    movdqu %xmm2, -104(%rbp)
     movdqu %xmm11, -88(%rbp)
-    movdqu %xmm4, -72(%rbp)
-    movdqu %xmm10, -56(%rbp)
-    movdqu %xmm2, -40(%rbp)
+    movdqu %xmm10, -72(%rbp)
+    movdqu %xmm3, -56(%rbp)
+    movdqu %xmm4, -40(%rbp)
     movaps %xmm3, %xmm0
     call __kefir_softfloat_fabsf
     movaps %xmm0, %xmm5
-    movdqu -104(%rbp), %xmm3
+    movdqu -104(%rbp), %xmm2
     movdqu -88(%rbp), %xmm11
-    movdqu -72(%rbp), %xmm4
-    movdqu -56(%rbp), %xmm10
-    movdqu -40(%rbp), %xmm2
-    movdqu %xmm3, -176(%rbp)
+    movdqu -72(%rbp), %xmm10
+    movdqu -56(%rbp), %xmm3
+    movdqu -40(%rbp), %xmm4
+    movdqu %xmm2, -176(%rbp)
     movdqu %xmm11, -160(%rbp)
     movdqu %xmm10, -144(%rbp)
-    movdqu %xmm2, -128(%rbp)
+    movdqu %xmm3, -128(%rbp)
     movaps %xmm4, %xmm0
     movaps %xmm5, %xmm1
     call __kefir_softfloat_fmaximum_numf
-    movdqu -176(%rbp), %xmm3
+    movdqu -176(%rbp), %xmm2
     movdqu -160(%rbp), %xmm11
     movdqu -144(%rbp), %xmm10
-    movdqu -128(%rbp), %xmm2
-    movdqu %xmm3, -176(%rbp)
+    movdqu -128(%rbp), %xmm3
+    movdqu %xmm2, -176(%rbp)
     movdqu %xmm11, -160(%rbp)
     movdqu %xmm10, -144(%rbp)
-    movdqu %xmm2, -128(%rbp)
+    movdqu %xmm3, -128(%rbp)
     call __kefir_softfloat_logbf
     movaps %xmm0, %xmm7
-    movdqu -176(%rbp), %xmm3
+    movdqu -176(%rbp), %xmm2
     movdqu -160(%rbp), %xmm11
     movdqu -144(%rbp), %xmm10
-    movdqu -128(%rbp), %xmm2
+    movdqu -128(%rbp), %xmm3
     movaps %xmm7, %xmm0
     andps __kefir_runtime_constant_isfinitef32_mask(%rip), %xmm0
     movdqu __kefir_runtime_constant_isfinitef32_cmp(%rip), %xmm4
@@ -115,46 +115,46 @@ __kefir_runtime_func___kefir_softfloat_complex_float_div_label1:
     divss %xmm2, %xmm0
     mov %rdi, %rax
     neg %eax
-    movdqu %xmm8, -176(%rbp)
-    movdqu %xmm7, -160(%rbp)
+    movdqu %xmm7, -176(%rbp)
+    movdqu %xmm11, -160(%rbp)
     movdqu %xmm2, -144(%rbp)
-    movdqu %xmm11, -128(%rbp)
-    movdqu %xmm10, -112(%rbp)
-    movq %rax, -96(%rbp)
-    movdqu %xmm9, -88(%rbp)
+    movq %rax, -128(%rbp)
+    movdqu %xmm9, -120(%rbp)
+    movdqu %xmm10, -104(%rbp)
+    movdqu %xmm8, -88(%rbp)
     mov %rax, %rdi
     call __kefir_softfloat_scalbnf
     movaps %xmm0, %xmm5
-    movdqu -176(%rbp), %xmm8
-    movdqu -160(%rbp), %xmm7
+    movdqu -176(%rbp), %xmm7
+    movdqu -160(%rbp), %xmm11
     movdqu -144(%rbp), %xmm2
-    movdqu -128(%rbp), %xmm11
-    movdqu -112(%rbp), %xmm10
-    movq -96(%rbp), %rax
-    movdqu -88(%rbp), %xmm9
+    movq -128(%rbp), %rax
+    movdqu -120(%rbp), %xmm9
+    movdqu -104(%rbp), %xmm10
+    movdqu -88(%rbp), %xmm8
     movaps %xmm10, %xmm1
     mulss %xmm8, %xmm1
     movaps %xmm11, %xmm0
     mulss %xmm9, %xmm0
     subss %xmm0, %xmm1
     divss %xmm2, %xmm1
-    movdqu %xmm2, -176(%rbp)
-    movdqu %xmm5, -160(%rbp)
-    movdqu %xmm9, -144(%rbp)
-    movdqu %xmm8, -128(%rbp)
-    movdqu %xmm7, -112(%rbp)
-    movdqu %xmm11, -96(%rbp)
+    movdqu %xmm7, -176(%rbp)
+    movdqu %xmm11, -160(%rbp)
+    movdqu %xmm2, -144(%rbp)
+    movdqu %xmm5, -128(%rbp)
+    movdqu %xmm9, -112(%rbp)
+    movdqu %xmm8, -96(%rbp)
     movdqu %xmm10, -80(%rbp)
     movaps %xmm1, %xmm0
     mov %rax, %rdi
     call __kefir_softfloat_scalbnf
     movaps %xmm0, %xmm6
-    movdqu -176(%rbp), %xmm2
-    movdqu -160(%rbp), %xmm5
-    movdqu -144(%rbp), %xmm9
-    movdqu -128(%rbp), %xmm8
-    movdqu -112(%rbp), %xmm7
-    movdqu -96(%rbp), %xmm11
+    movdqu -176(%rbp), %xmm7
+    movdqu -160(%rbp), %xmm11
+    movdqu -144(%rbp), %xmm2
+    movdqu -128(%rbp), %xmm5
+    movdqu -112(%rbp), %xmm9
+    movdqu -96(%rbp), %xmm8
     movdqu -80(%rbp), %xmm10
     xor %eax, %eax
     ucomiss %xmm5, %xmm5
@@ -500,34 +500,34 @@ __kefir_runtime_func___kefir_softfloat_complex_float_div_label27:
     cvttss2si %xmm7, %rax
     mov %rax, %rcx
     neg %ecx
-    movdqu %xmm3, -176(%rbp)
+    movdqu %xmm7, -176(%rbp)
     movq %rax, -160(%rbp)
-    movq %rcx, -152(%rbp)
-    movdqu %xmm7, -144(%rbp)
-    movdqu %xmm11, -128(%rbp)
-    movdqu %xmm10, -112(%rbp)
+    movdqu %xmm11, -152(%rbp)
+    movdqu %xmm10, -136(%rbp)
+    movdqu %xmm3, -120(%rbp)
+    movq %rcx, -104(%rbp)
     movaps %xmm2, %xmm0
     mov %rcx, %rdi
     call __kefir_softfloat_scalbnf
     movaps %xmm0, %xmm2
-    movdqu -176(%rbp), %xmm3
+    movdqu -176(%rbp), %xmm7
     movq -160(%rbp), %rax
-    movq -152(%rbp), %rcx
-    movdqu -144(%rbp), %xmm7
-    movdqu -128(%rbp), %xmm11
-    movdqu -112(%rbp), %xmm10
-    movdqu %xmm2, -176(%rbp)
+    movdqu -152(%rbp), %xmm11
+    movdqu -136(%rbp), %xmm10
+    movdqu -120(%rbp), %xmm3
+    movq -104(%rbp), %rcx
+    movdqu %xmm7, -176(%rbp)
     movq %rax, -160(%rbp)
-    movdqu %xmm7, -152(%rbp)
-    movdqu %xmm11, -136(%rbp)
+    movdqu %xmm11, -152(%rbp)
+    movdqu %xmm2, -136(%rbp)
     movdqu %xmm10, -120(%rbp)
     movaps %xmm3, %xmm0
     mov %rcx, %rdi
     call __kefir_softfloat_scalbnf
-    movdqu -176(%rbp), %xmm2
+    movdqu -176(%rbp), %xmm7
     movq -160(%rbp), %rax
-    movdqu -152(%rbp), %xmm7
-    movdqu -136(%rbp), %xmm11
+    movdqu -136(%rbp), %xmm2
+    movdqu -152(%rbp), %xmm11
     movdqu -120(%rbp), %xmm10
     movaps %xmm2, %xmm8
     movaps %xmm0, %xmm9
@@ -692,10 +692,10 @@ __kefir_runtime_text_func___kefir_softfloat_ilogbf_begin:
     movd %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
     movq -24(%rbp), %rcx
-    shr $23, %rax
-    and $255, %rax
     mov %rcx, %rsi
     shl $9, %rsi
+    shr $23, %rax
+    and $255, %rax
     mov %rax, %rcx
     sub $127, %ecx
     cmp $255, %eax

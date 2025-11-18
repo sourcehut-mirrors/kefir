@@ -717,8 +717,8 @@ __kefir_func_set10_label0:
     mov %rcx, %rsi
     mov $80, %rdx
     call __kefir_bigint_and
-    movq -96(%rbp), %rax
     movq -88(%rbp), %r8
+    movq -96(%rbp), %rax
     movq %r8, -112(%rbp)
     leaq -96(%rbp), %rcx
     mov %rcx, %rdi
@@ -791,8 +791,8 @@ __kefir_func_set11_label0:
     mov %rcx, %rsi
     mov $120, %rdx
     call __kefir_bigint_and
-    movq -96(%rbp), %rax
     movq -88(%rbp), %r8
+    movq -96(%rbp), %rax
     movq %r8, -112(%rbp)
     leaq -96(%rbp), %rcx
     mov %rcx, %rdi
@@ -869,8 +869,8 @@ __kefir_func_set12_label0:
     mov %rcx, %rsi
     mov $104, %rdx
     call __kefir_bigint_and
-    movq -96(%rbp), %rax
     movq -88(%rbp), %r8
+    movq -96(%rbp), %rax
     movq %r8, -112(%rbp)
     leaq -96(%rbp), %rcx
     mov %rcx, %rdi

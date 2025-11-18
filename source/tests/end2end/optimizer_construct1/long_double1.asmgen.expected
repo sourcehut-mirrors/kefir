@@ -91,11 +91,11 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                1,
+                                0,
                                 4,
                                 3,
-                                2,
-                                0
+                                1,
+                                2
                             ]
                         }
                     }
@@ -173,12 +173,12 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                1,
-                                5,
-                                4,
+                                0,
                                 3,
-                                2,
-                                0
+                                4,
+                                5,
+                                1,
+                                2
                             ]
                         }
                     },
