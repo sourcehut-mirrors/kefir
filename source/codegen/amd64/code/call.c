@@ -1032,6 +1032,9 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                     mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &return_placement_vreg));
                 REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, return_placement_vreg,
                                                                             KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+                REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), return_placement_vreg,
+                    NULL));
                 REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), return_vreg,
                     return_placement_vreg, NULL));
