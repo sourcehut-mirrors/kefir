@@ -64,7 +64,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
     kefir_codegen_target_ir_value_ref_t used_value;
     for (res = kefir_codegen_target_ir_code_use_iter(control_flow->code, &use_iter, value_ref.instr_ref, &user_instr_ref, &used_value);
         res == KEFIR_OK;
-        res = kefir_codegen_target_ir_code_use_next(&use_iter, &user_instr_ref, NULL)) {
+        res = kefir_codegen_target_ir_code_use_next(&use_iter, &user_instr_ref, &used_value)) {
         if (used_value.aspect != value_ref.aspect) {
             continue;
         }
