@@ -486,6 +486,69 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
     return KEFIR_OK;
 }
 
+static kefir_result_t alias_return_space_allocation(struct kefir_codegen_amd64_function *func) {
+    REQUIRE(func->variable_allocator.return_space_variable_ref == KEFIR_ID_NONE, KEFIR_OK);
+    kefir_size_t num_of_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(&func->function->code, &num_of_blocks));
+    for (kefir_opt_block_id_t block_id = 0; block_id < num_of_blocks; block_id++) {
+        if (block_id != func->function->code.entry_point && func->function_analysis.structure.blocks[block_id].immediate_dominator == KEFIR_ID_NONE) {
+            continue;
+        }
+
+        const struct kefir_opt_code_block *block;
+        REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, block_id, &block));
+
+        kefir_opt_instruction_ref_t tail_ref;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->function->code, block, &tail_ref));
+        if (tail_ref == KEFIR_ID_NONE) {
+            continue;
+        }
+
+        const struct kefir_opt_instruction *tail_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, tail_ref, &tail_instr));
+        if (tail_instr->operation.opcode != KEFIR_OPT_OPCODE_RETURN || tail_instr->operation.parameters.refs[0] == KEFIR_ID_NONE) {
+            continue;
+        }
+
+        const struct kefir_opt_instruction *returned_instr, *return_space_instr, *alloc_instr = NULL;
+        REQUIRE_OK(
+            kefir_opt_code_container_instr(&func->function->code, tail_instr->operation.parameters.refs[0], &returned_instr));
+        if (returned_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+            alloc_instr = returned_instr;
+        } else if (returned_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
+            returned_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL ||
+            returned_instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
+            returned_instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
+            const struct kefir_opt_call_node *call;
+            REQUIRE_OK(kefir_opt_code_container_call(&func->function->code, returned_instr->operation.parameters.function_call.call_ref, &call));
+            if (call->return_space != KEFIR_ID_NONE) {
+                REQUIRE_OK(
+                    kefir_opt_code_container_instr(&func->function->code, call->return_space, &return_space_instr));
+                if (return_space_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+                    alloc_instr = return_space_instr;
+                }
+            }
+        }
+        
+        if (alloc_instr != NULL) {
+            const struct kefir_ir_type *alloc_ir_type = kefir_ir_module_get_named_type(
+                func->module->ir_module, alloc_instr->operation.parameters.type.type_id);
+            REQUIRE(alloc_ir_type != NULL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
+            kefir_bool_t same_type;
+            REQUIRE_OK(
+                kefir_ir_type_same(func->function->ir_func->declaration->result, 0, alloc_ir_type,
+                                    alloc_instr->operation.parameters.type.type_index, &same_type));
+            if (same_type) {
+                REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_return_space(
+                    &func->variable_allocator, alloc_instr->id));
+                break;
+            }
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
     // Schedule code
     struct scheduler_schedule_param scheduler_param = {.mem = mem, .func = func};
@@ -539,11 +602,12 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &func->code, implicit_param_placement_vreg,
                                                                       implicit_parameter_reg));
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &func->code,
-                                                             kefir_asmcmp_context_instr_tail(&func->code.context),
-                                                             implicit_param_vreg, implicit_param_placement_vreg, NULL));
+                                                             after_prologue,
+                                                             implicit_param_vreg, implicit_param_placement_vreg, &after_prologue));
         func->stack_frame.return_space_vreg = implicit_param_vreg;
         REQUIRE_OK(kefir_hashtreeset_add(mem, &func->preserve_vregs,
                                          (kefir_hashtreeset_entry_t) func->stack_frame.return_space_vreg));
+        REQUIRE_OK(alias_return_space_allocation(func));
     }
 
     // Translate blocks

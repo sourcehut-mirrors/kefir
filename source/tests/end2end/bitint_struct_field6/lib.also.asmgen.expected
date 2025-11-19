@@ -28,7 +28,7 @@ __kefir_text_func_get1_begin:
     mov %rdi, %r12
 __kefir_func_get1_label0:
     movl %esi, -20(%rbp)
-    leaq (%r12), %rdi
+    mov %r12, %rdi
     mov $0, %rax
     mov $9, %rcx
     rep stosq
@@ -50,7 +50,7 @@ __kefir_func_get1_label0:
     sar $50, %rax
     movw %ax, 16(%r12)
     movl -20(%rbp), %eax
-    leaq (%r12), %rbx
+    mov %r12, %rbx
     add $24, %rbx
     add $3, %eax
     movsx %eax, %rdx
@@ -71,7 +71,7 @@ __kefir_func_get1_label0:
     sar $35, %rax
     movl %eax, 48(%r12)
     movl -20(%rbp), %eax
-    leaq (%r12), %rbx
+    mov %r12, %rbx
     add $56, %rbx
     add $5, %eax
     movsx %eax, %rdx

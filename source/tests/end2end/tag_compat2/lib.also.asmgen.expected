@@ -15,7 +15,7 @@ __kefir_text_func_get_begin:
     stmxcsr -16(%rbp)
     mov %rdi, %r9
     mov %rsi, %r8
-    leaq (%r9), %rdi
+    mov %r9, %rdi
     xor %eax, %eax
     mov $14, %rcx
     rep stosq

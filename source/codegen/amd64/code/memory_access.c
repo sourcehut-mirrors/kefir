@@ -30,12 +30,12 @@ static kefir_result_t is_local_var(struct kefir_mem *mem, struct kefir_codegen_a
     UNUSED(mem);
     const struct kefir_opt_instruction *location_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instr_ref, &location_instr));
-    if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+    if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL && location_instr->id != function->variable_allocator.return_space_variable_ref) {
         REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_alive(mem, &function->variable_allocator, instr_ref,
                                                                      local_var_id));
         *offset = 0;
         *res = true;
-    } else if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+    } else if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL && location_instr->id != function->variable_allocator.return_space_variable_ref) {
         REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_alive(
             mem, &function->variable_allocator, location_instr->operation.parameters.refs[0], local_var_id));
         *offset = location_instr->operation.parameters.offset;

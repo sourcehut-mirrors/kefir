@@ -22,7 +22,7 @@ __kefir_text_func_test_begin:
     call leak@PLT
     mov %rbx, %rsi
     not %rsi
-    leaq (%r12), %rbx
+    mov %r12, %rbx
     mov %rbx, %rdi
     call get@PLT
     mov %r12, %rax

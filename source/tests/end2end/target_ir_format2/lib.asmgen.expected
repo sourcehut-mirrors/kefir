@@ -3349,7 +3349,7 @@ __kefir_text_func_test3_end:
 test4:
 #{
 #    "entry_point": 0,
-#    "indirect_jump_gate": 6,
+#    "indirect_jump_gate": 7,
 #    "blocks": [
 #        {
 #            "block_ref": 0,
@@ -3547,7 +3547,7 @@ test4:
 #                            }
 #                        },
 #                        {
-#                            "block_ref": 6,
+#                            "block_ref": 7,
 #                            "value_ref": {
 #                                "instr_ref": 16,
 #                                "aspect": {
@@ -3959,7 +3959,7 @@ test4:
 #            "public_labels": []
 #        },
 #        {
-#            "block_ref": 6,
+#            "block_ref": 7,
 #            "code": [],
 #            "externally_visible": false,
 #            "public_labels": []

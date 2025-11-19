@@ -326,42 +326,19 @@ static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir
                 if (return_vreg != KEFIR_ID_NONE) {
                     kefir_bool_t copy_return = true;
                     if (result_instr_ref != KEFIR_ID_NONE) {
-                        const struct kefir_opt_instruction *returned_instr, *return_space_instr, *alloc_instr = NULL;
+                        const struct kefir_opt_instruction *returned_instr;
                         REQUIRE_OK(
                             kefir_opt_code_container_instr(&function->function->code, result_instr_ref, &returned_instr));
-                        if (returned_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
-                            alloc_instr = returned_instr;
+                        if (returned_instr->id == function->variable_allocator.return_space_variable_ref) {
+                            copy_return = false;
                         } else if (returned_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
                             returned_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL ||
                             returned_instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
                             returned_instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
                             const struct kefir_opt_call_node *call;
                             REQUIRE_OK(kefir_opt_code_container_call(&function->function->code, returned_instr->operation.parameters.function_call.call_ref, &call));
-                            if (call->return_space != KEFIR_ID_NONE) {
-                                REQUIRE_OK(
-                                    kefir_opt_code_container_instr(&function->function->code, call->return_space, &return_space_instr));
-                                if (return_space_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
-                                    alloc_instr = return_space_instr;
-                                }
-                            }
-                        }
-                        
-                        if (alloc_instr != NULL) {
-                            const struct kefir_ir_type *alloc_ir_type = kefir_ir_module_get_named_type(
-                                function->module->ir_module, alloc_instr->operation.parameters.type.type_id);
-                            REQUIRE(alloc_ir_type != NULL,
-                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
-                            kefir_bool_t same_type;
-                            REQUIRE_OK(
-                                kefir_ir_type_same(function->function->ir_func->declaration->result, 0, alloc_ir_type,
-                                                   alloc_instr->operation.parameters.type.type_index, &same_type));
-                            if (same_type) {
-                                kefir_result_t res = kefir_codegen_local_variable_allocator_mark_return_space(
-                                    &function->variable_allocator, alloc_instr->id);
-                                if (res != KEFIR_ALREADY_EXISTS) {
-                                    REQUIRE_OK(res);
-                                    copy_return = false;
-                                }
+                            if (call->return_space != KEFIR_ID_NONE && call->return_space == function->variable_allocator.return_space_variable_ref) {
+                                copy_return = false;
                             }
                         }
                     }
