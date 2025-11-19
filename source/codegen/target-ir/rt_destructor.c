@@ -505,12 +505,7 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
         } else if (!terminator_props.undefined_target) {
             REQUIRE_OK(map_phis_unconditional(state, block_state, terminator_props.target_block_refs[0]));
         } else {
-            struct kefir_hashtreeset_iterator iter;
-            kefir_result_t res = kefir_hashtreeset_iter(&state->control_flow.blocks[block_state->block_ref].successors, &iter);
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-                REQUIRE_OK(map_phis_unconditional(state, block_state, (kefir_codegen_target_ir_block_ref_t) iter.entry));
-            }
+            REQUIRE_OK(map_phis_unconditional(state, block_state, state->control_flow.code->indirect_jump_gate_block));
         }
     }
 

@@ -646,6 +646,22 @@ static kefir_result_t terminate_current_block(struct constructor_state *state, s
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, current_block_state->block_ref,
             kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref),
             &operation, NULL));
+    } else if (terminator_props.undefined_target && state->code->indirect_jump_gate_block == KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_block(state->mem, state->code, &state->code->indirect_jump_gate_block));
+
+        struct code_block_state *gate_block_state = KEFIR_MALLOC(state->mem, sizeof(struct code_block_state));
+        REQUIRE(gate_block_state != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate code block state"));
+        gate_block_state->block_ref = state->code->indirect_jump_gate_block;
+        gate_block_state->input_flags_ref = KEFIR_ID_NONE;
+        gate_block_state->output_flags_ref = KEFIR_ID_NONE;
+        kefir_result_t res = kefir_hashtable_init(&gate_block_state->block_inputs, &kefir_hashtable_uint_ops);
+        REQUIRE_CHAIN(&res, kefir_hashtable_init(&gate_block_state->virtual_register_refs, &kefir_hashtable_uint_ops));
+        REQUIRE_CHAIN(&res, kefir_hashtable_init(&gate_block_state->alive_vregs, &kefir_hashtable_uint_ops));
+        REQUIRE_CHAIN(&res, kefir_hashtree_insert(state->mem, &state->blocks, (kefir_hashtree_key_t) state->code->indirect_jump_gate_block, (kefir_hashtree_value_t) gate_block_state));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(state->mem, gate_block_state);
+            return res;
+        });
     }
     return KEFIR_OK;
 }

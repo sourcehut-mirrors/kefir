@@ -349,6 +349,10 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "entry_point"));
     REQUIRE_OK(id_format(json, code->entry_block));
+    if (code->indirect_jump_gate_block != KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "indirect_jump_gate"));
+        REQUIRE_OK(id_format(json, code->indirect_jump_gate_block));
+    }
     REQUIRE_OK(kefir_json_output_object_key(json, "blocks"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {

@@ -342,6 +342,7 @@ typedef struct kefir_codegen_target_ir_code {
     kefir_size_t use_entries_capacity;
 
     kefir_codegen_target_ir_block_ref_t entry_block;
+    kefir_codegen_target_ir_block_ref_t indirect_jump_gate_block;
 
     const struct kefir_codegen_target_ir_code_class *klass;
 } kefir_codegen_target_ir_code_t;

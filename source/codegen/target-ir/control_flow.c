@@ -41,10 +41,12 @@ static kefir_result_t store_terminator_target(struct kefir_mem *mem, struct kefi
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_operand *operand) {
+static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_operand *operand, const struct kefir_codegen_target_ir_block_terminator_props *terminator_props) {
     switch (operand->type) {
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF:
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) operand->block_ref));
+            if (!terminator_props->block_terminator) {
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) operand->block_ref));
+            }
             break;
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
@@ -270,9 +272,17 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
             instr_ref = kefir_codegen_target_ir_code_control_next(control_flow->code, instr_ref)) {
             const struct kefir_codegen_target_ir_instruction *instr = NULL;
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, instr_ref, &instr));
+            struct kefir_codegen_target_ir_block_terminator_props instr_terminator_props;
+            REQUIRE_OK(control_flow->code->klass->is_block_terminator(instr, &instr_terminator_props, control_flow->code->klass->payload));
             for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
-                REQUIRE_OK(scan_operand(mem, control_flow, &instr->operation.parameters[i]));
+                REQUIRE_OK(scan_operand(mem, control_flow, &instr->operation.parameters[i], &instr_terminator_props));
             }
+        }
+
+        const struct kefir_codegen_target_ir_block *block = kefir_codegen_target_ir_code_block_at(control_flow->code, block_ref);
+        REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable o retrieve target IR block"));
+        if (block->externally_visible) {
+            REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) block_ref));
         }
     }
 
@@ -281,10 +291,12 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
     for (res = kefir_hashtreeset_iter(&control_flow->indirect_jump_sources, &source_iter);
         res == KEFIR_OK;
         res = kefir_hashtreeset_next(&source_iter)) {
-        for (res = kefir_hashtreeset_iter(&control_flow->indirect_jump_sources, &target_iter);
+        for (res = kefir_hashtreeset_iter(&control_flow->indirect_jump_targets, &target_iter);
             res == KEFIR_OK;
             res = kefir_hashtreeset_next(&target_iter)) {
-            REQUIRE_OK(store_terminator_target(mem, control_flow, source_iter.entry, target_iter.entry));
+            REQUIRE(control_flow->code->indirect_jump_gate_block != KEFIR_ID_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected target IR indirect jump gate to exist"));
+            REQUIRE_OK(store_terminator_target(mem, control_flow, source_iter.entry, control_flow->code->indirect_jump_gate_block));
+            REQUIRE_OK(store_terminator_target(mem, control_flow, control_flow->code->indirect_jump_gate_block, target_iter.entry));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);

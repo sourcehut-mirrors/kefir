@@ -60,6 +60,7 @@ kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_
     code->use_entries_length = 0;
     code->use_entries_capacity = 0;
     code->entry_block = KEFIR_ID_NONE;
+    code->indirect_jump_gate_block = KEFIR_ID_NONE;
     code->klass = klass;
 
     REQUIRE_OK(kefir_hashtable_init(&code->attributes, &kefir_hashtable_uint_ops));
