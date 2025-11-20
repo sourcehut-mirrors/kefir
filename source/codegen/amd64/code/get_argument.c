@@ -129,8 +129,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
             REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&function_parameter, &qwords));
             REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, qwords, 1, &vreg));
             REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                vreg, NULL));
+                mem, &function->code, function->argument_touch_instr,
+                vreg, &function->argument_touch_instr));
             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code, function->argument_touch_instr,
                                                                  vreg, &function->argument_touch_instr));
             REQUIRE_OK(kefir_hashtreeset_add(mem, &function->preserve_vregs, (kefir_hashtreeset_entry_t) vreg));
@@ -161,6 +161,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                                 mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &arg_vreg));
                             REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, arg_vreg,
                                                                                         subparam.direct_reg));
+                            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                                                                function->argument_touch_instr, arg_vreg,
+                                                                                &function->argument_touch_instr));
                             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
                                                                                 function->argument_touch_instr, arg_vreg,
                                                                                 &function->argument_touch_instr));
@@ -173,6 +176,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                                 mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &arg_vreg));
                             REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, arg_vreg,
                                                                                         subparam.direct_reg));
+                            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                                                                function->argument_touch_instr, arg_vreg,
+                                                                                &function->argument_touch_instr));
                             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
                                                                                 function->argument_touch_instr, arg_vreg,
                                                                                 &function->argument_touch_instr));

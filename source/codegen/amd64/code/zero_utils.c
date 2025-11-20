@@ -33,6 +33,9 @@ static kefir_result_t unrolled_zero(struct kefir_mem *mem, struct kefir_codegen_
     if (size % (2 * KEFIR_AMD64_ABI_QWORD) == 0) {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &tmp_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            tmp_vreg, NULL));
         REQUIRE_OK(kefir_asmcmp_amd64_xorps(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
@@ -46,6 +49,9 @@ static kefir_result_t unrolled_zero(struct kefir_mem *mem, struct kefir_codegen_
     } else {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            tmp_vreg, NULL));
         REQUIRE_OK(kefir_asmcmp_amd64_xor(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG32(tmp_vreg),

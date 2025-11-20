@@ -175,11 +175,11 @@ __kefir_text_func_mul3_begin:
     push %rbx
     sub $136, %rsp
     mov %r8, %rbx
-    movq %rdx, -48(%rbp)
-    movq %rcx, -40(%rbp)
-    movq %rdi, -32(%rbp)
-    movq %rsi, -24(%rbp)
-    movdqu -32(%rbp), %xmm0
+    movq %rdx, -32(%rbp)
+    movq %rcx, -24(%rbp)
+    movq %rdi, -48(%rbp)
+    movq %rsi, -40(%rbp)
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
     leaq -144(%rbp), %rax
     mov %rax, %rdi
@@ -192,7 +192,7 @@ __kefir_text_func_mul3_begin:
     movq %rax, -112(%rbp)
     movq -128(%rbp), %rax
     movq %rax, -104(%rbp)
-    movdqu -48(%rbp), %xmm0
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
     leaq -96(%rbp), %rax
     mov %rax, %rdi

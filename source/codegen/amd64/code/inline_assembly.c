@@ -222,6 +222,9 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
         REQUIRE_OK(obtain_available_gp_register(mem, function, context, &reg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &entry->allocation_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            entry->allocation_vreg, NULL));
         REQUIRE_OK(
             kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, entry->allocation_vreg, reg));
         entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER;
@@ -229,6 +232,9 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
         REQUIRE_OK(obtain_available_sse_register(mem, function, context, &reg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &entry->allocation_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            entry->allocation_vreg, NULL));
         REQUIRE_OK(
             kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, entry->allocation_vreg, reg));
         entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER;

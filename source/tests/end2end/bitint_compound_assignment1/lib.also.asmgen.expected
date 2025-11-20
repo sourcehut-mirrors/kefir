@@ -714,23 +714,23 @@ __kefir_func_umul_label0:
     movq 16(%rax), %rcx
     movq %rcx, -24(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -112(%rbp)
+    movq %rax, -88(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -104(%rbp)
+    movq %rax, -80(%rbp)
     movq -24(%rbp), %rax
-    movq %rax, -96(%rbp)
+    movq %rax, -72(%rbp)
     movq y@GOTPCREL(%rip), %rbx
     movq (%rbx), %rax
-    movq %rax, -88(%rbp)
+    movq %rax, -112(%rbp)
     movq 8(%rbx), %rax
-    movq %rax, -80(%rbp)
+    movq %rax, -104(%rbp)
     movq 16(%rbx), %rax
-    movq %rax, -72(%rbp)
+    movq %rax, -96(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -88(%rbp), %rax
-    mov %rax, %rsi
     leaq -112(%rbp), %rax
+    mov %rax, %rsi
+    leaq -88(%rbp), %rax
     mov %rax, %rdx
     mov $150, %rcx
     mov $150, %r8
