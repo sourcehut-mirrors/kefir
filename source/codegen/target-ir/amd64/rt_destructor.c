@@ -324,6 +324,16 @@ static kefir_result_t split_branch_instruction(struct kefir_mem *mem, const stru
     return KEFIR_OK;
 }
 
+static kefir_result_t new_inline_asm(struct kefir_mem *mem, kefir_asmcmp_instruction_index_t insert_after_idx, kefir_asmcmp_inline_assembly_index_t inline_asm_idx, kefir_asmcmp_instruction_index_t *instr_idx, void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops *, ops,
+        payload);
+    REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid target IR destructor amd64 ops"));
+    
+    REQUIRE_OK(kefir_asmcmp_amd64_inline_assembly(mem, ops->code, insert_after_idx, inline_asm_idx, instr_idx));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(const struct kefir_codegen_amd64_function *function, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops *ops) {
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 asmcmp code"));
@@ -340,6 +350,7 @@ kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(cons
     ops->ops.preallocation_requirement = preallocation_requirement;
     ops->ops.preallocation_hint = preallocation_hint;
     ops->ops.split_branch_instruction = split_branch_instruction;
+    ops->ops.new_inline_asm = new_inline_asm;
     ops->ops.payload = ops;
 
     REQUIRE_OK(kefir_hashtree_init(&ops->constants, &kefir_hashtree_uint_ops));

@@ -452,6 +452,31 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
         return KEFIR_OK;
     }
 
+    if (instr->operation.opcode == state->code->klass->inline_asm_opcode) {
+        kefir_asmcmp_inline_assembly_index_t inline_asm;
+        REQUIRE_OK(kefir_asmcmp_inline_assembly_new(state->mem, state->asmcmp_ctx, "", &inline_asm));
+        for (const struct kefir_list_entry *iter = kefir_list_head(&instr->operation.inline_asm_node.fragments);
+            iter != NULL;
+            kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(const struct kefir_codegen_target_ir_inline_assembly_fragment *, fragment,
+                iter->value);
+            switch (fragment->type) {
+                case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                    REQUIRE_OK(kefir_asmcmp_inline_assembly_add_text(state->mem, state->asmcmp_ctx, inline_asm, "%s", fragment->text));
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND: {
+                    struct kefir_asmcmp_value value;
+                    REQUIRE_OK(resolve_operand(state, &fragment->operand, &value));
+                    REQUIRE_OK(kefir_asmcmp_inline_assembly_add_value(state->mem, state->asmcmp_ctx, inline_asm, &value));
+                } break;
+            }
+        }
+
+        REQUIRE_OK(state->parameter->new_inline_asm(state->mem, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx),
+                                                    inline_asm, NULL, state->parameter->payload));
+    }
+
     struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification classification;
     REQUIRE_OK(state->parameter->classify_instruction(state->code, instr_ref, &classification, state->parameter->payload));
 
