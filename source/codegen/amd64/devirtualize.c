@@ -238,24 +238,11 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
                     REQUIRE_OK(update_live_virtual_reg(mem, state, linear_position, value->indirect.base.vreg));
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS: {
-                    kefir_codegen_local_variable_allocation_type_t allocation_type;
-                    kefir_int64_t offset;
-                    REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(
-                        state->stack_frame, value->indirect.base.local_variable_id, &allocation_type, &offset));
-
-                    switch (allocation_type) {
-                        case KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE:
-                            REQUIRE_OK(update_live_virtual_reg(mem, state, linear_position,
-                                                               state->stack_frame->return_space_vreg));
-                            break;
-
-                        case KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION:
-                            // Intentionally left blank
-                            break;
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
+                    if (value->indirect.base.local_variable_id == state->stack_frame->local_variables->return_space_variable_ref) {
+                        REQUIRE_OK(update_live_virtual_reg(mem, state, linear_position, state->stack_frame->return_space_vreg));
                     }
-                } break;
-
+                    break;
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
@@ -688,25 +675,12 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                     // Intentionally left blank
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS: {
-                    kefir_codegen_local_variable_allocation_type_t allocation_type;
-                    kefir_int64_t offset;
-                    REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(
-                        state->stack_frame, value->indirect.base.local_variable_id, &allocation_type, &offset));
-
-                    switch (allocation_type) {
-                        case KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE:
-                            *value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(state->stack_frame->return_space_vreg,
-                                                                        offset + value->indirect.offset,
-                                                                        value->indirect.variant);
-                            REQUIRE_OK(devirtualize_value(mem, state, position, value));
-                            break;
-
-                        case KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION:
-                            // Intentionally left blank
-                            break;
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
+                    if (value->indirect.base.local_variable_id == state->stack_frame->local_variables->return_space_variable_ref) {
+                        *value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(state->stack_frame->return_space_vreg, value->indirect.offset, value->indirect.variant);
+                        REQUIRE_OK(devirtualize_value(mem, state, position, value));
                     }
-                } break;
+                    break;
 
                 case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
                     REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, value->indirect.base.vreg,

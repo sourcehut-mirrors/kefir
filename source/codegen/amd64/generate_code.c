@@ -140,21 +140,13 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS: {
-                    kefir_codegen_local_variable_allocation_type_t allocation_type;
                     kefir_int64_t offset;
                     REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(
-                        stack_frame, value->indirect.base.local_variable_id, &allocation_type, &offset));
-                    switch (allocation_type) {
-                        case KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE:
-                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected local variable allocation type");
-
-                        case KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION:
-                            base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
-                                &arg_state->base_operands[0],
-                                kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                                stack_frame->offsets.local_area + offset + value->indirect.offset);
-                            break;
-                    }
+                        stack_frame, value->indirect.base.local_variable_id, &offset));
+                    base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
+                        &arg_state->base_operands[0],
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        stack_frame->offsets.local_area + offset + value->indirect.offset);
                 } break;
 
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:

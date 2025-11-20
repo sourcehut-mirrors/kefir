@@ -81,7 +81,6 @@ kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefi
 
 kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struct kefir_codegen_amd64_stack_frame *,
                                                                      kefir_id_t,
-                                                                     kefir_codegen_local_variable_allocation_type_t *,
                                                                      kefir_int64_t *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t,

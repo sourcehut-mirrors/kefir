@@ -35,7 +35,7 @@ static kefir_result_t is_local_var(struct kefir_mem *mem, struct kefir_codegen_a
                                                                      local_var_id));
         *offset = 0;
         *res = true;
-    } else if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL && location_instr->id != function->variable_allocator.return_space_variable_ref) {
+    } else if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL && location_instr->operation.parameters.refs[0] != function->variable_allocator.return_space_variable_ref) {
         REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_alive(
             mem, &function->variable_allocator, location_instr->operation.parameters.refs[0], local_var_id));
         *offset = location_instr->operation.parameters.offset;

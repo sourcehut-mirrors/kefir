@@ -38,11 +38,6 @@ typedef struct kefir_codegen_local_variable_allocator {
     kefir_bool_t all_global;
 } kefir_codegen_local_variable_allocator_t;
 
-typedef enum kefir_codegen_local_variable_allocation_type {
-    KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION,
-    KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE
-} kefir_codegen_local_variable_allocation_type_t;
-
 kefir_result_t kefir_codegen_local_variable_allocator_init(struct kefir_codegen_local_variable_allocator *);
 kefir_result_t kefir_codegen_local_variable_allocator_free(struct kefir_mem *,
                                                            struct kefir_codegen_local_variable_allocator *);
@@ -60,7 +55,6 @@ kefir_result_t kefir_codegen_local_variable_allocator_run(struct kefir_mem *,
                                                           const struct kefir_opt_code_variable_conflicts *);
 kefir_result_t kefir_codegen_local_variable_allocation_of(const struct kefir_codegen_local_variable_allocator *,
                                                           kefir_opt_instruction_ref_t,
-                                                          kefir_codegen_local_variable_allocation_type_t *,
                                                           kefir_int64_t *);
 
 #endif
