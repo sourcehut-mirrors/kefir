@@ -240,6 +240,12 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
 
     for (kefir_size_t i = 0; i < control_flow->code->blocks_length; i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(control_flow->code, i);
+        const struct kefir_codegen_target_ir_block *block = kefir_codegen_target_ir_code_block_at(control_flow->code, block_ref);
+        REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable o retrieve target IR block"));
+        if (block->externally_visible || !kefir_hashtreeset_empty(&block->public_labels)) {
+            REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) block_ref));
+        }
+
         kefir_codegen_target_ir_instruction_ref_t current_block_tail_ref = kefir_codegen_target_ir_code_block_control_tail(control_flow->code, block_ref);
         if (current_block_tail_ref == KEFIR_ID_NONE) {
             continue;
@@ -277,12 +283,6 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
             for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
                 REQUIRE_OK(scan_operand(mem, control_flow, &instr->operation.parameters[i], &instr_terminator_props));
             }
-        }
-
-        const struct kefir_codegen_target_ir_block *block = kefir_codegen_target_ir_code_block_at(control_flow->code, block_ref);
-        REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable o retrieve target IR block"));
-        if (block->externally_visible) {
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) block_ref));
         }
     }
 
