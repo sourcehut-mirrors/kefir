@@ -1097,8 +1097,8 @@ static kefir_result_t tail_invoke_impl(struct kefir_mem *mem, struct kefir_codeg
                                        struct kefir_abi_amd64_function_decl *abi_func_decl,
                                        struct kefir_hashtree *argument_placement) {
     kefir_bool_t passthrough_aggregate_return = false;
-    REQUIRE_OK(kfir_codegen_amd64_tail_call_return_aggregate_passthrough(function, call_node->node_id, &passthrough_aggregate_return));
-    if (passthrough_aggregate_return) {
+    REQUIRE_OK(kefir_codegen_amd64_tail_call_return_aggregate_passthrough(function, call_node->node_id, &passthrough_aggregate_return));
+    if (passthrough_aggregate_return && function->stack_frame.return_space_vreg != KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_return_space(&function->variable_allocator, call_node->return_space));
     }
 

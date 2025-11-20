@@ -207,7 +207,7 @@ struct scheduler_schedule_param {
     struct kefir_codegen_amd64_function *func;
 };
 
-kefir_result_t kfir_codegen_amd64_tail_call_return_aggregate_passthrough(struct kefir_codegen_amd64_function *function,
+kefir_result_t kefir_codegen_amd64_tail_call_return_aggregate_passthrough(struct kefir_codegen_amd64_function *function,
                                                                          kefir_opt_call_id_t call_ref,
                                                                          kefir_bool_t *passthrough) {
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
@@ -275,10 +275,10 @@ kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *mem,
 
     kefir_bool_t passthrough_aggregate_return = false;
     REQUIRE_OK(
-        kfir_codegen_amd64_tail_call_return_aggregate_passthrough(function, call_ref, &passthrough_aggregate_return));
+        kefir_codegen_amd64_tail_call_return_aggregate_passthrough(function, call_ref, &passthrough_aggregate_return));
 
     *tail_call_possible_ptr = reqs.stack == 0 &&
-                              (return_reqs.stack == 0 || passthrough_aggregate_return || ir_func_decl->no_return) &&
+                              (return_reqs.stack == 0 || (passthrough_aggregate_return && function->stack_frame.return_space_vreg != KEFIR_ASMCMP_INDEX_NONE) || ir_func_decl->no_return) &&
                               !ir_func_decl->returns_twice && !ir_func_decl->vararg;
     return KEFIR_OK;
 }
@@ -378,9 +378,9 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
 
         if (tail_call_possible) {
             kefir_bool_t passthrough_aggregate_return = false;
-            REQUIRE_OK(kfir_codegen_amd64_tail_call_return_aggregate_passthrough(param->func, call_node->node_id,
+            REQUIRE_OK(kefir_codegen_amd64_tail_call_return_aggregate_passthrough(param->func, call_node->node_id,
                                                                                  &passthrough_aggregate_return));
-            if (passthrough_aggregate_return) {
+            if (passthrough_aggregate_return && param->func->stack_frame.return_space_vreg != KEFIR_ASMCMP_INDEX_NONE) {
                 REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_return_space(&param->func->variable_allocator,
                                                                                     call_node->return_space));
             }
@@ -539,7 +539,7 @@ static kefir_result_t alias_return_space_allocation(struct kefir_codegen_amd64_f
             REQUIRE_OK(
                 kefir_ir_type_same(func->function->ir_func->declaration->result, 0, alloc_ir_type,
                                     alloc_instr->operation.parameters.type.type_index, &same_type));
-            if (same_type) {
+            if (same_type && func->stack_frame.return_space_vreg != KEFIR_ASMCMP_INDEX_NONE) {
                 REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_return_space(
                     &func->variable_allocator, alloc_instr->id));
                 break;
@@ -550,6 +550,17 @@ static kefir_result_t alias_return_space_allocation(struct kefir_codegen_amd64_f
 }
 
 static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
+    kefir_bool_t implicit_parameter_present;
+    kefir_asm_amd64_xasmgen_register_t implicit_parameter_reg;
+    REQUIRE_OK(kefir_abi_amd64_function_decl_returns_implicit_parameter(
+        &func->abi_function_declaration, &implicit_parameter_present, &implicit_parameter_reg));
+    if (implicit_parameter_present) {
+        kefir_asmcmp_virtual_register_index_t implicit_param_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+            mem, &func->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_param_vreg));
+        func->stack_frame.return_space_vreg = implicit_param_vreg;
+    }
+
     // Schedule code
     struct scheduler_schedule_param scheduler_param = {.mem = mem, .func = func};
     struct kefir_opt_code_topological_scheduler scheduler;
@@ -589,22 +600,15 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(kefir_asmcmp_amd64_function_prologue(
         mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), &func->prologue_tail));
     kefir_asmcmp_instruction_index_t after_prologue = func->prologue_tail;
-    kefir_bool_t implicit_parameter_present;
-    kefir_asm_amd64_xasmgen_register_t implicit_parameter_reg;
-    REQUIRE_OK(kefir_abi_amd64_function_decl_returns_implicit_parameter(
-        &func->abi_function_declaration, &implicit_parameter_present, &implicit_parameter_reg));
     if (implicit_parameter_present) {
-        kefir_asmcmp_virtual_register_index_t implicit_param_vreg, implicit_param_placement_vreg;
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-            mem, &func->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_param_vreg));
+        kefir_asmcmp_virtual_register_index_t implicit_param_placement_vreg;
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &func->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_param_placement_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &func->code, implicit_param_placement_vreg,
                                                                       implicit_parameter_reg));
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &func->code,
                                                              after_prologue,
-                                                             implicit_param_vreg, implicit_param_placement_vreg, &after_prologue));
-        func->stack_frame.return_space_vreg = implicit_param_vreg;
+                                                             func->stack_frame.return_space_vreg, implicit_param_placement_vreg, &after_prologue));
         REQUIRE_OK(kefir_hashtreeset_add(mem, &func->preserve_vregs,
                                          (kefir_hashtreeset_entry_t) func->stack_frame.return_space_vreg));
         REQUIRE_OK(alias_return_space_allocation(func));
