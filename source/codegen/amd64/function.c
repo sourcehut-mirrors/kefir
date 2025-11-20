@@ -606,6 +606,9 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             mem, &func->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_param_placement_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &func->code, implicit_param_placement_vreg,
                                                                       implicit_parameter_reg));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &func->code,
+                                                             after_prologue,
+                                                             implicit_param_placement_vreg, &after_prologue));
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &func->code,
                                                              after_prologue,
                                                              func->stack_frame.return_space_vreg, implicit_param_placement_vreg, &after_prologue));

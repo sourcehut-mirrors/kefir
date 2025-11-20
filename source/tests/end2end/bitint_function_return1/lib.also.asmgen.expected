@@ -28,6 +28,17 @@ test1:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
