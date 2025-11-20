@@ -31,11 +31,16 @@ __kefir_text_func_test2_begin:
     movq %rax, 8(%rdi)
     movq %rax, 16(%rdi)
     movl $-100, (%rdi)
-    movl $3, 4(%rdi)
-    movl $5, 8(%rdi)
-    movl $0, 12(%rdi)
-    movl $6, 16(%rdi)
-    movl $-5, 20(%rdi)
+    lea 4(%rdi), %rax
+    movl $3, (%rax)
+    lea 8(%rdi), %rax
+    movl $5, (%rax)
+    lea 12(%rdi), %rax
+    movl $0, (%rax)
+    lea 16(%rdi), %rax
+    movl $6, (%rax)
+    lea 20(%rdi), %rax
+    movl $-5, (%rax)
     mov %rdi, %rax
     ret
 __kefir_text_func_test2_end:

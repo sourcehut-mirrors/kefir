@@ -142,49 +142,71 @@ __kefir_func_ret32_label5:
 __kefir_func_ret32_label14:
     movd %xmm0, (%rdi)
 .loc 0 357 12
-__kefir_func_ret32_label16:
 __kefir_func_ret32_label15:
-    movd %xmm1, 4(%rdi)
+    lea 4(%rdi), %rax
+.loc 0 357 12
+__kefir_func_ret32_label16:
+    movd %xmm1, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label17:
+    lea 8(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label18:
-__kefir_func_ret32_label17:
-    movd %xmm2, 8(%rdi)
+    movd %xmm2, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label19:
+    lea 12(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label20:
-__kefir_func_ret32_label19:
-    movd %xmm3, 12(%rdi)
+    movd %xmm3, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label21:
+    lea 16(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label22:
-__kefir_func_ret32_label21:
-    movd %xmm4, 16(%rdi)
+    movd %xmm4, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label23:
+    lea 20(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label24:
-__kefir_func_ret32_label23:
-    movd %xmm5, 20(%rdi)
+    movd %xmm5, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label25:
+    lea 24(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label26:
-__kefir_func_ret32_label25:
-    movd %xmm6, 24(%rdi)
+    movd %xmm6, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label27:
+    lea 28(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label28:
-__kefir_func_ret32_label27:
-    movd %xmm7, 28(%rdi)
+    movd %xmm7, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label29:
+    lea 32(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label30:
-__kefir_func_ret32_label29:
-    movd %xmm8, 32(%rdi)
+    movd %xmm8, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label31:
+    lea 36(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label32:
-__kefir_func_ret32_label31:
-    movd %xmm12, 36(%rdi)
+    movd %xmm12, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label33:
+    lea 40(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label34:
-__kefir_func_ret32_label33:
-    movd %xmm11, 40(%rdi)
+    movd %xmm11, (%rax)
+.loc 0 357 12
+__kefir_func_ret32_label35:
+    lea 44(%rdi), %rax
 .loc 0 357 12
 __kefir_func_ret32_label36:
-__kefir_func_ret32_label35:
-    movd %xmm10, 44(%rdi)
+    movd %xmm10, (%rax)
 .loc 0 357 5
 __kefir_func_ret32_label37:
     mov %rdi, %rax
@@ -226,49 +248,71 @@ __kefir_func_ret64_label5:
 __kefir_func_ret64_label14:
     movq %xmm0, (%rdx)
 .loc 0 363 12
-__kefir_func_ret64_label16:
 __kefir_func_ret64_label15:
-    movq %xmm1, 8(%rdx)
+    lea 8(%rdx), %rax
+.loc 0 363 12
+__kefir_func_ret64_label16:
+    movq %xmm1, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label17:
+    lea 16(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label18:
-__kefir_func_ret64_label17:
-    movq %xmm2, 16(%rdx)
+    movq %xmm2, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label19:
+    lea 24(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label20:
-__kefir_func_ret64_label19:
-    movq %xmm3, 24(%rdx)
+    movq %xmm3, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label21:
+    lea 32(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label22:
-__kefir_func_ret64_label21:
-    movq %xmm4, 32(%rdx)
+    movq %xmm4, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label23:
+    lea 40(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label24:
-__kefir_func_ret64_label23:
-    movq %xmm5, 40(%rdx)
+    movq %xmm5, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label25:
+    lea 48(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label26:
-__kefir_func_ret64_label25:
-    movq %xmm6, 48(%rdx)
+    movq %xmm6, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label27:
+    lea 56(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label28:
-__kefir_func_ret64_label27:
-    movq %xmm7, 56(%rdx)
+    movq %xmm7, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label29:
+    lea 64(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label30:
-__kefir_func_ret64_label29:
-    movq %xmm11, 64(%rdx)
+    movq %xmm11, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label31:
+    lea 72(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label32:
-__kefir_func_ret64_label31:
-    movq %xmm10, 72(%rdx)
+    movq %xmm10, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label33:
+    lea 80(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label34:
-__kefir_func_ret64_label33:
-    movq %xmm9, 80(%rdx)
+    movq %xmm9, (%rax)
+.loc 0 363 12
+__kefir_func_ret64_label35:
+    lea 88(%rdx), %rax
 .loc 0 363 12
 __kefir_func_ret64_label36:
-__kefir_func_ret64_label35:
-    movq %xmm8, 88(%rdx)
+    movq %xmm8, (%rax)
 .loc 0 363 5
 __kefir_func_ret64_label37:
     mov %rdx, %rax
@@ -1194,49 +1238,71 @@ __kefir_func_ret128_label5:
 __kefir_func_ret128_label14:
     movdqu %xmm0, (%rdx)
 .loc 0 369 12
-__kefir_func_ret128_label16:
 __kefir_func_ret128_label15:
-    movdqu %xmm1, 16(%rdx)
+    lea 16(%rdx), %rax
+.loc 0 369 12
+__kefir_func_ret128_label16:
+    movdqu %xmm1, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label17:
+    lea 32(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label18:
-__kefir_func_ret128_label17:
-    movdqu %xmm2, 32(%rdx)
+    movdqu %xmm2, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label19:
+    lea 48(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label20:
-__kefir_func_ret128_label19:
-    movdqu %xmm3, 48(%rdx)
+    movdqu %xmm3, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label21:
+    lea 64(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label22:
-__kefir_func_ret128_label21:
-    movdqu %xmm4, 64(%rdx)
+    movdqu %xmm4, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label23:
+    lea 80(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label24:
-__kefir_func_ret128_label23:
-    movdqu %xmm5, 80(%rdx)
+    movdqu %xmm5, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label25:
+    lea 96(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label26:
-__kefir_func_ret128_label25:
-    movdqu %xmm6, 96(%rdx)
+    movdqu %xmm6, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label27:
+    lea 112(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label28:
-__kefir_func_ret128_label27:
-    movdqu %xmm7, 112(%rdx)
+    movdqu %xmm7, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label29:
+    lea 128(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label30:
-__kefir_func_ret128_label29:
-    movdqu %xmm11, 128(%rdx)
+    movdqu %xmm11, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label31:
+    lea 144(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label32:
-__kefir_func_ret128_label31:
-    movdqu %xmm10, 144(%rdx)
+    movdqu %xmm10, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label33:
+    lea 160(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label34:
-__kefir_func_ret128_label33:
-    movdqu %xmm9, 160(%rdx)
+    movdqu %xmm9, (%rax)
+.loc 0 369 12
+__kefir_func_ret128_label35:
+    lea 176(%rdx), %rax
 .loc 0 369 12
 __kefir_func_ret128_label36:
-__kefir_func_ret128_label35:
-    movdqu %xmm8, 176(%rdx)
+    movdqu %xmm8, (%rax)
 .loc 0 369 5
 __kefir_func_ret128_label37:
     mov %rdx, %rax
@@ -1815,9 +1881,11 @@ __kefir_func_swap128_label7:
 __kefir_func_swap128_label8:
     movdqu -32(%rbp), %xmm0
 .loc 0 402 12
-__kefir_func_swap128_label10:
 __kefir_func_swap128_label9:
-    movdqu %xmm0, 16(%rdi)
+    lea 16(%rdi), %rax
+.loc 0 402 12
+__kefir_func_swap128_label10:
+    movdqu %xmm0, (%rax)
 .loc 0 402 5
 __kefir_func_swap128_label11:
     mov %rdi, %rax

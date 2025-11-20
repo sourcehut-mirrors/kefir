@@ -137,7 +137,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ref_local)(struct kefir_mem 
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     kefir_asmcmp_virtual_register_index_t vreg;
-    if (instruction->id == function->variable_allocator.return_space_variable_ref) {
+    if (instruction->operation.parameters.refs[0] == function->variable_allocator.return_space_variable_ref) {
         if (instruction->operation.parameters.offset != 0) {
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));

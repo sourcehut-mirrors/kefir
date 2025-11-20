@@ -239,9 +239,8 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
-                    if (value->indirect.base.local_variable_id == state->stack_frame->local_variables->return_space_variable_ref) {
-                        REQUIRE_OK(update_live_virtual_reg(mem, state, linear_position, state->stack_frame->return_space_vreg));
-                    }
+                    REQUIRE(value->indirect.base.local_variable_id != state->stack_frame->local_variables->return_space_variable_ref,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected local variable reference to return space"));
                     break;
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
@@ -676,10 +675,8 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
-                    if (value->indirect.base.local_variable_id == state->stack_frame->local_variables->return_space_variable_ref) {
-                        *value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(state->stack_frame->return_space_vreg, value->indirect.offset, value->indirect.variant);
-                        REQUIRE_OK(devirtualize_value(mem, state, position, value));
-                    }
+                    REQUIRE(value->indirect.base.local_variable_id != state->stack_frame->local_variables->return_space_variable_ref,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected local variable reference to return space"));
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:

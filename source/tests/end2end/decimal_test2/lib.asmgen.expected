@@ -3171,8 +3171,9 @@ __kefir_text_func_test_dec128_addv_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $72, %rsp
-    mov %rdi, %rbx
+    push %r12
+    sub $64, %rsp
+    mov %rdi, %r12
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
     movdqu (%rax), %xmm0
@@ -3184,18 +3185,20 @@ __kefir_text_func_test_dec128_addv_begin:
     movdqu 16(%rcx), %xmm0
     movdqu %xmm0, -64(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, (%rbx)
-    movdqu %xmm0, 16(%rbx)
+    movdqu %xmm0, (%r12)
+    movdqu %xmm0, 16(%r12)
     movdqu -80(%rbp), %xmm0
     movdqu -48(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movdqu %xmm0, (%rbx)
+    movdqu %xmm0, (%r12)
     movdqu -64(%rbp), %xmm0
     movdqu -32(%rbp), %xmm1
+    lea 16(%r12), %rbx
     call __bid_addtd3@PLT
-    movdqu %xmm0, 16(%rbx)
-    mov %rbx, %rax
-    lea -8(%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    mov %r12, %rax
+    lea -16(%rbp), %rsp
+    pop %r12
     pop %rbx
     pop %rbp
     ret
@@ -3206,8 +3209,9 @@ __kefir_text_func_test_dec128_mulv_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $56, %rsp
-    mov %rdi, %rbx
+    push %r12
+    sub $48, %rsp
+    mov %rdi, %r12
     movdqu %xmm0, -64(%rbp)
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm1
@@ -3215,18 +3219,20 @@ __kefir_text_func_test_dec128_mulv_begin:
     movdqu 16(%rax), %xmm1
     movdqu %xmm1, -32(%rbp)
     xorps %xmm1, %xmm1
-    movdqu %xmm1, (%rbx)
-    movdqu %xmm1, 16(%rbx)
+    movdqu %xmm1, (%r12)
+    movdqu %xmm1, 16(%r12)
     movdqu -48(%rbp), %xmm0
     movdqu -64(%rbp), %xmm1
     call __bid_multd3@PLT
-    movdqu %xmm0, (%rbx)
+    movdqu %xmm0, (%r12)
     movdqu -32(%rbp), %xmm0
+    lea 16(%r12), %rbx
     movdqu -64(%rbp), %xmm1
     call __bid_multd3@PLT
-    movdqu %xmm0, 16(%rbx)
-    mov %rbx, %rax
-    lea -8(%rbp), %rsp
+    movdqu %xmm0, (%rbx)
+    mov %r12, %rax
+    lea -16(%rbp), %rsp
+    pop %r12
     pop %rbx
     pop %rbp
     ret

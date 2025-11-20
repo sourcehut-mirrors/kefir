@@ -13,51 +13,56 @@ __kefir_text_func_get_begin:
     sub $16, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    mov %rdi, %r9
-    mov %rsi, %r8
-    mov %r9, %rdi
+    mov %rdi, %r10
+    mov %rsi, %r9
+    mov %r10, %rdi
     xor %eax, %eax
     mov $14, %rcx
     rep stosq
-    movl %r8d, (%r9)
-    movzxb 6(%r9), %rax
-    movzxw 4(%r9), %rcx
-    shl $16, %rax
-    or %rcx, %rax
-    mov %r8, %rsi
-    add $1, %esi
-    movsx %esi, %rcx
-    movabs $18446744073701163008, %rdx
-    and %rax, %rdx
-    shl $41, %rcx
-    shr $41, %rcx
+    movl %r9d, (%r10)
+    lea 4(%r10), %rax
+    movzxb 2(%rax), %rcx
+    movzxw (%rax), %rdx
+    shl $16, %rcx
     or %rdx, %rcx
-    mov %rcx, %rax
-    shr $16, %rax
-    movb %al, 6(%r9)
-    movw %cx, 4(%r9)
-    mov %r8, %rsi
+    mov %r9, %rsi
+    add $1, %esi
+    movsx %esi, %rdx
+    movabs $18446744073701163008, %r8
+    and %rcx, %r8
+    shl $41, %rdx
+    shr $41, %rdx
+    or %r8, %rdx
+    mov %rdx, %rcx
+    shr $16, %rcx
+    movb %cl, 2(%rax)
+    movw %dx, (%rax)
+    lea 8(%r10), %rax
+    mov %r9, %rsi
     add $2, %esi
-    movsx %esi, %rax
-    cvtsi2ss %rax, %xmm0
-    movd %xmm0, 8(%r9)
-    mov %r8, %rsi
+    movsx %esi, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd %xmm0, (%rax)
+    lea 16(%r10), %rax
+    mov %r9, %rsi
     add $3, %esi
-    movsx %esi, %rax
-    push %rax
+    movsx %esi, %rcx
+    push %rcx
     fildq (%rsp)
     add $8, %rsp
-    movq $0, 24(%r9)
-    fstpt 16(%r9)
-    mov %r8, %rsi
+    movq $0, 8(%rax)
+    fstpt (%rax)
+    lea 96(%r10), %rax
+    mov %r9, %rsi
     add $4, %esi
-    movb %sil, 96(%r9)
-    mov %r8, %rsi
+    movb %sil, (%rax)
+    lea 104(%r10), %rax
+    mov %r9, %rsi
     add $5, %esi
-    movsx %esi, %rax
-    cvtsi2sd %rax, %xmm0
-    movq %xmm0, 104(%r9)
-    mov %r9, %rax
+    movsx %esi, %rcx
+    cvtsi2sd %rcx, %xmm0
+    movq %xmm0, (%rax)
+    mov %r10, %rax
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

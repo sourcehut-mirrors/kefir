@@ -17,24 +17,29 @@ __kefir_text_func_get_begin:
     mov $71, %rcx
     rep stosq
     movw $10, (%rdx)
-    movl $11, 8(%rdx)
-    movq $12, 16(%rdx)
+    lea 8(%rdx), %rax
+    movl $11, (%rax)
+    movq $12, 8(%rax)
     movd __kefir_func_get_label2(%rip), %xmm0
-    movd %xmm0, 24(%rdx)
+    movd %xmm0, 16(%rax)
+    lea 32(%rdx), %rax
     movq __kefir_func_get_label3(%rip), %xmm0
-    movq %xmm0, 32(%rdx)
-    movl $15, 40(%rdx)
-    movq $16, 48(%rdx)
+    movq %xmm0, (%rax)
+    lea 40(%rdx), %rax
+    movl $15, (%rax)
+    movq $16, 8(%rax)
     movd __kefir_func_get_label4(%rip), %xmm0
-    movd %xmm0, 56(%rdx)
-    movl $18, 112(%rdx)
-    movq $19, 120(%rdx)
+    movd %xmm0, 16(%rax)
+    lea 112(%rdx), %rax
+    movl $18, (%rax)
+    movq $19, 8(%rax)
     movd __kefir_func_get_label5(%rip), %xmm0
-    movd %xmm0, 128(%rdx)
-    movl $21, 136(%rdx)
-    movq $22, 144(%rdx)
+    movd %xmm0, 16(%rax)
+    lea 136(%rdx), %rax
+    movl $21, (%rax)
+    movq $22, 8(%rax)
     movd __kefir_func_get_label6(%rip), %xmm0
-    movd %xmm0, 152(%rdx)
+    movd %xmm0, 16(%rax)
     leaq -272(%rbp), %rdi
     xor %eax, %eax
     mov $17, %rcx
@@ -45,27 +50,32 @@ __kefir_text_func_get_begin:
     cld
     mov $17, %rcx
     rep movsq
-    leaq 160(%rdx), %rdi
+    lea 160(%rdx), %rdi
     leaq -272(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    leaq 296(%rdx), %rdi
+    lea 296(%rdx), %rdi
     leaq -136(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    movw $24, 432(%rdx)
-    movl $25, 440(%rdx)
-    movq $26, 448(%rdx)
+    lea 432(%rdx), %rax
+    movw $24, (%rax)
+    movl $25, 8(%rax)
+    lea 448(%rdx), %rcx
+    movq $26, (%rcx)
+    lea 456(%rdx), %rcx
     movd __kefir_func_get_label7(%rip), %xmm0
-    movd %xmm0, 456(%rdx)
+    movd %xmm0, (%rcx)
     movq __kefir_func_get_label8(%rip), %xmm0
-    movq %xmm0, 464(%rdx)
-    movl $29, 544(%rdx)
-    movq $30, 552(%rdx)
+    movq %xmm0, 32(%rax)
+    movl $29, 112(%rax)
+    lea 552(%rdx), %rax
+    movq $30, (%rax)
+    lea 560(%rdx), %rax
     movd __kefir_func_get_label9(%rip), %xmm0
-    movd %xmm0, 560(%rdx)
+    movd %xmm0, (%rax)
     mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
