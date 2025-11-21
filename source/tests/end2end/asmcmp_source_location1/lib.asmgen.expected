@@ -13,6 +13,18 @@ factorial:
 #    "function": {
 #        "code": [
 #            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
@@ -212,6 +224,24 @@ factorial:
 #                }
 #            },
 #            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 7,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    22
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 5
+#                }
+#            },
+#            {
 #                "opcode": "test",
 #                "args": [
 #                    {
@@ -225,9 +255,7 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [
-#                    22
-#                ],
+#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 22,
@@ -599,6 +627,24 @@ factorial:
 #                }
 #            },
 #            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    29
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 5
+#                }
+#            },
+#            {
 #                "opcode": "test",
 #                "args": [
 #                    {
@@ -612,9 +658,7 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [
-#                    29
-#                ],
+#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 24,
@@ -957,6 +1001,24 @@ factorial:
 #                }
 #            },
 #            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    36
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
 #                "opcode": "test",
 #                "args": [
 #                    {
@@ -970,9 +1032,7 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [
-#                    36
-#                ],
+#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 28,

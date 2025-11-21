@@ -520,45 +520,46 @@ __kefir_text_func_set7_begin:
 __kefir_func_set7_label0:
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
-    movq -8(%rbp), %rax
-    movq -16(%rbp), %rcx
-    mov %rcx, %r8
+    movq -8(%rbp), %rdi
+    movq -16(%rbp), %rax
+    mov %rax, %r8
     add $22, %r8
-    mov %r8, %rcx
-    add $2, %rcx
-    movb 6(%rcx), %dl
-    movw 4(%rcx), %cx
-    movl 2(%r8), %esi
-    movabs $4294967295, %rdi
-    and %rdi, %rsi
-    and $65535, %rcx
-    shl $32, %rcx
-    or %rcx, %rsi
-    shl $48, %rdx
-    mov %rsi, %rcx
-    or %rdx, %rcx
-    shl $8, %rcx
-    shr $8, %rcx
-    shl $9, %rax
-    sar $9, %rax
-    shl $9, %rax
-    shr $9, %rax
+    mov %r8, %rax
+    add $2, %rax
+    movb 6(%rax), %cl
+    movw 4(%rax), %ax
+    movl 2(%r8), %edx
+    movabs $4294967295, %rsi
+    and %rsi, %rdx
+    and $65535, %rax
+    shl $32, %rax
+    or %rax, %rdx
+    shl $48, %rcx
+    mov %rdx, %rax
+    or %rcx, %rax
+    shl $8, %rax
+    shr $8, %rax
+    mov %rdi, %rcx
+    shl $9, %rcx
+    sar $9, %rcx
+    shl $9, %rcx
+    shr $9, %rcx
     movabs $18437736874454810624, %rdx
-    and %rcx, %rdx
-    shl $11, %rax
-    shr $11, %rax
-    or %rdx, %rax
-    mov %r8, %rcx
-    add $2, %rcx
-    mov %rcx, %rdx
+    and %rax, %rdx
+    shl $11, %rcx
+    shr $11, %rcx
+    or %rdx, %rcx
+    mov %r8, %rax
+    add $2, %rax
+    mov %rax, %rdx
     add $4, %rdx
-    mov %rax, %rsi
+    mov %rcx, %rsi
     shr $32, %rsi
     mov %rsi, %rdi
     shr $16, %rdi
     movb %dil, 2(%rdx)
-    movw %si, 4(%rcx)
-    movl %eax, 2(%r8)
+    movw %si, 4(%rax)
+    movl %ecx, 2(%r8)
     lea (%rbp), %rsp
     pop %rbp
     ret

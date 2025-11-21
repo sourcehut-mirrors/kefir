@@ -631,29 +631,29 @@ __kefir_runtime_text_func___kefir_bigint_left_shift_begin:
     push %r13
     push %r14
     mov %rdx, %rcx
-    mov %rdi, %r12
+    mov %rdi, %rbx
     mov %rsi, %rax
     mov %rcx, %rdx
     cmp %rcx, %rsi
     cmova %rdx, %rax
-    mov %rax, %r13
+    mov %rax, %r12
     mov %rcx, %rdx
     sub $-7, %rdx
     mov %rdx, %rax
     xor %edx, %edx
     mov $8, %rsi
     div %rsi
-    mov %rax, %r14
-    mov %r13, %rax
+    mov %rax, %r13
+    mov %r12, %rax
     xor %edx, %edx
     mov $8, %rsi
     div %rsi
-    mov %rax, %rbx
-    cmp $0, %rbx
+    mov %rax, %r14
+    cmp $0, %r14
     ja __kefir_runtime_func___kefir_bigint_left_shift_label12
-    mov %r13, %rsi
+    mov %r12, %rsi
 __kefir_runtime_func___kefir_bigint_left_shift_label2:
-    mov %r14, %rax
+    mov %r13, %rax
     sub $1, %rax
     mov $8, %r9
     sub %rsi, %r9
@@ -673,18 +673,18 @@ __kefir_runtime_func___kefir_bigint_left_shift_label4:
 __kefir_runtime_func___kefir_bigint_left_shift_label6:
     cmp $0, %r10
     ja __kefir_runtime_func___kefir_bigint_left_shift_label10
-    movb (%r12), %al
+    movb (%rbx), %al
     mov %rsi, %rcx
     shl %cl, %al
-    movb %al, (%r12)
+    movb %al, (%rbx)
     jmp __kefir_runtime_func___kefir_bigint_left_shift_label4
 __kefir_runtime_func___kefir_bigint_left_shift_label10:
-    mov %r12, %rdi
+    mov %rbx, %rdi
     add %r10, %rdi
     movzxb (%rdi), %rdx
     mov %r10, %rax
     sub $1, %rax
-    mov %r12, %r8
+    mov %rbx, %r8
     add %rax, %r8
     movzxb (%r8), %r8
     mov %rsi, %rcx
@@ -697,12 +697,12 @@ __kefir_runtime_func___kefir_bigint_left_shift_label10:
     mov %rax, %r10
     jmp __kefir_runtime_func___kefir_bigint_left_shift_label6
 __kefir_runtime_func___kefir_bigint_left_shift_label12:
-    mov %r12, %rdi
-    mov %rbx, %rsi
+    mov %rbx, %rdi
+    mov %r14, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_left_shift_whole_digits
-    imul $8, %rbx, %rcx
-    mov %r13, %rsi
+    imul $8, %r14, %rcx
+    mov %r12, %rsi
     sub %rcx, %rsi
     jmp __kefir_runtime_func___kefir_bigint_left_shift_label2
 __kefir_runtime_text_func___kefir_bigint_left_shift_end:

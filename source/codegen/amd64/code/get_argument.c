@@ -55,6 +55,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
             REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, arg_vreg,
                                                                           function_parameter.direct_reg));
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, function->argument_touch_instr,
+                                                                 arg_vreg, &function->argument_touch_instr));
             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code, function->argument_touch_instr,
                                                                  arg_vreg, &function->argument_touch_instr));
             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
@@ -69,6 +71,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &vreg));
             REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, arg_vreg,
                                                                           function_parameter.direct_reg));
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, function->argument_touch_instr,
+                                                                 arg_vreg, &function->argument_touch_instr));
             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code, function->argument_touch_instr,
                                                                  arg_vreg, &function->argument_touch_instr));
             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
@@ -196,6 +200,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &arg_vreg));
                         REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, arg_vreg,
                                                                                       subparam.direct_reg));
+                        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                                                             function->argument_touch_instr, arg_vreg,
+                                                                             &function->argument_touch_instr));
                         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
                                                                              function->argument_touch_instr, arg_vreg,
                                                                              &function->argument_touch_instr));

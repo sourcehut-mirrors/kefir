@@ -22,7 +22,7 @@ test1:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 33,
+#                    "instr_ref": 31,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -33,61 +33,6 @@ test1:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 32,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 31,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 2,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdi"
 #                            }
 #                        }
 #                    ]
@@ -128,6 +73,27 @@ test1:
 #                        }
 #                    ],
 #                    "values": []
+#                },
+#                {
+#                    "instr_ref": 2,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rdi"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 3,
@@ -338,12 +304,29 @@ test1:
 #                    ]
 #                },
 #                {
+#                    "instr_ref": 14,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
 #                    "instr_ref": 15,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 32,
+#                            "instr_ref": 14,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -372,12 +355,29 @@ test1:
 #                    ]
 #                },
 #                {
+#                    "instr_ref": 16,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
 #                    "instr_ref": 17,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 31,
+#                            "instr_ref": 16,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -558,7 +558,7 @@ test1:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 33,
+#                            "instr_ref": 31,
 #                            "aspect": {
 #                                "type": "flags"
 #                            },
@@ -784,27 +784,6 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 2,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rdi"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 0,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
@@ -840,6 +819,27 @@ test2:
 #                        }
 #                    ],
 #                    "values": []
+#                },
+#                {
+#                    "instr_ref": 2,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rdi"
+#                            }
+#                        }
+#                    ]
 #                },
 #                {
 #                    "instr_ref": 3,
@@ -3962,40 +3962,6 @@ init_array:
 #            "block_ref": 0,
 #            "code": [
 #                {
-#                    "instr_ref": 13,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
-#                    "instr_ref": 12,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 0,
 #                    "opcode": "function_prologue",
 #                    "parameters": [],
@@ -4020,12 +3986,33 @@ init_array:
 #            "block_ref": 1,
 #            "code": [
 #                {
+#                    "instr_ref": 2,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rax"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
 #                    "instr_ref": 3,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 13,
+#                            "instr_ref": 2,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4036,12 +4023,33 @@ init_array:
 #                    "values": []
 #                },
 #                {
+#                    "instr_ref": 4,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rbx"
+#                            }
+#                        }
+#                    ]
+#                },
+#                {
 #                    "instr_ref": 5,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 12,
+#                            "instr_ref": 4,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4277,7 +4285,7 @@ init_array:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 13,
+#                            "instr_ref": 2,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4293,7 +4301,7 @@ init_array:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 12,
+#                            "instr_ref": 4,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0

@@ -430,11 +430,11 @@ __kefir_text_func_multiply_f64_begin:
     push %rbx
     sub $168, %rsp
     stmxcsr -16(%rbp)
-    movdqu %xmm0, -80(%rbp)
-    movdqu %xmm1, -64(%rbp)
+    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm1, -80(%rbp)
     mov %rdi, %rbx
-    fnstenv -48(%rbp)
-    stmxcsr -20(%rbp)
+    fnstenv -64(%rbp)
+    stmxcsr -36(%rbp)
     fnclex
 __kefir_func_multiply_f64_label2:
     mov %rbx, %rsi
@@ -446,8 +446,8 @@ __kefir_func_multiply_f64_label2:
     movq -168(%rbp), %xmm3
     movaps %xmm2, %xmm4
     movaps %xmm3, %xmm5
-    movdqu -80(%rbp), %xmm0
-    movdqu -64(%rbp), %xmm1
+    movdqu -96(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm1
     unpcklpd %xmm5, %xmm4
     movaps %xmm4, %xmm5
     xorps __kefir_constant_complex_float64_mul(%rip), %xmm5
@@ -483,8 +483,8 @@ __kefir_func_multiply_f64_label2:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -48(%rbp)
-    ldmxcsr -20(%rbp)
+    fldenv -64(%rbp)
+    ldmxcsr -36(%rbp)
     stmxcsr -144(%rbp)
     orl %eax, -144(%rbp)
     ldmxcsr -144(%rbp)
