@@ -78,6 +78,9 @@ static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_a
     REQUIRE_OK(
         kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, result_placement_vreg, result_phreg));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                         result_placement_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, result_placement_vreg, NULL));

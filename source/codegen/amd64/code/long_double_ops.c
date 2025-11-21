@@ -668,6 +668,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float32_to_long_double)(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         result_vreg, NULL));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      tmp_vreg,
+                                      NULL));
+
     const struct kefir_asmcmp_virtual_register *arg1;
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg1_vreg, &arg1));
     if (arg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT) {

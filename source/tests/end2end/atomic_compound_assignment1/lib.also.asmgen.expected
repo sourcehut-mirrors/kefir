@@ -257,8 +257,8 @@ __kefir_func_add_f32_label2:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz __kefir_func_add_f32_label6
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
@@ -296,8 +296,8 @@ __kefir_func_add_f64_label2:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz __kefir_func_add_f64_label6
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
@@ -791,8 +791,8 @@ __kefir_func_divide_f32_label2:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz __kefir_func_divide_f32_label6
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
@@ -830,8 +830,8 @@ __kefir_func_divide_f64_label2:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz __kefir_func_divide_f64_label6
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
@@ -1145,8 +1145,8 @@ __kefir_func_multiply_f32_label2:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz __kefir_func_multiply_f32_label6
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
@@ -1184,8 +1184,8 @@ __kefir_func_multiply_f64_label2:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz __kefir_func_multiply_f64_label6
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
@@ -1273,8 +1273,8 @@ __kefir_func_subtract_f32_label2:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz __kefir_func_subtract_f32_label6
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
@@ -1312,8 +1312,8 @@ __kefir_func_subtract_f64_label2:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz __kefir_func_subtract_f64_label6
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx

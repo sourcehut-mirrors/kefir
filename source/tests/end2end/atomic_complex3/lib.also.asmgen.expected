@@ -351,14 +351,14 @@ __kefir_text_func_multiply_f32_begin:
     push %rbx
     sub $136, %rsp
     stmxcsr -16(%rbp)
-    movaps %xmm0, -80(%rbp)
-    movdqu -80(%rbp), %xmm1
-    shufps $1, -80(%rbp), %xmm1
-    movdqu %xmm1, -80(%rbp)
-    movdqu %xmm0, -64(%rbp)
+    movaps %xmm0, -96(%rbp)
+    movdqu -96(%rbp), %xmm1
+    shufps $1, -96(%rbp), %xmm1
+    movdqu %xmm1, -96(%rbp)
+    movdqu %xmm0, -80(%rbp)
     mov %rdi, %rbx
-    fnstenv -48(%rbp)
-    stmxcsr -20(%rbp)
+    fnstenv -64(%rbp)
+    stmxcsr -36(%rbp)
     fnclex
 __kefir_func_multiply_f32_label2:
     mov %rbx, %rsi
@@ -370,8 +370,8 @@ __kefir_func_multiply_f32_label2:
     movd -140(%rbp), %xmm1
     movaps %xmm0, %xmm2
     insertps $16, %xmm1, %xmm2
-    movdqu -64(%rbp), %xmm3
-    insertps $16, -80(%rbp), %xmm3
+    movdqu -80(%rbp), %xmm3
+    insertps $16, -96(%rbp), %xmm3
     movaps %xmm3, %xmm4
     shufps $160, %xmm3, %xmm4
     mulps %xmm2, %xmm4
@@ -406,8 +406,8 @@ __kefir_func_multiply_f32_label2:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -48(%rbp)
-    ldmxcsr -20(%rbp)
+    fldenv -64(%rbp)
+    ldmxcsr -36(%rbp)
     stmxcsr -112(%rbp)
     orl %eax, -112(%rbp)
     ldmxcsr -112(%rbp)
