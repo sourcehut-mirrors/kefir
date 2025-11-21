@@ -683,6 +683,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int128_neg)(struct kefir_mem
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         result_lower_half_vreg, arg1_lower_half_vreg, NULL));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        result_upper_half_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_xor(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_VREG32(result_upper_half_vreg), &KEFIR_ASMCMP_MAKE_VREG32(result_upper_half_vreg), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_neg(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

@@ -367,8 +367,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_binary_op)(
         kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        result_vreg, NULL));
+        mem, &function->code, function->prologue_tail,
+        result_vreg, &function->prologue_tail));
 
     if (instruction->operation.parameters.refs[0] != instruction->operation.parameters.refs[1]) {
         REQUIRE_OK(kefir_codegen_amd64_function_x87_load_consume_by(mem, function, instruction->operation.parameters.refs[1], instruction->id));
@@ -668,9 +668,12 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float32_to_long_double)(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         result_vreg, NULL));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, function->prologue_tail,
                                       tmp_vreg,
-                                      NULL));
+                                      &function->prologue_tail));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, function->prologue_tail,
+                                      result_vreg,
+                                      &function->prologue_tail));
 
     const struct kefir_asmcmp_virtual_register *arg1;
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg1_vreg, &arg1));

@@ -480,8 +480,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_load)(struct kef
         kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &value_vreg));
         
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        value_vreg, NULL));
+        mem, &function->code, function->prologue_tail,
+        value_vreg, &function->prologue_tail));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, value_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));

@@ -209,6 +209,16 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(add_overflow)(struct kefir_m
     REQUIRE_OK(expand_arg(mem, function, arg1_type, arg1_signed, arg1_expanded_vreg, arg1_vreg, &left_ulong));
     REQUIRE_OK(expand_arg(mem, function, arg2_type, arg2_signed, arg2_expanded_vreg, arg2_vreg, &right_ulong));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                        kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        overflow_flag_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                        kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        result_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                        kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        tmp_flag_vreg, NULL));
+
     const kefir_bool_t result_64bit = result_type == KEFIR_IR_TYPE_INT64;
     if (result_signed || !result_64bit) {
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
@@ -397,6 +407,16 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(sub_overflow)(struct kefir_m
 
     REQUIRE_OK(expand_arg(mem, function, arg1_type, arg1_signed, arg1_expanded_vreg, arg1_vreg, &left_ulong));
     REQUIRE_OK(expand_arg(mem, function, arg2_type, arg2_signed, arg2_expanded_vreg, arg2_vreg, &right_ulong));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                        kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        overflow_flag_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                        kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        result_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                        kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        tmp_flag_vreg, NULL));
 
     const kefir_bool_t result_64bit = result_type == KEFIR_IR_TYPE_INT64;
     if (result_signed || !result_64bit) {
@@ -599,6 +619,16 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(mul_overflow)(struct kefir_m
 
     REQUIRE_OK(expand_arg(mem, function, arg1_type, arg1_signed, arg1_expanded_vreg, arg1_vreg, &left_ulong));
     REQUIRE_OK(expand_arg(mem, function, arg2_type, arg2_signed, arg2_expanded_vreg, arg2_vreg, &right_ulong));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                        kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        overflow_flag_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                        kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        result_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                        kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        tmp_flag_vreg, NULL));
 
     const kefir_bool_t result_64bit = result_type == KEFIR_IR_TYPE_INT64;
     if (result_signed || !result_64bit) {
