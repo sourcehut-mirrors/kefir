@@ -300,13 +300,23 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                 if (load_size == 0) {
                                     load_size = KEFIR_AMD64_ABI_QWORD;
                                 }
+
+                                kefir_asmcmp_virtual_register_index_t tmp_vreg;
+                                REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                                            KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                                                                            &tmp_vreg));
                                 REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
                                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                    argument_placement_vreg,
+                                    tmp_vreg,
                                     NULL));
                                 REQUIRE_OK(kefir_codegen_amd64_load_general_purpose_register(
-                                    mem, function, argument_placement_vreg, argument_vreg, load_size,
+                                    mem, function, tmp_vreg, argument_vreg, load_size,
                                     i * KEFIR_AMD64_ABI_QWORD));
+                                REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                    argument_placement_vreg,
+                                    tmp_vreg,
+                                    NULL));
                             } else {
                                 REQUIRE_OK(kefir_asmcmp_amd64_mov(
                                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
