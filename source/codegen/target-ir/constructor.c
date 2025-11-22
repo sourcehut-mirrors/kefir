@@ -380,19 +380,7 @@ static kefir_result_t resolve_input_virtual_register(struct constructor_state *s
         value_ref->aspect = (kefir_uint32_t) value;
     } else {
         if (block_state->block_ref == state->code->entry_block) {
-            struct kefir_codegen_target_ir_operation operation = {
-                .opcode = state->code->klass->placeholder_opcode,
-                .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-                .parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-                .parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-                .parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE
-            };
-            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, block_state->block_ref,
-                KEFIR_ID_NONE,
-                &operation, &value_ref->instr_ref));
-            value_ref->aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0);
-            REQUIRE_OK(store_virtual_reigster_output(state, block_state, vreg_idx, KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT, *value_ref));
-            REQUIRE_OK(kefir_hashtable_insert(state->mem, &block_state->block_inputs, (kefir_hashtable_key_t) vreg_idx, (kefir_hashtable_value_t) value_ref->instr_ref));
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to resolve input virtual register in target IR construction");
         } else {
             struct kefir_codegen_target_ir_operation operation = {
                 .opcode = state->code->klass->phi_opcode,
@@ -1096,7 +1084,6 @@ static kefir_result_t push_phi_link_frame(struct constructor_state *state, kefir
 }
 
 static kefir_result_t find_link_for(struct constructor_state *state, struct phi_link_frame *frame, kefir_codegen_target_ir_instruction_ref_t phi_instr_ref, kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_codegen_target_ir_block_ref_t predecessor_block_ref, struct kefir_codegen_target_ir_value_ref *value_ref) {
-    UNUSED(phi_instr_ref);
     for (; frame != NULL; frame = frame->parent) {
         kefir_hashtable_value_t table_value;
         kefir_result_t res = kefir_hashtable_at(&frame->content, (kefir_hashtable_key_t) vreg_idx, &table_value);
@@ -1108,22 +1095,26 @@ static kefir_result_t find_link_for(struct constructor_state *state, struct phi_
         }
     }
 
-    kefir_codegen_target_ir_instruction_ref_t placeholder_instr_ref;
-    struct kefir_codegen_target_ir_operation operation = {
-        .opcode = state->code->klass->placeholder_opcode,
-        .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-        .parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-        .parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-        .parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE
-    };
-    REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, predecessor_block_ref,
-        KEFIR_ID_NONE,
-        &operation, &placeholder_instr_ref));
-    *value_ref = (kefir_codegen_target_ir_value_ref_t) {
-        .instr_ref = placeholder_instr_ref,
-        .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
-    };
-    REQUIRE_OK(store_virtual_register_aspect(state, vreg_idx, KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT, *value_ref, NULL));
+    if (kefir_hashset_has(&state->inserted_phis, (kefir_hashset_key_t) phi_instr_ref)) {
+        kefir_codegen_target_ir_instruction_ref_t placeholder_instr_ref;
+        struct kefir_codegen_target_ir_operation operation = {
+            .opcode = state->code->klass->placeholder_opcode,
+            .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
+            .parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
+            .parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
+            .parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE
+        };
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, predecessor_block_ref,
+            KEFIR_ID_NONE,
+            &operation, &placeholder_instr_ref));
+        *value_ref = (kefir_codegen_target_ir_value_ref_t) {
+            .instr_ref = placeholder_instr_ref,
+            .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
+        };
+        REQUIRE_OK(store_virtual_register_aspect(state, vreg_idx, KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT, *value_ref, NULL));
+    } else {
+        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to resolve input virtual register in target IR construction");
+    }
     return KEFIR_OK;
 }
 
