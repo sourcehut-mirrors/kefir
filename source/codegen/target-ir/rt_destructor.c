@@ -475,6 +475,7 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
 
         REQUIRE_OK(state->parameter->new_inline_asm(state->mem, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx),
                                                     inline_asm, NULL, state->parameter->payload));
+        return KEFIR_OK;
     }
 
     struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification classification;
