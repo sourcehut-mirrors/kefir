@@ -242,7 +242,7 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(control_flow->code, i);
         const struct kefir_codegen_target_ir_block *block = kefir_codegen_target_ir_code_block_at(control_flow->code, block_ref);
         REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable o retrieve target IR block"));
-        if (block->externally_visible || !kefir_hashtreeset_empty(&block->public_labels)) {
+        if (!kefir_hashtreeset_empty(&block->public_labels)) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) block_ref));
         }
 
