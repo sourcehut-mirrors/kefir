@@ -22,6 +22,7 @@
 #include "kefir/codegen/target-ir/amd64/code.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <string.h>
 
 static kefir_result_t is_jump(kefir_asmcmp_instruction_opcode_t asmcmp_opcode, kefir_bool_t *is_jump_ptr, void *payload) {
     UNUSED(payload);
@@ -47,6 +48,7 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp instruction"));
     REQUIRE(classification != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp instruction"));
 
+    memset(classification, 0, sizeof(struct kefir_codegen_target_ir_asmcmp_instruction_classification));
     classification->special = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_SPECIAL_NONE;
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE;
@@ -320,7 +322,7 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
                 classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
                 classification->operands[1].implicit = true;
                 classification->operands[1].implicit_parameter.phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
-                MATCH_VARIANT(&classification->operands[2], &instruction->args[0]);
+                MATCH_VARIANT(&classification->operands[1], &instruction->args[0]);
                 if ((instruction->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER &&
                     instruction->args[0].vreg.variant != KEFIR_ASMCMP_OPERAND_VARIANT_8BIT) ||
                     (instruction->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT &&
