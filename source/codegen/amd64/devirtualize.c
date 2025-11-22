@@ -112,7 +112,7 @@ static kefir_result_t scan_virtual_block_virtual_register_lifetimes(struct kefir
 
         if (begin_entry->vregs_length >= begin_entry->vregs_capacity) {
             kefir_size_t new_capacity = MAX(32, 2 * begin_entry->vregs_length);
-            struct virtual_block_vreg_lifetime_entry_vreg *new_content = KEFIR_MALLOC(mem, new_capacity * sizeof(struct virtual_block_vreg_lifetime_entry_vreg));
+            struct virtual_block_vreg_lifetime_entry_vreg *new_content = KEFIR_REALLOC(mem, begin_entry->vregs, new_capacity * sizeof(struct virtual_block_vreg_lifetime_entry_vreg));
             REQUIRE(new_content != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate virtual block virtual register lifetime entry"));
             begin_entry->vregs = new_content;
             begin_entry->vregs_capacity = new_capacity;
@@ -122,7 +122,7 @@ static kefir_result_t scan_virtual_block_virtual_register_lifetimes(struct kefir
         
         if (end_entry->vregs_length >= end_entry->vregs_capacity) {
             kefir_size_t new_capacity = MAX(32, 2 * end_entry->vregs_length);
-            struct virtual_block_vreg_lifetime_entry_vreg *new_content = KEFIR_MALLOC(mem, new_capacity * sizeof(struct virtual_block_vreg_lifetime_entry_vreg));
+            struct virtual_block_vreg_lifetime_entry_vreg *new_content = KEFIR_REALLOC(mem, end_entry->vregs, new_capacity * sizeof(struct virtual_block_vreg_lifetime_entry_vreg));
             REQUIRE(new_content != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate virtual block virtual register lifetime entry"));
             end_entry->vregs = new_content;
             end_entry->vregs_capacity = new_capacity;
