@@ -428,6 +428,9 @@ static kefir_result_t allocate_x86_rh_register(struct kefir_mem *mem, struct kef
                 kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, entry->allocation_vreg, candidate_reg));
             entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER;
             REQUIRE_OK(kefir_list_pop(mem, &context->available_gp_registers, iter));
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                entry->allocation_vreg, NULL));
             return KEFIR_OK;
         }
     }

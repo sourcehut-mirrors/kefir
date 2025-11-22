@@ -1408,8 +1408,7 @@ __kefir_runtime_text_func___kefir_bigint_unsigned_to_long_double_begin:
     push %r13
     push %r14
     push %r15
-    sub $56, %rsp
-    fstcw -48(%rbp)
+    sub $40, %rsp
     mov %rdx, %r14
     mov %rsi, %rbx
     mov %rdi, %r15
@@ -1447,7 +1446,6 @@ __kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label8:
     and $32767, %rax
     movq %rax, -72(%rbp)
     fldt -80(%rbp)
-    fldcw -48(%rbp)
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -1459,7 +1457,6 @@ __kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label8:
 __kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label10:
     movabs $9223372036854775808, %rax
     movq %rax, -64(%rbp)
-    fstpt -96(%rbp)
     mov $16384, %rax
     jmp __kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label8
 __kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label12:
@@ -1562,7 +1559,6 @@ __kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label28:
     jmp __kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label20
 __kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label30:
     fldt __kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label32(%rip)
-    fldcw -48(%rbp)
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -2123,7 +2119,6 @@ __kefir_runtime_text_func___kefir_bigint_signed_to_long_double_begin:
     push %r14
     push %r15
     sub $56, %rsp
-    fstcw -48(%rbp)
     mov %rdx, %r15
     mov %rsi, %rbx
     movq %rdi, -96(%rbp)
@@ -2173,7 +2168,6 @@ __kefir_runtime_func___kefir_bigint_signed_to_long_double_label10:
     or %rax, %rcx
     movq %rcx, -72(%rbp)
     fldt -80(%rbp)
-    fldcw -48(%rbp)
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -2185,7 +2179,6 @@ __kefir_runtime_func___kefir_bigint_signed_to_long_double_label10:
 __kefir_runtime_func___kefir_bigint_signed_to_long_double_label12:
     movabs $9223372036854775808, %rax
     movq %rax, -64(%rbp)
-    fstpt -96(%rbp)
     mov $16384, %rax
     jmp __kefir_runtime_func___kefir_bigint_signed_to_long_double_label10
 __kefir_runtime_func___kefir_bigint_signed_to_long_double_label14:
@@ -2293,7 +2286,6 @@ __kefir_runtime_func___kefir_bigint_signed_to_long_double_label32:
     jmp __kefir_runtime_func___kefir_bigint_signed_to_long_double_label4
 __kefir_runtime_func___kefir_bigint_signed_to_long_double_label34:
     fldt __kefir_runtime_func___kefir_bigint_signed_to_long_double_label36(%rip)
-    fldcw -48(%rbp)
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
