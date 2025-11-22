@@ -388,6 +388,8 @@ static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir
                             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                             &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(return_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT),
                             NULL));
+                    } else {
+                        REQUIRE_OK(kefir_list_clear(mem, &function->x87_stack));
                     }
                 } else {
                     REQUIRE_OK(kefir_codegen_amd64_function_x87_clear(mem, function, 0));
