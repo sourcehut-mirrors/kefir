@@ -432,6 +432,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float32_truncate_1bi
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          tmp2_vreg, arg1_imag_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                       zero_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_pxor(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_VREG(zero_vreg), &KEFIR_ASMCMP_MAKE_VREG(zero_vreg), NULL));
 
@@ -484,6 +486,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float64_truncate_1bi
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          tmp2_vreg, arg1_imag_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                       zero_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_pxor(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_VREG(zero_vreg), &KEFIR_ASMCMP_MAKE_VREG(zero_vreg), NULL));
 
@@ -533,6 +537,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_pair_truncate_1b
     REQUIRE_OK(kefir_asmcmp_amd64_fstp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_X87(0), NULL));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                       tmp_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                       tmp2_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_setp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_setne(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -550,6 +558,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_pair_truncate_1b
     REQUIRE_OK(kefir_asmcmp_amd64_fstp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_X87(0), NULL));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                       result_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_setp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_setne(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

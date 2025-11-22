@@ -212,6 +212,9 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
                 kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, entry->allocation_vreg, reg));
             REQUIRE_OK(kefir_hashtree_insert(mem, &context->explicitly_allocated, (kefir_hashtree_key_t) reg,
                                              (kefir_hashtree_value_t) entry->allocation_vreg));
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                entry->allocation_vreg, NULL));
             entry->allocation_type = allocation_type;
         } else {
             REQUIRE_OK(res);

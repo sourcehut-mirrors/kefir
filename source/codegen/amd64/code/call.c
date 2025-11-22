@@ -300,6 +300,10 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                 if (load_size == 0) {
                                     load_size = KEFIR_AMD64_ABI_QWORD;
                                 }
+                                REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                    argument_placement_vreg,
+                                    NULL));
                                 REQUIRE_OK(kefir_codegen_amd64_load_general_purpose_register(
                                     mem, function, argument_placement_vreg, argument_vreg, load_size,
                                     i * KEFIR_AMD64_ABI_QWORD));
@@ -357,6 +361,10 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                 if (load_bytes == 0) {
                                     load_bytes = 8;
                                 }
+                                REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                    argument_placement_vreg,
+                                    NULL));
                                 REQUIRE_OK(kefir_codegen_amd64_load_floating_point_register(
                                     mem, function, argument_placement_vreg, argument_vreg, load_bytes,
                                     i * KEFIR_AMD64_ABI_QWORD));
@@ -613,6 +621,10 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                 REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
                                                                     implicit_vreg, function->stack_frame.return_space_vreg, NULL));
+            } else {
+                REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                                    implicit_vreg, NULL));
             }
         } else {
             REQUIRE(return_space_vreg != KEFIR_ID_NONE,
