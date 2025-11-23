@@ -615,7 +615,7 @@ static kefir_result_t init_operand(struct constructor_state *state, struct code_
 static kefir_result_t terminate_current_block(struct constructor_state *state, struct code_block_state *current_block_state, struct code_block_state *next_block_state) {
     kefir_codegen_target_ir_instruction_ref_t current_block_tail_ref = kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref);
     if (current_block_tail_ref == KEFIR_ID_NONE) {
-        struct kefir_codegen_target_ir_operation operation;
+        struct kefir_codegen_target_ir_operation operation = {0};
         REQUIRE_OK(state->code->klass->make_unconditional_jump(next_block_state->block_ref, &operation, state->code->klass->payload));
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, current_block_state->block_ref,
             kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref),
@@ -630,13 +630,13 @@ static kefir_result_t terminate_current_block(struct constructor_state *state, s
     REQUIRE_OK(state->code->klass->is_block_terminator(current_block_tail, &terminator_props, state->code->klass->payload));
 
     if (!terminator_props.block_terminator) {
-        struct kefir_codegen_target_ir_operation operation;
+        struct kefir_codegen_target_ir_operation operation = {0};
         REQUIRE_OK(state->code->klass->make_unconditional_jump(next_block_state->block_ref, &operation, state->code->klass->payload));
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, current_block_state->block_ref,
             kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref),
             &operation, NULL));
     } else if (terminator_props.fallthrough) {
-        struct kefir_codegen_target_ir_operation operation;
+        struct kefir_codegen_target_ir_operation operation = {0};
         REQUIRE_OK(state->code->klass->finalize_conditional_jump(&current_block_tail->operation, next_block_state->block_ref, &operation, state->code->klass->payload));
         REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(state->mem, state->code, current_block_tail_ref));
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, current_block_state->block_ref,
