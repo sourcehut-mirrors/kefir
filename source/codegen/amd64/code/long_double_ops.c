@@ -663,9 +663,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float32_to_long_double)(
 
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        arg1_vreg, NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         result_vreg, NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

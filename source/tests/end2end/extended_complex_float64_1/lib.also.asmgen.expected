@@ -257,13 +257,13 @@ __kefir_func_conv6_label0:
 .loc 0 103 5
 __kefir_func_conv6_label3:
 __kefir_func_conv6_label2:
-    movq %xmm0, -64(%rbp)
-    flds -64(%rbp)
+    movq %xmm0, -56(%rbp)
+    flds -56(%rbp)
 .loc 0 103 5
 __kefir_func_conv6_label5:
 __kefir_func_conv6_label4:
-    movq %xmm1, -64(%rbp)
-    flds -64(%rbp)
+    movq %xmm1, -56(%rbp)
+    flds -56(%rbp)
 .loc 0 103 5
 __kefir_func_conv6_label6:
     fxch %st(1)
