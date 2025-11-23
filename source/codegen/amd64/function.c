@@ -1606,6 +1606,10 @@ kefir_result_t kefir_codegen_amd64_function_x87_consume_by(struct kefir_mem *mem
                         kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
                         kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &tmp_vreg));
 
+                    REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                        tmp_vreg, NULL));
+
                     REQUIRE_OK(kefir_asmcmp_amd64_fstp(
                         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
