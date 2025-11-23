@@ -681,6 +681,9 @@ kefir_result_t kefir_asmcmp_context_label_add_public_name(struct kefir_mem *mem,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen label index is out of context bounds"));
     REQUIRE(public_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbolic label"));
 
+    public_label = kefir_string_pool_insert(mem, &context->strings, public_label, NULL);
+    REQUIRE(public_label != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert public label into string pool"));
+
     struct kefir_asmcmp_label *label = &context->labels[label_index];
     REQUIRE_OK(kefir_hashtreeset_add(mem, &label->public_labels, (kefir_hashtreeset_entry_t) public_label));
     label->external_dependencies = true;
