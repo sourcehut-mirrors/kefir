@@ -78,6 +78,12 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
             classification->operands[0].index = 0;
             return KEFIR_OK;
 
+        case KEFIR_ASMCMP_AMD64_OPCODE(data_word):
+            classification->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(data_word);
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[0].index = 0;
+            return KEFIR_OK;
+
         case KEFIR_ASMCMP_AMD64_OPCODE(weak_touch_virtual_register):
         case KEFIR_ASMCMP_AMD64_OPCODE(noop):
         case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin):
