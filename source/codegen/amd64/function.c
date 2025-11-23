@@ -1209,6 +1209,22 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
         kefir_codegen_target_ir_round_trip_destructor_amd64_ops_free(mem, &destructor_ops);
         return res;
     });
+    if (codegen->config->enable_target_ir) {
+        res = kefir_asmcmp_amd64_free(mem, &func->code);
+        if (res == KEFIR_OK) {
+            func->code = *asmcmp_code;
+        }
+        REQUIRE_CHAIN(&res, kefir_asmcmp_amd64_init(func->code.function_name, codegen->abi_variant, codegen->config->position_independent_code, asmcmp_code));
+        REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &func->constants));
+        if (res == KEFIR_OK) {
+            func->constants = destructor_ops.constants;
+        }
+        REQUIRE_CHAIN(&res, kefir_hashtree_init(&destructor_ops.constants, &kefir_hashtree_uint_ops));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_codegen_target_ir_round_trip_destructor_amd64_ops_free(mem, &destructor_ops);
+            return res;
+        });
+    }
     REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_amd64_ops_free(mem, &destructor_ops));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "target_ir") == 0) {
