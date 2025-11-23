@@ -14,7 +14,7 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
     const struct kefir_codegen_target_ir_instruction *instruction;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instruction));
 
-    memset(classification, 0, sizeof(struct kefir_codegen_target_ir_asmcmp_instruction_classification));
+    memset(classification, 0, sizeof(struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification));
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE;
         classification->operands[i].implicit = false;
