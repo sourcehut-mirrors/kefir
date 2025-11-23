@@ -18,6 +18,7 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE;
         classification->operands[i].implicit = false;
+        classification->operands[i].immediate = false;
         classification->operands[i].index = 0;
     }
 
@@ -46,6 +47,13 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
             classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(tail_call);
             classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
             classification->operands[0].index = 0;
+            return KEFIR_OK;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(data_word):
+            classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(data_word);
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[0].index = 0;
+            classification->operands[0].immediate = true;
             return KEFIR_OK;
 
         case KEFIR_TARGET_IR_AMD64_OPCODE(phi):
@@ -336,6 +344,31 @@ static kefir_result_t new_inline_asm(struct kefir_mem *mem, kefir_asmcmp_instruc
     return KEFIR_OK;
 }
 
+static kefir_result_t materialize_attribute(struct kefir_mem *mem, kefir_asmcmp_instruction_index_t insert_after_idx, kefir_codegen_target_ir_native_id_t attribute, kefir_asmcmp_instruction_index_t *instr_idx, void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops *, ops,
+        payload);
+    REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid target IR destructor amd64 ops"));
+    
+    switch (attribute) {
+        case KEFIR_TARGET_IR_AMD64_OPCODE(rexW):
+            REQUIRE_OK(kefir_asmcmp_amd64_rexW(mem, ops->code, insert_after_idx, instr_idx));
+            break;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(data16):
+            REQUIRE_OK(kefir_asmcmp_amd64_data16(mem, ops->code, insert_after_idx, instr_idx));
+            break;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(lock):
+            REQUIRE_OK(kefir_asmcmp_amd64_lock(mem, ops->code, insert_after_idx, instr_idx));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected amd64 target IR attribute");
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(const struct kefir_codegen_amd64_function *function, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops *ops) {
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 asmcmp code"));
@@ -353,6 +386,7 @@ kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(cons
     ops->ops.preallocation_hint = preallocation_hint;
     ops->ops.split_branch_instruction = split_branch_instruction;
     ops->ops.new_inline_asm = new_inline_asm;
+    ops->ops.materialize_attribute = materialize_attribute;
     ops->ops.payload = ops;
 
     REQUIRE_OK(kefir_hashtree_init(&ops->constants, &kefir_hashtree_uint_ops));
