@@ -71,7 +71,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
 
         const struct kefir_codegen_target_ir_instruction *user_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, user_instr_ref, &user_instr));
-        if (instr->block_ref != user_instr->block_ref || user_instr_ref == instr->instr_ref) {
+        if (instr->block_ref != user_instr->block_ref || user_instr->operation.opcode == control_flow->code->klass->phi_opcode) {
             if (user_instr->operation.opcode != control_flow->code->klass->phi_opcode) {
                 REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) user_instr->block_ref));
                 REQUIRE_OK(add_to_entry(mem, &liveness->blocks[user_instr->block_ref].live_in, value_ref));
