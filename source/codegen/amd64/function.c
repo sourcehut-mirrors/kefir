@@ -1241,7 +1241,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     }
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "rt_vasm") == 0) {
-        REQUIRE_OK(output_asm(codegen, &asmcmp_code->context, NULL, codegen->config->debug_info));
+        REQUIRE_OK(output_asm(codegen, &func->code.context, NULL, codegen->config->debug_info));
     }
 
     return KEFIR_OK;
