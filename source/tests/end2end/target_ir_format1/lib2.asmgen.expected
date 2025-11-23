@@ -298,7 +298,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 16
+#                        "value": 17
 #                    }
 #                ],
 #                "labels": []
@@ -318,7 +318,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 16
+#                        "value": 17
 #                    }
 #                ],
 #                "labels": []
@@ -328,7 +328,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 17
+#                        "value": 18
 #                    }
 #                ],
 #                "labels": [
@@ -350,7 +350,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 17
+#                        "value": 18
 #                    }
 #                ],
 #                "labels": []
@@ -770,7 +770,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 18
+#                        "value": 19
 #                    }
 #                ],
 #                "labels": []
@@ -790,7 +790,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 18
+#                        "value": 19
 #                    }
 #                ],
 #                "labels": []
@@ -800,7 +800,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 19
+#                        "value": 20
 #                    }
 #                ],
 #                "labels": [
@@ -822,7 +822,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 19
+#                        "value": 20
 #                    }
 #                ],
 #                "labels": []
@@ -1160,7 +1160,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 20
+#                        "value": 21
 #                    }
 #                ],
 #                "labels": []
@@ -1180,7 +1180,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 20
+#                        "value": 21
 #                    }
 #                ],
 #                "labels": []
@@ -1190,7 +1190,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 21
+#                        "value": 22
 #                    }
 #                ],
 #                "labels": [
@@ -1212,7 +1212,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "uinteger",
-#                        "value": 21
+#                        "value": 22
 #                    }
 #                ],
 #                "labels": []
@@ -1549,21 +1549,33 @@ factorial:
 #    }
 #}
 __kefir_text_func_factorial_begin:
+__kefir_func_factorial_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_factorial_label0:
+    jmp __kefir_func_factorial_label1
+__kefir_func_factorial_label1:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $0, %eax
-    setl %cl
-    test %ecx, %ecx
+    mov %rcx, %rax
+    setl %al
+    test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_func_factorial_label14
-__kefir_func_factorial_label1:
+    jz __kefir_func_factorial_label17
+    jmp __kefir_func_factorial_label2
+__kefir_func_factorial_label17:
+    jmp __kefir_func_factorial_label14
 __kefir_func_factorial_label2:
+    jmp __kefir_func_factorial_label3
+__kefir_func_factorial_label14:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_factorial_label3:
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $2, %eax
@@ -1571,34 +1583,44 @@ __kefir_func_factorial_label2:
     mov $0, %rdx
     mov $2, %rdi
     cmp %eax, %edi
-    sete %dl
-    or %rdx, %rcx
-    setne %cl
-    movzx %cl, %rcx
-    test %ecx, %ecx
+    mov %rdx, %rax
+    sete %al
+    or %rax, %rcx
+    mov %rcx, %rax
+    setne %al
+    movzx %al, %rax
+    test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_func_factorial_label12
-__kefir_func_factorial_label3:
+    jz __kefir_func_factorial_label18
+    jmp __kefir_func_factorial_label4
+__kefir_func_factorial_label18:
+    jmp __kefir_func_factorial_label12
 __kefir_func_factorial_label4:
-    movl $1, -4(%rbp)
+    jmp __kefir_func_factorial_label5
+__kefir_func_factorial_label12:
+    movl -8(%rbp), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 __kefir_func_factorial_label5:
+    movl $1, -4(%rbp)
+    jmp __kefir_func_factorial_label6
 __kefir_func_factorial_label6:
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $1, %eax
-    setg %cl
-    test %ecx, %ecx
+    mov %rcx, %rax
+    setg %al
+    test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_func_factorial_label10
+    jz __kefir_func_factorial_label19
+    jmp __kefir_func_factorial_label7
+__kefir_func_factorial_label19:
+    jmp __kefir_func_factorial_label10
 __kefir_func_factorial_label7:
-__kefir_func_factorial_label8:
-    movl -4(%rbp), %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_factorial_label9:
+    jmp __kefir_func_factorial_label8
 __kefir_func_factorial_label10:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
@@ -1608,19 +1630,11 @@ __kefir_func_factorial_label10:
     add $-1, %eax
     movl %eax, -8(%rbp)
     jmp __kefir_func_factorial_label6
-__kefir_func_factorial_label11:
-__kefir_func_factorial_label12:
-    movl -8(%rbp), %eax
+__kefir_func_factorial_label8:
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_factorial_label13:
-__kefir_func_factorial_label14:
-    mov $0, %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_factorial_label15:
 __kefir_text_func_factorial_end:
 
 __kefir_text_section_end:
