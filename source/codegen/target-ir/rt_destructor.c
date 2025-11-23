@@ -369,6 +369,12 @@ static kefir_result_t resolve_operand(struct rt_destructor_state *state, const s
             value->x87 = operand->x87;
             break;
     }
+    if (operand->segment.present) {
+        value->segment.present = true;
+        value->segment.reg = operand->segment.reg;
+    } else {
+        value->segment.present = false;
+    }
     return KEFIR_OK;
 }
 

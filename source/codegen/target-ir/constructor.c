@@ -602,6 +602,13 @@ static kefir_result_t init_operand(struct constructor_state *state, struct code_
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual assembly value type");
     }
 
+    if (value->segment.present) {
+        operand->segment.present = true;
+        operand->segment.reg = value->segment.reg;
+    } else {
+        operand->segment.present = false;
+    }
+
     return KEFIR_OK;
 }
 
