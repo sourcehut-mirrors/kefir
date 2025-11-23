@@ -27,6 +27,7 @@
 #include "kefir/core/hashset.h"
 #include "kefir/core/hashtreeset.h"
 #include "kefir/core/list.h"
+#include "kefir/core/string_pool.h"
 
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 4
 
@@ -324,6 +325,7 @@ typedef struct kefir_codegen_target_ir_code_class {
 } kefir_codegen_target_ir_code_class_t;
 
 typedef struct kefir_codegen_target_ir_code {
+    struct kefir_string_pool strings;
     struct kefir_codegen_target_ir_instruction *code;
     kefir_size_t code_length;
     kefir_size_t code_capacity;

@@ -63,6 +63,7 @@ kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_
     code->indirect_jump_gate_block = KEFIR_ID_NONE;
     code->klass = klass;
 
+    REQUIRE_OK(kefir_string_pool_init(&code->strings));
     REQUIRE_OK(kefir_hashtable_init(&code->attributes, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&code->attributes, free_attributes, NULL));
     return KEFIR_OK;
@@ -85,6 +86,7 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
         REQUIRE_OK(kefir_hashset_free(mem, &code->blocks[i].phi_refs));
     }
     REQUIRE_OK(kefir_hashtable_free(mem, &code->attributes));
+    REQUIRE_OK(kefir_string_pool_free(mem, &code->strings));
     KEFIR_FREE(mem, code->use_entries);
     KEFIR_FREE(mem, code->value_types);
     KEFIR_FREE(mem, code->blocks);
@@ -853,6 +855,9 @@ kefir_result_t kefir_codegen_target_ir_code_inline_assembly_text_fragment(struct
     REQUIRE(instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
     REQUIRE(text != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR inline assembly text"));
     
+    text = kefir_string_pool_insert(mem, &code->strings, text, NULL);
+    REQUIRE(text != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert inline assembly fragment into string pool"));
+
     struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
     REQUIRE(instr->operation.opcode == code->klass->inline_asm_opcode, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to attach a link to non-inline assembly target IR instruction"));
 
