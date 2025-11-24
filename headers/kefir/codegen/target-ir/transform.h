@@ -25,5 +25,6 @@
 
 kefir_result_t kefir_codegen_target_ir_transform_phi_removal(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 kefir_result_t kefir_codegen_target_ir_transform_copy_elision(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_transform_jump_propagate(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 
 #endif

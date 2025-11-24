@@ -1180,6 +1180,24 @@ test2:
 #                                    "type": "flags"
 #                                }
 #                            }
+#                        },
+#                        {
+#                            "block_ref": 4,
+#                            "value_ref": {
+#                                "instr_ref": 36,
+#                                "aspect": {
+#                                    "type": "flags"
+#                                }
+#                            }
+#                        },
+#                        {
+#                            "block_ref": 7,
+#                            "value_ref": {
+#                                "instr_ref": 36,
+#                                "aspect": {
+#                                    "type": "flags"
+#                                }
+#                            }
 #                        }
 #                    ],
 #                    "values": [
@@ -1623,7 +1641,7 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 38,
+#                    "instr_ref": 62,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -1632,7 +1650,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 3
+#                            "block_ref": 6
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1709,12 +1727,12 @@ test2:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 46,
+#                    "instr_ref": 63,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 8
+#                            "block_ref": 2
 #                        }
 #                    ],
 #                    "values": []
@@ -1827,12 +1845,12 @@ test2:
 #            "block_ref": 7,
 #            "code": [
 #                {
-#                    "instr_ref": 54,
+#                    "instr_ref": 64,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 8
+#                            "block_ref": 2
 #                        }
 #                    ],
 #                    "values": []
