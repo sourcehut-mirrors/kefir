@@ -894,7 +894,9 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
                 }
             }
         }
+    }
 
+    if (next_block_ref != KEFIR_ID_NONE || instr_ref == kefir_codegen_target_ir_code_block_control_tail(state->code, block_state->block_ref)) {
         struct kefir_asmcmp_instruction virtual_block_end_instr = {
             .opcode = state->parameter->virtual_block_end_opcode,
             .args[0] = {

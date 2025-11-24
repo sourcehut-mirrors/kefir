@@ -740,6 +740,16 @@ factorial:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 14
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
@@ -865,6 +875,16 @@ factorial:
 #            {
 #                "opcode": "ret",
 #                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 12
+#                    }
+#                ],
 #                "labels": []
 #            },
 #            {
@@ -1153,6 +1173,16 @@ factorial:
 #            {
 #                "opcode": "ret",
 #                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 8
+#                    }
+#                ],
 #                "labels": []
 #            },
 #            {
