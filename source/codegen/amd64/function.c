@@ -1200,6 +1200,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
         .payload = func
     };
     REQUIRE_OK(kefir_codegen_target_ir_code_construct(mem, code, &func->code.context, &ops));
+    REQUIRE_OK(kefir_codegen_target_ir_transform_copy_elision(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_phi_removal(mem, code));
 
     struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops destructor_ops;

@@ -733,39 +733,12 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 31,
-#                    "opcode": "assign",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 27,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 32,
 #                    "opcode": "or",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 31,
+#                            "instr_ref": 27,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1643,39 +1616,12 @@ factorial:
 #                    ]
 #                },
 #                {
-#                    "instr_ref": 67,
-#                    "opcode": "assign",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 66,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 69,
 #                    "opcode": "imul",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 67,
+#                            "instr_ref": 66,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1788,39 +1734,12 @@ factorial:
 #                    "values": []
 #                },
 #                {
-#                    "instr_ref": 73,
-#                    "opcode": "assign",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 71,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            }
-#                        }
-#                    ]
-#                },
-#                {
 #                    "instr_ref": 74,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 73,
+#                            "instr_ref": 71,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
