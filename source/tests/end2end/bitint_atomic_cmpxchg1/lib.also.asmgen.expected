@@ -283,7 +283,7 @@ __kefir_text_func_add6_begin:
     push %rbx
     push %r12
     sub $240, %rsp
-    mov %rdi, %rbx
+    mov %rdi, %r12
 __kefir_func_add6_label0:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
@@ -299,7 +299,7 @@ __kefir_func_add6_label0:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -224(%rbp)
     movq f@GOTPCREL(%rip), %rsi
-    mov %rsi, %r12
+    mov %rsi, %rbx
     movq -256(%rbp), %rax
     movq %rax, -112(%rbp)
     movq -248(%rbp), %rax
@@ -316,7 +316,7 @@ __kefir_func_add6_label1:
 __kefir_func_add6_label2:
     leaq -208(%rbp), %rax
     mov %rax, %rdx
-    mov %r12, %rsi
+    mov %rbx, %rsi
     mov $48, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
@@ -338,7 +338,7 @@ __kefir_func_add6_label2:
     movdqu %xmm0, -240(%rbp)
     movdqu -176(%rbp), %xmm0
     movdqu %xmm0, -224(%rbp)
-    mov %r12, %rsi
+    mov %rbx, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $48, %rdi
@@ -350,7 +350,7 @@ __kefir_func_add6_label2:
     jz __kefir_func_add6_label8
     jmp __kefir_func_add6_label4
 __kefir_func_add6_label8:
-    mov %r12, %rsi
+    mov %rbx, %rsi
     movq -112(%rbp), %rax
     movq %rax, -256(%rbp)
     movq -104(%rbp), %rax
@@ -366,7 +366,7 @@ __kefir_func_add6_label8:
     jmp __kefir_func_add6_label6
 __kefir_func_add6_label3:
 __kefir_func_add6_label4:
-    mov %rbx, %rax
+    mov %r12, %rax
     movdqu -160(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -144(%rbp), %xmm0
@@ -380,7 +380,7 @@ __kefir_func_add6_label4:
     ret
 __kefir_func_add6_label5:
 __kefir_func_add6_label6:
-    mov %rsi, %r12
+    mov %rsi, %rbx
     movq -256(%rbp), %rax
     movq %rax, -112(%rbp)
     movq -248(%rbp), %rax

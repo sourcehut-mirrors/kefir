@@ -59,57 +59,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(unreachable)(struct kefir_me
     return KEFIR_OK;
 }
 
-static kefir_result_t new_virtual_register_of_type(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                                   kefir_asmcmp_virtual_register_index_t vreg_idx,
-                                                   kefir_asmcmp_virtual_register_index_t *new_vreg_idx) {
-    const struct kefir_asmcmp_virtual_register *vreg;
-    REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, vreg_idx, &vreg));
-
-    switch (vreg->type) {
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED:
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, vreg->type, new_vreg_idx));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type_dependent(mem, &function->code.context, *new_vreg_idx,
-                                                                            vreg_idx));
-            break;
-
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE:
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT:
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, vreg->type, new_vreg_idx));
-            break;
-
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE:
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
-                mem, &function->code.context, vreg->parameters.spill_space_allocation.length,
-                vreg->parameters.spill_space_allocation.alignment, new_vreg_idx));
-            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                *new_vreg_idx, NULL));
-            break;
-
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE:
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER:
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, new_vreg_idx));
-            break;
-
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, new_vreg_idx));
-            break;
-
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR: {
-            kefir_asmcmp_virtual_register_index_t first, second;
-            REQUIRE_OK(new_virtual_register_of_type(mem, function, vreg->parameters.pair.virtual_registers[0], &first));
-            REQUIRE_OK(
-                new_virtual_register_of_type(mem, function, vreg->parameters.pair.virtual_registers[1], &second));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context, vreg->parameters.pair.type,
-                                                              first, second, new_vreg_idx));
-        } break;
-    }
-
-    return KEFIR_OK;
-}
-
 static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                            kefir_opt_block_id_t target_block_ref, kefir_opt_block_id_t source_block_ref,
                                            struct kefir_hashtreeset *transferred_vregs,
@@ -194,7 +143,10 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                 }
             }
 
-            REQUIRE_OK(new_virtual_register_of_type(mem, function, source_vreg_idx, &target_vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_new_virtual_register_of_type(mem, &function->code.context, source_vreg_idx, &target_vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                                                kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                                target_vreg_idx, NULL));
 
             if (deferred_target_vreg_idx != KEFIR_ASMCMP_INDEX_NONE) {
                 REQUIRE_OK(kefir_hashtree_insert(mem, deferred_target_vregs,

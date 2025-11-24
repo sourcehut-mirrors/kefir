@@ -982,6 +982,58 @@ kefir_result_t kefir_asmcmp_virtual_set_spill_space_size(const struct kefir_asmc
     return KEFIR_OK;
 }
 
+
+kefir_result_t kefir_asmcmp_new_virtual_register_of_type(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                   kefir_asmcmp_virtual_register_index_t vreg_idx,
+                                                   kefir_asmcmp_virtual_register_index_t *new_vreg_idx) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp context"));
+
+    const struct kefir_asmcmp_virtual_register *vreg;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, vreg_idx, &vreg));
+
+    switch (vreg->type) {
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED:
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, context, vreg->type, new_vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type_dependent(mem, context, *new_vreg_idx,
+                                                                            vreg_idx));
+            break;
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE:
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT:
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, context, vreg->type, new_vreg_idx));
+            break;
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE:
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
+                mem, context, vreg->parameters.spill_space_allocation.length,
+                vreg->parameters.spill_space_allocation.alignment, new_vreg_idx));
+            break;
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE:
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER:
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, new_vreg_idx));
+            break;
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, new_vreg_idx));
+            break;
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR: {
+            kefir_asmcmp_virtual_register_index_t first, second;
+            REQUIRE_OK(kefir_asmcmp_new_virtual_register_of_type(mem, context, vreg->parameters.pair.virtual_registers[0], &first));
+            REQUIRE_OK(
+                kefir_asmcmp_new_virtual_register_of_type(mem, context, vreg->parameters.pair.virtual_registers[1], &second));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, context, vreg->parameters.pair.type,
+                                                              first, second, new_vreg_idx));
+        } break;
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_size_t kefir_asmcmp_virtual_register_pair_at(const struct kefir_asmcmp_context *context,
                                                    kefir_asmcmp_virtual_register_index_t pair_vreg_idx,
                                                    kefir_size_t index,

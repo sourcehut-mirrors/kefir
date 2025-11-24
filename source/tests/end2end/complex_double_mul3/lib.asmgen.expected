@@ -129,11 +129,11 @@ __kefir_runtime_func___kefir_softfloat_complex_double_mul_label6:
     setne %r11b
     movzx %r11b, %r11
     test %edi, %edi
-    setne %r9b
-    movzx %r9b, %r9
-    test %esi, %esi
     setne %r8b
     movzx %r8b, %r8
+    test %esi, %esi
+    setne %r9b
+    movzx %r9b, %r9
     mov %rsi, %rax
     or %edi, %eax
     setne %al
@@ -405,7 +405,7 @@ __kefir_runtime_func___kefir_softfloat_complex_double_mul_label62:
     movq __kefir_runtime_func___kefir_softfloat_complex_double_mul_label87(%rip), %xmm5
     movq %xmm4, %rcx
     movq %xmm5, %rdx
-    test %r8b, %r8b
+    test %r9b, %r9b
     cmovz %rdx, %rcx
     movdqu __kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm6
@@ -417,7 +417,7 @@ __kefir_runtime_func___kefir_softfloat_complex_double_mul_label62:
     movq __kefir_runtime_func___kefir_softfloat_complex_double_mul_label89(%rip), %xmm5
     movq %xmm4, %rcx
     movq %xmm5, %rdx
-    test %r9b, %r9b
+    test %r8b, %r8b
     cmovz %rdx, %rcx
     movdqu __kefir_runtime_constant_copysign(%rip), %xmm1
     movaps %xmm1, %xmm7

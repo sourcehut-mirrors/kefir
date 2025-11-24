@@ -1414,33 +1414,33 @@ __kefir_text_func_generate_buf_37_end:
 
 generate_buf_38:
 __kefir_text_func_generate_buf_38_begin:
-    mov %rdi, %rdx
+    mov %rdi, %r8
     xor %eax, %eax
-    movq %rax, (%rdx)
-    movq %rax, 8(%rdx)
-    movq %rax, 16(%rdx)
-    movq %rax, 24(%rdx)
-    movl %eax, 32(%rdx)
-    movw %ax, 36(%rdx)
-    movb %al, 38(%rdx)
-    movb $0, (%rdx)
-    xor %r8d, %r8d
+    movq %rax, (%r8)
+    movq %rax, 8(%r8)
+    movq %rax, 16(%r8)
+    movq %rax, 24(%r8)
+    movl %eax, 32(%r8)
+    movw %ax, 36(%r8)
+    movb %al, 38(%r8)
+    movb $0, (%r8)
+    xor %edx, %edx
 __kefir_func_generate_buf_38_label2:
-    movzx %r8b, %rax
+    movzx %dl, %rax
     cmp $39, %eax
     jl __kefir_func_generate_buf_38_label6
-    mov %rdx, %rax
+    mov %r8, %rax
     ret
 __kefir_func_generate_buf_38_label6:
-    movzx %r8b, %rax
-    mov %rdx, %rdi
+    movzx %dl, %rax
+    mov %r8, %rdi
     add %rax, %rdi
     movzx %sil, %rcx
     add %eax, %ecx
     movb %cl, (%rdi)
-    mov %r8, %rax
+    mov %rdx, %rax
     add $1, %al
-    mov %rax, %r8
+    mov %rax, %rdx
     jmp __kefir_func_generate_buf_38_label2
 __kefir_text_func_generate_buf_38_end:
 
@@ -1538,33 +1538,33 @@ __kefir_text_func_generate_buf_41_end:
 
 generate_buf_42:
 __kefir_text_func_generate_buf_42_begin:
-    mov %rdi, %rdx
+    mov %rdi, %r8
     xor %eax, %eax
-    movq %rax, (%rdx)
-    movq %rax, 8(%rdx)
-    movq %rax, 16(%rdx)
-    movq %rax, 24(%rdx)
-    movq %rax, 32(%rdx)
-    movw %ax, 40(%rdx)
-    movb %al, 42(%rdx)
-    movb $0, (%rdx)
-    xor %r8d, %r8d
+    movq %rax, (%r8)
+    movq %rax, 8(%r8)
+    movq %rax, 16(%r8)
+    movq %rax, 24(%r8)
+    movq %rax, 32(%r8)
+    movw %ax, 40(%r8)
+    movb %al, 42(%r8)
+    movb $0, (%r8)
+    xor %edx, %edx
 __kefir_func_generate_buf_42_label2:
-    movzx %r8b, %rax
+    movzx %dl, %rax
     cmp $43, %eax
     jl __kefir_func_generate_buf_42_label6
-    mov %rdx, %rax
+    mov %r8, %rax
     ret
 __kefir_func_generate_buf_42_label6:
-    movzx %r8b, %rax
-    mov %rdx, %rdi
+    movzx %dl, %rax
+    mov %r8, %rdi
     add %rax, %rdi
     movzx %sil, %rcx
     add %eax, %ecx
     movb %cl, (%rdi)
-    mov %r8, %rax
+    mov %rdx, %rax
     add $1, %al
-    mov %rax, %r8
+    mov %rax, %rdx
     jmp __kefir_func_generate_buf_42_label2
 __kefir_text_func_generate_buf_42_end:
 
@@ -1601,65 +1601,65 @@ __kefir_text_func_generate_buf_43_end:
 
 generate_buf_44:
 __kefir_text_func_generate_buf_44_begin:
-    mov %rdi, %rdx
+    mov %rdi, %r8
     xor %eax, %eax
-    movq %rax, (%rdx)
-    movq %rax, 8(%rdx)
-    movq %rax, 16(%rdx)
-    movq %rax, 24(%rdx)
-    movq %rax, 32(%rdx)
-    movl %eax, 40(%rdx)
-    movb %al, 44(%rdx)
-    movb $0, (%rdx)
-    xor %r8d, %r8d
+    movq %rax, (%r8)
+    movq %rax, 8(%r8)
+    movq %rax, 16(%r8)
+    movq %rax, 24(%r8)
+    movq %rax, 32(%r8)
+    movl %eax, 40(%r8)
+    movb %al, 44(%r8)
+    movb $0, (%r8)
+    xor %edx, %edx
 __kefir_func_generate_buf_44_label2:
-    movzx %r8b, %rax
+    movzx %dl, %rax
     cmp $45, %eax
     jl __kefir_func_generate_buf_44_label6
-    mov %rdx, %rax
+    mov %r8, %rax
     ret
 __kefir_func_generate_buf_44_label6:
-    movzx %r8b, %rax
-    mov %rdx, %rdi
+    movzx %dl, %rax
+    mov %r8, %rdi
     add %rax, %rdi
     movzx %sil, %rcx
     add %eax, %ecx
     movb %cl, (%rdi)
-    mov %r8, %rax
+    mov %rdx, %rax
     add $1, %al
-    mov %rax, %r8
+    mov %rax, %rdx
     jmp __kefir_func_generate_buf_44_label2
 __kefir_text_func_generate_buf_44_end:
 
 generate_buf_45:
 __kefir_text_func_generate_buf_45_begin:
-    mov %rdi, %rdx
+    mov %rdi, %r8
     xor %eax, %eax
-    movq %rax, (%rdx)
-    movq %rax, 8(%rdx)
-    movq %rax, 16(%rdx)
-    movq %rax, 24(%rdx)
-    movq %rax, 32(%rdx)
-    movl %eax, 40(%rdx)
-    movw %ax, 44(%rdx)
-    movb $0, (%rdx)
-    xor %r8d, %r8d
+    movq %rax, (%r8)
+    movq %rax, 8(%r8)
+    movq %rax, 16(%r8)
+    movq %rax, 24(%r8)
+    movq %rax, 32(%r8)
+    movl %eax, 40(%r8)
+    movw %ax, 44(%r8)
+    movb $0, (%r8)
+    xor %edx, %edx
 __kefir_func_generate_buf_45_label2:
-    movzx %r8b, %rax
+    movzx %dl, %rax
     cmp $46, %eax
     jl __kefir_func_generate_buf_45_label6
-    mov %rdx, %rax
+    mov %r8, %rax
     ret
 __kefir_func_generate_buf_45_label6:
-    movzx %r8b, %rax
-    mov %rdx, %rdi
+    movzx %dl, %rax
+    mov %r8, %rdi
     add %rax, %rdi
     movzx %sil, %rcx
     add %eax, %ecx
     movb %cl, (%rdi)
-    mov %r8, %rax
+    mov %rdx, %rax
     add $1, %al
-    mov %rax, %r8
+    mov %rax, %rdx
     jmp __kefir_func_generate_buf_45_label2
 __kefir_text_func_generate_buf_45_end:
 
@@ -1726,65 +1726,65 @@ __kefir_text_func_generate_buf_47_end:
 
 generate_buf_48:
 __kefir_text_func_generate_buf_48_begin:
-    mov %rdi, %rdx
+    mov %rdi, %r8
     xor %eax, %eax
-    movq %rax, (%rdx)
-    movq %rax, 8(%rdx)
-    movq %rax, 16(%rdx)
-    movq %rax, 24(%rdx)
-    movq %rax, 32(%rdx)
-    movq %rax, 40(%rdx)
-    movb %al, 48(%rdx)
-    movb $0, (%rdx)
-    xor %r8d, %r8d
+    movq %rax, (%r8)
+    movq %rax, 8(%r8)
+    movq %rax, 16(%r8)
+    movq %rax, 24(%r8)
+    movq %rax, 32(%r8)
+    movq %rax, 40(%r8)
+    movb %al, 48(%r8)
+    movb $0, (%r8)
+    xor %edx, %edx
 __kefir_func_generate_buf_48_label2:
-    movzx %r8b, %rax
+    movzx %dl, %rax
     cmp $49, %eax
     jl __kefir_func_generate_buf_48_label6
-    mov %rdx, %rax
+    mov %r8, %rax
     ret
 __kefir_func_generate_buf_48_label6:
-    movzx %r8b, %rax
-    mov %rdx, %rdi
+    movzx %dl, %rax
+    mov %r8, %rdi
     add %rax, %rdi
     movzx %sil, %rcx
     add %eax, %ecx
     movb %cl, (%rdi)
-    mov %r8, %rax
+    mov %rdx, %rax
     add $1, %al
-    mov %rax, %r8
+    mov %rax, %rdx
     jmp __kefir_func_generate_buf_48_label2
 __kefir_text_func_generate_buf_48_end:
 
 generate_buf_49:
 __kefir_text_func_generate_buf_49_begin:
-    mov %rdi, %rdx
+    mov %rdi, %r8
     xor %eax, %eax
-    movq %rax, (%rdx)
-    movq %rax, 8(%rdx)
-    movq %rax, 16(%rdx)
-    movq %rax, 24(%rdx)
-    movq %rax, 32(%rdx)
-    movq %rax, 40(%rdx)
-    movw %ax, 48(%rdx)
-    movb $0, (%rdx)
-    xor %r8d, %r8d
+    movq %rax, (%r8)
+    movq %rax, 8(%r8)
+    movq %rax, 16(%r8)
+    movq %rax, 24(%r8)
+    movq %rax, 32(%r8)
+    movq %rax, 40(%r8)
+    movw %ax, 48(%r8)
+    movb $0, (%r8)
+    xor %edx, %edx
 __kefir_func_generate_buf_49_label2:
-    movzx %r8b, %rax
+    movzx %dl, %rax
     cmp $50, %eax
     jl __kefir_func_generate_buf_49_label6
-    mov %rdx, %rax
+    mov %r8, %rax
     ret
 __kefir_func_generate_buf_49_label6:
-    movzx %r8b, %rax
-    mov %rdx, %rdi
+    movzx %dl, %rax
+    mov %r8, %rdi
     add %rax, %rdi
     movzx %sil, %rcx
     add %eax, %ecx
     movb %cl, (%rdi)
-    mov %r8, %rax
+    mov %rdx, %rax
     add $1, %al
-    mov %rax, %r8
+    mov %rax, %rdx
     jmp __kefir_func_generate_buf_49_label2
 __kefir_text_func_generate_buf_49_end:
 
@@ -1823,33 +1823,33 @@ __kefir_text_func_generate_buf_50_end:
 
 generate_buf_51:
 __kefir_text_func_generate_buf_51_begin:
-    mov %rdi, %rdx
+    mov %rdi, %r8
     xor %eax, %eax
-    movq %rax, (%rdx)
-    movq %rax, 8(%rdx)
-    movq %rax, 16(%rdx)
-    movq %rax, 24(%rdx)
-    movq %rax, 32(%rdx)
-    movq %rax, 40(%rdx)
-    movl %eax, 48(%rdx)
-    movb $0, (%rdx)
-    xor %r8d, %r8d
+    movq %rax, (%r8)
+    movq %rax, 8(%r8)
+    movq %rax, 16(%r8)
+    movq %rax, 24(%r8)
+    movq %rax, 32(%r8)
+    movq %rax, 40(%r8)
+    movl %eax, 48(%r8)
+    movb $0, (%r8)
+    xor %edx, %edx
 __kefir_func_generate_buf_51_label2:
-    movzx %r8b, %rax
+    movzx %dl, %rax
     cmp $52, %eax
     jl __kefir_func_generate_buf_51_label6
-    mov %rdx, %rax
+    mov %r8, %rax
     ret
 __kefir_func_generate_buf_51_label6:
-    movzx %r8b, %rax
-    mov %rdx, %rdi
+    movzx %dl, %rax
+    mov %r8, %rdi
     add %rax, %rdi
     movzx %sil, %rcx
     add %eax, %ecx
     movb %cl, (%rdi)
-    mov %r8, %rax
+    mov %rdx, %rax
     add $1, %al
-    mov %rax, %r8
+    mov %rax, %rdx
     jmp __kefir_func_generate_buf_51_label2
 __kefir_text_func_generate_buf_51_end:
 
@@ -1955,33 +1955,33 @@ __kefir_text_func_generate_buf_54_end:
 
 generate_buf_55:
 __kefir_text_func_generate_buf_55_begin:
-    mov %rdi, %rdx
+    mov %rdi, %r8
     xor %eax, %eax
-    movq %rax, (%rdx)
-    movq %rax, 8(%rdx)
-    movq %rax, 16(%rdx)
-    movq %rax, 24(%rdx)
-    movq %rax, 32(%rdx)
-    movq %rax, 40(%rdx)
-    movq %rax, 48(%rdx)
-    movb $0, (%rdx)
-    xor %r8d, %r8d
+    movq %rax, (%r8)
+    movq %rax, 8(%r8)
+    movq %rax, 16(%r8)
+    movq %rax, 24(%r8)
+    movq %rax, 32(%r8)
+    movq %rax, 40(%r8)
+    movq %rax, 48(%r8)
+    movb $0, (%r8)
+    xor %edx, %edx
 __kefir_func_generate_buf_55_label2:
-    movzx %r8b, %rax
+    movzx %dl, %rax
     cmp $56, %eax
     jl __kefir_func_generate_buf_55_label6
-    mov %rdx, %rax
+    mov %r8, %rax
     ret
 __kefir_func_generate_buf_55_label6:
-    movzx %r8b, %rax
-    mov %rdx, %rdi
+    movzx %dl, %rax
+    mov %r8, %rdi
     add %rax, %rdi
     movzx %sil, %rcx
     add %eax, %ecx
     movb %cl, (%rdi)
-    mov %r8, %rax
+    mov %rdx, %rax
     add $1, %al
-    mov %rax, %r8
+    mov %rax, %rdx
     jmp __kefir_func_generate_buf_55_label2
 __kefir_text_func_generate_buf_55_end:
 

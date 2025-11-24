@@ -267,12 +267,12 @@ __kefir_runtime_text_func___kefir_bigint_leading_zeros_begin:
     push %r14
     push %r15
     sub $24, %rsp
-    movq %rdx, -64(%rbp)
-    movq %rsi, -56(%rbp)
-    movq %rdi, -48(%rbp)
-    cmpq $0, -56(%rbp)
+    movq %rdx, -48(%rbp)
+    movq %rsi, -64(%rbp)
+    movq %rdi, -56(%rbp)
+    cmpq $0, -64(%rbp)
     je __kefir_runtime_func___kefir_bigint_leading_zeros_label16
-    movq -56(%rbp), %rsi
+    movq -64(%rbp), %rsi
     sub $-7, %rsi
     mov %rsi, %rax
     xor %edx, %edx
@@ -284,7 +284,7 @@ __kefir_runtime_text_func___kefir_bigint_leading_zeros_begin:
 __kefir_runtime_func___kefir_bigint_leading_zeros_label4:
     cmp %r14, %r15
     jb __kefir_runtime_func___kefir_bigint_leading_zeros_label8
-    movq -64(%rbp), %rax
+    movq -48(%rbp), %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -297,13 +297,13 @@ __kefir_runtime_func___kefir_bigint_leading_zeros_label8:
     mov %r14, %rax
     sub %r15, %rax
     sub $1, %rax
-    movq -48(%rbp), %rdi
+    movq -56(%rbp), %rdi
     add %rax, %rdi
     movzxb (%rdi), %r13
     mov %r14, %rax
     sub $1, %rax
     imul $8, %rax, %rcx
-    movq -56(%rbp), %rsi
+    movq -64(%rbp), %rsi
     sub %rcx, %rsi
     mov $8, %rcx
     cmp $0, %r15
@@ -343,7 +343,7 @@ __kefir_runtime_func___kefir_bigint_leading_zeros_label14:
     pop %rbp
     ret
 __kefir_runtime_func___kefir_bigint_leading_zeros_label16:
-    movq -64(%rbp), %rax
+    movq -48(%rbp), %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
