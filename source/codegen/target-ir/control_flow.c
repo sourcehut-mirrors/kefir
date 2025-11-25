@@ -300,8 +300,32 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, instr_ref, &instr));
             struct kefir_codegen_target_ir_block_terminator_props instr_terminator_props;
             REQUIRE_OK(control_flow->code->klass->is_block_terminator(instr, &instr_terminator_props, control_flow->code->klass->payload));
-            for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
-                REQUIRE_OK(scan_operand(mem, control_flow, &instr->operation.parameters[i], &instr_terminator_props));
+            if (instr->operation.opcode == control_flow->code->klass->phi_opcode) {
+                // Intentionally left blank
+            } else if (instr->operation.opcode == control_flow->code->klass->inline_asm_opcode) {
+                struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
+                const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
+                kefir_result_t res;
+                for (res = kefir_codegen_target_ir_code_inline_assembly_fragment_iter(control_flow->code, &iter, instr_ref, &fragment);
+                    res == KEFIR_OK;
+                    res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
+                    switch (fragment->type) {
+                        case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                            // Intentionally left blank
+                            break;
+
+                        case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND:
+                            REQUIRE_OK(scan_operand(mem, control_flow, &fragment->operand, &instr_terminator_props));
+                            break;
+                    }
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_OK(res);
+                }
+            } else {
+                for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+                    REQUIRE_OK(scan_operand(mem, control_flow, &instr->operation.parameters[i], &instr_terminator_props));
+                }
             }
         }
     }
