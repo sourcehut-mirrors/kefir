@@ -1017,6 +1017,35 @@ static kefir_result_t translate_blocks(struct rt_destructor_state *state) {
         }
     }
 
+    kefir_result_t res;
+    struct kefir_hashtreeset_iterator iter;
+    kefir_bool_t has_dead_indirect_targets = false;
+    for (res = kefir_hashtreeset_iter(&state->control_flow.indirect_jump_targets, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref, iter.entry);
+        if (state->control_flow.blocks[block_ref].immediate_dominator == KEFIR_ID_NONE && block_ref != state->code->entry_block) {
+            kefir_hashtable_value_t table_value;
+            REQUIRE_OK(kefir_hashtable_at(&state->blocks, (kefir_hashtable_key_t) block_ref, &table_value));
+            ASSIGN_DECL_CAST(struct block_state *, block_state,
+                table_value);
+            REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(state->mem, state->asmcmp_ctx, block_state->asmcmp_label));
+            has_dead_indirect_targets = true;
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    if (has_dead_indirect_targets) {
+        struct kefir_asmcmp_instruction instr = {
+            .opcode = state->parameter->unreachable_opcode,
+            .args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+            .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+            .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE
+        };
+        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx), &instr, NULL));
+    }
+
     return KEFIR_OK;
 }
 
