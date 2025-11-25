@@ -464,7 +464,7 @@ static kefir_result_t map_phis_unconditional_impl(struct rt_destructor_state *st
         if (link_value_ref.aspect != KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS && value_type->kind != KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE) {
             const struct kefir_codegen_target_ir_instruction *linked_instr;
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, link_value_ref.instr_ref, &linked_instr));
-            if (linked_instr->block_ref == target_block_ref && linked_instr->operation.opcode == state->code->klass->phi_opcode) {
+            if (linked_instr->block_ref == target_block_ref && linked_instr->operation.opcode == state->code->klass->phi_opcode && link_value_ref.instr_ref != phi_ref) {
                 kefir_asmcmp_virtual_register_index_t src_vreg, dst_vreg;
                 REQUIRE_OK(resolve_value_virtual_register(state, link_value_ref, &src_vreg));
                 REQUIRE_OK(resolve_value_virtual_register(state, (kefir_codegen_target_ir_value_ref_t) {
@@ -683,6 +683,17 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
                         .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE
                     };
                     REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx), &virtual_block_begin_instr, NULL));
+                }
+
+                for (kefir_size_t live_in_idx = 0; live_in_idx < state->liveness.blocks[target_block_state->block_ref].live_in.length; live_in_idx++) {
+                    kefir_codegen_target_ir_value_ref_t value_ref = state->liveness.blocks[target_block_state->block_ref].live_in.content[live_in_idx];
+                    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(value_ref.aspect)) {
+                        kefir_asmcmp_virtual_register_index_t vreg_idx;
+                        REQUIRE_OK(resolve_value_virtual_register(state, value_ref, &vreg_idx));
+                        if (vreg_idx != KEFIR_ASMCMP_INDEX_NONE) {
+                            REQUIRE_OK(touch_virtual_register(state, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx), (kefir_asmcmp_virtual_register_index_t) vreg_idx, NULL));
+                        }
+                    }
                 }
 
                 struct kefir_codegen_target_ir_value_phi_node_iterator phi_node_iter;
