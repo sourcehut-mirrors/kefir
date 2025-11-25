@@ -589,7 +589,7 @@
         KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY) _separator \
     _instr0(fnclex, "fnclex", , KEFIR_AMD64_INSTRDB_MODIFY_X87_ENVIRONMENT) _separator \
     _instr1(fldenv, "fldenv", , KEFIR_AMD64_INSTRDB_MODIFY_X87_ENVIRONMENT, \
-        KEFIR_AMD64_INSTRDB_GP_MEMORY) _separator \
+        KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_MEMORY) _separator \
     /* Prefixes */ \
     _instr0(lock, "lock", PREFIX, KEFIR_AMD64_INSTRDB_PREFIX_INSTRUCTION) _separator \
     _instr0(data16, "data16", PREFIX, KEFIR_AMD64_INSTRDB_PREFIX_INSTRUCTION) _separator \
