@@ -1239,6 +1239,8 @@ kefir_result_t kefir_asmcmp_inline_assembly_add_value(struct kefir_mem *mem, str
         KEFIR_FREE(mem, fragment);
         return res;
     });
+
+    REQUIRE_OK(allocate_value_symbols(mem, context, &fragment->value));
     return KEFIR_OK;
 }
 

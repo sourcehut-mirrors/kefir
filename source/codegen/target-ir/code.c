@@ -315,6 +315,55 @@ static kefir_result_t record_uses(struct kefir_mem *mem, struct kefir_codegen_ta
     return KEFIR_OK;
 }
 
+static kefir_result_t store_strings_in_operand(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                                struct kefir_codegen_target_ir_operand *operand) {
+    switch (operand->type) {
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_EXTERNAL_LABEL:
+            operand->external_label.symbolic = kefir_string_pool_insert(mem, &code->strings, operand->external_label.symbolic, NULL);
+            REQUIRE(operand->external_label.symbolic != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert external label into string pool"));
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_EXTERNAL:
+            operand->rip_indirection.external = kefir_string_pool_insert(mem, &code->strings, operand->rip_indirection.external, NULL);
+            REQUIRE(operand->rip_indirection.external != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert external label into string pool"));
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
+            switch (operand->indirect.type) {
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS:
+                    operand->indirect.base.external_label = kefir_string_pool_insert(mem, &code->strings, operand->indirect.base.external_label, NULL);
+                    REQUIRE(operand->indirect.base.external_label != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert external label into string pool"));
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_PHYSICAL_BASIS:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_IMMEDIATE_BASIS:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_NATIVE_LABEL_BASIS:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_LOCAL_AREA_BASIS:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
+                    // Intentionally left blank
+                    break;
+            }
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_PHYSICAL_REGISTER:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87:
+            // Intentionally left blank
+            break;
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
     kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t after_instr_ref,
     const struct kefir_codegen_target_ir_operation *operation, kefir_codegen_target_ir_instruction_ref_t *instr_ref_ptr) {
@@ -355,49 +404,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
         REQUIRE_OK(kefir_list_on_remove(&instr->operation.inline_asm_node.fragments, free_inline_asm_node, NULL));
     } else {
         for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
-            switch (instr->operation.parameters[i].type) {
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_EXTERNAL_LABEL:
-                    instr->operation.parameters[i].external_label.symbolic = kefir_string_pool_insert(mem, &code->strings, instr->operation.parameters[i].external_label.symbolic, NULL);
-                    REQUIRE(instr->operation.parameters[i].external_label.symbolic != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert external label into string pool"));
-                    break;
-
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_EXTERNAL:
-                    instr->operation.parameters[i].rip_indirection.external = kefir_string_pool_insert(mem, &code->strings, instr->operation.parameters[i].rip_indirection.external, NULL);
-                    REQUIRE(instr->operation.parameters[i].rip_indirection.external != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert external label into string pool"));
-                    break;
-
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
-                    switch (instr->operation.parameters[i].indirect.type) {
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS:
-                            instr->operation.parameters[i].indirect.base.external_label = kefir_string_pool_insert(mem, &code->strings, instr->operation.parameters[i].indirect.base.external_label, NULL);
-                            REQUIRE(instr->operation.parameters[i].indirect.base.external_label != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert external label into string pool"));
-                            break;
-
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_PHYSICAL_BASIS:
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS:
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_IMMEDIATE_BASIS:
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS:
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_NATIVE_LABEL_BASIS:
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_LOCAL_AREA_BASIS:
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
-                            // Intentionally left blank
-                            break;
-                    }
-                    break;
-
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_PHYSICAL_REGISTER:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87:
-                    // Intentionally left blank
-                    break;
-            }
+            REQUIRE_OK(store_strings_in_operand(mem, code, &instr->operation.parameters[i]));
         }
     }
     REQUIRE_OK(kefir_hashtable_init(&instr->aspects, &kefir_hashtable_uint_ops));
@@ -944,6 +951,7 @@ kefir_result_t kefir_codegen_target_ir_code_inline_assembly_operand_fragment(str
         return res;
     });
 
+    REQUIRE_OK(store_strings_in_operand(mem, code, &fragment->operand));
     return KEFIR_OK;
 }
 
