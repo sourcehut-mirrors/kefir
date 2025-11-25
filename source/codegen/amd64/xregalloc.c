@@ -373,6 +373,27 @@ static kefir_result_t scan_code(struct kefir_mem *mem, struct kefir_asmcmp_amd64
                 // Intentionally left blank
                 break;
 
+            case KEFIR_ASMCMP_AMD64_OPCODE(inline_assembly): {
+                struct kefir_asmcmp_inline_assembly_fragment_iterator iter;
+                kefir_result_t res;
+                for (res =
+                        kefir_asmcmp_inline_assembly_fragment_iter(&code->context, instr->args[0].inline_asm_idx, &iter);
+                    res == KEFIR_OK && iter.fragment != NULL; res = kefir_asmcmp_inline_assembly_fragment_next(&iter)) {
+
+                    switch (iter.fragment->type) {
+                        case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                            // Intentionally left blank
+                            break;
+
+                        case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_VALUE:
+                            REQUIRE_OK(scan_virtual_register(mem, code, xregalloc, &iter.fragment->value, linear_index,
+                                                            state->current_virtual_block));
+                            break;
+                    }
+                }
+                REQUIRE_OK(res);
+            } break;
+
             default:
                 REQUIRE_OK(scan_virtual_register(mem, code, xregalloc, &instr->args[0], linear_index,
                                                  state->current_virtual_block));
