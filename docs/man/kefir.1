@@ -644,6 +644,9 @@ Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-int
 Augment assembly output with internal code generator details in comments. DETAILS-SPEC can be: vasm (virtual assembly),
 vasm+regs (virtual assembly and register allocations), devasm (devirtualized assembly).
 .\"
+.It Ar target-ir
+Enable Target IR passthrough after instruction selection [default: on]
+.\"
 .It Ar pipeline=PIPELINE-SPEC
 Code generator transformation pipeline specification consists of comma separated names of pipeline passes:
 .Bl -tag -width Ds
