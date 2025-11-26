@@ -42,6 +42,7 @@ __kefir_text_func_get2_end:
 
 tget:
 __kefir_text_func_tget_begin:
+.extern __tls_get_addr
 __kefir_func_tget_label0:
     push %rbp
     mov %rsp, %rbp
@@ -56,6 +57,7 @@ __kefir_text_func_tget_end:
 
 tget2:
 __kefir_text_func_tget2_begin:
+.extern __tls_get_addr
 __kefir_func_tget2_label0:
     push %rbp
     mov %rsp, %rbp

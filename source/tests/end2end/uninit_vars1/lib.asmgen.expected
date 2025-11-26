@@ -28,6 +28,7 @@ __kefir_text_func_get_global_uninit_static_end:
 
 get_global_tlocal_uninit_static:
 __kefir_text_func_get_global_tlocal_uninit_static_begin:
+.extern __tls_get_addr
 __kefir_func_get_global_tlocal_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp
@@ -42,6 +43,7 @@ __kefir_text_func_get_global_tlocal_uninit_static_end:
 
 get_local_tlocal_uninit_static:
 __kefir_text_func_get_local_tlocal_uninit_static_begin:
+.extern __tls_get_addr
 __kefir_func_get_local_tlocal_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp

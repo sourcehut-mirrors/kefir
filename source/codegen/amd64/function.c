@@ -1212,7 +1212,8 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
         return res;
     });
     if (codegen->config->enable_target_ir) {
-        res = kefir_asmcmp_amd64_free(mem, &func->code);
+        REQUIRE_CHAIN(&res, kefir_hashtreeset_merge(mem, &asmcmp_code->externals, &func->code.externals, NULL, NULL));
+        REQUIRE_CHAIN(&res, kefir_asmcmp_amd64_free(mem, &func->code));
         if (res == KEFIR_OK) {
             func->code = *asmcmp_code;
         }

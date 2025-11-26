@@ -10,6 +10,7 @@
 __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
+.extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
     push %rbx

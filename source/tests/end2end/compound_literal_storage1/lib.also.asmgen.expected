@@ -32,6 +32,7 @@ __kefir_text_func_get1_end:
 
 get2:
 __kefir_text_func_get2_begin:
+.extern __tls_get_addr
 __kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
