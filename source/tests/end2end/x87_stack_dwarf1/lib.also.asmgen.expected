@@ -19,9 +19,11 @@ __kefir_func_compute_label1:
     fldt 48(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
+.loc 0 24 22
     fxch %st(1)
     fld %st(0)
     fmulp
+.loc 0 25 23
     fldt __kefir_func_compute_label4(%rip)
     fxch %st(1)
     fxch %st(2)
@@ -31,8 +33,10 @@ __kefir_func_compute_label1:
     fxch %st(2)
     fxch %st(1)
     fmulp
+.loc 0 26 23
     fxch %st(1)
     fsubp
+.loc 0 27 5
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -50,7 +50,9 @@ __kefir_text_func_add80_begin:
 __kefir_func_add80_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
+.loc 0 67 12
     faddp
+.loc 0 67 5
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -65,6 +67,7 @@ __kefir_text_func_conv1_begin:
     sub $16, %rsp
     fstcw -8(%rbp)
     jmp __kefir_func_conv1_label1
+.loc 0 83 5
 __kefir_func_conv1_label1:
     push %rdi
     fildq (%rsp)
@@ -83,6 +86,7 @@ __kefir_text_func_conv2_begin:
     sub $16, %rsp
     fstcw -8(%rbp)
     jmp __kefir_func_conv2_label1
+.loc 0 87 5
 __kefir_func_conv2_label1:
     push %rdi
     fildq (%rsp)
@@ -90,9 +94,11 @@ __kefir_func_conv2_label1:
     test %rdi, %rdi
     jns __kefir_func_conv2_label3
     jmp __kefir_func_conv2_label2
+.loc 0 87 5
 __kefir_func_conv2_label2:
     fadds __kefir_constant_uint_to_long_double(%rip)
     jmp __kefir_func_conv2_label3
+.loc 0 87 5
 __kefir_func_conv2_label3:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -108,6 +114,7 @@ __kefir_text_func_conv3_begin:
     sub $16, %rsp
     fstcw -8(%rbp)
     jmp __kefir_func_conv3_label1
+.loc 0 91 5
 __kefir_func_conv3_label1:
     movq %xmm0, -16(%rbp)
     flds -16(%rbp)
@@ -125,6 +132,7 @@ __kefir_text_func_conv4_begin:
     sub $16, %rsp
     fstcw -8(%rbp)
     jmp __kefir_func_conv4_label1
+.loc 0 95 5
 __kefir_func_conv4_label1:
     movq %xmm0, -16(%rbp)
     fldl -16(%rbp)
@@ -142,6 +150,7 @@ __kefir_text_func_conv5_begin:
     jmp __kefir_func_conv5_label1
 __kefir_func_conv5_label1:
     fldt 16(%rbp)
+.loc 0 99 5
     pop %rbp
     ret
 __kefir_text_func_conv5_end:
@@ -157,7 +166,9 @@ __kefir_text_func_div80_begin:
 __kefir_func_div80_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
+.loc 0 79 12
     fdivp
+.loc 0 79 5
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -175,7 +186,9 @@ __kefir_text_func_mul80_begin:
 __kefir_func_mul80_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
+.loc 0 75 12
     fmulp
+.loc 0 75 5
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -192,7 +205,9 @@ __kefir_text_func_neg80_begin:
     jmp __kefir_func_neg80_label1
 __kefir_func_neg80_label1:
     fldt 16(%rbp)
+.loc 0 63 12
     fchs
+.loc 0 63 5
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -210,7 +225,9 @@ __kefir_text_func_sub80_begin:
 __kefir_func_sub80_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
+.loc 0 71 12
     fsubp
+.loc 0 71 5
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -221,6 +238,7 @@ get80_1:
 .loc 0 54 1
 __kefir_text_func_get80_1_begin:
     jmp __kefir_func_get80_1_label1
+.loc 0 55 5
 __kefir_func_get80_1_label1:
     fldt __kefir_func_get80_1_label4(%rip)
     ret
@@ -236,8 +254,10 @@ get80_2:
 .loc 0 58 1
 __kefir_text_func_get80_2_begin:
     jmp __kefir_func_get80_2_label1
+.loc 0 59 12
 __kefir_func_get80_2_label1:
     fldt __kefir_func_get80_2_label4(%rip)
+.loc 0 59 5
     ret
 __kefir_text_func_get80_2_end:
 .section .rodata

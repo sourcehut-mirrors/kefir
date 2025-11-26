@@ -14,12 +14,16 @@ __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
     jmp __kefir_func_test1_label1
+.loc 0 25 5
 __kefir_func_test1_label1:
     call test2@PLT
     jmp __kefir_func_test1_label2
+.loc 0 28 9
 __kefir_func_test1_label2:
     call test2@PLT
+.loc 0 31 13
     call test2@PLT
+.loc 0 26 5
     jmp __kefir_func_test1_label2
 __kefir_text_func_test1_end:
 

@@ -29,9 +29,12 @@ __kefir_func_fn1_label1:
     cld
     mov $100, %rcx
     rep movsq
+.loc 0 26 16
     movsx %r8d, %rax
     add %r9, %rax
+.loc 0 26 5
     cvtsi2sd %rax, %xmm1
+.loc 0 28 9
     test %r9, %r9
     jnz __kefir_func_fn1_label5
     jmp __kefir_func_fn1_label3
@@ -43,41 +46,58 @@ __kefir_func_fn1_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.loc 0 30 33
 __kefir_func_fn1_label5:
     movq (%rdx), %rax
+.loc 0 32 24
     movsx %r8d, %rcx
     imul $8, %rcx, %rcx
     leaq -816(%rbp), %rdi
+.loc 0 32 24
     add %rcx, %rdi
     movq (%rdi), %rcx
+.loc 0 31 24
     movq %xmm1, -1632(%rbp)
     fldl -1632(%rbp)
+.loc 0 30 29
     cvtss2sd %xmm0, %xmm0
     movq %rax, %xmm1
+.loc 0 30 29
     addsd %xmm1, %xmm0
+.loc 0 30 13
     movq %xmm0, -1632(%rbp)
     fldl -1632(%rbp)
+.loc 0 31 24
     fxch %st(1)
     fsubp
+.loc 0 31 13
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
+.loc 0 32 20
     cvtsi2sd %rcx, %xmm1
     mulsd %xmm1, %xmm0
+.loc 0 32 34
     cmp $0, %rdx
     je __kefir_func_fn1_label10
     jmp __kefir_func_fn1_label7
+.loc 0 32 44
 __kefir_func_fn1_label7:
     imul $8, %r9, %rax
     leaq -1616(%rbp), %rdi
+.loc 0 32 44
     add %rax, %rdi
     movq (%rdi), %rax
     jmp __kefir_func_fn1_label8
+.loc 0 32 54
 __kefir_func_fn1_label10:
     movq -1560(%rbp), %rax
+.loc 0 32 34
     jmp __kefir_func_fn1_label8
+.loc 0 32 20
 __kefir_func_fn1_label8:
     cvtsi2sd %rax, %xmm1
     addsd %xmm1, %xmm0
+.loc 0 32 13
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -114,6 +134,7 @@ __kefir_func_fn2_label1:
     mov 32(%rbp), %r11
     mov 24(%rbp), %rbx
     mov 16(%rbp), %r12
+.loc 0 39 12
     add %rsi, %rdi
     add %rdx, %rdi
     add %rcx, %rdi
@@ -131,6 +152,7 @@ __kefir_func_fn2_label1:
     add %r15, %rdi
     add %r14, %rdi
     add %r13, %rdi
+.loc 0 39 5
     mov %rdi, %rax
     lea -40(%rbp), %rsp
     pop %r15
@@ -163,6 +185,7 @@ __kefir_func_fn3_label1:
     movq 32(%rbp), %xmm8
     movq 24(%rbp), %xmm9
     movq 16(%rbp), %xmm10
+.loc 0 44 12
     addsd %xmm1, %xmm0
     addsd %xmm2, %xmm0
     addsd %xmm3, %xmm0
@@ -180,6 +203,7 @@ __kefir_func_fn3_label1:
     addsd %xmm13, %xmm0
     addsd %xmm12, %xmm0
     addsd %xmm11, %xmm0
+.loc 0 44 5
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

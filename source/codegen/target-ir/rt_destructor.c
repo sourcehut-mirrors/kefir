@@ -23,6 +23,7 @@
 #include "kefir/codegen/target-ir/liveness.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <string.h>
 
 struct rt_destructor_state {
     struct kefir_mem *mem;
@@ -995,11 +996,47 @@ static kefir_result_t translate_block(struct rt_destructor_state *state, kefir_c
         }
     }
 
+    const struct kefir_source_location *current_source_location = NULL;
+    kefir_asmcmp_instruction_index_t current_source_location_start = KEFIR_ASMCMP_INDEX_NONE;
+#define WRITE_SOURCE_LOCATION \
+    do { \
+        const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(state->asmcmp_ctx); \
+        REQUIRE_OK(kefir_asmcmp_debug_info_source_map_add_location(state->mem, &state->asmcmp_ctx->debug_info.source_map, \
+                                                        &state->asmcmp_ctx->strings, current_source_location_start, end_idx, \
+                                                        current_source_location)); \
+        current_source_location = NULL; \
+        current_source_location_start = KEFIR_ASMCMP_INDEX_NONE; \
+    } while (0)
+
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref =  kefir_codegen_target_ir_code_block_control_head(state->code, block_ref);
         instr_ref != KEFIR_ID_NONE;
         instr_ref = kefir_codegen_target_ir_code_control_next(state->code, instr_ref)) {
+        const struct kefir_codegen_target_ir_instruction *instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, instr_ref, &instr));
+        if (instr->source_location.source != NULL) {
+            if (current_source_location != NULL && current_source_location->source != NULL &&
+                (instr->source_location.source == NULL ||
+                strcmp(instr->source_location.source, current_source_location->source) != 0 ||
+                instr->source_location.line != current_source_location->line ||
+                instr->source_location.column != current_source_location->column)) {
+                WRITE_SOURCE_LOCATION;
+            }
+            if (current_source_location == NULL) {
+                current_source_location = &instr->source_location;
+                current_source_location_start = kefir_asmcmp_context_instr_length(state->asmcmp_ctx);
+            }
+        } else if (current_source_location != NULL) {
+            WRITE_SOURCE_LOCATION;
+        }
+
         REQUIRE_OK(translate_instruction(state, block_state, instr_ref));
     }
+
+    if (current_source_location != NULL) {
+        WRITE_SOURCE_LOCATION;
+    }
+
+#undef WRITE_SOURCE_LOCATION
 
     return KEFIR_OK;
 }

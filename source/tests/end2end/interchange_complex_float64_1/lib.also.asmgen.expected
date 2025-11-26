@@ -53,9 +53,11 @@ __kefir_text_func_add64_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_add64_label1
+.loc 0 67 12
 __kefir_func_add64_label1:
     addsd %xmm2, %xmm0
     addsd %xmm3, %xmm1
+.loc 0 67 5
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -70,6 +72,7 @@ __kefir_text_func_conv1_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_conv1_label1
+.loc 0 83 5
 __kefir_func_conv1_label1:
     cvtsi2sd %rdi, %xmm0
     movq __kefir_func_conv1_label4(%rip), %xmm1
@@ -94,13 +97,16 @@ __kefir_text_func_conv2_begin:
     jmp __kefir_func_conv2_label1
 __kefir_func_conv2_label1:
     movaps %xmm1, %xmm0
+.loc 0 87 5
     pxor %xmm1, %xmm0
     test %rdi, %rdi
     js __kefir_func_conv2_label3
     jmp __kefir_func_conv2_label2
+.loc 0 87 5
 __kefir_func_conv2_label2:
     cvtsi2sd %rdi, %xmm0
     jmp __kefir_func_conv2_label4
+.loc 0 87 5
 __kefir_func_conv2_label3:
     mov %rdi, %rax
     and $1, %rax
@@ -108,9 +114,12 @@ __kefir_func_conv2_label3:
     or %rdi, %rax
     cvtsi2sd %rax, %xmm0
     movaps %xmm0, %xmm1
+.loc 0 87 5
     addsd %xmm0, %xmm1
     movaps %xmm1, %xmm0
+.loc 0 87 5
     jmp __kefir_func_conv2_label4
+.loc 0 87 5
 __kefir_func_conv2_label4:
     movq __kefir_func_conv2_label8(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -132,6 +141,7 @@ __kefir_text_func_conv3_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_conv3_label1
+.loc 0 91 5
 __kefir_func_conv3_label1:
     cvtss2sd %xmm0, %xmm0
     movq __kefir_func_conv3_label4(%rip), %xmm1
@@ -154,6 +164,7 @@ __kefir_text_func_conv4_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_conv4_label1
+.loc 0 95 5
 __kefir_func_conv4_label1:
     movq __kefir_func_conv4_label4(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -178,6 +189,7 @@ __kefir_text_func_conv5_begin:
     jmp __kefir_func_conv5_label1
 __kefir_func_conv5_label1:
     fldt 16(%rbp)
+.loc 0 99 5
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
     movq __kefir_func_conv5_label4(%rip), %xmm1
@@ -205,6 +217,7 @@ __kefir_func_conv6_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
+.loc 0 103 5
     cvtss2sd %xmm0, %xmm0
     cvtss2sd %xmm2, %xmm1
     ldmxcsr -8(%rbp)
@@ -220,6 +233,7 @@ __kefir_text_func_conv7_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     jmp __kefir_func_conv7_label1
+.loc 0 107 5
 __kefir_func_conv7_label1:
     lea (%rbp), %rsp
     pop %rbp
@@ -237,6 +251,7 @@ __kefir_text_func_conv8_begin:
     jmp __kefir_func_conv8_label1
 __kefir_func_conv8_label1:
     lea 16(%rbp), %rax
+.loc 0 111 5
     fldt (%rax)
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
@@ -258,8 +273,10 @@ __kefir_text_func_div64_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_div64_label1
+.loc 0 79 12
 __kefir_func_div64_label1:
     call __kefir_softfloat_complex_double_div
+.loc 0 79 5
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -274,8 +291,10 @@ __kefir_text_func_mul64_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_mul64_label1
+.loc 0 75 12
 __kefir_func_mul64_label1:
     call __kefir_softfloat_complex_double_mul
+.loc 0 75 5
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -290,9 +309,11 @@ __kefir_text_func_neg64_begin:
     sub $32, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_neg64_label1
+.loc 0 63 12
 __kefir_func_neg64_label1:
     xorps __kefir_constant_complex_float64_neg(%rip), %xmm0
     xorps __kefir_constant_complex_float64_neg(%rip), %xmm1
+.loc 0 63 5
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -307,9 +328,11 @@ __kefir_text_func_sub64_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_sub64_label1
+.loc 0 71 12
 __kefir_func_sub64_label1:
     subsd %xmm2, %xmm0
     subsd %xmm3, %xmm1
+.loc 0 71 5
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -324,6 +347,7 @@ __kefir_text_func_get64_1_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_get64_1_label1
+.loc 0 55 5
 __kefir_func_get64_1_label1:
     movq __kefir_func_get64_1_label4(%rip), %xmm0
     movq __kefir_func_get64_1_label5(%rip), %xmm1
@@ -349,9 +373,11 @@ __kefir_text_func_get64_2_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     jmp __kefir_func_get64_2_label1
+.loc 0 59 12
 __kefir_func_get64_2_label1:
     movq __kefir_func_get64_2_label4(%rip), %xmm0
     movq __kefir_func_get64_2_label5(%rip), %xmm1
+.loc 0 59 5
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -366,7 +366,7 @@ static kefir_result_t store_strings_in_operand(struct kefir_mem *mem, struct kef
 
 kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
     kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t after_instr_ref,
-    const struct kefir_codegen_target_ir_operation *operation, kefir_codegen_target_ir_instruction_ref_t *instr_ref_ptr) {
+    const struct kefir_codegen_target_ir_operation *operation, const struct kefir_source_location *source_location, kefir_codegen_target_ir_instruction_ref_t *instr_ref_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(block_ref != KEFIR_ID_NONE && block_ref < code->blocks_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR block reference"));
@@ -393,6 +393,17 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
     instr->instr_ref = code->code_length;
     instr->block_ref = block_ref;
     instr->operation = *operation;
+    if (source_location != NULL) {
+        instr->source_location = *source_location;
+    } else {
+        instr->source_location.source = NULL;
+        instr->source_location.line = 0;
+        instr->source_location.column = 0;
+    }
+    if (instr->source_location.source != NULL) {
+        instr->source_location.source = kefir_string_pool_insert(mem, &code->strings, instr->source_location.source, NULL);
+        REQUIRE(instr->source_location.source != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to insert source location into string pool"));
+    }
 
     if (instr->operation.opcode == code->klass->phi_opcode) {
         instr->operation.phi_node.links = NULL;

@@ -11,35 +11,44 @@ factorial64:
 .loc 0 23 1
 __kefir_text_func_factorial64_begin:
     jmp __kefir_func_factorial64_label1
+.loc 0 24 5
 __kefir_func_factorial64_label1:
     cmp $0, %rdi
     jl __kefir_func_factorial64_label13
     jmp __kefir_func_factorial64_label3
+.loc 0 29 9
 __kefir_func_factorial64_label3:
     cmp $2, %rdi
     jle __kefir_func_factorial64_label11
     jmp __kefir_func_factorial64_label4
+.loc 0 25 9
 __kefir_func_factorial64_label13:
     xor %eax, %eax
     ret
+.loc 0 29 9
 __kefir_func_factorial64_label4:
     mov $1, %rax
     mov %rdi, %rdx
     mov %rax, %rsi
     jmp __kefir_func_factorial64_label5
+.loc 0 27 9
 __kefir_func_factorial64_label11:
     mov %rdi, %rax
     ret
+.loc 0 30 23
 __kefir_func_factorial64_label5:
     lea -1(%rdx), %rdi
+.loc 0 31 13
     mov %rsi, %rcx
     imul %rdx, %rcx
+.loc 0 30 23
     cmp $1, %rdx
     jle __kefir_func_factorial64_label9
 __kefir_func_factorial64_label18:
     mov %rdi, %rdx
     mov %rcx, %rsi
     jmp __kefir_func_factorial64_label5
+.loc 0 33 9
 __kefir_func_factorial64_label9:
     mov %rsi, %rax
     ret

@@ -1809,11 +1809,14 @@ __kefir_func_factorial_label0:
     jmp __kefir_func_factorial_label1
 __kefir_func_factorial_label1:
     movl %edi, -8(%rbp)
+.loc 0 22 9
     movl -8(%rbp), %eax
+.loc 0 22 9
     mov $0, %rcx
     cmp $0, %eax
     mov %rcx, %rax
     setl %al
+.loc 0 22 5
     test %eax, %eax
     sete %al
     test %al, %al
@@ -1822,12 +1825,15 @@ __kefir_func_factorial_label1:
 __kefir_func_factorial_label17:
     jmp __kefir_func_factorial_label14
 __kefir_func_factorial_label3:
+.loc 0 24 9
     movl -8(%rbp), %eax
+.loc 0 24 9
     mov $0, %rcx
     cmp $2, %eax
     setl %cl
     mov $0, %rdx
     mov $2, %rdi
+.loc 0 24 9
     cmp %eax, %edi
     mov %rdx, %rax
     sete %al
@@ -1835,6 +1841,7 @@ __kefir_func_factorial_label3:
     mov %rcx, %rax
     setne %al
     movzx %al, %rax
+.loc 0 24 5
     test %eax, %eax
     sete %al
     test %al, %al
@@ -1843,24 +1850,31 @@ __kefir_func_factorial_label3:
 __kefir_func_factorial_label18:
     jmp __kefir_func_factorial_label12
 __kefir_func_factorial_label14:
+.loc 0 23 9
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_func_factorial_label5:
+.loc 0 27 5
     movl $1, -4(%rbp)
     jmp __kefir_func_factorial_label6
 __kefir_func_factorial_label12:
+.loc 0 25 16
     movl -8(%rbp), %eax
+.loc 0 25 9
     lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_func_factorial_label6:
+.loc 0 28 12
     movl -8(%rbp), %eax
+.loc 0 28 12
     mov $0, %rcx
     cmp $1, %eax
     mov %rcx, %rax
     setg %al
+.loc 0 28 5
     test %eax, %eax
     sete %al
     test %al, %al
@@ -1869,18 +1883,24 @@ __kefir_func_factorial_label6:
 __kefir_func_factorial_label19:
     jmp __kefir_func_factorial_label10
 __kefir_func_factorial_label8:
+.loc 0 31 12
     movl -4(%rbp), %eax
+.loc 0 31 5
     lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_func_factorial_label10:
+.loc 0 29 19
     movl -8(%rbp), %eax
+.loc 0 29 9
     movl -4(%rbp), %ecx
     imul %eax, %ecx
     movl %ecx, -4(%rbp)
+.loc 0 28 19
     movl -8(%rbp), %eax
     add $-1, %eax
     movl %eax, -8(%rbp)
+.loc 0 28 5
     jmp __kefir_func_factorial_label6
 __kefir_text_func_factorial_end:
 
