@@ -24,12 +24,40 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t is_jump(kefir_asmcmp_instruction_opcode_t asmcmp_opcode, kefir_bool_t *is_jump_ptr, void *payload) {
+static kefir_result_t is_jump(const struct kefir_asmcmp_context *context, kefir_asmcmp_instruction_index_t instr_idx, kefir_bool_t *is_jump_ptr, void *payload) {
     UNUSED(payload);
     REQUIRE(is_jump_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     *is_jump_ptr = false;
-    switch (asmcmp_opcode){
+
+    struct kefir_asmcmp_instruction *instr;
+    REQUIRE_OK(kefir_asmcmp_context_instr_at(context, instr_idx, &instr));
+    if (instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(inline_assembly)) {
+        struct kefir_asmcmp_inline_assembly_fragment_iterator iter;
+        kefir_result_t res;
+        for (res =
+                    kefir_asmcmp_inline_assembly_fragment_iter(context, instr->args[0].inline_asm_idx, &iter);
+                res == KEFIR_OK && iter.fragment != NULL; res = kefir_asmcmp_inline_assembly_fragment_next(&iter)) {
+
+            switch (iter.fragment->type) {
+                case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_VALUE:
+                    if (iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL ||
+                        iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL ||
+                        (iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT && iter.fragment->value.indirect.type == KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS)) {
+                        *is_jump_ptr = true;
+                        return KEFIR_OK;
+                    }
+                    break;
+            }
+        }
+        REQUIRE_OK(res);
+    }
+
+    switch (instr->opcode){
 #define DEF_OPCODE0(_opcode, _mnemonic, _variant, _flags) \
         case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
             *is_jump_ptr = ((_flags) & (KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP | KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP_FALLTHROUGH | KEFIR_AMD64_INSTRDB_CONTROL_FLOW_TERMINATE_CONTROL_FLOW)) != 0; \

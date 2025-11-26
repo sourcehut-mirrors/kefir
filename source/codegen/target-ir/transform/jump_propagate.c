@@ -30,7 +30,7 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, tail_ref, &tail_instr));
 
     struct kefir_codegen_target_ir_block_terminator_props terminator_props;
-    REQUIRE_OK(code->klass->is_block_terminator(tail_instr, &terminator_props, code->klass->payload));
+    REQUIRE_OK(code->klass->is_block_terminator(code, tail_instr, &terminator_props, code->klass->payload));
     REQUIRE(terminator_props.block_terminator && !terminator_props.function_terminator && !terminator_props.undefined_target, KEFIR_OK);
 
     kefir_bool_t do_replace = false;
@@ -51,7 +51,7 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, target_tail_ref, &target_tail_instr));
         
         struct kefir_codegen_target_ir_block_terminator_props target_terminator_props;
-        REQUIRE_OK(code->klass->is_block_terminator(target_tail_instr, &target_terminator_props, code->klass->payload));
+        REQUIRE_OK(code->klass->is_block_terminator(code, target_tail_instr, &target_terminator_props, code->klass->payload));
 
         if (!target_terminator_props.block_terminator || target_terminator_props.function_terminator || target_terminator_props.undefined_target || target_terminator_props.branch || target_terminator_props.target_block_refs[1] != KEFIR_ID_NONE) {
             continue;

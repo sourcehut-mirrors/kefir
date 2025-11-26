@@ -73,8 +73,10 @@ static kefir_result_t attribute_mnemonic(kefir_codegen_target_ir_native_id_t att
     return KEFIR_OK;
 }
 
-static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_instruction *instruction, struct kefir_codegen_target_ir_block_terminator_props *props, void *payload) {
+static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instruction, struct kefir_codegen_target_ir_block_terminator_props *props, void *payload) {
     UNUSED(payload);
+    REQUIRE(code != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(instruction != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
     REQUIRE(props != NULL,
@@ -87,6 +89,35 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_i
     props->undefined_target = false;
     props->target_block_refs[0] = KEFIR_ID_NONE;
     props->target_block_refs[1] = KEFIR_ID_NONE;
+
+    if (instruction->operation.opcode == code->klass->inline_asm_opcode) {
+        struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
+        const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
+        kefir_result_t res;
+        for (res = kefir_codegen_target_ir_code_inline_assembly_fragment_iter(code, &iter, instruction->instr_ref, &fragment);
+            res == KEFIR_OK;
+            res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
+            switch (fragment->type) {
+                case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND:
+                    if (fragment->operand.type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF ||
+                        fragment->operand.type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF ||
+                        (fragment->operand.type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT && fragment->operand.indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS)) {
+                        props->block_terminator = true;
+                        props->undefined_target = true;
+                        props->fallthrough = instruction->operation.inline_asm_node.target_block_ref == KEFIR_ID_NONE;
+                        return KEFIR_OK;    
+                    }
+                    break;
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+    }
 
     switch (instruction->operation.opcode) {
 #define DEF_OPCODE_NOOP(...)

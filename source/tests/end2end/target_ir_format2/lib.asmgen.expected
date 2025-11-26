@@ -3765,6 +3765,7 @@ init_array:
 #                {
 #                    "instr_ref": 6,
 #                    "opcode": "inline_assembly",
+#                    "target_block_ref": null,
 #                    "fragments": [
 #                        {
 #                            "type": "text",

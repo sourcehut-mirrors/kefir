@@ -64,7 +64,7 @@ static kefir_result_t store_terminator_target(struct kefir_mem *mem, struct kefi
 static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_operand *operand, const struct kefir_codegen_target_ir_block_terminator_props *terminator_props) {
     switch (operand->type) {
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF:
-            if (!terminator_props->block_terminator) {
+            if (!terminator_props->block_terminator || terminator_props->undefined_target) {
                 REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) operand->block_ref));
             }
             break;
@@ -275,7 +275,7 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, current_block_tail_ref, &current_block_tail));
 
         struct kefir_codegen_target_ir_block_terminator_props terminator_props;
-        REQUIRE_OK(control_flow->code->klass->is_block_terminator(current_block_tail, &terminator_props, control_flow->code->klass->payload));
+        REQUIRE_OK(control_flow->code->klass->is_block_terminator(control_flow->code, current_block_tail, &terminator_props, control_flow->code->klass->payload));
 
         if (!terminator_props.block_terminator || terminator_props.function_terminator) {
             continue;
@@ -299,10 +299,13 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
             const struct kefir_codegen_target_ir_instruction *instr = NULL;
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, instr_ref, &instr));
             struct kefir_codegen_target_ir_block_terminator_props instr_terminator_props;
-            REQUIRE_OK(control_flow->code->klass->is_block_terminator(instr, &instr_terminator_props, control_flow->code->klass->payload));
+            REQUIRE_OK(control_flow->code->klass->is_block_terminator(control_flow->code, instr, &instr_terminator_props, control_flow->code->klass->payload));
             if (instr->operation.opcode == control_flow->code->klass->phi_opcode) {
                 // Intentionally left blank
             } else if (instr->operation.opcode == control_flow->code->klass->inline_asm_opcode) {
+                if (instr->operation.inline_asm_node.target_block_ref != KEFIR_ID_NONE) {
+                    REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) instr->operation.inline_asm_node.target_block_ref));
+                }
                 struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
                 const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
                 kefir_result_t res;

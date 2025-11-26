@@ -146,7 +146,7 @@ static kefir_result_t init_code_blocks(struct constructor_state *state) {
         REQUIRE_OK(kefir_asmcmp_context_instr_at(state->asmcmp_ctx, instr_idx, &asmcmp_instr));
 
         kefir_bool_t is_jump;
-        REQUIRE_OK(state->ops->klass->is_jump(asmcmp_instr->opcode, &is_jump, state->ops->klass->payload));
+        REQUIRE_OK(state->ops->klass->is_jump(state->asmcmp_ctx, instr_idx, &is_jump, state->ops->klass->payload));
         kefir_asmcmp_label_index_t label_idx = kefir_asmcmp_context_instr_label_head(state->asmcmp_ctx, instr_idx);
         if (block_state == NULL || label_idx != KEFIR_ASMCMP_INDEX_NONE) {
             kefir_codegen_target_ir_block_ref_t block_ref;
@@ -627,7 +627,7 @@ static kefir_result_t terminate_current_block(struct constructor_state *state, s
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, current_block_tail_ref, &current_block_tail));
 
     struct kefir_codegen_target_ir_block_terminator_props terminator_props;
-    REQUIRE_OK(state->code->klass->is_block_terminator(current_block_tail, &terminator_props, state->code->klass->payload));
+    REQUIRE_OK(state->code->klass->is_block_terminator(state->code, current_block_tail, &terminator_props, state->code->klass->payload));
 
     if (!terminator_props.block_terminator) {
         struct kefir_codegen_target_ir_operation operation = {0};
@@ -643,6 +643,7 @@ static kefir_result_t terminate_current_block(struct constructor_state *state, s
             kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref),
             &operation, NULL));
     } else if (terminator_props.undefined_target && state->code->indirect_jump_gate_block == KEFIR_ID_NONE) {
+        REQUIRE(!terminator_props.fallthrough, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected fallthrough terminator instruction in target IR block"));
         REQUIRE_OK(kefir_codegen_target_ir_code_new_block(state->mem, state->code, &state->code->indirect_jump_gate_block));
 
         struct code_block_state *gate_block_state = KEFIR_MALLOC(state->mem, sizeof(struct code_block_state));
@@ -829,11 +830,21 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
         if (classification.opcode == state->code->klass->inline_asm_opcode) {
             REQUIRE(asmcmp_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected virtual assembly instruction with inline assembly parameter"));
+
+            kefir_codegen_target_ir_block_ref_t target_block_ref = KEFIR_ID_NONE;
+            kefir_result_t res = kefir_hashtable_at(&state->block_head_instr, (kefir_hashtable_key_t) kefir_asmcmp_context_instr_next(state->asmcmp_ctx, instr_idx), &value);
+            if (res != KEFIR_NOT_FOUND) {
+                struct kefir_hashtree_node *node;
+                REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) value, &node));
+                target_block_ref = ((struct code_block_state *) node->value)->block_ref;
+            }
+
             kefir_codegen_target_ir_instruction_ref_t inline_asm_ref;
             REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, current_block_state->block_ref,
                 kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref),
                 &(struct kefir_codegen_target_ir_operation) {
-                    .opcode = classification.opcode
+                    .opcode = classification.opcode,
+                    .inline_asm_node.target_block_ref = target_block_ref
                 }, &inline_asm_ref));
 
             struct kefir_asmcmp_inline_assembly_fragment_iterator iter;

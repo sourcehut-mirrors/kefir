@@ -37,6 +37,7 @@ typedef kefir_uint32_t kefir_codegen_target_ir_opcode_t;
 typedef kefir_uint64_t kefir_codegen_target_ir_native_id_t;
 typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_physical_register_t;
 typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_asmcmp_label_t;
+typedef struct kefir_codegen_target_ir_code kefir_codegen_target_ir_code_t;
 
 // clang-format off
 #define KEFIR_CODEGEN_TARGET_IR_SPECIAL_OPCODES(_instr, _separator) \
@@ -253,6 +254,7 @@ typedef struct kefir_codegen_target_ir_inline_assembly_fragment {
 } kefir_codegen_target_ir_inline_assembly_fragment_t;
 
 typedef struct kefir_codegen_target_ir_inline_assembly_node {
+    kefir_codegen_target_ir_block_ref_t target_block_ref;
     struct kefir_list fragments;
 } kefir_codegen_target_ir_inline_assembly_node_t;
 
@@ -302,6 +304,7 @@ typedef struct kefir_codegen_target_ir_use_entry {
 typedef struct kefir_codegen_target_ir_block_terminator_props {
     kefir_bool_t block_terminator;
     kefir_bool_t function_terminator;
+    kefir_bool_t inline_assembly;
     kefir_bool_t fallthrough;
     kefir_bool_t branch;
     kefir_bool_t undefined_target;
@@ -312,7 +315,7 @@ typedef struct kefir_codegen_target_ir_code_class {
     kefir_result_t (*opcode_mnemonic)(kefir_codegen_target_ir_opcode_t, const char **, void *);
     kefir_result_t (*register_mnemonic)(kefir_codegen_target_ir_physical_register_t, const char **, void *);
     kefir_result_t (*attribute_mnemonic)(kefir_codegen_target_ir_native_id_t, const char **, void *);
-    kefir_result_t (*is_block_terminator)(const struct kefir_codegen_target_ir_instruction *, struct kefir_codegen_target_ir_block_terminator_props *, void *);
+    kefir_result_t (*is_block_terminator)(const struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, struct kefir_codegen_target_ir_block_terminator_props *, void *);
     kefir_result_t (*make_unconditional_jump)(kefir_codegen_target_ir_block_ref_t, struct kefir_codegen_target_ir_operation *, void *);
     kefir_result_t (*finalize_conditional_jump)(const struct kefir_codegen_target_ir_operation *, kefir_codegen_target_ir_block_ref_t, struct kefir_codegen_target_ir_operation *, void *);
 
