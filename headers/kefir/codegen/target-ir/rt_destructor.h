@@ -49,7 +49,7 @@ typedef struct kefir_codegen_target_ir_round_trip_destructor_ops {
     kefir_asmcmp_instruction_opcode_t unreachable_opcode;
     kefir_asmcmp_instruction_opcode_t jump_opcode;
     kefir_result_t (*classify_instruction)(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification *, void *);
-    kefir_result_t (*bind_native_id)(struct kefir_mem *, kefir_codegen_target_ir_native_id_t, kefir_asmcmp_label_index_t, void *);
+    kefir_result_t (*bind_native_id)(struct kefir_mem *, kefir_asmcmp_label_index_t, kefir_codegen_target_ir_native_id_t, void *);
     kefir_result_t (*preallocation_requirement)(struct kefir_mem *, kefir_asmcmp_virtual_register_index_t, kefir_codegen_target_ir_physical_register_t, void *);
     kefir_result_t (*preallocation_hint)(struct kefir_mem *, kefir_asmcmp_virtual_register_index_t, kefir_codegen_target_ir_physical_register_t, void *);
     kefir_result_t (*split_branch_instruction)(struct kefir_mem *, const struct kefir_codegen_target_ir_instruction *, struct kefir_asmcmp_instruction[2], void *);

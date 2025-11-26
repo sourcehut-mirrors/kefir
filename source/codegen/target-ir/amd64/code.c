@@ -43,7 +43,7 @@ static kefir_result_t amd64_opcode_mnemonic(kefir_codegen_target_ir_opcode_t opc
     return KEFIR_OK;
 }
 
-static kefir_result_t register_mnemonic(kefir_asmcmp_physical_register_index_t reg, const char **mnemonic_ptr,
+static kefir_result_t register_mnemonic(kefir_codegen_target_ir_physical_register_t reg, const char **mnemonic_ptr,
                                         void *payload) {
     UNUSED(payload);
     REQUIRE(mnemonic_ptr != NULL,
