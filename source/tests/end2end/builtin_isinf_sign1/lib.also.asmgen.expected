@@ -18,81 +18,88 @@
 __kefir_text_section_begin:
 is_inf_f32:
 __kefir_text_func_is_inf_f32_begin:
+__kefir_func_is_inf_f32_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-__kefir_func_is_inf_f32_label0:
+    jmp __kefir_func_is_inf_f32_label1
+__kefir_func_is_inf_f32_label1:
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
     mov %rax, %rcx
-    mov %rcx, %rdx
-    and $2147483647, %edx
-    sar $31, %ecx
-    or $1, %ecx
-    xor %eax, %eax
-    cmp $2139095040, %edx
-    cmove %ecx, %eax
+    and $2147483647, %ecx
+    sar $31, %eax
+    mov %rax, %rdx
+    or $1, %edx
+    mov %rsi, %rax
+    xor %esi, %eax
+    cmp $2139095040, %ecx
+    cmove %edx, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_is_inf_f32_label1:
 __kefir_text_func_is_inf_f32_end:
 
 is_inf_f64:
 __kefir_text_func_is_inf_f64_begin:
+__kefir_func_is_inf_f64_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-__kefir_func_is_inf_f64_label0:
+    jmp __kefir_func_is_inf_f64_label1
+__kefir_func_is_inf_f64_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
-    xor %edx, %edx
+    mov %rax, %rdx
+    or $1, %rdx
+    mov %rsi, %rax
+    xor %esi, %eax
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
-    cmove %eax, %edx
-    mov %rdx, %rax
+    cmove %edx, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_is_inf_f64_label1:
 __kefir_text_func_is_inf_f64_end:
 
 is_inf_f80:
 __kefir_text_func_is_inf_f80_begin:
+__kefir_func_is_inf_f80_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-__kefir_func_is_inf_f80_label0:
+    jmp __kefir_func_is_inf_f80_label1
+__kefir_func_is_inf_f80_label1:
     fldt 16(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
     fstpt -48(%rbp)
-    movsxw -40(%rbp), %rcx
-    mov %rcx, %rdx
-    not %edx
-    movabs $9223372036854775808, %rsi
-    xorq -48(%rbp), %rsi
-    and $32767, %edx
-    shr $15, %rcx
-    or $1, %ecx
-    xor %eax, %eax
-    or %rsi, %rdx
-    cmove %ecx, %eax
+    movsxw -40(%rbp), %rax
+    mov %rax, %rcx
+    not %ecx
+    movabs $-9223372036854775808, %rdx
+    xorq -48(%rbp), %rdx
+    and $32767, %ecx
+    shr $15, %rax
+    mov %rax, %rsi
+    or $1, %esi
+    mov %rdi, %rax
+    xor %edi, %eax
+    or %rdx, %rcx
+    cmove %esi, %eax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_is_inf_f80_label1:
 __kefir_text_func_is_inf_f80_end:
 
 __kefir_text_section_end:

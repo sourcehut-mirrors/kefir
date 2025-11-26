@@ -13,36 +13,38 @@ __kefir_text_func_sum_progression_begin:
     mov %rsp, %rbp
     sub $176, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_sum_progression_label1
+__kefir_func_sum_progression_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fld %st(1)
     fld %st(1)
     faddp
-    fldt __kefir_func_sum_progression_label2(%rip)
+    fldt __kefir_func_sum_progression_label4(%rip)
     fld %st(3)
     fxch %st(1)
     fmulp
     fld %st(2)
     faddp
-    fldt __kefir_func_sum_progression_label3(%rip)
+    fldt __kefir_func_sum_progression_label5(%rip)
     fld %st(4)
     fxch %st(1)
     fmulp
     fld %st(3)
     faddp
-    fldt __kefir_func_sum_progression_label4(%rip)
+    fldt __kefir_func_sum_progression_label6(%rip)
     fld %st(5)
     fxch %st(1)
     fmulp
     fld %st(4)
     faddp
-    fldt __kefir_func_sum_progression_label5(%rip)
+    fldt __kefir_func_sum_progression_label7(%rip)
     fld %st(6)
     fxch %st(1)
     fmulp
     fld %st(5)
     faddp
-    fldt __kefir_func_sum_progression_label6(%rip)
+    fldt __kefir_func_sum_progression_label8(%rip)
     fxch %st(1)
     fxch %st(2)
     fxch %st(3)
@@ -56,63 +58,63 @@ __kefir_text_func_sum_progression_begin:
     fmulp
     fld %st(6)
     faddp
-    fldt __kefir_func_sum_progression_label7(%rip)
-    fdecstp
-    fstpt -48(%rbp)
-    fldt -176(%rbp)
-    fstpt -176(%rbp)
-    fldt -176(%rbp)
-    fxch %st(1)
-    fmulp
-    fldt -48(%rbp)
-    faddp
-    fldt __kefir_func_sum_progression_label8(%rip)
-    fdecstp
-    fstpt -32(%rbp)
-    fldt -176(%rbp)
-    fstpt -176(%rbp)
-    fldt -176(%rbp)
-    fxch %st(1)
-    fmulp
-    fldt -48(%rbp)
-    faddp
     fldt __kefir_func_sum_progression_label9(%rip)
     fdecstp
-    fstpt -160(%rbp)
+    fstpt -112(%rbp)
     fldt -176(%rbp)
     fstpt -176(%rbp)
     fldt -176(%rbp)
     fxch %st(1)
     fmulp
-    fldt -48(%rbp)
+    fldt -112(%rbp)
     faddp
+    fldt __kefir_func_sum_progression_label10(%rip)
+    fdecstp
+    fstpt -96(%rbp)
+    fldt -176(%rbp)
     fstpt -176(%rbp)
+    fldt -176(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -112(%rbp)
+    faddp
+    fldt __kefir_func_sum_progression_label11(%rip)
+    fdecstp
+    fstpt -80(%rbp)
+    fldt -176(%rbp)
+    fstpt -176(%rbp)
+    fldt -176(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -112(%rbp)
+    faddp
+    fstpt -64(%rbp)
+    fstpt -48(%rbp)
+    fstpt -32(%rbp)
+    fstpt -176(%rbp)
+    fstpt -160(%rbp)
     fstpt -144(%rbp)
     fstpt -128(%rbp)
-    fstpt -112(%rbp)
-    fstpt -96(%rbp)
-    fstpt -80(%rbp)
-    fstpt -64(%rbp)
     sub $160, %rsp
-    fldt -48(%rbp)
-    fstpt (%rsp)
-    fldt -32(%rbp)
-    fstpt 16(%rsp)
-    fldt -160(%rbp)
-    fstpt 32(%rsp)
-    fldt -64(%rbp)
-    fstpt 48(%rsp)
-    fldt -80(%rbp)
-    fstpt 64(%rsp)
-    fldt -96(%rbp)
-    fstpt 80(%rsp)
     fldt -112(%rbp)
-    fstpt 96(%rsp)
+    fstpt (%rsp)
+    fldt -96(%rbp)
+    fstpt 16(%rsp)
+    fldt -80(%rbp)
+    fstpt 32(%rsp)
     fldt -128(%rbp)
-    fstpt 112(%rsp)
+    fstpt 48(%rsp)
     fldt -144(%rbp)
-    fstpt 128(%rsp)
+    fstpt 64(%rsp)
+    fldt -160(%rbp)
+    fstpt 80(%rsp)
     fldt -176(%rbp)
+    fstpt 96(%rsp)
+    fldt -32(%rbp)
+    fstpt 112(%rsp)
+    fldt -48(%rbp)
+    fstpt 128(%rsp)
+    fldt -64(%rbp)
     fstpt 144(%rsp)
     call sum10@PLT
     fstpt -176(%rbp)
@@ -125,35 +127,35 @@ __kefir_text_func_sum_progression_begin:
 __kefir_text_func_sum_progression_end:
 .section .rodata
     .align 8
-__kefir_func_sum_progression_label2:
-    .quad 9223372036854775808
-    .quad 16384
-    .align 8
-__kefir_func_sum_progression_label3:
-    .quad 13835058055282163712
-    .quad 16384
-    .align 8
 __kefir_func_sum_progression_label4:
     .quad 9223372036854775808
-    .quad 16385
+    .quad 16384
     .align 8
 __kefir_func_sum_progression_label5:
-    .quad 11529215046068469760
-    .quad 16385
+    .quad 13835058055282163712
+    .quad 16384
     .align 8
 __kefir_func_sum_progression_label6:
-    .quad 13835058055282163712
+    .quad 9223372036854775808
     .quad 16385
     .align 8
 __kefir_func_sum_progression_label7:
-    .quad 16140901064495857664
+    .quad 11529215046068469760
     .quad 16385
     .align 8
 __kefir_func_sum_progression_label8:
+    .quad 13835058055282163712
+    .quad 16385
+    .align 8
+__kefir_func_sum_progression_label9:
+    .quad 16140901064495857664
+    .quad 16385
+    .align 8
+__kefir_func_sum_progression_label10:
     .quad 9223372036854775808
     .quad 16386
     .align 8
-__kefir_func_sum_progression_label9:
+__kefir_func_sum_progression_label11:
     .quad 10376293541461622784
     .quad 16386
 .section .text

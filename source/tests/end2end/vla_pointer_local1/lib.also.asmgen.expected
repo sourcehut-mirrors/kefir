@@ -8,6 +8,8 @@
 __kefir_text_section_begin:
 get_element:
 __kefir_text_func_get_element_begin:
+    jmp __kefir_func_get_element_label1
+__kefir_func_get_element_label1:
     imul $8, %rdx, %rax
     add %rax, %rdi
     movq (%rdi), %rax

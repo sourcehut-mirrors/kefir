@@ -14,10 +14,13 @@ __kefir_text_func_get_begin:
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
     mov %rdi, %r10
+    jmp __kefir_func_get_label1
+__kefir_func_get_label1:
     mov %rsi, %r9
     mov %r10, %rdi
     xor %eax, %eax
     mov $14, %rcx
+    mov %rax, %rsi
     rep stosq
     movl %r9d, (%r10)
     lea 4(%r10), %rax
@@ -28,15 +31,16 @@ __kefir_text_func_get_begin:
     mov %r9, %rsi
     add $1, %esi
     movsx %esi, %rdx
-    movabs $18446744073701163008, %r8
+    movabs $-8388608, %r8
     and %rcx, %r8
-    shl $41, %rdx
-    shr $41, %rdx
-    or %r8, %rdx
     mov %rdx, %rcx
-    shr $16, %rcx
-    movb %cl, 2(%rax)
-    movw %dx, (%rax)
+    shl $41, %rcx
+    shr $41, %rcx
+    or %r8, %rcx
+    mov %rcx, %rdx
+    shr $16, %rdx
+    movb %dl, 2(%rax)
+    movw %cx, (%rax)
     lea 8(%r10), %rax
     mov %r9, %rsi
     add $2, %esi

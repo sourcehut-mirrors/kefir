@@ -11,14 +11,15 @@
 __kefir_text_section_begin:
 get_real_value:
 __kefir_text_func_get_real_value_begin:
+__kefir_func_get_real_value_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_get_real_value_label0:
+    jmp __kefir_func_get_real_value_label1
+__kefir_func_get_real_value_label1:
     lea real_value(%rip), %rax
     movq (%rax), %rax
     pop %rbp
     ret
-__kefir_func_get_real_value_label1:
 __kefir_text_func_get_real_value_end:
 
 __kefir_text_section_end:

@@ -11,9 +11,12 @@ __kefir_text_func_gets1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $256, %rsp
-    mov %rdi, %rdx
-    mov %rsi, %r8
-    xorps %xmm0, %xmm0
+    mov %rdi, %r8
+    jmp __kefir_func_gets1_label1
+__kefir_func_gets1_label1:
+    mov %rsi, %rdx
+    movaps %xmm1, %xmm0
+    xorps %xmm1, %xmm0
     movdqu %xmm0, -256(%rbp)
     movdqu %xmm0, -240(%rbp)
     movdqu %xmm0, -224(%rbp)
@@ -35,11 +38,11 @@ __kefir_text_func_gets1_begin:
     movdqu %xmm0, -96(%rbp)
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
-    movsx %r8d, %rax
+    movsx %edx, %rax
     imul $4, %rax, %rax
     leaq -128(%rbp), %rcx
     add %rax, %rcx
-    mov %r8, %rsi
+    mov %rdx, %rsi
     not %esi
     movl %esi, (%rcx)
     movdqu -128(%rbp), %xmm0
@@ -51,19 +54,19 @@ __kefir_text_func_gets1_begin:
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, (%rdx)
+    movdqu %xmm0, (%r8)
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, 16(%rdx)
+    movdqu %xmm0, 16(%r8)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, 32(%rdx)
+    movdqu %xmm0, 32(%r8)
     movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, 48(%rdx)
-    movsx %r8d, %rax
+    movdqu %xmm0, 48(%r8)
+    movsx %edx, %rax
     imul $4, %rax, %rax
-    mov %rdx, %rdi
+    mov %r8, %rdi
     add %rax, %rdi
-    movl %r8d, (%rdi)
-    mov %rdx, %rax
+    movl %edx, (%rdi)
+    mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

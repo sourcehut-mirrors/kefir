@@ -50,6 +50,8 @@
 __kefir_text_section_begin:
 is:
 __kefir_text_func_is_begin:
+    jmp __kefir_func_is_label1
+__kefir_func_is_label1:
     xor %eax, %eax
     cmp $0, %rdi
     sete %al
@@ -58,18 +60,24 @@ __kefir_text_func_is_end:
 
 get:
 __kefir_text_func_get_begin:
+    jmp __kefir_func_get_label1
+__kefir_func_get_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_get_end:
 
 is2:
 __kefir_text_func_is2_begin:
+    jmp __kefir_func_is2_label1
+__kefir_func_is2_label1:
     mov $1, %rax
     ret
 __kefir_text_func_is2_end:
 
 or1:
 __kefir_text_func_or1_begin:
+    jmp __kefir_func_or1_label1
+__kefir_func_or1_label1:
     test %dil, %dil
     setne %al
     movzx %al, %rax
@@ -78,6 +86,8 @@ __kefir_text_func_or1_end:
 
 or2:
 __kefir_text_func_or2_begin:
+    jmp __kefir_func_or2_label1
+__kefir_func_or2_label1:
     test %dil, %dil
     setne %al
     movzx %al, %rax
@@ -86,30 +96,40 @@ __kefir_text_func_or2_end:
 
 or3:
 __kefir_text_func_or3_begin:
+    jmp __kefir_func_or3_label1
+__kefir_func_or3_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_or3_end:
 
 and1:
 __kefir_text_func_and1_begin:
+    jmp __kefir_func_and1_label1
+__kefir_func_and1_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_and1_end:
 
 and2:
 __kefir_text_func_and2_begin:
+    jmp __kefir_func_and2_label1
+__kefir_func_and2_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_and2_end:
 
 and3:
 __kefir_text_func_and3_begin:
+    jmp __kefir_func_and3_label1
+__kefir_func_and3_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_and3_end:
 
 get1:
 __kefir_text_func_get1_begin:
+    jmp __kefir_func_get1_label1
+__kefir_func_get1_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_get1_end:
@@ -120,7 +140,9 @@ __kefir_text_func_get2_begin:
     mov %rsp, %rbp
     sub $208, %rsp
     test %al, %al
-    je __kefir_func_get2_label4
+    je __kefir_func_get2_label2
+    jmp __kefir_func_get2_label1
+__kefir_func_get2_label1:
     movdqu %xmm0, -160(%rbp)
     movdqu %xmm1, -144(%rbp)
     movdqu %xmm2, -128(%rbp)
@@ -129,13 +151,16 @@ __kefir_text_func_get2_begin:
     movdqu %xmm5, -80(%rbp)
     movdqu %xmm6, -64(%rbp)
     movdqu %xmm7, -48(%rbp)
-__kefir_func_get2_label4:
+    jmp __kefir_func_get2_label2
+__kefir_func_get2_label2:
     mov %rdi, -208(%rbp)
     mov %rsi, -200(%rbp)
     mov %rdx, -192(%rbp)
     mov %rcx, -184(%rbp)
     mov %r8, -176(%rbp)
     mov %r9, -168(%rbp)
+    jmp __kefir_func_get2_label3
+__kefir_func_get2_label3:
     movl $0, -32(%rbp)
     movl $48, -28(%rbp)
     lea 16(%rbp), %rax
@@ -144,18 +169,21 @@ __kefir_func_get2_label4:
     movq %rax, -16(%rbp)
     movl -32(%rbp), %eax
     cmp $48, %eax
-    jae __kefir_func_get2_label2
+    jae __kefir_func_get2_label5
+    jmp __kefir_func_get2_label4
+__kefir_func_get2_label4:
     lea 8(%rax), %rax
     movl %eax, -32(%rbp)
     add -16(%rbp), %rax
     mov -8(%rax), %rax
-    jmp __kefir_func_get2_label3
-__kefir_func_get2_label2:
+    jmp __kefir_func_get2_label6
+__kefir_func_get2_label5:
     mov -24(%rbp), %rax
     lea 8(%rax), %rax
     mov %rax, -24(%rbp)
     mov -8(%rax), %rax
-__kefir_func_get2_label3:
+    jmp __kefir_func_get2_label6
+__kefir_func_get2_label6:
     xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -164,42 +192,56 @@ __kefir_text_func_get2_end:
 
 set1:
 __kefir_text_func_set1_begin:
+    jmp __kefir_func_set1_label1
+__kefir_func_set1_label1:
     movq $0, (%rdi)
     ret
 __kefir_text_func_set1_end:
 
 set2:
 __kefir_text_func_set2_begin:
+    jmp __kefir_func_set2_label1
+__kefir_func_set2_label1:
     movb $0, (%rdi)
     ret
 __kefir_text_func_set2_end:
 
 set3:
 __kefir_text_func_set3_begin:
+    jmp __kefir_func_set3_label1
+__kefir_func_set3_label1:
     movq $0, (%rdi)
     ret
 __kefir_text_func_set3_end:
 
 conv1:
 __kefir_text_func_conv1_begin:
+    jmp __kefir_func_conv1_label1
+__kefir_func_conv1_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_conv1_end:
 
 conv2:
 __kefir_text_func_conv2_begin:
+    jmp __kefir_func_conv2_label1
+__kefir_func_conv2_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_conv2_end:
 
 conv3:
 __kefir_text_func_conv3_begin:
+    jmp __kefir_func_conv3_label1
+__kefir_func_conv3_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_conv3_end:
 
 test1:
 __kefir_text_func_test1_begin:
+    jmp __kefir_func_test1_label1
+__kefir_func_test1_label1:
     movl $1, (%rdi)
     movl $1, 4(%rdi)
     movl $1, 8(%rdi)

@@ -30,10 +30,12 @@
 __kefir_text_section_begin:
 call1_proxy:
 __kefir_text_func_call1_proxy_begin:
+__kefir_func_call1_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_call1_proxy_label0:
+    jmp __kefir_func_call1_proxy_label1
+__kefir_func_call1_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movb (%rax), %dil
@@ -41,15 +43,16 @@ __kefir_func_call1_proxy_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_call1_proxy_label1:
 __kefir_text_func_call1_proxy_end:
 
 call2_proxy:
 __kefir_text_func_call2_proxy_begin:
+__kefir_func_call2_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_call2_proxy_label0:
+    jmp __kefir_func_call2_proxy_label1
+__kefir_func_call2_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movw (%rax), %di
@@ -57,35 +60,39 @@ __kefir_func_call2_proxy_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_call2_proxy_label1:
 __kefir_text_func_call2_proxy_end:
 
 call3_proxy:
 __kefir_text_func_call3_proxy_begin:
+__kefir_func_call3_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_call3_proxy_label0:
+    jmp __kefir_func_call3_proxy_label1
+__kefir_func_call3_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    xor %edi, %edi
+    mov %rcx, %rdi
+    xor %ecx, %edi
     movw (%rax), %di
-    movb 2(%rax), %al
+    movb 2(%rax), %cl
+    mov %rcx, %rax
     shl $16, %eax
     or %rax, %rdi
     call call3@PLT
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_call3_proxy_label1:
 __kefir_text_func_call3_proxy_end:
 
 call4_proxy:
 __kefir_text_func_call4_proxy_begin:
+__kefir_func_call4_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_call4_proxy_label0:
+    jmp __kefir_func_call4_proxy_label1
+__kefir_func_call4_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movl (%rax), %edi
@@ -93,76 +100,84 @@ __kefir_func_call4_proxy_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_call4_proxy_label1:
 __kefir_text_func_call4_proxy_end:
 
 call5_proxy:
 __kefir_text_func_call5_proxy_begin:
+__kefir_func_call5_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_call5_proxy_label0:
+    jmp __kefir_func_call5_proxy_label1
+__kefir_func_call5_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movl (%rax), %edi
-    movb 4(%rax), %al
+    movb 4(%rax), %cl
+    mov %rcx, %rax
     shl $32, %rax
     or %rax, %rdi
     call call5@PLT
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_call5_proxy_label1:
 __kefir_text_func_call5_proxy_end:
 
 call6_proxy:
 __kefir_text_func_call6_proxy_begin:
+__kefir_func_call6_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_call6_proxy_label0:
+    jmp __kefir_func_call6_proxy_label1
+__kefir_func_call6_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movl (%rax), %edi
-    movw 4(%rax), %ax
+    movw 4(%rax), %cx
+    mov %rcx, %rax
     shl $32, %rax
     or %rax, %rdi
     call call6@PLT
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_call6_proxy_label1:
 __kefir_text_func_call6_proxy_end:
 
 call7_proxy:
 __kefir_text_func_call7_proxy_begin:
+__kefir_func_call7_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_call7_proxy_label0:
+    jmp __kefir_func_call7_proxy_label1
+__kefir_func_call7_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movl (%rax), %edi
-    xor %ecx, %ecx
+    mov %rdx, %rcx
+    xor %edx, %ecx
     movw 4(%rax), %cx
     shl $32, %rcx
     or %rcx, %rdi
     movb 6(%rax), %cl
-    shl $48, %rcx
-    or %rcx, %rdi
+    mov %rcx, %rax
+    shl $48, %rax
+    or %rax, %rdi
     call call7@PLT
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_call7_proxy_label1:
 __kefir_text_func_call7_proxy_end:
 
 call8_proxy:
 __kefir_text_func_call8_proxy_begin:
+__kefir_func_call8_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_call8_proxy_label0:
+    jmp __kefir_func_call8_proxy_label1
+__kefir_func_call8_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movq (%rax), %rdi
@@ -170,7 +185,6 @@ __kefir_func_call8_proxy_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_call8_proxy_label1:
 __kefir_text_func_call8_proxy_end:
 
 __kefir_text_section_end:

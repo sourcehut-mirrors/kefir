@@ -12,9 +12,11 @@ test:
 __kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_test_label1
+__kefir_func_test_label1:
     movsx %edi, %rax
     mov %rax, %r10
-    sar $63, %rax
+    sar $63, %r10
     sub $32, %rsp
     mov $7, %rdi
     xor %esi, %esi
@@ -24,8 +26,8 @@ __kefir_text_func_test_begin:
     xor %r9d, %r9d
     movl $0, (%rsp)
     movl $0, 8(%rsp)
-    movq %r10, 16(%rsp)
-    movq %rax, 24(%rsp)
+    movq %rax, 16(%rsp)
+    movq %r10, 24(%rsp)
     xor %eax, %eax
     call testx
     add $32, %rsp
@@ -37,9 +39,11 @@ test2:
 __kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_test2_label1
+__kefir_func_test2_label1:
     movsx %edi, %rax
     mov %rax, %r10
-    sar $63, %rax
+    sar $63, %r10
     sub $32, %rsp
     mov $6, %rdi
     xor %esi, %esi
@@ -49,8 +53,8 @@ __kefir_text_func_test2_begin:
     xor %r9d, %r9d
     movl $0, (%rsp)
     movl $0, 8(%rsp)
-    movq %r10, 16(%rsp)
-    movq %rax, 24(%rsp)
+    movq %rax, 16(%rsp)
+    movq %r10, 24(%rsp)
     xor %eax, %eax
     call testx
     add $32, %rsp
@@ -64,7 +68,9 @@ __kefir_text_func_testx_begin:
     mov %rsp, %rbp
     sub $208, %rsp
     test %al, %al
-    je __kefir_func_testx_label12
+    je __kefir_func_testx_label2
+    jmp __kefir_func_testx_label1
+__kefir_func_testx_label1:
     movdqu %xmm0, -160(%rbp)
     movdqu %xmm1, -144(%rbp)
     movdqu %xmm2, -128(%rbp)
@@ -73,13 +79,16 @@ __kefir_text_func_testx_begin:
     movdqu %xmm5, -80(%rbp)
     movdqu %xmm6, -64(%rbp)
     movdqu %xmm7, -48(%rbp)
-__kefir_func_testx_label12:
+    jmp __kefir_func_testx_label2
+__kefir_func_testx_label2:
     mov %rdi, -208(%rbp)
     mov %rsi, -200(%rbp)
     mov %rdx, -192(%rbp)
     mov %rcx, -184(%rbp)
     mov %r8, -176(%rbp)
     mov %r9, -168(%rbp)
+    jmp __kefir_func_testx_label3
+__kefir_func_testx_label3:
     movl $8, -32(%rbp)
     movl $48, -28(%rbp)
     lea 16(%rbp), %rax
@@ -87,55 +96,65 @@ __kefir_func_testx_label12:
     lea -208(%rbp), %rax
     movq %rax, -16(%rbp)
     mov %rdi, %rax
-__kefir_func_testx_label2:
+    jmp __kefir_func_testx_label4
+__kefir_func_testx_label4:
     mov %rax, %rdi
     add $-1, %edi
     test %eax, %eax
-    jnz __kefir_func_testx_label6
-    movl -32(%rbp), %ecx
-    add $16, %rcx
-    cmp $48, %rcx
-    ja __kefir_func_testx_label9
-    movq -16(%rbp), %rcx
-    movl -32(%rbp), %esi
-    add %rsi, %rcx
-    movq (%rcx), %rsi
-    mov %rsi, %rax
-    movq 8(%rcx), %rsi
-    mov %rsi, %rdx
-    addl $16, -32(%rbp)
-    jmp __kefir_func_testx_label8
-__kefir_func_testx_label9:
-    movq -24(%rbp), %rcx
-    add $15, %rcx
-    and $-16, %rcx
-    lea 16(%rcx), %rsi
-    movq %rsi, -24(%rbp)
-    movq (%rcx), %rsi
-    mov %rsi, %rax
-    movq 8(%rcx), %rsi
-    mov %rsi, %rdx
-__kefir_func_testx_label8:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jnz __kefir_func_testx_label11
+    jmp __kefir_func_testx_label6
 __kefir_func_testx_label6:
     movl -32(%rbp), %eax
+    add $16, %rax
+    cmp $48, %rax
+    ja __kefir_func_testx_label8
+    jmp __kefir_func_testx_label7
+__kefir_func_testx_label11:
+    movl -32(%rbp), %eax
     cmp $48, %eax
-    jae __kefir_func_testx_label10
+    jae __kefir_func_testx_label13
+    jmp __kefir_func_testx_label12
+__kefir_func_testx_label7:
+    movq -16(%rbp), %rax
+    movl -32(%rbp), %ecx
+    mov %rax, %rdx
+    add %rcx, %rdx
+    movq (%rdx), %rax
+    mov %rax, %rax
+    movq 8(%rdx), %rcx
+    mov %rcx, %rdx
+    addl $16, -32(%rbp)
+    jmp __kefir_func_testx_label9
+__kefir_func_testx_label8:
+    movq -24(%rbp), %rax
+    add $15, %rax
+    mov %rax, %rcx
+    and $-16, %rcx
+    lea 16(%rcx), %rax
+    movq %rax, -24(%rbp)
+    movq (%rcx), %rax
+    mov %rax, %rax
+    movq 8(%rcx), %rcx
+    mov %rcx, %rdx
+    jmp __kefir_func_testx_label9
+__kefir_func_testx_label12:
     lea 8(%rax), %rax
     movl %eax, -32(%rbp)
     add -16(%rbp), %rax
     mov -8(%rax), %rax
-    jmp __kefir_func_testx_label11
-__kefir_func_testx_label10:
+    mov %rdi, %rax
+    jmp __kefir_func_testx_label4
+__kefir_func_testx_label13:
     mov -24(%rbp), %rax
     lea 8(%rax), %rax
     mov %rax, -24(%rbp)
     mov -8(%rax), %rax
-__kefir_func_testx_label11:
     mov %rdi, %rax
-    jmp __kefir_func_testx_label2
+    jmp __kefir_func_testx_label4
+__kefir_func_testx_label9:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 __kefir_text_func_testx_end:
 
 __kefir_text_section_end:

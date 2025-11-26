@@ -14,10 +14,13 @@ __kefir_text_func_test32_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
+    jmp __kefir_func_test32_label1
+__kefir_func_test32_label1:
     movaps %xmm0, %xmm1
-    shufps $1, %xmm1, %xmm1
+    movaps %xmm1, %xmm2
+    shufps $1, %xmm1, %xmm2
     movd %xmm0, %eax
-    movd %xmm1, %ecx
+    movd %xmm2, %ecx
     shl $32, %rcx
     or %rax, %rcx
     movq %rcx, %xmm1
@@ -39,6 +42,8 @@ __kefir_text_func_test64_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
+    jmp __kefir_func_test64_label1
+__kefir_func_test64_label1:
     movaps %xmm1, %xmm2
     movaps %xmm0, %xmm1
     shufpd $0, %xmm2, %xmm1

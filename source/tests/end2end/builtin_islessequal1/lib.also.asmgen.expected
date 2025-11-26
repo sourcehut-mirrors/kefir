@@ -18,16 +18,19 @@
 __kefir_text_section_begin:
 is_lessequal_f32:
 __kefir_text_func_is_lessequal_f32_begin:
+__kefir_func_is_lessequal_f32_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-__kefir_func_is_lessequal_f32_label0:
+    jmp __kefir_func_is_lessequal_f32_label1
+__kefir_func_is_lessequal_f32_label1:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %ecx
     movl -12(%rbp), %edx
-    xor %eax, %eax
+    mov %rsi, %rax
+    xor %esi, %eax
     movd %edx, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
@@ -37,21 +40,23 @@ __kefir_func_is_lessequal_f32_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_is_lessequal_f32_label1:
 __kefir_text_func_is_lessequal_f32_end:
 
 is_lessequal_f64:
 __kefir_text_func_is_lessequal_f64_begin:
+__kefir_func_is_lessequal_f64_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-__kefir_func_is_lessequal_f64_label0:
+    jmp __kefir_func_is_lessequal_f64_label1
+__kefir_func_is_lessequal_f64_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rcx
     movq -16(%rbp), %rdx
-    xor %eax, %eax
+    mov %rsi, %rax
+    xor %esi, %eax
     movq %rdx, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -61,16 +66,17 @@ __kefir_func_is_lessequal_f64_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_is_lessequal_f64_label1:
 __kefir_text_func_is_lessequal_f64_end:
 
 is_lessequal_f80:
 __kefir_text_func_is_lessequal_f80_begin:
+__kefir_func_is_lessequal_f80_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-__kefir_func_is_lessequal_f80_label0:
+    jmp __kefir_func_is_lessequal_f80_label1
+__kefir_func_is_lessequal_f80_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
@@ -82,7 +88,8 @@ __kefir_func_is_lessequal_f80_label0:
     fldt -32(%rbp)
     fxch %st(1)
     fxch %st(1)
-    xor %eax, %eax
+    mov %rcx, %rax
+    xor %ecx, %eax
     fucomi %st(1)
     setnb %al
     and $255, %rax
@@ -92,7 +99,6 @@ __kefir_func_is_lessequal_f80_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_is_lessequal_f80_label1:
 __kefir_text_func_is_lessequal_f80_end:
 
 __kefir_text_section_end:

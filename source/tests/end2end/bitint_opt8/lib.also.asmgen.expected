@@ -14,24 +14,32 @@
 __kefir_text_section_begin:
 get1:
 __kefir_text_func_get1_begin:
+    jmp __kefir_func_get1_label1
+__kefir_func_get1_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_get1_end:
 
 get2:
 __kefir_text_func_get2_begin:
+    jmp __kefir_func_get2_label1
+__kefir_func_get2_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_get2_end:
 
 get3:
 __kefir_text_func_get3_begin:
+    jmp __kefir_func_get3_label1
+__kefir_func_get3_label1:
     mov $1, %rax
     ret
 __kefir_text_func_get3_end:
 
 get4:
 __kefir_text_func_get4_begin:
+    jmp __kefir_func_get4_label1
+__kefir_func_get4_label1:
     mov $1, %rax
     ret
 __kefir_text_func_get4_end:

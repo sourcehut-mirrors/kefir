@@ -18,10 +18,12 @@
 __kefir_text_section_begin:
 xor1:
 __kefir_text_func_xor1_begin:
+__kefir_func_xor1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_xor1_label0:
+    jmp __kefir_func_xor1_label1
+__kefir_func_xor1_label1:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
@@ -34,15 +36,16 @@ __kefir_func_xor1_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_xor1_label1:
 __kefir_text_func_xor1_end:
 
 xor2:
 __kefir_text_func_xor2_begin:
+__kefir_func_xor2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_xor2_label0:
+    jmp __kefir_func_xor2_label1
+__kefir_func_xor2_label1:
     movw %si, -2(%rbp)
     movw %di, -4(%rbp)
     movw -4(%rbp), %ax
@@ -55,15 +58,16 @@ __kefir_func_xor2_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_xor2_label1:
 __kefir_text_func_xor2_end:
 
 xor3:
 __kefir_text_func_xor3_begin:
+__kefir_func_xor3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_xor3_label0:
+    jmp __kefir_func_xor3_label1
+__kefir_func_xor3_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -76,15 +80,16 @@ __kefir_func_xor3_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_xor3_label1:
 __kefir_text_func_xor3_end:
 
 xor4:
 __kefir_text_func_xor4_begin:
+__kefir_func_xor4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_xor4_label0:
+    jmp __kefir_func_xor4_label1
+__kefir_func_xor4_label1:
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
@@ -97,15 +102,16 @@ __kefir_func_xor4_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_xor4_label1:
 __kefir_text_func_xor4_end:
 
 xor5:
 __kefir_text_func_xor5_begin:
+__kefir_func_xor5_label0:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
-__kefir_func_xor5_label0:
+    sub $96, %rsp
+    jmp __kefir_func_xor5_label1
+__kefir_func_xor5_label1:
     movq %rdx, -64(%rbp)
     movq %rcx, -56(%rbp)
     movq %rdi, -48(%rbp)
@@ -115,33 +121,34 @@ __kefir_func_xor5_label0:
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
-    movdqu -112(%rbp), %xmm0
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
-    leaq -80(%rbp), %rax
-    mov %rax, %rdi
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
     leaq -96(%rbp), %rax
+    mov %rax, %rdi
+    leaq -80(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_xor
-    movq -80(%rbp), %rax
-    movq -72(%rbp), %rdx
+    movq -96(%rbp), %rax
+    movq -88(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_xor5_label1:
 __kefir_text_func_xor5_end:
 
 xor6:
 __kefir_text_func_xor6_begin:
+__kefir_func_xor6_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $200, %rsp
     mov %rdi, %rbx
-__kefir_func_xor6_label0:
+    jmp __kefir_func_xor6_label1
+__kefir_func_xor6_label1:
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
     movq (%rax), %rdx
@@ -152,8 +159,8 @@ __kefir_func_xor6_label0:
     movq %rdx, -32(%rbp)
     movq 24(%rax), %rdx
     movq %rdx, -24(%rbp)
-    movq 32(%rax), %rdx
-    movq %rdx, -16(%rbp)
+    movq 32(%rax), %rax
+    movq %rax, -16(%rbp)
     movq (%rcx), %rax
     movq %rax, -88(%rbp)
     movq 8(%rcx), %rax
@@ -215,7 +222,6 @@ __kefir_func_xor6_label0:
     pop %rbx
     pop %rbp
     ret
-__kefir_func_xor6_label1:
 __kefir_text_func_xor6_end:
 
 __kefir_text_section_end:
@@ -227,10 +233,12 @@ __kefir_text_section_end:
 .section .text
 __kefir_bigint_xor:
 __kefir_runtime_text_func___kefir_bigint_xor_begin:
+__kefir_runtime_func___kefir_bigint_xor_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-__kefir_runtime_func___kefir_bigint_xor_label0:
+    jmp __kefir_runtime_func___kefir_bigint_xor_label1
+__kefir_runtime_func___kefir_bigint_xor_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -32(%rbp)
     movq %rdi, -40(%rbp)
@@ -245,7 +253,8 @@ __kefir_runtime_func___kefir_bigint_xor_label0:
     sub %rcx, %rax
     mov $8, %rdx
     movsx %edx, %rcx
-    mov $1, %rsi
+    mov $1, %rdx
+    mov %rdx, %rsi
     imul %rcx, %rsi
     mov $0, %rdx
     div %rsi
@@ -253,37 +262,41 @@ __kefir_runtime_func___kefir_bigint_xor_label0:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -16(%rbp)
-__kefir_runtime_func___kefir_bigint_xor_label1:
+    jmp __kefir_runtime_func___kefir_bigint_xor_label2
 __kefir_runtime_func___kefir_bigint_xor_label2:
     movq -16(%rbp), %rax
     movq -24(%rbp), %rcx
     mov $0, %rdx
     cmp %rcx, %rax
-    setb %dl
-    test %edx, %edx
+    mov %rdx, %rax
+    setb %al
+    test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_xor_label6
-__kefir_runtime_func___kefir_bigint_xor_label3:
+    jz __kefir_runtime_func___kefir_bigint_xor_label9
+    jmp __kefir_runtime_func___kefir_bigint_xor_label4
+__kefir_runtime_func___kefir_bigint_xor_label9:
+    jmp __kefir_runtime_func___kefir_bigint_xor_label6
 __kefir_runtime_func___kefir_bigint_xor_label4:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_xor_label5:
 __kefir_runtime_func___kefir_bigint_xor_label6:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
-    movb (%rax), %al
+    movb (%rax), %cl
+    mov %rcx, %rax
     and $255, %rax
     movl %eax, -8(%rbp)
     movq -32(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
-    movb (%rax), %al
+    movb (%rax), %cl
+    mov %rcx, %rax
     and $255, %rax
     movl %eax, -4(%rbp)
     movl -8(%rbp), %eax
@@ -298,7 +311,6 @@ __kefir_runtime_func___kefir_bigint_xor_label6:
     add $1, %rax
     movq %rax, -16(%rbp)
     jmp __kefir_runtime_func___kefir_bigint_xor_label2
-__kefir_runtime_func___kefir_bigint_xor_label7:
 __kefir_runtime_text_func___kefir_bigint_xor_end:
 
 

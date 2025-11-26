@@ -17,6 +17,8 @@ __kefir_text_func_div1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    jmp __kefir_func_div1_label1
+__kefir_func_div1_label1:
     movl $67108864, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -33,6 +35,8 @@ __kefir_text_func_div2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    jmp __kefir_func_div2_label1
+__kefir_func_div2_label1:
     movl $68157440, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -49,6 +53,8 @@ __kefir_text_func_div3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    jmp __kefir_func_div3_label1
+__kefir_func_div3_label1:
     movl $4227858432, -16(%rbp)
     movl $4294967295, -12(%rbp)
     movl $4294967295, -8(%rbp)
@@ -65,6 +71,8 @@ __kefir_text_func_div4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    jmp __kefir_func_div4_label1
+__kefir_func_div4_label1:
     movl $66060287, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)

@@ -10,43 +10,56 @@ sum32:
 __kefir_text_func_sum32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $208, %rsp
+    sub $224, %rsp
     stmxcsr -8(%rbp)
-    movd 40(%rbp), %xmm8
-    movd %xmm8, -208(%rbp)
+    jmp __kefir_func_sum32_label1
+__kefir_func_sum32_label1:
+    movd 40(%rbp), %xmm11
     movd 44(%rbp), %xmm8
-    movd %xmm8, -96(%rbp)
-    movd 32(%rbp), %xmm8
-    movd 36(%rbp), %xmm9
-    movd %xmm9, -192(%rbp)
-    movd 24(%rbp), %xmm9
-    movd 28(%rbp), %xmm10
-    movd %xmm10, -176(%rbp)
-    movd 16(%rbp), %xmm10
-    movd 20(%rbp), %xmm11
-    movd %xmm11, -160(%rbp)
-    movaps %xmm7, -144(%rbp)
-    movdqu -144(%rbp), %xmm11
-    shufps $1, -144(%rbp), %xmm11
-    movdqu %xmm11, -144(%rbp)
-    movaps %xmm6, -128(%rbp)
-    movdqu -128(%rbp), %xmm11
-    shufps $1, -128(%rbp), %xmm11
-    movdqu %xmm11, -128(%rbp)
-    movaps %xmm5, -112(%rbp)
-    movdqu -112(%rbp), %xmm11
-    shufps $1, -112(%rbp), %xmm11
-    movdqu %xmm11, -112(%rbp)
-    movaps %xmm4, %xmm11
-    shufps $1, %xmm11, %xmm11
-    movaps %xmm3, %xmm12
-    shufps $1, %xmm12, %xmm12
-    movaps %xmm2, %xmm13
-    shufps $1, %xmm13, %xmm13
-    movaps %xmm1, %xmm14
-    shufps $1, %xmm14, %xmm14
-    movaps %xmm0, %xmm15
-    shufps $1, %xmm15, %xmm15
+    movd %xmm8, -160(%rbp)
+    movd 32(%rbp), %xmm12
+    movd 36(%rbp), %xmm8
+    movd %xmm8, -144(%rbp)
+    movd 24(%rbp), %xmm13
+    movd 28(%rbp), %xmm8
+    movd %xmm8, -128(%rbp)
+    movd 16(%rbp), %xmm14
+    movd 20(%rbp), %xmm8
+    movd %xmm8, -112(%rbp)
+    movaps %xmm7, %xmm8
+    movdqu %xmm8, -96(%rbp)
+    movdqu -96(%rbp), %xmm9
+    shufps $1, %xmm8, %xmm9
+    movdqu %xmm9, -96(%rbp)
+    movaps %xmm6, %xmm8
+    movaps %xmm8, %xmm15
+    shufps $1, %xmm8, %xmm15
+    movaps %xmm5, %xmm8
+    movdqu %xmm8, -224(%rbp)
+    movdqu -224(%rbp), %xmm9
+    shufps $1, %xmm8, %xmm9
+    movdqu %xmm9, -224(%rbp)
+    movaps %xmm4, %xmm8
+    movdqu %xmm8, -208(%rbp)
+    movdqu -208(%rbp), %xmm9
+    shufps $1, %xmm8, %xmm9
+    movdqu %xmm9, -208(%rbp)
+    movaps %xmm3, %xmm8
+    movdqu %xmm8, -192(%rbp)
+    movdqu -192(%rbp), %xmm9
+    shufps $1, %xmm8, %xmm9
+    movdqu %xmm9, -192(%rbp)
+    movaps %xmm2, %xmm8
+    movdqu %xmm8, -176(%rbp)
+    movdqu -176(%rbp), %xmm9
+    shufps $1, %xmm8, %xmm9
+    movdqu %xmm9, -176(%rbp)
+    movaps %xmm1, %xmm8
+    movaps %xmm8, %xmm9
+    shufps $1, %xmm8, %xmm9
+    movaps %xmm0, %xmm8
+    movaps %xmm8, %xmm10
+    shufps $1, %xmm8, %xmm10
     addss %xmm1, %xmm0
     addss %xmm2, %xmm0
     addss %xmm3, %xmm0
@@ -54,37 +67,22 @@ __kefir_text_func_sum32_begin:
     addss %xmm5, %xmm0
     addss %xmm6, %xmm0
     addss %xmm7, %xmm0
+    addss %xmm14, %xmm0
+    addss %xmm13, %xmm0
+    addss %xmm12, %xmm0
+    addss %xmm11, %xmm0
     movaps %xmm10, %xmm1
-    addss %xmm1, %xmm0
-    movaps %xmm9, %xmm1
-    addss %xmm1, %xmm0
-    movaps %xmm8, %xmm1
-    addss %xmm1, %xmm0
-    movdqu -208(%rbp), %xmm1
-    addss %xmm1, %xmm0
-    movaps %xmm15, %xmm1
-    movaps %xmm14, %xmm2
-    addss %xmm2, %xmm1
-    movaps %xmm13, %xmm2
-    addss %xmm2, %xmm1
-    movaps %xmm12, %xmm2
-    addss %xmm2, %xmm1
-    movaps %xmm11, %xmm2
-    addss %xmm2, %xmm1
-    movdqu -112(%rbp), %xmm2
-    addss %xmm2, %xmm1
-    movdqu -128(%rbp), %xmm2
-    addss %xmm2, %xmm1
-    movdqu -144(%rbp), %xmm2
-    addss %xmm2, %xmm1
-    movdqu -160(%rbp), %xmm2
-    addss %xmm2, %xmm1
-    movdqu -176(%rbp), %xmm2
-    addss %xmm2, %xmm1
-    movdqu -192(%rbp), %xmm2
-    addss %xmm2, %xmm1
-    movdqu -96(%rbp), %xmm2
-    addss %xmm2, %xmm1
+    addss %xmm9, %xmm1
+    addss -176(%rbp), %xmm1
+    addss -192(%rbp), %xmm1
+    addss -208(%rbp), %xmm1
+    addss -224(%rbp), %xmm1
+    addss %xmm15, %xmm1
+    addss -96(%rbp), %xmm1
+    addss -112(%rbp), %xmm1
+    addss -128(%rbp), %xmm1
+    addss -144(%rbp), %xmm1
+    addss -160(%rbp), %xmm1
     insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp

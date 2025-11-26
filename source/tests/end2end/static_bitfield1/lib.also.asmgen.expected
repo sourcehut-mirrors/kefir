@@ -10,17 +10,18 @@
 __kefir_text_section_begin:
 getfield40:
 __kefir_text_func_getfield40_begin:
+__kefir_func_getfield40_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_getfield40_label0:
-    movq struct1@GOTPCREL(%rip), %rax
-    movb 8(%rax), %al
+    jmp __kefir_func_getfield40_label1
+__kefir_func_getfield40_label1:
+    movq struct1@GOTPCREL(%rip), %rcx
+    movb 8(%rcx), %al
     and $255, %rax
     shl $63, %rax
     shr $63, %rax
     pop %rbp
     ret
-__kefir_func_getfield40_label1:
 __kefir_text_func_getfield40_end:
 
 __kefir_text_section_end:

@@ -44,12 +44,16 @@ __kefir_text_func_c32_to_bool_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
+    jmp __kefir_func_c32_to_bool_label1
+__kefir_func_c32_to_bool_label1:
     movaps %xmm0, %xmm1
-    shufps $1, %xmm1, %xmm1
-    pxor %xmm2, %xmm2
-    cmpneqps %xmm2, %xmm0
-    cmpneqps %xmm2, %xmm1
-    orps %xmm1, %xmm0
+    movaps %xmm1, %xmm2
+    shufps $1, %xmm1, %xmm2
+    movaps %xmm3, %xmm1
+    pxor %xmm3, %xmm1
+    cmpneqps %xmm1, %xmm0
+    cmpneqps %xmm1, %xmm2
+    orps %xmm2, %xmm0
     movd %xmm0, %eax
     and $1, %rax
     ldmxcsr -8(%rbp)
@@ -64,7 +68,10 @@ __kefir_text_func_c64_to_bool_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    pxor %xmm2, %xmm2
+    jmp __kefir_func_c64_to_bool_label1
+__kefir_func_c64_to_bool_label1:
+    movaps %xmm3, %xmm2
+    pxor %xmm3, %xmm2
     cmpneqpd %xmm2, %xmm0
     cmpneqpd %xmm2, %xmm1
     orpd %xmm1, %xmm0
@@ -82,23 +89,26 @@ __kefir_text_func_c80_to_bool_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_c80_to_bool_label1
+__kefir_func_c80_to_bool_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    setp %cl
-    setne %dl
-    or %cl, %dl
+    setp %al
+    setne %cl
+    or %al, %cl
     fxch %st(1)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    setp %cl
+    mov %rax, %rdx
+    setp %dl
     setne %al
-    or %cl, %al
     or %dl, %al
+    or %cl, %al
     fstp %st(0)
     fstp %st(0)
     fldcw -8(%rbp)
@@ -113,12 +123,16 @@ __kefir_text_func_c32_to_bool2_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
+    jmp __kefir_func_c32_to_bool2_label1
+__kefir_func_c32_to_bool2_label1:
     movaps %xmm0, %xmm1
-    shufps $1, %xmm1, %xmm1
-    pxor %xmm2, %xmm2
-    cmpneqps %xmm2, %xmm0
-    cmpneqps %xmm2, %xmm1
-    orps %xmm1, %xmm0
+    movaps %xmm1, %xmm2
+    shufps $1, %xmm1, %xmm2
+    movaps %xmm3, %xmm1
+    pxor %xmm3, %xmm1
+    cmpneqps %xmm1, %xmm0
+    cmpneqps %xmm1, %xmm2
+    orps %xmm2, %xmm0
     movd %xmm0, %eax
     and $1, %rax
     ldmxcsr -8(%rbp)
@@ -133,7 +147,10 @@ __kefir_text_func_c64_to_bool2_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    pxor %xmm2, %xmm2
+    jmp __kefir_func_c64_to_bool2_label1
+__kefir_func_c64_to_bool2_label1:
+    movaps %xmm3, %xmm2
+    pxor %xmm3, %xmm2
     cmpneqpd %xmm2, %xmm0
     cmpneqpd %xmm2, %xmm1
     orpd %xmm1, %xmm0
@@ -151,7 +168,10 @@ __kefir_text_func_c64_to_bool3_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    pxor %xmm2, %xmm2
+    jmp __kefir_func_c64_to_bool3_label1
+__kefir_func_c64_to_bool3_label1:
+    movaps %xmm3, %xmm2
+    pxor %xmm3, %xmm2
     cmpneqpd %xmm2, %xmm0
     cmpneqpd %xmm2, %xmm1
     orpd %xmm1, %xmm0
@@ -169,23 +189,26 @@ __kefir_text_func_c80_to_bool2_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_c80_to_bool2_label1
+__kefir_func_c80_to_bool2_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    setp %cl
-    setne %dl
-    or %cl, %dl
+    setp %al
+    setne %cl
+    or %al, %cl
     fxch %st(1)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    setp %cl
+    mov %rax, %rdx
+    setp %dl
     setne %al
-    or %cl, %al
     or %dl, %al
+    or %cl, %al
     fstp %st(0)
     fstp %st(0)
     fldcw -8(%rbp)
@@ -200,23 +223,26 @@ __kefir_text_func_c80_to_bool3_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_c80_to_bool3_label1
+__kefir_func_c80_to_bool3_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    setp %cl
-    setne %dl
-    or %cl, %dl
+    setp %al
+    setne %cl
+    or %al, %cl
     fxch %st(1)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    setp %cl
+    mov %rax, %rdx
+    setp %dl
     setne %al
-    or %cl, %al
     or %dl, %al
+    or %cl, %al
     fstp %st(0)
     fstp %st(0)
     fldcw -8(%rbp)

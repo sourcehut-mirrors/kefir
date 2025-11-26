@@ -30,6 +30,8 @@
 __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
+    jmp __kefir_func_test1_label1
+__kefir_func_test1_label1:
     add %edx, %esi
     mov %rsi, %rax
     ret
@@ -37,6 +39,8 @@ __kefir_text_func_test1_end:
 
 test2:
 __kefir_text_func_test2_begin:
+    jmp __kefir_func_test2_label1
+__kefir_func_test2_label1:
     add %edx, %esi
     mov %rsi, %rax
     ret
@@ -44,6 +48,8 @@ __kefir_text_func_test2_end:
 
 test3:
 __kefir_text_func_test3_begin:
+    jmp __kefir_func_test3_label1
+__kefir_func_test3_label1:
     sub %edx, %esi
     mov %rsi, %rax
     ret
@@ -51,6 +57,8 @@ __kefir_text_func_test3_end:
 
 test4:
 __kefir_text_func_test4_begin:
+    jmp __kefir_func_test4_label1
+__kefir_func_test4_label1:
     imul %edx, %esi
     mov %rsi, %rax
     ret
@@ -58,6 +66,8 @@ __kefir_text_func_test4_end:
 
 test5:
 __kefir_text_func_test5_begin:
+    jmp __kefir_func_test5_label1
+__kefir_func_test5_label1:
     imul %edx, %esi
     mov %rsi, %rax
     ret
@@ -65,23 +75,30 @@ __kefir_text_func_test5_end:
 
 test6:
 __kefir_text_func_test6_begin:
+    jmp __kefir_func_test6_label1
+__kefir_func_test6_label1:
     mov %rdx, %rcx
     test %edi, %edi
     jnz __kefir_func_test6_label6
+    jmp __kefir_func_test6_label3
+__kefir_func_test6_label3:
     mov %rsi, %rax
     cdq
     idiv %ecx
-__kefir_func_test6_label4:
-    ret
+    jmp __kefir_func_test6_label4
 __kefir_func_test6_label6:
     mov %rsi, %rax
     cdq
     idiv %ecx
     jmp __kefir_func_test6_label4
+__kefir_func_test6_label4:
+    ret
 __kefir_text_func_test6_end:
 
 test7:
 __kefir_text_func_test7_begin:
+    jmp __kefir_func_test7_label1
+__kefir_func_test7_label1:
     mov %rdx, %rcx
     shl %cl, %esi
     mov %rsi, %rax
@@ -90,6 +107,8 @@ __kefir_text_func_test7_end:
 
 test8:
 __kefir_text_func_test8_begin:
+    jmp __kefir_func_test8_label1
+__kefir_func_test8_label1:
     mov %rdx, %rcx
     shl %cl, %esi
     mov %rsi, %rax
@@ -98,6 +117,8 @@ __kefir_text_func_test8_end:
 
 test9:
 __kefir_text_func_test9_begin:
+    jmp __kefir_func_test9_label1
+__kefir_func_test9_label1:
     mov %rdx, %rcx
     sar %cl, %esi
     mov %rsi, %rax
@@ -106,6 +127,8 @@ __kefir_text_func_test9_end:
 
 test10:
 __kefir_text_func_test10_begin:
+    jmp __kefir_func_test10_label1
+__kefir_func_test10_label1:
     mov %rdx, %rcx
     sar %cl, %esi
     mov %rsi, %rax
@@ -114,6 +137,8 @@ __kefir_text_func_test10_end:
 
 test11:
 __kefir_text_func_test11_begin:
+    jmp __kefir_func_test11_label1
+__kefir_func_test11_label1:
     mov %rdx, %rcx
     shr %cl, %esi
     mov %rsi, %rax
@@ -122,6 +147,8 @@ __kefir_text_func_test11_end:
 
 test12:
 __kefir_text_func_test12_begin:
+    jmp __kefir_func_test12_label1
+__kefir_func_test12_label1:
     mov %rdx, %rcx
     shr %cl, %esi
     mov %rsi, %rax

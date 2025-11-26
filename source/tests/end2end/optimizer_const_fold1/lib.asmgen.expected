@@ -102,530 +102,578 @@
 __kefir_text_section_begin:
 int_or:
 __kefir_text_func_int_or_begin:
+__kefir_func_int_or_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_or_label0:
+    jmp __kefir_func_int_or_label1
+__kefir_func_int_or_label1:
     movabs $3741317886, %rax
     pop %rbp
     ret
-__kefir_func_int_or_label1:
 __kefir_text_func_int_or_end:
 
 int_add:
 __kefir_text_func_int_add_begin:
+__kefir_func_int_add_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_add_label0:
+    jmp __kefir_func_int_add_label1
+__kefir_func_int_add_label1:
     mov $14, %rax
     pop %rbp
     ret
-__kefir_func_int_add_label1:
 __kefir_text_func_int_add_end:
 
 int_and:
 __kefir_text_func_int_and_begin:
+__kefir_func_int_and_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_and_label0:
+    jmp __kefir_func_int_and_label1
+__kefir_func_int_and_label1:
     movabs $3400302782, %rax
     pop %rbp
     ret
-__kefir_func_int_and_label1:
 __kefir_text_func_int_and_end:
 
 int_div:
 __kefir_text_func_int_div_begin:
+__kefir_func_int_div_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_div_label0:
+    jmp __kefir_func_int_div_label1
+__kefir_func_int_div_label1:
     mov $-50, %rax
     pop %rbp
     ret
-__kefir_func_int_div_label1:
 __kefir_text_func_int_div_end:
 
 int_mod:
 __kefir_text_func_int_mod_begin:
+__kefir_func_int_mod_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_mod_label0:
+    jmp __kefir_func_int_mod_label1
+__kefir_func_int_mod_label1:
     mov $19, %rax
     pop %rbp
     ret
-__kefir_func_int_mod_label1:
 __kefir_text_func_int_mod_end:
 
 int_mul:
 __kefir_text_func_int_mul_begin:
+__kefir_func_int_mul_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_mul_label0:
+    jmp __kefir_func_int_mul_label1
+__kefir_func_int_mul_label1:
     mov $3000, %rax
     pop %rbp
     ret
-__kefir_func_int_mul_label1:
 __kefir_text_func_int_mul_end:
 
 int_neg:
 __kefir_text_func_int_neg_begin:
+__kefir_func_int_neg_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_neg_label0:
+    jmp __kefir_func_int_neg_label1
+__kefir_func_int_neg_label1:
     mov $-1234, %rax
     pop %rbp
     ret
-__kefir_func_int_neg_label1:
 __kefir_text_func_int_neg_end:
 
 int_not:
 __kefir_text_func_int_not_begin:
+__kefir_func_int_not_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_not_label0:
+    jmp __kefir_func_int_not_label1
+__kefir_func_int_not_label1:
     mov $-1235, %rax
     pop %rbp
     ret
-__kefir_func_int_not_label1:
 __kefir_text_func_int_not_end:
 
 int_shl:
 __kefir_text_func_int_shl_begin:
+__kefir_func_int_shl_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_shl_label0:
+    jmp __kefir_func_int_shl_label1
+__kefir_func_int_shl_label1:
     mov $4096, %rax
     pop %rbp
     ret
-__kefir_func_int_shl_label1:
 __kefir_text_func_int_shl_end:
 
 int_shr:
 __kefir_text_func_int_shr_begin:
+__kefir_func_int_shr_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_shr_label0:
+    jmp __kefir_func_int_shr_label1
+__kefir_func_int_shr_label1:
     movabs $4611686018427387903, %rax
     pop %rbp
     ret
-__kefir_func_int_shr_label1:
 __kefir_text_func_int_shr_end:
 
 int_sub:
 __kefir_text_func_int_sub_begin:
+__kefir_func_int_sub_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_sub_label0:
+    jmp __kefir_func_int_sub_label1
+__kefir_func_int_sub_label1:
     movabs $4294967146, %rax
     pop %rbp
     ret
-__kefir_func_int_sub_label1:
 __kefir_text_func_int_sub_end:
 
 int_xor:
 __kefir_text_func_int_xor_begin:
+__kefir_func_int_xor_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_xor_label0:
+    jmp __kefir_func_int_xor_label1
+__kefir_func_int_xor_label1:
     mov $341015104, %rax
     pop %rbp
     ret
-__kefir_func_int_xor_label1:
 __kefir_text_func_int_xor_end:
 
 bool_not:
 __kefir_text_func_bool_not_begin:
+__kefir_func_bool_not_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_bool_not_label0:
+    jmp __kefir_func_bool_not_label1
+__kefir_func_bool_not_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_bool_not_label1:
 __kefir_text_func_bool_not_end:
 
 int_ashr:
 __kefir_text_func_int_ashr_begin:
+__kefir_func_int_ashr_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_ashr_label0:
+    jmp __kefir_func_int_ashr_label1
+__kefir_func_int_ashr_label1:
     mov $-1, %rax
     pop %rbp
     ret
-__kefir_func_int_ashr_label1:
 __kefir_text_func_int_ashr_end:
 
 int_div2:
 __kefir_text_func_int_div2_begin:
+__kefir_func_int_div2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_div2_label0:
+    jmp __kefir_func_int_div2_label1
+__kefir_func_int_div2_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_div2_label1:
 __kefir_text_func_int_div2_end:
 
 int_div3:
 __kefir_text_func_int_div3_begin:
+__kefir_func_int_div3_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_div3_label0:
+    jmp __kefir_func_int_div3_label1
+__kefir_func_int_div3_label1:
     mov $25, %rax
     pop %rbp
     ret
-__kefir_func_int_div3_label1:
 __kefir_text_func_int_div3_end:
 
 int_less:
 __kefir_text_func_int_less_begin:
+__kefir_func_int_less_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_less_label0:
+    jmp __kefir_func_int_less_label1
+__kefir_func_int_less_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_less_label1:
 __kefir_text_func_int_less_end:
 
 int_mod2:
 __kefir_text_func_int_mod2_begin:
+__kefir_func_int_mod2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_mod2_label0:
+    jmp __kefir_func_int_mod2_label1
+__kefir_func_int_mod2_label1:
     mov $-19, %rax
     pop %rbp
     ret
-__kefir_func_int_mod2_label1:
 __kefir_text_func_int_mod2_end:
 
 int_mod3:
 __kefir_text_func_int_mod3_begin:
+__kefir_func_int_mod3_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_mod3_label0:
+    jmp __kefir_func_int_mod3_label1
+__kefir_func_int_mod3_label1:
     mov $2147483647, %rax
     pop %rbp
     ret
-__kefir_func_int_mod3_label1:
 __kefir_text_func_int_mod3_end:
 
 int_sub2:
 __kefir_text_func_int_sub2_begin:
+__kefir_func_int_sub2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_sub2_label0:
+    jmp __kefir_func_int_sub2_label1
+__kefir_func_int_sub2_label1:
     mov $-1, %rax
     pop %rbp
     ret
-__kefir_func_int_sub2_label1:
 __kefir_text_func_int_sub2_end:
 
 bool_not2:
 __kefir_text_func_bool_not2_begin:
+__kefir_func_bool_not2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_bool_not2_label0:
+    jmp __kefir_func_bool_not2_label1
+__kefir_func_bool_not2_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_bool_not2_label1:
 __kefir_text_func_bool_not2_end:
 
 int_above:
 __kefir_text_func_int_above_begin:
+__kefir_func_int_above_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_above_label0:
+    jmp __kefir_func_int_above_label1
+__kefir_func_int_above_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_above_label1:
 __kefir_text_func_int_above_end:
 
 int_ashr2:
 __kefir_text_func_int_ashr2_begin:
+__kefir_func_int_ashr2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_ashr2_label0:
+    jmp __kefir_func_int_ashr2_label1
+__kefir_func_int_ashr2_label1:
     mov $-256, %rax
     pop %rbp
     ret
-__kefir_func_int_ashr2_label1:
 __kefir_text_func_int_ashr2_end:
 
 int_below:
 __kefir_text_func_int_below_begin:
+__kefir_func_int_below_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_below_label0:
+    jmp __kefir_func_int_below_label1
+__kefir_func_int_below_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_below_label1:
 __kefir_text_func_int_below_end:
 
 int_less2:
 __kefir_text_func_int_less2_begin:
+__kefir_func_int_less2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_less2_label0:
+    jmp __kefir_func_int_less2_label1
+__kefir_func_int_less2_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_less2_label1:
 __kefir_text_func_int_less2_end:
 
 truct1bit:
 __kefir_text_func_truct1bit_begin:
+__kefir_func_truct1bit_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_truct1bit_label0:
+    jmp __kefir_func_truct1bit_label1
+__kefir_func_truct1bit_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_truct1bit_label1:
 __kefir_text_func_truct1bit_end:
 
 int_above2:
 __kefir_text_func_int_above2_begin:
+__kefir_func_int_above2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_above2_label0:
+    jmp __kefir_func_int_above2_label1
+__kefir_func_int_above2_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_above2_label1:
 __kefir_text_func_int_above2_end:
 
 int_below2:
 __kefir_text_func_int_below2_begin:
+__kefir_func_int_below2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_below2_label0:
+    jmp __kefir_func_int_below2_label1
+__kefir_func_int_below2_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_below2_label1:
 __kefir_text_func_int_below2_end:
 
 int_equals:
 __kefir_text_func_int_equals_begin:
+__kefir_func_int_equals_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_equals_label0:
+    jmp __kefir_func_int_equals_label1
+__kefir_func_int_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_equals_label1:
 __kefir_text_func_int_equals_end:
 
 truct1bit2:
 __kefir_text_func_truct1bit2_begin:
+__kefir_func_truct1bit2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_truct1bit2_label0:
+    jmp __kefir_func_truct1bit2_label1
+__kefir_func_truct1bit2_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_truct1bit2_label1:
 __kefir_text_func_truct1bit2_end:
 
 int_equals2:
 __kefir_text_func_int_equals2_begin:
+__kefir_func_int_equals2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_equals2_label0:
+    jmp __kefir_func_int_equals2_label1
+__kefir_func_int_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_equals2_label1:
 __kefir_text_func_int_equals2_end:
 
 int_equals3:
 __kefir_text_func_int_equals3_begin:
+__kefir_func_int_equals3_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_equals3_label0:
+    jmp __kefir_func_int_equals3_label1
+__kefir_func_int_equals3_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_equals3_label1:
 __kefir_text_func_int_equals3_end:
 
 int_greater:
 __kefir_text_func_int_greater_begin:
+__kefir_func_int_greater_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_greater_label0:
+    jmp __kefir_func_int_greater_label1
+__kefir_func_int_greater_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_greater_label1:
 __kefir_text_func_int_greater_end:
 
 int_less_or_equals2:
 __kefir_text_func_int_less_or_equals2_begin:
+__kefir_func_int_less_or_equals2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_less_or_equals2_label0:
+    jmp __kefir_func_int_less_or_equals2_label1
+__kefir_func_int_less_or_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_less_or_equals2_label1:
 __kefir_text_func_int_less_or_equals2_end:
 
 int_greater_or_equals2:
 __kefir_text_func_int_greater_or_equals2_begin:
+__kefir_func_int_greater_or_equals2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_greater_or_equals2_label0:
+    jmp __kefir_func_int_greater_or_equals2_label1
+__kefir_func_int_greater_or_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_greater_or_equals2_label1:
 __kefir_text_func_int_greater_or_equals2_end:
 
 sign_extend16:
 __kefir_text_func_sign_extend16_begin:
+__kefir_func_sign_extend16_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_sign_extend16_label0:
+    jmp __kefir_func_sign_extend16_label1
+__kefir_func_sign_extend16_label1:
     mov $102398, %rax
     pop %rbp
     ret
-__kefir_func_sign_extend16_label1:
 __kefir_text_func_sign_extend16_end:
 
 sign_extend32:
 __kefir_text_func_sign_extend32_begin:
+__kefir_func_sign_extend32_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_sign_extend32_label0:
+    jmp __kefir_func_sign_extend32_label1
+__kefir_func_sign_extend32_label1:
     movabs $282162171478014, %rax
     pop %rbp
     ret
-__kefir_func_sign_extend32_label1:
 __kefir_text_func_sign_extend32_end:
 
 int_greater2:
 __kefir_text_func_int_greater2_begin:
+__kefir_func_int_greater2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_greater2_label0:
+    jmp __kefir_func_int_greater2_label1
+__kefir_func_int_greater2_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_greater2_label1:
 __kefir_text_func_int_greater2_end:
 
 sign_extend8:
 __kefir_text_func_sign_extend8_begin:
+__kefir_func_sign_extend8_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_sign_extend8_label0:
+    jmp __kefir_func_sign_extend8_label1
+__kefir_func_sign_extend8_label1:
     mov $384, %rax
     pop %rbp
     ret
-__kefir_func_sign_extend8_label1:
 __kefir_text_func_sign_extend8_end:
 
 zero_extend8:
 __kefir_text_func_zero_extend8_begin:
+__kefir_func_zero_extend8_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_zero_extend8_label0:
+    jmp __kefir_func_zero_extend8_label1
+__kefir_func_zero_extend8_label1:
     mov $384, %rax
     pop %rbp
     ret
-__kefir_func_zero_extend8_label1:
 __kefir_text_func_zero_extend8_end:
 
 int_below_or_equals:
 __kefir_text_func_int_below_or_equals_begin:
+__kefir_func_int_below_or_equals_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_below_or_equals_label0:
+    jmp __kefir_func_int_below_or_equals_label1
+__kefir_func_int_below_or_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_below_or_equals_label1:
 __kefir_text_func_int_below_or_equals_end:
 
 int_less_or_equals:
 __kefir_text_func_int_less_or_equals_begin:
+__kefir_func_int_less_or_equals_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_less_or_equals_label0:
+    jmp __kefir_func_int_less_or_equals_label1
+__kefir_func_int_less_or_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_less_or_equals_label1:
 __kefir_text_func_int_less_or_equals_end:
 
 int_greater_or_equals:
 __kefir_text_func_int_greater_or_equals_begin:
+__kefir_func_int_greater_or_equals_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_greater_or_equals_label0:
+    jmp __kefir_func_int_greater_or_equals_label1
+__kefir_func_int_greater_or_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_greater_or_equals_label1:
 __kefir_text_func_int_greater_or_equals_end:
 
 zero_extend16:
 __kefir_text_func_zero_extend16_begin:
+__kefir_func_zero_extend16_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_zero_extend16_label0:
+    jmp __kefir_func_zero_extend16_label1
+__kefir_func_zero_extend16_label1:
     mov $102398, %rax
     pop %rbp
     ret
-__kefir_func_zero_extend16_label1:
 __kefir_text_func_zero_extend16_end:
 
 zero_extend32:
 __kefir_text_func_zero_extend32_begin:
+__kefir_func_zero_extend32_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_zero_extend32_label0:
+    jmp __kefir_func_zero_extend32_label1
+__kefir_func_zero_extend32_label1:
     movabs $282162171478014, %rax
     pop %rbp
     ret
-__kefir_func_zero_extend32_label1:
 __kefir_text_func_zero_extend32_end:
 
 int_above_or_equals:
 __kefir_text_func_int_above_or_equals_begin:
+__kefir_func_int_above_or_equals_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_above_or_equals_label0:
+    jmp __kefir_func_int_above_or_equals_label1
+__kefir_func_int_above_or_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
-__kefir_func_int_above_or_equals_label1:
 __kefir_text_func_int_above_or_equals_end:
 
 int_below_or_equals2:
 __kefir_text_func_int_below_or_equals2_begin:
+__kefir_func_int_below_or_equals2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_below_or_equals2_label0:
+    jmp __kefir_func_int_below_or_equals2_label1
+__kefir_func_int_below_or_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_below_or_equals2_label1:
 __kefir_text_func_int_below_or_equals2_end:
 
 int_above_or_equals2:
 __kefir_text_func_int_above_or_equals2_begin:
+__kefir_func_int_above_or_equals2_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_above_or_equals2_label0:
+    jmp __kefir_func_int_above_or_equals2_label1
+__kefir_func_int_above_or_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret
-__kefir_func_int_above_or_equals2_label1:
 __kefir_text_func_int_above_or_equals2_end:
 
 __kefir_text_section_end:

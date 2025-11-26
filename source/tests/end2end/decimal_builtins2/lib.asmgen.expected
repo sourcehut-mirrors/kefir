@@ -34,20 +34,24 @@ __kefir_text_func_dec32_isinf_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
+    jmp __kefir_func_dec32_isinf_label1
+__kefir_func_dec32_isinf_label1:
     movdqu %xmm0, -32(%rbp)
-    movd __kefir_func_dec32_isinf_label2(%rip), %xmm1
-    movdqu -32(%rbp), %xmm0
-    call __bid_eqsd2@PLT
-    xor %ebx, %ebx
-    test %eax, %eax
-    sete %bl
-    movd __kefir_func_dec32_isinf_label3(%rip), %xmm1
+    movd __kefir_func_dec32_isinf_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
-    sete %cl
-    imul $-1, %ecx, %eax
+    mov %rcx, %rbx
+    sete %bl
+    movd __kefir_func_dec32_isinf_label5(%rip), %xmm1
+    movdqu -32(%rbp), %xmm0
+    call __bid_eqsd2@PLT
+    xor %ecx, %ecx
+    test %eax, %eax
+    mov %rcx, %rax
+    sete %al
+    imul $-1, %eax, %eax
     mov %rbx, %rcx
     or %eax, %ecx
     xor %eax, %eax
@@ -60,10 +64,10 @@ __kefir_text_func_dec32_isinf_begin:
 __kefir_text_func_dec32_isinf_end:
 .section .rodata
     .align 4
-__kefir_func_dec32_isinf_label2:
+__kefir_func_dec32_isinf_label4:
     .long 2013265920
     .align 4
-__kefir_func_dec32_isinf_label3:
+__kefir_func_dec32_isinf_label5:
     .long 4160749568
 .section .text
 
@@ -73,20 +77,24 @@ __kefir_text_func_dec64_isinf_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
+    jmp __kefir_func_dec64_isinf_label1
+__kefir_func_dec64_isinf_label1:
     movdqu %xmm0, -32(%rbp)
-    movq __kefir_func_dec64_isinf_label2(%rip), %xmm1
-    movdqu -32(%rbp), %xmm0
-    call __bid_eqdd2@PLT
-    xor %ebx, %ebx
-    test %eax, %eax
-    sete %bl
-    movq __kefir_func_dec64_isinf_label3(%rip), %xmm1
+    movq __kefir_func_dec64_isinf_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
-    sete %cl
-    imul $-1, %ecx, %eax
+    mov %rcx, %rbx
+    sete %bl
+    movq __kefir_func_dec64_isinf_label5(%rip), %xmm1
+    movdqu -32(%rbp), %xmm0
+    call __bid_eqdd2@PLT
+    xor %ecx, %ecx
+    test %eax, %eax
+    mov %rcx, %rax
+    sete %al
+    imul $-1, %eax, %eax
     mov %rbx, %rcx
     or %eax, %ecx
     xor %eax, %eax
@@ -99,10 +107,10 @@ __kefir_text_func_dec64_isinf_begin:
 __kefir_text_func_dec64_isinf_end:
 .section .rodata
     .align 8
-__kefir_func_dec64_isinf_label2:
+__kefir_func_dec64_isinf_label4:
     .quad 8646911284551352320
     .align 8
-__kefir_func_dec64_isinf_label3:
+__kefir_func_dec64_isinf_label5:
     .quad 17870283321406128128
 .section .text
 
@@ -113,17 +121,20 @@ __kefir_text_func_dec32_isfinite_begin:
     push %rbx
     push %r12
     sub $16, %rsp
+    jmp __kefir_func_dec32_isfinite_label1
+__kefir_func_dec32_isfinite_label1:
     movdqu %xmm0, -32(%rbp)
-    movd __kefir_func_dec32_isfinite_label2(%rip), %xmm1
+    movd __kefir_func_dec32_isfinite_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
     test %eax, %eax
+    mov %rax, %r12
     sete %r12b
     movdqu -32(%rbp), %xmm0
     movdqu -32(%rbp), %xmm1
     call __bid_unordsd2@PLT
     mov %rax, %rbx
-    movd __kefir_func_dec32_isfinite_label3(%rip), %xmm1
+    movd __kefir_func_dec32_isfinite_label5(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
     test %eax, %eax
@@ -145,10 +156,10 @@ __kefir_text_func_dec32_isfinite_begin:
 __kefir_text_func_dec32_isfinite_end:
 .section .rodata
     .align 4
-__kefir_func_dec32_isfinite_label2:
+__kefir_func_dec32_isfinite_label4:
     .long 2013265920
     .align 4
-__kefir_func_dec32_isfinite_label3:
+__kefir_func_dec32_isfinite_label5:
     .long 4160749568
 .section .text
 
@@ -159,17 +170,20 @@ __kefir_text_func_dec64_isfinite_begin:
     push %rbx
     push %r12
     sub $16, %rsp
+    jmp __kefir_func_dec64_isfinite_label1
+__kefir_func_dec64_isfinite_label1:
     movdqu %xmm0, -32(%rbp)
-    movq __kefir_func_dec64_isfinite_label2(%rip), %xmm1
+    movq __kefir_func_dec64_isfinite_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
     test %eax, %eax
+    mov %rax, %r12
     sete %r12b
     movdqu -32(%rbp), %xmm0
     movdqu -32(%rbp), %xmm1
     call __bid_unorddd2@PLT
     mov %rax, %rbx
-    movq __kefir_func_dec64_isfinite_label3(%rip), %xmm1
+    movq __kefir_func_dec64_isfinite_label5(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
     test %eax, %eax
@@ -191,10 +205,10 @@ __kefir_text_func_dec64_isfinite_begin:
 __kefir_text_func_dec64_isfinite_end:
 .section .rodata
     .align 8
-__kefir_func_dec64_isfinite_label2:
+__kefir_func_dec64_isfinite_label4:
     .quad 8646911284551352320
     .align 8
-__kefir_func_dec64_isfinite_label3:
+__kefir_func_dec64_isfinite_label5:
     .quad 17870283321406128128
 .section .text
 
@@ -204,14 +218,17 @@ __kefir_text_func_dec64_isinf_sign_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
+    jmp __kefir_func_dec64_isinf_sign_label1
+__kefir_func_dec64_isinf_sign_label1:
     movdqu %xmm0, -32(%rbp)
-    movq __kefir_func_dec64_isinf_sign_label2(%rip), %xmm1
+    movq __kefir_func_dec64_isinf_sign_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
-    xor %ebx, %ebx
+    xor %ecx, %ecx
     test %eax, %eax
+    mov %rcx, %rbx
     sete %bl
-    movq __kefir_func_dec64_isinf_sign_label3(%rip), %xmm1
+    movq __kefir_func_dec64_isinf_sign_label5(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
     xor %ecx, %ecx
@@ -227,10 +244,10 @@ __kefir_text_func_dec64_isinf_sign_begin:
 __kefir_text_func_dec64_isinf_sign_end:
 .section .rodata
     .align 8
-__kefir_func_dec64_isinf_sign_label2:
+__kefir_func_dec64_isinf_sign_label4:
     .quad 8646911284551352320
     .align 8
-__kefir_func_dec64_isinf_sign_label3:
+__kefir_func_dec64_isinf_sign_label5:
     .quad 17870283321406128128
 .section .text
 
@@ -240,20 +257,24 @@ __kefir_text_func_dec128_isinf_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
+    jmp __kefir_func_dec128_isinf_label1
+__kefir_func_dec128_isinf_label1:
     movdqu %xmm0, -32(%rbp)
-    movdqu __kefir_func_dec128_isinf_label2(%rip), %xmm1
-    movdqu -32(%rbp), %xmm0
-    call __bid_eqtd2@PLT
-    xor %ebx, %ebx
-    test %eax, %eax
-    sete %bl
-    movdqu __kefir_func_dec128_isinf_label3(%rip), %xmm1
+    movdqu __kefir_func_dec128_isinf_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
-    sete %cl
-    imul $-1, %ecx, %eax
+    mov %rcx, %rbx
+    sete %bl
+    movdqu __kefir_func_dec128_isinf_label5(%rip), %xmm1
+    movdqu -32(%rbp), %xmm0
+    call __bid_eqtd2@PLT
+    xor %ecx, %ecx
+    test %eax, %eax
+    mov %rcx, %rax
+    sete %al
+    imul $-1, %eax, %eax
     mov %rbx, %rcx
     or %eax, %ecx
     xor %eax, %eax
@@ -266,10 +287,10 @@ __kefir_text_func_dec128_isinf_begin:
 __kefir_text_func_dec128_isinf_end:
 .section .rodata
     .align 16
-__kefir_func_dec128_isinf_label2:
+__kefir_func_dec128_isinf_label4:
     .quad 0, 8646911284551352320
     .align 16
-__kefir_func_dec128_isinf_label3:
+__kefir_func_dec128_isinf_label5:
     .quad 0, 17870283321406128128
 .section .text
 
@@ -279,14 +300,17 @@ __kefir_text_func_dec128_isinf_sign_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
+    jmp __kefir_func_dec128_isinf_sign_label1
+__kefir_func_dec128_isinf_sign_label1:
     movdqu %xmm0, -32(%rbp)
-    movdqu __kefir_func_dec128_isinf_sign_label2(%rip), %xmm1
+    movdqu __kefir_func_dec128_isinf_sign_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
-    xor %ebx, %ebx
+    xor %ecx, %ecx
     test %eax, %eax
+    mov %rcx, %rbx
     sete %bl
-    movdqu __kefir_func_dec128_isinf_sign_label3(%rip), %xmm1
+    movdqu __kefir_func_dec128_isinf_sign_label5(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
     xor %ecx, %ecx
@@ -302,10 +326,10 @@ __kefir_text_func_dec128_isinf_sign_begin:
 __kefir_text_func_dec128_isinf_sign_end:
 .section .rodata
     .align 16
-__kefir_func_dec128_isinf_sign_label2:
+__kefir_func_dec128_isinf_sign_label4:
     .quad 0, 8646911284551352320
     .align 16
-__kefir_func_dec128_isinf_sign_label3:
+__kefir_func_dec128_isinf_sign_label5:
     .quad 0, 17870283321406128128
 .section .text
 
@@ -316,17 +340,20 @@ __kefir_text_func_dec128_isfinite_begin:
     push %rbx
     push %r12
     sub $16, %rsp
+    jmp __kefir_func_dec128_isfinite_label1
+__kefir_func_dec128_isfinite_label1:
     movdqu %xmm0, -32(%rbp)
-    movdqu __kefir_func_dec128_isfinite_label2(%rip), %xmm1
+    movdqu __kefir_func_dec128_isfinite_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
     test %eax, %eax
+    mov %rax, %r12
     sete %r12b
     movdqu -32(%rbp), %xmm0
     movdqu -32(%rbp), %xmm1
     call __bid_unordtd2@PLT
     mov %rax, %rbx
-    movdqu __kefir_func_dec128_isfinite_label3(%rip), %xmm1
+    movdqu __kefir_func_dec128_isfinite_label5(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
     test %eax, %eax
@@ -348,10 +375,10 @@ __kefir_text_func_dec128_isfinite_begin:
 __kefir_text_func_dec128_isfinite_end:
 .section .rodata
     .align 16
-__kefir_func_dec128_isfinite_label2:
+__kefir_func_dec128_isfinite_label4:
     .quad 0, 8646911284551352320
     .align 16
-__kefir_func_dec128_isfinite_label3:
+__kefir_func_dec128_isfinite_label5:
     .quad 0, 17870283321406128128
 .section .text
 
@@ -361,14 +388,17 @@ __kefir_text_func_dec32_isinf_sign_begin:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
+    jmp __kefir_func_dec32_isinf_sign_label1
+__kefir_func_dec32_isinf_sign_label1:
     movdqu %xmm0, -32(%rbp)
-    movd __kefir_func_dec32_isinf_sign_label2(%rip), %xmm1
+    movd __kefir_func_dec32_isinf_sign_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
-    xor %ebx, %ebx
+    xor %ecx, %ecx
     test %eax, %eax
+    mov %rcx, %rbx
     sete %bl
-    movd __kefir_func_dec32_isinf_sign_label3(%rip), %xmm1
+    movd __kefir_func_dec32_isinf_sign_label5(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
     xor %ecx, %ecx
@@ -384,10 +414,10 @@ __kefir_text_func_dec32_isinf_sign_begin:
 __kefir_text_func_dec32_isinf_sign_end:
 .section .rodata
     .align 4
-__kefir_func_dec32_isinf_sign_label2:
+__kefir_func_dec32_isinf_sign_label4:
     .long 2013265920
     .align 4
-__kefir_func_dec32_isinf_sign_label3:
+__kefir_func_dec32_isinf_sign_label5:
     .long 4160749568
 .section .text
 

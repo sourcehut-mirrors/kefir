@@ -14,11 +14,13 @@
 __kefir_text_section_begin:
 less_or_equalsld:
 __kefir_text_func_less_or_equalsld_begin:
+__kefir_func_less_or_equalsld_label0:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-__kefir_func_less_or_equalsld_label0:
+    jmp __kefir_func_less_or_equalsld_label1
+__kefir_func_less_or_equalsld_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
@@ -57,16 +59,17 @@ __kefir_func_less_or_equalsld_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_less_or_equalsld_label1:
 __kefir_text_func_less_or_equalsld_end:
 
 greater_or_equalsd:
 __kefir_text_func_greater_or_equalsd_begin:
+__kefir_func_greater_or_equalsd_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-__kefir_func_greater_or_equalsd_label0:
+    jmp __kefir_func_greater_or_equalsd_label1
+__kefir_func_greater_or_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rcx
@@ -80,16 +83,17 @@ __kefir_func_greater_or_equalsd_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_greater_or_equalsd_label1:
 __kefir_text_func_greater_or_equalsd_end:
 
 less_or_equalsd:
 __kefir_text_func_less_or_equalsd_begin:
+__kefir_func_less_or_equalsd_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-__kefir_func_less_or_equalsd_label0:
+    jmp __kefir_func_less_or_equalsd_label1
+__kefir_func_less_or_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rcx
@@ -103,16 +107,17 @@ __kefir_func_less_or_equalsd_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_less_or_equalsd_label1:
 __kefir_text_func_less_or_equalsd_end:
 
 greater_or_equalsld:
 __kefir_text_func_greater_or_equalsld_begin:
+__kefir_func_greater_or_equalsld_label0:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-__kefir_func_greater_or_equalsld_label0:
+    jmp __kefir_func_greater_or_equalsld_label1
+__kefir_func_greater_or_equalsld_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
@@ -124,19 +129,19 @@ __kefir_func_greater_or_equalsld_label0:
     fldt -32(%rbp)
     fxch %st(1)
     fld %st(0)
-    fstpt -80(%rbp)
-    fld %st(1)
     fstpt -64(%rbp)
+    fld %st(1)
+    fstpt -80(%rbp)
     mov $0, %rax
     fcomip %st(1)
     fstp %st(0)
     seta %al
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
     fld %st(0)
-    fstpt -64(%rbp)
-    fld %st(1)
     fstpt -80(%rbp)
+    fld %st(1)
+    fstpt -64(%rbp)
     mov $0, %rcx
     mov $0, %rdx
     fucomip %st(1)
@@ -150,7 +155,6 @@ __kefir_func_greater_or_equalsld_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_greater_or_equalsld_label1:
 __kefir_text_func_greater_or_equalsld_end:
 
 __kefir_text_section_end:

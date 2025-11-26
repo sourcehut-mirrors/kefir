@@ -16,6 +16,8 @@ __kefir_text_func_get2_begin:
     push %rbx
     push %r12
     sub $256, %rsp
+    jmp __kefir_func_get2_label1
+__kefir_func_get2_label1:
     mov %rsi, %r12
     leaq -272(%rbp), %rbx
     mov %rdi, %rsi
@@ -40,6 +42,8 @@ __kefir_text_func_get3_begin:
     push %rbx
     push %r12
     sub $512, %rsp
+    jmp __kefir_func_get3_label1
+__kefir_func_get3_label1:
     mov %rsi, %r12
     lea ptr(%rip), %rax
     lea -528(%rbp), %rcx

@@ -24,128 +24,137 @@
 __kefir_text_section_begin:
 int_equals_const:
 __kefir_text_func_int_equals_const_begin:
+__kefir_func_int_equals_const_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_equals_const_label0:
+    jmp __kefir_func_int_equals_const_label1
+__kefir_func_int_equals_const_label1:
     mov $0, %rax
     cmp $123, %rdi
     sete %al
     movsx %eax, %rax
     pop %rbp
     ret
-__kefir_func_int_equals_const_label1:
 __kefir_text_func_int_equals_const_end:
 
 int_less_or_equal_const:
 __kefir_text_func_int_less_or_equal_const_begin:
+__kefir_func_int_less_or_equal_const_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_less_or_equal_const_label0:
+    jmp __kefir_func_int_less_or_equal_const_label1
+__kefir_func_int_less_or_equal_const_label1:
     mov $0, %rax
     cmp $543, %rdi
     setle %al
     movsx %eax, %rax
     pop %rbp
     ret
-__kefir_func_int_less_or_equal_const_label1:
 __kefir_text_func_int_less_or_equal_const_end:
 
 int_less_const:
 __kefir_text_func_int_less_const_begin:
+__kefir_func_int_less_const_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_less_const_label0:
+    jmp __kefir_func_int_less_const_label1
+__kefir_func_int_less_const_label1:
     mov $0, %rax
     cmp $90, %rdi
     setl %al
     movsx %eax, %rax
     pop %rbp
     ret
-__kefir_func_int_less_const_label1:
 __kefir_text_func_int_less_const_end:
 
 int_below_or_equal_const:
 __kefir_text_func_int_below_or_equal_const_begin:
+__kefir_func_int_below_or_equal_const_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_below_or_equal_const_label0:
+    jmp __kefir_func_int_below_or_equal_const_label1
+__kefir_func_int_below_or_equal_const_label1:
     mov $0, %rax
     cmp $1, %rdi
     setbe %al
     movsx %eax, %rax
     pop %rbp
     ret
-__kefir_func_int_below_or_equal_const_label1:
 __kefir_text_func_int_below_or_equal_const_end:
 
 int_greater_or_equal_const:
 __kefir_text_func_int_greater_or_equal_const_begin:
+__kefir_func_int_greater_or_equal_const_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_greater_or_equal_const_label0:
+    jmp __kefir_func_int_greater_or_equal_const_label1
+__kefir_func_int_greater_or_equal_const_label1:
     mov $0, %rax
     cmp $-50, %rdi
     setge %al
     movsx %eax, %rax
     pop %rbp
     ret
-__kefir_func_int_greater_or_equal_const_label1:
 __kefir_text_func_int_greater_or_equal_const_end:
 
 int_greater_const:
 __kefir_text_func_int_greater_const_begin:
+__kefir_func_int_greater_const_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_greater_const_label0:
+    jmp __kefir_func_int_greater_const_label1
+__kefir_func_int_greater_const_label1:
     mov $0, %rax
     cmp $150, %rdi
     setg %al
     movsx %eax, %rax
     pop %rbp
     ret
-__kefir_func_int_greater_const_label1:
 __kefir_text_func_int_greater_const_end:
 
 int_above_const:
 __kefir_text_func_int_above_const_begin:
+__kefir_func_int_above_const_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_above_const_label0:
+    jmp __kefir_func_int_above_const_label1
+__kefir_func_int_above_const_label1:
     mov $0, %rax
     cmp $100, %rdi
     seta %al
     movsx %eax, %rax
     pop %rbp
     ret
-__kefir_func_int_above_const_label1:
 __kefir_text_func_int_above_const_end:
 
 int_below_const:
 __kefir_text_func_int_below_const_begin:
+__kefir_func_int_below_const_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_below_const_label0:
+    jmp __kefir_func_int_below_const_label1
+__kefir_func_int_below_const_label1:
     mov $0, %rax
     cmp $90, %rdi
     setb %al
     movsx %eax, %rax
     pop %rbp
     ret
-__kefir_func_int_below_const_label1:
 __kefir_text_func_int_below_const_end:
 
 int_above_or_equal_const:
 __kefir_text_func_int_above_or_equal_const_begin:
+__kefir_func_int_above_or_equal_const_label0:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_int_above_or_equal_const_label0:
+    jmp __kefir_func_int_above_or_equal_const_label1
+__kefir_func_int_above_or_equal_const_label1:
     mov $0, %rax
     cmp $190, %rdi
     setae %al
     movsx %eax, %rax
     pop %rbp
     ret
-__kefir_func_int_above_or_equal_const_label1:
 __kefir_text_func_int_above_or_equal_const_end:
 
 __kefir_text_section_end:

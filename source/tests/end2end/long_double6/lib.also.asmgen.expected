@@ -12,7 +12,10 @@ __kefir_text_func_init_s_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    xorps %xmm1, %xmm1
+    jmp __kefir_func_init_s_label1
+__kefir_func_init_s_label1:
+    movaps %xmm2, %xmm1
+    xorps %xmm2, %xmm1
     movdqu %xmm1, (%rdi)
     movdqu %xmm1, 16(%rdi)
     movdqu %xmm1, 32(%rdi)
@@ -22,17 +25,20 @@ __kefir_text_func_init_s_begin:
     add $8, %rsp
     movq $0, 8(%rdi)
     fstpt (%rdi)
-    lea 16(%rdi), %rax
-    mov %edx, %ecx
-    push %rcx
+    lea 16(%rdi), %rcx
+    mov %edx, %eax
+    push %rax
     fildq (%rsp)
     add $8, %rsp
-    test %rcx, %rcx
-    jns __kefir_func_init_s_label2
-    fadds __kefir_constant_uint_to_long_double(%rip)
+    test %rax, %rax
+    jns __kefir_func_init_s_label3
+    jmp __kefir_func_init_s_label2
 __kefir_func_init_s_label2:
-    movq $0, 8(%rax)
-    fstpt (%rax)
+    fadds __kefir_constant_uint_to_long_double(%rip)
+    jmp __kefir_func_init_s_label3
+__kefir_func_init_s_label3:
+    movq $0, 8(%rcx)
+    fstpt (%rcx)
     lea 32(%rdi), %rax
     movq %xmm0, -16(%rbp)
     fldl -16(%rbp)

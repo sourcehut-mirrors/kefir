@@ -12,9 +12,12 @@ __kefir_text_func_init_s1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $512, %rsp
+    jmp __kefir_func_init_s1_label1
+__kefir_func_init_s1_label1:
     leaq -512(%rbp), %rdi
     xor %eax, %eax
     mov $64, %rcx
+    mov %rax, %rsi
     rep stosq
     movq s1@GOTPCREL(%rip), %rdi
     leaq -512(%rbp), %rsi

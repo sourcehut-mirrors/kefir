@@ -8,27 +8,37 @@
 __kefir_text_section_begin:
 get:
 __kefir_text_func_get_begin:
+    jmp __kefir_func_get_label1
+__kefir_func_get_label1:
     cmp $0, %edi
-    je __kefir_func_get_label16
+    je __kefir_func_get_label17
+    jmp __kefir_func_get_label3
+__kefir_func_get_label3:
     cmp $1, %edi
-    je __kefir_func_get_label14
+    je __kefir_func_get_label15
+    jmp __kefir_func_get_label5
+__kefir_func_get_label17:
+    mov $-1, %rax
+    ret
+__kefir_func_get_label5:
     cmp $2, %edi
-    je __kefir_func_get_label12
-    cmp $3, %edi
-    je __kefir_func_get_label10
-    mov $-101, %rax
-    ret
-__kefir_func_get_label10:
-    mov $101, %rax
-    ret
-__kefir_func_get_label12:
-    mov $1, %rax
-    ret
-__kefir_func_get_label14:
+    je __kefir_func_get_label13
+    jmp __kefir_func_get_label7
+__kefir_func_get_label15:
     xor %eax, %eax
     ret
-__kefir_func_get_label16:
-    mov $-1, %rax
+__kefir_func_get_label7:
+    cmp $3, %edi
+    je __kefir_func_get_label11
+    jmp __kefir_func_get_label9
+__kefir_func_get_label13:
+    mov $1, %rax
+    ret
+__kefir_func_get_label9:
+    mov $-101, %rax
+    ret
+__kefir_func_get_label11:
+    mov $101, %rax
     ret
 __kefir_text_func_get_end:
 

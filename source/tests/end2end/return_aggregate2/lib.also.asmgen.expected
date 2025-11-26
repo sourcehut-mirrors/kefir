@@ -16,6 +16,8 @@ __kefir_text_func_test_begin:
     push %r12
     sub $16, %rsp
     mov %rdi, %r12
+    jmp __kefir_func_test_label1
+__kefir_func_test_label1:
     mov %rsi, %rbx
     movb $0, -17(%rbp)
     leaq -17(%rbp), %rdi

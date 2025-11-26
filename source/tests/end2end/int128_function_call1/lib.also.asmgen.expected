@@ -17,103 +17,105 @@ __kefir_text_func_test1_begin:
     push %r14
     push %r15
     sub $120, %rsp
+    jmp __kefir_func_test1_label1
+__kefir_func_test1_label1:
     mov $1, %rax
     xor %ecx, %ecx
-    mov %rdi, %rdx
+    movq %rdi, -80(%rbp)
+    add %rax, -80(%rbp)
     movq %rsi, -72(%rbp)
-    add %rax, %rdx
     adc %rcx, -72(%rbp)
     mov $2, %rax
     xor %ecx, %ecx
     mov %rdi, %r8
-    mov %rsi, %r9
     add %rax, %r8
+    mov %rsi, %r9
     adc %rcx, %r9
     mov $3, %rax
     xor %ecx, %ecx
-    movq %rdi, -152(%rbp)
-    movq %rsi, -144(%rbp)
-    add %rax, -152(%rbp)
-    adc %rcx, -144(%rbp)
+    mov %rdi, %r12
+    add %rax, %r12
+    mov %rsi, %r13
+    adc %rcx, %r13
     mov $4, %rax
     xor %ecx, %ecx
-    movq %rdi, -136(%rbp)
-    movq %rsi, -128(%rbp)
-    add %rax, -136(%rbp)
-    adc %rcx, -128(%rbp)
+    mov %rdi, %r14
+    add %rax, %r14
+    mov %rsi, %r15
+    adc %rcx, %r15
     mov $5, %rax
     xor %ecx, %ecx
-    movq %rdi, -120(%rbp)
-    movq %rsi, -112(%rbp)
-    add %rax, -120(%rbp)
-    adc %rcx, -112(%rbp)
+    movq %rdi, -160(%rbp)
+    add %rax, -160(%rbp)
+    movq %rsi, -152(%rbp)
+    adc %rcx, -152(%rbp)
     mov $6, %rax
     xor %ecx, %ecx
-    movq %rdi, -104(%rbp)
-    movq %rsi, -96(%rbp)
-    add %rax, -104(%rbp)
-    adc %rcx, -96(%rbp)
+    movq %rdi, -144(%rbp)
+    add %rax, -144(%rbp)
+    movq %rsi, -136(%rbp)
+    adc %rcx, -136(%rbp)
     mov $7, %rax
     xor %ecx, %ecx
-    movq %rdi, -88(%rbp)
-    movq %rsi, -80(%rbp)
-    add %rax, -88(%rbp)
-    adc %rcx, -80(%rbp)
+    movq %rdi, -128(%rbp)
+    add %rax, -128(%rbp)
+    movq %rsi, -120(%rbp)
+    adc %rcx, -120(%rbp)
     mov $8, %rax
     xor %ecx, %ecx
-    mov %rdi, %r10
-    mov %rsi, %r11
-    add %rax, %r10
-    adc %rcx, %r11
+    movq %rdi, -112(%rbp)
+    add %rax, -112(%rbp)
+    movq %rsi, -104(%rbp)
+    adc %rcx, -104(%rbp)
     mov $9, %rax
     xor %ecx, %ecx
-    mov %rdi, %rbx
-    mov %rsi, %r12
-    add %rax, %rbx
-    adc %rcx, %r12
+    movq %rdi, -96(%rbp)
+    add %rax, -96(%rbp)
+    movq %rsi, -88(%rbp)
+    adc %rcx, -88(%rbp)
     mov $10, %rax
     xor %ecx, %ecx
-    mov %rdi, %r13
-    mov %rsi, %r14
-    add %rax, %r13
-    adc %rcx, %r14
-    mov $11, %rax
-    xor %ecx, %ecx
-    mov %rdi, %r15
-    movq %rsi, -160(%rbp)
-    add %rax, %r15
-    adc %rcx, -160(%rbp)
+    mov %rdi, %r10
+    add %rax, %r10
+    mov %rsi, %rax
+    adc %rcx, %rax
+    mov $11, %rcx
+    xor %edx, %edx
+    mov %rdi, %r11
+    add %rcx, %r11
+    mov %rsi, %rbx
+    adc %rdx, %rbx
     sub $144, %rsp
+    movq -80(%rbp), %rdx
     movq -72(%rbp), %rcx
-    movq -152(%rbp), %rax
-    movq %rax, (%rsp)
-    movq -144(%rbp), %rax
-    movq %rax, 8(%rsp)
-    movq -136(%rbp), %rax
-    movq %rax, 16(%rsp)
-    movq -128(%rbp), %rax
-    movq %rax, 24(%rsp)
-    movq -120(%rbp), %rax
-    movq %rax, 32(%rsp)
-    movq -112(%rbp), %rax
-    movq %rax, 40(%rsp)
-    movq -104(%rbp), %rax
-    movq %rax, 48(%rsp)
-    movq -96(%rbp), %rax
-    movq %rax, 56(%rsp)
-    movq -88(%rbp), %rax
-    movq %rax, 64(%rsp)
-    movq -80(%rbp), %rax
-    movq %rax, 72(%rsp)
-    movq %r10, 80(%rsp)
-    movq %r11, 88(%rsp)
-    movq %rbx, 96(%rsp)
+    movq %r12, (%rsp)
+    movq %r13, 8(%rsp)
+    movq %r14, 16(%rsp)
+    movq %r15, 24(%rsp)
+    movq -160(%rbp), %r12
+    movq %r12, 32(%rsp)
+    movq -152(%rbp), %r12
+    movq %r12, 40(%rsp)
+    movq -144(%rbp), %r12
+    movq %r12, 48(%rsp)
+    movq -136(%rbp), %r12
+    movq %r12, 56(%rsp)
+    movq -128(%rbp), %r12
+    movq %r12, 64(%rsp)
+    movq -120(%rbp), %r12
+    movq %r12, 72(%rsp)
+    movq -112(%rbp), %r12
+    movq %r12, 80(%rsp)
+    movq -104(%rbp), %r12
+    movq %r12, 88(%rsp)
+    movq -96(%rbp), %r12
+    movq %r12, 96(%rsp)
+    movq -88(%rbp), %r12
     movq %r12, 104(%rsp)
-    movq %r13, 112(%rsp)
-    movq %r14, 120(%rsp)
-    movq %r15, 128(%rsp)
-    movq -160(%rbp), %rax
-    movq %rax, 136(%rsp)
+    movq %r10, 112(%rsp)
+    movq %rax, 120(%rsp)
+    movq %r11, 128(%rsp)
+    movq %rbx, 136(%rsp)
     call somefn@PLT
     add $144, %rsp
     lea -40(%rbp), %rsp

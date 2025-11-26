@@ -118,6 +118,8 @@
 __kefir_text_section_begin:
 sint_shl1:
 __kefir_text_func_sint_shl1_begin:
+    jmp __kefir_func_sint_shl1_label1
+__kefir_func_sint_shl1_label1:
     shl $1, %edi
     mov %rdi, %rax
     ret
@@ -125,6 +127,8 @@ __kefir_text_func_sint_shl1_end:
 
 sint_shl2:
 __kefir_text_func_sint_shl2_begin:
+    jmp __kefir_func_sint_shl2_label1
+__kefir_func_sint_shl2_label1:
     shl $2, %edi
     mov %rdi, %rax
     ret
@@ -132,6 +136,8 @@ __kefir_text_func_sint_shl2_end:
 
 sint_shl4:
 __kefir_text_func_sint_shl4_begin:
+    jmp __kefir_func_sint_shl4_label1
+__kefir_func_sint_shl4_label1:
     shl $4, %edi
     mov %rdi, %rax
     ret
@@ -139,6 +145,8 @@ __kefir_text_func_sint_shl4_end:
 
 sint_shl8:
 __kefir_text_func_sint_shl8_begin:
+    jmp __kefir_func_sint_shl8_label1
+__kefir_func_sint_shl8_label1:
     shl $8, %edi
     mov %rdi, %rax
     ret
@@ -146,6 +154,8 @@ __kefir_text_func_sint_shl8_end:
 
 uint_shl1:
 __kefir_text_func_uint_shl1_begin:
+    jmp __kefir_func_uint_shl1_label1
+__kefir_func_uint_shl1_label1:
     shl $1, %edi
     mov %rdi, %rax
     ret
@@ -153,6 +163,8 @@ __kefir_text_func_uint_shl1_end:
 
 uint_shl2:
 __kefir_text_func_uint_shl2_begin:
+    jmp __kefir_func_uint_shl2_label1
+__kefir_func_uint_shl2_label1:
     shl $2, %edi
     mov %rdi, %rax
     ret
@@ -160,6 +172,8 @@ __kefir_text_func_uint_shl2_end:
 
 uint_shl4:
 __kefir_text_func_uint_shl4_begin:
+    jmp __kefir_func_uint_shl4_label1
+__kefir_func_uint_shl4_label1:
     shl $4, %edi
     mov %rdi, %rax
     ret
@@ -167,6 +181,8 @@ __kefir_text_func_uint_shl4_end:
 
 uint_shl8:
 __kefir_text_func_uint_shl8_begin:
+    jmp __kefir_func_uint_shl8_label1
+__kefir_func_uint_shl8_label1:
     shl $8, %edi
     mov %rdi, %rax
     ret
@@ -174,6 +190,8 @@ __kefir_text_func_uint_shl8_end:
 
 schar_shl1:
 __kefir_text_func_schar_shl1_begin:
+    jmp __kefir_func_schar_shl1_label1
+__kefir_func_schar_shl1_label1:
     movsx %dil, %rax
     shl $1, %eax
     ret
@@ -181,6 +199,8 @@ __kefir_text_func_schar_shl1_end:
 
 schar_shl2:
 __kefir_text_func_schar_shl2_begin:
+    jmp __kefir_func_schar_shl2_label1
+__kefir_func_schar_shl2_label1:
     movsx %dil, %rax
     shl $2, %eax
     ret
@@ -188,6 +208,8 @@ __kefir_text_func_schar_shl2_end:
 
 schar_shl4:
 __kefir_text_func_schar_shl4_begin:
+    jmp __kefir_func_schar_shl4_label1
+__kefir_func_schar_shl4_label1:
     movsx %dil, %rax
     shl $4, %eax
     ret
@@ -195,6 +217,8 @@ __kefir_text_func_schar_shl4_end:
 
 schar_shl8:
 __kefir_text_func_schar_shl8_begin:
+    jmp __kefir_func_schar_shl8_label1
+__kefir_func_schar_shl8_label1:
     movsx %dil, %rax
     shl $8, %eax
     ret
@@ -202,6 +226,8 @@ __kefir_text_func_schar_shl8_end:
 
 sint_shl16:
 __kefir_text_func_sint_shl16_begin:
+    jmp __kefir_func_sint_shl16_label1
+__kefir_func_sint_shl16_label1:
     shl $16, %edi
     mov %rdi, %rax
     ret
@@ -209,18 +235,24 @@ __kefir_text_func_sint_shl16_end:
 
 sint_shl32:
 __kefir_text_func_sint_shl32_begin:
+    jmp __kefir_func_sint_shl32_label1
+__kefir_func_sint_shl32_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_sint_shl32_end:
 
 sint_shl64:
 __kefir_text_func_sint_shl64_begin:
+    jmp __kefir_func_sint_shl64_label1
+__kefir_func_sint_shl64_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_sint_shl64_end:
 
 slong_shl1:
 __kefir_text_func_slong_shl1_begin:
+    jmp __kefir_func_slong_shl1_label1
+__kefir_func_slong_shl1_label1:
     shl $1, %rdi
     mov %rdi, %rax
     ret
@@ -228,6 +260,8 @@ __kefir_text_func_slong_shl1_end:
 
 slong_shl2:
 __kefir_text_func_slong_shl2_begin:
+    jmp __kefir_func_slong_shl2_label1
+__kefir_func_slong_shl2_label1:
     shl $2, %rdi
     mov %rdi, %rax
     ret
@@ -235,6 +269,8 @@ __kefir_text_func_slong_shl2_end:
 
 slong_shl4:
 __kefir_text_func_slong_shl4_begin:
+    jmp __kefir_func_slong_shl4_label1
+__kefir_func_slong_shl4_label1:
     shl $4, %rdi
     mov %rdi, %rax
     ret
@@ -242,6 +278,8 @@ __kefir_text_func_slong_shl4_end:
 
 slong_shl8:
 __kefir_text_func_slong_shl8_begin:
+    jmp __kefir_func_slong_shl8_label1
+__kefir_func_slong_shl8_label1:
     shl $8, %rdi
     mov %rdi, %rax
     ret
@@ -249,6 +287,8 @@ __kefir_text_func_slong_shl8_end:
 
 uchar_shl1:
 __kefir_text_func_uchar_shl1_begin:
+    jmp __kefir_func_uchar_shl1_label1
+__kefir_func_uchar_shl1_label1:
     movzx %dil, %rax
     shl $1, %eax
     ret
@@ -256,6 +296,8 @@ __kefir_text_func_uchar_shl1_end:
 
 uchar_shl2:
 __kefir_text_func_uchar_shl2_begin:
+    jmp __kefir_func_uchar_shl2_label1
+__kefir_func_uchar_shl2_label1:
     movzx %dil, %rax
     shl $2, %eax
     ret
@@ -263,6 +305,8 @@ __kefir_text_func_uchar_shl2_end:
 
 uchar_shl4:
 __kefir_text_func_uchar_shl4_begin:
+    jmp __kefir_func_uchar_shl4_label1
+__kefir_func_uchar_shl4_label1:
     movzx %dil, %rax
     shl $4, %eax
     ret
@@ -270,6 +314,8 @@ __kefir_text_func_uchar_shl4_end:
 
 uchar_shl8:
 __kefir_text_func_uchar_shl8_begin:
+    jmp __kefir_func_uchar_shl8_label1
+__kefir_func_uchar_shl8_label1:
     movzx %dil, %rax
     shl $8, %eax
     ret
@@ -277,6 +323,8 @@ __kefir_text_func_uchar_shl8_end:
 
 uint_shl16:
 __kefir_text_func_uint_shl16_begin:
+    jmp __kefir_func_uint_shl16_label1
+__kefir_func_uint_shl16_label1:
     shl $16, %edi
     mov %rdi, %rax
     ret
@@ -284,18 +332,24 @@ __kefir_text_func_uint_shl16_end:
 
 uint_shl32:
 __kefir_text_func_uint_shl32_begin:
+    jmp __kefir_func_uint_shl32_label1
+__kefir_func_uint_shl32_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_uint_shl32_end:
 
 uint_shl64:
 __kefir_text_func_uint_shl64_begin:
+    jmp __kefir_func_uint_shl64_label1
+__kefir_func_uint_shl64_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_uint_shl64_end:
 
 ulong_shl1:
 __kefir_text_func_ulong_shl1_begin:
+    jmp __kefir_func_ulong_shl1_label1
+__kefir_func_ulong_shl1_label1:
     shl $1, %rdi
     mov %rdi, %rax
     ret
@@ -303,6 +357,8 @@ __kefir_text_func_ulong_shl1_end:
 
 ulong_shl2:
 __kefir_text_func_ulong_shl2_begin:
+    jmp __kefir_func_ulong_shl2_label1
+__kefir_func_ulong_shl2_label1:
     shl $2, %rdi
     mov %rdi, %rax
     ret
@@ -310,6 +366,8 @@ __kefir_text_func_ulong_shl2_end:
 
 ulong_shl4:
 __kefir_text_func_ulong_shl4_begin:
+    jmp __kefir_func_ulong_shl4_label1
+__kefir_func_ulong_shl4_label1:
     shl $4, %rdi
     mov %rdi, %rax
     ret
@@ -317,6 +375,8 @@ __kefir_text_func_ulong_shl4_end:
 
 ulong_shl8:
 __kefir_text_func_ulong_shl8_begin:
+    jmp __kefir_func_ulong_shl8_label1
+__kefir_func_ulong_shl8_label1:
     shl $8, %rdi
     mov %rdi, %rax
     ret
@@ -324,6 +384,8 @@ __kefir_text_func_ulong_shl8_end:
 
 schar_shl16:
 __kefir_text_func_schar_shl16_begin:
+    jmp __kefir_func_schar_shl16_label1
+__kefir_func_schar_shl16_label1:
     movsx %dil, %rax
     shl $16, %eax
     ret
@@ -331,18 +393,24 @@ __kefir_text_func_schar_shl16_end:
 
 schar_shl32:
 __kefir_text_func_schar_shl32_begin:
+    jmp __kefir_func_schar_shl32_label1
+__kefir_func_schar_shl32_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_schar_shl32_end:
 
 schar_shl64:
 __kefir_text_func_schar_shl64_begin:
+    jmp __kefir_func_schar_shl64_label1
+__kefir_func_schar_shl64_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_schar_shl64_end:
 
 slong_shl16:
 __kefir_text_func_slong_shl16_begin:
+    jmp __kefir_func_slong_shl16_label1
+__kefir_func_slong_shl16_label1:
     shl $16, %rdi
     mov %rdi, %rax
     ret
@@ -350,6 +418,8 @@ __kefir_text_func_slong_shl16_end:
 
 slong_shl32:
 __kefir_text_func_slong_shl32_begin:
+    jmp __kefir_func_slong_shl32_label1
+__kefir_func_slong_shl32_label1:
     shl $32, %rdi
     mov %rdi, %rax
     ret
@@ -357,12 +427,16 @@ __kefir_text_func_slong_shl32_end:
 
 slong_shl64:
 __kefir_text_func_slong_shl64_begin:
+    jmp __kefir_func_slong_shl64_label1
+__kefir_func_slong_shl64_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_slong_shl64_end:
 
 sshort_shl1:
 __kefir_text_func_sshort_shl1_begin:
+    jmp __kefir_func_sshort_shl1_label1
+__kefir_func_sshort_shl1_label1:
     movsx %di, %rax
     shl $1, %eax
     ret
@@ -370,6 +444,8 @@ __kefir_text_func_sshort_shl1_end:
 
 sshort_shl2:
 __kefir_text_func_sshort_shl2_begin:
+    jmp __kefir_func_sshort_shl2_label1
+__kefir_func_sshort_shl2_label1:
     movsx %di, %rax
     shl $2, %eax
     ret
@@ -377,6 +453,8 @@ __kefir_text_func_sshort_shl2_end:
 
 sshort_shl4:
 __kefir_text_func_sshort_shl4_begin:
+    jmp __kefir_func_sshort_shl4_label1
+__kefir_func_sshort_shl4_label1:
     movsx %di, %rax
     shl $4, %eax
     ret
@@ -384,6 +462,8 @@ __kefir_text_func_sshort_shl4_end:
 
 sshort_shl8:
 __kefir_text_func_sshort_shl8_begin:
+    jmp __kefir_func_sshort_shl8_label1
+__kefir_func_sshort_shl8_label1:
     movsx %di, %rax
     shl $8, %eax
     ret
@@ -391,6 +471,8 @@ __kefir_text_func_sshort_shl8_end:
 
 uchar_shl16:
 __kefir_text_func_uchar_shl16_begin:
+    jmp __kefir_func_uchar_shl16_label1
+__kefir_func_uchar_shl16_label1:
     movzx %dil, %rax
     shl $16, %eax
     ret
@@ -398,18 +480,24 @@ __kefir_text_func_uchar_shl16_end:
 
 uchar_shl32:
 __kefir_text_func_uchar_shl32_begin:
+    jmp __kefir_func_uchar_shl32_label1
+__kefir_func_uchar_shl32_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_uchar_shl32_end:
 
 uchar_shl64:
 __kefir_text_func_uchar_shl64_begin:
+    jmp __kefir_func_uchar_shl64_label1
+__kefir_func_uchar_shl64_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_uchar_shl64_end:
 
 ulong_shl16:
 __kefir_text_func_ulong_shl16_begin:
+    jmp __kefir_func_ulong_shl16_label1
+__kefir_func_ulong_shl16_label1:
     shl $16, %rdi
     mov %rdi, %rax
     ret
@@ -417,6 +505,8 @@ __kefir_text_func_ulong_shl16_end:
 
 ulong_shl32:
 __kefir_text_func_ulong_shl32_begin:
+    jmp __kefir_func_ulong_shl32_label1
+__kefir_func_ulong_shl32_label1:
     shl $32, %rdi
     mov %rdi, %rax
     ret
@@ -424,12 +514,16 @@ __kefir_text_func_ulong_shl32_end:
 
 ulong_shl64:
 __kefir_text_func_ulong_shl64_begin:
+    jmp __kefir_func_ulong_shl64_label1
+__kefir_func_ulong_shl64_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_ulong_shl64_end:
 
 ushort_shl1:
 __kefir_text_func_ushort_shl1_begin:
+    jmp __kefir_func_ushort_shl1_label1
+__kefir_func_ushort_shl1_label1:
     movzx %di, %rax
     shl $1, %eax
     ret
@@ -437,6 +531,8 @@ __kefir_text_func_ushort_shl1_end:
 
 ushort_shl2:
 __kefir_text_func_ushort_shl2_begin:
+    jmp __kefir_func_ushort_shl2_label1
+__kefir_func_ushort_shl2_label1:
     movzx %di, %rax
     shl $2, %eax
     ret
@@ -444,6 +540,8 @@ __kefir_text_func_ushort_shl2_end:
 
 ushort_shl4:
 __kefir_text_func_ushort_shl4_begin:
+    jmp __kefir_func_ushort_shl4_label1
+__kefir_func_ushort_shl4_label1:
     movzx %di, %rax
     shl $4, %eax
     ret
@@ -451,6 +549,8 @@ __kefir_text_func_ushort_shl4_end:
 
 ushort_shl8:
 __kefir_text_func_ushort_shl8_begin:
+    jmp __kefir_func_ushort_shl8_label1
+__kefir_func_ushort_shl8_label1:
     movzx %di, %rax
     shl $8, %eax
     ret
@@ -458,6 +558,8 @@ __kefir_text_func_ushort_shl8_end:
 
 sshort_shl16:
 __kefir_text_func_sshort_shl16_begin:
+    jmp __kefir_func_sshort_shl16_label1
+__kefir_func_sshort_shl16_label1:
     movsx %di, %rax
     shl $16, %eax
     ret
@@ -465,18 +567,24 @@ __kefir_text_func_sshort_shl16_end:
 
 sshort_shl32:
 __kefir_text_func_sshort_shl32_begin:
+    jmp __kefir_func_sshort_shl32_label1
+__kefir_func_sshort_shl32_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_sshort_shl32_end:
 
 sshort_shl64:
 __kefir_text_func_sshort_shl64_begin:
+    jmp __kefir_func_sshort_shl64_label1
+__kefir_func_sshort_shl64_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_sshort_shl64_end:
 
 ushort_shl16:
 __kefir_text_func_ushort_shl16_begin:
+    jmp __kefir_func_ushort_shl16_label1
+__kefir_func_ushort_shl16_label1:
     movzx %di, %rax
     shl $16, %eax
     ret
@@ -484,12 +592,16 @@ __kefir_text_func_ushort_shl16_end:
 
 ushort_shl32:
 __kefir_text_func_ushort_shl32_begin:
+    jmp __kefir_func_ushort_shl32_label1
+__kefir_func_ushort_shl32_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_ushort_shl32_end:
 
 ushort_shl64:
 __kefir_text_func_ushort_shl64_begin:
+    jmp __kefir_func_ushort_shl64_label1
+__kefir_func_ushort_shl64_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_ushort_shl64_end:

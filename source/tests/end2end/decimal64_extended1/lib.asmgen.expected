@@ -51,6 +51,8 @@ conv1:
 __kefir_text_func_conv1_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_conv1_label1
+__kefir_func_conv1_label1:
     call __bid_floatditd@PLT
     pop %rbp
     ret
@@ -60,6 +62,8 @@ conv2:
 __kefir_text_func_conv2_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_conv2_label1
+__kefir_func_conv2_label1:
     call __bid_floatunsditd@PLT
     pop %rbp
     ret
@@ -69,6 +73,8 @@ conv3:
 __kefir_text_func_conv3_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_conv3_label1
+__kefir_func_conv3_label1:
     call __bid_extendsftd@PLT
     pop %rbp
     ret
@@ -78,6 +84,8 @@ conv4:
 __kefir_text_func_conv4_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_conv4_label1
+__kefir_func_conv4_label1:
     call __bid_extenddftd@PLT
     pop %rbp
     ret
@@ -89,6 +97,8 @@ __kefir_text_func_conv5_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_conv5_label1
+__kefir_func_conv5_label1:
     fldt 16(%rbp)
     fstpt -32(%rbp)
     sub $16, %rsp
@@ -106,6 +116,8 @@ add32x:
 __kefir_text_func_add32x_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_add32x_label1
+__kefir_func_add32x_label1:
     call __bid_addtd3@PLT
     pop %rbp
     ret
@@ -115,6 +127,8 @@ div32x:
 __kefir_text_func_div32x_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_div32x_label1
+__kefir_func_div32x_label1:
     call __bid_divtd3@PLT
     pop %rbp
     ret
@@ -124,6 +138,8 @@ mul32x:
 __kefir_text_func_mul32x_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_mul32x_label1
+__kefir_func_mul32x_label1:
     call __bid_multd3@PLT
     pop %rbp
     ret
@@ -134,6 +150,8 @@ __kefir_text_func_neg32x_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    jmp __kefir_func_neg32x_label1
+__kefir_func_neg32x_label1:
     movdqu %xmm0, -16(%rbp)
     mov -8(%rbp), %rax
     btc $63, %rax
@@ -148,6 +166,8 @@ sub32x:
 __kefir_text_func_sub32x_begin:
     push %rbp
     mov %rsp, %rbp
+    jmp __kefir_func_sub32x_label1
+__kefir_func_sub32x_label1:
     call __bid_subtd3@PLT
     pop %rbp
     ret
@@ -155,23 +175,27 @@ __kefir_text_func_sub32x_end:
 
 get32x_1:
 __kefir_text_func_get32x_1_begin:
-    movdqu __kefir_func_get32x_1_label2(%rip), %xmm0
+    jmp __kefir_func_get32x_1_label1
+__kefir_func_get32x_1_label1:
+    movdqu __kefir_func_get32x_1_label4(%rip), %xmm0
     ret
 __kefir_text_func_get32x_1_end:
 .section .rodata
     .align 16
-__kefir_func_get32x_1_label2:
+__kefir_func_get32x_1_label4:
     .quad 4657215626510965521, 3464956963308175654
 .section .text
 
 get32x_2:
 __kefir_text_func_get32x_2_begin:
-    movdqu __kefir_func_get32x_2_label2(%rip), %xmm0
+    jmp __kefir_func_get32x_2_label1
+__kefir_func_get32x_2_label1:
+    movdqu __kefir_func_get32x_2_label4(%rip), %xmm0
     ret
 __kefir_text_func_get32x_2_end:
 .section .rodata
     .align 16
-__kefir_func_get32x_2_label2:
+__kefir_func_get32x_2_label4:
     .quad 15702718261525870664, 3458348922121190810
 .section .text
 

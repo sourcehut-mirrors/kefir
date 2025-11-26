@@ -42,6 +42,8 @@
 __kefir_text_section_begin:
 or:
 __kefir_text_func_or_begin:
+    jmp __kefir_func_or_label1
+__kefir_func_or_label1:
     or %edx, %esi
     mov %rsi, %rax
     ret
@@ -49,6 +51,8 @@ __kefir_text_func_or_end:
 
 add:
 __kefir_text_func_add_begin:
+    jmp __kefir_func_add_label1
+__kefir_func_add_label1:
     add %edx, %esi
     mov %rsi, %rax
     ret
@@ -56,6 +60,8 @@ __kefir_text_func_add_end:
 
 and:
 __kefir_text_func_and_begin:
+    jmp __kefir_func_and_label1
+__kefir_func_and_label1:
     and %edx, %esi
     mov %rsi, %rax
     ret
@@ -63,6 +69,8 @@ __kefir_text_func_and_end:
 
 mul:
 __kefir_text_func_mul_begin:
+    jmp __kefir_func_mul_label1
+__kefir_func_mul_label1:
     shl $45, %rsi
     sar $45, %rsi
     shl $45, %rdx
@@ -74,6 +82,8 @@ __kefir_text_func_mul_end:
 
 shl:
 __kefir_text_func_shl_begin:
+    jmp __kefir_func_shl_label1
+__kefir_func_shl_label1:
     shl $45, %rdx
     sar $45, %rdx
     mov %rdx, %rcx
@@ -84,6 +94,8 @@ __kefir_text_func_shl_end:
 
 shr:
 __kefir_text_func_shr_begin:
+    jmp __kefir_func_shr_label1
+__kefir_func_shr_label1:
     shl $45, %rdx
     sar $45, %rdx
     mov %rdx, %rcx
@@ -94,6 +106,8 @@ __kefir_text_func_shr_end:
 
 sub:
 __kefir_text_func_sub_begin:
+    jmp __kefir_func_sub_label1
+__kefir_func_sub_label1:
     sub %edx, %esi
     mov %rsi, %rax
     ret
@@ -101,6 +115,8 @@ __kefir_text_func_sub_end:
 
 uor:
 __kefir_text_func_uor_begin:
+    jmp __kefir_func_uor_label1
+__kefir_func_uor_label1:
     or %edx, %esi
     mov %rsi, %rax
     ret
@@ -108,6 +124,8 @@ __kefir_text_func_uor_end:
 
 xor:
 __kefir_text_func_xor_begin:
+    jmp __kefir_func_xor_label1
+__kefir_func_xor_label1:
     xor %edx, %esi
     mov %rsi, %rax
     ret
@@ -115,6 +133,8 @@ __kefir_text_func_xor_end:
 
 test:
 __kefir_text_func_test_begin:
+    jmp __kefir_func_test_label1
+__kefir_func_test_label1:
     mov %rsi, %rax
     shl $57, %rax
     sar $57, %rax
@@ -132,6 +152,8 @@ __kefir_text_func_test_end:
 
 uadd:
 __kefir_text_func_uadd_begin:
+    jmp __kefir_func_uadd_label1
+__kefir_func_uadd_label1:
     add %edx, %esi
     mov %rsi, %rax
     ret
@@ -139,6 +161,8 @@ __kefir_text_func_uadd_end:
 
 uand:
 __kefir_text_func_uand_begin:
+    jmp __kefir_func_uand_label1
+__kefir_func_uand_label1:
     and %edx, %esi
     mov %rsi, %rax
     ret
@@ -146,6 +170,8 @@ __kefir_text_func_uand_end:
 
 umul:
 __kefir_text_func_umul_begin:
+    jmp __kefir_func_umul_label1
+__kefir_func_umul_label1:
     shl $45, %rsi
     shr $45, %rsi
     shl $45, %rdx
@@ -157,6 +183,8 @@ __kefir_text_func_umul_end:
 
 ushl:
 __kefir_text_func_ushl_begin:
+    jmp __kefir_func_ushl_label1
+__kefir_func_ushl_label1:
     shl $45, %rdx
     shr $45, %rdx
     mov %rdx, %rcx
@@ -167,6 +195,8 @@ __kefir_text_func_ushl_end:
 
 ushr:
 __kefir_text_func_ushr_begin:
+    jmp __kefir_func_ushr_label1
+__kefir_func_ushr_label1:
     shl $45, %rdx
     shr $45, %rdx
     mov %rdx, %rcx
@@ -177,6 +207,8 @@ __kefir_text_func_ushr_end:
 
 usub:
 __kefir_text_func_usub_begin:
+    jmp __kefir_func_usub_label1
+__kefir_func_usub_label1:
     sub %edx, %esi
     mov %rsi, %rax
     ret
@@ -184,6 +216,8 @@ __kefir_text_func_usub_end:
 
 uxor:
 __kefir_text_func_uxor_begin:
+    jmp __kefir_func_uxor_label1
+__kefir_func_uxor_label1:
     xor %edx, %esi
     mov %rsi, %rax
     ret
@@ -191,6 +225,8 @@ __kefir_text_func_uxor_end:
 
 test2:
 __kefir_text_func_test2_begin:
+    jmp __kefir_func_test2_label1
+__kefir_func_test2_label1:
     mov %rsi, %rax
     shl $60, %rax
     sar $60, %rax

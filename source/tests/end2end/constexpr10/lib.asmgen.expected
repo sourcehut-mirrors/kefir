@@ -13,9 +13,12 @@ __kefir_text_func_get1_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rdx
+    jmp __kefir_func_get1_label1
+__kefir_func_get1_label1:
     mov %rdx, %rdi
     xor %eax, %eax
     mov $10, %rcx
+    mov %rax, %rsi
     rep stosq
     movl $58472, (%rdx)
     lea 8(%rdx), %rax
@@ -24,11 +27,11 @@ __kefir_text_func_get1_begin:
     lea 16(%rdx), %rax
     movq $58580, (%rax)
     lea 24(%rdx), %rax
-    movq __kefir_func_get1_label2(%rip), %xmm0
+    movq __kefir_func_get1_label4(%rip), %xmm0
     movq %xmm0, (%rax)
     lea 32(%rdx), %rax
-    movd __kefir_func_get1_label3(%rip), %xmm0
-    movd __kefir_func_get1_label4(%rip), %xmm1
+    movd __kefir_func_get1_label5(%rip), %xmm0
+    movd __kefir_func_get1_label6(%rip), %xmm1
     movd %xmm0, (%rax)
     movd %xmm1, 4(%rax)
     lea 40(%rdx), %rax
@@ -38,7 +41,7 @@ __kefir_text_func_get1_begin:
     lea 56(%rdx), %rax
     movw $50, (%rax)
     movq $-4451786, 8(%rax)
-    movd __kefir_func_get1_label5(%rip), %xmm0
+    movd __kefir_func_get1_label7(%rip), %xmm0
     movd %xmm0, 16(%rax)
     mov %rdx, %rax
     ldmxcsr -8(%rbp)
@@ -48,16 +51,16 @@ __kefir_text_func_get1_begin:
 __kefir_text_func_get1_end:
 .section .rodata
     .align 8
-__kefir_func_get1_label2:
+__kefir_func_get1_label4:
     .quad 4617793822760025908
     .align 4
-__kefir_func_get1_label3:
+__kefir_func_get1_label5:
     .long 2147483648
     .align 4
-__kefir_func_get1_label4:
+__kefir_func_get1_label6:
     .long 3317067981
     .align 4
-__kefir_func_get1_label5:
+__kefir_func_get1_label7:
     .long 1085116776
 .section .text
 

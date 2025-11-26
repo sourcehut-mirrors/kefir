@@ -52,16 +52,52 @@ __kefir_text_func_f32_op_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
+    jmp __kefir_func_f32_op_label1
+__kefir_func_f32_op_label1:
     movaps %xmm0, %xmm2
     cmp $0, %edi
-    je __kefir_func_f32_op_label16
+    je __kefir_func_f32_op_label17
+    jmp __kefir_func_f32_op_label3
+__kefir_func_f32_op_label3:
     cmp $1, %edi
-    je __kefir_func_f32_op_label14
+    je __kefir_func_f32_op_label15
+    jmp __kefir_func_f32_op_label5
+__kefir_func_f32_op_label17:
+    movd __kefir_func_f32_op_label22(%rip), %xmm0
+    addss %xmm1, %xmm2
+    insertps $16, %xmm2, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f32_op_label5:
     cmp $2, %edi
-    je __kefir_func_f32_op_label12
+    je __kefir_func_f32_op_label13
+    jmp __kefir_func_f32_op_label7
+__kefir_func_f32_op_label15:
+    movd __kefir_func_f32_op_label24(%rip), %xmm0
+    subss %xmm1, %xmm2
+    insertps $16, %xmm2, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f32_op_label7:
     cmp $3, %edi
-    je __kefir_func_f32_op_label10
-    movd __kefir_func_f32_op_label18(%rip), %xmm0
+    je __kefir_func_f32_op_label11
+    jmp __kefir_func_f32_op_label9
+__kefir_func_f32_op_label13:
+    movaps %xmm2, %xmm0
+    mulss %xmm1, %xmm0
+    xorps __kefir_constant_float32_neg(%rip), %xmm0
+    movd __kefir_func_f32_op_label26(%rip), %xmm1
+    insertps $16, %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f32_op_label9:
+    movd __kefir_func_f32_op_label27(%rip), %xmm0
     movaps %xmm2, %xmm1
     xorps __kefir_constant_float32_neg(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
@@ -69,38 +105,10 @@ __kefir_text_func_f32_op_begin:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f32_op_label10:
+__kefir_func_f32_op_label11:
     movaps %xmm2, %xmm0
     divss %xmm1, %xmm0
-    movd __kefir_func_f32_op_label19(%rip), %xmm1
-    insertps $16, %xmm1, %xmm0
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f32_op_label12:
-    movaps %xmm2, %xmm0
-    mulss %xmm1, %xmm0
-    xorps __kefir_constant_float32_neg(%rip), %xmm0
-    movd __kefir_func_f32_op_label20(%rip), %xmm1
-    insertps $16, %xmm1, %xmm0
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f32_op_label14:
-    movd __kefir_func_f32_op_label21(%rip), %xmm0
-    subss %xmm1, %xmm2
-    movaps %xmm2, %xmm1
-    insertps $16, %xmm1, %xmm0
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f32_op_label16:
-    movd __kefir_func_f32_op_label22(%rip), %xmm0
-    addss %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    movd __kefir_func_f32_op_label28(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -109,19 +117,19 @@ __kefir_func_f32_op_label16:
 __kefir_text_func_f32_op_end:
 .section .rodata
     .align 4
-__kefir_func_f32_op_label18:
-    .long 0
-    .align 4
-__kefir_func_f32_op_label19:
-    .long 0
-    .align 4
-__kefir_func_f32_op_label20:
-    .long 0
-    .align 4
-__kefir_func_f32_op_label21:
-    .long 0
-    .align 4
 __kefir_func_f32_op_label22:
+    .long 0
+    .align 4
+__kefir_func_f32_op_label24:
+    .long 0
+    .align 4
+__kefir_func_f32_op_label26:
+    .long 0
+    .align 4
+__kefir_func_f32_op_label27:
+    .long 0
+    .align 4
+__kefir_func_f32_op_label28:
     .long 0
 .section .text
 
@@ -131,48 +139,17 @@ __kefir_text_func_f64_op_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
+    jmp __kefir_func_f64_op_label1
+__kefir_func_f64_op_label1:
     movaps %xmm0, %xmm2
     cmp $0, %edi
-    je __kefir_func_f64_op_label16
+    je __kefir_func_f64_op_label17
+    jmp __kefir_func_f64_op_label3
+__kefir_func_f64_op_label3:
     cmp $1, %edi
-    je __kefir_func_f64_op_label14
-    cmp $2, %edi
-    je __kefir_func_f64_op_label12
-    cmp $3, %edi
-    je __kefir_func_f64_op_label10
-    movq __kefir_func_f64_op_label18(%rip), %xmm0
-    movaps %xmm2, %xmm1
-    xorpd __kefir_constant_float64_neg(%rip), %xmm1
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f64_op_label10:
-    movaps %xmm2, %xmm0
-    divsd %xmm1, %xmm0
-    movq __kefir_func_f64_op_label19(%rip), %xmm1
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f64_op_label12:
-    movaps %xmm2, %xmm0
-    mulsd %xmm1, %xmm0
-    xorpd __kefir_constant_float64_neg(%rip), %xmm0
-    movq __kefir_func_f64_op_label20(%rip), %xmm1
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f64_op_label14:
-    movq __kefir_func_f64_op_label21(%rip), %xmm0
-    subsd %xmm1, %xmm2
-    movaps %xmm2, %xmm1
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f64_op_label16:
+    je __kefir_func_f64_op_label15
+    jmp __kefir_func_f64_op_label5
+__kefir_func_f64_op_label17:
     movq __kefir_func_f64_op_label22(%rip), %xmm0
     addsd %xmm1, %xmm2
     movaps %xmm2, %xmm1
@@ -180,22 +157,63 @@ __kefir_func_f64_op_label16:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_f64_op_label5:
+    cmp $2, %edi
+    je __kefir_func_f64_op_label13
+    jmp __kefir_func_f64_op_label7
+__kefir_func_f64_op_label15:
+    movq __kefir_func_f64_op_label24(%rip), %xmm0
+    subsd %xmm1, %xmm2
+    movaps %xmm2, %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f64_op_label7:
+    cmp $3, %edi
+    je __kefir_func_f64_op_label11
+    jmp __kefir_func_f64_op_label9
+__kefir_func_f64_op_label13:
+    movaps %xmm2, %xmm0
+    mulsd %xmm1, %xmm0
+    xorpd __kefir_constant_float64_neg(%rip), %xmm0
+    movq __kefir_func_f64_op_label26(%rip), %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f64_op_label9:
+    movq __kefir_func_f64_op_label27(%rip), %xmm0
+    movaps %xmm2, %xmm1
+    xorpd __kefir_constant_float64_neg(%rip), %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f64_op_label11:
+    movaps %xmm2, %xmm0
+    divsd %xmm1, %xmm0
+    movq __kefir_func_f64_op_label28(%rip), %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 __kefir_text_func_f64_op_end:
 .section .rodata
     .align 8
-__kefir_func_f64_op_label18:
-    .quad 0
-    .align 8
-__kefir_func_f64_op_label19:
-    .quad 0
-    .align 8
-__kefir_func_f64_op_label20:
-    .quad 0
-    .align 8
-__kefir_func_f64_op_label21:
-    .quad 0
-    .align 8
 __kefir_func_f64_op_label22:
+    .quad 0
+    .align 8
+__kefir_func_f64_op_label24:
+    .quad 0
+    .align 8
+__kefir_func_f64_op_label26:
+    .quad 0
+    .align 8
+__kefir_func_f64_op_label27:
+    .quad 0
+    .align 8
+__kefir_func_f64_op_label28:
     .quad 0
 .section .text
 
@@ -205,72 +223,20 @@ __kefir_text_func_f80_op_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_f80_op_label1
+__kefir_func_f80_op_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
     fstpt -32(%rbp)
     cmp $0, %edi
-    je __kefir_func_f80_op_label16
+    je __kefir_func_f80_op_label17
+    jmp __kefir_func_f80_op_label3
+__kefir_func_f80_op_label3:
     cmp $1, %edi
-    je __kefir_func_f80_op_label14
-    cmp $2, %edi
-    je __kefir_func_f80_op_label12
-    cmp $3, %edi
-    je __kefir_func_f80_op_label10
-    fldt __kefir_func_f80_op_label18(%rip)
-    fldt -48(%rbp)
-    fld %st(0)
-    fstpt -48(%rbp)
-    fchs
-    fstpt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f80_op_label10:
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fdivp
-    fldt __kefir_func_f80_op_label19(%rip)
-    fstpt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f80_op_label12:
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fmulp
-    fchs
-    fldt __kefir_func_f80_op_label20(%rip)
-    fstpt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f80_op_label14:
-    fldt __kefir_func_f80_op_label21(%rip)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fsubp
-    fstpt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f80_op_label16:
+    je __kefir_func_f80_op_label15
+    jmp __kefir_func_f80_op_label5
+__kefir_func_f80_op_label17:
     fldt __kefir_func_f80_op_label22(%rip)
     fldt -32(%rbp)
     fldt -48(%rbp)
@@ -283,123 +249,43 @@ __kefir_func_f80_op_label16:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_f80_op_end:
-.section .rodata
-    .align 8
-__kefir_func_f80_op_label18:
-    .quad 0
-    .quad 0
-    .align 8
-__kefir_func_f80_op_label19:
-    .quad 0
-    .quad 0
-    .align 8
-__kefir_func_f80_op_label20:
-    .quad 0
-    .quad 0
-    .align 8
-__kefir_func_f80_op_label21:
-    .quad 0
-    .quad 0
-    .align 8
-__kefir_func_f80_op_label22:
-    .quad 0
-    .quad 0
-.section .text
-
-f32x_op:
-__kefir_text_func_f32x_op_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    stmxcsr -8(%rbp)
-    movaps %xmm0, %xmm2
-    cmp $0, %edi
-    je __kefir_func_f32x_op_label16
-    cmp $1, %edi
-    je __kefir_func_f32x_op_label14
+__kefir_func_f80_op_label5:
     cmp $2, %edi
-    je __kefir_func_f32x_op_label12
-    cmp $3, %edi
-    je __kefir_func_f32x_op_label10
-    movq __kefir_func_f32x_op_label18(%rip), %xmm0
-    movaps %xmm2, %xmm1
-    xorpd __kefir_constant_float64_neg(%rip), %xmm1
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f32x_op_label10:
-    movaps %xmm2, %xmm0
-    divsd %xmm1, %xmm0
-    movq __kefir_func_f32x_op_label19(%rip), %xmm1
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f32x_op_label12:
-    movaps %xmm2, %xmm0
-    mulsd %xmm1, %xmm0
-    xorpd __kefir_constant_float64_neg(%rip), %xmm0
-    movq __kefir_func_f32x_op_label20(%rip), %xmm1
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f32x_op_label14:
-    movq __kefir_func_f32x_op_label21(%rip), %xmm0
-    subsd %xmm1, %xmm2
-    movaps %xmm2, %xmm1
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_func_f32x_op_label16:
-    movq __kefir_func_f32x_op_label22(%rip), %xmm0
-    addsd %xmm1, %xmm2
-    movaps %xmm2, %xmm1
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_f32x_op_end:
-.section .rodata
-    .align 8
-__kefir_func_f32x_op_label18:
-    .quad 0
-    .align 8
-__kefir_func_f32x_op_label19:
-    .quad 0
-    .align 8
-__kefir_func_f32x_op_label20:
-    .quad 0
-    .align 8
-__kefir_func_f32x_op_label21:
-    .quad 0
-    .align 8
-__kefir_func_f32x_op_label22:
-    .quad 0
-.section .text
-
-f64x_op:
-__kefir_text_func_f64x_op_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
-    fstcw -8(%rbp)
-    fldt 32(%rbp)
-    fldt 16(%rbp)
-    fstpt -48(%rbp)
+    je __kefir_func_f80_op_label13
+    jmp __kefir_func_f80_op_label7
+__kefir_func_f80_op_label15:
+    fldt __kefir_func_f80_op_label24(%rip)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fsubp
     fstpt -32(%rbp)
-    cmp $0, %edi
-    je __kefir_func_f64x_op_label16
-    cmp $1, %edi
-    je __kefir_func_f64x_op_label14
-    cmp $2, %edi
-    je __kefir_func_f64x_op_label12
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f80_op_label7:
     cmp $3, %edi
-    je __kefir_func_f64x_op_label10
-    fldt __kefir_func_f64x_op_label18(%rip)
+    je __kefir_func_f80_op_label11
+    jmp __kefir_func_f80_op_label9
+__kefir_func_f80_op_label13:
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fmulp
+    fchs
+    fldt __kefir_func_f80_op_label26(%rip)
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f80_op_label9:
+    fldt __kefir_func_f80_op_label27(%rip)
     fldt -48(%rbp)
     fld %st(0)
     fstpt -48(%rbp)
@@ -412,11 +298,11 @@ __kefir_text_func_f64x_op_begin:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f64x_op_label10:
+__kefir_func_f80_op_label11:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fdivp
-    fldt __kefir_func_f64x_op_label19(%rip)
+    fldt __kefir_func_f80_op_label28(%rip)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
     fldt -32(%rbp)
@@ -425,34 +311,134 @@ __kefir_func_f64x_op_label10:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f64x_op_label12:
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fmulp
-    fchs
-    fldt __kefir_func_f64x_op_label20(%rip)
-    fstpt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fldcw -8(%rbp)
+__kefir_text_func_f80_op_end:
+.section .rodata
+    .align 8
+__kefir_func_f80_op_label22:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_f80_op_label24:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_f80_op_label26:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_f80_op_label27:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_f80_op_label28:
+    .quad 0
+    .quad 0
+.section .text
+
+f32x_op:
+__kefir_text_func_f32x_op_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    jmp __kefir_func_f32x_op_label1
+__kefir_func_f32x_op_label1:
+    movaps %xmm0, %xmm2
+    cmp $0, %edi
+    je __kefir_func_f32x_op_label17
+    jmp __kefir_func_f32x_op_label3
+__kefir_func_f32x_op_label3:
+    cmp $1, %edi
+    je __kefir_func_f32x_op_label15
+    jmp __kefir_func_f32x_op_label5
+__kefir_func_f32x_op_label17:
+    movq __kefir_func_f32x_op_label22(%rip), %xmm0
+    addsd %xmm1, %xmm2
+    movaps %xmm2, %xmm1
+    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f64x_op_label14:
-    fldt __kefir_func_f64x_op_label21(%rip)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fsubp
-    fstpt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -32(%rbp)
-    fldt -48(%rbp)
-    fldcw -8(%rbp)
+__kefir_func_f32x_op_label5:
+    cmp $2, %edi
+    je __kefir_func_f32x_op_label13
+    jmp __kefir_func_f32x_op_label7
+__kefir_func_f32x_op_label15:
+    movq __kefir_func_f32x_op_label24(%rip), %xmm0
+    subsd %xmm1, %xmm2
+    movaps %xmm2, %xmm1
+    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f64x_op_label16:
+__kefir_func_f32x_op_label7:
+    cmp $3, %edi
+    je __kefir_func_f32x_op_label11
+    jmp __kefir_func_f32x_op_label9
+__kefir_func_f32x_op_label13:
+    movaps %xmm2, %xmm0
+    mulsd %xmm1, %xmm0
+    xorpd __kefir_constant_float64_neg(%rip), %xmm0
+    movq __kefir_func_f32x_op_label26(%rip), %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f32x_op_label9:
+    movq __kefir_func_f32x_op_label27(%rip), %xmm0
+    movaps %xmm2, %xmm1
+    xorpd __kefir_constant_float64_neg(%rip), %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f32x_op_label11:
+    movaps %xmm2, %xmm0
+    divsd %xmm1, %xmm0
+    movq __kefir_func_f32x_op_label28(%rip), %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_f32x_op_end:
+.section .rodata
+    .align 8
+__kefir_func_f32x_op_label22:
+    .quad 0
+    .align 8
+__kefir_func_f32x_op_label24:
+    .quad 0
+    .align 8
+__kefir_func_f32x_op_label26:
+    .quad 0
+    .align 8
+__kefir_func_f32x_op_label27:
+    .quad 0
+    .align 8
+__kefir_func_f32x_op_label28:
+    .quad 0
+.section .text
+
+f64x_op:
+__kefir_text_func_f64x_op_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    jmp __kefir_func_f64x_op_label1
+__kefir_func_f64x_op_label1:
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    fstpt -48(%rbp)
+    fstpt -32(%rbp)
+    cmp $0, %edi
+    je __kefir_func_f64x_op_label17
+    jmp __kefir_func_f64x_op_label3
+__kefir_func_f64x_op_label3:
+    cmp $1, %edi
+    je __kefir_func_f64x_op_label15
+    jmp __kefir_func_f64x_op_label5
+__kefir_func_f64x_op_label17:
     fldt __kefir_func_f64x_op_label22(%rip)
     fldt -32(%rbp)
     fldt -48(%rbp)
@@ -465,26 +451,88 @@ __kefir_func_f64x_op_label16:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_f64x_op_label5:
+    cmp $2, %edi
+    je __kefir_func_f64x_op_label13
+    jmp __kefir_func_f64x_op_label7
+__kefir_func_f64x_op_label15:
+    fldt __kefir_func_f64x_op_label24(%rip)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fsubp
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f64x_op_label7:
+    cmp $3, %edi
+    je __kefir_func_f64x_op_label11
+    jmp __kefir_func_f64x_op_label9
+__kefir_func_f64x_op_label13:
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fmulp
+    fchs
+    fldt __kefir_func_f64x_op_label26(%rip)
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f64x_op_label9:
+    fldt __kefir_func_f64x_op_label27(%rip)
+    fldt -48(%rbp)
+    fld %st(0)
+    fstpt -48(%rbp)
+    fchs
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_f64x_op_label11:
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fdivp
+    fldt __kefir_func_f64x_op_label28(%rip)
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 __kefir_text_func_f64x_op_end:
 .section .rodata
     .align 8
-__kefir_func_f64x_op_label18:
-    .quad 0
-    .quad 0
-    .align 8
-__kefir_func_f64x_op_label19:
-    .quad 0
-    .quad 0
-    .align 8
-__kefir_func_f64x_op_label20:
-    .quad 0
-    .quad 0
-    .align 8
-__kefir_func_f64x_op_label21:
-    .quad 0
-    .quad 0
-    .align 8
 __kefir_func_f64x_op_label22:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_f64x_op_label24:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_f64x_op_label26:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_f64x_op_label27:
+    .quad 0
+    .quad 0
+    .align 8
+__kefir_func_f64x_op_label28:
     .quad 0
     .quad 0
 .section .text

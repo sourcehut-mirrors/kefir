@@ -11,95 +11,97 @@ __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    jmp __kefir_func_test1_label1
+__kefir_func_test1_label1:
     mov %rdi, %r9
     mov %rsi, %r10
     mov $1, %rax
     xor %ecx, %ecx
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rax, %rdi
+    mov %r10, %rsi
     adc %rcx, %rsi
     mov %r9, %rax
-    mov %r10, %rcx
     xor %rdi, %rax
+    mov %r10, %rcx
     xor %rsi, %rcx
     mov $2, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx
     mov $3, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx
     mov $4, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx
     mov $5, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx
     mov $6, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx
     mov $7, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx
     mov $8, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx
     mov $9, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx
     mov $10, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx
     mov $11, %rdx
     xor %r8d, %r8d
     mov %r9, %rdi
-    mov %r10, %rsi
     add %rdx, %rdi
+    mov %r10, %rsi
     adc %r8, %rsi
     xor %rdi, %rax
     xor %rsi, %rcx

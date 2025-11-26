@@ -22,10 +22,12 @@
 __kefir_text_section_begin:
 set8:
 __kefir_text_func_set8_begin:
+__kefir_func_set8_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_set8_label0:
+    jmp __kefir_func_set8_label1
+__kefir_func_set8_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %al, %al
@@ -35,15 +37,16 @@ movb %al, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_set8_label1:
 __kefir_text_func_set8_end:
 
 set16:
 __kefir_text_func_set16_begin:
+__kefir_func_set16_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_set16_label0:
+    jmp __kefir_func_set16_label1
+__kefir_func_set16_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %ax, %ax
@@ -53,15 +56,16 @@ movw %ax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_set16_label1:
 __kefir_text_func_set16_end:
 
 set32:
 __kefir_text_func_set32_begin:
+__kefir_func_set32_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_set32_label0:
+    jmp __kefir_func_set32_label1
+__kefir_func_set32_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %eax, %eax
@@ -71,15 +75,16 @@ movl %eax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_set32_label1:
 __kefir_text_func_set32_end:
 
 set64:
 __kefir_text_func_set64_begin:
+__kefir_func_set64_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_set64_label0:
+    jmp __kefir_func_set64_label1
+__kefir_func_set64_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %rax, %rax
@@ -89,15 +94,16 @@ movq %rax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_set64_label1:
 __kefir_text_func_set64_end:
 
 clear8:
 __kefir_text_func_clear8_begin:
+__kefir_func_clear8_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_clear8_label0:
+    jmp __kefir_func_clear8_label1
+__kefir_func_clear8_label1:
     movq %rdi, -8(%rbp)
 movb $0, %al
     mov %rax, -8(%rbp)
@@ -105,15 +111,16 @@ movb $0, %al
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_clear8_label1:
 __kefir_text_func_clear8_end:
 
 clear16:
 __kefir_text_func_clear16_begin:
+__kefir_func_clear16_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_clear16_label0:
+    jmp __kefir_func_clear16_label1
+__kefir_func_clear16_label1:
     movq %rdi, -8(%rbp)
 movw $0, %ax
     mov %rax, -8(%rbp)
@@ -121,15 +128,16 @@ movw $0, %ax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_clear16_label1:
 __kefir_text_func_clear16_end:
 
 clear32:
 __kefir_text_func_clear32_begin:
+__kefir_func_clear32_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_clear32_label0:
+    jmp __kefir_func_clear32_label1
+__kefir_func_clear32_label1:
     movq %rdi, -8(%rbp)
 movl $0, %eax
     mov %rax, -8(%rbp)
@@ -137,15 +145,16 @@ movl $0, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_clear32_label1:
 __kefir_text_func_clear32_end:
 
 clear64:
 __kefir_text_func_clear64_begin:
+__kefir_func_clear64_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_clear64_label0:
+    jmp __kefir_func_clear64_label1
+__kefir_func_clear64_label1:
     movq %rdi, -8(%rbp)
 movq $0, %rax
     mov %rax, -8(%rbp)
@@ -153,7 +162,6 @@ movq $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_clear64_label1:
 __kefir_text_func_clear64_end:
 
 __kefir_text_section_end:

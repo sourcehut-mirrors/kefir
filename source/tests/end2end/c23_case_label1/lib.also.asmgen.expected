@@ -12,21 +12,29 @@
 __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
+    jmp __kefir_func_test1_label1
+__kefir_func_test1_label1:
     cmp $0, %edi
-    je __kefir_func_test1_label6
+    je __kefir_func_test1_label7
+    jmp __kefir_func_test1_label3
+__kefir_func_test1_label3:
     cmp $1, %edi
-    je __kefir_func_test1_label6
-    neg %edi
+    je __kefir_func_test1_label7
+    jmp __kefir_func_test1_label5
+__kefir_func_test1_label7:
+    not %edi
     mov %rdi, %rax
     ret
-__kefir_func_test1_label6:
-    not %edi
+__kefir_func_test1_label5:
+    neg %edi
     mov %rdi, %rax
     ret
 __kefir_text_func_test1_end:
 
 test2:
 __kefir_text_func_test2_begin:
+    jmp __kefir_func_test2_label1
+__kefir_func_test2_label1:
     xor %eax, %eax
     cmp $1, %edi
     setge %al
@@ -34,21 +42,29 @@ __kefir_text_func_test2_begin:
     cmp $9, %edi
     setle %cl
     and %cl, %al
-    jnz __kefir_func_test2_label6
+    jnz __kefir_func_test2_label7
+    jmp __kefir_func_test2_label3
+__kefir_func_test2_label3:
     cmp $10, %edi
-    je __kefir_func_test2_label6
+    je __kefir_func_test2_label7
+    jmp __kefir_func_test2_label5
+__kefir_func_test2_label7:
+    neg %edi
     mov %rdi, %rax
     ret
-__kefir_func_test2_label6:
-    neg %edi
+__kefir_func_test2_label5:
     mov %rdi, %rax
     ret
 __kefir_text_func_test2_end:
 
 test3:
 __kefir_text_func_test3_begin:
+    jmp __kefir_func_test3_label1
+__kefir_func_test3_label1:
     cmp $10, %edi
-    je __kefir_func_test3_label4
+    je __kefir_func_test3_label5
+    jmp __kefir_func_test3_label3
+__kefir_func_test3_label3:
     xor %eax, %eax
     cmp $0, %edi
     setge %al
@@ -56,12 +72,13 @@ __kefir_text_func_test3_begin:
     cmp $9, %edi
     setle %cl
     and %cl, %al
-    jnz __kefir_func_test3_label6
-__kefir_func_test3_label4:
+    jnz __kefir_func_test3_label7
+    jmp __kefir_func_test3_label5
+__kefir_func_test3_label5:
     neg %edi
     mov %rdi, %rax
     ret
-__kefir_func_test3_label6:
+__kefir_func_test3_label7:
     mov %rdi, %rax
     ret
 __kefir_text_func_test3_end:

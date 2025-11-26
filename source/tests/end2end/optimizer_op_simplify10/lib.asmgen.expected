@@ -8,31 +8,33 @@
 __kefir_text_section_begin:
 test:
 __kefir_text_func_test_begin:
+__kefir_func_test_label0:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
-__kefir_func_test_label0:
+    jmp __kefir_func_test_label1
+__kefir_func_test_label1:
     movq $1, -80(%rbp)
     movq $3, -64(%rbp)
     movq $100, -40(%rbp)
     movq $-1000, -8(%rbp)
     movl $-314159, -112(%rbp)
-    xor %eax, %eax
+    mov %rcx, %rax
+    xor %ecx, %eax
     movq %rax, -104(%rbp)
     movq %rax, -96(%rbp)
     movq %rax, -88(%rbp)
     movl $1, -104(%rbp)
     movq $2, -96(%rbp)
-    movd __kefir_func_test_label2(%rip), %xmm0
+    movd __kefir_func_test_label4(%rip), %xmm0
     movd %xmm0, -88(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_test_label1:
 __kefir_text_func_test_end:
 .section .rodata
     .align 4
-__kefir_func_test_label2:
+__kefir_func_test_label4:
     .long 1077936128
 .section .text
 

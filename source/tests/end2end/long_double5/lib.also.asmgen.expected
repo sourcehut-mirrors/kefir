@@ -22,6 +22,8 @@ __kefir_text_func_eq_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_eq_label1
+__kefir_func_eq_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     xor %eax, %eax
@@ -42,6 +44,8 @@ __kefir_text_func_ge_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_ge_label1
+__kefir_func_ge_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fld %st(0)
@@ -79,6 +83,8 @@ __kefir_text_func_gr_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_gr_label1
+__kefir_func_gr_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     xor %eax, %eax
@@ -97,6 +103,8 @@ __kefir_text_func_le_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_le_label1
+__kefir_func_le_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fxch %st(1)
@@ -135,6 +143,8 @@ __kefir_text_func_lt_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_lt_label1
+__kefir_func_lt_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fxch %st(1)
@@ -154,16 +164,19 @@ __kefir_text_func_neq_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
+    jmp __kefir_func_neq_label1
+__kefir_func_neq_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
-    xor %ecx, %ecx
     xor %eax, %eax
+    xor %ecx, %ecx
     fucomip %st(1)
     fstp %st(0)
-    setnp %cl
-    cmovne %rax, %rcx
+    setnp %al
+    mov %rax, %rdx
+    cmovne %rcx, %rdx
     xor %eax, %eax
-    test %cl, %cl
+    test %dl, %dl
     sete %al
     fldcw -8(%rbp)
     lea (%rbp), %rsp

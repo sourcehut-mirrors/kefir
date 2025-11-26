@@ -8,18 +8,21 @@
 __kefir_text_section_begin:
 test:
 __kefir_text_func_test_begin:
+    jmp __kefir_func_test_label1
+__kefir_func_test_label1:
     xor %eax, %eax
     cmp $0, %edi
     setg %al
-    jg __kefir_func_test_label4
-__kefir_func_test_label2:
-    ret
-__kefir_func_test_label4:
+    jg __kefir_func_test_label5
+    jmp __kefir_func_test_label3
+__kefir_func_test_label5:
     movl (%rsi), %ecx
     xor %eax, %eax
     cmp $0, %ecx
     setg %al
-    jmp __kefir_func_test_label2
+    jmp __kefir_func_test_label3
+__kefir_func_test_label3:
+    ret
 __kefir_text_func_test_end:
 
 __kefir_text_section_end:

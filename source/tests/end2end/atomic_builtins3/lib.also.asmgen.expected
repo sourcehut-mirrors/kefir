@@ -22,6 +22,8 @@
 __kefir_text_section_begin:
 test2_atomic_exchange16:
 __kefir_text_func_test2_atomic_exchange16_begin:
+    jmp __kefir_func_test2_atomic_exchange16_label1
+__kefir_func_test2_atomic_exchange16_label1:
     xchgw (%rdi), %si
     mov %rsi, %rax
     ret
@@ -29,6 +31,8 @@ __kefir_text_func_test2_atomic_exchange16_end:
 
 test2_atomic_exchange32:
 __kefir_text_func_test2_atomic_exchange32_begin:
+    jmp __kefir_func_test2_atomic_exchange32_label1
+__kefir_func_test2_atomic_exchange32_label1:
     xchgl (%rdi), %esi
     mov %rsi, %rax
     ret
@@ -36,6 +40,8 @@ __kefir_text_func_test2_atomic_exchange32_end:
 
 test2_atomic_exchange64:
 __kefir_text_func_test2_atomic_exchange64_begin:
+    jmp __kefir_func_test2_atomic_exchange64_label1
+__kefir_func_test2_atomic_exchange64_label1:
     xchgq (%rdi), %rsi
     mov %rsi, %rax
     ret
@@ -43,6 +49,8 @@ __kefir_text_func_test2_atomic_exchange64_end:
 
 test_atomic_exchange8:
 __kefir_text_func_test_atomic_exchange8_begin:
+    jmp __kefir_func_test_atomic_exchange8_label1
+__kefir_func_test_atomic_exchange8_label1:
     xchgb (%rdi), %sil
     mov %rsi, %rax
     ret
@@ -50,6 +58,8 @@ __kefir_text_func_test_atomic_exchange8_end:
 
 test2_atomic_exchange8:
 __kefir_text_func_test2_atomic_exchange8_begin:
+    jmp __kefir_func_test2_atomic_exchange8_label1
+__kefir_func_test2_atomic_exchange8_label1:
     xchgb (%rdi), %sil
     mov %rsi, %rax
     ret
@@ -57,6 +67,8 @@ __kefir_text_func_test2_atomic_exchange8_end:
 
 test_atomic_exchange16:
 __kefir_text_func_test_atomic_exchange16_begin:
+    jmp __kefir_func_test_atomic_exchange16_label1
+__kefir_func_test_atomic_exchange16_label1:
     xchgw (%rdi), %si
     mov %rsi, %rax
     ret
@@ -64,6 +76,8 @@ __kefir_text_func_test_atomic_exchange16_end:
 
 test_atomic_exchange32:
 __kefir_text_func_test_atomic_exchange32_begin:
+    jmp __kefir_func_test_atomic_exchange32_label1
+__kefir_func_test_atomic_exchange32_label1:
     xchgl (%rdi), %esi
     mov %rsi, %rax
     ret
@@ -71,6 +85,8 @@ __kefir_text_func_test_atomic_exchange32_end:
 
 test_atomic_exchange64:
 __kefir_text_func_test_atomic_exchange64_begin:
+    jmp __kefir_func_test_atomic_exchange64_label1
+__kefir_func_test_atomic_exchange64_label1:
     xchgq (%rdi), %rsi
     mov %rsi, %rax
     ret

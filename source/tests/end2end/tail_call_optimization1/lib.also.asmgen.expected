@@ -12,18 +12,22 @@ __kefir_text_func_run_bf_begin:
     mov %rsp, %rbp
     push %rbx
     sub $5144, %rsp
-    mov %rdi, %rdx
+    jmp __kefir_func_run_bf_label1
+__kefir_func_run_bf_label1:
+    mov %rsi, %rdx
+    mov %rdi, %r8
     leaq -5152(%rbp), %rdi
     xor %eax, %eax
     mov $643, %rcx
+    mov %rax, %rsi
     rep stosq
-    movq %rdx, -5152(%rbp)
+    movq %r8, -5152(%rbp)
     movb $0, -5144(%rbp)
     movq $0, -1048(%rbp)
     movl $0, -24(%rbp)
     movw $0, -20(%rbp)
     movb $0, -18(%rbp)
-    movq %rsi, -16(%rbp)
+    movq %rdx, -16(%rbp)
     movq -5152(%rbp), %rax
     movl -24(%rbp), %ecx
     mov %rcx, %rdx
@@ -46,6 +50,8 @@ __kefir_text_func_run_bf_end:
 
 op_next:
 __kefir_text_func_op_next_begin:
+    jmp __kefir_func_op_next_label1
+__kefir_func_op_next_label1:
     movw 5132(%rdi), %ax
     add $1, %ax
     movw %ax, 5132(%rdi)
@@ -66,6 +72,8 @@ __kefir_text_func_op_next_end:
 
 op_plus:
 __kefir_text_func_op_plus_begin:
+    jmp __kefir_func_op_plus_label1
+__kefir_func_op_plus_label1:
     movzxw 5132(%rdi), %rax
     lea 8(%rdi), %rcx
     add %rax, %rcx
@@ -89,6 +97,8 @@ __kefir_text_func_op_plus_end:
 
 op_prev:
 __kefir_text_func_op_prev_begin:
+    jmp __kefir_func_op_prev_label1
+__kefir_func_op_prev_label1:
     movw 5132(%rdi), %ax
     add $-1, %ax
     movw %ax, 5132(%rdi)
@@ -109,6 +119,8 @@ __kefir_text_func_op_prev_end:
 
 op_minus:
 __kefir_text_func_op_minus_begin:
+    jmp __kefir_func_op_minus_label1
+__kefir_func_op_minus_label1:
     movzxw 5132(%rdi), %rax
     lea 8(%rdi), %rcx
     add %rax, %rcx
@@ -136,12 +148,15 @@ __kefir_text_func_op_print_begin:
     mov %rsp, %rbp
     push %rbx
     push %r12
+    jmp __kefir_func_op_print_label1
+__kefir_func_op_print_label1:
     mov %rdi, %r12
     movq 5136(%r12), %rbx
     movzxw 5132(%r12), %rax
     lea 8(%r12), %rdi
     add %rax, %rdi
-    movb (%rdi), %dil
+    movb (%rdi), %al
+    mov %rax, %rdi
     call *%rbx
     movq (%r12), %rax
     movl 5128(%r12), %ecx
@@ -164,6 +179,8 @@ __kefir_text_func_op_print_end:
 
 op_loop_end:
 __kefir_text_func_op_loop_end_begin:
+    jmp __kefir_func_op_loop_end_label1
+__kefir_func_op_loop_end_label1:
     mov %rdi, %rsi
     movb 5134(%rsi), %al
     add $-1, %al
@@ -174,7 +191,8 @@ __kefir_text_func_op_loop_end_begin:
     movzxb (%rdi), %rax
     cmp $0, %eax
     jne __kefir_func_op_loop_end_label4
-__kefir_func_op_loop_end_label2:
+    jmp __kefir_func_op_loop_end_label3
+__kefir_func_op_loop_end_label3:
     movq (%rsi), %rax
     lea 5128(%rsi), %rdi
     movl (%rdi), %ecx
@@ -200,11 +218,13 @@ __kefir_func_op_loop_end_label4:
     lea 5128(%rsi), %rdi
     sub $1, %rax
     movl %eax, (%rdi)
-    jmp __kefir_func_op_loop_end_label2
+    jmp __kefir_func_op_loop_end_label3
 __kefir_text_func_op_loop_end_end:
 
 op_loop_begin:
 __kefir_text_func_op_loop_begin_begin:
+    jmp __kefir_func_op_loop_begin_label1
+__kefir_func_op_loop_begin_label1:
     mov %rdi, %r8
     movzxw 5132(%r8), %rax
     lea 8(%r8), %rdi
@@ -212,9 +232,27 @@ __kefir_text_func_op_loop_begin_begin:
     movzxb (%rdi), %rax
     lea 5128(%r8), %rdi
     cmp $0, %eax
-    jne __kefir_func_op_loop_begin_label12
-    xor %esi, %esi
+    jne __kefir_func_op_loop_begin_label15
+    jmp __kefir_func_op_loop_begin_label2
 __kefir_func_op_loop_begin_label2:
+    xor %eax, %eax
+    mov %rax, %rsi
+    jmp __kefir_func_op_loop_begin_label3
+__kefir_func_op_loop_begin_label15:
+    lea 5128(%r8), %rdi
+    movl (%rdi), %eax
+    lea 5134(%r8), %rdi
+    movb (%rdi), %cl
+    mov %rcx, %rdx
+    add $1, %dl
+    movb %dl, (%rdi)
+    lea 4104(%r8), %rdi
+    movzx %cl, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rdi
+    movq %rax, (%rdi)
+    jmp __kefir_func_op_loop_begin_label12
+__kefir_func_op_loop_begin_label3:
     movq (%r8), %rax
     movl (%rdi), %ecx
     mov %rcx, %rdx
@@ -222,26 +260,15 @@ __kefir_func_op_loop_begin_label2:
     movl %edx, (%rdi)
     mov %ecx, %ecx
     add %rcx, %rax
-    movb (%rax), %al
+    mov %rcx, %rdx
+    movb (%rax), %dl
     mov %rsi, %rcx
     add $1, %ecx
-    movsx %al, %rdx
-    cmp $91, %edx
-    jne __kefir_func_op_loop_begin_label4
-__kefir_func_op_loop_begin_label14:
-    mov %rcx, %rdx
-    jmp __kefir_func_op_loop_begin_label6
-__kefir_func_op_loop_begin_label4:
-    movsx %al, %rax
-    cmp $93, %eax
-    je __kefir_func_op_loop_begin_label10
-    mov %rsi, %rdx
-__kefir_func_op_loop_begin_label6:
-    cmp $0, %edx
-    jbe __kefir_func_op_loop_begin_label8
-    mov %rdx, %rsi
-    jmp __kefir_func_op_loop_begin_label2
-__kefir_func_op_loop_begin_label8:
+    movsx %dl, %rax
+    cmp $91, %eax
+    je __kefir_func_op_loop_begin_label5
+    jmp __kefir_func_op_loop_begin_label7
+__kefir_func_op_loop_begin_label12:
     movq (%r8), %rax
     lea 5128(%r8), %rdi
     movl (%rdi), %ecx
@@ -257,29 +284,30 @@ __kefir_func_op_loop_begin_label8:
     movq (%rcx), %rax
     mov %r8, %rdi
     jmp *%rax
-__kefir_func_op_loop_begin_label10:
+__kefir_func_op_loop_begin_label5:
+    mov %rcx, %rax
+    jmp __kefir_func_op_loop_begin_label9
+__kefir_func_op_loop_begin_label7:
+    movsx %dl, %rax
+    cmp $93, %eax
+    je __kefir_func_op_loop_begin_label13
+    mov %rsi, %rax
+    jmp __kefir_func_op_loop_begin_label9
+__kefir_func_op_loop_begin_label9:
+    cmp $0, %eax
+    jbe __kefir_func_op_loop_begin_label12
+    mov %rax, %rsi
+    jmp __kefir_func_op_loop_begin_label3
+__kefir_func_op_loop_begin_label13:
     mov %rsi, %rax
     add $-1, %eax
-    mov %rax, %rdx
-    jmp __kefir_func_op_loop_begin_label6
-__kefir_func_op_loop_begin_label12:
-    lea 5128(%r8), %rdi
-    movl (%rdi), %eax
-    lea 5134(%r8), %rdi
-    movb (%rdi), %cl
-    mov %rcx, %rdx
-    add $1, %dl
-    movb %dl, (%rdi)
-    lea 4104(%r8), %rdi
-    movzx %cl, %rcx
-    imul $8, %rcx, %rcx
-    add %rcx, %rdi
-    movq %rax, (%rdi)
-    jmp __kefir_func_op_loop_begin_label8
+    jmp __kefir_func_op_loop_begin_label9
 __kefir_text_func_op_loop_begin_end:
 
 op_terminate:
 __kefir_text_func_op_terminate_begin:
+    jmp __kefir_func_op_terminate_label1
+__kefir_func_op_terminate_label1:
     xor %eax, %eax
     ret
 __kefir_text_func_op_terminate_end:

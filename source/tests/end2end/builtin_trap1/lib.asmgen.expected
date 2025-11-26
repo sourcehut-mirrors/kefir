@@ -8,10 +8,9 @@
 __kefir_text_section_begin:
 sum:
 __kefir_text_func_sum_begin:
+    jmp __kefir_func_sum_label1
+__kefir_func_sum_label1:
     ud2
-    add %esi, %edi
-    mov %rdi, %rax
-    ret
 __kefir_text_func_sum_end:
 
 __kefir_text_section_end:

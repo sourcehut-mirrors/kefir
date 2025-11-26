@@ -54,6 +54,8 @@
 __kefir_text_section_begin:
 char_int_or:
 __kefir_text_func_char_int_or_begin:
+    jmp __kefir_func_char_int_or_label1
+__kefir_func_char_int_or_label1:
     test %esi, %esi
     setne %al
     movzx %al, %rax
@@ -66,6 +68,8 @@ __kefir_text_func_char_int_or_end:
 
 int_char_or:
 __kefir_text_func_int_char_or_begin:
+    jmp __kefir_func_int_char_or_label1
+__kefir_func_int_char_or_label1:
     test %sil, %sil
     setne %al
     movzx %al, %rax
@@ -78,6 +82,8 @@ __kefir_text_func_int_char_or_end:
 
 int_long_or:
 __kefir_text_func_int_long_or_begin:
+    jmp __kefir_func_int_long_or_label1
+__kefir_func_int_long_or_label1:
     test %rsi, %rsi
     setne %al
     movzx %al, %rax
@@ -90,6 +96,8 @@ __kefir_text_func_int_long_or_end:
 
 long_int_or:
 __kefir_text_func_long_int_or_begin:
+    jmp __kefir_func_long_int_or_label1
+__kefir_func_long_int_or_label1:
     test %esi, %esi
     setne %al
     movzx %al, %rax
@@ -102,9 +110,11 @@ __kefir_text_func_long_int_or_end:
 
 long_char_and:
 __kefir_text_func_long_char_and_begin:
+    jmp __kefir_func_long_char_and_label1
+__kefir_func_long_char_and_label1:
     test %sil, %sil
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %rdi, %rdi
     setne %al
     and %al, %cl
@@ -114,6 +124,8 @@ __kefir_text_func_long_char_and_end:
 
 long_short_or:
 __kefir_text_func_long_short_or_begin:
+    jmp __kefir_func_long_short_or_label1
+__kefir_func_long_short_or_label1:
     test %si, %si
     setne %al
     movzx %al, %rax
@@ -126,9 +138,11 @@ __kefir_text_func_long_short_or_end:
 
 short_char_and:
 __kefir_text_func_short_char_and_begin:
+    jmp __kefir_func_short_char_and_label1
+__kefir_func_short_char_and_label1:
     test %sil, %sil
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %di, %di
     setne %al
     and %al, %cl
@@ -138,9 +152,11 @@ __kefir_text_func_short_char_and_end:
 
 short_long_and:
 __kefir_text_func_short_long_and_begin:
+    jmp __kefir_func_short_long_and_label1
+__kefir_func_short_long_and_label1:
     test %rsi, %rsi
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %di, %di
     setne %al
     and %al, %cl
@@ -150,9 +166,11 @@ __kefir_text_func_short_long_and_end:
 
 long_short_and:
 __kefir_text_func_long_short_and_begin:
+    jmp __kefir_func_long_short_and_label1
+__kefir_func_long_short_and_label1:
     test %si, %si
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %rdi, %rdi
     setne %al
     and %al, %cl
@@ -162,6 +180,8 @@ __kefir_text_func_long_short_and_end:
 
 short_char_or:
 __kefir_text_func_short_char_or_begin:
+    jmp __kefir_func_short_char_or_label1
+__kefir_func_short_char_or_label1:
     test %sil, %sil
     setne %al
     movzx %al, %rax
@@ -174,9 +194,11 @@ __kefir_text_func_short_char_or_end:
 
 short_int_and:
 __kefir_text_func_short_int_and_begin:
+    jmp __kefir_func_short_int_and_label1
+__kefir_func_short_int_and_label1:
     test %esi, %esi
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %di, %di
     setne %al
     and %al, %cl
@@ -186,6 +208,8 @@ __kefir_text_func_short_int_and_end:
 
 short_long_or:
 __kefir_text_func_short_long_or_begin:
+    jmp __kefir_func_short_long_or_label1
+__kefir_func_short_long_or_label1:
     test %rsi, %rsi
     setne %al
     movzx %al, %rax
@@ -198,9 +222,11 @@ __kefir_text_func_short_long_or_end:
 
 char_int_and:
 __kefir_text_func_char_int_and_begin:
+    jmp __kefir_func_char_int_and_label1
+__kefir_func_char_int_and_label1:
     test %esi, %esi
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %dil, %dil
     setne %al
     and %al, %cl
@@ -210,6 +236,8 @@ __kefir_text_func_char_int_and_end:
 
 char_long_or:
 __kefir_text_func_char_long_or_begin:
+    jmp __kefir_func_char_long_or_label1
+__kefir_func_char_long_or_label1:
     test %rsi, %rsi
     setne %al
     movzx %al, %rax
@@ -222,9 +250,11 @@ __kefir_text_func_char_long_or_end:
 
 int_char_and:
 __kefir_text_func_int_char_and_begin:
+    jmp __kefir_func_int_char_and_label1
+__kefir_func_int_char_and_label1:
     test %sil, %sil
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %edi, %edi
     setne %al
     and %al, %cl
@@ -234,9 +264,11 @@ __kefir_text_func_int_char_and_end:
 
 int_long_and:
 __kefir_text_func_int_long_and_begin:
+    jmp __kefir_func_int_long_and_label1
+__kefir_func_int_long_and_label1:
     test %rsi, %rsi
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %edi, %edi
     setne %al
     and %al, %cl
@@ -246,6 +278,8 @@ __kefir_text_func_int_long_and_end:
 
 int_short_or:
 __kefir_text_func_int_short_or_begin:
+    jmp __kefir_func_int_short_or_label1
+__kefir_func_int_short_or_label1:
     test %si, %si
     setne %al
     movzx %al, %rax
@@ -258,6 +292,8 @@ __kefir_text_func_int_short_or_end:
 
 long_char_or:
 __kefir_text_func_long_char_or_begin:
+    jmp __kefir_func_long_char_or_label1
+__kefir_func_long_char_or_label1:
     test %sil, %sil
     setne %al
     movzx %al, %rax
@@ -270,9 +306,11 @@ __kefir_text_func_long_char_or_end:
 
 long_int_and:
 __kefir_text_func_long_int_and_begin:
+    jmp __kefir_func_long_int_and_label1
+__kefir_func_long_int_and_label1:
     test %esi, %esi
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %rdi, %rdi
     setne %al
     and %al, %cl
@@ -282,6 +320,8 @@ __kefir_text_func_long_int_and_end:
 
 short_int_or:
 __kefir_text_func_short_int_or_begin:
+    jmp __kefir_func_short_int_or_label1
+__kefir_func_short_int_or_label1:
     test %esi, %esi
     setne %al
     movzx %al, %rax
@@ -294,9 +334,11 @@ __kefir_text_func_short_int_or_end:
 
 char_long_and:
 __kefir_text_func_char_long_and_begin:
+    jmp __kefir_func_char_long_and_label1
+__kefir_func_char_long_and_label1:
     test %rsi, %rsi
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %dil, %dil
     setne %al
     and %al, %cl
@@ -306,6 +348,8 @@ __kefir_text_func_char_long_and_end:
 
 char_short_or:
 __kefir_text_func_char_short_or_begin:
+    jmp __kefir_func_char_short_or_label1
+__kefir_func_char_short_or_label1:
     test %si, %si
     setne %al
     movzx %al, %rax
@@ -318,9 +362,11 @@ __kefir_text_func_char_short_or_end:
 
 char_short_and:
 __kefir_text_func_char_short_and_begin:
+    jmp __kefir_func_char_short_and_label1
+__kefir_func_char_short_and_label1:
     test %si, %si
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %dil, %dil
     setne %al
     and %al, %cl
@@ -330,9 +376,11 @@ __kefir_text_func_char_short_and_end:
 
 int_short_and:
 __kefir_text_func_int_short_and_begin:
+    jmp __kefir_func_int_short_and_label1
+__kefir_func_int_short_and_label1:
     test %si, %si
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     test %edi, %edi
     setne %al
     and %al, %cl

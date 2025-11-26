@@ -14,12 +14,15 @@
 __kefir_text_section_begin:
 bit_ceil:
 __kefir_text_func_bit_ceil_begin:
+    jmp __kefir_func_bit_ceil_label1
+__kefir_func_bit_ceil_label1:
     cmp $1, %rdi
-    jg __kefir_func_bit_ceil_label4
-    mov $1, %rax
+    jg __kefir_func_bit_ceil_label5
+    jmp __kefir_func_bit_ceil_label2
 __kefir_func_bit_ceil_label2:
-    ret
-__kefir_func_bit_ceil_label4:
+    mov $1, %rax
+    jmp __kefir_func_bit_ceil_label3
+__kefir_func_bit_ceil_label5:
     sub $1, %rdi
     bsr %rdi, %rax
     xor $63, %eax
@@ -28,17 +31,22 @@ __kefir_func_bit_ceil_label4:
     movsx %ecx, %rcx
     mov $2, %rax
     shl %cl, %rax
-    jmp __kefir_func_bit_ceil_label2
+    jmp __kefir_func_bit_ceil_label3
+__kefir_func_bit_ceil_label3:
+    ret
 __kefir_text_func_bit_ceil_end:
 
 bit_floor:
 __kefir_text_func_bit_floor_begin:
+    jmp __kefir_func_bit_floor_label1
+__kefir_func_bit_floor_label1:
     cmp $0, %rdi
-    jne __kefir_func_bit_floor_label4
-    xor %eax, %eax
+    jne __kefir_func_bit_floor_label5
+    jmp __kefir_func_bit_floor_label2
 __kefir_func_bit_floor_label2:
-    ret
-__kefir_func_bit_floor_label4:
+    xor %eax, %eax
+    jmp __kefir_func_bit_floor_label3
+__kefir_func_bit_floor_label5:
     bsr %rdi, %rax
     xor $63, %eax
     mov $63, %rcx
@@ -46,50 +54,60 @@ __kefir_func_bit_floor_label4:
     movsx %ecx, %rcx
     mov $1, %rax
     shl %cl, %rax
-    jmp __kefir_func_bit_floor_label2
+    jmp __kefir_func_bit_floor_label3
+__kefir_func_bit_floor_label3:
+    ret
 __kefir_text_func_bit_floor_end:
 
 rotate_left:
 __kefir_text_func_rotate_left_begin:
+    jmp __kefir_func_rotate_left_label1
+__kefir_func_rotate_left_label1:
+    mov %rdi, %r8
     movzx %sil, %rsi
     mov %rsi, %rax
     cdq
     mov $64, %rcx
     idiv %ecx
     movsx %edx, %rcx
-    mov %rdi, %r8
-    shl %cl, %r8
+    mov %r8, %rdi
+    shl %cl, %rdi
     mov %rsi, %rax
     neg %eax
     cdq
     mov $64, %rcx
     idiv %ecx
     movsx %edx, %rcx
-    shr %cl, %rdi
     mov %r8, %rax
-    or %rdi, %rax
+    shr %cl, %rax
+    or %rax, %rdi
+    mov %rdi, %rax
     ret
 __kefir_text_func_rotate_left_end:
 
 rotate_right:
 __kefir_text_func_rotate_right_begin:
+    jmp __kefir_func_rotate_right_label1
+__kefir_func_rotate_right_label1:
+    mov %rdi, %r8
     movzx %sil, %rsi
     mov %rsi, %rax
     cdq
     mov $64, %rcx
     idiv %ecx
     movsx %edx, %rcx
-    mov %rdi, %r8
-    shr %cl, %r8
+    mov %r8, %rdi
+    shr %cl, %rdi
     mov %rsi, %rax
     neg %eax
     cdq
     mov $64, %rcx
     idiv %ecx
     movsx %edx, %rcx
-    shl %cl, %rdi
     mov %r8, %rax
-    or %rdi, %rax
+    shl %cl, %rax
+    or %rax, %rdi
+    mov %rdi, %rax
     ret
 __kefir_text_func_rotate_right_end:
 

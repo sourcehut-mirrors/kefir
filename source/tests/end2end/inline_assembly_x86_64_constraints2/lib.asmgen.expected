@@ -8,6 +8,7 @@
 __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
+__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
@@ -17,7 +18,8 @@ __kefir_text_func_test1_begin:
     push %r15
     sub $40, %rsp
     stmxcsr -48(%rbp)
-__kefir_func_test1_label0:
+    jmp __kefir_func_test1_label1
+__kefir_func_test1_label1:
     movq %xmm0, -64(%rbp)
     movq %rdi, -56(%rbp)
     movq -56(%rbp), %r8
@@ -38,7 +40,7 @@ __kefir_func_test1_label0:
     movq %r10, -56(%rbp)
     movq -64(%rbp), %r10
     movq %r10, -80(%rbp)
-    movq __kefir_func_test1_label2(%rip), %xmm0
+    movq __kefir_func_test1_label4(%rip), %xmm0
     movq -80(%rbp), %xmm5
     addsd %xmm0, %xmm5
     movq %xmm5, -64(%rbp)
@@ -52,19 +54,20 @@ __kefir_func_test1_label0:
     movsx %eax, %r10
     movq -72(%rbp), %rax
     cvtsi2sd %r10, %xmm0
-    movq %r9, %xmm4
-    addsd %xmm0, %xmm4
-    cvtsi2sd %rax, %xmm0
-    movaps %xmm0, %xmm5
-    movq %rcx, %xmm0
-    addsd %xmm0, %xmm5
-    cvtsi2sd %rdx, %xmm0
-    movq %rsi, %xmm1
-    mulsd %xmm1, %xmm0
-    cvtsi2sd %rdi, %xmm1
+    movq %r9, %xmm1
     movaps %xmm1, %xmm3
+    addsd %xmm0, %xmm3
+    cvtsi2sd %rax, %xmm0
+    movq %rcx, %xmm1
+    addsd %xmm1, %xmm0
+    cvtsi2sd %rdx, %xmm1
+    movaps %xmm1, %xmm6
+    movq %rsi, %xmm1
+    mulsd %xmm1, %xmm6
+    cvtsi2sd %rdi, %xmm1
+    movaps %xmm1, %xmm7
     movq %r11, %xmm1
-    divsd %xmm1, %xmm3
+    divsd %xmm1, %xmm7
     mov %rbx, %rax
     neg %rax
     cvtsi2sd %rax, %xmm1
@@ -73,14 +76,14 @@ __kefir_func_test1_label0:
     mov %r13, %rax
     neg %rax
     cvtsi2sd %rax, %xmm2
-    movq %r14, %xmm6
-    divsd %xmm6, %xmm2
+    movq %r14, %xmm4
+    divsd %xmm4, %xmm2
     mov -56(%rbp), %rsi
     mov -64(%rbp), %rdi
-    movq %xmm4, %r9
-    movq %xmm5, %r10
-    movq %xmm0, %r12
-    movq %xmm3, %r14
+    movq %xmm3, %r9
+    movq %xmm0, %r10
+    movq %xmm6, %r12
+    movq %xmm7, %r14
     movq %r15, %xmm4
     movq -80(%rbp), %xmm5
 # %rsi, %rdi, %r8, %r9, %r10, %r12, %r14, %xmm1, %xmm2, %xmm4, %xmm5
@@ -93,11 +96,10 @@ __kefir_func_test1_label0:
     pop %rbx
     pop %rbp
     ret
-__kefir_func_test1_label1:
 __kefir_text_func_test1_end:
 .section .rodata
     .align 8
-__kefir_func_test1_label2:
+__kefir_func_test1_label4:
     .quad 4607182418800017408
 .section .text
 

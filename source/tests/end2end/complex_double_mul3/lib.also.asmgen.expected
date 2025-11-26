@@ -12,14 +12,21 @@ __kefir_text_func_mul_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
+    jmp __kefir_func_mul_label1
+__kefir_func_mul_label1:
     unpcklpd %xmm1, %xmm0
     movaps %xmm0, %xmm1
     xorps __kefir_constant_complex_float64_mul(%rip), %xmm1
-    shufpd $1, %xmm1, %xmm1
-    unpcklpd %xmm2, %xmm2
-    unpcklpd %xmm3, %xmm3
+    movaps %xmm1, %xmm4
+    shufpd $1, %xmm1, %xmm4
+    movaps %xmm2, %xmm1
+    unpcklpd %xmm2, %xmm1
+    movaps %xmm3, %xmm5
+    unpcklpd %xmm3, %xmm5
+    movaps %xmm1, %xmm2
     mulpd %xmm0, %xmm2
-    mulpd %xmm1, %xmm3
+    movaps %xmm5, %xmm3
+    mulpd %xmm4, %xmm3
     addpd %xmm2, %xmm3
     movaps %xmm3, %xmm1
     movaps %xmm3, %xmm0
