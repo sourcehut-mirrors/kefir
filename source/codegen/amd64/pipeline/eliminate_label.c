@@ -24,7 +24,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t collect_labels(struct kefir_mem *mem, const struct kefir_asmcmp_value *value,
+static kefir_result_t collect_labels(struct kefir_mem *mem, const struct kefir_asmcmp_context *context, const struct kefir_asmcmp_value *value,
                                      struct kefir_hashtreeset *alive_labels) {
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
@@ -53,6 +53,35 @@ static kefir_result_t collect_labels(struct kefir_mem *mem, const struct kefir_a
             }
             break;
 
+        case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX: {
+            struct kefir_asmcmp_inline_assembly_fragment_iterator iter;
+            kefir_result_t res;
+            for (res =
+                        kefir_asmcmp_inline_assembly_fragment_iter(context, value->inline_asm_idx, &iter);
+                    res == KEFIR_OK && iter.fragment != NULL; res = kefir_asmcmp_inline_assembly_fragment_next(&iter)) {
+
+                switch (iter.fragment->type) {
+                    case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                        // Intentionally left blank
+                        break;
+
+                    case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_VALUE:
+                        if (iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL) {
+                            REQUIRE_OK(kefir_hashtreeset_add(mem, alive_labels,
+                                                            (kefir_hashtreeset_entry_t) iter.fragment->value.internal_label));
+                        } else if (iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL) {
+                            REQUIRE_OK(kefir_hashtreeset_add(mem, alive_labels,
+                                                            (kefir_hashtreeset_entry_t) iter.fragment->value.rip_indirection.internal));
+                        } else if (iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT && iter.fragment->value.indirect.type == KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS) {
+                            REQUIRE_OK(kefir_hashtreeset_add(mem, alive_labels,
+                                                            (kefir_hashtreeset_entry_t) iter.fragment->value.indirect.base.internal_label));
+                        }
+                        break;
+                }
+            }
+            REQUIRE_OK(res);
+        } break;
+
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
@@ -61,7 +90,6 @@ static kefir_result_t collect_labels(struct kefir_mem *mem, const struct kefir_a
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
         case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
-        case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
             // Intentionally left blank
             break;
     }
@@ -76,9 +104,9 @@ static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_a
         struct kefir_asmcmp_instruction *instr;
         REQUIRE_OK(kefir_asmcmp_context_instr_at(context, instr_index, &instr));
 
-        REQUIRE_OK(collect_labels(mem, &instr->args[0], alive_labels));
-        REQUIRE_OK(collect_labels(mem, &instr->args[1], alive_labels));
-        REQUIRE_OK(collect_labels(mem, &instr->args[2], alive_labels));
+        REQUIRE_OK(collect_labels(mem, context, &instr->args[0], alive_labels));
+        REQUIRE_OK(collect_labels(mem, context, &instr->args[1], alive_labels));
+        REQUIRE_OK(collect_labels(mem, context, &instr->args[2], alive_labels));
     }
 
     kefir_result_t res;
