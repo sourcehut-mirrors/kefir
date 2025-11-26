@@ -53,6 +53,8 @@
 .section .text
 __kefir_text_section_begin:
 arg32:
+.file 0 "decimal_constants1"
+.loc 0 35 1
 __kefir_text_func_arg32_begin:
     jmp __kefir_func_arg32_label1
 __kefir_func_arg32_label1:
@@ -60,6 +62,7 @@ __kefir_func_arg32_label1:
 __kefir_text_func_arg32_end:
 
 arg64:
+.loc 0 39 1
 __kefir_text_func_arg64_begin:
     jmp __kefir_func_arg64_label1
 __kefir_func_arg64_label1:
@@ -67,6 +70,7 @@ __kefir_func_arg64_label1:
 __kefir_text_func_arg64_end:
 
 get32:
+.loc 0 23 1
 __kefir_text_func_get32_begin:
     jmp __kefir_func_get32_label1
 __kefir_func_get32_label1:
@@ -80,6 +84,7 @@ __kefir_func_get32_label4:
 .section .text
 
 get64:
+.loc 0 27 1
 __kefir_text_func_get64_begin:
     jmp __kefir_func_get64_label1
 __kefir_func_get64_label1:
@@ -93,6 +98,7 @@ __kefir_func_get64_label4:
 .section .text
 
 ret32:
+.loc 0 356 1
 __kefir_text_func_ret32_begin:
     push %rbp
     mov %rsp, %rbp
@@ -136,6 +142,7 @@ __kefir_func_ret32_label1:
 __kefir_text_func_ret32_end:
 
 ret64:
+.loc 0 362 1
 __kefir_text_func_ret64_begin:
     push %rbp
     mov %rsp, %rbp
@@ -180,6 +187,7 @@ __kefir_func_ret64_label1:
 __kefir_text_func_ret64_end:
 
 arg128:
+.loc 0 43 1
 __kefir_text_func_arg128_begin:
     jmp __kefir_func_arg128_label1
 __kefir_func_arg128_label1:
@@ -187,6 +195,7 @@ __kefir_func_arg128_label1:
 __kefir_text_func_arg128_end:
 
 arg32x:
+.loc 0 47 1
 __kefir_text_func_arg32x_begin:
     push %rbp
     mov %rsp, %rbp
@@ -298,6 +307,7 @@ __kefir_func_arg32x_label27:
 __kefir_text_func_arg32x_end:
 
 arg32y:
+.loc 0 236 1
 __kefir_text_func_arg32y_begin:
     push %rbp
     mov %rsp, %rbp
@@ -427,6 +437,7 @@ __kefir_func_arg32y_label27:
 __kefir_text_func_arg32y_end:
 
 arg64x:
+.loc 0 87 1
 __kefir_text_func_arg64x_begin:
     push %rbp
     mov %rsp, %rbp
@@ -538,6 +549,7 @@ __kefir_func_arg64x_label27:
 __kefir_text_func_arg64x_end:
 
 arg64y:
+.loc 0 276 1
 __kefir_text_func_arg64y_begin:
     push %rbp
     mov %rsp, %rbp
@@ -666,6 +678,7 @@ __kefir_func_arg64y_label27:
 __kefir_text_func_arg64y_end:
 
 get128:
+.loc 0 31 1
 __kefir_text_func_get128_begin:
     jmp __kefir_func_get128_label1
 __kefir_func_get128_label1:
@@ -679,6 +692,7 @@ __kefir_func_get128_label4:
 .section .text
 
 load32:
+.loc 0 167 1
 __kefir_text_func_load32_begin:
     jmp __kefir_func_load32_label1
 __kefir_func_load32_label1:
@@ -687,6 +701,7 @@ __kefir_func_load32_label1:
 __kefir_text_func_load32_end:
 
 load64:
+.loc 0 171 1
 __kefir_text_func_load64_begin:
     jmp __kefir_func_load64_label1
 __kefir_func_load64_label1:
@@ -695,6 +710,7 @@ __kefir_func_load64_label1:
 __kefir_text_func_load64_end:
 
 ret128:
+.loc 0 368 1
 __kefir_text_func_ret128_begin:
     push %rbp
     mov %rsp, %rbp
@@ -739,6 +755,7 @@ __kefir_func_ret128_label1:
 __kefir_text_func_ret128_end:
 
 swap32:
+.loc 0 389 1
 __kefir_text_func_swap32_begin:
     push %rbp
     mov %rsp, %rbp
@@ -762,6 +779,7 @@ __kefir_func_swap32_label1:
 __kefir_text_func_swap32_end:
 
 swap64:
+.loc 0 395 1
 __kefir_text_func_swap64_begin:
     push %rbp
     mov %rsp, %rbp
@@ -787,6 +805,7 @@ __kefir_func_swap64_label1:
 __kefir_text_func_swap64_end:
 
 arg128x:
+.loc 0 127 1
 __kefir_text_func_arg128x_begin:
     push %rbp
     mov %rsp, %rbp
@@ -898,6 +917,7 @@ __kefir_func_arg128x_label27:
 __kefir_text_func_arg128x_end:
 
 arg128y:
+.loc 0 316 1
 __kefir_text_func_arg128y_begin:
     push %rbp
     mov %rsp, %rbp
@@ -1026,6 +1046,7 @@ __kefir_func_arg128y_label27:
 __kefir_text_func_arg128y_end:
 
 load128:
+.loc 0 175 1
 __kefir_text_func_load128_begin:
     jmp __kefir_func_load128_label1
 __kefir_func_load128_label1:
@@ -1034,6 +1055,7 @@ __kefir_func_load128_label1:
 __kefir_text_func_load128_end:
 
 store32:
+.loc 0 179 1
 __kefir_text_func_store32_begin:
     jmp __kefir_func_store32_label1
 __kefir_func_store32_label1:
@@ -1042,6 +1064,7 @@ __kefir_func_store32_label1:
 __kefir_text_func_store32_end:
 
 store64:
+.loc 0 183 1
 __kefir_text_func_store64_begin:
     jmp __kefir_func_store64_label1
 __kefir_func_store64_label1:
@@ -1050,6 +1073,7 @@ __kefir_func_store64_label1:
 __kefir_text_func_store64_end:
 
 swap128:
+.loc 0 401 1
 __kefir_text_func_swap128_begin:
     push %rbp
     mov %rsp, %rbp
@@ -1077,6 +1101,7 @@ __kefir_func_swap128_label1:
 __kefir_text_func_swap128_end:
 
 store128:
+.loc 0 187 1
 __kefir_text_func_store128_begin:
     jmp __kefir_func_store128_label1
 __kefir_func_store128_label1:

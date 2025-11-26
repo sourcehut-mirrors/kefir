@@ -11,6 +11,8 @@
 .section .text
 __kefir_text_section_begin:
 fn1:
+.file 0 "source/tests/end2end/debug_info_local_vars1/lib.kefir.asmgen.c"
+.loc 0 25 1
 __kefir_text_func_fn1_begin:
     push %rbp
     mov %rsp, %rbp
@@ -84,6 +86,7 @@ __kefir_func_fn1_label8:
 __kefir_text_func_fn1_end:
 
 fn2:
+.loc 0 37 1
 __kefir_text_func_fn2_begin:
     push %rbp
     mov %rsp, %rbp
@@ -140,6 +143,7 @@ __kefir_func_fn2_label1:
 __kefir_text_func_fn2_end:
 
 fn3:
+.loc 0 42 1
 __kefir_text_func_fn3_begin:
     push %rbp
     mov %rsp, %rbp

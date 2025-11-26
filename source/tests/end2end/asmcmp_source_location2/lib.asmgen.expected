@@ -7,6 +7,8 @@
 .section .text
 __kefir_text_section_begin:
 factorial:
+.file 0 "source/tests/end2end/asmcmp_source_location2/lib.kefir.asmgen.c"
+.loc 0 21 1
 #{
 #    "function": {
 #        "code": [
@@ -20,7 +22,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    0
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -31,12 +34,14 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "function_prologue",
 #                "args": [],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -47,7 +52,8 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jmp",
@@ -57,7 +63,8 @@ factorial:
 #                        "label": 1
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -68,7 +75,8 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -78,7 +86,8 @@ factorial:
 #                        "value": 0
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -90,7 +99,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    1
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -101,7 +111,8 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -115,7 +126,8 @@ factorial:
 #                        "reg": "rdi"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -132,7 +144,8 @@ factorial:
 #                        "reg": "edi"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -149,7 +162,8 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -163,7 +177,8 @@ factorial:
 #                        "value": 0
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "cmp",
@@ -177,7 +192,8 @@ factorial:
 #                        "value": 0
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -191,7 +207,8 @@ factorial:
 #                        "reg": "rcx"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "setl",
@@ -201,7 +218,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "test",
@@ -215,7 +233,8 @@ factorial:
 #                        "reg": "eax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -229,7 +248,8 @@ factorial:
 #                        "reg": "rax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "sete",
@@ -239,7 +259,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "test",
@@ -253,7 +274,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jz",
@@ -263,7 +285,8 @@ factorial:
 #                        "label": 17
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jmp",
@@ -273,7 +296,8 @@ factorial:
 #                        "label": 3
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -283,7 +307,8 @@ factorial:
 #                        "value": 1
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -295,7 +320,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    17
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jmp",
@@ -305,7 +331,8 @@ factorial:
 #                        "label": 14
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -315,7 +342,8 @@ factorial:
 #                        "value": 17
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -327,7 +355,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    3
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -344,7 +373,8 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -358,7 +388,8 @@ factorial:
 #                        "value": 0
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "cmp",
@@ -372,7 +403,8 @@ factorial:
 #                        "value": 2
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -386,7 +418,8 @@ factorial:
 #                        "reg": "rcx"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "setl",
@@ -396,7 +429,8 @@ factorial:
 #                        "reg": "cl"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -410,7 +444,8 @@ factorial:
 #                        "value": 0
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -424,7 +459,8 @@ factorial:
 #                        "value": 2
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "cmp",
@@ -438,7 +474,8 @@ factorial:
 #                        "reg": "eax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -452,7 +489,8 @@ factorial:
 #                        "reg": "rdx"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "sete",
@@ -462,7 +500,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -476,7 +515,8 @@ factorial:
 #                        "reg": "rcx"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "or",
@@ -490,7 +530,8 @@ factorial:
 #                        "reg": "rax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -504,7 +545,8 @@ factorial:
 #                        "reg": "rcx"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "setne",
@@ -514,7 +556,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "movzx",
@@ -528,7 +571,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "test",
@@ -542,7 +586,8 @@ factorial:
 #                        "reg": "eax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -556,7 +601,8 @@ factorial:
 #                        "reg": "rax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "sete",
@@ -566,7 +612,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "test",
@@ -580,7 +627,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jz",
@@ -590,7 +638,8 @@ factorial:
 #                        "label": 18
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jmp",
@@ -600,7 +649,8 @@ factorial:
 #                        "label": 5
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -610,7 +660,8 @@ factorial:
 #                        "value": 3
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -622,7 +673,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    18
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jmp",
@@ -632,7 +684,8 @@ factorial:
 #                        "label": 12
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -642,7 +695,8 @@ factorial:
 #                        "value": 18
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -654,7 +708,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    14
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -668,12 +723,14 @@ factorial:
 #                        "value": 0
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "function_epilogue",
 #                "args": [],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -684,7 +741,8 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -695,12 +753,14 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "ret",
 #                "args": [],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -710,7 +770,8 @@ factorial:
 #                        "value": 14
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -722,7 +783,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    5
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -739,7 +801,8 @@ factorial:
 #                        "value": 1
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jmp",
@@ -749,7 +812,8 @@ factorial:
 #                        "label": 6
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -759,7 +823,8 @@ factorial:
 #                        "value": 5
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -771,7 +836,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    12
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -788,7 +854,8 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -802,12 +869,14 @@ factorial:
 #                        "reg": "rax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "function_epilogue",
 #                "args": [],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -818,7 +887,8 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -829,12 +899,14 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "ret",
 #                "args": [],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -844,7 +916,8 @@ factorial:
 #                        "value": 12
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -856,7 +929,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    6
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -873,7 +947,8 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -887,7 +962,8 @@ factorial:
 #                        "value": 0
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "cmp",
@@ -901,7 +977,8 @@ factorial:
 #                        "value": 1
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -915,7 +992,8 @@ factorial:
 #                        "reg": "rcx"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "setg",
@@ -925,7 +1003,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "test",
@@ -939,7 +1018,8 @@ factorial:
 #                        "reg": "eax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -953,7 +1033,8 @@ factorial:
 #                        "reg": "rax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "sete",
@@ -963,7 +1044,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "test",
@@ -977,7 +1059,8 @@ factorial:
 #                        "reg": "al"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jz",
@@ -987,7 +1070,8 @@ factorial:
 #                        "label": 19
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jmp",
@@ -997,7 +1081,8 @@ factorial:
 #                        "label": 8
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -1007,7 +1092,8 @@ factorial:
 #                        "value": 6
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -1019,7 +1105,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    19
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jmp",
@@ -1029,7 +1116,8 @@ factorial:
 #                        "label": 10
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -1039,7 +1127,8 @@ factorial:
 #                        "value": 19
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -1051,7 +1140,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    8
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -1068,7 +1158,8 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -1082,12 +1173,14 @@ factorial:
 #                        "reg": "rax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "function_epilogue",
 #                "args": [],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -1098,7 +1191,8 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "touch_virtual_register",
@@ -1109,12 +1203,14 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "ret",
 #                "args": [],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -1124,7 +1220,8 @@ factorial:
 #                        "value": 8
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_begin",
@@ -1136,7 +1233,8 @@ factorial:
 #                ],
 #                "labels": [
 #                    10
-#                ]
+#                ],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -1153,7 +1251,8 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -1170,7 +1269,8 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -1184,7 +1284,8 @@ factorial:
 #                        "reg": "rcx"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "imul",
@@ -1198,7 +1299,8 @@ factorial:
 #                        "reg": "eax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -1215,7 +1317,8 @@ factorial:
 #                        "reg": "ecx"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -1232,7 +1335,8 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -1246,7 +1350,8 @@ factorial:
 #                        "reg": "rax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "add",
@@ -1260,7 +1365,8 @@ factorial:
 #                        "value": -1
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -1277,7 +1383,8 @@ factorial:
 #                        "reg": "eax"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "jmp",
@@ -1287,7 +1394,8 @@ factorial:
 #                        "label": 6
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            },
 #            {
 #                "opcode": "virtual_block_end",
@@ -1297,7 +1405,8 @@ factorial:
 #                        "value": 10
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [],
+#                "source_location": null
 #            }
 #        ]
 #    }

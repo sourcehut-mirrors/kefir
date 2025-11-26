@@ -7,6 +7,8 @@
 .section .text
 __kefir_text_section_begin:
 compute:
+.file 0 "source/tests/end2end/x87_stack_dwarf1/lib.kefir.c"
+.loc 0 23 1
 __kefir_text_func_compute_begin:
     push %rbp
     mov %rsp, %rbp

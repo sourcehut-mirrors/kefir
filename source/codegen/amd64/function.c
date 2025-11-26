@@ -77,7 +77,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
 #undef CASE_INSTR
     }
 
-    if (function->codegen->config->debug_info) {
+    if (function->codegen->config->debug_info && !function->codegen->config->enable_target_ir) {
         kefir_asmcmp_label_index_t begin_asmlabel, end_asmlabel;
         const struct kefir_opt_code_instruction_schedule *instr_schedule;
         REQUIRE_OK(kefir_opt_code_schedule_of(&function->schedule, instruction->id, &instr_schedule));

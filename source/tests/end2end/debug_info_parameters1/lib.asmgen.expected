@@ -11,6 +11,8 @@
 .section .text
 __kefir_text_section_begin:
 test:
+.file 0 "source/tests/end2end/debug_info_parameters1/lib.kefir.asmgen.c"
+.loc 0 21 1
 __kefir_text_func_test_begin:
     jmp __kefir_func_test_label1
 __kefir_func_test_label1:
@@ -19,6 +21,7 @@ __kefir_func_test_label1:
 __kefir_text_func_test_end:
 
 test2:
+.loc 0 25 1
 __kefir_text_func_test2_begin:
     jmp __kefir_func_test2_label1
 __kefir_func_test2_label1:
@@ -26,6 +29,7 @@ __kefir_func_test2_label1:
 __kefir_text_func_test2_end:
 
 test3:
+.loc 0 27 1
 __kefir_text_func_test3_begin:
     jmp __kefir_func_test3_label1
 __kefir_func_test3_label1:

@@ -7,6 +7,8 @@
 .section .text
 __kefir_text_section_begin:
 sum:
+.file 0 "source/tests/end2end/nullptr3/lib.kefir.c"
+.loc 0 23 1
 __kefir_text_func_sum_begin:
     push %rbp
     mov %rsp, %rbp
