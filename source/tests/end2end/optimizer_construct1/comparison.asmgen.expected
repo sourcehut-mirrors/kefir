@@ -487,7 +487,8 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [],
+                    "allocation_placement": []
                 }
             }
         }

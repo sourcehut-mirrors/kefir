@@ -943,6 +943,9 @@ kefir_result_t kefir_opt_code_container_drop_instr(struct kefir_mem *mem, const 
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(drop_instr_impl(mem, code, instr_id, true));
+    if (code->event_listener != NULL) {
+        REQUIRE_OK(code->event_listener->on_drop_instruction(mem, code, instr_id, code->event_listener->payload));
+    }
     return KEFIR_OK;
 }
 
@@ -2887,6 +2890,10 @@ kefir_result_t kefir_opt_code_container_replace_references(struct kefir_mem *mem
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
+    }
+
+    if (code->event_listener != NULL && code->event_listener->on_new_instruction != NULL) {
+        REQUIRE_OK(code->event_listener->on_replace_instruction(mem, code, to_ref, from_ref, code->event_listener->payload));
     }
     return KEFIR_OK;
 }

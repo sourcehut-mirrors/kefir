@@ -736,17 +736,17 @@ __kefir_debug_loclist_section_entry_6:
     .byte 0
 __kefir_debug_loclist_section_entry_7:
     .byte 7
+    .quad __kefir_func_get2_label50
+    .quad __kefir_func_get2_label51
+    .byte 2
+    .byte 144
+    .byte 0
+    .byte 7
     .quad __kefir_func_get2_label18
     .quad __kefir_func_get2_label18
     .byte 3
     .byte 158
     .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label50
-    .quad __kefir_func_get2_label51
-    .byte 2
-    .byte 144
     .byte 0
     .byte 7
     .quad __kefir_func_get2_label21

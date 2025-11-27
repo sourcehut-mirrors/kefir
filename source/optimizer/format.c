@@ -1308,22 +1308,52 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
 
         REQUIRE_OK(kefir_json_output_object_key(json, "local_variables"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
-        struct kefir_opt_code_debug_info_local_variable_iterator iter;
-        struct kefir_opt_code_debug_info_local_variable_ref_iterator ref_iter;
-        kefir_opt_instruction_ref_t alloc_instr_ref;
-        kefir_opt_instruction_ref_t instr_ref;
+        struct kefir_opt_code_debug_info_local_variable_iterator local_variable_iter;
+        const struct kefir_opt_code_debug_info_local_variable *local_variable;
         kefir_result_t res;
-
-        for (res = kefir_opt_code_debug_info_local_variable_iter(debug_info, &iter, &alloc_instr_ref); res == KEFIR_OK;
-             res = kefir_opt_code_debug_info_local_variable_next(&iter, &alloc_instr_ref)) {
+        for (res = kefir_opt_code_debug_info_local_variable_iter(debug_info, &local_variable_iter, &local_variable); res == KEFIR_OK;
+             res = kefir_opt_code_debug_info_local_variable_next(&local_variable_iter, &local_variable)) {
             REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "variable"));
-            REQUIRE_OK(id_format(json, alloc_instr_ref));
-            REQUIRE_OK(kefir_json_output_object_key(json, "refs"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "variable_id"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, local_variable->variable_ref));
+            REQUIRE_OK(kefir_json_output_object_key(json, "allocations"));
             REQUIRE_OK(kefir_json_output_array_begin(json));
-            for (res = kefir_opt_code_debug_info_local_variable_ref_iter(debug_info, &ref_iter, alloc_instr_ref,
-                                                                         &instr_ref);
-                 res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_ref_next(&ref_iter, &instr_ref)) {
+            struct kefir_hashset_iterator ref_iter;
+            kefir_hashset_key_t ref_key;
+            for (res = kefir_hashset_iter(&local_variable->allocations, &ref_iter, &ref_key);
+                res == KEFIR_OK;
+                res = kefir_hashset_next(&ref_iter, &ref_key)) {
+                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, ref_key);
+                REQUIRE_OK(id_format(json, instr_ref));
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+            REQUIRE_OK(kefir_json_output_array_end(json));
+            REQUIRE_OK(kefir_json_output_object_end(json));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
+
+        REQUIRE_OK(kefir_json_output_object_key(json, "allocation_placement"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        struct kefir_opt_code_debug_info_allocation_placement_iterator placement_iter;
+        const struct kefir_opt_code_debug_info_allocation_placement *placement;
+        for (res = kefir_opt_code_debug_info_allocation_placement_iter(debug_info, &placement_iter, &placement); res == KEFIR_OK;
+             res = kefir_opt_code_debug_info_allocation_placement_next(&placement_iter, &placement)) {
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "allocation_ref"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, placement->allocation_ref));
+            REQUIRE_OK(kefir_json_output_object_key(json, "placement"));
+            REQUIRE_OK(kefir_json_output_array_begin(json));
+            struct kefir_hashset_iterator ref_iter;
+            kefir_hashset_key_t ref_key;
+            for (res = kefir_hashset_iter(&placement->placement, &ref_iter, &ref_key);
+                res == KEFIR_OK;
+                res = kefir_hashset_next(&ref_iter, &ref_key)) {
+                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, ref_key);
                 REQUIRE_OK(id_format(json, instr_ref));
             }
             if (res != KEFIR_ITERATOR_END) {

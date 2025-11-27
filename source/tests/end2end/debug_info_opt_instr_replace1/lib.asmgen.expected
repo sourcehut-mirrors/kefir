@@ -91,29 +91,55 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable": 0,
-                            "refs": [
-                                4
+                            "variable_id": 412316860416,
+                            "allocations": [
+                                0
                             ]
                         },
                         {
-                            "variable": 2,
-                            "refs": [
+                            "variable_id": 395136991233,
+                            "allocations": [
+                                31
+                            ]
+                        },
+                        {
+                            "variable_id": 395136991232,
+                            "allocations": [
+                                32
+                            ]
+                        },
+                        {
+                            "variable_id": 412316860417,
+                            "allocations": [
+                                2
+                            ]
+                        }
+                    ],
+                    "allocation_placement": [
+                        {
+                            "allocation_ref": 2,
+                            "placement": [
                                 39
                             ]
                         },
                         {
-                            "variable": 31,
-                            "refs": [
+                            "allocation_ref": 0,
+                            "placement": [
                                 4
                             ]
                         },
                         {
-                            "variable": 32,
-                            "refs": [
-                                36,
+                            "allocation_ref": 31,
+                            "placement": [
+                                38,
                                 37,
-                                38
+                                36
+                            ]
+                        },
+                        {
+                            "allocation_ref": 32,
+                            "placement": [
+                                4
                             ]
                         }
                     ]

@@ -30,7 +30,8 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [],
+                    "allocation_placement": []
                 }
             }
         },
@@ -101,7 +102,15 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [
+                        {
+                            "variable_id": 429496729600,
+                            "allocations": [
+                                0
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
                 }
             }
         },
@@ -209,7 +218,8 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [],
+                    "allocation_placement": []
                 }
             }
         },
@@ -243,7 +253,8 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [],
+                    "allocation_placement": []
                 }
             }
         }

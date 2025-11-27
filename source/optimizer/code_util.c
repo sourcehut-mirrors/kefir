@@ -483,9 +483,6 @@ static kefir_result_t copy_instruction_resolve_phi(struct kefir_mem *mem, struct
             REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor_of(debug_info, instr_ref));
         }
         REQUIRE_OK(kefir_opt_code_container_copy_instruction(mem, code, block_id, instr_ref, copied_instr_ref));
-        if (debug_info != NULL) {
-            REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, debug_info, instr_ref, *copied_instr_ref));
-        }
     }
     return KEFIR_OK;
 }
@@ -518,7 +515,6 @@ kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kef
             REQUIRE_OK(kefir_opt_code_container_add_control(code, target_block_id, replacement_ref));
         }
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, instr_ref));
-        REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, debug_info, instr_ref, replacement_ref));
     }
     REQUIRE_OK(res);
 
@@ -531,7 +527,6 @@ kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kef
             REQUIRE_OK(
                 copy_instruction_resolve_phi(mem, code, debug_info, instr_ref, target_block_id, &replacement_ref));
             REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, instr_ref));
-            REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, debug_info, instr_ref, replacement_ref));
         }
     }
     REQUIRE_OK(res);
@@ -656,7 +651,6 @@ static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir
         }
         REQUIRE_OK(kefir_opt_code_container_copy_instruction(mem, code, new_block_id, instr_ref, &replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, instr_ref));
-        REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, debug_info, instr_ref, replacement_ref));
         if (is_control_flow) {
             REQUIRE_OK(kefir_opt_code_container_add_control(code, new_block_id, replacement_ref));
             REQUIRE_OK(kefir_opt_code_container_drop_control(code, instr_ref));
@@ -873,7 +867,6 @@ kefir_result_t kefir_opt_move_instruction(struct kefir_mem *mem, struct kefir_op
     kefir_opt_instruction_ref_t moved_instr_ref;
     REQUIRE_OK(kefir_opt_code_container_copy_instruction(mem, code, target_block_id, instr_ref, &moved_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, moved_instr_ref, instr_ref));
-    REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, debug_info, instr_ref, moved_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, instr_ref));
     ASSIGN_PTR(moved_instr_ref_ptr, moved_instr_ref);
 

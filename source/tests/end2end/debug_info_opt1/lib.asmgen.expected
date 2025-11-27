@@ -152,60 +152,116 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable": 0,
-                            "refs": [
-                                22
+                            "variable_id": 386547056644,
+                            "allocations": [
+                                8
                             ]
                         },
                         {
-                            "variable": 2,
-                            "refs": [
-                                20
+                            "variable_id": 386547056647,
+                            "allocations": [
+                                14
                             ]
                         },
                         {
-                            "variable": 4,
-                            "refs": [
+                            "variable_id": 386547056641,
+                            "allocations": [
+                                2
+                            ]
+                        },
+                        {
+                            "variable_id": 386547056643,
+                            "allocations": [
+                                6
+                            ]
+                        },
+                        {
+                            "variable_id": 386547056646,
+                            "allocations": [
+                                12
+                            ]
+                        },
+                        {
+                            "variable_id": 386547056645,
+                            "allocations": [
+                                10
+                            ]
+                        },
+                        {
+                            "variable_id": 386547056648,
+                            "allocations": [
+                                16
+                            ]
+                        },
+                        {
+                            "variable_id": 386547056640,
+                            "allocations": [
+                                0
+                            ]
+                        },
+                        {
+                            "variable_id": 386547056642,
+                            "allocations": [
+                                4
+                            ]
+                        }
+                    ],
+                    "allocation_placement": [
+                        {
+                            "allocation_ref": 8,
+                            "placement": [
+                                53,
+                                30
+                            ]
+                        },
+                        {
+                            "allocation_ref": 4,
+                            "placement": [
                                 18
                             ]
                         },
                         {
-                            "variable": 6,
-                            "refs": [
+                            "allocation_ref": 16,
+                            "placement": [
+                                45,
+                                57
+                            ]
+                        },
+                        {
+                            "allocation_ref": 14,
+                            "placement": [
+                                42
+                            ]
+                        },
+                        {
+                            "allocation_ref": 0,
+                            "placement": [
+                                22
+                            ]
+                        },
+                        {
+                            "allocation_ref": 6,
+                            "placement": [
                                 26,
                                 49
                             ]
                         },
                         {
-                            "variable": 8,
-                            "refs": [
-                                30,
-                                53
-                            ]
-                        },
-                        {
-                            "variable": 10,
-                            "refs": [
-                                34,
-                                57
-                            ]
-                        },
-                        {
-                            "variable": 12,
-                            "refs": [
+                            "allocation_ref": 12,
+                            "placement": [
                                 38
                             ]
                         },
                         {
-                            "variable": 14,
-                            "refs": [
-                                42
+                            "allocation_ref": 2,
+                            "placement": [
+                                20
                             ]
                         },
                         {
-                            "variable": 16,
-                            "refs": [
-                                45,
+                            "allocation_ref": 10,
+                            "placement": [
+                                34,
                                 57
                             ]
                         }

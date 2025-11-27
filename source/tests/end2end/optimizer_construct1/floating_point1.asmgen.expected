@@ -286,7 +286,33 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [
+                        {
+                            "variable_id": 420906795009,
+                            "allocations": [
+                                2
+                            ]
+                        },
+                        {
+                            "variable_id": 420906795010,
+                            "allocations": [
+                                4
+                            ]
+                        },
+                        {
+                            "variable_id": 420906795008,
+                            "allocations": [
+                                0
+                            ]
+                        },
+                        {
+                            "variable_id": 420906795011,
+                            "allocations": [
+                                6
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
                 }
             }
         },
@@ -576,7 +602,33 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [
+                        {
+                            "variable_id": 438086664195,
+                            "allocations": [
+                                6
+                            ]
+                        },
+                        {
+                            "variable_id": 438086664193,
+                            "allocations": [
+                                2
+                            ]
+                        },
+                        {
+                            "variable_id": 438086664194,
+                            "allocations": [
+                                4
+                            ]
+                        },
+                        {
+                            "variable_id": 438086664192,
+                            "allocations": [
+                                0
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
                 }
             }
         },
@@ -684,7 +736,21 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [
+                        {
+                            "variable_id": 455266533376,
+                            "allocations": [
+                                0
+                            ]
+                        },
+                        {
+                            "variable_id": 455266533377,
+                            "allocations": [
+                                2
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
                 }
             }
         },
@@ -792,7 +858,21 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [
+                        {
+                            "variable_id": 472446402561,
+                            "allocations": [
+                                2
+                            ]
+                        },
+                        {
+                            "variable_id": 472446402560,
+                            "allocations": [
+                                0
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
                 }
             }
         },
@@ -900,7 +980,21 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [
+                        {
+                            "variable_id": 489626271745,
+                            "allocations": [
+                                2
+                            ]
+                        },
+                        {
+                            "variable_id": 489626271744,
+                            "allocations": [
+                                0
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
                 }
             }
         }

@@ -576,7 +576,33 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [
+                        {
+                            "variable_id": 395136991233,
+                            "allocations": [
+                                2
+                            ]
+                        },
+                        {
+                            "variable_id": 395136991235,
+                            "allocations": [
+                                6
+                            ]
+                        },
+                        {
+                            "variable_id": 395136991234,
+                            "allocations": [
+                                4
+                            ]
+                        },
+                        {
+                            "variable_id": 395136991232,
+                            "allocations": [
+                                0
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
                 }
             }
         },
@@ -1115,7 +1141,27 @@
                     }
                 ],
                 "debug": {
-                    "local_variables": []
+                    "local_variables": [
+                        {
+                            "variable_id": 412316860416,
+                            "allocations": [
+                                0
+                            ]
+                        },
+                        {
+                            "variable_id": 412316860418,
+                            "allocations": [
+                                4
+                            ]
+                        },
+                        {
+                            "variable_id": 412316860417,
+                            "allocations": [
+                                2
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
                 }
             }
         }
