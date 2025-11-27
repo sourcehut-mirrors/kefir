@@ -838,12 +838,17 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
             REQUIRE(asmcmp_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected virtual assembly instruction with inline assembly parameter"));
 
+            kefir_bool_t is_jump;
+            REQUIRE_OK(state->ops->klass->is_jump(state->asmcmp_ctx, instr_idx, &is_jump, state->ops->klass->payload));
+
             kefir_codegen_target_ir_block_ref_t target_block_ref = KEFIR_ID_NONE;
-            kefir_result_t res = kefir_hashtable_at(&state->block_head_instr, (kefir_hashtable_key_t) kefir_asmcmp_context_instr_next(state->asmcmp_ctx, instr_idx), &value);
-            if (res != KEFIR_NOT_FOUND) {
-                struct kefir_hashtree_node *node;
-                REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) value, &node));
-                target_block_ref = ((struct code_block_state *) node->value)->block_ref;
+            if (is_jump) {
+                kefir_result_t res = kefir_hashtable_at(&state->block_head_instr, (kefir_hashtable_key_t) kefir_asmcmp_context_instr_next(state->asmcmp_ctx, instr_idx), &value);
+                if (res != KEFIR_NOT_FOUND) {
+                    struct kefir_hashtree_node *node;
+                    REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) value, &node));
+                    target_block_ref = ((struct code_block_state *) node->value)->block_ref;
+                }
             }
 
             kefir_codegen_target_ir_instruction_ref_t inline_asm_ref;
