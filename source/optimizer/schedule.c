@@ -83,6 +83,7 @@ kefir_result_t kefir_opt_code_schedule_init(struct kefir_opt_code_schedule *sche
 
     REQUIRE_OK(kefir_hashtree_init(&schedule->instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&schedule->instructions, free_instruction_schedule, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&schedule->instructions_by_index, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&schedule->blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&schedule->blocks, free_block_schedule, NULL));
     REQUIRE_OK(kefir_hashtree_init(&schedule->blocks_by_index, &kefir_hashtree_uint_ops));
@@ -97,6 +98,7 @@ kefir_result_t kefir_opt_code_schedule_free(struct kefir_mem *mem, struct kefir_
 
     REQUIRE_OK(kefir_hashtree_free(mem, &schedule->blocks_by_index));
     REQUIRE_OK(kefir_hashtree_free(mem, &schedule->blocks));
+    REQUIRE_OK(kefir_hashtree_free(mem, &schedule->instructions_by_index));
     REQUIRE_OK(kefir_hashtree_free(mem, &schedule->instructions));
     return KEFIR_OK;
 }
@@ -417,6 +419,7 @@ static kefir_result_t schedule_instructions(struct schedule_instruction_param *p
             REQUIRE_OK(kefir_list_insert_after(param->mem, &param->block_schedule->instructions,
                                                kefir_list_tail(&param->block_schedule->instructions),
                                                (void *) (kefir_uptr_t) instr_ref));
+            REQUIRE_OK(kefir_hashtree_insert(param->mem, &param->schedule->instructions_by_index, (kefir_hashtree_key_t) instruction_schedule->linear_index, (kefir_hashtree_value_t) instr_ref));
         }
     }
 
@@ -542,6 +545,24 @@ kefir_result_t kefir_opt_code_schedule_of(const struct kefir_opt_code_schedule *
     REQUIRE_OK(res);
 
     *instr_schedule = (const struct kefir_opt_code_instruction_schedule *) node->value;
+    return KEFIR_OK;
+}
+
+
+kefir_result_t kefir_opt_code_schedule_at(const struct kefir_opt_code_schedule *schedule, kefir_size_t linear_index,
+                                          kefir_opt_instruction_ref_t *instr_ref_ptr) {
+    REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code schedule"));
+    REQUIRE(instr_ref_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction reference"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&schedule->instructions_by_index, (kefir_hashtree_key_t) linear_index, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer instruction schedule");
+    }
+    REQUIRE_OK(res);
+
+    *instr_ref_ptr = (kefir_opt_instruction_ref_t) node->value;
     return KEFIR_OK;
 }
 

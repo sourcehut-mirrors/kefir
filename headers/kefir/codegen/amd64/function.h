@@ -60,8 +60,7 @@ typedef struct kefir_codegen_amd64_function {
     kefir_asmcmp_virtual_register_index_t vararg_area;
 
     struct {
-        struct kefir_hashtree opt_instruction_location_labels;
-        struct kefir_hashtree ir_instructions;
+        struct kefir_hashtree instruction_labels;
         struct kefir_hashtree function_parameters;
         struct kefir_hashtree occupied_x87_stack_slots;
     } debug;
@@ -81,11 +80,12 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
                                                     kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                             kefir_opt_block_id_t, kefir_opt_block_id_t);
-kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations(struct kefir_mem *,
-                                                                                 struct kefir_codegen_amd64_function *,
-                                                                                 kefir_opt_instruction_ref_t);
 
-kefir_result_t kefir_codegen_amd64_function_find_instruction_lifetime(const struct kefir_codegen_amd64_function *,
+kefir_result_t kefir_codegen_amd64_function_find_instruction_definition_range(const struct kefir_codegen_amd64_function *,
+                                                                      kefir_opt_instruction_ref_t,
+                                                                      kefir_asmcmp_label_index_t *,
+                                                                      kefir_asmcmp_label_index_t *);
+kefir_result_t kefir_codegen_amd64_function_find_instruction_use_range(const struct kefir_codegen_amd64_function *,
                                                                       kefir_opt_instruction_ref_t,
                                                                       kefir_asmcmp_label_index_t *,
                                                                       kefir_asmcmp_label_index_t *);
@@ -93,8 +93,6 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct 
                                                                    kefir_size_t, kefir_size_t,
                                                                    kefir_asmcmp_label_index_t *,
                                                                    kefir_asmcmp_label_index_t *);
-kefir_result_t kefir_codegen_amd64_function_find_instruction_linear_index_label(
-    const struct kefir_codegen_amd64_function *, kefir_size_t, kefir_asmcmp_label_index_t *);
 
 kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         kefir_opt_instruction_ref_t,

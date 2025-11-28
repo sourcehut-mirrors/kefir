@@ -52,6 +52,7 @@ typedef struct kefir_opt_code_instruction_scheduler {
 
 typedef struct kefir_opt_code_schedule {
     struct kefir_hashtree instructions;
+    struct kefir_hashtree instructions_by_index;
     struct kefir_hashtree blocks;
     struct kefir_hashtree blocks_by_index;
     kefir_size_t next_block_index;
@@ -70,6 +71,8 @@ kefir_result_t kefir_opt_code_schedule_of_block(const struct kefir_opt_code_sche
                                                 const struct kefir_opt_code_block_schedule **);
 kefir_result_t kefir_opt_code_schedule_of(const struct kefir_opt_code_schedule *, kefir_opt_instruction_ref_t,
                                           const struct kefir_opt_code_instruction_schedule **);
+kefir_result_t kefir_opt_code_schedule_at(const struct kefir_opt_code_schedule *, kefir_size_t,
+                                          kefir_opt_instruction_ref_t *);
 kefir_bool_t kefir_opt_code_schedule_has(const struct kefir_opt_code_schedule *, kefir_opt_instruction_ref_t);
 kefir_bool_t kefir_opt_code_schedule_has_block(const struct kefir_opt_code_schedule *, kefir_opt_block_id_t);
 

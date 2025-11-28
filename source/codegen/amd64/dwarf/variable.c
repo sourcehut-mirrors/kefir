@@ -690,19 +690,15 @@ static kefir_result_t generate_x87_stack_locations_of_instruction(struct kefir_c
             kefir_opt_code_schedule_of(&codegen_function->schedule, x87_location_instr_ref, &location_instr_schedule));
 
         kefir_asmcmp_label_index_t location_range_begin_label, location_range_end_label;
-        res = kefir_codegen_amd64_function_find_instruction_linear_index_label(
-            codegen_function, location_instr_schedule->linear_index, &location_range_begin_label);
+        res = kefir_codegen_amd64_function_find_instruction_use_range(
+            codegen_function, x87_location_instr_ref, &location_range_begin_label, &location_range_end_label);
         if (res == KEFIR_NOT_FOUND) {
             continue;
         }
         REQUIRE_OK(res);
-
-        res = kefir_codegen_amd64_function_find_instruction_linear_index_label(
-            codegen_function, location_instr_schedule->linear_index + 1, &location_range_end_label);
-        if (res == KEFIR_NOT_FOUND) {
+        if (location_range_begin_label == KEFIR_ASMCMP_INDEX_NONE || location_range_end_label == KEFIR_ASMCMP_INDEX_NONE) {
             continue;
         }
-        REQUIRE_OK(res);
 
         const kefir_uint8_t regnum = X87_ST0_DWARF_REGNUM + x87_stack_slot;
 
@@ -724,7 +720,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
     REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
 
     kefir_asmcmp_label_index_t range_begin_label, range_end_label;
-    REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_lifetime(codegen_function, instr_ref, &range_begin_label,
+    REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_use_range(codegen_function, instr_ref, &range_begin_label,
                                                                       &range_end_label));
     REQUIRE(range_begin_label != KEFIR_ASMCMP_INDEX_NONE && range_end_label != KEFIR_ASMCMP_INDEX_NONE, KEFIR_OK);
 
