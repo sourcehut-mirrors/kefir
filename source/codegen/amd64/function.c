@@ -59,10 +59,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
 #undef CASE_INSTR
     }
 
-    kefir_size_t instruction_location;
-    REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(&function->function->debug_info, instruction->id,
+    kefir_opt_code_debug_info_code_ref_t instruction_location;
+    REQUIRE_OK(kefir_opt_code_debug_info_instruction_code_reference(&function->function->debug_info, instruction->id,
                                                               &instruction_location));
-    if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE &&
+    if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_CODE_REF_NONE &&
         function->codegen->config->debug_info) {
         const struct kefir_ir_debug_source_location *source_location;
         kefir_result_t res = kefir_ir_debug_function_source_map_find(
@@ -1148,11 +1148,11 @@ kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations
                                          (kefir_hashtree_value_t) x87_stack_index));
     }
 
-    kefir_size_t instruction_location;
-    REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(&function->function->debug_info, instr_ref,
+    kefir_opt_code_debug_info_code_ref_t instruction_location;
+    REQUIRE_OK(kefir_opt_code_debug_info_instruction_code_reference(&function->function->debug_info, instr_ref,
                                                               &instruction_location));
 
-    if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE &&
+    if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_CODE_REF_NONE &&
         !kefir_hashtree_has(&function->debug.ir_instructions, (kefir_hashtree_key_t) instruction_location)) {
         REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.ir_instructions,
                                          (kefir_hashtree_key_t) instruction_location,

@@ -910,10 +910,10 @@ static kefir_result_t do_inline_instr(kefir_opt_instruction_ref_t instr_ref, voi
     kefir_opt_block_id_t mapped_block_id;
     REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
 
-    kefir_size_t src_ir_instruction_location;
-    REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(&param->src_function->debug_info, instr_ref,
+    kefir_opt_code_debug_info_code_ref_t src_ir_instruction_location;
+    REQUIRE_OK(kefir_opt_code_debug_info_instruction_code_reference(&param->src_function->debug_info, instr_ref,
                                                               &src_ir_instruction_location));
-    REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(
+    REQUIRE_OK(kefir_opt_code_debug_info_next_instruction_code_reference(
         &param->dst_function->debug_info,
         param->dst_function->debug_info_mapping.ir_code_length + src_ir_instruction_location));
 

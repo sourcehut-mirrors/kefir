@@ -1624,11 +1624,11 @@ static kefir_result_t translate_code(struct kefir_mem *mem, const struct kefir_o
 
         const struct kefir_irinstr *instr = kefir_irblock_at(ir_block, state->ir_location);
         REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR instruction to be returned"));
-        REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(&state->function->debug_info,
+        REQUIRE_OK(kefir_opt_code_debug_info_next_instruction_code_reference(&state->function->debug_info,
                                                                              state->ir_location));
         REQUIRE_OK(translate_instruction(mem, module, &state->function->code, state, instr));
-        REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(
-            &state->function->debug_info, KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE));
+        REQUIRE_OK(kefir_opt_code_debug_info_next_instruction_code_reference(
+            &state->function->debug_info, KEFIR_OPT_CODE_DEBUG_INSTRUCTION_CODE_REF_NONE));
     }
 
     REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, state->ir_location));

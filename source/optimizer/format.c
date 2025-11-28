@@ -1127,9 +1127,9 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
 
     if (debug_info != NULL) {
         REQUIRE_OK(kefir_json_output_object_key(json, "ir_instruction"));
-        kefir_size_t instruction_location;
-        REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(debug_info, instr->id, &instruction_location));
-        if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE) {
+        kefir_opt_code_debug_info_code_ref_t instruction_location;
+        REQUIRE_OK(kefir_opt_code_debug_info_instruction_code_reference(debug_info, instr->id, &instruction_location));
+        if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_CODE_REF_NONE) {
             REQUIRE_OK(kefir_json_output_uinteger(json, instruction_location));
         } else {
             REQUIRE_OK(kefir_json_output_null(json));
