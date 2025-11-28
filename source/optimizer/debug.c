@@ -340,18 +340,18 @@ static kefir_result_t kefir_opt_code_debug_info_replace_reference(struct kefir_m
     kefir_result_t res;
     struct kefir_hashtable_iterator iter;
     kefir_hashtable_value_t table_value;
-    for (res = kefir_hashtable_iter(&debug_info->local_variables, &iter, NULL, &table_value);
-        res == KEFIR_OK; res = kefir_hashtable_next(&iter, NULL, &table_value)) {
-        ASSIGN_DECL_CAST(struct kefir_opt_code_debug_info_local_variable *, local_variable, table_value);
-        if (kefir_hashset_has(&local_variable->allocations, (kefir_hashset_key_t) instr_ref)) {
-            REQUIRE_OK(kefir_hashset_delete(&local_variable->allocations, (kefir_hashset_key_t) instr_ref));
-            if (replacement_instr_ref != KEFIR_ID_NONE) {
+    if (replacement_instr_ref != KEFIR_ID_NONE) {
+        for (res = kefir_hashtable_iter(&debug_info->local_variables, &iter, NULL, &table_value);
+            res == KEFIR_OK; res = kefir_hashtable_next(&iter, NULL, &table_value)) {
+            ASSIGN_DECL_CAST(struct kefir_opt_code_debug_info_local_variable *, local_variable, table_value);
+            if (kefir_hashset_has(&local_variable->allocations, (kefir_hashset_key_t) instr_ref)) {
+                REQUIRE_OK(kefir_hashset_delete(&local_variable->allocations, (kefir_hashset_key_t) replacement_instr_ref));
                 REQUIRE_OK(kefir_hashset_add(mem, &local_variable->allocations, (kefir_hashset_key_t) replacement_instr_ref));
             }
         }
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
     }
 
     for (res = kefir_hashtable_iter(&debug_info->allocations, &iter, NULL, &table_value);
