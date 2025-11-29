@@ -751,22 +751,10 @@ __kefir_debug_loclists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_loclist_section_entry_1:
-    .byte 7
-    .quad __kefir_func_get_label2
-    .quad __kefir_func_get_label19
-    .byte 2
-    .byte 145
-    .byte 126
     .byte 0
 __kefir_debug_loclist_section_entry_2:
     .byte 0
 __kefir_debug_loclist_section_entry_3:
-    .byte 7
-    .quad __kefir_func_get2_label2
-    .quad __kefir_func_get2_label19
-    .byte 2
-    .byte 145
-    .byte 126
     .byte 0
 __kefir_debug_loclist_section_entry_4:
     .byte 0

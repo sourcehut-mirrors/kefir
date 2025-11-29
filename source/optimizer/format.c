@@ -20,6 +20,7 @@
 
 #include "kefir/optimizer/format.h"
 #include "kefir/optimizer/schedule.h"
+#include "kefir/optimizer/topological_schedule.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -1283,12 +1284,13 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
     REQUIRE_OK(kefir_json_output_object_key(json, "entry_point"));
     REQUIRE_OK(id_format(json, code->entry_point));
 
-    struct kefir_opt_code_instruction_scheduler scheduler = KEFIR_OPT_CODE_INSTRUCTION_DEFAULT_SCHEDULE_INIT(code);
+    struct kefir_opt_code_topological_scheduler topological_scheduler;
+    REQUIRE_OK(kefir_opt_code_topological_scheduler_init(&topological_scheduler, kefir_opt_code_topological_scheduler_default_schedule, (void *) code));
     struct kefir_opt_code_schedule schedule;
     kefir_result_t res = KEFIR_OK;
     if (mem != NULL && code_analysis != NULL) {
         REQUIRE_OK(kefir_opt_code_schedule_init(&schedule));
-        res = kefir_opt_code_schedule_run(mem, &schedule, code, code_analysis, &scheduler);
+        res = kefir_opt_code_schedule_run(mem, &schedule, code, code_analysis, &topological_scheduler.scheduler);
     }
     REQUIRE_CHAIN(&res, format_blocks(json, module, code, code_analysis,
                                       mem != NULL && code_analysis != NULL ? &schedule : NULL, debug_info));

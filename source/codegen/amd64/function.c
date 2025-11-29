@@ -28,6 +28,7 @@
 #include "kefir/codegen/asmcmp/format.h"
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/optimizer/topological_schedule.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -268,7 +269,7 @@ kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *mem,
 }
 
 static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
-                                         kefir_opt_code_instruction_scheduler_dependency_callback_t dependency_callback,
+                                         kefir_opt_code_topological_scheduler_instruction_dependency_callback_t dependency_callback,
                                          void *dependency_callback_payload, kefir_bool_t *schedule_instruction,
                                          void *payload) {
     REQUIRE(
@@ -473,10 +474,10 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
 static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
     // Schedule code
     struct scheduler_schedule_param scheduler_param = {.mem = mem, .func = func};
-    struct kefir_opt_code_instruction_scheduler scheduler = {.try_schedule = scheduler_schedule,
-                                                             .payload = &scheduler_param};
+    struct kefir_opt_code_topological_scheduler scheduler;
+    REQUIRE_OK(kefir_opt_code_topological_scheduler_init(&scheduler, scheduler_schedule, &scheduler_param));
     REQUIRE_OK(
-        kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, &func->function_analysis, &scheduler));
+        kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, &func->function_analysis, &scheduler.scheduler));
 
     REQUIRE_OK(collect_translated_instructions(mem, func));
     // Initialize block labels
@@ -1197,14 +1198,14 @@ kefir_result_t kefir_codegen_amd64_function_find_instruction_use_range(
     REQUIRE_OK(res);
 
     kefir_opt_instruction_ref_t use_begin_instr_ref = KEFIR_ID_NONE, use_end_instr_ref = KEFIR_ID_NONE;
-    res = kefir_opt_code_schedule_at(&codegen_function->schedule, instruction_schedule->liveness_range.begin_index, &use_begin_instr_ref);
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
-    }
-    res = kefir_opt_code_schedule_at(&codegen_function->schedule, instruction_schedule->liveness_range.end_index, &use_end_instr_ref);
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
-    }
+    // res = kefir_opt_code_schedule_at(&codegen_function->schedule, instruction_schedule->liveness_range.begin_index, &use_begin_instr_ref);
+    // if (res != KEFIR_NOT_FOUND) {
+    //     REQUIRE_OK(res);
+    // }
+    // res = kefir_opt_code_schedule_at(&codegen_function->schedule, instruction_schedule->liveness_range.end_index, &use_end_instr_ref);
+    // if (res != KEFIR_NOT_FOUND) {
+    //     REQUIRE_OK(res);
+    // }
 
     if (use_begin_instr_ref != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_definition_range(codegen_function, use_begin_instr_ref, begin_label, NULL));
@@ -1223,7 +1224,7 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
     REQUIRE(end_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
 
     kefir_asmcmp_label_index_t tmp_label, tmp2_label;
-    kefir_size_t begin_linear_position = 0, end_linear_position = 0;
+    // kefir_size_t begin_linear_position = 0, end_linear_position = 0;
     *begin_label = KEFIR_ASMCMP_INDEX_NONE;
     *end_label = KEFIR_ASMCMP_INDEX_NONE;
 
@@ -1249,16 +1250,16 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
             }
             REQUIRE_OK(res);
 
-            if (*begin_label == KEFIR_ASMCMP_INDEX_NONE ||
-                instr_schedule->liveness_range.begin_index < begin_linear_position) {
-                *begin_label = tmp_label;
-                begin_linear_position = instr_schedule->linear_index;
-            }
+            // if (*begin_label == KEFIR_ASMCMP_INDEX_NONE ||
+            //     instr_schedule->liveness_range.begin_index < begin_linear_position) {
+            //     *begin_label = tmp_label;
+            //     begin_linear_position = instr_schedule->linear_index;
+            // }
 
-            if (*end_label == KEFIR_ASMCMP_INDEX_NONE || instr_schedule->liveness_range.end_index > end_linear_position) {
-                *end_label = tmp2_label;
-                end_linear_position = instr_schedule->linear_index;
-            }
+            // if (*end_label == KEFIR_ASMCMP_INDEX_NONE || instr_schedule->liveness_range.end_index > end_linear_position) {
+            //     *end_label = tmp2_label;
+            //     end_linear_position = instr_schedule->linear_index;
+            // }
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
