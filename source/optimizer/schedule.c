@@ -220,7 +220,7 @@ static kefir_result_t builder_schedule_instruction(struct kefir_mem *mem, kefir_
     instruction_schedule->instr_ref = instr_ref;
 
     table_value = (((kefir_uint64_t) block_schedule->linear_position) << 32) | (kefir_uint32_t) instruction_schedule->linear_position;
-    REQUIRE_OK(kefir_hashtable_insert(mem, &builder_payload->schedule->instructions_by_ref, (kefir_hashtable_key_t) instr_ref, (kefir_hashtable_value_t) block_schedule->linear_position));
+    REQUIRE_OK(kefir_hashtable_insert(mem, &builder_payload->schedule->instructions_by_ref, (kefir_hashtable_key_t) instr_ref, table_value));
     block_schedule->instructions_length++;
     ASSIGN_PTR(linear_index_ptr, instruction_schedule->linear_position);
     return KEFIR_OK;

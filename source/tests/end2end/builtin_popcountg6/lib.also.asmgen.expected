@@ -154,7 +154,7 @@ __kefir_runtime_text_func___kefir_bigint_nonzero_count_begin:
     sub $24, %rsp
     mov %rdi, %r14
     cmp $0, %rsi
-    je __kefir_runtime_func___kefir_bigint_nonzero_count_label6
+    je __kefir_runtime_func___kefir_bigint_nonzero_count_label12
     mov %rsi, %rax
     sub $-7, %rax
     xor %edx, %edx
@@ -168,9 +168,9 @@ __kefir_runtime_text_func___kefir_bigint_nonzero_count_begin:
     subq %rcx, -64(%rbp)
     movq $0, -56(%rbp)
     xor %r10d, %r10d
-__kefir_runtime_func___kefir_bigint_nonzero_count_label2:
+__kefir_runtime_func___kefir_bigint_nonzero_count_label4:
     cmpq %r15, -56(%rbp)
-    jb __kefir_runtime_func___kefir_bigint_nonzero_count_label4
+    jb __kefir_runtime_func___kefir_bigint_nonzero_count_label8
     mov %r10, %rax
     lea -40(%rbp), %rsp
     pop %r15
@@ -180,7 +180,7 @@ __kefir_runtime_func___kefir_bigint_nonzero_count_label2:
     pop %rbx
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_nonzero_count_label4:
+__kefir_runtime_func___kefir_bigint_nonzero_count_label8:
     mov %r14, %rdi
     addq -56(%rbp), %rdi
     movzxb (%rdi), %rbx
@@ -192,7 +192,7 @@ __kefir_runtime_func___kefir_bigint_nonzero_count_label4:
     cmovae %rsi, %rdx
     xor %r12d, %r12d
     mov %r10, %r13
-__kefir_runtime_func___kefir_bigint_nonzero_count_label5:
+__kefir_runtime_func___kefir_bigint_nonzero_count_label10:
     movq -56(%rbp), %r8
     add $1, %r8
     lea 1(%r12), %r9
@@ -206,15 +206,15 @@ __kefir_runtime_func___kefir_bigint_nonzero_count_label5:
     cmove %rax, %r11
     mov %r11, %rax
     cmp %rdx, %r12
-    jb __kefir_runtime_func___kefir_bigint_nonzero_count_label7
+    jb __kefir_runtime_func___kefir_bigint_nonzero_count_label14
     movq %r8, -56(%rbp)
     mov %r13, %r10
-    jmp __kefir_runtime_func___kefir_bigint_nonzero_count_label2
-__kefir_runtime_func___kefir_bigint_nonzero_count_label7:
+    jmp __kefir_runtime_func___kefir_bigint_nonzero_count_label4
+__kefir_runtime_func___kefir_bigint_nonzero_count_label14:
     mov %r9, %r12
     mov %rax, %r13
-    jmp __kefir_runtime_func___kefir_bigint_nonzero_count_label5
-__kefir_runtime_func___kefir_bigint_nonzero_count_label6:
+    jmp __kefir_runtime_func___kefir_bigint_nonzero_count_label10
+__kefir_runtime_func___kefir_bigint_nonzero_count_label12:
     xor %eax, %eax
     lea -40(%rbp), %rsp
     pop %r15

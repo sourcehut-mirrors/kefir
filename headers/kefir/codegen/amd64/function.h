@@ -49,6 +49,7 @@ typedef struct kefir_codegen_amd64_function {
 
     struct kefir_hashtreeset translated_instructions;
     struct kefir_hashtree labels;
+    struct kefir_hashtree block_end_labels;
     struct kefir_hashtree virtual_registers;
     struct kefir_hashtree constants;
     struct kefir_hashtree type_layouts;

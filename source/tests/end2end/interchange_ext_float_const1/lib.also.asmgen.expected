@@ -26,57 +26,57 @@
 __kefir_text_section_begin:
 mygeta:
 __kefir_text_func_mygeta_begin:
-    movd __kefir_func_mygeta_label1(%rip), %xmm0
+    movd __kefir_func_mygeta_label2(%rip), %xmm0
     ret
 __kefir_text_func_mygeta_end:
 .section .rodata
     .align 4
-__kefir_func_mygeta_label1:
+__kefir_func_mygeta_label2:
     .long 1078530000
 .section .text
 
 mygetb:
 __kefir_text_func_mygetb_begin:
-    movq __kefir_func_mygetb_label1(%rip), %xmm0
+    movq __kefir_func_mygetb_label2(%rip), %xmm0
     ret
 __kefir_text_func_mygetb_end:
 .section .rodata
     .align 8
-__kefir_func_mygetb_label1:
+__kefir_func_mygetb_label2:
     .quad 4613303441197561744
 .section .text
 
 mygetc:
 __kefir_text_func_mygetc_begin:
-    movq __kefir_func_mygetc_label1(%rip), %xmm0
+    movq __kefir_func_mygetc_label2(%rip), %xmm0
     ret
 __kefir_text_func_mygetc_end:
 .section .rodata
     .align 8
-__kefir_func_mygetc_label1:
+__kefir_func_mygetc_label2:
     .quad 4614256650576692846
 .section .text
 
 mygetd:
 __kefir_text_func_mygetd_begin:
-    fldt __kefir_func_mygetd_label1(%rip)
+    fldt __kefir_func_mygetd_label2(%rip)
     ret
 __kefir_text_func_mygetd_end:
 .section .rodata
     .align 8
-__kefir_func_mygetd_label1:
+__kefir_func_mygetd_label2:
     .quad 12535853870170799992
     .quad 16384
 .section .text
 
 mygete:
 __kefir_text_func_mygete_begin:
-    fldt __kefir_func_mygete_label1(%rip)
+    fldt __kefir_func_mygete_label2(%rip)
     ret
 __kefir_text_func_mygete_end:
 .section .rodata
     .align 8
-__kefir_func_mygete_label1:
+__kefir_func_mygete_label2:
     .quad 14488026678631297565
     .quad 16384
 .section .text

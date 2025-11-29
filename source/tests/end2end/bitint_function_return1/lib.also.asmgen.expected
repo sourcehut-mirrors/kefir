@@ -504,7 +504,9 @@ test1:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    1
+#                ]
 #            },
 #            {
 #                "opcode": "noop",
@@ -823,7 +825,8 @@ __kefir_bigint_invert:
 #                    }
 #                ],
 #                "labels": [
-#                    1
+#                    1,
+#                    2
 #                ]
 #            },
 #            {
@@ -880,7 +883,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "internal_label",
-#                        "label": 3
+#                        "label": 6
 #                    }
 #                ],
 #                "labels": []
@@ -948,7 +951,8 @@ __kefir_bigint_invert:
 #                    }
 #                ],
 #                "labels": [
-#                    2
+#                    3,
+#                    4
 #                ]
 #            },
 #            {
@@ -1008,7 +1012,8 @@ __kefir_bigint_invert:
 #                    }
 #                ],
 #                "labels": [
-#                    3
+#                    5,
+#                    6
 #                ]
 #            },
 #            {
@@ -1192,7 +1197,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "internal_label",
-#                        "label": 1
+#                        "label": 2
 #                    }
 #                ],
 #                "labels": []
@@ -1227,7 +1232,9 @@ __kefir_bigint_invert:
 #            {
 #                "opcode": "noop",
 #                "args": [],
-#                "labels": []
+#                "labels": [
+#                    7
+#                ]
 #            }
 #        ]
 #    }
@@ -1240,12 +1247,12 @@ __kefir_runtime_text_func___kefir_bigint_invert_begin:
     mov $8, %rcx
     div %rcx
     xor %edx, %edx
-__kefir_runtime_func___kefir_bigint_invert_label1:
+__kefir_runtime_func___kefir_bigint_invert_label2:
     cmp %rax, %rdx
-    jb __kefir_runtime_func___kefir_bigint_invert_label3
+    jb __kefir_runtime_func___kefir_bigint_invert_label6
     xor %eax, %eax
     ret
-__kefir_runtime_func___kefir_bigint_invert_label3:
+__kefir_runtime_func___kefir_bigint_invert_label6:
     mov %r8, %rdi
     add %rdx, %rdi
     movzxb (%rdi), %rcx
@@ -1253,7 +1260,7 @@ __kefir_runtime_func___kefir_bigint_invert_label3:
     movb %cl, (%rdi)
     lea 1(%rdx), %rcx
     mov %rcx, %rdx
-    jmp __kefir_runtime_func___kefir_bigint_invert_label1
+    jmp __kefir_runtime_func___kefir_bigint_invert_label2
 __kefir_runtime_text_func___kefir_bigint_invert_end:
 
 

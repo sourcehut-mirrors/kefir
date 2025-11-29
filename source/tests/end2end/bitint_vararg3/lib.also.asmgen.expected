@@ -12,7 +12,7 @@ __kefir_text_func_test1_begin:
     mov %rsp, %rbp
     sub $352, %rsp
     test %al, %al
-    je __kefir_func_test1_label5
+    je __kefir_func_test1_label8
     movdqu %xmm0, -240(%rbp)
     movdqu %xmm1, -224(%rbp)
     movdqu %xmm2, -208(%rbp)
@@ -21,7 +21,7 @@ __kefir_text_func_test1_begin:
     movdqu %xmm5, -160(%rbp)
     movdqu %xmm6, -144(%rbp)
     movdqu %xmm7, -128(%rbp)
-__kefir_func_test1_label5:
+__kefir_func_test1_label8:
     mov %rdi, -288(%rbp)
     mov %rsi, -280(%rbp)
     mov %rdx, -272(%rbp)
@@ -37,10 +37,11 @@ __kefir_func_test1_label0:
     lea -288(%rbp), %rax
     movq %rax, -16(%rbp)
 __kefir_func_test1_label1:
+__kefir_func_test1_label2:
     movl -32(%rbp), %eax
     add $64, %rax
     cmp $48, %rax
-    ja __kefir_func_test1_label4
+    ja __kefir_func_test1_label7
     movq -16(%rbp), %rax
     movl -32(%rbp), %ecx
     add %rcx, %rax
@@ -61,8 +62,8 @@ __kefir_func_test1_label1:
     movq 56(%rax), %rcx
     movq %rcx, -296(%rbp)
     addl $64, -32(%rbp)
-    jmp __kefir_func_test1_label3
-__kefir_func_test1_label4:
+    jmp __kefir_func_test1_label6
+__kefir_func_test1_label7:
     movq -24(%rbp), %rax
     add $7, %rax
     and $-8, %rax
@@ -84,7 +85,7 @@ __kefir_func_test1_label4:
     movq %rcx, -304(%rbp)
     movq 56(%rax), %rcx
     movq %rcx, -296(%rbp)
-__kefir_func_test1_label3:
+__kefir_func_test1_label6:
     movdqu -352(%rbp), %xmm0
     movdqu %xmm0, -104(%rbp)
     movdqu -336(%rbp), %xmm0
@@ -98,9 +99,10 @@ __kefir_func_test1_label3:
     add $-1, %ecx
     movl %ecx, -112(%rbp)
     test %eax, %eax
-    jz __kefir_func_test1_label2
-    jmp __kefir_func_test1_label1
-__kefir_func_test1_label2:
+    jz __kefir_func_test1_label4
+    jmp __kefir_func_test1_label2
+__kefir_func_test1_label3:
+__kefir_func_test1_label4:
     movdqu -104(%rbp), %xmm0
     movdqu %xmm0, -352(%rbp)
     movdqu -88(%rbp), %xmm0
@@ -121,6 +123,7 @@ __kefir_func_test1_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_test1_label5:
 __kefir_text_func_test1_end:
 
 __kefir_text_section_end:

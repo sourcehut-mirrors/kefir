@@ -47,20 +47,20 @@ __kefir_text_func_add64_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 67 12
-__kefir_func_add64_label4:
 __kefir_func_add64_label5:
-__kefir_func_add64_label2:
+__kefir_func_add64_label6:
 __kefir_func_add64_label3:
-__kefir_func_add64_label1:
+__kefir_func_add64_label4:
+__kefir_func_add64_label2:
     addsd %xmm1, %xmm0
 .loc 0 67 5
-__kefir_func_add64_label6:
 __kefir_func_add64_label7:
+__kefir_func_add64_label8:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_add64_label8:
+__kefir_func_add64_label9:
 __kefir_text_func_add64_end:
 
 conv1:
@@ -71,18 +71,18 @@ __kefir_text_func_conv1_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 83 5
-__kefir_func_conv1_label2:
 __kefir_func_conv1_label3:
-__kefir_func_conv1_label1:
+__kefir_func_conv1_label4:
+__kefir_func_conv1_label2:
     cvtsi2sd %rdi, %xmm0
 .loc 0 83 5
-__kefir_func_conv1_label4:
 __kefir_func_conv1_label5:
+__kefir_func_conv1_label6:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_conv1_label6:
+__kefir_func_conv1_label7:
 __kefir_text_func_conv1_end:
 
 conv2:
@@ -93,15 +93,15 @@ __kefir_text_func_conv2_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 87 5
-__kefir_func_conv2_label2:
 __kefir_func_conv2_label3:
-__kefir_func_conv2_label1:
+__kefir_func_conv2_label4:
+__kefir_func_conv2_label2:
     pxor %xmm0, %xmm0
     test %rdi, %rdi
-    js __kefir_func_conv2_label4
+    js __kefir_func_conv2_label5
     cvtsi2sd %rdi, %xmm0
-    jmp __kefir_func_conv2_label5
-__kefir_func_conv2_label4:
+    jmp __kefir_func_conv2_label6
+__kefir_func_conv2_label5:
     mov %rdi, %rax
     and $1, %rax
     shr $1, %rdi
@@ -109,14 +109,14 @@ __kefir_func_conv2_label4:
     cvtsi2sd %rax, %xmm0
     addsd %xmm0, %xmm0
 .loc 0 87 5
-__kefir_func_conv2_label5:
 __kefir_func_conv2_label6:
 __kefir_func_conv2_label7:
+__kefir_func_conv2_label8:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_conv2_label8:
+__kefir_func_conv2_label9:
 __kefir_text_func_conv2_end:
 
 conv3:
@@ -127,29 +127,29 @@ __kefir_text_func_conv3_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 91 5
-__kefir_func_conv3_label2:
 __kefir_func_conv3_label3:
-__kefir_func_conv3_label1:
+__kefir_func_conv3_label4:
+__kefir_func_conv3_label2:
     cvtss2sd %xmm0, %xmm0
 .loc 0 91 5
-__kefir_func_conv3_label4:
 __kefir_func_conv3_label5:
+__kefir_func_conv3_label6:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_conv3_label6:
+__kefir_func_conv3_label7:
 __kefir_text_func_conv3_end:
 
 conv4:
 .loc 0 94 1
 __kefir_text_func_conv4_begin:
 .loc 0 95 5
-__kefir_func_conv4_label2:
 __kefir_func_conv4_label3:
-__kefir_func_conv4_label1:
-    ret
 __kefir_func_conv4_label4:
+__kefir_func_conv4_label2:
+    ret
+__kefir_func_conv4_label5:
 __kefir_text_func_conv4_end:
 
 conv5:
@@ -160,22 +160,22 @@ __kefir_text_func_conv5_begin:
     sub $16, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-__kefir_func_conv5_label1:
+__kefir_func_conv5_label2:
     fldt 16(%rbp)
 .loc 0 99 5
-__kefir_func_conv5_label2:
 __kefir_func_conv5_label3:
+__kefir_func_conv5_label4:
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
 .loc 0 99 5
-__kefir_func_conv5_label4:
 __kefir_func_conv5_label5:
+__kefir_func_conv5_label6:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_conv5_label6:
+__kefir_func_conv5_label7:
 __kefir_text_func_conv5_end:
 
 div64:
@@ -186,20 +186,20 @@ __kefir_text_func_div64_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 79 12
-__kefir_func_div64_label4:
 __kefir_func_div64_label5:
-__kefir_func_div64_label2:
+__kefir_func_div64_label6:
 __kefir_func_div64_label3:
-__kefir_func_div64_label1:
+__kefir_func_div64_label4:
+__kefir_func_div64_label2:
     divsd %xmm1, %xmm0
 .loc 0 79 5
-__kefir_func_div64_label6:
 __kefir_func_div64_label7:
+__kefir_func_div64_label8:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_div64_label8:
+__kefir_func_div64_label9:
 __kefir_text_func_div64_end:
 
 mul64:
@@ -210,20 +210,20 @@ __kefir_text_func_mul64_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 75 12
-__kefir_func_mul64_label4:
 __kefir_func_mul64_label5:
-__kefir_func_mul64_label2:
+__kefir_func_mul64_label6:
 __kefir_func_mul64_label3:
-__kefir_func_mul64_label1:
+__kefir_func_mul64_label4:
+__kefir_func_mul64_label2:
     mulsd %xmm1, %xmm0
 .loc 0 75 5
-__kefir_func_mul64_label6:
 __kefir_func_mul64_label7:
+__kefir_func_mul64_label8:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_mul64_label8:
+__kefir_func_mul64_label9:
 __kefir_text_func_mul64_end:
 
 neg64:
@@ -234,18 +234,18 @@ __kefir_text_func_neg64_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 63 12
-__kefir_func_neg64_label2:
 __kefir_func_neg64_label3:
-__kefir_func_neg64_label1:
+__kefir_func_neg64_label4:
+__kefir_func_neg64_label2:
     xorpd __kefir_constant_float64_neg(%rip), %xmm0
 .loc 0 63 5
-__kefir_func_neg64_label4:
 __kefir_func_neg64_label5:
+__kefir_func_neg64_label6:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_neg64_label6:
+__kefir_func_neg64_label7:
 __kefir_text_func_neg64_end:
 
 sub64:
@@ -256,37 +256,37 @@ __kefir_text_func_sub64_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 71 12
-__kefir_func_sub64_label4:
 __kefir_func_sub64_label5:
-__kefir_func_sub64_label2:
+__kefir_func_sub64_label6:
 __kefir_func_sub64_label3:
-__kefir_func_sub64_label1:
+__kefir_func_sub64_label4:
+__kefir_func_sub64_label2:
     subsd %xmm1, %xmm0
 .loc 0 71 5
-__kefir_func_sub64_label6:
 __kefir_func_sub64_label7:
+__kefir_func_sub64_label8:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_sub64_label8:
+__kefir_func_sub64_label9:
 __kefir_text_func_sub64_end:
 
 get64_1:
 .loc 0 54 1
 __kefir_text_func_get64_1_begin:
 .loc 0 55 5
-__kefir_func_get64_1_label1:
-    movq __kefir_func_get64_1_label2(%rip), %xmm0
+__kefir_func_get64_1_label2:
+    movq __kefir_func_get64_1_label3(%rip), %xmm0
 .loc 0 55 5
-__kefir_func_get64_1_label3:
 __kefir_func_get64_1_label4:
-    ret
 __kefir_func_get64_1_label5:
+    ret
+__kefir_func_get64_1_label6:
 __kefir_text_func_get64_1_end:
 .section .rodata
     .align 8
-__kefir_func_get64_1_label2:
+__kefir_func_get64_1_label3:
     .quad 4617797403091664896
 .section .text
 
@@ -294,17 +294,17 @@ get64_2:
 .loc 0 58 1
 __kefir_text_func_get64_2_begin:
 .loc 0 59 12
-__kefir_func_get64_2_label1:
-    movq __kefir_func_get64_2_label2(%rip), %xmm0
+__kefir_func_get64_2_label2:
+    movq __kefir_func_get64_2_label3(%rip), %xmm0
 .loc 0 59 5
-__kefir_func_get64_2_label3:
 __kefir_func_get64_2_label4:
-    ret
 __kefir_func_get64_2_label5:
+    ret
+__kefir_func_get64_2_label6:
 __kefir_text_func_get64_2_end:
 .section .rodata
     .align 8
-__kefir_func_get64_2_label2:
+__kefir_func_get64_2_label3:
     .quad 4613303441197561744
 .section .text
 

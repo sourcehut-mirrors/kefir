@@ -14,55 +14,55 @@ __kefir_text_func_compute_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-__kefir_func_compute_label1:
-    fldt 48(%rbp)
 __kefir_func_compute_label2:
+    fldt 48(%rbp)
 __kefir_func_compute_label3:
-    fldt 32(%rbp)
 __kefir_func_compute_label4:
+    fldt 32(%rbp)
 __kefir_func_compute_label5:
+__kefir_func_compute_label6:
     fldt 16(%rbp)
 .loc 0 24 22
-__kefir_func_compute_label6:
 __kefir_func_compute_label7:
+__kefir_func_compute_label8:
     fxch %st(1)
     fld %st(0)
     fmulp
 .loc 0 25 23
-__kefir_func_compute_label8:
 __kefir_func_compute_label9:
-    fldt __kefir_func_compute_label10(%rip)
+__kefir_func_compute_label10:
+    fldt __kefir_func_compute_label11(%rip)
 .loc 0 25 23
-__kefir_func_compute_label11:
 __kefir_func_compute_label12:
+__kefir_func_compute_label13:
     fxch %st(1)
     fxch %st(2)
     fxch %st(1)
     fmulp
 .loc 0 25 23
-__kefir_func_compute_label13:
 __kefir_func_compute_label14:
+__kefir_func_compute_label15:
     fxch %st(1)
     fxch %st(2)
     fxch %st(1)
     fmulp
 .loc 0 26 23
-__kefir_func_compute_label15:
 __kefir_func_compute_label16:
+__kefir_func_compute_label17:
     fxch %st(1)
     fsubp
 .loc 0 27 5
-__kefir_func_compute_label17:
 __kefir_func_compute_label18:
+__kefir_func_compute_label19:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_compute_label19:
+__kefir_func_compute_label20:
 __kefir_text_func_compute_end:
 .section .rodata
     .align 8
-__kefir_func_compute_label10:
+__kefir_func_compute_label11:
     .quad 9223372036854775808
     .quad 16385
 .section .text

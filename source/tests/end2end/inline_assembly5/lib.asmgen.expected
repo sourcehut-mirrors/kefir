@@ -35,6 +35,7 @@ movb %al, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_set8_label1:
 __kefir_text_func_set8_end:
 
 set16:
@@ -52,6 +53,7 @@ movw %ax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_set16_label1:
 __kefir_text_func_set16_end:
 
 set32:
@@ -69,6 +71,7 @@ movl %eax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_set32_label1:
 __kefir_text_func_set32_end:
 
 set64:
@@ -86,6 +89,7 @@ movq %rax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_set64_label1:
 __kefir_text_func_set64_end:
 
 clear8:
@@ -101,6 +105,7 @@ movb $0, %al
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_clear8_label1:
 __kefir_text_func_clear8_end:
 
 clear16:
@@ -116,6 +121,7 @@ movw $0, %ax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_clear16_label1:
 __kefir_text_func_clear16_end:
 
 clear32:
@@ -131,6 +137,7 @@ movl $0, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_clear32_label1:
 __kefir_text_func_clear32_end:
 
 clear64:
@@ -146,6 +153,7 @@ movq $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_clear64_label1:
 __kefir_text_func_clear64_end:
 
 __kefir_text_section_end:

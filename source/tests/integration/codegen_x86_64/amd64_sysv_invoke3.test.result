@@ -29,6 +29,7 @@ __kefir_func_proxyadd_label0:
     pop %rbx
     pop %rbp
     ret
+__kefir_func_proxyadd_label1:
 __kefir_text_func_proxyadd_end:
 
 __kefir_text_section_end:

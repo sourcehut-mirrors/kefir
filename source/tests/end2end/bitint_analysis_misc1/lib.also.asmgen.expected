@@ -18,6 +18,7 @@ __kefir_func_get1_label0:
     mov $1, %rax
     pop %rbp
     ret
+__kefir_func_get1_label1:
 __kefir_text_func_get1_end:
 
 get2:
@@ -28,6 +29,7 @@ __kefir_func_get2_label0:
     mov $1, %rax
     pop %rbp
     ret
+__kefir_func_get2_label1:
 __kefir_text_func_get2_end:
 
 get3:
@@ -37,17 +39,18 @@ __kefir_text_func_get3_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 __kefir_func_get3_label0:
-    movd __kefir_func_get3_label1(%rip), %xmm0
+    movd __kefir_func_get3_label2(%rip), %xmm0
     xorps __kefir_constant_float32_neg(%rip), %xmm0
     cvttss2si %xmm0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_get3_label1:
 __kefir_text_func_get3_end:
 .section .rodata
     .align 4
-__kefir_func_get3_label1:
+__kefir_func_get3_label2:
     .long 1065353216
 .section .text
 

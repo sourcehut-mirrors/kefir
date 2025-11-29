@@ -193,16 +193,16 @@ __kefir_runtime_text_func___kefir_bigint_unsigned_compare_begin:
     div %rcx
     mov %rax, %r11
     mov %r11, %rbx
-__kefir_runtime_func___kefir_bigint_unsigned_compare_label1:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label2:
     cmp $0, %rbx
-    ja __kefir_runtime_func___kefir_bigint_unsigned_compare_label3
+    ja __kefir_runtime_func___kefir_bigint_unsigned_compare_label6
     xor %eax, %eax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     ret
-__kefir_runtime_func___kefir_bigint_unsigned_compare_label3:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
     mov %rbx, %rax
     sub $1, %rax
     mov %r14, %rdi
@@ -214,32 +214,32 @@ __kefir_runtime_func___kefir_bigint_unsigned_compare_label3:
     add %rax, %rsi
     movzxb (%rsi), %r9
     cmp %r11, %rbx
-    je __kefir_runtime_func___kefir_bigint_unsigned_compare_label8
+    je __kefir_runtime_func___kefir_bigint_unsigned_compare_label16
     mov %r10, %rcx
     mov %r9, %r8
-__kefir_runtime_func___kefir_bigint_unsigned_compare_label4:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     cmp %r8d, %ecx
-    ja __kefir_runtime_func___kefir_bigint_unsigned_compare_label7
+    ja __kefir_runtime_func___kefir_bigint_unsigned_compare_label14
     lea -1(%rbx), %rax
     cmp %r8d, %ecx
-    jb __kefir_runtime_func___kefir_bigint_unsigned_compare_label6
+    jb __kefir_runtime_func___kefir_bigint_unsigned_compare_label12
     mov %rax, %rbx
-    jmp __kefir_runtime_func___kefir_bigint_unsigned_compare_label1
-__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
+    jmp __kefir_runtime_func___kefir_bigint_unsigned_compare_label2
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label12:
     mov $-1, %rax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     ret
-__kefir_runtime_func___kefir_bigint_unsigned_compare_label7:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label14:
     mov $1, %rax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     ret
-__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
+__kefir_runtime_func___kefir_bigint_unsigned_compare_label16:
     mov %r12, %rcx
     sub $1, %rcx
     mov %r12, %rdx
@@ -260,7 +260,7 @@ __kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     and %r8d, %ecx
     and %r8d, %r9d
     mov %r9, %r8
-    jmp __kefir_runtime_func___kefir_bigint_unsigned_compare_label4
+    jmp __kefir_runtime_func___kefir_bigint_unsigned_compare_label8
 __kefir_runtime_text_func___kefir_bigint_unsigned_compare_end:
 
 __kefir_bigint_right_shift_whole_digits:
@@ -280,25 +280,25 @@ __kefir_runtime_text_func___kefir_bigint_right_shift_whole_digits_begin:
     test %r8d, %r8d
     cmovz %rcx, %r11
     cmp %r10, %rsi
-    jae __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label8
+    jae __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label16
     xor %r8d, %r8d
-    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label1
-__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label8:
+    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label2
+__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label16:
     xor %edx, %edx
-    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label6
-__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label1:
+    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label12
+__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label2:
     mov %r8d, %ecx
     cmp %rax, %rcx
-    jb __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label5
+    jb __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label10
     mov %r8, %rdx
-__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label2:
+__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label4:
     mov %edx, %ecx
     cmp %r10, %rcx
-    jb __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label4
-__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label3:
+    jb __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label8
+__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label6:
     xor %eax, %eax
     ret
-__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label4:
+__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label8:
     mov %edx, %ecx
     mov %r9, %rdi
     add %rcx, %rdi
@@ -306,8 +306,8 @@ __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label4:
     mov %rdx, %rcx
     add $1, %ecx
     mov %rcx, %rdx
-    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label2
-__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label5:
+    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label4
+__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label10:
     mov %r8d, %ecx
     mov %rcx, %rdx
     add %rsi, %rdx
@@ -320,12 +320,12 @@ __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label5:
     mov %r8, %rcx
     add $1, %ecx
     mov %rcx, %r8
-    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label1
-__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label6:
+    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label2
+__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label12:
     mov %edx, %ecx
     cmp %r10, %rcx
-    jae __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label3
-__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label7:
+    jae __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label6
+__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label14:
     mov %edx, %ecx
     mov %r9, %rdi
     add %rcx, %rdi
@@ -333,7 +333,7 @@ __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label7:
     mov %rdx, %rcx
     add $1, %ecx
     mov %rcx, %rdx
-    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label6
+    jmp __kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label12
 __kefir_runtime_text_func___kefir_bigint_right_shift_whole_digits_end:
 
 __kefir_bigint_or:
@@ -346,12 +346,12 @@ __kefir_runtime_text_func___kefir_bigint_or_begin:
     mov $8, %rcx
     div %rcx
     xor %r10d, %r10d
-__kefir_runtime_func___kefir_bigint_or_label1:
+__kefir_runtime_func___kefir_bigint_or_label2:
     cmp %rax, %r10
-    jb __kefir_runtime_func___kefir_bigint_or_label3
+    jb __kefir_runtime_func___kefir_bigint_or_label6
     xor %eax, %eax
     ret
-__kefir_runtime_func___kefir_bigint_or_label3:
+__kefir_runtime_func___kefir_bigint_or_label6:
     mov %r9, %rdi
     add %r10, %rdi
     movzxb (%rdi), %rcx
@@ -362,7 +362,7 @@ __kefir_runtime_func___kefir_bigint_or_label3:
     movb %cl, (%rdi)
     lea 1(%r10), %rcx
     mov %rcx, %r10
-    jmp __kefir_runtime_func___kefir_bigint_or_label1
+    jmp __kefir_runtime_func___kefir_bigint_or_label2
 __kefir_runtime_text_func___kefir_bigint_or_end:
 
 __kefir_bigint_cast_signed:
@@ -384,13 +384,13 @@ __kefir_runtime_text_func___kefir_bigint_cast_signed_begin:
     mov %r8, %rdx
     sub %r9, %rdx
     cmp %rsi, %rcx
-    jbe __kefir_runtime_func___kefir_bigint_cast_signed_label16
+    jbe __kefir_runtime_func___kefir_bigint_cast_signed_label32
     cmp $0, %rsi
-    jne __kefir_runtime_func___kefir_bigint_cast_signed_label2
-__kefir_runtime_func___kefir_bigint_cast_signed_label20:
+    jne __kefir_runtime_func___kefir_bigint_cast_signed_label4
+__kefir_runtime_func___kefir_bigint_cast_signed_label40:
     xor %edx, %edx
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label13
-__kefir_runtime_func___kefir_bigint_cast_signed_label2:
+    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label26
+__kefir_runtime_func___kefir_bigint_cast_signed_label4:
     sub $1, %rsi
     mov %rsi, %rax
     xor %edx, %edx
@@ -408,34 +408,34 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label2:
     and $1, %edx
     lea 1(%r10), %rsi
     cmp $8, %rsi
-    jb __kefir_runtime_func___kefir_bigint_cast_signed_label10
-__kefir_runtime_func___kefir_bigint_cast_signed_label3:
+    jb __kefir_runtime_func___kefir_bigint_cast_signed_label20
+__kefir_runtime_func___kefir_bigint_cast_signed_label6:
     add $1, %rax
     mov %rax, %rcx
-__kefir_runtime_func___kefir_bigint_cast_signed_label4:
+__kefir_runtime_func___kefir_bigint_cast_signed_label8:
     cmp %rbx, %rcx
-    jbe __kefir_runtime_func___kefir_bigint_cast_signed_label6
+    jbe __kefir_runtime_func___kefir_bigint_cast_signed_label12
     xor %eax, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_cast_signed_label6:
+__kefir_runtime_func___kefir_bigint_cast_signed_label12:
     mov %r11, %rdi
     add %rcx, %rdi
     test %edx, %edx
-    jnz __kefir_runtime_func___kefir_bigint_cast_signed_label9
+    jnz __kefir_runtime_func___kefir_bigint_cast_signed_label18
     movb $0, (%rdi)
-__kefir_runtime_func___kefir_bigint_cast_signed_label8:
+__kefir_runtime_func___kefir_bigint_cast_signed_label16:
     lea 1(%rcx), %rax
     mov %rax, %rcx
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label4
-__kefir_runtime_func___kefir_bigint_cast_signed_label9:
-    movb $-1, (%rdi)
     jmp __kefir_runtime_func___kefir_bigint_cast_signed_label8
-__kefir_runtime_func___kefir_bigint_cast_signed_label10:
+__kefir_runtime_func___kefir_bigint_cast_signed_label18:
+    movb $-1, (%rdi)
+    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label16
+__kefir_runtime_func___kefir_bigint_cast_signed_label20:
     test %edx, %edx
-    jnz __kefir_runtime_func___kefir_bigint_cast_signed_label12
+    jnz __kefir_runtime_func___kefir_bigint_cast_signed_label24
     movzxb (%rdi), %r8
     mov $1, %r9
     mov %r10, %rcx
@@ -443,8 +443,8 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label10:
     sub $1, %r9
     and %r9d, %r8d
     movb %r8b, (%rdi)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label3
-__kefir_runtime_func___kefir_bigint_cast_signed_label12:
+    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label6
+__kefir_runtime_func___kefir_bigint_cast_signed_label24:
     movzxb (%rdi), %r8
     mov $1, %r9
     mov %r10, %rcx
@@ -454,30 +454,30 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label12:
     not %rcx
     or %ecx, %r8d
     movb %r8b, (%rdi)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label3
-__kefir_runtime_func___kefir_bigint_cast_signed_label13:
+    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label6
+__kefir_runtime_func___kefir_bigint_cast_signed_label26:
     cmp %rbx, %rdx
-    jbe __kefir_runtime_func___kefir_bigint_cast_signed_label15
+    jbe __kefir_runtime_func___kefir_bigint_cast_signed_label30
     xor %eax, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_cast_signed_label15:
+__kefir_runtime_func___kefir_bigint_cast_signed_label30:
     mov %r11, %rdi
     add %rdx, %rdi
     movb $0, (%rdi)
     lea 1(%rdx), %rcx
     mov %rcx, %rdx
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label13
-__kefir_runtime_func___kefir_bigint_cast_signed_label16:
+    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label26
+__kefir_runtime_func___kefir_bigint_cast_signed_label32:
     mov %r11, %rdi
     add %rbx, %rdi
     movzxb (%rdi), %rax
     mov %rdx, %rcx
     sar %cl, %eax
     and $1, %eax
-    jnz __kefir_runtime_func___kefir_bigint_cast_signed_label19
+    jnz __kefir_runtime_func___kefir_bigint_cast_signed_label38
     movzxb (%rdi), %rax
     mov $1, %rsi
     mov %rdx, %rcx
@@ -485,13 +485,13 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label16:
     sub $1, %rsi
     and %esi, %eax
     movb %al, (%rdi)
-__kefir_runtime_func___kefir_bigint_cast_signed_label18:
+__kefir_runtime_func___kefir_bigint_cast_signed_label36:
     xor %eax, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_cast_signed_label19:
+__kefir_runtime_func___kefir_bigint_cast_signed_label38:
     movzxb (%rdi), %rax
     mov $1, %rsi
     mov %rdx, %rcx
@@ -501,7 +501,7 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label19:
     not %rcx
     or %ecx, %eax
     movb %al, (%rdi)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label18
+    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label36
 __kefir_runtime_text_func___kefir_bigint_cast_signed_end:
 
 __kefir_bigint_right_shift:
@@ -548,19 +548,19 @@ __kefir_runtime_text_func___kefir_bigint_right_shift_begin:
     div %rcx
     mov %rax, %r10
     cmp $0, %r10
-    ja __kefir_runtime_func___kefir_bigint_right_shift_label6
+    ja __kefir_runtime_func___kefir_bigint_right_shift_label12
     mov %r8, %rsi
-__kefir_runtime_func___kefir_bigint_right_shift_label1:
+__kefir_runtime_func___kefir_bigint_right_shift_label2:
     mov $8, %rbx
     sub %rsi, %rbx
     mov %r13, %rax
     sub $1, %rax
     cmp $0, %rsi
-    jbe __kefir_runtime_func___kefir_bigint_right_shift_label2
-__kefir_runtime_func___kefir_bigint_right_shift_label7:
+    jbe __kefir_runtime_func___kefir_bigint_right_shift_label4
+__kefir_runtime_func___kefir_bigint_right_shift_label14:
     xor %r11d, %r11d
-    jmp __kefir_runtime_func___kefir_bigint_right_shift_label3
-__kefir_runtime_func___kefir_bigint_right_shift_label2:
+    jmp __kefir_runtime_func___kefir_bigint_right_shift_label6
+__kefir_runtime_func___kefir_bigint_right_shift_label4:
     xor %eax, %eax
     lea -24(%rbp), %rsp
     pop %r13
@@ -568,9 +568,9 @@ __kefir_runtime_func___kefir_bigint_right_shift_label2:
     pop %rbx
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_right_shift_label3:
+__kefir_runtime_func___kefir_bigint_right_shift_label6:
     cmp %rax, %r11
-    jb __kefir_runtime_func___kefir_bigint_right_shift_label5
+    jb __kefir_runtime_func___kefir_bigint_right_shift_label10
     mov %r13, %rax
     sub $1, %rax
     mov %r12, %rdi
@@ -586,8 +586,8 @@ __kefir_runtime_func___kefir_bigint_right_shift_label3:
     mov %rsi, %rcx
     shr %cl, %al
     movb %al, (%rdi)
-    jmp __kefir_runtime_func___kefir_bigint_right_shift_label2
-__kefir_runtime_func___kefir_bigint_right_shift_label5:
+    jmp __kefir_runtime_func___kefir_bigint_right_shift_label4
+__kefir_runtime_func___kefir_bigint_right_shift_label10:
     mov %r12, %rdi
     add %r11, %rdi
     movzxb (%rdi), %rdx
@@ -603,8 +603,8 @@ __kefir_runtime_func___kefir_bigint_right_shift_label5:
     movb %dl, (%rdi)
     lea 1(%r11), %rdx
     mov %rdx, %r11
-    jmp __kefir_runtime_func___kefir_bigint_right_shift_label3
-__kefir_runtime_func___kefir_bigint_right_shift_label6:
+    jmp __kefir_runtime_func___kefir_bigint_right_shift_label6
+__kefir_runtime_func___kefir_bigint_right_shift_label12:
     movq %r9, -48(%rbp)
     movq %r8, -40(%rbp)
     movq %r10, -32(%rbp)
@@ -619,7 +619,7 @@ __kefir_runtime_func___kefir_bigint_right_shift_label6:
     imul $8, %r10, %rcx
     mov %r8, %rsi
     sub %rcx, %rsi
-    jmp __kefir_runtime_func___kefir_bigint_right_shift_label1
+    jmp __kefir_runtime_func___kefir_bigint_right_shift_label2
 __kefir_runtime_text_func___kefir_bigint_right_shift_end:
 
 __kefir_bigint_left_shift:
@@ -647,32 +647,32 @@ __kefir_runtime_text_func___kefir_bigint_left_shift_begin:
     div %rsi
     mov %rax, %r10
     cmp $0, %r10
-    ja __kefir_runtime_func___kefir_bigint_left_shift_label6
+    ja __kefir_runtime_func___kefir_bigint_left_shift_label12
     mov %r8, %rsi
-__kefir_runtime_func___kefir_bigint_left_shift_label1:
+__kefir_runtime_func___kefir_bigint_left_shift_label2:
     mov %r9, %rax
     sub $1, %rax
     mov $8, %r10
     sub %rsi, %r10
     cmp $0, %rsi
-    jbe __kefir_runtime_func___kefir_bigint_left_shift_label2
-__kefir_runtime_func___kefir_bigint_left_shift_label7:
+    jbe __kefir_runtime_func___kefir_bigint_left_shift_label4
+__kefir_runtime_func___kefir_bigint_left_shift_label14:
     mov %rax, %r9
-    jmp __kefir_runtime_func___kefir_bigint_left_shift_label3
-__kefir_runtime_func___kefir_bigint_left_shift_label2:
+    jmp __kefir_runtime_func___kefir_bigint_left_shift_label6
+__kefir_runtime_func___kefir_bigint_left_shift_label4:
     xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_left_shift_label3:
+__kefir_runtime_func___kefir_bigint_left_shift_label6:
     cmp $0, %r9
-    ja __kefir_runtime_func___kefir_bigint_left_shift_label5
+    ja __kefir_runtime_func___kefir_bigint_left_shift_label10
     movb (%r11), %al
     mov %rsi, %rcx
     shl %cl, %al
     movb %al, (%r11)
-    jmp __kefir_runtime_func___kefir_bigint_left_shift_label2
-__kefir_runtime_func___kefir_bigint_left_shift_label5:
+    jmp __kefir_runtime_func___kefir_bigint_left_shift_label4
+__kefir_runtime_func___kefir_bigint_left_shift_label10:
     mov %r11, %rdi
     add %r9, %rdi
     movzxb (%rdi), %rdx
@@ -689,8 +689,8 @@ __kefir_runtime_func___kefir_bigint_left_shift_label5:
     movb %dl, (%rdi)
     lea -1(%r9), %rax
     mov %rax, %r9
-    jmp __kefir_runtime_func___kefir_bigint_left_shift_label3
-__kefir_runtime_func___kefir_bigint_left_shift_label6:
+    jmp __kefir_runtime_func___kefir_bigint_left_shift_label6
+__kefir_runtime_func___kefir_bigint_left_shift_label12:
     movq %r8, -32(%rbp)
     movq %r10, -24(%rbp)
     movq %r9, -16(%rbp)
@@ -706,7 +706,7 @@ __kefir_runtime_func___kefir_bigint_left_shift_label6:
     imul $8, %r10, %rcx
     mov %r8, %rsi
     sub %rcx, %rsi
-    jmp __kefir_runtime_func___kefir_bigint_left_shift_label1
+    jmp __kefir_runtime_func___kefir_bigint_left_shift_label2
 __kefir_runtime_text_func___kefir_bigint_left_shift_end:
 
 __kefir_bigint_and:
@@ -719,12 +719,12 @@ __kefir_runtime_text_func___kefir_bigint_and_begin:
     mov $8, %rcx
     div %rcx
     xor %r10d, %r10d
-__kefir_runtime_func___kefir_bigint_and_label1:
+__kefir_runtime_func___kefir_bigint_and_label2:
     cmp %rax, %r10
-    jb __kefir_runtime_func___kefir_bigint_and_label3
+    jb __kefir_runtime_func___kefir_bigint_and_label6
     xor %eax, %eax
     ret
-__kefir_runtime_func___kefir_bigint_and_label3:
+__kefir_runtime_func___kefir_bigint_and_label6:
     mov %r9, %rdi
     add %r10, %rdi
     movzxb (%rdi), %rcx
@@ -735,7 +735,7 @@ __kefir_runtime_func___kefir_bigint_and_label3:
     movb %cl, (%rdi)
     lea 1(%r10), %rcx
     mov %rcx, %r10
-    jmp __kefir_runtime_func___kefir_bigint_and_label1
+    jmp __kefir_runtime_func___kefir_bigint_and_label2
 __kefir_runtime_text_func___kefir_bigint_and_end:
 
 __kefir_bigint_cast_unsigned:
@@ -754,13 +754,13 @@ __kefir_runtime_text_func___kefir_bigint_cast_unsigned_begin:
     mov %rcx, %rdx
     sub %r8, %rdx
     cmp %r9, %rcx
-    jbe __kefir_runtime_func___kefir_bigint_cast_unsigned_label11
+    jbe __kefir_runtime_func___kefir_bigint_cast_unsigned_label22
     cmp $0, %r9
-    jne __kefir_runtime_func___kefir_bigint_cast_unsigned_label2
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label12:
+    jne __kefir_runtime_func___kefir_bigint_cast_unsigned_label4
+__kefir_runtime_func___kefir_bigint_cast_unsigned_label24:
     xor %edx, %edx
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label8
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label2:
+    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label16
+__kefir_runtime_func___kefir_bigint_cast_unsigned_label4:
     mov %r9, %rsi
     sub $1, %rsi
     mov %rsi, %rax
@@ -771,23 +771,23 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label2:
     mov %r9, %rsi
     sub %rcx, %rsi
     cmp $8, %rsi
-    jb __kefir_runtime_func___kefir_bigint_cast_unsigned_label7
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label3:
+    jb __kefir_runtime_func___kefir_bigint_cast_unsigned_label14
+__kefir_runtime_func___kefir_bigint_cast_unsigned_label6:
     add $1, %rax
     mov %rax, %rcx
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label4:
+__kefir_runtime_func___kefir_bigint_cast_unsigned_label8:
     cmp %r11, %rcx
-    jbe __kefir_runtime_func___kefir_bigint_cast_unsigned_label6
+    jbe __kefir_runtime_func___kefir_bigint_cast_unsigned_label12
     xor %eax, %eax
     ret
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label6:
+__kefir_runtime_func___kefir_bigint_cast_unsigned_label12:
     mov %r10, %rdi
     add %rcx, %rdi
     movb $0, (%rdi)
     lea 1(%rcx), %rax
     mov %rax, %rcx
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label4
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label7:
+    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label8
+__kefir_runtime_func___kefir_bigint_cast_unsigned_label14:
     mov %r10, %rdi
     add %rax, %rdi
     movzxb (%rdi), %rdx
@@ -797,20 +797,20 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label7:
     sub $1, %r8
     and %r8d, %edx
     movb %dl, (%rdi)
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label3
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label8:
+    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label6
+__kefir_runtime_func___kefir_bigint_cast_unsigned_label16:
     cmp %r11, %rdx
-    jbe __kefir_runtime_func___kefir_bigint_cast_unsigned_label10
+    jbe __kefir_runtime_func___kefir_bigint_cast_unsigned_label20
     xor %eax, %eax
     ret
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label10:
+__kefir_runtime_func___kefir_bigint_cast_unsigned_label20:
     mov %r10, %rdi
     add %rdx, %rdi
     movb $0, (%rdi)
     lea 1(%rdx), %rcx
     mov %rcx, %rdx
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label8
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label11:
+    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label16
+__kefir_runtime_func___kefir_bigint_cast_unsigned_label22:
     mov %r10, %rdi
     add %r11, %rdi
     movzxb (%rdi), %rax
@@ -834,23 +834,23 @@ __kefir_runtime_text_func___kefir_bigint_left_shift_whole_digits_begin:
     div %rcx
     sub $1, %rax
     mov %rax, %rdx
-__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label1:
-    cmp %rsi, %rdx
-    jae __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label5
-    xor %ecx, %ecx
 __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label2:
+    cmp %rsi, %rdx
+    jae __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label10
+    xor %ecx, %ecx
+__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label4:
     cmp %rsi, %rcx
-    jb __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label4
+    jb __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label8
     xor %eax, %eax
     ret
-__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label4:
+__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label8:
     mov %r8, %rdi
     add %rcx, %rdi
     movb $0, (%rdi)
     lea 1(%rcx), %rax
     mov %rax, %rcx
-    jmp __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label2
-__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label5:
+    jmp __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label4
+__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label10:
     mov %rdx, %rax
     sub %rsi, %rax
     mov %r8, %rdi
@@ -861,7 +861,7 @@ __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label5:
     movb %cl, (%rdi)
     lea -1(%rdx), %rax
     mov %rax, %rdx
-    jmp __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label1
+    jmp __kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label2
 __kefir_runtime_text_func___kefir_bigint_left_shift_whole_digits_end:
 
 

@@ -33,7 +33,7 @@ __kefir_text_func_inc_begin:
     sub $16, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
-    fldt __kefir_func_inc_label1(%rip)
+    fldt __kefir_func_inc_label2(%rip)
     fxch %st(1)
     faddp
     fldcw -8(%rbp)
@@ -43,7 +43,7 @@ __kefir_text_func_inc_begin:
 __kefir_text_func_inc_end:
 .section .rodata
     .align 8
-__kefir_func_inc_label1:
+__kefir_func_inc_label2:
     .quad 9223372036854775808
     .quad 16383
 .section .text
@@ -171,7 +171,7 @@ __kefir_text_func_ldcuint_begin:
     flds __kefir_constant_long_double_to_uint(%rip)
     fxch %st(1)
     fcomi %st(1)
-    jnb __kefir_func_ldcuint_label1
+    jnb __kefir_func_ldcuint_label2
     fstp %st(1)
     fnstcww -32(%rbp)
     movzxw -32(%rbp), %eax
@@ -181,8 +181,8 @@ __kefir_text_func_ldcuint_begin:
     fistpq -16(%rbp)
     mov -16(%rbp), %rax
     fldcww -32(%rbp)
-    jmp __kefir_func_ldcuint_label2
-__kefir_func_ldcuint_label1:
+    jmp __kefir_func_ldcuint_label3
+__kefir_func_ldcuint_label2:
     fnstcww -32(%rbp)
     fsubp
     movzxw -32(%rbp), %eax
@@ -193,7 +193,7 @@ __kefir_func_ldcuint_label1:
     mov -16(%rbp), %rax
     fldcww -32(%rbp)
     btc $63, %rax
-__kefir_func_ldcuint_label2:
+__kefir_func_ldcuint_label3:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -211,9 +211,9 @@ __kefir_text_func_uintcld_begin:
     fildq (%rsp)
     add $8, %rsp
     test %rax, %rax
-    jns __kefir_func_uintcld_label1
+    jns __kefir_func_uintcld_label2
     fadds __kefir_constant_uint_to_long_double(%rip)
-__kefir_func_uintcld_label1:
+__kefir_func_uintcld_label2:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

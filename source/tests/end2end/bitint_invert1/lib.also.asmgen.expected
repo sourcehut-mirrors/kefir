@@ -30,6 +30,7 @@ __kefir_func_inv1_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_inv1_label1:
 __kefir_text_func_inv1_end:
 
 inv2:
@@ -46,6 +47,7 @@ __kefir_func_inv2_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_inv2_label1:
 __kefir_text_func_inv2_end:
 
 inv3:
@@ -62,6 +64,7 @@ __kefir_func_inv3_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_inv3_label1:
 __kefir_text_func_inv3_end:
 
 inv4:
@@ -78,6 +81,7 @@ __kefir_func_inv4_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_inv4_label1:
 __kefir_text_func_inv4_end:
 
 inv5:
@@ -103,6 +107,7 @@ __kefir_func_inv5_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_inv5_label1:
 __kefir_text_func_inv5_end:
 
 inv6:
@@ -163,6 +168,7 @@ __kefir_func_inv6_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_inv6_label1:
 __kefir_text_func_inv6_end:
 
 __kefir_text_section_end:
@@ -200,6 +206,7 @@ __kefir_runtime_func___kefir_bigint_invert_label0:
     movsx %ecx, %rax
     movq %rax, -8(%rbp)
 __kefir_runtime_func___kefir_bigint_invert_label1:
+__kefir_runtime_func___kefir_bigint_invert_label2:
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
     mov $0, %rdx
@@ -208,13 +215,15 @@ __kefir_runtime_func___kefir_bigint_invert_label1:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_invert_label3
-__kefir_runtime_func___kefir_bigint_invert_label2:
+    jz __kefir_runtime_func___kefir_bigint_invert_label6
+__kefir_runtime_func___kefir_bigint_invert_label3:
+__kefir_runtime_func___kefir_bigint_invert_label4:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_invert_label3:
+__kefir_runtime_func___kefir_bigint_invert_label5:
+__kefir_runtime_func___kefir_bigint_invert_label6:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -230,7 +239,8 @@ __kefir_runtime_func___kefir_bigint_invert_label3:
     movq -8(%rbp), %rax
     add $1, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_invert_label1
+    jmp __kefir_runtime_func___kefir_bigint_invert_label2
+__kefir_runtime_func___kefir_bigint_invert_label7:
 __kefir_runtime_text_func___kefir_bigint_invert_end:
 
 

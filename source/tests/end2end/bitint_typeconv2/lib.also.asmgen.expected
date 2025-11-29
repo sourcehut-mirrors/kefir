@@ -30,6 +30,7 @@ __kefir_func_get1_label0:
     shr $61, %rax
     pop %rbp
     ret
+__kefir_func_get1_label1:
 __kefir_text_func_get1_end:
 
 get2:
@@ -42,6 +43,7 @@ __kefir_func_get2_label0:
     sar $60, %rax
     pop %rbp
     ret
+__kefir_func_get2_label1:
 __kefir_text_func_get2_end:
 
 get3:
@@ -54,6 +56,7 @@ __kefir_func_get3_label0:
     shr $54, %rax
     pop %rbp
     ret
+__kefir_func_get3_label1:
 __kefir_text_func_get3_end:
 
 get4:
@@ -66,6 +69,7 @@ __kefir_func_get4_label0:
     sar $53, %rax
     pop %rbp
     ret
+__kefir_func_get4_label1:
 __kefir_text_func_get4_end:
 
 get5:
@@ -78,6 +82,7 @@ __kefir_func_get5_label0:
     shr $40, %rax
     pop %rbp
     ret
+__kefir_func_get5_label1:
 __kefir_text_func_get5_end:
 
 get6:
@@ -90,6 +95,7 @@ __kefir_func_get6_label0:
     sar $39, %rax
     pop %rbp
     ret
+__kefir_func_get6_label1:
 __kefir_text_func_get6_end:
 
 get7:
@@ -102,6 +108,7 @@ __kefir_func_get7_label0:
     shr $27, %rax
     pop %rbp
     ret
+__kefir_func_get7_label1:
 __kefir_text_func_get7_end:
 
 get8:
@@ -114,6 +121,7 @@ __kefir_func_get8_label0:
     sar $26, %rax
     pop %rbp
     ret
+__kefir_func_get8_label1:
 __kefir_text_func_get8_end:
 
 __kefir_text_section_end:

@@ -26,6 +26,7 @@ __kefir_func_get1_label0:
     lea __kefir_function_get1_static___kefir_local_temporary_0_3(%rip), %rax
     pop %rbp
     ret
+__kefir_func_get1_label1:
 __kefir_text_func_get1_end:
 
 get2:
@@ -39,6 +40,7 @@ __kefir_func_get2_label0:
     rex.W     call __tls_get_addr@PLT
     pop %rbp
     ret
+__kefir_func_get2_label1:
 __kefir_text_func_get2_end:
 
 get3:
@@ -76,6 +78,7 @@ __kefir_func_get3_label0:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_func_get3_label1:
 __kefir_text_func_get3_end:
 
 get4:
@@ -113,6 +116,7 @@ __kefir_func_get4_label0:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_func_get4_label1:
 __kefir_text_func_get4_end:
 
 get5:
@@ -124,16 +128,20 @@ __kefir_func_get5_label0:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     test %eax, %eax
-    jz __kefir_func_get5_label3
+    jz __kefir_func_get5_label6
 __kefir_func_get5_label1:
-    lea __kefir_function_get5_static___kefir_local_temporary_0_12(%rip), %rax
 __kefir_func_get5_label2:
+    lea __kefir_function_get5_static___kefir_local_temporary_0_12(%rip), %rax
+__kefir_func_get5_label3:
+__kefir_func_get5_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_get5_label3:
+__kefir_func_get5_label5:
+__kefir_func_get5_label6:
     lea __kefir_function_get5_static___kefir_local_temporary_1_13(%rip), %rax
-    jmp __kefir_func_get5_label2
+    jmp __kefir_func_get5_label4
+__kefir_func_get5_label7:
 __kefir_text_func_get5_end:
 
 test1:
@@ -147,6 +155,7 @@ __kefir_func_test1_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_test1_label1:
 __kefir_text_func_test1_end:
 
 __kefir_text_section_end:

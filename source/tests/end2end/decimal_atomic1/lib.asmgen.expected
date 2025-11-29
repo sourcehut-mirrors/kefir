@@ -34,7 +34,7 @@ __kefir_text_func_add32_begin:
     fnstenv -72(%rbp)
     stmxcsr -44(%rbp)
     fnclex
-__kefir_func_add32_label1:
+__kefir_func_add32_label2:
     movl (%rdi), %eax
     movq %rax, -40(%rbp)
     movq %rdi, -32(%rbp)
@@ -50,7 +50,7 @@ __kefir_func_add32_label1:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_add32_label3
+    jz __kefir_func_add32_label6
     stmxcsr -80(%rbp)
     mov -80(%rbp), %rcx
     fnstsw %ax
@@ -64,9 +64,9 @@ __kefir_func_add32_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_add32_label3:
+__kefir_func_add32_label6:
     fnclex
-    jmp __kefir_func_add32_label1
+    jmp __kefir_func_add32_label2
 __kefir_text_func_add32_end:
 
 add64:
@@ -78,7 +78,7 @@ __kefir_text_func_add64_begin:
     fnstenv -72(%rbp)
     stmxcsr -44(%rbp)
     fnclex
-__kefir_func_add64_label1:
+__kefir_func_add64_label2:
     movq (%rdi), %rax
     movq %rax, -40(%rbp)
     movq %rdi, -32(%rbp)
@@ -94,7 +94,7 @@ __kefir_func_add64_label1:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_add64_label3
+    jz __kefir_func_add64_label6
     stmxcsr -80(%rbp)
     mov -80(%rbp), %rcx
     fnstsw %ax
@@ -108,9 +108,9 @@ __kefir_func_add64_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_add64_label3:
+__kefir_func_add64_label6:
     fnclex
-    jmp __kefir_func_add64_label1
+    jmp __kefir_func_add64_label2
 __kefir_text_func_add64_end:
 
 add128:
@@ -123,7 +123,7 @@ __kefir_text_func_add128_begin:
     fnstenv -80(%rbp)
     stmxcsr -52(%rbp)
     fnclex
-__kefir_func_add128_label1:
+__kefir_func_add128_label2:
     movq %r10, -112(%rbp)
     movdqu %xmm2, -104(%rbp)
     leaq -128(%rbp), %rax
@@ -160,7 +160,7 @@ __kefir_func_add128_label1:
     movq -32(%rbp), %r10
     movdqu -24(%rbp), %xmm2
     test %al, %al
-    jz __kefir_func_add128_label3
+    jz __kefir_func_add128_label6
     stmxcsr -128(%rbp)
     mov -128(%rbp), %rcx
     fnstsw %ax
@@ -174,9 +174,9 @@ __kefir_func_add128_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_add128_label3:
+__kefir_func_add128_label6:
     fnclex
-    jmp __kefir_func_add128_label1
+    jmp __kefir_func_add128_label2
 __kefir_text_func_add128_end:
 
 load32:

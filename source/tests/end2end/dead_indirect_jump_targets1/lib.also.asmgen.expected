@@ -16,7 +16,7 @@ __kefir_text_func_test_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 __kefir_func_test_label0:
-    lea __kefir_func_test_label1(%rip), %rax
+    lea __kefir_func_test_label2(%rip), %rax
     movq %rax, -8(%rbp)
     mov $0, %rcx
     movsx %ecx, %rax
@@ -24,7 +24,9 @@ __kefir_func_test_label0:
     pop %rbp
     ret
 __kefir_func_test_label1:
+__kefir_func_test_label2:
 _kefir_local_public_label_test_L1:
+__kefir_func_test_label3:
 __kefir_text_func_test_end:
 
 test2:
@@ -33,16 +35,18 @@ __kefir_text_func_test2_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 __kefir_func_test2_label0:
-    lea __kefir_func_test2_label1(%rip), %rax
+    lea __kefir_func_test2_label2(%rip), %rax
     movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
     jmp *%rax
 __kefir_func_test2_label1:
+__kefir_func_test2_label2:
 _kefir_local_public_label_test2_L1:
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_test2_label3:
 __kefir_text_func_test2_end:
 
 test3:
@@ -58,10 +62,12 @@ __kefir_func_test3_label0:
     movq (%rax), %rax
     jmp *%rax
 __kefir_func_test3_label1:
+__kefir_func_test3_label2:
 _kefir_local_public_label_test3_L1:
     lea __kefir_function_test3_static_x_4(%rip), %rax
     pop %rbp
     ret
+__kefir_func_test3_label3:
 __kefir_text_func_test3_end:
 
 __kefir_text_section_end:

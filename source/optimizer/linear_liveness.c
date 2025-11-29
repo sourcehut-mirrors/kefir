@@ -197,3 +197,47 @@ kefir_result_t kefir_opt_code_linear_liveness_build(struct kefir_mem *mem, struc
     REQUIRE_OK(kefir_hashset_free(mem, &visited));
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_opt_code_instruction_linear_liveness_iter(const struct kefir_opt_code_linear_liveness *liveness, kefir_opt_instruction_ref_t instr_ref,
+    struct kefir_opt_code_instruction_linear_liveness_iterator *iter,
+    kefir_opt_block_id_t *block_id_ptr, kefir_uint32_t *liveness_begin_ptr, kefir_uint32_t *liveness_end_ptr) {
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code linear liveness"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction linear liveness iterator"));
+
+    kefir_hashtable_key_t table_key;
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&liveness->instructions, (kefir_hashtable_key_t) instr_ref, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer instruction linear liveness");
+    }
+    REQUIRE_OK(res);
+    ASSIGN_DECL_CAST(const struct kefir_opt_code_instruction_linear_liveness *,instr_liveness, table_value);
+
+    res = kefir_hashtable_iter(&instr_liveness->per_block, &iter->iter, &table_key, &table_value);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of optimizer instruction linear liveness iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(block_id_ptr, (kefir_opt_block_id_t) table_key);
+    ASSIGN_PTR(liveness_begin_ptr, ((kefir_uint64_t) table_value) >> 32);
+    ASSIGN_PTR(liveness_end_ptr, (kefir_uint32_t) table_value);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_instruction_linear_liveness_next(struct kefir_opt_code_instruction_linear_liveness_iterator *iter, kefir_opt_block_id_t *block_id_ptr, kefir_uint32_t *liveness_begin_ptr, kefir_uint32_t *liveness_end_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction linear liveness iterator"));
+
+    kefir_hashtable_key_t table_key;
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_next(&iter->iter, &table_key, &table_value);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of optimizer instruction linear liveness iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(block_id_ptr, (kefir_opt_block_id_t) table_key);
+    ASSIGN_PTR(liveness_begin_ptr, ((kefir_uint64_t) table_value) >> 32);
+    ASSIGN_PTR(liveness_end_ptr, (kefir_uint32_t) table_value);
+    return KEFIR_OK;
+}

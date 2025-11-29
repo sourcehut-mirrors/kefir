@@ -42,6 +42,7 @@ __kefir_func_f32_predec_label0:
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
 __kefir_func_f32_predec_label1:
+__kefir_func_f32_predec_label2:
     movq %r10, -120(%rbp)
     mov %r10, %rsi
     lea -128(%rbp), %rdx
@@ -52,8 +53,8 @@ __kefir_func_f32_predec_label1:
     movd -128(%rbp), %xmm0
     movd -124(%rbp), %xmm1
     movaps %xmm0, %xmm2
-    movd __kefir_func_f32_predec_label4(%rip), %xmm3
-    movd __kefir_func_f32_predec_label5(%rip), %xmm4
+    movd __kefir_func_f32_predec_label8(%rip), %xmm3
+    movd __kefir_func_f32_predec_label9(%rip), %xmm4
     addss %xmm3, %xmm2
     movaps %xmm1, %xmm3
     addss %xmm4, %xmm3
@@ -76,7 +77,7 @@ __kefir_func_f32_predec_label1:
     movdqu -40(%rbp), %xmm3
     movq -24(%rbp), %r10
     test %al, %al
-    jz __kefir_func_f32_predec_label6
+    jz __kefir_func_f32_predec_label10
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
     movq -80(%rbp), %rax
@@ -85,8 +86,8 @@ __kefir_func_f32_predec_label1:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f32_predec_label2
-__kefir_func_f32_predec_label6:
+    jmp __kefir_func_f32_predec_label4
+__kefir_func_f32_predec_label10:
     mov %r10, %rsi
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -96,8 +97,9 @@ __kefir_func_f32_predec_label6:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f32_predec_label3
-__kefir_func_f32_predec_label2:
+    jmp __kefir_func_f32_predec_label6
+__kefir_func_f32_predec_label3:
+__kefir_func_f32_predec_label4:
     stmxcsr -96(%rbp)
     mov -96(%rbp), %rcx
     fnstsw %ax
@@ -114,7 +116,8 @@ __kefir_func_f32_predec_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f32_predec_label3:
+__kefir_func_f32_predec_label5:
+__kefir_func_f32_predec_label6:
     fnclex
     mov %rsi, %r10
     movq -128(%rbp), %rax
@@ -125,14 +128,15 @@ __kefir_func_f32_predec_label3:
     movq %rax, -72(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
-    jmp __kefir_func_f32_predec_label1
+    jmp __kefir_func_f32_predec_label2
+__kefir_func_f32_predec_label7:
 __kefir_text_func_f32_predec_end:
 .section .rodata
     .align 4
-__kefir_func_f32_predec_label4:
+__kefir_func_f32_predec_label8:
     .long 3212836864
     .align 4
-__kefir_func_f32_predec_label5:
+__kefir_func_f32_predec_label9:
     .long 0
 .section .text
 
@@ -158,6 +162,7 @@ __kefir_func_f32_preinc_label0:
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
 __kefir_func_f32_preinc_label1:
+__kefir_func_f32_preinc_label2:
     movq %r10, -120(%rbp)
     mov %r10, %rsi
     lea -128(%rbp), %rdx
@@ -168,8 +173,8 @@ __kefir_func_f32_preinc_label1:
     movd -128(%rbp), %xmm0
     movd -124(%rbp), %xmm1
     movaps %xmm0, %xmm2
-    movd __kefir_func_f32_preinc_label4(%rip), %xmm3
-    movd __kefir_func_f32_preinc_label5(%rip), %xmm4
+    movd __kefir_func_f32_preinc_label8(%rip), %xmm3
+    movd __kefir_func_f32_preinc_label9(%rip), %xmm4
     addss %xmm3, %xmm2
     movaps %xmm1, %xmm3
     addss %xmm4, %xmm3
@@ -192,7 +197,7 @@ __kefir_func_f32_preinc_label1:
     movdqu -40(%rbp), %xmm3
     movq -24(%rbp), %r10
     test %al, %al
-    jz __kefir_func_f32_preinc_label6
+    jz __kefir_func_f32_preinc_label10
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
     movq -80(%rbp), %rax
@@ -201,8 +206,8 @@ __kefir_func_f32_preinc_label1:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f32_preinc_label2
-__kefir_func_f32_preinc_label6:
+    jmp __kefir_func_f32_preinc_label4
+__kefir_func_f32_preinc_label10:
     mov %r10, %rsi
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -212,8 +217,9 @@ __kefir_func_f32_preinc_label6:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f32_preinc_label3
-__kefir_func_f32_preinc_label2:
+    jmp __kefir_func_f32_preinc_label6
+__kefir_func_f32_preinc_label3:
+__kefir_func_f32_preinc_label4:
     stmxcsr -96(%rbp)
     mov -96(%rbp), %rcx
     fnstsw %ax
@@ -230,7 +236,8 @@ __kefir_func_f32_preinc_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f32_preinc_label3:
+__kefir_func_f32_preinc_label5:
+__kefir_func_f32_preinc_label6:
     fnclex
     mov %rsi, %r10
     movq -128(%rbp), %rax
@@ -241,14 +248,15 @@ __kefir_func_f32_preinc_label3:
     movq %rax, -72(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
-    jmp __kefir_func_f32_preinc_label1
+    jmp __kefir_func_f32_preinc_label2
+__kefir_func_f32_preinc_label7:
 __kefir_text_func_f32_preinc_end:
 .section .rodata
     .align 4
-__kefir_func_f32_preinc_label4:
+__kefir_func_f32_preinc_label8:
     .long 1065353216
     .align 4
-__kefir_func_f32_preinc_label5:
+__kefir_func_f32_preinc_label9:
     .long 0
 .section .text
 
@@ -274,6 +282,7 @@ __kefir_func_f64_predec_label0:
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
 __kefir_func_f64_predec_label1:
+__kefir_func_f64_predec_label2:
     movq %r10, -112(%rbp)
     mov %r10, %rsi
     lea -128(%rbp), %rdx
@@ -284,8 +293,8 @@ __kefir_func_f64_predec_label1:
     movq -128(%rbp), %xmm0
     movq -120(%rbp), %xmm1
     movaps %xmm0, %xmm2
-    movq __kefir_func_f64_predec_label4(%rip), %xmm3
-    movq __kefir_func_f64_predec_label5(%rip), %xmm4
+    movq __kefir_func_f64_predec_label8(%rip), %xmm3
+    movq __kefir_func_f64_predec_label9(%rip), %xmm4
     addsd %xmm3, %xmm2
     movaps %xmm1, %xmm3
     addsd %xmm4, %xmm3
@@ -308,7 +317,7 @@ __kefir_func_f64_predec_label1:
     movdqu -40(%rbp), %xmm3
     movq -24(%rbp), %r10
     test %al, %al
-    jz __kefir_func_f64_predec_label6
+    jz __kefir_func_f64_predec_label10
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
     movq -80(%rbp), %rax
@@ -317,8 +326,8 @@ __kefir_func_f64_predec_label1:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f64_predec_label2
-__kefir_func_f64_predec_label6:
+    jmp __kefir_func_f64_predec_label4
+__kefir_func_f64_predec_label10:
     mov %r10, %rsi
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -328,8 +337,9 @@ __kefir_func_f64_predec_label6:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f64_predec_label3
-__kefir_func_f64_predec_label2:
+    jmp __kefir_func_f64_predec_label6
+__kefir_func_f64_predec_label3:
+__kefir_func_f64_predec_label4:
     stmxcsr -96(%rbp)
     mov -96(%rbp), %rcx
     fnstsw %ax
@@ -346,7 +356,8 @@ __kefir_func_f64_predec_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f64_predec_label3:
+__kefir_func_f64_predec_label5:
+__kefir_func_f64_predec_label6:
     fnclex
     mov %rsi, %r10
     movq -128(%rbp), %rax
@@ -357,14 +368,15 @@ __kefir_func_f64_predec_label3:
     movq %rax, -72(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
-    jmp __kefir_func_f64_predec_label1
+    jmp __kefir_func_f64_predec_label2
+__kefir_func_f64_predec_label7:
 __kefir_text_func_f64_predec_end:
 .section .rodata
     .align 8
-__kefir_func_f64_predec_label4:
+__kefir_func_f64_predec_label8:
     .quad 13830554455654793216
     .align 8
-__kefir_func_f64_predec_label5:
+__kefir_func_f64_predec_label9:
     .quad 0
 .section .text
 
@@ -390,6 +402,7 @@ __kefir_func_f64_preinc_label0:
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
 __kefir_func_f64_preinc_label1:
+__kefir_func_f64_preinc_label2:
     movq %r10, -112(%rbp)
     mov %r10, %rsi
     lea -128(%rbp), %rdx
@@ -400,8 +413,8 @@ __kefir_func_f64_preinc_label1:
     movq -128(%rbp), %xmm0
     movq -120(%rbp), %xmm1
     movaps %xmm0, %xmm2
-    movq __kefir_func_f64_preinc_label4(%rip), %xmm3
-    movq __kefir_func_f64_preinc_label5(%rip), %xmm4
+    movq __kefir_func_f64_preinc_label8(%rip), %xmm3
+    movq __kefir_func_f64_preinc_label9(%rip), %xmm4
     addsd %xmm3, %xmm2
     movaps %xmm1, %xmm3
     addsd %xmm4, %xmm3
@@ -424,7 +437,7 @@ __kefir_func_f64_preinc_label1:
     movdqu -40(%rbp), %xmm3
     movq -24(%rbp), %r10
     test %al, %al
-    jz __kefir_func_f64_preinc_label6
+    jz __kefir_func_f64_preinc_label10
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
     movq -80(%rbp), %rax
@@ -433,8 +446,8 @@ __kefir_func_f64_preinc_label1:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f64_preinc_label2
-__kefir_func_f64_preinc_label6:
+    jmp __kefir_func_f64_preinc_label4
+__kefir_func_f64_preinc_label10:
     mov %r10, %rsi
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -444,8 +457,9 @@ __kefir_func_f64_preinc_label6:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f64_preinc_label3
-__kefir_func_f64_preinc_label2:
+    jmp __kefir_func_f64_preinc_label6
+__kefir_func_f64_preinc_label3:
+__kefir_func_f64_preinc_label4:
     stmxcsr -96(%rbp)
     mov -96(%rbp), %rcx
     fnstsw %ax
@@ -462,7 +476,8 @@ __kefir_func_f64_preinc_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f64_preinc_label3:
+__kefir_func_f64_preinc_label5:
+__kefir_func_f64_preinc_label6:
     fnclex
     mov %rsi, %r10
     movq -128(%rbp), %rax
@@ -473,14 +488,15 @@ __kefir_func_f64_preinc_label3:
     movq %rax, -72(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
-    jmp __kefir_func_f64_preinc_label1
+    jmp __kefir_func_f64_preinc_label2
+__kefir_func_f64_preinc_label7:
 __kefir_text_func_f64_preinc_end:
 .section .rodata
     .align 8
-__kefir_func_f64_preinc_label4:
+__kefir_func_f64_preinc_label8:
     .quad 4607182418800017408
     .align 8
-__kefir_func_f64_preinc_label5:
+__kefir_func_f64_preinc_label9:
     .quad 0
 .section .text
 
@@ -506,6 +522,7 @@ __kefir_func_f32_postdec_label0:
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
 __kefir_func_f32_postdec_label1:
+__kefir_func_f32_postdec_label2:
     movq %r10, -120(%rbp)
     mov %r10, %rsi
     lea -128(%rbp), %rdx
@@ -516,8 +533,8 @@ __kefir_func_f32_postdec_label1:
     movd -128(%rbp), %xmm5
     movd -124(%rbp), %xmm6
     movaps %xmm5, %xmm0
-    movd __kefir_func_f32_postdec_label4(%rip), %xmm1
-    movd __kefir_func_f32_postdec_label5(%rip), %xmm2
+    movd __kefir_func_f32_postdec_label8(%rip), %xmm1
+    movd __kefir_func_f32_postdec_label9(%rip), %xmm2
     movaps %xmm0, %xmm3
     addss %xmm1, %xmm3
     movaps %xmm6, %xmm1
@@ -542,7 +559,7 @@ __kefir_func_f32_postdec_label1:
     movdqu -40(%rbp), %xmm5
     movq -24(%rbp), %r10
     test %al, %al
-    jz __kefir_func_f32_postdec_label6
+    jz __kefir_func_f32_postdec_label10
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
     movq -80(%rbp), %rax
@@ -551,8 +568,8 @@ __kefir_func_f32_postdec_label1:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f32_postdec_label2
-__kefir_func_f32_postdec_label6:
+    jmp __kefir_func_f32_postdec_label4
+__kefir_func_f32_postdec_label10:
     mov %r10, %rsi
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -562,8 +579,9 @@ __kefir_func_f32_postdec_label6:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f32_postdec_label3
-__kefir_func_f32_postdec_label2:
+    jmp __kefir_func_f32_postdec_label6
+__kefir_func_f32_postdec_label3:
+__kefir_func_f32_postdec_label4:
     stmxcsr -96(%rbp)
     mov -96(%rbp), %rcx
     fnstsw %ax
@@ -580,7 +598,8 @@ __kefir_func_f32_postdec_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f32_postdec_label3:
+__kefir_func_f32_postdec_label5:
+__kefir_func_f32_postdec_label6:
     fnclex
     mov %rsi, %r10
     movq -128(%rbp), %rax
@@ -591,14 +610,15 @@ __kefir_func_f32_postdec_label3:
     movq %rax, -72(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
-    jmp __kefir_func_f32_postdec_label1
+    jmp __kefir_func_f32_postdec_label2
+__kefir_func_f32_postdec_label7:
 __kefir_text_func_f32_postdec_end:
 .section .rodata
     .align 4
-__kefir_func_f32_postdec_label4:
+__kefir_func_f32_postdec_label8:
     .long 3212836864
     .align 4
-__kefir_func_f32_postdec_label5:
+__kefir_func_f32_postdec_label9:
     .long 0
 .section .text
 
@@ -624,6 +644,7 @@ __kefir_func_f32_postinc_label0:
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
 __kefir_func_f32_postinc_label1:
+__kefir_func_f32_postinc_label2:
     movq %r10, -120(%rbp)
     mov %r10, %rsi
     lea -128(%rbp), %rdx
@@ -634,8 +655,8 @@ __kefir_func_f32_postinc_label1:
     movd -128(%rbp), %xmm5
     movd -124(%rbp), %xmm6
     movaps %xmm5, %xmm0
-    movd __kefir_func_f32_postinc_label4(%rip), %xmm1
-    movd __kefir_func_f32_postinc_label5(%rip), %xmm2
+    movd __kefir_func_f32_postinc_label8(%rip), %xmm1
+    movd __kefir_func_f32_postinc_label9(%rip), %xmm2
     movaps %xmm0, %xmm3
     addss %xmm1, %xmm3
     movaps %xmm6, %xmm1
@@ -660,7 +681,7 @@ __kefir_func_f32_postinc_label1:
     movdqu -40(%rbp), %xmm5
     movq -24(%rbp), %r10
     test %al, %al
-    jz __kefir_func_f32_postinc_label6
+    jz __kefir_func_f32_postinc_label10
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
     movq -80(%rbp), %rax
@@ -669,8 +690,8 @@ __kefir_func_f32_postinc_label1:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f32_postinc_label2
-__kefir_func_f32_postinc_label6:
+    jmp __kefir_func_f32_postinc_label4
+__kefir_func_f32_postinc_label10:
     mov %r10, %rsi
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -680,8 +701,9 @@ __kefir_func_f32_postinc_label6:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f32_postinc_label3
-__kefir_func_f32_postinc_label2:
+    jmp __kefir_func_f32_postinc_label6
+__kefir_func_f32_postinc_label3:
+__kefir_func_f32_postinc_label4:
     stmxcsr -96(%rbp)
     mov -96(%rbp), %rcx
     fnstsw %ax
@@ -698,7 +720,8 @@ __kefir_func_f32_postinc_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f32_postinc_label3:
+__kefir_func_f32_postinc_label5:
+__kefir_func_f32_postinc_label6:
     fnclex
     mov %rsi, %r10
     movq -128(%rbp), %rax
@@ -709,14 +732,15 @@ __kefir_func_f32_postinc_label3:
     movq %rax, -72(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
-    jmp __kefir_func_f32_postinc_label1
+    jmp __kefir_func_f32_postinc_label2
+__kefir_func_f32_postinc_label7:
 __kefir_text_func_f32_postinc_end:
 .section .rodata
     .align 4
-__kefir_func_f32_postinc_label4:
+__kefir_func_f32_postinc_label8:
     .long 1065353216
     .align 4
-__kefir_func_f32_postinc_label5:
+__kefir_func_f32_postinc_label9:
     .long 0
 .section .text
 
@@ -742,6 +766,7 @@ __kefir_func_f64_postdec_label0:
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
 __kefir_func_f64_postdec_label1:
+__kefir_func_f64_postdec_label2:
     movq %r10, -112(%rbp)
     mov %r10, %rsi
     lea -128(%rbp), %rdx
@@ -752,8 +777,8 @@ __kefir_func_f64_postdec_label1:
     movq -128(%rbp), %xmm5
     movq -120(%rbp), %xmm6
     movaps %xmm5, %xmm0
-    movq __kefir_func_f64_postdec_label4(%rip), %xmm1
-    movq __kefir_func_f64_postdec_label5(%rip), %xmm2
+    movq __kefir_func_f64_postdec_label8(%rip), %xmm1
+    movq __kefir_func_f64_postdec_label9(%rip), %xmm2
     movaps %xmm0, %xmm3
     addsd %xmm1, %xmm3
     movaps %xmm6, %xmm1
@@ -778,7 +803,7 @@ __kefir_func_f64_postdec_label1:
     movdqu -40(%rbp), %xmm5
     movq -24(%rbp), %r10
     test %al, %al
-    jz __kefir_func_f64_postdec_label6
+    jz __kefir_func_f64_postdec_label10
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
     movq -80(%rbp), %rax
@@ -787,8 +812,8 @@ __kefir_func_f64_postdec_label1:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f64_postdec_label2
-__kefir_func_f64_postdec_label6:
+    jmp __kefir_func_f64_postdec_label4
+__kefir_func_f64_postdec_label10:
     mov %r10, %rsi
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -798,8 +823,9 @@ __kefir_func_f64_postdec_label6:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f64_postdec_label3
-__kefir_func_f64_postdec_label2:
+    jmp __kefir_func_f64_postdec_label6
+__kefir_func_f64_postdec_label3:
+__kefir_func_f64_postdec_label4:
     stmxcsr -96(%rbp)
     mov -96(%rbp), %rcx
     fnstsw %ax
@@ -816,7 +842,8 @@ __kefir_func_f64_postdec_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f64_postdec_label3:
+__kefir_func_f64_postdec_label5:
+__kefir_func_f64_postdec_label6:
     fnclex
     mov %rsi, %r10
     movq -128(%rbp), %rax
@@ -827,14 +854,15 @@ __kefir_func_f64_postdec_label3:
     movq %rax, -72(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
-    jmp __kefir_func_f64_postdec_label1
+    jmp __kefir_func_f64_postdec_label2
+__kefir_func_f64_postdec_label7:
 __kefir_text_func_f64_postdec_end:
 .section .rodata
     .align 8
-__kefir_func_f64_postdec_label4:
+__kefir_func_f64_postdec_label8:
     .quad 13830554455654793216
     .align 8
-__kefir_func_f64_postdec_label5:
+__kefir_func_f64_postdec_label9:
     .quad 0
 .section .text
 
@@ -860,6 +888,7 @@ __kefir_func_f64_postinc_label0:
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
 __kefir_func_f64_postinc_label1:
+__kefir_func_f64_postinc_label2:
     movq %r10, -112(%rbp)
     mov %r10, %rsi
     lea -128(%rbp), %rdx
@@ -870,8 +899,8 @@ __kefir_func_f64_postinc_label1:
     movq -128(%rbp), %xmm5
     movq -120(%rbp), %xmm6
     movaps %xmm5, %xmm0
-    movq __kefir_func_f64_postinc_label4(%rip), %xmm1
-    movq __kefir_func_f64_postinc_label5(%rip), %xmm2
+    movq __kefir_func_f64_postinc_label8(%rip), %xmm1
+    movq __kefir_func_f64_postinc_label9(%rip), %xmm2
     movaps %xmm0, %xmm3
     addsd %xmm1, %xmm3
     movaps %xmm6, %xmm1
@@ -896,7 +925,7 @@ __kefir_func_f64_postinc_label1:
     movdqu -40(%rbp), %xmm5
     movq -24(%rbp), %r10
     test %al, %al
-    jz __kefir_func_f64_postinc_label6
+    jz __kefir_func_f64_postinc_label10
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
     movq -80(%rbp), %rax
@@ -905,8 +934,8 @@ __kefir_func_f64_postinc_label1:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f64_postinc_label2
-__kefir_func_f64_postinc_label6:
+    jmp __kefir_func_f64_postinc_label4
+__kefir_func_f64_postinc_label10:
     mov %r10, %rsi
     movq -88(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -916,8 +945,9 @@ __kefir_func_f64_postinc_label6:
     movq %rax, -112(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -104(%rbp)
-    jmp __kefir_func_f64_postinc_label3
-__kefir_func_f64_postinc_label2:
+    jmp __kefir_func_f64_postinc_label6
+__kefir_func_f64_postinc_label3:
+__kefir_func_f64_postinc_label4:
     stmxcsr -96(%rbp)
     mov -96(%rbp), %rcx
     fnstsw %ax
@@ -934,7 +964,8 @@ __kefir_func_f64_postinc_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_f64_postinc_label3:
+__kefir_func_f64_postinc_label5:
+__kefir_func_f64_postinc_label6:
     fnclex
     mov %rsi, %r10
     movq -128(%rbp), %rax
@@ -945,14 +976,15 @@ __kefir_func_f64_postinc_label3:
     movq %rax, -72(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -64(%rbp)
-    jmp __kefir_func_f64_postinc_label1
+    jmp __kefir_func_f64_postinc_label2
+__kefir_func_f64_postinc_label7:
 __kefir_text_func_f64_postinc_end:
 .section .rodata
     .align 8
-__kefir_func_f64_postinc_label4:
+__kefir_func_f64_postinc_label8:
     .quad 4607182418800017408
     .align 8
-__kefir_func_f64_postinc_label5:
+__kefir_func_f64_postinc_label9:
     .quad 0
 .section .text
 

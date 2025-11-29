@@ -98,8 +98,8 @@ __kefir_text_func_getx_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    fldt __kefir_func_getx_label1(%rip)
     fldt __kefir_func_getx_label2(%rip)
+    fldt __kefir_func_getx_label3(%rip)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
     fldt -32(%rbp)
@@ -111,11 +111,11 @@ __kefir_text_func_getx_begin:
 __kefir_text_func_getx_end:
 .section .rodata
     .align 8
-__kefir_func_getx_label1:
+__kefir_func_getx_label2:
     .quad 14480694097861998019
     .quad 16384
     .align 8
-__kefir_func_getx_label2:
+__kefir_func_getx_label3:
     .quad 12497669109938221220
     .quad 49152
 .section .text

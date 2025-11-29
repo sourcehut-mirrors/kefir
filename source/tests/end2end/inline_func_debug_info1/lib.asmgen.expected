@@ -13,74 +13,74 @@ main:
 .loc 0 35 1
 __kefir_text_func_main_begin:
 .loc 0 24 16
-__kefir_func_main_label1:
+__kefir_func_main_label2:
     movq x@GOTPCREL(%rip), %rax
 .loc 0 24 16
-__kefir_func_main_label2:
 __kefir_func_main_label3:
+__kefir_func_main_label4:
     movl (%rax), %eax
 .loc 0 26 5
-__kefir_func_main_label4:
 __kefir_func_main_label5:
+__kefir_func_main_label6:
     movq x@GOTPCREL(%rip), %rcx
 .loc 0 25 13
-__kefir_func_main_label6:
 __kefir_func_main_label7:
 __kefir_func_main_label8:
+__kefir_func_main_label9:
     add $1, %eax
 .loc 0 26 9
-__kefir_func_main_label9:
 __kefir_func_main_label10:
+__kefir_func_main_label11:
     movl %eax, (%rcx)
 .loc 0 30 16
-__kefir_func_main_label11:
 __kefir_func_main_label12:
+__kefir_func_main_label13:
     movq x@GOTPCREL(%rip), %rax
 .loc 0 30 16
-__kefir_func_main_label13:
 __kefir_func_main_label14:
+__kefir_func_main_label15:
     movl (%rax), %eax
 .loc 0 32 5
-__kefir_func_main_label15:
 __kefir_func_main_label16:
+__kefir_func_main_label17:
     movq x@GOTPCREL(%rip), %rcx
 .loc 0 31 13
-__kefir_func_main_label17:
 __kefir_func_main_label18:
 __kefir_func_main_label19:
+__kefir_func_main_label20:
     add $3, %eax
 .loc 0 32 9
-__kefir_func_main_label20:
 __kefir_func_main_label21:
+__kefir_func_main_label22:
     movl %eax, (%rcx)
 .loc 0 24 16
-__kefir_func_main_label22:
 __kefir_func_main_label23:
+__kefir_func_main_label24:
     movq x@GOTPCREL(%rip), %rax
 .loc 0 24 16
-__kefir_func_main_label24:
 __kefir_func_main_label25:
+__kefir_func_main_label26:
     movl (%rax), %eax
 .loc 0 26 5
-__kefir_func_main_label26:
 __kefir_func_main_label27:
+__kefir_func_main_label28:
     movq x@GOTPCREL(%rip), %rcx
 .loc 0 25 13
-__kefir_func_main_label28:
 __kefir_func_main_label29:
 __kefir_func_main_label30:
+__kefir_func_main_label31:
     add $-1, %eax
 .loc 0 26 9
-__kefir_func_main_label31:
 __kefir_func_main_label32:
+__kefir_func_main_label33:
     movl %eax, (%rcx)
 .loc 0 42 5
-__kefir_func_main_label33:
 __kefir_func_main_label34:
 __kefir_func_main_label35:
+__kefir_func_main_label36:
     xor %eax, %eax
     ret
-__kefir_func_main_label36:
+__kefir_func_main_label37:
 __kefir_text_func_main_end:
 
 __kefir_text_section_end:

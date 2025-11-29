@@ -135,46 +135,46 @@ __kefir_text_func_less_uint_end:
 test_sint:
 __kefir_text_func_test_sint_begin:
     cmp $0, %edi
-    je __kefir_func_test_sint_label12
+    je __kefir_func_test_sint_label24
     cmp $1, %edi
-    je __kefir_func_test_sint_label11
+    je __kefir_func_test_sint_label22
     cmp $2, %edi
-    je __kefir_func_test_sint_label10
+    je __kefir_func_test_sint_label20
     cmp $3, %edi
-    je __kefir_func_test_sint_label9
+    je __kefir_func_test_sint_label18
     cmp $4, %edi
-    je __kefir_func_test_sint_label8
+    je __kefir_func_test_sint_label16
     cmp $5, %edi
-    je __kefir_func_test_sint_label7
+    je __kefir_func_test_sint_label14
     ud2
     xor %rax, %rax
     ret
-__kefir_func_test_sint_label7:
+__kefir_func_test_sint_label14:
     xor %eax, %eax
     cmp %edx, %esi
     setle %al
     ret
-__kefir_func_test_sint_label8:
+__kefir_func_test_sint_label16:
     xor %eax, %eax
     cmp %edx, %esi
     setl %al
     ret
-__kefir_func_test_sint_label9:
+__kefir_func_test_sint_label18:
     xor %eax, %eax
     cmp %edx, %esi
     setge %al
     ret
-__kefir_func_test_sint_label10:
+__kefir_func_test_sint_label20:
     xor %eax, %eax
     cmp %edx, %esi
     setg %al
     ret
-__kefir_func_test_sint_label11:
+__kefir_func_test_sint_label22:
     xor %eax, %eax
     cmp %edx, %esi
     setne %al
     ret
-__kefir_func_test_sint_label12:
+__kefir_func_test_sint_label24:
     xor %eax, %eax
     cmp %edx, %esi
     sete %al
@@ -184,46 +184,46 @@ __kefir_text_func_test_sint_end:
 test_uint:
 __kefir_text_func_test_uint_begin:
     cmp $0, %edi
-    je __kefir_func_test_uint_label12
+    je __kefir_func_test_uint_label24
     cmp $1, %edi
-    je __kefir_func_test_uint_label11
+    je __kefir_func_test_uint_label22
     cmp $2, %edi
-    je __kefir_func_test_uint_label10
+    je __kefir_func_test_uint_label20
     cmp $3, %edi
-    je __kefir_func_test_uint_label9
+    je __kefir_func_test_uint_label18
     cmp $4, %edi
-    je __kefir_func_test_uint_label8
+    je __kefir_func_test_uint_label16
     cmp $5, %edi
-    je __kefir_func_test_uint_label7
+    je __kefir_func_test_uint_label14
     ud2
     xor %rax, %rax
     ret
-__kefir_func_test_uint_label7:
+__kefir_func_test_uint_label14:
     xor %eax, %eax
     cmp %edx, %esi
     setbe %al
     ret
-__kefir_func_test_uint_label8:
+__kefir_func_test_uint_label16:
     xor %eax, %eax
     cmp %edx, %esi
     setb %al
     ret
-__kefir_func_test_uint_label9:
+__kefir_func_test_uint_label18:
     xor %eax, %eax
     cmp %edx, %esi
     setae %al
     ret
-__kefir_func_test_uint_label10:
+__kefir_func_test_uint_label20:
     xor %eax, %eax
     cmp %edx, %esi
     seta %al
     ret
-__kefir_func_test_uint_label11:
+__kefir_func_test_uint_label22:
     xor %eax, %eax
     cmp %edx, %esi
     setne %al
     ret
-__kefir_func_test_uint_label12:
+__kefir_func_test_uint_label24:
     xor %eax, %eax
     cmp %edx, %esi
     sete %al
@@ -285,56 +285,56 @@ __kefir_text_func_less_ulong_end:
 test_schar:
 __kefir_text_func_test_schar_begin:
     cmp $0, %edi
-    je __kefir_func_test_schar_label12
+    je __kefir_func_test_schar_label24
     cmp $1, %edi
-    je __kefir_func_test_schar_label11
+    je __kefir_func_test_schar_label22
     cmp $2, %edi
-    je __kefir_func_test_schar_label10
+    je __kefir_func_test_schar_label20
     cmp $3, %edi
-    je __kefir_func_test_schar_label9
+    je __kefir_func_test_schar_label18
     cmp $4, %edi
-    je __kefir_func_test_schar_label8
+    je __kefir_func_test_schar_label16
     cmp $5, %edi
-    je __kefir_func_test_schar_label7
+    je __kefir_func_test_schar_label14
     ud2
     xor %rax, %rax
     ret
-__kefir_func_test_schar_label7:
+__kefir_func_test_schar_label14:
     movsx %sil, %rcx
     movsx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setle %al
     ret
-__kefir_func_test_schar_label8:
+__kefir_func_test_schar_label16:
     movsx %sil, %rcx
     movsx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setl %al
     ret
-__kefir_func_test_schar_label9:
+__kefir_func_test_schar_label18:
     movsx %sil, %rcx
     movsx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setge %al
     ret
-__kefir_func_test_schar_label10:
+__kefir_func_test_schar_label20:
     movsx %sil, %rcx
     movsx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setg %al
     ret
-__kefir_func_test_schar_label11:
+__kefir_func_test_schar_label22:
     movsx %sil, %rcx
     movsx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setne %al
     ret
-__kefir_func_test_schar_label12:
+__kefir_func_test_schar_label24:
     movsx %sil, %rcx
     movsx %dl, %rdx
     xor %eax, %eax
@@ -346,46 +346,46 @@ __kefir_text_func_test_schar_end:
 test_slong:
 __kefir_text_func_test_slong_begin:
     cmp $0, %edi
-    je __kefir_func_test_slong_label12
+    je __kefir_func_test_slong_label24
     cmp $1, %edi
-    je __kefir_func_test_slong_label11
+    je __kefir_func_test_slong_label22
     cmp $2, %edi
-    je __kefir_func_test_slong_label10
+    je __kefir_func_test_slong_label20
     cmp $3, %edi
-    je __kefir_func_test_slong_label9
+    je __kefir_func_test_slong_label18
     cmp $4, %edi
-    je __kefir_func_test_slong_label8
+    je __kefir_func_test_slong_label16
     cmp $5, %edi
-    je __kefir_func_test_slong_label7
+    je __kefir_func_test_slong_label14
     ud2
     xor %rax, %rax
     ret
-__kefir_func_test_slong_label7:
+__kefir_func_test_slong_label14:
     xor %eax, %eax
     cmp %rdx, %rsi
     setle %al
     ret
-__kefir_func_test_slong_label8:
+__kefir_func_test_slong_label16:
     xor %eax, %eax
     cmp %rdx, %rsi
     setl %al
     ret
-__kefir_func_test_slong_label9:
+__kefir_func_test_slong_label18:
     xor %eax, %eax
     cmp %rdx, %rsi
     setge %al
     ret
-__kefir_func_test_slong_label10:
+__kefir_func_test_slong_label20:
     xor %eax, %eax
     cmp %rdx, %rsi
     setg %al
     ret
-__kefir_func_test_slong_label11:
+__kefir_func_test_slong_label22:
     xor %eax, %eax
     cmp %rdx, %rsi
     setne %al
     ret
-__kefir_func_test_slong_label12:
+__kefir_func_test_slong_label24:
     xor %eax, %eax
     cmp %rdx, %rsi
     sete %al
@@ -395,56 +395,56 @@ __kefir_text_func_test_slong_end:
 test_uchar:
 __kefir_text_func_test_uchar_begin:
     cmp $0, %edi
-    je __kefir_func_test_uchar_label12
+    je __kefir_func_test_uchar_label24
     cmp $1, %edi
-    je __kefir_func_test_uchar_label11
+    je __kefir_func_test_uchar_label22
     cmp $2, %edi
-    je __kefir_func_test_uchar_label10
+    je __kefir_func_test_uchar_label20
     cmp $3, %edi
-    je __kefir_func_test_uchar_label9
+    je __kefir_func_test_uchar_label18
     cmp $4, %edi
-    je __kefir_func_test_uchar_label8
+    je __kefir_func_test_uchar_label16
     cmp $5, %edi
-    je __kefir_func_test_uchar_label7
+    je __kefir_func_test_uchar_label14
     ud2
     xor %rax, %rax
     ret
-__kefir_func_test_uchar_label7:
+__kefir_func_test_uchar_label14:
     movzx %sil, %rcx
     movzx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setle %al
     ret
-__kefir_func_test_uchar_label8:
+__kefir_func_test_uchar_label16:
     movzx %sil, %rcx
     movzx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setl %al
     ret
-__kefir_func_test_uchar_label9:
+__kefir_func_test_uchar_label18:
     movzx %sil, %rcx
     movzx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setge %al
     ret
-__kefir_func_test_uchar_label10:
+__kefir_func_test_uchar_label20:
     movzx %sil, %rcx
     movzx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setg %al
     ret
-__kefir_func_test_uchar_label11:
+__kefir_func_test_uchar_label22:
     movzx %sil, %rcx
     movzx %dl, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setne %al
     ret
-__kefir_func_test_uchar_label12:
+__kefir_func_test_uchar_label24:
     movzx %sil, %rcx
     movzx %dl, %rdx
     xor %eax, %eax
@@ -456,46 +456,46 @@ __kefir_text_func_test_uchar_end:
 test_ulong:
 __kefir_text_func_test_ulong_begin:
     cmp $0, %edi
-    je __kefir_func_test_ulong_label12
+    je __kefir_func_test_ulong_label24
     cmp $1, %edi
-    je __kefir_func_test_ulong_label11
+    je __kefir_func_test_ulong_label22
     cmp $2, %edi
-    je __kefir_func_test_ulong_label10
+    je __kefir_func_test_ulong_label20
     cmp $3, %edi
-    je __kefir_func_test_ulong_label9
+    je __kefir_func_test_ulong_label18
     cmp $4, %edi
-    je __kefir_func_test_ulong_label8
+    je __kefir_func_test_ulong_label16
     cmp $5, %edi
-    je __kefir_func_test_ulong_label7
+    je __kefir_func_test_ulong_label14
     ud2
     xor %rax, %rax
     ret
-__kefir_func_test_ulong_label7:
+__kefir_func_test_ulong_label14:
     xor %eax, %eax
     cmp %rdx, %rsi
     setbe %al
     ret
-__kefir_func_test_ulong_label8:
+__kefir_func_test_ulong_label16:
     xor %eax, %eax
     cmp %rdx, %rsi
     setb %al
     ret
-__kefir_func_test_ulong_label9:
+__kefir_func_test_ulong_label18:
     xor %eax, %eax
     cmp %rdx, %rsi
     setae %al
     ret
-__kefir_func_test_ulong_label10:
+__kefir_func_test_ulong_label20:
     xor %eax, %eax
     cmp %rdx, %rsi
     seta %al
     ret
-__kefir_func_test_ulong_label11:
+__kefir_func_test_ulong_label22:
     xor %eax, %eax
     cmp %rdx, %rsi
     setne %al
     ret
-__kefir_func_test_ulong_label12:
+__kefir_func_test_ulong_label24:
     xor %eax, %eax
     cmp %rdx, %rsi
     sete %al
@@ -561,56 +561,56 @@ __kefir_text_func_less_ushort_end:
 test_sshort:
 __kefir_text_func_test_sshort_begin:
     cmp $0, %edi
-    je __kefir_func_test_sshort_label12
+    je __kefir_func_test_sshort_label24
     cmp $1, %edi
-    je __kefir_func_test_sshort_label11
+    je __kefir_func_test_sshort_label22
     cmp $2, %edi
-    je __kefir_func_test_sshort_label10
+    je __kefir_func_test_sshort_label20
     cmp $3, %edi
-    je __kefir_func_test_sshort_label9
+    je __kefir_func_test_sshort_label18
     cmp $4, %edi
-    je __kefir_func_test_sshort_label8
+    je __kefir_func_test_sshort_label16
     cmp $5, %edi
-    je __kefir_func_test_sshort_label7
+    je __kefir_func_test_sshort_label14
     ud2
     xor %rax, %rax
     ret
-__kefir_func_test_sshort_label7:
+__kefir_func_test_sshort_label14:
     movsx %si, %rcx
     movsx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setle %al
     ret
-__kefir_func_test_sshort_label8:
+__kefir_func_test_sshort_label16:
     movsx %si, %rcx
     movsx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setl %al
     ret
-__kefir_func_test_sshort_label9:
+__kefir_func_test_sshort_label18:
     movsx %si, %rcx
     movsx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setge %al
     ret
-__kefir_func_test_sshort_label10:
+__kefir_func_test_sshort_label20:
     movsx %si, %rcx
     movsx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setg %al
     ret
-__kefir_func_test_sshort_label11:
+__kefir_func_test_sshort_label22:
     movsx %si, %rcx
     movsx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setne %al
     ret
-__kefir_func_test_sshort_label12:
+__kefir_func_test_sshort_label24:
     movsx %si, %rcx
     movsx %dx, %rdx
     xor %eax, %eax
@@ -622,56 +622,56 @@ __kefir_text_func_test_sshort_end:
 test_ushort:
 __kefir_text_func_test_ushort_begin:
     cmp $0, %edi
-    je __kefir_func_test_ushort_label12
+    je __kefir_func_test_ushort_label24
     cmp $1, %edi
-    je __kefir_func_test_ushort_label11
+    je __kefir_func_test_ushort_label22
     cmp $2, %edi
-    je __kefir_func_test_ushort_label10
+    je __kefir_func_test_ushort_label20
     cmp $3, %edi
-    je __kefir_func_test_ushort_label9
+    je __kefir_func_test_ushort_label18
     cmp $4, %edi
-    je __kefir_func_test_ushort_label8
+    je __kefir_func_test_ushort_label16
     cmp $5, %edi
-    je __kefir_func_test_ushort_label7
+    je __kefir_func_test_ushort_label14
     ud2
     xor %rax, %rax
     ret
-__kefir_func_test_ushort_label7:
+__kefir_func_test_ushort_label14:
     movzx %si, %rcx
     movzx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setle %al
     ret
-__kefir_func_test_ushort_label8:
+__kefir_func_test_ushort_label16:
     movzx %si, %rcx
     movzx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setl %al
     ret
-__kefir_func_test_ushort_label9:
+__kefir_func_test_ushort_label18:
     movzx %si, %rcx
     movzx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setge %al
     ret
-__kefir_func_test_ushort_label10:
+__kefir_func_test_ushort_label20:
     movzx %si, %rcx
     movzx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setg %al
     ret
-__kefir_func_test_ushort_label11:
+__kefir_func_test_ushort_label22:
     movzx %si, %rcx
     movzx %dx, %rdx
     xor %eax, %eax
     cmp %edx, %ecx
     setne %al
     ret
-__kefir_func_test_ushort_label12:
+__kefir_func_test_ushort_label24:
     movzx %si, %rcx
     movzx %dx, %rdx
     xor %eax, %eax

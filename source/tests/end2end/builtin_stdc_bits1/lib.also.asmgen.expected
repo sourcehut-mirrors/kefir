@@ -15,11 +15,11 @@ __kefir_text_section_begin:
 bit_ceil:
 __kefir_text_func_bit_ceil_begin:
     cmp $1, %rdi
-    jg __kefir_func_bit_ceil_label2
+    jg __kefir_func_bit_ceil_label4
     mov $1, %rax
-__kefir_func_bit_ceil_label1:
-    ret
 __kefir_func_bit_ceil_label2:
+    ret
+__kefir_func_bit_ceil_label4:
     sub $1, %rdi
     bsr %rdi, %rax
     xor $63, %eax
@@ -28,17 +28,17 @@ __kefir_func_bit_ceil_label2:
     movsx %ecx, %rcx
     mov $2, %rax
     shl %cl, %rax
-    jmp __kefir_func_bit_ceil_label1
+    jmp __kefir_func_bit_ceil_label2
 __kefir_text_func_bit_ceil_end:
 
 bit_floor:
 __kefir_text_func_bit_floor_begin:
     cmp $0, %rdi
-    jne __kefir_func_bit_floor_label2
+    jne __kefir_func_bit_floor_label4
     xor %eax, %eax
-__kefir_func_bit_floor_label1:
-    ret
 __kefir_func_bit_floor_label2:
+    ret
+__kefir_func_bit_floor_label4:
     bsr %rdi, %rax
     xor $63, %eax
     mov $63, %rcx
@@ -46,7 +46,7 @@ __kefir_func_bit_floor_label2:
     movsx %ecx, %rcx
     mov $1, %rax
     shl %cl, %rax
-    jmp __kefir_func_bit_floor_label1
+    jmp __kefir_func_bit_floor_label2
 __kefir_text_func_bit_floor_end:
 
 rotate_left:

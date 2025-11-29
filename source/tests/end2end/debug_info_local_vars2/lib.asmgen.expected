@@ -18,14 +18,14 @@ __kefir_text_func_test1_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
 .loc 0 26 12
-__kefir_func_test1_label1:
+__kefir_func_test1_label2:
     movq x@GOTPCREL(%rip), %rax
 .loc 0 26 12
-__kefir_func_test1_label2:
 __kefir_func_test1_label3:
-    movsxl (%rax), %rcx
 __kefir_func_test1_label4:
+    movsxl (%rax), %rcx
 __kefir_func_test1_label5:
+__kefir_func_test1_label6:
     movq %rcx, -48(%rbp)
 .loc 0 26 16
     data16     lea y@tlsgd(%rip), %rdi
@@ -33,19 +33,19 @@ __kefir_func_test1_label5:
     rex.W     call __tls_get_addr@PLT
     movq -48(%rbp), %rcx
 .loc 0 26 16
-__kefir_func_test1_label6:
 __kefir_func_test1_label7:
+__kefir_func_test1_label8:
     movq (%rax), %rdx
 .loc 0 26 20
-__kefir_func_test1_label8:
 __kefir_func_test1_label9:
+__kefir_func_test1_label10:
     lea __kefir_function_test1_static_z_3(%rip), %rax
 .loc 0 26 20
-__kefir_func_test1_label10:
 __kefir_func_test1_label11:
-    movl (%rax), %esi
 __kefir_func_test1_label12:
+    movl (%rax), %esi
 __kefir_func_test1_label13:
+__kefir_func_test1_label14:
     movq %rcx, -40(%rbp)
     movq %rdx, -32(%rbp)
     movq %rsi, -24(%rbp)
@@ -57,39 +57,39 @@ __kefir_func_test1_label13:
     movq -32(%rbp), %rdx
     movq -40(%rbp), %rcx
 .loc 0 26 25
-__kefir_func_test1_label14:
 __kefir_func_test1_label15:
+__kefir_func_test1_label16:
     movq (%rax), %rax
 .loc 0 26 12
-__kefir_func_test1_label16:
 __kefir_func_test1_label17:
+__kefir_func_test1_label18:
     add %rdx, %rcx
 .loc 0 26 12
-__kefir_func_test1_label18:
 __kefir_func_test1_label19:
-    cvtsi2ss %rcx, %xmm0
 __kefir_func_test1_label20:
+    cvtsi2ss %rcx, %xmm0
 __kefir_func_test1_label21:
+__kefir_func_test1_label22:
     movd %esi, %xmm1
 .loc 0 26 12
     addss %xmm1, %xmm0
 .loc 0 26 12
-__kefir_func_test1_label22:
 __kefir_func_test1_label23:
-    cvtss2sd %xmm0, %xmm0
 __kefir_func_test1_label24:
+    cvtss2sd %xmm0, %xmm0
 __kefir_func_test1_label25:
+__kefir_func_test1_label26:
     movq %rax, %xmm1
 .loc 0 26 12
     addsd %xmm1, %xmm0
 .loc 0 26 5
-__kefir_func_test1_label26:
 __kefir_func_test1_label27:
+__kefir_func_test1_label28:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_test1_label28:
+__kefir_func_test1_label29:
 __kefir_text_func_test1_end:
 
 __kefir_text_section_end:

@@ -27,7 +27,7 @@ __kefir_text_func_pnanl_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    fldt __kefir_func_pnanl_label3(%rip)
+    fldt __kefir_func_pnanl_label6(%rip)
     fstpt -48(%rbp)
     sub $16, %rsp
     fldt -48(%rbp)
@@ -35,14 +35,14 @@ __kefir_text_func_pnanl_begin:
     call mysignbit@PLT
     add $16, %rsp
     test %eax, %eax
-    jnz __kefir_func_pnanl_label1
-__kefir_func_pnanl_label4:
+    jnz __kefir_func_pnanl_label2
+__kefir_func_pnanl_label7:
     movq -48(%rbp), %rax
     movq %rax, -32(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -24(%rbp)
-    jmp __kefir_func_pnanl_label2
-__kefir_func_pnanl_label1:
+    jmp __kefir_func_pnanl_label4
+__kefir_func_pnanl_label2:
     sub $16, %rsp
     fldt -48(%rbp)
     fstpt (%rsp)
@@ -53,7 +53,7 @@ __kefir_func_pnanl_label1:
     movq %rax, -32(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -24(%rbp)
-__kefir_func_pnanl_label2:
+__kefir_func_pnanl_label4:
     fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -62,7 +62,7 @@ __kefir_func_pnanl_label2:
 __kefir_text_func_pnanl_end:
 .section .rodata
     .align 8
-__kefir_func_pnanl_label3:
+__kefir_func_pnanl_label6:
     .quad 13835058055282163712
     .quad 65535
 .section .text

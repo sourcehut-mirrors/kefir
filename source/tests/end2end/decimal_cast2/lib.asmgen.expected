@@ -152,7 +152,7 @@ d32_to_bool:
 __kefir_text_func_d32_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
-    movd __kefir_func_d32_to_bool_label1(%rip), %xmm1
+    movd __kefir_func_d32_to_bool_label2(%rip), %xmm1
     call __bid_eqsd2@PLT
     test %eax, %eax
     setne %al
@@ -162,7 +162,7 @@ __kefir_text_func_d32_to_bool_begin:
 __kefir_text_func_d32_to_bool_end:
 .section .rodata
     .align 4
-__kefir_func_d32_to_bool_label1:
+__kefir_func_d32_to_bool_label2:
     .long 847249408
 .section .text
 
@@ -179,7 +179,7 @@ d64_to_bool:
 __kefir_text_func_d64_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
-    movq __kefir_func_d64_to_bool_label1(%rip), %xmm1
+    movq __kefir_func_d64_to_bool_label2(%rip), %xmm1
     call __bid_eqdd2@PLT
     test %eax, %eax
     setne %al
@@ -189,7 +189,7 @@ __kefir_text_func_d64_to_bool_begin:
 __kefir_text_func_d64_to_bool_end:
 .section .rodata
     .align 8
-__kefir_func_d64_to_bool_label1:
+__kefir_func_d64_to_bool_label2:
     .quad 3584865303386914816
 .section .text
 
@@ -476,7 +476,7 @@ d128_to_bool:
 __kefir_text_func_d128_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
-    movdqu __kefir_func_d128_to_bool_label1(%rip), %xmm1
+    movdqu __kefir_func_d128_to_bool_label2(%rip), %xmm1
     call __bid_eqtd2@PLT
     test %eax, %eax
     setne %al
@@ -486,7 +486,7 @@ __kefir_text_func_d128_to_bool_begin:
 __kefir_text_func_d128_to_bool_end:
 .section .rodata
     .align 16
-__kefir_func_d128_to_bool_label1:
+__kefir_func_d128_to_bool_label2:
     .quad 0, 3476778912330022912
 .section .text
 

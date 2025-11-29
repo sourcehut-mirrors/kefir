@@ -31,20 +31,20 @@ __kefir_text_func_fn3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_fn3_label1:
+__kefir_func_fn3_label2:
     cmp $0, %edi
-    jg __kefir_func_fn3_label3
+    jg __kefir_func_fn3_label6
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_fn3_label3:
+__kefir_func_fn3_label6:
     movq %rdi, -16(%rbp)
     call fn1
     movq -16(%rbp), %rdi
     mov %rdi, %rax
     add $-1, %eax
     mov %rax, %rdi
-    jmp __kefir_func_fn3_label1
+    jmp __kefir_func_fn3_label2
 __kefir_text_func_fn3_end:
 
 __kefir_text_section_end:

@@ -30,6 +30,7 @@ __kefir_func_neg1_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_neg1_label1:
 __kefir_text_func_neg1_end:
 
 neg2:
@@ -46,6 +47,7 @@ __kefir_func_neg2_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_neg2_label1:
 __kefir_text_func_neg2_end:
 
 neg3:
@@ -62,6 +64,7 @@ __kefir_func_neg3_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_neg3_label1:
 __kefir_text_func_neg3_end:
 
 neg4:
@@ -78,6 +81,7 @@ __kefir_func_neg4_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_neg4_label1:
 __kefir_text_func_neg4_end:
 
 neg5:
@@ -103,6 +107,7 @@ __kefir_func_neg5_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_neg5_label1:
 __kefir_text_func_neg5_end:
 
 neg6:
@@ -163,6 +168,7 @@ __kefir_func_neg6_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_neg6_label1:
 __kefir_text_func_neg6_end:
 
 __kefir_text_section_end:
@@ -200,6 +206,7 @@ __kefir_runtime_func___kefir_bigint_invert_label0:
     movsx %ecx, %rax
     movq %rax, -8(%rbp)
 __kefir_runtime_func___kefir_bigint_invert_label1:
+__kefir_runtime_func___kefir_bigint_invert_label2:
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
     mov $0, %rdx
@@ -208,13 +215,15 @@ __kefir_runtime_func___kefir_bigint_invert_label1:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_invert_label3
-__kefir_runtime_func___kefir_bigint_invert_label2:
+    jz __kefir_runtime_func___kefir_bigint_invert_label6
+__kefir_runtime_func___kefir_bigint_invert_label3:
+__kefir_runtime_func___kefir_bigint_invert_label4:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_invert_label3:
+__kefir_runtime_func___kefir_bigint_invert_label5:
+__kefir_runtime_func___kefir_bigint_invert_label6:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -230,7 +239,8 @@ __kefir_runtime_func___kefir_bigint_invert_label3:
     movq -8(%rbp), %rax
     add $1, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_invert_label1
+    jmp __kefir_runtime_func___kefir_bigint_invert_label2
+__kefir_runtime_func___kefir_bigint_invert_label7:
 __kefir_runtime_text_func___kefir_bigint_invert_end:
 
 __kefir_bigint_negate:
@@ -252,6 +262,7 @@ __kefir_runtime_func___kefir_bigint_negate_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_runtime_func___kefir_bigint_negate_label1:
 __kefir_runtime_text_func___kefir_bigint_negate_end:
 
 __kefir_bigint_util_add_digit_zero_extended:
@@ -285,6 +296,7 @@ __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label0:
     movsx %ecx, %rax
     movq %rax, -16(%rbp)
 __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label1:
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2:
     movq -16(%rbp), %rax
     movq -24(%rbp), %rcx
     mov $0, %rdx
@@ -293,13 +305,15 @@ __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label1:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label3
-__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2:
+    jz __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label6
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label3:
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label4:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label3:
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label5:
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label6:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -314,15 +328,17 @@ __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label3:
     cmp %rcx, %rax
     sete %dl
     test %edx, %edx
-    jz __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label7
-    jmp __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label4
+    jz __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label14
+    jmp __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label8
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label14:
+    jmp __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label12
 __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label7:
-    jmp __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label6
-__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label4:
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label8:
     movb -52(%rbp), %al
     and $255, %rax
     leaq -28(%rbp), %rcx
-__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label5:
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label9:
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label10:
     movl %eax, (%rcx)
     movl -56(%rbp), %eax
     movl -4(%rbp), %ecx
@@ -346,11 +362,13 @@ __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label5:
     movq -16(%rbp), %rax
     add $1, %rax
     movq %rax, -16(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label1
-__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label6:
+    jmp __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label11:
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label12:
     movl -32(%rbp), %eax
     leaq -28(%rbp), %rcx
-    jmp __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label5
+    jmp __kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label10
+__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label13:
 __kefir_runtime_text_func___kefir_bigint_util_add_digit_zero_extended_end:
 
 

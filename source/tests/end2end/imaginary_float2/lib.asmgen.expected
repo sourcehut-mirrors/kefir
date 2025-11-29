@@ -30,67 +30,67 @@
 __kefir_text_section_begin:
 d32_to_fi32:
 __kefir_text_func_d32_to_fi32_begin:
-    movd __kefir_func_d32_to_fi32_label1(%rip), %xmm0
+    movd __kefir_func_d32_to_fi32_label2(%rip), %xmm0
     ret
 __kefir_text_func_d32_to_fi32_end:
 .section .rodata
     .align 4
-__kefir_func_d32_to_fi32_label1:
+__kefir_func_d32_to_fi32_label2:
     .long 0
 .section .text
 
 d64_to_fi32:
 __kefir_text_func_d64_to_fi32_begin:
-    movd __kefir_func_d64_to_fi32_label1(%rip), %xmm0
+    movd __kefir_func_d64_to_fi32_label2(%rip), %xmm0
     ret
 __kefir_text_func_d64_to_fi32_end:
 .section .rodata
     .align 4
-__kefir_func_d64_to_fi32_label1:
+__kefir_func_d64_to_fi32_label2:
     .long 0
 .section .text
 
 fi32_to_d32:
 __kefir_text_func_fi32_to_d32_begin:
-    movd __kefir_func_fi32_to_d32_label1(%rip), %xmm0
+    movd __kefir_func_fi32_to_d32_label2(%rip), %xmm0
     ret
 __kefir_text_func_fi32_to_d32_end:
 .section .rodata
     .align 4
-__kefir_func_fi32_to_d32_label1:
+__kefir_func_fi32_to_d32_label2:
     .long 847249408
 .section .text
 
 fi32_to_d64:
 __kefir_text_func_fi32_to_d64_begin:
-    movq __kefir_func_fi32_to_d64_label1(%rip), %xmm0
+    movq __kefir_func_fi32_to_d64_label2(%rip), %xmm0
     ret
 __kefir_text_func_fi32_to_d64_end:
 .section .rodata
     .align 8
-__kefir_func_fi32_to_d64_label1:
+__kefir_func_fi32_to_d64_label2:
     .quad 3584865303386914816
 .section .text
 
 d128_to_fi32:
 __kefir_text_func_d128_to_fi32_begin:
-    movd __kefir_func_d128_to_fi32_label1(%rip), %xmm0
+    movd __kefir_func_d128_to_fi32_label2(%rip), %xmm0
     ret
 __kefir_text_func_d128_to_fi32_end:
 .section .rodata
     .align 4
-__kefir_func_d128_to_fi32_label1:
+__kefir_func_d128_to_fi32_label2:
     .long 0
 .section .text
 
 fi32_to_d128:
 __kefir_text_func_fi32_to_d128_begin:
-    movdqu __kefir_func_fi32_to_d128_label1(%rip), %xmm0
+    movdqu __kefir_func_fi32_to_d128_label2(%rip), %xmm0
     ret
 __kefir_text_func_fi32_to_d128_end:
 .section .rodata
     .align 16
-__kefir_func_fi32_to_d128_label1:
+__kefir_func_fi32_to_d128_label2:
     .quad 0, 3476778912330022912
 .section .text
 

@@ -34,6 +34,7 @@ __kefir_func_sub1_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_sub1_label1:
 __kefir_text_func_sub1_end:
 
 sub2:
@@ -54,6 +55,7 @@ __kefir_func_sub2_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_sub2_label1:
 __kefir_text_func_sub2_end:
 
 sub3:
@@ -74,6 +76,7 @@ __kefir_func_sub3_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_sub3_label1:
 __kefir_text_func_sub3_end:
 
 sub4:
@@ -94,6 +97,7 @@ __kefir_func_sub4_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_sub4_label1:
 __kefir_text_func_sub4_end:
 
 sub5:
@@ -127,6 +131,7 @@ __kefir_func_sub5_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_sub5_label1:
 __kefir_text_func_sub5_end:
 
 sub6:
@@ -210,6 +215,7 @@ __kefir_func_sub6_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_sub6_label1:
 __kefir_text_func_sub6_end:
 
 __kefir_text_section_end:
@@ -249,6 +255,7 @@ __kefir_runtime_func___kefir_bigint_subtract_label0:
     movsx %ecx, %rax
     movq %rax, -16(%rbp)
 __kefir_runtime_func___kefir_bigint_subtract_label1:
+__kefir_runtime_func___kefir_bigint_subtract_label2:
     movq -16(%rbp), %rax
     movq -24(%rbp), %rcx
     mov $0, %rdx
@@ -257,13 +264,15 @@ __kefir_runtime_func___kefir_bigint_subtract_label1:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_subtract_label3
-__kefir_runtime_func___kefir_bigint_subtract_label2:
+    jz __kefir_runtime_func___kefir_bigint_subtract_label6
+__kefir_runtime_func___kefir_bigint_subtract_label3:
+__kefir_runtime_func___kefir_bigint_subtract_label4:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_subtract_label3:
+__kefir_runtime_func___kefir_bigint_subtract_label5:
+__kefir_runtime_func___kefir_bigint_subtract_label6:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -301,7 +310,8 @@ __kefir_runtime_func___kefir_bigint_subtract_label3:
     movq -16(%rbp), %rax
     add $1, %rax
     movq %rax, -16(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_subtract_label1
+    jmp __kefir_runtime_func___kefir_bigint_subtract_label2
+__kefir_runtime_func___kefir_bigint_subtract_label7:
 __kefir_runtime_text_func___kefir_bigint_subtract_end:
 
 

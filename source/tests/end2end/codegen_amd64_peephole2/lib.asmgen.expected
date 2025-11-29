@@ -24,73 +24,73 @@
 __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
-__kefir_func_test1_label1:
+__kefir_func_test1_label2:
     test %rdi, %rdi
-    jnz __kefir_func_test1_label1
+    jnz __kefir_func_test1_label2
     ret
 __kefir_text_func_test1_end:
 
 test2:
 __kefir_text_func_test2_begin:
-__kefir_func_test2_label1:
+__kefir_func_test2_label2:
     cmp $0, %rdi
-    jg __kefir_func_test2_label1
+    jg __kefir_func_test2_label2
     ret
 __kefir_text_func_test2_end:
 
 test3:
 __kefir_text_func_test3_begin:
-__kefir_func_test3_label1:
+__kefir_func_test3_label2:
     cmp $0, %rdi
-    jge __kefir_func_test3_label1
+    jge __kefir_func_test3_label2
     ret
 __kefir_text_func_test3_end:
 
 test4:
 __kefir_text_func_test4_begin:
-__kefir_func_test4_label1:
+__kefir_func_test4_label2:
     cmp $0, %rdi
-    jl __kefir_func_test4_label1
+    jl __kefir_func_test4_label2
     ret
 __kefir_text_func_test4_end:
 
 test5:
 __kefir_text_func_test5_begin:
-__kefir_func_test5_label1:
+__kefir_func_test5_label2:
     cmp $0, %rdi
-    jle __kefir_func_test5_label1
+    jle __kefir_func_test5_label2
     ret
 __kefir_text_func_test5_end:
 
 test6:
 __kefir_text_func_test6_begin:
-__kefir_func_test6_label1:
+__kefir_func_test6_label2:
     cmp $0, %rdi
-    ja __kefir_func_test6_label1
+    ja __kefir_func_test6_label2
     ret
 __kefir_text_func_test6_end:
 
 test7:
 __kefir_text_func_test7_begin:
-__kefir_func_test7_label1:
+__kefir_func_test7_label2:
     cmp $0, %rdi
-    jae __kefir_func_test7_label1
+    jae __kefir_func_test7_label2
     ret
 __kefir_text_func_test7_end:
 
 test8:
 __kefir_text_func_test8_begin:
-__kefir_func_test8_label1:
+__kefir_func_test8_label2:
     cmp $0, %rdi
-    jb __kefir_func_test8_label1
+    jb __kefir_func_test8_label2
     ret
 __kefir_text_func_test8_end:
 
 test9:
 __kefir_text_func_test9_begin:
-__kefir_func_test9_label1:
+__kefir_func_test9_label2:
     cmp $0, %rdi
-    jbe __kefir_func_test9_label1
+    jbe __kefir_func_test9_label2
     ret
 __kefir_text_func_test9_end:
 

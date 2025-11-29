@@ -37,4 +37,11 @@ kefir_result_t kefir_opt_code_linear_liveness_init(struct kefir_opt_code_linear_
 kefir_result_t kefir_opt_code_linear_liveness_free(struct kefir_mem *, struct kefir_opt_code_linear_liveness *);
 kefir_result_t kefir_opt_code_linear_liveness_build(struct kefir_mem *, struct kefir_opt_code_linear_liveness *, const struct kefir_opt_code_container *, const struct kefir_opt_code_structure *, const struct kefir_opt_code_schedule *);
 
+typedef struct kefir_opt_code_instruction_linear_liveness_iterator {
+    struct kefir_hashtable_iterator iter;
+} kefir_opt_code_instruction_linear_liveness_iterator_t;
+
+kefir_result_t kefir_opt_code_instruction_linear_liveness_iter(const struct kefir_opt_code_linear_liveness *, kefir_opt_instruction_ref_t, struct kefir_opt_code_instruction_linear_liveness_iterator *, kefir_opt_block_id_t *, kefir_uint32_t *, kefir_uint32_t *);
+kefir_result_t kefir_opt_code_instruction_linear_liveness_next(struct kefir_opt_code_instruction_linear_liveness_iterator *, kefir_opt_block_id_t *, kefir_uint32_t *, kefir_uint32_t *);
+
 #endif

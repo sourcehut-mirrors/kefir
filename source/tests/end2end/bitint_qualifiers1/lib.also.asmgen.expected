@@ -30,6 +30,7 @@ __kefir_func_add_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_add_label1:
 __kefir_text_func_add_end:
 
 get:
@@ -40,6 +41,7 @@ __kefir_func_get_label0:
     movq value@GOTPCREL(%rip), %rax
     pop %rbp
     ret
+__kefir_func_get_label1:
 __kefir_text_func_get_end:
 
 __kefir_text_section_end:

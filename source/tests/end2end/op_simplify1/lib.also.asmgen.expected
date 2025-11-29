@@ -67,17 +67,17 @@ test6:
 __kefir_text_func_test6_begin:
     mov %rdx, %rcx
     test %edi, %edi
-    jnz __kefir_func_test6_label3
+    jnz __kefir_func_test6_label6
     mov %rsi, %rax
     cdq
     idiv %ecx
-__kefir_func_test6_label2:
+__kefir_func_test6_label4:
     ret
-__kefir_func_test6_label3:
+__kefir_func_test6_label6:
     mov %rsi, %rax
     cdq
     idiv %ecx
-    jmp __kefir_func_test6_label2
+    jmp __kefir_func_test6_label4
 __kefir_text_func_test6_end:
 
 test7:

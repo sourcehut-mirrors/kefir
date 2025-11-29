@@ -37,6 +37,7 @@ __kefir_func_is_inf_f32_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_is_inf_f32_label1:
 __kefir_text_func_is_inf_f32_end:
 
 is_inf_f64:
@@ -61,6 +62,7 @@ __kefir_func_is_inf_f64_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_is_inf_f64_label1:
 __kefir_text_func_is_inf_f64_end:
 
 is_inf_f80:
@@ -90,6 +92,7 @@ __kefir_func_is_inf_f80_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_is_inf_f80_label1:
 __kefir_text_func_is_inf_f80_end:
 
 __kefir_text_section_end:

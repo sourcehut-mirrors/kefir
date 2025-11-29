@@ -22,10 +22,10 @@ __kefir_text_func_test1_begin:
     cmp $255, %eax
     setle %dl
     and %dl, %cl
-    jnz __kefir_func_test1_label2
+    jnz __kefir_func_test1_label4
     mov $2, %rax
     ret
-__kefir_func_test1_label2:
+__kefir_func_test1_label4:
     mov $1, %rax
     ret
 __kefir_text_func_test1_end:
@@ -40,10 +40,10 @@ __kefir_text_func_test2_begin:
     cmp $65535, %eax
     setle %dl
     and %dl, %cl
-    jnz __kefir_func_test2_label2
+    jnz __kefir_func_test2_label4
     mov $2, %rax
     ret
-__kefir_func_test2_label2:
+__kefir_func_test2_label4:
     mov $1, %rax
     ret
 __kefir_text_func_test2_end:
@@ -59,10 +59,10 @@ __kefir_text_func_test3_begin:
     cmp %eax, %edi
     setbe %dl
     and %dl, %cl
-    jnz __kefir_func_test3_label2
+    jnz __kefir_func_test3_label4
     mov $2, %rax
     ret
-__kefir_func_test3_label2:
+__kefir_func_test3_label4:
     mov $1, %rax
     ret
 __kefir_text_func_test3_end:
@@ -76,10 +76,10 @@ __kefir_text_func_test4_begin:
     cmp $-1, %rdi
     setbe %cl
     and %cl, %al
-    jnz __kefir_func_test4_label2
+    jnz __kefir_func_test4_label4
     mov $2, %rax
     ret
-__kefir_func_test4_label2:
+__kefir_func_test4_label4:
     mov $1, %rax
     ret
 __kefir_text_func_test4_end:

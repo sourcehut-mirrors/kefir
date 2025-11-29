@@ -92,11 +92,42 @@ kefir_result_t kefir_asmcmp_debug_info_code_map_free(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
+static kefir_result_t free_value_entry(struct kefir_mem *mem, struct kefir_hashtable *table,
+                                               kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_debug_info_value_map_entry *, entry, value);
+    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info value map entry"));
+    
+    KEFIR_FREE(mem, entry->fragments);
+    KEFIR_FREE(mem, entry);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_debug_info_value_map_init(struct kefir_asmcmp_debug_info_value_map *value_map) {
+    REQUIRE(value_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp debug info value map"));
+
+    REQUIRE_OK(kefir_hashtable_init(&value_map->fragments, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&value_map->fragments, free_value_entry, NULL));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_debug_info_value_map_free(struct kefir_mem *mem, struct kefir_asmcmp_debug_info_value_map *value_map) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(value_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info value map"));
+
+    REQUIRE_OK(kefir_hashtable_free(mem, &value_map->fragments));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_debug_info_init(struct kefir_asmcmp_debug_info *debug_info) {
     REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp debug info"));
 
     REQUIRE_OK(kefir_asmcmp_debug_info_source_map_init(&debug_info->source_map));
     REQUIRE_OK(kefir_asmcmp_debug_info_code_map_init(&debug_info->code_map));
+    REQUIRE_OK(kefir_asmcmp_debug_info_value_map_init(&debug_info->value_map));
     return KEFIR_OK;
 }
 
@@ -106,6 +137,7 @@ kefir_result_t kefir_asmcmp_debug_info_free(struct kefir_mem *mem, struct kefir_
 
     REQUIRE_OK(kefir_asmcmp_debug_info_source_map_free(mem, &debug_info->source_map));
     REQUIRE_OK(kefir_asmcmp_debug_info_code_map_free(mem, &debug_info->code_map));
+    REQUIRE_OK(kefir_asmcmp_debug_info_value_map_free(mem, &debug_info->value_map));
     return KEFIR_OK;
 }
 
@@ -205,7 +237,7 @@ kefir_result_t kefir_asmcmp_code_map_add_fragment(struct kefir_mem *mem, struct 
         entry = (struct kefir_asmcmp_debug_info_code_map_entry *) table_value;
     }
 
-    if (entry->fragments_capacity >= entry->fragments_length) {
+    if (entry->fragments_length >= entry->fragments_capacity) {
         kefir_size_t new_capacity = MAX(entry->fragments_capacity * 2, 4);
         struct kefir_asmcmp_debug_info_code_fragment *new_fragments = KEFIR_REALLOC(mem, entry->fragments, sizeof(struct kefir_asmcmp_debug_info_code_fragment) * new_capacity);
         REQUIRE(new_fragments != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmcmp debug info definition fragment"));
@@ -213,6 +245,49 @@ kefir_result_t kefir_asmcmp_code_map_add_fragment(struct kefir_mem *mem, struct 
         entry->fragments_capacity = new_capacity;
     }
 
+    entry->fragments[entry->fragments_length].begin_label = begin_label;
+    entry->fragments[entry->fragments_length].end_label = end_label;
+    entry->fragments_length++;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_value_map_add_fragment(struct kefir_mem *mem, struct kefir_asmcmp_debug_info_value_map *value_map,
+    kefir_asmcmp_debug_info_value_reference_t value_reference, kefir_asmcmp_virtual_register_index_t vreg_idx,
+    kefir_asmcmp_label_index_t begin_label, kefir_asmcmp_label_index_t end_label) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(value_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info value map"));
+    REQUIRE(vreg_idx != KEFIR_ASMCMP_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp virtual register index"));
+    REQUIRE(begin_label != KEFIR_ASMCMP_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp label index"));
+    REQUIRE(end_label != KEFIR_ASMCMP_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp label index"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&value_map->fragments, (kefir_hashtable_key_t) value_reference, &table_value);
+    struct kefir_asmcmp_debug_info_value_map_entry *entry = NULL;
+    if (res == KEFIR_NOT_FOUND) {
+        entry = KEFIR_MALLOC(mem, sizeof(struct kefir_asmcmp_debug_info_value_map_entry));
+        REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmcmp debug info value map entry"));
+        entry->fragments = NULL;
+        entry->fragments_capacity = 0;
+        entry->fragments_length = 0;
+        res = kefir_hashtable_insert(mem, &value_map->fragments, (kefir_hashtable_key_t) value_reference, (kefir_hashtable_value_t) entry);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, entry);
+            return res;
+        });
+    } else {
+        REQUIRE_OK(res);
+        entry = (struct kefir_asmcmp_debug_info_value_map_entry *) table_value;
+    }
+
+    if (entry->fragments_length >= entry->fragments_capacity) {
+        kefir_size_t new_capacity = MAX(entry->fragments_capacity * 2, 4);
+        struct kefir_asmcmp_debug_info_value_fragment *new_fragments = KEFIR_REALLOC(mem, entry->fragments, sizeof(struct kefir_asmcmp_debug_info_value_fragment) * new_capacity);
+        REQUIRE(new_fragments != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmcmp debug info value map fragment"));
+        entry->fragments = new_fragments;
+        entry->fragments_capacity = new_capacity;
+    }
+
+    entry->fragments[entry->fragments_length].vreg_idx = vreg_idx;
     entry->fragments[entry->fragments_length].begin_label = begin_label;
     entry->fragments[entry->fragments_length].end_label = end_label;
     entry->fragments_length++;

@@ -13,91 +13,91 @@ get1:
 .loc 0 23 1
 __kefir_text_func_get1_begin:
 .loc 0 24 5
-__kefir_func_get1_label2:
 __kefir_func_get1_label3:
 __kefir_func_get1_label4:
-__kefir_func_get1_label1:
+__kefir_func_get1_label5:
+__kefir_func_get1_label2:
     xorps %xmm0, %xmm0
     movdqu %xmm0, (%rdi)
     movdqu %xmm0, 16(%rdi)
     movdqu %xmm0, 32(%rdi)
     movdqu %xmm0, 48(%rdi)
 .loc 0 24 5
-__kefir_func_get1_label5:
 __kefir_func_get1_label6:
 __kefir_func_get1_label7:
+__kefir_func_get1_label8:
     movq $0, (%rdi)
 .loc 0 25 5
-__kefir_func_get1_label8:
 __kefir_func_get1_label9:
 __kefir_func_get1_label10:
+__kefir_func_get1_label11:
     movq %rsi, 8(%rdi)
 .loc 0 26 16
-__kefir_func_get1_label11:
 __kefir_func_get1_label12:
 __kefir_func_get1_label13:
 __kefir_func_get1_label14:
+__kefir_func_get1_label15:
     lea 1(%rsi), %rax
 .loc 0 26 5
-__kefir_func_get1_label15:
 __kefir_func_get1_label16:
+__kefir_func_get1_label17:
     movq %rax, 16(%rdi)
 .loc 0 27 16
-__kefir_func_get1_label17:
 __kefir_func_get1_label18:
 __kefir_func_get1_label19:
 __kefir_func_get1_label20:
+__kefir_func_get1_label21:
     lea 2(%rsi), %rax
 .loc 0 27 5
-__kefir_func_get1_label21:
 __kefir_func_get1_label22:
+__kefir_func_get1_label23:
     movq %rax, 24(%rdi)
 .loc 0 28 16
-__kefir_func_get1_label23:
 __kefir_func_get1_label24:
 __kefir_func_get1_label25:
 __kefir_func_get1_label26:
+__kefir_func_get1_label27:
     lea 3(%rsi), %rax
 .loc 0 28 5
-__kefir_func_get1_label27:
 __kefir_func_get1_label28:
+__kefir_func_get1_label29:
     movq %rax, 32(%rdi)
 .loc 0 29 16
-__kefir_func_get1_label29:
 __kefir_func_get1_label30:
 __kefir_func_get1_label31:
 __kefir_func_get1_label32:
+__kefir_func_get1_label33:
     lea 4(%rsi), %rax
 .loc 0 29 5
-__kefir_func_get1_label33:
 __kefir_func_get1_label34:
+__kefir_func_get1_label35:
     movq %rax, 40(%rdi)
 .loc 0 30 16
-__kefir_func_get1_label35:
 __kefir_func_get1_label36:
 __kefir_func_get1_label37:
 __kefir_func_get1_label38:
+__kefir_func_get1_label39:
     lea 5(%rsi), %rax
 .loc 0 30 5
-__kefir_func_get1_label39:
 __kefir_func_get1_label40:
+__kefir_func_get1_label41:
     movq %rax, 48(%rdi)
 .loc 0 31 16
-__kefir_func_get1_label41:
 __kefir_func_get1_label42:
 __kefir_func_get1_label43:
 __kefir_func_get1_label44:
+__kefir_func_get1_label45:
     add $6, %rsi
 .loc 0 31 5
-__kefir_func_get1_label45:
 __kefir_func_get1_label46:
+__kefir_func_get1_label47:
     movq %rsi, 56(%rdi)
 .loc 0 32 5
-__kefir_func_get1_label47:
 __kefir_func_get1_label48:
+__kefir_func_get1_label49:
     mov %rdi, %rax
     ret
-__kefir_func_get1_label49:
+__kefir_func_get1_label50:
 __kefir_text_func_get1_end:
 
 get2:
@@ -106,111 +106,111 @@ __kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
-__kefir_func_get2_label10:
+__kefir_func_get2_label20:
     mov %rdx, %r9
 .loc 0 36 5
-__kefir_func_get2_label13:
-__kefir_func_get2_label14:
-__kefir_func_get2_label15:
-__kefir_func_get2_label11:
-__kefir_func_get2_label12:
+__kefir_func_get2_label23:
+__kefir_func_get2_label24:
+__kefir_func_get2_label25:
+__kefir_func_get2_label21:
+__kefir_func_get2_label22:
     xorps %xmm0, %xmm0
     movdqu %xmm0, (%rdi)
     movdqu %xmm0, 16(%rdi)
     movdqu %xmm0, 32(%rdi)
     movdqu %xmm0, 48(%rdi)
 .loc 0 36 5
-__kefir_func_get2_label16:
-__kefir_func_get2_label17:
-__kefir_func_get2_label18:
+__kefir_func_get2_label26:
+__kefir_func_get2_label27:
+__kefir_func_get2_label28:
     movq $0, (%rdi)
 .loc 0 36 5
-__kefir_func_get2_label19:
-__kefir_func_get2_label20:
-__kefir_func_get2_label21:
+__kefir_func_get2_label29:
+__kefir_func_get2_label30:
+__kefir_func_get2_label31:
     xorps %xmm0, %xmm0
     movdqu %xmm0, -128(%rbp)
     movdqu %xmm0, -112(%rbp)
     movdqu %xmm0, -96(%rbp)
     movdqu %xmm0, -80(%rbp)
 .loc 0 36 5
-__kefir_func_get2_label22:
-__kefir_func_get2_label23:
-__kefir_func_get2_label24:
+__kefir_func_get2_label32:
+__kefir_func_get2_label33:
+__kefir_func_get2_label34:
     movq $0, -128(%rbp)
 .loc 0 36 5
-__kefir_func_get2_label25:
-__kefir_func_get2_label26:
-__kefir_func_get2_label27:
+__kefir_func_get2_label35:
+__kefir_func_get2_label36:
+__kefir_func_get2_label37:
     xorps %xmm0, %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu %xmm0, -48(%rbp)
     movdqu %xmm0, -32(%rbp)
     movdqu %xmm0, -16(%rbp)
 .loc 0 36 5
-__kefir_func_get2_label28:
-__kefir_func_get2_label29:
-__kefir_func_get2_label30:
+__kefir_func_get2_label38:
+__kefir_func_get2_label39:
+__kefir_func_get2_label40:
     movq $0, -64(%rbp)
-__kefir_func_get2_label31:
-__kefir_func_get2_label32:
-__kefir_func_get2_label33:
+__kefir_func_get2_label41:
+__kefir_func_get2_label42:
+__kefir_func_get2_label43:
     xor %r8d, %r8d
 .loc 0 43 5
-__kefir_func_get2_label35:
-__kefir_func_get2_label36:
-__kefir_func_get2_label1:
-__kefir_func_get2_label34:
+__kefir_func_get2_label45:
+__kefir_func_get2_label46:
+__kefir_func_get2_label2:
+__kefir_func_get2_label44:
     xor %eax, %eax
     cmp $1, %esi
     setne %al
 .loc 0 43 9
-__kefir_func_get2_label37:
-__kefir_func_get2_label38:
-__kefir_func_get2_label39:
+__kefir_func_get2_label47:
+__kefir_func_get2_label48:
+__kefir_func_get2_label49:
     xor %ecx, %ecx
     cmp $0, %esi
     setg %cl
 .loc 0 43 5
-__kefir_func_get2_label42:
-__kefir_func_get2_label43:
-__kefir_func_get2_label44:
-__kefir_func_get2_label40:
-__kefir_func_get2_label41:
-    cmp $7, %r8d
-    jl __kefir_func_get2_label9
-.loc 0 43 5
-__kefir_func_get2_label46:
-__kefir_func_get2_label45:
-    and %al, %cl
-.loc 0 43 5
-__kefir_func_get2_label47:
-__kefir_func_get2_label48:
-    test %cl, %cl
-    jnz __kefir_func_get2_label8
-.loc 0 45 12
-__kefir_func_get2_label50:
-__kefir_func_get2_label51:
-__kefir_func_get2_label49:
-    cmp $0, %esi
-    jl __kefir_func_get2_label7
-.loc 0 47 12
+__kefir_func_get2_label52:
 __kefir_func_get2_label53:
 __kefir_func_get2_label54:
-__kefir_func_get2_label52:
-    cmp $1, %esi
-    jne __kefir_func_get2_label6
-.loc 0 50 9
+__kefir_func_get2_label50:
+__kefir_func_get2_label51:
+    cmp $7, %r8d
+    jl __kefir_func_get2_label18
+.loc 0 43 5
 __kefir_func_get2_label56:
 __kefir_func_get2_label55:
+    and %al, %cl
+.loc 0 43 5
+__kefir_func_get2_label57:
+__kefir_func_get2_label58:
+    test %cl, %cl
+    jnz __kefir_func_get2_label16
+.loc 0 45 12
+__kefir_func_get2_label60:
+__kefir_func_get2_label61:
+__kefir_func_get2_label59:
+    cmp $0, %esi
+    jl __kefir_func_get2_label14
+.loc 0 47 12
+__kefir_func_get2_label63:
+__kefir_func_get2_label64:
+__kefir_func_get2_label62:
+    cmp $1, %esi
+    jne __kefir_func_get2_label12
+.loc 0 50 9
+__kefir_func_get2_label66:
+__kefir_func_get2_label65:
     mov %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 .loc 0 48 9
-__kefir_func_get2_label58:
-__kefir_func_get2_label6:
-__kefir_func_get2_label57:
+__kefir_func_get2_label68:
+__kefir_func_get2_label12:
+__kefir_func_get2_label67:
     mov %rdi, %rax
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -224,9 +224,9 @@ __kefir_func_get2_label57:
     pop %rbp
     ret
 .loc 0 46 9
-__kefir_func_get2_label60:
-__kefir_func_get2_label7:
-__kefir_func_get2_label59:
+__kefir_func_get2_label70:
+__kefir_func_get2_label14:
+__kefir_func_get2_label69:
     mov %rdi, %rax
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -240,116 +240,116 @@ __kefir_func_get2_label59:
     pop %rbp
     ret
 .loc 0 44 9
-__kefir_func_get2_label62:
-__kefir_func_get2_label8:
-__kefir_func_get2_label61:
+__kefir_func_get2_label72:
+__kefir_func_get2_label16:
+__kefir_func_get2_label71:
     mov %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 .loc 0 38 16
-__kefir_func_get2_label64:
-__kefir_func_get2_label65:
-__kefir_func_get2_label9:
-__kefir_func_get2_label63:
+__kefir_func_get2_label74:
+__kefir_func_get2_label75:
+__kefir_func_get2_label18:
+__kefir_func_get2_label73:
     mov %r8, %rax
     add $1, %eax
 .loc 0 38 9
-__kefir_func_get2_label66:
-__kefir_func_get2_label67:
+__kefir_func_get2_label76:
+__kefir_func_get2_label77:
     movsx %eax, %rax
 .loc 0 38 9
-__kefir_func_get2_label68:
-__kefir_func_get2_label69:
-__kefir_func_get2_label70:
+__kefir_func_get2_label78:
+__kefir_func_get2_label79:
+__kefir_func_get2_label80:
     imul $8, %rax, %rax
-__kefir_func_get2_label71:
-__kefir_func_get2_label72:
+__kefir_func_get2_label81:
+__kefir_func_get2_label82:
     leaq (%rdi), %rcx
 .loc 0 38 9
     add %rax, %rcx
 .loc 0 38 25
-__kefir_func_get2_label73:
-__kefir_func_get2_label74:
+__kefir_func_get2_label83:
+__kefir_func_get2_label84:
     movsx %r8d, %rax
 .loc 0 38 25
-__kefir_func_get2_label75:
-__kefir_func_get2_label76:
+__kefir_func_get2_label85:
+__kefir_func_get2_label86:
     mov %r9, %rdx
     add %rax, %rdx
 .loc 0 38 9
-__kefir_func_get2_label77:
-__kefir_func_get2_label78:
+__kefir_func_get2_label87:
+__kefir_func_get2_label88:
     movq %rdx, (%rcx)
 .loc 0 39 16
-__kefir_func_get2_label79:
-__kefir_func_get2_label80:
-__kefir_func_get2_label81:
+__kefir_func_get2_label89:
+__kefir_func_get2_label90:
+__kefir_func_get2_label91:
     mov %r8, %rax
     add $1, %eax
 .loc 0 39 9
-__kefir_func_get2_label82:
-__kefir_func_get2_label83:
+__kefir_func_get2_label92:
+__kefir_func_get2_label93:
     movsx %eax, %rax
 .loc 0 39 9
-__kefir_func_get2_label84:
-__kefir_func_get2_label85:
-__kefir_func_get2_label86:
+__kefir_func_get2_label94:
+__kefir_func_get2_label95:
+__kefir_func_get2_label96:
     imul $8, %rax, %rax
-__kefir_func_get2_label87:
-__kefir_func_get2_label88:
+__kefir_func_get2_label97:
+__kefir_func_get2_label98:
     leaq -128(%rbp), %rcx
 .loc 0 39 9
     add %rax, %rcx
 .loc 0 39 25
-__kefir_func_get2_label89:
-__kefir_func_get2_label90:
+__kefir_func_get2_label99:
+__kefir_func_get2_label100:
     mov %rdx, %rax
     neg %rax
 .loc 0 39 9
-__kefir_func_get2_label91:
-__kefir_func_get2_label92:
+__kefir_func_get2_label101:
+__kefir_func_get2_label102:
     movq %rax, (%rcx)
 .loc 0 40 16
-__kefir_func_get2_label93:
-__kefir_func_get2_label94:
-__kefir_func_get2_label95:
+__kefir_func_get2_label103:
+__kefir_func_get2_label104:
+__kefir_func_get2_label105:
     mov %r8, %rax
     add $1, %eax
 .loc 0 40 9
-__kefir_func_get2_label96:
-__kefir_func_get2_label97:
+__kefir_func_get2_label106:
+__kefir_func_get2_label107:
     movsx %eax, %rax
 .loc 0 40 9
-__kefir_func_get2_label98:
-__kefir_func_get2_label99:
-__kefir_func_get2_label100:
+__kefir_func_get2_label108:
+__kefir_func_get2_label109:
+__kefir_func_get2_label110:
     imul $8, %rax, %rax
-__kefir_func_get2_label101:
-__kefir_func_get2_label102:
+__kefir_func_get2_label111:
+__kefir_func_get2_label112:
     leaq -64(%rbp), %rcx
 .loc 0 40 9
     add %rax, %rcx
 .loc 0 40 25
-__kefir_func_get2_label103:
-__kefir_func_get2_label104:
+__kefir_func_get2_label113:
+__kefir_func_get2_label114:
     not %rdx
 .loc 0 40 9
-__kefir_func_get2_label105:
-__kefir_func_get2_label106:
+__kefir_func_get2_label115:
+__kefir_func_get2_label116:
     movq %rdx, (%rcx)
 .loc 0 37 28
-__kefir_func_get2_label107:
-__kefir_func_get2_label108:
-__kefir_func_get2_label109:
+__kefir_func_get2_label117:
+__kefir_func_get2_label118:
+__kefir_func_get2_label119:
     mov %r8, %rax
     add $1, %eax
 .loc 0 37 5
-__kefir_func_get2_label110:
-__kefir_func_get2_label111:
+__kefir_func_get2_label120:
+__kefir_func_get2_label121:
     mov %rax, %r8
-    jmp __kefir_func_get2_label1
-__kefir_func_get2_label112:
+    jmp __kefir_func_get2_label2
+__kefir_func_get2_label122:
 __kefir_text_func_get2_end:
 
 __kefir_text_section_end:

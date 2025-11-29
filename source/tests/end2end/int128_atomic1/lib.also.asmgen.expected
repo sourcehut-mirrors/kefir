@@ -27,7 +27,7 @@ __kefir_text_func_add_i128_begin:
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
-__kefir_func_add_i128_label1:
+__kefir_func_add_i128_label2:
     leaq -112(%rbp), %rax
     mov %rax, %rdx
     mov %r13, %rsi
@@ -59,7 +59,7 @@ __kefir_func_add_i128_label1:
     movq -40(%rbp), %r11
     movq -48(%rbp), %r10
     test %al, %al
-    jz __kefir_func_add_i128_label1
+    jz __kefir_func_add_i128_label2
     mov %r10, %rax
     mov %r11, %rdx
     lea -24(%rbp), %rsp
@@ -81,7 +81,7 @@ __kefir_text_func_add_u128_begin:
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
-__kefir_func_add_u128_label1:
+__kefir_func_add_u128_label2:
     leaq -112(%rbp), %rax
     mov %rax, %rdx
     mov %r13, %rsi
@@ -113,7 +113,7 @@ __kefir_func_add_u128_label1:
     movq -40(%rbp), %r11
     movq -48(%rbp), %r10
     test %al, %al
-    jz __kefir_func_add_u128_label1
+    jz __kefir_func_add_u128_label2
     mov %r10, %rax
     mov %r11, %rdx
     lea -24(%rbp), %rsp

@@ -69,12 +69,12 @@ __kefir_text_func_select5_begin:
     fstpt -48(%rbp)
     fstpt -32(%rbp)
     test %edi, %edi
-    jnz __kefir_func_select5_label1
+    jnz __kefir_func_select5_label2
     movq -32(%rbp), %rdi
     movq %rdi, -48(%rbp)
     movq -24(%rbp), %rdi
     movq %rdi, -40(%rbp)
-__kefir_func_select5_label1:
+__kefir_func_select5_label2:
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -92,10 +92,10 @@ __kefir_text_func_select6_begin:
     movaps %xmm0, %xmm3
     shufps $1, %xmm3, %xmm3
     test %edi, %edi
-    jnz __kefir_func_select6_label1
+    jnz __kefir_func_select6_label2
     movq %xmm1, %xmm0
     movq %xmm2, %xmm3
-__kefir_func_select6_label1:
+__kefir_func_select6_label2:
     insertps $16, %xmm3, %xmm0
     lea (%rbp), %rsp
     pop %rbp
@@ -108,10 +108,10 @@ __kefir_text_func_select7_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     test %edi, %edi
-    jnz __kefir_func_select7_label1
+    jnz __kefir_func_select7_label2
     movq %xmm2, %xmm0
     movq %xmm3, %xmm1
-__kefir_func_select7_label1:
+__kefir_func_select7_label2:
     lea (%rbp), %rsp
     pop %rbp
     ret

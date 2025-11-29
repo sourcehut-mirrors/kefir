@@ -18,31 +18,31 @@ __kefir_text_func_sum_progression_begin:
     fld %st(1)
     fld %st(1)
     faddp
-    fldt __kefir_func_sum_progression_label1(%rip)
+    fldt __kefir_func_sum_progression_label2(%rip)
     fld %st(3)
     fxch %st(1)
     fmulp
     fld %st(2)
     faddp
-    fldt __kefir_func_sum_progression_label2(%rip)
+    fldt __kefir_func_sum_progression_label3(%rip)
     fld %st(4)
     fxch %st(1)
     fmulp
     fld %st(3)
     faddp
-    fldt __kefir_func_sum_progression_label3(%rip)
+    fldt __kefir_func_sum_progression_label4(%rip)
     fld %st(5)
     fxch %st(1)
     fmulp
     fld %st(4)
     faddp
-    fldt __kefir_func_sum_progression_label4(%rip)
+    fldt __kefir_func_sum_progression_label5(%rip)
     fld %st(6)
     fxch %st(1)
     fmulp
     fld %st(5)
     faddp
-    fldt __kefir_func_sum_progression_label5(%rip)
+    fldt __kefir_func_sum_progression_label6(%rip)
     fxch %st(1)
     fxch %st(2)
     fxch %st(3)
@@ -56,7 +56,7 @@ __kefir_text_func_sum_progression_begin:
     fmulp
     fld %st(6)
     faddp
-    fldt __kefir_func_sum_progression_label6(%rip)
+    fldt __kefir_func_sum_progression_label7(%rip)
     fdecstp
     fstpt -128(%rbp)
     fldt -176(%rbp)
@@ -66,7 +66,7 @@ __kefir_text_func_sum_progression_begin:
     fmulp
     fldt -128(%rbp)
     faddp
-    fldt __kefir_func_sum_progression_label7(%rip)
+    fldt __kefir_func_sum_progression_label8(%rip)
     fdecstp
     fstpt -112(%rbp)
     fldt -176(%rbp)
@@ -76,7 +76,7 @@ __kefir_text_func_sum_progression_begin:
     fmulp
     fldt -128(%rbp)
     faddp
-    fldt __kefir_func_sum_progression_label8(%rip)
+    fldt __kefir_func_sum_progression_label9(%rip)
     fdecstp
     fstpt -96(%rbp)
     fldt -176(%rbp)
@@ -125,35 +125,35 @@ __kefir_text_func_sum_progression_begin:
 __kefir_text_func_sum_progression_end:
 .section .rodata
     .align 8
-__kefir_func_sum_progression_label1:
-    .quad 9223372036854775808
-    .quad 16384
-    .align 8
 __kefir_func_sum_progression_label2:
-    .quad 13835058055282163712
+    .quad 9223372036854775808
     .quad 16384
     .align 8
 __kefir_func_sum_progression_label3:
-    .quad 9223372036854775808
-    .quad 16385
+    .quad 13835058055282163712
+    .quad 16384
     .align 8
 __kefir_func_sum_progression_label4:
-    .quad 11529215046068469760
+    .quad 9223372036854775808
     .quad 16385
     .align 8
 __kefir_func_sum_progression_label5:
-    .quad 13835058055282163712
+    .quad 11529215046068469760
     .quad 16385
     .align 8
 __kefir_func_sum_progression_label6:
-    .quad 16140901064495857664
+    .quad 13835058055282163712
     .quad 16385
     .align 8
 __kefir_func_sum_progression_label7:
+    .quad 16140901064495857664
+    .quad 16385
+    .align 8
+__kefir_func_sum_progression_label8:
     .quad 9223372036854775808
     .quad 16386
     .align 8
-__kefir_func_sum_progression_label8:
+__kefir_func_sum_progression_label9:
     .quad 10376293541461622784
     .quad 16386
 .section .text

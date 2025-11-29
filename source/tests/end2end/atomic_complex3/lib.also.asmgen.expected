@@ -33,7 +33,7 @@ __kefir_text_func_add_f32_begin:
     fnstenv -152(%rbp)
     stmxcsr -124(%rbp)
     fnclex
-__kefir_func_add_f32_label1:
+__kefir_func_add_f32_label2:
     movq %r10, -120(%rbp)
     movdqu %xmm5, -112(%rbp)
     movdqu %xmm6, -96(%rbp)
@@ -76,7 +76,7 @@ __kefir_func_add_f32_label1:
     movq -32(%rbp), %r10
     movdqu -24(%rbp), %xmm6
     test %al, %al
-    jz __kefir_func_add_f32_label3
+    jz __kefir_func_add_f32_label6
     stmxcsr -176(%rbp)
     mov -176(%rbp), %rcx
     fnstsw %ax
@@ -93,9 +93,9 @@ __kefir_func_add_f32_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_add_f32_label3:
+__kefir_func_add_f32_label6:
     fnclex
-    jmp __kefir_func_add_f32_label1
+    jmp __kefir_func_add_f32_label2
 __kefir_text_func_add_f32_end:
 
 add_f64:
@@ -110,7 +110,7 @@ __kefir_text_func_add_f64_begin:
     fnstenv -160(%rbp)
     stmxcsr -132(%rbp)
     fnclex
-__kefir_func_add_f64_label1:
+__kefir_func_add_f64_label2:
     movdqu %xmm5, -128(%rbp)
     movq %r10, -112(%rbp)
     movdqu %xmm6, -104(%rbp)
@@ -153,7 +153,7 @@ __kefir_func_add_f64_label1:
     movdqu -48(%rbp), %xmm5
     movdqu -32(%rbp), %xmm6
     test %al, %al
-    jz __kefir_func_add_f64_label3
+    jz __kefir_func_add_f64_label6
     stmxcsr -208(%rbp)
     mov -208(%rbp), %rcx
     fnstsw %ax
@@ -170,9 +170,9 @@ __kefir_func_add_f64_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_add_f64_label3:
+__kefir_func_add_f64_label6:
     fnclex
-    jmp __kefir_func_add_f64_label1
+    jmp __kefir_func_add_f64_label2
 __kefir_text_func_add_f64_end:
 
 divide_f32:
@@ -188,7 +188,7 @@ __kefir_text_func_divide_f32_begin:
     fnstenv -152(%rbp)
     stmxcsr -124(%rbp)
     fnclex
-__kefir_func_divide_f32_label1:
+__kefir_func_divide_f32_label2:
     movq %r10, -120(%rbp)
     movdqu %xmm8, -112(%rbp)
     movdqu %xmm7, -96(%rbp)
@@ -248,7 +248,7 @@ __kefir_func_divide_f32_label1:
     movdqu -40(%rbp), %xmm0
     movdqu -24(%rbp), %xmm7
     test %al, %al
-    jz __kefir_func_divide_f32_label3
+    jz __kefir_func_divide_f32_label6
     stmxcsr -176(%rbp)
     mov -176(%rbp), %rcx
     fnstsw %ax
@@ -264,9 +264,9 @@ __kefir_func_divide_f32_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_divide_f32_label3:
+__kefir_func_divide_f32_label6:
     fnclex
-    jmp __kefir_func_divide_f32_label1
+    jmp __kefir_func_divide_f32_label2
 __kefir_text_func_divide_f32_end:
 
 divide_f64:
@@ -282,7 +282,7 @@ __kefir_text_func_divide_f64_begin:
     fnstenv -160(%rbp)
     stmxcsr -132(%rbp)
     fnclex
-__kefir_func_divide_f64_label1:
+__kefir_func_divide_f64_label2:
     movdqu %xmm4, -128(%rbp)
     movq %r10, -112(%rbp)
     movdqu %xmm5, -104(%rbp)
@@ -353,7 +353,7 @@ __kefir_func_divide_f64_label1:
     movdqu -48(%rbp), %xmm5
     movdqu -32(%rbp), %xmm1
     test %al, %al
-    jz __kefir_func_divide_f64_label3
+    jz __kefir_func_divide_f64_label6
     stmxcsr -208(%rbp)
     mov -208(%rbp), %rcx
     fnstsw %ax
@@ -369,9 +369,9 @@ __kefir_func_divide_f64_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_divide_f64_label3:
+__kefir_func_divide_f64_label6:
     fnclex
-    jmp __kefir_func_divide_f64_label1
+    jmp __kefir_func_divide_f64_label2
 __kefir_text_func_divide_f64_end:
 
 multiply_f32:
@@ -387,7 +387,7 @@ __kefir_text_func_multiply_f32_begin:
     fnstenv -160(%rbp)
     stmxcsr -132(%rbp)
     fnclex
-__kefir_func_multiply_f32_label1:
+__kefir_func_multiply_f32_label2:
     movq %r10, -120(%rbp)
     movdqu %xmm5, -112(%rbp)
     movdqu %xmm6, -96(%rbp)
@@ -438,7 +438,7 @@ __kefir_func_multiply_f32_label1:
     movq -32(%rbp), %r10
     movdqu -24(%rbp), %xmm6
     test %al, %al
-    jz __kefir_func_multiply_f32_label3
+    jz __kefir_func_multiply_f32_label6
     stmxcsr -176(%rbp)
     mov -176(%rbp), %rcx
     fnstsw %ax
@@ -455,9 +455,9 @@ __kefir_func_multiply_f32_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_multiply_f32_label3:
+__kefir_func_multiply_f32_label6:
     fnclex
-    jmp __kefir_func_multiply_f32_label1
+    jmp __kefir_func_multiply_f32_label2
 __kefir_text_func_multiply_f32_end:
 
 multiply_f64:
@@ -472,7 +472,7 @@ __kefir_text_func_multiply_f64_begin:
     fnstenv -176(%rbp)
     stmxcsr -148(%rbp)
     fnclex
-__kefir_func_multiply_f64_label1:
+__kefir_func_multiply_f64_label2:
     movdqu %xmm6, -128(%rbp)
     movq %r10, -112(%rbp)
     movdqu %xmm7, -104(%rbp)
@@ -525,7 +525,7 @@ __kefir_func_multiply_f64_label1:
     movdqu -48(%rbp), %xmm6
     movdqu -32(%rbp), %xmm7
     test %al, %al
-    jz __kefir_func_multiply_f64_label3
+    jz __kefir_func_multiply_f64_label6
     stmxcsr -208(%rbp)
     mov -208(%rbp), %rcx
     fnstsw %ax
@@ -541,9 +541,9 @@ __kefir_func_multiply_f64_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_multiply_f64_label3:
+__kefir_func_multiply_f64_label6:
     fnclex
-    jmp __kefir_func_multiply_f64_label1
+    jmp __kefir_func_multiply_f64_label2
 __kefir_text_func_multiply_f64_end:
 
 subtract_f32:
@@ -559,7 +559,7 @@ __kefir_text_func_subtract_f32_begin:
     fnstenv -152(%rbp)
     stmxcsr -124(%rbp)
     fnclex
-__kefir_func_subtract_f32_label1:
+__kefir_func_subtract_f32_label2:
     movq %r10, -120(%rbp)
     movdqu %xmm5, -112(%rbp)
     movdqu %xmm6, -96(%rbp)
@@ -602,7 +602,7 @@ __kefir_func_subtract_f32_label1:
     movq -32(%rbp), %r10
     movdqu -24(%rbp), %xmm6
     test %al, %al
-    jz __kefir_func_subtract_f32_label3
+    jz __kefir_func_subtract_f32_label6
     stmxcsr -176(%rbp)
     mov -176(%rbp), %rcx
     fnstsw %ax
@@ -619,9 +619,9 @@ __kefir_func_subtract_f32_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_subtract_f32_label3:
+__kefir_func_subtract_f32_label6:
     fnclex
-    jmp __kefir_func_subtract_f32_label1
+    jmp __kefir_func_subtract_f32_label2
 __kefir_text_func_subtract_f32_end:
 
 subtract_f64:
@@ -636,7 +636,7 @@ __kefir_text_func_subtract_f64_begin:
     fnstenv -160(%rbp)
     stmxcsr -132(%rbp)
     fnclex
-__kefir_func_subtract_f64_label1:
+__kefir_func_subtract_f64_label2:
     movdqu %xmm5, -128(%rbp)
     movq %r10, -112(%rbp)
     movdqu %xmm6, -104(%rbp)
@@ -679,7 +679,7 @@ __kefir_func_subtract_f64_label1:
     movdqu -48(%rbp), %xmm5
     movdqu -32(%rbp), %xmm6
     test %al, %al
-    jz __kefir_func_subtract_f64_label3
+    jz __kefir_func_subtract_f64_label6
     stmxcsr -208(%rbp)
     mov -208(%rbp), %rcx
     fnstsw %ax
@@ -696,9 +696,9 @@ __kefir_func_subtract_f64_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_subtract_f64_label3:
+__kefir_func_subtract_f64_label6:
     fnclex
-    jmp __kefir_func_subtract_f64_label1
+    jmp __kefir_func_subtract_f64_label2
 __kefir_text_func_subtract_f64_end:
 
 __kefir_text_section_end:

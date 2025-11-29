@@ -31,17 +31,20 @@ __kefir_func_below_or_equals_label0:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jbe __kefir_func_below_or_equals_label2
+    jbe __kefir_func_below_or_equals_label4
 __kefir_func_below_or_equals_label1:
+__kefir_func_below_or_equals_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_below_or_equals_label2:
+__kefir_func_below_or_equals_label3:
+__kefir_func_below_or_equals_label4:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_below_or_equals_label5:
 __kefir_text_func_below_or_equals_end:
 
 above_or_equals:
@@ -55,17 +58,20 @@ __kefir_func_above_or_equals_label0:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jae __kefir_func_above_or_equals_label2
+    jae __kefir_func_above_or_equals_label4
 __kefir_func_above_or_equals_label1:
+__kefir_func_above_or_equals_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_above_or_equals_label2:
+__kefir_func_above_or_equals_label3:
+__kefir_func_above_or_equals_label4:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_above_or_equals_label5:
 __kefir_text_func_above_or_equals_end:
 
 below_or_equals2:
@@ -84,6 +90,7 @@ __kefir_func_below_or_equals2_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_below_or_equals2_label1:
 __kefir_text_func_below_or_equals2_end:
 
 above_or_equals2:
@@ -102,6 +109,7 @@ __kefir_func_above_or_equals2_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_above_or_equals2_label1:
 __kefir_text_func_above_or_equals2_end:
 
 greater_or_equals2:
@@ -120,6 +128,7 @@ __kefir_func_greater_or_equals2_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_greater_or_equals2_label1:
 __kefir_text_func_greater_or_equals2_end:
 
 less_or_equals:
@@ -133,17 +142,20 @@ __kefir_func_less_or_equals_label0:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jle __kefir_func_less_or_equals_label2
+    jle __kefir_func_less_or_equals_label4
 __kefir_func_less_or_equals_label1:
+__kefir_func_less_or_equals_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_less_or_equals_label2:
+__kefir_func_less_or_equals_label3:
+__kefir_func_less_or_equals_label4:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_less_or_equals_label5:
 __kefir_text_func_less_or_equals_end:
 
 greater_or_equals:
@@ -157,17 +169,20 @@ __kefir_func_greater_or_equals_label0:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jge __kefir_func_greater_or_equals_label2
+    jge __kefir_func_greater_or_equals_label4
 __kefir_func_greater_or_equals_label1:
+__kefir_func_greater_or_equals_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_greater_or_equals_label2:
+__kefir_func_greater_or_equals_label3:
+__kefir_func_greater_or_equals_label4:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_greater_or_equals_label5:
 __kefir_text_func_greater_or_equals_end:
 
 less_or_equals2:
@@ -186,6 +201,7 @@ __kefir_func_less_or_equals2_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_less_or_equals2_label1:
 __kefir_text_func_less_or_equals2_end:
 
 __kefir_text_section_end:
