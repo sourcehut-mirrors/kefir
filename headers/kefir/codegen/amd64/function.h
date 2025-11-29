@@ -27,6 +27,7 @@
 #include "kefir/codegen/amd64/stack_frame.h"
 #include "kefir/codegen/variable_allocator.h"
 #include "kefir/optimizer/schedule.h"
+#include "kefir/optimizer/linear_liveness.h"
 #include "kefir/target/abi/amd64/function.h"
 #include "kefir/optimizer/module.h"
 
@@ -44,6 +45,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_codegen_amd64_stack_frame stack_frame;
     struct kefir_codegen_local_variable_allocator variable_allocator;
     struct kefir_opt_code_schedule schedule;
+    struct kefir_opt_code_linear_liveness linear_liveness;
 
     struct kefir_hashtreeset translated_instructions;
     struct kefir_hashtree labels;

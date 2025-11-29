@@ -478,6 +478,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(kefir_opt_code_topological_scheduler_init(&scheduler, scheduler_schedule, &scheduler_param));
     REQUIRE_OK(
         kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, &func->function_analysis, &scheduler.scheduler));
+    REQUIRE_OK(kefir_opt_code_linear_liveness_build(mem, &func->linear_liveness, &func->function->code, &func->function_analysis.structure, &func->schedule));
 
     REQUIRE_OK(collect_translated_instructions(mem, func));
     // Initialize block labels
@@ -1087,6 +1088,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_list_init(&func->x87_stack));
     REQUIRE_OK(kefir_opt_code_analysis_init(&func->function_analysis));
     REQUIRE_OK(kefir_opt_code_schedule_init(&func->schedule));
+    REQUIRE_OK(kefir_opt_code_linear_liveness_init(&func->linear_liveness));
     REQUIRE_OK(kefir_codegen_local_variable_allocator_init(&func->variable_allocator));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func->stack_frame, &func->variable_allocator));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_init(&func->xregalloc));
@@ -1104,6 +1106,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_codegen_local_variable_allocator_free(mem, &func->variable_allocator));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_free(mem, &func->xregalloc));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
+    REQUIRE_OK(kefir_opt_code_linear_liveness_free(mem, &func->linear_liveness));
     REQUIRE_OK(kefir_opt_code_schedule_free(mem, &func->schedule));
     REQUIRE_OK(kefir_opt_code_analysis_free(mem, &func->function_analysis));
     REQUIRE_OK(kefir_list_free(mem, &func->x87_stack));
