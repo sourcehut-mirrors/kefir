@@ -18,6 +18,7 @@ __kefir_text_func_test1_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
 .loc 0 26 12
+__kefir_func_test1_label0:
 __kefir_func_test1_label2:
     movq x@GOTPCREL(%rip), %rax
 .loc 0 26 12
@@ -89,6 +90,7 @@ __kefir_func_test1_label28:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_test1_label1:
 __kefir_func_test1_label29:
 __kefir_text_func_test1_end:
 

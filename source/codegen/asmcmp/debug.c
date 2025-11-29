@@ -293,3 +293,31 @@ kefir_result_t kefir_asmcmp_value_map_add_fragment(struct kefir_mem *mem, struct
     entry->fragments_length++;
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_asmcmp_value_map_fragment_iter(const struct kefir_asmcmp_debug_info_value_map *value_map, kefir_asmcmp_debug_info_value_reference_t value_ref, struct kefir_asmcmp_value_map_fragment_iterator *iter, const struct kefir_asmcmp_debug_info_value_fragment **fragment_ptr) {
+    REQUIRE(value_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info value map"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp debug info value fragment iterator"));
+
+    kefir_hashtree_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&value_map->fragments, (kefir_hashtable_key_t) value_ref, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find asmcmp debug information value map entry");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(const struct kefir_asmcmp_debug_info_value_map_entry *, entry, table_value);
+    iter->entry = entry;
+    iter->index = 0;
+    REQUIRE(iter->index < entry->fragments_length, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of asmcmp debug information value fragments"));
+    ASSIGN_PTR(fragment_ptr, &iter->entry->fragments[iter->index]);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_value_map_fragment_next(struct kefir_asmcmp_value_map_fragment_iterator *iter, const struct kefir_asmcmp_debug_info_value_fragment **fragment_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info value fragment iterator"));
+
+    iter->index++;
+    REQUIRE(iter->index < iter->entry->fragments_length, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of asmcmp debug information value fragments"));
+    ASSIGN_PTR(fragment_ptr, &iter->entry->fragments[iter->index]);
+    return KEFIR_OK;
+}

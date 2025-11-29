@@ -544,6 +544,10 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, asmlabel, asmlabel_node->value);
         REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &func->code.context, asmlabel));
 
+        if (func->codegen->config->debug_info) {
+            REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, &func->code.context, asmlabel));
+        }
+
         struct kefir_hashset_iterator alive_instr_iter;
         kefir_hashset_key_t alive_instr_entry;
         for (res = kefir_hashset_iter(&func->function_analysis.liveness.blocks[block_id].alive_instr, &alive_instr_iter,
@@ -628,6 +632,9 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(kefir_hashtree_at(&func->block_end_labels, (kefir_hashtree_key_t) block_id, &asmlabel_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, end_asmlabel, asmlabel_node->value);
         REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &func->code.context, end_asmlabel));
+        if (func->codegen->config->debug_info) {
+            REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, &func->code.context, end_asmlabel));
+        }
     }
 
     struct kefir_hashtreeset_iterator iter;
@@ -1230,7 +1237,7 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_function_find_instruction_definition_range(
+static kefir_result_t kefir_codegen_amd64_function_find_instruction_definition_range(
     const struct kefir_codegen_amd64_function *codegen_function, kefir_opt_instruction_ref_t instr_ref,
     kefir_asmcmp_label_index_t *begin_label, kefir_asmcmp_label_index_t *end_label) {
     REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
@@ -1245,40 +1252,6 @@ kefir_result_t kefir_codegen_amd64_function_find_instruction_definition_range(
         REQUIRE_OK(res);
         ASSIGN_PTR(begin_label, node->value >> 32);
         ASSIGN_PTR(end_label, (kefir_uint32_t) node->value);
-    }
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_codegen_amd64_function_find_instruction_use_range(
-    const struct kefir_codegen_amd64_function *codegen_function, kefir_opt_instruction_ref_t instr_ref,
-    kefir_asmcmp_label_index_t *begin_label, kefir_asmcmp_label_index_t *end_label) {
-    REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
-    REQUIRE(begin_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
-    REQUIRE(end_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
-
-    *begin_label = KEFIR_ASMCMP_INDEX_NONE;
-    *end_label = *begin_label;
-
-    const struct kefir_opt_code_instruction_schedule *instruction_schedule;
-    kefir_result_t res = kefir_opt_code_schedule_of(&codegen_function->schedule, instr_ref, &instruction_schedule);
-    REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
-    REQUIRE_OK(res);
-
-    kefir_opt_instruction_ref_t use_begin_instr_ref = KEFIR_ID_NONE, use_end_instr_ref = KEFIR_ID_NONE;
-    // res = kefir_opt_code_schedule_at(&codegen_function->schedule, instruction_schedule->liveness_range.begin_index, &use_begin_instr_ref);
-    // if (res != KEFIR_NOT_FOUND) {
-    //     REQUIRE_OK(res);
-    // }
-    // res = kefir_opt_code_schedule_at(&codegen_function->schedule, instruction_schedule->liveness_range.end_index, &use_end_instr_ref);
-    // if (res != KEFIR_NOT_FOUND) {
-    //     REQUIRE_OK(res);
-    // }
-
-    if (use_begin_instr_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_definition_range(codegen_function, use_begin_instr_ref, begin_label, NULL));
-    }
-    if (use_end_instr_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_definition_range(codegen_function, use_end_instr_ref, NULL, end_label));
     }
     return KEFIR_OK;
 }

@@ -20,6 +20,7 @@ __kefir_text_func_SOMEFN1_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 27 20
+__kefir_func_SOMEFN1_label0:
 __kefir_func_SOMEFN1_label2:
 __kefir_func_SOMEFN1_label3:
     mov $1, %rdi
@@ -40,6 +41,7 @@ __kefir_func_SOMEFN1_label10:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_SOMEFN1_label1:
 __kefir_func_SOMEFN1_label11:
 __kefir_text_func_SOMEFN1_end:
 .section .rodata

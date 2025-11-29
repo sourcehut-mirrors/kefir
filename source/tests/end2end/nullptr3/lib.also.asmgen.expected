@@ -31,6 +31,7 @@ __kefir_func_sum_label35:
     mov %r8, -176(%rbp)
     mov %r9, -168(%rbp)
 .loc 0 25 5
+__kefir_func_sum_label0:
 __kefir_func_sum_label8:
 __kefir_func_sum_label9:
     movl $0, -32(%rbp)
@@ -45,6 +46,7 @@ __kefir_func_sum_label12:
     xor %esi, %esi
 .loc 0 28 21
 __kefir_func_sum_label14:
+__kefir_func_sum_label1:
 __kefir_func_sum_label2:
 __kefir_func_sum_label13:
     movl -32(%rbp), %ecx
@@ -78,6 +80,8 @@ __kefir_func_sum_label22:
     je __kefir_func_sum_label6
 .loc 0 32 16
 __kefir_func_sum_label26:
+__kefir_func_sum_label3:
+__kefir_func_sum_label4:
 __kefir_func_sum_label25:
     movq (%rcx), %rcx
 .loc 0 32 9
@@ -93,12 +97,14 @@ __kefir_func_sum_label30:
 .loc 0 35 5
 __kefir_func_sum_label32:
 __kefir_func_sum_label33:
+__kefir_func_sum_label5:
 __kefir_func_sum_label6:
 __kefir_func_sum_label31:
     mov %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_func_sum_label7:
 __kefir_func_sum_label34:
 __kefir_text_func_sum_end:
 
@@ -512,8 +518,51 @@ __kefir_debug_loclists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_loclist_section_entry_1:
+    .byte 7
+    .quad __kefir_func_sum_label4
+    .quad __kefir_func_sum_label27
+    .byte 2
+    .byte 144
+    .byte 2
+    .byte 7
+    .quad __kefir_func_sum_label2
+    .quad __kefir_func_sum_label3
+    .byte 2
+    .byte 144
+    .byte 2
     .byte 0
 __kefir_debug_loclist_section_entry_2:
+    .byte 7
+    .quad __kefir_func_sum_label28
+    .quad __kefir_func_sum_label5
+    .byte 2
+    .byte 144
+    .byte 0
+    .byte 7
+    .quad __kefir_func_sum_label4
+    .quad __kefir_func_sum_label29
+    .byte 2
+    .byte 144
+    .byte 4
+    .byte 7
+    .quad __kefir_func_sum_label22
+    .quad __kefir_func_sum_label3
+    .byte 2
+    .byte 144
+    .byte 4
+    .byte 7
+    .quad __kefir_func_sum_label6
+    .quad __kefir_func_sum_label34
+    .byte 2
+    .byte 144
+    .byte 4
+    .byte 7
+    .quad __kefir_func_sum_label11
+    .quad __kefir_func_sum_label1
+    .byte 3
+    .byte 158
+    .byte 1
+    .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_3:
     .byte 0

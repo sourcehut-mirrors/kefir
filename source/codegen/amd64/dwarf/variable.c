@@ -685,28 +685,26 @@ static kefir_result_t generate_x87_stack_locations_of_instruction(struct kefir_c
                                                                &x87_location_instr_ref, &x87_stack_slot);
          res != KEFIR_ITERATOR_END;
          res = kefir_codegen_amd64_function_x87_locations_next(&x87_iter, &x87_location_instr_ref, &x87_stack_slot)) {
-        const struct kefir_opt_code_instruction_schedule *location_instr_schedule;
-        REQUIRE_OK(
-            kefir_opt_code_schedule_of(&codegen_function->schedule, x87_location_instr_ref, &location_instr_schedule));
 
-        kefir_asmcmp_label_index_t location_range_begin_label, location_range_end_label;
-        res = kefir_codegen_amd64_function_find_instruction_use_range(
-            codegen_function, x87_location_instr_ref, &location_range_begin_label, &location_range_end_label);
+        struct kefir_asmcmp_value_map_fragment_iterator iter;
+        const struct kefir_asmcmp_debug_info_value_fragment *fragment;
+        for (res = kefir_asmcmp_value_map_fragment_iter(&codegen_function->code.context.debug_info.value_map, x87_location_instr_ref, &iter, &fragment);
+            res == KEFIR_OK;
+            res = kefir_asmcmp_value_map_fragment_next(&iter, &fragment)) {
+            const kefir_uint8_t regnum = X87_ST0_DWARF_REGNUM + x87_stack_slot;
+
+            REQUIRE_OK(generate_lle_start_end(codegen_function, ir_identifier, fragment->begin_label,
+                                            fragment->end_label));
+            REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 2));
+            REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_regx)));
+            REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, regnum));
+        }
         if (res == KEFIR_NOT_FOUND) {
-            continue;
+            res = KEFIR_OK;
         }
-        REQUIRE_OK(res);
-        if (location_range_begin_label == KEFIR_ASMCMP_INDEX_NONE || location_range_end_label == KEFIR_ASMCMP_INDEX_NONE) {
-            continue;
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
         }
-
-        const kefir_uint8_t regnum = X87_ST0_DWARF_REGNUM + x87_stack_slot;
-
-        REQUIRE_OK(generate_lle_start_end(codegen_function, ir_identifier, location_range_begin_label,
-                                          location_range_end_label));
-        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 2));
-        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_regx)));
-        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, regnum));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -719,18 +717,23 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
     struct kefir_codegen_amd64_function *codegen_function, kefir_opt_instruction_ref_t instr_ref) {
     REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
 
-    kefir_asmcmp_label_index_t range_begin_label, range_end_label;
-    REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_use_range(codegen_function, instr_ref, &range_begin_label,
-                                                                      &range_end_label));
-    REQUIRE(range_begin_label != KEFIR_ASMCMP_INDEX_NONE && range_end_label != KEFIR_ASMCMP_INDEX_NONE, KEFIR_OK);
-
-    kefir_asmcmp_virtual_register_index_t vreg;
-    kefir_result_t res = kefir_codegen_amd64_function_vreg_of(codegen_function, instr_ref, &vreg);
-    REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
-    REQUIRE_OK(res);
 
     REQUIRE_OK(generate_x87_stack_locations_of_instruction(codegen_function, instr_ref));
-    REQUIRE_OK(generate_location_of_virtual_register(codegen_function, vreg, range_begin_label, range_end_label));
+
+    kefir_result_t res;
+    struct kefir_asmcmp_value_map_fragment_iterator iter;
+    const struct kefir_asmcmp_debug_info_value_fragment *fragment;
+    for (res = kefir_asmcmp_value_map_fragment_iter(&codegen_function->code.context.debug_info.value_map, instr_ref, &iter, &fragment);
+        res == KEFIR_OK;
+        res = kefir_asmcmp_value_map_fragment_next(&iter, &fragment)) {
+        REQUIRE_OK(generate_location_of_virtual_register(codegen_function, fragment->vreg_idx, fragment->begin_label, fragment->end_label));
+    }
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_OK;
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
 
     return KEFIR_OK;
 }
