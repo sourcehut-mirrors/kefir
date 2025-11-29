@@ -332,7 +332,7 @@ kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *json, const
         if (debug_info) {
             const struct kefir_source_location *source_location;
             kefir_result_t res =
-                kefir_asmcmp_source_map_at(&context->debug_info.source_map, instr_idx, &source_location);
+                kefir_asmcmp_debug_info_source_map_at(&context->debug_info.source_map, instr_idx, &source_location);
             if (res == KEFIR_NOT_FOUND) {
                 source_location = NULL;
             } else {

@@ -599,7 +599,7 @@ kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *mem, struct ke
 
         if (debug_info_tracker != NULL) {
             const struct kefir_source_location *source_location = NULL;
-            res = kefir_asmcmp_source_map_at(&target->context.debug_info.source_map, idx, &source_location);
+            res = kefir_asmcmp_debug_info_source_map_at(&target->context.debug_info.source_map, idx, &source_location);
             if (res != KEFIR_NOT_FOUND) {
                 REQUIRE_OK(res);
                 if (last_source_location != source_location) {

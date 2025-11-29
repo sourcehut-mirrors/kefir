@@ -89,6 +89,8 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
 
         const kefir_hashtree_value_t labels_value = (((kefir_uint64_t) begin_asmlabel) << 32) | (kefir_uint32_t) end_asmlabel;
         REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_labels, (kefir_hashtree_key_t) instruction->id, labels_value));
+
+        REQUIRE_OK(kefir_asmcmp_code_map_add_fragment(mem, &function->code.context.debug_info.code_map, instruction->id, begin_asmlabel, end_asmlabel));
     }
 
     kefir_opt_code_debug_info_code_ref_t instruction_location;
@@ -102,7 +104,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
             const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(&function->code.context);
-            REQUIRE_OK(kefir_asmcmp_source_map_add_location(mem, &function->code.context.debug_info.source_map,
+            REQUIRE_OK(kefir_asmcmp_debug_info_source_map_add_location(mem, &function->code.context.debug_info.source_map,
                                                             &function->code.context.strings, begin_idx, end_idx,
                                                             &source_location->location));
         }
