@@ -177,7 +177,7 @@ kefir_result_t kefir_opt_code_debug_info_free(struct kefir_mem *mem, struct kefi
 }
 
 kefir_result_t kefir_opt_code_debug_info_next_instruction_code_reference(struct kefir_opt_code_debug_info *debug_info,
-                                                                         kefir_size_t code_ref) {
+                                                                         kefir_opt_code_debug_info_code_ref_t code_ref) {
     REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer debug information"));
 
     debug_info->next_instruction_code_ref = code_ref;
