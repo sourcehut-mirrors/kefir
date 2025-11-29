@@ -182,6 +182,11 @@ static kefir_result_t generate_function(struct kefir_mem *mem, struct kefir_code
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(
             mem, codegen_function, context, liveness, codegen_function->function->ir_func->debug_info.subprogram_id));
     }
+
+    KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_RNGLISTS) {
+        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(
+            mem, codegen_function, context, liveness, codegen_function->function->ir_func->debug_info.subprogram_id));
+    }
     return KEFIR_OK;
 }
 

@@ -1972,6 +1972,16 @@ __kefir_debug_loclist_section_entry_49:
     .byte 0
 __kefir_debug_loclists_section_end:
 
+.section .debug_rnglists
+__kefir_debug_rnglists_section:
+    .long __kefir_debug_rnglists_section_end - __kefir_debug_rnglists_section_begin
+__kefir_debug_rnglists_section_begin:
+    .word 5
+    .byte 8
+    .byte 0
+    .long 0
+__kefir_debug_rnglists_section_end:
+
 .section .debug_line
 __kefir_debug_lines_section_begin:
 .att_syntax

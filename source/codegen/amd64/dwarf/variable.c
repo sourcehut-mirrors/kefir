@@ -156,95 +156,124 @@ static kefir_result_t generate_local_variable_simple_location(struct kefir_mem *
                                                   variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, &attr));
     const kefir_size_t code_end_idx = attr->code_index;
 
-    kefir_asmcmp_label_index_t range_begin_label, range_end_label;
-    REQUIRE_OK(kefir_codegen_amd64_function_find_code_range_labels(codegen_function, code_begin_idx, code_end_idx,
-                                                                   &range_begin_label, &range_end_label));
+    const struct kefir_ir_identifier *ir_identifier;
+    REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
+                                              codegen_function->function->ir_func->name, &ir_identifier));
 
-    if (range_begin_label != KEFIR_ASMCMP_INDEX_NONE && range_end_label != KEFIR_ASMCMP_INDEX_NONE) {
-        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_start_end)));
+    for (kefir_opt_code_debug_info_code_ref_t code_ref = code_begin_idx; code_ref <= code_end_idx; code_ref++) {
+        const struct kefir_opt_code_debug_info_code_reference *code_reference;
+        kefir_result_t res = kefir_opt_code_debug_info_code_reference(&codegen_function->function->debug_info, code_ref, &code_reference);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
 
-        const struct kefir_ir_identifier *ir_identifier;
-        REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
-                                                  codegen_function->function->ir_func->name, &ir_identifier));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-            kefir_asm_amd64_xasmgen_operand_label(
-                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
-                                                       ir_identifier->symbol, range_begin_label))));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-            kefir_asm_amd64_xasmgen_operand_label(
-                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
-                                                       ir_identifier->symbol, range_end_label))));
+        struct kefir_hashset_iterator iter;
+        kefir_hashset_key_t iter_key;
+        for (res = kefir_hashset_iter(&code_reference->instructions, &iter, &iter_key); res == KEFIR_OK;
+            res = kefir_hashset_next(&iter, &iter_key)) {
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, iter_key);
 
-        kefir_codegen_local_variable_allocation_type_t allocation_type;
-        kefir_int64_t offset;
-        kefir_result_t res = kefir_codegen_amd64_stack_frame_local_variable_offset(
-            &codegen_function->stack_frame, (kefir_id_t) allocation_instr_ref, &allocation_type, &offset);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
+            struct kefir_asmcmp_code_map_fragment_iterator iter;
+            const struct kefir_asmcmp_debug_info_code_fragment *fragment;
+            for (res = kefir_asmcmp_code_map_fragment_iter(&codegen_function->code.context.debug_info.code_map, instr_ref, &iter, &fragment);
+                res == KEFIR_OK;
+                res = kefir_asmcmp_code_map_fragment_next(&iter, &fragment)) {        
+                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_start_end)));
 
-            switch (allocation_type) {
-                case KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE: {
-                    if (codegen_function->stack_frame.return_space_vreg != KEFIR_ASMCMP_INDEX_NONE) {
-                        const struct kefir_codegen_amd64_register_allocation *reg_allocation;
-                        REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
-                            &codegen_function->xregalloc, codegen_function->stack_frame.return_space_vreg,
-                            &reg_allocation));
-                        switch (reg_allocation->type) {
-                            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER: {
-                                kefir_asm_amd64_xasmgen_register_t reg;
-                                kefir_uint8_t regnum;
-                                REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg_allocation->direct_reg, &reg));
-                                REQUIRE_OK(register_to_dwarf_op(reg, &regnum));
+                const struct kefir_ir_identifier *ir_identifier;
+                REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
+                                                        codegen_function->function->ir_func->name, &ir_identifier));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_label(
+                        &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                        kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
+                                                            ir_identifier->symbol, fragment->begin_label))));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_label(
+                        &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                        kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
+                                                            ir_identifier->symbol, fragment->end_label))));
 
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
-                                                                     1 + kefir_amd64_dwarf_uleb128_length(regnum) +
-                                                                         kefir_amd64_dwarf_sleb128_length(offset)));
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
-                                                                  KEFIR_DWARF(DW_OP_bregx)));
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, regnum));
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
-                            } break;
+                kefir_codegen_local_variable_allocation_type_t allocation_type;
+                kefir_int64_t offset;
+                kefir_result_t res = kefir_codegen_amd64_stack_frame_local_variable_offset(
+                    &codegen_function->stack_frame, (kefir_id_t) allocation_instr_ref, &allocation_type, &offset);
+                if (res != KEFIR_NOT_FOUND) {
+                    REQUIRE_OK(res);
 
-                            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT: {
-                                const kefir_int64_t vreg_offset =
-                                    reg_allocation->spill_area.index * KEFIR_AMD64_ABI_QWORD +
-                                    codegen_function->stack_frame.offsets.spill_area;
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
-                                                                     4 + kefir_amd64_dwarf_sleb128_length(vreg_offset) +
-                                                                         kefir_amd64_dwarf_sleb128_length(offset)));
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
-                                                                  KEFIR_DWARF(DW_OP_fbreg)));
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, vreg_offset));
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
-                                                                  KEFIR_DWARF(DW_OP_deref)));
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
-                                                                  KEFIR_DWARF(DW_OP_consts)));
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
-                                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
-                                                                  KEFIR_DWARF(DW_OP_plus)));
-                            } break;
+                    switch (allocation_type) {
+                        case KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE: {
+                            if (codegen_function->stack_frame.return_space_vreg != KEFIR_ASMCMP_INDEX_NONE) {
+                                const struct kefir_codegen_amd64_register_allocation *reg_allocation;
+                                REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
+                                    &codegen_function->xregalloc, codegen_function->stack_frame.return_space_vreg,
+                                    &reg_allocation));
+                                switch (reg_allocation->type) {
+                                    case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER: {
+                                        kefir_asm_amd64_xasmgen_register_t reg;
+                                        kefir_uint8_t regnum;
+                                        REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg_allocation->direct_reg, &reg));
+                                        REQUIRE_OK(register_to_dwarf_op(reg, &regnum));
 
-                            default:
-                                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                                       "Unexpected return space virtual register allocation type");
-                        }
-                    } else {
-                        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 0));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
+                                                                            1 + kefir_amd64_dwarf_uleb128_length(regnum) +
+                                                                                kefir_amd64_dwarf_sleb128_length(offset)));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
+                                                                        KEFIR_DWARF(DW_OP_bregx)));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, regnum));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
+                                    } break;
+
+                                    case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT: {
+                                        const kefir_int64_t vreg_offset =
+                                            reg_allocation->spill_area.index * KEFIR_AMD64_ABI_QWORD +
+                                            codegen_function->stack_frame.offsets.spill_area;
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
+                                                                            4 + kefir_amd64_dwarf_sleb128_length(vreg_offset) +
+                                                                                kefir_amd64_dwarf_sleb128_length(offset)));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
+                                                                        KEFIR_DWARF(DW_OP_fbreg)));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, vreg_offset));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
+                                                                        KEFIR_DWARF(DW_OP_deref)));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
+                                                                        KEFIR_DWARF(DW_OP_consts)));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
+                                        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen,
+                                                                        KEFIR_DWARF(DW_OP_plus)));
+                                    } break;
+
+                                    default:
+                                        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                            "Unexpected return space virtual register allocation type");
+                                }
+                            } else {
+                                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 0));
+                            }
+                        } break;
+
+                        case KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION:
+                            offset += codegen_function->stack_frame.offsets.local_area;
+                            REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
+                                                                1 + kefir_amd64_dwarf_sleb128_length(offset)));
+                            REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_fbreg)));
+                            REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
+                            break;
                     }
-                } break;
-
-                case KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION:
-                    offset += codegen_function->stack_frame.offsets.local_area;
-                    REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
-                                                         1 + kefir_amd64_dwarf_sleb128_length(offset)));
-                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_fbreg)));
-                    REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
-                    break;
+                }           
             }
+            if (res == KEFIR_NOT_FOUND) {
+                res = KEFIR_OK;
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
         }
     }
 
@@ -819,10 +848,6 @@ static kefir_result_t generate_global_variable_loclists(struct kefir_mem *mem,
                                                   variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, &attr));
     const kefir_size_t code_end_idx = attr->code_index;
 
-    kefir_asmcmp_label_index_t range_begin_label, range_end_label;
-    REQUIRE_OK(kefir_codegen_amd64_function_find_code_range_labels(codegen_function, code_begin_idx, code_end_idx,
-                                                                   &range_begin_label, &range_end_label));
-
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
                                                   variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_GLOBAL_VARIABLE,
                                                   &attr));
@@ -831,35 +856,55 @@ static kefir_result_t generate_global_variable_loclists(struct kefir_mem *mem,
     kefir_result_t res =
         kefir_ir_module_get_identifier(codegen_function->module->ir_module, symbol, &variable_identifier);
 
-    if (res != KEFIR_NOT_FOUND && range_begin_label != KEFIR_ASMCMP_INDEX_NONE &&
-        range_end_label != KEFIR_ASMCMP_INDEX_NONE && kefir_opt_module_is_symbol_alive(liveness, symbol)) {
+    if (res != KEFIR_NOT_FOUND && kefir_opt_module_is_symbol_alive(liveness, symbol)) {
         REQUIRE_OK(res);
+        for (kefir_opt_code_debug_info_code_ref_t code_ref = code_begin_idx; code_ref <= code_end_idx; code_ref++) {
+            const struct kefir_opt_code_debug_info_code_reference *code_reference;
+            kefir_result_t res = kefir_opt_code_debug_info_code_reference(&codegen_function->function->debug_info, code_ref, &code_reference);
+            if (res == KEFIR_NOT_FOUND) {
+                continue;
+            }
+            REQUIRE_OK(res);
 
-        const struct kefir_ir_identifier *function_identifier;
-        REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
-                                                  codegen_function->function->ir_func->name, &function_identifier));
+            struct kefir_hashset_iterator iter;
+            kefir_hashset_key_t iter_key;
+            for (res = kefir_hashset_iter(&code_reference->instructions, &iter, &iter_key); res == KEFIR_OK;
+                res = kefir_hashset_next(&iter, &iter_key)) {
+                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, iter_key);
 
-        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_start_end)));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-            kefir_asm_amd64_xasmgen_operand_label(
-                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
-                                                       function_identifier->symbol, range_begin_label))));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-            kefir_asm_amd64_xasmgen_operand_label(
-                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
-                                                       function_identifier->symbol, range_end_label))));
+                struct kefir_asmcmp_code_map_fragment_iterator iter;
+                const struct kefir_asmcmp_debug_info_code_fragment *fragment;
+                for (res = kefir_asmcmp_code_map_fragment_iter(&codegen_function->code.context.debug_info.code_map, instr_ref, &iter, &fragment);
+                    res == KEFIR_OK;
+                    res = kefir_asmcmp_code_map_fragment_next(&iter, &fragment)) {
+                    const struct kefir_ir_identifier *function_identifier;
+                    REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
+                                                            codegen_function->function->ir_func->name, &function_identifier));
 
-        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 1 + KEFIR_AMD64_ABI_QWORD));
-        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_addr)));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-            kefir_asm_amd64_xasmgen_operand_label(
-                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                variable_identifier->alias != NULL ? variable_identifier->alias : variable_identifier->symbol)));
+                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_start_end)));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                        &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                        kefir_asm_amd64_xasmgen_operand_label(
+                            &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                            kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
+                                                                function_identifier->symbol, fragment->begin_label))));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                        &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                        kefir_asm_amd64_xasmgen_operand_label(
+                            &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                            kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
+                                                                function_identifier->symbol, fragment->end_label))));
+
+                    REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 1 + KEFIR_AMD64_ABI_QWORD));
+                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_addr)));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                        &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                        kefir_asm_amd64_xasmgen_operand_label(
+                            &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                            variable_identifier->alias != NULL ? variable_identifier->alias : variable_identifier->symbol)));
+                }
+            }
+        }
     }
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_end_of_list)));
@@ -887,10 +932,6 @@ static kefir_result_t generate_thread_local_variable_loclists(struct kefir_mem *
                                                   variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, &attr));
     const kefir_size_t code_end_idx = attr->code_index;
 
-    kefir_asmcmp_label_index_t range_begin_label, range_end_label;
-    REQUIRE_OK(kefir_codegen_amd64_function_find_code_range_labels(codegen_function, code_begin_idx, code_end_idx,
-                                                                   &range_begin_label, &range_end_label));
-
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
                                                   variable_entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_THREAD_LOCAL_VARIABLE, &attr));
@@ -900,36 +941,56 @@ static kefir_result_t generate_thread_local_variable_loclists(struct kefir_mem *
         kefir_ir_module_get_named_symbol(codegen_function->module->ir_module, attr->global_variable),
         &variable_identifier);
 
-    if (!codegen_function->codegen->config->emulated_tls && res != KEFIR_NOT_FOUND &&
-        range_begin_label != KEFIR_ASMCMP_INDEX_NONE && range_end_label != KEFIR_ASMCMP_INDEX_NONE) {
+    if (!codegen_function->codegen->config->emulated_tls && res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
+        for (kefir_opt_code_debug_info_code_ref_t code_ref = code_begin_idx; code_ref <= code_end_idx; code_ref++) {
+            const struct kefir_opt_code_debug_info_code_reference *code_reference;
+            kefir_result_t res = kefir_opt_code_debug_info_code_reference(&codegen_function->function->debug_info, code_ref, &code_reference);
+            if (res == KEFIR_NOT_FOUND) {
+                continue;
+            }
+            REQUIRE_OK(res);
 
-        const struct kefir_ir_identifier *function_identifier;
-        REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
-                                                  codegen_function->function->ir_func->name, &function_identifier));
+            struct kefir_hashset_iterator iter;
+            kefir_hashset_key_t iter_key;
+            for (res = kefir_hashset_iter(&code_reference->instructions, &iter, &iter_key); res == KEFIR_OK;
+                res = kefir_hashset_next(&iter, &iter_key)) {
+                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, iter_key);
 
-        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_start_end)));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-            kefir_asm_amd64_xasmgen_operand_label(
-                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
-                                                       function_identifier->symbol, range_begin_label))));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-            kefir_asm_amd64_xasmgen_operand_label(
-                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
-                                                       function_identifier->symbol, range_end_label))));
+                struct kefir_asmcmp_code_map_fragment_iterator iter;
+                const struct kefir_asmcmp_debug_info_code_fragment *fragment;
+                for (res = kefir_asmcmp_code_map_fragment_iter(&codegen_function->code.context.debug_info.code_map, instr_ref, &iter, &fragment);
+                    res == KEFIR_OK;
+                    res = kefir_asmcmp_code_map_fragment_next(&iter, &fragment)) {
+                    const struct kefir_ir_identifier *function_identifier;
+                    REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
+                                                            codegen_function->function->ir_func->name, &function_identifier));
 
-        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 2 + KEFIR_AMD64_ABI_QWORD));
-        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_const8u)));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-            kefir_asm_amd64_xasmgen_operand_label(
-                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_DTPOFF,
-                variable_identifier->alias != NULL ? variable_identifier->alias : variable_identifier->symbol)));
-        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_form_tls_address)));
+                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_start_end)));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                        &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                        kefir_asm_amd64_xasmgen_operand_label(
+                            &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                            kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
+                                                                function_identifier->symbol, fragment->begin_label))));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                        &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                        kefir_asm_amd64_xasmgen_operand_label(
+                            &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                            kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
+                                                                function_identifier->symbol, fragment->end_label))));
+
+                    REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 2 + KEFIR_AMD64_ABI_QWORD));
+                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_const8u)));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                        &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                        kefir_asm_amd64_xasmgen_operand_label(
+                            &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_DTPOFF,
+                            variable_identifier->alias != NULL ? variable_identifier->alias : variable_identifier->symbol)));
+                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_form_tls_address)));
+                }
+            }
+        }
     }
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_end_of_list)));

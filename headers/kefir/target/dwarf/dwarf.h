@@ -82,6 +82,7 @@ typedef enum kefir_dwarf_attribute {
     KEFIR_DWARF(DW_AT_external) = 0x3f,
     KEFIR_DWARF(DW_AT_frame_base) = 0x40,
     KEFIR_DWARF(DW_AT_type) = 0x49,
+    KEFIR_DWARF(DW_AT_ranges) = 0x55,
     KEFIR_DWARF(DW_AT_data_bit_offset) = 0x6b,
     KEFIR_DWARF(DW_AT_linkage_name) = 0x6e,
     KEFIR_DWARF(DW_AT_alignment) = 0x88
@@ -136,6 +137,11 @@ typedef enum kefir_dwarf_loclist {
     KEFIR_DWARF(DW_LLE_end_of_list) = 0x0,
     KEFIR_DWARF(DW_LLE_start_end) = 0x7
 } kefir_dwarf_loclist_t;
+
+typedef enum kefir_dwarf_rnglist {
+    KEFIR_DWARF(DW_RLE_end_of_list) = 0x0,
+    KEFIR_DWARF(DW_RLE_start_end) = 0x6
+} kefir_dwarf_rnglist_t;
 
 #define KEFIR_DWARF_AMD64_BREG_RBP KEFIR_DWARF(DW_OP_breg6)
 
