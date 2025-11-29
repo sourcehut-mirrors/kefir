@@ -41,50 +41,38 @@ __kefir_text_func_get_begin:
     sub $32, %rsp
 .loc 0 29 5
 __kefir_func_get_label0:
-__kefir_func_get_label2:
-__kefir_func_get_label3:
-__kefir_func_get_label4:
     mov $0, %rax
     shl $62, %rax
     sar $62, %rax
 .loc 0 29 5
-__kefir_func_get_label5:
-__kefir_func_get_label6:
+__kefir_func_get_label2:
     movw %ax, -2(%rbp)
 .loc 0 30 12
-__kefir_func_get_label7:
-__kefir_func_get_label8:
+__kefir_func_get_label3:
     movw -2(%rbp), %dx
 .loc 0 30 12
-__kefir_func_get_label9:
-__kefir_func_get_label10:
-__kefir_func_get_label11:
-__kefir_func_get_label12:
+__kefir_func_get_label4:
     shl $55, %rdx
     sar $55, %rdx
 .loc 0 30 5
-__kefir_func_get_label13:
-__kefir_func_get_label14:
+__kefir_func_get_label5:
     shl $55, %rdx
     sar $55, %rdx
 .loc 0 30 5
-__kefir_func_get_label15:
-__kefir_func_get_label16:
+__kefir_func_get_label6:
     leaq -32(%rbp), %rax
 .loc 0 30 5
     mov %rax, %rdi
     mov $90, %rsi
     call __kefir_bigint_set_signed_integer
 .loc 0 30 5
-__kefir_func_get_label17:
-__kefir_func_get_label18:
-__kefir_func_get_label19:
+__kefir_func_get_label7:
     movq -32(%rbp), %rax
     movq -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_get_label20:
+__kefir_func_get_label8:
 __kefir_func_get_label1:
 __kefir_text_func_get_end:
 
@@ -96,50 +84,38 @@ __kefir_text_func_get2_begin:
     sub $32, %rsp
 .loc 0 41 5
 __kefir_func_get2_label0:
-__kefir_func_get2_label2:
-__kefir_func_get2_label3:
-__kefir_func_get2_label4:
     mov $0, %rax
     shl $63, %rax
     shr $63, %rax
 .loc 0 41 5
-__kefir_func_get2_label5:
-__kefir_func_get2_label6:
+__kefir_func_get2_label2:
     movw %ax, -2(%rbp)
 .loc 0 42 12
-__kefir_func_get2_label7:
-__kefir_func_get2_label8:
+__kefir_func_get2_label3:
     movw -2(%rbp), %dx
 .loc 0 42 12
-__kefir_func_get2_label9:
-__kefir_func_get2_label10:
-__kefir_func_get2_label11:
-__kefir_func_get2_label12:
+__kefir_func_get2_label4:
     shl $55, %rdx
     shr $55, %rdx
 .loc 0 42 5
-__kefir_func_get2_label13:
-__kefir_func_get2_label14:
+__kefir_func_get2_label5:
     shl $55, %rdx
     shr $55, %rdx
 .loc 0 42 5
-__kefir_func_get2_label15:
-__kefir_func_get2_label16:
+__kefir_func_get2_label6:
     leaq -32(%rbp), %rax
 .loc 0 42 5
     mov %rax, %rdi
     mov $90, %rsi
     call __kefir_bigint_set_unsigned_integer
 .loc 0 42 5
-__kefir_func_get2_label17:
-__kefir_func_get2_label18:
-__kefir_func_get2_label19:
+__kefir_func_get2_label7:
     movq -32(%rbp), %rax
     movq -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_get2_label20:
+__kefir_func_get2_label8:
 __kefir_func_get2_label1:
 __kefir_text_func_get2_end:
 
@@ -754,7 +730,13 @@ __kefir_debug_loclists_section_begin:
     .long 0
 __kefir_debug_loclist_section_entry_1:
     .byte 7
-    .quad __kefir_func_get_label3
+    .quad __kefir_func_get_label0
+    .quad __kefir_func_get_label2
+    .byte 2
+    .byte 145
+    .byte 126
+    .byte 7
+    .quad __kefir_func_get_label2
     .quad __kefir_func_get_label3
     .byte 2
     .byte 145
@@ -766,56 +748,26 @@ __kefir_debug_loclist_section_entry_1:
     .byte 145
     .byte 126
     .byte 7
+    .quad __kefir_func_get_label3
+    .quad __kefir_func_get_label4
+    .byte 2
+    .byte 145
+    .byte 126
+    .byte 7
     .quad __kefir_func_get_label6
     .quad __kefir_func_get_label7
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get_label12
-    .quad __kefir_func_get_label13
+    .quad __kefir_func_get_label5
+    .quad __kefir_func_get_label6
     .byte 2
     .byte 145
     .byte 126
     .byte 7
+    .quad __kefir_func_get_label7
     .quad __kefir_func_get_label8
-    .quad __kefir_func_get_label9
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get_label11
-    .quad __kefir_func_get_label11
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get_label18
-    .quad __kefir_func_get_label18
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get_label16
-    .quad __kefir_func_get_label17
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get_label10
-    .quad __kefir_func_get_label10
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get_label14
-    .quad __kefir_func_get_label15
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get_label19
-    .quad __kefir_func_get_label20
     .byte 2
     .byte 145
     .byte 126
@@ -824,7 +776,13 @@ __kefir_debug_loclist_section_entry_2:
     .byte 0
 __kefir_debug_loclist_section_entry_3:
     .byte 7
-    .quad __kefir_func_get2_label3
+    .quad __kefir_func_get2_label0
+    .quad __kefir_func_get2_label2
+    .byte 2
+    .byte 145
+    .byte 126
+    .byte 7
+    .quad __kefir_func_get2_label2
     .quad __kefir_func_get2_label3
     .byte 2
     .byte 145
@@ -836,56 +794,26 @@ __kefir_debug_loclist_section_entry_3:
     .byte 145
     .byte 126
     .byte 7
+    .quad __kefir_func_get2_label3
+    .quad __kefir_func_get2_label4
+    .byte 2
+    .byte 145
+    .byte 126
+    .byte 7
     .quad __kefir_func_get2_label6
     .quad __kefir_func_get2_label7
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get2_label12
-    .quad __kefir_func_get2_label13
+    .quad __kefir_func_get2_label5
+    .quad __kefir_func_get2_label6
     .byte 2
     .byte 145
     .byte 126
     .byte 7
+    .quad __kefir_func_get2_label7
     .quad __kefir_func_get2_label8
-    .quad __kefir_func_get2_label9
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get2_label11
-    .quad __kefir_func_get2_label11
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get2_label18
-    .quad __kefir_func_get2_label18
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get2_label16
-    .quad __kefir_func_get2_label17
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get2_label10
-    .quad __kefir_func_get2_label10
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get2_label14
-    .quad __kefir_func_get2_label15
-    .byte 2
-    .byte 145
-    .byte 126
-    .byte 7
-    .quad __kefir_func_get2_label19
-    .quad __kefir_func_get2_label20
     .byte 2
     .byte 145
     .byte 126

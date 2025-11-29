@@ -60,14 +60,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
             KEFIR_OK);
     const kefir_asmcmp_instruction_index_t begin_idx = kefir_asmcmp_context_instr_length(&function->code.context);
 
-    kefir_asmcmp_label_index_t begin_asmlabel, end_asmlabel;
-    if (function->codegen->config->debug_info) {
-        REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &begin_asmlabel));
-        REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, &function->code.context, begin_asmlabel));
-
-        REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, begin_asmlabel));
-    }
-
     switch (instruction->operation.opcode) {
 #define CASE_INSTR(_id, _opcode)                                                           \
     case _opcode:                                                                          \
@@ -78,6 +70,18 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
     }
 
     if (function->codegen->config->debug_info) {
+        kefir_asmcmp_label_index_t begin_asmlabel, end_asmlabel;
+        const struct kefir_opt_code_instruction_schedule *instr_schedule;
+        REQUIRE_OK(kefir_opt_code_schedule_of(&function->schedule, instruction->id, &instr_schedule));
+
+        struct kefir_hashtree_node *node;
+        if (instr_schedule->linear_position == 0) {
+            REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) instruction->block_id, &node));
+        } else {
+            REQUIRE_OK(kefir_hashtree_at(&function->debug.instruction_labels, (kefir_hashtree_key_t) ((((kefir_uint64_t) instruction->block_id) << 32) | (kefir_uint32_t) (instr_schedule->linear_position - 1)), &node));
+        }
+        begin_asmlabel = node->value;
+
         const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(&function->code.context);
         if (end_idx != begin_idx) {
             REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &end_asmlabel));
@@ -87,10 +91,11 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
             end_asmlabel = begin_asmlabel;
         }
 
-        const kefir_hashtree_value_t labels_value = (((kefir_uint64_t) begin_asmlabel) << 32) | (kefir_uint32_t) end_asmlabel;
-        REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_labels, (kefir_hashtree_key_t) instruction->id, labels_value));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_labels, (kefir_hashtree_key_t) ((((kefir_uint64_t) instruction->block_id) << 32) | (kefir_uint32_t) instr_schedule->linear_position), end_asmlabel));
 
-        REQUIRE_OK(kefir_asmcmp_code_map_add_fragment(mem, &function->code.context.debug_info.code_map, instruction->id, begin_asmlabel, end_asmlabel));
+        if (begin_asmlabel != end_asmlabel) {
+            REQUIRE_OK(kefir_asmcmp_code_map_add_fragment(mem, &function->code.context.debug_info.code_map, instruction->id, begin_asmlabel, end_asmlabel));
+        }
     }
 
     kefir_opt_code_debug_info_code_ref_t instruction_location;
@@ -721,27 +726,25 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
                 begin_label = asmlabel_node->value;
             } else {
                 struct kefir_hashtree_node *node;
-                res = kefir_hashtree_at(&func->debug.instruction_labels, (kefir_hashtree_key_t) block_schedule->instructions[liveness_begin].instr_ref, &node);
+                res = kefir_hashtree_at(&func->debug.instruction_labels, (kefir_hashtree_key_t) ((((kefir_uint64_t) block_id) << 32) | (kefir_uint32_t) (liveness_begin - 1)), &node);
                 if (res != KEFIR_NOT_FOUND) {
                     REQUIRE_OK(res);
                     begin_label = node->value >> 32;
                 }
             }
 
-            if (liveness_end == block_schedule->instructions_length) {
-                struct kefir_hashtree_node *asmlabel_node;
-                REQUIRE_OK(kefir_hashtree_at(&func->block_end_labels, (kefir_hashtree_key_t) block_id, &asmlabel_node));
-                end_label = asmlabel_node->value;
+            if (liveness_end == 0) {
+                end_label = begin_label;
             } else {
                 struct kefir_hashtree_node *node;
-                res = kefir_hashtree_at(&func->debug.instruction_labels, (kefir_hashtree_key_t) block_schedule->instructions[liveness_end].instr_ref, &node);
+                res = kefir_hashtree_at(&func->debug.instruction_labels, (kefir_hashtree_key_t) ((((kefir_uint64_t) block_id) << 32) | (kefir_uint32_t) (liveness_end - 1)), &node);
                 if (res != KEFIR_NOT_FOUND) {
                     REQUIRE_OK(res);
-                    end_label = (kefir_uint32_t) node->value;                    
+                    end_label = (kefir_uint32_t) node->value;
                 }
             }
 
-            if (begin_label != KEFIR_ASMCMP_INDEX_NONE && end_label != KEFIR_ASMCMP_INDEX_NONE) {
+            if (begin_label != KEFIR_ASMCMP_INDEX_NONE && end_label != KEFIR_ASMCMP_INDEX_NONE && begin_label != end_label) {
                 REQUIRE_OK(kefir_asmcmp_value_map_add_fragment(mem, &func->code.context.debug_info.value_map, (kefir_asmcmp_debug_info_value_reference_t) instr_ref, vreg_idx, begin_label, end_label));
             }
         }
