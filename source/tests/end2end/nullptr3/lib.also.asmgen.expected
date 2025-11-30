@@ -59,7 +59,6 @@ __kefir_func_sum_label10:
     lea 8(%rcx), %rcx
 __kefir_func_sum_label111:
     movl %ecx, -32(%rbp)
-__kefir_func_sum_label114:
     add -16(%rbp), %rcx
 __kefir_func_sum_label115:
     mov -8(%rcx), %rcx
@@ -73,7 +72,6 @@ __kefir_func_sum_label123:
     lea 8(%rcx), %rcx
 __kefir_func_sum_label125:
     mov %rcx, -24(%rbp)
-__kefir_func_sum_label128:
     mov -8(%rcx), %rcx
 __kefir_func_sum_label129:
     mov %rcx, %rdx
@@ -86,6 +84,7 @@ __kefir_func_sum_label141:
 .loc 0 29 9
 __kefir_func_sum_label145:
     cmp %rcx, %rdx
+__kefir_func_sum_label147:
     je __kefir_func_sum_label22
     jmp __kefir_func_sum_label18
 .loc 0 32 16
@@ -102,6 +101,7 @@ __kefir_func_sum_label163:
 .loc 0 35 5
 __kefir_func_sum_label22:
     mov %rsi, %rax
+__kefir_func_sum_label166:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -534,13 +534,13 @@ __kefir_debug_loclists_section_begin:
 __kefir_debug_loclist_section_entry_5:
     .byte 7
     .quad __kefir_func_sum_label111
-    .quad __kefir_func_sum_label114
+    .quad __kefir_func_sum_label115
     .byte 2
     .byte 144
     .byte 2
     .byte 7
     .quad __kefir_func_sum_label123
-    .quad __kefir_func_sum_label123
+    .quad __kefir_func_sum_label125
     .byte 2
     .byte 144
     .byte 2
@@ -564,13 +564,13 @@ __kefir_debug_loclist_section_entry_5:
     .byte 1
     .byte 7
     .quad __kefir_func_sum_label18
-    .quad __kefir_func_sum_label18
+    .quad __kefir_func_sum_label156
     .byte 2
     .byte 144
     .byte 1
     .byte 7
     .quad __kefir_func_sum_label10
-    .quad __kefir_func_sum_label10
+    .quad __kefir_func_sum_label111
     .byte 2
     .byte 144
     .byte 2
@@ -582,7 +582,7 @@ __kefir_debug_loclist_section_entry_5:
     .byte 2
     .byte 7
     .quad __kefir_func_sum_label125
-    .quad __kefir_func_sum_label128
+    .quad __kefir_func_sum_label129
     .byte 2
     .byte 144
     .byte 2
@@ -614,7 +614,7 @@ __kefir_debug_loclist_section_entry_6:
     .byte 4
     .byte 7
     .quad __kefir_func_sum_label18
-    .quad __kefir_func_sum_label156
+    .quad __kefir_func_sum_label163
     .byte 2
     .byte 144
     .byte 4
@@ -638,7 +638,7 @@ __kefir_debug_loclist_section_entry_6:
     .byte 4
     .byte 7
     .quad __kefir_func_sum_label22
-    .quad __kefir_func_sum_label22
+    .quad __kefir_func_sum_label166
     .byte 2
     .byte 144
     .byte 4

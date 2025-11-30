@@ -119,8 +119,8 @@ __kefir_func_conv2_label40:
 __kefir_func_conv2_label6:
     mov %rdi, %rax
     and $1, %rax
-__kefir_func_conv2_label47:
     shr $1, %rdi
+__kefir_func_conv2_label48:
     or %rdi, %rax
     cvtsi2sd %rax, %xmm0
 __kefir_func_conv2_label52:
@@ -1647,7 +1647,7 @@ __kefir_debug_loclist_section_entry_6:
     .byte 5
     .byte 7
     .quad __kefir_func_conv1_label2
-    .quad __kefir_func_conv1_label2
+    .quad __kefir_func_conv1_label23
     .byte 2
     .byte 144
     .byte 5
@@ -1667,7 +1667,7 @@ __kefir_debug_loclist_section_entry_7:
     .byte 5
     .byte 7
     .quad __kefir_func_conv1_label2
-    .quad __kefir_func_conv1_label2
+    .quad __kefir_func_conv1_label23
     .byte 2
     .byte 144
     .byte 5
@@ -1677,7 +1677,7 @@ __kefir_debug_loclist_section_entry_8:
 __kefir_debug_loclist_section_entry_9:
     .byte 7
     .quad __kefir_func_conv2_label6
-    .quad __kefir_func_conv2_label47
+    .quad __kefir_func_conv2_label48
     .byte 2
     .byte 144
     .byte 5
@@ -1689,7 +1689,7 @@ __kefir_debug_loclist_section_entry_9:
     .byte 5
     .byte 7
     .quad __kefir_func_conv2_label4
-    .quad __kefir_func_conv2_label4
+    .quad __kefir_func_conv2_label40
     .byte 2
     .byte 144
     .byte 5
@@ -1709,7 +1709,7 @@ __kefir_debug_loclist_section_entry_9:
 __kefir_debug_loclist_section_entry_10:
     .byte 7
     .quad __kefir_func_conv2_label6
-    .quad __kefir_func_conv2_label47
+    .quad __kefir_func_conv2_label48
     .byte 2
     .byte 144
     .byte 5
@@ -1721,7 +1721,7 @@ __kefir_debug_loclist_section_entry_10:
     .byte 5
     .byte 7
     .quad __kefir_func_conv2_label4
-    .quad __kefir_func_conv2_label4
+    .quad __kefir_func_conv2_label40
     .byte 2
     .byte 144
     .byte 5
@@ -1755,7 +1755,7 @@ __kefir_debug_loclist_section_entry_12:
     .byte 17
     .byte 7
     .quad __kefir_func_conv3_label2
-    .quad __kefir_func_conv3_label2
+    .quad __kefir_func_conv3_label23
     .byte 2
     .byte 144
     .byte 17
@@ -1775,7 +1775,7 @@ __kefir_debug_loclist_section_entry_13:
     .byte 17
     .byte 7
     .quad __kefir_func_conv3_label2
-    .quad __kefir_func_conv3_label2
+    .quad __kefir_func_conv3_label23
     .byte 2
     .byte 144
     .byte 17
@@ -1857,7 +1857,7 @@ __kefir_debug_loclist_section_entry_26:
 __kefir_debug_loclist_section_entry_27:
     .byte 7
     .quad __kefir_func_conv8_label22
-    .quad __kefir_func_conv8_label29
+    .quad __kefir_func_conv8_label40
     .byte 2
     .byte 144
     .byte 0
@@ -1865,7 +1865,7 @@ __kefir_debug_loclist_section_entry_27:
 __kefir_debug_loclist_section_entry_28:
     .byte 7
     .quad __kefir_func_conv8_label22
-    .quad __kefir_func_conv8_label29
+    .quad __kefir_func_conv8_label40
     .byte 2
     .byte 144
     .byte 0

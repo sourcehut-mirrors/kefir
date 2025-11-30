@@ -52,7 +52,7 @@ __kefir_func_temp_label556:
     fstpt (%rsp)
     fldt -32(%rbp)
     fstpt 16(%rsp)
-__kefir_func_temp_label394:
+__kefir_func_temp_label395:
     call test3@PLT
     add $32, %rsp
 .loc 0 32 5
@@ -81,8 +81,9 @@ __kefir_func_temp_label947:
 __kefir_func_temp_label948:
     mov $1, %rdi
     mov $2, %rsi
-__kefir_func_temp_label965:
+__kefir_func_temp_label962:
     insertps $16, %xmm2, %xmm1
+__kefir_func_temp_label966:
     mov $5, %rdx
     mov $6, %rcx
     mov $7, %r8

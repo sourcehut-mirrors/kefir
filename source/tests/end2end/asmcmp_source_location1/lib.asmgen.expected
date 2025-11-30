@@ -2374,13 +2374,13 @@ __kefir_debug_loclists_section_begin:
 __kefir_debug_loclist_section_entry_1:
     .byte 7
     .quad __kefir_func_factorial_label45
-    .quad __kefir_func_factorial_label50
+    .quad __kefir_func_factorial_label51
     .byte 2
     .byte 144
     .byte 5
     .byte 7
     .quad __kefir_func_factorial_label2
-    .quad __kefir_func_factorial_label44
+    .quad __kefir_func_factorial_label45
     .byte 2
     .byte 144
     .byte 5

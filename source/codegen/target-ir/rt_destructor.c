@@ -1217,7 +1217,7 @@ static kefir_result_t generate_metadata(struct rt_destructor_state *state) {
                     continue;
                 }
                 REQUIRE_OK(res);
-                end_label = ((kefir_uint64_t) table_value) >> 32;
+                end_label = (kefir_uint32_t) table_value;
             }
 
             struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator value_ref_iter;
