@@ -213,7 +213,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
                 predecessor_iter.entry);
             REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) predecessor_block_ref));
             REQUIRE_OK(add_to_entry(mem, &liveness->blocks[predecessor_block_ref].live_out, value_ref));
-            REQUIRE_OK(add_value_liveness(mem, liveness, used_value, predecessor_block_ref, kefir_codegen_target_ir_code_block_control_tail(liveness->code, block_ref), KEFIR_ID_NONE));
+            REQUIRE_OK(add_value_liveness(mem, liveness, used_value, predecessor_block_ref, kefir_codegen_target_ir_code_block_control_tail(liveness->code, predecessor_block_ref), KEFIR_ID_NONE));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);

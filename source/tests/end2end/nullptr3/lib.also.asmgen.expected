@@ -607,7 +607,7 @@ __kefir_debug_loclist_section_entry_5:
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 7
-    .quad __kefir_func_sum_label12
+    .quad __kefir_func_sum_label8
     .quad __kefir_func_sum_label10
     .byte 2
     .byte 144
