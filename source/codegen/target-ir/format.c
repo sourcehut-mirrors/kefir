@@ -538,6 +538,16 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
                     }
                     REQUIRE_OK(kefir_json_output_object_end(json));
                 }
+
+                REQUIRE_OK(kefir_json_output_object_key(json, "metadata"));
+                REQUIRE_OK(kefir_json_output_object_begin(json));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value_ref"));
+                if (value_type->metadata.value_ref != KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE) {
+                    REQUIRE_OK(kefir_json_output_uinteger(json, value_type->metadata.value_ref));
+                } else {
+                    REQUIRE_OK(kefir_json_output_null(json));
+                }
+                REQUIRE_OK(kefir_json_output_object_end(json));
                 REQUIRE_OK(kefir_json_output_object_end(json));
             }
             if (res != KEFIR_ITERATOR_END) {

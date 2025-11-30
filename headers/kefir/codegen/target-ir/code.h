@@ -40,8 +40,10 @@ typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_physical_reg
 typedef kefir_codegen_target_ir_native_id_t kefir_codegen_target_ir_asmcmp_label_t;
 typedef struct kefir_codegen_target_ir_code kefir_codegen_target_ir_code_t;
 typedef kefir_uint64_t kefir_codegen_target_ir_metadata_code_ref_t;
+typedef kefir_uint64_t kefir_codegen_target_ir_metadata_value_ref_t;
 
 #define KEFIR_CODEGEN_TARGET_IR_METADATA_CODE_REF_NONE ((kefir_codegen_target_ir_metadata_code_ref_t) ~0ull)
+#define KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE ((kefir_codegen_target_ir_metadata_code_ref_t) ~0ull)
 
 // clang-format off
 #define KEFIR_CODEGEN_TARGET_IR_SPECIAL_OPCODES(_instr, _separator) \
@@ -137,6 +139,10 @@ typedef struct kefir_codegen_target_ir_allocation_constraint {
     };
 } kefir_codegen_target_ir_allocation_constraint_t;
 
+typedef struct kefir_codegen_target_ir_value_type_metadata {
+    kefir_codegen_target_ir_metadata_value_ref_t value_ref;
+} kefir_codegen_target_ir_value_type_metadata_t;
+
 typedef struct kefir_codegen_target_ir_value_type {
     kefir_codegen_target_ir_value_type_kind_t kind;
     kefir_codegen_target_ir_operand_variant_t variant;
@@ -156,6 +162,7 @@ typedef struct kefir_codegen_target_ir_value_type {
     } parameters;
 
     struct kefir_codegen_target_ir_allocation_constraint constraint;
+    struct kefir_codegen_target_ir_value_type_metadata metadata;
 } kefir_codegen_target_ir_value_type_t;
 
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_NONE ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_NONE) << 16))

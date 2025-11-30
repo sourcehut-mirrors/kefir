@@ -25,6 +25,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -50,6 +53,9 @@ factorial:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
 #                            }
 #                        }
 #                    ],
@@ -137,6 +143,9 @@ factorial:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 1
 #                            }
 #                        }
 #                    ],
@@ -160,6 +169,9 @@ factorial:
 #                                "kind": "local_variable",
 #                                "identifier": 0,
 #                                "offset": 0
+#                            },
+#                            "metadata": {
+#                                "value_ref": 2
 #                            }
 #                        }
 #                    ],
@@ -198,6 +210,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -227,6 +242,9 @@ factorial:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 3
 #                            }
 #                        }
 #                    ],
@@ -250,6 +268,9 @@ factorial:
 #                                "kind": "local_variable",
 #                                "identifier": 2,
 #                                "offset": 0
+#                            },
+#                            "metadata": {
+#                                "value_ref": 4
 #                            }
 #                        }
 #                    ],
@@ -287,6 +308,9 @@ factorial:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 6
 #                            }
 #                        }
 #                    ],
@@ -330,6 +354,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -369,6 +396,9 @@ factorial:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 6
 #                            }
 #                        }
 #                    ],
@@ -390,6 +420,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 7
 #                            }
 #                        }
 #                    ],
@@ -437,6 +470,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -476,6 +512,9 @@ factorial:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 7
 #                            }
 #                        }
 #                    ],
@@ -523,6 +562,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -608,6 +650,9 @@ factorial:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 8
 #                            }
 #                        }
 #                    ],
@@ -645,6 +690,9 @@ factorial:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 10
 #                            }
 #                        }
 #                    ],
@@ -688,6 +736,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -727,6 +778,9 @@ factorial:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 10
 #                            }
 #                        }
 #                    ],
@@ -754,6 +808,9 @@ factorial:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 11
 #                            }
 #                        }
 #                    ],
@@ -797,6 +854,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -836,6 +896,9 @@ factorial:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 11
 #                            }
 #                        }
 #                    ],
@@ -884,6 +947,9 @@ factorial:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 12
 #                            }
 #                        },
 #                        {
@@ -893,6 +959,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -932,6 +1001,9 @@ factorial:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 12
 #                            }
 #                        }
 #                    ],
@@ -963,6 +1035,9 @@ factorial:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 12
 #                            }
 #                        }
 #                    ],
@@ -984,6 +1059,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 13
 #                            }
 #                        }
 #                    ],
@@ -1031,6 +1109,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1070,6 +1151,9 @@ factorial:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 13
 #                            }
 #                        }
 #                    ],
@@ -1117,6 +1201,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1217,6 +1304,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1278,6 +1368,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1307,6 +1400,9 @@ factorial:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 15
 #                            }
 #                        }
 #                    ],
@@ -1344,6 +1440,9 @@ factorial:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 17
 #                            }
 #                        }
 #                    ],
@@ -1387,6 +1486,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1426,6 +1528,9 @@ factorial:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 17
 #                            }
 #                        }
 #                    ],
@@ -1447,6 +1552,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 18
 #                            }
 #                        }
 #                    ],
@@ -1494,6 +1602,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1533,6 +1644,9 @@ factorial:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 18
 #                            }
 #                        }
 #                    ],
@@ -1580,6 +1694,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1669,6 +1786,9 @@ factorial:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 19
 #                            }
 #                        }
 #                    ],
@@ -1704,6 +1824,9 @@ factorial:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 20
 #                            }
 #                        }
 #                    ],
@@ -1822,6 +1945,9 @@ factorial:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 21
 #                            }
 #                        }
 #                    ],
@@ -1851,6 +1977,9 @@ factorial:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 22
 #                            }
 #                        }
 #                    ],
@@ -1899,6 +2028,9 @@ factorial:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 23
 #                            }
 #                        },
 #                        {
@@ -1908,6 +2040,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1946,6 +2081,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1975,6 +2113,9 @@ factorial:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 24
 #                            }
 #                        }
 #                    ],
@@ -2029,6 +2170,9 @@ factorial:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 26
 #                            }
 #                        },
 #                        {
@@ -2038,6 +2182,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -2076,6 +2223,9 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -2153,6 +2303,9 @@ factorial:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 27
 #                            }
 #                        }
 #                    ],
@@ -2188,6 +2341,9 @@ factorial:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 28
 #                            }
 #                        }
 #                    ],
@@ -2318,6 +2474,9 @@ factorial:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 30
 #                            }
 #                        }
 #                    ],

@@ -1454,6 +1454,8 @@ kefir_result_t kefir_codegen_amd64_function_assign_vreg(struct kefir_mem *mem,
         res = KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Virtual register has already been assigned");
     }
     REQUIRE_OK(res);
+
+    REQUIRE_OK(kefir_codegen_target_ir_code_constructor_metadata_add_value_ref(mem, &function->debug.target_ir_metadata, vreg, instr_ref));
     return KEFIR_OK;
 }
 

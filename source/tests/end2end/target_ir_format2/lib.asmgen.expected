@@ -33,6 +33,9 @@ test1:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -58,6 +61,9 @@ test1:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rsi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
 #                            }
 #                        }
 #                    ],
@@ -103,6 +109,9 @@ test1:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 2
 #                            }
 #                        }
 #                    ],
@@ -190,6 +199,9 @@ test1:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rsi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 1
 #                            }
 #                        }
 #                    ],
@@ -225,6 +237,9 @@ test1:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 3
 #                            }
 #                        }
 #                    ],
@@ -248,6 +263,9 @@ test1:
 #                                "kind": "local_variable",
 #                                "identifier": 2,
 #                                "offset": 0
+#                            },
+#                            "metadata": {
+#                                "value_ref": 4
 #                            }
 #                        }
 #                    ],
@@ -286,6 +304,9 @@ test1:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -309,6 +330,9 @@ test1:
 #                                "kind": "local_variable",
 #                                "identifier": 0,
 #                                "offset": 0
+#                            },
+#                            "metadata": {
+#                                "value_ref": 5
 #                            }
 #                        }
 #                    ],
@@ -347,6 +371,9 @@ test1:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -368,6 +395,9 @@ test1:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 6
 #                            }
 #                        }
 #                    ],
@@ -406,6 +436,9 @@ test1:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 6
 #                            }
 #                        }
 #                    ],
@@ -427,6 +460,9 @@ test1:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 7
 #                            }
 #                        }
 #                    ],
@@ -465,6 +501,9 @@ test1:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 7
 #                            }
 #                        }
 #                    ],
@@ -500,6 +539,9 @@ test1:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 8
 #                            }
 #                        }
 #                    ],
@@ -531,6 +573,9 @@ test1:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 9
 #                            }
 #                        }
 #                    ],
@@ -566,6 +611,9 @@ test1:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 11
 #                            }
 #                        }
 #                    ],
@@ -601,6 +649,9 @@ test1:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 10
 #                            }
 #                        }
 #                    ],
@@ -662,6 +713,9 @@ test1:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 11
 #                            }
 #                        },
 #                        {
@@ -671,6 +725,9 @@ test1:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        },
 #                        {
@@ -685,6 +742,9 @@ test1:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 10
 #                            }
 #                        }
 #                    ],
@@ -720,6 +780,9 @@ test1:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 12
 #                            }
 #                        }
 #                    ],
@@ -755,6 +818,9 @@ test1:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 13
 #                            }
 #                        }
 #                    ],
@@ -896,6 +962,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -921,6 +990,9 @@ test2:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rsi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
 #                            }
 #                        }
 #                    ],
@@ -966,6 +1038,9 @@ test2:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 2
 #                            }
 #                        }
 #                    ],
@@ -1053,6 +1128,9 @@ test2:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rsi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 1
 #                            }
 #                        }
 #                    ],
@@ -1088,6 +1166,9 @@ test2:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 3
 #                            }
 #                        }
 #                    ],
@@ -1111,6 +1192,9 @@ test2:
 #                                "kind": "local_variable",
 #                                "identifier": 2,
 #                                "offset": 0
+#                            },
+#                            "metadata": {
+#                                "value_ref": 4
 #                            }
 #                        }
 #                    ],
@@ -1149,6 +1233,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1172,6 +1259,9 @@ test2:
 #                                "kind": "local_variable",
 #                                "identifier": 0,
 #                                "offset": 0
+#                            },
+#                            "metadata": {
+#                                "value_ref": 5
 #                            }
 #                        }
 #                    ],
@@ -1210,6 +1300,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1239,6 +1332,9 @@ test2:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 6
 #                            }
 #                        }
 #                    ],
@@ -1272,6 +1368,9 @@ test2:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 7
 #                            }
 #                        }
 #                    ],
@@ -1297,6 +1396,9 @@ test2:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 8
 #                            }
 #                        }
 #                    ],
@@ -1318,6 +1420,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 9
 #                            }
 #                        }
 #                    ],
@@ -1397,6 +1502,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1422,6 +1530,9 @@ test2:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 10
 #                            }
 #                        }
 #                    ],
@@ -1459,6 +1570,9 @@ test2:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 10
 #                            }
 #                        }
 #                    ],
@@ -1494,6 +1608,9 @@ test2:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 11
 #                            }
 #                        }
 #                    ],
@@ -1529,6 +1646,9 @@ test2:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rcx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 12
 #                            }
 #                        }
 #                    ],
@@ -1581,6 +1701,9 @@ test2:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rcx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 13
 #                            }
 #                        },
 #                        {
@@ -1590,6 +1713,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1625,6 +1751,9 @@ test2:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 14
 #                            }
 #                        }
 #                    ],
@@ -1660,6 +1789,9 @@ test2:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rcx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 17
 #                            }
 #                        }
 #                    ],
@@ -1695,6 +1827,9 @@ test2:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 16
 #                            }
 #                        }
 #                    ],
@@ -1753,6 +1888,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        },
 #                        {
@@ -1763,6 +1901,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1787,6 +1928,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 15
 #                            }
 #                        }
 #                    ],
@@ -1826,6 +1970,9 @@ test2:
 #                            "type": {
 #                                "variant": "8bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 15
 #                            }
 #                        }
 #                    ],
@@ -1873,6 +2020,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -1954,6 +2104,9 @@ test2:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 18
 #                            }
 #                        }
 #                    ],
@@ -1975,6 +2128,9 @@ test2:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 19
 #                            }
 #                        }
 #                    ],
@@ -2054,6 +2210,9 @@ test2:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 20
 #                            }
 #                        }
 #                    ],
@@ -2254,6 +2413,9 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -2277,6 +2439,9 @@ test3:
 #                                "kind": "spill_space",
 #                                "alignment": 1,
 #                                "length": 2
+#                            },
+#                            "metadata": {
+#                                "value_ref": 3
 #                            }
 #                        }
 #                    ],
@@ -2322,6 +2487,9 @@ test3:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 4
 #                            }
 #                        }
 #                    ],
@@ -2367,6 +2535,9 @@ test3:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rcx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 5
 #                            }
 #                        }
 #                    ],
@@ -2410,6 +2581,9 @@ test3:
 #                                "kind": "spill_space",
 #                                "alignment": 1,
 #                                "length": 2
+#                            },
+#                            "metadata": {
+#                                "value_ref": 9
 #                            }
 #                        }
 #                    ],
@@ -2455,6 +2629,9 @@ test3:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 10
 #                            }
 #                        }
 #                    ],
@@ -2500,6 +2677,9 @@ test3:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rsi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 11
 #                            }
 #                        }
 #                    ],
@@ -2587,6 +2767,9 @@ test3:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
 #                            }
 #                        }
 #                    ],
@@ -2622,6 +2805,9 @@ test3:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rcx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 1
 #                            }
 #                        }
 #                    ],
@@ -2657,6 +2843,9 @@ test3:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 6
 #                            }
 #                        }
 #                    ],
@@ -2692,6 +2881,9 @@ test3:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rsi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 7
 #                            }
 #                        }
 #                    ],
@@ -2715,6 +2907,9 @@ test3:
 #                                "kind": "local_variable",
 #                                "identifier": 2,
 #                                "offset": 0
+#                            },
+#                            "metadata": {
+#                                "value_ref": 12
 #                            }
 #                        }
 #                    ],
@@ -2757,6 +2952,9 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -2799,6 +2997,9 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -2822,6 +3023,9 @@ test3:
 #                                "kind": "local_variable",
 #                                "identifier": 0,
 #                                "offset": 0
+#                            },
+#                            "metadata": {
+#                                "value_ref": 13
 #                            }
 #                        }
 #                    ],
@@ -2864,6 +3068,9 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -2906,6 +3113,9 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -2943,6 +3153,9 @@ test3:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 14
 #                            }
 #                        }
 #                    ],
@@ -2980,6 +3193,9 @@ test3:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 15
 #                            }
 #                        }
 #                    ],
@@ -3013,6 +3229,9 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 17
 #                            }
 #                        }
 #                    ],
@@ -3046,6 +3265,9 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 18
 #                            }
 #                        }
 #                    ],
@@ -3098,6 +3320,9 @@ test3:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 20
 #                            }
 #                        },
 #                        {
@@ -3107,6 +3332,9 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -3159,6 +3387,9 @@ test3:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 21
 #                            }
 #                        },
 #                        {
@@ -3168,6 +3399,9 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -3203,6 +3437,9 @@ test3:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 23
 #                            }
 #                        }
 #                    ],
@@ -3238,6 +3475,9 @@ test3:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 24
 #                            }
 #                        }
 #                    ],
@@ -3410,6 +3650,9 @@ test3:
 #                                "kind": "spill_space",
 #                                "alignment": 1,
 #                                "length": 2
+#                            },
+#                            "metadata": {
+#                                "value_ref": 9
 #                            }
 #                        }
 #                    ],
@@ -3433,6 +3676,9 @@ test3:
 #                                "kind": "spill_space",
 #                                "alignment": 1,
 #                                "length": 2
+#                            },
+#                            "metadata": {
+#                                "value_ref": 3
 #                            }
 #                        }
 #                    ],
@@ -3529,6 +3775,9 @@ test4:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -3554,6 +3803,9 @@ test4:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
 #                            }
 #                        }
 #                    ],
@@ -3641,6 +3893,9 @@ test4:
 #                            "constraint": {
 #                                "type": "hint",
 #                                "register": "rdi"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 1
 #                            }
 #                        }
 #                    ],
@@ -3664,6 +3919,9 @@ test4:
 #                                "kind": "local_variable",
 #                                "identifier": 0,
 #                                "offset": 0
+#                            },
+#                            "metadata": {
+#                                "value_ref": 2
 #                            }
 #                        }
 #                    ],
@@ -3702,6 +3960,9 @@ test4:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -3763,6 +4024,9 @@ test4:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -3792,6 +4056,9 @@ test4:
 #                            "type": {
 #                                "variant": "32bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 3
 #                            }
 #                        }
 #                    ],
@@ -3820,6 +4087,9 @@ test4:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 4
 #                            }
 #                        }
 #                    ],
@@ -3851,6 +4121,9 @@ test4:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 5
 #                            }
 #                        }
 #                    ],
@@ -3905,6 +4178,9 @@ test4:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 7
 #                            }
 #                        },
 #                        {
@@ -3914,6 +4190,9 @@ test4:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -3962,6 +4241,9 @@ test4:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 8
 #                            }
 #                        },
 #                        {
@@ -3971,6 +4253,9 @@ test4:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -4004,6 +4289,9 @@ test4:
 #                            "type": {
 #                                "variant": "64bit",
 #                                "kind": "general_purpose"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 9
 #                            }
 #                        }
 #                    ],
@@ -4096,6 +4384,9 @@ test4:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 11
 #                            }
 #                        }
 #                    ],
@@ -4289,6 +4580,9 @@ init_array:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
 #                            }
 #                        }
 #                    ],
@@ -4334,6 +4628,9 @@ init_array:
 #                            "constraint": {
 #                                "type": "requirement",
 #                                "register": "rbx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 1
 #                            }
 #                        }
 #                    ],

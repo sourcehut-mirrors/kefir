@@ -284,7 +284,10 @@ static kefir_asmcmp_virtual_register_index_t store_virtual_register_aspect(struc
             REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(state->mem, state->code, value_ref, &(struct kefir_codegen_target_ir_value_type) {
                 .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED,
                 .variant = variant,
-                .constraint = constraint_copy
+                .constraint = constraint_copy,
+                .metadata = {
+                    .value_ref = vreg
+                }
             }));
             break;
 
@@ -292,7 +295,10 @@ static kefir_asmcmp_virtual_register_index_t store_virtual_register_aspect(struc
             REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(state->mem, state->code, value_ref, &(struct kefir_codegen_target_ir_value_type) {
                 .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE,
                 .variant = variant,
-                .constraint = constraint_copy
+                .constraint = constraint_copy,
+                .metadata = {
+                    .value_ref = vreg
+                }
             }));
             break;
 
@@ -300,7 +306,10 @@ static kefir_asmcmp_virtual_register_index_t store_virtual_register_aspect(struc
             REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(state->mem, state->code, value_ref, &(struct kefir_codegen_target_ir_value_type) {
                 .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT,
                 .variant = variant,
-                .constraint = constraint_copy
+                .constraint = constraint_copy,
+                .metadata = {
+                    .value_ref = vreg
+                }
             }));
             break;
 
@@ -312,7 +321,10 @@ static kefir_asmcmp_virtual_register_index_t store_virtual_register_aspect(struc
                     .alignment = virtual_register->parameters.spill_space_allocation.alignment,
                     .length = virtual_register->parameters.spill_space_allocation.length
                 },
-                .constraint = constraint_copy
+                .constraint = constraint_copy,
+                .metadata = {
+                    .value_ref = vreg
+                }
             }));
             break;
 
@@ -324,7 +336,10 @@ static kefir_asmcmp_virtual_register_index_t store_virtual_register_aspect(struc
                     .identifier = virtual_register->parameters.local_variable.identifier,
                     .offset = virtual_register->parameters.local_variable.offset
                 },
-                .constraint = constraint_copy
+                .constraint = constraint_copy,
+                .metadata = {
+                    .value_ref = vreg
+                }
             }));
             break;
 
@@ -339,7 +354,10 @@ static kefir_asmcmp_virtual_register_index_t store_virtual_register_aspect(struc
                     .base_reg = virtual_register->parameters.memory.base_reg,
                     .offset = virtual_register->parameters.memory.offset
                 },
-                .constraint = constraint_copy
+                .constraint = constraint_copy,
+                .metadata = {
+                    .value_ref = vreg
+                }
             }));
             break;
 
@@ -420,7 +438,10 @@ static kefir_result_t resolve_flags(struct constructor_state *state, struct code
             value_ref->aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS;
             REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(state->mem, state->code, *value_ref, &(struct kefir_codegen_target_ir_value_type) {
                 .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS,
-                .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+                .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT,
+                .metadata = {
+                    .value_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE
+                }
             }));
             block_state->output_flags_ref = value_ref->instr_ref;
         } else {
@@ -437,7 +458,10 @@ static kefir_result_t resolve_flags(struct constructor_state *state, struct code
             value_ref->aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS;
             REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(state->mem, state->code, *value_ref, &(struct kefir_codegen_target_ir_value_type) {
                 .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS,
-                .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+                .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT,
+                .metadata = {
+                    .value_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE
+                }
             }));
             block_state->output_flags_ref = value_ref->instr_ref;
             block_state->input_flags_ref = value_ref->instr_ref;
@@ -968,7 +992,10 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                     .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(output_regs++)
                 }, &(struct kefir_codegen_target_ir_value_type) {
                     .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT,
-                    .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+                    .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT,
+                    .metadata = {
+                        .value_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE
+                    }
                 }));
             }
         }
@@ -979,7 +1006,10 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                 .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS
             }, &(struct kefir_codegen_target_ir_value_type) {
                 .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS,
-                .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+                .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT,
+                .metadata = {
+                    .value_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE
+                }
             }));
         }
 
@@ -1483,10 +1513,31 @@ kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *mem, str
     return KEFIR_OK;
 }
 
+struct metadata_value_refs {
+    struct kefir_hashset refs;
+};
+
+static kefir_result_t free_metadata_value_refs(struct kefir_mem *mem, struct kefir_hashtable *table,
+                                                          kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct metadata_value_refs *, value_refs,
+        value);
+    REQUIRE(value_refs != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR constructor metadata value references"));
+
+    REQUIRE_OK(kefir_hashset_free(mem, &value_refs->refs));
+    KEFIR_FREE(mem, value_refs);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_init(struct kefir_codegen_target_ir_code_constructor_metadata *metadata) {
     REQUIRE(metadata != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR code constructor metadata"));
 
     REQUIRE_OK(kefir_hashtable_init(&metadata->code_refs, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_init(&metadata->value_refs, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&metadata->value_refs, free_metadata_value_refs, NULL));
     return KEFIR_OK;
 }
 
@@ -1494,6 +1545,7 @@ kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_free(struct kef
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(metadata != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code constructor metadata"));
 
+    REQUIRE_OK(kefir_hashtable_free(mem, &metadata->value_refs));
     REQUIRE_OK(kefir_hashtable_free(mem, &metadata->code_refs));
     return KEFIR_OK;
 }
@@ -1508,6 +1560,30 @@ kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_add_code_ref(st
         res = KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Code reference metadata for asmcmp instruction already exists");
     }
     REQUIRE_OK(res);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_add_value_ref(struct kefir_mem *mem, struct kefir_codegen_target_ir_code_constructor_metadata *metadata, kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_codegen_target_ir_metadata_value_ref_t value_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(metadata != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code constructor metadata"));
+
+    struct metadata_value_refs *value_refs = NULL;
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&metadata->value_refs, (kefir_hashtable_key_t) vreg_idx, &table_value);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        value_refs = (struct metadata_value_refs *) table_value;
+    } else {
+        value_refs = KEFIR_MALLOC(mem, sizeof(struct metadata_value_refs));
+        REQUIRE(value_refs != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR constructor metadata value references"));
+        res = kefir_hashset_init(&value_refs->refs, &kefir_hashtable_uint_ops);
+        REQUIRE_CHAIN(&res, kefir_hashtable_insert(mem, &metadata->value_refs, (kefir_hashtable_key_t) vreg_idx, (kefir_hashtable_value_t) value_refs));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, value_refs);
+            return res;
+        });
+    }
+    REQUIRE_OK(kefir_hashset_add(mem, &value_refs->refs, (kefir_hashset_key_t) value_ref));
     return KEFIR_OK;
 }
 
