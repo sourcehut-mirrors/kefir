@@ -35,7 +35,11 @@ test1:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 0,
@@ -56,7 +60,11 @@ test1:
 #                                "register": "rsi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 1,
@@ -72,7 +80,11 @@ test1:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 2,
@@ -93,7 +105,11 @@ test1:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 3,
@@ -109,13 +125,21 @@ test1:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 4,
 #                    "opcode": "function_prologue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 5,
@@ -126,7 +150,11 @@ test1:
 #                            "block_ref": 1
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -164,7 +192,11 @@ test1:
 #                                "register": "rsi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 9,
@@ -195,7 +227,11 @@ test1:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 10,
@@ -214,7 +250,11 @@ test1:
 #                                "offset": 0
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 11,
@@ -248,7 +288,11 @@ test1:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 12,
@@ -267,7 +311,11 @@ test1:
 #                                "offset": 0
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 13,
@@ -301,7 +349,11 @@ test1:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 14,
@@ -318,7 +370,11 @@ test1:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 15,
@@ -352,7 +408,11 @@ test1:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 16,
@@ -369,7 +429,11 @@ test1:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 17,
@@ -403,7 +467,11 @@ test1:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 18,
@@ -434,7 +502,11 @@ test1:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 19,
@@ -461,7 +533,11 @@ test1:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 20,
@@ -492,7 +568,11 @@ test1:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 21,
@@ -523,7 +603,11 @@ test1:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 23,
@@ -603,7 +687,11 @@ test1:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 24,
@@ -634,7 +722,11 @@ test1:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 25,
@@ -665,13 +757,21 @@ test1:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 26,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 27,
@@ -687,7 +787,11 @@ test1:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 28,
@@ -703,13 +807,21 @@ test1:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 29,
 #                    "opcode": "ret",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -727,7 +839,11 @@ test1:
 #                            "block_ref": 3
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -782,7 +898,11 @@ test2:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 0,
@@ -803,7 +923,11 @@ test2:
 #                                "register": "rsi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 1,
@@ -819,7 +943,11 @@ test2:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 2,
@@ -840,7 +968,11 @@ test2:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 3,
@@ -856,13 +988,21 @@ test2:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 4,
 #                    "opcode": "function_prologue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 5,
@@ -873,7 +1013,11 @@ test2:
 #                            "block_ref": 1
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -911,7 +1055,11 @@ test2:
 #                                "register": "rsi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 9,
@@ -942,7 +1090,11 @@ test2:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 10,
@@ -961,7 +1113,11 @@ test2:
 #                                "offset": 0
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 11,
@@ -995,7 +1151,11 @@ test2:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 12,
@@ -1014,7 +1174,11 @@ test2:
 #                                "offset": 0
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 13,
@@ -1048,7 +1212,11 @@ test2:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 14,
@@ -1073,7 +1241,11 @@ test2:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 15,
@@ -1102,7 +1274,11 @@ test2:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 16,
@@ -1123,7 +1299,11 @@ test2:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 18,
@@ -1140,7 +1320,11 @@ test2:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 20,
@@ -1151,7 +1335,11 @@ test2:
 #                            "block_ref": 2
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1211,7 +1399,11 @@ test2:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 21,
@@ -1232,7 +1424,11 @@ test2:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 23,
@@ -1265,7 +1461,11 @@ test2:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 24,
@@ -1296,7 +1496,11 @@ test2:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 25,
@@ -1327,7 +1531,11 @@ test2:
 #                                "register": "rcx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 29,
@@ -1384,7 +1592,11 @@ test2:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 30,
@@ -1415,7 +1627,11 @@ test2:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 31,
@@ -1446,7 +1662,11 @@ test2:
 #                                "register": "rcx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 32,
@@ -1477,7 +1697,11 @@ test2:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 33,
@@ -1544,7 +1768,11 @@ test2:
 #                    ],
 #                    "attributes": [
 #                        "lock"
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 34,
@@ -1561,7 +1789,11 @@ test2:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 35,
@@ -1596,7 +1828,11 @@ test2:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 36,
@@ -1639,7 +1875,11 @@ test2:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 62,
@@ -1662,7 +1902,11 @@ test2:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1680,7 +1924,11 @@ test2:
 #                            "block_ref": 6
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1708,7 +1956,11 @@ test2:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 43,
@@ -1725,7 +1977,11 @@ test2:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 63,
@@ -1736,7 +1992,11 @@ test2:
 #                            "block_ref": 2
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1754,7 +2014,11 @@ test2:
 #                            "block_ref": 6
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1792,13 +2056,21 @@ test2:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 50,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 51,
@@ -1814,7 +2086,11 @@ test2:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 52,
@@ -1830,13 +2106,21 @@ test2:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 53,
 #                    "opcode": "ret",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1854,7 +2138,11 @@ test2:
 #                            "block_ref": 2
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1872,7 +2160,11 @@ test2:
 #                            "block_ref": 2
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1890,7 +2182,11 @@ test2:
 #                            "block_ref": 10
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1960,7 +2256,11 @@ test3:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 0,
@@ -1979,7 +2279,11 @@ test3:
 #                                "length": 2
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 1,
@@ -1995,7 +2299,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 2,
@@ -2016,7 +2324,11 @@ test3:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 3,
@@ -2032,7 +2344,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 4,
@@ -2053,7 +2369,11 @@ test3:
 #                                "register": "rcx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 5,
@@ -2069,7 +2389,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 6,
@@ -2088,7 +2412,11 @@ test3:
 #                                "length": 2
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 7,
@@ -2104,7 +2432,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 8,
@@ -2125,7 +2457,11 @@ test3:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 9,
@@ -2141,7 +2477,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 10,
@@ -2162,7 +2502,11 @@ test3:
 #                                "register": "rsi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 11,
@@ -2178,13 +2522,21 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 12,
 #                    "opcode": "function_prologue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 13,
@@ -2195,7 +2547,11 @@ test3:
 #                            "block_ref": 1
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -2233,7 +2589,11 @@ test3:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 17,
@@ -2264,7 +2624,11 @@ test3:
 #                                "register": "rcx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 19,
@@ -2295,7 +2659,11 @@ test3:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 21,
@@ -2326,7 +2694,11 @@ test3:
 #                                "register": "rsi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 22,
@@ -2345,7 +2717,11 @@ test3:
 #                                "offset": 0
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 23,
@@ -2383,7 +2759,11 @@ test3:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 24,
@@ -2421,7 +2801,11 @@ test3:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 25,
@@ -2440,7 +2824,11 @@ test3:
 #                                "offset": 0
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 26,
@@ -2478,7 +2866,11 @@ test3:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 27,
@@ -2516,7 +2908,11 @@ test3:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 28,
@@ -2549,7 +2945,11 @@ test3:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 29,
@@ -2582,7 +2982,11 @@ test3:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 30,
@@ -2611,7 +3015,11 @@ test3:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 31,
@@ -2640,7 +3048,11 @@ test3:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 35,
@@ -2697,7 +3109,11 @@ test3:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 36,
@@ -2754,7 +3170,11 @@ test3:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 37,
@@ -2785,7 +3205,11 @@ test3:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 38,
@@ -2816,13 +3240,21 @@ test3:
 #                                "register": "rdx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 39,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 40,
@@ -2838,7 +3270,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 41,
@@ -2854,7 +3290,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 42,
@@ -2870,7 +3310,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 44,
@@ -2886,7 +3330,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 46,
@@ -2902,13 +3350,21 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 47,
 #                    "opcode": "ret",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -2926,7 +3382,11 @@ test3:
 #                            "block_ref": 3
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -2952,7 +3412,11 @@ test3:
 #                                "length": 2
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 49,
@@ -2971,7 +3435,11 @@ test3:
 #                                "length": 2
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 50,
@@ -2987,7 +3455,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 52,
@@ -3003,7 +3475,11 @@ test3:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -3055,7 +3531,11 @@ test4:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 0,
@@ -3076,7 +3556,11 @@ test4:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 1,
@@ -3092,13 +3576,21 @@ test4:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 2,
 #                    "opcode": "function_prologue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 3,
@@ -3109,7 +3601,11 @@ test4:
 #                            "block_ref": 1
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -3147,7 +3643,11 @@ test4:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 6,
@@ -3166,7 +3666,11 @@ test4:
 #                                "offset": 0
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 7,
@@ -3200,7 +3704,11 @@ test4:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 8,
@@ -3211,7 +3719,11 @@ test4:
 #                            "block_ref": 2
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -3253,7 +3765,11 @@ test4:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 9,
@@ -3278,7 +3794,11 @@ test4:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 10,
@@ -3302,7 +3822,11 @@ test4:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 11,
@@ -3329,13 +3853,21 @@ test4:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 12,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 14,
@@ -3384,7 +3916,11 @@ test4:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 16,
@@ -3437,7 +3973,11 @@ test4:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 17,
@@ -3466,7 +4006,11 @@ test4:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 18,
@@ -3482,7 +4026,11 @@ test4:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": true,
@@ -3502,7 +4050,11 @@ test4:
 #                            "block_ref": 4
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -3515,7 +4067,11 @@ test4:
 #                    "instr_ref": 20,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 21,
@@ -3542,13 +4098,21 @@ test4:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 22,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 23,
@@ -3564,7 +4128,11 @@ test4:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 24,
@@ -3580,13 +4148,21 @@ test4:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 25,
 #                    "opcode": "ret",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": true,
@@ -3606,7 +4182,11 @@ test4:
 #                            "block_ref": 6
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -3664,7 +4244,11 @@ init_array:
 #                    "instr_ref": 0,
 #                    "opcode": "function_prologue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 1,
@@ -3675,7 +4259,11 @@ init_array:
 #                            "block_ref": 1
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -3703,7 +4291,11 @@ init_array:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 3,
@@ -3719,7 +4311,11 @@ init_array:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 4,
@@ -3740,7 +4336,11 @@ init_array:
 #                                "register": "rbx"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 5,
@@ -3756,7 +4356,11 @@ init_array:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 6,
@@ -3977,7 +4581,11 @@ init_array:
 #                            "text": ")"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 7,
@@ -3993,7 +4601,11 @@ init_array:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 8,
@@ -4009,19 +4621,31 @@ init_array:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 9,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 10,
 #                    "opcode": "ret",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -4039,7 +4663,11 @@ init_array:
 #                            "block_ref": 3
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,

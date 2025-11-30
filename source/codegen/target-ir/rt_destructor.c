@@ -997,7 +997,9 @@ static kefir_result_t translate_block(struct rt_destructor_state *state, kefir_c
     }
 
     const struct kefir_source_location *current_source_location = NULL;
+    kefir_codegen_target_ir_metadata_code_ref_t current_code_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_CODE_REF_NONE;
     kefir_asmcmp_instruction_index_t current_source_location_start = KEFIR_ASMCMP_INDEX_NONE;
+    kefir_asmcmp_instruction_index_t current_code_ref_start = kefir_asmcmp_context_instr_tail(state->asmcmp_ctx);
 #define WRITE_SOURCE_LOCATION \
     do { \
         const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(state->asmcmp_ctx); \
@@ -1008,25 +1010,47 @@ static kefir_result_t translate_block(struct rt_destructor_state *state, kefir_c
         current_source_location_start = KEFIR_ASMCMP_INDEX_NONE; \
     } while (0)
 
+#define WRITE_CODE_REF \
+    do { \
+        if (current_code_ref != KEFIR_CODEGEN_TARGET_IR_METADATA_CODE_REF_NONE) { \
+            kefir_asmcmp_instruction_index_t current_code_ref_end = kefir_asmcmp_context_instr_tail(state->asmcmp_ctx); \
+            if (current_code_ref_start != current_code_ref_end) { \
+                kefir_asmcmp_label_index_t begin_label, end_label; \
+                REQUIRE_OK(kefir_asmcmp_context_new_label(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_next(state->asmcmp_ctx, current_code_ref_start), &begin_label)); \
+                REQUIRE_OK(kefir_asmcmp_context_new_label(state->mem, state->asmcmp_ctx, KEFIR_ASMCMP_INDEX_NONE, &end_label)); \
+                REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(state->mem, state->asmcmp_ctx, end_label)); \
+                REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(state->mem, state->asmcmp_ctx, begin_label)); \
+                REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(state->mem, state->asmcmp_ctx, end_label)); \
+                REQUIRE_OK(state->parameter->new_code_fragment(state->mem, current_code_ref, begin_label, end_label, state->parameter->payload)); \
+            } \
+        } \
+    } while (0)
+
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref =  kefir_codegen_target_ir_code_block_control_head(state->code, block_ref);
         instr_ref != KEFIR_ID_NONE;
         instr_ref = kefir_codegen_target_ir_code_control_next(state->code, instr_ref)) {
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, instr_ref, &instr));
-        if (instr->source_location.source != NULL) {
+        if (instr->metadata.source_location.source != NULL) {
             if (current_source_location != NULL && current_source_location->source != NULL &&
-                (instr->source_location.source == NULL ||
-                strcmp(instr->source_location.source, current_source_location->source) != 0 ||
-                instr->source_location.line != current_source_location->line ||
-                instr->source_location.column != current_source_location->column)) {
+                (instr->metadata.source_location.source == NULL ||
+                strcmp(instr->metadata.source_location.source, current_source_location->source) != 0 ||
+                instr->metadata.source_location.line != current_source_location->line ||
+                instr->metadata.source_location.column != current_source_location->column)) {
                 WRITE_SOURCE_LOCATION;
             }
             if (current_source_location == NULL) {
-                current_source_location = &instr->source_location;
+                current_source_location = &instr->metadata.source_location;
                 current_source_location_start = kefir_asmcmp_context_instr_length(state->asmcmp_ctx);
             }
         } else if (current_source_location != NULL) {
             WRITE_SOURCE_LOCATION;
+        }
+
+        if (instr->metadata.code_ref != current_code_ref) {
+            WRITE_CODE_REF;
+            current_code_ref = instr->metadata.code_ref;
+            current_code_ref_start = kefir_asmcmp_context_instr_tail(state->asmcmp_ctx);
         }
 
         REQUIRE_OK(translate_instruction(state, block_state, instr_ref));
@@ -1035,7 +1059,9 @@ static kefir_result_t translate_block(struct rt_destructor_state *state, kefir_c
     if (current_source_location != NULL) {
         WRITE_SOURCE_LOCATION;
     }
+    WRITE_CODE_REF;
 
+#undef WRITE_CODE_REF
 #undef WRITE_SOURCE_LOCATION
 
     return KEFIR_OK;
@@ -1098,6 +1124,14 @@ static kefir_result_t translate_blocks(struct rt_destructor_state *state) {
         };
         REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx), &instr, NULL));
     }
+
+    struct kefir_asmcmp_instruction instr = {
+        .opcode = state->parameter->noop_opcode,
+        .args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+        .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+        .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE
+    };
+    REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx), &instr, NULL));
 
     return KEFIR_OK;
 }

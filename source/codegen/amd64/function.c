@@ -67,6 +67,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
     REQUIRE(kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) instruction->id),
             KEFIR_OK);
     const kefir_asmcmp_instruction_index_t begin_idx = kefir_asmcmp_context_instr_length(&function->code.context);
+    const kefir_asmcmp_instruction_index_t begin_tail_idx = kefir_asmcmp_context_instr_tail(&function->code.context);
 
     switch (instruction->operation.opcode) {
 #define CASE_INSTR(_id, _opcode)                                                           \
@@ -77,32 +78,39 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
 #undef CASE_INSTR
     }
 
-    if (function->codegen->config->debug_info && !function->codegen->config->enable_target_ir) {
-        kefir_asmcmp_label_index_t begin_asmlabel, end_asmlabel;
-        const struct kefir_opt_code_instruction_schedule *instr_schedule;
-        REQUIRE_OK(kefir_opt_code_schedule_of(&function->schedule, instruction->id, &instr_schedule));
-
-        struct kefir_hashtree_node *node;
-        if (instr_schedule->linear_position == 0) {
-            REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) instruction->block_id, &node));
-        } else {
-            REQUIRE_OK(kefir_hashtree_at(&function->debug.instruction_labels, (kefir_hashtree_key_t) ((((kefir_uint64_t) instruction->block_id) << 32) | (kefir_uint32_t) (instr_schedule->linear_position - 1)), &node));
-        }
-        begin_asmlabel = node->value;
-
+    if (function->codegen->config->debug_info) {
         const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(&function->code.context);
-        if (end_idx != begin_idx) {
-            REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &end_asmlabel));
-            REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, &function->code.context, end_asmlabel));
-            REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, end_asmlabel));
+        const kefir_asmcmp_instruction_index_t end_tail_idx = kefir_asmcmp_context_instr_tail(&function->code.context);
+        if (!function->codegen->config->enable_target_ir) {
+            kefir_asmcmp_label_index_t begin_asmlabel, end_asmlabel;
+            const struct kefir_opt_code_instruction_schedule *instr_schedule;
+            REQUIRE_OK(kefir_opt_code_schedule_of(&function->schedule, instruction->id, &instr_schedule));
+
+            struct kefir_hashtree_node *node;
+            if (instr_schedule->linear_position == 0) {
+                REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) instruction->block_id, &node));
+            } else {
+                REQUIRE_OK(kefir_hashtree_at(&function->debug.instruction_labels, (kefir_hashtree_key_t) ((((kefir_uint64_t) instruction->block_id) << 32) | (kefir_uint32_t) (instr_schedule->linear_position - 1)), &node));
+            }
+            begin_asmlabel = node->value;
+
+            if (end_idx != begin_idx) {
+                REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &end_asmlabel));
+                REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, &function->code.context, end_asmlabel));
+                REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, end_asmlabel));
+            } else {
+                end_asmlabel = begin_asmlabel;
+            }
+
+            REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_labels, (kefir_hashtree_key_t) ((((kefir_uint64_t) instruction->block_id) << 32) | (kefir_uint32_t) instr_schedule->linear_position), end_asmlabel));
+
+            if (begin_asmlabel != end_asmlabel) {
+                REQUIRE_OK(kefir_asmcmp_code_map_add_fragment(mem, &function->code.context.debug_info.code_map, instruction->id, begin_asmlabel, end_asmlabel));
+            }
         } else {
-            end_asmlabel = begin_asmlabel;
-        }
-
-        REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_labels, (kefir_hashtree_key_t) ((((kefir_uint64_t) instruction->block_id) << 32) | (kefir_uint32_t) instr_schedule->linear_position), end_asmlabel));
-
-        if (begin_asmlabel != end_asmlabel) {
-            REQUIRE_OK(kefir_asmcmp_code_map_add_fragment(mem, &function->code.context.debug_info.code_map, instruction->id, begin_asmlabel, end_asmlabel));
+            for (kefir_asmcmp_instruction_index_t instr_idx = begin_tail_idx; instr_idx != end_tail_idx; instr_idx = kefir_asmcmp_context_instr_next(&function->code.context, instr_idx)) {
+                REQUIRE_OK(kefir_codegen_target_ir_code_constructor_metadata_add_code_ref(mem, &function->debug.target_ir_metadata, kefir_asmcmp_context_instr_next(&function->code.context, instr_idx), (kefir_codegen_target_ir_metadata_code_ref_t) instruction->id));
+            }
         }
     }
 
@@ -1199,7 +1207,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
         .get_native_id_by_label = construct_target_ir_get_native_id_by_label,
         .payload = func
     };
-    REQUIRE_OK(kefir_codegen_target_ir_code_construct(mem, code, &func->code.context, &ops));
+    REQUIRE_OK(kefir_codegen_target_ir_code_construct(mem, code, &func->code.context, &func->debug.target_ir_metadata, &ops));
     REQUIRE_OK(kefir_codegen_target_ir_transform_copy_elision(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_phi_removal(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_jump_propagate(mem, code));
@@ -1223,6 +1231,16 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
             func->constants = destructor_ops.constants;
         }
         REQUIRE_CHAIN(&res, kefir_hashtree_init(&destructor_ops.constants, &kefir_hashtree_uint_ops));
+        REQUIRE_CHAIN(&res, kefir_asmcmp_debug_info_code_map_free(mem, &func->code.context.debug_info.code_map));
+        if (res == KEFIR_OK) {
+            func->code.context.debug_info.code_map = destructor_ops.debug_code_map;
+        }
+        REQUIRE_CHAIN(&res, kefir_asmcmp_debug_info_code_map_init(&destructor_ops.debug_code_map));
+        REQUIRE_CHAIN(&res, kefir_asmcmp_debug_info_value_map_free(mem, &func->code.context.debug_info.value_map));
+        if (res == KEFIR_OK) {
+            func->code.context.debug_info.value_map = destructor_ops.debug_value_map;
+        }
+        REQUIRE_CHAIN(&res, kefir_asmcmp_debug_info_value_map_init(&destructor_ops.debug_value_map));
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_codegen_target_ir_round_trip_destructor_amd64_ops_free(mem, &destructor_ops);
             return res;
@@ -1374,6 +1392,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.occupied_x87_stack_slots, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_list_init(&func->x87_stack));
+    REQUIRE_OK(kefir_codegen_target_ir_code_constructor_metadata_init(&func->debug.target_ir_metadata));
     REQUIRE_OK(kefir_opt_code_analysis_init(&func->function_analysis));
     REQUIRE_OK(kefir_opt_code_schedule_init(&func->schedule));
     REQUIRE_OK(kefir_opt_code_linear_liveness_init(&func->linear_liveness));
@@ -1397,6 +1416,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_opt_code_linear_liveness_free(mem, &func->linear_liveness));
     REQUIRE_OK(kefir_opt_code_schedule_free(mem, &func->schedule));
     REQUIRE_OK(kefir_opt_code_analysis_free(mem, &func->function_analysis));
+    REQUIRE_OK(kefir_codegen_target_ir_code_constructor_metadata_free(mem, &func->debug.target_ir_metadata));
     REQUIRE_OK(kefir_list_free(mem, &func->x87_stack));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.instruction_labels));

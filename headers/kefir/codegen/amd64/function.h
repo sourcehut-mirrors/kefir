@@ -29,6 +29,7 @@
 #include "kefir/optimizer/schedule.h"
 #include "kefir/optimizer/linear_liveness.h"
 #include "kefir/target/abi/amd64/function.h"
+#include "kefir/codegen/target-ir/constructor.h"
 #include "kefir/optimizer/module.h"
 
 typedef struct kefir_codegen_amd64_module kefir_codegen_amd64_module_t;
@@ -66,6 +67,7 @@ typedef struct kefir_codegen_amd64_function {
         struct kefir_hashtree instruction_labels;
         struct kefir_hashtree function_parameters;
         struct kefir_hashtree occupied_x87_stack_slots;
+        struct kefir_codegen_target_ir_code_constructor_metadata target_ir_metadata;
     } debug;
 } kefir_codegen_amd64_function_t;
 

@@ -47,6 +47,7 @@ typedef struct kefir_codegen_target_ir_round_trip_destructor_ops {
     kefir_asmcmp_instruction_opcode_t virtual_block_begin_opcode;
     kefir_asmcmp_instruction_opcode_t virtual_block_end_opcode;
     kefir_asmcmp_instruction_opcode_t unreachable_opcode;
+    kefir_asmcmp_instruction_opcode_t noop_opcode;
     kefir_asmcmp_instruction_opcode_t jump_opcode;
     kefir_result_t (*classify_instruction)(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification *, void *);
     kefir_result_t (*bind_native_id)(struct kefir_mem *, kefir_asmcmp_label_index_t, kefir_codegen_target_ir_native_id_t, void *);
@@ -55,6 +56,7 @@ typedef struct kefir_codegen_target_ir_round_trip_destructor_ops {
     kefir_result_t (*split_branch_instruction)(struct kefir_mem *, const struct kefir_codegen_target_ir_instruction *, struct kefir_asmcmp_instruction[2], void *);
     kefir_result_t (*new_inline_asm)(struct kefir_mem *, kefir_asmcmp_instruction_index_t, kefir_asmcmp_inline_assembly_index_t, kefir_asmcmp_instruction_index_t *, void *);
     kefir_result_t (*materialize_attribute)(struct kefir_mem *, kefir_asmcmp_instruction_index_t, kefir_codegen_target_ir_native_id_t, kefir_asmcmp_instruction_index_t *, void *);
+    kefir_result_t (*new_code_fragment)(struct kefir_mem *, kefir_codegen_target_ir_metadata_code_ref_t, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t, void *);
     void *payload;
 } kefir_codegen_target_ir_round_trip_destructor_parameter_t;
 

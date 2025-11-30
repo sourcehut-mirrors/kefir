@@ -28,7 +28,7 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
 
     const struct kefir_codegen_target_ir_instruction *tail_instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, tail_ref, &tail_instr));
-    struct kefir_source_location source_location = tail_instr->source_location;
+    struct kefir_codegen_target_ir_instruction_metadata tail_metadata = tail_instr->metadata;
 
     struct kefir_codegen_target_ir_block_terminator_props terminator_props;
     REQUIRE_OK(code->klass->is_block_terminator(code, tail_instr, &terminator_props, code->klass->payload));
@@ -96,7 +96,7 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
 
     if (do_replace) {
         kefir_codegen_target_ir_instruction_ref_t new_tail_ref;
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref, tail_ref, &replacement, &source_location, &new_tail_ref));
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref, tail_ref, &replacement, &tail_metadata, &new_tail_ref));
         REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, new_tail_ref, tail_ref));
         REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, tail_ref));
     }

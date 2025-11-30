@@ -27,7 +27,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 0,
@@ -48,7 +52,11 @@ factorial:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 1,
@@ -64,13 +72,21 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 2,
 #                    "opcode": "function_prologue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 3,
@@ -81,7 +97,11 @@ factorial:
 #                            "block_ref": 1
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -119,7 +139,11 @@ factorial:
 #                                "register": "rdi"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 6,
@@ -138,7 +162,11 @@ factorial:
 #                                "offset": 0
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 7,
@@ -172,7 +200,11 @@ factorial:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 8,
@@ -197,7 +229,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 9,
@@ -216,13 +252,21 @@ factorial:
 #                                "offset": 0
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 10,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 11,
@@ -245,7 +289,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 13,
@@ -284,7 +332,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 14,
@@ -319,7 +371,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 15,
@@ -336,7 +392,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 16,
@@ -379,7 +439,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 17,
@@ -414,7 +478,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 18,
@@ -457,7 +525,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 93,
@@ -480,7 +552,11 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -498,7 +574,11 @@ factorial:
 #                            "block_ref": 3
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -530,13 +610,21 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 23,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 24,
@@ -559,7 +647,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 26,
@@ -598,7 +690,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 27,
@@ -633,7 +729,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 28,
@@ -656,7 +756,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 29,
@@ -695,7 +799,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 30,
@@ -730,7 +838,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 32,
@@ -783,7 +895,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 33,
@@ -818,7 +934,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 34,
@@ -845,7 +965,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 35,
@@ -862,7 +986,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 36,
@@ -905,7 +1033,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 37,
@@ -940,7 +1072,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 38,
@@ -983,7 +1119,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 94,
@@ -1006,7 +1146,11 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1024,7 +1168,11 @@ factorial:
 #                            "block_ref": 5
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1037,7 +1185,11 @@ factorial:
 #                    "instr_ref": 42,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 43,
@@ -1067,7 +1219,11 @@ factorial:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 44,
@@ -1078,7 +1234,11 @@ factorial:
 #                            "block_ref": 6
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1120,7 +1280,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 45,
@@ -1145,13 +1309,21 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 46,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 47,
@@ -1174,7 +1346,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 49,
@@ -1213,7 +1389,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 50,
@@ -1248,7 +1428,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 51,
@@ -1265,7 +1449,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 52,
@@ -1308,7 +1496,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 53,
@@ -1343,7 +1535,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 54,
@@ -1386,7 +1582,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 95,
@@ -1409,7 +1609,11 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1427,7 +1631,11 @@ factorial:
 #                            "block_ref": 8
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1463,7 +1671,11 @@ factorial:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 59,
@@ -1494,13 +1706,21 @@ factorial:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 60,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 61,
@@ -1516,7 +1736,11 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 62,
@@ -1532,13 +1756,21 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 63,
 #                    "opcode": "ret",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1556,7 +1788,11 @@ factorial:
 #                            "block_ref": 10
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1588,7 +1824,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 66,
@@ -1613,7 +1853,11 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 69,
@@ -1666,7 +1910,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 70,
@@ -1700,7 +1948,11 @@ factorial:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 71,
@@ -1725,13 +1977,21 @@ factorial:
 #                                "kind": "general_purpose"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 72,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 74,
@@ -1780,7 +2040,11 @@ factorial:
 #                                "kind": "flags"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 75,
@@ -1814,7 +2078,11 @@ factorial:
 #                                "kind": "indirect"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 76,
@@ -1825,7 +2093,11 @@ factorial:
 #                            "block_ref": 6
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1843,7 +2115,11 @@ factorial:
 #                            "block_ref": 12
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1879,7 +2155,11 @@ factorial:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 79,
@@ -1910,13 +2190,21 @@ factorial:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 80,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 81,
@@ -1932,7 +2220,11 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 82,
@@ -1948,13 +2240,21 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 83,
 #                    "opcode": "ret",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1972,7 +2272,11 @@ factorial:
 #                            "block_ref": 14
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -1985,7 +2289,11 @@ factorial:
 #                    "instr_ref": 85,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 86,
@@ -2012,13 +2320,21 @@ factorial:
 #                                "register": "rax"
 #                            }
 #                        }
-#                    ]
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 87,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 88,
@@ -2034,7 +2350,11 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 89,
@@ -2050,13 +2370,21 @@ factorial:
 #                            "variant": "default"
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                },
 #                {
 #                    "instr_ref": 90,
 #                    "opcode": "ret",
 #                    "parameters": [],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,
@@ -2074,7 +2402,11 @@ factorial:
 #                            "block_ref": 16
 #                        }
 #                    ],
-#                    "values": []
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
 #                }
 #            ],
 #            "externally_visible": false,

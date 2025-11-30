@@ -791,7 +791,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(generate_fini_array(codegen_module));
     }
 
-    if (codegen_module->codegen->config->debug_info && !codegen_module->codegen->config->enable_target_ir) { // TODO KEFIR_NOT_IMPLEMENTED
+    if (codegen_module->codegen->config->debug_info) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
         REQUIRE_OK(kefir_codegen_amd64_generate_dwarf_debug_info(mem, codegen_module));
     }

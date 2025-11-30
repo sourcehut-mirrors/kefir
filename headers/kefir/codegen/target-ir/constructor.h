@@ -84,6 +84,15 @@ typedef struct kefir_codegen_target_ir_code_constructor_ops {
     void *payload;
 } kefir_codegen_target_ir_code_constructor_parameters_t;
 
-kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_asmcmp_context *, const struct kefir_codegen_target_ir_code_constructor_ops *);
+typedef struct kefir_codegen_target_ir_code_constructor_metadata {
+    struct kefir_hashtable code_refs;
+} kefir_codegen_target_ir_code_constructor_metadata_t;
+
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_init(struct kefir_codegen_target_ir_code_constructor_metadata *);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_free(struct kefir_mem *, struct kefir_codegen_target_ir_code_constructor_metadata *);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_add_code_ref(struct kefir_mem *, struct kefir_codegen_target_ir_code_constructor_metadata *, kefir_asmcmp_instruction_index_t, kefir_codegen_target_ir_metadata_code_ref_t);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_get_code_ref(const struct kefir_codegen_target_ir_code_constructor_metadata *, kefir_asmcmp_instruction_index_t, kefir_codegen_target_ir_metadata_code_ref_t *);
+
+kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_asmcmp_context *, const struct kefir_codegen_target_ir_code_constructor_metadata *, const struct kefir_codegen_target_ir_code_constructor_ops *);
 
 #endif
