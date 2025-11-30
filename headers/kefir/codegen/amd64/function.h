@@ -81,6 +81,9 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct
 kefir_result_t kefir_codegen_amd64_function_assign_vreg(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         kefir_opt_instruction_ref_t,
                                                         kefir_asmcmp_virtual_register_index_t);
+kefir_result_t kefir_codegen_amd64_function_register_transient_vreg(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                        kefir_opt_instruction_ref_t,
+                                                        kefir_asmcmp_virtual_register_index_t);
 kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_function *, kefir_opt_instruction_ref_t,
                                                     kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, struct kefir_codegen_amd64_function *,

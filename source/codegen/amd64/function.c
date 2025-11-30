@@ -1459,6 +1459,17 @@ kefir_result_t kefir_codegen_amd64_function_assign_vreg(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_amd64_function_register_transient_vreg(struct kefir_mem *mem,
+                                                        struct kefir_codegen_amd64_function *function,
+                                                        kefir_opt_instruction_ref_t instr_ref,
+                                                        kefir_asmcmp_virtual_register_index_t vreg) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+
+    REQUIRE_OK(kefir_codegen_target_ir_code_constructor_metadata_add_value_ref(mem, &function->debug.target_ir_metadata, vreg, instr_ref));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_function *function,
                                                     kefir_opt_instruction_ref_t instr_ref,
                                                     kefir_asmcmp_virtual_register_index_t *vreg) {

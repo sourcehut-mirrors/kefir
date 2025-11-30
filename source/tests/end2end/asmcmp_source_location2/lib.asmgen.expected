@@ -2630,6 +2630,18 @@ __kefir_debug_loclist_section_entry_1:
     .byte 2
     .byte 144
     .byte 5
+    .byte 7
+    .quad __kefir_func_factorial_label2
+    .quad __kefir_func_factorial_label44
+    .byte 2
+    .byte 144
+    .byte 5
+    .byte 7
+    .quad __kefir_func_factorial_label37
+    .quad __kefir_func_factorial_label1
+    .byte 2
+    .byte 144
+    .byte 5
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 7
