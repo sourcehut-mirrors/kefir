@@ -328,12 +328,6 @@ __kefir_debug_loclist_section_entry_1:
     .byte 144
     .byte 5
     .byte 7
-    .quad __kefir_func_factorial64_label8
-    .quad __kefir_func_factorial64_label8
-    .byte 2
-    .byte 144
-    .byte 5
-    .byte 7
     .quad __kefir_func_factorial64_label10
     .quad __kefir_func_factorial64_label18
     .byte 2
@@ -348,12 +342,6 @@ __kefir_debug_loclist_section_entry_1:
     .byte 7
     .quad __kefir_func_factorial64_label2
     .quad __kefir_func_factorial64_label6
-    .byte 2
-    .byte 144
-    .byte 5
-    .byte 7
-    .quad __kefir_func_factorial64_label2
-    .quad __kefir_func_factorial64_label2
     .byte 2
     .byte 144
     .byte 5
@@ -416,12 +404,6 @@ __kefir_debug_loclist_section_entry_10:
     .byte 144
     .byte 5
     .byte 7
-    .quad __kefir_func_factorial64_label8
-    .quad __kefir_func_factorial64_label8
-    .byte 2
-    .byte 144
-    .byte 5
-    .byte 7
     .quad __kefir_func_factorial64_label10
     .quad __kefir_func_factorial64_label18
     .byte 2
@@ -436,12 +418,6 @@ __kefir_debug_loclist_section_entry_10:
     .byte 7
     .quad __kefir_func_factorial64_label2
     .quad __kefir_func_factorial64_label6
-    .byte 2
-    .byte 144
-    .byte 5
-    .byte 7
-    .quad __kefir_func_factorial64_label2
-    .quad __kefir_func_factorial64_label2
     .byte 2
     .byte 144
     .byte 5

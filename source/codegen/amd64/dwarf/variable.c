@@ -717,6 +717,9 @@ static kefir_result_t generate_x87_stack_locations_of_instruction(struct kefir_c
         for (res = kefir_asmcmp_value_map_fragment_iter(&codegen_function->code.context.debug_info.value_map, x87_location_instr_ref, &iter, &fragment);
             res == KEFIR_OK;
             res = kefir_asmcmp_value_map_fragment_next(&iter, &fragment)) {
+            if (fragment->begin_label == fragment->end_label) {
+                continue;
+            }
             const kefir_uint8_t regnum = X87_ST0_DWARF_REGNUM + x87_stack_slot;
 
             REQUIRE_OK(generate_lle_start_end(codegen_function, ir_identifier, fragment->begin_label,
@@ -752,6 +755,9 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
     for (res = kefir_asmcmp_value_map_fragment_iter(&codegen_function->code.context.debug_info.value_map, instr_ref, &iter, &fragment);
         res == KEFIR_OK;
         res = kefir_asmcmp_value_map_fragment_next(&iter, &fragment)) {
+        if (fragment->begin_label == fragment->end_label) {
+            continue;
+        }
         REQUIRE_OK(generate_location_of_virtual_register(codegen_function, fragment->vreg_idx, fragment->begin_label, fragment->end_label));
     }
     if (res == KEFIR_NOT_FOUND) {
