@@ -294,6 +294,35 @@ kefir_result_t kefir_asmcmp_value_map_add_fragment(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_code_map_iter(const struct kefir_asmcmp_debug_info_code_map *code_map, struct kefir_asmcmp_code_map_iterator *iter, kefir_asmcmp_debug_info_code_reference_t *code_ref_ptr) {
+    REQUIRE(code_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info code map"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp debug info code map iterator"));
+
+    kefir_hashtable_key_t key;
+    kefir_result_t res = kefir_hashtable_iter(&code_map->fragments, &iter->iter, &key, NULL);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of asmcmp debug info code map iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(code_ref_ptr, key);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_code_map_next(struct kefir_asmcmp_code_map_iterator *iter, kefir_asmcmp_debug_info_code_reference_t *code_ref_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info code map iterator"));
+
+    kefir_hashtable_key_t key;
+    kefir_result_t res = kefir_hashtable_next(&iter->iter, &key, NULL);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of asmcmp debug info code map iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(code_ref_ptr, key);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_code_map_fragment_iter(const struct kefir_asmcmp_debug_info_code_map *code_map, kefir_asmcmp_debug_info_code_reference_t code_ref, struct kefir_asmcmp_code_map_fragment_iterator *iter, const struct kefir_asmcmp_debug_info_code_fragment **fragment_ptr) {
     REQUIRE(code_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info code map"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp debug info code fragment iterator"));
@@ -319,6 +348,35 @@ kefir_result_t kefir_asmcmp_code_map_fragment_next(struct kefir_asmcmp_code_map_
     iter->index++;
     REQUIRE(iter->index < iter->entry->fragments_length, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of asmcmp debug information code fragments"));
     ASSIGN_PTR(fragment_ptr, &iter->entry->fragments[iter->index]);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_value_map_iter(const struct kefir_asmcmp_debug_info_value_map *value_map, struct kefir_asmcmp_value_map_iterator *iter, kefir_asmcmp_debug_info_value_reference_t *code_ref_ptr) {
+    REQUIRE(value_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info value map"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp debug info value map iterator"));
+
+    kefir_hashtable_key_t key;
+    kefir_result_t res = kefir_hashtable_iter(&value_map->fragments, &iter->iter, &key, NULL);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of asmcmp debug info value map iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(code_ref_ptr, key);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_value_map_next(struct kefir_asmcmp_value_map_iterator *iter, kefir_asmcmp_debug_info_value_reference_t *code_ref_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info code map iterator"));
+
+    kefir_hashtable_key_t key;
+    kefir_result_t res = kefir_hashtable_next(&iter->iter, &key, NULL);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of asmcmp debug info code map iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(code_ref_ptr, key);
     return KEFIR_OK;
 }
 
