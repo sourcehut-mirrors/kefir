@@ -68,7 +68,7 @@ endif
 $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION): $(KEFIR_LIB_OBJECT_FILES)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Linking $@"
-	@$(CCLD) -shared -o $@ $(KEFIR_LIB_OBJECT_FILES) $(LDFLAGS)
+	@$(CCLD) -shared -o $@ $(KEFIR_LIB_OBJECT_FILES) $(LDFLAGS) -Wl,-soname=$(shell basename "$@")
 ifneq (,$(findstring release,$(PROFILE)))
 	@echo "Stripping $@"
 	@$(STRIP) $@
