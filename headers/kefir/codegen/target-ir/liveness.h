@@ -34,9 +34,14 @@ typedef struct kefir_codegen_target_ir_block_liveness {
     struct kefir_codegen_target_ir_liveness_entry live_out;
 } kefir_codegen_target_ir_block_liveness_t;
 
+typedef struct kefir_codegen_target_ir_value_liveness {
+    struct kefir_hashtable per_block;
+} kefir_codegen_target_ir_value_liveness_t;
+
 typedef struct kefir_codegen_target_ir_liveness {
     const struct kefir_codegen_target_ir_code *code;
     struct kefir_codegen_target_ir_block_liveness *blocks;
+    struct kefir_hashtable values;
 } kefir_codegen_target_ir_liveness_t;
 
 kefir_result_t kefir_codegen_target_ir_liveness_init(struct kefir_codegen_target_ir_liveness *);
