@@ -49,4 +49,11 @@ kefir_result_t kefir_codegen_target_ir_liveness_free(struct kefir_mem *, struct 
 
 kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *, const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_liveness *);
 
+typedef struct kefir_codegen_target_ir_value_liveness_iterator {
+    struct kefir_hashtable_iterator iter;
+} kefir_codegen_target_ir_value_liveness_iterator_t;
+
+kefir_result_t kefir_codegen_target_ir_value_liveness_iter(const struct kefir_codegen_target_ir_liveness *, struct kefir_codegen_target_ir_value_liveness_iterator *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_block_ref_t *, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_value_liveness_next(struct kefir_codegen_target_ir_value_liveness_iterator *, kefir_codegen_target_ir_block_ref_t *, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_instruction_ref_t *);
+
 #endif

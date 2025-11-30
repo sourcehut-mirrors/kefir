@@ -37,96 +37,528 @@ get:
 .loc 0 28 1
 __kefir_text_func_get_begin:
 __kefir_func_get_label0:
+__kefir_func_get_label8:
+__kefir_func_get_label9:
+__kefir_func_get_label10:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_get_label1
-__kefir_func_get_label1:
-.loc 0 29 5
-__kefir_func_get_label4:
-    mov $0, %rax
-    shl $62, %rax
-    sar $62, %rax
-__kefir_func_get_label5:
-__kefir_func_get_label6:
-    movw %ax, -2(%rbp)
-.loc 0 30 12
-__kefir_func_get_label7:
-__kefir_func_get_label8:
-    movw -2(%rbp), %dx
-.loc 0 30 12
-__kefir_func_get_label9:
-__kefir_func_get_label10:
-    shl $55, %rdx
-    sar $55, %rdx
-.loc 0 30 5
 __kefir_func_get_label11:
 __kefir_func_get_label12:
-    shl $55, %rdx
-    sar $55, %rdx
+    jmp __kefir_func_get_label2
 __kefir_func_get_label13:
+__kefir_func_get_label1:
+__kefir_func_get_label2:
+.loc 0 29 5
 __kefir_func_get_label14:
+__kefir_func_get_label15:
+__kefir_func_get_label16:
+__kefir_func_get_label17:
+__kefir_func_get_label18:
+__kefir_func_get_label24:
+    mov $0, %rax
+__kefir_func_get_label19:
+__kefir_func_get_label20:
+    shl $62, %rax
+__kefir_func_get_label21:
+__kefir_func_get_label22:
+    sar $62, %rax
+__kefir_func_get_label23:
+__kefir_func_get_label25:
+__kefir_func_get_label26:
+__kefir_func_get_label28:
+    movw %ax, -2(%rbp)
+.loc 0 30 12
+__kefir_func_get_label27:
+__kefir_func_get_label29:
+__kefir_func_get_label30:
+__kefir_func_get_label31:
+__kefir_func_get_label32:
+__kefir_func_get_label34:
+    movw -2(%rbp), %dx
+.loc 0 30 12
+__kefir_func_get_label33:
+__kefir_func_get_label35:
+__kefir_func_get_label36:
+__kefir_func_get_label37:
+__kefir_func_get_label38:
+__kefir_func_get_label39:
+__kefir_func_get_label40:
+__kefir_func_get_label44:
+    shl $55, %rdx
+__kefir_func_get_label41:
+__kefir_func_get_label42:
+    sar $55, %rdx
+.loc 0 30 5
+__kefir_func_get_label43:
+__kefir_func_get_label45:
+__kefir_func_get_label46:
+__kefir_func_get_label50:
+    shl $55, %rdx
+__kefir_func_get_label47:
+__kefir_func_get_label48:
+    sar $55, %rdx
+__kefir_func_get_label49:
+__kefir_func_get_label51:
+__kefir_func_get_label52:
+__kefir_func_get_label218:
     leaq -32(%rbp), %rax
 .loc 0 30 5
     mov %rax, %rdi
+__kefir_func_get_label53:
+__kefir_func_get_label54:
     mov $90, %rsi
+__kefir_func_get_label55:
+__kefir_func_get_label56:
+__kefir_func_get_label57:
+__kefir_func_get_label58:
+__kefir_func_get_label59:
+__kefir_func_get_label60:
+__kefir_func_get_label61:
+__kefir_func_get_label62:
+__kefir_func_get_label63:
+__kefir_func_get_label64:
+__kefir_func_get_label65:
+__kefir_func_get_label66:
+__kefir_func_get_label67:
+__kefir_func_get_label68:
+__kefir_func_get_label69:
+__kefir_func_get_label70:
+__kefir_func_get_label71:
+__kefir_func_get_label72:
+__kefir_func_get_label73:
+__kefir_func_get_label74:
+__kefir_func_get_label75:
+__kefir_func_get_label76:
+__kefir_func_get_label77:
+__kefir_func_get_label78:
+__kefir_func_get_label79:
+__kefir_func_get_label80:
+__kefir_func_get_label81:
+__kefir_func_get_label82:
+__kefir_func_get_label83:
+__kefir_func_get_label84:
+__kefir_func_get_label85:
+__kefir_func_get_label86:
+__kefir_func_get_label87:
+__kefir_func_get_label88:
+__kefir_func_get_label89:
+__kefir_func_get_label90:
+__kefir_func_get_label91:
+__kefir_func_get_label92:
+__kefir_func_get_label93:
+__kefir_func_get_label94:
+__kefir_func_get_label95:
+__kefir_func_get_label96:
+__kefir_func_get_label97:
+__kefir_func_get_label98:
+__kefir_func_get_label99:
+__kefir_func_get_label100:
+__kefir_func_get_label101:
+__kefir_func_get_label102:
+__kefir_func_get_label103:
+__kefir_func_get_label104:
+__kefir_func_get_label105:
+__kefir_func_get_label106:
+__kefir_func_get_label107:
+__kefir_func_get_label108:
+__kefir_func_get_label109:
+__kefir_func_get_label110:
+__kefir_func_get_label111:
+__kefir_func_get_label112:
+__kefir_func_get_label113:
+__kefir_func_get_label114:
+__kefir_func_get_label115:
+__kefir_func_get_label116:
+__kefir_func_get_label117:
+__kefir_func_get_label118:
+__kefir_func_get_label119:
+__kefir_func_get_label120:
+__kefir_func_get_label121:
+__kefir_func_get_label122:
+__kefir_func_get_label123:
+__kefir_func_get_label124:
+__kefir_func_get_label125:
+__kefir_func_get_label126:
+__kefir_func_get_label127:
+__kefir_func_get_label128:
+__kefir_func_get_label129:
+__kefir_func_get_label130:
+__kefir_func_get_label131:
+__kefir_func_get_label132:
+__kefir_func_get_label133:
+__kefir_func_get_label134:
+__kefir_func_get_label135:
+__kefir_func_get_label136:
+__kefir_func_get_label137:
+__kefir_func_get_label138:
+__kefir_func_get_label139:
+__kefir_func_get_label140:
+__kefir_func_get_label141:
+__kefir_func_get_label142:
+__kefir_func_get_label143:
+__kefir_func_get_label144:
+__kefir_func_get_label145:
+__kefir_func_get_label146:
+__kefir_func_get_label147:
+__kefir_func_get_label148:
+__kefir_func_get_label149:
+__kefir_func_get_label150:
+__kefir_func_get_label151:
+__kefir_func_get_label152:
+__kefir_func_get_label153:
+__kefir_func_get_label154:
+__kefir_func_get_label155:
+__kefir_func_get_label156:
+__kefir_func_get_label157:
+__kefir_func_get_label158:
+__kefir_func_get_label159:
+__kefir_func_get_label160:
+__kefir_func_get_label161:
+__kefir_func_get_label162:
+__kefir_func_get_label163:
+__kefir_func_get_label164:
+__kefir_func_get_label165:
+__kefir_func_get_label166:
     call __kefir_bigint_set_signed_integer
-__kefir_func_get_label15:
-__kefir_func_get_label16:
+__kefir_func_get_label167:
+__kefir_func_get_label168:
+__kefir_func_get_label169:
+__kefir_func_get_label170:
+__kefir_func_get_label171:
+__kefir_func_get_label172:
+__kefir_func_get_label173:
+__kefir_func_get_label174:
+__kefir_func_get_label175:
+__kefir_func_get_label176:
+__kefir_func_get_label177:
+__kefir_func_get_label178:
+__kefir_func_get_label179:
+__kefir_func_get_label180:
+__kefir_func_get_label181:
+__kefir_func_get_label182:
+__kefir_func_get_label183:
+__kefir_func_get_label184:
+__kefir_func_get_label185:
+__kefir_func_get_label186:
+__kefir_func_get_label187:
+__kefir_func_get_label188:
+__kefir_func_get_label189:
+__kefir_func_get_label190:
+__kefir_func_get_label191:
+__kefir_func_get_label192:
+__kefir_func_get_label193:
+__kefir_func_get_label194:
+__kefir_func_get_label195:
+__kefir_func_get_label196:
+__kefir_func_get_label197:
+__kefir_func_get_label198:
+__kefir_func_get_label199:
+__kefir_func_get_label200:
+__kefir_func_get_label201:
+__kefir_func_get_label202:
+__kefir_func_get_label203:
+__kefir_func_get_label204:
+__kefir_func_get_label205:
+__kefir_func_get_label206:
+__kefir_func_get_label207:
+__kefir_func_get_label208:
+__kefir_func_get_label209:
+__kefir_func_get_label210:
+__kefir_func_get_label211:
+__kefir_func_get_label212:
+__kefir_func_get_label213:
+__kefir_func_get_label214:
+__kefir_func_get_label215:
+__kefir_func_get_label216:
+__kefir_func_get_label217:
+__kefir_func_get_label219:
+__kefir_func_get_label220:
+__kefir_func_get_label234:
     movq -32(%rbp), %rax
+__kefir_func_get_label221:
+__kefir_func_get_label222:
     movq -24(%rbp), %rdx
+__kefir_func_get_label223:
+__kefir_func_get_label224:
     lea (%rbp), %rsp
     pop %rbp
+__kefir_func_get_label225:
+__kefir_func_get_label226:
+__kefir_func_get_label227:
+__kefir_func_get_label228:
+__kefir_func_get_label229:
+__kefir_func_get_label230:
+__kefir_func_get_label231:
+__kefir_func_get_label232:
     ret
-__kefir_func_get_label17:
+__kefir_func_get_label233:
+__kefir_func_get_label235:
+__kefir_func_get_label3:
 __kefir_text_func_get_end:
 
 get2:
 .loc 0 40 1
 __kefir_text_func_get2_begin:
 __kefir_func_get2_label0:
+__kefir_func_get2_label8:
+__kefir_func_get2_label9:
+__kefir_func_get2_label10:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_get2_label1
-__kefir_func_get2_label1:
-.loc 0 41 5
-__kefir_func_get2_label4:
-    mov $0, %rax
-    shl $63, %rax
-    shr $63, %rax
-__kefir_func_get2_label5:
-__kefir_func_get2_label6:
-    movw %ax, -2(%rbp)
-.loc 0 42 12
-__kefir_func_get2_label7:
-__kefir_func_get2_label8:
-    movw -2(%rbp), %dx
-.loc 0 42 12
-__kefir_func_get2_label9:
-__kefir_func_get2_label10:
-    shl $55, %rdx
-    shr $55, %rdx
-.loc 0 42 5
 __kefir_func_get2_label11:
 __kefir_func_get2_label12:
-    shl $55, %rdx
-    shr $55, %rdx
+    jmp __kefir_func_get2_label2
 __kefir_func_get2_label13:
+__kefir_func_get2_label1:
+__kefir_func_get2_label2:
+.loc 0 41 5
 __kefir_func_get2_label14:
+__kefir_func_get2_label15:
+__kefir_func_get2_label16:
+__kefir_func_get2_label17:
+__kefir_func_get2_label18:
+__kefir_func_get2_label24:
+    mov $0, %rax
+__kefir_func_get2_label19:
+__kefir_func_get2_label20:
+    shl $63, %rax
+__kefir_func_get2_label21:
+__kefir_func_get2_label22:
+    shr $63, %rax
+__kefir_func_get2_label23:
+__kefir_func_get2_label25:
+__kefir_func_get2_label26:
+__kefir_func_get2_label28:
+    movw %ax, -2(%rbp)
+.loc 0 42 12
+__kefir_func_get2_label27:
+__kefir_func_get2_label29:
+__kefir_func_get2_label30:
+__kefir_func_get2_label31:
+__kefir_func_get2_label32:
+__kefir_func_get2_label34:
+    movw -2(%rbp), %dx
+.loc 0 42 12
+__kefir_func_get2_label33:
+__kefir_func_get2_label35:
+__kefir_func_get2_label36:
+__kefir_func_get2_label37:
+__kefir_func_get2_label38:
+__kefir_func_get2_label39:
+__kefir_func_get2_label40:
+__kefir_func_get2_label44:
+    shl $55, %rdx
+__kefir_func_get2_label41:
+__kefir_func_get2_label42:
+    shr $55, %rdx
+.loc 0 42 5
+__kefir_func_get2_label43:
+__kefir_func_get2_label45:
+__kefir_func_get2_label46:
+__kefir_func_get2_label50:
+    shl $55, %rdx
+__kefir_func_get2_label47:
+__kefir_func_get2_label48:
+    shr $55, %rdx
+__kefir_func_get2_label49:
+__kefir_func_get2_label51:
+__kefir_func_get2_label52:
+__kefir_func_get2_label218:
     leaq -32(%rbp), %rax
 .loc 0 42 5
     mov %rax, %rdi
+__kefir_func_get2_label53:
+__kefir_func_get2_label54:
     mov $90, %rsi
+__kefir_func_get2_label55:
+__kefir_func_get2_label56:
+__kefir_func_get2_label57:
+__kefir_func_get2_label58:
+__kefir_func_get2_label59:
+__kefir_func_get2_label60:
+__kefir_func_get2_label61:
+__kefir_func_get2_label62:
+__kefir_func_get2_label63:
+__kefir_func_get2_label64:
+__kefir_func_get2_label65:
+__kefir_func_get2_label66:
+__kefir_func_get2_label67:
+__kefir_func_get2_label68:
+__kefir_func_get2_label69:
+__kefir_func_get2_label70:
+__kefir_func_get2_label71:
+__kefir_func_get2_label72:
+__kefir_func_get2_label73:
+__kefir_func_get2_label74:
+__kefir_func_get2_label75:
+__kefir_func_get2_label76:
+__kefir_func_get2_label77:
+__kefir_func_get2_label78:
+__kefir_func_get2_label79:
+__kefir_func_get2_label80:
+__kefir_func_get2_label81:
+__kefir_func_get2_label82:
+__kefir_func_get2_label83:
+__kefir_func_get2_label84:
+__kefir_func_get2_label85:
+__kefir_func_get2_label86:
+__kefir_func_get2_label87:
+__kefir_func_get2_label88:
+__kefir_func_get2_label89:
+__kefir_func_get2_label90:
+__kefir_func_get2_label91:
+__kefir_func_get2_label92:
+__kefir_func_get2_label93:
+__kefir_func_get2_label94:
+__kefir_func_get2_label95:
+__kefir_func_get2_label96:
+__kefir_func_get2_label97:
+__kefir_func_get2_label98:
+__kefir_func_get2_label99:
+__kefir_func_get2_label100:
+__kefir_func_get2_label101:
+__kefir_func_get2_label102:
+__kefir_func_get2_label103:
+__kefir_func_get2_label104:
+__kefir_func_get2_label105:
+__kefir_func_get2_label106:
+__kefir_func_get2_label107:
+__kefir_func_get2_label108:
+__kefir_func_get2_label109:
+__kefir_func_get2_label110:
+__kefir_func_get2_label111:
+__kefir_func_get2_label112:
+__kefir_func_get2_label113:
+__kefir_func_get2_label114:
+__kefir_func_get2_label115:
+__kefir_func_get2_label116:
+__kefir_func_get2_label117:
+__kefir_func_get2_label118:
+__kefir_func_get2_label119:
+__kefir_func_get2_label120:
+__kefir_func_get2_label121:
+__kefir_func_get2_label122:
+__kefir_func_get2_label123:
+__kefir_func_get2_label124:
+__kefir_func_get2_label125:
+__kefir_func_get2_label126:
+__kefir_func_get2_label127:
+__kefir_func_get2_label128:
+__kefir_func_get2_label129:
+__kefir_func_get2_label130:
+__kefir_func_get2_label131:
+__kefir_func_get2_label132:
+__kefir_func_get2_label133:
+__kefir_func_get2_label134:
+__kefir_func_get2_label135:
+__kefir_func_get2_label136:
+__kefir_func_get2_label137:
+__kefir_func_get2_label138:
+__kefir_func_get2_label139:
+__kefir_func_get2_label140:
+__kefir_func_get2_label141:
+__kefir_func_get2_label142:
+__kefir_func_get2_label143:
+__kefir_func_get2_label144:
+__kefir_func_get2_label145:
+__kefir_func_get2_label146:
+__kefir_func_get2_label147:
+__kefir_func_get2_label148:
+__kefir_func_get2_label149:
+__kefir_func_get2_label150:
+__kefir_func_get2_label151:
+__kefir_func_get2_label152:
+__kefir_func_get2_label153:
+__kefir_func_get2_label154:
+__kefir_func_get2_label155:
+__kefir_func_get2_label156:
+__kefir_func_get2_label157:
+__kefir_func_get2_label158:
+__kefir_func_get2_label159:
+__kefir_func_get2_label160:
+__kefir_func_get2_label161:
+__kefir_func_get2_label162:
+__kefir_func_get2_label163:
+__kefir_func_get2_label164:
+__kefir_func_get2_label165:
+__kefir_func_get2_label166:
     call __kefir_bigint_set_unsigned_integer
-__kefir_func_get2_label15:
-__kefir_func_get2_label16:
+__kefir_func_get2_label167:
+__kefir_func_get2_label168:
+__kefir_func_get2_label169:
+__kefir_func_get2_label170:
+__kefir_func_get2_label171:
+__kefir_func_get2_label172:
+__kefir_func_get2_label173:
+__kefir_func_get2_label174:
+__kefir_func_get2_label175:
+__kefir_func_get2_label176:
+__kefir_func_get2_label177:
+__kefir_func_get2_label178:
+__kefir_func_get2_label179:
+__kefir_func_get2_label180:
+__kefir_func_get2_label181:
+__kefir_func_get2_label182:
+__kefir_func_get2_label183:
+__kefir_func_get2_label184:
+__kefir_func_get2_label185:
+__kefir_func_get2_label186:
+__kefir_func_get2_label187:
+__kefir_func_get2_label188:
+__kefir_func_get2_label189:
+__kefir_func_get2_label190:
+__kefir_func_get2_label191:
+__kefir_func_get2_label192:
+__kefir_func_get2_label193:
+__kefir_func_get2_label194:
+__kefir_func_get2_label195:
+__kefir_func_get2_label196:
+__kefir_func_get2_label197:
+__kefir_func_get2_label198:
+__kefir_func_get2_label199:
+__kefir_func_get2_label200:
+__kefir_func_get2_label201:
+__kefir_func_get2_label202:
+__kefir_func_get2_label203:
+__kefir_func_get2_label204:
+__kefir_func_get2_label205:
+__kefir_func_get2_label206:
+__kefir_func_get2_label207:
+__kefir_func_get2_label208:
+__kefir_func_get2_label209:
+__kefir_func_get2_label210:
+__kefir_func_get2_label211:
+__kefir_func_get2_label212:
+__kefir_func_get2_label213:
+__kefir_func_get2_label214:
+__kefir_func_get2_label215:
+__kefir_func_get2_label216:
+__kefir_func_get2_label217:
+__kefir_func_get2_label219:
+__kefir_func_get2_label220:
+__kefir_func_get2_label234:
     movq -32(%rbp), %rax
+__kefir_func_get2_label221:
+__kefir_func_get2_label222:
     movq -24(%rbp), %rdx
+__kefir_func_get2_label223:
+__kefir_func_get2_label224:
     lea (%rbp), %rsp
     pop %rbp
+__kefir_func_get2_label225:
+__kefir_func_get2_label226:
+__kefir_func_get2_label227:
+__kefir_func_get2_label228:
+__kefir_func_get2_label229:
+__kefir_func_get2_label230:
+__kefir_func_get2_label231:
+__kefir_func_get2_label232:
     ret
-__kefir_func_get2_label17:
+__kefir_func_get2_label233:
+__kefir_func_get2_label235:
+__kefir_func_get2_label3:
 __kefir_text_func_get2_end:
 
 __kefir_text_section_end:
@@ -740,44 +1172,44 @@ __kefir_debug_loclists_section_begin:
     .long 0
 __kefir_debug_loclist_section_entry_1:
     .byte 7
-    .quad __kefir_func_get_label4
-    .quad __kefir_func_get_label5
+    .quad __kefir_func_get_label24
+    .quad __kefir_func_get_label25
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get_label6
-    .quad __kefir_func_get_label7
+    .quad __kefir_func_get_label28
+    .quad __kefir_func_get_label29
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get_label10
-    .quad __kefir_func_get_label11
+    .quad __kefir_func_get_label44
+    .quad __kefir_func_get_label45
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get_label8
-    .quad __kefir_func_get_label9
+    .quad __kefir_func_get_label34
+    .quad __kefir_func_get_label35
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get_label14
-    .quad __kefir_func_get_label15
+    .quad __kefir_func_get_label218
+    .quad __kefir_func_get_label219
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get_label12
-    .quad __kefir_func_get_label13
+    .quad __kefir_func_get_label50
+    .quad __kefir_func_get_label51
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get_label16
-    .quad __kefir_func_get_label17
+    .quad __kefir_func_get_label234
+    .quad __kefir_func_get_label235
     .byte 2
     .byte 145
     .byte 126
@@ -786,44 +1218,44 @@ __kefir_debug_loclist_section_entry_2:
     .byte 0
 __kefir_debug_loclist_section_entry_3:
     .byte 7
-    .quad __kefir_func_get2_label4
-    .quad __kefir_func_get2_label5
+    .quad __kefir_func_get2_label24
+    .quad __kefir_func_get2_label25
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get2_label6
-    .quad __kefir_func_get2_label7
+    .quad __kefir_func_get2_label28
+    .quad __kefir_func_get2_label29
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get2_label10
-    .quad __kefir_func_get2_label11
+    .quad __kefir_func_get2_label44
+    .quad __kefir_func_get2_label45
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get2_label8
-    .quad __kefir_func_get2_label9
+    .quad __kefir_func_get2_label34
+    .quad __kefir_func_get2_label35
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get2_label14
-    .quad __kefir_func_get2_label15
+    .quad __kefir_func_get2_label218
+    .quad __kefir_func_get2_label219
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get2_label12
-    .quad __kefir_func_get2_label13
+    .quad __kefir_func_get2_label50
+    .quad __kefir_func_get2_label51
     .byte 2
     .byte 145
     .byte 126
     .byte 7
-    .quad __kefir_func_get2_label16
-    .quad __kefir_func_get2_label17
+    .quad __kefir_func_get2_label234
+    .quad __kefir_func_get2_label235
     .byte 2
     .byte 145
     .byte 126

@@ -395,10 +395,17 @@ static kefir_result_t new_code_fragment(struct kefir_mem *mem, kefir_codegen_tar
         payload);
     REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid target IR destructor amd64 ops"));
 
-    UNUSED(code_ref);
-    UNUSED(begin_label);
-    UNUSED(end_label);
     REQUIRE_OK(kefir_asmcmp_code_map_add_fragment(mem, &ops->debug_code_map, (kefir_asmcmp_debug_info_code_reference_t) code_ref, begin_label, end_label));
+    return KEFIR_OK;
+}
+
+static kefir_result_t new_value_fragment(struct kefir_mem *mem, kefir_codegen_target_ir_metadata_value_ref_t value_ref, kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_asmcmp_label_index_t begin_label, kefir_asmcmp_label_index_t end_label, void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops *, ops,
+        payload);
+    REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid target IR destructor amd64 ops"));
+
+    REQUIRE_OK(kefir_asmcmp_value_map_add_fragment(mem, &ops->debug_value_map, value_ref, vreg_idx, begin_label, end_label));
     return KEFIR_OK;
 }
 
@@ -424,6 +431,7 @@ kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(cons
     ops->ops.new_inline_asm = new_inline_asm;
     ops->ops.materialize_attribute = materialize_attribute;
     ops->ops.new_code_fragment = new_code_fragment;
+    ops->ops.new_value_fragment = new_value_fragment;
     ops->ops.payload = ops;
 
     REQUIRE_OK(kefir_hashtree_init(&ops->constants, &kefir_hashtree_uint_ops));

@@ -17,114 +17,1245 @@ temp:
 .file 0 "source/tests/end2end/debug_info_function_decl1/lib.kefir.asmgen.c"
 .loc 0 28 1
 __kefir_text_func_temp_begin:
+__kefir_func_temp_label6:
+__kefir_func_temp_label7:
+__kefir_func_temp_label8:
+__kefir_func_temp_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    jmp __kefir_func_temp_label1
-.loc 0 29 5
-__kefir_func_temp_label3:
-__kefir_func_temp_label1:
-    call test1@PLT
-.loc 0 30 5
-__kefir_func_temp_label4:
-__kefir_func_temp_label5:
-    mov $1, %rdi
-    mov $2, %rsi
-    mov $3, %rdx
-    xor %eax, %eax
-    call test2@PLT
-.loc 0 31 5
-__kefir_func_temp_label6:
-__kefir_func_temp_label8:
-    fldt __kefir_func_temp_label7(%rip)
 __kefir_func_temp_label9:
-__kefir_func_temp_label11:
-    fldt __kefir_func_temp_label10(%rip)
-__kefir_func_temp_label12:
-__kefir_func_temp_label13:
-    fxch %st(1)
-    fxch %st(1)
-    fstpt -32(%rbp)
-    fstpt -48(%rbp)
-__kefir_func_temp_label14:
-__kefir_func_temp_label15:
-    sub $32, %rsp
-    mov $3, %rdi
-    mov $4, %rsi
-    fldt -48(%rbp)
-    fstpt (%rsp)
-    fldt -32(%rbp)
-    fstpt 16(%rsp)
-    call test3@PLT
-    add $32, %rsp
-.loc 0 32 5
-__kefir_func_temp_label16:
-__kefir_func_temp_label17:
-    mov $1, %rdi
-    mov $2, %rsi
-    mov $3, %rdx
-    mov $4, %rcx
-    mov $5, %r8
-    xor %eax, %eax
-    call test4@PLT
-.loc 0 33 5
-__kefir_func_temp_label18:
-__kefir_func_temp_label19:
-    mov $1, %rdi
-    mov $2, %rsi
-    mov $3, %rdx
-    call test5@PLT
-.loc 0 34 5
-__kefir_func_temp_label20:
-__kefir_func_temp_label22:
-    movq __kefir_func_temp_label21(%rip), %xmm0
-__kefir_func_temp_label23:
-__kefir_func_temp_label25:
-    movd __kefir_func_temp_label24(%rip), %xmm1
-__kefir_func_temp_label26:
-__kefir_func_temp_label28:
-    movd __kefir_func_temp_label27(%rip), %xmm2
-.loc 0 34 5
-__kefir_func_temp_label29:
-__kefir_func_temp_label30:
-    mov $1, %rdi
-    mov $2, %rsi
-    insertps $16, %xmm2, %xmm1
-    mov $5, %rdx
-    mov $6, %rcx
-    mov $7, %r8
-    mov $8, %r9
-    mov $2, %rax
-    call test6@PLT
+__kefir_func_temp_label10:
+    jmp __kefir_func_temp_label2
+.loc 0 29 5
+__kefir_func_temp_label111:
+__kefir_func_temp_label112:
+__kefir_func_temp_label107:
+__kefir_func_temp_label108:
+__kefir_func_temp_label109:
+__kefir_func_temp_label110:
+__kefir_func_temp_label103:
+__kefir_func_temp_label104:
+__kefir_func_temp_label105:
+__kefir_func_temp_label106:
+__kefir_func_temp_label99:
+__kefir_func_temp_label100:
+__kefir_func_temp_label101:
+__kefir_func_temp_label102:
+__kefir_func_temp_label95:
+__kefir_func_temp_label96:
+__kefir_func_temp_label97:
+__kefir_func_temp_label98:
+__kefir_func_temp_label91:
+__kefir_func_temp_label92:
+__kefir_func_temp_label93:
+__kefir_func_temp_label94:
+__kefir_func_temp_label87:
+__kefir_func_temp_label88:
+__kefir_func_temp_label89:
+__kefir_func_temp_label90:
+__kefir_func_temp_label83:
+__kefir_func_temp_label84:
+__kefir_func_temp_label85:
+__kefir_func_temp_label86:
+__kefir_func_temp_label79:
+__kefir_func_temp_label80:
+__kefir_func_temp_label81:
+__kefir_func_temp_label82:
+__kefir_func_temp_label75:
+__kefir_func_temp_label76:
+__kefir_func_temp_label77:
+__kefir_func_temp_label78:
+__kefir_func_temp_label71:
+__kefir_func_temp_label72:
+__kefir_func_temp_label73:
+__kefir_func_temp_label74:
+__kefir_func_temp_label67:
+__kefir_func_temp_label68:
+__kefir_func_temp_label69:
+__kefir_func_temp_label70:
+__kefir_func_temp_label63:
+__kefir_func_temp_label64:
+__kefir_func_temp_label65:
+__kefir_func_temp_label66:
+__kefir_func_temp_label59:
+__kefir_func_temp_label60:
+__kefir_func_temp_label61:
+__kefir_func_temp_label62:
+__kefir_func_temp_label55:
+__kefir_func_temp_label56:
+__kefir_func_temp_label57:
+__kefir_func_temp_label58:
+__kefir_func_temp_label51:
+__kefir_func_temp_label52:
+__kefir_func_temp_label53:
+__kefir_func_temp_label54:
+__kefir_func_temp_label47:
+__kefir_func_temp_label48:
+__kefir_func_temp_label49:
+__kefir_func_temp_label50:
+__kefir_func_temp_label43:
+__kefir_func_temp_label44:
+__kefir_func_temp_label45:
+__kefir_func_temp_label46:
+__kefir_func_temp_label39:
+__kefir_func_temp_label40:
+__kefir_func_temp_label41:
+__kefir_func_temp_label42:
+__kefir_func_temp_label35:
+__kefir_func_temp_label36:
+__kefir_func_temp_label37:
+__kefir_func_temp_label38:
 __kefir_func_temp_label31:
 __kefir_func_temp_label32:
+__kefir_func_temp_label33:
+__kefir_func_temp_label34:
+__kefir_func_temp_label27:
+__kefir_func_temp_label28:
+__kefir_func_temp_label29:
+__kefir_func_temp_label30:
+__kefir_func_temp_label23:
+__kefir_func_temp_label24:
+__kefir_func_temp_label25:
+__kefir_func_temp_label26:
+__kefir_func_temp_label19:
+__kefir_func_temp_label20:
+__kefir_func_temp_label21:
+__kefir_func_temp_label22:
+__kefir_func_temp_label15:
+__kefir_func_temp_label16:
+__kefir_func_temp_label17:
+__kefir_func_temp_label18:
+__kefir_func_temp_label12:
+__kefir_func_temp_label13:
+__kefir_func_temp_label14:
+__kefir_func_temp_label164:
+__kefir_func_temp_label11:
+__kefir_func_temp_label1:
+__kefir_func_temp_label2:
+    call test1@PLT
+.loc 0 30 5
+__kefir_func_temp_label163:
+__kefir_func_temp_label165:
+__kefir_func_temp_label166:
+__kefir_func_temp_label167:
+__kefir_func_temp_label168:
+__kefir_func_temp_label169:
+__kefir_func_temp_label170:
+__kefir_func_temp_label171:
+__kefir_func_temp_label172:
+__kefir_func_temp_label340:
+__kefir_func_temp_label161:
+__kefir_func_temp_label162:
+__kefir_func_temp_label159:
+__kefir_func_temp_label160:
+__kefir_func_temp_label157:
+__kefir_func_temp_label158:
+__kefir_func_temp_label155:
+__kefir_func_temp_label156:
+__kefir_func_temp_label153:
+__kefir_func_temp_label154:
+__kefir_func_temp_label151:
+__kefir_func_temp_label152:
+__kefir_func_temp_label149:
+__kefir_func_temp_label150:
+__kefir_func_temp_label147:
+__kefir_func_temp_label148:
+__kefir_func_temp_label145:
+__kefir_func_temp_label146:
+__kefir_func_temp_label143:
+__kefir_func_temp_label144:
+__kefir_func_temp_label141:
+__kefir_func_temp_label142:
+__kefir_func_temp_label139:
+__kefir_func_temp_label140:
+__kefir_func_temp_label137:
+__kefir_func_temp_label138:
+__kefir_func_temp_label135:
+__kefir_func_temp_label136:
+__kefir_func_temp_label133:
+__kefir_func_temp_label134:
+__kefir_func_temp_label131:
+__kefir_func_temp_label132:
+__kefir_func_temp_label129:
+__kefir_func_temp_label130:
+__kefir_func_temp_label127:
+__kefir_func_temp_label128:
+__kefir_func_temp_label125:
+__kefir_func_temp_label126:
+__kefir_func_temp_label123:
+__kefir_func_temp_label124:
+__kefir_func_temp_label121:
+__kefir_func_temp_label122:
+__kefir_func_temp_label119:
+__kefir_func_temp_label120:
+__kefir_func_temp_label117:
+__kefir_func_temp_label118:
+__kefir_func_temp_label115:
+__kefir_func_temp_label116:
+__kefir_func_temp_label113:
+__kefir_func_temp_label114:
+    mov $1, %rdi
+__kefir_func_temp_label173:
+__kefir_func_temp_label174:
+    mov $2, %rsi
+__kefir_func_temp_label175:
+__kefir_func_temp_label176:
+    mov $3, %rdx
+__kefir_func_temp_label177:
+__kefir_func_temp_label178:
+    xor %eax, %eax
+__kefir_func_temp_label287:
+__kefir_func_temp_label288:
+__kefir_func_temp_label283:
+__kefir_func_temp_label284:
+__kefir_func_temp_label285:
+__kefir_func_temp_label286:
+__kefir_func_temp_label279:
+__kefir_func_temp_label280:
+__kefir_func_temp_label281:
+__kefir_func_temp_label282:
+__kefir_func_temp_label275:
+__kefir_func_temp_label276:
+__kefir_func_temp_label277:
+__kefir_func_temp_label278:
+__kefir_func_temp_label271:
+__kefir_func_temp_label272:
+__kefir_func_temp_label273:
+__kefir_func_temp_label274:
+__kefir_func_temp_label267:
+__kefir_func_temp_label268:
+__kefir_func_temp_label269:
+__kefir_func_temp_label270:
+__kefir_func_temp_label263:
+__kefir_func_temp_label264:
+__kefir_func_temp_label265:
+__kefir_func_temp_label266:
+__kefir_func_temp_label259:
+__kefir_func_temp_label260:
+__kefir_func_temp_label261:
+__kefir_func_temp_label262:
+__kefir_func_temp_label255:
+__kefir_func_temp_label256:
+__kefir_func_temp_label257:
+__kefir_func_temp_label258:
+__kefir_func_temp_label251:
+__kefir_func_temp_label252:
+__kefir_func_temp_label253:
+__kefir_func_temp_label254:
+__kefir_func_temp_label247:
+__kefir_func_temp_label248:
+__kefir_func_temp_label249:
+__kefir_func_temp_label250:
+__kefir_func_temp_label243:
+__kefir_func_temp_label244:
+__kefir_func_temp_label245:
+__kefir_func_temp_label246:
+__kefir_func_temp_label239:
+__kefir_func_temp_label240:
+__kefir_func_temp_label241:
+__kefir_func_temp_label242:
+__kefir_func_temp_label235:
+__kefir_func_temp_label236:
+__kefir_func_temp_label237:
+__kefir_func_temp_label238:
+__kefir_func_temp_label231:
+__kefir_func_temp_label232:
+__kefir_func_temp_label233:
+__kefir_func_temp_label234:
+__kefir_func_temp_label227:
+__kefir_func_temp_label228:
+__kefir_func_temp_label229:
+__kefir_func_temp_label230:
+__kefir_func_temp_label223:
+__kefir_func_temp_label224:
+__kefir_func_temp_label225:
+__kefir_func_temp_label226:
+__kefir_func_temp_label219:
+__kefir_func_temp_label220:
+__kefir_func_temp_label221:
+__kefir_func_temp_label222:
+__kefir_func_temp_label215:
+__kefir_func_temp_label216:
+__kefir_func_temp_label217:
+__kefir_func_temp_label218:
+__kefir_func_temp_label211:
+__kefir_func_temp_label212:
+__kefir_func_temp_label213:
+__kefir_func_temp_label214:
+__kefir_func_temp_label207:
+__kefir_func_temp_label208:
+__kefir_func_temp_label209:
+__kefir_func_temp_label210:
+__kefir_func_temp_label203:
+__kefir_func_temp_label204:
+__kefir_func_temp_label205:
+__kefir_func_temp_label206:
+__kefir_func_temp_label199:
+__kefir_func_temp_label200:
+__kefir_func_temp_label201:
+__kefir_func_temp_label202:
+__kefir_func_temp_label195:
+__kefir_func_temp_label196:
+__kefir_func_temp_label197:
+__kefir_func_temp_label198:
+__kefir_func_temp_label191:
+__kefir_func_temp_label192:
+__kefir_func_temp_label193:
+__kefir_func_temp_label194:
+__kefir_func_temp_label187:
+__kefir_func_temp_label188:
+__kefir_func_temp_label189:
+__kefir_func_temp_label190:
+__kefir_func_temp_label185:
+__kefir_func_temp_label186:
+__kefir_func_temp_label183:
+__kefir_func_temp_label184:
+__kefir_func_temp_label181:
+__kefir_func_temp_label182:
+__kefir_func_temp_label179:
+__kefir_func_temp_label180:
+    call test2@PLT
+.loc 0 31 5
+__kefir_func_temp_label339:
+__kefir_func_temp_label341:
+__kefir_func_temp_label342:
+__kefir_func_temp_label343:
+__kefir_func_temp_label344:
+__kefir_func_temp_label345:
+__kefir_func_temp_label346:
+__kefir_func_temp_label347:
+__kefir_func_temp_label348:
+__kefir_func_temp_label351:
+__kefir_func_temp_label337:
+__kefir_func_temp_label338:
+__kefir_func_temp_label335:
+__kefir_func_temp_label336:
+__kefir_func_temp_label333:
+__kefir_func_temp_label334:
+__kefir_func_temp_label331:
+__kefir_func_temp_label332:
+__kefir_func_temp_label329:
+__kefir_func_temp_label330:
+__kefir_func_temp_label327:
+__kefir_func_temp_label328:
+__kefir_func_temp_label325:
+__kefir_func_temp_label326:
+__kefir_func_temp_label323:
+__kefir_func_temp_label324:
+__kefir_func_temp_label321:
+__kefir_func_temp_label322:
+__kefir_func_temp_label319:
+__kefir_func_temp_label320:
+__kefir_func_temp_label317:
+__kefir_func_temp_label318:
+__kefir_func_temp_label315:
+__kefir_func_temp_label316:
+__kefir_func_temp_label313:
+__kefir_func_temp_label314:
+__kefir_func_temp_label311:
+__kefir_func_temp_label312:
+__kefir_func_temp_label309:
+__kefir_func_temp_label310:
+__kefir_func_temp_label307:
+__kefir_func_temp_label308:
+__kefir_func_temp_label305:
+__kefir_func_temp_label306:
+__kefir_func_temp_label303:
+__kefir_func_temp_label304:
+__kefir_func_temp_label301:
+__kefir_func_temp_label302:
+__kefir_func_temp_label299:
+__kefir_func_temp_label300:
+__kefir_func_temp_label297:
+__kefir_func_temp_label298:
+__kefir_func_temp_label295:
+__kefir_func_temp_label296:
+__kefir_func_temp_label293:
+__kefir_func_temp_label294:
+__kefir_func_temp_label291:
+__kefir_func_temp_label292:
+__kefir_func_temp_label289:
+__kefir_func_temp_label290:
+    fldt __kefir_func_temp_label350(%rip)
+__kefir_func_temp_label349:
+__kefir_func_temp_label352:
+__kefir_func_temp_label353:
+__kefir_func_temp_label354:
+__kefir_func_temp_label355:
+__kefir_func_temp_label358:
+    fldt __kefir_func_temp_label357(%rip)
+__kefir_func_temp_label356:
+__kefir_func_temp_label359:
+__kefir_func_temp_label360:
+__kefir_func_temp_label370:
+    fxch %st(1)
+__kefir_func_temp_label361:
+__kefir_func_temp_label362:
+    fxch %st(1)
+__kefir_func_temp_label363:
+__kefir_func_temp_label364:
+__kefir_func_temp_label365:
+__kefir_func_temp_label366:
+    fstpt -32(%rbp)
+__kefir_func_temp_label367:
+__kefir_func_temp_label368:
+    fstpt -48(%rbp)
+__kefir_func_temp_label369:
+__kefir_func_temp_label371:
+__kefir_func_temp_label372:
+__kefir_func_temp_label556:
+    sub $32, %rsp
+__kefir_func_temp_label373:
+__kefir_func_temp_label374:
+__kefir_func_temp_label375:
+__kefir_func_temp_label376:
+    mov $3, %rdi
+__kefir_func_temp_label377:
+__kefir_func_temp_label378:
+    mov $4, %rsi
+__kefir_func_temp_label379:
+__kefir_func_temp_label380:
+__kefir_func_temp_label381:
+__kefir_func_temp_label382:
+    fldt -48(%rbp)
+__kefir_func_temp_label383:
+__kefir_func_temp_label384:
+    fstpt (%rsp)
+__kefir_func_temp_label385:
+__kefir_func_temp_label386:
+    fldt -32(%rbp)
+__kefir_func_temp_label387:
+__kefir_func_temp_label388:
+    fstpt 16(%rsp)
+__kefir_func_temp_label495:
+__kefir_func_temp_label496:
+__kefir_func_temp_label491:
+__kefir_func_temp_label492:
+__kefir_func_temp_label493:
+__kefir_func_temp_label494:
+__kefir_func_temp_label487:
+__kefir_func_temp_label488:
+__kefir_func_temp_label489:
+__kefir_func_temp_label490:
+__kefir_func_temp_label483:
+__kefir_func_temp_label484:
+__kefir_func_temp_label485:
+__kefir_func_temp_label486:
+__kefir_func_temp_label479:
+__kefir_func_temp_label480:
+__kefir_func_temp_label481:
+__kefir_func_temp_label482:
+__kefir_func_temp_label475:
+__kefir_func_temp_label476:
+__kefir_func_temp_label477:
+__kefir_func_temp_label478:
+__kefir_func_temp_label471:
+__kefir_func_temp_label472:
+__kefir_func_temp_label473:
+__kefir_func_temp_label474:
+__kefir_func_temp_label467:
+__kefir_func_temp_label468:
+__kefir_func_temp_label469:
+__kefir_func_temp_label470:
+__kefir_func_temp_label463:
+__kefir_func_temp_label464:
+__kefir_func_temp_label465:
+__kefir_func_temp_label466:
+__kefir_func_temp_label459:
+__kefir_func_temp_label460:
+__kefir_func_temp_label461:
+__kefir_func_temp_label462:
+__kefir_func_temp_label455:
+__kefir_func_temp_label456:
+__kefir_func_temp_label457:
+__kefir_func_temp_label458:
+__kefir_func_temp_label451:
+__kefir_func_temp_label452:
+__kefir_func_temp_label453:
+__kefir_func_temp_label454:
+__kefir_func_temp_label447:
+__kefir_func_temp_label448:
+__kefir_func_temp_label449:
+__kefir_func_temp_label450:
+__kefir_func_temp_label443:
+__kefir_func_temp_label444:
+__kefir_func_temp_label445:
+__kefir_func_temp_label446:
+__kefir_func_temp_label439:
+__kefir_func_temp_label440:
+__kefir_func_temp_label441:
+__kefir_func_temp_label442:
+__kefir_func_temp_label435:
+__kefir_func_temp_label436:
+__kefir_func_temp_label437:
+__kefir_func_temp_label438:
+__kefir_func_temp_label431:
+__kefir_func_temp_label432:
+__kefir_func_temp_label433:
+__kefir_func_temp_label434:
+__kefir_func_temp_label427:
+__kefir_func_temp_label428:
+__kefir_func_temp_label429:
+__kefir_func_temp_label430:
+__kefir_func_temp_label423:
+__kefir_func_temp_label424:
+__kefir_func_temp_label425:
+__kefir_func_temp_label426:
+__kefir_func_temp_label419:
+__kefir_func_temp_label420:
+__kefir_func_temp_label421:
+__kefir_func_temp_label422:
+__kefir_func_temp_label415:
+__kefir_func_temp_label416:
+__kefir_func_temp_label417:
+__kefir_func_temp_label418:
+__kefir_func_temp_label411:
+__kefir_func_temp_label412:
+__kefir_func_temp_label413:
+__kefir_func_temp_label414:
+__kefir_func_temp_label407:
+__kefir_func_temp_label408:
+__kefir_func_temp_label409:
+__kefir_func_temp_label410:
+__kefir_func_temp_label403:
+__kefir_func_temp_label404:
+__kefir_func_temp_label405:
+__kefir_func_temp_label406:
+__kefir_func_temp_label399:
+__kefir_func_temp_label400:
+__kefir_func_temp_label401:
+__kefir_func_temp_label402:
+__kefir_func_temp_label395:
+__kefir_func_temp_label396:
+__kefir_func_temp_label397:
+__kefir_func_temp_label398:
+__kefir_func_temp_label393:
+__kefir_func_temp_label394:
+__kefir_func_temp_label391:
+__kefir_func_temp_label392:
+__kefir_func_temp_label389:
+__kefir_func_temp_label390:
+    call test3@PLT
+__kefir_func_temp_label553:
+__kefir_func_temp_label554:
+__kefir_func_temp_label551:
+__kefir_func_temp_label552:
+__kefir_func_temp_label547:
+__kefir_func_temp_label548:
+__kefir_func_temp_label549:
+__kefir_func_temp_label550:
+__kefir_func_temp_label545:
+__kefir_func_temp_label546:
+__kefir_func_temp_label543:
+__kefir_func_temp_label544:
+__kefir_func_temp_label541:
+__kefir_func_temp_label542:
+__kefir_func_temp_label539:
+__kefir_func_temp_label540:
+__kefir_func_temp_label537:
+__kefir_func_temp_label538:
+__kefir_func_temp_label535:
+__kefir_func_temp_label536:
+__kefir_func_temp_label533:
+__kefir_func_temp_label534:
+__kefir_func_temp_label531:
+__kefir_func_temp_label532:
+__kefir_func_temp_label529:
+__kefir_func_temp_label530:
+__kefir_func_temp_label527:
+__kefir_func_temp_label528:
+__kefir_func_temp_label525:
+__kefir_func_temp_label526:
+__kefir_func_temp_label523:
+__kefir_func_temp_label524:
+__kefir_func_temp_label521:
+__kefir_func_temp_label522:
+__kefir_func_temp_label519:
+__kefir_func_temp_label520:
+__kefir_func_temp_label517:
+__kefir_func_temp_label518:
+__kefir_func_temp_label515:
+__kefir_func_temp_label516:
+__kefir_func_temp_label513:
+__kefir_func_temp_label514:
+__kefir_func_temp_label511:
+__kefir_func_temp_label512:
+__kefir_func_temp_label509:
+__kefir_func_temp_label510:
+__kefir_func_temp_label507:
+__kefir_func_temp_label508:
+__kefir_func_temp_label505:
+__kefir_func_temp_label506:
+__kefir_func_temp_label503:
+__kefir_func_temp_label504:
+__kefir_func_temp_label501:
+__kefir_func_temp_label502:
+__kefir_func_temp_label499:
+__kefir_func_temp_label500:
+__kefir_func_temp_label497:
+__kefir_func_temp_label498:
+    add $32, %rsp
+.loc 0 32 5
+__kefir_func_temp_label555:
+__kefir_func_temp_label557:
+__kefir_func_temp_label558:
+__kefir_func_temp_label559:
+__kefir_func_temp_label560:
+__kefir_func_temp_label561:
+__kefir_func_temp_label562:
+__kefir_func_temp_label563:
+__kefir_func_temp_label564:
+__kefir_func_temp_label565:
+__kefir_func_temp_label566:
+__kefir_func_temp_label567:
+__kefir_func_temp_label568:
+__kefir_func_temp_label750:
+    mov $1, %rdi
+__kefir_func_temp_label569:
+__kefir_func_temp_label570:
+    mov $2, %rsi
+__kefir_func_temp_label571:
+__kefir_func_temp_label572:
+    mov $3, %rdx
+__kefir_func_temp_label573:
+__kefir_func_temp_label574:
+    mov $4, %rcx
+__kefir_func_temp_label575:
+__kefir_func_temp_label576:
+    mov $5, %r8
+__kefir_func_temp_label577:
+__kefir_func_temp_label578:
+    xor %eax, %eax
+__kefir_func_temp_label691:
+__kefir_func_temp_label692:
+__kefir_func_temp_label687:
+__kefir_func_temp_label688:
+__kefir_func_temp_label689:
+__kefir_func_temp_label690:
+__kefir_func_temp_label683:
+__kefir_func_temp_label684:
+__kefir_func_temp_label685:
+__kefir_func_temp_label686:
+__kefir_func_temp_label679:
+__kefir_func_temp_label680:
+__kefir_func_temp_label681:
+__kefir_func_temp_label682:
+__kefir_func_temp_label675:
+__kefir_func_temp_label676:
+__kefir_func_temp_label677:
+__kefir_func_temp_label678:
+__kefir_func_temp_label671:
+__kefir_func_temp_label672:
+__kefir_func_temp_label673:
+__kefir_func_temp_label674:
+__kefir_func_temp_label667:
+__kefir_func_temp_label668:
+__kefir_func_temp_label669:
+__kefir_func_temp_label670:
+__kefir_func_temp_label663:
+__kefir_func_temp_label664:
+__kefir_func_temp_label665:
+__kefir_func_temp_label666:
+__kefir_func_temp_label659:
+__kefir_func_temp_label660:
+__kefir_func_temp_label661:
+__kefir_func_temp_label662:
+__kefir_func_temp_label655:
+__kefir_func_temp_label656:
+__kefir_func_temp_label657:
+__kefir_func_temp_label658:
+__kefir_func_temp_label651:
+__kefir_func_temp_label652:
+__kefir_func_temp_label653:
+__kefir_func_temp_label654:
+__kefir_func_temp_label647:
+__kefir_func_temp_label648:
+__kefir_func_temp_label649:
+__kefir_func_temp_label650:
+__kefir_func_temp_label643:
+__kefir_func_temp_label644:
+__kefir_func_temp_label645:
+__kefir_func_temp_label646:
+__kefir_func_temp_label639:
+__kefir_func_temp_label640:
+__kefir_func_temp_label641:
+__kefir_func_temp_label642:
+__kefir_func_temp_label635:
+__kefir_func_temp_label636:
+__kefir_func_temp_label637:
+__kefir_func_temp_label638:
+__kefir_func_temp_label631:
+__kefir_func_temp_label632:
+__kefir_func_temp_label633:
+__kefir_func_temp_label634:
+__kefir_func_temp_label627:
+__kefir_func_temp_label628:
+__kefir_func_temp_label629:
+__kefir_func_temp_label630:
+__kefir_func_temp_label623:
+__kefir_func_temp_label624:
+__kefir_func_temp_label625:
+__kefir_func_temp_label626:
+__kefir_func_temp_label619:
+__kefir_func_temp_label620:
+__kefir_func_temp_label621:
+__kefir_func_temp_label622:
+__kefir_func_temp_label615:
+__kefir_func_temp_label616:
+__kefir_func_temp_label617:
+__kefir_func_temp_label618:
+__kefir_func_temp_label611:
+__kefir_func_temp_label612:
+__kefir_func_temp_label613:
+__kefir_func_temp_label614:
+__kefir_func_temp_label607:
+__kefir_func_temp_label608:
+__kefir_func_temp_label609:
+__kefir_func_temp_label610:
+__kefir_func_temp_label603:
+__kefir_func_temp_label604:
+__kefir_func_temp_label605:
+__kefir_func_temp_label606:
+__kefir_func_temp_label599:
+__kefir_func_temp_label600:
+__kefir_func_temp_label601:
+__kefir_func_temp_label602:
+__kefir_func_temp_label595:
+__kefir_func_temp_label596:
+__kefir_func_temp_label597:
+__kefir_func_temp_label598:
+__kefir_func_temp_label591:
+__kefir_func_temp_label592:
+__kefir_func_temp_label593:
+__kefir_func_temp_label594:
+__kefir_func_temp_label589:
+__kefir_func_temp_label590:
+__kefir_func_temp_label587:
+__kefir_func_temp_label588:
+__kefir_func_temp_label585:
+__kefir_func_temp_label586:
+__kefir_func_temp_label583:
+__kefir_func_temp_label584:
+__kefir_func_temp_label581:
+__kefir_func_temp_label582:
+__kefir_func_temp_label579:
+__kefir_func_temp_label580:
+    call test4@PLT
+.loc 0 33 5
+__kefir_func_temp_label749:
+__kefir_func_temp_label751:
+__kefir_func_temp_label752:
+__kefir_func_temp_label753:
+__kefir_func_temp_label754:
+__kefir_func_temp_label755:
+__kefir_func_temp_label756:
+__kefir_func_temp_label757:
+__kefir_func_temp_label758:
+__kefir_func_temp_label928:
+__kefir_func_temp_label747:
+__kefir_func_temp_label748:
+__kefir_func_temp_label743:
+__kefir_func_temp_label744:
+__kefir_func_temp_label745:
+__kefir_func_temp_label746:
+__kefir_func_temp_label741:
+__kefir_func_temp_label742:
+__kefir_func_temp_label739:
+__kefir_func_temp_label740:
+__kefir_func_temp_label737:
+__kefir_func_temp_label738:
+__kefir_func_temp_label735:
+__kefir_func_temp_label736:
+__kefir_func_temp_label733:
+__kefir_func_temp_label734:
+__kefir_func_temp_label731:
+__kefir_func_temp_label732:
+__kefir_func_temp_label729:
+__kefir_func_temp_label730:
+__kefir_func_temp_label727:
+__kefir_func_temp_label728:
+__kefir_func_temp_label725:
+__kefir_func_temp_label726:
+__kefir_func_temp_label723:
+__kefir_func_temp_label724:
+__kefir_func_temp_label721:
+__kefir_func_temp_label722:
+__kefir_func_temp_label719:
+__kefir_func_temp_label720:
+__kefir_func_temp_label717:
+__kefir_func_temp_label718:
+__kefir_func_temp_label715:
+__kefir_func_temp_label716:
+__kefir_func_temp_label713:
+__kefir_func_temp_label714:
+__kefir_func_temp_label711:
+__kefir_func_temp_label712:
+__kefir_func_temp_label709:
+__kefir_func_temp_label710:
+__kefir_func_temp_label707:
+__kefir_func_temp_label708:
+__kefir_func_temp_label705:
+__kefir_func_temp_label706:
+__kefir_func_temp_label703:
+__kefir_func_temp_label704:
+__kefir_func_temp_label701:
+__kefir_func_temp_label702:
+__kefir_func_temp_label699:
+__kefir_func_temp_label700:
+__kefir_func_temp_label697:
+__kefir_func_temp_label698:
+__kefir_func_temp_label695:
+__kefir_func_temp_label696:
+__kefir_func_temp_label693:
+__kefir_func_temp_label694:
+    mov $1, %rdi
+__kefir_func_temp_label759:
+__kefir_func_temp_label760:
+    mov $2, %rsi
+__kefir_func_temp_label761:
+__kefir_func_temp_label762:
+    mov $3, %rdx
+__kefir_func_temp_label869:
+__kefir_func_temp_label870:
+__kefir_func_temp_label865:
+__kefir_func_temp_label866:
+__kefir_func_temp_label867:
+__kefir_func_temp_label868:
+__kefir_func_temp_label861:
+__kefir_func_temp_label862:
+__kefir_func_temp_label863:
+__kefir_func_temp_label864:
+__kefir_func_temp_label857:
+__kefir_func_temp_label858:
+__kefir_func_temp_label859:
+__kefir_func_temp_label860:
+__kefir_func_temp_label853:
+__kefir_func_temp_label854:
+__kefir_func_temp_label855:
+__kefir_func_temp_label856:
+__kefir_func_temp_label849:
+__kefir_func_temp_label850:
+__kefir_func_temp_label851:
+__kefir_func_temp_label852:
+__kefir_func_temp_label845:
+__kefir_func_temp_label846:
+__kefir_func_temp_label847:
+__kefir_func_temp_label848:
+__kefir_func_temp_label841:
+__kefir_func_temp_label842:
+__kefir_func_temp_label843:
+__kefir_func_temp_label844:
+__kefir_func_temp_label837:
+__kefir_func_temp_label838:
+__kefir_func_temp_label839:
+__kefir_func_temp_label840:
+__kefir_func_temp_label833:
+__kefir_func_temp_label834:
+__kefir_func_temp_label835:
+__kefir_func_temp_label836:
+__kefir_func_temp_label829:
+__kefir_func_temp_label830:
+__kefir_func_temp_label831:
+__kefir_func_temp_label832:
+__kefir_func_temp_label825:
+__kefir_func_temp_label826:
+__kefir_func_temp_label827:
+__kefir_func_temp_label828:
+__kefir_func_temp_label821:
+__kefir_func_temp_label822:
+__kefir_func_temp_label823:
+__kefir_func_temp_label824:
+__kefir_func_temp_label817:
+__kefir_func_temp_label818:
+__kefir_func_temp_label819:
+__kefir_func_temp_label820:
+__kefir_func_temp_label813:
+__kefir_func_temp_label814:
+__kefir_func_temp_label815:
+__kefir_func_temp_label816:
+__kefir_func_temp_label809:
+__kefir_func_temp_label810:
+__kefir_func_temp_label811:
+__kefir_func_temp_label812:
+__kefir_func_temp_label805:
+__kefir_func_temp_label806:
+__kefir_func_temp_label807:
+__kefir_func_temp_label808:
+__kefir_func_temp_label801:
+__kefir_func_temp_label802:
+__kefir_func_temp_label803:
+__kefir_func_temp_label804:
+__kefir_func_temp_label797:
+__kefir_func_temp_label798:
+__kefir_func_temp_label799:
+__kefir_func_temp_label800:
+__kefir_func_temp_label793:
+__kefir_func_temp_label794:
+__kefir_func_temp_label795:
+__kefir_func_temp_label796:
+__kefir_func_temp_label789:
+__kefir_func_temp_label790:
+__kefir_func_temp_label791:
+__kefir_func_temp_label792:
+__kefir_func_temp_label785:
+__kefir_func_temp_label786:
+__kefir_func_temp_label787:
+__kefir_func_temp_label788:
+__kefir_func_temp_label781:
+__kefir_func_temp_label782:
+__kefir_func_temp_label783:
+__kefir_func_temp_label784:
+__kefir_func_temp_label777:
+__kefir_func_temp_label778:
+__kefir_func_temp_label779:
+__kefir_func_temp_label780:
+__kefir_func_temp_label773:
+__kefir_func_temp_label774:
+__kefir_func_temp_label775:
+__kefir_func_temp_label776:
+__kefir_func_temp_label769:
+__kefir_func_temp_label770:
+__kefir_func_temp_label771:
+__kefir_func_temp_label772:
+__kefir_func_temp_label767:
+__kefir_func_temp_label768:
+__kefir_func_temp_label765:
+__kefir_func_temp_label766:
+__kefir_func_temp_label763:
+__kefir_func_temp_label764:
+    call test5@PLT
+.loc 0 34 5
+__kefir_func_temp_label927:
+__kefir_func_temp_label929:
+__kefir_func_temp_label930:
+__kefir_func_temp_label931:
+__kefir_func_temp_label932:
+__kefir_func_temp_label933:
+__kefir_func_temp_label934:
+__kefir_func_temp_label937:
+__kefir_func_temp_label925:
+__kefir_func_temp_label926:
+__kefir_func_temp_label921:
+__kefir_func_temp_label922:
+__kefir_func_temp_label923:
+__kefir_func_temp_label924:
+__kefir_func_temp_label919:
+__kefir_func_temp_label920:
+__kefir_func_temp_label917:
+__kefir_func_temp_label918:
+__kefir_func_temp_label915:
+__kefir_func_temp_label916:
+__kefir_func_temp_label913:
+__kefir_func_temp_label914:
+__kefir_func_temp_label911:
+__kefir_func_temp_label912:
+__kefir_func_temp_label909:
+__kefir_func_temp_label910:
+__kefir_func_temp_label907:
+__kefir_func_temp_label908:
+__kefir_func_temp_label905:
+__kefir_func_temp_label906:
+__kefir_func_temp_label903:
+__kefir_func_temp_label904:
+__kefir_func_temp_label901:
+__kefir_func_temp_label902:
+__kefir_func_temp_label899:
+__kefir_func_temp_label900:
+__kefir_func_temp_label897:
+__kefir_func_temp_label898:
+__kefir_func_temp_label895:
+__kefir_func_temp_label896:
+__kefir_func_temp_label893:
+__kefir_func_temp_label894:
+__kefir_func_temp_label891:
+__kefir_func_temp_label892:
+__kefir_func_temp_label889:
+__kefir_func_temp_label890:
+__kefir_func_temp_label887:
+__kefir_func_temp_label888:
+__kefir_func_temp_label885:
+__kefir_func_temp_label886:
+__kefir_func_temp_label883:
+__kefir_func_temp_label884:
+__kefir_func_temp_label881:
+__kefir_func_temp_label882:
+__kefir_func_temp_label879:
+__kefir_func_temp_label880:
+__kefir_func_temp_label877:
+__kefir_func_temp_label878:
+__kefir_func_temp_label875:
+__kefir_func_temp_label876:
+__kefir_func_temp_label873:
+__kefir_func_temp_label874:
+__kefir_func_temp_label871:
+__kefir_func_temp_label872:
+    movq __kefir_func_temp_label936(%rip), %xmm0
+__kefir_func_temp_label935:
+__kefir_func_temp_label938:
+__kefir_func_temp_label939:
+__kefir_func_temp_label942:
+    movd __kefir_func_temp_label941(%rip), %xmm1
+__kefir_func_temp_label940:
+__kefir_func_temp_label943:
+__kefir_func_temp_label944:
+__kefir_func_temp_label947:
+    movd __kefir_func_temp_label946(%rip), %xmm2
+.loc 0 34 5
+__kefir_func_temp_label945:
+__kefir_func_temp_label948:
+__kefir_func_temp_label949:
+__kefir_func_temp_label950:
+__kefir_func_temp_label951:
+__kefir_func_temp_label952:
+__kefir_func_temp_label953:
+__kefir_func_temp_label954:
+__kefir_func_temp_label955:
+__kefir_func_temp_label956:
+__kefir_func_temp_label957:
+__kefir_func_temp_label1153:
+    mov $1, %rdi
+__kefir_func_temp_label958:
+__kefir_func_temp_label959:
+    mov $2, %rsi
+__kefir_func_temp_label964:
+__kefir_func_temp_label965:
+__kefir_func_temp_label962:
+__kefir_func_temp_label963:
+__kefir_func_temp_label960:
+__kefir_func_temp_label961:
+    insertps $16, %xmm2, %xmm1
+__kefir_func_temp_label966:
+__kefir_func_temp_label967:
+    mov $5, %rdx
+__kefir_func_temp_label968:
+__kefir_func_temp_label969:
+    mov $6, %rcx
+__kefir_func_temp_label970:
+__kefir_func_temp_label971:
+    mov $7, %r8
+__kefir_func_temp_label972:
+__kefir_func_temp_label973:
+    mov $8, %r9
+__kefir_func_temp_label974:
+__kefir_func_temp_label975:
+    mov $2, %rax
+__kefir_func_temp_label1094:
+__kefir_func_temp_label1095:
+__kefir_func_temp_label1090:
+__kefir_func_temp_label1091:
+__kefir_func_temp_label1092:
+__kefir_func_temp_label1093:
+__kefir_func_temp_label1086:
+__kefir_func_temp_label1087:
+__kefir_func_temp_label1088:
+__kefir_func_temp_label1089:
+__kefir_func_temp_label1082:
+__kefir_func_temp_label1083:
+__kefir_func_temp_label1084:
+__kefir_func_temp_label1085:
+__kefir_func_temp_label1078:
+__kefir_func_temp_label1079:
+__kefir_func_temp_label1080:
+__kefir_func_temp_label1081:
+__kefir_func_temp_label1074:
+__kefir_func_temp_label1075:
+__kefir_func_temp_label1076:
+__kefir_func_temp_label1077:
+__kefir_func_temp_label1070:
+__kefir_func_temp_label1071:
+__kefir_func_temp_label1072:
+__kefir_func_temp_label1073:
+__kefir_func_temp_label1066:
+__kefir_func_temp_label1067:
+__kefir_func_temp_label1068:
+__kefir_func_temp_label1069:
+__kefir_func_temp_label1062:
+__kefir_func_temp_label1063:
+__kefir_func_temp_label1064:
+__kefir_func_temp_label1065:
+__kefir_func_temp_label1058:
+__kefir_func_temp_label1059:
+__kefir_func_temp_label1060:
+__kefir_func_temp_label1061:
+__kefir_func_temp_label1054:
+__kefir_func_temp_label1055:
+__kefir_func_temp_label1056:
+__kefir_func_temp_label1057:
+__kefir_func_temp_label1050:
+__kefir_func_temp_label1051:
+__kefir_func_temp_label1052:
+__kefir_func_temp_label1053:
+__kefir_func_temp_label1046:
+__kefir_func_temp_label1047:
+__kefir_func_temp_label1048:
+__kefir_func_temp_label1049:
+__kefir_func_temp_label1042:
+__kefir_func_temp_label1043:
+__kefir_func_temp_label1044:
+__kefir_func_temp_label1045:
+__kefir_func_temp_label1038:
+__kefir_func_temp_label1039:
+__kefir_func_temp_label1040:
+__kefir_func_temp_label1041:
+__kefir_func_temp_label1034:
+__kefir_func_temp_label1035:
+__kefir_func_temp_label1036:
+__kefir_func_temp_label1037:
+__kefir_func_temp_label1030:
+__kefir_func_temp_label1031:
+__kefir_func_temp_label1032:
+__kefir_func_temp_label1033:
+__kefir_func_temp_label1026:
+__kefir_func_temp_label1027:
+__kefir_func_temp_label1028:
+__kefir_func_temp_label1029:
+__kefir_func_temp_label1022:
+__kefir_func_temp_label1023:
+__kefir_func_temp_label1024:
+__kefir_func_temp_label1025:
+__kefir_func_temp_label1018:
+__kefir_func_temp_label1019:
+__kefir_func_temp_label1020:
+__kefir_func_temp_label1021:
+__kefir_func_temp_label1014:
+__kefir_func_temp_label1015:
+__kefir_func_temp_label1016:
+__kefir_func_temp_label1017:
+__kefir_func_temp_label1010:
+__kefir_func_temp_label1011:
+__kefir_func_temp_label1012:
+__kefir_func_temp_label1013:
+__kefir_func_temp_label1006:
+__kefir_func_temp_label1007:
+__kefir_func_temp_label1008:
+__kefir_func_temp_label1009:
+__kefir_func_temp_label1002:
+__kefir_func_temp_label1003:
+__kefir_func_temp_label1004:
+__kefir_func_temp_label1005:
+__kefir_func_temp_label998:
+__kefir_func_temp_label999:
+__kefir_func_temp_label1000:
+__kefir_func_temp_label1001:
+__kefir_func_temp_label994:
+__kefir_func_temp_label995:
+__kefir_func_temp_label996:
+__kefir_func_temp_label997:
+__kefir_func_temp_label992:
+__kefir_func_temp_label993:
+__kefir_func_temp_label990:
+__kefir_func_temp_label991:
+__kefir_func_temp_label988:
+__kefir_func_temp_label989:
+__kefir_func_temp_label986:
+__kefir_func_temp_label987:
+__kefir_func_temp_label984:
+__kefir_func_temp_label985:
+__kefir_func_temp_label982:
+__kefir_func_temp_label983:
+__kefir_func_temp_label980:
+__kefir_func_temp_label981:
+__kefir_func_temp_label978:
+__kefir_func_temp_label979:
+__kefir_func_temp_label976:
+__kefir_func_temp_label977:
+    call test6@PLT
+__kefir_func_temp_label1152:
+__kefir_func_temp_label1154:
+__kefir_func_temp_label1155:
+__kefir_func_temp_label1156:
+__kefir_func_temp_label1157:
+__kefir_func_temp_label1163:
+__kefir_func_temp_label1150:
+__kefir_func_temp_label1151:
+__kefir_func_temp_label1146:
+__kefir_func_temp_label1147:
+__kefir_func_temp_label1148:
+__kefir_func_temp_label1149:
+__kefir_func_temp_label1144:
+__kefir_func_temp_label1145:
+__kefir_func_temp_label1142:
+__kefir_func_temp_label1143:
+__kefir_func_temp_label1140:
+__kefir_func_temp_label1141:
+__kefir_func_temp_label1138:
+__kefir_func_temp_label1139:
+__kefir_func_temp_label1136:
+__kefir_func_temp_label1137:
+__kefir_func_temp_label1134:
+__kefir_func_temp_label1135:
+__kefir_func_temp_label1132:
+__kefir_func_temp_label1133:
+__kefir_func_temp_label1130:
+__kefir_func_temp_label1131:
+__kefir_func_temp_label1128:
+__kefir_func_temp_label1129:
+__kefir_func_temp_label1126:
+__kefir_func_temp_label1127:
+__kefir_func_temp_label1124:
+__kefir_func_temp_label1125:
+__kefir_func_temp_label1122:
+__kefir_func_temp_label1123:
+__kefir_func_temp_label1120:
+__kefir_func_temp_label1121:
+__kefir_func_temp_label1118:
+__kefir_func_temp_label1119:
+__kefir_func_temp_label1116:
+__kefir_func_temp_label1117:
+__kefir_func_temp_label1114:
+__kefir_func_temp_label1115:
+__kefir_func_temp_label1112:
+__kefir_func_temp_label1113:
+__kefir_func_temp_label1110:
+__kefir_func_temp_label1111:
+__kefir_func_temp_label1108:
+__kefir_func_temp_label1109:
+__kefir_func_temp_label1106:
+__kefir_func_temp_label1107:
+__kefir_func_temp_label1104:
+__kefir_func_temp_label1105:
+__kefir_func_temp_label1102:
+__kefir_func_temp_label1103:
+__kefir_func_temp_label1100:
+__kefir_func_temp_label1101:
+__kefir_func_temp_label1098:
+__kefir_func_temp_label1099:
+__kefir_func_temp_label1096:
+__kefir_func_temp_label1097:
     mov $100, %rdi
+__kefir_func_temp_label1160:
+__kefir_func_temp_label1161:
+__kefir_func_temp_label1158:
+__kefir_func_temp_label1159:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     jmp test7@PLT
-__kefir_func_temp_label33:
+__kefir_func_temp_label1162:
+__kefir_func_temp_label1164:
+__kefir_func_temp_label3:
 __kefir_text_func_temp_end:
 .section .rodata
     .align 8
-__kefir_func_temp_label7:
+__kefir_func_temp_label350:
     .quad 11529215046068469760
     .quad 16385
     .align 8
-__kefir_func_temp_label10:
+__kefir_func_temp_label357:
     .quad 0
     .quad 0
     .align 8
-__kefir_func_temp_label21:
+__kefir_func_temp_label936:
     .quad 4613937818241073152
     .align 4
-__kefir_func_temp_label24:
+__kefir_func_temp_label941:
     .long 1082130432
     .align 4
-__kefir_func_temp_label27:
+__kefir_func_temp_label946:
     .long 0
 .section .text
 

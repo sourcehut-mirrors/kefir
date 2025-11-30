@@ -1599,3 +1599,45 @@ kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_get_code_ref(co
     ASSIGN_PTR(code_ref_ptr, (kefir_codegen_target_ir_metadata_code_ref_t) table_value);
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_value_ref_iter(const struct kefir_codegen_target_ir_code_constructor_metadata *metadata,
+    struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator *iter,
+    kefir_asmcmp_instruction_index_t vreg_idx,
+    kefir_codegen_target_ir_metadata_value_ref_t *value_ref_ptr) {
+    REQUIRE(metadata != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code constructor metadata"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR code constructor metadata value ref iterator"));
+    
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&metadata->value_refs, (kefir_hashtable_key_t) vreg_idx, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find code reference metadata for asmcmp virtual register");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(const struct metadata_value_refs *, value_refs,
+        table_value);
+    kefir_hashset_key_t key;
+    res = kefir_hashset_iter(&value_refs->refs, &iter->iter, &key);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR code constructor metadata value ref iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(value_ref_ptr, key);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_value_ref_next(struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator *iter,
+    kefir_codegen_target_ir_metadata_value_ref_t *value_ref_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code constructor metadata value ref iterator"));
+    
+    kefir_hashset_key_t key;
+    kefir_result_t res = kefir_hashset_next(&iter->iter, &key);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR code constructor metadata value ref iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(value_ref_ptr, key);
+    return KEFIR_OK;
+}

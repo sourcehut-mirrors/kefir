@@ -1803,165 +1803,326 @@ factorial:
 #}
 __kefir_text_func_factorial_begin:
 __kefir_func_factorial_label0:
+__kefir_func_factorial_label34:
+__kefir_func_factorial_label35:
+__kefir_func_factorial_label36:
+__kefir_func_factorial_label37:
+__kefir_func_factorial_label38:
+__kefir_func_factorial_label39:
+__kefir_func_factorial_label40:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_factorial_label1
+__kefir_func_factorial_label41:
+__kefir_func_factorial_label42:
+    jmp __kefir_func_factorial_label2
+__kefir_func_factorial_label43:
 __kefir_func_factorial_label1:
-__kefir_func_factorial_label17:
-__kefir_func_factorial_label18:
-__kefir_func_factorial_label19:
+__kefir_func_factorial_label2:
+__kefir_func_factorial_label44:
+__kefir_func_factorial_label46:
+__kefir_func_factorial_label45:
+__kefir_func_factorial_label47:
+__kefir_func_factorial_label48:
+__kefir_func_factorial_label49:
+__kefir_func_factorial_label50:
+__kefir_func_factorial_label52:
     movl %edi, -8(%rbp)
 .loc 0 22 9
-__kefir_func_factorial_label20:
-__kefir_func_factorial_label21:
+__kefir_func_factorial_label51:
+__kefir_func_factorial_label53:
+__kefir_func_factorial_label54:
+__kefir_func_factorial_label56:
     movl -8(%rbp), %eax
 .loc 0 22 9
-__kefir_func_factorial_label22:
-__kefir_func_factorial_label23:
+__kefir_func_factorial_label55:
+__kefir_func_factorial_label57:
+__kefir_func_factorial_label58:
+__kefir_func_factorial_label59:
+__kefir_func_factorial_label60:
+__kefir_func_factorial_label61:
+__kefir_func_factorial_label62:
+__kefir_func_factorial_label68:
     mov $0, %rcx
+__kefir_func_factorial_label63:
+__kefir_func_factorial_label64:
     cmp $0, %eax
+__kefir_func_factorial_label65:
+__kefir_func_factorial_label66:
     mov %rcx, %rax
     setl %al
 .loc 0 22 5
-__kefir_func_factorial_label24:
-__kefir_func_factorial_label25:
+__kefir_func_factorial_label67:
+__kefir_func_factorial_label69:
+__kefir_func_factorial_label70:
+__kefir_func_factorial_label71:
+__kefir_func_factorial_label72:
+__kefir_func_factorial_label76:
     test %eax, %eax
+__kefir_func_factorial_label73:
+__kefir_func_factorial_label74:
     sete %al
-__kefir_func_factorial_label26:
-__kefir_func_factorial_label28:
+__kefir_func_factorial_label75:
+__kefir_func_factorial_label77:
+__kefir_func_factorial_label78:
+__kefir_func_factorial_label83:
     test %al, %al
-    jz __kefir_func_factorial_label27
-    jmp __kefir_func_factorial_label3
-__kefir_func_factorial_label27:
-    jmp __kefir_func_factorial_label14
-__kefir_func_factorial_label29:
+__kefir_func_factorial_label79:
+__kefir_func_factorial_label80:
+    jz __kefir_func_factorial_label82
+    jmp __kefir_func_factorial_label6
+__kefir_func_factorial_label82:
+    jmp __kefir_func_factorial_label28
+__kefir_func_factorial_label81:
+__kefir_func_factorial_label84:
 __kefir_func_factorial_label3:
+__kefir_func_factorial_label6:
 .loc 0 24 9
-__kefir_func_factorial_label30:
+__kefir_func_factorial_label85:
+__kefir_func_factorial_label87:
     movl -8(%rbp), %eax
 .loc 0 24 9
-__kefir_func_factorial_label31:
-__kefir_func_factorial_label32:
+__kefir_func_factorial_label86:
+__kefir_func_factorial_label88:
+__kefir_func_factorial_label89:
+__kefir_func_factorial_label90:
+__kefir_func_factorial_label91:
+__kefir_func_factorial_label97:
     mov $0, %rcx
+__kefir_func_factorial_label92:
+__kefir_func_factorial_label93:
     cmp $2, %eax
+__kefir_func_factorial_label94:
+__kefir_func_factorial_label95:
     setl %cl
-__kefir_func_factorial_label33:
-__kefir_func_factorial_label34:
+__kefir_func_factorial_label96:
+__kefir_func_factorial_label98:
+__kefir_func_factorial_label99:
+__kefir_func_factorial_label105:
     mov $0, %rdx
+__kefir_func_factorial_label100:
+__kefir_func_factorial_label101:
     mov $2, %rdi
 .loc 0 24 9
     cmp %eax, %edi
+__kefir_func_factorial_label102:
+__kefir_func_factorial_label103:
     mov %rdx, %rax
     sete %al
-__kefir_func_factorial_label35:
-__kefir_func_factorial_label36:
+__kefir_func_factorial_label104:
+__kefir_func_factorial_label106:
+__kefir_func_factorial_label107:
+__kefir_func_factorial_label113:
     or %rax, %rcx
+__kefir_func_factorial_label108:
+__kefir_func_factorial_label109:
     mov %rcx, %rax
     setne %al
+__kefir_func_factorial_label110:
+__kefir_func_factorial_label111:
     movzx %al, %rax
 .loc 0 24 5
-__kefir_func_factorial_label37:
-__kefir_func_factorial_label38:
+__kefir_func_factorial_label112:
+__kefir_func_factorial_label114:
+__kefir_func_factorial_label115:
+__kefir_func_factorial_label116:
+__kefir_func_factorial_label117:
+__kefir_func_factorial_label121:
     test %eax, %eax
+__kefir_func_factorial_label118:
+__kefir_func_factorial_label119:
     sete %al
-__kefir_func_factorial_label39:
-__kefir_func_factorial_label41:
+__kefir_func_factorial_label120:
+__kefir_func_factorial_label122:
+__kefir_func_factorial_label123:
+__kefir_func_factorial_label128:
     test %al, %al
-    jz __kefir_func_factorial_label40
-    jmp __kefir_func_factorial_label5
-__kefir_func_factorial_label40:
-    jmp __kefir_func_factorial_label12
-__kefir_func_factorial_label42:
-__kefir_func_factorial_label14:
+__kefir_func_factorial_label124:
+__kefir_func_factorial_label125:
+    jz __kefir_func_factorial_label127
+    jmp __kefir_func_factorial_label10
+__kefir_func_factorial_label127:
+    jmp __kefir_func_factorial_label24
+__kefir_func_factorial_label126:
+__kefir_func_factorial_label129:
+__kefir_func_factorial_label7:
+__kefir_func_factorial_label28:
 .loc 0 23 9
-__kefir_func_factorial_label43:
+__kefir_func_factorial_label130:
+__kefir_func_factorial_label131:
+__kefir_func_factorial_label132:
+__kefir_func_factorial_label142:
     mov $0, %rax
+__kefir_func_factorial_label133:
+__kefir_func_factorial_label134:
     lea (%rbp), %rsp
     pop %rbp
+__kefir_func_factorial_label135:
+__kefir_func_factorial_label136:
+__kefir_func_factorial_label137:
+__kefir_func_factorial_label138:
+__kefir_func_factorial_label139:
+__kefir_func_factorial_label140:
     ret
-__kefir_func_factorial_label44:
-__kefir_func_factorial_label5:
+__kefir_func_factorial_label141:
+__kefir_func_factorial_label143:
+__kefir_func_factorial_label29:
+__kefir_func_factorial_label10:
 .loc 0 27 5
-__kefir_func_factorial_label45:
+__kefir_func_factorial_label144:
+__kefir_func_factorial_label145:
+__kefir_func_factorial_label146:
+__kefir_func_factorial_label150:
     movl $1, -4(%rbp)
-    jmp __kefir_func_factorial_label6
-__kefir_func_factorial_label46:
-__kefir_func_factorial_label12:
+__kefir_func_factorial_label147:
+__kefir_func_factorial_label148:
+    jmp __kefir_func_factorial_label12
+__kefir_func_factorial_label149:
+__kefir_func_factorial_label151:
+__kefir_func_factorial_label11:
+__kefir_func_factorial_label24:
 .loc 0 25 16
-__kefir_func_factorial_label47:
+__kefir_func_factorial_label152:
+__kefir_func_factorial_label154:
     movl -8(%rbp), %eax
 .loc 0 25 9
-__kefir_func_factorial_label48:
-__kefir_func_factorial_label49:
+__kefir_func_factorial_label153:
+__kefir_func_factorial_label155:
+__kefir_func_factorial_label156:
+__kefir_func_factorial_label166:
+__kefir_func_factorial_label157:
+__kefir_func_factorial_label158:
     lea (%rbp), %rsp
     pop %rbp
+__kefir_func_factorial_label159:
+__kefir_func_factorial_label160:
+__kefir_func_factorial_label161:
+__kefir_func_factorial_label162:
+__kefir_func_factorial_label163:
+__kefir_func_factorial_label164:
     ret
-__kefir_func_factorial_label50:
-__kefir_func_factorial_label6:
+__kefir_func_factorial_label165:
+__kefir_func_factorial_label167:
+__kefir_func_factorial_label25:
+__kefir_func_factorial_label12:
 .loc 0 28 12
-__kefir_func_factorial_label51:
+__kefir_func_factorial_label168:
+__kefir_func_factorial_label169:
+__kefir_func_factorial_label170:
+__kefir_func_factorial_label172:
     movl -8(%rbp), %eax
 .loc 0 28 12
-__kefir_func_factorial_label52:
-__kefir_func_factorial_label53:
+__kefir_func_factorial_label171:
+__kefir_func_factorial_label173:
+__kefir_func_factorial_label174:
+__kefir_func_factorial_label175:
+__kefir_func_factorial_label176:
+__kefir_func_factorial_label182:
     mov $0, %rcx
+__kefir_func_factorial_label177:
+__kefir_func_factorial_label178:
     cmp $1, %eax
+__kefir_func_factorial_label179:
+__kefir_func_factorial_label180:
     mov %rcx, %rax
     setg %al
 .loc 0 28 5
-__kefir_func_factorial_label54:
-__kefir_func_factorial_label55:
+__kefir_func_factorial_label181:
+__kefir_func_factorial_label183:
+__kefir_func_factorial_label184:
+__kefir_func_factorial_label185:
+__kefir_func_factorial_label186:
+__kefir_func_factorial_label190:
     test %eax, %eax
+__kefir_func_factorial_label187:
+__kefir_func_factorial_label188:
     sete %al
-__kefir_func_factorial_label56:
-__kefir_func_factorial_label58:
+__kefir_func_factorial_label189:
+__kefir_func_factorial_label191:
+__kefir_func_factorial_label192:
+__kefir_func_factorial_label197:
     test %al, %al
-    jz __kefir_func_factorial_label57
-    jmp __kefir_func_factorial_label8
-__kefir_func_factorial_label57:
-    jmp __kefir_func_factorial_label10
-__kefir_func_factorial_label59:
-__kefir_func_factorial_label8:
+__kefir_func_factorial_label193:
+__kefir_func_factorial_label194:
+    jz __kefir_func_factorial_label196
+    jmp __kefir_func_factorial_label16
+__kefir_func_factorial_label196:
+    jmp __kefir_func_factorial_label20
+__kefir_func_factorial_label195:
+__kefir_func_factorial_label198:
+__kefir_func_factorial_label13:
+__kefir_func_factorial_label16:
 .loc 0 31 12
-__kefir_func_factorial_label60:
+__kefir_func_factorial_label199:
+__kefir_func_factorial_label201:
     movl -4(%rbp), %eax
 .loc 0 31 5
-__kefir_func_factorial_label61:
-__kefir_func_factorial_label62:
+__kefir_func_factorial_label200:
+__kefir_func_factorial_label202:
+__kefir_func_factorial_label203:
+__kefir_func_factorial_label213:
+__kefir_func_factorial_label204:
+__kefir_func_factorial_label205:
     lea (%rbp), %rsp
     pop %rbp
+__kefir_func_factorial_label206:
+__kefir_func_factorial_label207:
+__kefir_func_factorial_label208:
+__kefir_func_factorial_label209:
+__kefir_func_factorial_label210:
+__kefir_func_factorial_label211:
     ret
-__kefir_func_factorial_label63:
-__kefir_func_factorial_label10:
+__kefir_func_factorial_label212:
+__kefir_func_factorial_label214:
+__kefir_func_factorial_label17:
+__kefir_func_factorial_label20:
 .loc 0 29 19
-__kefir_func_factorial_label64:
+__kefir_func_factorial_label215:
+__kefir_func_factorial_label217:
     movl -8(%rbp), %eax
 .loc 0 29 9
-__kefir_func_factorial_label65:
-__kefir_func_factorial_label66:
+__kefir_func_factorial_label216:
+__kefir_func_factorial_label218:
+__kefir_func_factorial_label219:
+__kefir_func_factorial_label221:
     movl -4(%rbp), %ecx
-__kefir_func_factorial_label67:
-__kefir_func_factorial_label68:
+__kefir_func_factorial_label220:
+__kefir_func_factorial_label222:
+__kefir_func_factorial_label223:
+__kefir_func_factorial_label225:
     imul %eax, %ecx
-__kefir_func_factorial_label69:
-__kefir_func_factorial_label70:
+__kefir_func_factorial_label224:
+__kefir_func_factorial_label226:
+__kefir_func_factorial_label227:
+__kefir_func_factorial_label229:
     movl %ecx, -4(%rbp)
 .loc 0 28 19
-__kefir_func_factorial_label71:
-__kefir_func_factorial_label72:
+__kefir_func_factorial_label228:
+__kefir_func_factorial_label230:
+__kefir_func_factorial_label231:
+__kefir_func_factorial_label233:
     movl -8(%rbp), %eax
-__kefir_func_factorial_label73:
-__kefir_func_factorial_label74:
+__kefir_func_factorial_label232:
+__kefir_func_factorial_label234:
+__kefir_func_factorial_label235:
+__kefir_func_factorial_label236:
+__kefir_func_factorial_label237:
+__kefir_func_factorial_label239:
     add $-1, %eax
-__kefir_func_factorial_label75:
-__kefir_func_factorial_label76:
+__kefir_func_factorial_label238:
+__kefir_func_factorial_label240:
+__kefir_func_factorial_label241:
+__kefir_func_factorial_label243:
     movl %eax, -8(%rbp)
 .loc 0 28 5
-__kefir_func_factorial_label77:
-__kefir_func_factorial_label78:
-    jmp __kefir_func_factorial_label6
-__kefir_func_factorial_label79:
+__kefir_func_factorial_label242:
+__kefir_func_factorial_label244:
+__kefir_func_factorial_label245:
+__kefir_func_factorial_label247:
+    jmp __kefir_func_factorial_label12
+__kefir_func_factorial_label246:
+__kefir_func_factorial_label248:
+__kefir_func_factorial_label21:
 __kefir_text_func_factorial_end:
 
 __kefir_text_section_end:
@@ -2211,125 +2372,17 @@ __kefir_debug_loclists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_loclist_section_entry_1:
+    .byte 7
+    .quad __kefir_func_factorial_label45
+    .quad __kefir_func_factorial_label50
+    .byte 2
+    .byte 144
+    .byte 5
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 7
-    .quad __kefir_func_factorial_label21
-    .quad __kefir_func_factorial_label22
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label23
-    .quad __kefir_func_factorial_label24
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label25
-    .quad __kefir_func_factorial_label26
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label28
-    .quad __kefir_func_factorial_label29
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label43
-    .quad __kefir_func_factorial_label44
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label30
-    .quad __kefir_func_factorial_label31
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label32
-    .quad __kefir_func_factorial_label33
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label34
-    .quad __kefir_func_factorial_label35
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label36
-    .quad __kefir_func_factorial_label37
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label38
-    .quad __kefir_func_factorial_label39
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label41
-    .quad __kefir_func_factorial_label42
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label47
-    .quad __kefir_func_factorial_label48
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label49
-    .quad __kefir_func_factorial_label50
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label45
-    .quad __kefir_func_factorial_label46
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label51
-    .quad __kefir_func_factorial_label52
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label53
-    .quad __kefir_func_factorial_label54
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label55
     .quad __kefir_func_factorial_label56
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label58
-    .quad __kefir_func_factorial_label59
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label64
-    .quad __kefir_func_factorial_label65
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label66
-    .quad __kefir_func_factorial_label67
+    .quad __kefir_func_factorial_label57
     .byte 2
     .byte 145
     .byte 120
@@ -2340,166 +2393,166 @@ __kefir_debug_loclist_section_entry_6:
     .byte 145
     .byte 120
     .byte 7
-    .quad __kefir_func_factorial_label70
-    .quad __kefir_func_factorial_label71
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label72
-    .quad __kefir_func_factorial_label73
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label74
-    .quad __kefir_func_factorial_label75
-    .byte 2
-    .byte 145
-    .byte 120
-    .byte 7
     .quad __kefir_func_factorial_label76
     .quad __kefir_func_factorial_label77
     .byte 2
     .byte 145
     .byte 120
     .byte 7
-    .quad __kefir_func_factorial_label78
-    .quad __kefir_func_factorial_label79
+    .quad __kefir_func_factorial_label83
+    .quad __kefir_func_factorial_label84
     .byte 2
     .byte 145
     .byte 120
     .byte 7
-    .quad __kefir_func_factorial_label60
-    .quad __kefir_func_factorial_label61
+    .quad __kefir_func_factorial_label142
+    .quad __kefir_func_factorial_label143
     .byte 2
     .byte 145
     .byte 120
     .byte 7
-    .quad __kefir_func_factorial_label62
-    .quad __kefir_func_factorial_label63
+    .quad __kefir_func_factorial_label87
+    .quad __kefir_func_factorial_label88
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label97
+    .quad __kefir_func_factorial_label98
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label105
+    .quad __kefir_func_factorial_label106
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label113
+    .quad __kefir_func_factorial_label114
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label121
+    .quad __kefir_func_factorial_label122
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label128
+    .quad __kefir_func_factorial_label129
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label154
+    .quad __kefir_func_factorial_label155
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label166
+    .quad __kefir_func_factorial_label167
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label150
+    .quad __kefir_func_factorial_label151
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label172
+    .quad __kefir_func_factorial_label173
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label182
+    .quad __kefir_func_factorial_label183
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label190
+    .quad __kefir_func_factorial_label191
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label197
+    .quad __kefir_func_factorial_label198
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label217
+    .quad __kefir_func_factorial_label218
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label221
+    .quad __kefir_func_factorial_label222
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label225
+    .quad __kefir_func_factorial_label226
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label229
+    .quad __kefir_func_factorial_label230
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label233
+    .quad __kefir_func_factorial_label234
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label239
+    .quad __kefir_func_factorial_label240
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label243
+    .quad __kefir_func_factorial_label244
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label247
+    .quad __kefir_func_factorial_label248
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label201
+    .quad __kefir_func_factorial_label202
+    .byte 2
+    .byte 145
+    .byte 120
+    .byte 7
+    .quad __kefir_func_factorial_label213
+    .quad __kefir_func_factorial_label214
     .byte 2
     .byte 145
     .byte 120
     .byte 0
 __kefir_debug_loclist_section_entry_7:
     .byte 7
-    .quad __kefir_func_factorial_label21
-    .quad __kefir_func_factorial_label22
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label23
-    .quad __kefir_func_factorial_label24
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label25
-    .quad __kefir_func_factorial_label26
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label28
-    .quad __kefir_func_factorial_label29
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label43
-    .quad __kefir_func_factorial_label44
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label30
-    .quad __kefir_func_factorial_label31
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label32
-    .quad __kefir_func_factorial_label33
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label34
-    .quad __kefir_func_factorial_label35
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label36
-    .quad __kefir_func_factorial_label37
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label38
-    .quad __kefir_func_factorial_label39
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label41
-    .quad __kefir_func_factorial_label42
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label47
-    .quad __kefir_func_factorial_label48
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label49
-    .quad __kefir_func_factorial_label50
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label45
-    .quad __kefir_func_factorial_label46
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label51
-    .quad __kefir_func_factorial_label52
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label53
-    .quad __kefir_func_factorial_label54
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label55
     .quad __kefir_func_factorial_label56
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label58
-    .quad __kefir_func_factorial_label59
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label64
-    .quad __kefir_func_factorial_label65
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label66
-    .quad __kefir_func_factorial_label67
+    .quad __kefir_func_factorial_label57
     .byte 2
     .byte 145
     .byte 124
@@ -2510,44 +2563,158 @@ __kefir_debug_loclist_section_entry_7:
     .byte 145
     .byte 124
     .byte 7
-    .quad __kefir_func_factorial_label70
-    .quad __kefir_func_factorial_label71
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label72
-    .quad __kefir_func_factorial_label73
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label74
-    .quad __kefir_func_factorial_label75
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 7
     .quad __kefir_func_factorial_label76
     .quad __kefir_func_factorial_label77
     .byte 2
     .byte 145
     .byte 124
     .byte 7
-    .quad __kefir_func_factorial_label78
-    .quad __kefir_func_factorial_label79
+    .quad __kefir_func_factorial_label83
+    .quad __kefir_func_factorial_label84
     .byte 2
     .byte 145
     .byte 124
     .byte 7
-    .quad __kefir_func_factorial_label60
-    .quad __kefir_func_factorial_label61
+    .quad __kefir_func_factorial_label142
+    .quad __kefir_func_factorial_label143
     .byte 2
     .byte 145
     .byte 124
     .byte 7
-    .quad __kefir_func_factorial_label62
-    .quad __kefir_func_factorial_label63
+    .quad __kefir_func_factorial_label87
+    .quad __kefir_func_factorial_label88
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label97
+    .quad __kefir_func_factorial_label98
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label105
+    .quad __kefir_func_factorial_label106
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label113
+    .quad __kefir_func_factorial_label114
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label121
+    .quad __kefir_func_factorial_label122
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label128
+    .quad __kefir_func_factorial_label129
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label154
+    .quad __kefir_func_factorial_label155
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label166
+    .quad __kefir_func_factorial_label167
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label150
+    .quad __kefir_func_factorial_label151
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label172
+    .quad __kefir_func_factorial_label173
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label182
+    .quad __kefir_func_factorial_label183
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label190
+    .quad __kefir_func_factorial_label191
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label197
+    .quad __kefir_func_factorial_label198
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label217
+    .quad __kefir_func_factorial_label218
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label221
+    .quad __kefir_func_factorial_label222
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label225
+    .quad __kefir_func_factorial_label226
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label229
+    .quad __kefir_func_factorial_label230
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label233
+    .quad __kefir_func_factorial_label234
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label239
+    .quad __kefir_func_factorial_label240
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label243
+    .quad __kefir_func_factorial_label244
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label247
+    .quad __kefir_func_factorial_label248
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label201
+    .quad __kefir_func_factorial_label202
+    .byte 2
+    .byte 145
+    .byte 124
+    .byte 7
+    .quad __kefir_func_factorial_label213
+    .quad __kefir_func_factorial_label214
     .byte 2
     .byte 145
     .byte 124
@@ -2566,98 +2733,98 @@ __kefir_debug_rnglists_section_begin:
     .long 0
 __kefir_debug_rnglist_section_entry_2:
     .byte 6
-    .quad __kefir_func_factorial_label21
-    .quad __kefir_func_factorial_label22
-    .byte 6
-    .quad __kefir_func_factorial_label23
-    .quad __kefir_func_factorial_label24
-    .byte 6
-    .quad __kefir_func_factorial_label25
-    .quad __kefir_func_factorial_label26
-    .byte 6
-    .quad __kefir_func_factorial_label28
-    .quad __kefir_func_factorial_label29
-    .byte 6
-    .quad __kefir_func_factorial_label43
-    .quad __kefir_func_factorial_label44
-    .byte 0
-__kefir_debug_rnglist_section_entry_3:
-    .byte 6
-    .quad __kefir_func_factorial_label30
-    .quad __kefir_func_factorial_label31
-    .byte 6
-    .quad __kefir_func_factorial_label32
-    .quad __kefir_func_factorial_label33
-    .byte 6
-    .quad __kefir_func_factorial_label34
-    .quad __kefir_func_factorial_label35
-    .byte 6
-    .quad __kefir_func_factorial_label36
-    .quad __kefir_func_factorial_label37
-    .byte 6
-    .quad __kefir_func_factorial_label38
-    .quad __kefir_func_factorial_label39
-    .byte 6
-    .quad __kefir_func_factorial_label41
-    .quad __kefir_func_factorial_label42
-    .byte 6
-    .quad __kefir_func_factorial_label47
-    .quad __kefir_func_factorial_label48
-    .byte 6
-    .quad __kefir_func_factorial_label49
-    .quad __kefir_func_factorial_label50
-    .byte 0
-__kefir_debug_rnglist_section_entry_4:
-    .byte 6
-    .quad __kefir_func_factorial_label51
-    .quad __kefir_func_factorial_label52
-    .byte 6
-    .quad __kefir_func_factorial_label53
-    .quad __kefir_func_factorial_label54
-    .byte 6
-    .quad __kefir_func_factorial_label55
     .quad __kefir_func_factorial_label56
-    .byte 6
-    .quad __kefir_func_factorial_label58
-    .quad __kefir_func_factorial_label59
-    .byte 6
-    .quad __kefir_func_factorial_label64
-    .quad __kefir_func_factorial_label65
-    .byte 6
-    .quad __kefir_func_factorial_label66
-    .quad __kefir_func_factorial_label67
+    .quad __kefir_func_factorial_label57
     .byte 6
     .quad __kefir_func_factorial_label68
     .quad __kefir_func_factorial_label69
-    .byte 6
-    .quad __kefir_func_factorial_label70
-    .quad __kefir_func_factorial_label71
-    .byte 6
-    .quad __kefir_func_factorial_label72
-    .quad __kefir_func_factorial_label73
-    .byte 6
-    .quad __kefir_func_factorial_label74
-    .quad __kefir_func_factorial_label75
     .byte 6
     .quad __kefir_func_factorial_label76
     .quad __kefir_func_factorial_label77
     .byte 6
-    .quad __kefir_func_factorial_label78
-    .quad __kefir_func_factorial_label79
+    .quad __kefir_func_factorial_label83
+    .quad __kefir_func_factorial_label84
+    .byte 6
+    .quad __kefir_func_factorial_label142
+    .quad __kefir_func_factorial_label143
+    .byte 0
+__kefir_debug_rnglist_section_entry_3:
+    .byte 6
+    .quad __kefir_func_factorial_label87
+    .quad __kefir_func_factorial_label88
+    .byte 6
+    .quad __kefir_func_factorial_label97
+    .quad __kefir_func_factorial_label98
+    .byte 6
+    .quad __kefir_func_factorial_label105
+    .quad __kefir_func_factorial_label106
+    .byte 6
+    .quad __kefir_func_factorial_label113
+    .quad __kefir_func_factorial_label114
+    .byte 6
+    .quad __kefir_func_factorial_label121
+    .quad __kefir_func_factorial_label122
+    .byte 6
+    .quad __kefir_func_factorial_label128
+    .quad __kefir_func_factorial_label129
+    .byte 6
+    .quad __kefir_func_factorial_label154
+    .quad __kefir_func_factorial_label155
+    .byte 6
+    .quad __kefir_func_factorial_label166
+    .quad __kefir_func_factorial_label167
+    .byte 0
+__kefir_debug_rnglist_section_entry_4:
+    .byte 6
+    .quad __kefir_func_factorial_label172
+    .quad __kefir_func_factorial_label173
+    .byte 6
+    .quad __kefir_func_factorial_label182
+    .quad __kefir_func_factorial_label183
+    .byte 6
+    .quad __kefir_func_factorial_label190
+    .quad __kefir_func_factorial_label191
+    .byte 6
+    .quad __kefir_func_factorial_label197
+    .quad __kefir_func_factorial_label198
+    .byte 6
+    .quad __kefir_func_factorial_label217
+    .quad __kefir_func_factorial_label218
+    .byte 6
+    .quad __kefir_func_factorial_label221
+    .quad __kefir_func_factorial_label222
+    .byte 6
+    .quad __kefir_func_factorial_label225
+    .quad __kefir_func_factorial_label226
+    .byte 6
+    .quad __kefir_func_factorial_label229
+    .quad __kefir_func_factorial_label230
+    .byte 6
+    .quad __kefir_func_factorial_label233
+    .quad __kefir_func_factorial_label234
+    .byte 6
+    .quad __kefir_func_factorial_label239
+    .quad __kefir_func_factorial_label240
+    .byte 6
+    .quad __kefir_func_factorial_label243
+    .quad __kefir_func_factorial_label244
+    .byte 6
+    .quad __kefir_func_factorial_label247
+    .quad __kefir_func_factorial_label248
     .byte 0
 __kefir_debug_rnglist_section_entry_5:
     .byte 6
-    .quad __kefir_func_factorial_label64
-    .quad __kefir_func_factorial_label65
+    .quad __kefir_func_factorial_label217
+    .quad __kefir_func_factorial_label218
     .byte 6
-    .quad __kefir_func_factorial_label66
-    .quad __kefir_func_factorial_label67
+    .quad __kefir_func_factorial_label221
+    .quad __kefir_func_factorial_label222
     .byte 6
-    .quad __kefir_func_factorial_label68
-    .quad __kefir_func_factorial_label69
+    .quad __kefir_func_factorial_label225
+    .quad __kefir_func_factorial_label226
     .byte 6
-    .quad __kefir_func_factorial_label70
-    .quad __kefir_func_factorial_label71
+    .quad __kefir_func_factorial_label229
+    .quad __kefir_func_factorial_label230
     .byte 0
 __kefir_debug_rnglists_section_end:
 

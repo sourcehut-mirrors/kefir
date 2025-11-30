@@ -1214,7 +1214,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
 
     struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops destructor_ops;
     REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(func, asmcmp_code, &destructor_ops));
-    kefir_result_t res = kefir_codegen_target_ir_round_trip_destruct(mem, code, &asmcmp_code->context, &destructor_ops.ops);
+    kefir_result_t res = kefir_codegen_target_ir_round_trip_destruct(mem, code, &asmcmp_code->context, func->codegen->config->debug_info ? &func->debug.target_ir_metadata : NULL, &destructor_ops.ops);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_target_ir_round_trip_destructor_amd64_ops_free(mem, &destructor_ops);
         return res;

@@ -15,36 +15,221 @@ SOMEFN1:
 .file 0 "source/tests/end2end/debug_info_asm_label1/lib.kefir.asmgen.c"
 .loc 0 26 1
 __kefir_text_func_SOMEFN1_begin:
+__kefir_func_SOMEFN1_label8:
+__kefir_func_SOMEFN1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_SOMEFN1_label1
+__kefir_func_SOMEFN1_label9:
+__kefir_func_SOMEFN1_label10:
+    jmp __kefir_func_SOMEFN1_label2
 .loc 0 27 20
-__kefir_func_SOMEFN1_label4:
+__kefir_func_SOMEFN1_label12:
+__kefir_func_SOMEFN1_label13:
+__kefir_func_SOMEFN1_label14:
+__kefir_func_SOMEFN1_label176:
+__kefir_func_SOMEFN1_label11:
 __kefir_func_SOMEFN1_label1:
+__kefir_func_SOMEFN1_label2:
     mov $1, %rdi
+__kefir_func_SOMEFN1_label117:
+__kefir_func_SOMEFN1_label118:
+__kefir_func_SOMEFN1_label113:
+__kefir_func_SOMEFN1_label114:
+__kefir_func_SOMEFN1_label115:
+__kefir_func_SOMEFN1_label116:
+__kefir_func_SOMEFN1_label109:
+__kefir_func_SOMEFN1_label110:
+__kefir_func_SOMEFN1_label111:
+__kefir_func_SOMEFN1_label112:
+__kefir_func_SOMEFN1_label105:
+__kefir_func_SOMEFN1_label106:
+__kefir_func_SOMEFN1_label107:
+__kefir_func_SOMEFN1_label108:
+__kefir_func_SOMEFN1_label101:
+__kefir_func_SOMEFN1_label102:
+__kefir_func_SOMEFN1_label103:
+__kefir_func_SOMEFN1_label104:
+__kefir_func_SOMEFN1_label97:
+__kefir_func_SOMEFN1_label98:
+__kefir_func_SOMEFN1_label99:
+__kefir_func_SOMEFN1_label100:
+__kefir_func_SOMEFN1_label93:
+__kefir_func_SOMEFN1_label94:
+__kefir_func_SOMEFN1_label95:
+__kefir_func_SOMEFN1_label96:
+__kefir_func_SOMEFN1_label89:
+__kefir_func_SOMEFN1_label90:
+__kefir_func_SOMEFN1_label91:
+__kefir_func_SOMEFN1_label92:
+__kefir_func_SOMEFN1_label85:
+__kefir_func_SOMEFN1_label86:
+__kefir_func_SOMEFN1_label87:
+__kefir_func_SOMEFN1_label88:
+__kefir_func_SOMEFN1_label81:
+__kefir_func_SOMEFN1_label82:
+__kefir_func_SOMEFN1_label83:
+__kefir_func_SOMEFN1_label84:
+__kefir_func_SOMEFN1_label77:
+__kefir_func_SOMEFN1_label78:
+__kefir_func_SOMEFN1_label79:
+__kefir_func_SOMEFN1_label80:
+__kefir_func_SOMEFN1_label73:
+__kefir_func_SOMEFN1_label74:
+__kefir_func_SOMEFN1_label75:
+__kefir_func_SOMEFN1_label76:
+__kefir_func_SOMEFN1_label69:
+__kefir_func_SOMEFN1_label70:
+__kefir_func_SOMEFN1_label71:
+__kefir_func_SOMEFN1_label72:
+__kefir_func_SOMEFN1_label65:
+__kefir_func_SOMEFN1_label66:
+__kefir_func_SOMEFN1_label67:
+__kefir_func_SOMEFN1_label68:
+__kefir_func_SOMEFN1_label61:
+__kefir_func_SOMEFN1_label62:
+__kefir_func_SOMEFN1_label63:
+__kefir_func_SOMEFN1_label64:
+__kefir_func_SOMEFN1_label57:
+__kefir_func_SOMEFN1_label58:
+__kefir_func_SOMEFN1_label59:
+__kefir_func_SOMEFN1_label60:
+__kefir_func_SOMEFN1_label53:
+__kefir_func_SOMEFN1_label54:
+__kefir_func_SOMEFN1_label55:
+__kefir_func_SOMEFN1_label56:
+__kefir_func_SOMEFN1_label49:
+__kefir_func_SOMEFN1_label50:
+__kefir_func_SOMEFN1_label51:
+__kefir_func_SOMEFN1_label52:
+__kefir_func_SOMEFN1_label45:
+__kefir_func_SOMEFN1_label46:
+__kefir_func_SOMEFN1_label47:
+__kefir_func_SOMEFN1_label48:
+__kefir_func_SOMEFN1_label41:
+__kefir_func_SOMEFN1_label42:
+__kefir_func_SOMEFN1_label43:
+__kefir_func_SOMEFN1_label44:
+__kefir_func_SOMEFN1_label37:
+__kefir_func_SOMEFN1_label38:
+__kefir_func_SOMEFN1_label39:
+__kefir_func_SOMEFN1_label40:
+__kefir_func_SOMEFN1_label33:
+__kefir_func_SOMEFN1_label34:
+__kefir_func_SOMEFN1_label35:
+__kefir_func_SOMEFN1_label36:
+__kefir_func_SOMEFN1_label29:
+__kefir_func_SOMEFN1_label30:
+__kefir_func_SOMEFN1_label31:
+__kefir_func_SOMEFN1_label32:
+__kefir_func_SOMEFN1_label25:
+__kefir_func_SOMEFN1_label26:
+__kefir_func_SOMEFN1_label27:
+__kefir_func_SOMEFN1_label28:
+__kefir_func_SOMEFN1_label21:
+__kefir_func_SOMEFN1_label22:
+__kefir_func_SOMEFN1_label23:
+__kefir_func_SOMEFN1_label24:
+__kefir_func_SOMEFN1_label17:
+__kefir_func_SOMEFN1_label18:
+__kefir_func_SOMEFN1_label19:
+__kefir_func_SOMEFN1_label20:
+__kefir_func_SOMEFN1_label15:
+__kefir_func_SOMEFN1_label16:
     call SOMEFN0@PLT
 .loc 0 27 12
-__kefir_func_SOMEFN1_label5:
-__kefir_func_SOMEFN1_label7:
-    movd __kefir_func_SOMEFN1_label6(%rip), %xmm1
-__kefir_func_SOMEFN1_label8:
-__kefir_func_SOMEFN1_label9:
+__kefir_func_SOMEFN1_label175:
+__kefir_func_SOMEFN1_label177:
+__kefir_func_SOMEFN1_label178:
+__kefir_func_SOMEFN1_label181:
+__kefir_func_SOMEFN1_label173:
+__kefir_func_SOMEFN1_label174:
+__kefir_func_SOMEFN1_label169:
+__kefir_func_SOMEFN1_label170:
+__kefir_func_SOMEFN1_label171:
+__kefir_func_SOMEFN1_label172:
+__kefir_func_SOMEFN1_label167:
+__kefir_func_SOMEFN1_label168:
+__kefir_func_SOMEFN1_label165:
+__kefir_func_SOMEFN1_label166:
+__kefir_func_SOMEFN1_label163:
+__kefir_func_SOMEFN1_label164:
+__kefir_func_SOMEFN1_label161:
+__kefir_func_SOMEFN1_label162:
+__kefir_func_SOMEFN1_label159:
+__kefir_func_SOMEFN1_label160:
+__kefir_func_SOMEFN1_label157:
+__kefir_func_SOMEFN1_label158:
+__kefir_func_SOMEFN1_label155:
+__kefir_func_SOMEFN1_label156:
+__kefir_func_SOMEFN1_label153:
+__kefir_func_SOMEFN1_label154:
+__kefir_func_SOMEFN1_label151:
+__kefir_func_SOMEFN1_label152:
+__kefir_func_SOMEFN1_label149:
+__kefir_func_SOMEFN1_label150:
+__kefir_func_SOMEFN1_label147:
+__kefir_func_SOMEFN1_label148:
+__kefir_func_SOMEFN1_label145:
+__kefir_func_SOMEFN1_label146:
+__kefir_func_SOMEFN1_label143:
+__kefir_func_SOMEFN1_label144:
+__kefir_func_SOMEFN1_label141:
+__kefir_func_SOMEFN1_label142:
+__kefir_func_SOMEFN1_label139:
+__kefir_func_SOMEFN1_label140:
+__kefir_func_SOMEFN1_label137:
+__kefir_func_SOMEFN1_label138:
+__kefir_func_SOMEFN1_label135:
+__kefir_func_SOMEFN1_label136:
+__kefir_func_SOMEFN1_label133:
+__kefir_func_SOMEFN1_label134:
+__kefir_func_SOMEFN1_label131:
+__kefir_func_SOMEFN1_label132:
+__kefir_func_SOMEFN1_label129:
+__kefir_func_SOMEFN1_label130:
+__kefir_func_SOMEFN1_label127:
+__kefir_func_SOMEFN1_label128:
+__kefir_func_SOMEFN1_label125:
+__kefir_func_SOMEFN1_label126:
+__kefir_func_SOMEFN1_label123:
+__kefir_func_SOMEFN1_label124:
+__kefir_func_SOMEFN1_label121:
+__kefir_func_SOMEFN1_label122:
+__kefir_func_SOMEFN1_label119:
+__kefir_func_SOMEFN1_label120:
+    movd __kefir_func_SOMEFN1_label180(%rip), %xmm1
+__kefir_func_SOMEFN1_label179:
+__kefir_func_SOMEFN1_label182:
+__kefir_func_SOMEFN1_label183:
+__kefir_func_SOMEFN1_label185:
     addss %xmm0, %xmm1
-__kefir_func_SOMEFN1_label10:
-__kefir_func_SOMEFN1_label11:
+__kefir_func_SOMEFN1_label184:
+__kefir_func_SOMEFN1_label186:
+__kefir_func_SOMEFN1_label187:
+__kefir_func_SOMEFN1_label197:
     movaps %xmm1, %xmm0
 .loc 0 27 5
+__kefir_func_SOMEFN1_label188:
+__kefir_func_SOMEFN1_label189:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
+__kefir_func_SOMEFN1_label194:
+__kefir_func_SOMEFN1_label195:
+__kefir_func_SOMEFN1_label192:
+__kefir_func_SOMEFN1_label193:
+__kefir_func_SOMEFN1_label190:
+__kefir_func_SOMEFN1_label191:
     ret
-__kefir_func_SOMEFN1_label12:
+__kefir_func_SOMEFN1_label196:
+__kefir_func_SOMEFN1_label198:
+__kefir_func_SOMEFN1_label3:
 __kefir_text_func_SOMEFN1_end:
 .section .rodata
     .align 4
-__kefir_func_SOMEFN1_label6:
+__kefir_func_SOMEFN1_label180:
     .long 1078523331
 .section .text
 

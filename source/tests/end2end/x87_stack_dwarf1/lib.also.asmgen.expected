@@ -10,59 +10,126 @@ compute:
 .file 0 "source/tests/end2end/x87_stack_dwarf1/lib.kefir.c"
 .loc 0 23 1
 __kefir_text_func_compute_begin:
+__kefir_func_compute_label8:
+__kefir_func_compute_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_compute_label1
-__kefir_func_compute_label4:
-__kefir_func_compute_label1:
-    fldt 48(%rbp)
-__kefir_func_compute_label5:
-__kefir_func_compute_label6:
-    fldt 32(%rbp)
-__kefir_func_compute_label7:
-__kefir_func_compute_label8:
-    fldt 16(%rbp)
-.loc 0 24 22
 __kefir_func_compute_label9:
 __kefir_func_compute_label10:
-    fxch %st(1)
-    fld %st(0)
-    fmulp
-.loc 0 25 23
-__kefir_func_compute_label11:
+    jmp __kefir_func_compute_label2
+__kefir_func_compute_label12:
 __kefir_func_compute_label13:
-    fldt __kefir_func_compute_label12(%rip)
 __kefir_func_compute_label14:
 __kefir_func_compute_label15:
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(1)
-    fmulp
 __kefir_func_compute_label16:
-__kefir_func_compute_label17:
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(1)
-    fmulp
-.loc 0 26 23
 __kefir_func_compute_label18:
+__kefir_func_compute_label11:
+__kefir_func_compute_label1:
+__kefir_func_compute_label2:
+    fldt 48(%rbp)
+__kefir_func_compute_label17:
 __kefir_func_compute_label19:
-    fxch %st(1)
-    fsubp
-.loc 0 27 5
 __kefir_func_compute_label20:
 __kefir_func_compute_label21:
+__kefir_func_compute_label22:
+__kefir_func_compute_label23:
+__kefir_func_compute_label24:
+__kefir_func_compute_label26:
+    fldt 32(%rbp)
+__kefir_func_compute_label25:
+__kefir_func_compute_label27:
+__kefir_func_compute_label28:
+__kefir_func_compute_label29:
+__kefir_func_compute_label30:
+__kefir_func_compute_label31:
+__kefir_func_compute_label32:
+__kefir_func_compute_label34:
+    fldt 16(%rbp)
+.loc 0 24 22
+__kefir_func_compute_label33:
+__kefir_func_compute_label35:
+__kefir_func_compute_label36:
+__kefir_func_compute_label37:
+__kefir_func_compute_label38:
+__kefir_func_compute_label44:
+    fxch %st(1)
+__kefir_func_compute_label39:
+__kefir_func_compute_label40:
+    fld %st(0)
+__kefir_func_compute_label41:
+__kefir_func_compute_label42:
+    fmulp
+.loc 0 25 23
+__kefir_func_compute_label43:
+__kefir_func_compute_label45:
+__kefir_func_compute_label46:
+__kefir_func_compute_label47:
+__kefir_func_compute_label48:
+__kefir_func_compute_label51:
+    fldt __kefir_func_compute_label50(%rip)
+__kefir_func_compute_label49:
+__kefir_func_compute_label52:
+__kefir_func_compute_label53:
+__kefir_func_compute_label54:
+__kefir_func_compute_label55:
+__kefir_func_compute_label63:
+    fxch %st(1)
+__kefir_func_compute_label56:
+__kefir_func_compute_label57:
+    fxch %st(2)
+__kefir_func_compute_label58:
+__kefir_func_compute_label59:
+    fxch %st(1)
+__kefir_func_compute_label60:
+__kefir_func_compute_label61:
+    fmulp
+__kefir_func_compute_label62:
+__kefir_func_compute_label64:
+__kefir_func_compute_label65:
+__kefir_func_compute_label66:
+__kefir_func_compute_label67:
+__kefir_func_compute_label75:
+    fxch %st(1)
+__kefir_func_compute_label68:
+__kefir_func_compute_label69:
+    fxch %st(2)
+__kefir_func_compute_label70:
+__kefir_func_compute_label71:
+    fxch %st(1)
+__kefir_func_compute_label72:
+__kefir_func_compute_label73:
+    fmulp
+.loc 0 26 23
+__kefir_func_compute_label74:
+__kefir_func_compute_label76:
+__kefir_func_compute_label77:
+__kefir_func_compute_label78:
+__kefir_func_compute_label79:
+__kefir_func_compute_label83:
+    fxch %st(1)
+__kefir_func_compute_label80:
+__kefir_func_compute_label81:
+    fsubp
+.loc 0 27 5
+__kefir_func_compute_label82:
+__kefir_func_compute_label84:
+__kefir_func_compute_label85:
+__kefir_func_compute_label89:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
+__kefir_func_compute_label86:
+__kefir_func_compute_label87:
     ret
-__kefir_func_compute_label22:
+__kefir_func_compute_label88:
+__kefir_func_compute_label90:
+__kefir_func_compute_label3:
 __kefir_text_func_compute_end:
 .section .rodata
     .align 8
-__kefir_func_compute_label12:
+__kefir_func_compute_label50:
     .quad 9223372036854775808
     .quad 16385
 .section .text
