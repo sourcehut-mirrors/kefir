@@ -121,65 +121,6 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(struct kefir_mem
     const struct kefir_ir_debug_entry *entry;
     REQUIRE_OK(kefir_ir_debug_entry_get(&codegen_function->module->ir_module->debug_info.entries, entry_id, &entry));
 
-    if (entry->parent_identifier != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
-        const struct kefir_ir_debug_entry *parent_entry;
-        REQUIRE_OK(kefir_ir_debug_entry_get(&codegen_function->module->ir_module->debug_info.entries, entry->parent_identifier, &parent_entry));
-        if (parent_entry->tag == KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK) {
-            const struct kefir_ir_debug_entry_attribute *attr;
-            REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
-                                                        KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, &attr));
-            const kefir_size_t block_begin_idx = attr->code_index;
-            REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
-                                                        KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, &attr));
-            const kefir_size_t block_end_idx = attr->code_index;
-
-            REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, parent_entry->identifier,
-                                                        KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, &attr));
-            const kefir_size_t parent_block_begin_idx = attr->code_index;
-            REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, parent_entry->identifier,
-                                                        KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, &attr));
-            const kefir_size_t parent_block_end_idx = attr->code_index;
-
-            struct kefir_hashtree block_fragments;
-            struct kefir_hashtree parent_block_fragments;
-            REQUIRE_OK(kefir_hashtree_init(&block_fragments, &kefir_hashtree_uint_ops));
-            REQUIRE_OK(kefir_hashtree_init(&parent_block_fragments, &kefir_hashtree_uint_ops));
-            
-            kefir_result_t res = kefir_codegen_amd64_dwarf_collect_code_fragments(mem, codegen_function, block_begin_idx, block_end_idx, &block_fragments);
-            REQUIRE_CHAIN(&res, kefir_codegen_amd64_dwarf_collect_code_fragments(mem, codegen_function, parent_block_begin_idx, parent_block_end_idx, &parent_block_fragments));
-
-            kefir_bool_t identical_lexical_blocks = true;
-            struct kefir_hashtree_node *node, *parent_node;
-            REQUIRE_OK(kefir_hashtree_min(&block_fragments, &node));
-            REQUIRE_OK(kefir_hashtree_min(&parent_block_fragments, &parent_node));
-            for (; node != NULL && parent_node != NULL && node->key == parent_node->key;
-                node = kefir_hashtree_next_node(&block_fragments, node), parent_node = kefir_hashtree_next_node(&block_fragments, parent_node)) {
-                // Intentionally left blank
-            }
-            if (node != NULL || parent_node != NULL) {
-                identical_lexical_blocks = false;
-            }
-
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_hashtree_free(mem, &block_fragments);
-                kefir_hashtree_free(mem, &parent_block_fragments);
-                return KEFIR_OK;
-            });
-            res = kefir_hashtree_free(mem, &block_fragments);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_hashtree_free(mem, &parent_block_fragments);
-                return KEFIR_OK;
-            });
-            REQUIRE_OK(kefir_hashtree_free(mem, &parent_block_fragments));
-
-            if (identical_lexical_blocks) {
-                REQUIRE_OK(
-                    kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, liveness, entry_id));
-                return KEFIR_OK;
-            }
-        }
-    }
-
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
         REQUIRE_OK(generate_lexical_block_abbrev(codegen_function->codegen, context));
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, liveness,
