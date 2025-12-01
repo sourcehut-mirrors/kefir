@@ -6,9 +6,11 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list_coalesce(struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
+kefir_result_t kefir_codegen_amd64_dwarf_collect_code_fragments(struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
     kefir_opt_code_debug_info_code_ref_t begin_ref, kefir_opt_code_debug_info_code_ref_t end_ref, struct kefir_hashtree *fragment_tree) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
+    REQUIRE(fragment_tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 dwarf fragment tree"));
 
     for (kefir_opt_code_debug_info_code_ref_t code_ref = begin_ref; code_ref <= end_ref; code_ref++) {
         const struct kefir_opt_code_debug_info_code_reference *code_reference;
@@ -47,6 +49,16 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list_coalesce(struct kef
         }
     }
 
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list_coalesce(struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
+    kefir_opt_code_debug_info_code_ref_t begin_ref, kefir_opt_code_debug_info_code_ref_t end_ref, struct kefir_hashtree *fragment_tree) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
+    REQUIRE(fragment_tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 dwarf fragment tree"));
+
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_collect_code_fragments(mem, codegen_function, begin_ref, end_ref, fragment_tree));
     kefir_bool_t reached_fixpoint = false;
     for (; !reached_fixpoint;) {
         reached_fixpoint = true;

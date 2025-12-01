@@ -159,6 +159,9 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_label(struct kefir_mem *, stru
                                                         struct kefir_codegen_amd64_dwarf_context *,
                                                         kefir_ir_debug_entry_id_t,
                                                         kefir_codegen_amd64_dwarf_entry_id_t *);
+
+kefir_result_t kefir_codegen_amd64_dwarf_collect_code_fragments(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+    kefir_opt_code_debug_info_code_ref_t, kefir_opt_code_debug_info_code_ref_t, struct kefir_hashtree *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list_coalesce(struct kefir_mem *, struct kefir_codegen_amd64_function *,
     kefir_opt_code_debug_info_code_ref_t, kefir_opt_code_debug_info_code_ref_t, struct kefir_hashtree *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list(struct kefir_mem *, struct kefir_codegen_amd64_function *,
