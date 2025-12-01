@@ -1327,6 +1327,7 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->xregalloc, &func->stack_frame));
     REQUIRE_OK(kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
                                            &func->code.context));
+    REQUIRE_OK(kefir_asmcmp_code_map_coalesce(mem, &func->code.context.debug_info.code_map));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "devasm") == 0) {
         REQUIRE_OK(output_asm(codegen, &func->code.context, NULL, codegen->config->debug_info));

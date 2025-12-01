@@ -93,6 +93,8 @@ kefir_result_t kefir_asmcmp_debug_info_source_map_at(const struct kefir_asmcmp_d
 kefir_result_t kefir_asmcmp_code_map_add_fragment(struct kefir_mem *, struct kefir_asmcmp_debug_info_code_map *, kefir_asmcmp_debug_info_code_reference_t, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t);
 kefir_result_t kefir_asmcmp_value_map_add_fragment(struct kefir_mem *, struct kefir_asmcmp_debug_info_value_map *, kefir_asmcmp_debug_info_value_reference_t, kefir_asmcmp_virtual_register_index_t, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t);
 
+kefir_result_t kefir_asmcmp_code_map_coalesce(struct kefir_mem *, struct kefir_asmcmp_debug_info_code_map *);
+
 typedef struct kefir_asmcmp_code_map_iterator {
     struct kefir_hashtable_iterator iter;
 } kefir_asmcmp_code_map_iterator_t;

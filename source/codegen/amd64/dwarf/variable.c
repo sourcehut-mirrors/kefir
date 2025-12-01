@@ -799,9 +799,10 @@ static kefir_result_t coalesce_value_map_fragments(struct kefir_mem *mem, struct
         reached_fixpoint = true;
 
         struct kefir_hashtree_node_iterator tree_iter;
+        struct kefir_hashtree_node *next_node = NULL;
         for (struct kefir_hashtree_node *node = kefir_hashtree_iter(fragment_tree, &tree_iter);
-            node != NULL && reached_fixpoint;
-            node = kefir_hashtree_next(&tree_iter)) {
+            node != NULL; node = next_node) {
+            next_node = kefir_hashtree_next(&tree_iter);
             kefir_asmcmp_label_index_t begin_label = ((kefir_uint64_t) node->key) >> 32;
             kefir_asmcmp_label_index_t end_label = (kefir_uint32_t) node->key;
             ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx,

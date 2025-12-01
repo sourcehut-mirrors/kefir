@@ -294,6 +294,107 @@ kefir_result_t kefir_asmcmp_value_map_add_fragment(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
+static kefir_result_t coalesce_code_map_entry(struct kefir_mem *mem, struct kefir_asmcmp_debug_info_code_map_entry *entry,
+    struct kefir_hashtree *fragment_tree) {
+
+    for (kefir_size_t i = 0; i < entry->fragments_length; i++) {
+        struct kefir_asmcmp_debug_info_code_fragment *fragment = &entry->fragments[i];
+        if (fragment->begin_label == fragment->end_label) {
+            continue;
+        }
+        
+        kefir_hashtree_key_t key = (((kefir_uint64_t) fragment->begin_label) << 32) | (kefir_uint32_t) fragment->end_label;
+        kefir_result_t res = kefir_hashtree_insert(mem, fragment_tree, key, (kefir_hashtree_value_t) 0);
+        if (res == KEFIR_ALREADY_EXISTS) {
+            continue;
+        }
+        REQUIRE_OK(res);
+    }
+
+    kefir_bool_t reached_fixpoint = false;
+    for (; !reached_fixpoint;) {
+        reached_fixpoint = true;
+
+        struct kefir_hashtree_node_iterator tree_iter;
+        for (struct kefir_hashtree_node *node = kefir_hashtree_iter(fragment_tree, &tree_iter);
+            node != NULL && reached_fixpoint;
+            node = kefir_hashtree_next(&tree_iter)) {
+            kefir_asmcmp_label_index_t begin_label = ((kefir_uint64_t) node->key) >> 32;
+            kefir_asmcmp_label_index_t end_label = (kefir_uint32_t) node->key;
+
+            struct kefir_hashtree_node *other_node;
+            kefir_result_t res = kefir_hashtree_lower_bound(fragment_tree, (kefir_hashtree_key_t) (((kefir_uint64_t) end_label) << 32), &other_node);
+            if (res == KEFIR_NOT_FOUND) {
+                REQUIRE_OK(kefir_hashtree_min(fragment_tree, &other_node));
+            } else {
+                REQUIRE_OK(res);
+                other_node = kefir_hashtree_next_node(fragment_tree, other_node);
+            }
+
+            if (other_node == NULL) {
+                continue;
+            }
+
+            kefir_asmcmp_label_index_t other_begin_label = ((kefir_uint64_t) other_node->key) >> 32;
+            kefir_asmcmp_label_index_t other_end_label = (kefir_uint32_t) other_node->key;
+
+            if (other_begin_label == end_label) {
+                reached_fixpoint = false;
+                REQUIRE_OK(kefir_hashtree_delete(mem, fragment_tree, node->key));
+                REQUIRE_OK(kefir_hashtree_delete(mem, fragment_tree, other_node->key));
+
+                kefir_hashtree_key_t key = (((kefir_uint64_t) begin_label) << 32) | (kefir_uint32_t) other_end_label;
+                res = kefir_hashtree_insert(mem, fragment_tree, key, (kefir_hashtree_value_t) 0);
+                if (res == KEFIR_ALREADY_EXISTS) {
+                    continue;
+                }
+                REQUIRE_OK(res);
+            }
+        }
+    }
+
+    entry->fragments_length = 0;
+    struct kefir_hashtree_node_iterator tree_iter;
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(fragment_tree, &tree_iter);
+        node != NULL;
+        node = kefir_hashtree_next(&tree_iter)) {
+        kefir_asmcmp_label_index_t begin_label = ((kefir_uint64_t) node->key) >> 32;
+        kefir_asmcmp_label_index_t end_label = (kefir_uint32_t) node->key;
+        entry->fragments[entry->fragments_length].begin_label = begin_label;
+        entry->fragments[entry->fragments_length].end_label = end_label;
+        entry->fragments_length++;
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_code_map_coalesce(struct kefir_mem *mem, struct kefir_asmcmp_debug_info_code_map *code_map) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info code map"));
+
+    kefir_result_t res;
+    kefir_hashtable_key_t key;
+    kefir_hashtable_value_t value;
+    struct kefir_hashtable_iterator iter;
+    for (res = kefir_hashtable_iter(&code_map->fragments, &iter, &key, &value);
+        res == KEFIR_OK;
+        res = kefir_hashtable_next(&iter, &key, &value)) {
+        ASSIGN_DECL_CAST(struct kefir_asmcmp_debug_info_code_map_entry *, entry,
+            value);
+
+        struct kefir_hashtree fragment_tree;
+        REQUIRE_OK(kefir_hashtree_init(&fragment_tree, &kefir_hashtree_uint_ops));
+
+        kefir_result_t res = coalesce_code_map_entry(mem, entry, &fragment_tree);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_hashtree_free(mem, &fragment_tree);
+            return res;
+        });
+        REQUIRE_OK(kefir_hashtree_free(mem, &fragment_tree));
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_code_map_iter(const struct kefir_asmcmp_debug_info_code_map *code_map, struct kefir_asmcmp_code_map_iterator *iter, kefir_asmcmp_debug_info_code_reference_t *code_ref_ptr) {
     REQUIRE(code_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info code map"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp debug info code map iterator"));
