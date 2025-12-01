@@ -36,16 +36,16 @@
 .type sub_f64, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 add_ld:
-__kefir_text_func_add_ld_begin:
+.L__kefir_text_func_add_ld_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $72, %rsp
     fstcw -16(%rbp)
-    jmp __kefir_func_add_ld_label1
-__kefir_func_add_ld_label1:
+    jmp .L__kefir_func_add_ld_label1
+.L__kefir_func_add_ld_label1:
     mov %rdi, %rbx
     movq ld_1@GOTPCREL(%rip), %rsi
     lea -48(%rbp), %rdx
@@ -74,17 +74,17 @@ __kefir_func_add_ld_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_add_ld_end:
+.L__kefir_text_func_add_ld_end:
 
 div_ld:
-__kefir_text_func_div_ld_begin:
+.L__kefir_text_func_div_ld_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $88, %rsp
     fstcw -16(%rbp)
-    jmp __kefir_func_div_ld_label1
-__kefir_func_div_ld_label1:
+    jmp .L__kefir_func_div_ld_label1
+.L__kefir_func_div_ld_label1:
     mov %rdi, %rbx
     movq ld_1@GOTPCREL(%rip), %rsi
     lea -48(%rbp), %rdx
@@ -154,17 +154,17 @@ __kefir_func_div_ld_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_div_ld_end:
+.L__kefir_text_func_div_ld_end:
 
 mul_ld:
-__kefir_text_func_mul_ld_begin:
+.L__kefir_text_func_mul_ld_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $72, %rsp
     fstcw -16(%rbp)
-    jmp __kefir_func_mul_ld_label1
-__kefir_func_mul_ld_label1:
+    jmp .L__kefir_func_mul_ld_label1
+.L__kefir_func_mul_ld_label1:
     mov %rdi, %rbx
     movq ld_1@GOTPCREL(%rip), %rsi
     lea -48(%rbp), %rdx
@@ -211,16 +211,16 @@ __kefir_func_mul_ld_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_mul_ld_end:
+.L__kefir_text_func_mul_ld_end:
 
 neg_ld:
-__kefir_text_func_neg_ld_begin:
+.L__kefir_text_func_neg_ld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_neg_ld_label1
-__kefir_func_neg_ld_label1:
+    jmp .L__kefir_func_neg_ld_label1
+.L__kefir_func_neg_ld_label1:
     movq ld_1@GOTPCREL(%rip), %rsi
     lea -48(%rbp), %rdx
     mov $32, %rdi
@@ -238,17 +238,17 @@ __kefir_func_neg_ld_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_neg_ld_end:
+.L__kefir_text_func_neg_ld_end:
 
 sub_ld:
-__kefir_text_func_sub_ld_begin:
+.L__kefir_text_func_sub_ld_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $72, %rsp
     fstcw -16(%rbp)
-    jmp __kefir_func_sub_ld_label1
-__kefir_func_sub_ld_label1:
+    jmp .L__kefir_func_sub_ld_label1
+.L__kefir_func_sub_ld_label1:
     mov %rdi, %rbx
     movq ld_1@GOTPCREL(%rip), %rsi
     lea -48(%rbp), %rdx
@@ -277,17 +277,17 @@ __kefir_func_sub_ld_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_sub_ld_end:
+.L__kefir_text_func_sub_ld_end:
 
 add_f32:
-__kefir_text_func_add_f32_begin:
+.L__kefir_text_func_add_f32_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $56, %rsp
     stmxcsr -16(%rbp)
-    jmp __kefir_func_add_f32_label1
-__kefir_func_add_f32_label1:
+    jmp .L__kefir_func_add_f32_label1
+.L__kefir_func_add_f32_label1:
     mov %rdi, %rbx
     movq f32_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
@@ -315,17 +315,17 @@ __kefir_func_add_f32_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_add_f32_end:
+.L__kefir_text_func_add_f32_end:
 
 add_f64:
-__kefir_text_func_add_f64_begin:
+.L__kefir_text_func_add_f64_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $56, %rsp
     stmxcsr -16(%rbp)
-    jmp __kefir_func_add_f64_label1
-__kefir_func_add_f64_label1:
+    jmp .L__kefir_func_add_f64_label1
+.L__kefir_func_add_f64_label1:
     mov %rdi, %rbx
     movq f64_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
@@ -352,17 +352,17 @@ __kefir_func_add_f64_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_add_f64_end:
+.L__kefir_text_func_add_f64_end:
 
 div_f32:
-__kefir_text_func_div_f32_begin:
+.L__kefir_text_func_div_f32_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $56, %rsp
     stmxcsr -16(%rbp)
-    jmp __kefir_func_div_f32_label1
-__kefir_func_div_f32_label1:
+    jmp .L__kefir_func_div_f32_label1
+.L__kefir_func_div_f32_label1:
     mov %rdi, %rbx
     movq f32_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
@@ -398,7 +398,7 @@ __kefir_func_div_f32_label1:
     movaps %xmm4, %xmm0
     mulpd %xmm1, %xmm0
     movaps %xmm3, %xmm1
-    xorps __kefir_constant_complex_float32_div(%rip), %xmm0
+    xorps .L__kefir_constant_complex_float32_div(%rip), %xmm0
     shufpd $1, %xmm3, %xmm1
     addpd %xmm0, %xmm2
     movaps %xmm3, %xmm0
@@ -415,18 +415,18 @@ __kefir_func_div_f32_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_div_f32_end:
+.L__kefir_text_func_div_f32_end:
 
 div_f64:
-__kefir_text_func_div_f64_begin:
+.L__kefir_text_func_div_f64_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $72, %rsp
     fstcw -16(%rbp)
     stmxcsr -24(%rbp)
-    jmp __kefir_func_div_f64_label1
-__kefir_func_div_f64_label1:
+    jmp .L__kefir_func_div_f64_label1
+.L__kefir_func_div_f64_label1:
     mov %rdi, %rbx
     movq f64_1@GOTPCREL(%rip), %rsi
     lea -80(%rbp), %rdx
@@ -486,17 +486,17 @@ __kefir_func_div_f64_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_div_f64_end:
+.L__kefir_text_func_div_f64_end:
 
 mul_f32:
-__kefir_text_func_mul_f32_begin:
+.L__kefir_text_func_mul_f32_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $56, %rsp
     stmxcsr -16(%rbp)
-    jmp __kefir_func_mul_f32_label1
-__kefir_func_mul_f32_label1:
+    jmp .L__kefir_func_mul_f32_label1
+.L__kefir_func_mul_f32_label1:
     mov %rdi, %rbx
     movq f32_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
@@ -520,7 +520,7 @@ __kefir_func_mul_f32_label1:
     movaps %xmm1, %xmm2
     shufps $160, %xmm1, %xmm2
     mulps %xmm0, %xmm2
-    xorps __kefir_constant_complex_float32_mul(%rip), %xmm0
+    xorps .L__kefir_constant_complex_float32_mul(%rip), %xmm0
     movaps %xmm0, %xmm3
     shufps $177, %xmm0, %xmm3
     movaps %xmm1, %xmm4
@@ -537,17 +537,17 @@ __kefir_func_mul_f32_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_mul_f32_end:
+.L__kefir_text_func_mul_f32_end:
 
 mul_f64:
-__kefir_text_func_mul_f64_begin:
+.L__kefir_text_func_mul_f64_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $56, %rsp
     stmxcsr -16(%rbp)
-    jmp __kefir_func_mul_f64_label1
-__kefir_func_mul_f64_label1:
+    jmp .L__kefir_func_mul_f64_label1
+.L__kefir_func_mul_f64_label1:
     mov %rdi, %rbx
     movq f64_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
@@ -568,7 +568,7 @@ __kefir_func_mul_f64_label1:
     movdqu -48(%rbp), %xmm2
     unpcklpd -64(%rbp), %xmm2
     movaps %xmm2, %xmm3
-    xorps __kefir_constant_complex_float64_mul(%rip), %xmm3
+    xorps .L__kefir_constant_complex_float64_mul(%rip), %xmm3
     movaps %xmm3, %xmm4
     shufpd $1, %xmm3, %xmm4
     movaps %xmm0, %xmm3
@@ -588,16 +588,16 @@ __kefir_func_mul_f64_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_mul_f64_end:
+.L__kefir_text_func_mul_f64_end:
 
 neg_f32:
-__kefir_text_func_neg_f32_begin:
+.L__kefir_text_func_neg_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_neg_f32_label1
-__kefir_func_neg_f32_label1:
+    jmp .L__kefir_func_neg_f32_label1
+.L__kefir_func_neg_f32_label1:
     movq f32_1@GOTPCREL(%rip), %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
@@ -606,7 +606,7 @@ __kefir_func_neg_f32_label1:
     movd -16(%rbp), %xmm0
     movd -12(%rbp), %xmm1
     insertps $16, %xmm1, %xmm0
-    xorps __kefir_constant_complex_float32_neg(%rip), %xmm0
+    xorps .L__kefir_constant_complex_float32_neg(%rip), %xmm0
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -615,16 +615,16 @@ __kefir_func_neg_f32_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_neg_f32_end:
+.L__kefir_text_func_neg_f32_end:
 
 neg_f64:
-__kefir_text_func_neg_f64_begin:
+.L__kefir_text_func_neg_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_neg_f64_label1
-__kefir_func_neg_f64_label1:
+    jmp .L__kefir_func_neg_f64_label1
+.L__kefir_func_neg_f64_label1:
     movq f64_1@GOTPCREL(%rip), %rsi
     lea -32(%rbp), %rdx
     mov $16, %rdi
@@ -632,23 +632,23 @@ __kefir_func_neg_f64_label1:
     call __atomic_load@PLT
     movq -32(%rbp), %xmm0
     movq -24(%rbp), %xmm1
-    xorps __kefir_constant_complex_float64_neg(%rip), %xmm0
-    xorps __kefir_constant_complex_float64_neg(%rip), %xmm1
+    xorps .L__kefir_constant_complex_float64_neg(%rip), %xmm0
+    xorps .L__kefir_constant_complex_float64_neg(%rip), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_neg_f64_end:
+.L__kefir_text_func_neg_f64_end:
 
 sub_f32:
-__kefir_text_func_sub_f32_begin:
+.L__kefir_text_func_sub_f32_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $56, %rsp
     stmxcsr -16(%rbp)
-    jmp __kefir_func_sub_f32_label1
-__kefir_func_sub_f32_label1:
+    jmp .L__kefir_func_sub_f32_label1
+.L__kefir_func_sub_f32_label1:
     mov %rdi, %rbx
     movq f32_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
@@ -676,17 +676,17 @@ __kefir_func_sub_f32_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_sub_f32_end:
+.L__kefir_text_func_sub_f32_end:
 
 sub_f64:
-__kefir_text_func_sub_f64_begin:
+.L__kefir_text_func_sub_f64_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $56, %rsp
     stmxcsr -16(%rbp)
-    jmp __kefir_func_sub_f64_label1
-__kefir_func_sub_f64_label1:
+    jmp .L__kefir_func_sub_f64_label1
+.L__kefir_func_sub_f64_label1:
     mov %rdi, %rbx
     movq f64_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
@@ -713,37 +713,37 @@ __kefir_func_sub_f64_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_sub_f64_end:
+.L__kefir_text_func_sub_f64_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .rodata
     .align 16
-__kefir_constant_complex_float32_mul:
+.L__kefir_constant_complex_float32_mul:
     .long 0
     .long 2147483648
     .long 0
     .long 2147483648
     .align 16
-__kefir_constant_complex_float32_div:
+.L__kefir_constant_complex_float32_div:
     .long 0
     .long 0
     .long 0
     .long 2147483648
     .align 16
-__kefir_constant_complex_float64_mul:
+.L__kefir_constant_complex_float64_mul:
     .long 0
     .long 0
     .long 0
     .long 2147483648
     .align 16
-__kefir_constant_complex_float32_neg:
+.L__kefir_constant_complex_float32_neg:
     .long 2147483648
     .long 2147483648
     .long 2147483648
     .long 2147483648
     .align 16
-__kefir_constant_complex_float64_neg:
+.L__kefir_constant_complex_float64_neg:
     .long 0
     .long 2147483648
     .long 0

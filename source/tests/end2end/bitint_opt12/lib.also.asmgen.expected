@@ -15,14 +15,14 @@
 .type xor2, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 or1:
-__kefir_text_func_or1_begin:
+.L__kefir_text_func_or1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_or1_label1
-__kefir_func_or1_label1:
+    jmp .L__kefir_func_or1_label1
+.L__kefir_func_or1_label1:
     movl $602927087, -16(%rbp)
     movl $1, -12(%rbp)
     movl $0, -8(%rbp)
@@ -32,15 +32,15 @@ __kefir_func_or1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_or1_end:
+.L__kefir_text_func_or1_end:
 
 or2:
-__kefir_text_func_or2_begin:
+.L__kefir_text_func_or2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_or2_label1
-__kefir_func_or2_label1:
+    jmp .L__kefir_func_or2_label1
+.L__kefir_func_or2_label1:
     movl $602927087, -16(%rbp)
     movl $1, -12(%rbp)
     movl $0, -8(%rbp)
@@ -50,15 +50,15 @@ __kefir_func_or2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_or2_end:
+.L__kefir_text_func_or2_end:
 
 and1:
-__kefir_text_func_and1_begin:
+.L__kefir_text_func_and1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_and1_label1
-__kefir_func_and1_label1:
+    jmp .L__kefir_func_and1_label1
+.L__kefir_func_and1_label1:
     movl $83337, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -68,15 +68,15 @@ __kefir_func_and1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_and1_end:
+.L__kefir_text_func_and1_end:
 
 and2:
-__kefir_text_func_and2_begin:
+.L__kefir_text_func_and2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_and2_label1
-__kefir_func_and2_label1:
+    jmp .L__kefir_func_and2_label1
+.L__kefir_func_and2_label1:
     movl $83337, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -86,15 +86,15 @@ __kefir_func_and2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_and2_end:
+.L__kefir_text_func_and2_end:
 
 xor1:
-__kefir_text_func_xor1_begin:
+.L__kefir_text_func_xor1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_xor1_label1
-__kefir_func_xor1_label1:
+    jmp .L__kefir_func_xor1_label1
+.L__kefir_func_xor1_label1:
     movl $602843750, -16(%rbp)
     movl $1, -12(%rbp)
     movl $0, -8(%rbp)
@@ -104,15 +104,15 @@ __kefir_func_xor1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_xor1_end:
+.L__kefir_text_func_xor1_end:
 
 xor2:
-__kefir_text_func_xor2_begin:
+.L__kefir_text_func_xor2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_xor2_label1
-__kefir_func_xor2_label1:
+    jmp .L__kefir_func_xor2_label1
+.L__kefir_func_xor2_label1:
     movl $602843750, -16(%rbp)
     movl $1, -12(%rbp)
     movl $0, -8(%rbp)
@@ -122,7 +122,7 @@ __kefir_func_xor2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_xor2_end:
+.L__kefir_text_func_xor2_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

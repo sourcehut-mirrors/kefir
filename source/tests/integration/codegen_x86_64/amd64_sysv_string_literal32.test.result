@@ -5,47 +5,47 @@
 .type func1, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 func1:
-__kefir_text_func_func1_begin:
+.L__kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
-__kefir_func_func1_label0:
-    lea %rax, [__kefir_string_literal0]
+.L__kefir_func_func1_label0:
+    lea %rax, [.L__kefir_string_literal0]
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    lea %rax, [__kefir_string_literal1]
+    lea %rax, [.L__kefir_string_literal1]
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    lea %rax, [__kefir_string_literal2]
+    lea %rax, [.L__kefir_string_literal2]
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    lea %rax, [__kefir_string_literal3]
+    lea %rax, [.L__kefir_string_literal3]
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    lea %rax, [__kefir_string_literal4]
+    lea %rax, [.L__kefir_string_literal4]
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     pop %rbp
     ret
-__kefir_func_func1_label1:
-__kefir_text_func_func1_end:
+.L__kefir_func_func1_label1:
+.L__kefir_text_func_func1_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .rodata
     .align 4
-__kefir_string_literal0:
+.L__kefir_string_literal0:
     .long 0x00000048, 0x00000065, 0x0000006c, 0x0000006c, 0x0000006f, 0x0000002c, 0x00000020, 0x00000077, 0x0000006f, 0x00000072, 0x0000006c, 0x00000064, 0x00000021, 0x00000000
     .align 4
-__kefir_string_literal1:
+.L__kefir_string_literal1:
     .long 0x00000048, 0x00000065, 0x0000006c, 0x0000006c, 0x0000006f, 0x0000002c, 0x0000000a, 0x00000063, 0x00000072, 0x00000075, 0x00000065, 0x0000006c, 0x00000009, 0x00000077, 0x0000006f, 0x00000072, 0x0000006c, 0x00000064, 0x00000021, 0x00000000
     .align 4
-__kefir_string_literal2:
+.L__kefir_string_literal2:
     .long 0x0000000a, 0x0000000a, 0x0000000a, 0x00000009, 0x00000009, 0x00000009, 0x00000020, 0x00000020, 0x00000020, 0x00000009, 0x00000009, 0x00000009, 0x0000000b, 0x0000000b, 0x0000000b, 0x0000000a, 0x00000000
     .align 4
-__kefir_string_literal3:
+.L__kefir_string_literal3:
     .long 0x00000027, 0x00000022, 0x00000048, 0x00000065, 0x00000079, 0x00000020, 0x00000068, 0x0000006f, 0x00000021, 0x00000022, 0x00000027, 0x0000005c, 0x00000022, 0x00000000
     .align 4
-__kefir_string_literal4:
+.L__kefir_string_literal4:
     .long 0x00000000, 0x00000000, 0x00000000, 0x0000000a, 0x00000000, 0x00000000

@@ -72,13 +72,13 @@
 .extern __bid_subtd3
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 eq32:
-__kefir_text_func_eq32_begin:
+.L__kefir_text_func_eq32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_eq32_label1
-__kefir_func_eq32_label1:
+    jmp .L__kefir_func_eq32_label1
+.L__kefir_func_eq32_label1:
     call __bid_eqsd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -86,14 +86,14 @@ __kefir_func_eq32_label1:
     sete %al
     pop %rbp
     ret
-__kefir_text_func_eq32_end:
+.L__kefir_text_func_eq32_end:
 
 eq64:
-__kefir_text_func_eq64_begin:
+.L__kefir_text_func_eq64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_eq64_label1
-__kefir_func_eq64_label1:
+    jmp .L__kefir_func_eq64_label1
+.L__kefir_func_eq64_label1:
     call __bid_eqdd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -101,14 +101,14 @@ __kefir_func_eq64_label1:
     sete %al
     pop %rbp
     ret
-__kefir_text_func_eq64_end:
+.L__kefir_text_func_eq64_end:
 
 gt32:
-__kefir_text_func_gt32_begin:
+.L__kefir_text_func_gt32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_gt32_label1
-__kefir_func_gt32_label1:
+    jmp .L__kefir_func_gt32_label1
+.L__kefir_func_gt32_label1:
     call __bid_gtsd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -116,14 +116,14 @@ __kefir_func_gt32_label1:
     setg %al
     pop %rbp
     ret
-__kefir_text_func_gt32_end:
+.L__kefir_text_func_gt32_end:
 
 gt64:
-__kefir_text_func_gt64_begin:
+.L__kefir_text_func_gt64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_gt64_label1
-__kefir_func_gt64_label1:
+    jmp .L__kefir_func_gt64_label1
+.L__kefir_func_gt64_label1:
     call __bid_gtdd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -131,14 +131,14 @@ __kefir_func_gt64_label1:
     setg %al
     pop %rbp
     ret
-__kefir_text_func_gt64_end:
+.L__kefir_text_func_gt64_end:
 
 lt32:
-__kefir_text_func_lt32_begin:
+.L__kefir_text_func_lt32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_lt32_label1
-__kefir_func_lt32_label1:
+    jmp .L__kefir_func_lt32_label1
+.L__kefir_func_lt32_label1:
     call __bid_ltsd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -146,14 +146,14 @@ __kefir_func_lt32_label1:
     setl %al
     pop %rbp
     ret
-__kefir_text_func_lt32_end:
+.L__kefir_text_func_lt32_end:
 
 lt64:
-__kefir_text_func_lt64_begin:
+.L__kefir_text_func_lt64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_lt64_label1
-__kefir_func_lt64_label1:
+    jmp .L__kefir_func_lt64_label1
+.L__kefir_func_lt64_label1:
     call __bid_ltdd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -161,58 +161,58 @@ __kefir_func_lt64_label1:
     setl %al
     pop %rbp
     ret
-__kefir_text_func_lt64_end:
+.L__kefir_text_func_lt64_end:
 
 add32:
-__kefir_text_func_add32_begin:
+.L__kefir_text_func_add32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_add32_label1
-__kefir_func_add32_label1:
+    jmp .L__kefir_func_add32_label1
+.L__kefir_func_add32_label1:
     call __bid_addsd3@PLT
     pop %rbp
     ret
-__kefir_text_func_add32_end:
+.L__kefir_text_func_add32_end:
 
 add64:
-__kefir_text_func_add64_begin:
+.L__kefir_text_func_add64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_add64_label1
-__kefir_func_add64_label1:
+    jmp .L__kefir_func_add64_label1
+.L__kefir_func_add64_label1:
     call __bid_adddd3@PLT
     pop %rbp
     ret
-__kefir_text_func_add64_end:
+.L__kefir_text_func_add64_end:
 
 div32:
-__kefir_text_func_div32_begin:
+.L__kefir_text_func_div32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_div32_label1
-__kefir_func_div32_label1:
+    jmp .L__kefir_func_div32_label1
+.L__kefir_func_div32_label1:
     call __bid_divsd3@PLT
     pop %rbp
     ret
-__kefir_text_func_div32_end:
+.L__kefir_text_func_div32_end:
 
 div64:
-__kefir_text_func_div64_begin:
+.L__kefir_text_func_div64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_div64_label1
-__kefir_func_div64_label1:
+    jmp .L__kefir_func_div64_label1
+.L__kefir_func_div64_label1:
     call __bid_divdd3@PLT
     pop %rbp
     ret
-__kefir_text_func_div64_end:
+.L__kefir_text_func_div64_end:
 
 eq128:
-__kefir_text_func_eq128_begin:
+.L__kefir_text_func_eq128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_eq128_label1
-__kefir_func_eq128_label1:
+    jmp .L__kefir_func_eq128_label1
+.L__kefir_func_eq128_label1:
     call __bid_eqtd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -220,14 +220,14 @@ __kefir_func_eq128_label1:
     sete %al
     pop %rbp
     ret
-__kefir_text_func_eq128_end:
+.L__kefir_text_func_eq128_end:
 
 gt128:
-__kefir_text_func_gt128_begin:
+.L__kefir_text_func_gt128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_gt128_label1
-__kefir_func_gt128_label1:
+    jmp .L__kefir_func_gt128_label1
+.L__kefir_func_gt128_label1:
     call __bid_gttd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -235,14 +235,14 @@ __kefir_func_gt128_label1:
     setg %al
     pop %rbp
     ret
-__kefir_text_func_gt128_end:
+.L__kefir_text_func_gt128_end:
 
 lt128:
-__kefir_text_func_lt128_begin:
+.L__kefir_text_func_lt128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_lt128_label1
-__kefir_func_lt128_label1:
+    jmp .L__kefir_func_lt128_label1
+.L__kefir_func_lt128_label1:
     call __bid_lttd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -250,112 +250,112 @@ __kefir_func_lt128_label1:
     setl %al
     pop %rbp
     ret
-__kefir_text_func_lt128_end:
+.L__kefir_text_func_lt128_end:
 
 mul32:
-__kefir_text_func_mul32_begin:
+.L__kefir_text_func_mul32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_mul32_label1
-__kefir_func_mul32_label1:
+    jmp .L__kefir_func_mul32_label1
+.L__kefir_func_mul32_label1:
     call __bid_mulsd3@PLT
     pop %rbp
     ret
-__kefir_text_func_mul32_end:
+.L__kefir_text_func_mul32_end:
 
 mul64:
-__kefir_text_func_mul64_begin:
+.L__kefir_text_func_mul64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_mul64_label1
-__kefir_func_mul64_label1:
+    jmp .L__kefir_func_mul64_label1
+.L__kefir_func_mul64_label1:
     call __bid_muldd3@PLT
     pop %rbp
     ret
-__kefir_text_func_mul64_end:
+.L__kefir_text_func_mul64_end:
 
 neg32:
-__kefir_text_func_neg32_begin:
-    jmp __kefir_func_neg32_label1
-__kefir_func_neg32_label1:
+.L__kefir_text_func_neg32_begin:
+    jmp .L__kefir_func_neg32_label1
+.L__kefir_func_neg32_label1:
     movq %xmm0, %rax
     add $-2147483648, %eax
     movq %rax, %xmm0
     ret
-__kefir_text_func_neg32_end:
+.L__kefir_text_func_neg32_end:
 
 neg64:
-__kefir_text_func_neg64_begin:
-    jmp __kefir_func_neg64_label1
-__kefir_func_neg64_label1:
+.L__kefir_text_func_neg64_begin:
+    jmp .L__kefir_func_neg64_label1
+.L__kefir_func_neg64_label1:
     movq %xmm0, %rax
     btc $63, %rax
     movq %rax, %xmm0
     ret
-__kefir_text_func_neg64_end:
+.L__kefir_text_func_neg64_end:
 
 sub32:
-__kefir_text_func_sub32_begin:
+.L__kefir_text_func_sub32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_sub32_label1
-__kefir_func_sub32_label1:
+    jmp .L__kefir_func_sub32_label1
+.L__kefir_func_sub32_label1:
     call __bid_subsd3@PLT
     pop %rbp
     ret
-__kefir_text_func_sub32_end:
+.L__kefir_text_func_sub32_end:
 
 sub64:
-__kefir_text_func_sub64_begin:
+.L__kefir_text_func_sub64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_sub64_label1
-__kefir_func_sub64_label1:
+    jmp .L__kefir_func_sub64_label1
+.L__kefir_func_sub64_label1:
     call __bid_subdd3@PLT
     pop %rbp
     ret
-__kefir_text_func_sub64_end:
+.L__kefir_text_func_sub64_end:
 
 add128:
-__kefir_text_func_add128_begin:
+.L__kefir_text_func_add128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_add128_label1
-__kefir_func_add128_label1:
+    jmp .L__kefir_func_add128_label1
+.L__kefir_func_add128_label1:
     call __bid_addtd3@PLT
     pop %rbp
     ret
-__kefir_text_func_add128_end:
+.L__kefir_text_func_add128_end:
 
 div128:
-__kefir_text_func_div128_begin:
+.L__kefir_text_func_div128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_div128_label1
-__kefir_func_div128_label1:
+    jmp .L__kefir_func_div128_label1
+.L__kefir_func_div128_label1:
     call __bid_divtd3@PLT
     pop %rbp
     ret
-__kefir_text_func_div128_end:
+.L__kefir_text_func_div128_end:
 
 mul128:
-__kefir_text_func_mul128_begin:
+.L__kefir_text_func_mul128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_mul128_label1
-__kefir_func_mul128_label1:
+    jmp .L__kefir_func_mul128_label1
+.L__kefir_func_mul128_label1:
     call __bid_multd3@PLT
     pop %rbp
     ret
-__kefir_text_func_mul128_end:
+.L__kefir_text_func_mul128_end:
 
 neg128:
-__kefir_text_func_neg128_begin:
+.L__kefir_text_func_neg128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_neg128_label1
-__kefir_func_neg128_label1:
+    jmp .L__kefir_func_neg128_label1
+.L__kefir_func_neg128_label1:
     movdqu %xmm0, -16(%rbp)
     mov -8(%rbp), %rax
     btc $63, %rax
@@ -364,18 +364,18 @@ __kefir_func_neg128_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_neg128_end:
+.L__kefir_text_func_neg128_end:
 
 sub128:
-__kefir_text_func_sub128_begin:
+.L__kefir_text_func_sub128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_sub128_label1
-__kefir_func_sub128_label1:
+    jmp .L__kefir_func_sub128_label1
+.L__kefir_func_sub128_label1:
     call __bid_subtd3@PLT
     pop %rbp
     ret
-__kefir_text_func_sub128_end:
+.L__kefir_text_func_sub128_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

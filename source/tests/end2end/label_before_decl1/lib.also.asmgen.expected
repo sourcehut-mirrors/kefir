@@ -5,27 +5,27 @@
 .type factorial, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 factorial:
-__kefir_text_func_factorial_begin:
-    jmp __kefir_func_factorial_label1
-__kefir_func_factorial_label1:
+.L__kefir_text_func_factorial_begin:
+    jmp .L__kefir_func_factorial_label1
+.L__kefir_func_factorial_label1:
     mov $1, %rax
     mov %rax, %rdx
-    jmp __kefir_func_factorial_label2
-__kefir_func_factorial_label2:
+    jmp .L__kefir_func_factorial_label2
+.L__kefir_func_factorial_label2:
     lea -1(%rdi), %rcx
     mov %rdx, %rax
     imul %rdi, %rax
     cmp $1, %rdi
-    jle __kefir_func_factorial_label5
+    jle .L__kefir_func_factorial_label5
     mov %rax, %rdx
     mov %rcx, %rdi
-    jmp __kefir_func_factorial_label2
-__kefir_func_factorial_label5:
+    jmp .L__kefir_func_factorial_label2
+.L__kefir_func_factorial_label5:
     mov %rdx, %rax
     ret
-__kefir_text_func_factorial_end:
+.L__kefir_text_func_factorial_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

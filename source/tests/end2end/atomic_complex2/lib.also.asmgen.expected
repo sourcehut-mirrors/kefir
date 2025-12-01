@@ -39,14 +39,14 @@
 .type f64_store_index, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 str1_a:
-__kefir_text_func_str1_a_begin:
+.L__kefir_text_func_str1_a_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_str1_a_label1
-__kefir_func_str1_a_label1:
+    jmp .L__kefir_func_str1_a_label1
+.L__kefir_func_str1_a_label1:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
@@ -58,15 +58,15 @@ __kefir_func_str1_a_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_str1_a_end:
+.L__kefir_text_func_str1_a_end:
 
 str1_b:
-__kefir_text_func_str1_b_begin:
+.L__kefir_text_func_str1_b_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_str1_b_label1
-__kefir_func_str1_b_label1:
+    jmp .L__kefir_func_str1_b_label1
+.L__kefir_func_str1_b_label1:
     add $16, %rdi
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
@@ -78,15 +78,15 @@ __kefir_func_str1_b_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_str1_b_end:
+.L__kefir_text_func_str1_b_end:
 
 str1_c:
-__kefir_text_func_str1_c_begin:
+.L__kefir_text_func_str1_c_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_str1_c_label1
-__kefir_func_str1_c_label1:
+    jmp .L__kefir_func_str1_c_label1
+.L__kefir_func_str1_c_label1:
     add $32, %rdi
     mov %rdi, %rsi
     lea -32(%rbp), %rdx
@@ -98,15 +98,15 @@ __kefir_func_str1_c_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_str1_c_end:
+.L__kefir_text_func_str1_c_end:
 
 ld_load:
-__kefir_text_func_ld_load_begin:
+.L__kefir_text_func_ld_load_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_ld_load_label1
-__kefir_func_ld_load_label1:
+    jmp .L__kefir_func_ld_load_label1
+.L__kefir_func_ld_load_label1:
     mov %rdi, %rsi
     lea -32(%rbp), %rdx
     mov $32, %rdi
@@ -117,15 +117,15 @@ __kefir_func_ld_load_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_ld_load_end:
+.L__kefir_text_func_ld_load_end:
 
 f32_load:
-__kefir_text_func_f32_load_begin:
+.L__kefir_text_func_f32_load_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_f32_load_label1
-__kefir_func_f32_load_label1:
+    jmp .L__kefir_func_f32_load_label1
+.L__kefir_func_f32_load_label1:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
@@ -137,15 +137,15 @@ __kefir_func_f32_load_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_f32_load_end:
+.L__kefir_text_func_f32_load_end:
 
 f64_load:
-__kefir_text_func_f64_load_begin:
+.L__kefir_text_func_f64_load_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_f64_load_label1
-__kefir_func_f64_load_label1:
+    jmp .L__kefir_func_f64_load_label1
+.L__kefir_func_f64_load_label1:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
@@ -156,14 +156,14 @@ __kefir_func_f64_load_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_f64_load_end:
+.L__kefir_text_func_f64_load_end:
 
 ld_store:
-__kefir_text_func_ld_store_begin:
+.L__kefir_text_func_ld_store_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_ld_store_label1
-__kefir_func_ld_store_label1:
+    jmp .L__kefir_func_ld_store_label1
+.L__kefir_func_ld_store_label1:
     lea 16(%rbp), %rdx
     mov %rdi, %rsi
     mov $32, %rdi
@@ -171,15 +171,15 @@ __kefir_func_ld_store_label1:
     call __atomic_store@PLT
     pop %rbp
     ret
-__kefir_text_func_ld_store_end:
+.L__kefir_text_func_ld_store_end:
 
 f32_store:
-__kefir_text_func_f32_store_begin:
+.L__kefir_text_func_f32_store_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_f32_store_label1
-__kefir_func_f32_store_label1:
+    jmp .L__kefir_func_f32_store_label1
+.L__kefir_func_f32_store_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -193,15 +193,15 @@ __kefir_func_f32_store_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_f32_store_end:
+.L__kefir_text_func_f32_store_end:
 
 f64_store:
-__kefir_text_func_f64_store_begin:
+.L__kefir_text_func_f64_store_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_f64_store_label1
-__kefir_func_f64_store_label1:
+    jmp .L__kefir_func_f64_store_label1
+.L__kefir_func_f64_store_label1:
     mov %rdi, %rsi
     movq %xmm0, -32(%rbp)
     movq %xmm1, -24(%rbp)
@@ -212,15 +212,15 @@ __kefir_func_f64_store_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_f64_store_end:
+.L__kefir_text_func_f64_store_end:
 
 str1_set_a:
-__kefir_text_func_str1_set_a_begin:
+.L__kefir_text_func_str1_set_a_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_str1_set_a_label1
-__kefir_func_str1_set_a_label1:
+    jmp .L__kefir_func_str1_set_a_label1
+.L__kefir_func_str1_set_a_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -234,15 +234,15 @@ __kefir_func_str1_set_a_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_str1_set_a_end:
+.L__kefir_text_func_str1_set_a_end:
 
 str1_set_b:
-__kefir_text_func_str1_set_b_begin:
+.L__kefir_text_func_str1_set_b_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_str1_set_b_label1
-__kefir_func_str1_set_b_label1:
+    jmp .L__kefir_func_str1_set_b_label1
+.L__kefir_func_str1_set_b_label1:
     add $16, %rdi
     mov %rdi, %rsi
     movq %xmm0, -32(%rbp)
@@ -254,14 +254,14 @@ __kefir_func_str1_set_b_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_str1_set_b_end:
+.L__kefir_text_func_str1_set_b_end:
 
 str1_set_c:
-__kefir_text_func_str1_set_c_begin:
+.L__kefir_text_func_str1_set_c_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_str1_set_c_label1
-__kefir_func_str1_set_c_label1:
+    jmp .L__kefir_func_str1_set_c_label1
+.L__kefir_func_str1_set_c_label1:
     lea 16(%rbp), %rdx
     add $32, %rdi
     mov %rdi, %rsi
@@ -270,15 +270,15 @@ __kefir_func_str1_set_c_label1:
     call __atomic_store@PLT
     pop %rbp
     ret
-__kefir_text_func_str1_set_c_end:
+.L__kefir_text_func_str1_set_c_end:
 
 ld_load_index:
-__kefir_text_func_ld_load_index_begin:
+.L__kefir_text_func_ld_load_index_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_ld_load_index_label1
-__kefir_func_ld_load_index_label1:
+    jmp .L__kefir_func_ld_load_index_label1
+.L__kefir_func_ld_load_index_label1:
     mov %esi, %eax
     imul $32, %rax, %rax
     add %rax, %rdi
@@ -292,15 +292,15 @@ __kefir_func_ld_load_index_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_ld_load_index_end:
+.L__kefir_text_func_ld_load_index_end:
 
 f32_load_index:
-__kefir_text_func_f32_load_index_begin:
+.L__kefir_text_func_f32_load_index_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_f32_load_index_label1
-__kefir_func_f32_load_index_label1:
+    jmp .L__kefir_func_f32_load_index_label1
+.L__kefir_func_f32_load_index_label1:
     mov %esi, %eax
     imul $8, %rax, %rax
     add %rax, %rdi
@@ -315,14 +315,14 @@ __kefir_func_f32_load_index_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_f32_load_index_end:
+.L__kefir_text_func_f32_load_index_end:
 
 ld_store_index:
-__kefir_text_func_ld_store_index_begin:
+.L__kefir_text_func_ld_store_index_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_ld_store_index_label1
-__kefir_func_ld_store_index_label1:
+    jmp .L__kefir_func_ld_store_index_label1
+.L__kefir_func_ld_store_index_label1:
     lea 16(%rbp), %rdx
     mov %esi, %eax
     imul $32, %rax, %rax
@@ -333,15 +333,15 @@ __kefir_func_ld_store_index_label1:
     call __atomic_store@PLT
     pop %rbp
     ret
-__kefir_text_func_ld_store_index_end:
+.L__kefir_text_func_ld_store_index_end:
 
 f32_store_index:
-__kefir_text_func_f32_store_index_begin:
+.L__kefir_text_func_f32_store_index_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_f32_store_index_label1
-__kefir_func_f32_store_index_label1:
+    jmp .L__kefir_func_f32_store_index_label1
+.L__kefir_func_f32_store_index_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -358,15 +358,15 @@ __kefir_func_f32_store_index_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_f32_store_index_end:
+.L__kefir_text_func_f32_store_index_end:
 
 f64_load_index:
-__kefir_text_func_f64_load_index_begin:
+.L__kefir_text_func_f64_load_index_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_f64_load_index_label1
-__kefir_func_f64_load_index_label1:
+    jmp .L__kefir_func_f64_load_index_label1
+.L__kefir_func_f64_load_index_label1:
     mov %esi, %eax
     imul $16, %rax, %rax
     add %rax, %rdi
@@ -380,15 +380,15 @@ __kefir_func_f64_load_index_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_f64_load_index_end:
+.L__kefir_text_func_f64_load_index_end:
 
 f64_store_index:
-__kefir_text_func_f64_store_index_begin:
+.L__kefir_text_func_f64_store_index_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_f64_store_index_label1
-__kefir_func_f64_store_index_label1:
+    jmp .L__kefir_func_f64_store_index_label1
+.L__kefir_func_f64_store_index_label1:
     mov %esi, %eax
     imul $16, %rax, %rax
     add %rax, %rdi
@@ -402,7 +402,7 @@ __kefir_func_f64_store_index_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_f64_store_index_end:
+.L__kefir_text_func_f64_store_index_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

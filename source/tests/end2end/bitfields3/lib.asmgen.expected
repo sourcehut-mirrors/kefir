@@ -36,106 +36,106 @@
 .type set_h, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get_a:
-__kefir_text_func_get_a_begin:
-    jmp __kefir_func_get_a_label1
-__kefir_func_get_a_label1:
+.L__kefir_text_func_get_a_begin:
+    jmp .L__kefir_func_get_a_label1
+.L__kefir_func_get_a_label1:
     movq s@GOTPCREL(%rip), %rax
     movzxb (%rax), %rax
     shl $57, %rax
     sar $57, %rax
     ret
-__kefir_text_func_get_a_end:
+.L__kefir_text_func_get_a_end:
 
 get_b:
-__kefir_text_func_get_b_begin:
-    jmp __kefir_func_get_b_label1
-__kefir_func_get_b_label1:
+.L__kefir_text_func_get_b_begin:
+    jmp .L__kefir_func_get_b_label1
+.L__kefir_func_get_b_label1:
     movq s@GOTPCREL(%rip), %rax
     add $1, %rax
     movzxw (%rax), %rax
     shl $49, %rax
     sar $49, %rax
     ret
-__kefir_text_func_get_b_end:
+.L__kefir_text_func_get_b_end:
 
 get_c:
-__kefir_text_func_get_c_begin:
-    jmp __kefir_func_get_c_label1
-__kefir_func_get_c_label1:
+.L__kefir_text_func_get_c_begin:
+    jmp .L__kefir_func_get_c_label1
+.L__kefir_func_get_c_label1:
     movq s@GOTPCREL(%rip), %rax
     add $3, %rax
     movl (%rax), %eax
     shl $41, %rax
     sar $41, %rax
     ret
-__kefir_text_func_get_c_end:
+.L__kefir_text_func_get_c_end:
 
 get_d:
-__kefir_text_func_get_d_begin:
-    jmp __kefir_func_get_d_label1
-__kefir_func_get_d_label1:
+.L__kefir_text_func_get_d_begin:
+    jmp .L__kefir_func_get_d_label1
+.L__kefir_func_get_d_label1:
     movq s@GOTPCREL(%rip), %rax
     add $8, %rax
     movl (%rax), %eax
     shl $33, %rax
     sar $33, %rax
     ret
-__kefir_text_func_get_d_end:
+.L__kefir_text_func_get_d_end:
 
 get_e:
-__kefir_text_func_get_e_begin:
-    jmp __kefir_func_get_e_label1
-__kefir_func_get_e_label1:
+.L__kefir_text_func_get_e_begin:
+    jmp .L__kefir_func_get_e_label1
+.L__kefir_func_get_e_label1:
     movq s@GOTPCREL(%rip), %rax
     add $16, %rax
     movq (%rax), %rax
     shl $25, %rax
     sar $25, %rax
     ret
-__kefir_text_func_get_e_end:
+.L__kefir_text_func_get_e_end:
 
 get_f:
-__kefir_text_func_get_f_begin:
-    jmp __kefir_func_get_f_label1
-__kefir_func_get_f_label1:
+.L__kefir_text_func_get_f_begin:
+    jmp .L__kefir_func_get_f_label1
+.L__kefir_func_get_f_label1:
     movq s@GOTPCREL(%rip), %rax
     add $24, %rax
     movq (%rax), %rax
     shl $17, %rax
     sar $17, %rax
     ret
-__kefir_text_func_get_f_end:
+.L__kefir_text_func_get_f_end:
 
 get_g:
-__kefir_text_func_get_g_begin:
-    jmp __kefir_func_get_g_label1
-__kefir_func_get_g_label1:
+.L__kefir_text_func_get_g_begin:
+    jmp .L__kefir_func_get_g_label1
+.L__kefir_func_get_g_label1:
     movq s@GOTPCREL(%rip), %rax
     add $32, %rax
     movq (%rax), %rax
     shl $9, %rax
     sar $9, %rax
     ret
-__kefir_text_func_get_g_end:
+.L__kefir_text_func_get_g_end:
 
 get_h:
-__kefir_text_func_get_h_begin:
-    jmp __kefir_func_get_h_label1
-__kefir_func_get_h_label1:
+.L__kefir_text_func_get_h_begin:
+    jmp .L__kefir_func_get_h_label1
+.L__kefir_func_get_h_label1:
     movq s@GOTPCREL(%rip), %rax
     add $40, %rax
     movq (%rax), %rax
     shl $1, %rax
     sar $1, %rax
     ret
-__kefir_text_func_get_h_end:
+.L__kefir_text_func_get_h_end:
 
 set_a:
-__kefir_text_func_set_a_begin:
-    jmp __kefir_func_set_a_label1
-__kefir_func_set_a_label1:
+.L__kefir_text_func_set_a_begin:
+    jmp .L__kefir_func_set_a_label1
+.L__kefir_func_set_a_label1:
     movq s@GOTPCREL(%rip), %rax
     movzxb (%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
@@ -146,12 +146,12 @@ __kefir_func_set_a_label1:
     or %rdx, %rdi
     movb %dil, (%rcx)
     ret
-__kefir_text_func_set_a_end:
+.L__kefir_text_func_set_a_end:
 
 set_b:
-__kefir_text_func_set_b_begin:
-    jmp __kefir_func_set_b_label1
-__kefir_func_set_b_label1:
+.L__kefir_text_func_set_b_begin:
+    jmp .L__kefir_func_set_b_label1
+.L__kefir_func_set_b_label1:
     movq s@GOTPCREL(%rip), %rax
     add $1, %rax
     movzxw (%rax), %rax
@@ -164,12 +164,12 @@ __kefir_func_set_b_label1:
     or %rdx, %rdi
     movw %di, (%rcx)
     ret
-__kefir_text_func_set_b_end:
+.L__kefir_text_func_set_b_end:
 
 set_c:
-__kefir_text_func_set_c_begin:
-    jmp __kefir_func_set_c_label1
-__kefir_func_set_c_label1:
+.L__kefir_text_func_set_c_begin:
+    jmp .L__kefir_func_set_c_label1
+.L__kefir_func_set_c_label1:
     movq s@GOTPCREL(%rip), %rax
     add $3, %rax
     movl (%rax), %eax
@@ -187,12 +187,12 @@ __kefir_func_set_c_label1:
     add $3, %rax
     movw %di, (%rax)
     ret
-__kefir_text_func_set_c_end:
+.L__kefir_text_func_set_c_end:
 
 set_d:
-__kefir_text_func_set_d_begin:
-    jmp __kefir_func_set_d_label1
-__kefir_func_set_d_label1:
+.L__kefir_text_func_set_d_begin:
+    jmp .L__kefir_func_set_d_label1
+.L__kefir_func_set_d_label1:
     movq s@GOTPCREL(%rip), %rax
     add $8, %rax
     movl (%rax), %eax
@@ -205,12 +205,12 @@ __kefir_func_set_d_label1:
     or %rdx, %rdi
     movl %edi, (%rcx)
     ret
-__kefir_text_func_set_d_end:
+.L__kefir_text_func_set_d_end:
 
 set_e:
-__kefir_text_func_set_e_begin:
-    jmp __kefir_func_set_e_label1
-__kefir_func_set_e_label1:
+.L__kefir_text_func_set_e_begin:
+    jmp .L__kefir_func_set_e_label1
+.L__kefir_func_set_e_label1:
     movq s@GOTPCREL(%rip), %rax
     add $16, %rax
     movq (%rax), %rax
@@ -228,12 +228,12 @@ __kefir_func_set_e_label1:
     add $16, %rax
     movl %edi, (%rax)
     ret
-__kefir_text_func_set_e_end:
+.L__kefir_text_func_set_e_end:
 
 set_f:
-__kefir_text_func_set_f_begin:
-    jmp __kefir_func_set_f_label1
-__kefir_func_set_f_label1:
+.L__kefir_text_func_set_f_begin:
+    jmp .L__kefir_func_set_f_label1
+.L__kefir_func_set_f_label1:
     movq s@GOTPCREL(%rip), %rax
     add $24, %rax
     movq (%rax), %rax
@@ -251,12 +251,12 @@ __kefir_func_set_f_label1:
     add $24, %rax
     movl %edi, (%rax)
     ret
-__kefir_text_func_set_f_end:
+.L__kefir_text_func_set_f_end:
 
 set_g:
-__kefir_text_func_set_g_begin:
-    jmp __kefir_func_set_g_label1
-__kefir_func_set_g_label1:
+.L__kefir_text_func_set_g_begin:
+    jmp .L__kefir_func_set_g_label1
+.L__kefir_func_set_g_label1:
     movq s@GOTPCREL(%rip), %rax
     add $32, %rax
     movq (%rax), %rax
@@ -279,12 +279,12 @@ __kefir_func_set_g_label1:
     add $32, %rax
     movl %edi, (%rax)
     ret
-__kefir_text_func_set_g_end:
+.L__kefir_text_func_set_g_end:
 
 set_h:
-__kefir_text_func_set_h_begin:
-    jmp __kefir_func_set_h_label1
-__kefir_func_set_h_label1:
+.L__kefir_text_func_set_h_begin:
+    jmp .L__kefir_func_set_h_label1
+.L__kefir_func_set_h_label1:
     movq s@GOTPCREL(%rip), %rax
     add $40, %rax
     movq (%rax), %rax
@@ -297,7 +297,7 @@ __kefir_func_set_h_label1:
     or %rdx, %rdi
     movq %rdi, (%rcx)
     ret
-__kefir_text_func_set_h_end:
+.L__kefir_text_func_set_h_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

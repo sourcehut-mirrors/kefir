@@ -28,14 +28,14 @@
 .type test2_atomic_store8, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test_atomic_store128:
-__kefir_text_func_test_atomic_store128_begin:
+.L__kefir_text_func_test_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test_atomic_store128_label1
-__kefir_func_test_atomic_store128_label1:
+    jmp .L__kefir_func_test_atomic_store128_label1
+.L__kefir_func_test_atomic_store128_label1:
     fldt 16(%rbp)
     mov %rdi, %rax
     movq $0, -8(%rbp)
@@ -48,16 +48,16 @@ __kefir_func_test_atomic_store128_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test_atomic_store128_end:
+.L__kefir_text_func_test_atomic_store128_end:
 
 test_atomic_store256:
-__kefir_text_func_test_atomic_store256_begin:
+.L__kefir_text_func_test_atomic_store256_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_test_atomic_store256_label1
-__kefir_func_test_atomic_store256_label1:
+    jmp .L__kefir_func_test_atomic_store256_label1
+.L__kefir_func_test_atomic_store256_label1:
     lea 16(%rbp), %rax
     mov %rdi, %rcx
     fldt 16(%rax)
@@ -75,15 +75,15 @@ __kefir_func_test_atomic_store256_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test_atomic_store256_end:
+.L__kefir_text_func_test_atomic_store256_end:
 
 test2_atomic_store128:
-__kefir_text_func_test2_atomic_store128_begin:
+.L__kefir_text_func_test2_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test2_atomic_store128_label1
-__kefir_func_test2_atomic_store128_label1:
+    jmp .L__kefir_func_test2_atomic_store128_label1
+.L__kefir_func_test2_atomic_store128_label1:
     fldt 16(%rbp)
     mov %rdi, %rax
     movq $0, -8(%rbp)
@@ -96,16 +96,16 @@ __kefir_func_test2_atomic_store128_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test2_atomic_store128_end:
+.L__kefir_text_func_test2_atomic_store128_end:
 
 test2_atomic_store256:
-__kefir_text_func_test2_atomic_store256_begin:
+.L__kefir_text_func_test2_atomic_store256_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_test2_atomic_store256_label1
-__kefir_func_test2_atomic_store256_label1:
+    jmp .L__kefir_func_test2_atomic_store256_label1
+.L__kefir_func_test2_atomic_store256_label1:
     lea 16(%rbp), %rax
     mov %rdi, %rcx
     fldt 16(%rax)
@@ -123,77 +123,77 @@ __kefir_func_test2_atomic_store256_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test2_atomic_store256_end:
+.L__kefir_text_func_test2_atomic_store256_end:
 
 test2_atomic_store16:
-__kefir_text_func_test2_atomic_store16_begin:
-    jmp __kefir_func_test2_atomic_store16_label1
-__kefir_func_test2_atomic_store16_label1:
+.L__kefir_text_func_test2_atomic_store16_begin:
+    jmp .L__kefir_func_test2_atomic_store16_label1
+.L__kefir_func_test2_atomic_store16_label1:
     movsx %si, %rax
     xchgw %ax, (%rdi)
     ret
-__kefir_text_func_test2_atomic_store16_end:
+.L__kefir_text_func_test2_atomic_store16_end:
 
 test2_atomic_store32:
-__kefir_text_func_test2_atomic_store32_begin:
-    jmp __kefir_func_test2_atomic_store32_label1
-__kefir_func_test2_atomic_store32_label1:
+.L__kefir_text_func_test2_atomic_store32_begin:
+    jmp .L__kefir_func_test2_atomic_store32_label1
+.L__kefir_func_test2_atomic_store32_label1:
     movsx %esi, %rax
     xchgl %eax, (%rdi)
     ret
-__kefir_text_func_test2_atomic_store32_end:
+.L__kefir_text_func_test2_atomic_store32_end:
 
 test2_atomic_store64:
-__kefir_text_func_test2_atomic_store64_begin:
-    jmp __kefir_func_test2_atomic_store64_label1
-__kefir_func_test2_atomic_store64_label1:
+.L__kefir_text_func_test2_atomic_store64_begin:
+    jmp .L__kefir_func_test2_atomic_store64_label1
+.L__kefir_func_test2_atomic_store64_label1:
     xchgq %rsi, (%rdi)
     ret
-__kefir_text_func_test2_atomic_store64_end:
+.L__kefir_text_func_test2_atomic_store64_end:
 
 test_atomic_store8:
-__kefir_text_func_test_atomic_store8_begin:
-    jmp __kefir_func_test_atomic_store8_label1
-__kefir_func_test_atomic_store8_label1:
+.L__kefir_text_func_test_atomic_store8_begin:
+    jmp .L__kefir_func_test_atomic_store8_label1
+.L__kefir_func_test_atomic_store8_label1:
     movsx %sil, %rax
     xchgb %al, (%rdi)
     ret
-__kefir_text_func_test_atomic_store8_end:
+.L__kefir_text_func_test_atomic_store8_end:
 
 test_atomic_store16:
-__kefir_text_func_test_atomic_store16_begin:
-    jmp __kefir_func_test_atomic_store16_label1
-__kefir_func_test_atomic_store16_label1:
+.L__kefir_text_func_test_atomic_store16_begin:
+    jmp .L__kefir_func_test_atomic_store16_label1
+.L__kefir_func_test_atomic_store16_label1:
     movsx %si, %rax
     xchgw %ax, (%rdi)
     ret
-__kefir_text_func_test_atomic_store16_end:
+.L__kefir_text_func_test_atomic_store16_end:
 
 test_atomic_store32:
-__kefir_text_func_test_atomic_store32_begin:
-    jmp __kefir_func_test_atomic_store32_label1
-__kefir_func_test_atomic_store32_label1:
+.L__kefir_text_func_test_atomic_store32_begin:
+    jmp .L__kefir_func_test_atomic_store32_label1
+.L__kefir_func_test_atomic_store32_label1:
     movsx %esi, %rax
     xchgl %eax, (%rdi)
     ret
-__kefir_text_func_test_atomic_store32_end:
+.L__kefir_text_func_test_atomic_store32_end:
 
 test_atomic_store64:
-__kefir_text_func_test_atomic_store64_begin:
-    jmp __kefir_func_test_atomic_store64_label1
-__kefir_func_test_atomic_store64_label1:
+.L__kefir_text_func_test_atomic_store64_begin:
+    jmp .L__kefir_func_test_atomic_store64_label1
+.L__kefir_func_test_atomic_store64_label1:
     xchgq %rsi, (%rdi)
     ret
-__kefir_text_func_test_atomic_store64_end:
+.L__kefir_text_func_test_atomic_store64_end:
 
 test2_atomic_store8:
-__kefir_text_func_test2_atomic_store8_begin:
-    jmp __kefir_func_test2_atomic_store8_label1
-__kefir_func_test2_atomic_store8_label1:
+.L__kefir_text_func_test2_atomic_store8_begin:
+    jmp .L__kefir_func_test2_atomic_store8_label1
+.L__kefir_func_test2_atomic_store8_label1:
     movsx %sil, %rax
     xchgb %al, (%rdi)
     ret
-__kefir_text_func_test2_atomic_store8_end:
+.L__kefir_text_func_test2_atomic_store8_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

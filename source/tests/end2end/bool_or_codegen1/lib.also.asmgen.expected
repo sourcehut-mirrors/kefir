@@ -5,11 +5,11 @@
 .type test, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test:
-__kefir_text_func_test_begin:
-    jmp __kefir_func_test_label1
-__kefir_func_test_label1:
+.L__kefir_text_func_test_begin:
+    jmp .L__kefir_func_test_label1
+.L__kefir_func_test_label1:
     xor %eax, %eax
     cmp $0, %edi
     setg %al
@@ -31,7 +31,7 @@ __kefir_func_test_label1:
     setne %al
     movzx %al, %rax
     ret
-__kefir_text_func_test_end:
+.L__kefir_text_func_test_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

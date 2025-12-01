@@ -7,16 +7,16 @@
 .type getlen, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 getlen:
-__kefir_text_func_getlen_begin:
-    jmp __kefir_func_getlen_label1
-__kefir_func_getlen_label1:
+.L__kefir_text_func_getlen_begin:
+    jmp .L__kefir_func_getlen_label1
+.L__kefir_func_getlen_label1:
     mov $100, %rax
     ret
-__kefir_text_func_getlen_end:
+.L__kefir_text_func_getlen_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 16

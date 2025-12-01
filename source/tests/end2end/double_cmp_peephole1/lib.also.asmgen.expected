@@ -5,25 +5,25 @@
 .type test, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test:
-__kefir_text_func_test_begin:
-    jmp __kefir_func_test_label1
-__kefir_func_test_label1:
+.L__kefir_text_func_test_begin:
+    jmp .L__kefir_func_test_label1
+.L__kefir_func_test_label1:
     xor %eax, %eax
     cmp $0, %edi
     setg %al
-    jg __kefir_func_test_label5
-    jmp __kefir_func_test_label3
-__kefir_func_test_label5:
+    jg .L__kefir_func_test_label5
+    jmp .L__kefir_func_test_label3
+.L__kefir_func_test_label5:
     movl (%rsi), %ecx
     xor %eax, %eax
     cmp $0, %ecx
     setg %al
-    jmp __kefir_func_test_label3
-__kefir_func_test_label3:
+    jmp .L__kefir_func_test_label3
+.L__kefir_func_test_label3:
     ret
-__kefir_text_func_test_end:
+.L__kefir_text_func_test_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

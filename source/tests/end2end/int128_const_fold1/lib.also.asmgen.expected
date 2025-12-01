@@ -49,97 +49,97 @@
 .type int128_sign_extend64, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 int128_neg:
-__kefir_text_func_int128_neg_begin:
-    jmp __kefir_func_int128_neg_label1
-__kefir_func_int128_neg_label1:
+.L__kefir_text_func_int128_neg_begin:
+    jmp .L__kefir_func_int128_neg_label1
+.L__kefir_func_int128_neg_label1:
     movabs $-802366226414, %rax
     mov $-1, %rdx
     ret
-__kefir_text_func_int128_neg_end:
+.L__kefir_text_func_int128_neg_end:
 
 int128_not:
-__kefir_text_func_int128_not_begin:
-    jmp __kefir_func_int128_not_label1
-__kefir_func_int128_not_label1:
+.L__kefir_text_func_int128_not_begin:
+    jmp .L__kefir_func_int128_not_label1
+.L__kefir_func_int128_not_label1:
     movabs $-802366226415, %rax
     mov $-1, %rdx
     ret
-__kefir_text_func_int128_not_end:
+.L__kefir_text_func_int128_not_end:
 
 int128_truncate_int64:
-__kefir_text_func_int128_truncate_int64_begin:
-    jmp __kefir_func_int128_truncate_int64_label1
-__kefir_func_int128_truncate_int64_label1:
+.L__kefir_text_func_int128_truncate_int64_begin:
+    jmp .L__kefir_func_int128_truncate_int64_label1
+.L__kefir_func_int128_truncate_int64_label1:
     movabs $-4294967296, %rax
     ret
-__kefir_text_func_int128_truncate_int64_end:
+.L__kefir_text_func_int128_truncate_int64_end:
 
 int128_to_bool:
-__kefir_text_func_int128_to_bool_begin:
-    jmp __kefir_func_int128_to_bool_label1
-__kefir_func_int128_to_bool_label1:
+.L__kefir_text_func_int128_to_bool_begin:
+    jmp .L__kefir_func_int128_to_bool_label1
+.L__kefir_func_int128_to_bool_label1:
     mov $1, %rax
     ret
-__kefir_text_func_int128_to_bool_end:
+.L__kefir_text_func_int128_to_bool_end:
 
 int128_unsigned_from_double:
-__kefir_text_func_int128_unsigned_from_double_begin:
-    jmp __kefir_func_int128_unsigned_from_double_label1
-__kefir_func_int128_unsigned_from_double_label1:
+.L__kefir_text_func_int128_unsigned_from_double_begin:
+    jmp .L__kefir_func_int128_unsigned_from_double_label1
+.L__kefir_func_int128_unsigned_from_double_label1:
     mov $31415, %rax
     xor %edx, %edx
     ret
-__kefir_text_func_int128_unsigned_from_double_end:
+.L__kefir_text_func_int128_unsigned_from_double_end:
 
 int128_signed_from_float:
-__kefir_text_func_int128_signed_from_float_begin:
-    jmp __kefir_func_int128_signed_from_float_label1
-__kefir_func_int128_signed_from_float_label1:
+.L__kefir_text_func_int128_signed_from_float_begin:
+    jmp .L__kefir_func_int128_signed_from_float_label1
+.L__kefir_func_int128_signed_from_float_label1:
     mov $-31415, %rax
     mov $-1, %rdx
     ret
-__kefir_text_func_int128_signed_from_float_end:
+.L__kefir_text_func_int128_signed_from_float_end:
 
 int128_unsigned_from_long_double:
-__kefir_text_func_int128_unsigned_from_long_double_begin:
-    jmp __kefir_func_int128_unsigned_from_long_double_label1
-__kefir_func_int128_unsigned_from_long_double_label1:
+.L__kefir_text_func_int128_unsigned_from_long_double_begin:
+    jmp .L__kefir_func_int128_unsigned_from_long_double_label1
+.L__kefir_func_int128_unsigned_from_long_double_label1:
     mov $31415, %rax
     xor %edx, %edx
     ret
-__kefir_text_func_int128_unsigned_from_long_double_end:
+.L__kefir_text_func_int128_unsigned_from_long_double_end:
 
 int128_zero_extend64:
-__kefir_text_func_int128_zero_extend64_begin:
-    jmp __kefir_func_int128_zero_extend64_label1
-__kefir_func_int128_zero_extend64_label1:
+.L__kefir_text_func_int128_zero_extend64_begin:
+    jmp .L__kefir_func_int128_zero_extend64_label1
+.L__kefir_func_int128_zero_extend64_label1:
     movabs $-3405691582, %rax
     xor %edx, %edx
     ret
-__kefir_text_func_int128_zero_extend64_end:
+.L__kefir_text_func_int128_zero_extend64_end:
 
 int128_signed_to_float:
-__kefir_text_func_int128_signed_to_float_begin:
-    jmp __kefir_func_int128_signed_to_float_label1
-__kefir_func_int128_signed_to_float_label1:
-    movd __kefir_func_int128_signed_to_float_label4(%rip), %xmm0
+.L__kefir_text_func_int128_signed_to_float_begin:
+    jmp .L__kefir_func_int128_signed_to_float_label1
+.L__kefir_func_int128_signed_to_float_label1:
+    movd .L__kefir_func_int128_signed_to_float_label4(%rip), %xmm0
     ret
-__kefir_text_func_int128_signed_to_float_end:
+.L__kefir_text_func_int128_signed_to_float_end:
 .section .rodata
     .align 4
-__kefir_func_int128_signed_to_float_label4:
+.L__kefir_func_int128_signed_to_float_label4:
     .long 3365496288
 .section .text
 
 int128_sign_to_bitint:
-__kefir_text_func_int128_sign_to_bitint_begin:
+.L__kefir_text_func_int128_sign_to_bitint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_int128_sign_to_bitint_label1
-__kefir_func_int128_sign_to_bitint_label1:
+    jmp .L__kefir_func_int128_sign_to_bitint_label1
+.L__kefir_func_int128_sign_to_bitint_label1:
     movl $792657938, -32(%rbp)
     movl $4294967109, -28(%rbp)
     movl $4294967295, -24(%rbp)
@@ -156,42 +156,42 @@ __kefir_func_int128_sign_to_bitint_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_int128_sign_to_bitint_end:
+.L__kefir_text_func_int128_sign_to_bitint_end:
 
 int128_unsigned_to_double:
-__kefir_text_func_int128_unsigned_to_double_begin:
-    jmp __kefir_func_int128_unsigned_to_double_label1
-__kefir_func_int128_unsigned_to_double_label1:
-    movq __kefir_func_int128_unsigned_to_double_label4(%rip), %xmm0
+.L__kefir_text_func_int128_unsigned_to_double_begin:
+    jmp .L__kefir_func_int128_unsigned_to_double_label1
+.L__kefir_func_int128_unsigned_to_double_label1:
+    movq .L__kefir_func_int128_unsigned_to_double_label4(%rip), %xmm0
     ret
-__kefir_text_func_int128_unsigned_to_double_end:
+.L__kefir_text_func_int128_unsigned_to_double_end:
 .section .rodata
     .align 8
-__kefir_func_int128_unsigned_to_double_label4:
+.L__kefir_func_int128_unsigned_to_double_label4:
     .quad 4689140822988292096
 .section .text
 
 int128_signed_to_long_double:
-__kefir_text_func_int128_signed_to_long_double_begin:
-    jmp __kefir_func_int128_signed_to_long_double_label1
-__kefir_func_int128_signed_to_long_double_label1:
-    fldt __kefir_func_int128_signed_to_long_double_label4(%rip)
+.L__kefir_text_func_int128_signed_to_long_double_begin:
+    jmp .L__kefir_func_int128_signed_to_long_double_label1
+.L__kefir_func_int128_signed_to_long_double_label1:
+    fldt .L__kefir_func_int128_signed_to_long_double_label4(%rip)
     ret
-__kefir_text_func_int128_signed_to_long_double_end:
+.L__kefir_text_func_int128_signed_to_long_double_end:
 .section .rodata
     .align 8
-__kefir_func_int128_signed_to_long_double_label4:
+.L__kefir_func_int128_signed_to_long_double_label4:
     .quad 11053487151055372288
     .quad 49169
 .section .text
 
 int128_unsign_to_bitint:
-__kefir_text_func_int128_unsign_to_bitint_begin:
+.L__kefir_text_func_int128_unsign_to_bitint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_int128_unsign_to_bitint_label1
-__kefir_func_int128_unsign_to_bitint_label1:
+    jmp .L__kefir_func_int128_unsign_to_bitint_label1
+.L__kefir_func_int128_unsign_to_bitint_label1:
     movl $792657938, -32(%rbp)
     movl $4294967109, -28(%rbp)
     movl $4294967295, -24(%rbp)
@@ -208,109 +208,109 @@ __kefir_func_int128_unsign_to_bitint_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_int128_unsign_to_bitint_end:
+.L__kefir_text_func_int128_unsign_to_bitint_end:
 
 int128_signed_to_double:
-__kefir_text_func_int128_signed_to_double_begin:
-    jmp __kefir_func_int128_signed_to_double_label1
-__kefir_func_int128_signed_to_double_label1:
-    movq __kefir_func_int128_signed_to_double_label4(%rip), %xmm0
+.L__kefir_text_func_int128_signed_to_double_begin:
+    jmp .L__kefir_func_int128_signed_to_double_label1
+.L__kefir_func_int128_signed_to_double_label1:
+    movq .L__kefir_func_int128_signed_to_double_label4(%rip), %xmm0
     ret
-__kefir_text_func_int128_signed_to_double_end:
+.L__kefir_text_func_int128_signed_to_double_end:
 .section .rodata
     .align 8
-__kefir_func_int128_signed_to_double_label4:
+.L__kefir_func_int128_signed_to_double_label4:
     .quad 13912512859843067904
 .section .text
 
 int128_bool_not:
-__kefir_text_func_int128_bool_not_begin:
-    jmp __kefir_func_int128_bool_not_label1
-__kefir_func_int128_bool_not_label1:
+.L__kefir_text_func_int128_bool_not_begin:
+    jmp .L__kefir_func_int128_bool_not_label1
+.L__kefir_func_int128_bool_not_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_int128_bool_not_end:
+.L__kefir_text_func_int128_bool_not_end:
 
 int128_unsigned_to_long_double:
-__kefir_text_func_int128_unsigned_to_long_double_begin:
-    jmp __kefir_func_int128_unsigned_to_long_double_label1
-__kefir_func_int128_unsigned_to_long_double_label1:
-    fldt __kefir_func_int128_unsigned_to_long_double_label4(%rip)
+.L__kefir_text_func_int128_unsigned_to_long_double_begin:
+    jmp .L__kefir_func_int128_unsigned_to_long_double_label1
+.L__kefir_func_int128_unsigned_to_long_double_label1:
+    fldt .L__kefir_func_int128_unsigned_to_long_double_label4(%rip)
     ret
-__kefir_text_func_int128_unsigned_to_long_double_end:
+.L__kefir_text_func_int128_unsigned_to_long_double_end:
 .section .rodata
     .align 8
-__kefir_func_int128_unsigned_to_long_double_label4:
+.L__kefir_func_int128_unsigned_to_long_double_label4:
     .quad 11053487151055372288
     .quad 16401
 .section .text
 
 int128_from_bitint_sign:
-__kefir_text_func_int128_from_bitint_sign_begin:
-    jmp __kefir_func_int128_from_bitint_sign_label1
-__kefir_func_int128_from_bitint_sign_label1:
+.L__kefir_text_func_int128_from_bitint_sign_begin:
+    jmp .L__kefir_func_int128_from_bitint_sign_label1
+.L__kefir_func_int128_from_bitint_sign_label1:
     movabs $-802366226414, %rax
     mov $-1, %rdx
     ret
-__kefir_text_func_int128_from_bitint_sign_end:
+.L__kefir_text_func_int128_from_bitint_sign_end:
 
 int128_unsigned_from_float:
-__kefir_text_func_int128_unsigned_from_float_begin:
-    jmp __kefir_func_int128_unsigned_from_float_label1
-__kefir_func_int128_unsigned_from_float_label1:
+.L__kefir_text_func_int128_unsigned_from_float_begin:
+    jmp .L__kefir_func_int128_unsigned_from_float_label1
+.L__kefir_func_int128_unsigned_from_float_label1:
     mov $31415, %rax
     xor %edx, %edx
     ret
-__kefir_text_func_int128_unsigned_from_float_end:
+.L__kefir_text_func_int128_unsigned_from_float_end:
 
 int128_unsigned_to_float:
-__kefir_text_func_int128_unsigned_to_float_begin:
-    jmp __kefir_func_int128_unsigned_to_float_label1
-__kefir_func_int128_unsigned_to_float_label1:
-    movd __kefir_func_int128_unsigned_to_float_label4(%rip), %xmm0
+.L__kefir_text_func_int128_unsigned_to_float_begin:
+    jmp .L__kefir_func_int128_unsigned_to_float_label1
+.L__kefir_func_int128_unsigned_to_float_label1:
+    movd .L__kefir_func_int128_unsigned_to_float_label4(%rip), %xmm0
     ret
-__kefir_text_func_int128_unsigned_to_float_end:
+.L__kefir_text_func_int128_unsigned_to_float_end:
 .section .rodata
     .align 4
-__kefir_func_int128_unsigned_to_float_label4:
+.L__kefir_func_int128_unsigned_to_float_label4:
     .long 1218012640
 .section .text
 
 int128_signed_from_long_double:
-__kefir_text_func_int128_signed_from_long_double_begin:
-    jmp __kefir_func_int128_signed_from_long_double_label1
-__kefir_func_int128_signed_from_long_double_label1:
+.L__kefir_text_func_int128_signed_from_long_double_begin:
+    jmp .L__kefir_func_int128_signed_from_long_double_label1
+.L__kefir_func_int128_signed_from_long_double_label1:
     mov $-31415, %rax
     mov $-1, %rdx
     ret
-__kefir_text_func_int128_signed_from_long_double_end:
+.L__kefir_text_func_int128_signed_from_long_double_end:
 
 int128_from_bitint_unsign:
-__kefir_text_func_int128_from_bitint_unsign_begin:
-    jmp __kefir_func_int128_from_bitint_unsign_label1
-__kefir_func_int128_from_bitint_unsign_label1:
+.L__kefir_text_func_int128_from_bitint_unsign_begin:
+    jmp .L__kefir_func_int128_from_bitint_unsign_label1
+.L__kefir_func_int128_from_bitint_unsign_label1:
     movabs $802366226414, %rax
     xor %edx, %edx
     ret
-__kefir_text_func_int128_from_bitint_unsign_end:
+.L__kefir_text_func_int128_from_bitint_unsign_end:
 
 int128_signed_from_double:
-__kefir_text_func_int128_signed_from_double_begin:
-    jmp __kefir_func_int128_signed_from_double_label1
-__kefir_func_int128_signed_from_double_label1:
+.L__kefir_text_func_int128_signed_from_double_begin:
+    jmp .L__kefir_func_int128_signed_from_double_label1
+.L__kefir_func_int128_signed_from_double_label1:
     mov $-31415, %rax
     mov $-1, %rdx
     ret
-__kefir_text_func_int128_signed_from_double_end:
+.L__kefir_text_func_int128_signed_from_double_end:
 
 int128_sign_extend64:
-__kefir_text_func_int128_sign_extend64_begin:
-    jmp __kefir_func_int128_sign_extend64_label1
-__kefir_func_int128_sign_extend64_label1:
+.L__kefir_text_func_int128_sign_extend64_begin:
+    jmp .L__kefir_func_int128_sign_extend64_label1
+.L__kefir_func_int128_sign_extend64_label1:
     movabs $-3405691582, %rax
     mov $-1, %rdx
     ret
-__kefir_text_func_int128_sign_extend64_end:
+.L__kefir_text_func_int128_sign_extend64_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

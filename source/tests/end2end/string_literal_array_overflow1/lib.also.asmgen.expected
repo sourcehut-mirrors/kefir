@@ -5,28 +5,28 @@
 .type somefn, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 somefn:
-__kefir_text_func_somefn_begin:
-__kefir_func_somefn_label0:
+.L__kefir_text_func_somefn_begin:
+.L__kefir_func_somefn_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_somefn_label1
-__kefir_func_somefn_label1:
+    jmp .L__kefir_func_somefn_label1
+.L__kefir_func_somefn_label1:
     mov %rcx, %rax
     xor %ecx, %eax
     movq %rax, -8(%rbp)
-    lea __kefir_string_literal0(%rip), %rax
+    lea .L__kefir_string_literal0(%rip), %rax
     movq (%rax), %rax
     movq %rax, -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_somefn_end:
+.L__kefir_text_func_somefn_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .rodata
-__kefir_string_literal0:
+.L__kefir_string_literal0:
     .ascii "SOME ABSURDLY CLEARLY LONG STRING THAT WOULD CAUSE CORRUPTION\000"

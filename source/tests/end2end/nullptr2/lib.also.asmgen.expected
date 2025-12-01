@@ -29,36 +29,36 @@
 .type set2, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get1:
-__kefir_text_func_get1_begin:
-    jmp __kefir_func_get1_label1
-__kefir_func_get1_label1:
+.L__kefir_text_func_get1_begin:
+    jmp .L__kefir_func_get1_label1
+.L__kefir_func_get1_label1:
     movq a@GOTPCREL(%rip), %rax
     movq (%rax), %rax
     xor %eax, %eax
     ret
-__kefir_text_func_get1_end:
+.L__kefir_text_func_get1_end:
 
 set1:
-__kefir_text_func_set1_begin:
-    jmp __kefir_func_set1_label1
-__kefir_func_set1_label1:
+.L__kefir_text_func_set1_begin:
+    jmp .L__kefir_func_set1_label1
+.L__kefir_func_set1_label1:
     movq a@GOTPCREL(%rip), %rax
     movq $0, (%rax)
     ret
-__kefir_text_func_set1_end:
+.L__kefir_text_func_set1_end:
 
 set2:
-__kefir_text_func_set2_begin:
-    jmp __kefir_func_set2_label1
-__kefir_func_set2_label1:
+.L__kefir_text_func_set2_begin:
+    jmp .L__kefir_func_set2_label1
+.L__kefir_func_set2_label1:
     movq a@GOTPCREL(%rip), %rax
     movq $0, (%rax)
     ret
-__kefir_text_func_set2_end:
+.L__kefir_text_func_set2_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 8

@@ -6,16 +6,16 @@
 .type sum_progression, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 sum_progression:
-__kefir_text_func_sum_progression_begin:
-__kefir_func_sum_progression_label0:
+.L__kefir_text_func_sum_progression_begin:
+.L__kefir_func_sum_progression_label0:
     push %rbp
     mov %rsp, %rbp
     sub $352, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_sum_progression_label1
-__kefir_func_sum_progression_label1:
+    jmp .L__kefir_func_sum_progression_label1
+.L__kefir_func_sum_progression_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
@@ -327,7 +327,7 @@ __kefir_func_sum_progression_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_sum_progression_end:
+.L__kefir_text_func_sum_progression_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

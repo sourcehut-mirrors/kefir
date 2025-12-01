@@ -15,14 +15,14 @@
 .type dec128_to_signed, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 dec32_to_unsigned:
-__kefir_text_func_dec32_to_unsigned_begin:
+.L__kefir_text_func_dec32_to_unsigned_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_dec32_to_unsigned_label1
-__kefir_func_dec32_to_unsigned_label1:
+    jmp .L__kefir_func_dec32_to_unsigned_label1
+.L__kefir_func_dec32_to_unsigned_label1:
     movl $9013, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -32,15 +32,15 @@ __kefir_func_dec32_to_unsigned_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_dec32_to_unsigned_end:
+.L__kefir_text_func_dec32_to_unsigned_end:
 
 dec64_to_unsigned:
-__kefir_text_func_dec64_to_unsigned_begin:
+.L__kefir_text_func_dec64_to_unsigned_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_dec64_to_unsigned_label1
-__kefir_func_dec64_to_unsigned_label1:
+    jmp .L__kefir_func_dec64_to_unsigned_label1
+.L__kefir_func_dec64_to_unsigned_label1:
     movl $13819, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -50,15 +50,15 @@ __kefir_func_dec64_to_unsigned_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_dec64_to_unsigned_end:
+.L__kefir_text_func_dec64_to_unsigned_end:
 
 dec32_to_signed:
-__kefir_text_func_dec32_to_signed_begin:
+.L__kefir_text_func_dec32_to_signed_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_dec32_to_signed_label1
-__kefir_func_dec32_to_signed_label1:
+    jmp .L__kefir_func_dec32_to_signed_label1
+.L__kefir_func_dec32_to_signed_label1:
     movl $4294960591, -16(%rbp)
     movl $4294967295, -12(%rbp)
     movl $4294967295, -8(%rbp)
@@ -68,15 +68,15 @@ __kefir_func_dec32_to_signed_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_dec32_to_signed_end:
+.L__kefir_text_func_dec32_to_signed_end:
 
 dec64_to_signed:
-__kefir_text_func_dec64_to_signed_begin:
+.L__kefir_text_func_dec64_to_signed_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_dec64_to_signed_label1
-__kefir_func_dec64_to_signed_label1:
+    jmp .L__kefir_func_dec64_to_signed_label1
+.L__kefir_func_dec64_to_signed_label1:
     movl $1910, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -86,15 +86,15 @@ __kefir_func_dec64_to_signed_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_dec64_to_signed_end:
+.L__kefir_text_func_dec64_to_signed_end:
 
 dec128_to_unsigned:
-__kefir_text_func_dec128_to_unsigned_begin:
+.L__kefir_text_func_dec128_to_unsigned_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_dec128_to_unsigned_label1
-__kefir_func_dec128_to_unsigned_label1:
+    jmp .L__kefir_func_dec128_to_unsigned_label1
+.L__kefir_func_dec128_to_unsigned_label1:
     movl $38194, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -104,15 +104,15 @@ __kefir_func_dec128_to_unsigned_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_dec128_to_unsigned_end:
+.L__kefir_text_func_dec128_to_unsigned_end:
 
 dec128_to_signed:
-__kefir_text_func_dec128_to_signed_begin:
+.L__kefir_text_func_dec128_to_signed_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_dec128_to_signed_label1
-__kefir_func_dec128_to_signed_label1:
+    jmp .L__kefir_func_dec128_to_signed_label1
+.L__kefir_func_dec128_to_signed_label1:
     movl $3301248477, -16(%rbp)
     movl $4294967295, -12(%rbp)
     movl $4294967295, -8(%rbp)
@@ -122,7 +122,7 @@ __kefir_func_dec128_to_signed_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_dec128_to_signed_end:
+.L__kefir_text_func_dec128_to_signed_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

@@ -3,30 +3,30 @@
 
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 close1:
-__kefir_text_func_close1_begin:
-__kefir_func_close1_label0:
+.L__kefir_text_func_close1_begin:
+.L__kefir_func_close1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_close1_label1
-__kefir_func_close1_label1:
+    jmp .L__kefir_func_close1_label1
+.L__kefir_func_close1_label1:
     pop %rbp
     ret
-__kefir_text_func_close1_end:
+.L__kefir_text_func_close1_end:
 
 close2:
-__kefir_text_func_close2_begin:
-__kefir_func_close2_label0:
+.L__kefir_text_func_close2_begin:
+.L__kefir_func_close2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_close2_label1
-__kefir_func_close2_label1:
+    jmp .L__kefir_func_close2_label1
+.L__kefir_func_close2_label1:
     pop %rbp
     ret
-__kefir_text_func_close2_end:
+.L__kefir_text_func_close2_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 
 .section .fini_array

@@ -5,17 +5,17 @@
 .type overflow_add, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 overflow_add:
-__kefir_text_func_overflow_add_begin:
-    jmp __kefir_func_overflow_add_label1
-__kefir_func_overflow_add_label1:
+.L__kefir_text_func_overflow_add_begin:
+    jmp .L__kefir_func_overflow_add_label1
+.L__kefir_func_overflow_add_label1:
     add %rsi, %rdi
     seto %al
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_add_end:
+.L__kefir_text_func_overflow_add_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

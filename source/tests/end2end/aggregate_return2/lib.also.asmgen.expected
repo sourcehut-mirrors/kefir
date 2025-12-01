@@ -12,16 +12,16 @@
 .type testlarge2, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 testlarge:
-__kefir_text_func_testlarge_begin:
+.L__kefir_text_func_testlarge_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $512, %rsp
-    jmp __kefir_func_testlarge_label1
-__kefir_func_testlarge_label1:
+    jmp .L__kefir_func_testlarge_label1
+.L__kefir_func_testlarge_label1:
     mov %rdi, %r12
     leaq -528(%rbp), %rbx
     mov %r12, %rsi
@@ -36,10 +36,10 @@ __kefir_func_testlarge_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_testlarge_end:
+.L__kefir_text_func_testlarge_end:
 
 testsmall:
-__kefir_text_func_testsmall_begin:
+.L__kefir_text_func_testsmall_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
@@ -47,8 +47,8 @@ __kefir_text_func_testsmall_begin:
     push %r13
     sub $40, %rsp
     stmxcsr -32(%rbp)
-    jmp __kefir_func_testsmall_label1
-__kefir_func_testsmall_label1:
+    jmp .L__kefir_func_testsmall_label1
+.L__kefir_func_testsmall_label1:
     mov %rdi, %r12
     leaq -64(%rbp), %rbx
     mov %r12, %rdi
@@ -72,17 +72,17 @@ __kefir_func_testsmall_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_testsmall_end:
+.L__kefir_text_func_testsmall_end:
 
 testlarge2:
-__kefir_text_func_testlarge2_begin:
+.L__kefir_text_func_testlarge2_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $1024, %rsp
-    jmp __kefir_func_testlarge2_label1
-__kefir_func_testlarge2_label1:
+    jmp .L__kefir_func_testlarge2_label1
+.L__kefir_func_testlarge2_label1:
     mov %rsi, %r12
     leaq -1040(%rbp), %rbx
     mov %rdi, %rsi
@@ -101,7 +101,7 @@ __kefir_func_testlarge2_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_testlarge2_end:
+.L__kefir_text_func_testlarge2_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

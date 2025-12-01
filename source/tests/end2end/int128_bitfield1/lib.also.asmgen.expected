@@ -11,11 +11,11 @@
 .type set_b, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get_a:
-__kefir_text_func_get_a_begin:
-    jmp __kefir_func_get_a_label1
-__kefir_func_get_a_label1:
+.L__kefir_text_func_get_a_begin:
+    jmp .L__kefir_func_get_a_label1
+.L__kefir_func_get_a_label1:
     lea value(%rip), %rax
     movl (%rax), %eax
     mov %rcx, %rdx
@@ -40,12 +40,12 @@ __kefir_func_get_a_label1:
     cmovne %rdx, %rcx
     mov %rcx, %rdx
     ret
-__kefir_text_func_get_a_end:
+.L__kefir_text_func_get_a_end:
 
 get_b:
-__kefir_text_func_get_b_begin:
-    jmp __kefir_func_get_b_label1
-__kefir_func_get_b_label1:
+.L__kefir_text_func_get_b_begin:
+    jmp .L__kefir_func_get_b_label1
+.L__kefir_func_get_b_label1:
     lea value(%rip), %rax
     add $4, %rax
     movq (%rax), %rax
@@ -72,16 +72,16 @@ __kefir_func_get_b_label1:
     cmovne %rdx, %rcx
     mov %rcx, %rdx
     ret
-__kefir_text_func_get_b_end:
+.L__kefir_text_func_get_b_end:
 
 set_a:
-__kefir_text_func_set_a_begin:
+.L__kefir_text_func_set_a_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp __kefir_func_set_a_label1
-__kefir_func_set_a_label1:
+    jmp .L__kefir_func_set_a_label1
+.L__kefir_func_set_a_label1:
     lea value(%rip), %rax
     movl (%rax), %r11d
     lea value(%rip), %rbx
@@ -137,16 +137,16 @@ __kefir_func_set_a_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_set_a_end:
+.L__kefir_text_func_set_a_end:
 
 set_b:
-__kefir_text_func_set_b_begin:
+.L__kefir_text_func_set_b_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp __kefir_func_set_b_label1
-__kefir_func_set_b_label1:
+    jmp .L__kefir_func_set_b_label1
+.L__kefir_func_set_b_label1:
     lea value(%rip), %rax
     add $4, %rax
     movq (%rax), %r10
@@ -208,9 +208,9 @@ __kefir_func_set_b_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_set_b_end:
+.L__kefir_text_func_set_b_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 8

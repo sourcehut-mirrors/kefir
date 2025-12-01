@@ -9,18 +9,18 @@
 .type test1, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test1:
-__kefir_text_func_test1_begin:
-__kefir_func_test1_label0:
+.L__kefir_text_func_test1_begin:
+.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     push %r13
     sub $56, %rsp
-    jmp __kefir_func_test1_label1
-__kefir_func_test1_label1:
+    jmp .L__kefir_func_test1_label1
+.L__kefir_func_test1_label1:
     mov 56(%rbp), %rax
     mov 48(%rbp), %r10
     mov 40(%rbp), %r11
@@ -153,7 +153,7 @@ __kefir_func_test1_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_test1_end:
+.L__kefir_text_func_test1_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

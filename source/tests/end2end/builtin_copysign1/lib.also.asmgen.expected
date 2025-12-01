@@ -15,21 +15,21 @@
 .type my_copysignl, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 my_copysign:
-__kefir_text_func_my_copysign_begin:
-__kefir_func_my_copysign_label0:
+.L__kefir_text_func_my_copysign_begin:
+.L__kefir_func_my_copysign_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_my_copysign_label1
-__kefir_func_my_copysign_label1:
+    jmp .L__kefir_func_my_copysign_label1
+.L__kefir_func_my_copysign_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
-    movdqu __kefir_constant_copysign(%rip), %xmm0
+    movdqu .L__kefir_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm1
     movq %rcx, %xmm2
     andpd %xmm2, %xmm1
@@ -40,22 +40,22 @@ __kefir_func_my_copysign_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_my_copysign_end:
+.L__kefir_text_func_my_copysign_end:
 
 my_copysignf:
-__kefir_text_func_my_copysignf_begin:
-__kefir_func_my_copysignf_label0:
+.L__kefir_text_func_my_copysignf_begin:
+.L__kefir_func_my_copysignf_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_my_copysignf_label1
-__kefir_func_my_copysignf_label1:
+    jmp .L__kefir_func_my_copysignf_label1
+.L__kefir_func_my_copysignf_label1:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    movdqu __kefir_constant_copysignf(%rip), %xmm0
+    movdqu .L__kefir_constant_copysignf(%rip), %xmm0
     movaps %xmm0, %xmm1
     movd %ecx, %xmm2
     andps %xmm2, %xmm1
@@ -66,17 +66,17 @@ __kefir_func_my_copysignf_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_my_copysignf_end:
+.L__kefir_text_func_my_copysignf_end:
 
 my_copysignl:
-__kefir_text_func_my_copysignl_begin:
-__kefir_func_my_copysignl_label0:
+.L__kefir_text_func_my_copysignl_begin:
+.L__kefir_func_my_copysignl_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_my_copysignl_label1
-__kefir_func_my_copysignl_label1:
+    jmp .L__kefir_func_my_copysignl_label1
+.L__kefir_func_my_copysignl_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
@@ -101,9 +101,9 @@ __kefir_func_my_copysignl_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_my_copysignl_end:
+.L__kefir_text_func_my_copysignl_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 16
@@ -135,13 +135,13 @@ f80:
 
 .section .rodata
     .align 16
-__kefir_constant_copysignf:
+.L__kefir_constant_copysignf:
     .long 2147483648
     .long 0
     .long 0
     .long 0
     .align 16
-__kefir_constant_copysign:
+.L__kefir_constant_copysign:
     .long 0
     .long 2147483648
     .long 0

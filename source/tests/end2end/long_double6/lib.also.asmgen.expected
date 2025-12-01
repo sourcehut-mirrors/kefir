@@ -5,15 +5,15 @@
 .type init_s, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 init_s:
-__kefir_text_func_init_s_begin:
+.L__kefir_text_func_init_s_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_init_s_label1
-__kefir_func_init_s_label1:
+    jmp .L__kefir_func_init_s_label1
+.L__kefir_func_init_s_label1:
     movaps %xmm2, %xmm1
     xorps %xmm2, %xmm1
     movdqu %xmm1, (%rdi)
@@ -31,12 +31,12 @@ __kefir_func_init_s_label1:
     fildq (%rsp)
     add $8, %rsp
     test %rax, %rax
-    jns __kefir_func_init_s_label3
-    jmp __kefir_func_init_s_label2
-__kefir_func_init_s_label2:
-    fadds __kefir_constant_uint_to_long_double(%rip)
-    jmp __kefir_func_init_s_label3
-__kefir_func_init_s_label3:
+    jns .L__kefir_func_init_s_label3
+    jmp .L__kefir_func_init_s_label2
+.L__kefir_func_init_s_label2:
+    fadds .L__kefir_constant_uint_to_long_double(%rip)
+    jmp .L__kefir_func_init_s_label3
+.L__kefir_func_init_s_label3:
     movq $0, 8(%rcx)
     fstpt (%rcx)
     lea 32(%rdi), %rax
@@ -49,11 +49,11 @@ __kefir_func_init_s_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_init_s_end:
+.L__kefir_text_func_init_s_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .rodata
     .align 16
-__kefir_constant_uint_to_long_double:
+.L__kefir_constant_uint_to_long_double:
     .long 1602224128

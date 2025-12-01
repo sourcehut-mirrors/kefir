@@ -31,537 +31,537 @@
 .type get2, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get:
 .file 0 "source/tests/end2end/bitint_dwarf1/lib.kefir.asmgen.c"
 .loc 0 28 1
-__kefir_text_func_get_begin:
-__kefir_func_get_label0:
-__kefir_func_get_label8:
-__kefir_func_get_label9:
-__kefir_func_get_label10:
+.L__kefir_text_func_get_begin:
+.L__kefir_func_get_label0:
+.L__kefir_func_get_label8:
+.L__kefir_func_get_label9:
+.L__kefir_func_get_label10:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-__kefir_func_get_label11:
-__kefir_func_get_label12:
-    jmp __kefir_func_get_label2
-__kefir_func_get_label13:
-__kefir_func_get_label1:
-__kefir_func_get_label2:
+.L__kefir_func_get_label11:
+.L__kefir_func_get_label12:
+    jmp .L__kefir_func_get_label2
+.L__kefir_func_get_label13:
+.L__kefir_func_get_label1:
+.L__kefir_func_get_label2:
 .loc 0 29 5
-__kefir_func_get_label14:
-__kefir_func_get_label15:
-__kefir_func_get_label16:
-__kefir_func_get_label17:
-__kefir_func_get_label18:
-__kefir_func_get_label24:
+.L__kefir_func_get_label14:
+.L__kefir_func_get_label15:
+.L__kefir_func_get_label16:
+.L__kefir_func_get_label17:
+.L__kefir_func_get_label18:
+.L__kefir_func_get_label24:
     mov $0, %rax
-__kefir_func_get_label19:
-__kefir_func_get_label20:
+.L__kefir_func_get_label19:
+.L__kefir_func_get_label20:
     shl $62, %rax
-__kefir_func_get_label21:
-__kefir_func_get_label22:
+.L__kefir_func_get_label21:
+.L__kefir_func_get_label22:
     sar $62, %rax
-__kefir_func_get_label23:
-__kefir_func_get_label25:
-__kefir_func_get_label26:
-__kefir_func_get_label28:
+.L__kefir_func_get_label23:
+.L__kefir_func_get_label25:
+.L__kefir_func_get_label26:
+.L__kefir_func_get_label28:
     movw %ax, -2(%rbp)
 .loc 0 30 12
-__kefir_func_get_label27:
-__kefir_func_get_label29:
-__kefir_func_get_label30:
-__kefir_func_get_label31:
-__kefir_func_get_label32:
-__kefir_func_get_label34:
+.L__kefir_func_get_label27:
+.L__kefir_func_get_label29:
+.L__kefir_func_get_label30:
+.L__kefir_func_get_label31:
+.L__kefir_func_get_label32:
+.L__kefir_func_get_label34:
     movw -2(%rbp), %dx
 .loc 0 30 12
-__kefir_func_get_label33:
-__kefir_func_get_label35:
-__kefir_func_get_label36:
-__kefir_func_get_label37:
-__kefir_func_get_label38:
-__kefir_func_get_label39:
-__kefir_func_get_label40:
-__kefir_func_get_label44:
+.L__kefir_func_get_label33:
+.L__kefir_func_get_label35:
+.L__kefir_func_get_label36:
+.L__kefir_func_get_label37:
+.L__kefir_func_get_label38:
+.L__kefir_func_get_label39:
+.L__kefir_func_get_label40:
+.L__kefir_func_get_label44:
     shl $55, %rdx
-__kefir_func_get_label41:
-__kefir_func_get_label42:
+.L__kefir_func_get_label41:
+.L__kefir_func_get_label42:
     sar $55, %rdx
 .loc 0 30 5
-__kefir_func_get_label43:
-__kefir_func_get_label45:
-__kefir_func_get_label46:
-__kefir_func_get_label50:
+.L__kefir_func_get_label43:
+.L__kefir_func_get_label45:
+.L__kefir_func_get_label46:
+.L__kefir_func_get_label50:
     shl $55, %rdx
-__kefir_func_get_label47:
-__kefir_func_get_label48:
+.L__kefir_func_get_label47:
+.L__kefir_func_get_label48:
     sar $55, %rdx
-__kefir_func_get_label49:
-__kefir_func_get_label51:
-__kefir_func_get_label52:
-__kefir_func_get_label218:
+.L__kefir_func_get_label49:
+.L__kefir_func_get_label51:
+.L__kefir_func_get_label52:
+.L__kefir_func_get_label218:
     leaq -32(%rbp), %rax
 .loc 0 30 5
     mov %rax, %rdi
-__kefir_func_get_label53:
-__kefir_func_get_label54:
+.L__kefir_func_get_label53:
+.L__kefir_func_get_label54:
     mov $90, %rsi
-__kefir_func_get_label55:
-__kefir_func_get_label56:
-__kefir_func_get_label57:
-__kefir_func_get_label58:
-__kefir_func_get_label59:
-__kefir_func_get_label60:
-__kefir_func_get_label61:
-__kefir_func_get_label62:
-__kefir_func_get_label63:
-__kefir_func_get_label64:
-__kefir_func_get_label65:
-__kefir_func_get_label66:
-__kefir_func_get_label67:
-__kefir_func_get_label68:
-__kefir_func_get_label69:
-__kefir_func_get_label70:
-__kefir_func_get_label71:
-__kefir_func_get_label72:
-__kefir_func_get_label73:
-__kefir_func_get_label74:
-__kefir_func_get_label75:
-__kefir_func_get_label76:
-__kefir_func_get_label77:
-__kefir_func_get_label78:
-__kefir_func_get_label79:
-__kefir_func_get_label80:
-__kefir_func_get_label81:
-__kefir_func_get_label82:
-__kefir_func_get_label83:
-__kefir_func_get_label84:
-__kefir_func_get_label85:
-__kefir_func_get_label86:
-__kefir_func_get_label87:
-__kefir_func_get_label88:
-__kefir_func_get_label89:
-__kefir_func_get_label90:
-__kefir_func_get_label91:
-__kefir_func_get_label92:
-__kefir_func_get_label93:
-__kefir_func_get_label94:
-__kefir_func_get_label95:
-__kefir_func_get_label96:
-__kefir_func_get_label97:
-__kefir_func_get_label98:
-__kefir_func_get_label99:
-__kefir_func_get_label100:
-__kefir_func_get_label101:
-__kefir_func_get_label102:
-__kefir_func_get_label103:
-__kefir_func_get_label104:
-__kefir_func_get_label105:
-__kefir_func_get_label106:
-__kefir_func_get_label107:
-__kefir_func_get_label108:
-__kefir_func_get_label109:
-__kefir_func_get_label110:
-__kefir_func_get_label111:
-__kefir_func_get_label112:
-__kefir_func_get_label113:
-__kefir_func_get_label114:
-__kefir_func_get_label115:
-__kefir_func_get_label116:
-__kefir_func_get_label117:
-__kefir_func_get_label118:
-__kefir_func_get_label119:
-__kefir_func_get_label120:
-__kefir_func_get_label121:
-__kefir_func_get_label122:
-__kefir_func_get_label123:
-__kefir_func_get_label124:
-__kefir_func_get_label125:
-__kefir_func_get_label126:
-__kefir_func_get_label127:
-__kefir_func_get_label128:
-__kefir_func_get_label129:
-__kefir_func_get_label130:
-__kefir_func_get_label131:
-__kefir_func_get_label132:
-__kefir_func_get_label133:
-__kefir_func_get_label134:
-__kefir_func_get_label135:
-__kefir_func_get_label136:
-__kefir_func_get_label137:
-__kefir_func_get_label138:
-__kefir_func_get_label139:
-__kefir_func_get_label140:
-__kefir_func_get_label141:
-__kefir_func_get_label142:
-__kefir_func_get_label143:
-__kefir_func_get_label144:
-__kefir_func_get_label145:
-__kefir_func_get_label146:
-__kefir_func_get_label147:
-__kefir_func_get_label148:
-__kefir_func_get_label149:
-__kefir_func_get_label150:
-__kefir_func_get_label151:
-__kefir_func_get_label152:
-__kefir_func_get_label153:
-__kefir_func_get_label154:
-__kefir_func_get_label155:
-__kefir_func_get_label156:
-__kefir_func_get_label157:
-__kefir_func_get_label158:
-__kefir_func_get_label159:
-__kefir_func_get_label160:
-__kefir_func_get_label161:
-__kefir_func_get_label162:
-__kefir_func_get_label163:
-__kefir_func_get_label164:
-__kefir_func_get_label165:
-__kefir_func_get_label166:
+.L__kefir_func_get_label55:
+.L__kefir_func_get_label56:
+.L__kefir_func_get_label57:
+.L__kefir_func_get_label58:
+.L__kefir_func_get_label59:
+.L__kefir_func_get_label60:
+.L__kefir_func_get_label61:
+.L__kefir_func_get_label62:
+.L__kefir_func_get_label63:
+.L__kefir_func_get_label64:
+.L__kefir_func_get_label65:
+.L__kefir_func_get_label66:
+.L__kefir_func_get_label67:
+.L__kefir_func_get_label68:
+.L__kefir_func_get_label69:
+.L__kefir_func_get_label70:
+.L__kefir_func_get_label71:
+.L__kefir_func_get_label72:
+.L__kefir_func_get_label73:
+.L__kefir_func_get_label74:
+.L__kefir_func_get_label75:
+.L__kefir_func_get_label76:
+.L__kefir_func_get_label77:
+.L__kefir_func_get_label78:
+.L__kefir_func_get_label79:
+.L__kefir_func_get_label80:
+.L__kefir_func_get_label81:
+.L__kefir_func_get_label82:
+.L__kefir_func_get_label83:
+.L__kefir_func_get_label84:
+.L__kefir_func_get_label85:
+.L__kefir_func_get_label86:
+.L__kefir_func_get_label87:
+.L__kefir_func_get_label88:
+.L__kefir_func_get_label89:
+.L__kefir_func_get_label90:
+.L__kefir_func_get_label91:
+.L__kefir_func_get_label92:
+.L__kefir_func_get_label93:
+.L__kefir_func_get_label94:
+.L__kefir_func_get_label95:
+.L__kefir_func_get_label96:
+.L__kefir_func_get_label97:
+.L__kefir_func_get_label98:
+.L__kefir_func_get_label99:
+.L__kefir_func_get_label100:
+.L__kefir_func_get_label101:
+.L__kefir_func_get_label102:
+.L__kefir_func_get_label103:
+.L__kefir_func_get_label104:
+.L__kefir_func_get_label105:
+.L__kefir_func_get_label106:
+.L__kefir_func_get_label107:
+.L__kefir_func_get_label108:
+.L__kefir_func_get_label109:
+.L__kefir_func_get_label110:
+.L__kefir_func_get_label111:
+.L__kefir_func_get_label112:
+.L__kefir_func_get_label113:
+.L__kefir_func_get_label114:
+.L__kefir_func_get_label115:
+.L__kefir_func_get_label116:
+.L__kefir_func_get_label117:
+.L__kefir_func_get_label118:
+.L__kefir_func_get_label119:
+.L__kefir_func_get_label120:
+.L__kefir_func_get_label121:
+.L__kefir_func_get_label122:
+.L__kefir_func_get_label123:
+.L__kefir_func_get_label124:
+.L__kefir_func_get_label125:
+.L__kefir_func_get_label126:
+.L__kefir_func_get_label127:
+.L__kefir_func_get_label128:
+.L__kefir_func_get_label129:
+.L__kefir_func_get_label130:
+.L__kefir_func_get_label131:
+.L__kefir_func_get_label132:
+.L__kefir_func_get_label133:
+.L__kefir_func_get_label134:
+.L__kefir_func_get_label135:
+.L__kefir_func_get_label136:
+.L__kefir_func_get_label137:
+.L__kefir_func_get_label138:
+.L__kefir_func_get_label139:
+.L__kefir_func_get_label140:
+.L__kefir_func_get_label141:
+.L__kefir_func_get_label142:
+.L__kefir_func_get_label143:
+.L__kefir_func_get_label144:
+.L__kefir_func_get_label145:
+.L__kefir_func_get_label146:
+.L__kefir_func_get_label147:
+.L__kefir_func_get_label148:
+.L__kefir_func_get_label149:
+.L__kefir_func_get_label150:
+.L__kefir_func_get_label151:
+.L__kefir_func_get_label152:
+.L__kefir_func_get_label153:
+.L__kefir_func_get_label154:
+.L__kefir_func_get_label155:
+.L__kefir_func_get_label156:
+.L__kefir_func_get_label157:
+.L__kefir_func_get_label158:
+.L__kefir_func_get_label159:
+.L__kefir_func_get_label160:
+.L__kefir_func_get_label161:
+.L__kefir_func_get_label162:
+.L__kefir_func_get_label163:
+.L__kefir_func_get_label164:
+.L__kefir_func_get_label165:
+.L__kefir_func_get_label166:
     call __kefir_bigint_set_signed_integer
-__kefir_func_get_label167:
-__kefir_func_get_label168:
-__kefir_func_get_label169:
-__kefir_func_get_label170:
-__kefir_func_get_label171:
-__kefir_func_get_label172:
-__kefir_func_get_label173:
-__kefir_func_get_label174:
-__kefir_func_get_label175:
-__kefir_func_get_label176:
-__kefir_func_get_label177:
-__kefir_func_get_label178:
-__kefir_func_get_label179:
-__kefir_func_get_label180:
-__kefir_func_get_label181:
-__kefir_func_get_label182:
-__kefir_func_get_label183:
-__kefir_func_get_label184:
-__kefir_func_get_label185:
-__kefir_func_get_label186:
-__kefir_func_get_label187:
-__kefir_func_get_label188:
-__kefir_func_get_label189:
-__kefir_func_get_label190:
-__kefir_func_get_label191:
-__kefir_func_get_label192:
-__kefir_func_get_label193:
-__kefir_func_get_label194:
-__kefir_func_get_label195:
-__kefir_func_get_label196:
-__kefir_func_get_label197:
-__kefir_func_get_label198:
-__kefir_func_get_label199:
-__kefir_func_get_label200:
-__kefir_func_get_label201:
-__kefir_func_get_label202:
-__kefir_func_get_label203:
-__kefir_func_get_label204:
-__kefir_func_get_label205:
-__kefir_func_get_label206:
-__kefir_func_get_label207:
-__kefir_func_get_label208:
-__kefir_func_get_label209:
-__kefir_func_get_label210:
-__kefir_func_get_label211:
-__kefir_func_get_label212:
-__kefir_func_get_label213:
-__kefir_func_get_label214:
-__kefir_func_get_label215:
-__kefir_func_get_label216:
-__kefir_func_get_label217:
-__kefir_func_get_label219:
-__kefir_func_get_label220:
-__kefir_func_get_label234:
+.L__kefir_func_get_label167:
+.L__kefir_func_get_label168:
+.L__kefir_func_get_label169:
+.L__kefir_func_get_label170:
+.L__kefir_func_get_label171:
+.L__kefir_func_get_label172:
+.L__kefir_func_get_label173:
+.L__kefir_func_get_label174:
+.L__kefir_func_get_label175:
+.L__kefir_func_get_label176:
+.L__kefir_func_get_label177:
+.L__kefir_func_get_label178:
+.L__kefir_func_get_label179:
+.L__kefir_func_get_label180:
+.L__kefir_func_get_label181:
+.L__kefir_func_get_label182:
+.L__kefir_func_get_label183:
+.L__kefir_func_get_label184:
+.L__kefir_func_get_label185:
+.L__kefir_func_get_label186:
+.L__kefir_func_get_label187:
+.L__kefir_func_get_label188:
+.L__kefir_func_get_label189:
+.L__kefir_func_get_label190:
+.L__kefir_func_get_label191:
+.L__kefir_func_get_label192:
+.L__kefir_func_get_label193:
+.L__kefir_func_get_label194:
+.L__kefir_func_get_label195:
+.L__kefir_func_get_label196:
+.L__kefir_func_get_label197:
+.L__kefir_func_get_label198:
+.L__kefir_func_get_label199:
+.L__kefir_func_get_label200:
+.L__kefir_func_get_label201:
+.L__kefir_func_get_label202:
+.L__kefir_func_get_label203:
+.L__kefir_func_get_label204:
+.L__kefir_func_get_label205:
+.L__kefir_func_get_label206:
+.L__kefir_func_get_label207:
+.L__kefir_func_get_label208:
+.L__kefir_func_get_label209:
+.L__kefir_func_get_label210:
+.L__kefir_func_get_label211:
+.L__kefir_func_get_label212:
+.L__kefir_func_get_label213:
+.L__kefir_func_get_label214:
+.L__kefir_func_get_label215:
+.L__kefir_func_get_label216:
+.L__kefir_func_get_label217:
+.L__kefir_func_get_label219:
+.L__kefir_func_get_label220:
+.L__kefir_func_get_label234:
     movq -32(%rbp), %rax
-__kefir_func_get_label221:
-__kefir_func_get_label222:
+.L__kefir_func_get_label221:
+.L__kefir_func_get_label222:
     movq -24(%rbp), %rdx
-__kefir_func_get_label223:
-__kefir_func_get_label224:
+.L__kefir_func_get_label223:
+.L__kefir_func_get_label224:
     lea (%rbp), %rsp
     pop %rbp
-__kefir_func_get_label225:
-__kefir_func_get_label226:
-__kefir_func_get_label227:
-__kefir_func_get_label228:
-__kefir_func_get_label229:
-__kefir_func_get_label230:
-__kefir_func_get_label231:
-__kefir_func_get_label232:
+.L__kefir_func_get_label225:
+.L__kefir_func_get_label226:
+.L__kefir_func_get_label227:
+.L__kefir_func_get_label228:
+.L__kefir_func_get_label229:
+.L__kefir_func_get_label230:
+.L__kefir_func_get_label231:
+.L__kefir_func_get_label232:
     ret
-__kefir_func_get_label233:
-__kefir_func_get_label235:
-__kefir_func_get_label3:
-__kefir_text_func_get_end:
+.L__kefir_func_get_label233:
+.L__kefir_func_get_label235:
+.L__kefir_func_get_label3:
+.L__kefir_text_func_get_end:
 
 get2:
 .loc 0 40 1
-__kefir_text_func_get2_begin:
-__kefir_func_get2_label0:
-__kefir_func_get2_label8:
-__kefir_func_get2_label9:
-__kefir_func_get2_label10:
+.L__kefir_text_func_get2_begin:
+.L__kefir_func_get2_label0:
+.L__kefir_func_get2_label8:
+.L__kefir_func_get2_label9:
+.L__kefir_func_get2_label10:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-__kefir_func_get2_label11:
-__kefir_func_get2_label12:
-    jmp __kefir_func_get2_label2
-__kefir_func_get2_label13:
-__kefir_func_get2_label1:
-__kefir_func_get2_label2:
+.L__kefir_func_get2_label11:
+.L__kefir_func_get2_label12:
+    jmp .L__kefir_func_get2_label2
+.L__kefir_func_get2_label13:
+.L__kefir_func_get2_label1:
+.L__kefir_func_get2_label2:
 .loc 0 41 5
-__kefir_func_get2_label14:
-__kefir_func_get2_label15:
-__kefir_func_get2_label16:
-__kefir_func_get2_label17:
-__kefir_func_get2_label18:
-__kefir_func_get2_label24:
+.L__kefir_func_get2_label14:
+.L__kefir_func_get2_label15:
+.L__kefir_func_get2_label16:
+.L__kefir_func_get2_label17:
+.L__kefir_func_get2_label18:
+.L__kefir_func_get2_label24:
     mov $0, %rax
-__kefir_func_get2_label19:
-__kefir_func_get2_label20:
+.L__kefir_func_get2_label19:
+.L__kefir_func_get2_label20:
     shl $63, %rax
-__kefir_func_get2_label21:
-__kefir_func_get2_label22:
+.L__kefir_func_get2_label21:
+.L__kefir_func_get2_label22:
     shr $63, %rax
-__kefir_func_get2_label23:
-__kefir_func_get2_label25:
-__kefir_func_get2_label26:
-__kefir_func_get2_label28:
+.L__kefir_func_get2_label23:
+.L__kefir_func_get2_label25:
+.L__kefir_func_get2_label26:
+.L__kefir_func_get2_label28:
     movw %ax, -2(%rbp)
 .loc 0 42 12
-__kefir_func_get2_label27:
-__kefir_func_get2_label29:
-__kefir_func_get2_label30:
-__kefir_func_get2_label31:
-__kefir_func_get2_label32:
-__kefir_func_get2_label34:
+.L__kefir_func_get2_label27:
+.L__kefir_func_get2_label29:
+.L__kefir_func_get2_label30:
+.L__kefir_func_get2_label31:
+.L__kefir_func_get2_label32:
+.L__kefir_func_get2_label34:
     movw -2(%rbp), %dx
 .loc 0 42 12
-__kefir_func_get2_label33:
-__kefir_func_get2_label35:
-__kefir_func_get2_label36:
-__kefir_func_get2_label37:
-__kefir_func_get2_label38:
-__kefir_func_get2_label39:
-__kefir_func_get2_label40:
-__kefir_func_get2_label44:
+.L__kefir_func_get2_label33:
+.L__kefir_func_get2_label35:
+.L__kefir_func_get2_label36:
+.L__kefir_func_get2_label37:
+.L__kefir_func_get2_label38:
+.L__kefir_func_get2_label39:
+.L__kefir_func_get2_label40:
+.L__kefir_func_get2_label44:
     shl $55, %rdx
-__kefir_func_get2_label41:
-__kefir_func_get2_label42:
+.L__kefir_func_get2_label41:
+.L__kefir_func_get2_label42:
     shr $55, %rdx
 .loc 0 42 5
-__kefir_func_get2_label43:
-__kefir_func_get2_label45:
-__kefir_func_get2_label46:
-__kefir_func_get2_label50:
+.L__kefir_func_get2_label43:
+.L__kefir_func_get2_label45:
+.L__kefir_func_get2_label46:
+.L__kefir_func_get2_label50:
     shl $55, %rdx
-__kefir_func_get2_label47:
-__kefir_func_get2_label48:
+.L__kefir_func_get2_label47:
+.L__kefir_func_get2_label48:
     shr $55, %rdx
-__kefir_func_get2_label49:
-__kefir_func_get2_label51:
-__kefir_func_get2_label52:
-__kefir_func_get2_label218:
+.L__kefir_func_get2_label49:
+.L__kefir_func_get2_label51:
+.L__kefir_func_get2_label52:
+.L__kefir_func_get2_label218:
     leaq -32(%rbp), %rax
 .loc 0 42 5
     mov %rax, %rdi
-__kefir_func_get2_label53:
-__kefir_func_get2_label54:
+.L__kefir_func_get2_label53:
+.L__kefir_func_get2_label54:
     mov $90, %rsi
-__kefir_func_get2_label55:
-__kefir_func_get2_label56:
-__kefir_func_get2_label57:
-__kefir_func_get2_label58:
-__kefir_func_get2_label59:
-__kefir_func_get2_label60:
-__kefir_func_get2_label61:
-__kefir_func_get2_label62:
-__kefir_func_get2_label63:
-__kefir_func_get2_label64:
-__kefir_func_get2_label65:
-__kefir_func_get2_label66:
-__kefir_func_get2_label67:
-__kefir_func_get2_label68:
-__kefir_func_get2_label69:
-__kefir_func_get2_label70:
-__kefir_func_get2_label71:
-__kefir_func_get2_label72:
-__kefir_func_get2_label73:
-__kefir_func_get2_label74:
-__kefir_func_get2_label75:
-__kefir_func_get2_label76:
-__kefir_func_get2_label77:
-__kefir_func_get2_label78:
-__kefir_func_get2_label79:
-__kefir_func_get2_label80:
-__kefir_func_get2_label81:
-__kefir_func_get2_label82:
-__kefir_func_get2_label83:
-__kefir_func_get2_label84:
-__kefir_func_get2_label85:
-__kefir_func_get2_label86:
-__kefir_func_get2_label87:
-__kefir_func_get2_label88:
-__kefir_func_get2_label89:
-__kefir_func_get2_label90:
-__kefir_func_get2_label91:
-__kefir_func_get2_label92:
-__kefir_func_get2_label93:
-__kefir_func_get2_label94:
-__kefir_func_get2_label95:
-__kefir_func_get2_label96:
-__kefir_func_get2_label97:
-__kefir_func_get2_label98:
-__kefir_func_get2_label99:
-__kefir_func_get2_label100:
-__kefir_func_get2_label101:
-__kefir_func_get2_label102:
-__kefir_func_get2_label103:
-__kefir_func_get2_label104:
-__kefir_func_get2_label105:
-__kefir_func_get2_label106:
-__kefir_func_get2_label107:
-__kefir_func_get2_label108:
-__kefir_func_get2_label109:
-__kefir_func_get2_label110:
-__kefir_func_get2_label111:
-__kefir_func_get2_label112:
-__kefir_func_get2_label113:
-__kefir_func_get2_label114:
-__kefir_func_get2_label115:
-__kefir_func_get2_label116:
-__kefir_func_get2_label117:
-__kefir_func_get2_label118:
-__kefir_func_get2_label119:
-__kefir_func_get2_label120:
-__kefir_func_get2_label121:
-__kefir_func_get2_label122:
-__kefir_func_get2_label123:
-__kefir_func_get2_label124:
-__kefir_func_get2_label125:
-__kefir_func_get2_label126:
-__kefir_func_get2_label127:
-__kefir_func_get2_label128:
-__kefir_func_get2_label129:
-__kefir_func_get2_label130:
-__kefir_func_get2_label131:
-__kefir_func_get2_label132:
-__kefir_func_get2_label133:
-__kefir_func_get2_label134:
-__kefir_func_get2_label135:
-__kefir_func_get2_label136:
-__kefir_func_get2_label137:
-__kefir_func_get2_label138:
-__kefir_func_get2_label139:
-__kefir_func_get2_label140:
-__kefir_func_get2_label141:
-__kefir_func_get2_label142:
-__kefir_func_get2_label143:
-__kefir_func_get2_label144:
-__kefir_func_get2_label145:
-__kefir_func_get2_label146:
-__kefir_func_get2_label147:
-__kefir_func_get2_label148:
-__kefir_func_get2_label149:
-__kefir_func_get2_label150:
-__kefir_func_get2_label151:
-__kefir_func_get2_label152:
-__kefir_func_get2_label153:
-__kefir_func_get2_label154:
-__kefir_func_get2_label155:
-__kefir_func_get2_label156:
-__kefir_func_get2_label157:
-__kefir_func_get2_label158:
-__kefir_func_get2_label159:
-__kefir_func_get2_label160:
-__kefir_func_get2_label161:
-__kefir_func_get2_label162:
-__kefir_func_get2_label163:
-__kefir_func_get2_label164:
-__kefir_func_get2_label165:
-__kefir_func_get2_label166:
+.L__kefir_func_get2_label55:
+.L__kefir_func_get2_label56:
+.L__kefir_func_get2_label57:
+.L__kefir_func_get2_label58:
+.L__kefir_func_get2_label59:
+.L__kefir_func_get2_label60:
+.L__kefir_func_get2_label61:
+.L__kefir_func_get2_label62:
+.L__kefir_func_get2_label63:
+.L__kefir_func_get2_label64:
+.L__kefir_func_get2_label65:
+.L__kefir_func_get2_label66:
+.L__kefir_func_get2_label67:
+.L__kefir_func_get2_label68:
+.L__kefir_func_get2_label69:
+.L__kefir_func_get2_label70:
+.L__kefir_func_get2_label71:
+.L__kefir_func_get2_label72:
+.L__kefir_func_get2_label73:
+.L__kefir_func_get2_label74:
+.L__kefir_func_get2_label75:
+.L__kefir_func_get2_label76:
+.L__kefir_func_get2_label77:
+.L__kefir_func_get2_label78:
+.L__kefir_func_get2_label79:
+.L__kefir_func_get2_label80:
+.L__kefir_func_get2_label81:
+.L__kefir_func_get2_label82:
+.L__kefir_func_get2_label83:
+.L__kefir_func_get2_label84:
+.L__kefir_func_get2_label85:
+.L__kefir_func_get2_label86:
+.L__kefir_func_get2_label87:
+.L__kefir_func_get2_label88:
+.L__kefir_func_get2_label89:
+.L__kefir_func_get2_label90:
+.L__kefir_func_get2_label91:
+.L__kefir_func_get2_label92:
+.L__kefir_func_get2_label93:
+.L__kefir_func_get2_label94:
+.L__kefir_func_get2_label95:
+.L__kefir_func_get2_label96:
+.L__kefir_func_get2_label97:
+.L__kefir_func_get2_label98:
+.L__kefir_func_get2_label99:
+.L__kefir_func_get2_label100:
+.L__kefir_func_get2_label101:
+.L__kefir_func_get2_label102:
+.L__kefir_func_get2_label103:
+.L__kefir_func_get2_label104:
+.L__kefir_func_get2_label105:
+.L__kefir_func_get2_label106:
+.L__kefir_func_get2_label107:
+.L__kefir_func_get2_label108:
+.L__kefir_func_get2_label109:
+.L__kefir_func_get2_label110:
+.L__kefir_func_get2_label111:
+.L__kefir_func_get2_label112:
+.L__kefir_func_get2_label113:
+.L__kefir_func_get2_label114:
+.L__kefir_func_get2_label115:
+.L__kefir_func_get2_label116:
+.L__kefir_func_get2_label117:
+.L__kefir_func_get2_label118:
+.L__kefir_func_get2_label119:
+.L__kefir_func_get2_label120:
+.L__kefir_func_get2_label121:
+.L__kefir_func_get2_label122:
+.L__kefir_func_get2_label123:
+.L__kefir_func_get2_label124:
+.L__kefir_func_get2_label125:
+.L__kefir_func_get2_label126:
+.L__kefir_func_get2_label127:
+.L__kefir_func_get2_label128:
+.L__kefir_func_get2_label129:
+.L__kefir_func_get2_label130:
+.L__kefir_func_get2_label131:
+.L__kefir_func_get2_label132:
+.L__kefir_func_get2_label133:
+.L__kefir_func_get2_label134:
+.L__kefir_func_get2_label135:
+.L__kefir_func_get2_label136:
+.L__kefir_func_get2_label137:
+.L__kefir_func_get2_label138:
+.L__kefir_func_get2_label139:
+.L__kefir_func_get2_label140:
+.L__kefir_func_get2_label141:
+.L__kefir_func_get2_label142:
+.L__kefir_func_get2_label143:
+.L__kefir_func_get2_label144:
+.L__kefir_func_get2_label145:
+.L__kefir_func_get2_label146:
+.L__kefir_func_get2_label147:
+.L__kefir_func_get2_label148:
+.L__kefir_func_get2_label149:
+.L__kefir_func_get2_label150:
+.L__kefir_func_get2_label151:
+.L__kefir_func_get2_label152:
+.L__kefir_func_get2_label153:
+.L__kefir_func_get2_label154:
+.L__kefir_func_get2_label155:
+.L__kefir_func_get2_label156:
+.L__kefir_func_get2_label157:
+.L__kefir_func_get2_label158:
+.L__kefir_func_get2_label159:
+.L__kefir_func_get2_label160:
+.L__kefir_func_get2_label161:
+.L__kefir_func_get2_label162:
+.L__kefir_func_get2_label163:
+.L__kefir_func_get2_label164:
+.L__kefir_func_get2_label165:
+.L__kefir_func_get2_label166:
     call __kefir_bigint_set_unsigned_integer
-__kefir_func_get2_label167:
-__kefir_func_get2_label168:
-__kefir_func_get2_label169:
-__kefir_func_get2_label170:
-__kefir_func_get2_label171:
-__kefir_func_get2_label172:
-__kefir_func_get2_label173:
-__kefir_func_get2_label174:
-__kefir_func_get2_label175:
-__kefir_func_get2_label176:
-__kefir_func_get2_label177:
-__kefir_func_get2_label178:
-__kefir_func_get2_label179:
-__kefir_func_get2_label180:
-__kefir_func_get2_label181:
-__kefir_func_get2_label182:
-__kefir_func_get2_label183:
-__kefir_func_get2_label184:
-__kefir_func_get2_label185:
-__kefir_func_get2_label186:
-__kefir_func_get2_label187:
-__kefir_func_get2_label188:
-__kefir_func_get2_label189:
-__kefir_func_get2_label190:
-__kefir_func_get2_label191:
-__kefir_func_get2_label192:
-__kefir_func_get2_label193:
-__kefir_func_get2_label194:
-__kefir_func_get2_label195:
-__kefir_func_get2_label196:
-__kefir_func_get2_label197:
-__kefir_func_get2_label198:
-__kefir_func_get2_label199:
-__kefir_func_get2_label200:
-__kefir_func_get2_label201:
-__kefir_func_get2_label202:
-__kefir_func_get2_label203:
-__kefir_func_get2_label204:
-__kefir_func_get2_label205:
-__kefir_func_get2_label206:
-__kefir_func_get2_label207:
-__kefir_func_get2_label208:
-__kefir_func_get2_label209:
-__kefir_func_get2_label210:
-__kefir_func_get2_label211:
-__kefir_func_get2_label212:
-__kefir_func_get2_label213:
-__kefir_func_get2_label214:
-__kefir_func_get2_label215:
-__kefir_func_get2_label216:
-__kefir_func_get2_label217:
-__kefir_func_get2_label219:
-__kefir_func_get2_label220:
-__kefir_func_get2_label234:
+.L__kefir_func_get2_label167:
+.L__kefir_func_get2_label168:
+.L__kefir_func_get2_label169:
+.L__kefir_func_get2_label170:
+.L__kefir_func_get2_label171:
+.L__kefir_func_get2_label172:
+.L__kefir_func_get2_label173:
+.L__kefir_func_get2_label174:
+.L__kefir_func_get2_label175:
+.L__kefir_func_get2_label176:
+.L__kefir_func_get2_label177:
+.L__kefir_func_get2_label178:
+.L__kefir_func_get2_label179:
+.L__kefir_func_get2_label180:
+.L__kefir_func_get2_label181:
+.L__kefir_func_get2_label182:
+.L__kefir_func_get2_label183:
+.L__kefir_func_get2_label184:
+.L__kefir_func_get2_label185:
+.L__kefir_func_get2_label186:
+.L__kefir_func_get2_label187:
+.L__kefir_func_get2_label188:
+.L__kefir_func_get2_label189:
+.L__kefir_func_get2_label190:
+.L__kefir_func_get2_label191:
+.L__kefir_func_get2_label192:
+.L__kefir_func_get2_label193:
+.L__kefir_func_get2_label194:
+.L__kefir_func_get2_label195:
+.L__kefir_func_get2_label196:
+.L__kefir_func_get2_label197:
+.L__kefir_func_get2_label198:
+.L__kefir_func_get2_label199:
+.L__kefir_func_get2_label200:
+.L__kefir_func_get2_label201:
+.L__kefir_func_get2_label202:
+.L__kefir_func_get2_label203:
+.L__kefir_func_get2_label204:
+.L__kefir_func_get2_label205:
+.L__kefir_func_get2_label206:
+.L__kefir_func_get2_label207:
+.L__kefir_func_get2_label208:
+.L__kefir_func_get2_label209:
+.L__kefir_func_get2_label210:
+.L__kefir_func_get2_label211:
+.L__kefir_func_get2_label212:
+.L__kefir_func_get2_label213:
+.L__kefir_func_get2_label214:
+.L__kefir_func_get2_label215:
+.L__kefir_func_get2_label216:
+.L__kefir_func_get2_label217:
+.L__kefir_func_get2_label219:
+.L__kefir_func_get2_label220:
+.L__kefir_func_get2_label234:
     movq -32(%rbp), %rax
-__kefir_func_get2_label221:
-__kefir_func_get2_label222:
+.L__kefir_func_get2_label221:
+.L__kefir_func_get2_label222:
     movq -24(%rbp), %rdx
-__kefir_func_get2_label223:
-__kefir_func_get2_label224:
+.L__kefir_func_get2_label223:
+.L__kefir_func_get2_label224:
     lea (%rbp), %rsp
     pop %rbp
-__kefir_func_get2_label225:
-__kefir_func_get2_label226:
-__kefir_func_get2_label227:
-__kefir_func_get2_label228:
-__kefir_func_get2_label229:
-__kefir_func_get2_label230:
-__kefir_func_get2_label231:
-__kefir_func_get2_label232:
+.L__kefir_func_get2_label225:
+.L__kefir_func_get2_label226:
+.L__kefir_func_get2_label227:
+.L__kefir_func_get2_label228:
+.L__kefir_func_get2_label229:
+.L__kefir_func_get2_label230:
+.L__kefir_func_get2_label231:
+.L__kefir_func_get2_label232:
     ret
-__kefir_func_get2_label233:
-__kefir_func_get2_label235:
-__kefir_func_get2_label3:
-__kefir_text_func_get2_end:
+.L__kefir_func_get2_label233:
+.L__kefir_func_get2_label235:
+.L__kefir_func_get2_label3:
+.L__kefir_text_func_get2_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .bss
     .align 8
@@ -775,8 +775,8 @@ __kefir_debug_info_section_entry_1:
     .byte 1
     .word 29
     .ascii "Kefir C compiler 0.5.0\000"
-    .quad __kefir_text_section_begin
-    .quad __kefir_text_section_end - __kefir_text_section_begin
+    .quad .L__kefir_text_section_begin
+    .quad .L__kefir_text_section_end - .L__kefir_text_section_begin
     .long __kefir_debug_lines_section_begin
 __kefir_debug_info_section_entry_2:
     .byte 3
@@ -937,8 +937,8 @@ __kefir_debug_info_section_entry_24:
 __kefir_debug_info_section_entry_26:
     .byte 4
     .ascii "get\000"
-    .quad __kefir_text_func_get_begin
-    .quad __kefir_text_func_get_end - __kefir_text_func_get_begin
+    .quad .L__kefir_text_func_get_begin
+    .quad .L__kefir_text_func_get_end - .L__kefir_text_func_get_begin
     .byte 2
     .byte 118
     .byte 0
@@ -973,8 +973,8 @@ __kefir_debug_info_section_entry_30:
 __kefir_debug_info_section_entry_32:
     .byte 4
     .ascii "get2\000"
-    .quad __kefir_text_func_get2_begin
-    .quad __kefir_text_func_get2_end - __kefir_text_func_get2_begin
+    .quad .L__kefir_text_func_get2_begin
+    .quad .L__kefir_text_func_get2_end - .L__kefir_text_func_get2_begin
     .byte 2
     .byte 118
     .byte 0
@@ -1172,44 +1172,44 @@ __kefir_debug_loclists_section_begin:
     .long 0
 __kefir_debug_loclist_section_entry_1:
     .byte 4
-    .uleb128 __kefir_func_get_label24 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get_label25 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label24 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label25 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get_label28 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get_label29 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label28 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label29 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get_label34 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get_label35 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label34 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label35 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get_label44 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get_label45 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label44 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label45 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get_label50 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get_label51 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label50 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label51 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get_label218 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get_label219 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label218 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label219 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get_label234 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get_label235 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label234 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label235 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
@@ -1218,44 +1218,44 @@ __kefir_debug_loclist_section_entry_2:
     .byte 0
 __kefir_debug_loclist_section_entry_3:
     .byte 4
-    .uleb128 __kefir_func_get2_label24 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get2_label25 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label24 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label25 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get2_label28 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get2_label29 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label28 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label29 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get2_label34 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get2_label35 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label34 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label35 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get2_label44 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get2_label45 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label44 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label45 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get2_label50 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get2_label51 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label50 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label51 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get2_label218 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get2_label219 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label218 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label219 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
     .byte 4
-    .uleb128 __kefir_func_get2_label234 - __kefir_text_section_begin
-    .uleb128 __kefir_func_get2_label235 - __kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label234 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label235 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
@@ -1282,13 +1282,13 @@ __kefir_debug_lines_section_begin:
 
 .section .text
 __kefir_bigint_cast_signed:
-__kefir_runtime_text_func___kefir_bigint_cast_signed_begin:
-__kefir_runtime_func___kefir_bigint_cast_signed_label0:
+.L__kefir_runtime_text_func___kefir_bigint_cast_signed_begin:
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label0:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label1
-__kefir_runtime_func___kefir_bigint_cast_signed_label1:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label1
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -88(%rbp)
@@ -1332,11 +1332,11 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label1:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_signed_label40
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label3
-__kefir_runtime_func___kefir_bigint_cast_signed_label40:
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label32
-__kefir_runtime_func___kefir_bigint_cast_signed_label3:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label40
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label3
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label40:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label32
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label3:
     movq -40(%rbp), %rax
     mov $0, %rdx
     movsx %edx, %rcx
@@ -1347,11 +1347,11 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label3:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_signed_label41
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label5
-__kefir_runtime_func___kefir_bigint_cast_signed_label41:
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label25
-__kefir_runtime_func___kefir_bigint_cast_signed_label32:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label41
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label5
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label41:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label25
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label32:
     movq -88(%rbp), %rax
     movq -48(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -1368,11 +1368,11 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label32:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_signed_label42
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label34
-__kefir_runtime_func___kefir_bigint_cast_signed_label42:
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label37
-__kefir_runtime_func___kefir_bigint_cast_signed_label5:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label42
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label34
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label42:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label37
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label5:
     movq -40(%rbp), %rax
     mov $1, %rdx
     movsx %edx, %rcx
@@ -1423,16 +1423,16 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label5:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_signed_label43
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label7
-__kefir_runtime_func___kefir_bigint_cast_signed_label43:
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label19
-__kefir_runtime_func___kefir_bigint_cast_signed_label25:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label43
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label7
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label43:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label19
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label25:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label26
-__kefir_runtime_func___kefir_bigint_cast_signed_label34:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label26
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label34:
     movq -56(%rbp), %rcx
     mov $1, %rax
     shl %cl, %rax
@@ -1449,8 +1449,8 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label34:
     and $255, %rdx
     and %eax, %edx
     movb %dl, (%rcx)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label35
-__kefir_runtime_func___kefir_bigint_cast_signed_label37:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label35
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label37:
     movq -56(%rbp), %rcx
     mov $1, %rax
     shl %cl, %rax
@@ -1468,24 +1468,24 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label37:
     and $255, %rdx
     or %eax, %edx
     movb %dl, (%rcx)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label35
-__kefir_runtime_func___kefir_bigint_cast_signed_label7:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label35
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label7:
     movq -16(%rbp), %rax
     mov $1, %rdx
     movsx %edx, %rcx
     add %rcx, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label8
-__kefir_runtime_func___kefir_bigint_cast_signed_label19:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label8
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label19:
     movl -80(%rbp), %eax
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_signed_label44
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label21
-__kefir_runtime_func___kefir_bigint_cast_signed_label44:
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label23
-__kefir_runtime_func___kefir_bigint_cast_signed_label26:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label44
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label21
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label44:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label23
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label26:
     movq -8(%rbp), %rax
     movq -48(%rbp), %rcx
     mov $0, %rdx
@@ -1503,16 +1503,16 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label26:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_signed_label45
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label28
-__kefir_runtime_func___kefir_bigint_cast_signed_label45:
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label30
-__kefir_runtime_func___kefir_bigint_cast_signed_label35:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label45
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label28
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label45:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label30
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label35:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_cast_signed_label8:
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label8:
     movq -8(%rbp), %rax
     movq -48(%rbp), %rcx
     mov $0, %rdx
@@ -1530,11 +1530,11 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label8:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_signed_label46
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label10
-__kefir_runtime_func___kefir_bigint_cast_signed_label46:
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label12
-__kefir_runtime_func___kefir_bigint_cast_signed_label21:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label46
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label10
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label46:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label12
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label21:
     movq -64(%rbp), %rcx
     mov $1, %rax
     shl %cl, %rax
@@ -1551,8 +1551,8 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label21:
     and $255, %rdx
     and %eax, %edx
     movb %dl, (%rcx)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label7
-__kefir_runtime_func___kefir_bigint_cast_signed_label23:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label7
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label23:
     movq -64(%rbp), %rcx
     mov $1, %rax
     shl %cl, %rax
@@ -1570,13 +1570,13 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label23:
     and $255, %rdx
     or %eax, %edx
     movb %dl, (%rcx)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label7
-__kefir_runtime_func___kefir_bigint_cast_signed_label28:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label7
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label28:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_cast_signed_label30:
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label30:
     movq -88(%rbp), %rax
     movq -8(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -1585,29 +1585,29 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label30:
     movq -8(%rbp), %rax
     add $1, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label26
-__kefir_runtime_func___kefir_bigint_cast_signed_label10:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label26
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label10:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_cast_signed_label12:
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label12:
     movl -80(%rbp), %eax
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_signed_label47
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label14
-__kefir_runtime_func___kefir_bigint_cast_signed_label47:
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label17
-__kefir_runtime_func___kefir_bigint_cast_signed_label14:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label47
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label14
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label47:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label17
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label14:
     movq -88(%rbp), %rax
     movq -8(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb $0, (%rax)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label15
-__kefir_runtime_func___kefir_bigint_cast_signed_label17:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label15
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label17:
     movq -88(%rbp), %rax
     movq -8(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -1616,22 +1616,22 @@ __kefir_runtime_func___kefir_bigint_cast_signed_label17:
     and $255, %rcx
     not %ecx
     movb %cl, (%rax)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label15
-__kefir_runtime_func___kefir_bigint_cast_signed_label15:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label15
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label15:
     movq -8(%rbp), %rax
     add $1, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_cast_signed_label8
-__kefir_runtime_text_func___kefir_bigint_cast_signed_end:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label8
+.L__kefir_runtime_text_func___kefir_bigint_cast_signed_end:
 
 __kefir_bigint_set_unsigned_integer:
-__kefir_runtime_text_func___kefir_bigint_set_unsigned_integer_begin:
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label0:
+.L__kefir_runtime_text_func___kefir_bigint_set_unsigned_integer_begin:
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label1
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label1:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label1
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -32(%rbp)
@@ -1645,11 +1645,11 @@ __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label1:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label21
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label3
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label21:
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label18
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label3:
+    jz .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label21
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label3
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label21:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label18
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label3:
     movq -40(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -24(%rbp), %rax
@@ -1664,16 +1664,16 @@ __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label3:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label22
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label5
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label22:
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label16
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label18:
+    jz .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label22
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label5
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label22:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label16
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label18:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label5:
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label5:
     movq -24(%rbp), %rax
     mov $8, %rdx
     movsx %edx, %rcx
@@ -1694,15 +1694,15 @@ __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label5:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label6
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label16:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label6
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label16:
     mov $8, %rcx
     movsx %ecx, %rax
     mov $8, %rcx
     imul %rax, %rcx
     movq %rcx, -24(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label5
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label6:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label5
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label6:
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
     mov $0, %rdx
@@ -1712,11 +1712,11 @@ __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label6:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label23
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label8
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label23:
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label14
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label8:
+    jz .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label23
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label8
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label23:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label14
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label8:
     movq -24(%rbp), %rax
     movq -40(%rbp), %rcx
     mov $0, %rdx
@@ -1726,11 +1726,11 @@ __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label8:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label24
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label10
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label24:
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label12
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label14:
+    jz .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label24
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label10
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label24:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label12
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label14:
     movq -48(%rbp), %rax
     movq -32(%rbp), %rcx
     movq -8(%rbp), %rdx
@@ -1747,28 +1747,28 @@ __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label14:
     imul %rdx, %rcx
     shr %cl, %rax
     movq %rax, -48(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label6
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label10:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label6
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label10:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label12:
+.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label12:
     movq -32(%rbp), %rdi
     movq -24(%rbp), %rsi
     movq -40(%rbp), %rdx
     call __kefir_bigint_cast_unsigned
-    jmp __kefir_runtime_func___kefir_bigint_set_unsigned_integer_label10
-__kefir_runtime_text_func___kefir_bigint_set_unsigned_integer_end:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label10
+.L__kefir_runtime_text_func___kefir_bigint_set_unsigned_integer_end:
 
 __kefir_bigint_cast_unsigned:
-__kefir_runtime_text_func___kefir_bigint_cast_unsigned_begin:
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label0:
+.L__kefir_runtime_text_func___kefir_bigint_cast_unsigned_begin:
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label0:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label1
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label1:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label1
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -80(%rbp)
@@ -1812,11 +1812,11 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label1:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_unsigned_label26
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label3
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label26:
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label23
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label3:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label26
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label3
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label26:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label23
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label3:
     movq -40(%rbp), %rax
     mov $0, %rdx
     movsx %edx, %rcx
@@ -1827,11 +1827,11 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label3:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_unsigned_label27
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label5
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label27:
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label16
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label23:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label27
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label5
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label27:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label16
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label23:
     movq -56(%rbp), %rcx
     mov $1, %rax
     shl %cl, %rax
@@ -1852,7 +1852,7 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label23:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label5:
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label5:
     movq -40(%rbp), %rax
     mov $1, %rdx
     movsx %edx, %rcx
@@ -1888,23 +1888,23 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label5:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_unsigned_label28
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label7
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label28:
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label14
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label16:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label7
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label14
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label16:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label17
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label7:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label17
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label7:
     movq -16(%rbp), %rax
     mov $1, %rdx
     movsx %edx, %rcx
     add %rcx, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label8
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label14:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label8
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label14:
     movq -64(%rbp), %rcx
     mov $1, %rax
     shl %cl, %rax
@@ -1921,8 +1921,8 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label14:
     and $255, %rdx
     and %eax, %edx
     movb %dl, (%rcx)
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label7
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label17:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label7
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label17:
     movq -8(%rbp), %rax
     movq -48(%rbp), %rcx
     mov $0, %rdx
@@ -1940,11 +1940,11 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label17:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_unsigned_label29
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label19
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label29:
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label21
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label8:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label29
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label19
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label29:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label21
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label8:
     movq -8(%rbp), %rax
     movq -48(%rbp), %rcx
     mov $0, %rdx
@@ -1962,16 +1962,16 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label8:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_cast_unsigned_label30
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label10
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label30:
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label12
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label19:
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label30
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label10
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label30:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label12
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label19:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label21:
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label21:
     movq -80(%rbp), %rax
     movq -8(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -1980,13 +1980,13 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label21:
     movq -8(%rbp), %rax
     add $1, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label17
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label10:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label17
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label10:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_cast_unsigned_label12:
+.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label12:
     movq -80(%rbp), %rax
     movq -8(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -1995,17 +1995,17 @@ __kefir_runtime_func___kefir_bigint_cast_unsigned_label12:
     movq -8(%rbp), %rax
     add $1, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_cast_unsigned_label8
-__kefir_runtime_text_func___kefir_bigint_cast_unsigned_end:
+    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label8
+.L__kefir_runtime_text_func___kefir_bigint_cast_unsigned_end:
 
 __kefir_bigint_set_signed_integer:
-__kefir_runtime_text_func___kefir_bigint_set_signed_integer_begin:
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label0:
+.L__kefir_runtime_text_func___kefir_bigint_set_signed_integer_begin:
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label1
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label1:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label1
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -32(%rbp)
@@ -2019,11 +2019,11 @@ __kefir_runtime_func___kefir_bigint_set_signed_integer_label1:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_set_signed_integer_label21
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label3
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label21:
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label18
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label3:
+    jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label21
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label3
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label21:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label18
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label3:
     movq -40(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -24(%rbp), %rax
@@ -2038,16 +2038,16 @@ __kefir_runtime_func___kefir_bigint_set_signed_integer_label3:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_set_signed_integer_label22
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label5
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label22:
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label16
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label18:
+    jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label22
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label5
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label22:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label18:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label5:
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label5:
     movq -24(%rbp), %rax
     mov $8, %rdx
     movsx %edx, %rcx
@@ -2068,15 +2068,15 @@ __kefir_runtime_func___kefir_bigint_set_signed_integer_label5:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -8(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label6
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label16:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label6
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16:
     mov $8, %rcx
     movsx %ecx, %rax
     mov $8, %rcx
     imul %rax, %rcx
     movq %rcx, -24(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label5
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label6:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label5
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label6:
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
     mov $0, %rdx
@@ -2086,11 +2086,11 @@ __kefir_runtime_func___kefir_bigint_set_signed_integer_label6:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_set_signed_integer_label23
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label8
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label23:
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label14
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label8:
+    jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label23
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label8
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label23:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label14
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label8:
     movq -24(%rbp), %rax
     movq -40(%rbp), %rcx
     mov $0, %rdx
@@ -2100,11 +2100,11 @@ __kefir_runtime_func___kefir_bigint_set_signed_integer_label8:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz __kefir_runtime_func___kefir_bigint_set_signed_integer_label24
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label10
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label24:
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label12
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label14:
+    jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label24
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label10
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label24:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label12
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label14:
     movq -48(%rbp), %rax
     movq -32(%rbp), %rcx
     movq -8(%rbp), %rdx
@@ -2121,18 +2121,18 @@ __kefir_runtime_func___kefir_bigint_set_signed_integer_label14:
     imul %rdx, %rcx
     shr %cl, %rax
     movq %rax, -48(%rbp)
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label6
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label10:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label6
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label10:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_runtime_func___kefir_bigint_set_signed_integer_label12:
+.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label12:
     movq -32(%rbp), %rdi
     movq -24(%rbp), %rsi
     movq -40(%rbp), %rdx
     call __kefir_bigint_cast_signed
-    jmp __kefir_runtime_func___kefir_bigint_set_signed_integer_label10
-__kefir_runtime_text_func___kefir_bigint_set_signed_integer_end:
+    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label10
+.L__kefir_runtime_text_func___kefir_bigint_set_signed_integer_end:
 
 

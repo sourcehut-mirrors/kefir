@@ -5,42 +5,42 @@
 .type get, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get:
-__kefir_text_func_get_begin:
-    jmp __kefir_func_get_label1
-__kefir_func_get_label1:
+.L__kefir_text_func_get_begin:
+    jmp .L__kefir_func_get_label1
+.L__kefir_func_get_label1:
     cmp $0, %edi
-    je __kefir_func_get_label17
-    jmp __kefir_func_get_label3
-__kefir_func_get_label3:
+    je .L__kefir_func_get_label17
+    jmp .L__kefir_func_get_label3
+.L__kefir_func_get_label3:
     cmp $1, %edi
-    je __kefir_func_get_label15
-    jmp __kefir_func_get_label5
-__kefir_func_get_label17:
+    je .L__kefir_func_get_label15
+    jmp .L__kefir_func_get_label5
+.L__kefir_func_get_label17:
     mov $-1, %rax
     ret
-__kefir_func_get_label5:
+.L__kefir_func_get_label5:
     cmp $2, %edi
-    je __kefir_func_get_label13
-    jmp __kefir_func_get_label7
-__kefir_func_get_label15:
+    je .L__kefir_func_get_label13
+    jmp .L__kefir_func_get_label7
+.L__kefir_func_get_label15:
     xor %eax, %eax
     ret
-__kefir_func_get_label7:
+.L__kefir_func_get_label7:
     cmp $3, %edi
-    je __kefir_func_get_label11
-    jmp __kefir_func_get_label9
-__kefir_func_get_label13:
+    je .L__kefir_func_get_label11
+    jmp .L__kefir_func_get_label9
+.L__kefir_func_get_label13:
     mov $1, %rax
     ret
-__kefir_func_get_label9:
+.L__kefir_func_get_label9:
     mov $-101, %rax
     ret
-__kefir_func_get_label11:
+.L__kefir_func_get_label11:
     mov $101, %rax
     ret
-__kefir_text_func_get_end:
+.L__kefir_text_func_get_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

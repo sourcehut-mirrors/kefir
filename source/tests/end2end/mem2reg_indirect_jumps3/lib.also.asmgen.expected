@@ -5,14 +5,14 @@
 .type run_op, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 run_op:
-__kefir_text_func_run_op_begin:
+.L__kefir_text_func_run_op_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_run_op_label1
-__kefir_func_run_op_label1:
+    jmp .L__kefir_func_run_op_label1
+.L__kefir_func_run_op_label1:
     mov %rdx, %r8
     lea __kefir_function_run_op_static_branches_6(%rip), %r9
     mov %rdi, %rax
@@ -28,7 +28,7 @@ __kefir_func_run_op_label1:
     movq %rsi, -8(%rbp)
     movq $0, -32(%rbp)
     jmp *%rax
-__kefir_func_run_op_label3:
+.L__kefir_func_run_op_label3:
 _kefir_local_public_label_run_op_ret:
     movq -32(%rbp), %rax
     movq -8(%rbp), %rcx
@@ -41,7 +41,7 @@ _kefir_local_public_label_run_op_ret:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_run_op_label5:
+.L__kefir_func_run_op_label5:
 _kefir_local_public_label_run_op_add:
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
@@ -50,8 +50,8 @@ _kefir_local_public_label_run_op_add:
     mov %rdx, %rcx
     add %rax, %rcx
     movq %rcx, -32(%rbp)
-    jmp __kefir_func_run_op_label3
-__kefir_func_run_op_label7:
+    jmp .L__kefir_func_run_op_label3
+.L__kefir_func_run_op_label7:
 _kefir_local_public_label_run_op_div:
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
@@ -61,8 +61,8 @@ _kefir_local_public_label_run_op_div:
     mov %rsi, %rcx
     add %rax, %rcx
     movq %rcx, -32(%rbp)
-    jmp __kefir_func_run_op_label3
-__kefir_func_run_op_label9:
+    jmp .L__kefir_func_run_op_label3
+.L__kefir_func_run_op_label9:
 _kefir_local_public_label_run_op_mul:
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
@@ -71,8 +71,8 @@ _kefir_local_public_label_run_op_mul:
     mov %rdx, %rcx
     add %rax, %rcx
     movq %rcx, -32(%rbp)
-    jmp __kefir_func_run_op_label3
-__kefir_func_run_op_label11:
+    jmp .L__kefir_func_run_op_label3
+.L__kefir_func_run_op_label11:
 _kefir_local_public_label_run_op_sub:
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
@@ -81,10 +81,10 @@ _kefir_local_public_label_run_op_sub:
     mov %rdx, %rcx
     add %rax, %rcx
     movq %rcx, -32(%rbp)
-    jmp __kefir_func_run_op_label3
-__kefir_text_func_run_op_end:
+    jmp .L__kefir_func_run_op_label3
+.L__kefir_text_func_run_op_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 16

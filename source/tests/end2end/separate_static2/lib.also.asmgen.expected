@@ -7,15 +7,15 @@
 .type setx, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 gety:
-__kefir_text_func_gety_begin:
-__kefir_func_gety_label0:
+.L__kefir_text_func_gety_begin:
+.L__kefir_func_gety_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_gety_label1
-__kefir_func_gety_label1:
+    jmp .L__kefir_func_gety_label1
+.L__kefir_func_gety_label1:
     movq $0, -8(%rbp)
 mov value(%rip), %rax
 add __kefir_function_gety_static_y_3(%rip), %rax
@@ -28,16 +28,16 @@ add __kefir_function_gety_static_y_3(%rip), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_gety_end:
+.L__kefir_text_func_gety_end:
 
 setx:
-__kefir_text_func_setx_begin:
-__kefir_func_setx_label0:
+.L__kefir_text_func_setx_begin:
+.L__kefir_func_setx_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_setx_label1
-__kefir_func_setx_label1:
+    jmp .L__kefir_func_setx_label1
+.L__kefir_func_setx_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea value(%rip), %rcx
@@ -45,9 +45,9 @@ __kefir_func_setx_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_setx_end:
+.L__kefir_text_func_setx_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 8

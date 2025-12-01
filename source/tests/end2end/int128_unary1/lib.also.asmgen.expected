@@ -31,14 +31,14 @@
 .type u128_postinc, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 i128_neg:
-__kefir_text_func_i128_neg_begin:
+.L__kefir_text_func_i128_neg_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_i128_neg_label1
-__kefir_func_i128_neg_label1:
+    jmp .L__kefir_func_i128_neg_label1
+.L__kefir_func_i128_neg_label1:
     mov %rax, %rdx
     xor %eax, %edx
     neg %rdi
@@ -47,15 +47,15 @@ __kefir_func_i128_neg_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_i128_neg_end:
+.L__kefir_text_func_i128_neg_end:
 
 i128_not:
-__kefir_text_func_i128_not_begin:
+.L__kefir_text_func_i128_not_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_i128_not_label1
-__kefir_func_i128_not_label1:
+    jmp .L__kefir_func_i128_not_label1
+.L__kefir_func_i128_not_label1:
     not %rdi
     not %rsi
     mov %rdi, %rax
@@ -63,15 +63,15 @@ __kefir_func_i128_not_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_i128_not_end:
+.L__kefir_text_func_i128_not_end:
 
 u128_neg:
-__kefir_text_func_u128_neg_begin:
+.L__kefir_text_func_u128_neg_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_u128_neg_label1
-__kefir_func_u128_neg_label1:
+    jmp .L__kefir_func_u128_neg_label1
+.L__kefir_func_u128_neg_label1:
     mov %rax, %rdx
     xor %eax, %edx
     neg %rdi
@@ -80,15 +80,15 @@ __kefir_func_u128_neg_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_u128_neg_end:
+.L__kefir_text_func_u128_neg_end:
 
 u128_not:
-__kefir_text_func_u128_not_begin:
+.L__kefir_text_func_u128_not_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_u128_not_label1
-__kefir_func_u128_not_label1:
+    jmp .L__kefir_func_u128_not_label1
+.L__kefir_func_u128_not_label1:
     not %rdi
     not %rsi
     mov %rdi, %rax
@@ -96,15 +96,15 @@ __kefir_func_u128_not_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_u128_not_end:
+.L__kefir_text_func_u128_not_end:
 
 i128_bnot:
-__kefir_text_func_i128_bnot_begin:
+.L__kefir_text_func_i128_bnot_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_i128_bnot_label1
-__kefir_func_i128_bnot_label1:
+    jmp .L__kefir_func_i128_bnot_label1
+.L__kefir_func_i128_bnot_label1:
     or %rsi, %rdi
     sete %dil
     movzx %dil, %rdi
@@ -112,15 +112,15 @@ __kefir_func_i128_bnot_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_i128_bnot_end:
+.L__kefir_text_func_i128_bnot_end:
 
 u128_bnot:
-__kefir_text_func_u128_bnot_begin:
+.L__kefir_text_func_u128_bnot_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_u128_bnot_label1
-__kefir_func_u128_bnot_label1:
+    jmp .L__kefir_func_u128_bnot_label1
+.L__kefir_func_u128_bnot_label1:
     or %rsi, %rdi
     sete %dil
     movzx %dil, %rdi
@@ -128,12 +128,12 @@ __kefir_func_u128_bnot_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_u128_bnot_end:
+.L__kefir_text_func_u128_bnot_end:
 
 i128_predec:
-__kefir_text_func_i128_predec_begin:
-    jmp __kefir_func_i128_predec_label1
-__kefir_func_i128_predec_label1:
+.L__kefir_text_func_i128_predec_begin:
+    jmp .L__kefir_func_i128_predec_label1
+.L__kefir_func_i128_predec_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov $-1, %rcx
@@ -143,12 +143,12 @@ __kefir_func_i128_predec_label1:
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     ret
-__kefir_text_func_i128_predec_end:
+.L__kefir_text_func_i128_predec_end:
 
 i128_preinc:
-__kefir_text_func_i128_preinc_begin:
-    jmp __kefir_func_i128_preinc_label1
-__kefir_func_i128_preinc_label1:
+.L__kefir_text_func_i128_preinc_begin:
+    jmp .L__kefir_func_i128_preinc_label1
+.L__kefir_func_i128_preinc_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov $1, %rcx
@@ -158,12 +158,12 @@ __kefir_func_i128_preinc_label1:
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     ret
-__kefir_text_func_i128_preinc_end:
+.L__kefir_text_func_i128_preinc_end:
 
 u128_predec:
-__kefir_text_func_u128_predec_begin:
-    jmp __kefir_func_u128_predec_label1
-__kefir_func_u128_predec_label1:
+.L__kefir_text_func_u128_predec_begin:
+    jmp .L__kefir_func_u128_predec_label1
+.L__kefir_func_u128_predec_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov $-1, %rcx
@@ -173,12 +173,12 @@ __kefir_func_u128_predec_label1:
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     ret
-__kefir_text_func_u128_predec_end:
+.L__kefir_text_func_u128_predec_end:
 
 u128_preinc:
-__kefir_text_func_u128_preinc_begin:
-    jmp __kefir_func_u128_preinc_label1
-__kefir_func_u128_preinc_label1:
+.L__kefir_text_func_u128_preinc_begin:
+    jmp .L__kefir_func_u128_preinc_label1
+.L__kefir_func_u128_preinc_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov $1, %rcx
@@ -188,12 +188,12 @@ __kefir_func_u128_preinc_label1:
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     ret
-__kefir_text_func_u128_preinc_end:
+.L__kefir_text_func_u128_preinc_end:
 
 i128_postdec:
-__kefir_text_func_i128_postdec_begin:
-    jmp __kefir_func_i128_postdec_label1
-__kefir_func_i128_postdec_label1:
+.L__kefir_text_func_i128_postdec_begin:
+    jmp .L__kefir_func_i128_postdec_label1
+.L__kefir_func_i128_postdec_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov $-1, %rcx
@@ -205,12 +205,12 @@ __kefir_func_i128_postdec_label1:
     mov %r8, (%rdi)
     mov %rcx, 8(%rdi)
     ret
-__kefir_text_func_i128_postdec_end:
+.L__kefir_text_func_i128_postdec_end:
 
 i128_postinc:
-__kefir_text_func_i128_postinc_begin:
-    jmp __kefir_func_i128_postinc_label1
-__kefir_func_i128_postinc_label1:
+.L__kefir_text_func_i128_postinc_begin:
+    jmp .L__kefir_func_i128_postinc_label1
+.L__kefir_func_i128_postinc_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov $1, %rcx
@@ -222,12 +222,12 @@ __kefir_func_i128_postinc_label1:
     mov %r8, (%rdi)
     mov %rcx, 8(%rdi)
     ret
-__kefir_text_func_i128_postinc_end:
+.L__kefir_text_func_i128_postinc_end:
 
 u128_postdec:
-__kefir_text_func_u128_postdec_begin:
-    jmp __kefir_func_u128_postdec_label1
-__kefir_func_u128_postdec_label1:
+.L__kefir_text_func_u128_postdec_begin:
+    jmp .L__kefir_func_u128_postdec_label1
+.L__kefir_func_u128_postdec_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov $-1, %rcx
@@ -239,12 +239,12 @@ __kefir_func_u128_postdec_label1:
     mov %r8, (%rdi)
     mov %rcx, 8(%rdi)
     ret
-__kefir_text_func_u128_postdec_end:
+.L__kefir_text_func_u128_postdec_end:
 
 u128_postinc:
-__kefir_text_func_u128_postinc_begin:
-    jmp __kefir_func_u128_postinc_label1
-__kefir_func_u128_postinc_label1:
+.L__kefir_text_func_u128_postinc_begin:
+    jmp .L__kefir_func_u128_postinc_label1
+.L__kefir_func_u128_postinc_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov $1, %rcx
@@ -256,7 +256,7 @@ __kefir_func_u128_postinc_label1:
     mov %r8, (%rdi)
     mov %rcx, 8(%rdi)
     ret
-__kefir_text_func_u128_postinc_end:
+.L__kefir_text_func_u128_postinc_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

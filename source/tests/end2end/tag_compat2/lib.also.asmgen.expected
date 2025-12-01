@@ -5,17 +5,17 @@
 .type get, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get:
-__kefir_text_func_get_begin:
+.L__kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
     mov %rdi, %r10
-    jmp __kefir_func_get_label1
-__kefir_func_get_label1:
+    jmp .L__kefir_func_get_label1
+.L__kefir_func_get_label1:
     mov %rsi, %r9
     mov %r10, %rdi
     xor %eax, %eax
@@ -72,7 +72,7 @@ __kefir_func_get_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_get_end:
+.L__kefir_text_func_get_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

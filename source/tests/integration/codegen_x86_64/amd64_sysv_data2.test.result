@@ -5,13 +5,13 @@
 .type func1, @object
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 func1:
-__kefir_text_func_func1_begin:
+.L__kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
     sub %rsp, 16
-__kefir_func_func1_label0:
+.L__kefir_func_func1_label0:
     mov QWORD PTR [%rbp - 16], %rsi
     lea %rcx, QWORD PTR [%rbp - 16]
     mov %rax, %rcx
@@ -25,8 +25,8 @@ __kefir_func_func1_label0:
     lea %rsp, [%rbp]
     pop %rbp
     ret
-__kefir_func_func1_label1:
-__kefir_text_func_func1_end:
+.L__kefir_func_func1_label1:
+.L__kefir_text_func_func1_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

@@ -12,39 +12,39 @@
 .extern test7
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 temp:
 .file 0 "source/tests/end2end/debug_info_function_decl1/lib.kefir.asmgen.c"
 .loc 0 28 1
-__kefir_text_func_temp_begin:
+.L__kefir_text_func_temp_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    jmp __kefir_func_temp_label2
+    jmp .L__kefir_func_temp_label2
 .loc 0 29 5
-__kefir_func_temp_label2:
+.L__kefir_func_temp_label2:
     call test1@PLT
 .loc 0 30 5
-__kefir_func_temp_label340:
+.L__kefir_func_temp_label340:
     mov $1, %rdi
     mov $2, %rsi
     mov $3, %rdx
     xor %eax, %eax
     call test2@PLT
 .loc 0 31 5
-__kefir_func_temp_label341:
-    fldt __kefir_func_temp_label350(%rip)
-__kefir_func_temp_label352:
-    fldt __kefir_func_temp_label357(%rip)
-__kefir_func_temp_label370:
+.L__kefir_func_temp_label341:
+    fldt .L__kefir_func_temp_label350(%rip)
+.L__kefir_func_temp_label352:
+    fldt .L__kefir_func_temp_label357(%rip)
+.L__kefir_func_temp_label370:
     fxch %st(1)
     fxch %st(1)
-__kefir_func_temp_label365:
+.L__kefir_func_temp_label365:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-__kefir_func_temp_label556:
+.L__kefir_func_temp_label556:
     sub $32, %rsp
     mov $3, %rdi
     mov $4, %rsi
@@ -52,11 +52,11 @@ __kefir_func_temp_label556:
     fstpt (%rsp)
     fldt -32(%rbp)
     fstpt 16(%rsp)
-__kefir_func_temp_label395:
+.L__kefir_func_temp_label395:
     call test3@PLT
     add $32, %rsp
 .loc 0 32 5
-__kefir_func_temp_label557:
+.L__kefir_func_temp_label557:
     mov $1, %rdi
     mov $2, %rsi
     mov $3, %rdx
@@ -65,61 +65,61 @@ __kefir_func_temp_label557:
     xor %eax, %eax
     call test4@PLT
 .loc 0 33 5
-__kefir_func_temp_label928:
+.L__kefir_func_temp_label928:
     mov $1, %rdi
     mov $2, %rsi
     mov $3, %rdx
     call test5@PLT
 .loc 0 34 5
-__kefir_func_temp_label929:
-    movq __kefir_func_temp_label936(%rip), %xmm0
-__kefir_func_temp_label942:
-    movd __kefir_func_temp_label941(%rip), %xmm1
-__kefir_func_temp_label947:
-    movd __kefir_func_temp_label946(%rip), %xmm2
+.L__kefir_func_temp_label929:
+    movq .L__kefir_func_temp_label936(%rip), %xmm0
+.L__kefir_func_temp_label942:
+    movd .L__kefir_func_temp_label941(%rip), %xmm1
+.L__kefir_func_temp_label947:
+    movd .L__kefir_func_temp_label946(%rip), %xmm2
 .loc 0 34 5
-__kefir_func_temp_label948:
+.L__kefir_func_temp_label948:
     mov $1, %rdi
     mov $2, %rsi
-__kefir_func_temp_label962:
+.L__kefir_func_temp_label962:
     insertps $16, %xmm2, %xmm1
-__kefir_func_temp_label966:
+.L__kefir_func_temp_label966:
     mov $5, %rdx
     mov $6, %rcx
     mov $7, %r8
     mov $8, %r9
     mov $2, %rax
     call test6@PLT
-__kefir_func_temp_label1154:
+.L__kefir_func_temp_label1154:
     mov $100, %rdi
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     jmp test7@PLT
-__kefir_func_temp_label1164:
-__kefir_text_func_temp_end:
+.L__kefir_func_temp_label1164:
+.L__kefir_text_func_temp_end:
 .section .rodata
     .align 8
-__kefir_func_temp_label350:
+.L__kefir_func_temp_label350:
     .quad 11529215046068469760
     .quad 16385
     .align 8
-__kefir_func_temp_label357:
+.L__kefir_func_temp_label357:
     .quad 0
     .quad 0
     .align 8
-__kefir_func_temp_label936:
+.L__kefir_func_temp_label936:
     .quad 4613937818241073152
     .align 4
-__kefir_func_temp_label941:
+.L__kefir_func_temp_label941:
     .long 1082130432
     .align 4
-__kefir_func_temp_label946:
+.L__kefir_func_temp_label946:
     .long 0
 .section .text
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 
 .section .debug_abbrev
@@ -303,8 +303,8 @@ __kefir_debug_info_section_entry_1:
     .byte 1
     .word 29
     .ascii "Kefir C compiler 0.5.0\000"
-    .quad __kefir_text_section_begin
-    .quad __kefir_text_section_end - __kefir_text_section_begin
+    .quad .L__kefir_text_section_begin
+    .quad .L__kefir_text_section_end - .L__kefir_text_section_begin
     .long __kefir_debug_lines_section_begin
 __kefir_debug_info_section_entry_2:
     .byte 3
@@ -442,8 +442,8 @@ __kefir_debug_info_section_entry_32:
 __kefir_debug_info_section_entry_33:
     .byte 9
     .ascii "temp\000"
-    .quad __kefir_text_func_temp_begin
-    .quad __kefir_text_func_temp_end - __kefir_text_func_temp_begin
+    .quad .L__kefir_text_func_temp_begin
+    .quad .L__kefir_text_func_temp_end - .L__kefir_text_func_temp_begin
     .byte 2
     .byte 118
     .byte 0

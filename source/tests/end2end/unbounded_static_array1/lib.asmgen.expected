@@ -15,62 +15,62 @@
 .type tpublicarray, @object
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get:
-__kefir_text_func_get_begin:
-__kefir_func_get_label0:
+.L__kefir_text_func_get_begin:
+.L__kefir_func_get_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_get_label1
-__kefir_func_get_label1:
+    jmp .L__kefir_func_get_label1
+.L__kefir_func_get_label1:
     lea somearray(%rip), %rax
     pop %rbp
     ret
-__kefir_text_func_get_end:
+.L__kefir_text_func_get_end:
 
 get2:
-__kefir_text_func_get2_begin:
-__kefir_func_get2_label0:
+.L__kefir_text_func_get2_begin:
+.L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_get2_label1
-__kefir_func_get2_label1:
+    jmp .L__kefir_func_get2_label1
+.L__kefir_func_get2_label1:
     lea someotherarray(%rip), %rax
     pop %rbp
     ret
-__kefir_text_func_get2_end:
+.L__kefir_text_func_get2_end:
 
 tget:
-__kefir_text_func_tget_begin:
+.L__kefir_text_func_tget_begin:
 .extern __tls_get_addr
-__kefir_func_tget_label0:
+.L__kefir_func_tget_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_tget_label1
-__kefir_func_tget_label1:
+    jmp .L__kefir_func_tget_label1
+.L__kefir_func_tget_label1:
     data16     lea tsomearray@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     pop %rbp
     ret
-__kefir_text_func_tget_end:
+.L__kefir_text_func_tget_end:
 
 tget2:
-__kefir_text_func_tget2_begin:
+.L__kefir_text_func_tget2_begin:
 .extern __tls_get_addr
-__kefir_func_tget2_label0:
+.L__kefir_func_tget2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_tget2_label1
-__kefir_func_tget2_label1:
+    jmp .L__kefir_func_tget2_label1
+.L__kefir_func_tget2_label1:
     data16     lea tsomeotherarray@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     pop %rbp
     ret
-__kefir_text_func_tget2_end:
+.L__kefir_text_func_tget2_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .bss
     .align 4

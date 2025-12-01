@@ -8,16 +8,16 @@
 .type store_buffer, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 load_buffer:
-__kefir_text_func_load_buffer_begin:
+.L__kefir_text_func_load_buffer_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $72, %rsp
     mov %rdi, %rbx
-    jmp __kefir_func_load_buffer_label1
-__kefir_func_load_buffer_label1:
+    jmp .L__kefir_func_load_buffer_label1
+.L__kefir_func_load_buffer_label1:
     movq buf@GOTPCREL(%rip), %rsi
     leaq -72(%rbp), %rdx
     mov $64, %rdi
@@ -36,19 +36,19 @@ __kefir_func_load_buffer_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_load_buffer_end:
+.L__kefir_text_func_load_buffer_end:
 
 store_buffer:
-__kefir_text_func_store_buffer_begin:
-    jmp __kefir_func_store_buffer_label1
-__kefir_func_store_buffer_label1:
+.L__kefir_text_func_store_buffer_begin:
+    jmp .L__kefir_func_store_buffer_label1
+.L__kefir_func_store_buffer_label1:
     movq buf@GOTPCREL(%rip), %rsi
     mov %rdi, %rdx
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
     ret
-__kefir_text_func_store_buffer_end:
+.L__kefir_text_func_store_buffer_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

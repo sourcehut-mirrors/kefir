@@ -111,14 +111,14 @@
 .type subtract_ptr, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 add_i8:
-__kefir_text_func_add_i8_begin:
-    jmp __kefir_func_add_i8_label1
-__kefir_func_add_i8_label1:
+.L__kefir_text_func_add_i8_begin:
+    jmp .L__kefir_func_add_i8_label1
+.L__kefir_func_add_i8_label1:
     movsx %sil, %r8
-    jmp __kefir_func_add_i8_label2
-__kefir_func_add_i8_label2:
+    jmp .L__kefir_func_add_i8_label2
+.L__kefir_func_add_i8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
     mov %rcx, %rsi
@@ -128,30 +128,30 @@ __kefir_func_add_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_add_i8_label2
-    jmp __kefir_func_add_i8_label4
-__kefir_func_add_i8_label4:
+    jz .L__kefir_func_add_i8_label2
+    jmp .L__kefir_func_add_i8_label4
+.L__kefir_func_add_i8_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_add_i8_end:
+.L__kefir_text_func_add_i8_end:
 
 add_ld:
-__kefir_text_func_add_ld_begin:
+.L__kefir_text_func_add_ld_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $104, %rsp
     fstcw -16(%rbp)
-    jmp __kefir_func_add_ld_label1
-__kefir_func_add_ld_label1:
+    jmp .L__kefir_func_add_ld_label1
+.L__kefir_func_add_ld_label1:
     fldt 16(%rbp)
     mov %rdi, %rbx
     fstpt -64(%rbp)
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    jmp __kefir_func_add_ld_label2
-__kefir_func_add_ld_label2:
+    jmp .L__kefir_func_add_ld_label2
+.L__kefir_func_add_ld_label2:
     lea -112(%rbp), %rdx
     mov %rbx, %rsi
     mov $16, %rdi
@@ -175,9 +175,9 @@ __kefir_func_add_ld_label2:
     lea -96(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz __kefir_func_add_ld_label6
-    jmp __kefir_func_add_ld_label4
-__kefir_func_add_ld_label4:
+    jz .L__kefir_func_add_ld_label6
+    jmp .L__kefir_func_add_ld_label4
+.L__kefir_func_add_ld_label4:
     stmxcsr -112(%rbp)
     mov -112(%rbp), %rcx
     fnstsw %ax
@@ -194,18 +194,18 @@ __kefir_func_add_ld_label4:
     pop %rbx
     pop %rbp
     ret
-__kefir_func_add_ld_label6:
+.L__kefir_func_add_ld_label6:
     fnclex
-    jmp __kefir_func_add_ld_label2
-__kefir_text_func_add_ld_end:
+    jmp .L__kefir_func_add_ld_label2
+.L__kefir_text_func_add_ld_end:
 
 ior_i8:
-__kefir_text_func_ior_i8_begin:
-    jmp __kefir_func_ior_i8_label1
-__kefir_func_ior_i8_label1:
+.L__kefir_text_func_ior_i8_begin:
+    jmp .L__kefir_func_ior_i8_label1
+.L__kefir_func_ior_i8_label1:
     movsx %sil, %r8
-    jmp __kefir_func_ior_i8_label2
-__kefir_func_ior_i8_label2:
+    jmp .L__kefir_func_ior_i8_label2
+.L__kefir_func_ior_i8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
     mov %rcx, %rsi
@@ -215,17 +215,17 @@ __kefir_func_ior_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_ior_i8_label2
-    jmp __kefir_func_ior_i8_label4
-__kefir_func_ior_i8_label4:
+    jz .L__kefir_func_ior_i8_label2
+    jmp .L__kefir_func_ior_i8_label4
+.L__kefir_func_ior_i8_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_ior_i8_end:
+.L__kefir_text_func_ior_i8_end:
 
 shl_i8:
-__kefir_text_func_shl_i8_begin:
-    jmp __kefir_func_shl_i8_label2
-__kefir_func_shl_i8_label2:
+.L__kefir_text_func_shl_i8_begin:
+    jmp .L__kefir_func_shl_i8_label2
+.L__kefir_func_shl_i8_label2:
     movb (%rdi), %al
     mov %rsi, %rcx
     mov %rax, %r8
@@ -235,17 +235,17 @@ __kefir_func_shl_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_shl_i8_label2
-    jmp __kefir_func_shl_i8_label4
-__kefir_func_shl_i8_label4:
+    jz .L__kefir_func_shl_i8_label2
+    jmp .L__kefir_func_shl_i8_label4
+.L__kefir_func_shl_i8_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_shl_i8_end:
+.L__kefir_text_func_shl_i8_end:
 
 shr_i8:
-__kefir_text_func_shr_i8_begin:
-    jmp __kefir_func_shr_i8_label2
-__kefir_func_shr_i8_label2:
+.L__kefir_text_func_shr_i8_begin:
+    jmp .L__kefir_func_shr_i8_label2
+.L__kefir_func_shr_i8_label2:
     movb (%rdi), %al
     mov %rsi, %rcx
     mov %rax, %r8
@@ -255,26 +255,26 @@ __kefir_func_shr_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_shr_i8_label2
-    jmp __kefir_func_shr_i8_label4
-__kefir_func_shr_i8_label4:
+    jz .L__kefir_func_shr_i8_label2
+    jmp .L__kefir_func_shr_i8_label4
+.L__kefir_func_shr_i8_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_shr_i8_end:
+.L__kefir_text_func_shr_i8_end:
 
 add_f32:
-__kefir_text_func_add_f32_begin:
+.L__kefir_text_func_add_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_add_f32_label1
-__kefir_func_add_f32_label1:
+    jmp .L__kefir_func_add_f32_label1
+.L__kefir_func_add_f32_label1:
     fnstenv -40(%rbp)
     stmxcsr -12(%rbp)
     fnclex
-    jmp __kefir_func_add_f32_label2
-__kefir_func_add_f32_label2:
+    jmp .L__kefir_func_add_f32_label2
+.L__kefir_func_add_f32_label2:
     movl (%rdi), %eax
     movq %rax, %xmm1
     addss %xmm0, %xmm1
@@ -283,9 +283,9 @@ __kefir_func_add_f32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %cl
     test %cl, %cl
-    jz __kefir_func_add_f32_label6
-    jmp __kefir_func_add_f32_label4
-__kefir_func_add_f32_label4:
+    jz .L__kefir_func_add_f32_label6
+    jmp .L__kefir_func_add_f32_label4
+.L__kefir_func_add_f32_label4:
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
     fnstsw %ax
@@ -301,24 +301,24 @@ __kefir_func_add_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_add_f32_label6:
+.L__kefir_func_add_f32_label6:
     fnclex
-    jmp __kefir_func_add_f32_label2
-__kefir_text_func_add_f32_end:
+    jmp .L__kefir_func_add_f32_label2
+.L__kefir_text_func_add_f32_end:
 
 add_f64:
-__kefir_text_func_add_f64_begin:
+.L__kefir_text_func_add_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_add_f64_label1
-__kefir_func_add_f64_label1:
+    jmp .L__kefir_func_add_f64_label1
+.L__kefir_func_add_f64_label1:
     fnstenv -40(%rbp)
     stmxcsr -12(%rbp)
     fnclex
-    jmp __kefir_func_add_f64_label2
-__kefir_func_add_f64_label2:
+    jmp .L__kefir_func_add_f64_label2
+.L__kefir_func_add_f64_label2:
     movq (%rdi), %rax
     movq %rax, %xmm1
     addsd %xmm0, %xmm1
@@ -327,9 +327,9 @@ __kefir_func_add_f64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %cl
     test %cl, %cl
-    jz __kefir_func_add_f64_label6
-    jmp __kefir_func_add_f64_label4
-__kefir_func_add_f64_label4:
+    jz .L__kefir_func_add_f64_label6
+    jmp .L__kefir_func_add_f64_label4
+.L__kefir_func_add_f64_label4:
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
     fnstsw %ax
@@ -345,18 +345,18 @@ __kefir_func_add_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_add_f64_label6:
+.L__kefir_func_add_f64_label6:
     fnclex
-    jmp __kefir_func_add_f64_label2
-__kefir_text_func_add_f64_end:
+    jmp .L__kefir_func_add_f64_label2
+.L__kefir_text_func_add_f64_end:
 
 add_i16:
-__kefir_text_func_add_i16_begin:
-    jmp __kefir_func_add_i16_label1
-__kefir_func_add_i16_label1:
+.L__kefir_text_func_add_i16_begin:
+    jmp .L__kefir_func_add_i16_label1
+.L__kefir_func_add_i16_label1:
     movsx %si, %r8
-    jmp __kefir_func_add_i16_label2
-__kefir_func_add_i16_label2:
+    jmp .L__kefir_func_add_i16_label2
+.L__kefir_func_add_i16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
     mov %rcx, %rsi
@@ -366,17 +366,17 @@ __kefir_func_add_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_add_i16_label2
-    jmp __kefir_func_add_i16_label4
-__kefir_func_add_i16_label4:
+    jz .L__kefir_func_add_i16_label2
+    jmp .L__kefir_func_add_i16_label4
+.L__kefir_func_add_i16_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_add_i16_end:
+.L__kefir_text_func_add_i16_end:
 
 add_i32:
-__kefir_text_func_add_i32_begin:
-    jmp __kefir_func_add_i32_label2
-__kefir_func_add_i32_label2:
+.L__kefir_text_func_add_i32_begin:
+    jmp .L__kefir_func_add_i32_label2
+.L__kefir_func_add_i32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
     add %esi, %r8d
@@ -385,17 +385,17 @@ __kefir_func_add_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_add_i32_label2
-    jmp __kefir_func_add_i32_label4
-__kefir_func_add_i32_label4:
+    jz .L__kefir_func_add_i32_label2
+    jmp .L__kefir_func_add_i32_label4
+.L__kefir_func_add_i32_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_add_i32_end:
+.L__kefir_text_func_add_i32_end:
 
 add_i64:
-__kefir_text_func_add_i64_begin:
-    jmp __kefir_func_add_i64_label2
-__kefir_func_add_i64_label2:
+.L__kefir_text_func_add_i64_begin:
+    jmp .L__kefir_func_add_i64_label2
+.L__kefir_func_add_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     add %rsi, %r8
@@ -404,20 +404,20 @@ __kefir_func_add_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_add_i64_label2
-    jmp __kefir_func_add_i64_label4
-__kefir_func_add_i64_label4:
+    jz .L__kefir_func_add_i64_label2
+    jmp .L__kefir_func_add_i64_label4
+.L__kefir_func_add_i64_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_add_i64_end:
+.L__kefir_text_func_add_i64_end:
 
 add_ptr:
-__kefir_text_func_add_ptr_begin:
-    jmp __kefir_func_add_ptr_label1
-__kefir_func_add_ptr_label1:
+.L__kefir_text_func_add_ptr_begin:
+    jmp .L__kefir_func_add_ptr_label1
+.L__kefir_func_add_ptr_label1:
     imul $4, %rsi, %r8
-    jmp __kefir_func_add_ptr_label2
-__kefir_func_add_ptr_label2:
+    jmp .L__kefir_func_add_ptr_label2
+.L__kefir_func_add_ptr_label2:
     movq (%rdi), %rax
     mov %rax, %rsi
     add %r8, %rsi
@@ -426,20 +426,20 @@ __kefir_func_add_ptr_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_add_ptr_label2
-    jmp __kefir_func_add_ptr_label4
-__kefir_func_add_ptr_label4:
+    jz .L__kefir_func_add_ptr_label2
+    jmp .L__kefir_func_add_ptr_label4
+.L__kefir_func_add_ptr_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_add_ptr_end:
+.L__kefir_text_func_add_ptr_end:
 
 iand_i8:
-__kefir_text_func_iand_i8_begin:
-    jmp __kefir_func_iand_i8_label1
-__kefir_func_iand_i8_label1:
+.L__kefir_text_func_iand_i8_begin:
+    jmp .L__kefir_func_iand_i8_label1
+.L__kefir_func_iand_i8_label1:
     movsx %sil, %r8
-    jmp __kefir_func_iand_i8_label2
-__kefir_func_iand_i8_label2:
+    jmp .L__kefir_func_iand_i8_label2
+.L__kefir_func_iand_i8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
     mov %rcx, %rsi
@@ -449,20 +449,20 @@ __kefir_func_iand_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_iand_i8_label2
-    jmp __kefir_func_iand_i8_label4
-__kefir_func_iand_i8_label4:
+    jz .L__kefir_func_iand_i8_label2
+    jmp .L__kefir_func_iand_i8_label4
+.L__kefir_func_iand_i8_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_iand_i8_end:
+.L__kefir_text_func_iand_i8_end:
 
 ior_i16:
-__kefir_text_func_ior_i16_begin:
-    jmp __kefir_func_ior_i16_label1
-__kefir_func_ior_i16_label1:
+.L__kefir_text_func_ior_i16_begin:
+    jmp .L__kefir_func_ior_i16_label1
+.L__kefir_func_ior_i16_label1:
     movsx %si, %r8
-    jmp __kefir_func_ior_i16_label2
-__kefir_func_ior_i16_label2:
+    jmp .L__kefir_func_ior_i16_label2
+.L__kefir_func_ior_i16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
     mov %rcx, %rsi
@@ -472,17 +472,17 @@ __kefir_func_ior_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_ior_i16_label2
-    jmp __kefir_func_ior_i16_label4
-__kefir_func_ior_i16_label4:
+    jz .L__kefir_func_ior_i16_label2
+    jmp .L__kefir_func_ior_i16_label4
+.L__kefir_func_ior_i16_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_ior_i16_end:
+.L__kefir_text_func_ior_i16_end:
 
 ior_i32:
-__kefir_text_func_ior_i32_begin:
-    jmp __kefir_func_ior_i32_label2
-__kefir_func_ior_i32_label2:
+.L__kefir_text_func_ior_i32_begin:
+    jmp .L__kefir_func_ior_i32_label2
+.L__kefir_func_ior_i32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
     or %esi, %r8d
@@ -491,17 +491,17 @@ __kefir_func_ior_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_ior_i32_label2
-    jmp __kefir_func_ior_i32_label4
-__kefir_func_ior_i32_label4:
+    jz .L__kefir_func_ior_i32_label2
+    jmp .L__kefir_func_ior_i32_label4
+.L__kefir_func_ior_i32_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_ior_i32_end:
+.L__kefir_text_func_ior_i32_end:
 
 ior_i64:
-__kefir_text_func_ior_i64_begin:
-    jmp __kefir_func_ior_i64_label2
-__kefir_func_ior_i64_label2:
+.L__kefir_text_func_ior_i64_begin:
+    jmp .L__kefir_func_ior_i64_label2
+.L__kefir_func_ior_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     or %rsi, %r8
@@ -510,20 +510,20 @@ __kefir_func_ior_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_ior_i64_label2
-    jmp __kefir_func_ior_i64_label4
-__kefir_func_ior_i64_label4:
+    jz .L__kefir_func_ior_i64_label2
+    jmp .L__kefir_func_ior_i64_label4
+.L__kefir_func_ior_i64_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_ior_i64_end:
+.L__kefir_text_func_ior_i64_end:
 
 ixor_i8:
-__kefir_text_func_ixor_i8_begin:
-    jmp __kefir_func_ixor_i8_label1
-__kefir_func_ixor_i8_label1:
+.L__kefir_text_func_ixor_i8_begin:
+    jmp .L__kefir_func_ixor_i8_label1
+.L__kefir_func_ixor_i8_label1:
     movsx %sil, %r8
-    jmp __kefir_func_ixor_i8_label2
-__kefir_func_ixor_i8_label2:
+    jmp .L__kefir_func_ixor_i8_label2
+.L__kefir_func_ixor_i8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
     mov %rcx, %rsi
@@ -533,17 +533,17 @@ __kefir_func_ixor_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_ixor_i8_label2
-    jmp __kefir_func_ixor_i8_label4
-__kefir_func_ixor_i8_label4:
+    jz .L__kefir_func_ixor_i8_label2
+    jmp .L__kefir_func_ixor_i8_label4
+.L__kefir_func_ixor_i8_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_ixor_i8_end:
+.L__kefir_text_func_ixor_i8_end:
 
 shl_i16:
-__kefir_text_func_shl_i16_begin:
-    jmp __kefir_func_shl_i16_label2
-__kefir_func_shl_i16_label2:
+.L__kefir_text_func_shl_i16_begin:
+    jmp .L__kefir_func_shl_i16_label2
+.L__kefir_func_shl_i16_label2:
     movw (%rdi), %ax
     mov %rsi, %rcx
     mov %rax, %r8
@@ -553,17 +553,17 @@ __kefir_func_shl_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_shl_i16_label2
-    jmp __kefir_func_shl_i16_label4
-__kefir_func_shl_i16_label4:
+    jz .L__kefir_func_shl_i16_label2
+    jmp .L__kefir_func_shl_i16_label4
+.L__kefir_func_shl_i16_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_shl_i16_end:
+.L__kefir_text_func_shl_i16_end:
 
 shl_i32:
-__kefir_text_func_shl_i32_begin:
-    jmp __kefir_func_shl_i32_label2
-__kefir_func_shl_i32_label2:
+.L__kefir_text_func_shl_i32_begin:
+    jmp .L__kefir_func_shl_i32_label2
+.L__kefir_func_shl_i32_label2:
     movl (%rdi), %eax
     mov %rsi, %rcx
     mov %rax, %r8
@@ -573,17 +573,17 @@ __kefir_func_shl_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_shl_i32_label2
-    jmp __kefir_func_shl_i32_label4
-__kefir_func_shl_i32_label4:
+    jz .L__kefir_func_shl_i32_label2
+    jmp .L__kefir_func_shl_i32_label4
+.L__kefir_func_shl_i32_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_shl_i32_end:
+.L__kefir_text_func_shl_i32_end:
 
 shl_i64:
-__kefir_text_func_shl_i64_begin:
-    jmp __kefir_func_shl_i64_label2
-__kefir_func_shl_i64_label2:
+.L__kefir_text_func_shl_i64_begin:
+    jmp .L__kefir_func_shl_i64_label2
+.L__kefir_func_shl_i64_label2:
     movq (%rdi), %rax
     mov %rsi, %rcx
     mov %rax, %r8
@@ -593,17 +593,17 @@ __kefir_func_shl_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_shl_i64_label2
-    jmp __kefir_func_shl_i64_label4
-__kefir_func_shl_i64_label4:
+    jz .L__kefir_func_shl_i64_label2
+    jmp .L__kefir_func_shl_i64_label4
+.L__kefir_func_shl_i64_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_shl_i64_end:
+.L__kefir_text_func_shl_i64_end:
 
 shr_i16:
-__kefir_text_func_shr_i16_begin:
-    jmp __kefir_func_shr_i16_label2
-__kefir_func_shr_i16_label2:
+.L__kefir_text_func_shr_i16_begin:
+    jmp .L__kefir_func_shr_i16_label2
+.L__kefir_func_shr_i16_label2:
     movw (%rdi), %ax
     mov %rsi, %rcx
     mov %rax, %r8
@@ -613,17 +613,17 @@ __kefir_func_shr_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_shr_i16_label2
-    jmp __kefir_func_shr_i16_label4
-__kefir_func_shr_i16_label4:
+    jz .L__kefir_func_shr_i16_label2
+    jmp .L__kefir_func_shr_i16_label4
+.L__kefir_func_shr_i16_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_shr_i16_end:
+.L__kefir_text_func_shr_i16_end:
 
 shr_i32:
-__kefir_text_func_shr_i32_begin:
-    jmp __kefir_func_shr_i32_label2
-__kefir_func_shr_i32_label2:
+.L__kefir_text_func_shr_i32_begin:
+    jmp .L__kefir_func_shr_i32_label2
+.L__kefir_func_shr_i32_label2:
     movl (%rdi), %eax
     mov %rsi, %rcx
     mov %rax, %r8
@@ -633,17 +633,17 @@ __kefir_func_shr_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_shr_i32_label2
-    jmp __kefir_func_shr_i32_label4
-__kefir_func_shr_i32_label4:
+    jz .L__kefir_func_shr_i32_label2
+    jmp .L__kefir_func_shr_i32_label4
+.L__kefir_func_shr_i32_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_shr_i32_end:
+.L__kefir_text_func_shr_i32_end:
 
 shr_i64:
-__kefir_text_func_shr_i64_begin:
-    jmp __kefir_func_shr_i64_label2
-__kefir_func_shr_i64_label2:
+.L__kefir_text_func_shr_i64_begin:
+    jmp .L__kefir_func_shr_i64_label2
+.L__kefir_func_shr_i64_label2:
     movq (%rdi), %rax
     mov %rsi, %rcx
     mov %rax, %r8
@@ -653,20 +653,20 @@ __kefir_func_shr_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_shr_i64_label2
-    jmp __kefir_func_shr_i64_label4
-__kefir_func_shr_i64_label4:
+    jz .L__kefir_func_shr_i64_label2
+    jmp .L__kefir_func_shr_i64_label4
+.L__kefir_func_shr_i64_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_shr_i64_end:
+.L__kefir_text_func_shr_i64_end:
 
 iand_i16:
-__kefir_text_func_iand_i16_begin:
-    jmp __kefir_func_iand_i16_label1
-__kefir_func_iand_i16_label1:
+.L__kefir_text_func_iand_i16_begin:
+    jmp .L__kefir_func_iand_i16_label1
+.L__kefir_func_iand_i16_label1:
     movsx %si, %r8
-    jmp __kefir_func_iand_i16_label2
-__kefir_func_iand_i16_label2:
+    jmp .L__kefir_func_iand_i16_label2
+.L__kefir_func_iand_i16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
     mov %rcx, %rsi
@@ -676,17 +676,17 @@ __kefir_func_iand_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_iand_i16_label2
-    jmp __kefir_func_iand_i16_label4
-__kefir_func_iand_i16_label4:
+    jz .L__kefir_func_iand_i16_label2
+    jmp .L__kefir_func_iand_i16_label4
+.L__kefir_func_iand_i16_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_iand_i16_end:
+.L__kefir_text_func_iand_i16_end:
 
 iand_i32:
-__kefir_text_func_iand_i32_begin:
-    jmp __kefir_func_iand_i32_label2
-__kefir_func_iand_i32_label2:
+.L__kefir_text_func_iand_i32_begin:
+    jmp .L__kefir_func_iand_i32_label2
+.L__kefir_func_iand_i32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
     and %esi, %r8d
@@ -695,17 +695,17 @@ __kefir_func_iand_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_iand_i32_label2
-    jmp __kefir_func_iand_i32_label4
-__kefir_func_iand_i32_label4:
+    jz .L__kefir_func_iand_i32_label2
+    jmp .L__kefir_func_iand_i32_label4
+.L__kefir_func_iand_i32_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_iand_i32_end:
+.L__kefir_text_func_iand_i32_end:
 
 iand_i64:
-__kefir_text_func_iand_i64_begin:
-    jmp __kefir_func_iand_i64_label2
-__kefir_func_iand_i64_label2:
+.L__kefir_text_func_iand_i64_begin:
+    jmp .L__kefir_func_iand_i64_label2
+.L__kefir_func_iand_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     and %rsi, %r8
@@ -714,20 +714,20 @@ __kefir_func_iand_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_iand_i64_label2
-    jmp __kefir_func_iand_i64_label4
-__kefir_func_iand_i64_label4:
+    jz .L__kefir_func_iand_i64_label2
+    jmp .L__kefir_func_iand_i64_label4
+.L__kefir_func_iand_i64_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_iand_i64_end:
+.L__kefir_text_func_iand_i64_end:
 
 ixor_i16:
-__kefir_text_func_ixor_i16_begin:
-    jmp __kefir_func_ixor_i16_label1
-__kefir_func_ixor_i16_label1:
+.L__kefir_text_func_ixor_i16_begin:
+    jmp .L__kefir_func_ixor_i16_label1
+.L__kefir_func_ixor_i16_label1:
     movsx %si, %r8
-    jmp __kefir_func_ixor_i16_label2
-__kefir_func_ixor_i16_label2:
+    jmp .L__kefir_func_ixor_i16_label2
+.L__kefir_func_ixor_i16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
     mov %rcx, %rsi
@@ -737,17 +737,17 @@ __kefir_func_ixor_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_ixor_i16_label2
-    jmp __kefir_func_ixor_i16_label4
-__kefir_func_ixor_i16_label4:
+    jz .L__kefir_func_ixor_i16_label2
+    jmp .L__kefir_func_ixor_i16_label4
+.L__kefir_func_ixor_i16_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_ixor_i16_end:
+.L__kefir_text_func_ixor_i16_end:
 
 ixor_i32:
-__kefir_text_func_ixor_i32_begin:
-    jmp __kefir_func_ixor_i32_label2
-__kefir_func_ixor_i32_label2:
+.L__kefir_text_func_ixor_i32_begin:
+    jmp .L__kefir_func_ixor_i32_label2
+.L__kefir_func_ixor_i32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
     xor %esi, %r8d
@@ -756,17 +756,17 @@ __kefir_func_ixor_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_ixor_i32_label2
-    jmp __kefir_func_ixor_i32_label4
-__kefir_func_ixor_i32_label4:
+    jz .L__kefir_func_ixor_i32_label2
+    jmp .L__kefir_func_ixor_i32_label4
+.L__kefir_func_ixor_i32_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_ixor_i32_end:
+.L__kefir_text_func_ixor_i32_end:
 
 ixor_i64:
-__kefir_text_func_ixor_i64_begin:
-    jmp __kefir_func_ixor_i64_label2
-__kefir_func_ixor_i64_label2:
+.L__kefir_text_func_ixor_i64_begin:
+    jmp .L__kefir_func_ixor_i64_label2
+.L__kefir_func_ixor_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     xor %rsi, %r8
@@ -775,20 +775,20 @@ __kefir_func_ixor_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_ixor_i64_label2
-    jmp __kefir_func_ixor_i64_label4
-__kefir_func_ixor_i64_label4:
+    jz .L__kefir_func_ixor_i64_label2
+    jmp .L__kefir_func_ixor_i64_label4
+.L__kefir_func_ixor_i64_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_ixor_i64_end:
+.L__kefir_text_func_ixor_i64_end:
 
 divide_i8:
-__kefir_text_func_divide_i8_begin:
-    jmp __kefir_func_divide_i8_label1
-__kefir_func_divide_i8_label1:
+.L__kefir_text_func_divide_i8_begin:
+    jmp .L__kefir_func_divide_i8_label1
+.L__kefir_func_divide_i8_label1:
     movsx %sil, %r9
-    jmp __kefir_func_divide_i8_label2
-__kefir_func_divide_i8_label2:
+    jmp .L__kefir_func_divide_i8_label2
+.L__kefir_func_divide_i8_label2:
     movb (%rdi), %al
     mov %rax, %rsi
     movsx %sil, %rax
@@ -801,30 +801,30 @@ __kefir_func_divide_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_divide_i8_label2
-    jmp __kefir_func_divide_i8_label4
-__kefir_func_divide_i8_label4:
+    jz .L__kefir_func_divide_i8_label2
+    jmp .L__kefir_func_divide_i8_label4
+.L__kefir_func_divide_i8_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_divide_i8_end:
+.L__kefir_text_func_divide_i8_end:
 
 divide_ld:
-__kefir_text_func_divide_ld_begin:
+.L__kefir_text_func_divide_ld_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $104, %rsp
     fstcw -16(%rbp)
-    jmp __kefir_func_divide_ld_label1
-__kefir_func_divide_ld_label1:
+    jmp .L__kefir_func_divide_ld_label1
+.L__kefir_func_divide_ld_label1:
     fldt 16(%rbp)
     mov %rdi, %rbx
     fstpt -64(%rbp)
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    jmp __kefir_func_divide_ld_label2
-__kefir_func_divide_ld_label2:
+    jmp .L__kefir_func_divide_ld_label2
+.L__kefir_func_divide_ld_label2:
     lea -112(%rbp), %rdx
     mov %rbx, %rsi
     mov $16, %rdi
@@ -848,9 +848,9 @@ __kefir_func_divide_ld_label2:
     lea -96(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz __kefir_func_divide_ld_label6
-    jmp __kefir_func_divide_ld_label4
-__kefir_func_divide_ld_label4:
+    jz .L__kefir_func_divide_ld_label6
+    jmp .L__kefir_func_divide_ld_label4
+.L__kefir_func_divide_ld_label4:
     stmxcsr -112(%rbp)
     mov -112(%rbp), %rcx
     fnstsw %ax
@@ -867,18 +867,18 @@ __kefir_func_divide_ld_label4:
     pop %rbx
     pop %rbp
     ret
-__kefir_func_divide_ld_label6:
+.L__kefir_func_divide_ld_label6:
     fnclex
-    jmp __kefir_func_divide_ld_label2
-__kefir_text_func_divide_ld_end:
+    jmp .L__kefir_func_divide_ld_label2
+.L__kefir_text_func_divide_ld_end:
 
 modulo_i8:
-__kefir_text_func_modulo_i8_begin:
-    jmp __kefir_func_modulo_i8_label1
-__kefir_func_modulo_i8_label1:
+.L__kefir_text_func_modulo_i8_begin:
+    jmp .L__kefir_func_modulo_i8_label1
+.L__kefir_func_modulo_i8_label1:
     movsx %sil, %r9
-    jmp __kefir_func_modulo_i8_label2
-__kefir_func_modulo_i8_label2:
+    jmp .L__kefir_func_modulo_i8_label2
+.L__kefir_func_modulo_i8_label2:
     movb (%rdi), %al
     mov %rax, %rsi
     movsx %sil, %rax
@@ -891,26 +891,26 @@ __kefir_func_modulo_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_modulo_i8_label2
-    jmp __kefir_func_modulo_i8_label4
-__kefir_func_modulo_i8_label4:
+    jz .L__kefir_func_modulo_i8_label2
+    jmp .L__kefir_func_modulo_i8_label4
+.L__kefir_func_modulo_i8_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_modulo_i8_end:
+.L__kefir_text_func_modulo_i8_end:
 
 divide_f32:
-__kefir_text_func_divide_f32_begin:
+.L__kefir_text_func_divide_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_divide_f32_label1
-__kefir_func_divide_f32_label1:
+    jmp .L__kefir_func_divide_f32_label1
+.L__kefir_func_divide_f32_label1:
     fnstenv -40(%rbp)
     stmxcsr -12(%rbp)
     fnclex
-    jmp __kefir_func_divide_f32_label2
-__kefir_func_divide_f32_label2:
+    jmp .L__kefir_func_divide_f32_label2
+.L__kefir_func_divide_f32_label2:
     movl (%rdi), %eax
     movq %rax, %xmm1
     divss %xmm0, %xmm1
@@ -919,9 +919,9 @@ __kefir_func_divide_f32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %cl
     test %cl, %cl
-    jz __kefir_func_divide_f32_label6
-    jmp __kefir_func_divide_f32_label4
-__kefir_func_divide_f32_label4:
+    jz .L__kefir_func_divide_f32_label6
+    jmp .L__kefir_func_divide_f32_label4
+.L__kefir_func_divide_f32_label4:
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
     fnstsw %ax
@@ -937,24 +937,24 @@ __kefir_func_divide_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_divide_f32_label6:
+.L__kefir_func_divide_f32_label6:
     fnclex
-    jmp __kefir_func_divide_f32_label2
-__kefir_text_func_divide_f32_end:
+    jmp .L__kefir_func_divide_f32_label2
+.L__kefir_text_func_divide_f32_end:
 
 divide_f64:
-__kefir_text_func_divide_f64_begin:
+.L__kefir_text_func_divide_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_divide_f64_label1
-__kefir_func_divide_f64_label1:
+    jmp .L__kefir_func_divide_f64_label1
+.L__kefir_func_divide_f64_label1:
     fnstenv -40(%rbp)
     stmxcsr -12(%rbp)
     fnclex
-    jmp __kefir_func_divide_f64_label2
-__kefir_func_divide_f64_label2:
+    jmp .L__kefir_func_divide_f64_label2
+.L__kefir_func_divide_f64_label2:
     movq (%rdi), %rax
     movq %rax, %xmm1
     divsd %xmm0, %xmm1
@@ -963,9 +963,9 @@ __kefir_func_divide_f64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %cl
     test %cl, %cl
-    jz __kefir_func_divide_f64_label6
-    jmp __kefir_func_divide_f64_label4
-__kefir_func_divide_f64_label4:
+    jz .L__kefir_func_divide_f64_label6
+    jmp .L__kefir_func_divide_f64_label4
+.L__kefir_func_divide_f64_label4:
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
     fnstsw %ax
@@ -981,18 +981,18 @@ __kefir_func_divide_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_divide_f64_label6:
+.L__kefir_func_divide_f64_label6:
     fnclex
-    jmp __kefir_func_divide_f64_label2
-__kefir_text_func_divide_f64_end:
+    jmp .L__kefir_func_divide_f64_label2
+.L__kefir_text_func_divide_f64_end:
 
 divide_i16:
-__kefir_text_func_divide_i16_begin:
-    jmp __kefir_func_divide_i16_label1
-__kefir_func_divide_i16_label1:
+.L__kefir_text_func_divide_i16_begin:
+    jmp .L__kefir_func_divide_i16_label1
+.L__kefir_func_divide_i16_label1:
     movsx %si, %r9
-    jmp __kefir_func_divide_i16_label2
-__kefir_func_divide_i16_label2:
+    jmp .L__kefir_func_divide_i16_label2
+.L__kefir_func_divide_i16_label2:
     movw (%rdi), %ax
     mov %rax, %rsi
     movsx %si, %rax
@@ -1005,17 +1005,17 @@ __kefir_func_divide_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_divide_i16_label2
-    jmp __kefir_func_divide_i16_label4
-__kefir_func_divide_i16_label4:
+    jz .L__kefir_func_divide_i16_label2
+    jmp .L__kefir_func_divide_i16_label4
+.L__kefir_func_divide_i16_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_divide_i16_end:
+.L__kefir_text_func_divide_i16_end:
 
 divide_i32:
-__kefir_text_func_divide_i32_begin:
-    jmp __kefir_func_divide_i32_label2
-__kefir_func_divide_i32_label2:
+.L__kefir_text_func_divide_i32_begin:
+    jmp .L__kefir_func_divide_i32_label2
+.L__kefir_func_divide_i32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
     movsx %r8d, %rax
@@ -1028,17 +1028,17 @@ __kefir_func_divide_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_divide_i32_label2
-    jmp __kefir_func_divide_i32_label4
-__kefir_func_divide_i32_label4:
+    jz .L__kefir_func_divide_i32_label2
+    jmp .L__kefir_func_divide_i32_label4
+.L__kefir_func_divide_i32_label4:
     mov %r9, %rax
     ret
-__kefir_text_func_divide_i32_end:
+.L__kefir_text_func_divide_i32_end:
 
 divide_i64:
-__kefir_text_func_divide_i64_begin:
-    jmp __kefir_func_divide_i64_label2
-__kefir_func_divide_i64_label2:
+.L__kefir_text_func_divide_i64_begin:
+    jmp .L__kefir_func_divide_i64_label2
+.L__kefir_func_divide_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     mov %r8, %rax
@@ -1051,20 +1051,20 @@ __kefir_func_divide_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_divide_i64_label2
-    jmp __kefir_func_divide_i64_label4
-__kefir_func_divide_i64_label4:
+    jz .L__kefir_func_divide_i64_label2
+    jmp .L__kefir_func_divide_i64_label4
+.L__kefir_func_divide_i64_label4:
     mov %r9, %rax
     ret
-__kefir_text_func_divide_i64_end:
+.L__kefir_text_func_divide_i64_end:
 
 modulo_i16:
-__kefir_text_func_modulo_i16_begin:
-    jmp __kefir_func_modulo_i16_label1
-__kefir_func_modulo_i16_label1:
+.L__kefir_text_func_modulo_i16_begin:
+    jmp .L__kefir_func_modulo_i16_label1
+.L__kefir_func_modulo_i16_label1:
     movsx %si, %r9
-    jmp __kefir_func_modulo_i16_label2
-__kefir_func_modulo_i16_label2:
+    jmp .L__kefir_func_modulo_i16_label2
+.L__kefir_func_modulo_i16_label2:
     movw (%rdi), %ax
     mov %rax, %rsi
     movsx %si, %rax
@@ -1077,17 +1077,17 @@ __kefir_func_modulo_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_modulo_i16_label2
-    jmp __kefir_func_modulo_i16_label4
-__kefir_func_modulo_i16_label4:
+    jz .L__kefir_func_modulo_i16_label2
+    jmp .L__kefir_func_modulo_i16_label4
+.L__kefir_func_modulo_i16_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_modulo_i16_end:
+.L__kefir_text_func_modulo_i16_end:
 
 modulo_i32:
-__kefir_text_func_modulo_i32_begin:
-    jmp __kefir_func_modulo_i32_label2
-__kefir_func_modulo_i32_label2:
+.L__kefir_text_func_modulo_i32_begin:
+    jmp .L__kefir_func_modulo_i32_label2
+.L__kefir_func_modulo_i32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
     movsx %r8d, %rax
@@ -1100,17 +1100,17 @@ __kefir_func_modulo_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_modulo_i32_label2
-    jmp __kefir_func_modulo_i32_label4
-__kefir_func_modulo_i32_label4:
+    jz .L__kefir_func_modulo_i32_label2
+    jmp .L__kefir_func_modulo_i32_label4
+.L__kefir_func_modulo_i32_label4:
     mov %r9, %rax
     ret
-__kefir_text_func_modulo_i32_end:
+.L__kefir_text_func_modulo_i32_end:
 
 modulo_i64:
-__kefir_text_func_modulo_i64_begin:
-    jmp __kefir_func_modulo_i64_label2
-__kefir_func_modulo_i64_label2:
+.L__kefir_text_func_modulo_i64_begin:
+    jmp .L__kefir_func_modulo_i64_label2
+.L__kefir_func_modulo_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     mov %r8, %rax
@@ -1123,20 +1123,20 @@ __kefir_func_modulo_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_modulo_i64_label2
-    jmp __kefir_func_modulo_i64_label4
-__kefir_func_modulo_i64_label4:
+    jz .L__kefir_func_modulo_i64_label2
+    jmp .L__kefir_func_modulo_i64_label4
+.L__kefir_func_modulo_i64_label4:
     mov %r9, %rax
     ret
-__kefir_text_func_modulo_i64_end:
+.L__kefir_text_func_modulo_i64_end:
 
 multiply_i8:
-__kefir_text_func_multiply_i8_begin:
-    jmp __kefir_func_multiply_i8_label1
-__kefir_func_multiply_i8_label1:
+.L__kefir_text_func_multiply_i8_begin:
+    jmp .L__kefir_func_multiply_i8_label1
+.L__kefir_func_multiply_i8_label1:
     movsx %sil, %r8
-    jmp __kefir_func_multiply_i8_label2
-__kefir_func_multiply_i8_label2:
+    jmp .L__kefir_func_multiply_i8_label2
+.L__kefir_func_multiply_i8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
     mov %rcx, %rsi
@@ -1146,30 +1146,30 @@ __kefir_func_multiply_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_multiply_i8_label2
-    jmp __kefir_func_multiply_i8_label4
-__kefir_func_multiply_i8_label4:
+    jz .L__kefir_func_multiply_i8_label2
+    jmp .L__kefir_func_multiply_i8_label4
+.L__kefir_func_multiply_i8_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_multiply_i8_end:
+.L__kefir_text_func_multiply_i8_end:
 
 multiply_ld:
-__kefir_text_func_multiply_ld_begin:
+.L__kefir_text_func_multiply_ld_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $104, %rsp
     fstcw -16(%rbp)
-    jmp __kefir_func_multiply_ld_label1
-__kefir_func_multiply_ld_label1:
+    jmp .L__kefir_func_multiply_ld_label1
+.L__kefir_func_multiply_ld_label1:
     fldt 16(%rbp)
     mov %rdi, %rbx
     fstpt -64(%rbp)
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    jmp __kefir_func_multiply_ld_label2
-__kefir_func_multiply_ld_label2:
+    jmp .L__kefir_func_multiply_ld_label2
+.L__kefir_func_multiply_ld_label2:
     lea -112(%rbp), %rdx
     mov %rbx, %rsi
     mov $16, %rdi
@@ -1193,9 +1193,9 @@ __kefir_func_multiply_ld_label2:
     lea -96(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz __kefir_func_multiply_ld_label6
-    jmp __kefir_func_multiply_ld_label4
-__kefir_func_multiply_ld_label4:
+    jz .L__kefir_func_multiply_ld_label6
+    jmp .L__kefir_func_multiply_ld_label4
+.L__kefir_func_multiply_ld_label4:
     stmxcsr -112(%rbp)
     mov -112(%rbp), %rcx
     fnstsw %ax
@@ -1212,18 +1212,18 @@ __kefir_func_multiply_ld_label4:
     pop %rbx
     pop %rbp
     ret
-__kefir_func_multiply_ld_label6:
+.L__kefir_func_multiply_ld_label6:
     fnclex
-    jmp __kefir_func_multiply_ld_label2
-__kefir_text_func_multiply_ld_end:
+    jmp .L__kefir_func_multiply_ld_label2
+.L__kefir_text_func_multiply_ld_end:
 
 subtract_i8:
-__kefir_text_func_subtract_i8_begin:
-    jmp __kefir_func_subtract_i8_label1
-__kefir_func_subtract_i8_label1:
+.L__kefir_text_func_subtract_i8_begin:
+    jmp .L__kefir_func_subtract_i8_label1
+.L__kefir_func_subtract_i8_label1:
     movsx %sil, %r8
-    jmp __kefir_func_subtract_i8_label2
-__kefir_func_subtract_i8_label2:
+    jmp .L__kefir_func_subtract_i8_label2
+.L__kefir_func_subtract_i8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
     mov %rcx, %rsi
@@ -1233,30 +1233,30 @@ __kefir_func_subtract_i8_label2:
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_subtract_i8_label2
-    jmp __kefir_func_subtract_i8_label4
-__kefir_func_subtract_i8_label4:
+    jz .L__kefir_func_subtract_i8_label2
+    jmp .L__kefir_func_subtract_i8_label4
+.L__kefir_func_subtract_i8_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_subtract_i8_end:
+.L__kefir_text_func_subtract_i8_end:
 
 subtract_ld:
-__kefir_text_func_subtract_ld_begin:
+.L__kefir_text_func_subtract_ld_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $104, %rsp
     fstcw -16(%rbp)
-    jmp __kefir_func_subtract_ld_label1
-__kefir_func_subtract_ld_label1:
+    jmp .L__kefir_func_subtract_ld_label1
+.L__kefir_func_subtract_ld_label1:
     fldt 16(%rbp)
     mov %rdi, %rbx
     fstpt -64(%rbp)
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    jmp __kefir_func_subtract_ld_label2
-__kefir_func_subtract_ld_label2:
+    jmp .L__kefir_func_subtract_ld_label2
+.L__kefir_func_subtract_ld_label2:
     lea -112(%rbp), %rdx
     mov %rbx, %rsi
     mov $16, %rdi
@@ -1280,9 +1280,9 @@ __kefir_func_subtract_ld_label2:
     lea -96(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz __kefir_func_subtract_ld_label6
-    jmp __kefir_func_subtract_ld_label4
-__kefir_func_subtract_ld_label4:
+    jz .L__kefir_func_subtract_ld_label6
+    jmp .L__kefir_func_subtract_ld_label4
+.L__kefir_func_subtract_ld_label4:
     stmxcsr -112(%rbp)
     mov -112(%rbp), %rcx
     fnstsw %ax
@@ -1299,24 +1299,24 @@ __kefir_func_subtract_ld_label4:
     pop %rbx
     pop %rbp
     ret
-__kefir_func_subtract_ld_label6:
+.L__kefir_func_subtract_ld_label6:
     fnclex
-    jmp __kefir_func_subtract_ld_label2
-__kefir_text_func_subtract_ld_end:
+    jmp .L__kefir_func_subtract_ld_label2
+.L__kefir_text_func_subtract_ld_end:
 
 multiply_f32:
-__kefir_text_func_multiply_f32_begin:
+.L__kefir_text_func_multiply_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_multiply_f32_label1
-__kefir_func_multiply_f32_label1:
+    jmp .L__kefir_func_multiply_f32_label1
+.L__kefir_func_multiply_f32_label1:
     fnstenv -40(%rbp)
     stmxcsr -12(%rbp)
     fnclex
-    jmp __kefir_func_multiply_f32_label2
-__kefir_func_multiply_f32_label2:
+    jmp .L__kefir_func_multiply_f32_label2
+.L__kefir_func_multiply_f32_label2:
     movl (%rdi), %eax
     movq %rax, %xmm1
     mulss %xmm0, %xmm1
@@ -1325,9 +1325,9 @@ __kefir_func_multiply_f32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %cl
     test %cl, %cl
-    jz __kefir_func_multiply_f32_label6
-    jmp __kefir_func_multiply_f32_label4
-__kefir_func_multiply_f32_label4:
+    jz .L__kefir_func_multiply_f32_label6
+    jmp .L__kefir_func_multiply_f32_label4
+.L__kefir_func_multiply_f32_label4:
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
     fnstsw %ax
@@ -1343,24 +1343,24 @@ __kefir_func_multiply_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_multiply_f32_label6:
+.L__kefir_func_multiply_f32_label6:
     fnclex
-    jmp __kefir_func_multiply_f32_label2
-__kefir_text_func_multiply_f32_end:
+    jmp .L__kefir_func_multiply_f32_label2
+.L__kefir_text_func_multiply_f32_end:
 
 multiply_f64:
-__kefir_text_func_multiply_f64_begin:
+.L__kefir_text_func_multiply_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_multiply_f64_label1
-__kefir_func_multiply_f64_label1:
+    jmp .L__kefir_func_multiply_f64_label1
+.L__kefir_func_multiply_f64_label1:
     fnstenv -40(%rbp)
     stmxcsr -12(%rbp)
     fnclex
-    jmp __kefir_func_multiply_f64_label2
-__kefir_func_multiply_f64_label2:
+    jmp .L__kefir_func_multiply_f64_label2
+.L__kefir_func_multiply_f64_label2:
     movq (%rdi), %rax
     movq %rax, %xmm1
     mulsd %xmm0, %xmm1
@@ -1369,9 +1369,9 @@ __kefir_func_multiply_f64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %cl
     test %cl, %cl
-    jz __kefir_func_multiply_f64_label6
-    jmp __kefir_func_multiply_f64_label4
-__kefir_func_multiply_f64_label4:
+    jz .L__kefir_func_multiply_f64_label6
+    jmp .L__kefir_func_multiply_f64_label4
+.L__kefir_func_multiply_f64_label4:
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
     fnstsw %ax
@@ -1387,18 +1387,18 @@ __kefir_func_multiply_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_multiply_f64_label6:
+.L__kefir_func_multiply_f64_label6:
     fnclex
-    jmp __kefir_func_multiply_f64_label2
-__kefir_text_func_multiply_f64_end:
+    jmp .L__kefir_func_multiply_f64_label2
+.L__kefir_text_func_multiply_f64_end:
 
 multiply_i16:
-__kefir_text_func_multiply_i16_begin:
-    jmp __kefir_func_multiply_i16_label1
-__kefir_func_multiply_i16_label1:
+.L__kefir_text_func_multiply_i16_begin:
+    jmp .L__kefir_func_multiply_i16_label1
+.L__kefir_func_multiply_i16_label1:
     movsx %si, %r8
-    jmp __kefir_func_multiply_i16_label2
-__kefir_func_multiply_i16_label2:
+    jmp .L__kefir_func_multiply_i16_label2
+.L__kefir_func_multiply_i16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
     mov %rcx, %rsi
@@ -1408,17 +1408,17 @@ __kefir_func_multiply_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_multiply_i16_label2
-    jmp __kefir_func_multiply_i16_label4
-__kefir_func_multiply_i16_label4:
+    jz .L__kefir_func_multiply_i16_label2
+    jmp .L__kefir_func_multiply_i16_label4
+.L__kefir_func_multiply_i16_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_multiply_i16_end:
+.L__kefir_text_func_multiply_i16_end:
 
 multiply_i32:
-__kefir_text_func_multiply_i32_begin:
-    jmp __kefir_func_multiply_i32_label2
-__kefir_func_multiply_i32_label2:
+.L__kefir_text_func_multiply_i32_begin:
+    jmp .L__kefir_func_multiply_i32_label2
+.L__kefir_func_multiply_i32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
     imul %esi, %r8d
@@ -1427,17 +1427,17 @@ __kefir_func_multiply_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_multiply_i32_label2
-    jmp __kefir_func_multiply_i32_label4
-__kefir_func_multiply_i32_label4:
+    jz .L__kefir_func_multiply_i32_label2
+    jmp .L__kefir_func_multiply_i32_label4
+.L__kefir_func_multiply_i32_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_multiply_i32_end:
+.L__kefir_text_func_multiply_i32_end:
 
 multiply_i64:
-__kefir_text_func_multiply_i64_begin:
-    jmp __kefir_func_multiply_i64_label2
-__kefir_func_multiply_i64_label2:
+.L__kefir_text_func_multiply_i64_begin:
+    jmp .L__kefir_func_multiply_i64_label2
+.L__kefir_func_multiply_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     imul %rsi, %r8
@@ -1446,26 +1446,26 @@ __kefir_func_multiply_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_multiply_i64_label2
-    jmp __kefir_func_multiply_i64_label4
-__kefir_func_multiply_i64_label4:
+    jz .L__kefir_func_multiply_i64_label2
+    jmp .L__kefir_func_multiply_i64_label4
+.L__kefir_func_multiply_i64_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_multiply_i64_end:
+.L__kefir_text_func_multiply_i64_end:
 
 subtract_f32:
-__kefir_text_func_subtract_f32_begin:
+.L__kefir_text_func_subtract_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_subtract_f32_label1
-__kefir_func_subtract_f32_label1:
+    jmp .L__kefir_func_subtract_f32_label1
+.L__kefir_func_subtract_f32_label1:
     fnstenv -40(%rbp)
     stmxcsr -12(%rbp)
     fnclex
-    jmp __kefir_func_subtract_f32_label2
-__kefir_func_subtract_f32_label2:
+    jmp .L__kefir_func_subtract_f32_label2
+.L__kefir_func_subtract_f32_label2:
     movl (%rdi), %eax
     movq %rax, %xmm1
     subss %xmm0, %xmm1
@@ -1474,9 +1474,9 @@ __kefir_func_subtract_f32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %cl
     test %cl, %cl
-    jz __kefir_func_subtract_f32_label6
-    jmp __kefir_func_subtract_f32_label4
-__kefir_func_subtract_f32_label4:
+    jz .L__kefir_func_subtract_f32_label6
+    jmp .L__kefir_func_subtract_f32_label4
+.L__kefir_func_subtract_f32_label4:
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
     fnstsw %ax
@@ -1492,24 +1492,24 @@ __kefir_func_subtract_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_subtract_f32_label6:
+.L__kefir_func_subtract_f32_label6:
     fnclex
-    jmp __kefir_func_subtract_f32_label2
-__kefir_text_func_subtract_f32_end:
+    jmp .L__kefir_func_subtract_f32_label2
+.L__kefir_text_func_subtract_f32_end:
 
 subtract_f64:
-__kefir_text_func_subtract_f64_begin:
+.L__kefir_text_func_subtract_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_subtract_f64_label1
-__kefir_func_subtract_f64_label1:
+    jmp .L__kefir_func_subtract_f64_label1
+.L__kefir_func_subtract_f64_label1:
     fnstenv -40(%rbp)
     stmxcsr -12(%rbp)
     fnclex
-    jmp __kefir_func_subtract_f64_label2
-__kefir_func_subtract_f64_label2:
+    jmp .L__kefir_func_subtract_f64_label2
+.L__kefir_func_subtract_f64_label2:
     movq (%rdi), %rax
     movq %rax, %xmm1
     subsd %xmm0, %xmm1
@@ -1518,9 +1518,9 @@ __kefir_func_subtract_f64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %cl
     test %cl, %cl
-    jz __kefir_func_subtract_f64_label6
-    jmp __kefir_func_subtract_f64_label4
-__kefir_func_subtract_f64_label4:
+    jz .L__kefir_func_subtract_f64_label6
+    jmp .L__kefir_func_subtract_f64_label4
+.L__kefir_func_subtract_f64_label4:
     stmxcsr -48(%rbp)
     mov -48(%rbp), %rcx
     fnstsw %ax
@@ -1536,18 +1536,18 @@ __kefir_func_subtract_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_subtract_f64_label6:
+.L__kefir_func_subtract_f64_label6:
     fnclex
-    jmp __kefir_func_subtract_f64_label2
-__kefir_text_func_subtract_f64_end:
+    jmp .L__kefir_func_subtract_f64_label2
+.L__kefir_text_func_subtract_f64_end:
 
 subtract_i16:
-__kefir_text_func_subtract_i16_begin:
-    jmp __kefir_func_subtract_i16_label1
-__kefir_func_subtract_i16_label1:
+.L__kefir_text_func_subtract_i16_begin:
+    jmp .L__kefir_func_subtract_i16_label1
+.L__kefir_func_subtract_i16_label1:
     movsx %si, %r8
-    jmp __kefir_func_subtract_i16_label2
-__kefir_func_subtract_i16_label2:
+    jmp .L__kefir_func_subtract_i16_label2
+.L__kefir_func_subtract_i16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
     mov %rcx, %rsi
@@ -1557,17 +1557,17 @@ __kefir_func_subtract_i16_label2:
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_subtract_i16_label2
-    jmp __kefir_func_subtract_i16_label4
-__kefir_func_subtract_i16_label4:
+    jz .L__kefir_func_subtract_i16_label2
+    jmp .L__kefir_func_subtract_i16_label4
+.L__kefir_func_subtract_i16_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_subtract_i16_end:
+.L__kefir_text_func_subtract_i16_end:
 
 subtract_i32:
-__kefir_text_func_subtract_i32_begin:
-    jmp __kefir_func_subtract_i32_label2
-__kefir_func_subtract_i32_label2:
+.L__kefir_text_func_subtract_i32_begin:
+    jmp .L__kefir_func_subtract_i32_label2
+.L__kefir_func_subtract_i32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
     sub %esi, %r8d
@@ -1576,17 +1576,17 @@ __kefir_func_subtract_i32_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_subtract_i32_label2
-    jmp __kefir_func_subtract_i32_label4
-__kefir_func_subtract_i32_label4:
+    jz .L__kefir_func_subtract_i32_label2
+    jmp .L__kefir_func_subtract_i32_label4
+.L__kefir_func_subtract_i32_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_subtract_i32_end:
+.L__kefir_text_func_subtract_i32_end:
 
 subtract_i64:
-__kefir_text_func_subtract_i64_begin:
-    jmp __kefir_func_subtract_i64_label2
-__kefir_func_subtract_i64_label2:
+.L__kefir_text_func_subtract_i64_begin:
+    jmp .L__kefir_func_subtract_i64_label2
+.L__kefir_func_subtract_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     sub %rsi, %r8
@@ -1595,20 +1595,20 @@ __kefir_func_subtract_i64_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_subtract_i64_label2
-    jmp __kefir_func_subtract_i64_label4
-__kefir_func_subtract_i64_label4:
+    jz .L__kefir_func_subtract_i64_label2
+    jmp .L__kefir_func_subtract_i64_label4
+.L__kefir_func_subtract_i64_label4:
     mov %r8, %rax
     ret
-__kefir_text_func_subtract_i64_end:
+.L__kefir_text_func_subtract_i64_end:
 
 subtract_ptr:
-__kefir_text_func_subtract_ptr_begin:
-    jmp __kefir_func_subtract_ptr_label1
-__kefir_func_subtract_ptr_label1:
+.L__kefir_text_func_subtract_ptr_begin:
+    jmp .L__kefir_func_subtract_ptr_label1
+.L__kefir_func_subtract_ptr_label1:
     imul $4, %rsi, %r8
-    jmp __kefir_func_subtract_ptr_label2
-__kefir_func_subtract_ptr_label2:
+    jmp .L__kefir_func_subtract_ptr_label2
+.L__kefir_func_subtract_ptr_label2:
     movq (%rdi), %rax
     mov %rax, %rsi
     sub %r8, %rsi
@@ -1617,12 +1617,12 @@ __kefir_func_subtract_ptr_label2:
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
-    jz __kefir_func_subtract_ptr_label2
-    jmp __kefir_func_subtract_ptr_label4
-__kefir_func_subtract_ptr_label4:
+    jz .L__kefir_func_subtract_ptr_label2
+    jmp .L__kefir_func_subtract_ptr_label4
+.L__kefir_func_subtract_ptr_label4:
     mov %rsi, %rax
     ret
-__kefir_text_func_subtract_ptr_end:
+.L__kefir_text_func_subtract_ptr_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

@@ -5,14 +5,14 @@
 .type testfn, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 testfn:
-__kefir_text_func_testfn_begin:
+.L__kefir_text_func_testfn_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_testfn_label1
-__kefir_func_testfn_label1:
+    jmp .L__kefir_func_testfn_label1
+.L__kefir_func_testfn_label1:
     mov %rsi, %rax
     mov %rdi, %rcx
     movq $0, -8(%rbp)
@@ -25,7 +25,7 @@ call somefn
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_testfn_end:
+.L__kefir_text_func_testfn_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

@@ -21,14 +21,14 @@
 .type set_arr2_el, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 set_a1:
-__kefir_text_func_set_a1_begin:
+.L__kefir_text_func_set_a1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp __kefir_func_set_a1_label1
-__kefir_func_set_a1_label1:
+    jmp .L__kefir_func_set_a1_label1
+.L__kefir_func_set_a1_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -64(%rbp)
@@ -47,71 +47,71 @@ __kefir_func_set_a1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_set_a1_end:
+.L__kefir_text_func_set_a1_end:
 
 set_i8:
-__kefir_text_func_set_i8_begin:
-    jmp __kefir_func_set_i8_label1
-__kefir_func_set_i8_label1:
+.L__kefir_text_func_set_i8_begin:
+    jmp .L__kefir_func_set_i8_label1
+.L__kefir_func_set_i8_label1:
     mov %rsi, %rax
     xchgb (%rdi), %al
     ret
-__kefir_text_func_set_i8_end:
+.L__kefir_text_func_set_i8_end:
 
 set_f32:
-__kefir_text_func_set_f32_begin:
-    jmp __kefir_func_set_f32_label1
-__kefir_func_set_f32_label1:
+.L__kefir_text_func_set_f32_begin:
+    jmp .L__kefir_func_set_f32_label1
+.L__kefir_func_set_f32_label1:
     add $16, %rdi
     movq %xmm0, %rax
     xchgl (%rdi), %eax
     ret
-__kefir_text_func_set_f32_end:
+.L__kefir_text_func_set_f32_end:
 
 set_f64:
-__kefir_text_func_set_f64_begin:
-    jmp __kefir_func_set_f64_label1
-__kefir_func_set_f64_label1:
+.L__kefir_text_func_set_f64_begin:
+    jmp .L__kefir_func_set_f64_label1
+.L__kefir_func_set_f64_label1:
     add $24, %rdi
     movq %xmm0, %rax
     xchgq (%rdi), %rax
     ret
-__kefir_text_func_set_f64_end:
+.L__kefir_text_func_set_f64_end:
 
 set_i16:
-__kefir_text_func_set_i16_begin:
-    jmp __kefir_func_set_i16_label1
-__kefir_func_set_i16_label1:
+.L__kefir_text_func_set_i16_begin:
+    jmp .L__kefir_func_set_i16_label1
+.L__kefir_func_set_i16_label1:
     add $2, %rdi
     mov %rsi, %rax
     xchgw (%rdi), %ax
     ret
-__kefir_text_func_set_i16_end:
+.L__kefir_text_func_set_i16_end:
 
 set_i32:
-__kefir_text_func_set_i32_begin:
-    jmp __kefir_func_set_i32_label1
-__kefir_func_set_i32_label1:
+.L__kefir_text_func_set_i32_begin:
+    jmp .L__kefir_func_set_i32_label1
+.L__kefir_func_set_i32_label1:
     add $4, %rdi
     mov %rsi, %rax
     xchgl (%rdi), %eax
     ret
-__kefir_text_func_set_i32_end:
+.L__kefir_text_func_set_i32_end:
 
 set_i64:
-__kefir_text_func_set_i64_begin:
-    jmp __kefir_func_set_i64_label1
-__kefir_func_set_i64_label1:
+.L__kefir_text_func_set_i64_begin:
+    jmp .L__kefir_func_set_i64_label1
+.L__kefir_func_set_i64_label1:
     add $8, %rdi
     mov %rsi, %rax
     xchgq (%rdi), %rax
     ret
-__kefir_text_func_set_i64_end:
+.L__kefir_text_func_set_i64_end:
 
 set_arr1_el:
-__kefir_text_func_set_arr1_el_begin:
-    jmp __kefir_func_set_arr1_el_label1
-__kefir_func_set_arr1_el_label1:
+.L__kefir_text_func_set_arr1_el_begin:
+    jmp .L__kefir_func_set_arr1_el_label1
+.L__kefir_func_set_arr1_el_label1:
     add $96, %rdi
     movsx %esi, %rax
     imul $8, %rax, %rax
@@ -119,15 +119,15 @@ __kefir_func_set_arr1_el_label1:
     mov %rdx, %rax
     xchgq (%rdi), %rax
     ret
-__kefir_text_func_set_arr1_el_end:
+.L__kefir_text_func_set_arr1_el_end:
 
 set_arr2_el:
-__kefir_text_func_set_arr2_el_begin:
+.L__kefir_text_func_set_arr2_el_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp __kefir_func_set_arr2_el_label1
-__kefir_func_set_arr2_el_label1:
+    jmp .L__kefir_func_set_arr2_el_label1
+.L__kefir_func_set_arr2_el_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -64(%rbp)
@@ -149,7 +149,7 @@ __kefir_func_set_arr2_el_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_set_arr2_el_end:
+.L__kefir_text_func_set_arr2_el_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

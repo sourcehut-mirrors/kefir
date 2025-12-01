@@ -36,14 +36,14 @@
 .extern someothervar
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test:
-__kefir_text_func_test_begin:
+.L__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test_label1
-__kefir_func_test_label1:
+    jmp .L__kefir_func_test_label1
+.L__kefir_func_test_label1:
     movl %edi, -4(%rbp)
     movq someptr@GOTPCREL(%rip), %rax
     lea -4(%rbp), %rcx
@@ -54,23 +54,23 @@ __kefir_func_test_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test_end:
+.L__kefir_text_func_test_end:
 
 test2:
-__kefir_text_func_test2_begin:
-    jmp __kefir_func_test2_label1
-__kefir_func_test2_label1:
+.L__kefir_text_func_test2_begin:
+    jmp .L__kefir_func_test2_label1
+.L__kefir_func_test2_label1:
     add $1, %edi
     jmp test2
-__kefir_text_func_test2_end:
+.L__kefir_text_func_test2_end:
 
 test3:
-__kefir_text_func_test3_begin:
+.L__kefir_text_func_test3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test3_label1
-__kefir_func_test3_label1:
+    jmp .L__kefir_func_test3_label1
+.L__kefir_func_test3_label1:
     movl %edi, -4(%rbp)
     leaq -4(%rbp), %rdi
     call somefn@PLT
@@ -80,17 +80,17 @@ __kefir_func_test3_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test3_end:
+.L__kefir_text_func_test3_end:
 
 test4:
-__kefir_text_func_test4_begin:
+.L__kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $16, %rsp
-    jmp __kefir_func_test4_label1
-__kefir_func_test4_label1:
+    jmp .L__kefir_func_test4_label1
+.L__kefir_func_test4_label1:
     movl %edi, -20(%rbp)
     movq someothervar@GOTPCREL(%rip), %rbx
     movq someothervar@GOTPCREL(%rip), %rcx
@@ -100,8 +100,8 @@ __kefir_func_test4_label1:
     mov $4, %rcx
     idiv %rcx
     mov %rax, %r12
-    jmp __kefir_func_test4_label2
-__kefir_func_test4_label2:
+    jmp .L__kefir_func_test4_label2
+.L__kefir_func_test4_label2:
     movl (%rbx), %eax
     movsx %eax, %rcx
     add %r12, %rcx
@@ -109,9 +109,9 @@ __kefir_func_test4_label2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %cl
     test %cl, %cl
-    jz __kefir_func_test4_label2
-    jmp __kefir_func_test4_label4
-__kefir_func_test4_label4:
+    jz .L__kefir_func_test4_label2
+    jmp .L__kefir_func_test4_label4
+.L__kefir_func_test4_label4:
     movl -20(%rbp), %edi
     add $1, %edi
     call test4
@@ -120,15 +120,15 @@ __kefir_func_test4_label4:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_test4_end:
+.L__kefir_text_func_test4_end:
 
 test5:
-__kefir_text_func_test5_begin:
+.L__kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test5_label1
-__kefir_func_test5_label1:
+    jmp .L__kefir_func_test5_label1
+.L__kefir_func_test5_label1:
     movl %edi, -4(%rbp)
     leaq -4(%rbp), %rax
 
@@ -138,28 +138,28 @@ __kefir_func_test5_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test5_end:
+.L__kefir_text_func_test5_end:
 
 test6:
-__kefir_text_func_test6_begin:
+.L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_test6_label1
-__kefir_func_test6_label1:
+    jmp .L__kefir_func_test6_label1
+.L__kefir_func_test6_label1:
     mov %rdi, %rax
 
     add $1, %edi
     pop %rbp
     jmp test5
-__kefir_text_func_test6_end:
+.L__kefir_text_func_test6_end:
 
 test7:
-__kefir_text_func_test7_begin:
+.L__kefir_text_func_test7_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test7_label1
-__kefir_func_test7_label1:
+    jmp .L__kefir_func_test7_label1
+.L__kefir_func_test7_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     leaq -4(%rbp), %rdi
@@ -173,16 +173,16 @@ __kefir_func_test7_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test7_end:
+.L__kefir_text_func_test7_end:
 
 test8:
-__kefir_text_func_test8_begin:
+.L__kefir_text_func_test8_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp __kefir_func_test8_label1
-__kefir_func_test8_label1:
+    jmp .L__kefir_func_test8_label1
+.L__kefir_func_test8_label1:
     mov %rdi, %rbx
     xor %eax, %eax
     cmp $0, %ebx
@@ -196,16 +196,16 @@ __kefir_func_test8_label1:
     pop %rbx
     pop %rbp
     jmp test8
-__kefir_text_func_test8_end:
+.L__kefir_text_func_test8_end:
 
 test9:
-__kefir_text_func_test9_begin:
+.L__kefir_text_func_test9_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp __kefir_func_test9_label1
-__kefir_func_test9_label1:
+    jmp .L__kefir_func_test9_label1
+.L__kefir_func_test9_label1:
     mov %rdi, %rbx
     call somejmp@PLT
     mov %rbx, %rdi
@@ -215,16 +215,16 @@ __kefir_func_test9_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_test9_end:
+.L__kefir_text_func_test9_end:
 
 test10:
-__kefir_text_func_test10_begin:
+.L__kefir_text_func_test10_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp __kefir_func_test10_label1
-__kefir_func_test10_label1:
+    jmp .L__kefir_func_test10_label1
+.L__kefir_func_test10_label1:
     mov %rdi, %rbx
     call somejmp2@PLT
     mov %rbx, %rdi
@@ -233,54 +233,54 @@ __kefir_func_test10_label1:
     pop %rbx
     pop %rbp
     jmp test10
-__kefir_text_func_test10_end:
+.L__kefir_text_func_test10_end:
 
 test11:
-__kefir_text_func_test11_begin:
+.L__kefir_text_func_test11_begin:
     mov %rdi, %rax
-    jmp __kefir_func_test11_label1
-__kefir_func_test11_label1:
+    jmp .L__kefir_func_test11_label1
+.L__kefir_func_test11_label1:
     add $1, %esi
     mov %rax, %rdi
     jmp test11
-__kefir_text_func_test11_end:
+.L__kefir_text_func_test11_end:
 
 test12:
-__kefir_text_func_test12_begin:
-    jmp __kefir_func_test12_label1
-__kefir_func_test12_label1:
+.L__kefir_text_func_test12_begin:
+    jmp .L__kefir_func_test12_label1
+.L__kefir_func_test12_label1:
     add $1, %edi
     jmp test12
-__kefir_text_func_test12_end:
+.L__kefir_text_func_test12_end:
 
 test13:
-__kefir_text_func_test13_begin:
+.L__kefir_text_func_test13_begin:
     push %rbp
     mov %rsp, %rbp
     sub $4096, %rsp
-    jmp __kefir_func_test13_label1
-__kefir_func_test13_label1:
+    jmp .L__kefir_func_test13_label1
+.L__kefir_func_test13_label1:
     movl $0, -4096(%rbp)
     call test13
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test13_end:
+.L__kefir_text_func_test13_end:
 
 test14:
-__kefir_text_func_test14_begin:
+.L__kefir_text_func_test14_begin:
     push %rbp
     mov %rsp, %rbp
     sub $4096, %rsp
-    jmp __kefir_func_test14_label1
-__kefir_func_test14_label1:
+    jmp .L__kefir_func_test14_label1
+.L__kefir_func_test14_label1:
     movl -4096(%rbp), %eax
     add %eax, %edi
     call test14
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test14_end:
+.L__kefir_text_func_test14_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

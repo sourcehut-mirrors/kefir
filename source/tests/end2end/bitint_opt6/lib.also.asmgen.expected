@@ -27,102 +27,102 @@
 .type get12, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get1:
-__kefir_text_func_get1_begin:
-    jmp __kefir_func_get1_label1
-__kefir_func_get1_label1:
+.L__kefir_text_func_get1_begin:
+    jmp .L__kefir_func_get1_label1
+.L__kefir_func_get1_label1:
     mov $314, %rax
     ret
-__kefir_text_func_get1_end:
+.L__kefir_text_func_get1_end:
 
 get2:
-__kefir_text_func_get2_begin:
-    jmp __kefir_func_get2_label1
-__kefir_func_get2_label1:
+.L__kefir_text_func_get2_begin:
+    jmp .L__kefir_func_get2_label1
+.L__kefir_func_get2_label1:
     mov $314, %rax
     ret
-__kefir_text_func_get2_end:
+.L__kefir_text_func_get2_end:
 
 get3:
-__kefir_text_func_get3_begin:
-    jmp __kefir_func_get3_label1
-__kefir_func_get3_label1:
+.L__kefir_text_func_get3_begin:
+    jmp .L__kefir_func_get3_label1
+.L__kefir_func_get3_label1:
     mov $2718, %rax
     ret
-__kefir_text_func_get3_end:
+.L__kefir_text_func_get3_end:
 
 get4:
-__kefir_text_func_get4_begin:
-    jmp __kefir_func_get4_label1
-__kefir_func_get4_label1:
+.L__kefir_text_func_get4_begin:
+    jmp .L__kefir_func_get4_label1
+.L__kefir_func_get4_label1:
     mov $2718, %rax
     ret
-__kefir_text_func_get4_end:
+.L__kefir_text_func_get4_end:
 
 get5:
-__kefir_text_func_get5_begin:
-    jmp __kefir_func_get5_label1
-__kefir_func_get5_label1:
+.L__kefir_text_func_get5_begin:
+    jmp .L__kefir_func_get5_label1
+.L__kefir_func_get5_label1:
     mov $271828, %rax
     ret
-__kefir_text_func_get5_end:
+.L__kefir_text_func_get5_end:
 
 get6:
-__kefir_text_func_get6_begin:
-    jmp __kefir_func_get6_label1
-__kefir_func_get6_label1:
+.L__kefir_text_func_get6_begin:
+    jmp .L__kefir_func_get6_label1
+.L__kefir_func_get6_label1:
     mov $271828, %rax
     ret
-__kefir_text_func_get6_end:
+.L__kefir_text_func_get6_end:
 
 get7:
-__kefir_text_func_get7_begin:
-    jmp __kefir_func_get7_label1
-__kefir_func_get7_label1:
+.L__kefir_text_func_get7_begin:
+    jmp .L__kefir_func_get7_label1
+.L__kefir_func_get7_label1:
     mov $-314, %rax
     ret
-__kefir_text_func_get7_end:
+.L__kefir_text_func_get7_end:
 
 get8:
-__kefir_text_func_get8_begin:
-    jmp __kefir_func_get8_label1
-__kefir_func_get8_label1:
+.L__kefir_text_func_get8_begin:
+    jmp .L__kefir_func_get8_label1
+.L__kefir_func_get8_label1:
     movabs $1152921504606846662, %rax
     ret
-__kefir_text_func_get8_end:
+.L__kefir_text_func_get8_end:
 
 get9:
-__kefir_text_func_get9_begin:
-    jmp __kefir_func_get9_label1
-__kefir_func_get9_label1:
+.L__kefir_text_func_get9_begin:
+    jmp .L__kefir_func_get9_label1
+.L__kefir_func_get9_label1:
     mov $-2718, %rax
     ret
-__kefir_text_func_get9_end:
+.L__kefir_text_func_get9_end:
 
 get10:
-__kefir_text_func_get10_begin:
-    jmp __kefir_func_get10_label1
-__kefir_func_get10_label1:
+.L__kefir_text_func_get10_begin:
+    jmp .L__kefir_func_get10_label1
+.L__kefir_func_get10_label1:
     movabs $1152921504606844258, %rax
     ret
-__kefir_text_func_get10_end:
+.L__kefir_text_func_get10_end:
 
 get11:
-__kefir_text_func_get11_begin:
-    jmp __kefir_func_get11_label1
-__kefir_func_get11_label1:
+.L__kefir_text_func_get11_begin:
+    jmp .L__kefir_func_get11_label1
+.L__kefir_func_get11_label1:
     mov $-271828, %rax
     ret
-__kefir_text_func_get11_end:
+.L__kefir_text_func_get11_end:
 
 get12:
-__kefir_text_func_get12_begin:
-    jmp __kefir_func_get12_label1
-__kefir_func_get12_label1:
+.L__kefir_text_func_get12_begin:
+    jmp .L__kefir_func_get12_label1
+.L__kefir_func_get12_label1:
     movabs $1152921504606575148, %rax
     ret
-__kefir_text_func_get12_end:
+.L__kefir_text_func_get12_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

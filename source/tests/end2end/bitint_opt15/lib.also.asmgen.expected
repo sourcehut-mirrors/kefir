@@ -11,14 +11,14 @@
 .type mod4, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 mod1:
-__kefir_text_func_mod1_begin:
+.L__kefir_text_func_mod1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_mod1_label1
-__kefir_func_mod1_label1:
+    jmp .L__kefir_func_mod1_label1
+.L__kefir_func_mod1_label1:
     movl $2157, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -28,15 +28,15 @@ __kefir_func_mod1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_mod1_end:
+.L__kefir_text_func_mod1_end:
 
 mod2:
-__kefir_text_func_mod2_begin:
+.L__kefir_text_func_mod2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_mod2_label1
-__kefir_func_mod2_label1:
+    jmp .L__kefir_func_mod2_label1
+.L__kefir_func_mod2_label1:
     movl $2157, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -46,15 +46,15 @@ __kefir_func_mod2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_mod2_end:
+.L__kefir_text_func_mod2_end:
 
 mod3:
-__kefir_text_func_mod3_begin:
+.L__kefir_text_func_mod3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_mod3_label1
-__kefir_func_mod3_label1:
+    jmp .L__kefir_func_mod3_label1
+.L__kefir_func_mod3_label1:
     movl $4294965139, -16(%rbp)
     movl $4294967295, -12(%rbp)
     movl $4294967295, -8(%rbp)
@@ -64,15 +64,15 @@ __kefir_func_mod3_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_mod3_end:
+.L__kefir_text_func_mod3_end:
 
 mod4:
-__kefir_text_func_mod4_begin:
+.L__kefir_text_func_mod4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_mod4_label1
-__kefir_func_mod4_label1:
+    jmp .L__kefir_func_mod4_label1
+.L__kefir_func_mod4_label1:
     movl $455, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -82,7 +82,7 @@ __kefir_func_mod4_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_mod4_end:
+.L__kefir_text_func_mod4_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

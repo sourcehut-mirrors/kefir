@@ -11,15 +11,15 @@
 .type unwrap_s1, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 make_s1:
-__kefir_text_func_make_s1_begin:
-__kefir_func_make_s1_label0:
+.L__kefir_text_func_make_s1_begin:
+.L__kefir_func_make_s1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_make_s1_label1
-__kefir_func_make_s1_label1:
+    jmp .L__kefir_func_make_s1_label1
+.L__kefir_func_make_s1_label1:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
 
@@ -28,16 +28,16 @@ __kefir_func_make_s1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_make_s1_end:
+.L__kefir_text_func_make_s1_end:
 
 cast_int:
-__kefir_text_func_cast_int_begin:
-__kefir_func_cast_int_label0:
+.L__kefir_text_func_cast_int_begin:
+.L__kefir_func_cast_int_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_cast_int_label1
-__kefir_func_cast_int_label1:
+    jmp .L__kefir_func_cast_int_label1
+.L__kefir_func_cast_int_label1:
     movq %rdi, -16(%rbp)
     movl $0, -8(%rbp)
     movq -16(%rbp), %rax
@@ -47,16 +47,16 @@ __kefir_func_cast_int_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_cast_int_end:
+.L__kefir_text_func_cast_int_end:
 
 sum3_one:
-__kefir_text_func_sum3_one_begin:
-__kefir_func_sum3_one_label0:
+.L__kefir_text_func_sum3_one_begin:
+.L__kefir_func_sum3_one_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp __kefir_func_sum3_one_label1
-__kefir_func_sum3_one_label1:
+    jmp .L__kefir_func_sum3_one_label1
+.L__kefir_func_sum3_one_label1:
     movq %rdx, -16(%rbp)
     movq %rsi, -24(%rbp)
     movq %rdi, -32(%rbp)
@@ -74,16 +74,16 @@ add %rdx, %rcx
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_sum3_one_end:
+.L__kefir_text_func_sum3_one_end:
 
 unwrap_s1:
-__kefir_text_func_unwrap_s1_begin:
-__kefir_func_unwrap_s1_label0:
+.L__kefir_text_func_unwrap_s1_begin:
+.L__kefir_func_unwrap_s1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_unwrap_s1_label1
-__kefir_func_unwrap_s1_label1:
+    jmp .L__kefir_func_unwrap_s1_label1
+.L__kefir_func_unwrap_s1_label1:
     movq %rdi, -16(%rbp)
     movl -16(%rbp), %eax
     movl %eax, -8(%rbp)
@@ -95,7 +95,7 @@ __kefir_func_unwrap_s1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_unwrap_s1_end:
+.L__kefir_text_func_unwrap_s1_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

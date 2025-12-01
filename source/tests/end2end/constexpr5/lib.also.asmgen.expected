@@ -5,18 +5,18 @@
 .type getarr, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 getarr:
-__kefir_text_func_getarr_begin:
-    jmp __kefir_func_getarr_label1
-__kefir_func_getarr_label1:
+.L__kefir_text_func_getarr_begin:
+    jmp .L__kefir_func_getarr_label1
+.L__kefir_func_getarr_label1:
     lea __kefir_function_getarr_static_arr_0(%rip), %rax
     movq %rax, (%rdi)
     lea __kefir_function_getarr_static_len_1(%rip), %rax
     ret
-__kefir_text_func_getarr_end:
+.L__kefir_text_func_getarr_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 16

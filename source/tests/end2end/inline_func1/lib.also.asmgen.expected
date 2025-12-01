@@ -5,11 +5,11 @@
 .type hypot_sq, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 hypot_sq:
-__kefir_text_func_hypot_sq_begin:
-    jmp __kefir_func_hypot_sq_label1
-__kefir_func_hypot_sq_label1:
+.L__kefir_text_func_hypot_sq_begin:
+    jmp .L__kefir_func_hypot_sq_label1
+.L__kefir_func_hypot_sq_label1:
     mov %rdi, %rax
     imul %rdi, %rax
     mov %rsi, %rcx
@@ -18,7 +18,7 @@ __kefir_func_hypot_sq_label1:
     add %rcx, %rdi
     mov %rdi, %rax
     ret
-__kefir_text_func_hypot_sq_end:
+.L__kefir_text_func_hypot_sq_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

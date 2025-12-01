@@ -9,16 +9,16 @@
 .type discriminantl, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 discriminant:
-__kefir_text_func_discriminant_begin:
-__kefir_func_discriminant_label0:
+.L__kefir_text_func_discriminant_begin:
+.L__kefir_func_discriminant_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_discriminant_label1
-__kefir_func_discriminant_label1:
+    jmp .L__kefir_func_discriminant_label1
+.L__kefir_func_discriminant_label1:
     movq %xmm2, -24(%rbp)
     movq %xmm1, -32(%rbp)
     movq %xmm0, -40(%rbp)
@@ -51,17 +51,17 @@ fsubp
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_discriminant_end:
+.L__kefir_text_func_discriminant_end:
 
 discriminantf:
-__kefir_text_func_discriminantf_begin:
-__kefir_func_discriminantf_label0:
+.L__kefir_text_func_discriminantf_begin:
+.L__kefir_func_discriminantf_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_discriminantf_label1
-__kefir_func_discriminantf_label1:
+    jmp .L__kefir_func_discriminantf_label1
+.L__kefir_func_discriminantf_label1:
     movd %xmm2, -16(%rbp)
     movd %xmm1, -20(%rbp)
     movd %xmm0, -24(%rbp)
@@ -94,17 +94,17 @@ fsubp
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_discriminantf_end:
+.L__kefir_text_func_discriminantf_end:
 
 discriminantl:
-__kefir_text_func_discriminantl_begin:
-__kefir_func_discriminantl_label0:
+.L__kefir_text_func_discriminantl_begin:
+.L__kefir_func_discriminantl_label0:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_discriminantl_label1
-__kefir_func_discriminantl_label1:
+    jmp .L__kefir_func_discriminantl_label1
+.L__kefir_func_discriminantl_label1:
     fldt 48(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -141,7 +141,7 @@ fsubp
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_discriminantl_end:
+.L__kefir_text_func_discriminantl_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

@@ -29,53 +29,53 @@
 .protected getz
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 geta:
-__kefir_text_func_geta_begin:
-    jmp __kefir_func_geta_label1
-__kefir_func_geta_label1:
+.L__kefir_text_func_geta_begin:
+    jmp .L__kefir_func_geta_label1
+.L__kefir_func_geta_label1:
     movq z@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
-__kefir_text_func_geta_end:
+.L__kefir_text_func_geta_end:
 
 getw:
-__kefir_text_func_getw_begin:
-    jmp __kefir_func_getw_label1
-__kefir_func_getw_label1:
+.L__kefir_text_func_getw_begin:
+    jmp .L__kefir_func_getw_label1
+.L__kefir_func_getw_label1:
     movq z@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
-__kefir_text_func_getw_end:
+.L__kefir_text_func_getw_end:
 
 getx:
-__kefir_text_func_getx_begin:
-    jmp __kefir_func_getx_label1
-__kefir_func_getx_label1:
+.L__kefir_text_func_getx_begin:
+    jmp .L__kefir_func_getx_label1
+.L__kefir_func_getx_label1:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
-__kefir_text_func_getx_end:
+.L__kefir_text_func_getx_end:
 
 gety:
-__kefir_text_func_gety_begin:
-    jmp __kefir_func_gety_label1
-__kefir_func_gety_label1:
+.L__kefir_text_func_gety_begin:
+    jmp .L__kefir_func_gety_label1
+.L__kefir_func_gety_label1:
     movq y@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
-__kefir_text_func_gety_end:
+.L__kefir_text_func_gety_end:
 
 getz:
-__kefir_text_func_getz_begin:
-    jmp __kefir_func_getz_label1
-__kefir_func_getz_label1:
+.L__kefir_text_func_getz_begin:
+    jmp .L__kefir_func_getz_label1
+.L__kefir_func_getz_label1:
     movq z@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
-__kefir_text_func_getz_end:
+.L__kefir_text_func_getz_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .bss
     .align 4

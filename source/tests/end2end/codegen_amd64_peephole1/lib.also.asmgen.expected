@@ -9,36 +9,36 @@
 .type some_math, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test:
-__kefir_text_func_test_begin:
+.L__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test_label1
-__kefir_func_test_label1:
+    jmp .L__kefir_func_test_label1
+.L__kefir_func_test_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test_end:
+.L__kefir_text_func_test_end:
 
 get_zero:
-__kefir_text_func_get_zero_begin:
-    jmp __kefir_func_get_zero_label1
-__kefir_func_get_zero_label1:
+.L__kefir_text_func_get_zero_begin:
+    jmp .L__kefir_func_get_zero_label1
+.L__kefir_func_get_zero_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_get_zero_end:
+.L__kefir_text_func_get_zero_end:
 
 some_math:
-__kefir_text_func_some_math_begin:
-    jmp __kefir_func_some_math_label1
-__kefir_func_some_math_label1:
+.L__kefir_text_func_some_math_begin:
+    jmp .L__kefir_func_some_math_label1
+.L__kefir_func_some_math_label1:
     mov %rdi, %rax
     ret
-__kefir_text_func_some_math_end:
+.L__kefir_text_func_some_math_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

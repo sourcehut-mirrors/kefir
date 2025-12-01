@@ -15,11 +15,11 @@
 .type overflow_uaddll, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 overflow_sadd:
-__kefir_text_func_overflow_sadd_begin:
-    jmp __kefir_func_overflow_sadd_label1
-__kefir_func_overflow_sadd_label1:
+.L__kefir_text_func_overflow_sadd_begin:
+    jmp .L__kefir_func_overflow_sadd_label1
+.L__kefir_func_overflow_sadd_label1:
     movsx %edi, %rax
     movsx %esi, %rcx
     mov %rax, %rsi
@@ -32,12 +32,12 @@ __kefir_func_overflow_sadd_label1:
     and $1, %eax
     movl %esi, (%rdx)
     ret
-__kefir_text_func_overflow_sadd_end:
+.L__kefir_text_func_overflow_sadd_end:
 
 overflow_uadd:
-__kefir_text_func_overflow_uadd_begin:
-    jmp __kefir_func_overflow_uadd_label1
-__kefir_func_overflow_uadd_label1:
+.L__kefir_text_func_overflow_uadd_begin:
+    jmp .L__kefir_func_overflow_uadd_label1
+.L__kefir_func_overflow_uadd_label1:
     mov %edi, %eax
     mov %esi, %ecx
     mov %rax, %rsi
@@ -50,51 +50,51 @@ __kefir_func_overflow_uadd_label1:
     and $1, %eax
     movl %esi, (%rdx)
     ret
-__kefir_text_func_overflow_uadd_end:
+.L__kefir_text_func_overflow_uadd_end:
 
 overflow_saddl:
-__kefir_text_func_overflow_saddl_begin:
-    jmp __kefir_func_overflow_saddl_label1
-__kefir_func_overflow_saddl_label1:
+.L__kefir_text_func_overflow_saddl_begin:
+    jmp .L__kefir_func_overflow_saddl_label1
+.L__kefir_func_overflow_saddl_label1:
     add %rsi, %rdi
     seto %al
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_saddl_end:
+.L__kefir_text_func_overflow_saddl_end:
 
 overflow_uaddl:
-__kefir_text_func_overflow_uaddl_begin:
-    jmp __kefir_func_overflow_uaddl_label1
-__kefir_func_overflow_uaddl_label1:
+.L__kefir_text_func_overflow_uaddl_begin:
+    jmp .L__kefir_func_overflow_uaddl_label1
+.L__kefir_func_overflow_uaddl_label1:
     add %rsi, %rdi
     setc %al
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_uaddl_end:
+.L__kefir_text_func_overflow_uaddl_end:
 
 overflow_saddll:
-__kefir_text_func_overflow_saddll_begin:
-    jmp __kefir_func_overflow_saddll_label1
-__kefir_func_overflow_saddll_label1:
+.L__kefir_text_func_overflow_saddll_begin:
+    jmp .L__kefir_func_overflow_saddll_label1
+.L__kefir_func_overflow_saddll_label1:
     add %rsi, %rdi
     seto %al
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_saddll_end:
+.L__kefir_text_func_overflow_saddll_end:
 
 overflow_uaddll:
-__kefir_text_func_overflow_uaddll_begin:
-    jmp __kefir_func_overflow_uaddll_label1
-__kefir_func_overflow_uaddll_label1:
+.L__kefir_text_func_overflow_uaddll_begin:
+    jmp .L__kefir_func_overflow_uaddll_label1
+.L__kefir_func_overflow_uaddll_label1:
     add %rsi, %rdi
     setc %al
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_uaddll_end:
+.L__kefir_text_func_overflow_uaddll_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

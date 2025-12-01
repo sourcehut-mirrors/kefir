@@ -5,15 +5,15 @@
 .type get, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get:
-__kefir_text_func_get_begin:
+.L__kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
     sub $272, %rsp
     mov %rdi, %rdx
-    jmp __kefir_func_get_label1
-__kefir_func_get_label1:
+    jmp .L__kefir_func_get_label1
+.L__kefir_func_get_label1:
     mov %rdx, %rdi
     xor %eax, %eax
     mov $71, %rcx
@@ -23,25 +23,25 @@ __kefir_func_get_label1:
     lea 8(%rdx), %rax
     movl $11, (%rax)
     movq $12, 8(%rax)
-    movd __kefir_func_get_label4(%rip), %xmm0
+    movd .L__kefir_func_get_label4(%rip), %xmm0
     movd %xmm0, 16(%rax)
     lea 32(%rdx), %rax
-    movq __kefir_func_get_label5(%rip), %xmm0
+    movq .L__kefir_func_get_label5(%rip), %xmm0
     movq %xmm0, (%rax)
     lea 40(%rdx), %rax
     movl $15, (%rax)
     movq $16, 8(%rax)
-    movd __kefir_func_get_label6(%rip), %xmm0
+    movd .L__kefir_func_get_label6(%rip), %xmm0
     movd %xmm0, 16(%rax)
     lea 112(%rdx), %rax
     movl $18, (%rax)
     movq $19, 8(%rax)
-    movd __kefir_func_get_label7(%rip), %xmm0
+    movd .L__kefir_func_get_label7(%rip), %xmm0
     movd %xmm0, 16(%rax)
     lea 136(%rdx), %rax
     movl $21, (%rax)
     movq $22, 8(%rax)
-    movd __kefir_func_get_label8(%rip), %xmm0
+    movd .L__kefir_func_get_label8(%rip), %xmm0
     movd %xmm0, 16(%rax)
     leaq -272(%rbp), %rdi
     xor %eax, %eax
@@ -70,47 +70,47 @@ __kefir_func_get_label1:
     lea 448(%rdx), %rcx
     movq $26, (%rcx)
     lea 456(%rdx), %rcx
-    movd __kefir_func_get_label9(%rip), %xmm0
+    movd .L__kefir_func_get_label9(%rip), %xmm0
     movd %xmm0, (%rcx)
-    movq __kefir_func_get_label10(%rip), %xmm0
+    movq .L__kefir_func_get_label10(%rip), %xmm0
     movq %xmm0, 32(%rax)
     movl $29, 112(%rax)
     lea 552(%rdx), %rax
     movq $30, (%rax)
     lea 560(%rdx), %rax
-    movd __kefir_func_get_label11(%rip), %xmm0
+    movd .L__kefir_func_get_label11(%rip), %xmm0
     movd %xmm0, (%rax)
     mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_get_end:
+.L__kefir_text_func_get_end:
 .section .rodata
     .align 4
-__kefir_func_get_label4:
+.L__kefir_func_get_label4:
     .long 1095761920
     .align 8
-__kefir_func_get_label5:
+.L__kefir_func_get_label5:
     .quad 4624070917402656768
     .align 4
-__kefir_func_get_label6:
+.L__kefir_func_get_label6:
     .long 1099431936
     .align 4
-__kefir_func_get_label7:
+.L__kefir_func_get_label7:
     .long 1101004800
     .align 4
-__kefir_func_get_label8:
+.L__kefir_func_get_label8:
     .long 1102577664
     .align 4
-__kefir_func_get_label9:
+.L__kefir_func_get_label9:
     .long 1104674816
     .align 8
-__kefir_func_get_label10:
+.L__kefir_func_get_label10:
     .quad 4628574517030027264
     .align 4
-__kefir_func_get_label11:
+.L__kefir_func_get_label11:
     .long 1106771968
 .section .text
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

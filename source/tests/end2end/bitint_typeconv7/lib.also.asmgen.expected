@@ -15,176 +15,176 @@
 .type get6, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get1:
-__kefir_text_func_get1_begin:
-__kefir_func_get1_label0:
+.L__kefir_text_func_get1_begin:
+.L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_get1_label1
-__kefir_func_get1_label1:
-    movd __kefir_func_get1_label4(%rip), %xmm0
+    jmp .L__kefir_func_get1_label1
+.L__kefir_func_get1_label1:
+    movd .L__kefir_func_get1_label4(%rip), %xmm0
     cvttss2si %xmm0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_get1_end:
+.L__kefir_text_func_get1_end:
 .section .rodata
     .align 4
-__kefir_func_get1_label4:
+.L__kefir_func_get1_label4:
     .long 1134367736
 .section .text
 
 get2:
-__kefir_text_func_get2_begin:
-__kefir_func_get2_label0:
+.L__kefir_text_func_get2_begin:
+.L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_get2_label1
-__kefir_func_get2_label1:
-    movd __kefir_func_get2_label4(%rip), %xmm0
-    xorps __kefir_constant_float32_neg(%rip), %xmm0
+    jmp .L__kefir_func_get2_label1
+.L__kefir_func_get2_label1:
+    movd .L__kefir_func_get2_label4(%rip), %xmm0
+    xorps .L__kefir_constant_float32_neg(%rip), %xmm0
     cvttss2si %xmm0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_get2_end:
+.L__kefir_text_func_get2_end:
 .section .rodata
     .align 4
-__kefir_func_get2_label4:
+.L__kefir_func_get2_label4:
     .long 1162107126
 .section .text
 
 get3:
-__kefir_text_func_get3_begin:
-__kefir_func_get3_label0:
+.L__kefir_text_func_get3_begin:
+.L__kefir_func_get3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_get3_label1
-__kefir_func_get3_label1:
-    movd __kefir_func_get3_label7(%rip), %xmm0
-    comiss __kefir_constant_float32_to_uint(%rip), %xmm0
-    jnb __kefir_func_get3_label8
-    jmp __kefir_func_get3_label2
-__kefir_func_get3_label8:
-    jmp __kefir_func_get3_label3
-__kefir_func_get3_label2:
+    jmp .L__kefir_func_get3_label1
+.L__kefir_func_get3_label1:
+    movd .L__kefir_func_get3_label7(%rip), %xmm0
+    comiss .L__kefir_constant_float32_to_uint(%rip), %xmm0
+    jnb .L__kefir_func_get3_label8
+    jmp .L__kefir_func_get3_label2
+.L__kefir_func_get3_label8:
+    jmp .L__kefir_func_get3_label3
+.L__kefir_func_get3_label2:
     cvttss2si %xmm0, %rax
-    jmp __kefir_func_get3_label4
-__kefir_func_get3_label3:
-    subss __kefir_constant_float32_to_uint(%rip), %xmm0
+    jmp .L__kefir_func_get3_label4
+.L__kefir_func_get3_label3:
+    subss .L__kefir_constant_float32_to_uint(%rip), %xmm0
     cvttss2si %xmm0, %rax
     btc $63, %rax
-    jmp __kefir_func_get3_label4
-__kefir_func_get3_label4:
+    jmp .L__kefir_func_get3_label4
+.L__kefir_func_get3_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_get3_end:
+.L__kefir_text_func_get3_end:
 .section .rodata
     .align 4
-__kefir_func_get3_label7:
+.L__kefir_func_get3_label7:
     .long 1190489907
 .section .text
 
 get4:
-__kefir_text_func_get4_begin:
-__kefir_func_get4_label0:
+.L__kefir_text_func_get4_begin:
+.L__kefir_func_get4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_get4_label1
-__kefir_func_get4_label1:
-    movq __kefir_func_get4_label4(%rip), %xmm0
+    jmp .L__kefir_func_get4_label1
+.L__kefir_func_get4_label1:
+    movq .L__kefir_func_get4_label4(%rip), %xmm0
     cvttsd2si %xmm0, %rax
     pop %rbp
     ret
-__kefir_text_func_get4_end:
+.L__kefir_text_func_get4_end:
 .section .rodata
     .align 8
-__kefir_func_get4_label4:
+.L__kefir_func_get4_label4:
     .quad 4644234306990580433
 .section .text
 
 get5:
-__kefir_text_func_get5_begin:
-__kefir_func_get5_label0:
+.L__kefir_text_func_get5_begin:
+.L__kefir_func_get5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_get5_label1
-__kefir_func_get5_label1:
-    movq __kefir_func_get5_label4(%rip), %xmm0
-    xorpd __kefir_constant_float64_neg(%rip), %xmm0
+    jmp .L__kefir_func_get5_label1
+.L__kefir_func_get5_label1:
+    movq .L__kefir_func_get5_label4(%rip), %xmm0
+    xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
     cvttsd2si %xmm0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_get5_end:
+.L__kefir_text_func_get5_end:
 .section .rodata
     .align 8
-__kefir_func_get5_label4:
+.L__kefir_func_get5_label4:
     .quad 4659126778572434309
 .section .text
 
 get6:
-__kefir_text_func_get6_begin:
-__kefir_func_get6_label0:
+.L__kefir_text_func_get6_begin:
+.L__kefir_func_get6_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_get6_label1
-__kefir_func_get6_label1:
-    movq __kefir_func_get6_label7(%rip), %xmm0
-    comisd __kefir_constant_float64_to_uint(%rip), %xmm0
-    jnb __kefir_func_get6_label8
-    jmp __kefir_func_get6_label2
-__kefir_func_get6_label8:
-    jmp __kefir_func_get6_label3
-__kefir_func_get6_label2:
+    jmp .L__kefir_func_get6_label1
+.L__kefir_func_get6_label1:
+    movq .L__kefir_func_get6_label7(%rip), %xmm0
+    comisd .L__kefir_constant_float64_to_uint(%rip), %xmm0
+    jnb .L__kefir_func_get6_label8
+    jmp .L__kefir_func_get6_label2
+.L__kefir_func_get6_label8:
+    jmp .L__kefir_func_get6_label3
+.L__kefir_func_get6_label2:
     cvttsd2si %xmm0, %rax
-    jmp __kefir_func_get6_label4
-__kefir_func_get6_label3:
-    subsd __kefir_constant_float64_to_uint(%rip), %xmm0
+    jmp .L__kefir_func_get6_label4
+.L__kefir_func_get6_label3:
+    subsd .L__kefir_constant_float64_to_uint(%rip), %xmm0
     cvttsd2si %xmm0, %rax
     btc $63, %rax
-    jmp __kefir_func_get6_label4
-__kefir_func_get6_label4:
+    jmp .L__kefir_func_get6_label4
+.L__kefir_func_get6_label4:
     pop %rbp
     ret
-__kefir_text_func_get6_end:
+.L__kefir_text_func_get6_end:
 .section .rodata
     .align 8
-__kefir_func_get6_label7:
+.L__kefir_func_get6_label7:
     .quad 4674364668329223782
 .section .text
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .rodata
     .align 4
-__kefir_constant_float32_to_uint:
+.L__kefir_constant_float32_to_uint:
     .long 1593835520
     .align 8
-__kefir_constant_float64_to_uint:
+.L__kefir_constant_float64_to_uint:
     .long 0, 1138753536
     .align 16
-__kefir_constant_float32_neg:
+.L__kefir_constant_float32_neg:
     .long 2147483648
     .long 0
     .long 0
     .long 0
     .align 16
-__kefir_constant_float64_neg:
+.L__kefir_constant_float64_neg:
     .long 0
     .long 2147483648
     .long 0

@@ -5,59 +5,59 @@
 .type fn1, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 fn1:
-__kefir_text_func_fn1_begin:
+.L__kefir_text_func_fn1_begin:
     push %rbp
     mov %rbp, %rsp
-__kefir_func_fn1_label0:
+.L__kefir_func_fn1_label0:
     mov %r8, %rdi
     mov %rdx, 0
     mov %rsi, 0
     mov %rdi, 0
-jmp __kefir_func_fn1_label8
-jmp __kefir_func_fn1_label9
-jmp __kefir_func_fn1_label10
+jmp .L__kefir_func_fn1_label8
+jmp .L__kefir_func_fn1_label9
+jmp .L__kefir_func_fn1_label10
     mov %rdx, 0
     mov [%rdx], %rax
     mov %rdx, 0
     mov [%rdx], %rcx
-    jmp __kefir_func_fn1_label2
-__kefir_func_fn1_label8:
+    jmp .L__kefir_func_fn1_label2
+.L__kefir_func_fn1_label8:
     mov %rdx, 0
     mov [%rdx], %rax
     mov %rdx, 0
     mov [%rdx], %rcx
-    jmp __kefir_func_fn1_label2
-__kefir_func_fn1_label9:
+    jmp .L__kefir_func_fn1_label2
+.L__kefir_func_fn1_label9:
     mov %rdx, 0
     mov [%rdx], %rax
     mov %rdx, 0
     mov [%rdx], %rcx
-    jmp __kefir_func_fn1_label4
-__kefir_func_fn1_label10:
+    jmp .L__kefir_func_fn1_label4
+.L__kefir_func_fn1_label10:
     mov %rdx, 0
     mov [%rdx], %rax
     mov %rax, 0
     mov [%rax], %rcx
-    jmp __kefir_func_fn1_label6
-__kefir_func_fn1_label1:
-__kefir_func_fn1_label2:
+    jmp .L__kefir_func_fn1_label6
+.L__kefir_func_fn1_label1:
+.L__kefir_func_fn1_label2:
     mov %rax, %r8
     pop %rbp
     ret
-__kefir_func_fn1_label3:
-__kefir_func_fn1_label4:
+.L__kefir_func_fn1_label3:
+.L__kefir_func_fn1_label4:
     mov %rax, %r8
     pop %rbp
     ret
-__kefir_func_fn1_label5:
-__kefir_func_fn1_label6:
+.L__kefir_func_fn1_label5:
+.L__kefir_func_fn1_label6:
     mov %rax, %r8
     pop %rbp
     ret
-__kefir_func_fn1_label7:
-__kefir_text_func_fn1_end:
+.L__kefir_func_fn1_label7:
+.L__kefir_text_func_fn1_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

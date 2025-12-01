@@ -12,16 +12,16 @@
 .type call3_proxy, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 call1_proxy:
-__kefir_text_func_call1_proxy_begin:
-__kefir_func_call1_proxy_label0:
+.L__kefir_text_func_call1_proxy_begin:
+.L__kefir_func_call1_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp __kefir_func_call1_proxy_label1
-__kefir_func_call1_proxy_label1:
+    jmp .L__kefir_func_call1_proxy_label1
+.L__kefir_func_call1_proxy_label1:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     leaq -12(%rbp), %rbx
@@ -33,17 +33,17 @@ __kefir_func_call1_proxy_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_call1_proxy_end:
+.L__kefir_text_func_call1_proxy_end:
 
 call2_proxy:
-__kefir_text_func_call2_proxy_begin:
-__kefir_func_call2_proxy_label0:
+.L__kefir_text_func_call2_proxy_begin:
+.L__kefir_func_call2_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp __kefir_func_call2_proxy_label1
-__kefir_func_call2_proxy_label1:
+    jmp .L__kefir_func_call2_proxy_label1
+.L__kefir_func_call2_proxy_label1:
     movd %xmm0, -20(%rbp)
     movl -20(%rbp), %eax
     leaq -16(%rbp), %rbx
@@ -55,17 +55,17 @@ __kefir_func_call2_proxy_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_call2_proxy_end:
+.L__kefir_text_func_call2_proxy_end:
 
 call3_proxy:
-__kefir_text_func_call3_proxy_begin:
-__kefir_func_call3_proxy_label0:
+.L__kefir_text_func_call3_proxy_begin:
+.L__kefir_func_call3_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp __kefir_func_call3_proxy_label1
-__kefir_func_call3_proxy_label1:
+    jmp .L__kefir_func_call3_proxy_label1
+.L__kefir_func_call3_proxy_label1:
     movd %xmm0, -24(%rbp)
     movl -24(%rbp), %eax
     leaq -20(%rbp), %rbx
@@ -79,7 +79,7 @@ __kefir_func_call3_proxy_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_call3_proxy_end:
+.L__kefir_text_func_call3_proxy_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

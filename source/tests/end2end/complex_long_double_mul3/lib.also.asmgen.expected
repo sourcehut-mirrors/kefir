@@ -5,15 +5,15 @@
 .type mul, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 mul:
-__kefir_text_func_mul_begin:
+.L__kefir_text_func_mul_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_mul_label1
-__kefir_func_mul_label1:
+    jmp .L__kefir_func_mul_label1
+.L__kefir_func_mul_label1:
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
     fldt (%rcx)
@@ -50,7 +50,7 @@ __kefir_func_mul_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_mul_end:
+.L__kefir_text_func_mul_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

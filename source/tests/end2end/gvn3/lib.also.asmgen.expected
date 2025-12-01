@@ -83,14 +83,14 @@
 .type uconv32short, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 negint:
-__kefir_text_func_negint_begin:
+.L__kefir_text_func_negint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_negint_label1
-__kefir_func_negint_label1:
+    jmp .L__kefir_func_negint_label1
+.L__kefir_func_negint_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -102,15 +102,15 @@ __kefir_func_negint_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_negint_end:
+.L__kefir_text_func_negint_end:
 
 notint:
-__kefir_text_func_notint_begin:
+.L__kefir_text_func_notint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_notint_label1
-__kefir_func_notint_label1:
+    jmp .L__kefir_func_notint_label1
+.L__kefir_func_notint_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -122,15 +122,15 @@ __kefir_func_notint_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_notint_end:
+.L__kefir_text_func_notint_end:
 
 bnotint:
-__kefir_text_func_bnotint_begin:
+.L__kefir_text_func_bnotint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_bnotint_label1
-__kefir_func_bnotint_label1:
+    jmp .L__kefir_func_bnotint_label1
+.L__kefir_func_bnotint_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -144,15 +144,15 @@ __kefir_func_bnotint_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_bnotint_end:
+.L__kefir_text_func_bnotint_end:
 
 boolint:
-__kefir_text_func_boolint_begin:
+.L__kefir_text_func_boolint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_boolint_label1
-__kefir_func_boolint_label1:
+    jmp .L__kefir_func_boolint_label1
+.L__kefir_func_boolint_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -167,15 +167,15 @@ __kefir_func_boolint_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_boolint_end:
+.L__kefir_text_func_boolint_end:
 
 negchar:
-__kefir_text_func_negchar_begin:
+.L__kefir_text_func_negchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_negchar_label1
-__kefir_func_negchar_label1:
+    jmp .L__kefir_func_negchar_label1
+.L__kefir_func_negchar_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -188,15 +188,15 @@ __kefir_func_negchar_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_negchar_end:
+.L__kefir_text_func_negchar_end:
 
 neglong:
-__kefir_text_func_neglong_begin:
+.L__kefir_text_func_neglong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_neglong_label1
-__kefir_func_neglong_label1:
+    jmp .L__kefir_func_neglong_label1
+.L__kefir_func_neglong_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -208,15 +208,15 @@ __kefir_func_neglong_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_neglong_end:
+.L__kefir_text_func_neglong_end:
 
 notchar:
-__kefir_text_func_notchar_begin:
+.L__kefir_text_func_notchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_notchar_label1
-__kefir_func_notchar_label1:
+    jmp .L__kefir_func_notchar_label1
+.L__kefir_func_notchar_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -229,15 +229,15 @@ __kefir_func_notchar_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_notchar_end:
+.L__kefir_text_func_notchar_end:
 
 notlong:
-__kefir_text_func_notlong_begin:
+.L__kefir_text_func_notlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_notlong_label1
-__kefir_func_notlong_label1:
+    jmp .L__kefir_func_notlong_label1
+.L__kefir_func_notlong_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -249,15 +249,15 @@ __kefir_func_notlong_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_notlong_end:
+.L__kefir_text_func_notlong_end:
 
 bnotchar:
-__kefir_text_func_bnotchar_begin:
+.L__kefir_text_func_bnotchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_bnotchar_label1
-__kefir_func_bnotchar_label1:
+    jmp .L__kefir_func_bnotchar_label1
+.L__kefir_func_bnotchar_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -271,15 +271,15 @@ __kefir_func_bnotchar_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_bnotchar_end:
+.L__kefir_text_func_bnotchar_end:
 
 bnotlong:
-__kefir_text_func_bnotlong_begin:
+.L__kefir_text_func_bnotlong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_bnotlong_label1
-__kefir_func_bnotlong_label1:
+    jmp .L__kefir_func_bnotlong_label1
+.L__kefir_func_bnotlong_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -294,15 +294,15 @@ __kefir_func_bnotlong_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_bnotlong_end:
+.L__kefir_text_func_bnotlong_end:
 
 boolchar:
-__kefir_text_func_boolchar_begin:
+.L__kefir_text_func_boolchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_boolchar_label1
-__kefir_func_boolchar_label1:
+    jmp .L__kefir_func_boolchar_label1
+.L__kefir_func_boolchar_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -316,15 +316,15 @@ __kefir_func_boolchar_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_boolchar_end:
+.L__kefir_text_func_boolchar_end:
 
 boollong:
-__kefir_text_func_boollong_begin:
+.L__kefir_text_func_boollong_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_boollong_label1
-__kefir_func_boollong_label1:
+    jmp .L__kefir_func_boollong_label1
+.L__kefir_func_boollong_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -339,15 +339,15 @@ __kefir_func_boollong_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_boollong_end:
+.L__kefir_text_func_boollong_end:
 
 conv8int:
-__kefir_text_func_conv8int_begin:
+.L__kefir_text_func_conv8int_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv8int_label1
-__kefir_func_conv8int_label1:
+    jmp .L__kefir_func_conv8int_label1
+.L__kefir_func_conv8int_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -359,15 +359,15 @@ __kefir_func_conv8int_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv8int_end:
+.L__kefir_text_func_conv8int_end:
 
 negshort:
-__kefir_text_func_negshort_begin:
+.L__kefir_text_func_negshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_negshort_label1
-__kefir_func_negshort_label1:
+    jmp .L__kefir_func_negshort_label1
+.L__kefir_func_negshort_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -380,15 +380,15 @@ __kefir_func_negshort_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_negshort_end:
+.L__kefir_text_func_negshort_end:
 
 notshort:
-__kefir_text_func_notshort_begin:
+.L__kefir_text_func_notshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_notshort_label1
-__kefir_func_notshort_label1:
+    jmp .L__kefir_func_notshort_label1
+.L__kefir_func_notshort_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -401,15 +401,15 @@ __kefir_func_notshort_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_notshort_end:
+.L__kefir_text_func_notshort_end:
 
 bnotshort:
-__kefir_text_func_bnotshort_begin:
+.L__kefir_text_func_bnotshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_bnotshort_label1
-__kefir_func_bnotshort_label1:
+    jmp .L__kefir_func_bnotshort_label1
+.L__kefir_func_bnotshort_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -423,15 +423,15 @@ __kefir_func_bnotshort_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_bnotshort_end:
+.L__kefir_text_func_bnotshort_end:
 
 boolshort:
-__kefir_text_func_boolshort_begin:
+.L__kefir_text_func_boolshort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_boolshort_label1
-__kefir_func_boolshort_label1:
+    jmp .L__kefir_func_boolshort_label1
+.L__kefir_func_boolshort_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -446,15 +446,15 @@ __kefir_func_boolshort_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_boolshort_end:
+.L__kefir_text_func_boolshort_end:
 
 conv16int:
-__kefir_text_func_conv16int_begin:
+.L__kefir_text_func_conv16int_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv16int_label1
-__kefir_func_conv16int_label1:
+    jmp .L__kefir_func_conv16int_label1
+.L__kefir_func_conv16int_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -466,15 +466,15 @@ __kefir_func_conv16int_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv16int_end:
+.L__kefir_text_func_conv16int_end:
 
 conv32int:
-__kefir_text_func_conv32int_begin:
+.L__kefir_text_func_conv32int_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv32int_label1
-__kefir_func_conv32int_label1:
+    jmp .L__kefir_func_conv32int_label1
+.L__kefir_func_conv32int_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -485,15 +485,15 @@ __kefir_func_conv32int_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv32int_end:
+.L__kefir_text_func_conv32int_end:
 
 conv8char:
-__kefir_text_func_conv8char_begin:
+.L__kefir_text_func_conv8char_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv8char_label1
-__kefir_func_conv8char_label1:
+    jmp .L__kefir_func_conv8char_label1
+.L__kefir_func_conv8char_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -504,15 +504,15 @@ __kefir_func_conv8char_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv8char_end:
+.L__kefir_text_func_conv8char_end:
 
 conv8long:
-__kefir_text_func_conv8long_begin:
+.L__kefir_text_func_conv8long_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv8long_label1
-__kefir_func_conv8long_label1:
+    jmp .L__kefir_func_conv8long_label1
+.L__kefir_func_conv8long_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -524,15 +524,15 @@ __kefir_func_conv8long_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv8long_end:
+.L__kefir_text_func_conv8long_end:
 
 uconv8int:
-__kefir_text_func_uconv8int_begin:
+.L__kefir_text_func_uconv8int_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv8int_label1
-__kefir_func_uconv8int_label1:
+    jmp .L__kefir_func_uconv8int_label1
+.L__kefir_func_uconv8int_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -544,15 +544,15 @@ __kefir_func_uconv8int_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv8int_end:
+.L__kefir_text_func_uconv8int_end:
 
 conv16char:
-__kefir_text_func_conv16char_begin:
+.L__kefir_text_func_conv16char_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv16char_label1
-__kefir_func_conv16char_label1:
+    jmp .L__kefir_func_conv16char_label1
+.L__kefir_func_conv16char_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -563,15 +563,15 @@ __kefir_func_conv16char_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv16char_end:
+.L__kefir_text_func_conv16char_end:
 
 conv16long:
-__kefir_text_func_conv16long_begin:
+.L__kefir_text_func_conv16long_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv16long_label1
-__kefir_func_conv16long_label1:
+    jmp .L__kefir_func_conv16long_label1
+.L__kefir_func_conv16long_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -583,15 +583,15 @@ __kefir_func_conv16long_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv16long_end:
+.L__kefir_text_func_conv16long_end:
 
 conv32char:
-__kefir_text_func_conv32char_begin:
+.L__kefir_text_func_conv32char_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv32char_label1
-__kefir_func_conv32char_label1:
+    jmp .L__kefir_func_conv32char_label1
+.L__kefir_func_conv32char_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -602,15 +602,15 @@ __kefir_func_conv32char_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv32char_end:
+.L__kefir_text_func_conv32char_end:
 
 conv32long:
-__kefir_text_func_conv32long_begin:
+.L__kefir_text_func_conv32long_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv32long_label1
-__kefir_func_conv32long_label1:
+    jmp .L__kefir_func_conv32long_label1
+.L__kefir_func_conv32long_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -622,15 +622,15 @@ __kefir_func_conv32long_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv32long_end:
+.L__kefir_text_func_conv32long_end:
 
 conv8short:
-__kefir_text_func_conv8short_begin:
+.L__kefir_text_func_conv8short_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv8short_label1
-__kefir_func_conv8short_label1:
+    jmp .L__kefir_func_conv8short_label1
+.L__kefir_func_conv8short_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -642,15 +642,15 @@ __kefir_func_conv8short_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv8short_end:
+.L__kefir_text_func_conv8short_end:
 
 uconv16int:
-__kefir_text_func_uconv16int_begin:
+.L__kefir_text_func_uconv16int_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv16int_label1
-__kefir_func_uconv16int_label1:
+    jmp .L__kefir_func_uconv16int_label1
+.L__kefir_func_uconv16int_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -662,15 +662,15 @@ __kefir_func_uconv16int_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv16int_end:
+.L__kefir_text_func_uconv16int_end:
 
 uconv32int:
-__kefir_text_func_uconv32int_begin:
+.L__kefir_text_func_uconv32int_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv32int_label1
-__kefir_func_uconv32int_label1:
+    jmp .L__kefir_func_uconv32int_label1
+.L__kefir_func_uconv32int_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -681,15 +681,15 @@ __kefir_func_uconv32int_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv32int_end:
+.L__kefir_text_func_uconv32int_end:
 
 uconv8char:
-__kefir_text_func_uconv8char_begin:
+.L__kefir_text_func_uconv8char_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv8char_label1
-__kefir_func_uconv8char_label1:
+    jmp .L__kefir_func_uconv8char_label1
+.L__kefir_func_uconv8char_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -700,15 +700,15 @@ __kefir_func_uconv8char_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv8char_end:
+.L__kefir_text_func_uconv8char_end:
 
 uconv8long:
-__kefir_text_func_uconv8long_begin:
+.L__kefir_text_func_uconv8long_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv8long_label1
-__kefir_func_uconv8long_label1:
+    jmp .L__kefir_func_uconv8long_label1
+.L__kefir_func_uconv8long_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -720,15 +720,15 @@ __kefir_func_uconv8long_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv8long_end:
+.L__kefir_text_func_uconv8long_end:
 
 conv16short:
-__kefir_text_func_conv16short_begin:
+.L__kefir_text_func_conv16short_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv16short_label1
-__kefir_func_conv16short_label1:
+    jmp .L__kefir_func_conv16short_label1
+.L__kefir_func_conv16short_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -739,15 +739,15 @@ __kefir_func_conv16short_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv16short_end:
+.L__kefir_text_func_conv16short_end:
 
 conv32short:
-__kefir_text_func_conv32short_begin:
+.L__kefir_text_func_conv32short_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_conv32short_label1
-__kefir_func_conv32short_label1:
+    jmp .L__kefir_func_conv32short_label1
+.L__kefir_func_conv32short_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -758,15 +758,15 @@ __kefir_func_conv32short_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_conv32short_end:
+.L__kefir_text_func_conv32short_end:
 
 uconv16char:
-__kefir_text_func_uconv16char_begin:
+.L__kefir_text_func_uconv16char_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv16char_label1
-__kefir_func_uconv16char_label1:
+    jmp .L__kefir_func_uconv16char_label1
+.L__kefir_func_uconv16char_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -777,15 +777,15 @@ __kefir_func_uconv16char_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv16char_end:
+.L__kefir_text_func_uconv16char_end:
 
 uconv16long:
-__kefir_text_func_uconv16long_begin:
+.L__kefir_text_func_uconv16long_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv16long_label1
-__kefir_func_uconv16long_label1:
+    jmp .L__kefir_func_uconv16long_label1
+.L__kefir_func_uconv16long_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -797,15 +797,15 @@ __kefir_func_uconv16long_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv16long_end:
+.L__kefir_text_func_uconv16long_end:
 
 uconv32char:
-__kefir_text_func_uconv32char_begin:
+.L__kefir_text_func_uconv32char_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv32char_label1
-__kefir_func_uconv32char_label1:
+    jmp .L__kefir_func_uconv32char_label1
+.L__kefir_func_uconv32char_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -816,15 +816,15 @@ __kefir_func_uconv32char_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv32char_end:
+.L__kefir_text_func_uconv32char_end:
 
 uconv32long:
-__kefir_text_func_uconv32long_begin:
+.L__kefir_text_func_uconv32long_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv32long_label1
-__kefir_func_uconv32long_label1:
+    jmp .L__kefir_func_uconv32long_label1
+.L__kefir_func_uconv32long_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -836,15 +836,15 @@ __kefir_func_uconv32long_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv32long_end:
+.L__kefir_text_func_uconv32long_end:
 
 uconv8short:
-__kefir_text_func_uconv8short_begin:
+.L__kefir_text_func_uconv8short_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv8short_label1
-__kefir_func_uconv8short_label1:
+    jmp .L__kefir_func_uconv8short_label1
+.L__kefir_func_uconv8short_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -856,15 +856,15 @@ __kefir_func_uconv8short_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv8short_end:
+.L__kefir_text_func_uconv8short_end:
 
 uconv16short:
-__kefir_text_func_uconv16short_begin:
+.L__kefir_text_func_uconv16short_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv16short_label1
-__kefir_func_uconv16short_label1:
+    jmp .L__kefir_func_uconv16short_label1
+.L__kefir_func_uconv16short_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -875,15 +875,15 @@ __kefir_func_uconv16short_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv16short_end:
+.L__kefir_text_func_uconv16short_end:
 
 uconv32short:
-__kefir_text_func_uconv32short_begin:
+.L__kefir_text_func_uconv32short_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_uconv32short_label1
-__kefir_func_uconv32short_label1:
+    jmp .L__kefir_func_uconv32short_label1
+.L__kefir_func_uconv32short_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -894,7 +894,7 @@ __kefir_func_uconv32short_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_uconv32short_end:
+.L__kefir_text_func_uconv32short_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

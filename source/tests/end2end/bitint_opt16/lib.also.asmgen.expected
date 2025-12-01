@@ -15,14 +15,14 @@
 .type rshift4, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 lshift1:
-__kefir_text_func_lshift1_begin:
+.L__kefir_text_func_lshift1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_lshift1_label1
-__kefir_func_lshift1_label1:
+    jmp .L__kefir_func_lshift1_label1
+.L__kefir_func_lshift1_label1:
     movl $439041096, -16(%rbp)
     movl $9, -12(%rbp)
     movl $0, -8(%rbp)
@@ -32,15 +32,15 @@ __kefir_func_lshift1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_lshift1_end:
+.L__kefir_text_func_lshift1_end:
 
 lshift2:
-__kefir_text_func_lshift2_begin:
+.L__kefir_text_func_lshift2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_lshift2_label1
-__kefir_func_lshift2_label1:
+    jmp .L__kefir_func_lshift2_label1
+.L__kefir_func_lshift2_label1:
     movl $878082192, -16(%rbp)
     movl $18, -12(%rbp)
     movl $0, -8(%rbp)
@@ -50,15 +50,15 @@ __kefir_func_lshift2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_lshift2_end:
+.L__kefir_text_func_lshift2_end:
 
 rshift1:
-__kefir_text_func_rshift1_begin:
+.L__kefir_text_func_rshift1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_rshift1_label1
-__kefir_func_rshift1_label1:
+    jmp .L__kefir_func_rshift1_label1
+.L__kefir_func_rshift1_label1:
     movl $610839793, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -68,15 +68,15 @@ __kefir_func_rshift1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_rshift1_end:
+.L__kefir_text_func_rshift1_end:
 
 rshift2:
-__kefir_text_func_rshift2_begin:
+.L__kefir_text_func_rshift2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_rshift2_label1
-__kefir_func_rshift2_label1:
+    jmp .L__kefir_func_rshift2_label1
+.L__kefir_func_rshift2_label1:
     movl $305419896, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -86,15 +86,15 @@ __kefir_func_rshift2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_rshift2_end:
+.L__kefir_text_func_rshift2_end:
 
 rshift3:
-__kefir_text_func_rshift3_begin:
+.L__kefir_text_func_rshift3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_rshift3_label1
-__kefir_func_rshift3_label1:
+    jmp .L__kefir_func_rshift3_label1
+.L__kefir_func_rshift3_label1:
     movl $3684127502, -16(%rbp)
     movl $4294967295, -12(%rbp)
     movl $4294967295, -8(%rbp)
@@ -104,15 +104,15 @@ __kefir_func_rshift3_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_rshift3_end:
+.L__kefir_text_func_rshift3_end:
 
 rshift4:
-__kefir_text_func_rshift4_begin:
+.L__kefir_text_func_rshift4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_rshift4_label1
-__kefir_func_rshift4_label1:
+    jmp .L__kefir_func_rshift4_label1
+.L__kefir_func_rshift4_label1:
     movl $3989547399, -16(%rbp)
     movl $4294967295, -12(%rbp)
     movl $4294967295, -8(%rbp)
@@ -122,7 +122,7 @@ __kefir_func_rshift4_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_rshift4_end:
+.L__kefir_text_func_rshift4_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

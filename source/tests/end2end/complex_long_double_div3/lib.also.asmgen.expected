@@ -5,15 +5,15 @@
 .type divide, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 divide:
-__kefir_text_func_divide_begin:
+.L__kefir_text_func_divide_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_divide_label1
-__kefir_func_divide_label1:
+    jmp .L__kefir_func_divide_label1
+.L__kefir_func_divide_label1:
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
     fldt (%rcx)
@@ -73,7 +73,7 @@ __kefir_func_divide_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_divide_end:
+.L__kefir_text_func_divide_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

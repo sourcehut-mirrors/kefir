@@ -7,11 +7,11 @@
 .type and, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 or:
-__kefir_text_func_or_begin:
-    jmp __kefir_func_or_label1
-__kefir_func_or_label1:
+.L__kefir_text_func_or_begin:
+    jmp .L__kefir_func_or_label1
+.L__kefir_func_or_label1:
     or %esi, %edi
     setne %dil
     movzx %dil, %rdi
@@ -23,12 +23,12 @@ __kefir_func_or_label1:
     movzx %dil, %rdi
     mov %rdi, %rax
     ret
-__kefir_text_func_or_end:
+.L__kefir_text_func_or_end:
 
 and:
-__kefir_text_func_and_begin:
-    jmp __kefir_func_and_label1
-__kefir_func_and_label1:
+.L__kefir_text_func_and_begin:
+    jmp .L__kefir_func_and_label1
+.L__kefir_func_and_label1:
     test %edi, %edi
     setne %al
     test %esi, %esi
@@ -36,7 +36,7 @@ __kefir_func_and_label1:
     and %al, %cl
     movzx %cl, %rax
     ret
-__kefir_text_func_and_end:
+.L__kefir_text_func_and_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

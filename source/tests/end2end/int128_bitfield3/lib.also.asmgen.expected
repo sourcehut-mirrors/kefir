@@ -19,11 +19,11 @@
 .type set_d, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get_a:
-__kefir_text_func_get_a_begin:
-    jmp __kefir_func_get_a_label1
-__kefir_func_get_a_label1:
+.L__kefir_text_func_get_a_begin:
+    jmp .L__kefir_func_get_a_label1
+.L__kefir_func_get_a_label1:
     lea value(%rip), %rax
     movq (%rax), %rax
     lea value(%rip), %rcx
@@ -49,12 +49,12 @@ __kefir_func_get_a_label1:
     cmovne %rdx, %rcx
     mov %rcx, %rdx
     ret
-__kefir_text_func_get_a_end:
+.L__kefir_text_func_get_a_end:
 
 get_b:
-__kefir_text_func_get_b_begin:
-    jmp __kefir_func_get_b_label1
-__kefir_func_get_b_label1:
+.L__kefir_text_func_get_b_begin:
+    jmp .L__kefir_func_get_b_label1
+.L__kefir_func_get_b_label1:
     lea value(%rip), %rax
     add $16, %rax
     movq (%rax), %rax
@@ -80,12 +80,12 @@ __kefir_func_get_b_label1:
     cmovne %rdx, %rcx
     mov %rcx, %rdx
     ret
-__kefir_text_func_get_b_end:
+.L__kefir_text_func_get_b_end:
 
 get_c:
-__kefir_text_func_get_c_begin:
-    jmp __kefir_func_get_c_label1
-__kefir_func_get_c_label1:
+.L__kefir_text_func_get_c_begin:
+    jmp .L__kefir_func_get_c_label1
+.L__kefir_func_get_c_label1:
     lea value(%rip), %rax
     add $32, %rax
     movq (%rax), %rax
@@ -112,12 +112,12 @@ __kefir_func_get_c_label1:
     cmovne %rdx, %rcx
     mov %rcx, %rdx
     ret
-__kefir_text_func_get_c_end:
+.L__kefir_text_func_get_c_end:
 
 get_d:
-__kefir_text_func_get_d_begin:
-    jmp __kefir_func_get_d_label1
-__kefir_func_get_d_label1:
+.L__kefir_text_func_get_d_begin:
+    jmp .L__kefir_func_get_d_label1
+.L__kefir_func_get_d_label1:
     lea value(%rip), %rax
     add $45, %rax
     movzxb (%rax), %rax
@@ -148,16 +148,16 @@ __kefir_func_get_d_label1:
     cmovne %rdx, %rcx
     mov %rcx, %rdx
     ret
-__kefir_text_func_get_d_end:
+.L__kefir_text_func_get_d_end:
 
 set_a:
-__kefir_text_func_set_a_begin:
+.L__kefir_text_func_set_a_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp __kefir_func_set_a_label1
-__kefir_func_set_a_label1:
+    jmp .L__kefir_func_set_a_label1
+.L__kefir_func_set_a_label1:
     lea value(%rip), %rax
     movq (%rax), %r10
     lea value(%rip), %rax
@@ -217,16 +217,16 @@ __kefir_func_set_a_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_set_a_end:
+.L__kefir_text_func_set_a_end:
 
 set_b:
-__kefir_text_func_set_b_begin:
+.L__kefir_text_func_set_b_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp __kefir_func_set_b_label1
-__kefir_func_set_b_label1:
+    jmp .L__kefir_func_set_b_label1
+.L__kefir_func_set_b_label1:
     lea value(%rip), %rax
     add $16, %rax
     movq (%rax), %r11
@@ -284,16 +284,16 @@ __kefir_func_set_b_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_set_b_end:
+.L__kefir_text_func_set_b_end:
 
 set_c:
-__kefir_text_func_set_c_begin:
+.L__kefir_text_func_set_c_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp __kefir_func_set_c_label1
-__kefir_func_set_c_label1:
+    jmp .L__kefir_func_set_c_label1
+.L__kefir_func_set_c_label1:
     lea value(%rip), %rax
     add $32, %rax
     movq (%rax), %r10
@@ -355,16 +355,16 @@ __kefir_func_set_c_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_set_c_end:
+.L__kefir_text_func_set_c_end:
 
 set_d:
-__kefir_text_func_set_d_begin:
+.L__kefir_text_func_set_d_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp __kefir_func_set_d_label1
-__kefir_func_set_d_label1:
+    jmp .L__kefir_func_set_d_label1
+.L__kefir_func_set_d_label1:
     lea value(%rip), %rax
     add $45, %rax
     movzxb (%rax), %r10
@@ -434,9 +434,9 @@ __kefir_func_set_d_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_set_d_end:
+.L__kefir_text_func_set_d_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 8

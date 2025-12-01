@@ -5,60 +5,60 @@
 .type compute, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 compute:
 .file 0 "source/tests/end2end/x87_stack_dwarf1/lib.kefir.c"
 .loc 0 23 1
-__kefir_text_func_compute_begin:
+.L__kefir_text_func_compute_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_compute_label2
-__kefir_func_compute_label2:
+    jmp .L__kefir_func_compute_label2
+.L__kefir_func_compute_label2:
     fldt 48(%rbp)
-__kefir_func_compute_label26:
+.L__kefir_func_compute_label26:
     fldt 32(%rbp)
-__kefir_func_compute_label27:
+.L__kefir_func_compute_label27:
     fldt 16(%rbp)
 .loc 0 24 22
-__kefir_func_compute_label44:
+.L__kefir_func_compute_label44:
     fxch %st(1)
     fld %st(0)
     fmulp
 .loc 0 25 23
-__kefir_func_compute_label45:
-    fldt __kefir_func_compute_label50(%rip)
-__kefir_func_compute_label52:
+.L__kefir_func_compute_label45:
+    fldt .L__kefir_func_compute_label50(%rip)
+.L__kefir_func_compute_label52:
     fxch %st(1)
     fxch %st(2)
     fxch %st(1)
     fmulp
-__kefir_func_compute_label64:
+.L__kefir_func_compute_label64:
     fxch %st(1)
     fxch %st(2)
     fxch %st(1)
     fmulp
 .loc 0 26 23
-__kefir_func_compute_label83:
+.L__kefir_func_compute_label83:
     fxch %st(1)
     fsubp
 .loc 0 27 5
-__kefir_func_compute_label89:
+.L__kefir_func_compute_label89:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_compute_label90:
-__kefir_text_func_compute_end:
+.L__kefir_func_compute_label90:
+.L__kefir_text_func_compute_end:
 .section .rodata
     .align 8
-__kefir_func_compute_label50:
+.L__kefir_func_compute_label50:
     .quad 9223372036854775808
     .quad 16385
 .section .text
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 
 .section .debug_abbrev
@@ -188,14 +188,14 @@ __kefir_debug_info_section_entry_1:
     .byte 1
     .word 29
     .ascii "Kefir C compiler 0.5.0\000"
-    .quad __kefir_text_section_begin
-    .quad __kefir_text_section_end - __kefir_text_section_begin
+    .quad .L__kefir_text_section_begin
+    .quad .L__kefir_text_section_end - .L__kefir_text_section_begin
     .long __kefir_debug_lines_section_begin
 __kefir_debug_info_section_entry_2:
     .byte 3
     .ascii "compute\000"
-    .quad __kefir_text_func_compute_begin
-    .quad __kefir_text_func_compute_end - __kefir_text_func_compute_begin
+    .quad .L__kefir_text_func_compute_begin
+    .quad .L__kefir_text_func_compute_end - .L__kefir_text_func_compute_begin
     .byte 2
     .byte 118
     .byte 0

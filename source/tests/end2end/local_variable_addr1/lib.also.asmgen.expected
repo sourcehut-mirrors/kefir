@@ -5,21 +5,21 @@
 .type test, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test:
-__kefir_text_func_test_begin:
+.L__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test_label1
-__kefir_func_test_label1:
+    jmp .L__kefir_func_test_label1
+.L__kefir_func_test_label1:
     lea -8(%rbp), %rax
     movl %eax, -4(%rbp)
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test_end:
+.L__kefir_text_func_test_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

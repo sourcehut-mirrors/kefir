@@ -31,78 +31,78 @@
 .type set_u64, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 set_b:
-__kefir_text_func_set_b_begin:
-    jmp __kefir_func_set_b_label1
-__kefir_func_set_b_label1:
+.L__kefir_text_func_set_b_begin:
+    jmp .L__kefir_func_set_b_label1
+.L__kefir_func_set_b_label1:
     movq b@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
     xchgb (%rcx), %al
     ret
-__kefir_text_func_set_b_end:
+.L__kefir_text_func_set_b_end:
 
 set_u8:
-__kefir_text_func_set_u8_begin:
-    jmp __kefir_func_set_u8_label1
-__kefir_func_set_u8_label1:
+.L__kefir_text_func_set_u8_begin:
+    jmp .L__kefir_func_set_u8_label1
+.L__kefir_func_set_u8_label1:
     movq u8@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
     xchgb (%rcx), %al
     ret
-__kefir_text_func_set_u8_end:
+.L__kefir_text_func_set_u8_end:
 
 set_f32:
-__kefir_text_func_set_f32_begin:
-    jmp __kefir_func_set_f32_label1
-__kefir_func_set_f32_label1:
+.L__kefir_text_func_set_f32_begin:
+    jmp .L__kefir_func_set_f32_label1
+.L__kefir_func_set_f32_label1:
     movq f32@GOTPCREL(%rip), %rcx
     movq %xmm0, %rax
     xchgl (%rcx), %eax
     ret
-__kefir_text_func_set_f32_end:
+.L__kefir_text_func_set_f32_end:
 
 set_f64:
-__kefir_text_func_set_f64_begin:
-    jmp __kefir_func_set_f64_label1
-__kefir_func_set_f64_label1:
+.L__kefir_text_func_set_f64_begin:
+    jmp .L__kefir_func_set_f64_label1
+.L__kefir_func_set_f64_label1:
     movq f64@GOTPCREL(%rip), %rcx
     movq %xmm0, %rax
     xchgq (%rcx), %rax
     ret
-__kefir_text_func_set_f64_end:
+.L__kefir_text_func_set_f64_end:
 
 set_u16:
-__kefir_text_func_set_u16_begin:
-    jmp __kefir_func_set_u16_label1
-__kefir_func_set_u16_label1:
+.L__kefir_text_func_set_u16_begin:
+    jmp .L__kefir_func_set_u16_label1
+.L__kefir_func_set_u16_label1:
     movq u16@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
     xchgw (%rcx), %ax
     ret
-__kefir_text_func_set_u16_end:
+.L__kefir_text_func_set_u16_end:
 
 set_u32:
-__kefir_text_func_set_u32_begin:
-    jmp __kefir_func_set_u32_label1
-__kefir_func_set_u32_label1:
+.L__kefir_text_func_set_u32_begin:
+    jmp .L__kefir_func_set_u32_label1
+.L__kefir_func_set_u32_label1:
     movq u32@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
     xchgl (%rcx), %eax
     ret
-__kefir_text_func_set_u32_end:
+.L__kefir_text_func_set_u32_end:
 
 set_u64:
-__kefir_text_func_set_u64_begin:
-    jmp __kefir_func_set_u64_label1
-__kefir_func_set_u64_label1:
+.L__kefir_text_func_set_u64_begin:
+    jmp .L__kefir_func_set_u64_label1
+.L__kefir_func_set_u64_label1:
     movq u64@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
     xchgq (%rcx), %rax
     ret
-__kefir_text_func_set_u64_end:
+.L__kefir_text_func_set_u64_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .bss
 b:

@@ -5,12 +5,12 @@
 .type func1, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 func1:
-__kefir_text_func_func1_begin:
+.L__kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
-__kefir_func_func1_label0:
+.L__kefir_func_func1_label0:
 xor rax, rax
 push rax
 pop rcx
@@ -19,8 +19,8 @@ add rax, rax
 push rax
     pop %rbp
     ret
-__kefir_func_func1_label1:
-__kefir_text_func_func1_end:
+.L__kefir_func_func1_label1:
+.L__kefir_text_func_func1_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

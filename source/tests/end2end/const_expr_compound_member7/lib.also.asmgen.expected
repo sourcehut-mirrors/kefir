@@ -7,8 +7,8 @@
 .type b, @object
 
 .section .text
-__kefir_text_section_begin:
-__kefir_text_section_end:
+.L__kefir_text_section_begin:
+.L__kefir_text_section_end:
 
 .section .data
     .align 8
@@ -18,7 +18,7 @@ a:
     .quad 4645463015632666624, 13840196662456993448
     .quad 51966
     .quad 47806
-    .quad __kefir_string_literal0
+    .quad .L__kefir_string_literal0
 
     .align 8
 b:
@@ -27,10 +27,10 @@ b:
     .quad 13868835052487442432, 4616824625602217640
     .quad 18446744073709499649
     .quad 18446744073709503809
-    .quad __kefir_string_literal1
+    .quad .L__kefir_string_literal1
 
 .section .rodata
-__kefir_string_literal0:
+.L__kefir_string_literal0:
     .ascii "Hello\000"
-__kefir_string_literal1:
+.L__kefir_string_literal1:
     .ascii "Goodbye\000"

@@ -37,15 +37,15 @@
 .type c80_to_bool3, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 c32_to_bool:
-__kefir_text_func_c32_to_bool_begin:
+.L__kefir_text_func_c32_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_c32_to_bool_label1
-__kefir_func_c32_to_bool_label1:
+    jmp .L__kefir_func_c32_to_bool_label1
+.L__kefir_func_c32_to_bool_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -60,16 +60,16 @@ __kefir_func_c32_to_bool_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_c32_to_bool_end:
+.L__kefir_text_func_c32_to_bool_end:
 
 c64_to_bool:
-__kefir_text_func_c64_to_bool_begin:
+.L__kefir_text_func_c64_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_c64_to_bool_label1
-__kefir_func_c64_to_bool_label1:
+    jmp .L__kefir_func_c64_to_bool_label1
+.L__kefir_func_c64_to_bool_label1:
     movaps %xmm3, %xmm2
     pxor %xmm3, %xmm2
     cmpneqpd %xmm2, %xmm0
@@ -81,16 +81,16 @@ __kefir_func_c64_to_bool_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_c64_to_bool_end:
+.L__kefir_text_func_c64_to_bool_end:
 
 c80_to_bool:
-__kefir_text_func_c80_to_bool_begin:
+.L__kefir_text_func_c80_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_c80_to_bool_label1
-__kefir_func_c80_to_bool_label1:
+    jmp .L__kefir_func_c80_to_bool_label1
+.L__kefir_func_c80_to_bool_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)
@@ -115,16 +115,16 @@ __kefir_func_c80_to_bool_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_c80_to_bool_end:
+.L__kefir_text_func_c80_to_bool_end:
 
 c32_to_bool2:
-__kefir_text_func_c32_to_bool2_begin:
+.L__kefir_text_func_c32_to_bool2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_c32_to_bool2_label1
-__kefir_func_c32_to_bool2_label1:
+    jmp .L__kefir_func_c32_to_bool2_label1
+.L__kefir_func_c32_to_bool2_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -139,16 +139,16 @@ __kefir_func_c32_to_bool2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_c32_to_bool2_end:
+.L__kefir_text_func_c32_to_bool2_end:
 
 c64_to_bool2:
-__kefir_text_func_c64_to_bool2_begin:
+.L__kefir_text_func_c64_to_bool2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_c64_to_bool2_label1
-__kefir_func_c64_to_bool2_label1:
+    jmp .L__kefir_func_c64_to_bool2_label1
+.L__kefir_func_c64_to_bool2_label1:
     movaps %xmm3, %xmm2
     pxor %xmm3, %xmm2
     cmpneqpd %xmm2, %xmm0
@@ -160,16 +160,16 @@ __kefir_func_c64_to_bool2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_c64_to_bool2_end:
+.L__kefir_text_func_c64_to_bool2_end:
 
 c64_to_bool3:
-__kefir_text_func_c64_to_bool3_begin:
+.L__kefir_text_func_c64_to_bool3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_c64_to_bool3_label1
-__kefir_func_c64_to_bool3_label1:
+    jmp .L__kefir_func_c64_to_bool3_label1
+.L__kefir_func_c64_to_bool3_label1:
     movaps %xmm3, %xmm2
     pxor %xmm3, %xmm2
     cmpneqpd %xmm2, %xmm0
@@ -181,16 +181,16 @@ __kefir_func_c64_to_bool3_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_c64_to_bool3_end:
+.L__kefir_text_func_c64_to_bool3_end:
 
 c80_to_bool2:
-__kefir_text_func_c80_to_bool2_begin:
+.L__kefir_text_func_c80_to_bool2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_c80_to_bool2_label1
-__kefir_func_c80_to_bool2_label1:
+    jmp .L__kefir_func_c80_to_bool2_label1
+.L__kefir_func_c80_to_bool2_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)
@@ -215,16 +215,16 @@ __kefir_func_c80_to_bool2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_c80_to_bool2_end:
+.L__kefir_text_func_c80_to_bool2_end:
 
 c80_to_bool3:
-__kefir_text_func_c80_to_bool3_begin:
+.L__kefir_text_func_c80_to_bool3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_c80_to_bool3_label1
-__kefir_func_c80_to_bool3_label1:
+    jmp .L__kefir_func_c80_to_bool3_label1
+.L__kefir_func_c80_to_bool3_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)
@@ -249,9 +249,9 @@ __kefir_func_c80_to_bool3_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_c80_to_bool3_end:
+.L__kefir_text_func_c80_to_bool3_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
 b0:

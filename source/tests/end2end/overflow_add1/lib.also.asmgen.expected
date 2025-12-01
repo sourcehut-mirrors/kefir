@@ -35,11 +35,11 @@
 .type overflow_add_uint_short_ushort, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 overflow_add_uchar_schar_uchar:
-__kefir_text_func_overflow_add_uchar_schar_uchar_begin:
-    jmp __kefir_func_overflow_add_uchar_schar_uchar_label1
-__kefir_func_overflow_add_uchar_schar_uchar_label1:
+.L__kefir_text_func_overflow_add_uchar_schar_uchar_begin:
+    jmp .L__kefir_func_overflow_add_uchar_schar_uchar_label1
+.L__kefir_func_overflow_add_uchar_schar_uchar_label1:
     movzx %dil, %rax
     movsx %sil, %rcx
     mov %rax, %rsi
@@ -52,12 +52,12 @@ __kefir_func_overflow_add_uchar_schar_uchar_label1:
     and $1, %eax
     movb %sil, (%rdx)
     ret
-__kefir_text_func_overflow_add_uchar_schar_uchar_end:
+.L__kefir_text_func_overflow_add_uchar_schar_uchar_end:
 
 overflow_add_long_ulong_ulong:
-__kefir_text_func_overflow_add_long_ulong_ulong_begin:
-    jmp __kefir_func_overflow_add_long_ulong_ulong_label1
-__kefir_func_overflow_add_long_ulong_ulong_label1:
+.L__kefir_text_func_overflow_add_long_ulong_ulong_begin:
+    jmp .L__kefir_func_overflow_add_long_ulong_ulong_label1
+.L__kefir_func_overflow_add_long_ulong_ulong_label1:
     mov %rcx, %rax
     xor %ecx, %eax
     movabs $-9223372036854775808, %rcx
@@ -68,12 +68,12 @@ __kefir_func_overflow_add_long_ulong_ulong_label1:
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_add_long_ulong_ulong_end:
+.L__kefir_text_func_overflow_add_long_ulong_ulong_end:
 
 overflow_add_ulong_long_ulong:
-__kefir_text_func_overflow_add_ulong_long_ulong_begin:
-    jmp __kefir_func_overflow_add_ulong_long_ulong_label1
-__kefir_func_overflow_add_ulong_long_ulong_label1:
+.L__kefir_text_func_overflow_add_ulong_long_ulong_begin:
+    jmp .L__kefir_func_overflow_add_ulong_long_ulong_label1
+.L__kefir_func_overflow_add_ulong_long_ulong_label1:
     mov %rcx, %rax
     xor %ecx, %eax
     movabs $-9223372036854775808, %rcx
@@ -84,12 +84,12 @@ __kefir_func_overflow_add_ulong_long_ulong_label1:
     and $1, %eax
     movq %rsi, (%rdx)
     ret
-__kefir_text_func_overflow_add_ulong_long_ulong_end:
+.L__kefir_text_func_overflow_add_ulong_long_ulong_end:
 
 overflow_add_ulong_ulong_long:
-__kefir_text_func_overflow_add_ulong_ulong_long_begin:
-    jmp __kefir_func_overflow_add_ulong_ulong_long_label1
-__kefir_func_overflow_add_ulong_ulong_long_label1:
+.L__kefir_text_func_overflow_add_ulong_ulong_long_begin:
+    jmp .L__kefir_func_overflow_add_ulong_ulong_long_label1
+.L__kefir_func_overflow_add_ulong_ulong_long_label1:
     add %rsi, %rdi
     sets %al
     cmp %rsi, %rdi
@@ -98,12 +98,12 @@ __kefir_func_overflow_add_ulong_ulong_long_label1:
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_add_ulong_ulong_long_end:
+.L__kefir_text_func_overflow_add_ulong_ulong_long_end:
 
 overflow_add_long_long_ulong:
-__kefir_text_func_overflow_add_long_long_ulong_begin:
-    jmp __kefir_func_overflow_add_long_long_ulong_label1
-__kefir_func_overflow_add_long_long_ulong_label1:
+.L__kefir_text_func_overflow_add_long_long_ulong_begin:
+    jmp .L__kefir_func_overflow_add_long_long_ulong_label1
+.L__kefir_func_overflow_add_long_long_ulong_label1:
     mov %rdi, %rax
     sar $63, %rax
     mov %rsi, %rcx
@@ -115,12 +115,12 @@ __kefir_func_overflow_add_long_long_ulong_label1:
     movq %rdi, (%rdx)
     mov %rsi, %rax
     ret
-__kefir_text_func_overflow_add_long_long_ulong_end:
+.L__kefir_text_func_overflow_add_long_long_ulong_end:
 
 overflow_add_long_ulong_long:
-__kefir_text_func_overflow_add_long_ulong_long_begin:
-    jmp __kefir_func_overflow_add_long_ulong_long_label1
-__kefir_func_overflow_add_long_ulong_long_label1:
+.L__kefir_text_func_overflow_add_long_ulong_long_begin:
+    jmp .L__kefir_func_overflow_add_long_ulong_long_label1
+.L__kefir_func_overflow_add_long_ulong_long_label1:
     add %rsi, %rdi
     movabs $-9223372036854775808, %rax
     add %rdi, %rax
@@ -129,12 +129,12 @@ __kefir_func_overflow_add_long_ulong_long_label1:
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_add_long_ulong_long_end:
+.L__kefir_text_func_overflow_add_long_ulong_long_end:
 
 overflow_add_long_int_int:
-__kefir_text_func_overflow_add_long_int_int_begin:
-    jmp __kefir_func_overflow_add_long_int_int_label1
-__kefir_func_overflow_add_long_int_int_label1:
+.L__kefir_text_func_overflow_add_long_int_int_begin:
+    jmp .L__kefir_func_overflow_add_long_int_int_label1
+.L__kefir_func_overflow_add_long_int_int_label1:
     movsx %esi, %rax
     add %rax, %rdi
     seto %al
@@ -145,12 +145,12 @@ __kefir_func_overflow_add_long_int_int_label1:
     and $1, %eax
     movl %edi, (%rdx)
     ret
-__kefir_text_func_overflow_add_long_int_int_end:
+.L__kefir_text_func_overflow_add_long_int_int_end:
 
 overflow_add_ulong_ulong_short:
-__kefir_text_func_overflow_add_ulong_ulong_short_begin:
-    jmp __kefir_func_overflow_add_ulong_ulong_short_label1
-__kefir_func_overflow_add_ulong_ulong_short_label1:
+.L__kefir_text_func_overflow_add_ulong_ulong_short_begin:
+    jmp .L__kefir_func_overflow_add_ulong_ulong_short_label1
+.L__kefir_func_overflow_add_ulong_ulong_short_label1:
     add %rsi, %rdi
     sets %al
     cmp %rsi, %rdi
@@ -163,23 +163,23 @@ __kefir_func_overflow_add_ulong_ulong_short_label1:
     and $1, %eax
     movw %di, (%rdx)
     ret
-__kefir_text_func_overflow_add_ulong_ulong_short_end:
+.L__kefir_text_func_overflow_add_ulong_ulong_short_end:
 
 overflow_add_ulong_ulong_ulong:
-__kefir_text_func_overflow_add_ulong_ulong_ulong_begin:
-    jmp __kefir_func_overflow_add_ulong_ulong_ulong_label1
-__kefir_func_overflow_add_ulong_ulong_ulong_label1:
+.L__kefir_text_func_overflow_add_ulong_ulong_ulong_begin:
+    jmp .L__kefir_func_overflow_add_ulong_ulong_ulong_label1
+.L__kefir_func_overflow_add_ulong_ulong_ulong_label1:
     add %rsi, %rdi
     setc %al
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_add_ulong_ulong_ulong_end:
+.L__kefir_text_func_overflow_add_ulong_ulong_ulong_end:
 
 overflow_add_schar_schar_schar:
-__kefir_text_func_overflow_add_schar_schar_schar_begin:
-    jmp __kefir_func_overflow_add_schar_schar_schar_label1
-__kefir_func_overflow_add_schar_schar_schar_label1:
+.L__kefir_text_func_overflow_add_schar_schar_schar_begin:
+    jmp .L__kefir_func_overflow_add_schar_schar_schar_label1
+.L__kefir_func_overflow_add_schar_schar_schar_label1:
     movsx %dil, %rax
     movsx %sil, %rcx
     mov %rax, %rsi
@@ -192,12 +192,12 @@ __kefir_func_overflow_add_schar_schar_schar_label1:
     and $1, %eax
     movb %sil, (%rdx)
     ret
-__kefir_text_func_overflow_add_schar_schar_schar_end:
+.L__kefir_text_func_overflow_add_schar_schar_schar_end:
 
 overflow_add_schar_schar_uchar:
-__kefir_text_func_overflow_add_schar_schar_uchar_begin:
-    jmp __kefir_func_overflow_add_schar_schar_uchar_label1
-__kefir_func_overflow_add_schar_schar_uchar_label1:
+.L__kefir_text_func_overflow_add_schar_schar_uchar_begin:
+    jmp .L__kefir_func_overflow_add_schar_schar_uchar_label1
+.L__kefir_func_overflow_add_schar_schar_uchar_label1:
     movsx %dil, %rax
     movsx %sil, %rcx
     mov %rax, %rsi
@@ -210,12 +210,12 @@ __kefir_func_overflow_add_schar_schar_uchar_label1:
     and $1, %eax
     movb %sil, (%rdx)
     ret
-__kefir_text_func_overflow_add_schar_schar_uchar_end:
+.L__kefir_text_func_overflow_add_schar_schar_uchar_end:
 
 overflow_add_schar_uchar_uchar:
-__kefir_text_func_overflow_add_schar_uchar_uchar_begin:
-    jmp __kefir_func_overflow_add_schar_uchar_uchar_label1
-__kefir_func_overflow_add_schar_uchar_uchar_label1:
+.L__kefir_text_func_overflow_add_schar_uchar_uchar_begin:
+    jmp .L__kefir_func_overflow_add_schar_uchar_uchar_label1
+.L__kefir_func_overflow_add_schar_uchar_uchar_label1:
     movsx %dil, %rax
     movzx %sil, %rcx
     mov %rax, %rsi
@@ -228,12 +228,12 @@ __kefir_func_overflow_add_schar_uchar_uchar_label1:
     and $1, %eax
     movb %sil, (%rdx)
     ret
-__kefir_text_func_overflow_add_schar_uchar_uchar_end:
+.L__kefir_text_func_overflow_add_schar_uchar_uchar_end:
 
 overflow_add_ulong_long_long:
-__kefir_text_func_overflow_add_ulong_long_long_begin:
-    jmp __kefir_func_overflow_add_ulong_long_long_label1
-__kefir_func_overflow_add_ulong_long_long_label1:
+.L__kefir_text_func_overflow_add_ulong_long_long_begin:
+    jmp .L__kefir_func_overflow_add_ulong_long_long_label1
+.L__kefir_func_overflow_add_ulong_long_long_label1:
     mov %rdi, %rcx
     add %rsi, %rcx
     movabs $-9223372036854775808, %rax
@@ -243,12 +243,12 @@ __kefir_func_overflow_add_ulong_long_long_label1:
     and $1, %eax
     movq %rcx, (%rdx)
     ret
-__kefir_text_func_overflow_add_ulong_long_long_end:
+.L__kefir_text_func_overflow_add_ulong_long_long_end:
 
 overflow_add_int_short_uint:
-__kefir_text_func_overflow_add_int_short_uint_begin:
-    jmp __kefir_func_overflow_add_int_short_uint_label1
-__kefir_func_overflow_add_int_short_uint_label1:
+.L__kefir_text_func_overflow_add_int_short_uint_begin:
+    jmp .L__kefir_func_overflow_add_int_short_uint_label1
+.L__kefir_func_overflow_add_int_short_uint_label1:
     movsx %edi, %rax
     movsx %si, %rcx
     mov %rax, %rsi
@@ -261,23 +261,23 @@ __kefir_func_overflow_add_int_short_uint_label1:
     and $1, %eax
     movl %esi, (%rdx)
     ret
-__kefir_text_func_overflow_add_int_short_uint_end:
+.L__kefir_text_func_overflow_add_int_short_uint_end:
 
 overflow_add_long_long_long:
-__kefir_text_func_overflow_add_long_long_long_begin:
-    jmp __kefir_func_overflow_add_long_long_long_label1
-__kefir_func_overflow_add_long_long_long_label1:
+.L__kefir_text_func_overflow_add_long_long_long_begin:
+    jmp .L__kefir_func_overflow_add_long_long_long_label1
+.L__kefir_func_overflow_add_long_long_long_label1:
     add %rsi, %rdi
     seto %al
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_add_long_long_long_end:
+.L__kefir_text_func_overflow_add_long_long_long_end:
 
 overflow_add_uint_short_ushort:
-__kefir_text_func_overflow_add_uint_short_ushort_begin:
-    jmp __kefir_func_overflow_add_uint_short_ushort_label1
-__kefir_func_overflow_add_uint_short_ushort_label1:
+.L__kefir_text_func_overflow_add_uint_short_ushort_begin:
+    jmp .L__kefir_func_overflow_add_uint_short_ushort_label1
+.L__kefir_func_overflow_add_uint_short_ushort_label1:
     mov %edi, %eax
     movsx %si, %rcx
     mov %rax, %rsi
@@ -290,7 +290,7 @@ __kefir_func_overflow_add_uint_short_ushort_label1:
     and $1, %eax
     movw %si, (%rdx)
     ret
-__kefir_text_func_overflow_add_uint_short_ushort_end:
+.L__kefir_text_func_overflow_add_uint_short_ushort_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

@@ -9,51 +9,51 @@
 .type ulong2ushort, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 ulong2uint:
-__kefir_text_func_ulong2uint_begin:
-__kefir_func_ulong2uint_label0:
+.L__kefir_text_func_ulong2uint_begin:
+.L__kefir_func_ulong2uint_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_ulong2uint_label1
-__kefir_func_ulong2uint_label1:
+    jmp .L__kefir_func_ulong2uint_label1
+.L__kefir_func_ulong2uint_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_ulong2uint_end:
+.L__kefir_text_func_ulong2uint_end:
 
 ulong2uchar:
-__kefir_text_func_ulong2uchar_begin:
-__kefir_func_ulong2uchar_label0:
+.L__kefir_text_func_ulong2uchar_begin:
+.L__kefir_func_ulong2uchar_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_ulong2uchar_label1
-__kefir_func_ulong2uchar_label1:
+    jmp .L__kefir_func_ulong2uchar_label1
+.L__kefir_func_ulong2uchar_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_ulong2uchar_end:
+.L__kefir_text_func_ulong2uchar_end:
 
 ulong2ushort:
-__kefir_text_func_ulong2ushort_begin:
-__kefir_func_ulong2ushort_label0:
+.L__kefir_text_func_ulong2ushort_begin:
+.L__kefir_func_ulong2ushort_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_ulong2ushort_label1
-__kefir_func_ulong2ushort_label1:
+    jmp .L__kefir_func_ulong2ushort_label1
+.L__kefir_func_ulong2ushort_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_ulong2ushort_end:
+.L__kefir_text_func_ulong2ushort_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

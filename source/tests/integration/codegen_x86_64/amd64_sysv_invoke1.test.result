@@ -7,13 +7,13 @@
 .type func2, @object
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 func1:
-__kefir_text_func_func1_begin:
+.L__kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
-__kefir_func_func1_label0:
-    movd %xmm0, [__kefir_func_func1_label2]
+.L__kefir_func_func1_label0:
+    movd %xmm0, [.L__kefir_func_func1_label2]
     sub %rsp, 32
     mov %rdi, 1
     mov %rsi, 2
@@ -29,13 +29,13 @@ __kefir_func_func1_label0:
     add %rsp, 32
     pop %rbp
     ret
-__kefir_func_func1_label1:
-__kefir_text_func_func1_end:
+.L__kefir_func_func1_label1:
+.L__kefir_text_func_func1_end:
 .section .rodata
     .align 4
-__kefir_func_func1_label2:
+.L__kefir_func_func1_label2:
     .long 1078523331
 .section .text
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

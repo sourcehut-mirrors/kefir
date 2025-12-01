@@ -11,24 +11,24 @@
 .type getT, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 getF:
-__kefir_text_func_getF_begin:
-    jmp __kefir_func_getF_label1
-__kefir_func_getF_label1:
+.L__kefir_text_func_getF_begin:
+    jmp .L__kefir_func_getF_label1
+.L__kefir_func_getF_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_getF_end:
+.L__kefir_text_func_getF_end:
 
 getT:
-__kefir_text_func_getT_begin:
-    jmp __kefir_func_getT_label1
-__kefir_func_getT_label1:
+.L__kefir_text_func_getT_begin:
+    jmp .L__kefir_func_getT_label1
+.L__kefir_func_getT_label1:
     mov $1, %rax
     ret
-__kefir_text_func_getT_end:
+.L__kefir_text_func_getT_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
 F:

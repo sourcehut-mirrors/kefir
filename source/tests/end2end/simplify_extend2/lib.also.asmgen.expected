@@ -15,60 +15,60 @@
 .type ushort_not, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 int_not:
-__kefir_text_func_int_not_begin:
-    jmp __kefir_func_int_not_label1
-__kefir_func_int_not_label1:
+.L__kefir_text_func_int_not_begin:
+    jmp .L__kefir_func_int_not_label1
+.L__kefir_func_int_not_label1:
     not %edi
     mov %rdi, %rax
     ret
-__kefir_text_func_int_not_end:
+.L__kefir_text_func_int_not_end:
 
 char_not:
-__kefir_text_func_char_not_begin:
-    jmp __kefir_func_char_not_label1
-__kefir_func_char_not_label1:
+.L__kefir_text_func_char_not_begin:
+    jmp .L__kefir_func_char_not_label1
+.L__kefir_func_char_not_label1:
     movsx %dil, %rax
     not %eax
     ret
-__kefir_text_func_char_not_end:
+.L__kefir_text_func_char_not_end:
 
 uint_not:
-__kefir_text_func_uint_not_begin:
-    jmp __kefir_func_uint_not_label1
-__kefir_func_uint_not_label1:
+.L__kefir_text_func_uint_not_begin:
+    jmp .L__kefir_func_uint_not_label1
+.L__kefir_func_uint_not_label1:
     not %edi
     mov %rdi, %rax
     ret
-__kefir_text_func_uint_not_end:
+.L__kefir_text_func_uint_not_end:
 
 short_not:
-__kefir_text_func_short_not_begin:
-    jmp __kefir_func_short_not_label1
-__kefir_func_short_not_label1:
+.L__kefir_text_func_short_not_begin:
+    jmp .L__kefir_func_short_not_label1
+.L__kefir_func_short_not_label1:
     movsx %di, %rax
     not %eax
     ret
-__kefir_text_func_short_not_end:
+.L__kefir_text_func_short_not_end:
 
 uchar_not:
-__kefir_text_func_uchar_not_begin:
-    jmp __kefir_func_uchar_not_label1
-__kefir_func_uchar_not_label1:
+.L__kefir_text_func_uchar_not_begin:
+    jmp .L__kefir_func_uchar_not_label1
+.L__kefir_func_uchar_not_label1:
     movzx %dil, %rax
     not %eax
     ret
-__kefir_text_func_uchar_not_end:
+.L__kefir_text_func_uchar_not_end:
 
 ushort_not:
-__kefir_text_func_ushort_not_begin:
-    jmp __kefir_func_ushort_not_label1
-__kefir_func_ushort_not_label1:
+.L__kefir_text_func_ushort_not_begin:
+    jmp .L__kefir_func_ushort_not_label1
+.L__kefir_func_ushort_not_label1:
     movzx %di, %rax
     not %eax
     ret
-__kefir_text_func_ushort_not_end:
+.L__kefir_text_func_ushort_not_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

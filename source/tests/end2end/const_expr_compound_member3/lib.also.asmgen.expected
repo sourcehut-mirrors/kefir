@@ -13,8 +13,8 @@
 .type s3_2, @object
 
 .section .text
-__kefir_text_section_begin:
-__kefir_text_section_end:
+.L__kefir_text_section_begin:
+.L__kefir_text_section_end:
 
 .section .data
     .align 8
@@ -27,7 +27,7 @@ s2:
     .zero 2
     .zero 6
     .quad 1027296
-    .quad __kefir_string_literal1
+    .quad .L__kefir_string_literal1
     .long 0
     .zero 4
     .long 10281
@@ -35,7 +35,7 @@ s2:
     .byte 0x47, 0x6f, 0x6f, 0x64, 0x62, 0x79, 0x65, 0x2c, 0x20, 0x77
     .zero 6
     .quad 18446744073709486338
-    .quad __kefir_string_literal3
+    .quad .L__kefir_string_literal3
 
     .align 8
 s1_1:
@@ -45,7 +45,7 @@ s1_1:
     .zero 2
     .zero 6
     .quad 1027296
-    .quad __kefir_string_literal5
+    .quad .L__kefir_string_literal5
 
     .align 8
 s1_2:
@@ -54,7 +54,7 @@ s1_2:
     .byte 0x47, 0x6f, 0x6f, 0x64, 0x62, 0x79, 0x65, 0x2c, 0x20, 0x77
     .zero 6
     .quad 18446744073709486338
-    .quad __kefir_string_literal7
+    .quad .L__kefir_string_literal7
 
     .align 8
 s3_1:
@@ -66,7 +66,7 @@ s3_1:
     .zero 2
     .zero 6
     .quad 1027296
-    .quad __kefir_string_literal9
+    .quad .L__kefir_string_literal9
     .long 0
     .zero 4
     .long 10281
@@ -74,21 +74,21 @@ s3_1:
     .byte 0x47, 0x6f, 0x6f, 0x64, 0x62, 0x79, 0x65, 0x2c, 0x20, 0x77
     .zero 6
     .quad 18446744073709486338
-    .quad __kefir_string_literal11
+    .quad .L__kefir_string_literal11
 
 s3_2:
     .byte 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72
 
 .section .rodata
-__kefir_string_literal1:
+.L__kefir_string_literal1:
     .ascii "Nope!\000"
-__kefir_string_literal3:
+.L__kefir_string_literal3:
     .ascii "What?\000"
-__kefir_string_literal5:
+.L__kefir_string_literal5:
     .ascii "Nope!\000"
-__kefir_string_literal7:
+.L__kefir_string_literal7:
     .ascii "What?\000"
-__kefir_string_literal9:
+.L__kefir_string_literal9:
     .ascii "Nope!\000"
-__kefir_string_literal11:
+.L__kefir_string_literal11:
     .ascii "What?\000"

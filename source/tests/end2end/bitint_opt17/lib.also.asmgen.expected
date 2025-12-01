@@ -31,118 +31,118 @@
 .type greater3, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 eq1:
-__kefir_text_func_eq1_begin:
-    jmp __kefir_func_eq1_label1
-__kefir_func_eq1_label1:
+.L__kefir_text_func_eq1_begin:
+    jmp .L__kefir_func_eq1_label1
+.L__kefir_func_eq1_label1:
     mov $1, %rax
     ret
-__kefir_text_func_eq1_end:
+.L__kefir_text_func_eq1_end:
 
 eq2:
-__kefir_text_func_eq2_begin:
-    jmp __kefir_func_eq2_label1
-__kefir_func_eq2_label1:
+.L__kefir_text_func_eq2_begin:
+    jmp .L__kefir_func_eq2_label1
+.L__kefir_func_eq2_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_eq2_end:
+.L__kefir_text_func_eq2_end:
 
 less1:
-__kefir_text_func_less1_begin:
-    jmp __kefir_func_less1_label1
-__kefir_func_less1_label1:
+.L__kefir_text_func_less1_begin:
+    jmp .L__kefir_func_less1_label1
+.L__kefir_func_less1_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_less1_end:
+.L__kefir_text_func_less1_end:
 
 less2:
-__kefir_text_func_less2_begin:
-    jmp __kefir_func_less2_label1
-__kefir_func_less2_label1:
+.L__kefir_text_func_less2_begin:
+    jmp .L__kefir_func_less2_label1
+.L__kefir_func_less2_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_less2_end:
+.L__kefir_text_func_less2_end:
 
 less3:
-__kefir_text_func_less3_begin:
-    jmp __kefir_func_less3_label1
-__kefir_func_less3_label1:
+.L__kefir_text_func_less3_begin:
+    jmp .L__kefir_func_less3_label1
+.L__kefir_func_less3_label1:
     mov $1, %rax
     ret
-__kefir_text_func_less3_end:
+.L__kefir_text_func_less3_end:
 
 above1:
-__kefir_text_func_above1_begin:
-    jmp __kefir_func_above1_label1
-__kefir_func_above1_label1:
+.L__kefir_text_func_above1_begin:
+    jmp .L__kefir_func_above1_label1
+.L__kefir_func_above1_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_above1_end:
+.L__kefir_text_func_above1_end:
 
 above2:
-__kefir_text_func_above2_begin:
-    jmp __kefir_func_above2_label1
-__kefir_func_above2_label1:
+.L__kefir_text_func_above2_begin:
+    jmp .L__kefir_func_above2_label1
+.L__kefir_func_above2_label1:
     mov $1, %rax
     ret
-__kefir_text_func_above2_end:
+.L__kefir_text_func_above2_end:
 
 above3:
-__kefir_text_func_above3_begin:
-    jmp __kefir_func_above3_label1
-__kefir_func_above3_label1:
+.L__kefir_text_func_above3_begin:
+    jmp .L__kefir_func_above3_label1
+.L__kefir_func_above3_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_above3_end:
+.L__kefir_text_func_above3_end:
 
 below1:
-__kefir_text_func_below1_begin:
-    jmp __kefir_func_below1_label1
-__kefir_func_below1_label1:
+.L__kefir_text_func_below1_begin:
+    jmp .L__kefir_func_below1_label1
+.L__kefir_func_below1_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_below1_end:
+.L__kefir_text_func_below1_end:
 
 below2:
-__kefir_text_func_below2_begin:
-    jmp __kefir_func_below2_label1
-__kefir_func_below2_label1:
+.L__kefir_text_func_below2_begin:
+    jmp .L__kefir_func_below2_label1
+.L__kefir_func_below2_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_below2_end:
+.L__kefir_text_func_below2_end:
 
 below3:
-__kefir_text_func_below3_begin:
-    jmp __kefir_func_below3_label1
-__kefir_func_below3_label1:
+.L__kefir_text_func_below3_begin:
+    jmp .L__kefir_func_below3_label1
+.L__kefir_func_below3_label1:
     mov $1, %rax
     ret
-__kefir_text_func_below3_end:
+.L__kefir_text_func_below3_end:
 
 greater1:
-__kefir_text_func_greater1_begin:
-    jmp __kefir_func_greater1_label1
-__kefir_func_greater1_label1:
+.L__kefir_text_func_greater1_begin:
+    jmp .L__kefir_func_greater1_label1
+.L__kefir_func_greater1_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_greater1_end:
+.L__kefir_text_func_greater1_end:
 
 greater2:
-__kefir_text_func_greater2_begin:
-    jmp __kefir_func_greater2_label1
-__kefir_func_greater2_label1:
+.L__kefir_text_func_greater2_begin:
+    jmp .L__kefir_func_greater2_label1
+.L__kefir_func_greater2_label1:
     mov $1, %rax
     ret
-__kefir_text_func_greater2_end:
+.L__kefir_text_func_greater2_end:
 
 greater3:
-__kefir_text_func_greater3_begin:
-    jmp __kefir_func_greater3_label1
-__kefir_func_greater3_label1:
+.L__kefir_text_func_greater3_begin:
+    jmp .L__kefir_func_greater3_label1
+.L__kefir_func_greater3_label1:
     xor %eax, %eax
     ret
-__kefir_text_func_greater3_end:
+.L__kefir_text_func_greater3_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

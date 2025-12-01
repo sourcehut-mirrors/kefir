@@ -23,106 +23,106 @@
 .type select_below_or_equals, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 select_above_or_equals:
-__kefir_text_func_select_above_or_equals_begin:
-    jmp __kefir_func_select_above_or_equals_label1
-__kefir_func_select_above_or_equals_label1:
+.L__kefir_text_func_select_above_or_equals_begin:
+    jmp .L__kefir_func_select_above_or_equals_label1
+.L__kefir_func_select_above_or_equals_label1:
     cmp %rsi, %rdi
     cmovb %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_above_or_equals_end:
+.L__kefir_text_func_select_above_or_equals_end:
 
 select_not_equals:
-__kefir_text_func_select_not_equals_begin:
-    jmp __kefir_func_select_not_equals_label1
-__kefir_func_select_not_equals_label1:
+.L__kefir_text_func_select_not_equals_begin:
+    jmp .L__kefir_func_select_not_equals_label1
+.L__kefir_func_select_not_equals_label1:
     cmp %rsi, %rdi
     cmove %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_not_equals_end:
+.L__kefir_text_func_select_not_equals_end:
 
 select_lesser_or_equals:
-__kefir_text_func_select_lesser_or_equals_begin:
-    jmp __kefir_func_select_lesser_or_equals_label1
-__kefir_func_select_lesser_or_equals_label1:
+.L__kefir_text_func_select_lesser_or_equals_begin:
+    jmp .L__kefir_func_select_lesser_or_equals_label1
+.L__kefir_func_select_lesser_or_equals_label1:
     cmp %rsi, %rdi
     cmovg %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_lesser_or_equals_end:
+.L__kefir_text_func_select_lesser_or_equals_end:
 
 select_equals:
-__kefir_text_func_select_equals_begin:
-    jmp __kefir_func_select_equals_label1
-__kefir_func_select_equals_label1:
+.L__kefir_text_func_select_equals_begin:
+    jmp .L__kefir_func_select_equals_label1
+.L__kefir_func_select_equals_label1:
     cmp %rsi, %rdi
     cmovne %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_equals_end:
+.L__kefir_text_func_select_equals_end:
 
 select_lesser:
-__kefir_text_func_select_lesser_begin:
-    jmp __kefir_func_select_lesser_label1
-__kefir_func_select_lesser_label1:
+.L__kefir_text_func_select_lesser_begin:
+    jmp .L__kefir_func_select_lesser_label1
+.L__kefir_func_select_lesser_label1:
     cmp %rsi, %rdi
     cmovge %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_lesser_end:
+.L__kefir_text_func_select_lesser_end:
 
 select_greater_or_equals:
-__kefir_text_func_select_greater_or_equals_begin:
-    jmp __kefir_func_select_greater_or_equals_label1
-__kefir_func_select_greater_or_equals_label1:
+.L__kefir_text_func_select_greater_or_equals_begin:
+    jmp .L__kefir_func_select_greater_or_equals_label1
+.L__kefir_func_select_greater_or_equals_label1:
     cmp %rsi, %rdi
     cmovl %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_greater_or_equals_end:
+.L__kefir_text_func_select_greater_or_equals_end:
 
 select_above:
-__kefir_text_func_select_above_begin:
-    jmp __kefir_func_select_above_label1
-__kefir_func_select_above_label1:
+.L__kefir_text_func_select_above_begin:
+    jmp .L__kefir_func_select_above_label1
+.L__kefir_func_select_above_label1:
     cmp %rsi, %rdi
     cmovbe %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_above_end:
+.L__kefir_text_func_select_above_end:
 
 select_below:
-__kefir_text_func_select_below_begin:
-    jmp __kefir_func_select_below_label1
-__kefir_func_select_below_label1:
+.L__kefir_text_func_select_below_begin:
+    jmp .L__kefir_func_select_below_label1
+.L__kefir_func_select_below_label1:
     cmp %rsi, %rdi
     cmovae %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_below_end:
+.L__kefir_text_func_select_below_end:
 
 select_greater:
-__kefir_text_func_select_greater_begin:
-    jmp __kefir_func_select_greater_label1
-__kefir_func_select_greater_label1:
+.L__kefir_text_func_select_greater_begin:
+    jmp .L__kefir_func_select_greater_label1
+.L__kefir_func_select_greater_label1:
     cmp %rsi, %rdi
     cmovle %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_greater_end:
+.L__kefir_text_func_select_greater_end:
 
 select_below_or_equals:
-__kefir_text_func_select_below_or_equals_begin:
-    jmp __kefir_func_select_below_or_equals_label1
-__kefir_func_select_below_or_equals_label1:
+.L__kefir_text_func_select_below_or_equals_begin:
+    jmp .L__kefir_func_select_below_or_equals_label1
+.L__kefir_func_select_below_or_equals_label1:
     cmp %rsi, %rdi
     cmova %rcx, %rdx
     mov %rdx, %rax
     ret
-__kefir_text_func_select_below_or_equals_end:
+.L__kefir_text_func_select_below_or_equals_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

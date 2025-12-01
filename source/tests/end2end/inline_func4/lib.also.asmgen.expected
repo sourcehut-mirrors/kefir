@@ -6,20 +6,20 @@
 .type addx, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 addx:
-__kefir_text_func_addx_begin:
+.L__kefir_text_func_addx_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_addx_label1
-__kefir_func_addx_label1:
+    jmp .L__kefir_func_addx_label1
+.L__kefir_func_addx_label1:
     movq x@GOTPCREL(%rip), %rax
     movq (%rax), %rax
     movq %rax, -16(%rbp)
     movq $0, -8(%rbp)
-    jmp __kefir_func_addx_label2
-__kefir_func_addx_label2:
+    jmp .L__kefir_func_addx_label2
+.L__kefir_func_addx_label2:
     movq -16(%rbp), %rax
     add %rdi, %rax
     movq %rax, -8(%rbp)
@@ -27,22 +27,22 @@ __kefir_func_addx_label2:
     movq x@GOTPCREL(%rip), %rdx
     movq -16(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
-    je __kefir_func_addx_label4
-    jmp __kefir_func_addx_label3
-__kefir_func_addx_label3:
+    je .L__kefir_func_addx_label4
+    jmp .L__kefir_func_addx_label3
+.L__kefir_func_addx_label3:
     movq %rax, -16(%rbp)
-    jmp __kefir_func_addx_label4
-__kefir_func_addx_label4:
+    jmp .L__kefir_func_addx_label4
+.L__kefir_func_addx_label4:
     sete %al
     test %al, %al
-    jnz __kefir_func_addx_label7
-    jmp __kefir_func_addx_label2
-__kefir_func_addx_label7:
+    jnz .L__kefir_func_addx_label7
+    jmp .L__kefir_func_addx_label2
+.L__kefir_func_addx_label7:
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_addx_end:
+.L__kefir_text_func_addx_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

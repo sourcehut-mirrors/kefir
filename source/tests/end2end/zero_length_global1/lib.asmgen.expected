@@ -7,20 +7,20 @@
 .type get, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 get:
-__kefir_text_func_get_begin:
-__kefir_func_get_label0:
+.L__kefir_text_func_get_begin:
+.L__kefir_func_get_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_get_label1
-__kefir_func_get_label1:
+    jmp .L__kefir_func_get_label1
+.L__kefir_func_get_label1:
     lea s0a(%rip), %rax
     pop %rbp
     ret
-__kefir_text_func_get_end:
+.L__kefir_text_func_get_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .bss
 s0:

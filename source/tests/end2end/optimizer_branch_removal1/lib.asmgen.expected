@@ -19,103 +19,103 @@
 .extern somefn2
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test1:
-__kefir_text_func_test1_begin:
-__kefir_func_test1_label0:
+.L__kefir_text_func_test1_begin:
+.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_test1_label2
-__kefir_func_test1_label2:
+    jmp .L__kefir_func_test1_label2
+.L__kefir_func_test1_label2:
     pop %rbp
     ret
-__kefir_text_func_test1_end:
+.L__kefir_text_func_test1_end:
 
 test2:
-__kefir_text_func_test2_begin:
-__kefir_func_test2_label0:
+.L__kefir_text_func_test2_begin:
+.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_test2_label2
-__kefir_func_test2_label2:
+    jmp .L__kefir_func_test2_label2
+.L__kefir_func_test2_label2:
     call somefn2@PLT
-    jmp __kefir_func_test2_label3
-__kefir_func_test2_label3:
+    jmp .L__kefir_func_test2_label3
+.L__kefir_func_test2_label3:
     pop %rbp
     ret
-__kefir_text_func_test2_end:
+.L__kefir_text_func_test2_end:
 
 test3:
-__kefir_text_func_test3_begin:
-__kefir_func_test3_label0:
+.L__kefir_text_func_test3_begin:
+.L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_test3_label2
-__kefir_func_test3_label2:
+    jmp .L__kefir_func_test3_label2
+.L__kefir_func_test3_label2:
     call somefn@PLT
-    jmp __kefir_func_test3_label3
-__kefir_func_test3_label3:
+    jmp .L__kefir_func_test3_label3
+.L__kefir_func_test3_label3:
     pop %rbp
     ret
-__kefir_text_func_test3_end:
+.L__kefir_text_func_test3_end:
 
 test4:
-__kefir_text_func_test4_begin:
-__kefir_func_test4_label0:
+.L__kefir_text_func_test4_begin:
+.L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_test4_label1
-__kefir_func_test4_label1:
+    jmp .L__kefir_func_test4_label1
+.L__kefir_func_test4_label1:
     call somefn@PLT
-    jmp __kefir_func_test4_label2
-__kefir_func_test4_label2:
+    jmp .L__kefir_func_test4_label2
+.L__kefir_func_test4_label2:
     pop %rbp
     ret
-__kefir_text_func_test4_end:
+.L__kefir_text_func_test4_end:
 
 test5:
-__kefir_text_func_test5_begin:
-__kefir_func_test5_label0:
+.L__kefir_text_func_test5_begin:
+.L__kefir_func_test5_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_test5_label1
-__kefir_func_test5_label1:
+    jmp .L__kefir_func_test5_label1
+.L__kefir_func_test5_label1:
     call somefn@PLT
-    jmp __kefir_func_test5_label1
-__kefir_text_func_test5_end:
+    jmp .L__kefir_func_test5_label1
+.L__kefir_text_func_test5_end:
 
 test6:
-__kefir_text_func_test6_begin:
-__kefir_func_test6_label0:
+.L__kefir_text_func_test6_begin:
+.L__kefir_func_test6_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_test6_label1
-__kefir_func_test6_label1:
+    jmp .L__kefir_func_test6_label1
+.L__kefir_func_test6_label1:
     mov $1, %rax
-    jmp __kefir_func_test6_label2
-__kefir_func_test6_label2:
+    jmp .L__kefir_func_test6_label2
+.L__kefir_func_test6_label2:
     pop %rbp
     ret
-__kefir_text_func_test6_end:
+.L__kefir_text_func_test6_end:
 
 test7:
-__kefir_text_func_test7_begin:
-__kefir_func_test7_label0:
+.L__kefir_text_func_test7_begin:
+.L__kefir_func_test7_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_test7_label2
-__kefir_func_test7_label2:
+    jmp .L__kefir_func_test7_label2
+.L__kefir_func_test7_label2:
     mov $0, %rax
-    jmp __kefir_func_test7_label3
-__kefir_func_test7_label3:
+    jmp .L__kefir_func_test7_label3
+.L__kefir_func_test7_label3:
     test %eax, %eax
     setne %al
     movzx %al, %rax
-    jmp __kefir_func_test7_label4
-__kefir_func_test7_label4:
+    jmp .L__kefir_func_test7_label4
+.L__kefir_func_test7_label4:
     pop %rbp
     ret
-__kefir_text_func_test7_end:
+.L__kefir_text_func_test7_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

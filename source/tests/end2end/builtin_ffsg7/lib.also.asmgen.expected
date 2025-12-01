@@ -15,11 +15,11 @@
 .type test6, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test1:
-__kefir_text_func_test1_begin:
-    jmp __kefir_func_test1_label1
-__kefir_func_test1_label1:
+.L__kefir_text_func_test1_begin:
+    jmp .L__kefir_func_test1_label1
+.L__kefir_func_test1_label1:
     shl $47, %rdi
     sar $47, %rdi
     bsf %edi, %eax
@@ -27,23 +27,23 @@ __kefir_func_test1_label1:
     cmove %ecx, %eax
     add $1, %eax
     ret
-__kefir_text_func_test1_end:
+.L__kefir_text_func_test1_end:
 
 test2:
-__kefir_text_func_test2_begin:
-    jmp __kefir_func_test2_label1
-__kefir_func_test2_label1:
+.L__kefir_text_func_test2_begin:
+    jmp .L__kefir_func_test2_label1
+.L__kefir_func_test2_label1:
     bsf %edi, %eax
     mov $-1, %ecx
     cmove %ecx, %eax
     add $1, %eax
     ret
-__kefir_text_func_test2_end:
+.L__kefir_text_func_test2_end:
 
 test3:
-__kefir_text_func_test3_begin:
-    jmp __kefir_func_test3_label1
-__kefir_func_test3_label1:
+.L__kefir_text_func_test3_begin:
+    jmp .L__kefir_func_test3_label1
+.L__kefir_func_test3_label1:
     shl $5, %rdi
     sar $5, %rdi
     mov %rdi, %rcx
@@ -53,12 +53,12 @@ __kefir_func_test3_label1:
     cmove %rax, %rdi
     lea 1(%rdi), %eax
     ret
-__kefir_text_func_test3_end:
+.L__kefir_text_func_test3_end:
 
 test4:
-__kefir_text_func_test4_begin:
-    jmp __kefir_func_test4_label1
-__kefir_func_test4_label1:
+.L__kefir_text_func_test4_begin:
+    jmp .L__kefir_func_test4_label1
+.L__kefir_func_test4_label1:
     mov %rdi, %rcx
     bsf %rdi, %rcx
     mov $-1, %rax
@@ -66,15 +66,15 @@ __kefir_func_test4_label1:
     cmove %rax, %rdi
     lea 1(%rdi), %eax
     ret
-__kefir_text_func_test4_end:
+.L__kefir_text_func_test4_end:
 
 test5:
-__kefir_text_func_test5_begin:
+.L__kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test5_label1
-__kefir_func_test5_label1:
+    jmp .L__kefir_func_test5_label1
+.L__kefir_func_test5_label1:
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
     leaq -16(%rbp), %rax
@@ -84,22 +84,22 @@ __kefir_func_test5_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test5_end:
+.L__kefir_text_func_test5_end:
 
 test6:
-__kefir_text_func_test6_begin:
+.L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_test6_label1
-__kefir_func_test6_label1:
+    jmp .L__kefir_func_test6_label1
+.L__kefir_func_test6_label1:
     lea 16(%rbp), %rdi
     mov $315, %rsi
     call __kefir_bigint_least_significant_nonzero
     pop %rbp
     ret
-__kefir_text_func_test6_end:
+.L__kefir_text_func_test6_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .att_syntax
 .section .note.GNU-stack,"",%progbits
@@ -107,19 +107,19 @@ __kefir_text_section_end:
 
 .section .text
 __kefir_bigint_least_significant_nonzero:
-__kefir_runtime_text_func___kefir_bigint_least_significant_nonzero_begin:
+.L__kefir_runtime_text_func___kefir_bigint_least_significant_nonzero_begin:
     push %rbx
     push %r12
     push %r13
     push %r14
-    jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label1
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label1:
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label1
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label1:
     mov %rsi, %r12
     mov %rdi, %r13
     cmp $0, %r12
-    je __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label19
-    jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label3
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label3:
+    je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label19
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label3
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label3:
     mov %r12, %rsi
     sub $-7, %rsi
     mov %rsi, %rax
@@ -129,26 +129,26 @@ __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label3:
     mov %rax, %rbx
     xor %ecx, %ecx
     mov %rcx, %r14
-    jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label19:
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label19:
     xor %eax, %eax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     ret
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4:
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4:
     cmp %rbx, %r14
-    jb __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8
-    jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label6
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label6:
+    jb .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label6
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label6:
     xor %eax, %eax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     ret
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8:
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8:
     mov %r13, %rdi
     add %r14, %rdi
     mov %rcx, %r10
@@ -165,31 +165,31 @@ __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8:
     cmovae %rsi, %r11
     movzx %r10b, %rcx
     cmp $0, %ecx
-    je __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12
-    jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label9
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label9:
+    je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label9
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label9:
     xor %ecx, %ecx
     mov %rcx, %r9
-    jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12:
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12:
     lea 1(%r14), %rcx
     mov %rcx, %r14
-    jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10:
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10:
     cmp %r11, %r9
-    jb __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label14
-    jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label14:
+    jb .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label14
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label14:
     lea 1(%r9), %rdx
     movzx %r10b, %r8
     mov %r9, %rcx
     sar %cl, %r8d
     and $1, %r8d
     cmp $1, %r8d
-    je __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label17
+    je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label17
     mov %rdx, %r9
-    jmp __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10
-__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label17:
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label17:
     imul $8, %r14, %rax
     add %r9, %rax
     add $1, %rax
@@ -198,6 +198,6 @@ __kefir_runtime_func___kefir_bigint_least_significant_nonzero_label17:
     pop %r12
     pop %rbx
     ret
-__kefir_runtime_text_func___kefir_bigint_least_significant_nonzero_end:
+.L__kefir_runtime_text_func___kefir_bigint_least_significant_nonzero_end:
 
 

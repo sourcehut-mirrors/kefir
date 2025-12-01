@@ -15,11 +15,11 @@
 .type overflow_umulll, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 overflow_smul:
-__kefir_text_func_overflow_smul_begin:
-    jmp __kefir_func_overflow_smul_label1
-__kefir_func_overflow_smul_label1:
+.L__kefir_text_func_overflow_smul_begin:
+    jmp .L__kefir_func_overflow_smul_label1
+.L__kefir_func_overflow_smul_label1:
     movsx %edi, %rax
     movsx %esi, %rcx
     mov %rax, %rsi
@@ -32,12 +32,12 @@ __kefir_func_overflow_smul_label1:
     and $1, %eax
     movl %esi, (%rdx)
     ret
-__kefir_text_func_overflow_smul_end:
+.L__kefir_text_func_overflow_smul_end:
 
 overflow_umul:
-__kefir_text_func_overflow_umul_begin:
-    jmp __kefir_func_overflow_umul_label1
-__kefir_func_overflow_umul_label1:
+.L__kefir_text_func_overflow_umul_begin:
+    jmp .L__kefir_func_overflow_umul_label1
+.L__kefir_func_overflow_umul_label1:
     mov %edi, %eax
     mov %esi, %ecx
     mov %rax, %rsi
@@ -50,23 +50,23 @@ __kefir_func_overflow_umul_label1:
     and $1, %eax
     movl %esi, (%rdx)
     ret
-__kefir_text_func_overflow_umul_end:
+.L__kefir_text_func_overflow_umul_end:
 
 overflow_smull:
-__kefir_text_func_overflow_smull_begin:
-    jmp __kefir_func_overflow_smull_label1
-__kefir_func_overflow_smull_label1:
+.L__kefir_text_func_overflow_smull_begin:
+    jmp .L__kefir_func_overflow_smull_label1
+.L__kefir_func_overflow_smull_label1:
     imul %rsi, %rdi
     seto %al
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_smull_end:
+.L__kefir_text_func_overflow_smull_end:
 
 overflow_umull:
-__kefir_text_func_overflow_umull_begin:
-    jmp __kefir_func_overflow_umull_label1
-__kefir_func_overflow_umull_label1:
+.L__kefir_text_func_overflow_umull_begin:
+    jmp .L__kefir_func_overflow_umull_label1
+.L__kefir_func_overflow_umull_label1:
     mov %rdx, %rcx
     mov %rdi, %rax
     mul %rsi
@@ -75,23 +75,23 @@ __kefir_func_overflow_umull_label1:
     movq %rax, (%rcx)
     mov %rdx, %rax
     ret
-__kefir_text_func_overflow_umull_end:
+.L__kefir_text_func_overflow_umull_end:
 
 overflow_smulll:
-__kefir_text_func_overflow_smulll_begin:
-    jmp __kefir_func_overflow_smulll_label1
-__kefir_func_overflow_smulll_label1:
+.L__kefir_text_func_overflow_smulll_begin:
+    jmp .L__kefir_func_overflow_smulll_label1
+.L__kefir_func_overflow_smulll_label1:
     imul %rsi, %rdi
     seto %al
     and $1, %eax
     movq %rdi, (%rdx)
     ret
-__kefir_text_func_overflow_smulll_end:
+.L__kefir_text_func_overflow_smulll_end:
 
 overflow_umulll:
-__kefir_text_func_overflow_umulll_begin:
-    jmp __kefir_func_overflow_umulll_label1
-__kefir_func_overflow_umulll_label1:
+.L__kefir_text_func_overflow_umulll_begin:
+    jmp .L__kefir_func_overflow_umulll_label1
+.L__kefir_func_overflow_umulll_label1:
     mov %rdx, %rcx
     mov %rdi, %rax
     mul %rsi
@@ -100,7 +100,7 @@ __kefir_func_overflow_umulll_label1:
     movq %rax, (%rcx)
     mov %rdx, %rax
     ret
-__kefir_text_func_overflow_umulll_end:
+.L__kefir_text_func_overflow_umulll_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

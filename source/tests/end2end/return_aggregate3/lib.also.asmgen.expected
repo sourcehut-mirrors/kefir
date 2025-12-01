@@ -6,19 +6,19 @@
 .type test, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test:
-__kefir_text_func_test_begin:
+.L__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
     mov %rdi, %rcx
-    jmp __kefir_func_test_label1
-__kefir_func_test_label1:
+    jmp .L__kefir_func_test_label1
+.L__kefir_func_test_label1:
     test %rsi, %rsi
-    jnz __kefir_func_test_label5
-    jmp __kefir_func_test_label3
-__kefir_func_test_label3:
+    jnz .L__kefir_func_test_label5
+    jmp .L__kefir_func_test_label3
+.L__kefir_func_test_label3:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -64(%rbp)
@@ -37,13 +37,13 @@ __kefir_func_test_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_test_label5:
+.L__kefir_func_test_label5:
     not %rsi
     mov %rcx, %rdi
     lea (%rbp), %rsp
     pop %rbp
     jmp get@PLT
-__kefir_text_func_test_end:
+.L__kefir_text_func_test_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

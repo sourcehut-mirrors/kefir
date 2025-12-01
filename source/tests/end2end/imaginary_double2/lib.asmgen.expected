@@ -27,86 +27,86 @@
 .type fi64_to_d128, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 d32_to_fi64:
-__kefir_text_func_d32_to_fi64_begin:
-    jmp __kefir_func_d32_to_fi64_label1
-__kefir_func_d32_to_fi64_label1:
-    movq __kefir_func_d32_to_fi64_label4(%rip), %xmm0
+.L__kefir_text_func_d32_to_fi64_begin:
+    jmp .L__kefir_func_d32_to_fi64_label1
+.L__kefir_func_d32_to_fi64_label1:
+    movq .L__kefir_func_d32_to_fi64_label4(%rip), %xmm0
     ret
-__kefir_text_func_d32_to_fi64_end:
+.L__kefir_text_func_d32_to_fi64_end:
 .section .rodata
     .align 8
-__kefir_func_d32_to_fi64_label4:
+.L__kefir_func_d32_to_fi64_label4:
     .quad 0
 .section .text
 
 d64_to_fi64:
-__kefir_text_func_d64_to_fi64_begin:
-    jmp __kefir_func_d64_to_fi64_label1
-__kefir_func_d64_to_fi64_label1:
-    movq __kefir_func_d64_to_fi64_label4(%rip), %xmm0
+.L__kefir_text_func_d64_to_fi64_begin:
+    jmp .L__kefir_func_d64_to_fi64_label1
+.L__kefir_func_d64_to_fi64_label1:
+    movq .L__kefir_func_d64_to_fi64_label4(%rip), %xmm0
     ret
-__kefir_text_func_d64_to_fi64_end:
+.L__kefir_text_func_d64_to_fi64_end:
 .section .rodata
     .align 8
-__kefir_func_d64_to_fi64_label4:
+.L__kefir_func_d64_to_fi64_label4:
     .quad 0
 .section .text
 
 fi64_to_d32:
-__kefir_text_func_fi64_to_d32_begin:
-    jmp __kefir_func_fi64_to_d32_label1
-__kefir_func_fi64_to_d32_label1:
-    movd __kefir_func_fi64_to_d32_label4(%rip), %xmm0
+.L__kefir_text_func_fi64_to_d32_begin:
+    jmp .L__kefir_func_fi64_to_d32_label1
+.L__kefir_func_fi64_to_d32_label1:
+    movd .L__kefir_func_fi64_to_d32_label4(%rip), %xmm0
     ret
-__kefir_text_func_fi64_to_d32_end:
+.L__kefir_text_func_fi64_to_d32_end:
 .section .rodata
     .align 4
-__kefir_func_fi64_to_d32_label4:
+.L__kefir_func_fi64_to_d32_label4:
     .long 847249408
 .section .text
 
 fi64_to_d64:
-__kefir_text_func_fi64_to_d64_begin:
-    jmp __kefir_func_fi64_to_d64_label1
-__kefir_func_fi64_to_d64_label1:
-    movq __kefir_func_fi64_to_d64_label4(%rip), %xmm0
+.L__kefir_text_func_fi64_to_d64_begin:
+    jmp .L__kefir_func_fi64_to_d64_label1
+.L__kefir_func_fi64_to_d64_label1:
+    movq .L__kefir_func_fi64_to_d64_label4(%rip), %xmm0
     ret
-__kefir_text_func_fi64_to_d64_end:
+.L__kefir_text_func_fi64_to_d64_end:
 .section .rodata
     .align 8
-__kefir_func_fi64_to_d64_label4:
+.L__kefir_func_fi64_to_d64_label4:
     .quad 3584865303386914816
 .section .text
 
 d128_to_fi64:
-__kefir_text_func_d128_to_fi64_begin:
-    jmp __kefir_func_d128_to_fi64_label1
-__kefir_func_d128_to_fi64_label1:
-    movq __kefir_func_d128_to_fi64_label4(%rip), %xmm0
+.L__kefir_text_func_d128_to_fi64_begin:
+    jmp .L__kefir_func_d128_to_fi64_label1
+.L__kefir_func_d128_to_fi64_label1:
+    movq .L__kefir_func_d128_to_fi64_label4(%rip), %xmm0
     ret
-__kefir_text_func_d128_to_fi64_end:
+.L__kefir_text_func_d128_to_fi64_end:
 .section .rodata
     .align 8
-__kefir_func_d128_to_fi64_label4:
+.L__kefir_func_d128_to_fi64_label4:
     .quad 0
 .section .text
 
 fi64_to_d128:
-__kefir_text_func_fi64_to_d128_begin:
-    jmp __kefir_func_fi64_to_d128_label1
-__kefir_func_fi64_to_d128_label1:
-    movdqu __kefir_func_fi64_to_d128_label4(%rip), %xmm0
+.L__kefir_text_func_fi64_to_d128_begin:
+    jmp .L__kefir_func_fi64_to_d128_label1
+.L__kefir_func_fi64_to_d128_label1:
+    movdqu .L__kefir_func_fi64_to_d128_label4(%rip), %xmm0
     ret
-__kefir_text_func_fi64_to_d128_end:
+.L__kefir_text_func_fi64_to_d128_end:
 .section .rodata
     .align 16
-__kefir_func_fi64_to_d128_label4:
+.L__kefir_func_fi64_to_d128_label4:
     .quad 0, 3476778912330022912
 .section .text
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 4

@@ -5,10 +5,10 @@
 .type sumall, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 sumall:
-__kefir_text_func_sumall_begin:
-__kefir_func_sumall_label0:
+.L__kefir_text_func_sumall_begin:
+.L__kefir_func_sumall_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
@@ -16,8 +16,8 @@ __kefir_func_sumall_label0:
     push %r13
     push %r14
     sub $16, %rsp
-    jmp __kefir_func_sumall_label1
-__kefir_func_sumall_label1:
+    jmp .L__kefir_func_sumall_label1
+.L__kefir_func_sumall_label1:
     movq %rdi, -48(%rbp)
     movq %xmm0, -40(%rbp)
     movq -48(%rbp), %rdx
@@ -30,7 +30,7 @@ __kefir_func_sumall_label1:
     movq -48(%rbp), %r12
     movq -48(%rbp), %rax
     movq -48(%rbp), %rcx
-    movq __kefir_func_sumall_label4(%rip), %xmm0
+    movq .L__kefir_func_sumall_label4(%rip), %xmm0
     mov $0, %r13
     movsx %r13d, %rbx
     imul $8, %rbx, %rbx
@@ -108,12 +108,12 @@ addsd (%rcx), %xmm0
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_sumall_end:
+.L__kefir_text_func_sumall_end:
 .section .rodata
     .align 8
-__kefir_func_sumall_label4:
+.L__kefir_func_sumall_label4:
     .quad 0
 .section .text
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

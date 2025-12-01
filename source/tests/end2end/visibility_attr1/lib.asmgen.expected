@@ -25,60 +25,60 @@
 .internal getz
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 getw:
-__kefir_text_func_getw_begin:
-__kefir_func_getw_label0:
+.L__kefir_text_func_getw_begin:
+.L__kefir_func_getw_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_getw_label1
-__kefir_func_getw_label1:
+    jmp .L__kefir_func_getw_label1
+.L__kefir_func_getw_label1:
     movq w@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     pop %rbp
     ret
-__kefir_text_func_getw_end:
+.L__kefir_text_func_getw_end:
 
 getx:
-__kefir_text_func_getx_begin:
-__kefir_func_getx_label0:
+.L__kefir_text_func_getx_begin:
+.L__kefir_func_getx_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_getx_label1
-__kefir_func_getx_label1:
+    jmp .L__kefir_func_getx_label1
+.L__kefir_func_getx_label1:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     pop %rbp
     ret
-__kefir_text_func_getx_end:
+.L__kefir_text_func_getx_end:
 
 gety:
-__kefir_text_func_gety_begin:
-__kefir_func_gety_label0:
+.L__kefir_text_func_gety_begin:
+.L__kefir_func_gety_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_gety_label1
-__kefir_func_gety_label1:
+    jmp .L__kefir_func_gety_label1
+.L__kefir_func_gety_label1:
     movq y@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     pop %rbp
     ret
-__kefir_text_func_gety_end:
+.L__kefir_text_func_gety_end:
 
 getz:
-__kefir_text_func_getz_begin:
-__kefir_func_getz_label0:
+.L__kefir_text_func_getz_begin:
+.L__kefir_func_getz_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp __kefir_func_getz_label1
-__kefir_func_getz_label1:
+    jmp .L__kefir_func_getz_label1
+.L__kefir_func_getz_label1:
     movq z@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     pop %rbp
     ret
-__kefir_text_func_getz_end:
+.L__kefir_text_func_getz_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 4

@@ -5,15 +5,15 @@
 .type hypot_sq, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 hypot_sq:
-__kefir_text_func_hypot_sq_begin:
+.L__kefir_text_func_hypot_sq_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_hypot_sq_label1
-__kefir_func_hypot_sq_label1:
+    jmp .L__kefir_func_hypot_sq_label1
+.L__kefir_func_hypot_sq_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fld %st(0)
@@ -27,7 +27,7 @@ __kefir_func_hypot_sq_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_hypot_sq_end:
+.L__kefir_text_func_hypot_sq_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

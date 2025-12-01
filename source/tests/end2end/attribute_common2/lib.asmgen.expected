@@ -13,27 +13,27 @@
 .type gety, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 getx:
-__kefir_text_func_getx_begin:
-    jmp __kefir_func_getx_label1
-__kefir_func_getx_label1:
+.L__kefir_text_func_getx_begin:
+    jmp .L__kefir_func_getx_label1
+.L__kefir_func_getx_label1:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
-__kefir_text_func_getx_end:
+.L__kefir_text_func_getx_end:
 
 gety:
-__kefir_text_func_gety_begin:
+.L__kefir_text_func_gety_begin:
 .extern __tls_get_addr
-    jmp __kefir_func_gety_label1
-__kefir_func_gety_label1:
+    jmp .L__kefir_func_gety_label1
+.L__kefir_func_gety_label1:
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     movl (%rax), %eax
     ret
-__kefir_text_func_gety_end:
+.L__kefir_text_func_gety_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

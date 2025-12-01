@@ -15,21 +15,21 @@
 .type is_finite_f80, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 is_finite_f32:
-__kefir_text_func_is_finite_f32_begin:
-__kefir_func_is_finite_f32_label0:
+.L__kefir_text_func_is_finite_f32_begin:
+.L__kefir_func_is_finite_f32_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_is_finite_f32_label1
-__kefir_func_is_finite_f32_label1:
+    jmp .L__kefir_func_is_finite_f32_label1
+.L__kefir_func_is_finite_f32_label1:
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
     movq %rax, %xmm0
-    andps __kefir_constant_isfinitef32_mask(%rip), %xmm0
-    movdqu __kefir_constant_isfinitef32_cmp(%rip), %xmm1
+    andps .L__kefir_constant_isfinitef32_mask(%rip), %xmm0
+    movdqu .L__kefir_constant_isfinitef32_cmp(%rip), %xmm1
     mov %rcx, %rax
     xor %ecx, %eax
     ucomiss %xmm0, %xmm1
@@ -41,22 +41,22 @@ __kefir_func_is_finite_f32_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_is_finite_f32_end:
+.L__kefir_text_func_is_finite_f32_end:
 
 is_finite_f64:
-__kefir_text_func_is_finite_f64_begin:
-__kefir_func_is_finite_f64_label0:
+.L__kefir_text_func_is_finite_f64_begin:
+.L__kefir_func_is_finite_f64_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_is_finite_f64_label1
-__kefir_func_is_finite_f64_label1:
+    jmp .L__kefir_func_is_finite_f64_label1
+.L__kefir_func_is_finite_f64_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movq %rax, %xmm0
-    andpd __kefir_constant_isfinitef64_mask(%rip), %xmm0
-    movdqu __kefir_constant_isfinitef64_cmp(%rip), %xmm1
+    andpd .L__kefir_constant_isfinitef64_mask(%rip), %xmm0
+    movdqu .L__kefir_constant_isfinitef64_cmp(%rip), %xmm1
     mov %rcx, %rax
     xor %ecx, %eax
     ucomisd %xmm0, %xmm1
@@ -68,17 +68,17 @@ __kefir_func_is_finite_f64_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_is_finite_f64_end:
+.L__kefir_text_func_is_finite_f64_end:
 
 is_finite_f80:
-__kefir_text_func_is_finite_f80_begin:
-__kefir_func_is_finite_f80_label0:
+.L__kefir_text_func_is_finite_f80_begin:
+.L__kefir_func_is_finite_f80_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_is_finite_f80_label1
-__kefir_func_is_finite_f80_label1:
+    jmp .L__kefir_func_is_finite_f80_label1
+.L__kefir_func_is_finite_f80_label1:
     fldt 16(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
@@ -86,7 +86,7 @@ __kefir_func_is_finite_f80_label1:
     fabs
     mov %rcx, %rax
     xor %ecx, %eax
-    fldt __kefir_constant_isfinitel_cmp(%rip)
+    fldt .L__kefir_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al
     fstp %st(0)
@@ -97,9 +97,9 @@ __kefir_func_is_finite_f80_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_is_finite_f80_end:
+.L__kefir_text_func_is_finite_f80_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 16
@@ -131,31 +131,31 @@ f80:
 
 .section .rodata
     .align 16
-__kefir_constant_isfinitef32_mask:
+.L__kefir_constant_isfinitef32_mask:
     .long 2147483647
     .long 0
     .long 0
     .long 0
     .align 16
-__kefir_constant_isfinitef32_cmp:
+.L__kefir_constant_isfinitef32_cmp:
     .long 2139095039
     .long 0
     .long 0
     .long 0
     .align 16
-__kefir_constant_isfinitef64_mask:
+.L__kefir_constant_isfinitef64_mask:
     .long 18446744073709551615
     .long 2147483647
     .long 0
     .long 0
     .align 16
-__kefir_constant_isfinitef64_cmp:
+.L__kefir_constant_isfinitef64_cmp:
     .long 18446744073709551615
     .long 2146435071
     .long 0
     .long 0
     .align 16
-__kefir_constant_isfinitel_cmp:
+.L__kefir_constant_isfinitel_cmp:
     .long 18446744073709551615
     .long 18446744073709551615
     .long 32766

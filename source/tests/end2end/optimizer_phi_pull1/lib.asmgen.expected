@@ -10,51 +10,51 @@
 .type condition1, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 somefn:
-__kefir_text_func_somefn_begin:
+.L__kefir_text_func_somefn_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_somefn_label1
-__kefir_func_somefn_label1:
-    movq __kefir_func_somefn_label9(%rip), %xmm0
-    movq __kefir_func_somefn_label10(%rip), %xmm1
+    jmp .L__kefir_func_somefn_label1
+.L__kefir_func_somefn_label1:
+    movq .L__kefir_func_somefn_label9(%rip), %xmm0
+    movq .L__kefir_func_somefn_label10(%rip), %xmm1
     movaps %xmm0, %xmm2
-    jmp __kefir_func_somefn_label2
-__kefir_func_somefn_label2:
+    jmp .L__kefir_func_somefn_label2
+.L__kefir_func_somefn_label2:
     mov %rdi, %rax
     add $-1, %eax
     test %edi, %edi
-    jnz __kefir_func_somefn_label6
-    jmp __kefir_func_somefn_label4
-__kefir_func_somefn_label4:
+    jnz .L__kefir_func_somefn_label6
+    jmp .L__kefir_func_somefn_label4
+.L__kefir_func_somefn_label4:
     movaps %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_somefn_label6:
+.L__kefir_func_somefn_label6:
     movaps %xmm2, %xmm0
     addsd %xmm1, %xmm0
     mov %rax, %rdi
     movaps %xmm0, %xmm2
-    jmp __kefir_func_somefn_label2
-__kefir_text_func_somefn_end:
+    jmp .L__kefir_func_somefn_label2
+.L__kefir_text_func_somefn_end:
 .section .rodata
     .align 8
-__kefir_func_somefn_label9:
+.L__kefir_func_somefn_label9:
     .quad 0
     .align 8
-__kefir_func_somefn_label10:
+.L__kefir_func_somefn_label10:
     .quad 4607182418800017408
 .section .text
 
 assign_abs:
-__kefir_text_func_assign_abs_begin:
-    jmp __kefir_func_assign_abs_label1
-__kefir_func_assign_abs_label1:
+.L__kefir_text_func_assign_abs_begin:
+    jmp .L__kefir_func_assign_abs_label1
+.L__kefir_func_assign_abs_label1:
     movq somevar@GOTPCREL(%rip), %rax
     mov %rdi, %rcx
     neg %rcx
@@ -62,23 +62,23 @@ __kefir_func_assign_abs_label1:
     cmovle %rcx, %rdi
     movq %rdi, (%rax)
     ret
-__kefir_text_func_assign_abs_end:
+.L__kefir_text_func_assign_abs_end:
 
 condition1:
-__kefir_text_func_condition1_begin:
-    jmp __kefir_func_condition1_label1
-__kefir_func_condition1_label1:
+.L__kefir_text_func_condition1_begin:
+    jmp .L__kefir_func_condition1_label1
+.L__kefir_func_condition1_label1:
     cmp $0, %edi
-    jg __kefir_func_condition1_label5
-    jmp __kefir_func_condition1_label3
-__kefir_func_condition1_label3:
+    jg .L__kefir_func_condition1_label5
+    jmp .L__kefir_func_condition1_label3
+.L__kefir_func_condition1_label3:
     mov $10, %rax
     ret
-__kefir_func_condition1_label5:
+.L__kefir_func_condition1_label5:
     add $10, %edi
     mov %rdi, %rax
     ret
-__kefir_text_func_condition1_end:
+.L__kefir_text_func_condition1_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

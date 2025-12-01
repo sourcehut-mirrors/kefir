@@ -5,19 +5,19 @@
 .type x, @object
 
 .section .text
-__kefir_text_section_begin:
-__kefir_text_section_end:
+.L__kefir_text_section_begin:
+.L__kefir_text_section_end:
 
 .section .data
     .align 16
 x:
-    .quad __kefir_string_literal0
+    .quad .L__kefir_string_literal0
     .long 0
     .zero 4
-    .quad __kefir_string_literal1
+    .quad .L__kefir_string_literal1
     .long 1
     .zero 4
-    .quad __kefir_string_literal2
+    .quad .L__kefir_string_literal2
     .long 2
     .zero 4
     .quad 0
@@ -25,9 +25,9 @@ x:
     .zero 4
 
 .section .rodata
-__kefir_string_literal0:
+.L__kefir_string_literal0:
     .ascii "Hello\000"
-__kefir_string_literal1:
+.L__kefir_string_literal1:
     .ascii "world\000"
-__kefir_string_literal2:
+.L__kefir_string_literal2:
     .ascii "!\000"

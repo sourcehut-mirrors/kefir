@@ -19,56 +19,56 @@
 .type mygetd, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 mygeta:
-__kefir_text_func_mygeta_begin:
-    jmp __kefir_func_mygeta_label1
-__kefir_func_mygeta_label1:
-    movd __kefir_func_mygeta_label4(%rip), %xmm0
+.L__kefir_text_func_mygeta_begin:
+    jmp .L__kefir_func_mygeta_label1
+.L__kefir_func_mygeta_label1:
+    movd .L__kefir_func_mygeta_label4(%rip), %xmm0
     ret
-__kefir_text_func_mygeta_end:
+.L__kefir_text_func_mygeta_end:
 .section .rodata
     .align 4
-__kefir_func_mygeta_label4:
+.L__kefir_func_mygeta_label4:
     .long 805620497
 .section .text
 
 mygetb:
-__kefir_text_func_mygetb_begin:
-    jmp __kefir_func_mygetb_label1
-__kefir_func_mygetb_label1:
-    movq __kefir_func_mygetb_label4(%rip), %xmm0
+.L__kefir_text_func_mygetb_begin:
+    jmp .L__kefir_func_mygetb_label1
+.L__kefir_func_mygetb_label1:
+    movq .L__kefir_func_mygetb_label4(%rip), %xmm0
     ret
-__kefir_text_func_mygetb_end:
+.L__kefir_text_func_mygetb_end:
 .section .rodata
     .align 8
-__kefir_func_mygetb_label4:
+.L__kefir_func_mygetb_label4:
     .quad 12763201343968257492
 .section .text
 
 mygetc:
-__kefir_text_func_mygetc_begin:
-    jmp __kefir_func_mygetc_label1
-__kefir_func_mygetc_label1:
-    movdqu __kefir_func_mygetc_label4(%rip), %xmm0
+.L__kefir_text_func_mygetc_begin:
+    jmp .L__kefir_func_mygetc_label1
+.L__kefir_func_mygetc_label1:
+    movdqu .L__kefir_func_mygetc_label4(%rip), %xmm0
     ret
-__kefir_text_func_mygetc_end:
+.L__kefir_text_func_mygetc_end:
 .section .rodata
     .align 16
-__kefir_func_mygetc_label4:
+.L__kefir_func_mygetc_label4:
     .quad 319371938, 3474527112516337664
 .section .text
 
 mygetd:
-__kefir_text_func_mygetd_begin:
-    jmp __kefir_func_mygetd_label1
-__kefir_func_mygetd_label1:
+.L__kefir_text_func_mygetd_begin:
+    jmp .L__kefir_func_mygetd_label1
+.L__kefir_func_mygetd_label1:
     movq d@GOTPCREL(%rip), %rax
     movdqu (%rax), %xmm0
     ret
-__kefir_text_func_mygetd_end:
+.L__kefir_text_func_mygetd_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 4

@@ -15,15 +15,15 @@
 .type neq, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 eq:
-__kefir_text_func_eq_begin:
+.L__kefir_text_func_eq_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_eq_label1
-__kefir_func_eq_label1:
+    jmp .L__kefir_func_eq_label1
+.L__kefir_func_eq_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     xor %eax, %eax
@@ -36,16 +36,16 @@ __kefir_func_eq_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_eq_end:
+.L__kefir_text_func_eq_end:
 
 ge:
-__kefir_text_func_ge_begin:
+.L__kefir_text_func_ge_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_ge_label1
-__kefir_func_ge_label1:
+    jmp .L__kefir_func_ge_label1
+.L__kefir_func_ge_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fld %st(0)
@@ -75,16 +75,16 @@ __kefir_func_ge_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_ge_end:
+.L__kefir_text_func_ge_end:
 
 gr:
-__kefir_text_func_gr_begin:
+.L__kefir_text_func_gr_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_gr_label1
-__kefir_func_gr_label1:
+    jmp .L__kefir_func_gr_label1
+.L__kefir_func_gr_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     xor %eax, %eax
@@ -95,16 +95,16 @@ __kefir_func_gr_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_gr_end:
+.L__kefir_text_func_gr_end:
 
 le:
-__kefir_text_func_le_begin:
+.L__kefir_text_func_le_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_le_label1
-__kefir_func_le_label1:
+    jmp .L__kefir_func_le_label1
+.L__kefir_func_le_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fxch %st(1)
@@ -135,16 +135,16 @@ __kefir_func_le_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_le_end:
+.L__kefir_text_func_le_end:
 
 lt:
-__kefir_text_func_lt_begin:
+.L__kefir_text_func_lt_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_lt_label1
-__kefir_func_lt_label1:
+    jmp .L__kefir_func_lt_label1
+.L__kefir_func_lt_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fxch %st(1)
@@ -156,16 +156,16 @@ __kefir_func_lt_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_lt_end:
+.L__kefir_text_func_lt_end:
 
 neq:
-__kefir_text_func_neq_begin:
+.L__kefir_text_func_neq_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_neq_label1
-__kefir_func_neq_label1:
+    jmp .L__kefir_func_neq_label1
+.L__kefir_func_neq_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     xor %eax, %eax
@@ -182,7 +182,7 @@ __kefir_func_neq_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_neq_end:
+.L__kefir_text_func_neq_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

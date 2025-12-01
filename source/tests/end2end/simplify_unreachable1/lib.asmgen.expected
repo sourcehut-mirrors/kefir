@@ -59,204 +59,204 @@
 .type test19, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test1:
-__kefir_text_func_test1_begin:
-    jmp __kefir_func_test1_label1
-__kefir_func_test1_label1:
+.L__kefir_text_func_test1_begin:
+    jmp .L__kefir_func_test1_label1
+.L__kefir_func_test1_label1:
     ud2
-__kefir_text_func_test1_end:
+.L__kefir_text_func_test1_end:
 
 test2:
-__kefir_text_func_test2_begin:
-    jmp __kefir_func_test2_label1
-__kefir_func_test2_label1:
+.L__kefir_text_func_test2_begin:
+    jmp .L__kefir_func_test2_label1
+.L__kefir_func_test2_label1:
     ud2
-__kefir_text_func_test2_end:
+.L__kefir_text_func_test2_end:
 
 test3:
-__kefir_text_func_test3_begin:
-    jmp __kefir_func_test3_label1
-__kefir_func_test3_label1:
+.L__kefir_text_func_test3_begin:
+    jmp .L__kefir_func_test3_label1
+.L__kefir_func_test3_label1:
     ud2
-__kefir_text_func_test3_end:
+.L__kefir_text_func_test3_end:
 
 test4:
-__kefir_text_func_test4_begin:
-    jmp __kefir_func_test4_label1
-__kefir_func_test4_label1:
+.L__kefir_text_func_test4_begin:
+    jmp .L__kefir_func_test4_label1
+.L__kefir_func_test4_label1:
     ud2
-__kefir_text_func_test4_end:
+.L__kefir_text_func_test4_end:
 
 test5:
-__kefir_text_func_test5_begin:
-    jmp __kefir_func_test5_label1
-__kefir_func_test5_label1:
+.L__kefir_text_func_test5_begin:
+    jmp .L__kefir_func_test5_label1
+.L__kefir_func_test5_label1:
     ud2
-__kefir_text_func_test5_end:
+.L__kefir_text_func_test5_end:
 
 test6:
-__kefir_text_func_test6_begin:
-    jmp __kefir_func_test6_label1
-__kefir_func_test6_label1:
+.L__kefir_text_func_test6_begin:
+    jmp .L__kefir_func_test6_label1
+.L__kefir_func_test6_label1:
     ud2
-__kefir_text_func_test6_end:
+.L__kefir_text_func_test6_end:
 
 test7:
-__kefir_text_func_test7_begin:
-    jmp __kefir_func_test7_label1
-__kefir_func_test7_label1:
+.L__kefir_text_func_test7_begin:
+    jmp .L__kefir_func_test7_label1
+.L__kefir_func_test7_label1:
     ud2
-__kefir_text_func_test7_end:
+.L__kefir_text_func_test7_end:
 
 test8:
-__kefir_text_func_test8_begin:
-    jmp __kefir_func_test8_label1
-__kefir_func_test8_label1:
+.L__kefir_text_func_test8_begin:
+    jmp .L__kefir_func_test8_label1
+.L__kefir_func_test8_label1:
     ud2
-__kefir_text_func_test8_end:
+.L__kefir_text_func_test8_end:
 
 test9:
-__kefir_text_func_test9_begin:
-    jmp __kefir_func_test9_label1
-__kefir_func_test9_label1:
+.L__kefir_text_func_test9_begin:
+    jmp .L__kefir_func_test9_label1
+.L__kefir_func_test9_label1:
     movq u8@GOTPCREL(%rip), %rax
     movb $1, (%rax)
     ud2
-__kefir_text_func_test9_end:
+.L__kefir_text_func_test9_end:
 
 test10:
-__kefir_text_func_test10_begin:
-    jmp __kefir_func_test10_label1
-__kefir_func_test10_label1:
+.L__kefir_text_func_test10_begin:
+    jmp .L__kefir_func_test10_label1
+.L__kefir_func_test10_label1:
     movq u16@GOTPCREL(%rip), %rax
     movw $1, (%rax)
     ud2
-__kefir_text_func_test10_end:
+.L__kefir_text_func_test10_end:
 
 test11:
-__kefir_text_func_test11_begin:
-    jmp __kefir_func_test11_label1
-__kefir_func_test11_label1:
+.L__kefir_text_func_test11_begin:
+    jmp .L__kefir_func_test11_label1
+.L__kefir_func_test11_label1:
     movq u32@GOTPCREL(%rip), %rax
     movl $1, (%rax)
     ud2
-__kefir_text_func_test11_end:
+.L__kefir_text_func_test11_end:
 
 test12:
-__kefir_text_func_test12_begin:
-    jmp __kefir_func_test12_label1
-__kefir_func_test12_label1:
+.L__kefir_text_func_test12_begin:
+    jmp .L__kefir_func_test12_label1
+.L__kefir_func_test12_label1:
     movq u64@GOTPCREL(%rip), %rax
     movq $1, (%rax)
     ud2
-__kefir_text_func_test12_end:
+.L__kefir_text_func_test12_end:
 
 test13:
-__kefir_text_func_test13_begin:
-    jmp __kefir_func_test13_label1
-__kefir_func_test13_label1:
+.L__kefir_text_func_test13_begin:
+    jmp .L__kefir_func_test13_label1
+.L__kefir_func_test13_label1:
     movq ld@GOTPCREL(%rip), %rax
-    fldt __kefir_func_test13_label4(%rip)
+    fldt .L__kefir_func_test13_label4(%rip)
     movq $0, 8(%rax)
     fstpt (%rax)
     ud2
-__kefir_text_func_test13_end:
+.L__kefir_text_func_test13_end:
 .section .rodata
     .align 8
-__kefir_func_test13_label4:
+.L__kefir_func_test13_label4:
     .quad 9223372036854775808
     .quad 16383
 .section .text
 
 test14:
-__kefir_text_func_test14_begin:
+.L__kefir_text_func_test14_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_test14_label1
-__kefir_func_test14_label1:
+    jmp .L__kefir_func_test14_label1
+.L__kefir_func_test14_label1:
     movq c32@GOTPCREL(%rip), %rax
-    movd __kefir_func_test14_label4(%rip), %xmm0
-    movd __kefir_func_test14_label5(%rip), %xmm1
+    movd .L__kefir_func_test14_label4(%rip), %xmm0
+    movd .L__kefir_func_test14_label5(%rip), %xmm1
     movd %xmm0, (%rax)
     movd %xmm1, 4(%rax)
     ud2
-__kefir_text_func_test14_end:
+.L__kefir_text_func_test14_end:
 .section .rodata
     .align 4
-__kefir_func_test14_label4:
+.L__kefir_func_test14_label4:
     .long 1065353216
     .align 4
-__kefir_func_test14_label5:
+.L__kefir_func_test14_label5:
     .long 0
 .section .text
 
 test15:
-__kefir_text_func_test15_begin:
+.L__kefir_text_func_test15_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp __kefir_func_test15_label1
-__kefir_func_test15_label1:
+    jmp .L__kefir_func_test15_label1
+.L__kefir_func_test15_label1:
     movq c64@GOTPCREL(%rip), %rax
-    movq __kefir_func_test15_label4(%rip), %xmm0
-    movq __kefir_func_test15_label5(%rip), %xmm1
+    movq .L__kefir_func_test15_label4(%rip), %xmm0
+    movq .L__kefir_func_test15_label5(%rip), %xmm1
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
     ud2
-__kefir_text_func_test15_end:
+.L__kefir_text_func_test15_end:
 .section .rodata
     .align 8
-__kefir_func_test15_label4:
+.L__kefir_func_test15_label4:
     .quad 4607182418800017408
     .align 8
-__kefir_func_test15_label5:
+.L__kefir_func_test15_label5:
     .quad 0
 .section .text
 
 test16:
-__kefir_text_func_test16_begin:
-    jmp __kefir_func_test16_label1
-__kefir_func_test16_label1:
+.L__kefir_text_func_test16_begin:
+    jmp .L__kefir_func_test16_label1
+.L__kefir_func_test16_label1:
     movq c80@GOTPCREL(%rip), %rax
     add $16, %rax
-    fldt __kefir_func_test16_label4(%rip)
+    fldt .L__kefir_func_test16_label4(%rip)
     movq $0, 8(%rax)
     fstpt (%rax)
     movq c80@GOTPCREL(%rip), %rax
-    fldt __kefir_func_test16_label5(%rip)
+    fldt .L__kefir_func_test16_label5(%rip)
     movq $0, 8(%rax)
     fstpt (%rax)
     ud2
-__kefir_text_func_test16_end:
+.L__kefir_text_func_test16_end:
 .section .rodata
     .align 8
-__kefir_func_test16_label4:
+.L__kefir_func_test16_label4:
     .quad 0
     .quad 0
     .align 8
-__kefir_func_test16_label5:
+.L__kefir_func_test16_label5:
     .quad 9223372036854775808
     .quad 16383
 .section .text
 
 test17:
-__kefir_text_func_test17_begin:
-    jmp __kefir_func_test17_label1
-__kefir_func_test17_label1:
+.L__kefir_text_func_test17_begin:
+    jmp .L__kefir_func_test17_label1
+.L__kefir_func_test17_label1:
     ud2
-__kefir_text_func_test17_end:
+.L__kefir_text_func_test17_end:
 
 test18:
-__kefir_text_func_test18_begin:
+.L__kefir_text_func_test18_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test18_label1
-__kefir_func_test18_label1:
+    jmp .L__kefir_func_test18_label1
+.L__kefir_func_test18_label1:
     movq u128@GOTPCREL(%rip), %rax
     movl $1, -16(%rbp)
     movl $0, -12(%rbp)
@@ -265,16 +265,16 @@ __kefir_func_test18_label1:
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     ud2
-__kefir_text_func_test18_end:
+.L__kefir_text_func_test18_end:
 
 test19:
-__kefir_text_func_test19_begin:
-    jmp __kefir_func_test19_label1
-__kefir_func_test19_label1:
+.L__kefir_text_func_test19_begin:
+    jmp .L__kefir_func_test19_label1
+.L__kefir_func_test19_label1:
     ud2
-__kefir_text_func_test19_end:
+.L__kefir_text_func_test19_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .bss
     .align 16

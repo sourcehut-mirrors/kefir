@@ -5,22 +5,22 @@
 .type test, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test:
-__kefir_text_func_test_begin:
-__kefir_func_test_label0:
+.L__kefir_text_func_test_begin:
+.L__kefir_func_test_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test_label1
-__kefir_func_test_label1:
+    jmp .L__kefir_func_test_label1
+.L__kefir_func_test_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl $0, -12(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test_end:
+.L__kefir_text_func_test_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

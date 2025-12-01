@@ -7,15 +7,15 @@
 .type my_hypot, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 my_hypot:
-__kefir_text_func_my_hypot_begin:
+.L__kefir_text_func_my_hypot_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_my_hypot_label1
-__kefir_func_my_hypot_label1:
+    jmp .L__kefir_func_my_hypot_label1
+.L__kefir_func_my_hypot_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -64(%rbp)
@@ -49,7 +49,7 @@ __kefir_func_my_hypot_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_my_hypot_end:
+.L__kefir_text_func_my_hypot_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 

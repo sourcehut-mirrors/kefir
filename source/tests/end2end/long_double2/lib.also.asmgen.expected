@@ -7,16 +7,16 @@
 .type LAST_VALUE, @object
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 increment:
-__kefir_text_func_increment_begin:
+.L__kefir_text_func_increment_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
     fstcw -16(%rbp)
-    jmp __kefir_func_increment_label1
-__kefir_func_increment_label1:
+    jmp .L__kefir_func_increment_label1
+.L__kefir_func_increment_label1:
     mov %rdi, %rbx
     call *%rbx
     movq LAST_VALUE@GOTPCREL(%rip), %rax
@@ -24,7 +24,7 @@ __kefir_func_increment_label1:
     fld %st(0)
     fstpt -32(%rbp)
     fstpt (%rax)
-    fldt __kefir_func_increment_label4(%rip)
+    fldt .L__kefir_func_increment_label4(%rip)
     fldt -32(%rbp)
     faddp
     fldcw -16(%rbp)
@@ -32,15 +32,15 @@ __kefir_func_increment_label1:
     pop %rbx
     pop %rbp
     ret
-__kefir_text_func_increment_end:
+.L__kefir_text_func_increment_end:
 .section .rodata
     .align 8
-__kefir_func_increment_label4:
+.L__kefir_func_increment_label4:
     .quad 9223372036854775808
     .quad 16383
 .section .text
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
 .section .data
     .align 16

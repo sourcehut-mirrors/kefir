@@ -28,22 +28,22 @@
 .type test2_atomic_load64, @function
 
 .section .text
-__kefir_text_section_begin:
+.L__kefir_text_section_begin:
 test2_atomic_load8:
-__kefir_text_func_test2_atomic_load8_begin:
-    jmp __kefir_func_test2_atomic_load8_label1
-__kefir_func_test2_atomic_load8_label1:
+.L__kefir_text_func_test2_atomic_load8_begin:
+    jmp .L__kefir_func_test2_atomic_load8_label1
+.L__kefir_func_test2_atomic_load8_label1:
     movb (%rdi), %al
     ret
-__kefir_text_func_test2_atomic_load8_end:
+.L__kefir_text_func_test2_atomic_load8_end:
 
 test2_atomic_load128:
-__kefir_text_func_test2_atomic_load128_begin:
+.L__kefir_text_func_test2_atomic_load128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test2_atomic_load128_label1
-__kefir_func_test2_atomic_load128_label1:
+    jmp .L__kefir_func_test2_atomic_load128_label1
+.L__kefir_func_test2_atomic_load128_label1:
     mov %rdi, %rax
     mov $16, %rdi
     mov %rax, %rsi
@@ -54,16 +54,16 @@ __kefir_func_test2_atomic_load128_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test2_atomic_load128_end:
+.L__kefir_text_func_test2_atomic_load128_end:
 
 test2_atomic_load256:
-__kefir_text_func_test2_atomic_load256_begin:
+.L__kefir_text_func_test2_atomic_load256_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_test2_atomic_load256_label1
-__kefir_func_test2_atomic_load256_label1:
+    jmp .L__kefir_func_test2_atomic_load256_label1
+.L__kefir_func_test2_atomic_load256_label1:
     mov %rdi, %rax
     mov $32, %rdi
     mov %rax, %rsi
@@ -81,47 +81,47 @@ __kefir_func_test2_atomic_load256_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test2_atomic_load256_end:
+.L__kefir_text_func_test2_atomic_load256_end:
 
 test_atomic_load8:
-__kefir_text_func_test_atomic_load8_begin:
-    jmp __kefir_func_test_atomic_load8_label1
-__kefir_func_test_atomic_load8_label1:
+.L__kefir_text_func_test_atomic_load8_begin:
+    jmp .L__kefir_func_test_atomic_load8_label1
+.L__kefir_func_test_atomic_load8_label1:
     movb (%rdi), %al
     ret
-__kefir_text_func_test_atomic_load8_end:
+.L__kefir_text_func_test_atomic_load8_end:
 
 test_atomic_load16:
-__kefir_text_func_test_atomic_load16_begin:
-    jmp __kefir_func_test_atomic_load16_label1
-__kefir_func_test_atomic_load16_label1:
+.L__kefir_text_func_test_atomic_load16_begin:
+    jmp .L__kefir_func_test_atomic_load16_label1
+.L__kefir_func_test_atomic_load16_label1:
     movw (%rdi), %ax
     ret
-__kefir_text_func_test_atomic_load16_end:
+.L__kefir_text_func_test_atomic_load16_end:
 
 test_atomic_load32:
-__kefir_text_func_test_atomic_load32_begin:
-    jmp __kefir_func_test_atomic_load32_label1
-__kefir_func_test_atomic_load32_label1:
+.L__kefir_text_func_test_atomic_load32_begin:
+    jmp .L__kefir_func_test_atomic_load32_label1
+.L__kefir_func_test_atomic_load32_label1:
     movl (%rdi), %eax
     ret
-__kefir_text_func_test_atomic_load32_end:
+.L__kefir_text_func_test_atomic_load32_end:
 
 test_atomic_load64:
-__kefir_text_func_test_atomic_load64_begin:
-    jmp __kefir_func_test_atomic_load64_label1
-__kefir_func_test_atomic_load64_label1:
+.L__kefir_text_func_test_atomic_load64_begin:
+    jmp .L__kefir_func_test_atomic_load64_label1
+.L__kefir_func_test_atomic_load64_label1:
     movq (%rdi), %rax
     ret
-__kefir_text_func_test_atomic_load64_end:
+.L__kefir_text_func_test_atomic_load64_end:
 
 test_atomic_load128:
-__kefir_text_func_test_atomic_load128_begin:
+.L__kefir_text_func_test_atomic_load128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp __kefir_func_test_atomic_load128_label1
-__kefir_func_test_atomic_load128_label1:
+    jmp .L__kefir_func_test_atomic_load128_label1
+.L__kefir_func_test_atomic_load128_label1:
     mov %rdi, %rax
     mov $16, %rdi
     mov %rax, %rsi
@@ -132,16 +132,16 @@ __kefir_func_test_atomic_load128_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test_atomic_load128_end:
+.L__kefir_text_func_test_atomic_load128_end:
 
 test_atomic_load256:
-__kefir_text_func_test_atomic_load256_begin:
+.L__kefir_text_func_test_atomic_load256_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-    jmp __kefir_func_test_atomic_load256_label1
-__kefir_func_test_atomic_load256_label1:
+    jmp .L__kefir_func_test_atomic_load256_label1
+.L__kefir_func_test_atomic_load256_label1:
     mov %rdi, %rax
     mov $32, %rdi
     mov %rax, %rsi
@@ -159,31 +159,31 @@ __kefir_func_test_atomic_load256_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_test_atomic_load256_end:
+.L__kefir_text_func_test_atomic_load256_end:
 
 test2_atomic_load16:
-__kefir_text_func_test2_atomic_load16_begin:
-    jmp __kefir_func_test2_atomic_load16_label1
-__kefir_func_test2_atomic_load16_label1:
+.L__kefir_text_func_test2_atomic_load16_begin:
+    jmp .L__kefir_func_test2_atomic_load16_label1
+.L__kefir_func_test2_atomic_load16_label1:
     movw (%rdi), %ax
     ret
-__kefir_text_func_test2_atomic_load16_end:
+.L__kefir_text_func_test2_atomic_load16_end:
 
 test2_atomic_load32:
-__kefir_text_func_test2_atomic_load32_begin:
-    jmp __kefir_func_test2_atomic_load32_label1
-__kefir_func_test2_atomic_load32_label1:
+.L__kefir_text_func_test2_atomic_load32_begin:
+    jmp .L__kefir_func_test2_atomic_load32_label1
+.L__kefir_func_test2_atomic_load32_label1:
     movl (%rdi), %eax
     ret
-__kefir_text_func_test2_atomic_load32_end:
+.L__kefir_text_func_test2_atomic_load32_end:
 
 test2_atomic_load64:
-__kefir_text_func_test2_atomic_load64_begin:
-    jmp __kefir_func_test2_atomic_load64_label1
-__kefir_func_test2_atomic_load64_label1:
+.L__kefir_text_func_test2_atomic_load64_begin:
+    jmp .L__kefir_func_test2_atomic_load64_label1
+.L__kefir_func_test2_atomic_load64_label1:
     movq (%rdi), %rax
     ret
-__kefir_text_func_test2_atomic_load64_end:
+.L__kefir_text_func_test2_atomic_load64_end:
 
-__kefir_text_section_end:
+.L__kefir_text_section_end:
 
