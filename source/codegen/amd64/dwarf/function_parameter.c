@@ -275,7 +275,7 @@ static kefir_result_t generate_anonymous_parameter_info(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_function_parameter_loclists(struct kefir_codegen_amd64_function *codegen_function,
+static kefir_result_t generate_function_parameter_loclists(struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
                                                            struct kefir_codegen_amd64_dwarf_context *context,
                                                            kefir_ir_debug_entry_id_t entry_id) {
     struct kefir_hashtree_node *node;
@@ -290,7 +290,7 @@ static kefir_result_t generate_function_parameter_loclists(struct kefir_codegen_
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_PARAMETER, &attr));
     REQUIRE_OK(
         kefir_hashtree_at(&codegen_function->debug.function_parameters, (kefir_hashtree_key_t) attr->parameter, &node));
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_instruction_location(codegen_function,
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_instruction_location(mem, codegen_function,
                                                                        (kefir_opt_instruction_ref_t) node->value));
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_end_of_list)));
@@ -349,7 +349,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_function_parameter(
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS) {
         if (has_location) {
-            REQUIRE_OK(generate_function_parameter_loclists(codegen_function, context, entry_id));
+            REQUIRE_OK(generate_function_parameter_loclists(mem, codegen_function, context, entry_id));
             ASSIGN_PTR(dwarf_entry_id, KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL);
         }
     }

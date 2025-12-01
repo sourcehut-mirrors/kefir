@@ -153,13 +153,15 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_unspecified_function_parameter
 kefir_result_t kefir_codegen_amd64_dwarf_define_unspecified_parameters_abbrev(
     struct kefir_codegen_amd64 *, struct kefir_codegen_amd64_dwarf_context *);
 
-kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(struct kefir_codegen_amd64_function *,
+kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                                        kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_label(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         struct kefir_codegen_amd64_dwarf_context *,
                                                         kefir_ir_debug_entry_id_t,
                                                         kefir_codegen_amd64_dwarf_entry_id_t *);
-kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list(struct kefir_codegen_amd64_function *,
+kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list_coalesce(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+    kefir_opt_code_debug_info_code_ref_t, kefir_opt_code_debug_info_code_ref_t, struct kefir_hashtree *);
+kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         kefir_opt_code_debug_info_code_ref_t, kefir_opt_code_debug_info_code_ref_t);
 
 #endif

@@ -99,7 +99,7 @@ static kefir_result_t generate_lexical_block_ranges(struct kefir_mem *mem,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, &attr));
     const kefir_size_t block_end_idx = attr->code_index;
 
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_range_list(codegen_function, block_begin_idx, block_end_idx));
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_range_list(mem, codegen_function, block_begin_idx, block_end_idx));
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_end_of_list)));
 

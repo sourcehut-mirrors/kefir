@@ -717,12 +717,6 @@ __kefir_debug_loclists_section_begin:
 __kefir_debug_loclist_section_entry_1:
     .byte 7
     .quad __kefir_func_get1_label11
-    .quad __kefir_func_get1_label2
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get1_label2
     .quad __kefir_func_get1_label136
     .byte 2
     .byte 144
@@ -731,160 +725,6 @@ __kefir_debug_loclist_section_entry_1:
 __kefir_debug_loclist_section_entry_2:
     .byte 7
     .quad __kefir_func_get1_label2
-    .quad __kefir_func_get1_label39
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label39
-    .quad __kefir_func_get1_label48
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label48
-    .quad __kefir_func_get1_label49
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label49
-    .quad __kefir_func_get1_label56
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label57
-    .quad __kefir_func_get1_label66
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label56
-    .quad __kefir_func_get1_label57
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label66
-    .quad __kefir_func_get1_label67
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label71
-    .quad __kefir_func_get1_label80
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label67
-    .quad __kefir_func_get1_label71
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label80
-    .quad __kefir_func_get1_label84
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label85
-    .quad __kefir_func_get1_label91
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label84
-    .quad __kefir_func_get1_label85
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label91
-    .quad __kefir_func_get1_label98
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label104
-    .quad __kefir_func_get1_label105
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label98
-    .quad __kefir_func_get1_label104
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label105
-    .quad __kefir_func_get1_label109
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label118
-    .quad __kefir_func_get1_label119
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label109
-    .quad __kefir_func_get1_label118
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label119
-    .quad __kefir_func_get1_label126
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label127
-    .quad __kefir_func_get1_label136
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label126
-    .quad __kefir_func_get1_label127
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label136
-    .quad __kefir_func_get1_label150
-    .byte 3
-    .byte 146
-    .byte 4
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get1_label150
     .quad __kefir_func_get1_label151
     .byte 3
     .byte 146
@@ -894,12 +734,6 @@ __kefir_debug_loclist_section_entry_2:
 __kefir_debug_loclist_section_entry_3:
     .byte 7
     .quad __kefir_func_get1_label11
-    .quad __kefir_func_get1_label2
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get1_label2
     .quad __kefir_func_get1_label136
     .byte 2
     .byte 144
@@ -909,81 +743,33 @@ __kefir_debug_loclist_section_entry_4:
     .byte 0
 __kefir_debug_loclist_section_entry_5:
     .byte 7
-    .quad __kefir_func_get2_label2
-    .quad __kefir_func_get2_label80
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label45
-    .quad __kefir_func_get2_label2
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
     .quad __kefir_func_get2_label16
     .quad __kefir_func_get2_label318
     .byte 2
     .byte 144
     .byte 4
     .byte 7
-    .quad __kefir_func_get2_label8
-    .quad __kefir_func_get2_label36
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label36
-    .quad __kefir_func_get2_label12
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label12
+    .quad __kefir_func_get2_label45
     .quad __kefir_func_get2_label32
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label80
-    .quad __kefir_func_get2_label4
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label4
-    .quad __kefir_func_get2_label8
     .byte 2
     .byte 144
     .byte 4
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 7
-    .quad __kefir_func_get2_label2
-    .quad __kefir_func_get2_label80
-    .byte 2
-    .byte 144
-    .byte 1
-    .byte 7
-    .quad __kefir_func_get2_label45
-    .quad __kefir_func_get2_label2
-    .byte 2
-    .byte 144
-    .byte 1
-    .byte 7
     .quad __kefir_func_get2_label36
     .quad __kefir_func_get2_label12
     .byte 2
     .byte 144
     .byte 9
     .byte 7
+    .quad __kefir_func_get2_label45
     .quad __kefir_func_get2_label80
-    .quad __kefir_func_get2_label4
     .byte 2
     .byte 144
-    .byte 9
+    .byte 1
     .byte 7
-    .quad __kefir_func_get2_label4
+    .quad __kefir_func_get2_label80
     .quad __kefir_func_get2_label8
     .byte 2
     .byte 144
@@ -997,43 +783,19 @@ __kefir_debug_loclist_section_entry_9:
     .byte 144
     .byte 0
     .byte 7
-    .quad __kefir_func_get2_label137
-    .quad __kefir_func_get2_label4
-    .byte 2
-    .byte 144
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label4
-    .quad __kefir_func_get2_label8
-    .byte 2
-    .byte 144
-    .byte 0
-    .byte 7
     .quad __kefir_func_get2_label36
     .quad __kefir_func_get2_label287
     .byte 2
     .byte 144
     .byte 8
     .byte 7
-    .quad __kefir_func_get2_label4
+    .quad __kefir_func_get2_label137
     .quad __kefir_func_get2_label8
     .byte 2
     .byte 144
-    .byte 8
+    .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_17:
-    .byte 7
-    .quad __kefir_func_get2_label2
-    .quad __kefir_func_get2_label80
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label45
-    .quad __kefir_func_get2_label2
-    .byte 2
-    .byte 144
-    .byte 4
     .byte 7
     .quad __kefir_func_get2_label16
     .quad __kefir_func_get2_label318
@@ -1041,63 +803,27 @@ __kefir_debug_loclist_section_entry_17:
     .byte 144
     .byte 4
     .byte 7
-    .quad __kefir_func_get2_label8
-    .quad __kefir_func_get2_label36
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label36
-    .quad __kefir_func_get2_label12
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label12
+    .quad __kefir_func_get2_label45
     .quad __kefir_func_get2_label32
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label80
-    .quad __kefir_func_get2_label4
-    .byte 2
-    .byte 144
-    .byte 4
-    .byte 7
-    .quad __kefir_func_get2_label4
-    .quad __kefir_func_get2_label8
     .byte 2
     .byte 144
     .byte 4
     .byte 0
 __kefir_debug_loclist_section_entry_18:
     .byte 7
-    .quad __kefir_func_get2_label2
-    .quad __kefir_func_get2_label80
-    .byte 2
-    .byte 144
-    .byte 1
-    .byte 7
-    .quad __kefir_func_get2_label45
-    .quad __kefir_func_get2_label2
-    .byte 2
-    .byte 144
-    .byte 1
-    .byte 7
     .quad __kefir_func_get2_label36
     .quad __kefir_func_get2_label12
     .byte 2
     .byte 144
     .byte 9
     .byte 7
+    .quad __kefir_func_get2_label45
     .quad __kefir_func_get2_label80
-    .quad __kefir_func_get2_label4
     .byte 2
     .byte 144
-    .byte 9
+    .byte 1
     .byte 7
-    .quad __kefir_func_get2_label4
+    .quad __kefir_func_get2_label80
     .quad __kefir_func_get2_label8
     .byte 2
     .byte 144
@@ -1105,267 +831,15 @@ __kefir_debug_loclist_section_entry_18:
     .byte 0
 __kefir_debug_loclist_section_entry_19:
     .byte 7
-    .quad __kefir_func_get2_label80
-    .quad __kefir_func_get2_label81
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label81
-    .quad __kefir_func_get2_label102
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label102
-    .quad __kefir_func_get2_label103
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label103
-    .quad __kefir_func_get2_label109
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label109
-    .quad __kefir_func_get2_label130
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label130
-    .quad __kefir_func_get2_label131
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label212
-    .quad __kefir_func_get2_label216
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label216
-    .quad __kefir_func_get2_label220
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label36
-    .quad __kefir_func_get2_label198
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label198
-    .quad __kefir_func_get2_label199
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label199
-    .quad __kefir_func_get2_label208
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label208
-    .quad __kefir_func_get2_label212
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label220
-    .quad __kefir_func_get2_label221
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label243
-    .quad __kefir_func_get2_label247
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label221
-    .quad __kefir_func_get2_label230
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label230
-    .quad __kefir_func_get2_label231
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label231
-    .quad __kefir_func_get2_label242
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label242
-    .quad __kefir_func_get2_label243
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label247
-    .quad __kefir_func_get2_label251
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label276
-    .quad __kefir_func_get2_label277
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label251
-    .quad __kefir_func_get2_label260
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label260
-    .quad __kefir_func_get2_label261
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label261
-    .quad __kefir_func_get2_label272
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label272
-    .quad __kefir_func_get2_label276
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label277
-    .quad __kefir_func_get2_label281
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label281
-    .quad __kefir_func_get2_label287
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label287
-    .quad __kefir_func_get2_label12
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label164
-    .quad __kefir_func_get2_label165
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
     .quad __kefir_func_get2_label4
-    .quad __kefir_func_get2_label164
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label165
-    .quad __kefir_func_get2_label8
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label8
-    .quad __kefir_func_get2_label188
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label188
-    .quad __kefir_func_get2_label36
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label32
-    .quad __kefir_func_get2_label16
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label12
-    .quad __kefir_func_get2_label32
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label28
-    .quad __kefir_func_get2_label20
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label16
-    .quad __kefir_func_get2_label28
-    .byte 3
-    .byte 146
-    .byte 1
-    .byte 0
-    .byte 7
-    .quad __kefir_func_get2_label24
     .quad __kefir_func_get2_label397
     .byte 3
     .byte 146
     .byte 1
     .byte 0
     .byte 7
-    .quad __kefir_func_get2_label20
-    .quad __kefir_func_get2_label24
+    .quad __kefir_func_get2_label80
+    .quad __kefir_func_get2_label131
     .byte 3
     .byte 146
     .byte 1
@@ -1373,267 +847,15 @@ __kefir_debug_loclist_section_entry_19:
     .byte 0
 __kefir_debug_loclist_section_entry_20:
     .byte 7
-    .quad __kefir_func_get2_label80
-    .quad __kefir_func_get2_label81
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label81
-    .quad __kefir_func_get2_label102
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label102
-    .quad __kefir_func_get2_label103
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label103
-    .quad __kefir_func_get2_label109
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label109
-    .quad __kefir_func_get2_label130
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label130
-    .quad __kefir_func_get2_label131
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label212
-    .quad __kefir_func_get2_label216
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label216
-    .quad __kefir_func_get2_label220
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label36
-    .quad __kefir_func_get2_label198
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label198
-    .quad __kefir_func_get2_label199
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label199
-    .quad __kefir_func_get2_label208
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label208
-    .quad __kefir_func_get2_label212
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label220
-    .quad __kefir_func_get2_label221
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label243
-    .quad __kefir_func_get2_label247
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label221
-    .quad __kefir_func_get2_label230
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label230
-    .quad __kefir_func_get2_label231
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label231
-    .quad __kefir_func_get2_label242
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label242
-    .quad __kefir_func_get2_label243
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label247
-    .quad __kefir_func_get2_label251
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label276
-    .quad __kefir_func_get2_label277
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label251
-    .quad __kefir_func_get2_label260
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label260
-    .quad __kefir_func_get2_label261
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label261
-    .quad __kefir_func_get2_label272
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label272
-    .quad __kefir_func_get2_label276
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label277
-    .quad __kefir_func_get2_label281
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label281
-    .quad __kefir_func_get2_label287
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label287
-    .quad __kefir_func_get2_label12
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label164
-    .quad __kefir_func_get2_label165
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
     .quad __kefir_func_get2_label4
-    .quad __kefir_func_get2_label164
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label165
-    .quad __kefir_func_get2_label8
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label8
-    .quad __kefir_func_get2_label188
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label188
-    .quad __kefir_func_get2_label36
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label32
-    .quad __kefir_func_get2_label16
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label12
-    .quad __kefir_func_get2_label32
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label28
-    .quad __kefir_func_get2_label20
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label16
-    .quad __kefir_func_get2_label28
-    .byte 3
-    .byte 145
-    .byte 128
-    .byte 127
-    .byte 7
-    .quad __kefir_func_get2_label24
     .quad __kefir_func_get2_label397
     .byte 3
     .byte 145
     .byte 128
     .byte 127
     .byte 7
-    .quad __kefir_func_get2_label20
-    .quad __kefir_func_get2_label24
+    .quad __kefir_func_get2_label80
+    .quad __kefir_func_get2_label131
     .byte 3
     .byte 145
     .byte 128
@@ -1641,230 +863,14 @@ __kefir_debug_loclist_section_entry_20:
     .byte 0
 __kefir_debug_loclist_section_entry_21:
     .byte 7
-    .quad __kefir_func_get2_label80
-    .quad __kefir_func_get2_label81
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label81
-    .quad __kefir_func_get2_label102
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label102
-    .quad __kefir_func_get2_label103
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label103
-    .quad __kefir_func_get2_label109
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label109
-    .quad __kefir_func_get2_label130
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label130
-    .quad __kefir_func_get2_label131
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label212
-    .quad __kefir_func_get2_label216
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label216
-    .quad __kefir_func_get2_label220
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label36
-    .quad __kefir_func_get2_label198
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label198
-    .quad __kefir_func_get2_label199
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label199
-    .quad __kefir_func_get2_label208
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label208
-    .quad __kefir_func_get2_label212
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label220
-    .quad __kefir_func_get2_label221
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label243
-    .quad __kefir_func_get2_label247
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label221
-    .quad __kefir_func_get2_label230
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label230
-    .quad __kefir_func_get2_label231
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label231
-    .quad __kefir_func_get2_label242
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label242
-    .quad __kefir_func_get2_label243
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label247
-    .quad __kefir_func_get2_label251
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label276
-    .quad __kefir_func_get2_label277
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label251
-    .quad __kefir_func_get2_label260
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label260
-    .quad __kefir_func_get2_label261
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label261
-    .quad __kefir_func_get2_label272
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label272
-    .quad __kefir_func_get2_label276
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label277
-    .quad __kefir_func_get2_label281
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label281
-    .quad __kefir_func_get2_label287
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label287
-    .quad __kefir_func_get2_label12
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label164
-    .quad __kefir_func_get2_label165
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
     .quad __kefir_func_get2_label4
-    .quad __kefir_func_get2_label164
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label165
-    .quad __kefir_func_get2_label8
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label8
-    .quad __kefir_func_get2_label188
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label188
-    .quad __kefir_func_get2_label36
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label32
-    .quad __kefir_func_get2_label16
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label12
-    .quad __kefir_func_get2_label32
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label28
-    .quad __kefir_func_get2_label20
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label16
-    .quad __kefir_func_get2_label28
-    .byte 2
-    .byte 145
-    .byte 64
-    .byte 7
-    .quad __kefir_func_get2_label24
     .quad __kefir_func_get2_label397
     .byte 2
     .byte 145
     .byte 64
     .byte 7
-    .quad __kefir_func_get2_label20
-    .quad __kefir_func_get2_label24
+    .quad __kefir_func_get2_label80
+    .quad __kefir_func_get2_label131
     .byte 2
     .byte 145
     .byte 64
@@ -1883,162 +889,21 @@ __kefir_debug_rnglists_section_begin:
     .long 0
 __kefir_debug_rnglist_section_entry_7:
     .byte 6
-    .quad __kefir_func_get2_label212
-    .quad __kefir_func_get2_label216
-    .byte 6
-    .quad __kefir_func_get2_label216
-    .quad __kefir_func_get2_label220
-    .byte 6
     .quad __kefir_func_get2_label36
-    .quad __kefir_func_get2_label198
-    .byte 6
-    .quad __kefir_func_get2_label198
-    .quad __kefir_func_get2_label199
-    .byte 6
-    .quad __kefir_func_get2_label199
-    .quad __kefir_func_get2_label208
-    .byte 6
-    .quad __kefir_func_get2_label208
-    .quad __kefir_func_get2_label212
-    .byte 6
-    .quad __kefir_func_get2_label220
-    .quad __kefir_func_get2_label221
-    .byte 6
-    .quad __kefir_func_get2_label243
-    .quad __kefir_func_get2_label247
-    .byte 6
-    .quad __kefir_func_get2_label221
-    .quad __kefir_func_get2_label230
-    .byte 6
-    .quad __kefir_func_get2_label230
-    .quad __kefir_func_get2_label231
-    .byte 6
-    .quad __kefir_func_get2_label231
-    .quad __kefir_func_get2_label242
-    .byte 6
-    .quad __kefir_func_get2_label242
-    .quad __kefir_func_get2_label243
-    .byte 6
-    .quad __kefir_func_get2_label247
-    .quad __kefir_func_get2_label251
-    .byte 6
-    .quad __kefir_func_get2_label276
-    .quad __kefir_func_get2_label277
-    .byte 6
-    .quad __kefir_func_get2_label251
-    .quad __kefir_func_get2_label260
-    .byte 6
-    .quad __kefir_func_get2_label260
-    .quad __kefir_func_get2_label261
-    .byte 6
-    .quad __kefir_func_get2_label261
-    .quad __kefir_func_get2_label272
-    .byte 6
-    .quad __kefir_func_get2_label272
-    .quad __kefir_func_get2_label276
-    .byte 6
-    .quad __kefir_func_get2_label277
-    .quad __kefir_func_get2_label281
-    .byte 6
-    .quad __kefir_func_get2_label281
-    .quad __kefir_func_get2_label287
-    .byte 6
-    .quad __kefir_func_get2_label287
     .quad __kefir_func_get2_label12
     .byte 0
 __kefir_debug_rnglist_section_entry_8:
     .byte 6
-    .quad __kefir_func_get2_label212
-    .quad __kefir_func_get2_label216
-    .byte 6
-    .quad __kefir_func_get2_label216
-    .quad __kefir_func_get2_label220
-    .byte 6
     .quad __kefir_func_get2_label36
-    .quad __kefir_func_get2_label198
-    .byte 6
-    .quad __kefir_func_get2_label198
-    .quad __kefir_func_get2_label199
-    .byte 6
-    .quad __kefir_func_get2_label199
-    .quad __kefir_func_get2_label208
-    .byte 6
-    .quad __kefir_func_get2_label208
-    .quad __kefir_func_get2_label212
-    .byte 6
-    .quad __kefir_func_get2_label220
-    .quad __kefir_func_get2_label221
-    .byte 6
-    .quad __kefir_func_get2_label243
-    .quad __kefir_func_get2_label247
-    .byte 6
-    .quad __kefir_func_get2_label221
-    .quad __kefir_func_get2_label230
-    .byte 6
-    .quad __kefir_func_get2_label230
-    .quad __kefir_func_get2_label231
-    .byte 6
-    .quad __kefir_func_get2_label231
-    .quad __kefir_func_get2_label242
-    .byte 6
-    .quad __kefir_func_get2_label242
-    .quad __kefir_func_get2_label243
-    .byte 6
-    .quad __kefir_func_get2_label247
-    .quad __kefir_func_get2_label251
-    .byte 6
-    .quad __kefir_func_get2_label276
-    .quad __kefir_func_get2_label277
-    .byte 6
-    .quad __kefir_func_get2_label251
-    .quad __kefir_func_get2_label260
-    .byte 6
-    .quad __kefir_func_get2_label260
-    .quad __kefir_func_get2_label261
-    .byte 6
-    .quad __kefir_func_get2_label261
-    .quad __kefir_func_get2_label272
-    .byte 6
-    .quad __kefir_func_get2_label272
-    .quad __kefir_func_get2_label276
-    .byte 6
-    .quad __kefir_func_get2_label277
     .quad __kefir_func_get2_label281
     .byte 0
 __kefir_debug_rnglist_section_entry_10:
     .byte 6
-    .quad __kefir_func_get2_label164
-    .quad __kefir_func_get2_label165
-    .byte 6
     .quad __kefir_func_get2_label4
-    .quad __kefir_func_get2_label164
-    .byte 6
-    .quad __kefir_func_get2_label165
-    .quad __kefir_func_get2_label8
-    .byte 6
-    .quad __kefir_func_get2_label8
-    .quad __kefir_func_get2_label188
-    .byte 6
-    .quad __kefir_func_get2_label188
     .quad __kefir_func_get2_label36
     .byte 6
-    .quad __kefir_func_get2_label32
-    .quad __kefir_func_get2_label16
-    .byte 6
     .quad __kefir_func_get2_label12
-    .quad __kefir_func_get2_label32
-    .byte 6
-    .quad __kefir_func_get2_label28
-    .quad __kefir_func_get2_label20
-    .byte 6
-    .quad __kefir_func_get2_label16
-    .quad __kefir_func_get2_label28
-    .byte 6
-    .quad __kefir_func_get2_label24
     .quad __kefir_func_get2_label397
-    .byte 6
-    .quad __kefir_func_get2_label20
-    .quad __kefir_func_get2_label24
     .byte 0
 __kefir_debug_rnglist_section_entry_11:
     .byte 6
@@ -2050,17 +915,8 @@ __kefir_debug_rnglist_section_entry_12:
     .quad __kefir_func_get2_label12
     .quad __kefir_func_get2_label32
     .byte 6
-    .quad __kefir_func_get2_label28
-    .quad __kefir_func_get2_label20
-    .byte 6
     .quad __kefir_func_get2_label16
-    .quad __kefir_func_get2_label28
-    .byte 6
-    .quad __kefir_func_get2_label24
     .quad __kefir_func_get2_label397
-    .byte 6
-    .quad __kefir_func_get2_label20
-    .quad __kefir_func_get2_label24
     .byte 0
 __kefir_debug_rnglist_section_entry_13:
     .byte 6
@@ -2072,11 +928,8 @@ __kefir_debug_rnglist_section_entry_14:
     .quad __kefir_func_get2_label16
     .quad __kefir_func_get2_label28
     .byte 6
-    .quad __kefir_func_get2_label24
-    .quad __kefir_func_get2_label397
-    .byte 6
     .quad __kefir_func_get2_label20
-    .quad __kefir_func_get2_label24
+    .quad __kefir_func_get2_label397
     .byte 0
 __kefir_debug_rnglist_section_entry_15:
     .byte 6
