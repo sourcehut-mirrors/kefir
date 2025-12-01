@@ -220,7 +220,8 @@ typedef enum kefir_asm_amd64_xasmgen_data_type {
     KEFIR_AMD64_XASMGEN_DATA_WORD,
     KEFIR_AMD64_XASMGEN_DATA_DOUBLE,
     KEFIR_AMD64_XASMGEN_DATA_QUAD,
-    KEFIR_AMD64_XASMGEN_DATA_ASCII
+    KEFIR_AMD64_XASMGEN_DATA_ASCII,
+    KEFIR_AMD64_XASMGEN_DATA_ULEB128
 } kefir_asm_amd64_xasmgen_data_type_t;
 
 typedef enum kefir_asm_amd64_xasmgen_syntax {

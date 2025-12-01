@@ -1900,6 +1900,10 @@ static kefir_result_t amd64_data(struct kefir_amd64_xasmgen *xasmgen, kefir_asm_
         case KEFIR_AMD64_XASMGEN_DATA_ASCII:
             fprintf(payload->output, ".ascii ");
             break;
+
+        case KEFIR_AMD64_XASMGEN_DATA_ULEB128:
+            fprintf(payload->output, ".uleb128 ");
+            break;
     }
 
     va_list args;
@@ -1947,6 +1951,9 @@ static kefir_result_t amd64_yasm_data(struct kefir_amd64_xasmgen *xasmgen, kefir
         case KEFIR_AMD64_XASMGEN_DATA_ASCII:
             fprintf(payload->output, "db ");
             break;
+
+        case KEFIR_AMD64_XASMGEN_DATA_ULEB128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Yasm does not support uleb128 data");
     }
 
     va_list args;
@@ -2051,6 +2058,18 @@ static kefir_result_t amd64_bindata(struct kefir_amd64_xasmgen *xasmgen, kefir_a
             fprintf(payload->output, "\n");
             break;
 
+
+        case KEFIR_AMD64_XASMGEN_DATA_ULEB128:
+            fprintf(payload->output, ".uleb128 ");
+            for (kefir_size_t i = 0; i < length; i++) {
+                fprintf(payload->output, "0x%016llx", (kefir_ulong_long_t) ((const kefir_uint64_t *) ptr)[i]);
+                if (i + 1 < length) {
+                    fprintf(payload->output, ", ");
+                }
+            }
+            fprintf(payload->output, "\n");
+            break;
+
         case KEFIR_AMD64_XASMGEN_DATA_ASCII:
             REQUIRE_OK(amd64_string_literal(print_fprintf, payload->output, ptr, length));
             break;
@@ -2109,6 +2128,10 @@ static kefir_result_t amd64_yasm_bindata(struct kefir_amd64_xasmgen *xasmgen, ke
             }
             fprintf(payload->output, "\n");
             break;
+
+
+        case KEFIR_AMD64_XASMGEN_DATA_ULEB128:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Yasm does not support uleb128 data");
 
         case KEFIR_AMD64_XASMGEN_DATA_ASCII:
             REQUIRE_OK(amd64_string_literal(print_fprintf, payload->output, ptr, length));

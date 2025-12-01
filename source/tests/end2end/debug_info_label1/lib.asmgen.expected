@@ -333,24 +333,24 @@ __kefir_debug_rnglists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_rnglist_section_entry_1:
-    .byte 6
-    .quad __kefir_func_test1_label4
-    .quad __kefir_func_test1_label481
+    .byte 4
+    .uleb128 __kefir_func_test1_label4 - __kefir_text_section_begin
+    .uleb128 __kefir_func_test1_label481 - __kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_2:
-    .byte 6
-    .quad __kefir_func_test1_label4
-    .quad __kefir_func_test1_label477
+    .byte 4
+    .uleb128 __kefir_func_test1_label4 - __kefir_text_section_begin
+    .uleb128 __kefir_func_test1_label477 - __kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_3:
-    .byte 6
-    .quad __kefir_func_test1_label476
-    .quad __kefir_func_test1_label477
+    .byte 4
+    .uleb128 __kefir_func_test1_label476 - __kefir_text_section_begin
+    .uleb128 __kefir_func_test1_label477 - __kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_4:
-    .byte 6
-    .quad __kefir_func_test1_label476
-    .quad __kefir_func_test1_label477
+    .byte 4
+    .uleb128 __kefir_func_test1_label476 - __kefir_text_section_begin
+    .uleb128 __kefir_func_test1_label477 - __kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:
 

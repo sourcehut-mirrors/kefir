@@ -351,35 +351,35 @@ __kefir_debug_loclists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_loclist_section_entry_1:
-    .byte 7
-    .quad __kefir_func_test1_label2
-    .quad __kefir_func_test1_label393
+    .byte 4
+    .uleb128 __kefir_func_test1_label2 - __kefir_text_section_begin
+    .uleb128 __kefir_func_test1_label393 - __kefir_text_section_begin
     .byte 10
     .byte 14
     .quad __kefir_function_test1_static_w_2@dtpoff
     .byte 155
     .byte 0
 __kefir_debug_loclist_section_entry_2:
-    .byte 7
-    .quad __kefir_func_test1_label2
-    .quad __kefir_func_test1_label393
+    .byte 4
+    .uleb128 __kefir_func_test1_label2 - __kefir_text_section_begin
+    .uleb128 __kefir_func_test1_label393 - __kefir_text_section_begin
     .byte 9
     .byte 3
     .quad x
     .byte 0
 __kefir_debug_loclist_section_entry_3:
-    .byte 7
-    .quad __kefir_func_test1_label2
-    .quad __kefir_func_test1_label393
+    .byte 4
+    .uleb128 __kefir_func_test1_label2 - __kefir_text_section_begin
+    .uleb128 __kefir_func_test1_label393 - __kefir_text_section_begin
     .byte 10
     .byte 14
     .quad y@dtpoff
     .byte 155
     .byte 0
 __kefir_debug_loclist_section_entry_4:
-    .byte 7
-    .quad __kefir_func_test1_label2
-    .quad __kefir_func_test1_label393
+    .byte 4
+    .uleb128 __kefir_func_test1_label2 - __kefir_text_section_begin
+    .uleb128 __kefir_func_test1_label393 - __kefir_text_section_begin
     .byte 9
     .byte 3
     .quad __kefir_function_test1_static_z_3

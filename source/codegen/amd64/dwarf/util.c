@@ -124,19 +124,30 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list(struct kefir_mem *m
         kefir_asmcmp_label_index_t begin_label = ((kefir_uint64_t) node->key) >> 32;
         kefir_asmcmp_label_index_t end_label = (kefir_uint32_t) node->key;
 
-        REQUIRE_CHAIN(&res, KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_RLE_start_end)));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+        struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers2;
+        REQUIRE_CHAIN(&res, KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_RLE_offset_pair)));
+        REQUIRE_CHAIN(&res, KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_ULEB128, 1,
+            kefir_asm_amd64_xasmgen_operand_subtract(
+                &codegen_function->codegen->xasmgen_helpers.operands[0],
                 kefir_asm_amd64_xasmgen_operand_label(
-                    &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                    &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                     kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
-                                                        ir_identifier->symbol, begin_label))));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                                                        ir_identifier->symbol, begin_label)),
                 kefir_asm_amd64_xasmgen_operand_label(
-                    &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                    &codegen_function->codegen->xasmgen_helpers.operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                    kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers2, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_function->codegen->config->symbol_prefix)))));
+        REQUIRE_CHAIN(&res, KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_ULEB128, 1,
+            kefir_asm_amd64_xasmgen_operand_subtract(
+                &codegen_function->codegen->xasmgen_helpers.operands[0],
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                     kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
-                                                        ir_identifier->symbol, end_label))));
+                                                        ir_identifier->symbol, end_label)),
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen_function->codegen->xasmgen_helpers.operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                    kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers2, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_function->codegen->config->symbol_prefix)))));
     }
     
     REQUIRE_ELSE(res == KEFIR_OK, {

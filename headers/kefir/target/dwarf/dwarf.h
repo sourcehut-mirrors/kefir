@@ -135,11 +135,13 @@ typedef enum kefir_dwarf_language { KEFIR_DWARF(DW_LANG_C11) = 0x1d } kefir_dwar
 
 typedef enum kefir_dwarf_loclist {
     KEFIR_DWARF(DW_LLE_end_of_list) = 0x0,
+    KEFIR_DWARF(DW_LLE_offset_pair) = 0x4,
     KEFIR_DWARF(DW_LLE_start_end) = 0x7
 } kefir_dwarf_loclist_t;
 
 typedef enum kefir_dwarf_rnglist {
     KEFIR_DWARF(DW_RLE_end_of_list) = 0x0,
+    KEFIR_DWARF(DW_RLE_offset_pair) = 0x4,
     KEFIR_DWARF(DW_RLE_start_end) = 0x6
 } kefir_dwarf_rnglist_t;
 

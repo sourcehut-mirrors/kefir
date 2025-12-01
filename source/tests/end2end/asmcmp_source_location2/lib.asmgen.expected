@@ -2624,355 +2624,355 @@ __kefir_debug_loclists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_loclist_section_entry_1:
-    .byte 7
-    .quad __kefir_func_factorial_label2
-    .quad __kefir_func_factorial_label51
+    .byte 4
+    .uleb128 __kefir_func_factorial_label2 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label51 - __kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 5
-    .byte 7
-    .quad __kefir_func_factorial_label37
-    .quad __kefir_func_factorial_label1
+    .byte 4
+    .uleb128 __kefir_func_factorial_label37 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label1 - __kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 5
     .byte 0
 __kefir_debug_loclist_section_entry_6:
-    .byte 7
-    .quad __kefir_func_factorial_label56
-    .quad __kefir_func_factorial_label57
+    .byte 4
+    .uleb128 __kefir_func_factorial_label56 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label57 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label68
-    .quad __kefir_func_factorial_label69
+    .byte 4
+    .uleb128 __kefir_func_factorial_label68 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label69 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label76
-    .quad __kefir_func_factorial_label77
+    .byte 4
+    .uleb128 __kefir_func_factorial_label76 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label77 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label83
-    .quad __kefir_func_factorial_label84
+    .byte 4
+    .uleb128 __kefir_func_factorial_label83 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label84 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label87
-    .quad __kefir_func_factorial_label88
+    .byte 4
+    .uleb128 __kefir_func_factorial_label87 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label88 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label97
-    .quad __kefir_func_factorial_label98
+    .byte 4
+    .uleb128 __kefir_func_factorial_label97 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label98 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label105
-    .quad __kefir_func_factorial_label106
+    .byte 4
+    .uleb128 __kefir_func_factorial_label105 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label106 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label113
-    .quad __kefir_func_factorial_label114
+    .byte 4
+    .uleb128 __kefir_func_factorial_label113 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label114 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label121
-    .quad __kefir_func_factorial_label122
+    .byte 4
+    .uleb128 __kefir_func_factorial_label121 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label122 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label128
-    .quad __kefir_func_factorial_label129
+    .byte 4
+    .uleb128 __kefir_func_factorial_label128 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label129 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label142
-    .quad __kefir_func_factorial_label143
+    .byte 4
+    .uleb128 __kefir_func_factorial_label142 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label143 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label150
-    .quad __kefir_func_factorial_label151
+    .byte 4
+    .uleb128 __kefir_func_factorial_label150 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label151 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label154
-    .quad __kefir_func_factorial_label155
+    .byte 4
+    .uleb128 __kefir_func_factorial_label154 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label155 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label166
-    .quad __kefir_func_factorial_label167
+    .byte 4
+    .uleb128 __kefir_func_factorial_label166 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label167 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label172
-    .quad __kefir_func_factorial_label173
+    .byte 4
+    .uleb128 __kefir_func_factorial_label172 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label173 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label182
-    .quad __kefir_func_factorial_label183
+    .byte 4
+    .uleb128 __kefir_func_factorial_label182 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label183 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label190
-    .quad __kefir_func_factorial_label191
+    .byte 4
+    .uleb128 __kefir_func_factorial_label190 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label191 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label197
-    .quad __kefir_func_factorial_label198
+    .byte 4
+    .uleb128 __kefir_func_factorial_label197 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label198 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label201
-    .quad __kefir_func_factorial_label202
+    .byte 4
+    .uleb128 __kefir_func_factorial_label201 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label202 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label213
-    .quad __kefir_func_factorial_label214
+    .byte 4
+    .uleb128 __kefir_func_factorial_label213 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label214 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label217
-    .quad __kefir_func_factorial_label218
+    .byte 4
+    .uleb128 __kefir_func_factorial_label217 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label218 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label221
-    .quad __kefir_func_factorial_label222
+    .byte 4
+    .uleb128 __kefir_func_factorial_label221 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label222 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label225
-    .quad __kefir_func_factorial_label226
+    .byte 4
+    .uleb128 __kefir_func_factorial_label225 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label226 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label229
-    .quad __kefir_func_factorial_label230
+    .byte 4
+    .uleb128 __kefir_func_factorial_label229 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label230 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label233
-    .quad __kefir_func_factorial_label234
+    .byte 4
+    .uleb128 __kefir_func_factorial_label233 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label234 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label239
-    .quad __kefir_func_factorial_label240
+    .byte 4
+    .uleb128 __kefir_func_factorial_label239 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label240 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label243
-    .quad __kefir_func_factorial_label244
+    .byte 4
+    .uleb128 __kefir_func_factorial_label243 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label244 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
-    .byte 7
-    .quad __kefir_func_factorial_label247
-    .quad __kefir_func_factorial_label248
+    .byte 4
+    .uleb128 __kefir_func_factorial_label247 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label248 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
     .byte 0
 __kefir_debug_loclist_section_entry_7:
-    .byte 7
-    .quad __kefir_func_factorial_label56
-    .quad __kefir_func_factorial_label57
+    .byte 4
+    .uleb128 __kefir_func_factorial_label56 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label57 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label68
-    .quad __kefir_func_factorial_label69
+    .byte 4
+    .uleb128 __kefir_func_factorial_label68 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label69 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label76
-    .quad __kefir_func_factorial_label77
+    .byte 4
+    .uleb128 __kefir_func_factorial_label76 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label77 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label83
-    .quad __kefir_func_factorial_label84
+    .byte 4
+    .uleb128 __kefir_func_factorial_label83 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label84 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label87
-    .quad __kefir_func_factorial_label88
+    .byte 4
+    .uleb128 __kefir_func_factorial_label87 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label88 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label97
-    .quad __kefir_func_factorial_label98
+    .byte 4
+    .uleb128 __kefir_func_factorial_label97 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label98 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label105
-    .quad __kefir_func_factorial_label106
+    .byte 4
+    .uleb128 __kefir_func_factorial_label105 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label106 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label113
-    .quad __kefir_func_factorial_label114
+    .byte 4
+    .uleb128 __kefir_func_factorial_label113 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label114 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label121
-    .quad __kefir_func_factorial_label122
+    .byte 4
+    .uleb128 __kefir_func_factorial_label121 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label122 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label128
-    .quad __kefir_func_factorial_label129
+    .byte 4
+    .uleb128 __kefir_func_factorial_label128 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label129 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label142
-    .quad __kefir_func_factorial_label143
+    .byte 4
+    .uleb128 __kefir_func_factorial_label142 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label143 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label150
-    .quad __kefir_func_factorial_label151
+    .byte 4
+    .uleb128 __kefir_func_factorial_label150 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label151 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label154
-    .quad __kefir_func_factorial_label155
+    .byte 4
+    .uleb128 __kefir_func_factorial_label154 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label155 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label166
-    .quad __kefir_func_factorial_label167
+    .byte 4
+    .uleb128 __kefir_func_factorial_label166 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label167 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label172
-    .quad __kefir_func_factorial_label173
+    .byte 4
+    .uleb128 __kefir_func_factorial_label172 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label173 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label182
-    .quad __kefir_func_factorial_label183
+    .byte 4
+    .uleb128 __kefir_func_factorial_label182 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label183 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label190
-    .quad __kefir_func_factorial_label191
+    .byte 4
+    .uleb128 __kefir_func_factorial_label190 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label191 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label197
-    .quad __kefir_func_factorial_label198
+    .byte 4
+    .uleb128 __kefir_func_factorial_label197 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label198 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label201
-    .quad __kefir_func_factorial_label202
+    .byte 4
+    .uleb128 __kefir_func_factorial_label201 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label202 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label213
-    .quad __kefir_func_factorial_label214
+    .byte 4
+    .uleb128 __kefir_func_factorial_label213 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label214 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label217
-    .quad __kefir_func_factorial_label218
+    .byte 4
+    .uleb128 __kefir_func_factorial_label217 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label218 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label221
-    .quad __kefir_func_factorial_label222
+    .byte 4
+    .uleb128 __kefir_func_factorial_label221 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label222 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label225
-    .quad __kefir_func_factorial_label226
+    .byte 4
+    .uleb128 __kefir_func_factorial_label225 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label226 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label229
-    .quad __kefir_func_factorial_label230
+    .byte 4
+    .uleb128 __kefir_func_factorial_label229 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label230 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label233
-    .quad __kefir_func_factorial_label234
+    .byte 4
+    .uleb128 __kefir_func_factorial_label233 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label234 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label239
-    .quad __kefir_func_factorial_label240
+    .byte 4
+    .uleb128 __kefir_func_factorial_label239 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label240 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label243
-    .quad __kefir_func_factorial_label244
+    .byte 4
+    .uleb128 __kefir_func_factorial_label243 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label244 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 7
-    .quad __kefir_func_factorial_label247
-    .quad __kefir_func_factorial_label248
+    .byte 4
+    .uleb128 __kefir_func_factorial_label247 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label248 - __kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
@@ -2990,99 +2990,99 @@ __kefir_debug_rnglists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_rnglist_section_entry_2:
-    .byte 6
-    .quad __kefir_func_factorial_label56
-    .quad __kefir_func_factorial_label57
-    .byte 6
-    .quad __kefir_func_factorial_label68
-    .quad __kefir_func_factorial_label69
-    .byte 6
-    .quad __kefir_func_factorial_label76
-    .quad __kefir_func_factorial_label77
-    .byte 6
-    .quad __kefir_func_factorial_label83
-    .quad __kefir_func_factorial_label84
-    .byte 6
-    .quad __kefir_func_factorial_label142
-    .quad __kefir_func_factorial_label143
+    .byte 4
+    .uleb128 __kefir_func_factorial_label56 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label57 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label68 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label69 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label76 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label77 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label83 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label84 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label142 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label143 - __kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_3:
-    .byte 6
-    .quad __kefir_func_factorial_label87
-    .quad __kefir_func_factorial_label88
-    .byte 6
-    .quad __kefir_func_factorial_label97
-    .quad __kefir_func_factorial_label98
-    .byte 6
-    .quad __kefir_func_factorial_label105
-    .quad __kefir_func_factorial_label106
-    .byte 6
-    .quad __kefir_func_factorial_label113
-    .quad __kefir_func_factorial_label114
-    .byte 6
-    .quad __kefir_func_factorial_label121
-    .quad __kefir_func_factorial_label122
-    .byte 6
-    .quad __kefir_func_factorial_label128
-    .quad __kefir_func_factorial_label129
-    .byte 6
-    .quad __kefir_func_factorial_label154
-    .quad __kefir_func_factorial_label155
-    .byte 6
-    .quad __kefir_func_factorial_label166
-    .quad __kefir_func_factorial_label167
+    .byte 4
+    .uleb128 __kefir_func_factorial_label87 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label88 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label97 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label98 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label105 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label106 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label113 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label114 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label121 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label122 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label128 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label129 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label154 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label155 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label166 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label167 - __kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_4:
-    .byte 6
-    .quad __kefir_func_factorial_label172
-    .quad __kefir_func_factorial_label173
-    .byte 6
-    .quad __kefir_func_factorial_label182
-    .quad __kefir_func_factorial_label183
-    .byte 6
-    .quad __kefir_func_factorial_label190
-    .quad __kefir_func_factorial_label191
-    .byte 6
-    .quad __kefir_func_factorial_label197
-    .quad __kefir_func_factorial_label198
-    .byte 6
-    .quad __kefir_func_factorial_label217
-    .quad __kefir_func_factorial_label218
-    .byte 6
-    .quad __kefir_func_factorial_label221
-    .quad __kefir_func_factorial_label222
-    .byte 6
-    .quad __kefir_func_factorial_label225
-    .quad __kefir_func_factorial_label226
-    .byte 6
-    .quad __kefir_func_factorial_label229
-    .quad __kefir_func_factorial_label230
-    .byte 6
-    .quad __kefir_func_factorial_label233
-    .quad __kefir_func_factorial_label234
-    .byte 6
-    .quad __kefir_func_factorial_label239
-    .quad __kefir_func_factorial_label240
-    .byte 6
-    .quad __kefir_func_factorial_label243
-    .quad __kefir_func_factorial_label244
-    .byte 6
-    .quad __kefir_func_factorial_label247
-    .quad __kefir_func_factorial_label248
+    .byte 4
+    .uleb128 __kefir_func_factorial_label172 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label173 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label182 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label183 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label190 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label191 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label197 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label198 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label217 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label218 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label221 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label222 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label225 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label226 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label229 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label230 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label233 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label234 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label239 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label240 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label243 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label244 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label247 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label248 - __kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_5:
-    .byte 6
-    .quad __kefir_func_factorial_label217
-    .quad __kefir_func_factorial_label218
-    .byte 6
-    .quad __kefir_func_factorial_label221
-    .quad __kefir_func_factorial_label222
-    .byte 6
-    .quad __kefir_func_factorial_label225
-    .quad __kefir_func_factorial_label226
-    .byte 6
-    .quad __kefir_func_factorial_label229
-    .quad __kefir_func_factorial_label230
+    .byte 4
+    .uleb128 __kefir_func_factorial_label217 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label218 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label221 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label222 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label225 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label226 - __kefir_text_section_begin
+    .byte 4
+    .uleb128 __kefir_func_factorial_label229 - __kefir_text_section_begin
+    .uleb128 __kefir_func_factorial_label230 - __kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:
 
