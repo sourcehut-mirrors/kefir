@@ -238,6 +238,8 @@ static kefir_result_t generate_local_variable_simple_location_impl(struct kefir_
                                                 1 + kefir_amd64_dwarf_sleb128_length(offset)));
             REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_fbreg)));
             REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
+        } else {
+            REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 0));
         }
     }  
 

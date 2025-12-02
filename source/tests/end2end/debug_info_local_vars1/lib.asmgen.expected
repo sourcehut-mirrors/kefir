@@ -1453,9 +1453,11 @@ __kefir_debug_loclist_section_entry_12:
     .byte 4
     .uleb128 .L__kefir_func_fn1_label10 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_fn1_label224 - .L__kefir_text_section_begin
+    .byte 0
     .byte 4
     .uleb128 .L__kefir_func_fn1_label20 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_fn1_label257 - .L__kefir_text_section_begin
+    .byte 0
     .byte 4
     .uleb128 .L__kefir_func_fn1_label10 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_fn1_label224 - .L__kefir_text_section_begin
