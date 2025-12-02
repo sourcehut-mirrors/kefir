@@ -96,6 +96,7 @@ typedef enum kefir_dwarf_form {
     KEFIR_DWARF(DW_FORM_data1) = 0x0b,
     KEFIR_DWARF(DW_FORM_udata) = 0xf,
     KEFIR_DWARF(DW_FORM_string) = 0x8,
+    KEFIR_DWARF(DW_FORM_strp) = 0x0e,
     KEFIR_DWARF(DW_FORM_exprloc) = 0x18,
     KEFIR_DWARF(DW_FORM_flag) = 0x0c,
     KEFIR_DWARF(DW_FORM_ref4) = 0x13,

@@ -275,6 +275,31 @@ kefir_result_t kefir_dwarf_generator_section_init(struct kefir_amd64_xasmgen *xa
                                                 kefir_asm_amd64_xasmgen_operand_immu(&operands[0], (kefir_uint8_t) 0)));
             break;
 
+        case KEFIR_DWARF_GENERATOR_SECTION_STR:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(xasmgen, 1));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(xasmgen, ".debug_str", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_STR));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+                kefir_asm_amd64_xasmgen_operand_subtract(
+                    &operands[0],
+                    kefir_asm_amd64_xasmgen_operand_label(&operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                                                          KEFIR_AMD64_DWARF_DEBUG_STR_END),
+                    kefir_asm_amd64_xasmgen_operand_label(&operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                                                          KEFIR_AMD64_DWARF_DEBUG_STR_BEGIN))));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_STR_BEGIN));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                xasmgen, KEFIR_AMD64_XASMGEN_DATA_WORD, 1,
+                kefir_asm_amd64_xasmgen_operand_immu(&operands[0], (kefir_uint16_t) KEFIR_DWARF_VESION)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
+                kefir_asm_amd64_xasmgen_operand_immu(&operands[0], (kefir_uint8_t) KEFIR_AMD64_ABI_QWORD)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
+                                                kefir_asm_amd64_xasmgen_operand_immu(&operands[0], (kefir_uint8_t) 0)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+                                                kefir_asm_amd64_xasmgen_operand_immu(&operands[0], (kefir_uint8_t) 0)));
+            break;
+
         case KEFIR_DWARF_GENERATOR_SECTION_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected DWARF generator section");
     }
@@ -302,6 +327,10 @@ kefir_result_t kefir_dwarf_generator_section_finalize(struct kefir_amd64_xasmgen
 
         case KEFIR_DWARF_GENERATOR_SECTION_RNGLISTS:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_RNGLISTS_END));
+            break;
+
+        case KEFIR_DWARF_GENERATOR_SECTION_STR:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_STR_END));
             break;
 
         case KEFIR_DWARF_GENERATOR_SECTION_LINES:

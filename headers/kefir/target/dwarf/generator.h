@@ -39,6 +39,10 @@
 #define KEFIR_AMD64_DWARF_DEBUG_RNGLISTS_BEGIN "__kefir_debug_rnglists_section_begin"
 #define KEFIR_AMD64_DWARF_DEBUG_RNGLISTS_END "__kefir_debug_rnglists_section_end"
 #define KEFIR_AMD64_DWARF_DEBUG_RNGLIST_ENTRY "__kefir_debug_rnglist_section_entry_%" KEFIR_UINT64_FMT
+#define KEFIR_AMD64_DWARF_DEBUG_STR "__kefir_debug_str_section"
+#define KEFIR_AMD64_DWARF_DEBUG_STR_BEGIN "__kefir_debug_str_section_begin"
+#define KEFIR_AMD64_DWARF_DEBUG_STR_END "__kefir_debug_str_section_end"
+#define KEFIR_AMD64_DWARF_DEBUG_STR_ENTRY "__kefir_debug_str_section_entry_%" KEFIR_UINT64_FMT
 
 kefir_result_t kefir_amd64_dwarf_byte(struct kefir_amd64_xasmgen *, kefir_uint8_t);
 kefir_result_t kefir_amd64_dwarf_word(struct kefir_amd64_xasmgen *, kefir_uint16_t);
@@ -62,7 +66,8 @@ typedef enum kefir_dwarf_generator_section {
     KEFIR_DWARF_GENERATOR_SECTION_INFO = 1,
     KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS = 2,
     KEFIR_DWARF_GENERATOR_SECTION_RNGLISTS = 3,
-    KEFIR_DWARF_GENERATOR_SECTION_LINES = 4,
+    KEFIR_DWARF_GENERATOR_SECTION_STR = 4,
+    KEFIR_DWARF_GENERATOR_SECTION_LINES = 5,
     KEFIR_DWARF_GENERATOR_SECTION_COUNT
 } kefir_dwarf_generator_section_t;
 

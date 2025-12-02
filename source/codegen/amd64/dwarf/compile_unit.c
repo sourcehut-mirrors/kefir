@@ -88,5 +88,18 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_generate_compile_unit(
         REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_module->codegen->xasmgen, 0));
     }
 
+    KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_STR) {
+        struct kefir_hashtree_node_iterator iter;
+        for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&context->strings.entries.strings, &iter);
+            node != NULL;
+            node = kefir_hashtree_next(&iter)) {
+            ASSIGN_DECL_CAST(const char *, string, node->key);
+            ASSIGN_DECL_CAST(kefir_codegen_amd64_dwarf_entry_id_t, entry_id, node->value);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(
+                &codegen_module->codegen->xasmgen, KEFIR_AMD64_DWARF_DEBUG_STR_ENTRY, entry_id));
+            REQUIRE_OK(KEFIR_AMD64_DWARF_STRING(&codegen_module->codegen->xasmgen, string));
+        }
+    }
+
     return KEFIR_OK;
 }

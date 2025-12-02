@@ -135,7 +135,7 @@ __kefir_debug_abbrev_section_entry_2:
     .byte 36
     .byte 0
     .byte 3
-    .byte 8
+    .byte 14
     .byte 11
     .byte 11
     .byte 136
@@ -150,7 +150,7 @@ __kefir_debug_abbrev_section_entry_3:
     .byte 52
     .byte 0
     .byte 3
-    .byte 8
+    .byte 14
     .byte 63
     .byte 12
     .byte 60
@@ -160,9 +160,9 @@ __kefir_debug_abbrev_section_entry_3:
     .byte 73
     .byte 19
     .byte 110
-    .byte 8
+    .byte 14
     .byte 58
-    .byte 8
+    .byte 14
     .byte 59
     .byte 7
     .byte 57
@@ -188,343 +188,343 @@ __kefir_debug_info_section_entry_1:
     .long __kefir_debug_lines_section_begin
 __kefir_debug_info_section_entry_2:
     .byte 3
-    .ascii "a\000"
+    .long __kefir_debug_str_section_entry_0
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad a
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
-    .ascii "a\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_0
+    .long __kefir_debug_str_section_entry_1
     .quad 21
     .quad 7
 __kefir_debug_info_section_entry_4:
     .byte 3
-    .ascii "b\000"
+    .long __kefir_debug_str_section_entry_2
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad b
     .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
-    .ascii "b\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_2
+    .long __kefir_debug_str_section_entry_1
     .quad 22
     .quad 6
 __kefir_debug_info_section_entry_6:
     .byte 3
-    .ascii "c\000"
+    .long __kefir_debug_str_section_entry_3
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad c
     .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
-    .ascii "c\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_3
+    .long __kefir_debug_str_section_entry_1
     .quad 23
     .quad 15
 __kefir_debug_info_section_entry_8:
     .byte 3
-    .ascii "d\000"
+    .long __kefir_debug_str_section_entry_4
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad d
     .long __kefir_debug_info_section_entry_9 - __kefir_debug_info_section
-    .ascii "d\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_4
+    .long __kefir_debug_str_section_entry_1
     .quad 24
     .quad 13
 __kefir_debug_info_section_entry_10:
     .byte 3
-    .ascii "e\000"
+    .long __kefir_debug_str_section_entry_5
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad e
     .long __kefir_debug_info_section_entry_11 - __kefir_debug_info_section
-    .ascii "e\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_5
+    .long __kefir_debug_str_section_entry_1
     .quad 25
     .quad 16
 __kefir_debug_info_section_entry_12:
     .byte 3
-    .ascii "f\000"
+    .long __kefir_debug_str_section_entry_6
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad f
     .long __kefir_debug_info_section_entry_13 - __kefir_debug_info_section
-    .ascii "f\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_6
+    .long __kefir_debug_str_section_entry_1
     .quad 26
     .quad 14
 __kefir_debug_info_section_entry_14:
     .byte 3
-    .ascii "g\000"
+    .long __kefir_debug_str_section_entry_7
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad g
     .long __kefir_debug_info_section_entry_15 - __kefir_debug_info_section
-    .ascii "g\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_7
+    .long __kefir_debug_str_section_entry_1
     .quad 27
     .quad 14
 __kefir_debug_info_section_entry_16:
     .byte 3
-    .ascii "h\000"
+    .long __kefir_debug_str_section_entry_8
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad h
     .long __kefir_debug_info_section_entry_17 - __kefir_debug_info_section
-    .ascii "h\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_8
+    .long __kefir_debug_str_section_entry_1
     .quad 28
     .quad 12
 __kefir_debug_info_section_entry_18:
     .byte 3
-    .ascii "i\000"
+    .long __kefir_debug_str_section_entry_9
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad i
     .long __kefir_debug_info_section_entry_19 - __kefir_debug_info_section
-    .ascii "i\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_9
+    .long __kefir_debug_str_section_entry_1
     .quad 29
     .quad 15
 __kefir_debug_info_section_entry_20:
     .byte 3
-    .ascii "j\000"
+    .long __kefir_debug_str_section_entry_10
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad j
     .long __kefir_debug_info_section_entry_21 - __kefir_debug_info_section
-    .ascii "j\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_10
+    .long __kefir_debug_str_section_entry_1
     .quad 30
     .quad 13
 __kefir_debug_info_section_entry_22:
     .byte 3
-    .ascii "k\000"
+    .long __kefir_debug_str_section_entry_11
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad k
     .long __kefir_debug_info_section_entry_23 - __kefir_debug_info_section
-    .ascii "k\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_11
+    .long __kefir_debug_str_section_entry_1
     .quad 31
     .quad 20
 __kefir_debug_info_section_entry_24:
     .byte 3
-    .ascii "l\000"
+    .long __kefir_debug_str_section_entry_12
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad l
     .long __kefir_debug_info_section_entry_25 - __kefir_debug_info_section
-    .ascii "l\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_12
+    .long __kefir_debug_str_section_entry_1
     .quad 32
     .quad 18
 __kefir_debug_info_section_entry_26:
     .byte 3
-    .ascii "m\000"
+    .long __kefir_debug_str_section_entry_13
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad m
     .long __kefir_debug_info_section_entry_27 - __kefir_debug_info_section
-    .ascii "m\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_13
+    .long __kefir_debug_str_section_entry_1
     .quad 34
     .quad 7
 __kefir_debug_info_section_entry_28:
     .byte 3
-    .ascii "n\000"
+    .long __kefir_debug_str_section_entry_14
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad n
     .long __kefir_debug_info_section_entry_29 - __kefir_debug_info_section
-    .ascii "n\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_14
+    .long __kefir_debug_str_section_entry_1
     .quad 35
     .quad 8
 __kefir_debug_info_section_entry_30:
     .byte 3
-    .ascii "o\000"
+    .long __kefir_debug_str_section_entry_15
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad o
     .long __kefir_debug_info_section_entry_31 - __kefir_debug_info_section
-    .ascii "o\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_15
+    .long __kefir_debug_str_section_entry_1
     .quad 36
     .quad 13
 __kefir_debug_info_section_entry_32:
     .byte 3
-    .ascii "p\000"
+    .long __kefir_debug_str_section_entry_16
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad p
     .long __kefir_debug_info_section_entry_33 - __kefir_debug_info_section
-    .ascii "p\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_16
+    .long __kefir_debug_str_section_entry_1
     .quad 38
     .quad 16
 __kefir_debug_info_section_entry_34:
     .byte 3
-    .ascii "q\000"
+    .long __kefir_debug_str_section_entry_17
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad q
     .long __kefir_debug_info_section_entry_35 - __kefir_debug_info_section
-    .ascii "q\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_17
+    .long __kefir_debug_str_section_entry_1
     .quad 39
     .quad 17
 __kefir_debug_info_section_entry_36:
     .byte 3
-    .ascii "r\000"
+    .long __kefir_debug_str_section_entry_18
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad r
     .long __kefir_debug_info_section_entry_37 - __kefir_debug_info_section
-    .ascii "r\000"
-    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+    .long __kefir_debug_str_section_entry_18
+    .long __kefir_debug_str_section_entry_1
     .quad 40
     .quad 22
 __kefir_debug_info_section_entry_3:
     .byte 2
-    .ascii "_Bool\000"
+    .long __kefir_debug_str_section_entry_19
     .byte 1
     .byte 1
     .byte 2
 __kefir_debug_info_section_entry_5:
     .byte 2
-    .ascii "char\000"
+    .long __kefir_debug_str_section_entry_20
     .byte 1
     .byte 1
     .byte 6
 __kefir_debug_info_section_entry_7:
     .byte 2
-    .ascii "unsigned char\000"
+    .long __kefir_debug_str_section_entry_21
     .byte 1
     .byte 1
     .byte 8
 __kefir_debug_info_section_entry_9:
     .byte 2
-    .ascii "signed char\000"
+    .long __kefir_debug_str_section_entry_22
     .byte 1
     .byte 1
     .byte 6
 __kefir_debug_info_section_entry_11:
     .byte 2
-    .ascii "unsigned short\000"
+    .long __kefir_debug_str_section_entry_23
     .byte 2
     .byte 2
     .byte 7
 __kefir_debug_info_section_entry_13:
     .byte 2
-    .ascii "signed short\000"
+    .long __kefir_debug_str_section_entry_24
     .byte 2
     .byte 2
     .byte 5
 __kefir_debug_info_section_entry_15:
     .byte 2
-    .ascii "unsigned int\000"
+    .long __kefir_debug_str_section_entry_25
     .byte 4
     .byte 4
     .byte 7
 __kefir_debug_info_section_entry_17:
     .byte 2
-    .ascii "signed int\000"
+    .long __kefir_debug_str_section_entry_26
     .byte 4
     .byte 4
     .byte 5
 __kefir_debug_info_section_entry_19:
     .byte 2
-    .ascii "unsigned long\000"
+    .long __kefir_debug_str_section_entry_27
     .byte 8
     .byte 8
     .byte 7
 __kefir_debug_info_section_entry_21:
     .byte 2
-    .ascii "signed long\000"
+    .long __kefir_debug_str_section_entry_28
     .byte 8
     .byte 8
     .byte 5
 __kefir_debug_info_section_entry_23:
     .byte 2
-    .ascii "unsigned long long\000"
+    .long __kefir_debug_str_section_entry_29
     .byte 8
     .byte 8
     .byte 7
 __kefir_debug_info_section_entry_25:
     .byte 2
-    .ascii "signed long long\000"
+    .long __kefir_debug_str_section_entry_30
     .byte 8
     .byte 8
     .byte 5
 __kefir_debug_info_section_entry_27:
     .byte 2
-    .ascii "float\000"
+    .long __kefir_debug_str_section_entry_31
     .byte 4
     .byte 4
     .byte 4
 __kefir_debug_info_section_entry_29:
     .byte 2
-    .ascii "double\000"
+    .long __kefir_debug_str_section_entry_32
     .byte 8
     .byte 8
     .byte 4
 __kefir_debug_info_section_entry_31:
     .byte 2
-    .ascii "long double\000"
+    .long __kefir_debug_str_section_entry_33
     .byte 16
     .byte 16
     .byte 4
 __kefir_debug_info_section_entry_33:
     .byte 2
-    .ascii "_Complex float\000"
+    .long __kefir_debug_str_section_entry_34
     .byte 8
     .byte 4
     .byte 3
 __kefir_debug_info_section_entry_35:
     .byte 2
-    .ascii "_Complex double\000"
+    .long __kefir_debug_str_section_entry_35
     .byte 16
     .byte 8
     .byte 3
 __kefir_debug_info_section_entry_37:
     .byte 2
-    .ascii "_Complex long double\000"
+    .long __kefir_debug_str_section_entry_36
     .byte 32
     .byte 16
     .byte 3
@@ -551,6 +551,90 @@ __kefir_debug_rnglists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_rnglists_section_end:
+
+.section .debug_str
+__kefir_debug_str_section:
+    .long __kefir_debug_str_section_end - __kefir_debug_str_section_begin
+__kefir_debug_str_section_begin:
+    .word 5
+    .byte 8
+    .byte 0
+    .long 0
+__kefir_debug_str_section_entry_0:
+    .ascii "a\000"
+__kefir_debug_str_section_entry_2:
+    .ascii "b\000"
+__kefir_debug_str_section_entry_3:
+    .ascii "c\000"
+__kefir_debug_str_section_entry_4:
+    .ascii "d\000"
+__kefir_debug_str_section_entry_5:
+    .ascii "e\000"
+__kefir_debug_str_section_entry_6:
+    .ascii "f\000"
+__kefir_debug_str_section_entry_7:
+    .ascii "g\000"
+__kefir_debug_str_section_entry_8:
+    .ascii "h\000"
+__kefir_debug_str_section_entry_9:
+    .ascii "i\000"
+__kefir_debug_str_section_entry_10:
+    .ascii "j\000"
+__kefir_debug_str_section_entry_11:
+    .ascii "k\000"
+__kefir_debug_str_section_entry_12:
+    .ascii "l\000"
+__kefir_debug_str_section_entry_13:
+    .ascii "m\000"
+__kefir_debug_str_section_entry_14:
+    .ascii "n\000"
+__kefir_debug_str_section_entry_15:
+    .ascii "o\000"
+__kefir_debug_str_section_entry_16:
+    .ascii "p\000"
+__kefir_debug_str_section_entry_17:
+    .ascii "q\000"
+__kefir_debug_str_section_entry_18:
+    .ascii "r\000"
+__kefir_debug_str_section_entry_20:
+    .ascii "char\000"
+__kefir_debug_str_section_entry_19:
+    .ascii "_Bool\000"
+__kefir_debug_str_section_entry_31:
+    .ascii "float\000"
+__kefir_debug_str_section_entry_32:
+    .ascii "double\000"
+__kefir_debug_str_section_entry_26:
+    .ascii "signed int\000"
+__kefir_debug_str_section_entry_34:
+    .ascii "_Complex float\000"
+__kefir_debug_str_section_entry_33:
+    .ascii "long double\000"
+__kefir_debug_str_section_entry_22:
+    .ascii "signed char\000"
+__kefir_debug_str_section_entry_28:
+    .ascii "signed long\000"
+__kefir_debug_str_section_entry_1:
+    .ascii "source/tests/end2end/debug_info_global_vars1/lib.kefir.asmgen.c\000"
+__kefir_debug_str_section_entry_35:
+    .ascii "_Complex double\000"
+__kefir_debug_str_section_entry_21:
+    .ascii "unsigned char\000"
+__kefir_debug_str_section_entry_27:
+    .ascii "unsigned long\000"
+__kefir_debug_str_section_entry_24:
+    .ascii "signed short\000"
+__kefir_debug_str_section_entry_25:
+    .ascii "unsigned int\000"
+__kefir_debug_str_section_entry_30:
+    .ascii "signed long long\000"
+__kefir_debug_str_section_entry_36:
+    .ascii "_Complex long double\000"
+__kefir_debug_str_section_entry_23:
+    .ascii "unsigned short\000"
+__kefir_debug_str_section_entry_29:
+    .ascii "unsigned long long\000"
+__kefir_debug_str_section_end:
 
 .section .debug_line
 __kefir_debug_lines_section_begin:

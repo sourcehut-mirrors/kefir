@@ -97,11 +97,19 @@ typedef struct kefir_codegen_amd64_dwarf_loclists_context {
     } entries;
 } kefir_codegen_amd64_dwarf_loclists_context_t;
 
+typedef struct kefir_codegen_amd64_dwarf_strings_context {
+    struct {
+        kefir_codegen_amd64_dwarf_entry_id_t next_string_id;
+        struct kefir_hashtree strings;
+    } entries;
+} kefir_codegen_amd64_dwarf_strings_context_t;
+
 typedef struct kefir_codegen_amd64_dwarf_context {
     kefir_dwarf_generator_section_t section;
     struct kefir_codegen_amd64_dwarf_abbrev_context abbrev;
     struct kefir_codegen_amd64_dwarf_info_context info;
     struct kefir_codegen_amd64_dwarf_loclists_context loclists;
+    struct kefir_codegen_amd64_dwarf_strings_context strings;
 } kefir_codegen_amd64_dwarf_context_t;
 
 #define KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(_context) (++(_context)->abbrev.entries.next_entry_id)
@@ -166,6 +174,11 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list_coalesce(struct kef
     kefir_opt_code_debug_info_code_ref_t, kefir_opt_code_debug_info_code_ref_t, struct kefir_hashtree *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         kefir_opt_code_debug_info_code_ref_t, kefir_opt_code_debug_info_code_ref_t);
+
+kefir_result_t kefir_codegen_amd64_dwarf_insert_string(
+    struct kefir_mem *, struct kefir_codegen_amd64_dwarf_context *, const char *, kefir_asmcmp_label_index_t *);
+kefir_result_t kefir_codegen_amd64_dwarf_generate_strp(
+    struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_amd64_dwarf_context *, const char *);
 
 #endif
 

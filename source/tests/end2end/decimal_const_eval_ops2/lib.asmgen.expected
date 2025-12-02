@@ -108,7 +108,7 @@ __kefir_debug_abbrev_section_entry_3:
     .byte 36
     .byte 0
     .byte 3
-    .byte 8
+    .byte 14
     .byte 11
     .byte 11
     .byte 136
@@ -133,7 +133,7 @@ __kefir_debug_abbrev_section_entry_5:
     .byte 52
     .byte 0
     .byte 3
-    .byte 8
+    .byte 14
     .byte 63
     .byte 12
     .byte 60
@@ -143,9 +143,9 @@ __kefir_debug_abbrev_section_entry_5:
     .byte 73
     .byte 19
     .byte 110
-    .byte 8
+    .byte 14
     .byte 58
-    .byte 8
+    .byte 14
     .byte 59
     .byte 7
     .byte 57
@@ -171,41 +171,41 @@ __kefir_debug_info_section_entry_1:
     .long __kefir_debug_lines_section_begin
 __kefir_debug_info_section_entry_2:
     .byte 5
-    .ascii "a\000"
+    .long __kefir_debug_str_section_entry_0
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad a
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
-    .ascii "a\000"
-    .ascii "decimal_const_eval_ops2\000"
+    .long __kefir_debug_str_section_entry_0
+    .long __kefir_debug_str_section_entry_1
     .quad 23
     .quad 5
 __kefir_debug_info_section_entry_4:
     .byte 5
-    .ascii "b\000"
+    .long __kefir_debug_str_section_entry_2
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad b
     .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
-    .ascii "b\000"
-    .ascii "decimal_const_eval_ops2\000"
+    .long __kefir_debug_str_section_entry_2
+    .long __kefir_debug_str_section_entry_1
     .quad 44
     .quad 5
 __kefir_debug_info_section_entry_6:
     .byte 5
-    .ascii "c\000"
+    .long __kefir_debug_str_section_entry_3
     .byte 1
     .byte 0
     .byte 9
     .byte 3
     .quad c
     .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
-    .ascii "c\000"
-    .ascii "decimal_const_eval_ops2\000"
+    .long __kefir_debug_str_section_entry_3
+    .long __kefir_debug_str_section_entry_1
     .quad 65
     .quad 5
 __kefir_debug_info_section_entry_3:
@@ -234,13 +234,13 @@ __kefir_debug_info_section_entry_12:
     .byte 0
 __kefir_debug_info_section_entry_8:
     .byte 3
-    .ascii "signed int\000"
+    .long __kefir_debug_str_section_entry_4
     .byte 4
     .byte 4
     .byte 5
 __kefir_debug_info_section_entry_10:
     .byte 3
-    .ascii "unsigned long\000"
+    .long __kefir_debug_str_section_entry_5
     .byte 8
     .byte 8
     .byte 7
@@ -267,6 +267,28 @@ __kefir_debug_rnglists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_rnglists_section_end:
+
+.section .debug_str
+__kefir_debug_str_section:
+    .long __kefir_debug_str_section_end - __kefir_debug_str_section_begin
+__kefir_debug_str_section_begin:
+    .word 5
+    .byte 8
+    .byte 0
+    .long 0
+__kefir_debug_str_section_entry_0:
+    .ascii "a\000"
+__kefir_debug_str_section_entry_2:
+    .ascii "b\000"
+__kefir_debug_str_section_entry_3:
+    .ascii "c\000"
+__kefir_debug_str_section_entry_4:
+    .ascii "signed int\000"
+__kefir_debug_str_section_entry_5:
+    .ascii "unsigned long\000"
+__kefir_debug_str_section_entry_1:
+    .ascii "decimal_const_eval_ops2\000"
+__kefir_debug_str_section_end:
 
 .section .debug_line
 __kefir_debug_lines_section_begin:
