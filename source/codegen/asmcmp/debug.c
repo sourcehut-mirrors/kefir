@@ -316,9 +316,11 @@ static kefir_result_t coalesce_code_map_entry(struct kefir_mem *mem, struct kefi
         reached_fixpoint = true;
 
         struct kefir_hashtree_node_iterator tree_iter;
+        struct kefir_hashtree_node *next_node = NULL; 
         for (struct kefir_hashtree_node *node = kefir_hashtree_iter(fragment_tree, &tree_iter);
-            node != NULL && reached_fixpoint;
-            node = kefir_hashtree_next(&tree_iter)) {
+            node != NULL;
+            node = next_node) {
+            next_node = kefir_hashtree_next(&tree_iter);
             kefir_asmcmp_label_index_t begin_label = ((kefir_uint64_t) node->key) >> 32;
             kefir_asmcmp_label_index_t end_label = (kefir_uint32_t) node->key;
 
@@ -339,6 +341,10 @@ static kefir_result_t coalesce_code_map_entry(struct kefir_mem *mem, struct kefi
             kefir_asmcmp_label_index_t other_end_label = (kefir_uint32_t) other_node->key;
 
             if (other_begin_label == end_label) {
+                if (next_node != NULL && next_node->key == other_node->key) {
+                    next_node = kefir_hashtree_next(&tree_iter);
+                }
+
                 reached_fixpoint = false;
                 REQUIRE_OK(kefir_hashtree_delete(mem, fragment_tree, node->key));
                 REQUIRE_OK(kefir_hashtree_delete(mem, fragment_tree, other_node->key));
