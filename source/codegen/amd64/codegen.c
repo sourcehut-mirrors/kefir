@@ -263,7 +263,7 @@ static kefir_result_t translate_strings(struct kefir_codegen_amd64 *codegen, str
 
         switch (literal_type) {
             case KEFIR_IR_STRING_LITERAL_MULTIBYTE:
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, codegen->config->symbol_prefix, id));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, codegen->symbol_prefix, id));
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(&codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_ASCII, 1,
                                                     kefir_asm_amd64_xasmgen_operand_string_literal(
                                                         &codegen->xasmgen_helpers.operands[0], content, length)));
@@ -271,14 +271,14 @@ static kefir_result_t translate_strings(struct kefir_codegen_amd64 *codegen, str
 
             case KEFIR_IR_STRING_LITERAL_UNICODE16:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 2));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, codegen->config->symbol_prefix, id));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, codegen->symbol_prefix, id));
                 REQUIRE_OK(
                     KEFIR_AMD64_XASMGEN_BINDATA(&codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_WORD, content, length));
                 break;
 
             case KEFIR_IR_STRING_LITERAL_UNICODE32:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 4));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, codegen->config->symbol_prefix, id));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, codegen->symbol_prefix, id));
                 REQUIRE_OK(
                     KEFIR_AMD64_XASMGEN_BINDATA(&codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, content, length));
                 break;
@@ -302,7 +302,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 4));
         REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_FLOAT32_TO_UINT, codegen_module->codegen->config->symbol_prefix));
+            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_FLOAT32_TO_UINT, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -313,7 +313,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 8));
         REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_FLOAT64_TO_UINT, codegen_module->codegen->config->symbol_prefix));
+            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_FLOAT64_TO_UINT, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 2,
@@ -325,7 +325,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 4));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_LONG_DOUBLE_TO_UINT, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_LONG_DOUBLE_TO_UINT, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -336,7 +336,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_UINT_TO_LONG_DOUBLE, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_UINT_TO_LONG_DOUBLE, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -347,7 +347,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_FLOAT32_NEG, codegen_module->codegen->config->symbol_prefix));
+            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_FLOAT32_NEG, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -367,7 +367,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_FLOAT64_NEG, codegen_module->codegen->config->symbol_prefix));
+            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_FLOAT64_NEG, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -387,7 +387,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_MUL, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_MUL, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -407,7 +407,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_DIV, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_DIV, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -427,7 +427,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_MUL, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_MUL, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -447,7 +447,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_COMPLEX_LONG_DOUBLE_DIV, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_COMPLEX_LONG_DOUBLE_DIV, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -467,7 +467,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_NEG, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_NEG, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -487,7 +487,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_NEG, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_NEG, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -507,7 +507,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_COPYSIGNF, codegen_module->codegen->config->symbol_prefix));
+            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_COPYSIGNF, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -528,7 +528,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_COPYSIGN, codegen_module->codegen->config->symbol_prefix));
+            KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_CONSTANT_COPYSIGN, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -548,7 +548,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_ISFINITEF32_MASK, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_ISFINITEF32_MASK, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -565,7 +565,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_ISFINITEF32_CMP, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_ISFINITEF32_CMP, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -585,7 +585,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_ISFINITEF64_MASK, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_ISFINITEF64_MASK, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -602,7 +602,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_ISFINITEF64_CMP, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_ISFINITEF64_CMP, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -622,7 +622,7 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
         DECLARE_RODATA;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 16));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen,
-                                             KEFIR_AMD64_CONSTANT_ISFINITEL_CMP, codegen_module->codegen->config->symbol_prefix));
+                                             KEFIR_AMD64_CONSTANT_ISFINITEL_CMP, codegen_module->codegen->symbol_prefix));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -746,7 +746,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(
         KEFIR_AMD64_XASMGEN_SECTION(&codegen_module->codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     if (!codegen_module->codegen->config->runtime_function_generator_mode) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_module->codegen->config->symbol_prefix));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_module->codegen->symbol_prefix));
     }
 
     kefir_bool_t has_constructors = false;
@@ -776,7 +776,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
 
     REQUIRE_OK(translate_global_inline_assembly(codegen_module->codegen, codegen_module->module));
     if (!codegen_module->codegen->config->runtime_function_generator_mode) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_TEXT_SECTION_END, codegen_module->codegen->config->symbol_prefix));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_TEXT_SECTION_END, codegen_module->codegen->symbol_prefix));
     }
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
@@ -840,6 +840,7 @@ static kefir_result_t close_impl(struct kefir_mem *mem, struct kefir_codegen *cg
     REQUIRE(cg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator interface"));
     REQUIRE(cg->data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 code generator"));
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64 *, codegen, cg->data);
+    KEFIR_FREE(mem, (char *) codegen->symbol_prefix);
     if (codegen->debug_info_tracker != NULL) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_FREE_DEBUG_INFO_TRACKER(mem, &codegen->xasmgen, codegen->debug_info_tracker));
     }
@@ -898,11 +899,29 @@ kefir_result_t kefir_codegen_amd64_init(struct kefir_mem *mem, struct kefir_code
     codegen->config = config;
     codegen->abi_variant = abi_variant;
     codegen->runtime_hooks = runtime_hooks;
+    char symbol_prefix[128];
+    int prefix_length = 0;
+    switch (syntax) {
+        case KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX:
+        case KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX:
+        case KEFIR_AMD64_XASMGEN_SYNTAX_ATT:
+            prefix_length = snprintf(symbol_prefix, sizeof(symbol_prefix), ".L%s", config->symbol_prefix);
+            break;
+
+        case KEFIR_AMD64_XASMGEN_SYNTAX_YASM:
+            prefix_length = snprintf(symbol_prefix, sizeof(symbol_prefix), "%s", config->symbol_prefix);
+            break;
+    }
     REQUIRE_OK(build_pipeline(mem, codegen));
     if (config->debug_info) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEW_DEBUG_INFO_TRACKER(mem, &codegen->xasmgen, &codegen->debug_info_tracker));
     } else {
         codegen->debug_info_tracker = NULL;
     }
+
+    char *prefix_copy = KEFIR_MALLOC(mem, sizeof(char) * (prefix_length + 1));
+    REQUIRE(prefix_copy != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 codegen internal symbol prefix"));
+    strncpy(prefix_copy, symbol_prefix, prefix_length + 1);
+    codegen->symbol_prefix = prefix_copy;
     return KEFIR_OK;
 }

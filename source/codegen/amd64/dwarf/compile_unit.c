@@ -60,7 +60,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_generate_compile_unit(
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(&codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
                                             kefir_asm_amd64_xasmgen_operand_label(
                                                 &codegen_module->codegen->xasmgen_helpers.operands[0],
-                                                KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, kefir_asm_amd64_xasmgen_helpers_format(&codegen_module->codegen->xasmgen_helpers, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_module->codegen->config->symbol_prefix))));
+                                                KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, kefir_asm_amd64_xasmgen_helpers_format(&codegen_module->codegen->xasmgen_helpers, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_module->codegen->symbol_prefix))));
         kefir_asm_amd64_xasmgen_helpers_t helpers2;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
@@ -68,10 +68,10 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_generate_compile_unit(
                 &codegen_module->codegen->xasmgen_helpers.operands[0],
                 kefir_asm_amd64_xasmgen_operand_label(&codegen_module->codegen->xasmgen_helpers.operands[1],
                                                       KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                      kefir_asm_amd64_xasmgen_helpers_format(&codegen_module->codegen->xasmgen_helpers, KEFIR_AMD64_TEXT_SECTION_END, codegen_module->codegen->config->symbol_prefix)),
+                                                      kefir_asm_amd64_xasmgen_helpers_format(&codegen_module->codegen->xasmgen_helpers, KEFIR_AMD64_TEXT_SECTION_END, codegen_module->codegen->symbol_prefix)),
                 kefir_asm_amd64_xasmgen_operand_label(&codegen_module->codegen->xasmgen_helpers.operands[2],
                                                       KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                      kefir_asm_amd64_xasmgen_helpers_format(&helpers2, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_module->codegen->config->symbol_prefix)))));
+                                                      kefir_asm_amd64_xasmgen_helpers_format(&helpers2, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_module->codegen->symbol_prefix)))));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
             kefir_asm_amd64_xasmgen_operand_label(&codegen_module->codegen->xasmgen_helpers.operands[0],

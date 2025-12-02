@@ -100,7 +100,7 @@ static kefir_result_t generate_label_info(struct kefir_mem *mem, struct kefir_co
         &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
         kefir_asm_amd64_xasmgen_operand_label(
             &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-            kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->config->symbol_prefix,
+            kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL, codegen_function->codegen->symbol_prefix,
                                                    ir_identifier->symbol, begin_label))));
 
     kefir_bool_t has_source_location;

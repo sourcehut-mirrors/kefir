@@ -94,7 +94,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(string_ref)(struct kefir_mem
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
 
     char buf[256];
-    snprintf(buf, sizeof(buf), KEFIR_AMD64_STRING_LITERAL, function->codegen->config->symbol_prefix, instruction->operation.parameters.imm.string_ref);
+    snprintf(buf, sizeof(buf), KEFIR_AMD64_STRING_LITERAL, function->codegen->symbol_prefix, instruction->operation.parameters.imm.string_ref);
     const char *string_ref = kefir_string_pool_insert(mem, &function->code.context.strings, buf, NULL);
     REQUIRE(string_ref != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert string reference into string pool"));
