@@ -89,6 +89,9 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list_coalesce(struct kef
 
             if (other_begin_label == end_label) {
                 reached_fixpoint = false;
+                if (next_node != NULL && other_node->key == next_node->key) {
+                    next_node = kefir_hashtree_next(&tree_iter);
+                }
                 REQUIRE_OK(kefir_hashtree_delete(mem, fragment_tree, node->key));
                 REQUIRE_OK(kefir_hashtree_delete(mem, fragment_tree, other_node->key));
 

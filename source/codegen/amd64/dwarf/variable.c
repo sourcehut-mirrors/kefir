@@ -856,6 +856,9 @@ static kefir_result_t coalesce_value_map_fragments(struct kefir_mem *mem, struct
             REQUIRE_OK(is_vregs_same(codegen_function, vreg_idx, other_vreg_idx, &vreg_same));
             if (vreg_same) {
                 reached_fixpoint = false;
+                if (next_node != NULL && other_node->key == next_node->key) {
+                    next_node = kefir_hashtree_next(&tree_iter);
+                }
                 REQUIRE_OK(kefir_hashtree_delete(mem, fragment_tree, node->key));
                 REQUIRE_OK(kefir_hashtree_delete(mem, fragment_tree, other_node->key));
 
