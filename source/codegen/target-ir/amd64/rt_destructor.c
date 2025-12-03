@@ -20,6 +20,7 @@
 
 #include "kefir/codegen/target-ir/amd64/rt_destructor.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
+#include "kefir/codegen/target-ir/amd64/topological_scheduler.h"
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -409,6 +410,21 @@ static kefir_result_t new_value_fragment(struct kefir_mem *mem, kefir_codegen_ta
     return KEFIR_OK;
 }
 
+static kefir_result_t schedule_code(struct kefir_mem *mem,
+    const struct kefir_codegen_target_ir_control_flow *control_flow,
+    struct kefir_codegen_target_ir_code_schedule *schedule,
+    void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
+    REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR schedule"));
+    UNUSED(payload);
+
+    struct kefir_codegen_target_ir_code_scheduler scheduler;
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_topological_scheduler_init(control_flow, &scheduler));
+    REQUIRE_OK(kefir_codegen_target_ir_code_schedule_build(mem, schedule, &scheduler));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(const struct kefir_codegen_amd64_function *function, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops *ops) {
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 asmcmp code"));
@@ -432,6 +448,7 @@ kefir_result_t kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(cons
     ops->ops.materialize_attribute = materialize_attribute;
     ops->ops.new_code_fragment = new_code_fragment;
     ops->ops.new_value_fragment = new_value_fragment;
+    ops->ops.schedule_code = schedule_code;
     ops->ops.payload = ops;
 
     REQUIRE_OK(kefir_hashtree_init(&ops->constants, &kefir_hashtree_uint_ops));

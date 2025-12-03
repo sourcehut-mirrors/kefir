@@ -22,6 +22,8 @@
 #define KEFIR_CODEGEN_TARGET_IR_RT_DESTRUCTOR_H_
 
 #include "kefir/codegen/target-ir/constructor.h"
+#include "kefir/codegen/target-ir/control_flow.h"
+#include "kefir/codegen/target-ir/schedule.h"
 #include "kefir/codegen/asmcmp/context.h"
 
 typedef struct kefir_codegen_target_ir_target_ir_operand_classification {
@@ -58,6 +60,7 @@ typedef struct kefir_codegen_target_ir_round_trip_destructor_ops {
     kefir_result_t (*materialize_attribute)(struct kefir_mem *, kefir_asmcmp_instruction_index_t, kefir_codegen_target_ir_native_id_t, kefir_asmcmp_instruction_index_t *, void *);
     kefir_result_t (*new_code_fragment)(struct kefir_mem *, kefir_codegen_target_ir_metadata_code_ref_t, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t, void *);
     kefir_result_t (*new_value_fragment)(struct kefir_mem *, kefir_codegen_target_ir_metadata_value_ref_t, kefir_asmcmp_virtual_register_index_t, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t, void *);
+    kefir_result_t (*schedule_code)(struct kefir_mem *, const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_code_schedule *, void *);
     void *payload;
 } kefir_codegen_target_ir_round_trip_destructor_parameter_t;
 
