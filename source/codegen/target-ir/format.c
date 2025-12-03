@@ -404,6 +404,8 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
             } else if (instr->operation.opcode == code->klass->inline_asm_opcode) {
                 REQUIRE_OK(kefir_json_output_object_key(json, "target_block_ref"));
                 REQUIRE_OK(id_format(json, instr->operation.inline_asm_node.target_block_ref));
+                REQUIRE_OK(kefir_json_output_object_key(json, "gate_block_ref"));
+                REQUIRE_OK(id_format(json, instr->operation.inline_asm_node.gate_block_ref));
                 REQUIRE_OK(kefir_json_output_object_key(json, "fragments"));
                 REQUIRE_OK(kefir_json_output_array_begin(json));
                 struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;

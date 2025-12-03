@@ -4515,7 +4515,6 @@ _kefir_local_public_label_test4_label1:
     add %rax, %rcx
     movq (%rcx), %rax
     jmp *%rax
-.L__kefir_func_test4_label7:
 .L__kefir_func_test4_label4:
 _kefir_local_public_label_test4_label2:
     mov $10, %rax
@@ -4663,6 +4662,7 @@ init_array:
 #                    "instr_ref": 6,
 #                    "opcode": "inline_assembly",
 #                    "target_block_ref": null,
+#                    "gate_block_ref": null,
 #                    "fragments": [
 #                        {
 #                            "type": "text",

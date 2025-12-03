@@ -42,7 +42,6 @@ test2:
     movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
     jmp *%rax
-.L__kefir_func_test2_label6:
 .L__kefir_func_test2_label3:
 _kefir_local_public_label_test2_L1:
     movq -8(%rbp), %rax
@@ -65,7 +64,6 @@ test3:
     add %rcx, %rax
     movq (%rax), %rax
     jmp *%rax
-.L__kefir_func_test3_label6:
 .L__kefir_func_test3_label3:
 _kefir_local_public_label_test3_L1:
     lea __kefir_function_test3_static_x_4(%rip), %rax

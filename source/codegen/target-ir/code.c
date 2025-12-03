@@ -66,6 +66,7 @@ kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_
     REQUIRE_OK(kefir_string_pool_init(&code->strings));
     REQUIRE_OK(kefir_hashtable_init(&code->attributes, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&code->attributes, free_attributes, NULL));
+    REQUIRE_OK(kefir_hashset_init(&code->gate_blocks, &kefir_hashtable_uint_ops));
     return KEFIR_OK;
 }
 
@@ -85,6 +86,7 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
         REQUIRE_OK(kefir_hashtreeset_free(mem, &code->blocks[i].public_labels));
         REQUIRE_OK(kefir_hashset_free(mem, &code->blocks[i].phi_refs));
     }
+    REQUIRE_OK(kefir_hashset_free(mem, &code->gate_blocks));
     REQUIRE_OK(kefir_hashtable_free(mem, &code->attributes));
     REQUIRE_OK(kefir_string_pool_free(mem, &code->strings));
     KEFIR_FREE(mem, code->use_entries);
@@ -414,6 +416,13 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
     } else if (instr->operation.opcode == code->klass->inline_asm_opcode) {
         REQUIRE_OK(kefir_list_init(&instr->operation.inline_asm_node.fragments));
         REQUIRE_OK(kefir_list_on_remove(&instr->operation.inline_asm_node.fragments, free_inline_asm_node, NULL));
+        if (instr->operation.inline_asm_node.target_block_ref != KEFIR_ID_NONE) {
+            REQUIRE_OK(kefir_codegen_target_ir_code_new_block(mem, code, &instr->operation.inline_asm_node.gate_block_ref));
+            REQUIRE_OK(kefir_hashset_add(mem, &code->gate_blocks, (kefir_hashset_key_t) instr->operation.inline_asm_node.gate_block_ref));
+            block = &code->blocks[block_ref];
+        } else {
+            instr->operation.inline_asm_node.gate_block_ref = KEFIR_ID_NONE;
+        }
     } else {
         for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
             REQUIRE_OK(store_strings_in_operand(mem, code, &instr->operation.parameters[i]));

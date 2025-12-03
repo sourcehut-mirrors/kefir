@@ -61,10 +61,12 @@ static kefir_result_t store_terminator_target(struct kefir_mem *mem, struct kefi
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_operand *operand, const struct kefir_codegen_target_ir_block_terminator_props *terminator_props) {
+static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_operand *operand, kefir_codegen_target_ir_block_ref_t gate_block_ref, const struct kefir_codegen_target_ir_block_terminator_props *terminator_props) {
     switch (operand->type) {
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF:
-            if (!terminator_props->block_terminator || terminator_props->undefined_target) {
+            if (terminator_props->inline_assembly && terminator_props->undefined_target) {
+                REQUIRE_OK(store_terminator_target(mem, control_flow, gate_block_ref, operand->block_ref));
+            } else if (!terminator_props->block_terminator || terminator_props->undefined_target) {
                 REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) operand->block_ref));
             }
             break;
@@ -72,7 +74,11 @@ static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_codegen_t
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
             switch (operand->indirect.type) {
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS:
-                    REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) operand->indirect.base.block_ref));
+                    if (terminator_props->inline_assembly && terminator_props->undefined_target) {
+                        REQUIRE_OK(store_terminator_target(mem, control_flow, gate_block_ref, operand->indirect.base.block_ref));
+                    } else {
+                        REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) operand->indirect.base.block_ref));
+                    }
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_PHYSICAL_BASIS:
@@ -88,7 +94,11 @@ static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_codegen_t
             break;
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF:
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) operand->rip_indirection.block_ref));
+            if (terminator_props->inline_assembly && terminator_props->undefined_target) {
+                REQUIRE_OK(store_terminator_target(mem, control_flow, gate_block_ref, operand->rip_indirection.block_ref));
+            } else {
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) operand->rip_indirection.block_ref));
+            }
             break;
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
@@ -302,32 +312,34 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
             REQUIRE_OK(control_flow->code->klass->is_block_terminator(control_flow->code, instr, &instr_terminator_props, control_flow->code->klass->payload));
             if (instr->operation.opcode == control_flow->code->klass->phi_opcode) {
                 // Intentionally left blank
-            } else if (instr->operation.opcode == control_flow->code->klass->inline_asm_opcode) {
+            } else if (instr_terminator_props.block_terminator && instr->operation.opcode == control_flow->code->klass->inline_asm_opcode) {
                 if (instr->operation.inline_asm_node.target_block_ref != KEFIR_ID_NONE) {
-                    REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) instr->operation.inline_asm_node.target_block_ref));
-                }
-                struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
-                const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
-                kefir_result_t res;
-                for (res = kefir_codegen_target_ir_code_inline_assembly_fragment_iter(control_flow->code, &iter, instr_ref, &fragment);
-                    res == KEFIR_OK;
-                    res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
-                    switch (fragment->type) {
-                        case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT:
-                            // Intentionally left blank
-                            break;
+                    REQUIRE_OK(store_terminator_target(mem, control_flow, block_ref, instr->operation.inline_asm_node.gate_block_ref));
+                    REQUIRE_OK(store_terminator_target(mem, control_flow, instr->operation.inline_asm_node.gate_block_ref, instr->operation.inline_asm_node.target_block_ref));
 
-                        case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND:
-                            REQUIRE_OK(scan_operand(mem, control_flow, &fragment->operand, &instr_terminator_props));
-                            break;
+                    struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
+                    const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
+                    kefir_result_t res;
+                    for (res = kefir_codegen_target_ir_code_inline_assembly_fragment_iter(control_flow->code, &iter, instr_ref, &fragment);
+                        res == KEFIR_OK;
+                        res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
+                        switch (fragment->type) {
+                            case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                                // Intentionally left blank
+                                break;
+
+                            case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND:
+                                REQUIRE_OK(scan_operand(mem, control_flow, &fragment->operand, instr->operation.inline_asm_node.gate_block_ref, &instr_terminator_props));
+                                break;
+                        }
                     }
-                }
-                if (res != KEFIR_ITERATOR_END) {
-                    REQUIRE_OK(res);
+                    if (res != KEFIR_ITERATOR_END) {
+                        REQUIRE_OK(res);
+                    }
                 }
             } else {
                 for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
-                    REQUIRE_OK(scan_operand(mem, control_flow, &instr->operation.parameters[i], &instr_terminator_props));
+                    REQUIRE_OK(scan_operand(mem, control_flow, &instr->operation.parameters[i], KEFIR_ID_NONE, &instr_terminator_props));
                 }
             }
         }

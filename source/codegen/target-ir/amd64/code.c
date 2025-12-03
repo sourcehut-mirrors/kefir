@@ -87,10 +87,12 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_c
     props->fallthrough = false;
     props->branch = false;
     props->undefined_target = false;
+    props->inline_assembly = false;
     props->target_block_refs[0] = KEFIR_ID_NONE;
     props->target_block_refs[1] = KEFIR_ID_NONE;
 
     if (instruction->operation.opcode == code->klass->inline_asm_opcode) {
+        props->inline_assembly = true;
         struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
         const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
         kefir_result_t res;

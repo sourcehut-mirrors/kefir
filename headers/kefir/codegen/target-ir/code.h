@@ -265,6 +265,7 @@ typedef struct kefir_codegen_target_ir_inline_assembly_fragment {
 } kefir_codegen_target_ir_inline_assembly_fragment_t;
 
 typedef struct kefir_codegen_target_ir_inline_assembly_node {
+    kefir_codegen_target_ir_block_ref_t gate_block_ref;
     kefir_codegen_target_ir_block_ref_t target_block_ref;
     struct kefir_list fragments;
 } kefir_codegen_target_ir_inline_assembly_node_t;
@@ -366,6 +367,7 @@ typedef struct kefir_codegen_target_ir_code {
 
     kefir_codegen_target_ir_block_ref_t entry_block;
     kefir_codegen_target_ir_block_ref_t indirect_jump_gate_block;
+    struct kefir_hashset gate_blocks;
 
     const struct kefir_codegen_target_ir_code_class *klass;
 } kefir_codegen_target_ir_code_t;
