@@ -15,8 +15,6 @@
 .L__kefir_text_section_begin:
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     jmp test@PLT
 .L__kefir_text_func_test2_end:
 
@@ -24,8 +22,6 @@ test3:
 .L__kefir_text_func_test3_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     mov $1, %rdi
     xor %eax, %eax
     call test@PLT
@@ -37,8 +33,6 @@ test4:
 .L__kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test4_label1
-.L__kefir_func_test4_label1:
     mov $1, %rdi
     mov $2, %rsi
     xor %eax, %eax
@@ -51,8 +45,6 @@ test5:
 .L__kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test5_label1
-.L__kefir_func_test5_label1:
     mov $1, %rdi
     mov $2, %rsi
     mov $3, %rdx

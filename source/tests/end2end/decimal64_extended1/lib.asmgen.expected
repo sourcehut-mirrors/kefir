@@ -51,8 +51,6 @@ conv1:
 .L__kefir_text_func_conv1_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_conv1_label1
-.L__kefir_func_conv1_label1:
     call __bid_floatditd@PLT
     pop %rbp
     ret
@@ -62,8 +60,6 @@ conv2:
 .L__kefir_text_func_conv2_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_conv2_label1
-.L__kefir_func_conv2_label1:
     call __bid_floatunsditd@PLT
     pop %rbp
     ret
@@ -73,8 +69,6 @@ conv3:
 .L__kefir_text_func_conv3_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_conv3_label1
-.L__kefir_func_conv3_label1:
     call __bid_extendsftd@PLT
     pop %rbp
     ret
@@ -84,8 +78,6 @@ conv4:
 .L__kefir_text_func_conv4_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_conv4_label1
-.L__kefir_func_conv4_label1:
     call __bid_extenddftd@PLT
     pop %rbp
     ret
@@ -97,8 +89,6 @@ conv5:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_conv5_label1
-.L__kefir_func_conv5_label1:
     fldt 16(%rbp)
     fstpt -32(%rbp)
     sub $16, %rsp
@@ -116,8 +106,6 @@ add32x:
 .L__kefir_text_func_add32x_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_add32x_label1
-.L__kefir_func_add32x_label1:
     call __bid_addtd3@PLT
     pop %rbp
     ret
@@ -127,8 +115,6 @@ div32x:
 .L__kefir_text_func_div32x_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_div32x_label1
-.L__kefir_func_div32x_label1:
     call __bid_divtd3@PLT
     pop %rbp
     ret
@@ -138,8 +124,6 @@ mul32x:
 .L__kefir_text_func_mul32x_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_mul32x_label1
-.L__kefir_func_mul32x_label1:
     call __bid_multd3@PLT
     pop %rbp
     ret
@@ -150,8 +134,6 @@ neg32x:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_neg32x_label1
-.L__kefir_func_neg32x_label1:
     movdqu %xmm0, -16(%rbp)
     mov -8(%rbp), %rax
     btc $63, %rax
@@ -166,8 +148,6 @@ sub32x:
 .L__kefir_text_func_sub32x_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_sub32x_label1
-.L__kefir_func_sub32x_label1:
     call __bid_subtd3@PLT
     pop %rbp
     ret
@@ -175,8 +155,6 @@ sub32x:
 
 get32x_1:
 .L__kefir_text_func_get32x_1_begin:
-    jmp .L__kefir_func_get32x_1_label1
-.L__kefir_func_get32x_1_label1:
     movdqu .L__kefir_func_get32x_1_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get32x_1_end:
@@ -188,8 +166,6 @@ get32x_1:
 
 get32x_2:
 .L__kefir_text_func_get32x_2_begin:
-    jmp .L__kefir_func_get32x_2_label1
-.L__kefir_func_get32x_2_label1:
     movdqu .L__kefir_func_get32x_2_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get32x_2_end:

@@ -26,16 +26,12 @@
 .L__kefir_text_section_begin:
 get_a:
 .L__kefir_text_func_get_a_begin:
-    jmp .L__kefir_func_get_a_label1
-.L__kefir_func_get_a_label1:
     mov $123456789, %rax
     ret
 .L__kefir_text_func_get_a_end:
 
 get_b:
 .L__kefir_text_func_get_b_begin:
-    jmp .L__kefir_func_get_b_label1
-.L__kefir_func_get_b_label1:
     movd .L__kefir_func_get_b_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_b_end:
@@ -47,8 +43,6 @@ get_b:
 
 get_c:
 .L__kefir_text_func_get_c_begin:
-    jmp .L__kefir_func_get_c_label1
-.L__kefir_func_get_c_label1:
     movq .L__kefir_func_get_c_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_c_end:
@@ -60,8 +54,6 @@ get_c:
 
 get_d:
 .L__kefir_text_func_get_d_begin:
-    jmp .L__kefir_func_get_d_label1
-.L__kefir_func_get_d_label1:
     fldt .L__kefir_func_get_d_label4(%rip)
     ret
 .L__kefir_text_func_get_d_end:
@@ -78,8 +70,6 @@ get_e:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_get_e_label1
-.L__kefir_func_get_e_label1:
     movd .L__kefir_func_get_e_label4(%rip), %xmm0
     movd .L__kefir_func_get_e_label5(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
@@ -103,8 +93,6 @@ get_f:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_get_f_label1
-.L__kefir_func_get_f_label1:
     movq .L__kefir_func_get_f_label4(%rip), %xmm0
     movq .L__kefir_func_get_f_label5(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -127,8 +115,6 @@ get_g:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get_g_label1
-.L__kefir_func_get_g_label1:
     fldt .L__kefir_func_get_g_label4(%rip)
     fldt .L__kefir_func_get_g_label5(%rip)
     fstpt -32(%rbp)
@@ -153,16 +139,12 @@ get_g:
 
 get_h:
 .L__kefir_text_func_get_h_begin:
-    jmp .L__kefir_func_get_h_label1
-.L__kefir_func_get_h_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_get_h_end:
 
 get_i:
 .L__kefir_text_func_get_i_begin:
-    jmp .L__kefir_func_get_i_label1
-.L__kefir_func_get_i_label1:
     lea .L__kefir_string_literal0(%rip), %rax
     add $1, %rax
     ret
@@ -170,8 +152,6 @@ get_i:
 
 get_j:
 .L__kefir_text_func_get_j_begin:
-    jmp .L__kefir_func_get_j_label1
-.L__kefir_func_get_j_label1:
     lea .L__kefir_string_literal1(%rip), %rax
     add $8, %rax
     ret

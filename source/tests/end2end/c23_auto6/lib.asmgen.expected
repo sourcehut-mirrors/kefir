@@ -18,15 +18,11 @@
 .L__kefir_text_section_begin:
 fn1:
 .L__kefir_text_func_fn1_begin:
-    jmp .L__kefir_func_fn1_label1
-.L__kefir_func_fn1_label1:
     ret
 .L__kefir_text_func_fn1_end:
 
 fn2:
 .L__kefir_text_func_fn2_begin:
-    jmp .L__kefir_func_fn2_label1
-.L__kefir_func_fn2_label1:
     ret
 .L__kefir_text_func_fn2_end:
 
@@ -36,10 +32,7 @@ fn3:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_fn3_label1
-.L__kefir_func_fn3_label1:
     mov %rdi, %rbx
-    jmp .L__kefir_func_fn3_label2
 .L__kefir_func_fn3_label2:
     cmp $0, %ebx
     jg .L__kefir_func_fn3_label6

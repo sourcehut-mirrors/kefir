@@ -18,7 +18,6 @@ make_s1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_make_s1_label1
 .L__kefir_func_make_s1_label1:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -36,7 +35,6 @@ cast_int:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_cast_int_label1
 .L__kefir_func_cast_int_label1:
     movq %rdi, -16(%rbp)
     movl $0, -8(%rbp)
@@ -55,7 +53,6 @@ sum3_one:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_sum3_one_label1
 .L__kefir_func_sum3_one_label1:
     movq %rdx, -16(%rbp)
     movq %rsi, -24(%rbp)
@@ -82,7 +79,6 @@ unwrap_s1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_unwrap_s1_label1
 .L__kefir_func_unwrap_s1_label1:
     movq %rdi, -16(%rbp)
     movl -16(%rbp), %eax

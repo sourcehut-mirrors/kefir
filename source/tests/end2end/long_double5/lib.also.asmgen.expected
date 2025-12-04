@@ -22,8 +22,6 @@ eq:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_eq_label1
-.L__kefir_func_eq_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     xor %eax, %eax
@@ -44,8 +42,6 @@ ge:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_ge_label1
-.L__kefir_func_ge_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fld %st(0)
@@ -83,8 +79,6 @@ gr:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_gr_label1
-.L__kefir_func_gr_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     xor %eax, %eax
@@ -103,8 +97,6 @@ le:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_le_label1
-.L__kefir_func_le_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fxch %st(1)
@@ -143,8 +135,6 @@ lt:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_lt_label1
-.L__kefir_func_lt_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fxch %st(1)
@@ -164,8 +154,6 @@ neq:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_neq_label1
-.L__kefir_func_neq_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     xor %eax, %eax

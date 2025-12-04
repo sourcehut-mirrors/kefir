@@ -19,7 +19,6 @@ less_or_equalsld:
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_less_or_equalsld_label1
 .L__kefir_func_less_or_equalsld_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -68,7 +67,6 @@ greater_or_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_greater_or_equalsd_label1
 .L__kefir_func_greater_or_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -92,7 +90,6 @@ less_or_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_less_or_equalsd_label1
 .L__kefir_func_less_or_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -116,7 +113,6 @@ greater_or_equalsld:
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_greater_or_equalsld_label1
 .L__kefir_func_greater_or_equalsld_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)

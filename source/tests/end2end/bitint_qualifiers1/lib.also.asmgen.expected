@@ -16,7 +16,6 @@ add:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_add_label1
 .L__kefir_func_add_label1:
     movq %rsi, -16(%rbp)
     movq %rdi, -8(%rbp)
@@ -39,7 +38,6 @@ get:
 .L__kefir_func_get_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get_label1
 .L__kefir_func_get_label1:
     movq value@GOTPCREL(%rip), %rax
     pop %rbp

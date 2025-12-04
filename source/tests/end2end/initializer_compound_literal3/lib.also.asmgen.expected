@@ -13,8 +13,6 @@ get:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get_label1
-.L__kefir_func_get_label1:
     mov %rcx, %rax
     xor %ecx, %eax
     movq %rax, -12(%rbp)
@@ -34,8 +32,6 @@ get2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get2_label1
-.L__kefir_func_get2_label1:
     mov %rcx, %rax
     xor %ecx, %eax
     movq %rax, -12(%rbp)

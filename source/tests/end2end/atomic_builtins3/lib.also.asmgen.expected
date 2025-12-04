@@ -22,8 +22,6 @@
 .L__kefir_text_section_begin:
 test2_atomic_exchange16:
 .L__kefir_text_func_test2_atomic_exchange16_begin:
-    jmp .L__kefir_func_test2_atomic_exchange16_label1
-.L__kefir_func_test2_atomic_exchange16_label1:
     xchgw (%rdi), %si
     mov %rsi, %rax
     ret
@@ -31,8 +29,6 @@ test2_atomic_exchange16:
 
 test2_atomic_exchange32:
 .L__kefir_text_func_test2_atomic_exchange32_begin:
-    jmp .L__kefir_func_test2_atomic_exchange32_label1
-.L__kefir_func_test2_atomic_exchange32_label1:
     xchgl (%rdi), %esi
     mov %rsi, %rax
     ret
@@ -40,8 +36,6 @@ test2_atomic_exchange32:
 
 test2_atomic_exchange64:
 .L__kefir_text_func_test2_atomic_exchange64_begin:
-    jmp .L__kefir_func_test2_atomic_exchange64_label1
-.L__kefir_func_test2_atomic_exchange64_label1:
     xchgq (%rdi), %rsi
     mov %rsi, %rax
     ret
@@ -49,8 +43,6 @@ test2_atomic_exchange64:
 
 test_atomic_exchange8:
 .L__kefir_text_func_test_atomic_exchange8_begin:
-    jmp .L__kefir_func_test_atomic_exchange8_label1
-.L__kefir_func_test_atomic_exchange8_label1:
     xchgb (%rdi), %sil
     mov %rsi, %rax
     ret
@@ -58,8 +50,6 @@ test_atomic_exchange8:
 
 test2_atomic_exchange8:
 .L__kefir_text_func_test2_atomic_exchange8_begin:
-    jmp .L__kefir_func_test2_atomic_exchange8_label1
-.L__kefir_func_test2_atomic_exchange8_label1:
     xchgb (%rdi), %sil
     mov %rsi, %rax
     ret
@@ -67,8 +57,6 @@ test2_atomic_exchange8:
 
 test_atomic_exchange16:
 .L__kefir_text_func_test_atomic_exchange16_begin:
-    jmp .L__kefir_func_test_atomic_exchange16_label1
-.L__kefir_func_test_atomic_exchange16_label1:
     xchgw (%rdi), %si
     mov %rsi, %rax
     ret
@@ -76,8 +64,6 @@ test_atomic_exchange16:
 
 test_atomic_exchange32:
 .L__kefir_text_func_test_atomic_exchange32_begin:
-    jmp .L__kefir_func_test_atomic_exchange32_label1
-.L__kefir_func_test_atomic_exchange32_label1:
     xchgl (%rdi), %esi
     mov %rsi, %rax
     ret
@@ -85,8 +71,6 @@ test_atomic_exchange32:
 
 test_atomic_exchange64:
 .L__kefir_text_func_test_atomic_exchange64_begin:
-    jmp .L__kefir_func_test_atomic_exchange64_label1
-.L__kefir_func_test_atomic_exchange64_label1:
     xchgq (%rdi), %rsi
     mov %rsi, %rax
     ret

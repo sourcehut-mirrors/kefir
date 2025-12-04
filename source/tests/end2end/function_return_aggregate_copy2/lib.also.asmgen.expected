@@ -14,8 +14,6 @@ get2:
     push %rbx
     push %r12
     sub $512, %rsp
-    jmp .L__kefir_func_get2_label1
-.L__kefir_func_get2_label1:
     mov %rsi, %r12
     leaq -272(%rbp), %rbx
     leaq -528(%rbp), %rsi

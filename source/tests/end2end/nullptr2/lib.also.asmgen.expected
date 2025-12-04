@@ -32,8 +32,6 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    jmp .L__kefir_func_get1_label1
-.L__kefir_func_get1_label1:
     movq a@GOTPCREL(%rip), %rax
     movq (%rax), %rax
     xor %eax, %eax
@@ -42,8 +40,6 @@ get1:
 
 set1:
 .L__kefir_text_func_set1_begin:
-    jmp .L__kefir_func_set1_label1
-.L__kefir_func_set1_label1:
     movq a@GOTPCREL(%rip), %rax
     movq $0, (%rax)
     ret
@@ -51,8 +47,6 @@ set1:
 
 set2:
 .L__kefir_text_func_set2_begin:
-    jmp .L__kefir_func_set2_label1
-.L__kefir_func_set2_label1:
     movq a@GOTPCREL(%rip), %rax
     movq $0, (%rax)
     ret

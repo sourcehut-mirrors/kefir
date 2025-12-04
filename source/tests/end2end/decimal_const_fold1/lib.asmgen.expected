@@ -84,8 +84,6 @@
 .L__kefir_text_section_begin:
 add32:
 .L__kefir_text_func_add32_begin:
-    jmp .L__kefir_func_add32_label1
-.L__kefir_func_add32_label1:
     movd .L__kefir_func_add32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_add32_end:
@@ -97,8 +95,6 @@ add32:
 
 add64:
 .L__kefir_text_func_add64_begin:
-    jmp .L__kefir_func_add64_label1
-.L__kefir_func_add64_label1:
     movq .L__kefir_func_add64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_add64_end:
@@ -110,8 +106,6 @@ add64:
 
 div32:
 .L__kefir_text_func_div32_begin:
-    jmp .L__kefir_func_div32_label1
-.L__kefir_func_div32_label1:
     movd .L__kefir_func_div32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_div32_end:
@@ -123,8 +117,6 @@ div32:
 
 div64:
 .L__kefir_text_func_div64_begin:
-    jmp .L__kefir_func_div64_label1
-.L__kefir_func_div64_label1:
     movq .L__kefir_func_div64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_div64_end:
@@ -136,8 +128,6 @@ div64:
 
 mul32:
 .L__kefir_text_func_mul32_begin:
-    jmp .L__kefir_func_mul32_label1
-.L__kefir_func_mul32_label1:
     movd .L__kefir_func_mul32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_mul32_end:
@@ -149,8 +139,6 @@ mul32:
 
 mul64:
 .L__kefir_text_func_mul64_begin:
-    jmp .L__kefir_func_mul64_label1
-.L__kefir_func_mul64_label1:
     movq .L__kefir_func_mul64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_mul64_end:
@@ -162,8 +150,6 @@ mul64:
 
 neg32:
 .L__kefir_text_func_neg32_begin:
-    jmp .L__kefir_func_neg32_label1
-.L__kefir_func_neg32_label1:
     movd .L__kefir_func_neg32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_neg32_end:
@@ -175,8 +161,6 @@ neg32:
 
 neg64:
 .L__kefir_text_func_neg64_begin:
-    jmp .L__kefir_func_neg64_label1
-.L__kefir_func_neg64_label1:
     movq .L__kefir_func_neg64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_neg64_end:
@@ -188,8 +172,6 @@ neg64:
 
 sub32:
 .L__kefir_text_func_sub32_begin:
-    jmp .L__kefir_func_sub32_label1
-.L__kefir_func_sub32_label1:
     movd .L__kefir_func_sub32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_sub32_end:
@@ -201,8 +183,6 @@ sub32:
 
 sub64:
 .L__kefir_text_func_sub64_begin:
-    jmp .L__kefir_func_sub64_label1
-.L__kefir_func_sub64_label1:
     movq .L__kefir_func_sub64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_sub64_end:
@@ -214,8 +194,6 @@ sub64:
 
 add128:
 .L__kefir_text_func_add128_begin:
-    jmp .L__kefir_func_add128_label1
-.L__kefir_func_add128_label1:
     movdqu .L__kefir_func_add128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_add128_end:
@@ -227,8 +205,6 @@ add128:
 
 div128:
 .L__kefir_text_func_div128_begin:
-    jmp .L__kefir_func_div128_label1
-.L__kefir_func_div128_label1:
     movdqu .L__kefir_func_div128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_div128_end:
@@ -240,104 +216,78 @@ div128:
 
 eq32_1:
 .L__kefir_text_func_eq32_1_begin:
-    jmp .L__kefir_func_eq32_1_label1
-.L__kefir_func_eq32_1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_eq32_1_end:
 
 eq32_2:
 .L__kefir_text_func_eq32_2_begin:
-    jmp .L__kefir_func_eq32_2_label1
-.L__kefir_func_eq32_2_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_eq32_2_end:
 
 eq64_1:
 .L__kefir_text_func_eq64_1_begin:
-    jmp .L__kefir_func_eq64_1_label1
-.L__kefir_func_eq64_1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_eq64_1_end:
 
 eq64_2:
 .L__kefir_text_func_eq64_2_begin:
-    jmp .L__kefir_func_eq64_2_label1
-.L__kefir_func_eq64_2_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_eq64_2_end:
 
 gt32_1:
 .L__kefir_text_func_gt32_1_begin:
-    jmp .L__kefir_func_gt32_1_label1
-.L__kefir_func_gt32_1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_gt32_1_end:
 
 gt32_2:
 .L__kefir_text_func_gt32_2_begin:
-    jmp .L__kefir_func_gt32_2_label1
-.L__kefir_func_gt32_2_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_gt32_2_end:
 
 gt64_1:
 .L__kefir_text_func_gt64_1_begin:
-    jmp .L__kefir_func_gt64_1_label1
-.L__kefir_func_gt64_1_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_gt64_1_end:
 
 gt64_2:
 .L__kefir_text_func_gt64_2_begin:
-    jmp .L__kefir_func_gt64_2_label1
-.L__kefir_func_gt64_2_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_gt64_2_end:
 
 lt32_1:
 .L__kefir_text_func_lt32_1_begin:
-    jmp .L__kefir_func_lt32_1_label1
-.L__kefir_func_lt32_1_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_lt32_1_end:
 
 lt32_2:
 .L__kefir_text_func_lt32_2_begin:
-    jmp .L__kefir_func_lt32_2_label1
-.L__kefir_func_lt32_2_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_lt32_2_end:
 
 lt64_1:
 .L__kefir_text_func_lt64_1_begin:
-    jmp .L__kefir_func_lt64_1_label1
-.L__kefir_func_lt64_1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_lt64_1_end:
 
 lt64_2:
 .L__kefir_text_func_lt64_2_begin:
-    jmp .L__kefir_func_lt64_2_label1
-.L__kefir_func_lt64_2_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_lt64_2_end:
 
 mul128:
 .L__kefir_text_func_mul128_begin:
-    jmp .L__kefir_func_mul128_label1
-.L__kefir_func_mul128_label1:
     movdqu .L__kefir_func_mul128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_mul128_end:
@@ -349,8 +299,6 @@ mul128:
 
 neg128:
 .L__kefir_text_func_neg128_begin:
-    jmp .L__kefir_func_neg128_label1
-.L__kefir_func_neg128_label1:
     movdqu .L__kefir_func_neg128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_neg128_end:
@@ -362,8 +310,6 @@ neg128:
 
 sub128:
 .L__kefir_text_func_sub128_begin:
-    jmp .L__kefir_func_sub128_label1
-.L__kefir_func_sub128_label1:
     movdqu .L__kefir_func_sub128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_sub128_end:
@@ -375,96 +321,72 @@ sub128:
 
 eq128_1:
 .L__kefir_text_func_eq128_1_begin:
-    jmp .L__kefir_func_eq128_1_label1
-.L__kefir_func_eq128_1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_eq128_1_end:
 
 eq128_2:
 .L__kefir_text_func_eq128_2_begin:
-    jmp .L__kefir_func_eq128_2_label1
-.L__kefir_func_eq128_2_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_eq128_2_end:
 
 gt128_1:
 .L__kefir_text_func_gt128_1_begin:
-    jmp .L__kefir_func_gt128_1_label1
-.L__kefir_func_gt128_1_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_gt128_1_end:
 
 gt128_2:
 .L__kefir_text_func_gt128_2_begin:
-    jmp .L__kefir_func_gt128_2_label1
-.L__kefir_func_gt128_2_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_gt128_2_end:
 
 lt128_1:
 .L__kefir_text_func_lt128_1_begin:
-    jmp .L__kefir_func_lt128_1_label1
-.L__kefir_func_lt128_1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_lt128_1_end:
 
 lt128_2:
 .L__kefir_text_func_lt128_2_begin:
-    jmp .L__kefir_func_lt128_2_label1
-.L__kefir_func_lt128_2_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_lt128_2_end:
 
 isnan32_1:
 .L__kefir_text_func_isnan32_1_begin:
-    jmp .L__kefir_func_isnan32_1_label1
-.L__kefir_func_isnan32_1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_isnan32_1_end:
 
 isnan32_2:
 .L__kefir_text_func_isnan32_2_begin:
-    jmp .L__kefir_func_isnan32_2_label1
-.L__kefir_func_isnan32_2_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_isnan32_2_end:
 
 isnan64_1:
 .L__kefir_text_func_isnan64_1_begin:
-    jmp .L__kefir_func_isnan64_1_label1
-.L__kefir_func_isnan64_1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_isnan64_1_end:
 
 isnan64_2:
 .L__kefir_text_func_isnan64_2_begin:
-    jmp .L__kefir_func_isnan64_2_label1
-.L__kefir_func_isnan64_2_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_isnan64_2_end:
 
 isnan128_1:
 .L__kefir_text_func_isnan128_1_begin:
-    jmp .L__kefir_func_isnan128_1_label1
-.L__kefir_func_isnan128_1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_isnan128_1_end:
 
 isnan128_2:
 .L__kefir_text_func_isnan128_2_begin:
-    jmp .L__kefir_func_isnan128_2_label1
-.L__kefir_func_isnan128_2_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_isnan128_2_end:

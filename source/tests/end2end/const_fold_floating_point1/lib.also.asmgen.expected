@@ -108,8 +108,6 @@
 .L__kefir_text_section_begin:
 add32:
 .L__kefir_text_func_add32_begin:
-    jmp .L__kefir_func_add32_label1
-.L__kefir_func_add32_label1:
     movd .L__kefir_func_add32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_add32_end:
@@ -121,8 +119,6 @@ add32:
 
 add64:
 .L__kefir_text_func_add64_begin:
-    jmp .L__kefir_func_add64_label1
-.L__kefir_func_add64_label1:
     movq .L__kefir_func_add64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_add64_end:
@@ -134,8 +130,6 @@ add64:
 
 add80:
 .L__kefir_text_func_add80_begin:
-    jmp .L__kefir_func_add80_label1
-.L__kefir_func_add80_label1:
     fldt .L__kefir_func_add80_label4(%rip)
     ret
 .L__kefir_text_func_add80_end:
@@ -148,8 +142,6 @@ add80:
 
 div32:
 .L__kefir_text_func_div32_begin:
-    jmp .L__kefir_func_div32_label1
-.L__kefir_func_div32_label1:
     movd .L__kefir_func_div32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_div32_end:
@@ -161,8 +153,6 @@ div32:
 
 div64:
 .L__kefir_text_func_div64_begin:
-    jmp .L__kefir_func_div64_label1
-.L__kefir_func_div64_label1:
     movq .L__kefir_func_div64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_div64_end:
@@ -174,8 +164,6 @@ div64:
 
 div80:
 .L__kefir_text_func_div80_begin:
-    jmp .L__kefir_func_div80_label1
-.L__kefir_func_div80_label1:
     fldt .L__kefir_func_div80_label4(%rip)
     ret
 .L__kefir_text_func_div80_end:
@@ -188,8 +176,6 @@ div80:
 
 mul32:
 .L__kefir_text_func_mul32_begin:
-    jmp .L__kefir_func_mul32_label1
-.L__kefir_func_mul32_label1:
     movd .L__kefir_func_mul32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_mul32_end:
@@ -201,8 +187,6 @@ mul32:
 
 mul64:
 .L__kefir_text_func_mul64_begin:
-    jmp .L__kefir_func_mul64_label1
-.L__kefir_func_mul64_label1:
     movq .L__kefir_func_mul64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_mul64_end:
@@ -214,8 +198,6 @@ mul64:
 
 mul80:
 .L__kefir_text_func_mul80_begin:
-    jmp .L__kefir_func_mul80_label1
-.L__kefir_func_mul80_label1:
     fldt .L__kefir_func_mul80_label4(%rip)
     ret
 .L__kefir_text_func_mul80_end:
@@ -228,8 +210,6 @@ mul80:
 
 neg32:
 .L__kefir_text_func_neg32_begin:
-    jmp .L__kefir_func_neg32_label1
-.L__kefir_func_neg32_label1:
     movd .L__kefir_func_neg32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_neg32_end:
@@ -241,8 +221,6 @@ neg32:
 
 neg64:
 .L__kefir_text_func_neg64_begin:
-    jmp .L__kefir_func_neg64_label1
-.L__kefir_func_neg64_label1:
     movq .L__kefir_func_neg64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_neg64_end:
@@ -254,8 +232,6 @@ neg64:
 
 neg80:
 .L__kefir_text_func_neg80_begin:
-    jmp .L__kefir_func_neg80_label1
-.L__kefir_func_neg80_label1:
     fldt .L__kefir_func_neg80_label4(%rip)
     ret
 .L__kefir_text_func_neg80_end:
@@ -268,8 +244,6 @@ neg80:
 
 sub32:
 .L__kefir_text_func_sub32_begin:
-    jmp .L__kefir_func_sub32_label1
-.L__kefir_func_sub32_label1:
     movd .L__kefir_func_sub32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_sub32_end:
@@ -281,8 +255,6 @@ sub32:
 
 sub64:
 .L__kefir_text_func_sub64_begin:
-    jmp .L__kefir_func_sub64_label1
-.L__kefir_func_sub64_label1:
     movq .L__kefir_func_sub64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_sub64_end:
@@ -294,8 +266,6 @@ sub64:
 
 sub80:
 .L__kefir_text_func_sub80_begin:
-    jmp .L__kefir_func_sub80_label1
-.L__kefir_func_sub80_label1:
     fldt .L__kefir_func_sub80_label4(%rip)
     ret
 .L__kefir_text_func_sub80_end:
@@ -308,80 +278,60 @@ sub80:
 
 to_int_32:
 .L__kefir_text_func_to_int_32_begin:
-    jmp .L__kefir_func_to_int_32_label1
-.L__kefir_func_to_int_32_label1:
     mov $-3, %rax
     ret
 .L__kefir_text_func_to_int_32_end:
 
 to_int_64:
 .L__kefir_text_func_to_int_64_begin:
-    jmp .L__kefir_func_to_int_64_label1
-.L__kefir_func_to_int_64_label1:
     mov $-31, %rax
     ret
 .L__kefir_text_func_to_int_64_end:
 
 to_int_80:
 .L__kefir_text_func_to_int_80_begin:
-    jmp .L__kefir_func_to_int_80_label1
-.L__kefir_func_to_int_80_label1:
     mov $-314, %rax
     ret
 .L__kefir_text_func_to_int_80_end:
 
 to_uint_32:
 .L__kefir_text_func_to_uint_32_begin:
-    jmp .L__kefir_func_to_uint_32_label1
-.L__kefir_func_to_uint_32_label1:
     mov $3, %rax
     ret
 .L__kefir_text_func_to_uint_32_end:
 
 to_uint_64:
 .L__kefir_text_func_to_uint_64_begin:
-    jmp .L__kefir_func_to_uint_64_label1
-.L__kefir_func_to_uint_64_label1:
     mov $31, %rax
     ret
 .L__kefir_text_func_to_uint_64_end:
 
 to_uint_80:
 .L__kefir_text_func_to_uint_80_begin:
-    jmp .L__kefir_func_to_uint_80_label1
-.L__kefir_func_to_uint_80_label1:
     mov $314, %rax
     ret
 .L__kefir_text_func_to_uint_80_end:
 
 float80_eq2_float80:
 .L__kefir_text_func_float80_eq2_float80_begin:
-    jmp .L__kefir_func_float80_eq2_float80_label1
-.L__kefir_func_float80_eq2_float80_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_float80_eq2_float80_end:
 
 float80_gt2_float80:
 .L__kefir_text_func_float80_gt2_float80_begin:
-    jmp .L__kefir_func_float80_gt2_float80_label1
-.L__kefir_func_float80_gt2_float80_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_float80_gt2_float80_end:
 
 float80_lt2_float80:
 .L__kefir_text_func_float80_lt2_float80_begin:
-    jmp .L__kefir_func_float80_lt2_float80_label1
-.L__kefir_func_float80_lt2_float80_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_float80_lt2_float80_end:
 
 int_to_float32:
 .L__kefir_text_func_int_to_float32_begin:
-    jmp .L__kefir_func_int_to_float32_label1
-.L__kefir_func_int_to_float32_label1:
     movd .L__kefir_func_int_to_float32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_int_to_float32_end:
@@ -393,8 +343,6 @@ int_to_float32:
 
 int_to_float64:
 .L__kefir_text_func_int_to_float64_begin:
-    jmp .L__kefir_func_int_to_float64_label1
-.L__kefir_func_int_to_float64_label1:
     movq .L__kefir_func_int_to_float64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_int_to_float64_end:
@@ -406,8 +354,6 @@ int_to_float64:
 
 int_to_float80:
 .L__kefir_text_func_int_to_float80_begin:
-    jmp .L__kefir_func_int_to_float80_label1
-.L__kefir_func_int_to_float80_label1:
     fldt .L__kefir_func_int_to_float80_label4(%rip)
     ret
 .L__kefir_text_func_int_to_float80_end:
@@ -420,8 +366,6 @@ int_to_float80:
 
 uint_to_float32:
 .L__kefir_text_func_uint_to_float32_begin:
-    jmp .L__kefir_func_uint_to_float32_label1
-.L__kefir_func_uint_to_float32_label1:
     movd .L__kefir_func_uint_to_float32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_uint_to_float32_end:
@@ -433,8 +377,6 @@ uint_to_float32:
 
 uint_to_float64:
 .L__kefir_text_func_uint_to_float64_begin:
-    jmp .L__kefir_func_uint_to_float64_label1
-.L__kefir_func_uint_to_float64_label1:
     movq .L__kefir_func_uint_to_float64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_uint_to_float64_end:
@@ -446,8 +388,6 @@ uint_to_float64:
 
 uint_to_float80:
 .L__kefir_text_func_uint_to_float80_begin:
-    jmp .L__kefir_func_uint_to_float80_label1
-.L__kefir_func_uint_to_float80_label1:
     fldt .L__kefir_func_uint_to_float80_label4(%rip)
     ret
 .L__kefir_text_func_uint_to_float80_end:
@@ -460,56 +400,42 @@ uint_to_float80:
 
 float32_eq2_float32:
 .L__kefir_text_func_float32_eq2_float32_begin:
-    jmp .L__kefir_func_float32_eq2_float32_label1
-.L__kefir_func_float32_eq2_float32_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_float32_eq2_float32_end:
 
 float32_gt2_float32:
 .L__kefir_text_func_float32_gt2_float32_begin:
-    jmp .L__kefir_func_float32_gt2_float32_label1
-.L__kefir_func_float32_gt2_float32_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_float32_gt2_float32_end:
 
 float32_lt2_float32:
 .L__kefir_text_func_float32_lt2_float32_begin:
-    jmp .L__kefir_func_float32_lt2_float32_label1
-.L__kefir_func_float32_lt2_float32_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_float32_lt2_float32_end:
 
 float32_eq_float32:
 .L__kefir_text_func_float32_eq_float32_begin:
-    jmp .L__kefir_func_float32_eq_float32_label1
-.L__kefir_func_float32_eq_float32_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_float32_eq_float32_end:
 
 float32_gt_float32:
 .L__kefir_text_func_float32_gt_float32_begin:
-    jmp .L__kefir_func_float32_gt_float32_label1
-.L__kefir_func_float32_gt_float32_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_float32_gt_float32_end:
 
 float32_lt_float32:
 .L__kefir_text_func_float32_lt_float32_begin:
-    jmp .L__kefir_func_float32_lt_float32_label1
-.L__kefir_func_float32_lt_float32_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_float32_lt_float32_end:
 
 float32_to_float64:
 .L__kefir_text_func_float32_to_float64_begin:
-    jmp .L__kefir_func_float32_to_float64_label1
-.L__kefir_func_float32_to_float64_label1:
     movq .L__kefir_func_float32_to_float64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_float32_to_float64_end:
@@ -521,8 +447,6 @@ float32_to_float64:
 
 float32_to_float80:
 .L__kefir_text_func_float32_to_float80_begin:
-    jmp .L__kefir_func_float32_to_float80_label1
-.L__kefir_func_float32_to_float80_label1:
     fldt .L__kefir_func_float32_to_float80_label4(%rip)
     ret
 .L__kefir_text_func_float32_to_float80_end:
@@ -535,56 +459,42 @@ float32_to_float80:
 
 float64_eq2_float64:
 .L__kefir_text_func_float64_eq2_float64_begin:
-    jmp .L__kefir_func_float64_eq2_float64_label1
-.L__kefir_func_float64_eq2_float64_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_float64_eq2_float64_end:
 
 float64_gt2_float64:
 .L__kefir_text_func_float64_gt2_float64_begin:
-    jmp .L__kefir_func_float64_gt2_float64_label1
-.L__kefir_func_float64_gt2_float64_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_float64_gt2_float64_end:
 
 float64_lt2_float64:
 .L__kefir_text_func_float64_lt2_float64_begin:
-    jmp .L__kefir_func_float64_lt2_float64_label1
-.L__kefir_func_float64_lt2_float64_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_float64_lt2_float64_end:
 
 float64_eq_float64:
 .L__kefir_text_func_float64_eq_float64_begin:
-    jmp .L__kefir_func_float64_eq_float64_label1
-.L__kefir_func_float64_eq_float64_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_float64_eq_float64_end:
 
 float64_gt_float64:
 .L__kefir_text_func_float64_gt_float64_begin:
-    jmp .L__kefir_func_float64_gt_float64_label1
-.L__kefir_func_float64_gt_float64_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_float64_gt_float64_end:
 
 float64_lt_float64:
 .L__kefir_text_func_float64_lt_float64_begin:
-    jmp .L__kefir_func_float64_lt_float64_label1
-.L__kefir_func_float64_lt_float64_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_float64_lt_float64_end:
 
 float64_to_float32:
 .L__kefir_text_func_float64_to_float32_begin:
-    jmp .L__kefir_func_float64_to_float32_label1
-.L__kefir_func_float64_to_float32_label1:
     movd .L__kefir_func_float64_to_float32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_float64_to_float32_end:
@@ -596,8 +506,6 @@ float64_to_float32:
 
 float64_to_float80:
 .L__kefir_text_func_float64_to_float80_begin:
-    jmp .L__kefir_func_float64_to_float80_label1
-.L__kefir_func_float64_to_float80_label1:
     fldt .L__kefir_func_float64_to_float80_label4(%rip)
     ret
 .L__kefir_text_func_float64_to_float80_end:
@@ -610,32 +518,24 @@ float64_to_float80:
 
 float80_eq_float80:
 .L__kefir_text_func_float80_eq_float80_begin:
-    jmp .L__kefir_func_float80_eq_float80_label1
-.L__kefir_func_float80_eq_float80_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_float80_eq_float80_end:
 
 float80_gt_float80:
 .L__kefir_text_func_float80_gt_float80_begin:
-    jmp .L__kefir_func_float80_gt_float80_label1
-.L__kefir_func_float80_gt_float80_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_float80_gt_float80_end:
 
 float80_lt_float80:
 .L__kefir_text_func_float80_lt_float80_begin:
-    jmp .L__kefir_func_float80_lt_float80_label1
-.L__kefir_func_float80_lt_float80_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_float80_lt_float80_end:
 
 float80_to_float32:
 .L__kefir_text_func_float80_to_float32_begin:
-    jmp .L__kefir_func_float80_to_float32_label1
-.L__kefir_func_float80_to_float32_label1:
     movd .L__kefir_func_float80_to_float32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_float80_to_float32_end:
@@ -647,8 +547,6 @@ float80_to_float32:
 
 float80_to_float64:
 .L__kefir_text_func_float80_to_float64_begin:
-    jmp .L__kefir_func_float80_to_float64_label1
-.L__kefir_func_float80_to_float64_label1:
     movq .L__kefir_func_float80_to_float64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_float80_to_float64_end:

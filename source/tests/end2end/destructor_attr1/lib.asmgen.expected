@@ -9,7 +9,6 @@ close1:
 .L__kefir_func_close1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_close1_label1
 .L__kefir_func_close1_label1:
     pop %rbp
     ret
@@ -20,7 +19,6 @@ close2:
 .L__kefir_func_close2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_close2_label1
 .L__kefir_func_close2_label1:
     pop %rbp
     ret

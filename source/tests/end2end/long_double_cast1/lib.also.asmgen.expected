@@ -32,8 +32,6 @@ inc:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_inc_label1
-.L__kefir_func_inc_label1:
     fldt 16(%rbp)
     fldt .L__kefir_func_inc_label4(%rip)
     fxch %st(1)
@@ -56,8 +54,6 @@ neg:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_neg_label1
-.L__kefir_func_neg_label1:
     fldt 16(%rbp)
     fchs
     fldcw -8(%rbp)
@@ -72,8 +68,6 @@ f32cld:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_f32cld_label1
-.L__kefir_func_f32cld_label1:
     movq %xmm0, -16(%rbp)
     flds -16(%rbp)
     fldcw -8(%rbp)
@@ -88,8 +82,6 @@ f64cld:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_f64cld_label1
-.L__kefir_func_f64cld_label1:
     movq %xmm0, -16(%rbp)
     fldl -16(%rbp)
     fldcw -8(%rbp)
@@ -104,8 +96,6 @@ intcld:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_intcld_label1
-.L__kefir_func_intcld_label1:
     movsx %edi, %rax
     push %rax
     fildq (%rsp)
@@ -123,8 +113,6 @@ ldcf32:
     sub $16, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_ldcf32_label1
-.L__kefir_func_ldcf32_label1:
     fldt 16(%rbp)
     fstps -4(%rsp)
     movd -4(%rsp), %xmm0
@@ -142,8 +130,6 @@ ldcf64:
     sub $16, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_ldcf64_label1
-.L__kefir_func_ldcf64_label1:
     fldt 16(%rbp)
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
@@ -160,8 +146,6 @@ ldcint:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_ldcint_label1
-.L__kefir_func_ldcint_label1:
     fldt 16(%rbp)
     fnstcww -32(%rbp)
     movzxw -32(%rbp), %eax
@@ -183,8 +167,6 @@ ldcuint:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_ldcuint_label1
-.L__kefir_func_ldcuint_label1:
     fldt 16(%rbp)
     flds .L__kefir_constant_long_double_to_uint(%rip)
     fxch %st(1)
@@ -213,7 +195,6 @@ ldcuint:
     mov -16(%rbp), %rax
     fldcww -32(%rbp)
     btc $63, %rax
-    jmp .L__kefir_func_ldcuint_label4
 .L__kefir_func_ldcuint_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -227,8 +208,6 @@ uintcld:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_uintcld_label1
-.L__kefir_func_uintcld_label1:
     mov %edi, %eax
     push %rax
     fildq (%rsp)
@@ -238,7 +217,6 @@ uintcld:
     jmp .L__kefir_func_uintcld_label2
 .L__kefir_func_uintcld_label2:
     fadds .L__kefir_constant_uint_to_long_double(%rip)
-    jmp .L__kefir_func_uintcld_label3
 .L__kefir_func_uintcld_label3:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -252,8 +230,6 @@ imp_cast:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_imp_cast_label1
-.L__kefir_func_imp_cast_label1:
     movsx %edi, %rax
     push %rax
     fildq (%rsp)

@@ -12,8 +12,6 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     movq flag@GOTPCREL(%rip), %rax
     movl $1, (%rax)
     jmp do_exit@PLT
@@ -23,8 +21,6 @@ test2:
 .L__kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     movq flag@GOTPCREL(%rip), %rax
     movl $2, (%rax)
 

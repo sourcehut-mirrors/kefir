@@ -14,8 +14,6 @@ test2:
 .L__kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     call test1@PLT
     mov %rcx, %rax
     xor %rcx, %rax
@@ -25,11 +23,8 @@ test2:
 
 factorial:
 .L__kefir_text_func_factorial_begin:
-    jmp .L__kefir_func_factorial_label1
-.L__kefir_func_factorial_label1:
     mov $1, %rax
     mov %rax, %rdx
-    jmp .L__kefir_func_factorial_label2
 .L__kefir_func_factorial_label2:
     lea -1(%rdi), %rax
     mov %rdx, %rcx

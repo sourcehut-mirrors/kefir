@@ -21,7 +21,6 @@ get:
 .L__kefir_func_get_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get_label1
 .L__kefir_func_get_label1:
     lea somearray(%rip), %rax
     pop %rbp
@@ -33,7 +32,6 @@ get2:
 .L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get2_label1
 .L__kefir_func_get2_label1:
     lea someotherarray(%rip), %rax
     pop %rbp
@@ -46,7 +44,6 @@ tget:
 .L__kefir_func_tget_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_tget_label1
 .L__kefir_func_tget_label1:
     data16     lea tsomearray@tlsgd(%rip), %rdi
     .word 26214
@@ -61,7 +58,6 @@ tget2:
 .L__kefir_func_tget2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_tget2_label1
 .L__kefir_func_tget2_label1:
     data16     lea tsomeotherarray@tlsgd(%rip), %rdi
     .word 26214

@@ -20,8 +20,7 @@ fn1:
     sub $1632, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_fn1_label2
-.L__kefir_func_fn1_label2:
+.L__kefir_func_fn1_label52:
     lea 16(%rbp), %rax
 .L__kefir_func_fn1_label64:
     mov %rsi, %r9
@@ -121,9 +120,6 @@ fn1:
 .loc 0 32 54
 .L__kefir_func_fn1_label20:
     movq -1560(%rbp), %rax
-.loc 0 32 34
-.L__kefir_func_fn1_label234:
-    jmp .L__kefir_func_fn1_label16
 .loc 0 32 20
 .L__kefir_func_fn1_label16:
     cvtsi2sd %rax, %xmm1
@@ -151,8 +147,7 @@ fn2:
     push %r14
     push %r15
     sub $40, %rsp
-    jmp .L__kefir_func_fn2_label2
-.L__kefir_func_fn2_label2:
+.L__kefir_func_fn2_label42:
     mov 104(%rbp), %r13
 .L__kefir_func_fn2_label43:
     mov 96(%rbp), %r14
@@ -238,8 +233,7 @@ fn3:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_fn3_label2
-.L__kefir_func_fn3_label2:
+.L__kefir_func_fn3_label48:
     movq 88(%rbp), %xmm11
 .L__kefir_func_fn3_label49:
     movq 80(%rbp), %xmm12

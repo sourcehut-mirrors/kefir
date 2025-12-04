@@ -13,8 +13,6 @@ test:
     mov %rsp, %rbp
     sub $64, %rsp
     mov %rdi, %rcx
-    jmp .L__kefir_func_test_label1
-.L__kefir_func_test_label1:
     test %rsi, %rsi
     jnz .L__kefir_func_test_label5
     jmp .L__kefir_func_test_label3

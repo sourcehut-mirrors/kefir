@@ -32,8 +32,6 @@
 .L__kefir_text_section_begin:
 geta:
 .L__kefir_text_func_geta_begin:
-    jmp .L__kefir_func_geta_label1
-.L__kefir_func_geta_label1:
     movq z@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
@@ -41,8 +39,6 @@ geta:
 
 getw:
 .L__kefir_text_func_getw_begin:
-    jmp .L__kefir_func_getw_label1
-.L__kefir_func_getw_label1:
     movq z@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
@@ -50,8 +46,6 @@ getw:
 
 getx:
 .L__kefir_text_func_getx_begin:
-    jmp .L__kefir_func_getx_label1
-.L__kefir_func_getx_label1:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
@@ -59,8 +53,6 @@ getx:
 
 gety:
 .L__kefir_text_func_gety_begin:
-    jmp .L__kefir_func_gety_label1
-.L__kefir_func_gety_label1:
     movq y@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
@@ -68,8 +60,6 @@ gety:
 
 getz:
 .L__kefir_text_func_getz_begin:
-    jmp .L__kefir_func_getz_label1
-.L__kefir_func_getz_label1:
     movq z@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret

@@ -22,7 +22,6 @@ or1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_or1_label1
 .L__kefir_func_or1_label1:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
@@ -44,7 +43,6 @@ or2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_or2_label1
 .L__kefir_func_or2_label1:
     movw %si, -2(%rbp)
     movw %di, -4(%rbp)
@@ -66,7 +64,6 @@ or3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_or3_label1
 .L__kefir_func_or3_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -88,7 +85,6 @@ or4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_or4_label1
 .L__kefir_func_or4_label1:
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
@@ -110,7 +106,6 @@ or5:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-    jmp .L__kefir_func_or5_label1
 .L__kefir_func_or5_label1:
     movq %rdx, -64(%rbp)
     movq %rcx, -56(%rbp)
@@ -147,7 +142,6 @@ or6:
     push %rbx
     sub $200, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_or6_label1
 .L__kefir_func_or6_label1:
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
@@ -237,7 +231,6 @@ __kefir_bigint_or:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_or_label1
 .L__kefir_runtime_func___kefir_bigint_or_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -32(%rbp)
@@ -262,7 +255,6 @@ __kefir_bigint_or:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -16(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_or_label2
 .L__kefir_runtime_func___kefir_bigint_or_label2:
     movq -16(%rbp), %rax
     movq -24(%rbp), %rcx

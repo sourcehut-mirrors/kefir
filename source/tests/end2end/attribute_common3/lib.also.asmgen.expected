@@ -10,8 +10,6 @@
 .L__kefir_text_section_begin:
 getx:
 .L__kefir_text_func_getx_begin:
-    jmp .L__kefir_func_getx_label1
-.L__kefir_func_getx_label1:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret

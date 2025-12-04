@@ -30,96 +30,72 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    jmp .L__kefir_func_get1_label1
-.L__kefir_func_get1_label1:
     mov $314, %rax
     ret
 .L__kefir_text_func_get1_end:
 
 get2:
 .L__kefir_text_func_get2_begin:
-    jmp .L__kefir_func_get2_label1
-.L__kefir_func_get2_label1:
     mov $314, %rax
     ret
 .L__kefir_text_func_get2_end:
 
 get3:
 .L__kefir_text_func_get3_begin:
-    jmp .L__kefir_func_get3_label1
-.L__kefir_func_get3_label1:
     mov $2718, %rax
     ret
 .L__kefir_text_func_get3_end:
 
 get4:
 .L__kefir_text_func_get4_begin:
-    jmp .L__kefir_func_get4_label1
-.L__kefir_func_get4_label1:
     mov $2718, %rax
     ret
 .L__kefir_text_func_get4_end:
 
 get5:
 .L__kefir_text_func_get5_begin:
-    jmp .L__kefir_func_get5_label1
-.L__kefir_func_get5_label1:
     mov $271828, %rax
     ret
 .L__kefir_text_func_get5_end:
 
 get6:
 .L__kefir_text_func_get6_begin:
-    jmp .L__kefir_func_get6_label1
-.L__kefir_func_get6_label1:
     mov $271828, %rax
     ret
 .L__kefir_text_func_get6_end:
 
 get7:
 .L__kefir_text_func_get7_begin:
-    jmp .L__kefir_func_get7_label1
-.L__kefir_func_get7_label1:
     mov $-314, %rax
     ret
 .L__kefir_text_func_get7_end:
 
 get8:
 .L__kefir_text_func_get8_begin:
-    jmp .L__kefir_func_get8_label1
-.L__kefir_func_get8_label1:
     movabs $1152921504606846662, %rax
     ret
 .L__kefir_text_func_get8_end:
 
 get9:
 .L__kefir_text_func_get9_begin:
-    jmp .L__kefir_func_get9_label1
-.L__kefir_func_get9_label1:
     mov $-2718, %rax
     ret
 .L__kefir_text_func_get9_end:
 
 get10:
 .L__kefir_text_func_get10_begin:
-    jmp .L__kefir_func_get10_label1
-.L__kefir_func_get10_label1:
     movabs $1152921504606844258, %rax
     ret
 .L__kefir_text_func_get10_end:
 
 get11:
 .L__kefir_text_func_get11_begin:
-    jmp .L__kefir_func_get11_label1
-.L__kefir_func_get11_label1:
     mov $-271828, %rax
     ret
 .L__kefir_text_func_get11_end:
 
 get12:
 .L__kefir_text_func_get12_begin:
-    jmp .L__kefir_func_get12_label1
-.L__kefir_func_get12_label1:
     movabs $1152921504606575148, %rax
     ret
 .L__kefir_text_func_get12_end:

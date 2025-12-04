@@ -28,7 +28,6 @@ f32_predec:
     push %rbx
     sub $104, %rsp
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_f32_predec_label1
 .L__kefir_func_f32_predec_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
@@ -43,7 +42,6 @@ f32_predec:
     movq %rax, -64(%rbp)
     movq -88(%rbp), %rax
     movq %rax, -56(%rbp)
-    jmp .L__kefir_func_f32_predec_label2
 .L__kefir_func_f32_predec_label2:
     mov %rbx, %rsi
     lea -112(%rbp), %rdx
@@ -140,7 +138,6 @@ f32_preinc:
     push %rbx
     sub $104, %rsp
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_f32_preinc_label1
 .L__kefir_func_f32_preinc_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
@@ -155,7 +152,6 @@ f32_preinc:
     movq %rax, -64(%rbp)
     movq -88(%rbp), %rax
     movq %rax, -56(%rbp)
-    jmp .L__kefir_func_f32_preinc_label2
 .L__kefir_func_f32_preinc_label2:
     mov %rbx, %rsi
     lea -112(%rbp), %rdx
@@ -252,7 +248,6 @@ f64_predec:
     push %rbx
     sub $120, %rsp
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_f64_predec_label1
 .L__kefir_func_f64_predec_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
@@ -267,7 +262,6 @@ f64_predec:
     movq %rax, -80(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -72(%rbp)
-    jmp .L__kefir_func_f64_predec_label2
 .L__kefir_func_f64_predec_label2:
     mov %rbx, %rsi
     lea -128(%rbp), %rdx
@@ -364,7 +358,6 @@ f64_preinc:
     push %rbx
     sub $120, %rsp
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_f64_preinc_label1
 .L__kefir_func_f64_preinc_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
@@ -379,7 +372,6 @@ f64_preinc:
     movq %rax, -80(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -72(%rbp)
-    jmp .L__kefir_func_f64_preinc_label2
 .L__kefir_func_f64_preinc_label2:
     mov %rbx, %rsi
     lea -128(%rbp), %rdx
@@ -476,7 +468,6 @@ f32_postdec:
     push %rbx
     sub $104, %rsp
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_f32_postdec_label1
 .L__kefir_func_f32_postdec_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
@@ -491,7 +482,6 @@ f32_postdec:
     movq %rax, -64(%rbp)
     movq -88(%rbp), %rax
     movq %rax, -56(%rbp)
-    jmp .L__kefir_func_f32_postdec_label2
 .L__kefir_func_f32_postdec_label2:
     mov %rbx, %rsi
     lea -112(%rbp), %rdx
@@ -586,7 +576,6 @@ f32_postinc:
     push %rbx
     sub $104, %rsp
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_f32_postinc_label1
 .L__kefir_func_f32_postinc_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
@@ -601,7 +590,6 @@ f32_postinc:
     movq %rax, -64(%rbp)
     movq -88(%rbp), %rax
     movq %rax, -56(%rbp)
-    jmp .L__kefir_func_f32_postinc_label2
 .L__kefir_func_f32_postinc_label2:
     mov %rbx, %rsi
     lea -112(%rbp), %rdx
@@ -696,7 +684,6 @@ f64_postdec:
     push %rbx
     sub $120, %rsp
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_f64_postdec_label1
 .L__kefir_func_f64_postdec_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
@@ -711,7 +698,6 @@ f64_postdec:
     movq %rax, -80(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -72(%rbp)
-    jmp .L__kefir_func_f64_postdec_label2
 .L__kefir_func_f64_postdec_label2:
     mov %rbx, %rsi
     lea -128(%rbp), %rdx
@@ -806,7 +792,6 @@ f64_postinc:
     push %rbx
     sub $120, %rsp
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_f64_postinc_label1
 .L__kefir_func_f64_postinc_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
@@ -821,7 +806,6 @@ f64_postinc:
     movq %rax, -80(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -72(%rbp)
-    jmp .L__kefir_func_f64_postinc_label2
 .L__kefir_func_f64_postinc_label2:
     mov %rbx, %rsi
     lea -128(%rbp), %rdx

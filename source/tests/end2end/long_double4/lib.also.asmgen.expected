@@ -13,8 +13,6 @@ init_s:
     sub $32, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rdx
-    jmp .L__kefir_func_init_s_label1
-.L__kefir_func_init_s_label1:
     fldt 16(%rbp)
     mov %rdx, %rdi
     xor %eax, %eax

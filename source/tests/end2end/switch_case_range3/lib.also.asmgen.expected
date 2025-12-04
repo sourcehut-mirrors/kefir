@@ -16,8 +16,6 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     mov %rdi, %rax
     shl $58, %rax
     shr $58, %rax
@@ -63,8 +61,6 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     mov %rdi, %rax
     shl $50, %rax
     shr $50, %rax
@@ -110,8 +106,6 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     mov %rdi, %rax
     shl $35, %rax
     shr $35, %rax
@@ -157,8 +151,6 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    jmp .L__kefir_func_test4_label1
-.L__kefir_func_test4_label1:
     mov %rdi, %rsi
     mov %rsi, %rdi
     shl $4, %rdi
@@ -214,8 +206,6 @@ test5:
     push %rbx
     push %r12
     sub $32, %rsp
-    jmp .L__kefir_func_test5_label1
-.L__kefir_func_test5_label1:
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movl $4294967040, -48(%rbp)
@@ -307,8 +297,6 @@ __kefir_bigint_unsigned_compare:
     push %r12
     push %r13
     push %r14
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label1
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label1:
     mov %rdx, %r11
     mov %rsi, %rbx
     mov %rdi, %r12
@@ -320,7 +308,6 @@ __kefir_bigint_unsigned_compare:
     div %rcx
     mov %rax, %r13
     mov %r13, %r14
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2:
     cmp $0, %r14
     ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
@@ -374,7 +361,6 @@ __kefir_bigint_unsigned_compare:
     and %ecx, %r9d
     mov %r8, %rcx
     mov %r9, %r8
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     cmp %r8d, %ecx
     ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label15

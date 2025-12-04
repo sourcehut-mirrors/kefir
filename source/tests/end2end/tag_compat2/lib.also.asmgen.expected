@@ -14,8 +14,6 @@ get:
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
     mov %rdi, %r10
-    jmp .L__kefir_func_get_label1
-.L__kefir_func_get_label1:
     mov %rsi, %r9
     mov %r10, %rdi
     xor %eax, %eax

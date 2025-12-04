@@ -17,8 +17,6 @@ test1:
     push %r14
     push %r15
     sub $120, %rsp
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     mov $1, %rax
     xor %ecx, %ecx
     movq %rdi, -80(%rbp)

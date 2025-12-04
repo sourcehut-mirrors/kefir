@@ -22,8 +22,6 @@
 .L__kefir_text_section_begin:
 mygeta:
 .L__kefir_text_func_mygeta_begin:
-    jmp .L__kefir_func_mygeta_label1
-.L__kefir_func_mygeta_label1:
     movd .L__kefir_func_mygeta_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_mygeta_end:
@@ -35,8 +33,6 @@ mygeta:
 
 mygetb:
 .L__kefir_text_func_mygetb_begin:
-    jmp .L__kefir_func_mygetb_label1
-.L__kefir_func_mygetb_label1:
     movq .L__kefir_func_mygetb_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_mygetb_end:
@@ -48,8 +44,6 @@ mygetb:
 
 mygetc:
 .L__kefir_text_func_mygetc_begin:
-    jmp .L__kefir_func_mygetc_label1
-.L__kefir_func_mygetc_label1:
     movdqu .L__kefir_func_mygetc_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_mygetc_end:
@@ -61,8 +55,6 @@ mygetc:
 
 mygetd:
 .L__kefir_text_func_mygetd_begin:
-    jmp .L__kefir_func_mygetd_label1
-.L__kefir_func_mygetd_label1:
     movq d@GOTPCREL(%rip), %rax
     movdqu (%rax), %xmm0
     ret

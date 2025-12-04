@@ -14,8 +14,6 @@
 .L__kefir_text_section_begin:
 get_a:
 .L__kefir_text_func_get_a_begin:
-    jmp .L__kefir_func_get_a_label1
-.L__kefir_func_get_a_label1:
     lea value(%rip), %rax
     movl (%rax), %eax
     mov %rcx, %rdx
@@ -44,8 +42,6 @@ get_a:
 
 get_b:
 .L__kefir_text_func_get_b_begin:
-    jmp .L__kefir_func_get_b_label1
-.L__kefir_func_get_b_label1:
     lea value(%rip), %rax
     add $4, %rax
     movq (%rax), %rax
@@ -80,8 +76,6 @@ set_a:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_set_a_label1
-.L__kefir_func_set_a_label1:
     lea value(%rip), %rax
     movl (%rax), %r11d
     lea value(%rip), %rbx
@@ -145,8 +139,6 @@ set_b:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_set_b_label1
-.L__kefir_func_set_b_label1:
     lea value(%rip), %rax
     add $4, %rax
     movq (%rax), %r10

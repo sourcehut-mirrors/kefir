@@ -14,8 +14,7 @@ compute:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_compute_label2
-.L__kefir_func_compute_label2:
+.L__kefir_func_compute_label18:
     fldt 48(%rbp)
 .L__kefir_func_compute_label26:
     fldt 32(%rbp)

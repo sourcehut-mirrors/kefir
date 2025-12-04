@@ -576,6 +576,7 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
     REQUIRE_OK(state->parameter->classify_instruction(state->code, instr_ref, &classification, state->parameter->payload));
 
     kefir_codegen_target_ir_block_ref_t next_block_ref = KEFIR_ID_NONE;
+    kefir_bool_t suppress_instruction = false;
     struct kefir_codegen_target_ir_block_terminator_props terminator_props;
     REQUIRE_OK(state->code->klass->is_block_terminator(state->code, instr, &terminator_props, state->code->klass->payload));
     if (terminator_props.block_terminator && !terminator_props.function_terminator) {
@@ -747,6 +748,11 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
         } else if (!terminator_props.undefined_target) {
             REQUIRE_OK(map_phis_unconditional(state, block_state, terminator_props.target_block_refs[0]));
             next_block_ref = terminator_props.target_block_refs[0];
+
+            const struct kefir_codegen_target_ir_block_schedule *current_block_schedule, *next_block_schedule;
+            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, block_state->block_ref, &current_block_schedule));
+            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, next_block_ref, &next_block_schedule));
+            suppress_instruction = current_block_schedule->linear_position + 1 == next_block_schedule->linear_position;
         } else if (terminator_props.inline_assembly) {
             REQUIRE_OK(map_phis_unconditional(state, block_state, instr->operation.inline_asm_node.gate_block_ref));
             next_block_ref = instr->operation.inline_asm_node.gate_block_ref;
@@ -756,7 +762,9 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
         }
     }
 
-    if (instr->operation.opcode == state->code->klass->inline_asm_opcode) {
+    if (suppress_instruction) {
+        // Intentionally left blank
+    } else if (instr->operation.opcode == state->code->klass->inline_asm_opcode) {
         kefir_asmcmp_inline_assembly_index_t inline_asm;
         REQUIRE_OK(kefir_asmcmp_inline_assembly_new(state->mem, state->asmcmp_ctx, "", &inline_asm));
         for (const struct kefir_list_entry *iter = kefir_list_head(&instr->operation.inline_asm_node.fragments);

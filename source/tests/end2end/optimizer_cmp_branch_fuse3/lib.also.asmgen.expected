@@ -23,7 +23,6 @@ lessd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_lessd_label1
 .L__kefir_func_lessd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -62,7 +61,6 @@ equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_equalsd_label1
 .L__kefir_func_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -101,7 +99,6 @@ greaterd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_greaterd_label1
 .L__kefir_func_greaterd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -140,7 +137,6 @@ not_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_not_equalsd_label1
 .L__kefir_func_not_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -179,7 +175,6 @@ greater_or_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_greater_or_equalsd_label1
 .L__kefir_func_greater_or_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -218,7 +213,6 @@ less_or_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_less_or_equalsd_label1
 .L__kefir_func_less_or_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)

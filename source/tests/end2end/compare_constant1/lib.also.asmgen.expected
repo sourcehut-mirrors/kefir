@@ -14,8 +14,6 @@
 .L__kefir_text_section_begin:
 compare1:
 .L__kefir_text_func_compare1_begin:
-    jmp .L__kefir_func_compare1_label1
-.L__kefir_func_compare1_label1:
     xor %eax, %eax
     cmp $1, %rdi
     sete %al
@@ -44,8 +42,6 @@ compare1:
 
 compare2:
 .L__kefir_text_func_compare2_begin:
-    jmp .L__kefir_func_compare2_label1
-.L__kefir_func_compare2_label1:
     xor %eax, %eax
     cmp $1, %rdi
     sete %al
@@ -74,8 +70,6 @@ compare2:
 
 compare3:
 .L__kefir_text_func_compare3_begin:
-    jmp .L__kefir_func_compare3_label1
-.L__kefir_func_compare3_label1:
     movabs $72057594037927935, %rcx
     xor %eax, %eax
     cmp %rcx, %rdi
@@ -115,8 +109,6 @@ compare3:
 
 compare4:
 .L__kefir_text_func_compare4_begin:
-    jmp .L__kefir_func_compare4_label1
-.L__kefir_func_compare4_label1:
     movabs $72057594037927935, %rcx
     xor %eax, %eax
     cmp %rcx, %rdi

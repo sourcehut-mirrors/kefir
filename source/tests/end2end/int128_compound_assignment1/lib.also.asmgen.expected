@@ -53,8 +53,6 @@ i128_or:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_i128_or_label1
-.L__kefir_func_i128_or_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     or %rsi, %rax
@@ -72,8 +70,6 @@ u128_or:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_u128_or_label1
-.L__kefir_func_u128_or_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     or %rsi, %rax
@@ -91,8 +87,6 @@ i128_add:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_i128_add_label1
-.L__kefir_func_i128_add_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     add %rsi, %rax
@@ -110,8 +104,6 @@ i128_and:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_i128_and_label1
-.L__kefir_func_i128_and_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     and %rsi, %rax
@@ -130,8 +122,6 @@ i128_div:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_i128_div_label1
-.L__kefir_func_i128_div_label1:
     mov %rsi, %rax
     mov %rdx, %rcx
     mov %rdi, %rbx
@@ -153,8 +143,6 @@ i128_mod:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_i128_mod_label1
-.L__kefir_func_i128_mod_label1:
     mov %rsi, %rax
     mov %rdx, %rcx
     mov %rdi, %rbx
@@ -175,8 +163,6 @@ i128_mul:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_i128_mul_label1
-.L__kefir_func_i128_mul_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     imul %rsi, %rcx
@@ -199,8 +185,6 @@ i128_shl:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_i128_shl_label1
-.L__kefir_func_i128_shl_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov %rsi, %rcx
@@ -224,8 +208,6 @@ i128_shr:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_i128_shr_label1
-.L__kefir_func_i128_shr_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov %rsi, %rcx
@@ -250,8 +232,6 @@ i128_sub:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_i128_sub_label1
-.L__kefir_func_i128_sub_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     sub %rsi, %rax
@@ -269,8 +249,6 @@ i128_xor:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_i128_xor_label1
-.L__kefir_func_i128_xor_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     xor %rsi, %rax
@@ -288,8 +266,6 @@ u128_add:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_u128_add_label1
-.L__kefir_func_u128_add_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     add %rsi, %rax
@@ -307,8 +283,6 @@ u128_and:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_u128_and_label1
-.L__kefir_func_u128_and_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     and %rsi, %rax
@@ -327,8 +301,6 @@ u128_div:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_u128_div_label1
-.L__kefir_func_u128_div_label1:
     mov %rsi, %rax
     mov %rdx, %rcx
     mov %rdi, %rbx
@@ -350,8 +322,6 @@ u128_mod:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_u128_mod_label1
-.L__kefir_func_u128_mod_label1:
     mov %rsi, %rax
     mov %rdx, %rcx
     mov %rdi, %rbx
@@ -372,8 +342,6 @@ u128_mul:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_u128_mul_label1
-.L__kefir_func_u128_mul_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     imul %rsi, %rcx
@@ -396,8 +364,6 @@ u128_shl:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_u128_shl_label1
-.L__kefir_func_u128_shl_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov %rsi, %rcx
@@ -421,8 +387,6 @@ u128_shr:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_u128_shr_label1
-.L__kefir_func_u128_shr_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     mov %rsi, %rcx
@@ -446,8 +410,6 @@ u128_sub:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_u128_sub_label1
-.L__kefir_func_u128_sub_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     sub %rsi, %rax
@@ -465,8 +427,6 @@ u128_xor:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_u128_xor_label1
-.L__kefir_func_u128_xor_label1:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     xor %rsi, %rax

@@ -8,15 +8,12 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     mov %rdi, %r8
     imul %esi, %edx
     mov %rdx, %r9
     add $1, %r9d
     xor %eax, %eax
     mov %rax, %rcx
-    jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label2:
     cmp %esi, %ecx
     jl .L__kefir_func_test1_label6

@@ -25,7 +25,6 @@ get:
     movdqu %xmm5, -96(%rbp)
     movdqu %xmm6, -80(%rbp)
     movdqu %xmm7, -64(%rbp)
-    jmp .L__kefir_func_get_label2
 .L__kefir_func_get_label2:
     mov %rdi, -224(%rbp)
     mov %rsi, -216(%rbp)
@@ -33,8 +32,6 @@ get:
     mov %rcx, -200(%rbp)
     mov %r8, -192(%rbp)
     mov %r9, -184(%rbp)
-    jmp .L__kefir_func_get_label3
-.L__kefir_func_get_label3:
     fldt .L__kefir_func_get_label15(%rip)
     fstpt -240(%rbp)
     cmp $0, %edi

@@ -12,8 +12,6 @@ sum32:
     mov %rsp, %rbp
     sub $224, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_sum32_label1
-.L__kefir_func_sum32_label1:
     movd 40(%rbp), %xmm11
     movd 44(%rbp), %xmm8
     movd %xmm8, -160(%rbp)

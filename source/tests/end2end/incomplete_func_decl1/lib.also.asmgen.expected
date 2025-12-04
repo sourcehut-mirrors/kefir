@@ -13,8 +13,6 @@ get4:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_get4_label1
-.L__kefir_func_get4_label1:
     movq %rdi, -32(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -16(%rbp)
@@ -41,8 +39,6 @@ test:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_test_label1
-.L__kefir_func_test_label1:
     mov %rcx, %rax
     xor %ecx, %eax
     movq %rax, -16(%rbp)

@@ -12,8 +12,6 @@
 .L__kefir_text_section_begin:
 get32:
 .L__kefir_text_func_get32_begin:
-    jmp .L__kefir_func_get32_label1
-.L__kefir_func_get32_label1:
     movd .L__kefir_func_get32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get32_end:
@@ -25,8 +23,6 @@ get32:
 
 get64:
 .L__kefir_text_func_get64_begin:
-    jmp .L__kefir_func_get64_label1
-.L__kefir_func_get64_label1:
     movq .L__kefir_func_get64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get64_end:
@@ -38,8 +34,6 @@ get64:
 
 get128:
 .L__kefir_text_func_get128_begin:
-    jmp .L__kefir_func_get128_label1
-.L__kefir_func_get128_label1:
     movdqu .L__kefir_func_get128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get128_end:

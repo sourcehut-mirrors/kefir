@@ -23,7 +23,6 @@ is_inf_f32:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_is_inf_f32_label1
 .L__kefir_func_is_inf_f32_label1:
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
@@ -56,7 +55,6 @@ is_inf_f64:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_is_inf_f64_label1
 .L__kefir_func_is_inf_f64_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
@@ -90,7 +88,6 @@ is_inf_f80:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_is_inf_f80_label1
 .L__kefir_func_is_inf_f80_label1:
     fldt 16(%rbp)
     movq $0, -24(%rbp)

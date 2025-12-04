@@ -11,8 +11,6 @@ run_op:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_run_op_label1
-.L__kefir_func_run_op_label1:
     mov %rdx, %r8
     lea __kefir_function_run_op_static_branches_6(%rip), %r9
     mov %rdi, %rax

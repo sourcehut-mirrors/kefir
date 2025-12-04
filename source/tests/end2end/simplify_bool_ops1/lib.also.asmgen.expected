@@ -38,8 +38,6 @@
 .L__kefir_text_section_begin:
 int_or:
 .L__kefir_text_func_int_or_begin:
-    jmp .L__kefir_func_int_or_label1
-.L__kefir_func_int_or_label1:
     or %esi, %edi
     setne %dil
     movzx %dil, %rdi
@@ -49,8 +47,6 @@ int_or:
 
 char_or:
 .L__kefir_text_func_char_or_begin:
-    jmp .L__kefir_func_char_or_label1
-.L__kefir_func_char_or_label1:
     or %sil, %dil
     setne %dil
     movzx %dil, %rdi
@@ -60,8 +56,6 @@ char_or:
 
 int_and:
 .L__kefir_text_func_int_and_begin:
-    jmp .L__kefir_func_int_and_label1
-.L__kefir_func_int_and_label1:
     test %edi, %edi
     setne %al
     test %esi, %esi
@@ -73,8 +67,6 @@ int_and:
 
 int_or3:
 .L__kefir_text_func_int_or3_begin:
-    jmp .L__kefir_func_int_or3_label1
-.L__kefir_func_int_or3_label1:
     or %esi, %edi
     setne %dil
     movzx %dil, %rdi
@@ -87,8 +79,6 @@ int_or3:
 
 long_or:
 .L__kefir_text_func_long_or_begin:
-    jmp .L__kefir_func_long_or_label1
-.L__kefir_func_long_or_label1:
     or %rsi, %rdi
     setne %dil
     movzx %dil, %rdi
@@ -98,8 +88,6 @@ long_or:
 
 char_and:
 .L__kefir_text_func_char_and_begin:
-    jmp .L__kefir_func_char_and_label1
-.L__kefir_func_char_and_label1:
     test %dil, %dil
     setne %al
     test %sil, %sil
@@ -111,8 +99,6 @@ char_and:
 
 char_or3:
 .L__kefir_text_func_char_or3_begin:
-    jmp .L__kefir_func_char_or3_label1
-.L__kefir_func_char_or3_label1:
     or %sil, %dil
     setne %dil
     or %dl, %dil
@@ -124,8 +110,6 @@ char_or3:
 
 int_and3:
 .L__kefir_text_func_int_and3_begin:
-    jmp .L__kefir_func_int_and3_label1
-.L__kefir_func_int_and3_label1:
     test %edi, %edi
     setne %al
     test %esi, %esi
@@ -141,8 +125,6 @@ int_and3:
 
 long_and:
 .L__kefir_text_func_long_and_begin:
-    jmp .L__kefir_func_long_and_label1
-.L__kefir_func_long_and_label1:
     test %rdi, %rdi
     setne %al
     test %rsi, %rsi
@@ -155,8 +137,6 @@ long_and:
 
 long_or3:
 .L__kefir_text_func_long_or3_begin:
-    jmp .L__kefir_func_long_or3_label1
-.L__kefir_func_long_or3_label1:
     or %rsi, %rdi
     setne %dil
     movzx %dil, %rdi
@@ -169,8 +149,6 @@ long_or3:
 
 short_or:
 .L__kefir_text_func_short_or_begin:
-    jmp .L__kefir_func_short_or_label1
-.L__kefir_func_short_or_label1:
     or %si, %di
     setne %dil
     movzx %dil, %rdi
@@ -180,8 +158,6 @@ short_or:
 
 char_and3:
 .L__kefir_text_func_char_and3_begin:
-    jmp .L__kefir_func_char_and3_label1
-.L__kefir_func_char_and3_label1:
     test %dil, %dil
     setne %al
     test %sil, %sil
@@ -196,8 +172,6 @@ char_and3:
 
 long_and3:
 .L__kefir_text_func_long_and3_begin:
-    jmp .L__kefir_func_long_and3_label1
-.L__kefir_func_long_and3_label1:
     test %rdi, %rdi
     setne %al
     test %rsi, %rsi
@@ -214,8 +188,6 @@ long_and3:
 
 short_and:
 .L__kefir_text_func_short_and_begin:
-    jmp .L__kefir_func_short_and_label1
-.L__kefir_func_short_and_label1:
     test %di, %di
     setne %al
     test %si, %si
@@ -227,8 +199,6 @@ short_and:
 
 short_or3:
 .L__kefir_text_func_short_or3_begin:
-    jmp .L__kefir_func_short_or3_label1
-.L__kefir_func_short_or3_label1:
     or %si, %di
     setne %dil
     movzx %dil, %rdi
@@ -241,8 +211,6 @@ short_or3:
 
 short_and3:
 .L__kefir_text_func_short_and3_begin:
-    jmp .L__kefir_func_short_and3_label1
-.L__kefir_func_short_and3_label1:
     test %di, %di
     setne %al
     test %si, %si

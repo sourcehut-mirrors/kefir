@@ -11,8 +11,6 @@ main:
 .L__kefir_text_func_main_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_main_label1
-.L__kefir_func_main_label1:
     movq A@GOTPCREL(%rip), %rax
     movl (%rax), %ecx
     add $100, %ecx
@@ -61,8 +59,6 @@ main:
 
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     movq A@GOTPCREL(%rip), %rax
     movl (%rax), %ecx
     add %edi, %ecx
@@ -72,8 +68,6 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     movq A@GOTPCREL(%rip), %rax
     movl (%rax), %ecx
     sub %edi, %ecx

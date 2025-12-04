@@ -12,7 +12,6 @@ init:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_init_label1
 .L__kefir_func_init_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax

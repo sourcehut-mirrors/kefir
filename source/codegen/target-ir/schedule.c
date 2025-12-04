@@ -79,3 +79,19 @@ kefir_result_t kefir_codegen_target_ir_code_schedule_build(struct kefir_mem *mem
 kefir_bool_t kefir_codegen_target_ir_code_schedule_has_block(const struct kefir_codegen_target_ir_code_schedule *schedule, kefir_codegen_target_ir_block_ref_t block_ref) {
     return kefir_hashtable_has(&schedule->blocks_by_ref, (kefir_hashtable_key_t) block_ref);
 }
+
+kefir_result_t kefir_codegen_target_ir_code_schedule_of_block(const struct kefir_codegen_target_ir_code_schedule *schedule,
+    kefir_codegen_target_ir_block_ref_t block_ref,
+    const struct kefir_codegen_target_ir_block_schedule **block_schedule_ptr) {
+    REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR schedule"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&schedule->blocks_by_ref, (kefir_hashtable_key_t) block_ref, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find target IR block schedule");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(block_schedule_ptr, &schedule->block_schedule[table_value]);
+    return KEFIR_OK;
+}

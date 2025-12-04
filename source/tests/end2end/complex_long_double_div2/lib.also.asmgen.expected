@@ -12,8 +12,6 @@ divide:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_divide_label1
-.L__kefir_func_divide_label1:
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
     fldt (%rcx)

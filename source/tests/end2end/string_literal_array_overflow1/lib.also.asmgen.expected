@@ -12,7 +12,6 @@ somefn:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_somefn_label1
 .L__kefir_func_somefn_label1:
     mov %rcx, %rax
     xor %ecx, %eax

@@ -12,7 +12,6 @@ test:
 .L__kefir_func_test_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test_label1
 .L__kefir_func_test_label1:
     movq value1@GOTPCREL(%rip), %rax
     movl $1, (%rax)

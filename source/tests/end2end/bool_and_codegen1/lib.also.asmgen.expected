@@ -8,8 +8,6 @@
 .L__kefir_text_section_begin:
 test:
 .L__kefir_text_func_test_begin:
-    jmp .L__kefir_func_test_label1
-.L__kefir_func_test_label1:
     xor %eax, %eax
     cmp $0, %edi
     setg %al

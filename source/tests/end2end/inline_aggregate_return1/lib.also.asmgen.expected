@@ -12,8 +12,6 @@ gets1:
     mov %rsp, %rbp
     sub $256, %rsp
     mov %rdi, %r8
-    jmp .L__kefir_func_gets1_label1
-.L__kefir_func_gets1_label1:
     mov %rsi, %rdx
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0

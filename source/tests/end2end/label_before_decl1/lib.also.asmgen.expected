@@ -8,11 +8,8 @@
 .L__kefir_text_section_begin:
 factorial:
 .L__kefir_text_func_factorial_begin:
-    jmp .L__kefir_func_factorial_label1
-.L__kefir_func_factorial_label1:
     mov $1, %rax
     mov %rax, %rdx
-    jmp .L__kefir_func_factorial_label2
 .L__kefir_func_factorial_label2:
     lea -1(%rdi), %rcx
     mov %rdx, %rax

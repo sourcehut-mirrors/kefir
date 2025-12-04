@@ -22,9 +22,8 @@ temp:
     sub $48, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_temp_label2
 .loc 0 29 5
-.L__kefir_func_temp_label2:
+.L__kefir_func_temp_label164:
     call test1@PLT
 .loc 0 30 5
 .L__kefir_func_temp_label340:

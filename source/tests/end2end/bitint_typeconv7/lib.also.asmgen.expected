@@ -23,7 +23,6 @@ get1:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_get1_label1
 .L__kefir_func_get1_label1:
     movd .L__kefir_func_get1_label4(%rip), %xmm0
     cvttss2si %xmm0, %rax
@@ -45,7 +44,6 @@ get2:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_get2_label1
 .L__kefir_func_get2_label1:
     movd .L__kefir_func_get2_label4(%rip), %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0
@@ -68,7 +66,6 @@ get3:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_get3_label1
 .L__kefir_func_get3_label1:
     movd .L__kefir_func_get3_label7(%rip), %xmm0
     comiss .L__kefir_constant_float32_to_uint(%rip), %xmm0
@@ -83,7 +80,6 @@ get3:
     subss .L__kefir_constant_float32_to_uint(%rip), %xmm0
     cvttss2si %xmm0, %rax
     btc $63, %rax
-    jmp .L__kefir_func_get3_label4
 .L__kefir_func_get3_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -101,7 +97,6 @@ get4:
 .L__kefir_func_get4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get4_label1
 .L__kefir_func_get4_label1:
     movq .L__kefir_func_get4_label4(%rip), %xmm0
     cvttsd2si %xmm0, %rax
@@ -121,7 +116,6 @@ get5:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_get5_label1
 .L__kefir_func_get5_label1:
     movq .L__kefir_func_get5_label4(%rip), %xmm0
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
@@ -142,7 +136,6 @@ get6:
 .L__kefir_func_get6_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get6_label1
 .L__kefir_func_get6_label1:
     movq .L__kefir_func_get6_label7(%rip), %xmm0
     comisd .L__kefir_constant_float64_to_uint(%rip), %xmm0
@@ -157,7 +150,6 @@ get6:
     subsd .L__kefir_constant_float64_to_uint(%rip), %xmm0
     cvttsd2si %xmm0, %rax
     btc $63, %rax
-    jmp .L__kefir_func_get6_label4
 .L__kefir_func_get6_label4:
     pop %rbp
     ret

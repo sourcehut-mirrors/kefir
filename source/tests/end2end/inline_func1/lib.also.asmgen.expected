@@ -8,8 +8,6 @@
 .L__kefir_text_section_begin:
 hypot_sq:
 .L__kefir_text_func_hypot_sq_begin:
-    jmp .L__kefir_func_hypot_sq_label1
-.L__kefir_func_hypot_sq_label1:
     mov %rdi, %rax
     imul %rdi, %rax
     mov %rsi, %rcx

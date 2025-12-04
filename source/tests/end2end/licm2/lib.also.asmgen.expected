@@ -16,13 +16,10 @@ test1:
     push %r12
     push %r13
     sub $8, %rsp
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     mov %rcx, %r9
     mov %rdi, %r10
     xor %eax, %eax
     mov %rax, %r11
-    jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label2:
     mov %r9, %rbx
     or %esi, %ebx
@@ -77,13 +74,10 @@ test2:
     push %r12
     push %r13
     sub $8, %rsp
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     mov %rcx, %r12
     mov %rdi, %r13
     xor %eax, %eax
     mov %rax, %r10
-    jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label2:
     movsx %r10d, %rax
     imul $40, %rax, %rax

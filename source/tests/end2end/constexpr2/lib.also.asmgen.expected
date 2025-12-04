@@ -16,40 +16,30 @@
 .L__kefir_text_section_begin:
 geta:
 .L__kefir_text_func_geta_begin:
-    jmp .L__kefir_func_geta_label1
-.L__kefir_func_geta_label1:
     lea a(%rip), %rax
     ret
 .L__kefir_text_func_geta_end:
 
 getx:
 .L__kefir_text_func_getx_begin:
-    jmp .L__kefir_func_getx_label1
-.L__kefir_func_getx_label1:
     lea x(%rip), %rax
     ret
 .L__kefir_text_func_getx_end:
 
 gety:
 .L__kefir_text_func_gety_begin:
-    jmp .L__kefir_func_gety_label1
-.L__kefir_func_gety_label1:
     lea y(%rip), %rax
     ret
 .L__kefir_text_func_gety_end:
 
 getz:
 .L__kefir_text_func_getz_begin:
-    jmp .L__kefir_func_getz_label1
-.L__kefir_func_getz_label1:
     lea z(%rip), %rax
     ret
 .L__kefir_text_func_getz_end:
 
 get_w:
 .L__kefir_text_func_get_w_begin:
-    jmp .L__kefir_func_get_w_label1
-.L__kefir_func_get_w_label1:
     lea w(%rip), %rax
     ret
 .L__kefir_text_func_get_w_end:

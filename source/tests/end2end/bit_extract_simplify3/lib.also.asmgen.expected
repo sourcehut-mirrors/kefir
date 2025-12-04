@@ -14,8 +14,6 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     shl $52, %rdi
     shr $52, %rdi
     mov %rdi, %rax
@@ -24,8 +22,6 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     shl $59, %rdi
     shr $59, %rdi
     mov %rdi, %rax
@@ -34,8 +30,6 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     shl $57, %rdi
     shr $57, %rdi
     mov %rdi, %rax
@@ -44,8 +38,6 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    jmp .L__kefir_func_test4_label1
-.L__kefir_func_test4_label1:
     shl $57, %rdi
     sar $57, %rdi
     shl $50, %rdi

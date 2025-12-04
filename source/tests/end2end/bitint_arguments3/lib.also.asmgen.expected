@@ -14,7 +14,6 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
-    jmp .L__kefir_func_test1_label1
 .L__kefir_func_test1_label1:
     mov 32(%rbp), %rax
     lea 16(%rbp), %r10

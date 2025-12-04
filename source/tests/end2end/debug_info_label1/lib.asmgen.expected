@@ -13,11 +13,9 @@ test1:
 .L__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test1_label2
 .loc 0 25 5
-.L__kefir_func_test1_label2:
+.L__kefir_func_test1_label168:
     call test2@PLT
-    jmp .L__kefir_func_test1_label4
 .loc 0 28 9
 .L__kefir_func_test1_label4:
     call test2@PLT
@@ -239,7 +237,7 @@ __kefir_debug_info_section_entry_4:
 __kefir_debug_info_section_entry_5:
     .byte 5
     .long __kefir_debug_str_section_entry_3
-    .quad .L__kefir_func_test1_label2
+    .quad .L__kefir_func_test1_label168
     .long __kefir_debug_str_section_entry_1
     .quad 24
     .quad 1

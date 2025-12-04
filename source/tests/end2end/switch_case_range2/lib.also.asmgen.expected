@@ -14,8 +14,6 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     movzx %dil, %rax
     xor %ecx, %ecx
     cmp $240, %eax
@@ -37,8 +35,6 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     movzx %di, %rax
     xor %ecx, %ecx
     cmp $65280, %eax
@@ -60,8 +56,6 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     movabs $4294967040, %rax
     xor %ecx, %ecx
     cmp %eax, %edi
@@ -85,8 +79,6 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    jmp .L__kefir_func_test4_label1
-.L__kefir_func_test4_label1:
     xor %eax, %eax
     cmp $-256, %rdi
     setae %al

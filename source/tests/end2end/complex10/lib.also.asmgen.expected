@@ -13,8 +13,6 @@ test32:
     push %rbx
     sub $24, %rsp
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_test32_label1
-.L__kefir_func_test32_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2

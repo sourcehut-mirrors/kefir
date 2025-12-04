@@ -28,7 +28,6 @@ process:
     movdqu %xmm5, -128(%rbp)
     movdqu %xmm6, -112(%rbp)
     movdqu %xmm7, -96(%rbp)
-    jmp .L__kefir_func_process_label2
 .L__kefir_func_process_label2:
     mov %rdi, -256(%rbp)
     mov %rsi, -248(%rbp)
@@ -37,7 +36,6 @@ process:
     mov %r8, -224(%rbp)
     mov %r9, -216(%rbp)
     mov $0, %rdx
-    jmp .L__kefir_func_process_label3
 .L__kefir_func_process_label3:
     movl %esi, -72(%rbp)
     movq %rdi, -40(%rbp)
@@ -91,7 +89,6 @@ process:
     mov %rsp, %rax
     movq %rax, -32(%rbp)
     movl $0, -68(%rbp)
-    jmp .L__kefir_func_process_label8
 .L__kefir_func_process_label8:
     movl -68(%rbp), %eax
     movl -72(%rbp), %ecx
@@ -138,7 +135,6 @@ process:
     mov %rax, -56(%rbp)
     mov -8(%rax), %rax
     mov %rax, %rdx
-    jmp .L__kefir_func_process_label15
 .L__kefir_func_process_label15:
     leaq -32(%rbp), %rax
     add $0, %rax

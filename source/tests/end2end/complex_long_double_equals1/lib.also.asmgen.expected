@@ -14,8 +14,6 @@ cld_eq:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_cld_eq_label1
-.L__kefir_func_cld_eq_label1:
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
     fldt (%rcx)
@@ -53,8 +51,6 @@ cld_trunc:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_cld_trunc_label1
-.L__kefir_func_cld_trunc_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)

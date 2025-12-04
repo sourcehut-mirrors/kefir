@@ -30,8 +30,6 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     add $3, %rdi
     mov %rdi, %rax
     ret
@@ -39,8 +37,6 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     add $7, %rdi
     mov %rdi, %rax
     ret
@@ -48,8 +44,6 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     sub $-5, %rdi
     mov %rdi, %rax
     ret
@@ -57,8 +51,6 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    jmp .L__kefir_func_test4_label1
-.L__kefir_func_test4_label1:
     mov $18, %rax
     sub %rdi, %rax
     ret
@@ -66,8 +58,6 @@ test4:
 
 test5:
 .L__kefir_text_func_test5_begin:
-    jmp .L__kefir_func_test5_label1
-.L__kefir_func_test5_label1:
     sub $-7, %rdi
     mov %rdi, %rax
     ret
@@ -75,8 +65,6 @@ test5:
 
 test6:
 .L__kefir_text_func_test6_begin:
-    jmp .L__kefir_func_test6_label1
-.L__kefir_func_test6_label1:
     mov $42, %rax
     sub %rdi, %rax
     ret
@@ -84,8 +72,6 @@ test6:
 
 test7:
 .L__kefir_text_func_test7_begin:
-    jmp .L__kefir_func_test7_label1
-.L__kefir_func_test7_label1:
     sub $101, %rdi
     mov %rdi, %rax
     ret
@@ -93,8 +79,6 @@ test7:
 
 test8:
 .L__kefir_text_func_test8_begin:
-    jmp .L__kefir_func_test8_label1
-.L__kefir_func_test8_label1:
     mov $121, %rax
     sub %rdi, %rax
     ret
@@ -102,8 +86,6 @@ test8:
 
 test9:
 .L__kefir_text_func_test9_begin:
-    jmp .L__kefir_func_test9_label1
-.L__kefir_func_test9_label1:
     sub $55, %rdi
     mov %rdi, %rax
     ret
@@ -111,8 +93,6 @@ test9:
 
 test10:
 .L__kefir_text_func_test10_begin:
-    jmp .L__kefir_func_test10_label1
-.L__kefir_func_test10_label1:
     mov $250, %rax
     sub %rdi, %rax
     ret
@@ -120,8 +100,6 @@ test10:
 
 test11:
 .L__kefir_text_func_test11_begin:
-    jmp .L__kefir_func_test11_label1
-.L__kefir_func_test11_label1:
     mov $95, %rax
     sub %rdi, %rax
     ret
@@ -129,8 +107,6 @@ test11:
 
 test12:
 .L__kefir_text_func_test12_begin:
-    jmp .L__kefir_func_test12_label1
-.L__kefir_func_test12_label1:
     add $325, %rdi
     mov %rdi, %rax
     ret

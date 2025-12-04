@@ -15,8 +15,6 @@ test:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_label1
-.L__kefir_func_test_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
@@ -26,16 +24,12 @@ test:
 
 get_zero:
 .L__kefir_text_func_get_zero_begin:
-    jmp .L__kefir_func_get_zero_label1
-.L__kefir_func_get_zero_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_get_zero_end:
 
 some_math:
 .L__kefir_text_func_some_math_begin:
-    jmp .L__kefir_func_some_math_label1
-.L__kefir_func_some_math_label1:
     mov %rdi, %rax
     ret
 .L__kefir_text_func_some_math_end:

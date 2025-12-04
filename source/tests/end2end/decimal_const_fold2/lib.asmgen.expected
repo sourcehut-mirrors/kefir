@@ -42,16 +42,12 @@
 .L__kefir_text_section_begin:
 dec128_to_long:
 .L__kefir_text_func_dec128_to_long_begin:
-    jmp .L__kefir_func_dec128_to_long_label1
-.L__kefir_func_dec128_to_long_label1:
     mov $-58400, %rax
     ret
 .L__kefir_text_func_dec128_to_long_end:
 
 dec32_to_dec64:
 .L__kefir_text_func_dec32_to_dec64_begin:
-    jmp .L__kefir_func_dec32_to_dec64_label1
-.L__kefir_func_dec32_to_dec64_label1:
     movq .L__kefir_func_dec32_to_dec64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec32_to_dec64_end:
@@ -63,8 +59,6 @@ dec32_to_dec64:
 
 dec32_to_float:
 .L__kefir_text_func_dec32_to_float_begin:
-    jmp .L__kefir_func_dec32_to_float_label1
-.L__kefir_func_dec32_to_float_label1:
     movd .L__kefir_func_dec32_to_float_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec32_to_float_end:
@@ -76,16 +70,12 @@ dec32_to_float:
 
 dec32_to_ulong:
 .L__kefir_text_func_dec32_to_ulong_begin:
-    jmp .L__kefir_func_dec32_to_ulong_label1
-.L__kefir_func_dec32_to_ulong_label1:
     mov $1234, %rax
     ret
 .L__kefir_text_func_dec32_to_ulong_end:
 
 dec64_to_dec32:
 .L__kefir_text_func_dec64_to_dec32_begin:
-    jmp .L__kefir_func_dec64_to_dec32_label1
-.L__kefir_func_dec64_to_dec32_label1:
     movd .L__kefir_func_dec64_to_dec32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec64_to_dec32_end:
@@ -97,8 +87,6 @@ dec64_to_dec32:
 
 dec64_to_float:
 .L__kefir_text_func_dec64_to_float_begin:
-    jmp .L__kefir_func_dec64_to_float_label1
-.L__kefir_func_dec64_to_float_label1:
     movd .L__kefir_func_dec64_to_float_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec64_to_float_end:
@@ -110,32 +98,24 @@ dec64_to_float:
 
 dec64_to_ulong:
 .L__kefir_text_func_dec64_to_ulong_begin:
-    jmp .L__kefir_func_dec64_to_ulong_label1
-.L__kefir_func_dec64_to_ulong_label1:
     mov $1234, %rax
     ret
 .L__kefir_text_func_dec64_to_ulong_end:
 
 dec32_to_long:
 .L__kefir_text_func_dec32_to_long_begin:
-    jmp .L__kefir_func_dec32_to_long_label1
-.L__kefir_func_dec32_to_long_label1:
     mov $-58400, %rax
     ret
 .L__kefir_text_func_dec32_to_long_end:
 
 dec64_to_long:
 .L__kefir_text_func_dec64_to_long_begin:
-    jmp .L__kefir_func_dec64_to_long_label1
-.L__kefir_func_dec64_to_long_label1:
     mov $-58400, %rax
     ret
 .L__kefir_text_func_dec64_to_long_end:
 
 dec128_to_dec32:
 .L__kefir_text_func_dec128_to_dec32_begin:
-    jmp .L__kefir_func_dec128_to_dec32_label1
-.L__kefir_func_dec128_to_dec32_label1:
     movd .L__kefir_func_dec128_to_dec32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec128_to_dec32_end:
@@ -147,8 +127,6 @@ dec128_to_dec32:
 
 dec128_to_dec64:
 .L__kefir_text_func_dec128_to_dec64_begin:
-    jmp .L__kefir_func_dec128_to_dec64_label1
-.L__kefir_func_dec128_to_dec64_label1:
     movq .L__kefir_func_dec128_to_dec64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec128_to_dec64_end:
@@ -160,8 +138,6 @@ dec128_to_dec64:
 
 dec128_to_float:
 .L__kefir_text_func_dec128_to_float_begin:
-    jmp .L__kefir_func_dec128_to_float_label1
-.L__kefir_func_dec128_to_float_label1:
     movd .L__kefir_func_dec128_to_float_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec128_to_float_end:
@@ -173,16 +149,12 @@ dec128_to_float:
 
 dec128_to_ulong:
 .L__kefir_text_func_dec128_to_ulong_begin:
-    jmp .L__kefir_func_dec128_to_ulong_label1
-.L__kefir_func_dec128_to_ulong_label1:
     mov $1234, %rax
     ret
 .L__kefir_text_func_dec128_to_ulong_end:
 
 dec32_to_dec128:
 .L__kefir_text_func_dec32_to_dec128_begin:
-    jmp .L__kefir_func_dec32_to_dec128_label1
-.L__kefir_func_dec32_to_dec128_label1:
     movdqu .L__kefir_func_dec32_to_dec128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec32_to_dec128_end:
@@ -194,8 +166,6 @@ dec32_to_dec128:
 
 dec32_to_double:
 .L__kefir_text_func_dec32_to_double_begin:
-    jmp .L__kefir_func_dec32_to_double_label1
-.L__kefir_func_dec32_to_double_label1:
     movq .L__kefir_func_dec32_to_double_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec32_to_double_end:
@@ -207,8 +177,6 @@ dec32_to_double:
 
 dec64_to_dec128:
 .L__kefir_text_func_dec64_to_dec128_begin:
-    jmp .L__kefir_func_dec64_to_dec128_label1
-.L__kefir_func_dec64_to_dec128_label1:
     movdqu .L__kefir_func_dec64_to_dec128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec64_to_dec128_end:
@@ -220,8 +188,6 @@ dec64_to_dec128:
 
 dec64_to_double:
 .L__kefir_text_func_dec64_to_double_begin:
-    jmp .L__kefir_func_dec64_to_double_label1
-.L__kefir_func_dec64_to_double_label1:
     movq .L__kefir_func_dec64_to_double_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec64_to_double_end:
@@ -233,8 +199,6 @@ dec64_to_double:
 
 dec128_to_double:
 .L__kefir_text_func_dec128_to_double_begin:
-    jmp .L__kefir_func_dec128_to_double_label1
-.L__kefir_func_dec128_to_double_label1:
     movq .L__kefir_func_dec128_to_double_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_dec128_to_double_end:

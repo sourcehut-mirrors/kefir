@@ -29,7 +29,6 @@ sub:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_sub_label1
 .L__kefir_func_sub_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -55,7 +54,6 @@ subf:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_subf_label1
 .L__kefir_func_subf_label1:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
@@ -81,7 +79,6 @@ subl:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_subl_label1
 .L__kefir_func_subl_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -110,7 +107,6 @@ mydiv:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_mydiv_label1
 .L__kefir_func_mydiv_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -136,7 +132,6 @@ mydivf:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_mydivf_label1
 .L__kefir_func_mydivf_label1:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
@@ -162,7 +157,6 @@ mydivl:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_mydivl_label1
 .L__kefir_func_mydivl_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -191,7 +185,6 @@ mydivr:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_mydivr_label1
 .L__kefir_func_mydivr_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -217,7 +210,6 @@ mydivrf:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_mydivrf_label1
 .L__kefir_func_mydivrf_label1:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
@@ -243,7 +235,6 @@ mydivrl:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_mydivrl_label1
 .L__kefir_func_mydivrl_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)

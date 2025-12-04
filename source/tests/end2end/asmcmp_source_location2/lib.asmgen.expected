@@ -68,17 +68,6 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "jmp",
-#                "args": [
-#                    {
-#                        "type": "internal_label",
-#                        "label": 2
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
 #                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
@@ -2067,7 +2056,6 @@ factorial:
     sub $16, %rsp
 .L__kefir_func_factorial_label41:
 .L__kefir_func_factorial_label42:
-    jmp .L__kefir_func_factorial_label2
 .L__kefir_func_factorial_label43:
 .L__kefir_func_factorial_label1:
 .L__kefir_func_factorial_label2:

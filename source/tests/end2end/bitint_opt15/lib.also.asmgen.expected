@@ -17,8 +17,6 @@ mod1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mod1_label1
-.L__kefir_func_mod1_label1:
     movl $2157, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -35,8 +33,6 @@ mod2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mod2_label1
-.L__kefir_func_mod2_label1:
     movl $2157, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)
@@ -53,8 +49,6 @@ mod3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mod3_label1
-.L__kefir_func_mod3_label1:
     movl $4294965139, -16(%rbp)
     movl $4294967295, -12(%rbp)
     movl $4294967295, -8(%rbp)
@@ -71,8 +65,6 @@ mod4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mod4_label1
-.L__kefir_func_mod4_label1:
     movl $455, -16(%rbp)
     movl $0, -12(%rbp)
     movl $0, -8(%rbp)

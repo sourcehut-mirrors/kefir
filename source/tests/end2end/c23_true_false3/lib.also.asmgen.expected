@@ -14,16 +14,12 @@
 .L__kefir_text_section_begin:
 getF:
 .L__kefir_text_func_getF_begin:
-    jmp .L__kefir_func_getF_label1
-.L__kefir_func_getF_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_getF_end:
 
 getT:
 .L__kefir_text_func_getT_begin:
-    jmp .L__kefir_func_getT_label1
-.L__kefir_func_getT_label1:
     mov $1, %rax
     ret
 .L__kefir_text_func_getT_end:

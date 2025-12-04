@@ -29,8 +29,6 @@ get:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get_label1
-.L__kefir_func_get_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
@@ -65,8 +63,6 @@ get2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get2_label1
-.L__kefir_func_get2_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
@@ -101,8 +97,6 @@ get3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get3_label1
-.L__kefir_func_get3_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
@@ -137,8 +131,6 @@ get4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get4_label1
-.L__kefir_func_get4_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
@@ -173,8 +165,6 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get5_label1
-.L__kefir_func_get5_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
@@ -209,8 +199,6 @@ get6:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get6_label1
-.L__kefir_func_get6_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
@@ -245,8 +233,6 @@ get7:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get7_label1
-.L__kefir_func_get7_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
@@ -281,8 +267,6 @@ get8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get8_label1
-.L__kefir_func_get8_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
@@ -317,8 +301,6 @@ get9:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get9_label1
-.L__kefir_func_get9_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
@@ -353,8 +335,6 @@ get10:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get10_label1
-.L__kefir_func_get10_label1:
     movaps %xmm1, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4

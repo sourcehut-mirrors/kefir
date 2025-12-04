@@ -18,7 +18,6 @@ dnot:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_dnot_label1
 .L__kefir_func_dnot_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
@@ -49,7 +48,6 @@ dnotd:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_dnotd_label1
 .L__kefir_func_dnotd_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
@@ -90,7 +88,6 @@ dnotf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_dnotf_label1
 .L__kefir_func_dnotf_label1:
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
@@ -131,7 +128,6 @@ dnotld:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_dnotld_label1
 .L__kefir_func_dnotld_label1:
     fldt 16(%rbp)
     movq $0, -24(%rbp)

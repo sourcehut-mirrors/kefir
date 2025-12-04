@@ -40,8 +40,6 @@ add32:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_add32_label1
-.L__kefir_func_add32_label1:
     movd .L__kefir_func_add32_label4(%rip), %xmm0
     movd .L__kefir_func_add32_label5(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
@@ -65,8 +63,6 @@ add64:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_add64_label1
-.L__kefir_func_add64_label1:
     movq .L__kefir_func_add64_label4(%rip), %xmm0
     movq .L__kefir_func_add64_label5(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -89,8 +85,6 @@ add80:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_add80_label1
-.L__kefir_func_add80_label1:
     fldt .L__kefir_func_add80_label4(%rip)
     fldt .L__kefir_func_add80_label5(%rip)
     fstpt -32(%rbp)
@@ -119,8 +113,6 @@ div32:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_div32_label1
-.L__kefir_func_div32_label1:
     movd .L__kefir_func_div32_label4(%rip), %xmm0
     movd .L__kefir_func_div32_label5(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
@@ -144,8 +136,6 @@ div64:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_div64_label1
-.L__kefir_func_div64_label1:
     movq .L__kefir_func_div64_label4(%rip), %xmm0
     movq .L__kefir_func_div64_label5(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -168,8 +158,6 @@ div80:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_div80_label1
-.L__kefir_func_div80_label1:
     fldt .L__kefir_func_div80_label4(%rip)
     fldt .L__kefir_func_div80_label5(%rip)
     fstpt -32(%rbp)
@@ -198,8 +186,6 @@ mul32:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_mul32_label1
-.L__kefir_func_mul32_label1:
     movd .L__kefir_func_mul32_label4(%rip), %xmm0
     movd .L__kefir_func_mul32_label5(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
@@ -223,8 +209,6 @@ mul64:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_mul64_label1
-.L__kefir_func_mul64_label1:
     movq .L__kefir_func_mul64_label4(%rip), %xmm0
     movq .L__kefir_func_mul64_label5(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -247,8 +231,6 @@ mul80:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_mul80_label1
-.L__kefir_func_mul80_label1:
     fldt .L__kefir_func_mul80_label4(%rip)
     fldt .L__kefir_func_mul80_label5(%rip)
     fstpt -32(%rbp)
@@ -277,8 +259,6 @@ neg32:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_neg32_label1
-.L__kefir_func_neg32_label1:
     movd .L__kefir_func_neg32_label4(%rip), %xmm0
     movd .L__kefir_func_neg32_label5(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
@@ -302,8 +282,6 @@ neg64:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_neg64_label1
-.L__kefir_func_neg64_label1:
     movq .L__kefir_func_neg64_label4(%rip), %xmm0
     movq .L__kefir_func_neg64_label5(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -326,8 +304,6 @@ neg80:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_neg80_label1
-.L__kefir_func_neg80_label1:
     fldt .L__kefir_func_neg80_label4(%rip)
     fldt .L__kefir_func_neg80_label5(%rip)
     fstpt -32(%rbp)
@@ -356,8 +332,6 @@ sub32:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_sub32_label1
-.L__kefir_func_sub32_label1:
     movd .L__kefir_func_sub32_label4(%rip), %xmm0
     movd .L__kefir_func_sub32_label5(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
@@ -381,8 +355,6 @@ sub64:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_sub64_label1
-.L__kefir_func_sub64_label1:
     movq .L__kefir_func_sub64_label4(%rip), %xmm0
     movq .L__kefir_func_sub64_label5(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -405,8 +377,6 @@ sub80:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_sub80_label1
-.L__kefir_func_sub80_label1:
     fldt .L__kefir_func_sub80_label4(%rip)
     fldt .L__kefir_func_sub80_label5(%rip)
     fstpt -32(%rbp)

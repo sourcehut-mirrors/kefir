@@ -25,8 +25,6 @@ test_sync_bool_compare_and_swap16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap16_label1
-.L__kefir_func_test_sync_bool_compare_and_swap16_label1:
     mov %rdx, %rax
     movw %si, -2(%rbp)
     mov %rdi, %rdx
@@ -37,7 +35,6 @@ test_sync_bool_compare_and_swap16:
     jmp .L__kefir_func_test_sync_bool_compare_and_swap16_label2
 .L__kefir_func_test_sync_bool_compare_and_swap16_label2:
     movw %ax, -2(%rbp)
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap16_label3
 .L__kefir_func_test_sync_bool_compare_and_swap16_label3:
     sete %al
     lea (%rbp), %rsp
@@ -50,8 +47,6 @@ test_sync_bool_compare_and_swap32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap32_label1
-.L__kefir_func_test_sync_bool_compare_and_swap32_label1:
     mov %rdx, %rax
     movl %esi, -4(%rbp)
     mov %rdi, %rdx
@@ -62,7 +57,6 @@ test_sync_bool_compare_and_swap32:
     jmp .L__kefir_func_test_sync_bool_compare_and_swap32_label2
 .L__kefir_func_test_sync_bool_compare_and_swap32_label2:
     movl %eax, -4(%rbp)
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap32_label3
 .L__kefir_func_test_sync_bool_compare_and_swap32_label3:
     sete %al
     lea (%rbp), %rsp
@@ -75,8 +69,6 @@ test_sync_bool_compare_and_swap64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap64_label1
-.L__kefir_func_test_sync_bool_compare_and_swap64_label1:
     mov %rdx, %rax
     movq %rsi, -8(%rbp)
     mov %rdi, %rdx
@@ -87,7 +79,6 @@ test_sync_bool_compare_and_swap64:
     jmp .L__kefir_func_test_sync_bool_compare_and_swap64_label2
 .L__kefir_func_test_sync_bool_compare_and_swap64_label2:
     movq %rax, -8(%rbp)
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap64_label3
 .L__kefir_func_test_sync_bool_compare_and_swap64_label3:
     sete %al
     lea (%rbp), %rsp
@@ -100,8 +91,6 @@ test_sync_bool_compare_and_swap8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap8_label1
-.L__kefir_func_test_sync_bool_compare_and_swap8_label1:
     mov %rdx, %rax
     movb %sil, -1(%rbp)
     mov %rdi, %rdx
@@ -112,7 +101,6 @@ test_sync_bool_compare_and_swap8:
     jmp .L__kefir_func_test_sync_bool_compare_and_swap8_label2
 .L__kefir_func_test_sync_bool_compare_and_swap8_label2:
     movb %al, -1(%rbp)
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap8_label3
 .L__kefir_func_test_sync_bool_compare_and_swap8_label3:
     sete %al
     lea (%rbp), %rsp
@@ -125,8 +113,6 @@ test_sync_val_compare_and_swap8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_sync_val_compare_and_swap8_label1
-.L__kefir_func_test_sync_val_compare_and_swap8_label1:
     mov %rdx, %rax
     movb %sil, -1(%rbp)
     mov %rdi, %rdx
@@ -137,7 +123,6 @@ test_sync_val_compare_and_swap8:
     jmp .L__kefir_func_test_sync_val_compare_and_swap8_label2
 .L__kefir_func_test_sync_val_compare_and_swap8_label2:
     movb %al, -1(%rbp)
-    jmp .L__kefir_func_test_sync_val_compare_and_swap8_label3
 .L__kefir_func_test_sync_val_compare_and_swap8_label3:
     sete %al
     movb -1(%rbp), %al
@@ -151,8 +136,6 @@ test_sync_val_compare_and_swap16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_sync_val_compare_and_swap16_label1
-.L__kefir_func_test_sync_val_compare_and_swap16_label1:
     mov %rdx, %rax
     movw %si, -2(%rbp)
     mov %rdi, %rdx
@@ -163,7 +146,6 @@ test_sync_val_compare_and_swap16:
     jmp .L__kefir_func_test_sync_val_compare_and_swap16_label2
 .L__kefir_func_test_sync_val_compare_and_swap16_label2:
     movw %ax, -2(%rbp)
-    jmp .L__kefir_func_test_sync_val_compare_and_swap16_label3
 .L__kefir_func_test_sync_val_compare_and_swap16_label3:
     sete %al
     movw -2(%rbp), %ax
@@ -177,8 +159,6 @@ test_sync_val_compare_and_swap32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_sync_val_compare_and_swap32_label1
-.L__kefir_func_test_sync_val_compare_and_swap32_label1:
     mov %rdx, %rax
     movl %esi, -4(%rbp)
     mov %rdi, %rdx
@@ -189,7 +169,6 @@ test_sync_val_compare_and_swap32:
     jmp .L__kefir_func_test_sync_val_compare_and_swap32_label2
 .L__kefir_func_test_sync_val_compare_and_swap32_label2:
     movl %eax, -4(%rbp)
-    jmp .L__kefir_func_test_sync_val_compare_and_swap32_label3
 .L__kefir_func_test_sync_val_compare_and_swap32_label3:
     sete %al
     movl -4(%rbp), %eax
@@ -203,8 +182,6 @@ test_sync_val_compare_and_swap64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_sync_val_compare_and_swap64_label1
-.L__kefir_func_test_sync_val_compare_and_swap64_label1:
     mov %rdx, %rax
     movq %rsi, -8(%rbp)
     mov %rdi, %rdx
@@ -215,7 +192,6 @@ test_sync_val_compare_and_swap64:
     jmp .L__kefir_func_test_sync_val_compare_and_swap64_label2
 .L__kefir_func_test_sync_val_compare_and_swap64_label2:
     movq %rax, -8(%rbp)
-    jmp .L__kefir_func_test_sync_val_compare_and_swap64_label3
 .L__kefir_func_test_sync_val_compare_and_swap64_label3:
     sete %al
     movq -8(%rbp), %rax

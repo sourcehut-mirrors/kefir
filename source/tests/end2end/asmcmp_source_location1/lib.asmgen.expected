@@ -1815,7 +1815,6 @@ factorial:
     sub $16, %rsp
 .L__kefir_func_factorial_label41:
 .L__kefir_func_factorial_label42:
-    jmp .L__kefir_func_factorial_label2
 .L__kefir_func_factorial_label43:
 .L__kefir_func_factorial_label1:
 .L__kefir_func_factorial_label2:

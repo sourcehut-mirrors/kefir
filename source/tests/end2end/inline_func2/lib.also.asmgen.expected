@@ -12,8 +12,6 @@ factorial:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_factorial_label1
-.L__kefir_func_factorial_label1:
     mov %rdi, %rbx
     cmp $1, %rbx
     jg .L__kefir_func_factorial_label5
@@ -28,7 +26,6 @@ factorial:
     mov %rbx, %rdi
     imul %rax, %rdi
     mov %rdi, %rax
-    jmp .L__kefir_func_factorial_label3
 .L__kefir_func_factorial_label3:
     lea -8(%rbp), %rsp
     pop %rbx
@@ -42,8 +39,6 @@ factorial_helper2:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_factorial_helper2_label1
-.L__kefir_func_factorial_helper2_label1:
     mov %rdi, %rbx
     mov %rbx, %rdi
     sub $1, %rdi
@@ -73,8 +68,6 @@ factorial_helper:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_factorial_helper_label1
-.L__kefir_func_factorial_helper_label1:
     mov %rdi, %rbx
     mov %rbx, %rdi
     sub $1, %rdi
@@ -89,7 +82,6 @@ factorial_helper:
     mov %rbx, %rdi
     imul %rax, %rdi
     mov %rdi, %rax
-    jmp .L__kefir_func_factorial_helper_label3
 .L__kefir_func_factorial_helper_label3:
     lea -8(%rbp), %rsp
     pop %rbx

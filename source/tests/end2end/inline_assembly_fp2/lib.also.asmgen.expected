@@ -12,7 +12,6 @@ custom_discriminant:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_custom_discriminant_label1
 .L__kefir_func_custom_discriminant_label1:
     movq %xmm2, -16(%rbp)
     movq %xmm1, -24(%rbp)

@@ -14,24 +14,18 @@
 .L__kefir_text_section_begin:
 getx2:
 .L__kefir_text_func_getx2_begin:
-    jmp .L__kefir_func_getx2_label1
-.L__kefir_func_getx2_label1:
     lea __kefir_temporary_6(%rip), %rax
     ret
 .L__kefir_text_func_getx2_end:
 
 getx3:
 .L__kefir_text_func_getx3_begin:
-    jmp .L__kefir_func_getx3_label1
-.L__kefir_func_getx3_label1:
     lea __kefir_function_getx3_static___kefir_local_temporary_0_11(%rip), %rax
     ret
 .L__kefir_text_func_getx3_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     mov %rcx, %rax
     xor %ecx, %eax
     movq %rax, (%rdi)
@@ -54,24 +48,21 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     mov $1, %rax
-    mov %rax, %rsi
-    jmp .L__kefir_func_test3_label2
+    mov %rax, %rcx
 .L__kefir_func_test3_label2:
-    mov %rdi, %rcx
-    add $-1, %ecx
-    mov %rsi, %rdx
-    imul %edi, %edx
+    mov %rdi, %rdx
+    add $-1, %edx
+    mov %rcx, %rsi
+    imul %edi, %esi
     cmp $0, %edi
     jle .L__kefir_func_test3_label6
 .L__kefir_func_test3_label9:
-    mov %rdx, %rsi
-    mov %rcx, %rdi
+    mov %rsi, %rcx
+    mov %rdx, %rdi
     jmp .L__kefir_func_test3_label2
 .L__kefir_func_test3_label6:
-    mov %rsi, %rax
+    mov %rcx, %rax
     ret
 .L__kefir_text_func_test3_end:
 

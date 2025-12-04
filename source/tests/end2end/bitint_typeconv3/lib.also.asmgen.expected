@@ -45,7 +45,6 @@ get1:
 .L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get1_label1
 .L__kefir_func_get1_label1:
     mov $3, %rax
     neg %eax
@@ -61,7 +60,6 @@ get2:
 .L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get2_label1
 .L__kefir_func_get2_label1:
     mov $10, %rcx
     movsx %ecx, %rax
@@ -76,7 +74,6 @@ get3:
 .L__kefir_func_get3_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get3_label1
 .L__kefir_func_get3_label1:
     mov $4096, %rax
     neg %eax
@@ -92,7 +89,6 @@ get4:
 .L__kefir_func_get4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get4_label1
 .L__kefir_func_get4_label1:
     mov $2048, %rcx
     movsx %ecx, %rax
@@ -107,7 +103,6 @@ get5:
 .L__kefir_func_get5_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get5_label1
 .L__kefir_func_get5_label1:
     mov $831467, %rax
     neg %eax
@@ -123,7 +118,6 @@ get6:
 .L__kefir_func_get6_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get6_label1
 .L__kefir_func_get6_label1:
     movabs $4294967295, %rcx
     mov $1044991, %rax
@@ -139,7 +133,6 @@ get7:
 .L__kefir_func_get7_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get7_label1
 .L__kefir_func_get7_label1:
     movabs $64327324284627417, %rax
     neg %rax
@@ -154,7 +147,6 @@ get8:
 .L__kefir_func_get8_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get8_label1
 .L__kefir_func_get8_label1:
     movabs $1094394507244, %rax
     shl $4, %rax
@@ -169,7 +161,6 @@ get9:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get9_label1
 .L__kefir_func_get9_label1:
     movabs $1028332837181762172, %rdx
     neg %rdx
@@ -190,7 +181,6 @@ get10:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get10_label1
 .L__kefir_func_get10_label1:
     movabs $3991073699158421302, %rdx
     leaq -16(%rbp), %rax
@@ -212,7 +202,6 @@ get11:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_get11_label1
 .L__kefir_func_get11_label1:
     movabs $1028332837181762172, %rdx
     neg %rdx
@@ -241,7 +230,6 @@ get12:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_get12_label1
 .L__kefir_func_get12_label1:
     movabs $3991073699158421302, %rdx
     leaq -64(%rbp), %rax
@@ -266,7 +254,6 @@ get1a:
 .L__kefir_func_get1a_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get1a_label1
 .L__kefir_func_get1a_label1:
     mov $3, %rcx
     movsx %ecx, %rax
@@ -281,7 +268,6 @@ get3a:
 .L__kefir_func_get3a_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get3a_label1
 .L__kefir_func_get3a_label1:
     mov $4096, %rcx
     movsx %ecx, %rax
@@ -296,7 +282,6 @@ get5a:
 .L__kefir_func_get5a_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get5a_label1
 .L__kefir_func_get5a_label1:
     mov $831467, %rcx
     movsx %ecx, %rax
@@ -311,7 +296,6 @@ get7a:
 .L__kefir_func_get7a_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get7a_label1
 .L__kefir_func_get7a_label1:
     movabs $64327324284627417, %rax
     shl $4, %rax
@@ -326,7 +310,6 @@ get9a:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get9a_label1
 .L__kefir_func_get9a_label1:
     movabs $1028332837181762172, %rdx
     leaq -16(%rbp), %rax
@@ -348,7 +331,6 @@ get11a:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_get11a_label1
 .L__kefir_func_get11a_label1:
     movabs $1028332837181762172, %rdx
     leaq -64(%rbp), %rax
@@ -381,7 +363,6 @@ __kefir_bigint_cast_signed:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label1
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
@@ -710,7 +691,6 @@ __kefir_bigint_cast_signed:
     and $255, %rcx
     not %ecx
     movb %cl, (%rax)
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label15
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label15:
     movq -8(%rbp), %rax
     add $1, %rax
@@ -724,7 +704,6 @@ __kefir_bigint_set_unsigned_integer:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label1
 .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -40(%rbp)
@@ -861,7 +840,6 @@ __kefir_bigint_cast_unsigned:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label1
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
@@ -1098,7 +1076,6 @@ __kefir_bigint_set_signed_integer:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label1
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -40(%rbp)

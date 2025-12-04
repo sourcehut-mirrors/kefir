@@ -26,7 +26,6 @@ get1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get1_label1
 .L__kefir_func_get1_label1:
     movl $4025334944, -16(%rbp)
     movl $1126280141, -12(%rbp)
@@ -44,7 +43,6 @@ get2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get2_label1
 .L__kefir_func_get2_label1:
     movl $4025334944, -16(%rbp)
     movl $1126280141, -12(%rbp)
@@ -62,7 +60,6 @@ get3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get3_label1
 .L__kefir_func_get3_label1:
     movl $4025334944, -16(%rbp)
     movl $1126280141, -12(%rbp)
@@ -80,7 +77,6 @@ get4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get4_label1
 .L__kefir_func_get4_label1:
     movl $4025334944, -16(%rbp)
     movl $1126280141, -12(%rbp)
@@ -98,7 +94,6 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get5_label1
 .L__kefir_func_get5_label1:
     movl $4025334944, -16(%rbp)
     movl $1126280141, -12(%rbp)
@@ -116,7 +111,6 @@ get6:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get6_label1
 .L__kefir_func_get6_label1:
     movl $4025334944, -16(%rbp)
     movl $1126280141, -12(%rbp)
@@ -134,7 +128,6 @@ get7:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get7_label1
 .L__kefir_func_get7_label1:
     movl $4025334944, -16(%rbp)
     movl $1126280141, -12(%rbp)
@@ -152,7 +145,6 @@ get8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get8_label1
 .L__kefir_func_get8_label1:
     movl $4025334944, -16(%rbp)
     movl $1126280141, -12(%rbp)

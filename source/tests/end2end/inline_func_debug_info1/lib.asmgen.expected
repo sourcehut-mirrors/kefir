@@ -12,9 +12,8 @@ main:
 .file 0 "source/tests/end2end/inline_func_debug_info1/lib.kefir.asmgen.c"
 .loc 0 35 1
 .L__kefir_text_func_main_begin:
-    jmp .L__kefir_func_main_label2
 .loc 0 24 16
-.L__kefir_func_main_label2:
+.L__kefir_func_main_label16:
     movq x@GOTPCREL(%rip), %rax
 .L__kefir_func_main_label20:
     movl (%rax), %eax
@@ -530,7 +529,7 @@ __kefir_debug_rnglists_section_begin:
     .long 0
 __kefir_debug_rnglist_section_entry_3:
     .byte 4
-    .uleb128 .L__kefir_func_main_label2 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_main_label16 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_main_label35 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_7:

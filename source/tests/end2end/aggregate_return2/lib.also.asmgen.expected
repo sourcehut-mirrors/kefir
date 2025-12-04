@@ -20,8 +20,6 @@ testlarge:
     push %rbx
     push %r12
     sub $512, %rsp
-    jmp .L__kefir_func_testlarge_label1
-.L__kefir_func_testlarge_label1:
     mov %rdi, %r12
     leaq -528(%rbp), %rbx
     mov %r12, %rsi
@@ -47,8 +45,6 @@ testsmall:
     push %r13
     sub $40, %rsp
     stmxcsr -32(%rbp)
-    jmp .L__kefir_func_testsmall_label1
-.L__kefir_func_testsmall_label1:
     mov %rdi, %r12
     leaq -64(%rbp), %rbx
     mov %r12, %rdi
@@ -81,8 +77,6 @@ testlarge2:
     push %rbx
     push %r12
     sub $1024, %rsp
-    jmp .L__kefir_func_testlarge2_label1
-.L__kefir_func_testlarge2_label1:
     mov %rsi, %r12
     leaq -1040(%rbp), %rbx
     mov %rdi, %rsi

@@ -32,14 +32,11 @@ add32:
     push %rbx
     push %r12
     sub $64, %rsp
-    jmp .L__kefir_func_add32_label1
-.L__kefir_func_add32_label1:
     movdqu %xmm0, -64(%rbp)
     mov %rdi, %r12
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    jmp .L__kefir_func_add32_label2
 .L__kefir_func_add32_label2:
     movl (%r12), %eax
     mov %rax, %rbx
@@ -82,14 +79,11 @@ add64:
     push %rbx
     push %r12
     sub $64, %rsp
-    jmp .L__kefir_func_add64_label1
-.L__kefir_func_add64_label1:
     movdqu %xmm0, -64(%rbp)
     mov %rdi, %r12
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    jmp .L__kefir_func_add64_label2
 .L__kefir_func_add64_label2:
     movq (%r12), %rax
     mov %rax, %rbx
@@ -131,14 +125,11 @@ add128:
     mov %rsp, %rbp
     push %rbx
     sub $104, %rsp
-    jmp .L__kefir_func_add128_label1
-.L__kefir_func_add128_label1:
     movdqu %xmm0, -64(%rbp)
     mov %rdi, %rbx
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    jmp .L__kefir_func_add128_label2
 .L__kefir_func_add128_label2:
     leaq -112(%rbp), %rax
     mov %rax, %rdx
@@ -189,8 +180,6 @@ add128:
 
 load32:
 .L__kefir_text_func_load32_begin:
-    jmp .L__kefir_func_load32_label1
-.L__kefir_func_load32_label1:
     movl (%rdi), %eax
     movq %rax, %xmm0
     ret
@@ -198,8 +187,6 @@ load32:
 
 load64:
 .L__kefir_text_func_load64_begin:
-    jmp .L__kefir_func_load64_label1
-.L__kefir_func_load64_label1:
     movq (%rdi), %rax
     movq %rax, %xmm0
     ret
@@ -210,8 +197,6 @@ load128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_load128_label1
-.L__kefir_func_load128_label1:
     leaq -16(%rbp), %rax
     mov %rax, %rdx
     mov %rdi, %rsi
@@ -226,8 +211,6 @@ load128:
 
 store32:
 .L__kefir_text_func_store32_begin:
-    jmp .L__kefir_func_store32_label1
-.L__kefir_func_store32_label1:
     movq %xmm0, %rax
     xchgl (%rdi), %eax
     ret
@@ -235,8 +218,6 @@ store32:
 
 store64:
 .L__kefir_text_func_store64_begin:
-    jmp .L__kefir_func_store64_label1
-.L__kefir_func_store64_label1:
     movq %xmm0, %rax
     xchgq (%rdi), %rax
     ret
@@ -247,8 +228,6 @@ store128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_store128_label1
-.L__kefir_func_store128_label1:
     movdqu %xmm0, -16(%rbp)
     mov %rdi, %rsi
     leaq -16(%rbp), %rax

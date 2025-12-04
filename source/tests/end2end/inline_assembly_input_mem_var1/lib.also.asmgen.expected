@@ -13,8 +13,6 @@ add:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_add_label1
-.L__kefir_func_add_label1:
     movq %rsi, -8(%rbp)
     pushfq
     sub $8, %rsp
@@ -35,8 +33,6 @@ add2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_add2_label1
-.L__kefir_func_add2_label1:
     movq %rsi, -8(%rbp)
     pushfq
     sub $8, %rsp

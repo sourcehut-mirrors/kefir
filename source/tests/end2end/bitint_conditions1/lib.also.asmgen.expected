@@ -22,7 +22,6 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test1_label1
 .L__kefir_func_test1_label1:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
@@ -44,7 +43,6 @@ test1:
 .L__kefir_func_test1_label6:
     mov $1, %rax
     neg %eax
-    jmp .L__kefir_func_test1_label4
 .L__kefir_func_test1_label4:
     lea (%rbp), %rsp
     pop %rbp
@@ -57,7 +55,6 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test2_label1
 .L__kefir_func_test2_label1:
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
@@ -79,7 +76,6 @@ test2:
 .L__kefir_func_test2_label6:
     mov $1, %rax
     neg %eax
-    jmp .L__kefir_func_test2_label4
 .L__kefir_func_test2_label4:
     lea (%rbp), %rsp
     pop %rbp
@@ -92,7 +88,6 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test3_label1
 .L__kefir_func_test3_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
@@ -114,7 +109,6 @@ test3:
 .L__kefir_func_test3_label6:
     mov $1, %rax
     neg %eax
-    jmp .L__kefir_func_test3_label4
 .L__kefir_func_test3_label4:
     lea (%rbp), %rsp
     pop %rbp
@@ -127,7 +121,6 @@ test4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test4_label1
 .L__kefir_func_test4_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -149,7 +142,6 @@ test4:
 .L__kefir_func_test4_label6:
     mov $1, %rax
     neg %eax
-    jmp .L__kefir_func_test4_label4
 .L__kefir_func_test4_label4:
     lea (%rbp), %rsp
     pop %rbp
@@ -162,7 +154,6 @@ test5:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp .L__kefir_func_test5_label1
 .L__kefir_func_test5_label1:
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
@@ -187,7 +178,6 @@ test5:
 .L__kefir_func_test5_label6:
     mov $1, %rax
     neg %eax
-    jmp .L__kefir_func_test5_label4
 .L__kefir_func_test5_label4:
     lea (%rbp), %rsp
     pop %rbp
@@ -200,7 +190,6 @@ test6:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-    jmp .L__kefir_func_test6_label1
 .L__kefir_func_test6_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
@@ -232,7 +221,6 @@ test6:
 .L__kefir_func_test6_label6:
     mov $1, %rax
     neg %eax
-    jmp .L__kefir_func_test6_label4
 .L__kefir_func_test6_label4:
     lea (%rbp), %rsp
     pop %rbp
@@ -252,7 +240,6 @@ __kefir_bigint_is_zero:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label1
 .L__kefir_runtime_func___kefir_bigint_is_zero_label1:
     movq %rsi, -56(%rbp)
     movq %rdi, -48(%rbp)

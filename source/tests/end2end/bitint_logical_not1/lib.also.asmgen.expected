@@ -22,7 +22,6 @@ bnot1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_bnot1_label1
 .L__kefir_func_bnot1_label1:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
@@ -45,7 +44,6 @@ bnot2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_bnot2_label1
 .L__kefir_func_bnot2_label1:
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
@@ -68,7 +66,6 @@ bnot3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_bnot3_label1
 .L__kefir_func_bnot3_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
@@ -91,7 +88,6 @@ bnot4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_bnot4_label1
 .L__kefir_func_bnot4_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -114,7 +110,6 @@ bnot5:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp .L__kefir_func_bnot5_label1
 .L__kefir_func_bnot5_label1:
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
@@ -140,7 +135,6 @@ bnot6:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-    jmp .L__kefir_func_bnot6_label1
 .L__kefir_func_bnot6_label1:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
@@ -188,7 +182,6 @@ __kefir_bigint_is_zero:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label1
 .L__kefir_runtime_func___kefir_bigint_is_zero_label1:
     movq %rsi, -56(%rbp)
     movq %rdi, -48(%rbp)

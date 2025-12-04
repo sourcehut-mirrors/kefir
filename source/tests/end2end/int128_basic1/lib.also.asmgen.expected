@@ -13,8 +13,6 @@
 .L__kefir_text_section_begin:
 get:
 .L__kefir_text_func_get_begin:
-    jmp .L__kefir_func_get_label1
-.L__kefir_func_get_label1:
     movq value@GOTPCREL(%rip), %rcx
     mov (%rcx), %rax
     mov 8(%rcx), %rdx
@@ -26,8 +24,6 @@ set:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_set_label1
-.L__kefir_func_set_label1:
     movq value@GOTPCREL(%rip), %rax
     mov %rdi, (%rax)
     mov %rsi, 8(%rax)
@@ -41,8 +37,6 @@ test:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_label1
-.L__kefir_func_test_label1:
     mov %rdi, %rax
     mov %rsi, %rdx
     lea (%rbp), %rsp

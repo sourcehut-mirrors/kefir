@@ -20,7 +20,6 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test1_label1
 .L__kefir_func_test1_label1:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
@@ -114,7 +113,6 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test2_label1
 .L__kefir_func_test2_label1:
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
@@ -210,7 +208,6 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test3_label1
 .L__kefir_func_test3_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
@@ -306,7 +303,6 @@ test4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test4_label1
 .L__kefir_func_test4_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -402,7 +398,6 @@ test5:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_func_test5_label1
 .L__kefir_func_test5_label1:
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
@@ -525,7 +520,6 @@ __kefir_bigint_unsigned_compare:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label1
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label1:
     movq %rdx, -56(%rbp)
     movq %rsi, -40(%rbp)
@@ -549,7 +543,6 @@ __kefir_bigint_unsigned_compare:
     movq %rax, -32(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -24(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2:
     movq -24(%rbp), %rax
     mov $0, %rdx
@@ -701,7 +694,6 @@ __kefir_bigint_cast_signed:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label1
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
@@ -1030,7 +1022,6 @@ __kefir_bigint_cast_signed:
     and $255, %rcx
     not %ecx
     movb %cl, (%rax)
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label15
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label15:
     movq -8(%rbp), %rax
     add $1, %rax
@@ -1044,7 +1035,6 @@ __kefir_bigint_set_signed_integer:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label1
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -40(%rbp)

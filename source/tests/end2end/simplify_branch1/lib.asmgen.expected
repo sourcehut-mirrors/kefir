@@ -10,16 +10,12 @@
 .L__kefir_text_section_begin:
 fn:
 .L__kefir_text_func_fn_begin:
-    jmp .L__kefir_func_fn_label1
-.L__kefir_func_fn_label1:
     mov %rsi, %rax
     ret
 .L__kefir_text_func_fn_end:
 
 fn2:
 .L__kefir_text_func_fn2_begin:
-    jmp .L__kefir_func_fn2_label1
-.L__kefir_func_fn2_label1:
     mov %rsi, %rax
     ret
 .L__kefir_text_func_fn2_end:

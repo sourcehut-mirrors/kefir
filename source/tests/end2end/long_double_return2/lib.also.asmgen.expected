@@ -13,8 +13,6 @@ minus:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_minus_label1
-.L__kefir_func_minus_label1:
     fldt 16(%rbp)
     fchs
     fldcw -8(%rbp)
@@ -29,8 +27,6 @@ pnanl:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_pnanl_label1
-.L__kefir_func_pnanl_label1:
     fldt .L__kefir_func_pnanl_label9(%rip)
     fstpt -32(%rbp)
     sub $16, %rsp
@@ -48,7 +44,6 @@ pnanl:
     call minus
     add $16, %rsp
     fstpt -32(%rbp)
-    jmp .L__kefir_func_pnanl_label6
 .L__kefir_func_pnanl_label6:
     fldt -32(%rbp)
     fldcw -8(%rbp)

@@ -11,8 +11,6 @@ test_syscall:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_syscall_label1
-.L__kefir_func_test_syscall_label1:
     mov 16(%rbp), %r11
     movq $0, -8(%rbp)
     mov %rdi, %rax

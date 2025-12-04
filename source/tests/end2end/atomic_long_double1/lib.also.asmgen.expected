@@ -14,8 +14,6 @@ get_ld1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get_ld1_label1
-.L__kefir_func_get_ld1_label1:
     movq ld1@GOTPCREL(%rip), %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
@@ -33,8 +31,6 @@ set_ld1:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_set_ld1_label1
-.L__kefir_func_set_ld1_label1:
     fldt 16(%rbp)
     movq ld1@GOTPCREL(%rip), %rsi
     fstpt -32(%rbp)

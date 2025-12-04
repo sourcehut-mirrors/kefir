@@ -14,7 +14,6 @@ sum_progression:
     mov %rsp, %rbp
     sub $352, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_sum_progression_label1
 .L__kefir_func_sum_progression_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)

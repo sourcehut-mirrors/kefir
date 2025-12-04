@@ -10,8 +10,6 @@
 .L__kefir_text_section_begin:
 getlen:
 .L__kefir_text_func_getlen_begin:
-    jmp .L__kefir_func_getlen_label1
-.L__kefir_func_getlen_label1:
     mov $100, %rax
     ret
 .L__kefir_text_func_getlen_end:

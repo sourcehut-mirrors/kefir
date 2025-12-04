@@ -8,8 +8,6 @@
 .L__kefir_text_section_begin:
 exchange_ptr:
 .L__kefir_text_func_exchange_ptr_begin:
-    jmp .L__kefir_func_exchange_ptr_label1
-.L__kefir_func_exchange_ptr_label1:
     xchgq (%rdi), %rsi
     mov %rsi, %rax
     ret

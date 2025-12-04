@@ -27,7 +27,6 @@ test1:
 .L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test1_label1
 .L__kefir_func_test1_label1:
     call fn1@PLT
     pop %rbp
@@ -39,7 +38,6 @@ test2:
 .L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test2_label1
 .L__kefir_func_test2_label1:
     call fn2@PLT
     pop %rbp
@@ -51,7 +49,6 @@ test3:
 .L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test3_label1
 .L__kefir_func_test3_label1:
     call fn3@PLT
     pop %rbp
@@ -63,7 +60,6 @@ test4:
 .L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test4_label1
 .L__kefir_func_test4_label1:
     call fn4@PLT
     pop %rbp
@@ -76,7 +72,6 @@ test5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test5_label1
 .L__kefir_func_test5_label1:
     call fn5@PLT
     movq %rax, -16(%rbp)
@@ -96,7 +91,6 @@ test6:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_test6_label1
 .L__kefir_func_test6_label1:
     leaq -64(%rbp), %rax
     mov %rax, %rdi

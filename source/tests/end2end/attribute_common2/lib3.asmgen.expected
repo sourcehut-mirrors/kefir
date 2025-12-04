@@ -17,8 +17,6 @@
 .L__kefir_text_section_begin:
 getx:
 .L__kefir_text_func_getx_begin:
-    jmp .L__kefir_func_getx_label1
-.L__kefir_func_getx_label1:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
@@ -26,8 +24,6 @@ getx:
 
 gety:
 .L__kefir_text_func_gety_begin:
-    jmp .L__kefir_func_gety_label1
-.L__kefir_func_gety_label1:
     movq __emutls_v.y@GOTPCREL(%rip), %rdi
     call __emutls_get_address@PLT
     movl (%rax), %eax

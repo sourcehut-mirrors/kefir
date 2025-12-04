@@ -16,7 +16,6 @@ get1:
     push %r12
     sub $144, %rsp
     mov %rdi, %r12
-    jmp .L__kefir_func_get1_label1
 .L__kefir_func_get1_label1:
     movq %rsi, -152(%rbp)
     movq -152(%rbp), %rax
@@ -103,7 +102,6 @@ get1:
     mov %rbx, %rdi
     call empty1@PLT
     mov %rax, %rcx
-    jmp .L__kefir_func_get1_label4
 .L__kefir_func_get1_label4:
     mov %r12, %rax
     movdqu (%rcx), %xmm0

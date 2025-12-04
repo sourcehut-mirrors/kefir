@@ -16,8 +16,6 @@ get1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get1_label1
-.L__kefir_func_get1_label1:
     mov %rcx, %rax
     xor %ecx, %eax
     movq %rax, -8(%rbp)
@@ -35,8 +33,6 @@ get2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get2_label1
-.L__kefir_func_get2_label1:
     mov %rcx, %rax
     xor %ecx, %eax
     movq %rax, -8(%rbp)
@@ -53,7 +49,6 @@ get3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get3_label2
 .L__kefir_func_get3_label2:
 _kefir_local_public_label_get3_label1:
     mov %rcx, %rax

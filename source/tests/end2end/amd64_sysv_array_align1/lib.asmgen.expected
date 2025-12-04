@@ -43,8 +43,6 @@ geta:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_geta_label1
-.L__kefir_func_geta_label1:
     leaq -1(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -56,8 +54,6 @@ getb:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_getb_label1
-.L__kefir_func_getb_label1:
     leaq -2(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -69,8 +65,6 @@ getc:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_getc_label1
-.L__kefir_func_getc_label1:
     leaq -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -82,8 +76,6 @@ getd:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_getd_label1
-.L__kefir_func_getd_label1:
     leaq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -95,8 +87,6 @@ gete:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_gete_label1
-.L__kefir_func_gete_label1:
     leaq -15(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -108,8 +98,6 @@ getf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_getf_label1
-.L__kefir_func_getf_label1:
     leaq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -121,8 +109,6 @@ getg:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_getg_label1
-.L__kefir_func_getg_label1:
     leaq -32(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -134,8 +120,6 @@ geth:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_geth_label1
-.L__kefir_func_geth_label1:
     leaq -32(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -148,8 +132,6 @@ vla1:
     mov %rsp, %rbp
     sub $32, %rsp
     xor %eax, %eax
-    jmp .L__kefir_func_vla1_label1
-.L__kefir_func_vla1_label1:
     mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)

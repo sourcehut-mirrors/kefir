@@ -13,8 +13,6 @@ get1:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rdx
-    jmp .L__kefir_func_get1_label1
-.L__kefir_func_get1_label1:
     mov %rdx, %rdi
     xor %eax, %eax
     mov $10, %rcx

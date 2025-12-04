@@ -12,8 +12,6 @@ hypot_sq:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_hypot_sq_label1
-.L__kefir_func_hypot_sq_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fld %st(0)

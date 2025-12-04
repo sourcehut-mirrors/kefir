@@ -18,8 +18,6 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     shl $47, %rdi
     sar $47, %rdi
     mov %edi, %eax
@@ -39,8 +37,6 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     mov %edi, %eax
     mov %rax, %rcx
     add %eax, %ecx
@@ -57,8 +53,6 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     shl $5, %rdi
     sar $5, %rdi
     mov %rdi, %rax
@@ -78,8 +72,6 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    jmp .L__kefir_func_test4_label1
-.L__kefir_func_test4_label1:
     mov %rdi, %rax
     mov %rax, %rcx
     add %rax, %rcx
@@ -99,8 +91,6 @@ test5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test5_label1
-.L__kefir_func_test5_label1:
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
     leaq -16(%rbp), %rax
@@ -116,8 +106,6 @@ test6:
 .L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test6_label1
-.L__kefir_func_test6_label1:
     lea 16(%rbp), %rdi
     mov $315, %rsi
     call __kefir_bigint_redundant_sign_bits
@@ -142,8 +130,6 @@ __kefir_bigint_redundant_sign_bits:
     push %r14
     push %r15
     sub $8, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label1
-.L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label1:
     mov %rsi, %r15
     movq %rdi, -48(%rbp)
     cmp $0, %r15
@@ -219,7 +205,6 @@ __kefir_bigint_redundant_sign_bits:
     xor %edx, %edx
     mov %r8, %rbx
     mov %rdx, %r9
-    jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label9
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label9:
     lea 1(%r12), %rdx
     cmp %r11, %r9

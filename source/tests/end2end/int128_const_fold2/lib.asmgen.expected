@@ -30,8 +30,6 @@
 .L__kefir_text_section_begin:
 i128_to_d32:
 .L__kefir_text_func_i128_to_d32_begin:
-    jmp .L__kefir_func_i128_to_d32_label1
-.L__kefir_func_i128_to_d32_label1:
     movd .L__kefir_func_i128_to_d32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_i128_to_d32_end:
@@ -43,8 +41,6 @@ i128_to_d32:
 
 i128_to_d64:
 .L__kefir_text_func_i128_to_d64_begin:
-    jmp .L__kefir_func_i128_to_d64_label1
-.L__kefir_func_i128_to_d64_label1:
     movq .L__kefir_func_i128_to_d64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_i128_to_d64_end:
@@ -56,8 +52,6 @@ i128_to_d64:
 
 u128_to_d32:
 .L__kefir_text_func_u128_to_d32_begin:
-    jmp .L__kefir_func_u128_to_d32_label1
-.L__kefir_func_u128_to_d32_label1:
     movd .L__kefir_func_u128_to_d32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_u128_to_d32_end:
@@ -69,8 +63,6 @@ u128_to_d32:
 
 u128_to_d64:
 .L__kefir_text_func_u128_to_d64_begin:
-    jmp .L__kefir_func_u128_to_d64_label1
-.L__kefir_func_u128_to_d64_label1:
     movq .L__kefir_func_u128_to_d64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_u128_to_d64_end:
@@ -82,8 +74,6 @@ u128_to_d64:
 
 uint128_from_d32:
 .L__kefir_text_func_uint128_from_d32_begin:
-    jmp .L__kefir_func_uint128_from_d32_label1
-.L__kefir_func_uint128_from_d32_label1:
     mov $317131, %rax
     xor %edx, %edx
     ret
@@ -91,8 +81,6 @@ uint128_from_d32:
 
 uint128_from_d64:
 .L__kefir_text_func_uint128_from_d64_begin:
-    jmp .L__kefir_func_uint128_from_d64_label1
-.L__kefir_func_uint128_from_d64_label1:
     mov $31783131, %rax
     xor %edx, %edx
     ret
@@ -100,8 +88,6 @@ uint128_from_d64:
 
 uint128_from_d128:
 .L__kefir_text_func_uint128_from_d128_begin:
-    jmp .L__kefir_func_uint128_from_d128_label1
-.L__kefir_func_uint128_from_d128_label1:
     movabs $31783119931, %rax
     xor %edx, %edx
     ret
@@ -109,8 +95,6 @@ uint128_from_d128:
 
 i128_to_d128:
 .L__kefir_text_func_i128_to_d128_begin:
-    jmp .L__kefir_func_i128_to_d128_label1
-.L__kefir_func_i128_to_d128_label1:
     movdqu .L__kefir_func_i128_to_d128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_i128_to_d128_end:
@@ -122,8 +106,6 @@ i128_to_d128:
 
 u128_to_d128:
 .L__kefir_text_func_u128_to_d128_begin:
-    jmp .L__kefir_func_u128_to_d128_label1
-.L__kefir_func_u128_to_d128_label1:
     movdqu .L__kefir_func_u128_to_d128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_u128_to_d128_end:
@@ -135,8 +117,6 @@ u128_to_d128:
 
 int128_from_d32:
 .L__kefir_text_func_int128_from_d32_begin:
-    jmp .L__kefir_func_int128_from_d32_label1
-.L__kefir_func_int128_from_d32_label1:
     mov $317131, %rax
     xor %edx, %edx
     ret
@@ -144,8 +124,6 @@ int128_from_d32:
 
 int128_from_d64:
 .L__kefir_text_func_int128_from_d64_begin:
-    jmp .L__kefir_func_int128_from_d64_label1
-.L__kefir_func_int128_from_d64_label1:
     mov $-31783131, %rax
     mov $-1, %rdx
     ret
@@ -153,8 +131,6 @@ int128_from_d64:
 
 int128_from_d128:
 .L__kefir_text_func_int128_from_d128_begin:
-    jmp .L__kefir_func_int128_from_d128_label1
-.L__kefir_func_int128_from_d128_label1:
     movabs $31783119931, %rax
     xor %edx, %edx
     ret

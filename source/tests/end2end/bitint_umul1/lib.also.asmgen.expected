@@ -22,7 +22,6 @@ mul1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mul1_label1
 .L__kefir_func_mul1_label1:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
@@ -48,7 +47,6 @@ mul2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mul2_label1
 .L__kefir_func_mul2_label1:
     movw %si, -2(%rbp)
     movw %di, -4(%rbp)
@@ -74,7 +72,6 @@ mul3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mul3_label1
 .L__kefir_func_mul3_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -100,7 +97,6 @@ mul4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mul4_label1
 .L__kefir_func_mul4_label1:
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
@@ -126,7 +122,6 @@ mul5:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
-    jmp .L__kefir_func_mul5_label1
 .L__kefir_func_mul5_label1:
     movq %rdx, -64(%rbp)
     movq %rcx, -56(%rbp)
@@ -164,7 +159,6 @@ mul6:
     push %rbx
     sub $200, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_mul6_label1
 .L__kefir_func_mul6_label1:
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
@@ -247,7 +241,6 @@ __kefir_bigint_zero:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_zero_label1
 .L__kefir_runtime_func___kefir_bigint_zero_label1:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
@@ -271,7 +264,6 @@ __kefir_bigint_zero:
     mov $0, %rcx
     movsx %ecx, %rax
     movq %rax, -8(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_zero_label2
 .L__kefir_runtime_func___kefir_bigint_zero_label2:
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
@@ -309,7 +301,6 @@ __kefir_bigint_unsigned_multiply:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label1
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label1:
     movq %r8, -88(%rbp)
     movq %rcx, -56(%rbp)
@@ -341,7 +332,6 @@ __kefir_bigint_unsigned_multiply:
     cmp %rcx, %rax
     mov %rdx, %rax
     sete %al
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label3
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label3:
     test %eax, %eax
     sete %al

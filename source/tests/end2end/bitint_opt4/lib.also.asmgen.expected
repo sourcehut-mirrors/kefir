@@ -14,32 +14,24 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    jmp .L__kefir_func_get1_label1
-.L__kefir_func_get1_label1:
     mov $34, %rax
     ret
 .L__kefir_text_func_get1_end:
 
 get2:
 .L__kefir_text_func_get2_begin:
-    jmp .L__kefir_func_get2_label1
-.L__kefir_func_get2_label1:
     mov $1024, %rax
     ret
 .L__kefir_text_func_get2_end:
 
 get3:
 .L__kefir_text_func_get3_begin:
-    jmp .L__kefir_func_get3_label1
-.L__kefir_func_get3_label1:
     mov $1048574, %rax
     ret
 .L__kefir_text_func_get3_end:
 
 get4:
 .L__kefir_text_func_get4_begin:
-    jmp .L__kefir_func_get4_label1
-.L__kefir_func_get4_label1:
     movabs $6500659511, %rax
     ret
 .L__kefir_text_func_get4_end:

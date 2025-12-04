@@ -44,8 +44,6 @@ c32_to_bool:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_c32_to_bool_label1
-.L__kefir_func_c32_to_bool_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -68,8 +66,6 @@ c64_to_bool:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_c64_to_bool_label1
-.L__kefir_func_c64_to_bool_label1:
     movaps %xmm3, %xmm2
     pxor %xmm3, %xmm2
     cmpneqpd %xmm2, %xmm0
@@ -89,8 +85,6 @@ c80_to_bool:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_c80_to_bool_label1
-.L__kefir_func_c80_to_bool_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)
@@ -123,8 +117,6 @@ c32_to_bool2:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_c32_to_bool2_label1
-.L__kefir_func_c32_to_bool2_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -147,8 +139,6 @@ c64_to_bool2:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_c64_to_bool2_label1
-.L__kefir_func_c64_to_bool2_label1:
     movaps %xmm3, %xmm2
     pxor %xmm3, %xmm2
     cmpneqpd %xmm2, %xmm0
@@ -168,8 +158,6 @@ c64_to_bool3:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_c64_to_bool3_label1
-.L__kefir_func_c64_to_bool3_label1:
     movaps %xmm3, %xmm2
     pxor %xmm3, %xmm2
     cmpneqpd %xmm2, %xmm0
@@ -189,8 +177,6 @@ c80_to_bool2:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_c80_to_bool2_label1
-.L__kefir_func_c80_to_bool2_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)
@@ -223,8 +209,6 @@ c80_to_bool3:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_c80_to_bool3_label1
-.L__kefir_func_c80_to_bool3_label1:
     lea 16(%rbp), %rax
     fldt (%rax)
     fldt 16(%rax)

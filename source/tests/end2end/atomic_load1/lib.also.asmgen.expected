@@ -34,8 +34,6 @@
 .L__kefir_text_section_begin:
 get_b:
 .L__kefir_text_func_get_b_begin:
-    jmp .L__kefir_func_get_b_label1
-.L__kefir_func_get_b_label1:
     movq b@GOTPCREL(%rip), %rcx
     movb (%rcx), %al
     ret
@@ -43,8 +41,6 @@ get_b:
 
 get_u8:
 .L__kefir_text_func_get_u8_begin:
-    jmp .L__kefir_func_get_u8_label1
-.L__kefir_func_get_u8_label1:
     movq u8@GOTPCREL(%rip), %rcx
     movb (%rcx), %al
     ret
@@ -52,8 +48,6 @@ get_u8:
 
 get_f32:
 .L__kefir_text_func_get_f32_begin:
-    jmp .L__kefir_func_get_f32_label1
-.L__kefir_func_get_f32_label1:
     movq f32@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     movq %rax, %xmm0
@@ -62,8 +56,6 @@ get_f32:
 
 get_f64:
 .L__kefir_text_func_get_f64_begin:
-    jmp .L__kefir_func_get_f64_label1
-.L__kefir_func_get_f64_label1:
     movq f64@GOTPCREL(%rip), %rax
     movq (%rax), %rax
     movq %rax, %xmm0
@@ -72,8 +64,6 @@ get_f64:
 
 get_u16:
 .L__kefir_text_func_get_u16_begin:
-    jmp .L__kefir_func_get_u16_label1
-.L__kefir_func_get_u16_label1:
     movq u16@GOTPCREL(%rip), %rcx
     movw (%rcx), %ax
     ret
@@ -81,8 +71,6 @@ get_u16:
 
 get_u32:
 .L__kefir_text_func_get_u32_begin:
-    jmp .L__kefir_func_get_u32_label1
-.L__kefir_func_get_u32_label1:
     movq u32@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
@@ -90,8 +78,6 @@ get_u32:
 
 get_u64:
 .L__kefir_text_func_get_u64_begin:
-    jmp .L__kefir_func_get_u64_label1
-.L__kefir_func_get_u64_label1:
     movq u64@GOTPCREL(%rip), %rax
     movq (%rax), %rax
     ret

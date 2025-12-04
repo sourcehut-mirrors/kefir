@@ -62,64 +62,46 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     ud2
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     ud2
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     ud2
 .L__kefir_text_func_test3_end:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    jmp .L__kefir_func_test4_label1
-.L__kefir_func_test4_label1:
     ud2
 .L__kefir_text_func_test4_end:
 
 test5:
 .L__kefir_text_func_test5_begin:
-    jmp .L__kefir_func_test5_label1
-.L__kefir_func_test5_label1:
     ud2
 .L__kefir_text_func_test5_end:
 
 test6:
 .L__kefir_text_func_test6_begin:
-    jmp .L__kefir_func_test6_label1
-.L__kefir_func_test6_label1:
     ud2
 .L__kefir_text_func_test6_end:
 
 test7:
 .L__kefir_text_func_test7_begin:
-    jmp .L__kefir_func_test7_label1
-.L__kefir_func_test7_label1:
     ud2
 .L__kefir_text_func_test7_end:
 
 test8:
 .L__kefir_text_func_test8_begin:
-    jmp .L__kefir_func_test8_label1
-.L__kefir_func_test8_label1:
     ud2
 .L__kefir_text_func_test8_end:
 
 test9:
 .L__kefir_text_func_test9_begin:
-    jmp .L__kefir_func_test9_label1
-.L__kefir_func_test9_label1:
     movq u8@GOTPCREL(%rip), %rax
     movb $1, (%rax)
     ud2
@@ -127,8 +109,6 @@ test9:
 
 test10:
 .L__kefir_text_func_test10_begin:
-    jmp .L__kefir_func_test10_label1
-.L__kefir_func_test10_label1:
     movq u16@GOTPCREL(%rip), %rax
     movw $1, (%rax)
     ud2
@@ -136,8 +116,6 @@ test10:
 
 test11:
 .L__kefir_text_func_test11_begin:
-    jmp .L__kefir_func_test11_label1
-.L__kefir_func_test11_label1:
     movq u32@GOTPCREL(%rip), %rax
     movl $1, (%rax)
     ud2
@@ -145,8 +123,6 @@ test11:
 
 test12:
 .L__kefir_text_func_test12_begin:
-    jmp .L__kefir_func_test12_label1
-.L__kefir_func_test12_label1:
     movq u64@GOTPCREL(%rip), %rax
     movq $1, (%rax)
     ud2
@@ -154,8 +130,6 @@ test12:
 
 test13:
 .L__kefir_text_func_test13_begin:
-    jmp .L__kefir_func_test13_label1
-.L__kefir_func_test13_label1:
     movq ld@GOTPCREL(%rip), %rax
     fldt .L__kefir_func_test13_label4(%rip)
     movq $0, 8(%rax)
@@ -175,8 +149,6 @@ test14:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_test14_label1
-.L__kefir_func_test14_label1:
     movq c32@GOTPCREL(%rip), %rax
     movd .L__kefir_func_test14_label4(%rip), %xmm0
     movd .L__kefir_func_test14_label5(%rip), %xmm1
@@ -199,8 +171,6 @@ test15:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_test15_label1
-.L__kefir_func_test15_label1:
     movq c64@GOTPCREL(%rip), %rax
     movq .L__kefir_func_test15_label4(%rip), %xmm0
     movq .L__kefir_func_test15_label5(%rip), %xmm1
@@ -219,8 +189,6 @@ test15:
 
 test16:
 .L__kefir_text_func_test16_begin:
-    jmp .L__kefir_func_test16_label1
-.L__kefir_func_test16_label1:
     movq c80@GOTPCREL(%rip), %rax
     add $16, %rax
     fldt .L__kefir_func_test16_label4(%rip)
@@ -245,8 +213,6 @@ test16:
 
 test17:
 .L__kefir_text_func_test17_begin:
-    jmp .L__kefir_func_test17_label1
-.L__kefir_func_test17_label1:
     ud2
 .L__kefir_text_func_test17_end:
 
@@ -255,8 +221,6 @@ test18:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test18_label1
-.L__kefir_func_test18_label1:
     movq u128@GOTPCREL(%rip), %rax
     movl $1, -16(%rbp)
     movl $0, -12(%rbp)
@@ -269,8 +233,6 @@ test18:
 
 test19:
 .L__kefir_text_func_test19_begin:
-    jmp .L__kefir_func_test19_label1
-.L__kefir_func_test19_label1:
     ud2
 .L__kefir_text_func_test19_end:
 

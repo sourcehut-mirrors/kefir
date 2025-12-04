@@ -32,7 +32,6 @@ less:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_less_label1
 .L__kefir_func_less_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -61,7 +60,6 @@ above:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_above_label1
 .L__kefir_func_above_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -90,7 +88,6 @@ below:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_below_label1
 .L__kefir_func_below_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -119,7 +116,6 @@ equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_equals_label1
 .L__kefir_func_equals_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -148,7 +144,6 @@ greater:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_greater_label1
 .L__kefir_func_greater_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -177,7 +172,6 @@ not_less:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_not_less_label1
 .L__kefir_func_not_less_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -206,7 +200,6 @@ not_above:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_not_above_label1
 .L__kefir_func_not_above_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -235,7 +228,6 @@ not_below:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_not_below_label1
 .L__kefir_func_not_below_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -264,7 +256,6 @@ not_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_not_equals_label1
 .L__kefir_func_not_equals_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -293,7 +284,6 @@ not_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_not_equals2_label1
 .L__kefir_func_not_equals2_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
@@ -322,7 +312,6 @@ not_greater:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_not_greater_label1
 .L__kefir_func_not_greater_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)

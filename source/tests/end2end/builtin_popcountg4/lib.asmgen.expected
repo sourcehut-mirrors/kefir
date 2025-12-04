@@ -14,7 +14,6 @@ get:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get_label1
 .L__kefir_func_get_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %ecx

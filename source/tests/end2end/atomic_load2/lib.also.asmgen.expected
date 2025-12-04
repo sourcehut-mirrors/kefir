@@ -20,24 +20,18 @@
 .L__kefir_text_section_begin:
 load_b:
 .L__kefir_text_func_load_b_begin:
-    jmp .L__kefir_func_load_b_label1
-.L__kefir_func_load_b_label1:
     movb (%rdi), %al
     ret
 .L__kefir_text_func_load_b_end:
 
 load_u8:
 .L__kefir_text_func_load_u8_begin:
-    jmp .L__kefir_func_load_u8_label1
-.L__kefir_func_load_u8_label1:
     movb (%rdi), %al
     ret
 .L__kefir_text_func_load_u8_end:
 
 load_f32:
 .L__kefir_text_func_load_f32_begin:
-    jmp .L__kefir_func_load_f32_label1
-.L__kefir_func_load_f32_label1:
     movl (%rdi), %eax
     movq %rax, %xmm0
     ret
@@ -45,8 +39,6 @@ load_f32:
 
 load_f64:
 .L__kefir_text_func_load_f64_begin:
-    jmp .L__kefir_func_load_f64_label1
-.L__kefir_func_load_f64_label1:
     movq (%rdi), %rax
     movq %rax, %xmm0
     ret
@@ -54,24 +46,18 @@ load_f64:
 
 load_u16:
 .L__kefir_text_func_load_u16_begin:
-    jmp .L__kefir_func_load_u16_label1
-.L__kefir_func_load_u16_label1:
     movw (%rdi), %ax
     ret
 .L__kefir_text_func_load_u16_end:
 
 load_u32:
 .L__kefir_text_func_load_u32_begin:
-    jmp .L__kefir_func_load_u32_label1
-.L__kefir_func_load_u32_label1:
     movl (%rdi), %eax
     ret
 .L__kefir_text_func_load_u32_end:
 
 load_u64:
 .L__kefir_text_func_load_u64_begin:
-    jmp .L__kefir_func_load_u64_label1
-.L__kefir_func_load_u64_label1:
     movq (%rdi), %rax
     ret
 .L__kefir_text_func_load_u64_end:

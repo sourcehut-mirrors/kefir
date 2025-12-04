@@ -18,8 +18,6 @@
 .L__kefir_text_section_begin:
 overflow_sadd:
 .L__kefir_text_func_overflow_sadd_begin:
-    jmp .L__kefir_func_overflow_sadd_label1
-.L__kefir_func_overflow_sadd_label1:
     movsx %edi, %rax
     movsx %esi, %rcx
     mov %rax, %rsi
@@ -36,8 +34,6 @@ overflow_sadd:
 
 overflow_uadd:
 .L__kefir_text_func_overflow_uadd_begin:
-    jmp .L__kefir_func_overflow_uadd_label1
-.L__kefir_func_overflow_uadd_label1:
     mov %edi, %eax
     mov %esi, %ecx
     mov %rax, %rsi
@@ -54,8 +50,6 @@ overflow_uadd:
 
 overflow_saddl:
 .L__kefir_text_func_overflow_saddl_begin:
-    jmp .L__kefir_func_overflow_saddl_label1
-.L__kefir_func_overflow_saddl_label1:
     add %rsi, %rdi
     seto %al
     and $1, %eax
@@ -65,8 +59,6 @@ overflow_saddl:
 
 overflow_uaddl:
 .L__kefir_text_func_overflow_uaddl_begin:
-    jmp .L__kefir_func_overflow_uaddl_label1
-.L__kefir_func_overflow_uaddl_label1:
     add %rsi, %rdi
     setc %al
     and $1, %eax
@@ -76,8 +68,6 @@ overflow_uaddl:
 
 overflow_saddll:
 .L__kefir_text_func_overflow_saddll_begin:
-    jmp .L__kefir_func_overflow_saddll_label1
-.L__kefir_func_overflow_saddll_label1:
     add %rsi, %rdi
     seto %al
     and $1, %eax
@@ -87,8 +77,6 @@ overflow_saddll:
 
 overflow_uaddll:
 .L__kefir_text_func_overflow_uaddll_begin:
-    jmp .L__kefir_func_overflow_uaddll_label1
-.L__kefir_func_overflow_uaddll_label1:
     add %rsi, %rdi
     setc %al
     and $1, %eax

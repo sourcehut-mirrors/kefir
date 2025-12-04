@@ -20,8 +20,6 @@
 .L__kefir_text_section_begin:
 store_b:
 .L__kefir_text_func_store_b_begin:
-    jmp .L__kefir_func_store_b_label1
-.L__kefir_func_store_b_label1:
     mov %rsi, %rax
     xchgb (%rdi), %al
     ret
@@ -29,8 +27,6 @@ store_b:
 
 store_u8:
 .L__kefir_text_func_store_u8_begin:
-    jmp .L__kefir_func_store_u8_label1
-.L__kefir_func_store_u8_label1:
     mov %rsi, %rax
     xchgb (%rdi), %al
     ret
@@ -38,8 +34,6 @@ store_u8:
 
 store_f32:
 .L__kefir_text_func_store_f32_begin:
-    jmp .L__kefir_func_store_f32_label1
-.L__kefir_func_store_f32_label1:
     movq %xmm0, %rax
     xchgl (%rdi), %eax
     ret
@@ -47,8 +41,6 @@ store_f32:
 
 store_f64:
 .L__kefir_text_func_store_f64_begin:
-    jmp .L__kefir_func_store_f64_label1
-.L__kefir_func_store_f64_label1:
     movq %xmm0, %rax
     xchgq (%rdi), %rax
     ret
@@ -56,8 +48,6 @@ store_f64:
 
 store_u16:
 .L__kefir_text_func_store_u16_begin:
-    jmp .L__kefir_func_store_u16_label1
-.L__kefir_func_store_u16_label1:
     mov %rsi, %rax
     xchgw (%rdi), %ax
     ret
@@ -65,8 +55,6 @@ store_u16:
 
 store_u32:
 .L__kefir_text_func_store_u32_begin:
-    jmp .L__kefir_func_store_u32_label1
-.L__kefir_func_store_u32_label1:
     mov %rsi, %rax
     xchgl (%rdi), %eax
     ret
@@ -74,8 +62,6 @@ store_u32:
 
 store_u64:
 .L__kefir_text_func_store_u64_begin:
-    jmp .L__kefir_func_store_u64_label1
-.L__kefir_func_store_u64_label1:
     mov %rsi, %rax
     xchgq (%rdi), %rax
     ret

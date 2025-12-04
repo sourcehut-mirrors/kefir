@@ -8,8 +8,6 @@
 .L__kefir_text_section_begin:
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     ud2
 .L__kefir_text_func_test2_end:
 

@@ -30,8 +30,6 @@ get:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get_label1
-.L__kefir_func_get_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -63,8 +61,6 @@ get2:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get2_label1
-.L__kefir_func_get2_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -96,8 +92,6 @@ get3:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get3_label1
-.L__kefir_func_get3_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -129,8 +123,6 @@ get4:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get4_label1
-.L__kefir_func_get4_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -162,8 +154,6 @@ get5:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get5_label1
-.L__kefir_func_get5_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -195,8 +185,6 @@ get6:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get6_label1
-.L__kefir_func_get6_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -228,8 +216,6 @@ get7:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get7_label1
-.L__kefir_func_get7_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -261,8 +247,6 @@ get8:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get8_label1
-.L__kefir_func_get8_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -294,8 +278,6 @@ get9:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get9_label1
-.L__kefir_func_get9_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -327,8 +309,6 @@ get10:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_get10_label1
-.L__kefir_func_get10_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)

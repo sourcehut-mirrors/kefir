@@ -43,8 +43,6 @@ u128_from_i256:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_u128_from_i256_label1
-.L__kefir_func_u128_from_i256_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -32(%rbp)
@@ -65,8 +63,6 @@ u128_from_u256:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_u128_from_u256_label1
-.L__kefir_func_u128_from_u256_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -32(%rbp)
@@ -86,8 +82,6 @@ u128_from_f32:
 .L__kefir_text_func_u128_from_f32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_u128_from_f32_label1
-.L__kefir_func_u128_from_f32_label1:
     call __fixunssfti@PLT
     pop %rbp
     ret
@@ -97,8 +91,6 @@ u128_from_f64:
 .L__kefir_text_func_u128_from_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_u128_from_f64_label1
-.L__kefir_func_u128_from_f64_label1:
     call __fixunsdfti@PLT
     pop %rbp
     ret
@@ -110,8 +102,6 @@ u128_from_f80:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_u128_from_f80_label1
-.L__kefir_func_u128_from_f80_label1:
     fldt 16(%rbp)
     fstpt -32(%rbp)
     sub $16, %rsp
@@ -130,8 +120,6 @@ i128_from_i256:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_i128_from_i256_label1
-.L__kefir_func_i128_from_i256_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -32(%rbp)
@@ -152,8 +140,6 @@ i128_from_u256:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_i128_from_u256_label1
-.L__kefir_func_i128_from_u256_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -32(%rbp)
@@ -171,8 +157,6 @@ i128_from_u256:
 
 i128_from_i9:
 .L__kefir_text_func_i128_from_i9_begin:
-    jmp .L__kefir_func_i128_from_i9_label1
-.L__kefir_func_i128_from_i9_label1:
     shl $55, %rdi
     sar $55, %rdi
     mov %rdi, %rcx
@@ -184,8 +168,6 @@ i128_from_i9:
 
 i128_from_u9:
 .L__kefir_text_func_i128_from_u9_begin:
-    jmp .L__kefir_func_i128_from_u9_label1
-.L__kefir_func_i128_from_u9_label1:
     shl $55, %rdi
     shr $55, %rdi
     mov %rax, %rdx
@@ -196,8 +178,6 @@ i128_from_u9:
 
 u128_from_i9:
 .L__kefir_text_func_u128_from_i9_begin:
-    jmp .L__kefir_func_u128_from_i9_label1
-.L__kefir_func_u128_from_i9_label1:
     shl $55, %rdi
     sar $55, %rdi
     mov %rdi, %rcx
@@ -209,8 +189,6 @@ u128_from_i9:
 
 u128_from_u9:
 .L__kefir_text_func_u128_from_u9_begin:
-    jmp .L__kefir_func_u128_from_u9_label1
-.L__kefir_func_u128_from_u9_label1:
     shl $55, %rdi
     shr $55, %rdi
     mov %rax, %rdx
@@ -223,8 +201,6 @@ i128_from_f32:
 .L__kefir_text_func_i128_from_f32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_i128_from_f32_label1
-.L__kefir_func_i128_from_f32_label1:
     call __fixsfti@PLT
     pop %rbp
     ret
@@ -234,8 +210,6 @@ i128_from_f64:
 .L__kefir_text_func_i128_from_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_i128_from_f64_label1
-.L__kefir_func_i128_from_f64_label1:
     call __fixdfti@PLT
     pop %rbp
     ret
@@ -247,8 +221,6 @@ i128_from_f80:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_i128_from_f80_label1
-.L__kefir_func_i128_from_f80_label1:
     fldt 16(%rbp)
     fstpt -32(%rbp)
     sub $16, %rsp
@@ -275,8 +247,6 @@ __kefir_bigint_cast_signed:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label1
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label1:
     mov %rdx, %rcx
     mov %rdi, %r11
     mov %rcx, %r8
@@ -427,7 +397,6 @@ __kefir_bigint_cast_signed:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label17
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label19:
     movb $-1, (%rdi)
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label17
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label17:
     lea 1(%rcx), %rax
     mov %rax, %rcx
@@ -436,8 +405,6 @@ __kefir_bigint_cast_signed:
 
 __kefir_bigint_cast_unsigned:
 .L__kefir_runtime_text_func___kefir_bigint_cast_unsigned_begin:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label1
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label1:
     mov %rdx, %rcx
     mov %rsi, %r9
     mov %rdi, %r11

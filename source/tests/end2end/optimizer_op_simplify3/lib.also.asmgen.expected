@@ -16,7 +16,6 @@ ulong2uint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_ulong2uint_label1
 .L__kefir_func_ulong2uint_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -31,7 +30,6 @@ ulong2uchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_ulong2uchar_label1
 .L__kefir_func_ulong2uchar_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -46,7 +44,6 @@ ulong2ushort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_ulong2ushort_label1
 .L__kefir_func_ulong2ushort_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax

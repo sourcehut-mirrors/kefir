@@ -12,7 +12,6 @@ test:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_label1
 .L__kefir_func_test_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)

@@ -16,16 +16,12 @@
 .L__kefir_text_section_begin:
 t3:
 .L__kefir_text_func_t3_begin:
-    jmp .L__kefir_func_t3_label1
-.L__kefir_func_t3_label1:
     lea __kefir_function_t3_static_t3_8(%rip), %rax
     ret
 .L__kefir_text_func_t3_end:
 
 get_T2:
 .L__kefir_text_func_get_T2_begin:
-    jmp .L__kefir_func_get_T2_label1
-.L__kefir_func_get_T2_label1:
     xor %eax, %eax
     cmp $0, %edi
     setge %al
@@ -38,7 +34,6 @@ get_T2:
     cmp %eax, %edi
     mov %rcx, %rax
     setl %al
-    jmp .L__kefir_func_get_T2_label3
 .L__kefir_func_get_T2_label3:
     test %eax, %eax
     jnz .L__kefir_func_get_T2_label7

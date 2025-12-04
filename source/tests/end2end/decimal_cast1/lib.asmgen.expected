@@ -80,8 +80,6 @@ d32_to_d64:
 .L__kefir_text_func_d32_to_d64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d32_to_d64_label1
-.L__kefir_func_d32_to_d64_label1:
     call __bid_extendsddd2@PLT
     pop %rbp
     ret
@@ -91,8 +89,6 @@ d32_to_f32:
 .L__kefir_text_func_d32_to_f32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d32_to_f32_label1
-.L__kefir_func_d32_to_f32_label1:
     call __bid_truncsdsf@PLT
     pop %rbp
     ret
@@ -102,8 +98,6 @@ d32_to_f64:
 .L__kefir_text_func_d32_to_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d32_to_f64_label1
-.L__kefir_func_d32_to_f64_label1:
     call __bid_extendsddf@PLT
     pop %rbp
     ret
@@ -113,8 +107,6 @@ d32_to_f80:
 .L__kefir_text_func_d32_to_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d32_to_f80_label1
-.L__kefir_func_d32_to_f80_label1:
     call __bid_extendsdxf@PLT
     pop %rbp
     ret
@@ -124,8 +116,6 @@ d64_to_d32:
 .L__kefir_text_func_d64_to_d32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d64_to_d32_label1
-.L__kefir_func_d64_to_d32_label1:
     call __bid_truncddsd2@PLT
     pop %rbp
     ret
@@ -135,8 +125,6 @@ d64_to_f32:
 .L__kefir_text_func_d64_to_f32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d64_to_f32_label1
-.L__kefir_func_d64_to_f32_label1:
     call __bid_truncddsf@PLT
     pop %rbp
     ret
@@ -146,8 +134,6 @@ d64_to_f64:
 .L__kefir_text_func_d64_to_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d64_to_f64_label1
-.L__kefir_func_d64_to_f64_label1:
     call __bid_truncdddf@PLT
     pop %rbp
     ret
@@ -157,8 +143,6 @@ d64_to_f80:
 .L__kefir_text_func_d64_to_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d64_to_f80_label1
-.L__kefir_func_d64_to_f80_label1:
     call __bid_extendddxf@PLT
     pop %rbp
     ret
@@ -168,8 +152,6 @@ f32_to_d32:
 .L__kefir_text_func_f32_to_d32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_f32_to_d32_label1
-.L__kefir_func_f32_to_d32_label1:
     call __bid_extendsfsd@PLT
     pop %rbp
     ret
@@ -179,8 +161,6 @@ f32_to_d64:
 .L__kefir_text_func_f32_to_d64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_f32_to_d64_label1
-.L__kefir_func_f32_to_d64_label1:
     call __bid_extendsfdd@PLT
     pop %rbp
     ret
@@ -190,8 +170,6 @@ f64_to_d32:
 .L__kefir_text_func_f64_to_d32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_f64_to_d32_label1
-.L__kefir_func_f64_to_d32_label1:
     call __bid_truncdfsd@PLT
     pop %rbp
     ret
@@ -201,8 +179,6 @@ f64_to_d64:
 .L__kefir_text_func_f64_to_d64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_f64_to_d64_label1
-.L__kefir_func_f64_to_d64_label1:
     call __bid_extenddfdd@PLT
     pop %rbp
     ret
@@ -214,8 +190,6 @@ f80_to_d32:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_f80_to_d32_label1
-.L__kefir_func_f80_to_d32_label1:
     fldt 16(%rbp)
     fstpt -32(%rbp)
     sub $16, %rsp
@@ -235,8 +209,6 @@ f80_to_d64:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_f80_to_d64_label1
-.L__kefir_func_f80_to_d64_label1:
     fldt 16(%rbp)
     fstpt -32(%rbp)
     sub $16, %rsp
@@ -254,8 +226,6 @@ d128_to_d32:
 .L__kefir_text_func_d128_to_d32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d128_to_d32_label1
-.L__kefir_func_d128_to_d32_label1:
     call __bid_trunctdsd2@PLT
     pop %rbp
     ret
@@ -265,8 +235,6 @@ d128_to_d64:
 .L__kefir_text_func_d128_to_d64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d128_to_d64_label1
-.L__kefir_func_d128_to_d64_label1:
     call __bid_trunctddd2@PLT
     pop %rbp
     ret
@@ -276,8 +244,6 @@ d128_to_f32:
 .L__kefir_text_func_d128_to_f32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d128_to_f32_label1
-.L__kefir_func_d128_to_f32_label1:
     call __bid_trunctdsf@PLT
     pop %rbp
     ret
@@ -287,8 +253,6 @@ d128_to_f64:
 .L__kefir_text_func_d128_to_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d128_to_f64_label1
-.L__kefir_func_d128_to_f64_label1:
     call __bid_trunctddf@PLT
     pop %rbp
     ret
@@ -298,8 +262,6 @@ d128_to_f80:
 .L__kefir_text_func_d128_to_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d128_to_f80_label1
-.L__kefir_func_d128_to_f80_label1:
     call __bid_trunctdxf@PLT
     pop %rbp
     ret
@@ -309,8 +271,6 @@ d32_to_d128:
 .L__kefir_text_func_d32_to_d128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d32_to_d128_label1
-.L__kefir_func_d32_to_d128_label1:
     call __bid_extendsdtd2@PLT
     pop %rbp
     ret
@@ -320,8 +280,6 @@ d64_to_d128:
 .L__kefir_text_func_d64_to_d128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d64_to_d128_label1
-.L__kefir_func_d64_to_d128_label1:
     call __bid_extendddtd2@PLT
     pop %rbp
     ret
@@ -331,8 +289,6 @@ f32_to_d128:
 .L__kefir_text_func_f32_to_d128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_f32_to_d128_label1
-.L__kefir_func_f32_to_d128_label1:
     call __bid_extendsftd@PLT
     pop %rbp
     ret
@@ -342,8 +298,6 @@ f64_to_d128:
 .L__kefir_text_func_f64_to_d128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_f64_to_d128_label1
-.L__kefir_func_f64_to_d128_label1:
     call __bid_extenddftd@PLT
     pop %rbp
     ret
@@ -355,8 +309,6 @@ f80_to_d128:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_f80_to_d128_label1
-.L__kefir_func_f80_to_d128_label1:
     fldt 16(%rbp)
     fstpt -32(%rbp)
     sub $16, %rsp

@@ -13,7 +13,6 @@ getfield40:
 .L__kefir_func_getfield40_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_getfield40_label1
 .L__kefir_func_getfield40_label1:
     movq struct1@GOTPCREL(%rip), %rcx
     movb 8(%rcx), %al

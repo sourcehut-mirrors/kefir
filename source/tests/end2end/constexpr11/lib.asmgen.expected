@@ -20,8 +20,6 @@
 .L__kefir_text_section_begin:
 get0:
 .L__kefir_text_func_get0_begin:
-    jmp .L__kefir_func_get0_label1
-.L__kefir_func_get0_label1:
     mov $12345, %rax
     ret
 .L__kefir_text_func_get0_end:
@@ -31,8 +29,6 @@ get1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get1_label1
-.L__kefir_func_get1_label1:
     lea __kefir_function_get1_static___kefir_local_temporary_0_5(%rip), %rax
     movl (%rax), %eax
     movl %eax, -4(%rbp)
@@ -47,8 +43,6 @@ get2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get2_label1
-.L__kefir_func_get2_label1:
     lea __kefir_function_get2_static___kefir_local_temporary_0_8(%rip), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -61,8 +55,6 @@ get2:
 
 get3:
 .L__kefir_text_func_get3_begin:
-    jmp .L__kefir_func_get3_label1
-.L__kefir_func_get3_label1:
     lea __kefir_function_get3_static___kefir_local_temporary_0_11(%rip), %rax
     movq (%rax), %rcx
     movq %rcx, (%rdi)
@@ -76,8 +68,6 @@ get3:
 
 get4:
 .L__kefir_text_func_get4_begin:
-    jmp .L__kefir_func_get4_label1
-.L__kefir_func_get4_label1:
     lea __kefir_function_get4_static___kefir_local_temporary_0_14(%rip), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, (%rdi)
@@ -89,8 +79,6 @@ get4:
 
 get5:
 .L__kefir_text_func_get5_begin:
-    jmp .L__kefir_func_get5_label1
-.L__kefir_func_get5_label1:
     lea __kefir_function_get5_static___kefir_local_temporary_0_17(%rip), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, (%rdi)
@@ -110,8 +98,6 @@ getx:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_getx_label1
-.L__kefir_func_getx_label1:
     fldt .L__kefir_func_getx_label4(%rip)
     fldt .L__kefir_func_getx_label5(%rip)
     fstpt -32(%rbp)

@@ -16,32 +16,24 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    jmp .L__kefir_func_get1_label1
-.L__kefir_func_get1_label1:
     mov $26, %rax
     ret
 .L__kefir_text_func_get1_end:
 
 get2:
 .L__kefir_text_func_get2_begin:
-    jmp .L__kefir_func_get2_label1
-.L__kefir_func_get2_label1:
     mov $1024, %rax
     ret
 .L__kefir_text_func_get2_end:
 
 get3:
 .L__kefir_text_func_get3_begin:
-    jmp .L__kefir_func_get3_label1
-.L__kefir_func_get3_label1:
     mov $16777192, %rax
     ret
 .L__kefir_text_func_get3_end:
 
 get4:
 .L__kefir_text_func_get4_begin:
-    jmp .L__kefir_func_get4_label1
-.L__kefir_func_get4_label1:
     mov $1447260770, %rax
     ret
 .L__kefir_text_func_get4_end:
@@ -51,8 +43,6 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get5_label1
-.L__kefir_func_get5_label1:
     movl $622194159, -16(%rbp)
     movl $5448246, -12(%rbp)
     movl $0, -8(%rbp)

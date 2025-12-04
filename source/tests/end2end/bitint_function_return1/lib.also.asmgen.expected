@@ -2198,8 +2198,6 @@ test1:
     push %rbx
     sub $72, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     leaq -80(%rbp), %rax
     mov %rax, %rdi
     call get1@PLT
@@ -3004,8 +3002,6 @@ __kefir_bigint_invert:
 #    }
 #}
 .L__kefir_runtime_text_func___kefir_bigint_invert_begin:
-    jmp .L__kefir_runtime_func___kefir_bigint_invert_label1
-.L__kefir_runtime_func___kefir_bigint_invert_label1:
     mov %rdi, %r8
     sub $-7, %rsi
     mov %rsi, %rax
@@ -3014,7 +3010,6 @@ __kefir_bigint_invert:
     div %rcx
     xor %ecx, %ecx
     mov %rcx, %rdx
-    jmp .L__kefir_runtime_func___kefir_bigint_invert_label2
 .L__kefir_runtime_func___kefir_bigint_invert_label2:
     cmp %rax, %rdx
     jb .L__kefir_runtime_func___kefir_bigint_invert_label6

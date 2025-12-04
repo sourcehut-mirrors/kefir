@@ -15,7 +15,6 @@ get1:
 .L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get1_label1
 .L__kefir_func_get1_label1:
     mov $1, %rax
     pop %rbp
@@ -27,7 +26,6 @@ get2:
 .L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get2_label1
 .L__kefir_func_get2_label1:
     mov $1, %rax
     pop %rbp
@@ -41,7 +39,6 @@ get3:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_get3_label1
 .L__kefir_func_get3_label1:
     movd .L__kefir_func_get3_label4(%rip), %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0

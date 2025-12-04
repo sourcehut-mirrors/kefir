@@ -45,8 +45,6 @@ test_dec32_addv:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp .L__kefir_func_test_dec32_addv_label1
-.L__kefir_func_test_dec32_addv_label1:
     movq %xmm1, -48(%rbp)
     movq %xmm0, -40(%rbp)
     movq -48(%rbp), %rax
@@ -75,8 +73,6 @@ test_dec32_mulv:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp .L__kefir_func_test_dec32_mulv_label1
-.L__kefir_func_test_dec32_mulv_label1:
     movdqu %xmm1, -48(%rbp)
     movq %xmm0, -32(%rbp)
     movq -32(%rbp), %rax
@@ -103,8 +99,6 @@ test_dec64_addv:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-    jmp .L__kefir_func_test_dec64_addv_label1
-.L__kefir_func_test_dec64_addv_label1:
     movq %xmm2, -80(%rbp)
     movq %xmm3, -72(%rbp)
     movq %xmm0, -64(%rbp)
@@ -136,8 +130,6 @@ test_dec64_mulv:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_func_test_dec64_mulv_label1
-.L__kefir_func_test_dec64_mulv_label1:
     movdqu %xmm2, -64(%rbp)
     movq %xmm0, -48(%rbp)
     movq %xmm1, -40(%rbp)
@@ -170,8 +162,6 @@ test_dec32_rk4_step:
     push %r13
     push %r14
     sub $736, %rsp
-    jmp .L__kefir_func_test_dec32_rk4_step_label1
-.L__kefir_func_test_dec32_rk4_step_label1:
     movdqu %xmm1, -720(%rbp)
     movdqu %xmm0, -736(%rbp)
     mov %rsi, %r14
@@ -751,8 +741,6 @@ test_dec32_simulate:
     push %rbx
     push %r12
     sub $176, %rsp
-    jmp .L__kefir_func_test_dec32_simulate_label1
-.L__kefir_func_test_dec32_simulate_label1:
     movdqu %xmm0, -176(%rbp)
     mov %rdi, %r12
     mov %rcx, %rax
@@ -793,7 +781,6 @@ test_dec32_simulate:
     movd %xmm0, -192(%rbp)
     xor %eax, %eax
     mov %rax, %rbx
-    jmp .L__kefir_func_test_dec32_simulate_label2
 .L__kefir_func_test_dec32_simulate_label2:
     cmp %r12d, %ebx
     jl .L__kefir_func_test_dec32_simulate_label6
@@ -914,8 +901,6 @@ test_dec64_rk4_step:
     push %r13
     push %r14
     sub $1392, %rsp
-    jmp .L__kefir_func_test_dec64_rk4_step_label1
-.L__kefir_func_test_dec64_rk4_step_label1:
     movdqu %xmm1, -1376(%rbp)
     movdqu %xmm0, -1392(%rbp)
     mov %rsi, %r14
@@ -1616,8 +1601,6 @@ test_dec64_simulate:
     push %rbx
     push %r12
     sub $208, %rsp
-    jmp .L__kefir_func_test_dec64_simulate_label1
-.L__kefir_func_test_dec64_simulate_label1:
     movdqu %xmm0, -208(%rbp)
     mov %rdi, %r12
     mov %rcx, %rax
@@ -1662,7 +1645,6 @@ test_dec64_simulate:
     movq %xmm0, -224(%rbp)
     xor %eax, %eax
     mov %rax, %rbx
-    jmp .L__kefir_func_test_dec64_simulate_label2
 .L__kefir_func_test_dec64_simulate_label2:
     cmp %r12d, %ebx
     jl .L__kefir_func_test_dec64_simulate_label6
@@ -1781,8 +1763,6 @@ test_dec32_sqrt_approx:
     push %rbx
     push %r12
     sub $48, %rsp
-    jmp .L__kefir_func_test_dec32_sqrt_approx_label1
-.L__kefir_func_test_dec32_sqrt_approx_label1:
     movdqu %xmm0, -32(%rbp)
     movd .L__kefir_func_test_dec32_sqrt_approx_label9(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -1792,7 +1772,6 @@ test_dec32_sqrt_approx:
     xor %eax, %eax
     movdqu %xmm0, -48(%rbp)
     mov %rax, %r12
-    jmp .L__kefir_func_test_dec32_sqrt_approx_label2
 .L__kefir_func_test_dec32_sqrt_approx_label2:
     cmp $6, %r12d
     jl .L__kefir_func_test_dec32_sqrt_approx_label6
@@ -1841,8 +1820,6 @@ test_dec128_sqrt_approx:
     push %rbx
     push %r12
     sub $48, %rsp
-    jmp .L__kefir_func_test_dec128_sqrt_approx_label1
-.L__kefir_func_test_dec128_sqrt_approx_label1:
     movdqu %xmm0, -32(%rbp)
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label9(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -1852,7 +1829,6 @@ test_dec128_sqrt_approx:
     xor %eax, %eax
     movdqu %xmm0, -48(%rbp)
     mov %rax, %r12
-    jmp .L__kefir_func_test_dec128_sqrt_approx_label2
 .L__kefir_func_test_dec128_sqrt_approx_label2:
     cmp $6, %r12d
     jl .L__kefir_func_test_dec128_sqrt_approx_label6
@@ -1901,8 +1877,6 @@ test_dec64_sqrt_approx:
     push %rbx
     push %r12
     sub $48, %rsp
-    jmp .L__kefir_func_test_dec64_sqrt_approx_label1
-.L__kefir_func_test_dec64_sqrt_approx_label1:
     movdqu %xmm0, -32(%rbp)
     movq .L__kefir_func_test_dec64_sqrt_approx_label9(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -1912,7 +1886,6 @@ test_dec64_sqrt_approx:
     xor %eax, %eax
     movdqu %xmm0, -48(%rbp)
     mov %rax, %r12
-    jmp .L__kefir_func_test_dec64_sqrt_approx_label2
 .L__kefir_func_test_dec64_sqrt_approx_label2:
     cmp $6, %r12d
     jl .L__kefir_func_test_dec64_sqrt_approx_label6
@@ -1961,8 +1934,6 @@ test_dec128_grav_accel:
     push %rbx
     sub $472, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_test_dec128_grav_accel_label1
-.L__kefir_func_test_dec128_grav_accel_label1:
     movdqu %xmm0, -432(%rbp)
     lea 96(%rbp), %rsi
     lea 16(%rbp), %rax
@@ -2081,8 +2052,6 @@ test_dec32_grav_accel:
     push %rbp
     mov %rsp, %rbp
     sub $192, %rsp
-    jmp .L__kefir_func_test_dec32_grav_accel_label1
-.L__kefir_func_test_dec32_grav_accel_label1:
     movdqu %xmm0, -144(%rbp)
     lea 40(%rbp), %rax
     lea 16(%rbp), %rcx
@@ -2193,8 +2162,6 @@ test_dec128_rk4_step:
     push %r13
     push %r14
     sub $2720, %rsp
-    jmp .L__kefir_func_test_dec128_rk4_step_label1
-.L__kefir_func_test_dec128_rk4_step_label1:
     movdqu %xmm1, -2704(%rbp)
     movdqu %xmm0, -2720(%rbp)
     mov %rsi, %r14
@@ -3015,8 +2982,6 @@ test_dec128_simulate:
     push %rbx
     push %r12
     sub $288, %rsp
-    jmp .L__kefir_func_test_dec128_simulate_label1
-.L__kefir_func_test_dec128_simulate_label1:
     movdqu %xmm0, -288(%rbp)
     mov %rdi, %r12
     leaq -176(%rbp), %rdi
@@ -3057,7 +3022,6 @@ test_dec128_simulate:
     movdqu %xmm0, -304(%rbp)
     xor %eax, %eax
     mov %rax, %rbx
-    jmp .L__kefir_func_test_dec128_simulate_label2
 .L__kefir_func_test_dec128_simulate_label2:
     cmp %r12d, %ebx
     jl .L__kefir_func_test_dec128_simulate_label6
@@ -3174,8 +3138,6 @@ test_dec64_grav_accel:
     push %rbp
     mov %rsp, %rbp
     sub $288, %rsp
-    jmp .L__kefir_func_test_dec64_grav_accel_label1
-.L__kefir_func_test_dec64_grav_accel_label1:
     movdqu %xmm0, -240(%rbp)
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
@@ -3294,8 +3256,6 @@ test_dec128_addv:
     push %r12
     sub $64, %rsp
     mov %rdi, %r12
-    jmp .L__kefir_func_test_dec128_addv_label1
-.L__kefir_func_test_dec128_addv_label1:
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
     movdqu (%rax), %xmm0
@@ -3335,8 +3295,6 @@ test_dec128_mulv:
     push %r12
     sub $48, %rsp
     mov %rdi, %r12
-    jmp .L__kefir_func_test_dec128_mulv_label1
-.L__kefir_func_test_dec128_mulv_label1:
     movdqu %xmm0, -64(%rbp)
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm1

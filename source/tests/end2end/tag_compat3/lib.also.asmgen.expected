@@ -8,8 +8,6 @@
 .L__kefir_text_section_begin:
 get:
 .L__kefir_text_func_get_begin:
-    jmp .L__kefir_func_get_label1
-.L__kefir_func_get_label1:
     cmp $0, %edi
     je .L__kefir_func_get_label17
     jmp .L__kefir_func_get_label3

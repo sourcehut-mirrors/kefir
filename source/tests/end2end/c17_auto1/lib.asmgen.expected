@@ -12,22 +12,16 @@
 .L__kefir_text_section_begin:
 fn1:
 .L__kefir_text_func_fn1_begin:
-    jmp .L__kefir_func_fn1_label1
-.L__kefir_func_fn1_label1:
     ret
 .L__kefir_text_func_fn1_end:
 
 fn2:
 .L__kefir_text_func_fn2_begin:
-    jmp .L__kefir_func_fn2_label1
-.L__kefir_func_fn2_label1:
     ret
 .L__kefir_text_func_fn2_end:
 
 fn3:
 .L__kefir_text_func_fn3_begin:
-    jmp .L__kefir_func_fn3_label1
-.L__kefir_func_fn3_label1:
     ret
 .L__kefir_text_func_fn3_end:
 

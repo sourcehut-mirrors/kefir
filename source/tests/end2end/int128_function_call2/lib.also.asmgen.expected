@@ -16,8 +16,6 @@ test1:
     push %r14
     push %r15
     sub $120, %rsp
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     mov $1, %rax
     xor %ecx, %ecx
     movq %rdi, -80(%rbp)
@@ -137,8 +135,6 @@ somefn:
     push %r14
     push %r15
     sub $136, %rsp
-    jmp .L__kefir_func_somefn_label1
-.L__kefir_func_somefn_label1:
     mov 144(%rbp), %rax
     mov %rax, -112(%rbp)
     mov 152(%rbp), %rax

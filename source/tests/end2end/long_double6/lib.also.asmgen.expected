@@ -12,8 +12,6 @@ init_s:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_init_s_label1
-.L__kefir_func_init_s_label1:
     movaps %xmm2, %xmm1
     xorps %xmm2, %xmm1
     movdqu %xmm1, (%rdi)
@@ -35,7 +33,6 @@ init_s:
     jmp .L__kefir_func_init_s_label2
 .L__kefir_func_init_s_label2:
     fadds .L__kefir_constant_uint_to_long_double(%rip)
-    jmp .L__kefir_func_init_s_label3
 .L__kefir_func_init_s_label3:
     movq $0, 8(%rcx)
     fstpt (%rcx)

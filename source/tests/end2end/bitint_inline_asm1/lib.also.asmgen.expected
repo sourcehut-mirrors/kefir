@@ -20,7 +20,6 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test1_label1
 .L__kefir_func_test1_label1:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %cl
@@ -43,7 +42,6 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test2_label1
 .L__kefir_func_test2_label1:
     movw %di, -2(%rbp)
     movw -2(%rbp), %cx
@@ -66,7 +64,6 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test3_label1
 .L__kefir_func_test3_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %ecx
@@ -89,7 +86,6 @@ test4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test4_label1
 .L__kefir_func_test4_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rcx
@@ -112,7 +108,6 @@ test5:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_func_test5_label1
 .L__kefir_func_test5_label1:
     movq %rdi, -48(%rbp)
     movq %rsi, -40(%rbp)

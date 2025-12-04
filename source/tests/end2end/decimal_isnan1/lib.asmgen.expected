@@ -17,8 +17,6 @@ dec32_isnan:
 .L__kefir_text_func_dec32_isnan_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_dec32_isnan_label1
-.L__kefir_func_dec32_isnan_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
     call __bid_unordsd2@PLT
@@ -30,8 +28,6 @@ dec64_isnan:
 .L__kefir_text_func_dec64_isnan_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_dec64_isnan_label1
-.L__kefir_func_dec64_isnan_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
     call __bid_unorddd2@PLT
@@ -43,8 +39,6 @@ dec128_isnan:
 .L__kefir_text_func_dec128_isnan_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_dec128_isnan_label1
-.L__kefir_func_dec128_isnan_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
     call __bid_unordtd2@PLT

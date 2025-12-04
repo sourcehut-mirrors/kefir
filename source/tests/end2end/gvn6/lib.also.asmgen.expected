@@ -13,7 +13,6 @@ get1:
 .L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get1_label1
 .L__kefir_func_get1_label1:
     shl $53, %rsi
     sar $53, %rsi
@@ -27,7 +26,6 @@ get2:
 .L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get2_label1
 .L__kefir_func_get2_label1:
     shl $53, %rsi
     shr $53, %rsi

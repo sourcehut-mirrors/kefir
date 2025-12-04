@@ -107,8 +107,6 @@ d32_to_int:
 .L__kefir_text_func_d32_to_int_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d32_to_int_label1
-.L__kefir_func_d32_to_int_label1:
     call __bid_fixsddi@PLT
     pop %rbp
     ret
@@ -118,8 +116,6 @@ d64_to_int:
 .L__kefir_text_func_d64_to_int_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d64_to_int_label1
-.L__kefir_func_d64_to_int_label1:
     call __bid_fixdddi@PLT
     pop %rbp
     ret
@@ -129,8 +125,6 @@ int_to_d32:
 .L__kefir_text_func_int_to_d32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_int_to_d32_label1
-.L__kefir_func_int_to_d32_label1:
     call __bid_floatdisd@PLT
     pop %rbp
     ret
@@ -140,8 +134,6 @@ int_to_d64:
 .L__kefir_text_func_int_to_d64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_int_to_d64_label1
-.L__kefir_func_int_to_d64_label1:
     call __bid_floatdidd@PLT
     pop %rbp
     ret
@@ -151,8 +143,6 @@ d128_to_int:
 .L__kefir_text_func_d128_to_int_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d128_to_int_label1
-.L__kefir_func_d128_to_int_label1:
     call __bid_fixtddi@PLT
     pop %rbp
     ret
@@ -162,8 +152,6 @@ d32_to_bool:
 .L__kefir_text_func_d32_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d32_to_bool_label1
-.L__kefir_func_d32_to_bool_label1:
     movd .L__kefir_func_d32_to_bool_label4(%rip), %xmm1
     call __bid_eqsd2@PLT
     test %eax, %eax
@@ -182,8 +170,6 @@ d32_to_uint:
 .L__kefir_text_func_d32_to_uint_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d32_to_uint_label1
-.L__kefir_func_d32_to_uint_label1:
     call __bid_fixunssddi@PLT
     pop %rbp
     ret
@@ -193,8 +179,6 @@ d64_to_bool:
 .L__kefir_text_func_d64_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d64_to_bool_label1
-.L__kefir_func_d64_to_bool_label1:
     movq .L__kefir_func_d64_to_bool_label4(%rip), %xmm1
     call __bid_eqdd2@PLT
     test %eax, %eax
@@ -213,8 +197,6 @@ d64_to_uint:
 .L__kefir_text_func_d64_to_uint_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d64_to_uint_label1
-.L__kefir_func_d64_to_uint_label1:
     call __bid_fixunsdddi@PLT
     pop %rbp
     ret
@@ -224,8 +206,6 @@ int_to_d128:
 .L__kefir_text_func_int_to_d128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_int_to_d128_label1
-.L__kefir_func_int_to_d128_label1:
     call __bid_floatditd@PLT
     pop %rbp
     ret
@@ -235,8 +215,6 @@ uint_to_d32:
 .L__kefir_text_func_uint_to_d32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_uint_to_d32_label1
-.L__kefir_func_uint_to_d32_label1:
     call __bid_floatunsdisd@PLT
     pop %rbp
     ret
@@ -246,8 +224,6 @@ uint_to_d64:
 .L__kefir_text_func_uint_to_d64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_uint_to_d64_label1
-.L__kefir_func_uint_to_d64_label1:
     call __bid_floatunsdidd@PLT
     pop %rbp
     ret
@@ -260,8 +236,6 @@ d64_to_bitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_d64_to_bitint180_label1
-.L__kefir_func_d64_to_bitint180_label1:
     leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $-180, %rsi
@@ -290,8 +264,6 @@ d64_to_ubitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_d64_to_ubitint24_label1
-.L__kefir_func_d64_to_ubitint24_label1:
     leaq -16(%rbp), %rax
     mov %rax, %rdi
     mov $24, %rsi
@@ -309,8 +281,6 @@ d64_to_ubitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_d64_to_ubitint180_label1
-.L__kefir_func_d64_to_ubitint180_label1:
     leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $180, %rsi
@@ -339,8 +309,6 @@ ubitint180_to_d128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_ubitint180_to_d128_label1
-.L__kefir_func_ubitint180_to_d128_label1:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
     movq %rcx, -32(%rbp)
@@ -364,8 +332,6 @@ d128_to_bitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_d128_to_bitint180_label1
-.L__kefir_func_d128_to_bitint180_label1:
     leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $-180, %rsi
@@ -394,8 +360,6 @@ d128_to_ubitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_d128_to_ubitint24_label1
-.L__kefir_func_d128_to_ubitint24_label1:
     leaq -16(%rbp), %rax
     mov %rax, %rdi
     mov $24, %rsi
@@ -411,8 +375,6 @@ ubitint180_to_d32:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_ubitint180_to_d32_label1
-.L__kefir_func_ubitint180_to_d32_label1:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
     movq %rcx, -32(%rbp)
@@ -434,8 +396,6 @@ ubitint180_to_d64:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_ubitint180_to_d64_label1
-.L__kefir_func_ubitint180_to_d64_label1:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
     movq %rcx, -32(%rbp)
@@ -457,8 +417,6 @@ ubitint24_to_d128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_ubitint24_to_d128_label1
-.L__kefir_func_ubitint24_to_d128_label1:
     movl %edi, -16(%rbp)
     leaq -16(%rbp), %rax
     mov %rax, %rdi
@@ -476,8 +434,6 @@ d32_to_bitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_d32_to_bitint180_label1
-.L__kefir_func_d32_to_bitint180_label1:
     leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $-180, %rsi
@@ -506,8 +462,6 @@ d32_to_ubitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_d32_to_ubitint24_label1
-.L__kefir_func_d32_to_ubitint24_label1:
     leaq -16(%rbp), %rax
     mov %rax, %rdi
     mov $24, %rsi
@@ -522,8 +476,6 @@ d128_to_bool:
 .L__kefir_text_func_d128_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d128_to_bool_label1
-.L__kefir_func_d128_to_bool_label1:
     movdqu .L__kefir_func_d128_to_bool_label4(%rip), %xmm1
     call __bid_eqtd2@PLT
     test %eax, %eax
@@ -542,8 +494,6 @@ d128_to_uint:
 .L__kefir_text_func_d128_to_uint_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_d128_to_uint_label1
-.L__kefir_func_d128_to_uint_label1:
     call __bid_fixunstddi@PLT
     pop %rbp
     ret
@@ -553,8 +503,6 @@ uint_to_d128:
 .L__kefir_text_func_uint_to_d128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_uint_to_d128_label1
-.L__kefir_func_uint_to_d128_label1:
     call __bid_floatunsditd@PLT
     pop %rbp
     ret
@@ -565,8 +513,6 @@ d32_to_bitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_d32_to_bitint24_label1
-.L__kefir_func_d32_to_bitint24_label1:
     leaq -16(%rbp), %rax
     mov %rax, %rdi
     mov $-24, %rsi
@@ -582,8 +528,6 @@ ubitint24_to_d32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_ubitint24_to_d32_label1
-.L__kefir_func_ubitint24_to_d32_label1:
     movl %edi, -16(%rbp)
     leaq -16(%rbp), %rax
     mov %rax, %rdi
@@ -599,8 +543,6 @@ ubitint24_to_d64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_ubitint24_to_d64_label1
-.L__kefir_func_ubitint24_to_d64_label1:
     movl %edi, -16(%rbp)
     leaq -16(%rbp), %rax
     mov %rax, %rdi
@@ -616,8 +558,6 @@ d64_to_bitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_d64_to_bitint24_label1
-.L__kefir_func_d64_to_bitint24_label1:
     leaq -16(%rbp), %rax
     mov %rax, %rdi
     mov $-24, %rsi
@@ -633,8 +573,6 @@ d128_to_bitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_d128_to_bitint24_label1
-.L__kefir_func_d128_to_bitint24_label1:
     leaq -16(%rbp), %rax
     mov %rax, %rdi
     mov $-24, %rsi
@@ -650,8 +588,6 @@ bitint180_to_d128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_bitint180_to_d128_label1
-.L__kefir_func_bitint180_to_d128_label1:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
     movq %rcx, -32(%rbp)
@@ -673,8 +609,6 @@ bitint24_to_d32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_bitint24_to_d32_label1
-.L__kefir_func_bitint24_to_d32_label1:
     movl %edi, -16(%rbp)
     leaq -16(%rbp), %rax
     mov %rax, %rdi
@@ -690,8 +624,6 @@ bitint24_to_d64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_bitint24_to_d64_label1
-.L__kefir_func_bitint24_to_d64_label1:
     movl %edi, -16(%rbp)
     leaq -16(%rbp), %rax
     mov %rax, %rdi
@@ -709,8 +641,6 @@ d128_to_ubitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_d128_to_ubitint180_label1
-.L__kefir_func_d128_to_ubitint180_label1:
     leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $180, %rsi
@@ -739,8 +669,6 @@ bitint180_to_d32:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_bitint180_to_d32_label1
-.L__kefir_func_bitint180_to_d32_label1:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
     movq %rcx, -32(%rbp)
@@ -762,8 +690,6 @@ bitint180_to_d64:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_bitint180_to_d64_label1
-.L__kefir_func_bitint180_to_d64_label1:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
     movq %rcx, -32(%rbp)
@@ -785,8 +711,6 @@ bitint24_to_d128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_bitint24_to_d128_label1
-.L__kefir_func_bitint24_to_d128_label1:
     movl %edi, -16(%rbp)
     leaq -16(%rbp), %rax
     mov %rax, %rdi
@@ -804,8 +728,6 @@ d32_to_ubitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_d32_to_ubitint180_label1
-.L__kefir_func_d32_to_ubitint180_label1:
     leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $180, %rsi

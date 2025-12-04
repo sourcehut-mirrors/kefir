@@ -19,9 +19,8 @@ SOMEFN1:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_SOMEFN1_label2
 .loc 0 27 20
-.L__kefir_func_SOMEFN1_label2:
+.L__kefir_func_SOMEFN1_label176:
     mov $1, %rdi
     call SOMEFN0@PLT
 .loc 0 27 12

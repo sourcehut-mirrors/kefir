@@ -13,8 +13,6 @@ test1:
     sub $160, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     mov %rdi, %rdx
     movq $0, (%rdx)
     movd .L__kefir_func_test1_label4(%rip), %xmm0

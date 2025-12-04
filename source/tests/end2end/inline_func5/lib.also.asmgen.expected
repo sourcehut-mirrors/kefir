@@ -8,8 +8,6 @@
 .L__kefir_text_section_begin:
 overflow_add:
 .L__kefir_text_func_overflow_add_begin:
-    jmp .L__kefir_func_overflow_add_label1
-.L__kefir_func_overflow_add_label1:
     add %rsi, %rdi
     seto %al
     and $1, %eax

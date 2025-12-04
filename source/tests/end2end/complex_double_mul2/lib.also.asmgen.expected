@@ -12,8 +12,6 @@ mul:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_mul_label1
-.L__kefir_func_mul_label1:
     unpcklpd %xmm1, %xmm0
     movaps %xmm0, %xmm1
     xorps .L__kefir_constant_complex_float64_mul(%rip), %xmm1

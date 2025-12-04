@@ -125,8 +125,6 @@ eq32:
 .L__kefir_text_func_eq32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_eq32_label1
-.L__kefir_func_eq32_label1:
     call __dpd_eqsd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -140,8 +138,6 @@ eq64:
 .L__kefir_text_func_eq64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_eq64_label1
-.L__kefir_func_eq64_label1:
     call __dpd_eqdd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -155,8 +151,6 @@ gt32:
 .L__kefir_text_func_gt32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_gt32_label1
-.L__kefir_func_gt32_label1:
     call __dpd_gtsd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -170,8 +164,6 @@ gt64:
 .L__kefir_text_func_gt64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_gt64_label1
-.L__kefir_func_gt64_label1:
     call __dpd_gtdd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -185,8 +177,6 @@ lt32:
 .L__kefir_text_func_lt32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_lt32_label1
-.L__kefir_func_lt32_label1:
     call __dpd_ltsd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -200,8 +190,6 @@ lt64:
 .L__kefir_text_func_lt64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_lt64_label1
-.L__kefir_func_lt64_label1:
     call __dpd_ltdd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -215,8 +203,6 @@ add32:
 .L__kefir_text_func_add32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_add32_label1
-.L__kefir_func_add32_label1:
     call __dpd_addsd3@PLT
     pop %rbp
     ret
@@ -226,8 +212,6 @@ add64:
 .L__kefir_text_func_add64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_add64_label1
-.L__kefir_func_add64_label1:
     call __dpd_adddd3@PLT
     pop %rbp
     ret
@@ -237,8 +221,6 @@ div32:
 .L__kefir_text_func_div32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_div32_label1
-.L__kefir_func_div32_label1:
     call __dpd_divsd3@PLT
     pop %rbp
     ret
@@ -248,8 +230,6 @@ div64:
 .L__kefir_text_func_div64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_div64_label1
-.L__kefir_func_div64_label1:
     call __dpd_divdd3@PLT
     pop %rbp
     ret
@@ -259,8 +239,6 @@ eq128:
 .L__kefir_text_func_eq128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_eq128_label1
-.L__kefir_func_eq128_label1:
     call __dpd_eqtd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -274,8 +252,6 @@ gt128:
 .L__kefir_text_func_gt128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_gt128_label1
-.L__kefir_func_gt128_label1:
     call __dpd_gttd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -289,8 +265,6 @@ lt128:
 .L__kefir_text_func_lt128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_lt128_label1
-.L__kefir_func_lt128_label1:
     call __dpd_lttd2@PLT
     xor %ecx, %ecx
     cmp $0, %eax
@@ -304,8 +278,6 @@ mul32:
 .L__kefir_text_func_mul32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_mul32_label1
-.L__kefir_func_mul32_label1:
     call __dpd_mulsd3@PLT
     pop %rbp
     ret
@@ -315,8 +287,6 @@ mul64:
 .L__kefir_text_func_mul64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_mul64_label1
-.L__kefir_func_mul64_label1:
     call __dpd_muldd3@PLT
     pop %rbp
     ret
@@ -324,8 +294,6 @@ mul64:
 
 neg32:
 .L__kefir_text_func_neg32_begin:
-    jmp .L__kefir_func_neg32_label1
-.L__kefir_func_neg32_label1:
     movq %xmm0, %rax
     add $-2147483648, %eax
     movq %rax, %xmm0
@@ -334,8 +302,6 @@ neg32:
 
 neg64:
 .L__kefir_text_func_neg64_begin:
-    jmp .L__kefir_func_neg64_label1
-.L__kefir_func_neg64_label1:
     movq %xmm0, %rax
     btc $63, %rax
     movq %rax, %xmm0
@@ -346,8 +312,6 @@ sub32:
 .L__kefir_text_func_sub32_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_sub32_label1
-.L__kefir_func_sub32_label1:
     call __dpd_subsd3@PLT
     pop %rbp
     ret
@@ -357,8 +321,6 @@ sub64:
 .L__kefir_text_func_sub64_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_sub64_label1
-.L__kefir_func_sub64_label1:
     call __dpd_subdd3@PLT
     pop %rbp
     ret
@@ -368,8 +330,6 @@ add128:
 .L__kefir_text_func_add128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_add128_label1
-.L__kefir_func_add128_label1:
     call __dpd_addtd3@PLT
     pop %rbp
     ret
@@ -379,8 +339,6 @@ div128:
 .L__kefir_text_func_div128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_div128_label1
-.L__kefir_func_div128_label1:
     call __dpd_divtd3@PLT
     pop %rbp
     ret
@@ -390,8 +348,6 @@ mul128:
 .L__kefir_text_func_mul128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_mul128_label1
-.L__kefir_func_mul128_label1:
     call __dpd_multd3@PLT
     pop %rbp
     ret
@@ -402,8 +358,6 @@ neg128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_neg128_label1
-.L__kefir_func_neg128_label1:
     movdqu %xmm0, -16(%rbp)
     mov -8(%rbp), %rax
     btc $63, %rax
@@ -418,8 +372,6 @@ sub128:
 .L__kefir_text_func_sub128_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_sub128_label1
-.L__kefir_func_sub128_label1:
     call __dpd_subtd3@PLT
     pop %rbp
     ret
@@ -431,8 +383,6 @@ xadd32:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xadd32_label1
-.L__kefir_func_xadd32_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movd (%rbx), %xmm0
@@ -450,8 +400,6 @@ xadd64:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xadd64_label1
-.L__kefir_func_xadd64_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movq (%rbx), %xmm0
@@ -469,8 +417,6 @@ xdiv32:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xdiv32_label1
-.L__kefir_func_xdiv32_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movd (%rbx), %xmm0
@@ -488,8 +434,6 @@ xdiv64:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xdiv64_label1
-.L__kefir_func_xdiv64_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movq (%rbx), %xmm0
@@ -507,8 +451,6 @@ xmul32:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xmul32_label1
-.L__kefir_func_xmul32_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movd (%rbx), %xmm0
@@ -526,8 +468,6 @@ xmul64:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xmul64_label1
-.L__kefir_func_xmul64_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movq (%rbx), %xmm0
@@ -545,8 +485,6 @@ xsub32:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xsub32_label1
-.L__kefir_func_xsub32_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movd (%rbx), %xmm0
@@ -564,8 +502,6 @@ xsub64:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xsub64_label1
-.L__kefir_func_xsub64_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movq (%rbx), %xmm0
@@ -583,8 +519,6 @@ xadd128:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xadd128_label1
-.L__kefir_func_xadd128_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
@@ -602,8 +536,6 @@ xdiv128:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xdiv128_label1
-.L__kefir_func_xdiv128_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
@@ -621,8 +553,6 @@ xmul128:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xmul128_label1
-.L__kefir_func_xmul128_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
@@ -640,8 +570,6 @@ xsub128:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_xsub128_label1
-.L__kefir_func_xsub128_label1:
     movaps %xmm0, %xmm1
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
@@ -659,8 +587,6 @@ predec32:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_predec32_label1
-.L__kefir_func_predec32_label1:
     mov %rdi, %rbx
     movd (%rbx), %xmm0
     movd .L__kefir_func_predec32_label4(%rip), %xmm1
@@ -683,8 +609,6 @@ predec64:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_predec64_label1
-.L__kefir_func_predec64_label1:
     mov %rdi, %rbx
     movq (%rbx), %xmm0
     movq .L__kefir_func_predec64_label4(%rip), %xmm1
@@ -707,8 +631,6 @@ preinc32:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_preinc32_label1
-.L__kefir_func_preinc32_label1:
     mov %rdi, %rbx
     movd (%rbx), %xmm0
     movd .L__kefir_func_preinc32_label4(%rip), %xmm1
@@ -731,8 +653,6 @@ preinc64:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_preinc64_label1
-.L__kefir_func_preinc64_label1:
     mov %rdi, %rbx
     movq (%rbx), %xmm0
     movq .L__kefir_func_preinc64_label4(%rip), %xmm1
@@ -755,8 +675,6 @@ postdec32:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_postdec32_label1
-.L__kefir_func_postdec32_label1:
     mov %rdi, %rbx
     movd (%rbx), %xmm0
     movd %xmm0, -32(%rbp)
@@ -782,8 +700,6 @@ postdec64:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_postdec64_label1
-.L__kefir_func_postdec64_label1:
     mov %rdi, %rbx
     movq (%rbx), %xmm0
     movq %xmm0, -32(%rbp)
@@ -809,8 +725,6 @@ postinc32:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_postinc32_label1
-.L__kefir_func_postinc32_label1:
     mov %rdi, %rbx
     movd (%rbx), %xmm0
     movd %xmm0, -32(%rbp)
@@ -836,8 +750,6 @@ postinc64:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_postinc64_label1
-.L__kefir_func_postinc64_label1:
     mov %rdi, %rbx
     movq (%rbx), %xmm0
     movq %xmm0, -32(%rbp)
@@ -863,8 +775,6 @@ predec128:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_predec128_label1
-.L__kefir_func_predec128_label1:
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
     movdqu .L__kefir_func_predec128_label4(%rip), %xmm1
@@ -887,8 +797,6 @@ preinc128:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_preinc128_label1
-.L__kefir_func_preinc128_label1:
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
     movdqu .L__kefir_func_preinc128_label4(%rip), %xmm1
@@ -911,8 +819,6 @@ postdec128:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_postdec128_label1
-.L__kefir_func_postdec128_label1:
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
     movdqu %xmm0, -32(%rbp)
@@ -938,8 +844,6 @@ postinc128:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_postinc128_label1
-.L__kefir_func_postinc128_label1:
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
     movdqu %xmm0, -32(%rbp)

@@ -13,8 +13,6 @@ sum:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_sum_label1
-.L__kefir_func_sum_label1:
     movq %rdi, -32(%rbp)
     movq %xmm0, -24(%rbp)
     movdqu -32(%rbp), %xmm0
@@ -32,8 +30,6 @@ sum_helper:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_sum_helper_label1
-.L__kefir_func_sum_helper_label1:
     movq %rdi, -48(%rbp)
     movq %xmm0, -40(%rbp)
     movdqu -48(%rbp), %xmm0

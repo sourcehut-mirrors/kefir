@@ -27,7 +27,6 @@ getx:
 .L__kefir_func_getx_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_getx_label1
 .L__kefir_func_getx_label1:
     lea x(%rip), %rax
     pop %rbp
@@ -40,7 +39,6 @@ gety:
 .L__kefir_func_gety_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_gety_label1
 .L__kefir_func_gety_label1:
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
@@ -54,7 +52,6 @@ getx1:
 .L__kefir_func_getx1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_getx1_label1
 .L__kefir_func_getx1_label1:
     lea __kefir_function_getx1_static_x_4(%rip), %rax
     pop %rbp
@@ -66,7 +63,6 @@ getx2:
 .L__kefir_func_getx2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_getx2_label1
 .L__kefir_func_getx2_label1:
     lea __kefir_function_getx2_static_x_6(%rip), %rax
     pop %rbp
@@ -79,7 +75,6 @@ getx3:
 .L__kefir_func_getx3_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_getx3_label1
 .L__kefir_func_getx3_label1:
     data16     lea __kefir_function_getx3_static_x_8@tlsgd(%rip), %rdi
     .word 26214
@@ -93,7 +88,6 @@ getx4:
 .L__kefir_func_getx4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_getx4_label1
 .L__kefir_func_getx4_label1:
     lea __kefir_function_getx4_static_x_12(%rip), %rax
     pop %rbp
@@ -106,7 +100,6 @@ gety1:
 .L__kefir_func_gety1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_gety1_label1
 .L__kefir_func_gety1_label1:
     data16     lea __kefir_function_gety1_static_y_14@tlsgd(%rip), %rdi
     .word 26214
@@ -120,7 +113,6 @@ function_name:
 .L__kefir_func_function_name_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_function_name_label1
 .L__kefir_func_function_name_label1:
     lea __kefir_function_function_name_static___func___16(%rip), %rax
     pop %rbp

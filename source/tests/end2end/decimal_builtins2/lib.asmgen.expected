@@ -34,8 +34,6 @@ dec32_isinf:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_dec32_isinf_label1
-.L__kefir_func_dec32_isinf_label1:
     movdqu %xmm0, -32(%rbp)
     movd .L__kefir_func_dec32_isinf_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -77,8 +75,6 @@ dec64_isinf:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_dec64_isinf_label1
-.L__kefir_func_dec64_isinf_label1:
     movdqu %xmm0, -32(%rbp)
     movq .L__kefir_func_dec64_isinf_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -121,8 +117,6 @@ dec32_isfinite:
     push %rbx
     push %r12
     sub $16, %rsp
-    jmp .L__kefir_func_dec32_isfinite_label1
-.L__kefir_func_dec32_isfinite_label1:
     movdqu %xmm0, -32(%rbp)
     movd .L__kefir_func_dec32_isfinite_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -170,8 +164,6 @@ dec64_isfinite:
     push %rbx
     push %r12
     sub $16, %rsp
-    jmp .L__kefir_func_dec64_isfinite_label1
-.L__kefir_func_dec64_isfinite_label1:
     movdqu %xmm0, -32(%rbp)
     movq .L__kefir_func_dec64_isfinite_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -218,8 +210,6 @@ dec64_isinf_sign:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_dec64_isinf_sign_label1
-.L__kefir_func_dec64_isinf_sign_label1:
     movdqu %xmm0, -32(%rbp)
     movq .L__kefir_func_dec64_isinf_sign_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -257,8 +247,6 @@ dec128_isinf:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_dec128_isinf_label1
-.L__kefir_func_dec128_isinf_label1:
     movdqu %xmm0, -32(%rbp)
     movdqu .L__kefir_func_dec128_isinf_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -300,8 +288,6 @@ dec128_isinf_sign:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_dec128_isinf_sign_label1
-.L__kefir_func_dec128_isinf_sign_label1:
     movdqu %xmm0, -32(%rbp)
     movdqu .L__kefir_func_dec128_isinf_sign_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -340,8 +326,6 @@ dec128_isfinite:
     push %rbx
     push %r12
     sub $16, %rsp
-    jmp .L__kefir_func_dec128_isfinite_label1
-.L__kefir_func_dec128_isfinite_label1:
     movdqu %xmm0, -32(%rbp)
     movdqu .L__kefir_func_dec128_isfinite_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0
@@ -388,8 +372,6 @@ dec32_isinf_sign:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_dec32_isinf_sign_label1
-.L__kefir_func_dec32_isinf_sign_label1:
     movdqu %xmm0, -32(%rbp)
     movd .L__kefir_func_dec32_isinf_sign_label4(%rip), %xmm1
     movdqu -32(%rbp), %xmm0

@@ -15,7 +15,6 @@ init:
 .L__kefir_func_init_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_init_label1
 .L__kefir_func_init_label1:
     movq flag@GOTPCREL(%rip), %rax
     movl $1, (%rax)
@@ -28,7 +27,6 @@ init2:
 .L__kefir_func_init2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_init2_label1
 .L__kefir_func_init2_label1:
     movq flag2@GOTPCREL(%rip), %rax
     movl $1, (%rax)

@@ -15,8 +15,6 @@ load_buffer:
     push %rbx
     sub $72, %rsp
     mov %rdi, %rbx
-    jmp .L__kefir_func_load_buffer_label1
-.L__kefir_func_load_buffer_label1:
     leaq -72(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx
@@ -38,8 +36,6 @@ load_buffer:
 
 store_buffer:
 .L__kefir_text_func_store_buffer_begin:
-    jmp .L__kefir_func_store_buffer_label1
-.L__kefir_func_store_buffer_label1:
     mov %rsi, %rax
     mov %rdi, %rsi
     mov %rax, %rdx

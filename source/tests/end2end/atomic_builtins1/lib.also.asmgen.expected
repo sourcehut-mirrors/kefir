@@ -34,8 +34,6 @@ test_atomic_store128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test_atomic_store128_label1
-.L__kefir_func_test_atomic_store128_label1:
     fldt 16(%rbp)
     mov %rdi, %rax
     movq $0, -8(%rbp)
@@ -56,8 +54,6 @@ test_atomic_store256:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_test_atomic_store256_label1
-.L__kefir_func_test_atomic_store256_label1:
     lea 16(%rbp), %rax
     mov %rdi, %rcx
     fldt 16(%rax)
@@ -82,8 +78,6 @@ test2_atomic_store128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test2_atomic_store128_label1
-.L__kefir_func_test2_atomic_store128_label1:
     fldt 16(%rbp)
     mov %rdi, %rax
     movq $0, -8(%rbp)
@@ -104,8 +98,6 @@ test2_atomic_store256:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_test2_atomic_store256_label1
-.L__kefir_func_test2_atomic_store256_label1:
     lea 16(%rbp), %rax
     mov %rdi, %rcx
     fldt 16(%rax)
@@ -127,8 +119,6 @@ test2_atomic_store256:
 
 test2_atomic_store16:
 .L__kefir_text_func_test2_atomic_store16_begin:
-    jmp .L__kefir_func_test2_atomic_store16_label1
-.L__kefir_func_test2_atomic_store16_label1:
     movsx %si, %rax
     xchgw %ax, (%rdi)
     ret
@@ -136,8 +126,6 @@ test2_atomic_store16:
 
 test2_atomic_store32:
 .L__kefir_text_func_test2_atomic_store32_begin:
-    jmp .L__kefir_func_test2_atomic_store32_label1
-.L__kefir_func_test2_atomic_store32_label1:
     movsx %esi, %rax
     xchgl %eax, (%rdi)
     ret
@@ -145,16 +133,12 @@ test2_atomic_store32:
 
 test2_atomic_store64:
 .L__kefir_text_func_test2_atomic_store64_begin:
-    jmp .L__kefir_func_test2_atomic_store64_label1
-.L__kefir_func_test2_atomic_store64_label1:
     xchgq %rsi, (%rdi)
     ret
 .L__kefir_text_func_test2_atomic_store64_end:
 
 test_atomic_store8:
 .L__kefir_text_func_test_atomic_store8_begin:
-    jmp .L__kefir_func_test_atomic_store8_label1
-.L__kefir_func_test_atomic_store8_label1:
     movsx %sil, %rax
     xchgb %al, (%rdi)
     ret
@@ -162,8 +146,6 @@ test_atomic_store8:
 
 test_atomic_store16:
 .L__kefir_text_func_test_atomic_store16_begin:
-    jmp .L__kefir_func_test_atomic_store16_label1
-.L__kefir_func_test_atomic_store16_label1:
     movsx %si, %rax
     xchgw %ax, (%rdi)
     ret
@@ -171,8 +153,6 @@ test_atomic_store16:
 
 test_atomic_store32:
 .L__kefir_text_func_test_atomic_store32_begin:
-    jmp .L__kefir_func_test_atomic_store32_label1
-.L__kefir_func_test_atomic_store32_label1:
     movsx %esi, %rax
     xchgl %eax, (%rdi)
     ret
@@ -180,16 +160,12 @@ test_atomic_store32:
 
 test_atomic_store64:
 .L__kefir_text_func_test_atomic_store64_begin:
-    jmp .L__kefir_func_test_atomic_store64_label1
-.L__kefir_func_test_atomic_store64_label1:
     xchgq %rsi, (%rdi)
     ret
 .L__kefir_text_func_test_atomic_store64_end:
 
 test2_atomic_store8:
 .L__kefir_text_func_test2_atomic_store8_begin:
-    jmp .L__kefir_func_test2_atomic_store8_label1
-.L__kefir_func_test2_atomic_store8_label1:
     movsx %sil, %rax
     xchgb %al, (%rdi)
     ret

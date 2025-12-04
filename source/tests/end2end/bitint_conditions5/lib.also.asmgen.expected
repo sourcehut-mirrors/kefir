@@ -22,11 +22,9 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test1_label1
 .L__kefir_func_test1_label1:
     movb %dil, -8(%rbp)
     movl $0, -4(%rbp)
-    jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label2:
     movl -4(%rbp), %eax
     test %eax, %eax
@@ -70,11 +68,9 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test2_label1
 .L__kefir_func_test2_label1:
     movw %di, -8(%rbp)
     movl $0, -4(%rbp)
-    jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label2:
     movl -4(%rbp), %eax
     test %eax, %eax
@@ -118,11 +114,9 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test3_label1
 .L__kefir_func_test3_label1:
     movl %edi, -8(%rbp)
     movl $0, -4(%rbp)
-    jmp .L__kefir_func_test3_label2
 .L__kefir_func_test3_label2:
     movl -4(%rbp), %eax
     test %eax, %eax
@@ -166,11 +160,9 @@ test4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test4_label1
 .L__kefir_func_test4_label1:
     movq %rdi, -16(%rbp)
     movl $0, -8(%rbp)
-    jmp .L__kefir_func_test4_label2
 .L__kefir_func_test4_label2:
     movl -8(%rbp), %eax
     test %eax, %eax
@@ -214,14 +206,12 @@ test5:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_func_test5_label1
 .L__kefir_func_test5_label1:
     movq %rdi, -48(%rbp)
     movq %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -24(%rbp)
     movl $0, -8(%rbp)
-    jmp .L__kefir_func_test5_label2
 .L__kefir_func_test5_label2:
     movl -8(%rbp), %eax
     test %eax, %eax
@@ -265,7 +255,6 @@ test6:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
-    jmp .L__kefir_func_test6_label1
 .L__kefir_func_test6_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
@@ -275,7 +264,6 @@ test6:
     movdqu 32(%rax), %xmm0
     movdqu %xmm0, -24(%rbp)
     movl $0, -8(%rbp)
-    jmp .L__kefir_func_test6_label2
 .L__kefir_func_test6_label2:
     movl -8(%rbp), %eax
     test %eax, %eax
@@ -330,7 +318,6 @@ __kefir_bigint_is_zero:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label1
 .L__kefir_runtime_func___kefir_bigint_is_zero_label1:
     movq %rsi, -56(%rbp)
     movq %rdi, -48(%rbp)

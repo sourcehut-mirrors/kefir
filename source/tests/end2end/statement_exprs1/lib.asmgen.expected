@@ -10,8 +10,6 @@
 .L__kefir_text_section_begin:
 eval1:
 .L__kefir_text_func_eval1_begin:
-    jmp .L__kefir_func_eval1_label1
-.L__kefir_func_eval1_label1:
     mov %rdi, %rax
     add $1, %eax
     add %edi, %eax
@@ -24,8 +22,6 @@ eval2:
     mov %rsp, %rbp
     sub $32, %rsp
     xor %eax, %eax
-    jmp .L__kefir_func_eval2_label1
-.L__kefir_func_eval2_label1:
     mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
@@ -54,7 +50,6 @@ eval2:
     mov %rdx, %rsp
     movq (%rsp), %rcx
     add $16, %rsp
-    jmp .L__kefir_func_eval2_label3
 .L__kefir_func_eval2_label3:
     add %rsi, %rax
     lea (%rbp), %rsp

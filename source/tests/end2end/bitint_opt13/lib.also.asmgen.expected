@@ -17,8 +17,6 @@ mul1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mul1_label1
-.L__kefir_func_mul1_label1:
     movl $3489661261, -16(%rbp)
     movl $20, -12(%rbp)
     movl $0, -8(%rbp)
@@ -35,8 +33,6 @@ mul2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mul2_label1
-.L__kefir_func_mul2_label1:
     movl $3221225916, -16(%rbp)
     movl $27, -12(%rbp)
     movl $0, -8(%rbp)
@@ -53,8 +49,6 @@ mul3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mul3_label1
-.L__kefir_func_mul3_label1:
     movl $805306035, -16(%rbp)
     movl $4294967275, -12(%rbp)
     movl $4294967295, -8(%rbp)
@@ -71,8 +65,6 @@ mul4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_mul4_label1
-.L__kefir_func_mul4_label1:
     movl $1073741380, -16(%rbp)
     movl $4294967268, -12(%rbp)
     movl $4294967295, -8(%rbp)

@@ -13,8 +13,6 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     movq %rdi, -48(%rbp)
     movq %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
@@ -37,8 +35,6 @@ test8:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
-    jmp .L__kefir_func_test8_label1
-.L__kefir_func_test8_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -128(%rbp)

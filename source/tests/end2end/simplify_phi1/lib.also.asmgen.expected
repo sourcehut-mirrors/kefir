@@ -16,13 +16,10 @@ test1:
     push %r13
     push %r14
     sub $16, %rsp
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     mov %rsi, %rbx
     mov %r8, %r12
     mov %rcx, %r13
     mov %rdx, %r14
-    jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label2:
     movq %r12, -48(%rbp)
     movq %r14, -40(%rbp)

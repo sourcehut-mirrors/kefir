@@ -12,8 +12,6 @@ get:
     mov %rsp, %rbp
     sub $272, %rsp
     mov %rdi, %rdx
-    jmp .L__kefir_func_get_label1
-.L__kefir_func_get_label1:
     mov %rdx, %rdi
     xor %eax, %eax
     mov $71, %rcx

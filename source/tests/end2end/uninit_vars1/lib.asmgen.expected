@@ -19,7 +19,6 @@ get_global_uninit_static:
 .L__kefir_func_get_global_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get_global_uninit_static_label1
 .L__kefir_func_get_global_uninit_static_label1:
     lea STRUCT1(%rip), %rax
     pop %rbp
@@ -32,7 +31,6 @@ get_global_tlocal_uninit_static:
 .L__kefir_func_get_global_tlocal_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get_global_tlocal_uninit_static_label1
 .L__kefir_func_get_global_tlocal_uninit_static_label1:
     data16     lea STRUCT2@tlsgd(%rip), %rdi
     .word 26214
@@ -47,7 +45,6 @@ get_local_tlocal_uninit_static:
 .L__kefir_func_get_local_tlocal_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get_local_tlocal_uninit_static_label1
 .L__kefir_func_get_local_tlocal_uninit_static_label1:
     data16     lea __kefir_function_get_local_tlocal_uninit_static_static_STRUCT2_7@tlsgd(%rip), %rdi
     .word 26214
@@ -61,7 +58,6 @@ get_local_uninit_static:
 .L__kefir_func_get_local_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get_local_uninit_static_label1
 .L__kefir_func_get_local_uninit_static_label1:
     lea __kefir_function_get_local_uninit_static_static_STRUCT2_4(%rip), %rax
     pop %rbp

@@ -21,8 +21,6 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     movd (%rdi), %xmm0
     add $4, %rdi
     movd (%rdi), %xmm1
@@ -31,8 +29,6 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     movd (%rsi), %xmm0
     add $4, %rsi
     movd (%rsi), %xmm1
@@ -42,8 +38,6 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     movq (%rdi), %xmm0
     add $8, %rdi
     movq (%rdi), %xmm1
@@ -52,8 +46,6 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    jmp .L__kefir_func_test4_label1
-.L__kefir_func_test4_label1:
     movq (%rsi), %xmm0
     add $8, %rsi
     movq (%rsi), %xmm1
@@ -63,8 +55,6 @@ test4:
 
 test5:
 .L__kefir_text_func_test5_begin:
-    jmp .L__kefir_func_test5_label1
-.L__kefir_func_test5_label1:
     movdqu (%rdi), %xmm0
     add $16, %rdi
     movdqu (%rdi), %xmm1
@@ -73,8 +63,6 @@ test5:
 
 test6:
 .L__kefir_text_func_test6_begin:
-    jmp .L__kefir_func_test6_label1
-.L__kefir_func_test6_label1:
     movdqu (%rsi), %xmm0
     add $16, %rsi
     movdqu (%rsi), %xmm1

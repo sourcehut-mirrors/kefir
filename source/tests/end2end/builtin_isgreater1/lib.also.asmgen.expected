@@ -23,7 +23,6 @@ is_greater_f32:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_is_greater_f32_label1
 .L__kefir_func_is_greater_f32_label1:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
@@ -49,7 +48,6 @@ is_greater_f64:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_is_greater_f64_label1
 .L__kefir_func_is_greater_f64_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
@@ -75,7 +73,6 @@ is_greater_f80:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_is_greater_f80_label1
 .L__kefir_func_is_greater_f80_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)

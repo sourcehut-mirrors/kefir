@@ -10,8 +10,6 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     shl $60, %rdi
     sar $60, %rdi
     mov %rdi, %rax
@@ -20,8 +18,6 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     shl $59, %rdi
     sar $59, %rdi
     mov %rdi, %rax

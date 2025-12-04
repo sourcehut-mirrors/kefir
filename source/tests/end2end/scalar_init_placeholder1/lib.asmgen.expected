@@ -14,16 +14,12 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     xor %eax, %eax
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     xor %eax, %eax
     cmp $0, %rdi
     mov %rdi, %rcx
@@ -49,15 +45,13 @@ test3:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_test3_label1
-.L__kefir_func_test3_label1:
     ucomiss .L__kefir_func_test3_label9(%rip), %xmm0
-    jp .L__kefir_func_test3_label4
+    jp .L__kefir_func_test3_label3
     jmp .L__kefir_func_test3_label2
 .L__kefir_func_test3_label2:
-    ja .L__kefir_func_test3_label4
-    jmp .L__kefir_func_test3_label4
-.L__kefir_func_test3_label4:
+    ja .L__kefir_func_test3_label3
+    jmp .L__kefir_func_test3_label3
+.L__kefir_func_test3_label3:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -75,15 +69,13 @@ test4:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_test4_label1
-.L__kefir_func_test4_label1:
     ucomisd .L__kefir_func_test4_label9(%rip), %xmm0
-    jp .L__kefir_func_test4_label4
+    jp .L__kefir_func_test4_label3
     jmp .L__kefir_func_test4_label2
 .L__kefir_func_test4_label2:
-    ja .L__kefir_func_test4_label4
-    jmp .L__kefir_func_test4_label4
-.L__kefir_func_test4_label4:
+    ja .L__kefir_func_test4_label3
+    jmp .L__kefir_func_test4_label3
+.L__kefir_func_test4_label3:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

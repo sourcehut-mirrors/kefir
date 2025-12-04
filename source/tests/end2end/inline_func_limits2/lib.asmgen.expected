@@ -13,36 +13,26 @@
 .L__kefir_text_section_begin:
 main:
 .L__kefir_text_func_main_begin:
-    jmp .L__kefir_func_main_label1
-.L__kefir_func_main_label1:
     jmp test0@PLT
 .L__kefir_text_func_main_end:
 
 main1:
 .L__kefir_text_func_main1_begin:
-    jmp .L__kefir_func_main1_label1
-.L__kefir_func_main1_label1:
     jmp test1
 .L__kefir_text_func_main1_end:
 
 main2:
 .L__kefir_text_func_main2_begin:
-    jmp .L__kefir_func_main2_label1
-.L__kefir_func_main2_label1:
     jmp test2
 .L__kefir_text_func_main2_end:
 
 test1:
 .L__kefir_text_func_test1_begin:
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     jmp test0@PLT
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     jmp test1
 .L__kefir_text_func_test2_end:
 

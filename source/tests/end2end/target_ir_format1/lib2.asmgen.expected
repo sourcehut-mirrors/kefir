@@ -50,16 +50,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "jmp",
-#                "args": [
-#                    {
-#                        "type": "internal_label",
-#                        "label": 1
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
@@ -1384,7 +1374,6 @@ factorial:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_factorial_label1
 .L__kefir_func_factorial_label1:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax

@@ -14,8 +14,6 @@
 .L__kefir_text_section_begin:
 clamp_int:
 .L__kefir_text_func_clamp_int_begin:
-    jmp .L__kefir_func_clamp_int_label1
-.L__kefir_func_clamp_int_label1:
     xor %eax, %eax
     cmp $-39, %edi
     setge %al
@@ -133,8 +131,6 @@ clamp_int:
 
 clamp_char:
 .L__kefir_text_func_clamp_char_begin:
-    jmp .L__kefir_func_clamp_char_label1
-.L__kefir_func_clamp_char_label1:
     movsx %dil, %rdx
     xor %eax, %eax
     cmp $-39, %edx
@@ -253,8 +249,6 @@ clamp_char:
 
 clamp_long:
 .L__kefir_text_func_clamp_long_begin:
-    jmp .L__kefir_func_clamp_long_label1
-.L__kefir_func_clamp_long_label1:
     xor %eax, %eax
     cmp $-39, %rdi
     setge %al
@@ -372,8 +366,6 @@ clamp_long:
 
 clamp_short:
 .L__kefir_text_func_clamp_short_begin:
-    jmp .L__kefir_func_clamp_short_label1
-.L__kefir_func_clamp_short_label1:
     movsx %di, %rdx
     xor %eax, %eax
     cmp $-39, %edx

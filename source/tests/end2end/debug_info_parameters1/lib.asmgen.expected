@@ -14,9 +14,8 @@ test:
 .file 0 "source/tests/end2end/debug_info_parameters1/lib.kefir.asmgen.c"
 .loc 0 21 1
 .L__kefir_text_func_test_begin:
-    jmp .L__kefir_func_test_label2
 .loc 0 22 5
-.L__kefir_func_test_label2:
+.L__kefir_func_test_label24:
     xor %eax, %eax
     ret
 .L__kefir_func_test_label25:
@@ -25,8 +24,7 @@ test:
 test2:
 .loc 0 25 1
 .L__kefir_text_func_test2_begin:
-    jmp .L__kefir_func_test2_label2
-.L__kefir_func_test2_label2:
+.L__kefir_func_test2_label16:
     ret
 .L__kefir_func_test2_label17:
 .L__kefir_text_func_test2_end:
@@ -34,8 +32,7 @@ test2:
 test3:
 .loc 0 27 1
 .L__kefir_text_func_test3_begin:
-    jmp .L__kefir_func_test3_label2
-.L__kefir_func_test3_label2:
+.L__kefir_func_test3_label16:
     ret
 .L__kefir_func_test3_label17:
 .L__kefir_text_func_test3_end:

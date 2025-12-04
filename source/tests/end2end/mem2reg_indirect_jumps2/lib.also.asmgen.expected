@@ -15,7 +15,6 @@ factorial2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_factorial2_label2
 .L__kefir_func_factorial2_label2:
     lea __kefir_function_factorial2_static_branches_7(%rip), %rax
     xor %ecx, %ecx
@@ -46,7 +45,6 @@ _kefir_local_public_label_factorial2_terminate:
 
 run_factorial:
 .L__kefir_text_func_run_factorial_begin:
-    jmp .L__kefir_func_run_factorial_label1
 .L__kefir_func_run_factorial_label1:
     movq factorial_param@GOTPCREL(%rip), %rax
     movq (%rax), %rax

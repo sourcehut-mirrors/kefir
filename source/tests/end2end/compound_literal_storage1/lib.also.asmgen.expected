@@ -23,7 +23,6 @@ get1:
 .L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get1_label1
 .L__kefir_func_get1_label1:
     lea __kefir_function_get1_static___kefir_local_temporary_0_3(%rip), %rax
     pop %rbp
@@ -36,7 +35,6 @@ get2:
 .L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get2_label1
 .L__kefir_func_get2_label1:
     data16     lea __kefir_function_get2_static___kefir_local_temporary_0_5@tlsgd(%rip), %rdi
     .word 26214
@@ -50,7 +48,6 @@ get3:
 .L__kefir_func_get3_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get3_label1
 .L__kefir_func_get3_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
@@ -90,7 +87,6 @@ get4:
 .L__kefir_func_get4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_get4_label1
 .L__kefir_func_get4_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
@@ -131,7 +127,6 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_get5_label1
 .L__kefir_func_get5_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
@@ -145,7 +140,6 @@ get5:
     jmp .L__kefir_func_get5_label4
 .L__kefir_func_get5_label6:
     lea __kefir_function_get5_static___kefir_local_temporary_1_13(%rip), %rax
-    jmp .L__kefir_func_get5_label4
 .L__kefir_func_get5_label4:
     lea (%rbp), %rsp
     pop %rbp
@@ -158,7 +152,6 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_test1_label1
 .L__kefir_func_test1_label1:
     movq %rdi, -8(%rbp)
     mov $8, %rax

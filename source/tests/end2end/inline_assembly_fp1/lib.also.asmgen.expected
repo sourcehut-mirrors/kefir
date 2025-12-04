@@ -12,7 +12,6 @@ custom_hypot:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_custom_hypot_label1
 .L__kefir_func_custom_hypot_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)

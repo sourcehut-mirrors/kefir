@@ -54,10 +54,7 @@
 .L__kefir_text_section_begin:
 or_fetch8:
 .L__kefir_text_func_or_fetch8_begin:
-    jmp .L__kefir_func_or_fetch8_label1
-.L__kefir_func_or_fetch8_label1:
     movsx %sil, %r8
-    jmp .L__kefir_func_or_fetch8_label2
 .L__kefir_func_or_fetch8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
@@ -77,10 +74,7 @@ or_fetch8:
 
 add_fetch8:
 .L__kefir_text_func_add_fetch8_begin:
-    jmp .L__kefir_func_add_fetch8_label1
-.L__kefir_func_add_fetch8_label1:
     movsx %sil, %r8
-    jmp .L__kefir_func_add_fetch8_label2
 .L__kefir_func_add_fetch8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
@@ -100,10 +94,7 @@ add_fetch8:
 
 and_fetch8:
 .L__kefir_text_func_and_fetch8_begin:
-    jmp .L__kefir_func_and_fetch8_label1
-.L__kefir_func_and_fetch8_label1:
     movsx %sil, %r8
-    jmp .L__kefir_func_and_fetch8_label2
 .L__kefir_func_and_fetch8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
@@ -123,10 +114,7 @@ and_fetch8:
 
 or_fetch16:
 .L__kefir_text_func_or_fetch16_begin:
-    jmp .L__kefir_func_or_fetch16_label1
-.L__kefir_func_or_fetch16_label1:
     movsx %si, %r8
-    jmp .L__kefir_func_or_fetch16_label2
 .L__kefir_func_or_fetch16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
@@ -146,7 +134,6 @@ or_fetch16:
 
 or_fetch32:
 .L__kefir_text_func_or_fetch32_begin:
-    jmp .L__kefir_func_or_fetch32_label2
 .L__kefir_func_or_fetch32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
@@ -165,7 +152,6 @@ or_fetch32:
 
 or_fetch64:
 .L__kefir_text_func_or_fetch64_begin:
-    jmp .L__kefir_func_or_fetch64_label2
 .L__kefir_func_or_fetch64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
@@ -184,10 +170,7 @@ or_fetch64:
 
 sub_fetch8:
 .L__kefir_text_func_sub_fetch8_begin:
-    jmp .L__kefir_func_sub_fetch8_label1
-.L__kefir_func_sub_fetch8_label1:
     movsx %sil, %r8
-    jmp .L__kefir_func_sub_fetch8_label2
 .L__kefir_func_sub_fetch8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
@@ -207,10 +190,7 @@ sub_fetch8:
 
 xor_fetch8:
 .L__kefir_text_func_xor_fetch8_begin:
-    jmp .L__kefir_func_xor_fetch8_label1
-.L__kefir_func_xor_fetch8_label1:
     movsx %sil, %r8
-    jmp .L__kefir_func_xor_fetch8_label2
 .L__kefir_func_xor_fetch8_label2:
     movb (%rdi), %al
     movsx %al, %rcx
@@ -230,10 +210,7 @@ xor_fetch8:
 
 add_fetch16:
 .L__kefir_text_func_add_fetch16_begin:
-    jmp .L__kefir_func_add_fetch16_label1
-.L__kefir_func_add_fetch16_label1:
     movsx %si, %r8
-    jmp .L__kefir_func_add_fetch16_label2
 .L__kefir_func_add_fetch16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
@@ -253,7 +230,6 @@ add_fetch16:
 
 add_fetch32:
 .L__kefir_text_func_add_fetch32_begin:
-    jmp .L__kefir_func_add_fetch32_label2
 .L__kefir_func_add_fetch32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
@@ -272,7 +248,6 @@ add_fetch32:
 
 add_fetch64:
 .L__kefir_text_func_add_fetch64_begin:
-    jmp .L__kefir_func_add_fetch64_label2
 .L__kefir_func_add_fetch64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
@@ -291,10 +266,7 @@ add_fetch64:
 
 and_fetch16:
 .L__kefir_text_func_and_fetch16_begin:
-    jmp .L__kefir_func_and_fetch16_label1
-.L__kefir_func_and_fetch16_label1:
     movsx %si, %r8
-    jmp .L__kefir_func_and_fetch16_label2
 .L__kefir_func_and_fetch16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
@@ -314,7 +286,6 @@ and_fetch16:
 
 and_fetch32:
 .L__kefir_text_func_and_fetch32_begin:
-    jmp .L__kefir_func_and_fetch32_label2
 .L__kefir_func_and_fetch32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
@@ -333,7 +304,6 @@ and_fetch32:
 
 and_fetch64:
 .L__kefir_text_func_and_fetch64_begin:
-    jmp .L__kefir_func_and_fetch64_label2
 .L__kefir_func_and_fetch64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
@@ -355,11 +325,8 @@ nand_fetch8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_nand_fetch8_label1
-.L__kefir_func_nand_fetch8_label1:
     movb (%rdi), %al
     movb %al, -1(%rbp)
-    jmp .L__kefir_func_nand_fetch8_label2
 .L__kefir_func_nand_fetch8_label2:
     movsxb -1(%rbp), %rcx
     movsx %sil, %rax
@@ -374,7 +341,6 @@ nand_fetch8:
     jmp .L__kefir_func_nand_fetch8_label3
 .L__kefir_func_nand_fetch8_label3:
     movb %al, -1(%rbp)
-    jmp .L__kefir_func_nand_fetch8_label4
 .L__kefir_func_nand_fetch8_label4:
     sete %al
     test %al, %al
@@ -389,10 +355,7 @@ nand_fetch8:
 
 sub_fetch16:
 .L__kefir_text_func_sub_fetch16_begin:
-    jmp .L__kefir_func_sub_fetch16_label1
-.L__kefir_func_sub_fetch16_label1:
     movsx %si, %r8
-    jmp .L__kefir_func_sub_fetch16_label2
 .L__kefir_func_sub_fetch16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
@@ -412,7 +375,6 @@ sub_fetch16:
 
 sub_fetch32:
 .L__kefir_text_func_sub_fetch32_begin:
-    jmp .L__kefir_func_sub_fetch32_label2
 .L__kefir_func_sub_fetch32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
@@ -431,7 +393,6 @@ sub_fetch32:
 
 sub_fetch64:
 .L__kefir_text_func_sub_fetch64_begin:
-    jmp .L__kefir_func_sub_fetch64_label2
 .L__kefir_func_sub_fetch64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
@@ -450,10 +411,7 @@ sub_fetch64:
 
 xor_fetch16:
 .L__kefir_text_func_xor_fetch16_begin:
-    jmp .L__kefir_func_xor_fetch16_label1
-.L__kefir_func_xor_fetch16_label1:
     movsx %si, %r8
-    jmp .L__kefir_func_xor_fetch16_label2
 .L__kefir_func_xor_fetch16_label2:
     movw (%rdi), %ax
     movsx %ax, %rcx
@@ -473,7 +431,6 @@ xor_fetch16:
 
 xor_fetch32:
 .L__kefir_text_func_xor_fetch32_begin:
-    jmp .L__kefir_func_xor_fetch32_label2
 .L__kefir_func_xor_fetch32_label2:
     movl (%rdi), %eax
     mov %rax, %r8
@@ -492,7 +449,6 @@ xor_fetch32:
 
 xor_fetch64:
 .L__kefir_text_func_xor_fetch64_begin:
-    jmp .L__kefir_func_xor_fetch64_label2
 .L__kefir_func_xor_fetch64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
@@ -514,11 +470,8 @@ nand_fetch16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_nand_fetch16_label1
-.L__kefir_func_nand_fetch16_label1:
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
-    jmp .L__kefir_func_nand_fetch16_label2
 .L__kefir_func_nand_fetch16_label2:
     movsxw -2(%rbp), %rcx
     movsx %si, %rax
@@ -533,7 +486,6 @@ nand_fetch16:
     jmp .L__kefir_func_nand_fetch16_label3
 .L__kefir_func_nand_fetch16_label3:
     movw %ax, -2(%rbp)
-    jmp .L__kefir_func_nand_fetch16_label4
 .L__kefir_func_nand_fetch16_label4:
     sete %al
     test %al, %al
@@ -551,11 +503,8 @@ nand_fetch32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_nand_fetch32_label1
-.L__kefir_func_nand_fetch32_label1:
     movl (%rdi), %eax
     movl %eax, -4(%rbp)
-    jmp .L__kefir_func_nand_fetch32_label2
 .L__kefir_func_nand_fetch32_label2:
     movl -4(%rbp), %ecx
     and %esi, %ecx
@@ -569,7 +518,6 @@ nand_fetch32:
     jmp .L__kefir_func_nand_fetch32_label3
 .L__kefir_func_nand_fetch32_label3:
     movl %eax, -4(%rbp)
-    jmp .L__kefir_func_nand_fetch32_label4
 .L__kefir_func_nand_fetch32_label4:
     sete %al
     test %al, %al
@@ -587,11 +535,8 @@ nand_fetch64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_nand_fetch64_label1
-.L__kefir_func_nand_fetch64_label1:
     movq (%rdi), %rax
     movq %rax, -8(%rbp)
-    jmp .L__kefir_func_nand_fetch64_label2
 .L__kefir_func_nand_fetch64_label2:
     movq -8(%rbp), %rcx
     and %rsi, %rcx
@@ -605,7 +550,6 @@ nand_fetch64:
     jmp .L__kefir_func_nand_fetch64_label3
 .L__kefir_func_nand_fetch64_label3:
     movq %rax, -8(%rbp)
-    jmp .L__kefir_func_nand_fetch64_label4
 .L__kefir_func_nand_fetch64_label4:
     sete %al
     test %al, %al

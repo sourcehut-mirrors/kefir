@@ -30,8 +30,6 @@
 .L__kefir_text_section_begin:
 copy8:
 .L__kefir_text_func_copy8_begin:
-    jmp .L__kefir_func_copy8_label1
-.L__kefir_func_copy8_label1:
     movq src8@GOTPCREL(%rip), %rcx
     movb (%rcx), %al
     movq dst8@GOTPCREL(%rip), %rcx
@@ -41,8 +39,6 @@ copy8:
 
 copy16:
 .L__kefir_text_func_copy16_begin:
-    jmp .L__kefir_func_copy16_label1
-.L__kefir_func_copy16_label1:
     movq src16@GOTPCREL(%rip), %rcx
     movw (%rcx), %ax
     movq dst16@GOTPCREL(%rip), %rcx
@@ -52,8 +48,6 @@ copy16:
 
 copy32:
 .L__kefir_text_func_copy32_begin:
-    jmp .L__kefir_func_copy32_label1
-.L__kefir_func_copy32_label1:
     movq src32@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     movq dst32@GOTPCREL(%rip), %rcx
@@ -63,8 +57,6 @@ copy32:
 
 copy64:
 .L__kefir_text_func_copy64_begin:
-    jmp .L__kefir_func_copy64_label1
-.L__kefir_func_copy64_label1:
     movq src64@GOTPCREL(%rip), %rax
     movq (%rax), %rax
     movq dst64@GOTPCREL(%rip), %rcx

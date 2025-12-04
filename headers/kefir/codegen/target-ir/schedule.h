@@ -50,5 +50,6 @@ kefir_result_t kefir_codegen_target_ir_code_schedule_free(struct kefir_mem *, st
 kefir_result_t kefir_codegen_target_ir_code_schedule_build(struct kefir_mem *, struct kefir_codegen_target_ir_code_schedule *, const struct kefir_codegen_target_ir_code_scheduler *);
 
 kefir_bool_t kefir_codegen_target_ir_code_schedule_has_block(const struct kefir_codegen_target_ir_code_schedule *, kefir_codegen_target_ir_block_ref_t);
+kefir_result_t kefir_codegen_target_ir_code_schedule_of_block(const struct kefir_codegen_target_ir_code_schedule *, kefir_codegen_target_ir_block_ref_t, const struct kefir_codegen_target_ir_block_schedule **);
 
 #endif

@@ -30,8 +30,6 @@ mygeta:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_mygeta_label1
-.L__kefir_func_mygeta_label1:
     movd .L__kefir_func_mygeta_label4(%rip), %xmm0
     movd .L__kefir_func_mygeta_label5(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
@@ -55,8 +53,6 @@ mygetb:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_mygetb_label1
-.L__kefir_func_mygetb_label1:
     movq .L__kefir_func_mygetb_label4(%rip), %xmm0
     movq .L__kefir_func_mygetb_label5(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -79,8 +75,6 @@ mygetc:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_mygetc_label1
-.L__kefir_func_mygetc_label1:
     movq .L__kefir_func_mygetc_label4(%rip), %xmm0
     movq .L__kefir_func_mygetc_label5(%rip), %xmm1
     ldmxcsr -8(%rbp)
@@ -103,8 +97,6 @@ mygetd:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_mygetd_label1
-.L__kefir_func_mygetd_label1:
     fldt .L__kefir_func_mygetd_label4(%rip)
     fldt .L__kefir_func_mygetd_label5(%rip)
     fstpt -32(%rbp)
@@ -133,8 +125,6 @@ mygete:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_mygete_label1
-.L__kefir_func_mygete_label1:
     fldt .L__kefir_func_mygete_label4(%rip)
     fldt .L__kefir_func_mygete_label5(%rip)
     fstpt -32(%rbp)

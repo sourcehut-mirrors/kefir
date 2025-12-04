@@ -20,9 +20,8 @@ test1:
     push %r13
     sub $8, %rsp
     stmxcsr -32(%rbp)
-    jmp .L__kefir_func_test1_label2
 .loc 0 26 12
-.L__kefir_func_test1_label2:
+.L__kefir_func_test1_label16:
     movq x@GOTPCREL(%rip), %rax
 .L__kefir_func_test1_label17:
     movsxl (%rax), %r13
@@ -352,7 +351,7 @@ __kefir_debug_loclists_section_begin:
     .long 0
 __kefir_debug_loclist_section_entry_1:
     .byte 4
-    .uleb128 .L__kefir_func_test1_label2 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label16 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_test1_label393 - .L__kefir_text_section_begin
     .byte 10
     .byte 14
@@ -361,7 +360,7 @@ __kefir_debug_loclist_section_entry_1:
     .byte 0
 __kefir_debug_loclist_section_entry_2:
     .byte 4
-    .uleb128 .L__kefir_func_test1_label2 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label16 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_test1_label393 - .L__kefir_text_section_begin
     .byte 9
     .byte 3
@@ -369,7 +368,7 @@ __kefir_debug_loclist_section_entry_2:
     .byte 0
 __kefir_debug_loclist_section_entry_3:
     .byte 4
-    .uleb128 .L__kefir_func_test1_label2 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label16 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_test1_label393 - .L__kefir_text_section_begin
     .byte 10
     .byte 14
@@ -378,7 +377,7 @@ __kefir_debug_loclist_section_entry_3:
     .byte 0
 __kefir_debug_loclist_section_entry_4:
     .byte 4
-    .uleb128 .L__kefir_func_test1_label2 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label16 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_test1_label393 - .L__kefir_text_section_begin
     .byte 9
     .byte 3

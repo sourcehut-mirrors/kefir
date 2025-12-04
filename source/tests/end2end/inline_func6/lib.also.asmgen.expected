@@ -12,8 +12,6 @@ init_s1:
     push %rbp
     mov %rsp, %rbp
     sub $512, %rsp
-    jmp .L__kefir_func_init_s1_label1
-.L__kefir_func_init_s1_label1:
     leaq -512(%rbp), %rdi
     xor %eax, %eax
     mov $64, %rcx

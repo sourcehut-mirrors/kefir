@@ -45,8 +45,6 @@ str1_a:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_str1_a_label1
-.L__kefir_func_str1_a_label1:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
@@ -65,8 +63,6 @@ str1_b:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_str1_b_label1
-.L__kefir_func_str1_b_label1:
     add $16, %rdi
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
@@ -85,8 +81,6 @@ str1_c:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_str1_c_label1
-.L__kefir_func_str1_c_label1:
     add $32, %rdi
     mov %rdi, %rsi
     lea -32(%rbp), %rdx
@@ -105,8 +99,6 @@ ld_load:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_ld_load_label1
-.L__kefir_func_ld_load_label1:
     mov %rdi, %rsi
     lea -32(%rbp), %rdx
     mov $32, %rdi
@@ -124,8 +116,6 @@ f32_load:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_f32_load_label1
-.L__kefir_func_f32_load_label1:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
@@ -144,8 +134,6 @@ f64_load:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_f64_load_label1
-.L__kefir_func_f64_load_label1:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
@@ -162,8 +150,6 @@ ld_store:
 .L__kefir_text_func_ld_store_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_ld_store_label1
-.L__kefir_func_ld_store_label1:
     lea 16(%rbp), %rdx
     mov %rdi, %rsi
     mov $32, %rdi
@@ -178,8 +164,6 @@ f32_store:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_f32_store_label1
-.L__kefir_func_f32_store_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -200,8 +184,6 @@ f64_store:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_f64_store_label1
-.L__kefir_func_f64_store_label1:
     mov %rdi, %rsi
     movq %xmm0, -32(%rbp)
     movq %xmm1, -24(%rbp)
@@ -219,8 +201,6 @@ str1_set_a:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_str1_set_a_label1
-.L__kefir_func_str1_set_a_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -241,8 +221,6 @@ str1_set_b:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_str1_set_b_label1
-.L__kefir_func_str1_set_b_label1:
     add $16, %rdi
     mov %rdi, %rsi
     movq %xmm0, -32(%rbp)
@@ -260,8 +238,6 @@ str1_set_c:
 .L__kefir_text_func_str1_set_c_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_str1_set_c_label1
-.L__kefir_func_str1_set_c_label1:
     lea 16(%rbp), %rdx
     add $32, %rdi
     mov %rdi, %rsi
@@ -277,8 +253,6 @@ ld_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_ld_load_index_label1
-.L__kefir_func_ld_load_index_label1:
     mov %esi, %eax
     imul $32, %rax, %rax
     add %rax, %rdi
@@ -299,8 +273,6 @@ f32_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_f32_load_index_label1
-.L__kefir_func_f32_load_index_label1:
     mov %esi, %eax
     imul $8, %rax, %rax
     add %rax, %rdi
@@ -321,8 +293,6 @@ ld_store_index:
 .L__kefir_text_func_ld_store_index_begin:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_ld_store_index_label1
-.L__kefir_func_ld_store_index_label1:
     lea 16(%rbp), %rdx
     mov %esi, %eax
     imul $32, %rax, %rax
@@ -340,8 +310,6 @@ f32_store_index:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_f32_store_index_label1
-.L__kefir_func_f32_store_index_label1:
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm2
     shufps $1, %xmm1, %xmm2
@@ -365,8 +333,6 @@ f64_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_f64_load_index_label1
-.L__kefir_func_f64_load_index_label1:
     mov %esi, %eax
     imul $16, %rax, %rax
     add %rax, %rdi
@@ -387,8 +353,6 @@ f64_store_index:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_f64_store_index_label1
-.L__kefir_func_f64_store_index_label1:
     mov %esi, %eax
     imul $16, %rax, %rax
     add %rax, %rdi

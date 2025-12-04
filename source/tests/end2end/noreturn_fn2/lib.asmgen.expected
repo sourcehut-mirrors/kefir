@@ -18,7 +18,6 @@ test1:
 .L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test1_label1
 .L__kefir_func_test1_label1:
     call do_exit@PLT
     ud2
@@ -29,7 +28,6 @@ test3:
 .L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test3_label1
 .L__kefir_func_test3_label1:
     call do_exit@PLT
     ud2
@@ -40,7 +38,6 @@ test4:
 .L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test4_label1
 .L__kefir_func_test4_label1:
     call do_exit@PLT
     ud2
@@ -51,7 +48,6 @@ test5:
 .L__kefir_func_test5_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test5_label1
 .L__kefir_func_test5_label1:
     call do_exit@PLT
     ud2

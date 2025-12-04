@@ -12,13 +12,10 @@ addx:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_addx_label1
-.L__kefir_func_addx_label1:
     movq x@GOTPCREL(%rip), %rax
     movq (%rax), %rax
     movq %rax, -16(%rbp)
     movq $0, -8(%rbp)
-    jmp .L__kefir_func_addx_label2
 .L__kefir_func_addx_label2:
     movq -16(%rbp), %rax
     add %rdi, %rax
@@ -31,7 +28,6 @@ addx:
     jmp .L__kefir_func_addx_label3
 .L__kefir_func_addx_label3:
     movq %rax, -16(%rbp)
-    jmp .L__kefir_func_addx_label4
 .L__kefir_func_addx_label4:
     sete %al
     test %al, %al

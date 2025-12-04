@@ -18,8 +18,6 @@ call1_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call1_proxy_label1
-.L__kefir_func_call1_proxy_label1:
     movq %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl %eax, -4(%rbp)
@@ -34,8 +32,6 @@ call2_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call2_proxy_label1
-.L__kefir_func_call2_proxy_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movq %rax, -8(%rbp)
@@ -50,8 +46,6 @@ call3_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_call3_proxy_label1
-.L__kefir_func_call3_proxy_label1:
     movq %xmm0, -32(%rbp)
     movq %xmm1, -24(%rbp)
     movq -32(%rbp), %rax

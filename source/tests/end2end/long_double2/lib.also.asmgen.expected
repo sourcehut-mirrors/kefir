@@ -15,8 +15,6 @@ increment:
     push %rbx
     sub $24, %rsp
     fstcw -16(%rbp)
-    jmp .L__kefir_func_increment_label1
-.L__kefir_func_increment_label1:
     mov %rdi, %rbx
     call *%rbx
     movq LAST_VALUE@GOTPCREL(%rip), %rax

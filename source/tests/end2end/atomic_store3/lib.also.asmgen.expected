@@ -27,8 +27,6 @@ set_a1:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_func_set_a1_label1
-.L__kefir_func_set_a1_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -64(%rbp)
@@ -51,8 +49,6 @@ set_a1:
 
 set_i8:
 .L__kefir_text_func_set_i8_begin:
-    jmp .L__kefir_func_set_i8_label1
-.L__kefir_func_set_i8_label1:
     mov %rsi, %rax
     xchgb (%rdi), %al
     ret
@@ -60,8 +56,6 @@ set_i8:
 
 set_f32:
 .L__kefir_text_func_set_f32_begin:
-    jmp .L__kefir_func_set_f32_label1
-.L__kefir_func_set_f32_label1:
     add $16, %rdi
     movq %xmm0, %rax
     xchgl (%rdi), %eax
@@ -70,8 +64,6 @@ set_f32:
 
 set_f64:
 .L__kefir_text_func_set_f64_begin:
-    jmp .L__kefir_func_set_f64_label1
-.L__kefir_func_set_f64_label1:
     add $24, %rdi
     movq %xmm0, %rax
     xchgq (%rdi), %rax
@@ -80,8 +72,6 @@ set_f64:
 
 set_i16:
 .L__kefir_text_func_set_i16_begin:
-    jmp .L__kefir_func_set_i16_label1
-.L__kefir_func_set_i16_label1:
     add $2, %rdi
     mov %rsi, %rax
     xchgw (%rdi), %ax
@@ -90,8 +80,6 @@ set_i16:
 
 set_i32:
 .L__kefir_text_func_set_i32_begin:
-    jmp .L__kefir_func_set_i32_label1
-.L__kefir_func_set_i32_label1:
     add $4, %rdi
     mov %rsi, %rax
     xchgl (%rdi), %eax
@@ -100,8 +88,6 @@ set_i32:
 
 set_i64:
 .L__kefir_text_func_set_i64_begin:
-    jmp .L__kefir_func_set_i64_label1
-.L__kefir_func_set_i64_label1:
     add $8, %rdi
     mov %rsi, %rax
     xchgq (%rdi), %rax
@@ -110,8 +96,6 @@ set_i64:
 
 set_arr1_el:
 .L__kefir_text_func_set_arr1_el_begin:
-    jmp .L__kefir_func_set_arr1_el_label1
-.L__kefir_func_set_arr1_el_label1:
     add $96, %rdi
     movsx %esi, %rax
     imul $8, %rax, %rax
@@ -126,8 +110,6 @@ set_arr2_el:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    jmp .L__kefir_func_set_arr2_el_label1
-.L__kefir_func_set_arr2_el_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -64(%rbp)

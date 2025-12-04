@@ -34,7 +34,6 @@ call1_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call1_proxy_label1
 .L__kefir_func_call1_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -51,7 +50,6 @@ call2_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call2_proxy_label1
 .L__kefir_func_call2_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -68,7 +66,6 @@ call3_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call3_proxy_label1
 .L__kefir_func_call3_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -91,7 +88,6 @@ call4_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call4_proxy_label1
 .L__kefir_func_call4_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -108,7 +104,6 @@ call5_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call5_proxy_label1
 .L__kefir_func_call5_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -129,7 +124,6 @@ call6_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call6_proxy_label1
 .L__kefir_func_call6_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -150,7 +144,6 @@ call7_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call7_proxy_label1
 .L__kefir_func_call7_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
@@ -176,7 +169,6 @@ call8_proxy:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_call8_proxy_label1
 .L__kefir_func_call8_proxy_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax

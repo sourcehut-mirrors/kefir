@@ -14,13 +14,10 @@ test1:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label1:
     mov %rcx, %r10
     mov %rdi, %r11
     xor %eax, %eax
     mov %rax, %rbx
-    jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label2:
     cmp %esi, %ebx
     je .L__kefir_func_test1_label10
@@ -72,13 +69,10 @@ test2:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     mov %rcx, %r10
     mov %rdi, %r11
     xor %eax, %eax
     mov %rax, %rbx
-    jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label2:
 _kefir_local_public_label_test2_outer:
     cmp %esi, %ebx

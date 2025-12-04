@@ -11,8 +11,6 @@ testfn:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_testfn_label1
-.L__kefir_func_testfn_label1:
     mov %rsi, %rax
     mov %rdi, %rcx
     movq $0, -8(%rbp)

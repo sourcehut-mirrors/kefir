@@ -13,8 +13,6 @@ test2:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_test2_label1
-.L__kefir_func_test2_label1:
     mov %rdi, %rbx
     movl $1, -28(%rbp)
     movl $2, -24(%rbp)

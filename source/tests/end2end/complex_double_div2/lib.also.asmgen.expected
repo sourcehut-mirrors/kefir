@@ -13,8 +13,6 @@ divide:
     sub $80, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    jmp .L__kefir_func_divide_label1
-.L__kefir_func_divide_label1:
     movq %xmm0, -80(%rbp)
     movq %xmm1, -72(%rbp)
     movq %xmm2, -64(%rbp)

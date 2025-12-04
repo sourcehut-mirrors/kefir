@@ -11,9 +11,8 @@ factorial64:
 .loc 0 23 1
 .L__kefir_text_func_factorial64_begin:
 .L__kefir_func_factorial64_label35:
-    jmp .L__kefir_func_factorial64_label2
 .loc 0 24 5
-.L__kefir_func_factorial64_label2:
+.L__kefir_func_factorial64_label53:
     cmp $0, %rdi
     jl .L__kefir_func_factorial64_label26
     jmp .L__kefir_func_factorial64_label6
@@ -412,7 +411,7 @@ __kefir_debug_rnglists_section_begin:
     .long 0
 __kefir_debug_rnglist_section_entry_2:
     .byte 4
-    .uleb128 .L__kefir_func_factorial64_label2 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label53 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial64_label138 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_3:

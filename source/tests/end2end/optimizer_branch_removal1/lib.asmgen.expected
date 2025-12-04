@@ -25,7 +25,6 @@ test1:
 .L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label2:
     pop %rbp
     ret
@@ -36,10 +35,8 @@ test2:
 .L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label2:
     call somefn2@PLT
-    jmp .L__kefir_func_test2_label3
 .L__kefir_func_test2_label3:
     pop %rbp
     ret
@@ -50,10 +47,8 @@ test3:
 .L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test3_label2
 .L__kefir_func_test3_label2:
     call somefn@PLT
-    jmp .L__kefir_func_test3_label3
 .L__kefir_func_test3_label3:
     pop %rbp
     ret
@@ -64,10 +59,8 @@ test4:
 .L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test4_label1
 .L__kefir_func_test4_label1:
     call somefn@PLT
-    jmp .L__kefir_func_test4_label2
 .L__kefir_func_test4_label2:
     pop %rbp
     ret
@@ -78,7 +71,6 @@ test5:
 .L__kefir_func_test5_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test5_label1
 .L__kefir_func_test5_label1:
     call somefn@PLT
     jmp .L__kefir_func_test5_label1
@@ -89,10 +81,8 @@ test6:
 .L__kefir_func_test6_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test6_label1
 .L__kefir_func_test6_label1:
     mov $1, %rax
-    jmp .L__kefir_func_test6_label2
 .L__kefir_func_test6_label2:
     pop %rbp
     ret
@@ -103,15 +93,12 @@ test7:
 .L__kefir_func_test7_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_test7_label2
 .L__kefir_func_test7_label2:
     mov $0, %rax
-    jmp .L__kefir_func_test7_label3
 .L__kefir_func_test7_label3:
     test %eax, %eax
     setne %al
     movzx %al, %rax
-    jmp .L__kefir_func_test7_label4
 .L__kefir_func_test7_label4:
     pop %rbp
     ret

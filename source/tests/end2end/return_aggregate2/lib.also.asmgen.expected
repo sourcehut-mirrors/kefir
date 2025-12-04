@@ -16,8 +16,6 @@ test:
     push %r12
     sub $16, %rsp
     mov %rdi, %r12
-    jmp .L__kefir_func_test_label1
-.L__kefir_func_test_label1:
     mov %rsi, %rbx
     movb $0, -17(%rbp)
     leaq -17(%rbp), %rdi

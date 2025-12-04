@@ -46,8 +46,6 @@
 .L__kefir_text_section_begin:
 get_d32_inf:
 .L__kefir_text_func_get_d32_inf_begin:
-    jmp .L__kefir_func_get_d32_inf_label1
-.L__kefir_func_get_d32_inf_label1:
     movd .L__kefir_func_get_d32_inf_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d32_inf_end:
@@ -59,8 +57,6 @@ get_d32_inf:
 
 get_d32_nan:
 .L__kefir_text_func_get_d32_nan_begin:
-    jmp .L__kefir_func_get_d32_nan_label1
-.L__kefir_func_get_d32_nan_label1:
     movd .L__kefir_func_get_d32_nan_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d32_nan_end:
@@ -72,8 +68,6 @@ get_d32_nan:
 
 get_d64_inf:
 .L__kefir_text_func_get_d64_inf_begin:
-    jmp .L__kefir_func_get_d64_inf_label1
-.L__kefir_func_get_d64_inf_label1:
     movq .L__kefir_func_get_d64_inf_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d64_inf_end:
@@ -85,8 +79,6 @@ get_d64_inf:
 
 get_d64_nan:
 .L__kefir_text_func_get_d64_nan_begin:
-    jmp .L__kefir_func_get_d64_nan_label1
-.L__kefir_func_get_d64_nan_label1:
     movq .L__kefir_func_get_d64_nan_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d64_nan_end:
@@ -98,8 +90,6 @@ get_d64_nan:
 
 get_d128_inf:
 .L__kefir_text_func_get_d128_inf_begin:
-    jmp .L__kefir_func_get_d128_inf_label1
-.L__kefir_func_get_d128_inf_label1:
     movdqu .L__kefir_func_get_d128_inf_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d128_inf_end:
@@ -111,8 +101,6 @@ get_d128_inf:
 
 get_d128_nan:
 .L__kefir_text_func_get_d128_nan_begin:
-    jmp .L__kefir_func_get_d128_nan_label1
-.L__kefir_func_get_d128_nan_label1:
     movdqu .L__kefir_func_get_d128_nan_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d128_nan_end:
@@ -124,8 +112,6 @@ get_d128_nan:
 
 get_d32_snan:
 .L__kefir_text_func_get_d32_snan_begin:
-    jmp .L__kefir_func_get_d32_snan_label1
-.L__kefir_func_get_d32_snan_label1:
     movd .L__kefir_func_get_d32_snan_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d32_snan_end:
@@ -137,8 +123,6 @@ get_d32_snan:
 
 get_d64_snan:
 .L__kefir_text_func_get_d64_snan_begin:
-    jmp .L__kefir_func_get_d64_snan_label1
-.L__kefir_func_get_d64_snan_label1:
     movq .L__kefir_func_get_d64_snan_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d64_snan_end:
@@ -150,8 +134,6 @@ get_d64_snan:
 
 get_d128_snan:
 .L__kefir_text_func_get_d128_snan_begin:
-    jmp .L__kefir_func_get_d128_snan_label1
-.L__kefir_func_get_d128_snan_label1:
     movdqu .L__kefir_func_get_d128_snan_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d128_snan_end:
@@ -163,8 +145,6 @@ get_d128_snan:
 
 get_d64x_snan:
 .L__kefir_text_func_get_d64x_snan_begin:
-    jmp .L__kefir_func_get_d64x_snan_label1
-.L__kefir_func_get_d64x_snan_label1:
     movdqu .L__kefir_func_get_d64x_snan_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_get_d64x_snan_end:

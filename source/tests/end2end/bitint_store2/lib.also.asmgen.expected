@@ -27,7 +27,6 @@ set1:
 .L__kefir_func_set1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_set1_label1
 .L__kefir_func_set1_label1:
     movq a@GOTPCREL(%rip), %rax
     mov $14, %rcx
@@ -43,7 +42,6 @@ set2:
 .L__kefir_func_set2_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_set2_label1
 .L__kefir_func_set2_label1:
     movq b@GOTPCREL(%rip), %rax
     mov $1024, %rcx
@@ -59,7 +57,6 @@ set3:
 .L__kefir_func_set3_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_set3_label1
 .L__kefir_func_set3_label1:
     movq c@GOTPCREL(%rip), %rax
     mov $2047468, %rcx
@@ -75,7 +72,6 @@ set4:
 .L__kefir_func_set4_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_set4_label1
 .L__kefir_func_set4_label1:
     movq d@GOTPCREL(%rip), %rax
     movabs $47426834430, %rcx
@@ -93,7 +89,6 @@ set5:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    jmp .L__kefir_func_set5_label1
 .L__kefir_func_set5_label1:
     movq e@GOTPCREL(%rip), %rbx
     movl $3736284861, -32(%rbp)
@@ -122,7 +117,6 @@ set6:
     mov %rsp, %rbp
     push %rbx
     sub $88, %rsp
-    jmp .L__kefir_func_set6_label1
 .L__kefir_func_set6_label1:
     movq f@GOTPCREL(%rip), %rbx
     movl $1735808086, -96(%rbp)
@@ -167,7 +161,6 @@ __kefir_bigint_cast_unsigned:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label1
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)

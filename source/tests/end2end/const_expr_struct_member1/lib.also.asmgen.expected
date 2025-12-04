@@ -21,8 +21,6 @@
 .L__kefir_text_section_begin:
 get_structure2:
 .L__kefir_text_func_get_structure2_begin:
-    jmp .L__kefir_func_get_structure2_label1
-.L__kefir_func_get_structure2_label1:
     lea structure2(%rip), %rax
     ret
 .L__kefir_text_func_get_structure2_end:

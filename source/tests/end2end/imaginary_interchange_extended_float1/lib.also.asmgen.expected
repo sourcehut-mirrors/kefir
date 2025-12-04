@@ -52,8 +52,6 @@ f32_op:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_f32_op_label1
-.L__kefir_func_f32_op_label1:
     movaps %xmm0, %xmm2
     cmp $0, %edi
     je .L__kefir_func_f32_op_label17
@@ -139,8 +137,6 @@ f64_op:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_f64_op_label1
-.L__kefir_func_f64_op_label1:
     movaps %xmm0, %xmm2
     cmp $0, %edi
     je .L__kefir_func_f64_op_label17
@@ -223,8 +219,6 @@ f80_op:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_f80_op_label1
-.L__kefir_func_f80_op_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)
@@ -341,8 +335,6 @@ f32x_op:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    jmp .L__kefir_func_f32x_op_label1
-.L__kefir_func_f32x_op_label1:
     movaps %xmm0, %xmm2
     cmp $0, %edi
     je .L__kefir_func_f32x_op_label17
@@ -425,8 +417,6 @@ f64x_op:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    jmp .L__kefir_func_f64x_op_label1
-.L__kefir_func_f64x_op_label1:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fstpt -48(%rbp)

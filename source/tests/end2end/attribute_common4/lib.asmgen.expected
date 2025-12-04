@@ -11,8 +11,6 @@
 getx:
 .L__kefir_text_func_getx_begin:
 .extern __tls_get_addr
-    jmp .L__kefir_func_getx_label1
-.L__kefir_func_getx_label1:
     data16     lea x@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT

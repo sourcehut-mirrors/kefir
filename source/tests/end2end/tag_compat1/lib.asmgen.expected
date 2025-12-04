@@ -11,7 +11,6 @@ fn1:
 .L__kefir_func_fn1_label0:
     push %rbp
     mov %rsp, %rbp
-    jmp .L__kefir_func_fn1_label1
 .L__kefir_func_fn1_label1:
     mov %rdi, %rax
     pop %rbp

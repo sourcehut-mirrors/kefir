@@ -26,12 +26,9 @@ add_i128:
     push %r14
     push %r15
     sub $56, %rsp
-    jmp .L__kefir_func_add_i128_label1
-.L__kefir_func_add_i128_label1:
     mov %rsi, %r13
     mov %rdx, %r14
     mov %rdi, %r15
-    jmp .L__kefir_func_add_i128_label2
 .L__kefir_func_add_i128_label2:
     leaq -96(%rbp), %rax
     mov %rax, %rdx
@@ -85,12 +82,9 @@ add_u128:
     push %r14
     push %r15
     sub $56, %rsp
-    jmp .L__kefir_func_add_u128_label1
-.L__kefir_func_add_u128_label1:
     mov %rsi, %r13
     mov %rdx, %r14
     mov %rdi, %r15
-    jmp .L__kefir_func_add_u128_label2
 .L__kefir_func_add_u128_label2:
     leaq -96(%rbp), %rax
     mov %rax, %rdx
@@ -139,8 +133,6 @@ load_i128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_load_i128_label1
-.L__kefir_func_load_i128_label1:
     leaq -16(%rbp), %rax
     mov %rax, %rdx
     mov %rdi, %rsi
@@ -159,8 +151,6 @@ load_u128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    jmp .L__kefir_func_load_u128_label1
-.L__kefir_func_load_u128_label1:
     leaq -16(%rbp), %rax
     mov %rax, %rdx
     mov %rdi, %rsi
@@ -179,8 +169,6 @@ store_i128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_store_i128_label1
-.L__kefir_func_store_i128_label1:
     mov %rsi, -32(%rbp)
     mov %rdx, -24(%rbp)
     mov %rdi, %rsi
@@ -199,8 +187,6 @@ store_u128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    jmp .L__kefir_func_store_u128_label1
-.L__kefir_func_store_u128_label1:
     mov %rsi, -32(%rbp)
     mov %rdx, -24(%rbp)
     mov %rdi, %rsi

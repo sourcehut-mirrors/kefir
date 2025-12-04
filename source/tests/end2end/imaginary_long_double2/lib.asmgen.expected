@@ -30,8 +30,6 @@
 .L__kefir_text_section_begin:
 d32_to_fi80:
 .L__kefir_text_func_d32_to_fi80_begin:
-    jmp .L__kefir_func_d32_to_fi80_label1
-.L__kefir_func_d32_to_fi80_label1:
     fldt .L__kefir_func_d32_to_fi80_label4(%rip)
     ret
 .L__kefir_text_func_d32_to_fi80_end:
@@ -44,8 +42,6 @@ d32_to_fi80:
 
 d64_to_fi80:
 .L__kefir_text_func_d64_to_fi80_begin:
-    jmp .L__kefir_func_d64_to_fi80_label1
-.L__kefir_func_d64_to_fi80_label1:
     fldt .L__kefir_func_d64_to_fi80_label4(%rip)
     ret
 .L__kefir_text_func_d64_to_fi80_end:
@@ -58,8 +54,6 @@ d64_to_fi80:
 
 fi80_to_d32:
 .L__kefir_text_func_fi80_to_d32_begin:
-    jmp .L__kefir_func_fi80_to_d32_label1
-.L__kefir_func_fi80_to_d32_label1:
     movd .L__kefir_func_fi80_to_d32_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_fi80_to_d32_end:
@@ -71,8 +65,6 @@ fi80_to_d32:
 
 fi80_to_d64:
 .L__kefir_text_func_fi80_to_d64_begin:
-    jmp .L__kefir_func_fi80_to_d64_label1
-.L__kefir_func_fi80_to_d64_label1:
     movq .L__kefir_func_fi80_to_d64_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_fi80_to_d64_end:
@@ -84,8 +76,6 @@ fi80_to_d64:
 
 d128_to_fi80:
 .L__kefir_text_func_d128_to_fi80_begin:
-    jmp .L__kefir_func_d128_to_fi80_label1
-.L__kefir_func_d128_to_fi80_label1:
     fldt .L__kefir_func_d128_to_fi80_label4(%rip)
     ret
 .L__kefir_text_func_d128_to_fi80_end:
@@ -98,8 +88,6 @@ d128_to_fi80:
 
 fi80_to_d128:
 .L__kefir_text_func_fi80_to_d128_begin:
-    jmp .L__kefir_func_fi80_to_d128_label1
-.L__kefir_func_fi80_to_d128_label1:
     movdqu .L__kefir_func_fi80_to_d128_label4(%rip), %xmm0
     ret
 .L__kefir_text_func_fi80_to_d128_end:
