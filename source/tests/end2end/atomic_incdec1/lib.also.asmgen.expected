@@ -54,8 +54,8 @@ predec_i8:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgb %cl, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_predec_i8_label2
     jmp .L__kefir_func_predec_i8_label8
 .L__kefir_func_predec_i8_label8:
@@ -138,8 +138,8 @@ preinc_i8:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgb %cl, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_preinc_i8_label2
     jmp .L__kefir_func_preinc_i8_label8
 .L__kefir_func_preinc_i8_label8:
@@ -318,8 +318,8 @@ predec_i16:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgw %cx, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_predec_i16_label2
     jmp .L__kefir_func_predec_i16_label8
 .L__kefir_func_predec_i16_label8:
@@ -337,8 +337,8 @@ predec_i32:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_predec_i32_label2
     jmp .L__kefir_func_predec_i32_label8
 .L__kefir_func_predec_i32_label8:
@@ -355,8 +355,8 @@ predec_i64:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_predec_i64_label2
     jmp .L__kefir_func_predec_i64_label8
 .L__kefir_func_predec_i64_label8:
@@ -373,8 +373,8 @@ predec_ptr:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_predec_ptr_label2
     jmp .L__kefir_func_predec_ptr_label8
 .L__kefir_func_predec_ptr_label8:
@@ -488,8 +488,8 @@ preinc_i16:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgw %cx, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_preinc_i16_label2
     jmp .L__kefir_func_preinc_i16_label8
 .L__kefir_func_preinc_i16_label8:
@@ -507,8 +507,8 @@ preinc_i32:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_preinc_i32_label2
     jmp .L__kefir_func_preinc_i32_label8
 .L__kefir_func_preinc_i32_label8:
@@ -525,8 +525,8 @@ preinc_i64:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_preinc_i64_label2
     jmp .L__kefir_func_preinc_i64_label8
 .L__kefir_func_preinc_i64_label8:
@@ -543,8 +543,8 @@ preinc_ptr:
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_preinc_ptr_label2
     jmp .L__kefir_func_preinc_ptr_label8
 .L__kefir_func_preinc_ptr_label8:

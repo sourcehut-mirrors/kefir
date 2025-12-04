@@ -737,8 +737,7 @@ uint_to_float32:
     pxor %xmm1, %xmm0
     mov $314159, %rax
     test $314159, %rax
-    js .L__kefir_func_uint_to_float32_label3
-    jmp .L__kefir_func_uint_to_float32_label2
+    jns .L__kefir_func_uint_to_float32_label2
 .L__kefir_func_uint_to_float32_label3:
     mov $314159, %rax
     mov $314159, %rcx
@@ -770,8 +769,7 @@ uint_to_float64:
     pxor %xmm1, %xmm0
     mov $31415926, %rax
     test $31415926, %rax
-    js .L__kefir_func_uint_to_float64_label3
-    jmp .L__kefir_func_uint_to_float64_label2
+    jns .L__kefir_func_uint_to_float64_label2
 .L__kefir_func_uint_to_float64_label3:
     mov $31415926, %rax
     mov $31415926, %rcx

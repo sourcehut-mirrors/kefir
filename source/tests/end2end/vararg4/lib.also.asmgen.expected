@@ -33,7 +33,7 @@ get:
     mov %rcx, -200(%rbp)
     mov %r8, -192(%rbp)
     mov %r9, -184(%rbp)
-    fldt .L__kefir_func_get_label18(%rip)
+    fldt .L__kefir_func_get_label17(%rip)
     fstpt -240(%rbp)
     cmp $0, %edi
     jg .L__kefir_func_get_label7
@@ -75,7 +75,7 @@ get:
 .L__kefir_text_func_get_end:
 .section .rodata
     .align 8
-.L__kefir_func_get_label18:
+.L__kefir_func_get_label17:
     .quad 9223372036854775808
     .quad 49151
 .section .text

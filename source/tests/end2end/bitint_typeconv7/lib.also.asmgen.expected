@@ -69,10 +69,8 @@ get3:
 .L__kefir_func_get3_label1:
     movd .L__kefir_func_get3_label7(%rip), %xmm0
     comiss .L__kefir_constant_float32_to_uint(%rip), %xmm0
-    jnb .L__kefir_func_get3_label8
+    jnb .L__kefir_func_get3_label3
     jmp .L__kefir_func_get3_label2
-.L__kefir_func_get3_label8:
-    jmp .L__kefir_func_get3_label3
 .L__kefir_func_get3_label3:
     subss .L__kefir_constant_float32_to_uint(%rip), %xmm0
     cvttss2si %xmm0, %rax
@@ -139,10 +137,8 @@ get6:
 .L__kefir_func_get6_label1:
     movq .L__kefir_func_get6_label7(%rip), %xmm0
     comisd .L__kefir_constant_float64_to_uint(%rip), %xmm0
-    jnb .L__kefir_func_get6_label8
+    jnb .L__kefir_func_get6_label3
     jmp .L__kefir_func_get6_label2
-.L__kefir_func_get6_label8:
-    jmp .L__kefir_func_get6_label3
 .L__kefir_func_get6_label3:
     subsd .L__kefir_constant_float64_to_uint(%rip), %xmm0
     cvttsd2si %xmm0, %rax

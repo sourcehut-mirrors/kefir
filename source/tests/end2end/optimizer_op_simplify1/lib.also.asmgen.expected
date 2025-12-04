@@ -25,10 +25,8 @@ dnot:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jnz .L__kefir_func_dnot_label10
+    jnz .L__kefir_func_dnot_label8
     jmp .L__kefir_func_dnot_label9
-.L__kefir_func_dnot_label10:
-    jmp .L__kefir_func_dnot_label8
 .L__kefir_func_dnot_label8:
     jmp .L__kefir_func_dnot_label5
 .L__kefir_func_dnot_label9:
@@ -57,17 +55,13 @@ dnotd:
     movq -16(%rbp), %rax
     movq %rax, %xmm0
     ucomisd .L__kefir_func_dnotd_label12(%rip), %xmm0
-    jp .L__kefir_func_dnotd_label13
+    jp .L__kefir_func_dnotd_label11
     jmp .L__kefir_func_dnotd_label2
-.L__kefir_func_dnotd_label13:
-    jmp .L__kefir_func_dnotd_label11
 .L__kefir_func_dnotd_label11:
     jmp .L__kefir_func_dnotd_label6
 .L__kefir_func_dnotd_label2:
-    jne .L__kefir_func_dnotd_label14
+    jne .L__kefir_func_dnotd_label10
     jmp .L__kefir_func_dnotd_label9
-.L__kefir_func_dnotd_label14:
-    jmp .L__kefir_func_dnotd_label10
 .L__kefir_func_dnotd_label6:
     mov $1, %rax
     ldmxcsr -8(%rbp)
@@ -102,17 +96,13 @@ dnotf:
     movl -12(%rbp), %eax
     movd %eax, %xmm0
     ucomiss .L__kefir_func_dnotf_label12(%rip), %xmm0
-    jp .L__kefir_func_dnotf_label13
+    jp .L__kefir_func_dnotf_label11
     jmp .L__kefir_func_dnotf_label2
-.L__kefir_func_dnotf_label13:
-    jmp .L__kefir_func_dnotf_label11
 .L__kefir_func_dnotf_label11:
     jmp .L__kefir_func_dnotf_label6
 .L__kefir_func_dnotf_label2:
-    jne .L__kefir_func_dnotf_label14
+    jne .L__kefir_func_dnotf_label10
     jmp .L__kefir_func_dnotf_label9
-.L__kefir_func_dnotf_label14:
-    jmp .L__kefir_func_dnotf_label10
 .L__kefir_func_dnotf_label6:
     mov $1, %rax
     ldmxcsr -8(%rbp)
@@ -156,10 +146,8 @@ dnotld:
     setnp %al
     cmovne %rcx, %rax
     test %al, %al
-    jz .L__kefir_func_dnotld_label11
+    jz .L__kefir_func_dnotld_label8
     jmp .L__kefir_func_dnotld_label9
-.L__kefir_func_dnotld_label11:
-    jmp .L__kefir_func_dnotld_label8
 .L__kefir_func_dnotld_label8:
     jmp .L__kefir_func_dnotld_label5
 .L__kefir_func_dnotld_label9:

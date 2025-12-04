@@ -75,10 +75,8 @@ f32_predec:
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_f32_predec_label13
+    jz .L__kefir_func_f32_predec_label4
     jmp .L__kefir_func_f32_predec_label3
-.L__kefir_func_f32_predec_label13:
-    jmp .L__kefir_func_f32_predec_label4
 .L__kefir_func_f32_predec_label3:
     jmp .L__kefir_func_f32_predec_label6
 .L__kefir_func_f32_predec_label4:
@@ -185,10 +183,8 @@ f32_preinc:
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_f32_preinc_label13
+    jz .L__kefir_func_f32_preinc_label4
     jmp .L__kefir_func_f32_preinc_label3
-.L__kefir_func_f32_preinc_label13:
-    jmp .L__kefir_func_f32_preinc_label4
 .L__kefir_func_f32_preinc_label3:
     jmp .L__kefir_func_f32_preinc_label6
 .L__kefir_func_f32_preinc_label4:
@@ -272,19 +268,19 @@ f64_predec:
     movq -120(%rbp), %xmm1
     movq .L__kefir_func_f64_predec_label11(%rip), %xmm2
     movq .L__kefir_func_f64_predec_label12(%rip), %xmm3
-    movdqu %xmm0, -48(%rbp)
-    movq -48(%rbp), %xmm4
+    movdqu %xmm0, -64(%rbp)
+    movq -64(%rbp), %xmm4
     addsd %xmm2, %xmm4
-    movq %xmm4, -48(%rbp)
-    movdqu %xmm1, -64(%rbp)
-    movq -64(%rbp), %xmm2
+    movq %xmm4, -64(%rbp)
+    movdqu %xmm1, -48(%rbp)
+    movq -48(%rbp), %xmm2
     addsd %xmm3, %xmm2
-    movq %xmm2, -64(%rbp)
+    movq %xmm2, -48(%rbp)
     movq %xmm0, -128(%rbp)
     movq %xmm1, -120(%rbp)
-    movq -48(%rbp), %xmm0
-    movq %xmm0, -112(%rbp)
     movq -64(%rbp), %xmm0
+    movq %xmm0, -112(%rbp)
+    movq -48(%rbp), %xmm0
     movq %xmm0, -104(%rbp)
     mov %rbx, %rsi
     mov $5, %r8
@@ -295,10 +291,8 @@ f64_predec:
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_f64_predec_label13
+    jz .L__kefir_func_f64_predec_label4
     jmp .L__kefir_func_f64_predec_label3
-.L__kefir_func_f64_predec_label13:
-    jmp .L__kefir_func_f64_predec_label4
 .L__kefir_func_f64_predec_label3:
     jmp .L__kefir_func_f64_predec_label6
 .L__kefir_func_f64_predec_label4:
@@ -322,8 +316,8 @@ f64_predec:
     stmxcsr -128(%rbp)
     orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
-    movdqu -48(%rbp), %xmm0
-    movdqu -64(%rbp), %xmm1
+    movdqu -64(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm1
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -382,19 +376,19 @@ f64_preinc:
     movq -120(%rbp), %xmm1
     movq .L__kefir_func_f64_preinc_label11(%rip), %xmm2
     movq .L__kefir_func_f64_preinc_label12(%rip), %xmm3
-    movdqu %xmm0, -48(%rbp)
-    movq -48(%rbp), %xmm4
+    movdqu %xmm0, -64(%rbp)
+    movq -64(%rbp), %xmm4
     addsd %xmm2, %xmm4
-    movq %xmm4, -48(%rbp)
-    movdqu %xmm1, -64(%rbp)
-    movq -64(%rbp), %xmm2
+    movq %xmm4, -64(%rbp)
+    movdqu %xmm1, -48(%rbp)
+    movq -48(%rbp), %xmm2
     addsd %xmm3, %xmm2
-    movq %xmm2, -64(%rbp)
+    movq %xmm2, -48(%rbp)
     movq %xmm0, -128(%rbp)
     movq %xmm1, -120(%rbp)
-    movq -48(%rbp), %xmm0
-    movq %xmm0, -112(%rbp)
     movq -64(%rbp), %xmm0
+    movq %xmm0, -112(%rbp)
+    movq -48(%rbp), %xmm0
     movq %xmm0, -104(%rbp)
     mov %rbx, %rsi
     mov $5, %r8
@@ -405,10 +399,8 @@ f64_preinc:
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_f64_preinc_label13
+    jz .L__kefir_func_f64_preinc_label4
     jmp .L__kefir_func_f64_preinc_label3
-.L__kefir_func_f64_preinc_label13:
-    jmp .L__kefir_func_f64_preinc_label4
 .L__kefir_func_f64_preinc_label3:
     jmp .L__kefir_func_f64_preinc_label6
 .L__kefir_func_f64_preinc_label4:
@@ -432,8 +424,8 @@ f64_preinc:
     stmxcsr -128(%rbp)
     orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
-    movdqu -48(%rbp), %xmm0
-    movdqu -64(%rbp), %xmm1
+    movdqu -64(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm1
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -513,10 +505,8 @@ f32_postdec:
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_f32_postdec_label13
+    jz .L__kefir_func_f32_postdec_label4
     jmp .L__kefir_func_f32_postdec_label3
-.L__kefir_func_f32_postdec_label13:
-    jmp .L__kefir_func_f32_postdec_label4
 .L__kefir_func_f32_postdec_label3:
     jmp .L__kefir_func_f32_postdec_label6
 .L__kefir_func_f32_postdec_label4:
@@ -621,10 +611,8 @@ f32_postinc:
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_f32_postinc_label13
+    jz .L__kefir_func_f32_postinc_label4
     jmp .L__kefir_func_f32_postinc_label3
-.L__kefir_func_f32_postinc_label13:
-    jmp .L__kefir_func_f32_postinc_label4
 .L__kefir_func_f32_postinc_label3:
     jmp .L__kefir_func_f32_postinc_label6
 .L__kefir_func_f32_postinc_label4:
@@ -729,10 +717,8 @@ f64_postdec:
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_f64_postdec_label13
+    jz .L__kefir_func_f64_postdec_label4
     jmp .L__kefir_func_f64_postdec_label3
-.L__kefir_func_f64_postdec_label13:
-    jmp .L__kefir_func_f64_postdec_label4
 .L__kefir_func_f64_postdec_label3:
     jmp .L__kefir_func_f64_postdec_label6
 .L__kefir_func_f64_postdec_label4:
@@ -837,10 +823,8 @@ f64_postinc:
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_f64_postinc_label13
+    jz .L__kefir_func_f64_postinc_label4
     jmp .L__kefir_func_f64_postinc_label3
-.L__kefir_func_f64_postinc_label13:
-    jmp .L__kefir_func_f64_postinc_label4
 .L__kefir_func_f64_postinc_label3:
     jmp .L__kefir_func_f64_postinc_label6
 .L__kefir_func_f64_postinc_label4:

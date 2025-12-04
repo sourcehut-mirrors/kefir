@@ -13,10 +13,8 @@ test1:
     mov %rsp, %rbp
     sub $224, %rsp
     test %al, %al
-    je .L__kefir_func_test1_label16
+    je .L__kefir_func_test1_label15
     jmp .L__kefir_func_test1_label1
-.L__kefir_func_test1_label16:
-    jmp .L__kefir_func_test1_label15
 .L__kefir_func_test1_label1:
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
@@ -46,10 +44,8 @@ test1:
 .L__kefir_func_test1_label4:
     movl -32(%rbp), %eax
     cmp $48, %eax
-    jae .L__kefir_func_test1_label17
+    jae .L__kefir_func_test1_label6
     jmp .L__kefir_func_test1_label5
-.L__kefir_func_test1_label17:
-    jmp .L__kefir_func_test1_label6
 .L__kefir_func_test1_label5:
     lea 8(%rax), %rax
     movl %eax, -32(%rbp)
@@ -68,10 +64,8 @@ test1:
     add $-1, %ecx
     movl %ecx, -48(%rbp)
     test %eax, %eax
-    jz .L__kefir_func_test1_label18
+    jz .L__kefir_func_test1_label13
     jmp .L__kefir_func_test1_label14
-.L__kefir_func_test1_label18:
-    jmp .L__kefir_func_test1_label13
 .L__kefir_func_test1_label14:
     jmp .L__kefir_func_test1_label4
 .L__kefir_func_test1_label13:

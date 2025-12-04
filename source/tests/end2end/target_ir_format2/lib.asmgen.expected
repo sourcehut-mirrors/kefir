@@ -2400,10 +2400,8 @@ test2:
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz .L__kefir_func_test2_label12
+    jz .L__kefir_func_test2_label4
     jmp .L__kefir_func_test2_label11
-.L__kefir_func_test2_label12:
-    jmp .L__kefir_func_test2_label4
 .L__kefir_func_test2_label11:
     jmp .L__kefir_func_test2_label6
 .L__kefir_func_test2_label4:

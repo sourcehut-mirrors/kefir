@@ -42,8 +42,7 @@ eval2:
     movq -8(%rbp), %rsi
     movq -24(%rbp), %rcx
     cmp $0, %rdx
-    jz .L__kefir_func_eval2_label6
-    jmp .L__kefir_func_eval2_label2
+    jnz .L__kefir_func_eval2_label2
 .L__kefir_func_eval2_label6:
     mov %rdx, %rcx
     jmp .L__kefir_func_eval2_label3

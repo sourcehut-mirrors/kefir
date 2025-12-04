@@ -30,16 +30,16 @@ get:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get_label5
     jmp .L__kefir_func_get_label2
 .L__kefir_func_get_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get_label3
 .L__kefir_func_get_label3:
     insertps $16, %xmm1, %xmm0
@@ -48,14 +48,13 @@ get:
     ret
 .L__kefir_func_get_label5:
     cmp $1, %esi
-    je .L__kefir_func_get_label11
-    jmp .L__kefir_func_get_label6
+    jne .L__kefir_func_get_label6
 .L__kefir_func_get_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get_label3
 .L__kefir_func_get_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get_label3
 .L__kefir_text_func_get_end:
 
@@ -65,16 +64,16 @@ get2:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get2_label5
     jmp .L__kefir_func_get2_label2
 .L__kefir_func_get2_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get2_label3
 .L__kefir_func_get2_label3:
     insertps $16, %xmm1, %xmm0
@@ -83,14 +82,13 @@ get2:
     ret
 .L__kefir_func_get2_label5:
     cmp $2, %esi
-    jne .L__kefir_func_get2_label11
-    jmp .L__kefir_func_get2_label6
+    je .L__kefir_func_get2_label6
 .L__kefir_func_get2_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get2_label3
 .L__kefir_func_get2_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get2_label3
 .L__kefir_text_func_get2_end:
 
@@ -100,16 +98,16 @@ get3:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get3_label5
     jmp .L__kefir_func_get3_label2
 .L__kefir_func_get3_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get3_label3
 .L__kefir_func_get3_label3:
     insertps $16, %xmm1, %xmm0
@@ -118,14 +116,13 @@ get3:
     ret
 .L__kefir_func_get3_label5:
     cmp $3, %esi
-    jg .L__kefir_func_get3_label11
-    jmp .L__kefir_func_get3_label6
+    jle .L__kefir_func_get3_label6
 .L__kefir_func_get3_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get3_label3
 .L__kefir_func_get3_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get3_label3
 .L__kefir_text_func_get3_end:
 
@@ -135,16 +132,16 @@ get4:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get4_label5
     jmp .L__kefir_func_get4_label2
 .L__kefir_func_get4_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get4_label3
 .L__kefir_func_get4_label3:
     insertps $16, %xmm1, %xmm0
@@ -153,14 +150,13 @@ get4:
     ret
 .L__kefir_func_get4_label5:
     cmp $4, %esi
-    jge .L__kefir_func_get4_label11
-    jmp .L__kefir_func_get4_label6
+    jl .L__kefir_func_get4_label6
 .L__kefir_func_get4_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get4_label3
 .L__kefir_func_get4_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get4_label3
 .L__kefir_text_func_get4_end:
 
@@ -170,16 +166,16 @@ get5:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get5_label5
     jmp .L__kefir_func_get5_label2
 .L__kefir_func_get5_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get5_label3
 .L__kefir_func_get5_label3:
     insertps $16, %xmm1, %xmm0
@@ -188,14 +184,13 @@ get5:
     ret
 .L__kefir_func_get5_label5:
     cmp $-3, %esi
-    jl .L__kefir_func_get5_label11
-    jmp .L__kefir_func_get5_label6
+    jge .L__kefir_func_get5_label6
 .L__kefir_func_get5_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get5_label3
 .L__kefir_func_get5_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get5_label3
 .L__kefir_text_func_get5_end:
 
@@ -205,16 +200,16 @@ get6:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get6_label5
     jmp .L__kefir_func_get6_label2
 .L__kefir_func_get6_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get6_label3
 .L__kefir_func_get6_label3:
     insertps $16, %xmm1, %xmm0
@@ -223,14 +218,13 @@ get6:
     ret
 .L__kefir_func_get6_label5:
     cmp $-4, %esi
-    jle .L__kefir_func_get6_label11
-    jmp .L__kefir_func_get6_label6
+    jg .L__kefir_func_get6_label6
 .L__kefir_func_get6_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get6_label3
 .L__kefir_func_get6_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get6_label3
 .L__kefir_text_func_get6_end:
 
@@ -240,16 +234,16 @@ get7:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get7_label5
     jmp .L__kefir_func_get7_label2
 .L__kefir_func_get7_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get7_label3
 .L__kefir_func_get7_label3:
     insertps $16, %xmm1, %xmm0
@@ -258,14 +252,13 @@ get7:
     ret
 .L__kefir_func_get7_label5:
     cmp $30, %esi
-    ja .L__kefir_func_get7_label11
-    jmp .L__kefir_func_get7_label6
+    jbe .L__kefir_func_get7_label6
 .L__kefir_func_get7_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get7_label3
 .L__kefir_func_get7_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get7_label3
 .L__kefir_text_func_get7_end:
 
@@ -275,16 +268,16 @@ get8:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get8_label5
     jmp .L__kefir_func_get8_label2
 .L__kefir_func_get8_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get8_label3
 .L__kefir_func_get8_label3:
     insertps $16, %xmm1, %xmm0
@@ -293,14 +286,13 @@ get8:
     ret
 .L__kefir_func_get8_label5:
     cmp $40, %esi
-    jae .L__kefir_func_get8_label11
-    jmp .L__kefir_func_get8_label6
+    jb .L__kefir_func_get8_label6
 .L__kefir_func_get8_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get8_label3
 .L__kefir_func_get8_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get8_label3
 .L__kefir_text_func_get8_end:
 
@@ -310,16 +302,16 @@ get9:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get9_label5
     jmp .L__kefir_func_get9_label2
 .L__kefir_func_get9_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get9_label3
 .L__kefir_func_get9_label3:
     insertps $16, %xmm1, %xmm0
@@ -328,14 +320,13 @@ get9:
     ret
 .L__kefir_func_get9_label5:
     cmp $100, %esi
-    jb .L__kefir_func_get9_label11
-    jmp .L__kefir_func_get9_label6
+    jae .L__kefir_func_get9_label6
 .L__kefir_func_get9_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get9_label3
 .L__kefir_func_get9_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get9_label3
 .L__kefir_text_func_get9_end:
 
@@ -345,16 +336,16 @@ get10:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm3
+    shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get10_label5
     jmp .L__kefir_func_get10_label2
 .L__kefir_func_get10_label2:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get10_label3
 .L__kefir_func_get10_label3:
     insertps $16, %xmm1, %xmm0
@@ -363,14 +354,13 @@ get10:
     ret
 .L__kefir_func_get10_label5:
     cmp $200, %esi
-    jbe .L__kefir_func_get10_label11
-    jmp .L__kefir_func_get10_label6
+    ja .L__kefir_func_get10_label6
 .L__kefir_func_get10_label11:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_get10_label3
 .L__kefir_func_get10_label6:
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm4, %xmm1
     jmp .L__kefir_func_get10_label3
 .L__kefir_text_func_get10_end:
 

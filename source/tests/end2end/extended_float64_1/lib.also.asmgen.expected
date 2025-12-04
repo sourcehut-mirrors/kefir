@@ -70,7 +70,7 @@ conv2:
     sub $16, %rsp
     fstcw -8(%rbp)
 .loc 0 87 5
-.L__kefir_func_conv2_label41:
+.L__kefir_func_conv2_label40:
     push %rdi
     fildq (%rsp)
     add $8, %rsp
@@ -78,7 +78,7 @@ conv2:
 .L__kefir_func_conv2_label37:
     jns .L__kefir_func_conv2_label6
     jmp .L__kefir_func_conv2_label4
-.L__kefir_func_conv2_label42:
+.L__kefir_func_conv2_label41:
     jmp .L__kefir_func_conv2_label6
 .loc 0 87 5
 .L__kefir_func_conv2_label4:
@@ -89,7 +89,7 @@ conv2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv2_label56:
+.L__kefir_func_conv2_label55:
 .L__kefir_text_func_conv2_end:
 
 conv3:

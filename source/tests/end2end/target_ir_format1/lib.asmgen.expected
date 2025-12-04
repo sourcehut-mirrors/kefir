@@ -2726,10 +2726,8 @@ factorial:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_func_factorial_label23
+    jz .L__kefir_func_factorial_label20
     jmp .L__kefir_func_factorial_label18
-.L__kefir_func_factorial_label23:
-    jmp .L__kefir_func_factorial_label20
 .L__kefir_func_factorial_label20:
     jmp .L__kefir_func_factorial_label14
 .L__kefir_func_factorial_label18:
@@ -2756,10 +2754,8 @@ factorial:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_func_factorial_label24
+    jz .L__kefir_func_factorial_label19
     jmp .L__kefir_func_factorial_label21
-.L__kefir_func_factorial_label24:
-    jmp .L__kefir_func_factorial_label19
 .L__kefir_func_factorial_label21:
     jmp .L__kefir_func_factorial_label5
 .L__kefir_func_factorial_label19:
@@ -2781,10 +2777,8 @@ factorial:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_func_factorial_label25
+    jz .L__kefir_func_factorial_label17
     jmp .L__kefir_func_factorial_label22
-.L__kefir_func_factorial_label25:
-    jmp .L__kefir_func_factorial_label17
 .L__kefir_func_factorial_label17:
     jmp .L__kefir_func_factorial_label10
 .L__kefir_func_factorial_label22:

@@ -33,10 +33,8 @@ test1:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_func_test1_label11
+    jz .L__kefir_func_test1_label10
     jmp .L__kefir_func_test1_label9
-.L__kefir_func_test1_label11:
-    jmp .L__kefir_func_test1_label10
 .L__kefir_func_test1_label10:
     jmp .L__kefir_func_test1_label6
 .L__kefir_func_test1_label9:
@@ -70,10 +68,8 @@ test2:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_func_test2_label11
+    jz .L__kefir_func_test2_label10
     jmp .L__kefir_func_test2_label9
-.L__kefir_func_test2_label11:
-    jmp .L__kefir_func_test2_label10
 .L__kefir_func_test2_label10:
     jmp .L__kefir_func_test2_label6
 .L__kefir_func_test2_label9:
@@ -107,10 +103,8 @@ test3:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_func_test3_label11
+    jz .L__kefir_func_test3_label10
     jmp .L__kefir_func_test3_label9
-.L__kefir_func_test3_label11:
-    jmp .L__kefir_func_test3_label10
 .L__kefir_func_test3_label10:
     jmp .L__kefir_func_test3_label6
 .L__kefir_func_test3_label9:
@@ -144,10 +138,8 @@ test4:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_func_test4_label11
+    jz .L__kefir_func_test4_label10
     jmp .L__kefir_func_test4_label9
-.L__kefir_func_test4_label11:
-    jmp .L__kefir_func_test4_label10
 .L__kefir_func_test4_label10:
     jmp .L__kefir_func_test4_label6
 .L__kefir_func_test4_label9:
@@ -184,10 +176,8 @@ test5:
     test %al, %al
     sete %al
     test %al, %al
-    jz .L__kefir_func_test5_label11
+    jz .L__kefir_func_test5_label10
     jmp .L__kefir_func_test5_label9
-.L__kefir_func_test5_label11:
-    jmp .L__kefir_func_test5_label10
 .L__kefir_func_test5_label10:
     jmp .L__kefir_func_test5_label6
 .L__kefir_func_test5_label9:
@@ -231,10 +221,8 @@ test6:
     test %al, %al
     sete %al
     test %al, %al
-    jz .L__kefir_func_test6_label11
+    jz .L__kefir_func_test6_label10
     jmp .L__kefir_func_test6_label9
-.L__kefir_func_test6_label11:
-    jmp .L__kefir_func_test6_label10
 .L__kefir_func_test6_label10:
     jmp .L__kefir_func_test6_label6
 .L__kefir_func_test6_label9:
@@ -277,10 +265,8 @@ __kefir_bigint_is_zero:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label29
+    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label21
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label27
-.L__kefir_runtime_func___kefir_bigint_is_zero_label29:
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label21
 .L__kefir_runtime_func___kefir_bigint_is_zero_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label18
 .L__kefir_runtime_func___kefir_bigint_is_zero_label27:
@@ -321,10 +307,8 @@ __kefir_bigint_is_zero:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label30
+    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label24
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label28
-.L__kefir_runtime_func___kefir_bigint_is_zero_label30:
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label24
 .L__kefir_runtime_func___kefir_bigint_is_zero_label24:
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label8
 .L__kefir_runtime_func___kefir_bigint_is_zero_label28:
@@ -348,10 +332,8 @@ __kefir_bigint_is_zero:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label31
+    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label25
-.L__kefir_runtime_func___kefir_bigint_is_zero_label31:
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label23
 .L__kefir_runtime_func___kefir_bigint_is_zero_label6:
     mov $1, %rax
     lea (%rbp), %rsp
@@ -406,10 +388,8 @@ __kefir_bigint_is_zero:
     test %al, %al
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label32
+    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label22
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label26
-.L__kefir_runtime_func___kefir_bigint_is_zero_label32:
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label22
 .L__kefir_runtime_func___kefir_bigint_is_zero_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label12
 .L__kefir_runtime_func___kefir_bigint_is_zero_label22:

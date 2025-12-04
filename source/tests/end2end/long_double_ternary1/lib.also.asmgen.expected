@@ -21,8 +21,7 @@ test1:
     fstpt -48(%rbp)
     fstpt -32(%rbp)
     cmp $0, %edx
-    je .L__kefir_func_test1_label6
-    jmp .L__kefir_func_test1_label2
+    jne .L__kefir_func_test1_label2
 .L__kefir_func_test1_label6:
     movq -32(%rbp), %rax
     movq %rax, -48(%rbp)

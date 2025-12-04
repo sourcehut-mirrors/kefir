@@ -76,13 +76,13 @@ __kefir_softfloat_complex_float_div:
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label2:
     xor %edi, %edi
     movq -112(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -88(%rbp)
-    movq -144(%rbp), %rax
     movq %rax, -80(%rbp)
-    movq -136(%rbp), %rax
+    movq -104(%rbp), %rax
     movq %rax, -72(%rbp)
+    movq -144(%rbp), %rax
+    movq %rax, -96(%rbp)
+    movq -136(%rbp), %rax
+    movq %rax, -88(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label3
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label56:
     cvttss2si -128(%rbp), %r12
@@ -95,22 +95,22 @@ __kefir_softfloat_complex_float_div:
     movdqu -112(%rbp), %xmm0
     mov %rbx, %rdi
     call __kefir_softfloat_scalbnf
-    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm0, -80(%rbp)
     mov %r12, %rdi
     movq -144(%rbp), %rax
-    movq %rax, -80(%rbp)
+    movq %rax, -96(%rbp)
     movq -136(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movq %rax, -88(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label3:
     movdqu -48(%rbp), %xmm0
-    mulss -80(%rbp), %xmm0
+    mulss -96(%rbp), %xmm0
     movdqu -64(%rbp), %xmm1
-    mulss -96(%rbp), %xmm1
+    mulss -80(%rbp), %xmm1
     addss %xmm1, %xmm0
-    movdqu -80(%rbp), %xmm2
-    mulss -80(%rbp), %xmm2
-    movdqu -96(%rbp), %xmm3
-    mulss -96(%rbp), %xmm3
+    movdqu -96(%rbp), %xmm2
+    mulss -96(%rbp), %xmm2
+    movdqu -80(%rbp), %xmm3
+    mulss -80(%rbp), %xmm3
     movdqu %xmm2, -144(%rbp)
     movd -144(%rbp), %xmm1
     addss %xmm3, %xmm1
@@ -122,9 +122,9 @@ __kefir_softfloat_complex_float_div:
     call __kefir_softfloat_scalbnf
     movdqu %xmm0, -112(%rbp)
     movdqu -64(%rbp), %xmm1
-    mulss -80(%rbp), %xmm1
+    mulss -96(%rbp), %xmm1
     movdqu -48(%rbp), %xmm0
-    mulss -96(%rbp), %xmm0
+    mulss -80(%rbp), %xmm0
     subss %xmm0, %xmm1
     divss -144(%rbp), %xmm1
     movaps %xmm1, %xmm0
@@ -171,7 +171,7 @@ __kefir_softfloat_complex_float_div:
     movq -144(%rbp), %xmm0
     movq %xmm0, -144(%rbp)
     flds -144(%rbp)
-    fldt .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label79(%rip)
+    fldt .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label76(%rip)
     fxch %st(1)
     xor %eax, %eax
     xor %ecx, %ecx
@@ -220,16 +220,16 @@ __kefir_softfloat_complex_float_div:
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label11
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label46:
-    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label83(%rip), %xmm3
+    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label77(%rip), %xmm3
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm0
     movaps %xmm0, %xmm4
-    andps -80(%rbp), %xmm4
+    andps -96(%rbp), %xmm4
     andnps %xmm3, %xmm0
     orps %xmm4, %xmm0
-    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label84(%rip), %xmm3
+    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label78(%rip), %xmm3
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm4
     movaps %xmm4, %xmm5
-    andps -80(%rbp), %xmm5
+    andps -96(%rbp), %xmm5
     movaps %xmm4, %xmm2
     andnps %xmm3, %xmm2
     orps %xmm5, %xmm2
@@ -284,7 +284,7 @@ __kefir_softfloat_complex_float_div:
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label40
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label19
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label42:
-    movdqu -80(%rbp), %xmm2
+    movdqu -96(%rbp), %xmm2
     andps .L__kefir_runtime_constant_isfinitef32_mask(%rip), %xmm2
     movdqu .L__kefir_runtime_constant_isfinitef32_cmp(%rip), %xmm4
     mov %rcx, %rax
@@ -300,7 +300,7 @@ __kefir_softfloat_complex_float_div:
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label38
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label21
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label40:
-    movdqu -96(%rbp), %xmm3
+    movdqu -80(%rbp), %xmm3
     andps .L__kefir_runtime_constant_isfinitef32_mask(%rip), %xmm3
     movdqu .L__kefir_runtime_constant_isfinitef32_cmp(%rip), %xmm4
     mov %rcx, %rax
@@ -322,8 +322,8 @@ __kefir_softfloat_complex_float_div:
     cmp $2139095040, %ecx
     mov %rdx, %rcx
     cmove %eax, %ecx
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label89(%rip), %xmm4
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label90(%rip), %xmm5
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label79(%rip), %xmm4
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label80(%rip), %xmm5
     movq %xmm4, %rax
     movq %xmm5, %rdx
     test %ecx, %ecx
@@ -347,8 +347,8 @@ __kefir_softfloat_complex_float_div:
     cmp $2139095040, %ecx
     mov %rdx, %rcx
     cmove %eax, %ecx
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label91(%rip), %xmm0
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label92(%rip), %xmm4
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label81(%rip), %xmm0
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label82(%rip), %xmm4
     movq %xmm0, %rax
     movq %xmm4, %rdx
     test %ecx, %ecx
@@ -361,17 +361,17 @@ __kefir_softfloat_complex_float_div:
     movaps %xmm4, %xmm1
     andnps %xmm0, %xmm1
     orps %xmm5, %xmm1
-    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label93(%rip), %xmm0
+    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label83(%rip), %xmm0
     movaps %xmm7, %xmm4
-    mulss -80(%rbp), %xmm4
+    mulss -96(%rbp), %xmm4
     movaps %xmm1, %xmm5
-    mulss -96(%rbp), %xmm5
+    mulss -80(%rbp), %xmm5
     addss %xmm5, %xmm4
     mulss %xmm4, %xmm0
-    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label94(%rip), %xmm4
-    mulss -80(%rbp), %xmm1
+    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label84(%rip), %xmm4
+    mulss -96(%rbp), %xmm1
     movaps %xmm7, %xmm2
-    mulss -96(%rbp), %xmm2
+    mulss -80(%rbp), %xmm2
     subss %xmm2, %xmm1
     movaps %xmm4, %xmm2
     mulss %xmm1, %xmm2
@@ -398,7 +398,7 @@ __kefir_softfloat_complex_float_div:
     movq -128(%rbp), %xmm0
     movq %xmm0, -144(%rbp)
     flds -144(%rbp)
-    fldt .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label96(%rip)
+    fldt .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label85(%rip)
     fxch %st(1)
     xor %eax, %eax
     fcomip %st(1)
@@ -453,31 +453,6 @@ __kefir_softfloat_complex_float_div:
     movdqu -112(%rbp), %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label7
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label62:
-    movq -80(%rbp), %rax
-    mov %rax, %rcx
-    and $2147483647, %ecx
-    sar $31, %eax
-    or $1, %eax
-    mov %rsi, %rdx
-    xor %esi, %edx
-    cmp $2139095040, %ecx
-    mov %rdx, %rcx
-    cmove %eax, %ecx
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label100(%rip), %xmm4
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label101(%rip), %xmm5
-    movq %xmm4, %rax
-    movq %xmm5, %rdx
-    test %ecx, %ecx
-    cmovz %rdx, %rax
-    movq %rax, %xmm0
-    cvtsd2ss %xmm0, %xmm4
-    movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm5
-    movaps %xmm5, %xmm6
-    andps -80(%rbp), %xmm6
-    movaps %xmm5, %xmm2
-    andnps %xmm4, %xmm2
-    movaps %xmm2, %xmm7
-    orps %xmm6, %xmm7
     movq -96(%rbp), %rax
     mov %rax, %rcx
     and $2147483647, %ecx
@@ -488,8 +463,33 @@ __kefir_softfloat_complex_float_div:
     cmp $2139095040, %ecx
     mov %rdx, %rcx
     cmove %eax, %ecx
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label102(%rip), %xmm2
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label103(%rip), %xmm4
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label86(%rip), %xmm4
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label87(%rip), %xmm5
+    movq %xmm4, %rax
+    movq %xmm5, %rdx
+    test %ecx, %ecx
+    cmovz %rdx, %rax
+    movq %rax, %xmm0
+    cvtsd2ss %xmm0, %xmm4
+    movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm5
+    movaps %xmm5, %xmm6
+    andps -96(%rbp), %xmm6
+    movaps %xmm5, %xmm2
+    andnps %xmm4, %xmm2
+    movaps %xmm2, %xmm7
+    orps %xmm6, %xmm7
+    movq -80(%rbp), %rax
+    mov %rax, %rcx
+    and $2147483647, %ecx
+    sar $31, %eax
+    or $1, %eax
+    mov %rsi, %rdx
+    xor %esi, %edx
+    cmp $2139095040, %ecx
+    mov %rdx, %rcx
+    cmove %eax, %ecx
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label88(%rip), %xmm2
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label89(%rip), %xmm4
     movq %xmm2, %rax
     movq %xmm4, %rdx
     test %ecx, %ecx
@@ -498,12 +498,12 @@ __kefir_softfloat_complex_float_div:
     cvtsd2ss %xmm0, %xmm2
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm4
     movaps %xmm4, %xmm5
-    andps -96(%rbp), %xmm5
+    andps -80(%rbp), %xmm5
     movaps %xmm4, %xmm3
     andnps %xmm2, %xmm3
     movaps %xmm3, %xmm2
     orps %xmm5, %xmm2
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label104(%rip), %xmm3
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label90(%rip), %xmm3
     movdqu -48(%rbp), %xmm0
     mulss %xmm7, %xmm0
     movdqu -64(%rbp), %xmm1
@@ -512,7 +512,7 @@ __kefir_softfloat_complex_float_div:
     cvtss2sd %xmm0, %xmm4
     mulsd %xmm4, %xmm3
     cvtsd2ss %xmm3, %xmm0
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label105(%rip), %xmm3
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label91(%rip), %xmm3
     movdqu -64(%rbp), %xmm1
     mulss %xmm7, %xmm1
     movdqu -48(%rbp), %xmm4
@@ -526,8 +526,26 @@ __kefir_softfloat_complex_float_div:
 .L__kefir_runtime_text_func___kefir_softfloat_complex_float_div_end:
 .section .rodata
     .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label79:
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label76:
     .quad 0
+    .quad 0
+    .align 4
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label77:
+    .long 2139095040
+    .align 4
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label78:
+    .long 2139095040
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label79:
+    .quad 4607182418800017408
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label80:
+    .quad 0
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label81:
+    .quad 4607182418800017408
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label82:
     .quad 0
     .align 4
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label83:
@@ -536,44 +554,26 @@ __kefir_softfloat_complex_float_div:
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label84:
     .long 2139095040
     .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label89:
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label85:
+    .quad 0
+    .quad 0
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label86:
     .quad 4607182418800017408
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label87:
+    .quad 0
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label88:
+    .quad 4607182418800017408
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label89:
+    .quad 0
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label90:
     .quad 0
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label91:
-    .quad 4607182418800017408
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label92:
-    .quad 0
-    .align 4
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label93:
-    .long 2139095040
-    .align 4
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label94:
-    .long 2139095040
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label96:
-    .quad 0
-    .quad 0
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label100:
-    .quad 4607182418800017408
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label101:
-    .quad 0
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label102:
-    .quad 4607182418800017408
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label103:
-    .quad 0
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label104:
-    .quad 0
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label105:
     .quad 0
 .section .text
 
@@ -609,18 +609,18 @@ __kefir_softfloat_scalbnf:
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label3
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label3:
     xor %eax, %eax
-    mov %rdi, %r8
-    mov %rax, %rsi
+    mov %rdi, %rsi
+    mov %rax, %r8
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label4
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label4:
     xor %eax, %eax
-    cmp $2, %esi
+    cmp $2, %r8d
     setge %al
     xor %ecx, %ecx
-    cmp $2, %esi
+    cmp $2, %r8d
     setl %cl
     xor %edx, %edx
-    cmp $-126, %r8d
+    cmp $-126, %esi
     setl %dl
     test %al, %al
     mov %rcx, %rax
@@ -633,7 +633,7 @@ __kefir_softfloat_scalbnf:
     add $1, %eax
     mov %rsi, %rdi
     sub $127, %edi
-    movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label18(%rip), %xmm1
+    movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label16(%rip), %xmm1
     movaps %xmm2, %xmm0
     mulss %xmm1, %xmm0
     mov %rdi, %rsi
@@ -641,21 +641,21 @@ __kefir_softfloat_scalbnf:
     mov %rax, %r8
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label2
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label8:
-    mov %rsi, %rax
+    mov %r8, %rax
     add $1, %eax
-    mov %r8, %rdi
+    mov %rsi, %rdi
     add $102, %edi
-    movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label19(%rip), %xmm1
+    movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label17(%rip), %xmm1
     movaps %xmm2, %xmm0
     mulss %xmm1, %xmm0
     movaps %xmm0, %xmm2
-    mov %rdi, %r8
-    mov %rax, %rsi
+    mov %rdi, %rsi
+    mov %rax, %r8
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label4
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label6:
     mov $-126, %rax
-    cmp $-126, %r8d
-    mov %r8, %rdi
+    cmp $-126, %esi
+    mov %rsi, %rdi
     cmovl %rax, %rdi
     add $127, %edi
     movsx %edi, %rax
@@ -672,10 +672,10 @@ __kefir_softfloat_scalbnf:
 .L__kefir_runtime_text_func___kefir_softfloat_scalbnf_end:
 .section .rodata
     .align 4
-.L__kefir_runtime_func___kefir_softfloat_scalbnf_label18:
+.L__kefir_runtime_func___kefir_softfloat_scalbnf_label16:
     .long 2130706432
     .align 4
-.L__kefir_runtime_func___kefir_softfloat_scalbnf_label19:
+.L__kefir_runtime_func___kefir_softfloat_scalbnf_label17:
     .long 209715200
 .section .text
 
@@ -691,8 +691,8 @@ __kefir_softfloat_ilogbf:
     movd %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
     movq -24(%rbp), %rcx
-    mov %rcx, %rsi
-    shl $9, %rsi
+    mov %rcx, %rdx
+    shl $9, %rdx
     shr $23, %rax
     and $255, %rax
     mov %rax, %rcx
@@ -705,15 +705,15 @@ __kefir_softfloat_ilogbf:
     je .L__kefir_runtime_func___kefir_softfloat_ilogbf_label7
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label4
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label15:
-    movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label26(%rip), %xmm0
-    movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label27(%rip), %xmm1
+    movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label24(%rip), %xmm0
+    movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label25(%rip), %xmm1
     divsd %xmm1, %xmm0
     cvtsd2ss %xmm0, %xmm0
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     mov $-2147483648, %rax
     mov $2147483647, %rcx
-    test %rsi, %rsi
+    test %rdx, %rdx
     cmovz %rcx, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label4:
@@ -724,17 +724,16 @@ __kefir_softfloat_ilogbf:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label7:
-    cmp $0, %rsi
+    cmp $0, %rdx
     je .L__kefir_runtime_func___kefir_softfloat_ilogbf_label13
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label8
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label8:
     mov $-127, %rax
-    mov %rax, %rdx
-    mov %rsi, %rcx
+    mov %rax, %rsi
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label13:
-    movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label29(%rip), %xmm0
-    movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label30(%rip), %xmm1
+    movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label26(%rip), %xmm0
+    movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label27(%rip), %xmm1
     divsd %xmm1, %xmm0
     cvtsd2ss %xmm0, %xmm0
     movd %xmm0, -16(%rbp)
@@ -742,34 +741,34 @@ __kefir_softfloat_ilogbf:
     mov $-2147483648, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label9:
-    mov %rcx, %rsi
-    shl $1, %rsi
-    mov %rdx, %rax
+    mov %rdx, %rcx
+    shl $1, %rcx
+    mov %rsi, %rax
     add $-1, %eax
-    shr $31, %rcx
-    cmp $0, %rcx
+    shr $31, %rdx
+    cmp $0, %rdx
     je .L__kefir_runtime_func___kefir_softfloat_ilogbf_label19
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label21
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label21:
-    mov %rdx, %rax
+    mov %rsi, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label19:
-    mov %rax, %rdx
-    mov %rsi, %rcx
+    mov %rax, %rsi
+    mov %rcx, %rdx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label9
 .L__kefir_runtime_text_func___kefir_softfloat_ilogbf_end:
 .section .rodata
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_ilogbf_label24:
+    .quad 0
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_ilogbf_label25:
+    .quad 0
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label26:
     .quad 0
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label27:
-    .quad 0
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_ilogbf_label29:
-    .quad 0
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_ilogbf_label30:
     .quad 0
 .section .text
 
@@ -822,14 +821,14 @@ __kefir_softfloat_fmaximum_numf:
     jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label17
     jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label12
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label19:
-    movd .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label50(%rip), %xmm2
+    movd .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label45(%rip), %xmm2
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm3
     movaps %xmm3, %xmm4
     andps %xmm0, %xmm4
     andnps %xmm2, %xmm3
     movaps %xmm3, %xmm2
     orps %xmm4, %xmm2
-    movd .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label51(%rip), %xmm3
+    movd .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label46(%rip), %xmm3
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm4
     movaps %xmm4, %xmm5
     andps %xmm1, %xmm5
@@ -877,10 +876,10 @@ __kefir_softfloat_fmaximum_numf:
 .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numf_end:
 .section .rodata
     .align 4
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label50:
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label45:
     .long 1065353216
     .align 4
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label51:
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label46:
     .long 1065353216
 .section .text
 
@@ -922,7 +921,7 @@ __kefir_softfloat_logbf:
     jmp .L__kefir_runtime_func___kefir_softfloat_logbf_label3
 .L__kefir_runtime_func___kefir_softfloat_logbf_label3:
     cvtss2sd %xmm2, %xmm1
-    ucomisd .L__kefir_runtime_func___kefir_softfloat_logbf_label19(%rip), %xmm1
+    ucomisd .L__kefir_runtime_func___kefir_softfloat_logbf_label18(%rip), %xmm1
     jp .L__kefir_runtime_func___kefir_softfloat_logbf_label6
     jmp .L__kefir_runtime_func___kefir_softfloat_logbf_label4
 .L__kefir_runtime_func___kefir_softfloat_logbf_label10:
@@ -945,7 +944,7 @@ __kefir_softfloat_logbf:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_logbf_label8:
-    movd .L__kefir_runtime_func___kefir_softfloat_logbf_label22(%rip), %xmm0
+    movd .L__kefir_runtime_func___kefir_softfloat_logbf_label19(%rip), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -953,10 +952,10 @@ __kefir_softfloat_logbf:
 .L__kefir_runtime_text_func___kefir_softfloat_logbf_end:
 .section .rodata
     .align 8
-.L__kefir_runtime_func___kefir_softfloat_logbf_label19:
+.L__kefir_runtime_func___kefir_softfloat_logbf_label18:
     .quad 0
     .align 4
-.L__kefir_runtime_func___kefir_softfloat_logbf_label22:
+.L__kefir_runtime_func___kefir_softfloat_logbf_label19:
     .long 4286578688
 .section .text
 

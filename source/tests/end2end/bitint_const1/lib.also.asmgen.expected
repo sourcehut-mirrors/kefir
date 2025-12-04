@@ -234,10 +234,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label36
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label33
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label32
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label36:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label33
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label33:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label23
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label32:
@@ -274,10 +272,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label37
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label26
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label29
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label37:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label26
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label16
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label29:
@@ -323,10 +319,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label38
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label34
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label27
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label38:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label34
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label17:
     movq -8(%rbp), %rax
     movq -48(%rbp), %rcx
@@ -345,10 +339,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label39
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label31
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label35
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label39:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label31
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label34:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label14
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label27:
@@ -414,10 +406,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label40
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label30
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label40:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label30:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label10
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28:

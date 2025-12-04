@@ -38,10 +38,8 @@ less:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jl .L__kefir_func_less_label10
+    jl .L__kefir_func_less_label8
     jmp .L__kefir_func_less_label9
-.L__kefir_func_less_label10:
-    jmp .L__kefir_func_less_label8
 .L__kefir_func_less_label8:
     jmp .L__kefir_func_less_label5
 .L__kefir_func_less_label9:
@@ -70,10 +68,8 @@ above:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    ja .L__kefir_func_above_label10
+    ja .L__kefir_func_above_label8
     jmp .L__kefir_func_above_label9
-.L__kefir_func_above_label10:
-    jmp .L__kefir_func_above_label8
 .L__kefir_func_above_label8:
     jmp .L__kefir_func_above_label5
 .L__kefir_func_above_label9:
@@ -102,10 +98,8 @@ below:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jb .L__kefir_func_below_label10
+    jb .L__kefir_func_below_label8
     jmp .L__kefir_func_below_label9
-.L__kefir_func_below_label10:
-    jmp .L__kefir_func_below_label8
 .L__kefir_func_below_label8:
     jmp .L__kefir_func_below_label5
 .L__kefir_func_below_label9:
@@ -134,10 +128,8 @@ equals:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    je .L__kefir_func_equals_label10
+    je .L__kefir_func_equals_label8
     jmp .L__kefir_func_equals_label9
-.L__kefir_func_equals_label10:
-    jmp .L__kefir_func_equals_label8
 .L__kefir_func_equals_label8:
     jmp .L__kefir_func_equals_label5
 .L__kefir_func_equals_label9:
@@ -166,10 +158,8 @@ greater:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jg .L__kefir_func_greater_label10
+    jg .L__kefir_func_greater_label8
     jmp .L__kefir_func_greater_label9
-.L__kefir_func_greater_label10:
-    jmp .L__kefir_func_greater_label8
 .L__kefir_func_greater_label8:
     jmp .L__kefir_func_greater_label5
 .L__kefir_func_greater_label9:
@@ -198,10 +188,8 @@ not_less:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jge .L__kefir_func_not_less_label10
+    jge .L__kefir_func_not_less_label8
     jmp .L__kefir_func_not_less_label9
-.L__kefir_func_not_less_label10:
-    jmp .L__kefir_func_not_less_label8
 .L__kefir_func_not_less_label8:
     jmp .L__kefir_func_not_less_label5
 .L__kefir_func_not_less_label9:
@@ -230,10 +218,8 @@ not_above:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jbe .L__kefir_func_not_above_label10
+    jbe .L__kefir_func_not_above_label8
     jmp .L__kefir_func_not_above_label9
-.L__kefir_func_not_above_label10:
-    jmp .L__kefir_func_not_above_label8
 .L__kefir_func_not_above_label8:
     jmp .L__kefir_func_not_above_label5
 .L__kefir_func_not_above_label9:
@@ -262,10 +248,8 @@ not_below:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jae .L__kefir_func_not_below_label10
+    jae .L__kefir_func_not_below_label8
     jmp .L__kefir_func_not_below_label9
-.L__kefir_func_not_below_label10:
-    jmp .L__kefir_func_not_below_label8
 .L__kefir_func_not_below_label8:
     jmp .L__kefir_func_not_below_label5
 .L__kefir_func_not_below_label9:
@@ -294,10 +278,8 @@ not_equals:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jne .L__kefir_func_not_equals_label10
+    jne .L__kefir_func_not_equals_label8
     jmp .L__kefir_func_not_equals_label9
-.L__kefir_func_not_equals_label10:
-    jmp .L__kefir_func_not_equals_label8
 .L__kefir_func_not_equals_label8:
     jmp .L__kefir_func_not_equals_label5
 .L__kefir_func_not_equals_label9:
@@ -326,10 +308,8 @@ not_equals2:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jne .L__kefir_func_not_equals2_label10
+    jne .L__kefir_func_not_equals2_label8
     jmp .L__kefir_func_not_equals2_label9
-.L__kefir_func_not_equals2_label10:
-    jmp .L__kefir_func_not_equals2_label8
 .L__kefir_func_not_equals2_label8:
     jmp .L__kefir_func_not_equals2_label5
 .L__kefir_func_not_equals2_label9:
@@ -358,10 +338,8 @@ not_greater:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jle .L__kefir_func_not_greater_label10
+    jle .L__kefir_func_not_greater_label8
     jmp .L__kefir_func_not_greater_label9
-.L__kefir_func_not_greater_label10:
-    jmp .L__kefir_func_not_greater_label8
 .L__kefir_func_not_greater_label8:
     jmp .L__kefir_func_not_greater_label5
 .L__kefir_func_not_greater_label9:

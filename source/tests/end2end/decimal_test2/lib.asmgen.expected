@@ -818,7 +818,7 @@ test_dec32_simulate:
     add $4, %rax
     movd (%rax), %xmm2
     movd %xmm2, -96(%rbp)
-    movd .L__kefir_func_test_dec32_simulate_label23(%rip), %xmm2
+    movd .L__kefir_func_test_dec32_simulate_label22(%rip), %xmm2
     movd %xmm2, -80(%rbp)
     call __bid_mulsd3@PLT
     movdqu %xmm0, -192(%rbp)
@@ -888,7 +888,7 @@ test_dec32_simulate:
 .L__kefir_func_test_dec32_simulate_label21:
     .long 847249409
     .align 4
-.L__kefir_func_test_dec32_simulate_label23:
+.L__kefir_func_test_dec32_simulate_label22:
     .long 838860805
 .section .text
 
@@ -1682,7 +1682,7 @@ test_dec64_simulate:
     add $8, %rax
     movq (%rax), %xmm2
     movq %xmm2, -128(%rbp)
-    movq .L__kefir_func_test_dec64_simulate_label23(%rip), %xmm2
+    movq .L__kefir_func_test_dec64_simulate_label22(%rip), %xmm2
     movq %xmm2, -112(%rbp)
     call __bid_muldd3@PLT
     movdqu %xmm0, -224(%rbp)
@@ -1752,7 +1752,7 @@ test_dec64_simulate:
 .L__kefir_func_test_dec64_simulate_label21:
     .quad 3584865303386914817
     .align 8
-.L__kefir_func_test_dec64_simulate_label23:
+.L__kefir_func_test_dec64_simulate_label22:
     .quad 3575858104132173829
 .section .text
 
@@ -1779,7 +1779,7 @@ test_dec32_sqrt_approx:
 .L__kefir_func_test_dec32_sqrt_approx_label6:
     mov %r12, %rbx
     add $1, %ebx
-    movd .L__kefir_func_test_dec32_sqrt_approx_label14(%rip), %xmm0
+    movd .L__kefir_func_test_dec32_sqrt_approx_label13(%rip), %xmm0
     movd %xmm0, -64(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu -48(%rbp), %xmm1
@@ -1809,7 +1809,7 @@ test_dec32_sqrt_approx:
 .L__kefir_func_test_dec32_sqrt_approx_label12:
     .long 838860805
     .align 4
-.L__kefir_func_test_dec32_sqrt_approx_label14:
+.L__kefir_func_test_dec32_sqrt_approx_label13:
     .long 838860805
 .section .text
 
@@ -1836,7 +1836,7 @@ test_dec128_sqrt_approx:
 .L__kefir_func_test_dec128_sqrt_approx_label6:
     mov %r12, %rbx
     add $1, %ebx
-    movdqu .L__kefir_func_test_dec128_sqrt_approx_label14(%rip), %xmm0
+    movdqu .L__kefir_func_test_dec128_sqrt_approx_label13(%rip), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu -48(%rbp), %xmm1
@@ -1866,7 +1866,7 @@ test_dec128_sqrt_approx:
 .L__kefir_func_test_dec128_sqrt_approx_label12:
     .quad 5, 3476215962376601600
     .align 16
-.L__kefir_func_test_dec128_sqrt_approx_label14:
+.L__kefir_func_test_dec128_sqrt_approx_label13:
     .quad 5, 3476215962376601600
 .section .text
 
@@ -1893,7 +1893,7 @@ test_dec64_sqrt_approx:
 .L__kefir_func_test_dec64_sqrt_approx_label6:
     mov %r12, %rbx
     add $1, %ebx
-    movq .L__kefir_func_test_dec64_sqrt_approx_label14(%rip), %xmm0
+    movq .L__kefir_func_test_dec64_sqrt_approx_label13(%rip), %xmm0
     movq %xmm0, -64(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu -48(%rbp), %xmm1
@@ -1923,7 +1923,7 @@ test_dec64_sqrt_approx:
 .L__kefir_func_test_dec64_sqrt_approx_label12:
     .quad 3575858104132173829
     .align 8
-.L__kefir_func_test_dec64_sqrt_approx_label14:
+.L__kefir_func_test_dec64_sqrt_approx_label13:
     .quad 3575858104132173829
 .section .text
 
@@ -3059,7 +3059,7 @@ test_dec128_simulate:
     add $16, %rax
     movdqu (%rax), %xmm2
     movdqu %xmm2, -208(%rbp)
-    movdqu .L__kefir_func_test_dec128_simulate_label23(%rip), %xmm2
+    movdqu .L__kefir_func_test_dec128_simulate_label22(%rip), %xmm2
     movdqu %xmm2, -192(%rbp)
     call __bid_multd3@PLT
     movdqu %xmm0, -304(%rbp)
@@ -3129,7 +3129,7 @@ test_dec128_simulate:
 .L__kefir_func_test_dec128_simulate_label21:
     .quad 1, 3476778912330022912
     .align 16
-.L__kefir_func_test_dec128_simulate_label23:
+.L__kefir_func_test_dec128_simulate_label22:
     .quad 5, 3476215962376601600
 .section .text
 

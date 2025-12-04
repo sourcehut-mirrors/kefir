@@ -268,7 +268,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "internal_label",
-#                        "label": 23
+#                        "label": 20
 #                    }
 #                ],
 #                "labels": []
@@ -289,38 +289,6 @@ factorial:
 #                    {
 #                        "type": "uinteger",
 #                        "value": 1
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 23
-#                    }
-#                ],
-#                "labels": [
-#                    23
-#                ]
-#            },
-#            {
-#                "opcode": "jmp",
-#                "args": [
-#                    {
-#                        "type": "internal_label",
-#                        "label": 20
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 23
 #                    }
 #                ],
 #                "labels": []
@@ -746,7 +714,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "internal_label",
-#                        "label": 24
+#                        "label": 19
 #                    }
 #                ],
 #                "labels": []
@@ -767,38 +735,6 @@ factorial:
 #                    {
 #                        "type": "uinteger",
 #                        "value": 3
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 24
-#                    }
-#                ],
-#                "labels": [
-#                    24
-#                ]
-#            },
-#            {
-#                "opcode": "jmp",
-#                "args": [
-#                    {
-#                        "type": "internal_label",
-#                        "label": 19
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 24
 #                    }
 #                ],
 #                "labels": []
@@ -1158,7 +1094,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "internal_label",
-#                        "label": 25
+#                        "label": 17
 #                    }
 #                ],
 #                "labels": []
@@ -1179,38 +1115,6 @@ factorial:
 #                    {
 #                        "type": "uinteger",
 #                        "value": 6
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 25
-#                    }
-#                ],
-#                "labels": [
-#                    25
-#                ]
-#            },
-#            {
-#                "opcode": "jmp",
-#                "args": [
-#                    {
-#                        "type": "internal_label",
-#                        "label": 17
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 25
 #                    }
 #                ],
 #                "labels": []
@@ -1576,10 +1480,8 @@ factorial:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_func_factorial_label23
+    jz .L__kefir_func_factorial_label20
     jmp .L__kefir_func_factorial_label18
-.L__kefir_func_factorial_label23:
-    jmp .L__kefir_func_factorial_label20
 .L__kefir_func_factorial_label20:
     jmp .L__kefir_func_factorial_label14
 .L__kefir_func_factorial_label18:
@@ -1606,10 +1508,8 @@ factorial:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_func_factorial_label24
+    jz .L__kefir_func_factorial_label19
     jmp .L__kefir_func_factorial_label21
-.L__kefir_func_factorial_label24:
-    jmp .L__kefir_func_factorial_label19
 .L__kefir_func_factorial_label21:
     jmp .L__kefir_func_factorial_label5
 .L__kefir_func_factorial_label19:
@@ -1631,10 +1531,8 @@ factorial:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_func_factorial_label25
+    jz .L__kefir_func_factorial_label17
     jmp .L__kefir_func_factorial_label22
-.L__kefir_func_factorial_label25:
-    jmp .L__kefir_func_factorial_label17
 .L__kefir_func_factorial_label17:
     jmp .L__kefir_func_factorial_label10
 .L__kefir_func_factorial_label22:

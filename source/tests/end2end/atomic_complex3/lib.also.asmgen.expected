@@ -114,19 +114,19 @@ add_f64:
     call __atomic_load@PLT
     movq -168(%rbp), %xmm0
     movq -160(%rbp), %xmm1
-    movdqu %xmm0, -128(%rbp)
-    movq -128(%rbp), %xmm2
-    addsd -96(%rbp), %xmm2
-    movq %xmm2, -128(%rbp)
-    movdqu %xmm1, -112(%rbp)
+    movdqu %xmm0, -112(%rbp)
     movq -112(%rbp), %xmm2
-    addsd -80(%rbp), %xmm2
+    addsd -96(%rbp), %xmm2
     movq %xmm2, -112(%rbp)
+    movdqu %xmm1, -128(%rbp)
+    movq -128(%rbp), %xmm2
+    addsd -80(%rbp), %xmm2
+    movq %xmm2, -128(%rbp)
     movq %xmm0, -176(%rbp)
     movq %xmm1, -168(%rbp)
-    movq -128(%rbp), %xmm0
-    movq %xmm0, -152(%rbp)
     movq -112(%rbp), %xmm0
+    movq %xmm0, -152(%rbp)
+    movq -128(%rbp), %xmm0
     movq %xmm0, -144(%rbp)
     mov %rbx, %rsi
     mov $5, %r8
@@ -153,8 +153,8 @@ add_f64:
     stmxcsr -176(%rbp)
     orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)
-    movdqu -128(%rbp), %xmm0
-    movdqu -112(%rbp), %xmm1
+    movdqu -112(%rbp), %xmm0
+    movdqu -128(%rbp), %xmm1
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -623,19 +623,19 @@ subtract_f64:
     call __atomic_load@PLT
     movq -168(%rbp), %xmm0
     movq -160(%rbp), %xmm1
-    movdqu %xmm0, -128(%rbp)
-    movq -128(%rbp), %xmm2
-    subsd -96(%rbp), %xmm2
-    movq %xmm2, -128(%rbp)
-    movdqu %xmm1, -112(%rbp)
+    movdqu %xmm0, -112(%rbp)
     movq -112(%rbp), %xmm2
-    subsd -80(%rbp), %xmm2
+    subsd -96(%rbp), %xmm2
     movq %xmm2, -112(%rbp)
+    movdqu %xmm1, -128(%rbp)
+    movq -128(%rbp), %xmm2
+    subsd -80(%rbp), %xmm2
+    movq %xmm2, -128(%rbp)
     movq %xmm0, -176(%rbp)
     movq %xmm1, -168(%rbp)
-    movq -128(%rbp), %xmm0
-    movq %xmm0, -152(%rbp)
     movq -112(%rbp), %xmm0
+    movq %xmm0, -152(%rbp)
+    movq -128(%rbp), %xmm0
     movq %xmm0, -144(%rbp)
     mov %rbx, %rsi
     mov $5, %r8
@@ -662,8 +662,8 @@ subtract_f64:
     stmxcsr -176(%rbp)
     orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)
-    movdqu -128(%rbp), %xmm0
-    movdqu -112(%rbp), %xmm1
+    movdqu -112(%rbp), %xmm0
+    movdqu -128(%rbp), %xmm1
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx

@@ -288,10 +288,8 @@ __kefir_bigint_is_zero:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label29
+    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label21
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label27
-.L__kefir_runtime_func___kefir_bigint_is_zero_label29:
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label21
 .L__kefir_runtime_func___kefir_bigint_is_zero_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label18
 .L__kefir_runtime_func___kefir_bigint_is_zero_label27:
@@ -332,10 +330,8 @@ __kefir_bigint_is_zero:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label30
+    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label24
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label28
-.L__kefir_runtime_func___kefir_bigint_is_zero_label30:
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label24
 .L__kefir_runtime_func___kefir_bigint_is_zero_label24:
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label8
 .L__kefir_runtime_func___kefir_bigint_is_zero_label28:
@@ -359,10 +355,8 @@ __kefir_bigint_is_zero:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label31
+    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label25
-.L__kefir_runtime_func___kefir_bigint_is_zero_label31:
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label23
 .L__kefir_runtime_func___kefir_bigint_is_zero_label6:
     mov $1, %rax
     lea (%rbp), %rsp
@@ -417,10 +411,8 @@ __kefir_bigint_is_zero:
     test %al, %al
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label32
+    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label22
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label26
-.L__kefir_runtime_func___kefir_bigint_is_zero_label32:
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label22
 .L__kefir_runtime_func___kefir_bigint_is_zero_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label12
 .L__kefir_runtime_func___kefir_bigint_is_zero_label22:
@@ -462,10 +454,8 @@ __kefir_bigint_unsigned_divide:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label30
+    jz .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label22
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label27
-.L__kefir_runtime_func___kefir_bigint_unsigned_divide_label30:
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label22
 .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label19
 .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label27:
@@ -482,10 +472,8 @@ __kefir_bigint_unsigned_divide:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label31
+    jz .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label28
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label23
-.L__kefir_runtime_func___kefir_bigint_unsigned_divide_label31:
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label28
 .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label23:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label5
 .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label28:
@@ -534,10 +522,8 @@ __kefir_bigint_unsigned_divide:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label32
+    jz .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label25
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label24
-.L__kefir_runtime_func___kefir_bigint_unsigned_divide_label32:
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label25
 .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label10
 .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label24:
@@ -596,10 +582,8 @@ __kefir_bigint_unsigned_divide:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label33
+    jz .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label29
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label26
-.L__kefir_runtime_func___kefir_bigint_unsigned_divide_label33:
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label29
 .L__kefir_runtime_func___kefir_bigint_unsigned_divide_label8:
     mov $0, %rax
     lea (%rbp), %rsp
@@ -704,10 +688,8 @@ __kefir_bigint_subtract_zero_extend:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label24
+    jz .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label22
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label21
-.L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label24:
-    jmp .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label22
 .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label4
 .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label22:
@@ -739,10 +721,8 @@ __kefir_bigint_subtract_zero_extend:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label25
+    jz .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label19
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label23
-.L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label25:
-    jmp .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label19
 .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label23:
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label8
 .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label19:
@@ -760,10 +740,8 @@ __kefir_bigint_subtract_zero_extend:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label26
+    jz .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label18
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label20
-.L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label26:
-    jmp .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label18
 .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label15:
     movq -56(%rbp), %rax
     movq -32(%rbp), %rcx
@@ -866,10 +844,8 @@ __kefir_bigint_left_shift:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_left_shift_label29
+    jz .L__kefir_runtime_func___kefir_bigint_left_shift_label22
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label28
-.L__kefir_runtime_func___kefir_bigint_left_shift_label29:
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label22
 .L__kefir_runtime_func___kefir_bigint_left_shift_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label18
 .L__kefir_runtime_func___kefir_bigint_left_shift_label28:
@@ -914,10 +890,8 @@ __kefir_bigint_left_shift:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_left_shift_label30
+    jz .L__kefir_runtime_func___kefir_bigint_left_shift_label21
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label25
-.L__kefir_runtime_func___kefir_bigint_left_shift_label30:
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label21
 .L__kefir_runtime_func___kefir_bigint_left_shift_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label5
 .L__kefir_runtime_func___kefir_bigint_left_shift_label21:
@@ -933,10 +907,8 @@ __kefir_bigint_left_shift:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_left_shift_label31
+    jz .L__kefir_runtime_func___kefir_bigint_left_shift_label26
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label23
-.L__kefir_runtime_func___kefir_bigint_left_shift_label31:
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label26
 .L__kefir_runtime_func___kefir_bigint_left_shift_label16:
     movq -32(%rbp), %rdi
     movq -24(%rbp), %rsi
@@ -979,10 +951,8 @@ __kefir_bigint_left_shift:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_left_shift_label32
+    jz .L__kefir_runtime_func___kefir_bigint_left_shift_label24
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label27
-.L__kefir_runtime_func___kefir_bigint_left_shift_label32:
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label24
 .L__kefir_runtime_func___kefir_bigint_left_shift_label24:
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label14
 .L__kefir_runtime_func___kefir_bigint_left_shift_label27:
@@ -1077,10 +1047,8 @@ __kefir_bigint_zero:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_zero_label11
+    jz .L__kefir_runtime_func___kefir_bigint_zero_label10
     jmp .L__kefir_runtime_func___kefir_bigint_zero_label9
-.L__kefir_runtime_func___kefir_bigint_zero_label11:
-    jmp .L__kefir_runtime_func___kefir_bigint_zero_label10
 .L__kefir_runtime_func___kefir_bigint_zero_label10:
     jmp .L__kefir_runtime_func___kefir_bigint_zero_label6
 .L__kefir_runtime_func___kefir_bigint_zero_label9:
@@ -1152,10 +1120,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label36
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label33
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label32
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label36:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label33
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label33:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label23
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label32:
@@ -1192,10 +1158,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label37
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label26
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label29
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label37:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label26
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label16
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label29:
@@ -1241,10 +1205,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label38
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label34
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label27
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label38:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label34
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label17:
     movq -8(%rbp), %rax
     movq -48(%rbp), %rcx
@@ -1263,10 +1225,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label39
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label31
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label35
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label39:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label31
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label34:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label14
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label27:
@@ -1332,10 +1292,8 @@ __kefir_bigint_cast_unsigned:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label40
+    jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label30
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label40:
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label30:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label10
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28:
@@ -1416,10 +1374,8 @@ __kefir_bigint_add_zero_extend:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label24
+    jz .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label22
     jmp .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label21
-.L__kefir_runtime_func___kefir_bigint_add_zero_extend_label24:
-    jmp .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label22
 .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label4
 .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label22:
@@ -1451,10 +1407,8 @@ __kefir_bigint_add_zero_extend:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label25
+    jz .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label19
     jmp .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label23
-.L__kefir_runtime_func___kefir_bigint_add_zero_extend_label25:
-    jmp .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label19
 .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label23:
     jmp .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label8
 .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label19:
@@ -1472,10 +1426,8 @@ __kefir_bigint_add_zero_extend:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label26
+    jz .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label18
     jmp .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label20
-.L__kefir_runtime_func___kefir_bigint_add_zero_extend_label26:
-    jmp .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label18
 .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label15:
     movq -56(%rbp), %rax
     movq -32(%rbp), %rcx
@@ -1608,10 +1560,8 @@ __kefir_bigint_left_shift_whole_digits:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label18
+    jz .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label16
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label15
-.L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label18:
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label16
 .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label16:
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label11
 .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label15:
@@ -1647,10 +1597,8 @@ __kefir_bigint_left_shift_whole_digits:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label19
+    jz .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label14
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label17
-.L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label19:
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label14
 .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label14:
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label9
 .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label17:

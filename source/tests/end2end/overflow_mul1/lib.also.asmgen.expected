@@ -246,8 +246,7 @@ overflow_mul_long_long_ulong:
     xor %eax, %r8d
     mov %rdi, %rax
     test %rsi, %rdi
-    js .L__kefir_func_overflow_mul_long_long_ulong_label5
-    jmp .L__kefir_func_overflow_mul_long_long_ulong_label2
+    jns .L__kefir_func_overflow_mul_long_long_ulong_label2
 .L__kefir_func_overflow_mul_long_long_ulong_label5:
     neg %rax
     neg %rsi

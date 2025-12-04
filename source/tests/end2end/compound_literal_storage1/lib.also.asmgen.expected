@@ -131,10 +131,8 @@ get5:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     test %eax, %eax
-    jz .L__kefir_func_get5_label11
+    jz .L__kefir_func_get5_label10
     jmp .L__kefir_func_get5_label9
-.L__kefir_func_get5_label11:
-    jmp .L__kefir_func_get5_label10
 .L__kefir_func_get5_label10:
     jmp .L__kefir_func_get5_label6
 .L__kefir_func_get5_label9:
