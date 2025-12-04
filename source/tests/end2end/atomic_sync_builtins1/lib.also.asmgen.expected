@@ -66,11 +66,12 @@ test_fetch_and_short:
     mov %rdi, %rdx
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
-    je .L__kefir_func_test_fetch_and_short_label4
+    je .L__kefir_func_test_fetch_and_short_label11
     jmp .L__kefir_func_test_fetch_and_short_label3
 .L__kefir_func_test_fetch_and_short_label3:
     movw %ax, -2(%rbp)
-.L__kefir_func_test_fetch_and_short_label4:
+    jmp .L__kefir_func_test_fetch_and_short_label11
+.L__kefir_func_test_fetch_and_short_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_and_short_label7
@@ -105,11 +106,12 @@ test_fetch_xor_short:
     mov %rdi, %rdx
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
-    je .L__kefir_func_test_fetch_xor_short_label4
+    je .L__kefir_func_test_fetch_xor_short_label11
     jmp .L__kefir_func_test_fetch_xor_short_label3
 .L__kefir_func_test_fetch_xor_short_label3:
     movw %ax, -2(%rbp)
-.L__kefir_func_test_fetch_xor_short_label4:
+    jmp .L__kefir_func_test_fetch_xor_short_label11
+.L__kefir_func_test_fetch_xor_short_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_xor_short_label7
@@ -134,11 +136,12 @@ test_fetch_or_int:
     mov %rdi, %rdx
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
-    je .L__kefir_func_test_fetch_or_int_label4
+    je .L__kefir_func_test_fetch_or_int_label11
     jmp .L__kefir_func_test_fetch_or_int_label3
 .L__kefir_func_test_fetch_or_int_label3:
     movl %eax, -4(%rbp)
-.L__kefir_func_test_fetch_or_int_label4:
+    jmp .L__kefir_func_test_fetch_or_int_label11
+.L__kefir_func_test_fetch_or_int_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_or_int_label7
@@ -180,11 +183,12 @@ test_fetch_and_char:
     mov %rdi, %rdx
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
-    je .L__kefir_func_test_fetch_and_char_label4
+    je .L__kefir_func_test_fetch_and_char_label11
     jmp .L__kefir_func_test_fetch_and_char_label3
 .L__kefir_func_test_fetch_and_char_label3:
     movb %al, -1(%rbp)
-.L__kefir_func_test_fetch_and_char_label4:
+    jmp .L__kefir_func_test_fetch_and_char_label11
+.L__kefir_func_test_fetch_and_char_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_and_char_label7
@@ -209,11 +213,12 @@ test_fetch_and_long:
     mov %rdi, %rdx
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
-    je .L__kefir_func_test_fetch_and_long_label4
+    je .L__kefir_func_test_fetch_and_long_label11
     jmp .L__kefir_func_test_fetch_and_long_label3
 .L__kefir_func_test_fetch_and_long_label3:
     movq %rax, -8(%rbp)
-.L__kefir_func_test_fetch_and_long_label4:
+    jmp .L__kefir_func_test_fetch_and_long_label11
+.L__kefir_func_test_fetch_and_long_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_and_long_label7
@@ -239,11 +244,12 @@ test_fetch_or_short:
     mov %rdi, %rdx
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
-    je .L__kefir_func_test_fetch_or_short_label4
+    je .L__kefir_func_test_fetch_or_short_label11
     jmp .L__kefir_func_test_fetch_or_short_label3
 .L__kefir_func_test_fetch_or_short_label3:
     movw %ax, -2(%rbp)
-.L__kefir_func_test_fetch_or_short_label4:
+    jmp .L__kefir_func_test_fetch_or_short_label11
+.L__kefir_func_test_fetch_or_short_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_or_short_label7
@@ -287,11 +293,12 @@ test_fetch_xor_char:
     mov %rdi, %rdx
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
-    je .L__kefir_func_test_fetch_xor_char_label4
+    je .L__kefir_func_test_fetch_xor_char_label11
     jmp .L__kefir_func_test_fetch_xor_char_label3
 .L__kefir_func_test_fetch_xor_char_label3:
     movb %al, -1(%rbp)
-.L__kefir_func_test_fetch_xor_char_label4:
+    jmp .L__kefir_func_test_fetch_xor_char_label11
+.L__kefir_func_test_fetch_xor_char_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_xor_char_label7
@@ -316,11 +323,12 @@ test_fetch_xor_long:
     mov %rdi, %rdx
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
-    je .L__kefir_func_test_fetch_xor_long_label4
+    je .L__kefir_func_test_fetch_xor_long_label11
     jmp .L__kefir_func_test_fetch_xor_long_label3
 .L__kefir_func_test_fetch_xor_long_label3:
     movq %rax, -8(%rbp)
-.L__kefir_func_test_fetch_xor_long_label4:
+    jmp .L__kefir_func_test_fetch_xor_long_label11
+.L__kefir_func_test_fetch_xor_long_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_xor_long_label7
@@ -353,11 +361,12 @@ test_fetch_and_int:
     mov %rdi, %rdx
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
-    je .L__kefir_func_test_fetch_and_int_label4
+    je .L__kefir_func_test_fetch_and_int_label11
     jmp .L__kefir_func_test_fetch_and_int_label3
 .L__kefir_func_test_fetch_and_int_label3:
     movl %eax, -4(%rbp)
-.L__kefir_func_test_fetch_and_int_label4:
+    jmp .L__kefir_func_test_fetch_and_int_label11
+.L__kefir_func_test_fetch_and_int_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_and_int_label7
@@ -383,11 +392,12 @@ test_fetch_or_char:
     mov %rdi, %rdx
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
-    je .L__kefir_func_test_fetch_or_char_label4
+    je .L__kefir_func_test_fetch_or_char_label11
     jmp .L__kefir_func_test_fetch_or_char_label3
 .L__kefir_func_test_fetch_or_char_label3:
     movb %al, -1(%rbp)
-.L__kefir_func_test_fetch_or_char_label4:
+    jmp .L__kefir_func_test_fetch_or_char_label11
+.L__kefir_func_test_fetch_or_char_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_or_char_label7
@@ -412,11 +422,12 @@ test_fetch_or_long:
     mov %rdi, %rdx
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
-    je .L__kefir_func_test_fetch_or_long_label4
+    je .L__kefir_func_test_fetch_or_long_label11
     jmp .L__kefir_func_test_fetch_or_long_label3
 .L__kefir_func_test_fetch_or_long_label3:
     movq %rax, -8(%rbp)
-.L__kefir_func_test_fetch_or_long_label4:
+    jmp .L__kefir_func_test_fetch_or_long_label11
+.L__kefir_func_test_fetch_or_long_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_or_long_label7
@@ -450,11 +461,12 @@ test_fetch_xor_int:
     mov %rdi, %rdx
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
-    je .L__kefir_func_test_fetch_xor_int_label4
+    je .L__kefir_func_test_fetch_xor_int_label11
     jmp .L__kefir_func_test_fetch_xor_int_label3
 .L__kefir_func_test_fetch_xor_int_label3:
     movl %eax, -4(%rbp)
-.L__kefir_func_test_fetch_xor_int_label4:
+    jmp .L__kefir_func_test_fetch_xor_int_label11
+.L__kefir_func_test_fetch_xor_int_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_test_fetch_xor_int_label7

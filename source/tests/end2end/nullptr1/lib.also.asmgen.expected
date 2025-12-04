@@ -120,7 +120,7 @@ get2:
     mov %rsp, %rbp
     sub $208, %rsp
     test %al, %al
-    je .L__kefir_func_get2_label2
+    je .L__kefir_func_get2_label9
     jmp .L__kefir_func_get2_label1
 .L__kefir_func_get2_label1:
     movdqu %xmm0, -160(%rbp)
@@ -131,7 +131,8 @@ get2:
     movdqu %xmm5, -80(%rbp)
     movdqu %xmm6, -64(%rbp)
     movdqu %xmm7, -48(%rbp)
-.L__kefir_func_get2_label2:
+    jmp .L__kefir_func_get2_label9
+.L__kefir_func_get2_label9:
     mov %rdi, -208(%rbp)
     mov %rsi, -200(%rbp)
     mov %rdx, -192(%rbp)

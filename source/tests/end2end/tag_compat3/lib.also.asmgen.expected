@@ -18,13 +18,13 @@ get:
     cmp $1, %edi
     je .L__kefir_func_get_label15
     jmp .L__kefir_func_get_label5
+.L__kefir_func_get_label15:
+    xor %eax, %eax
+    ret
 .L__kefir_func_get_label5:
     cmp $2, %edi
     je .L__kefir_func_get_label13
     jmp .L__kefir_func_get_label7
-.L__kefir_func_get_label15:
-    xor %eax, %eax
-    ret
 .L__kefir_func_get_label7:
     cmp $3, %edi
     je .L__kefir_func_get_label11
@@ -32,11 +32,12 @@ get:
 .L__kefir_func_get_label13:
     mov $1, %rax
     ret
-.L__kefir_func_get_label11:
-    mov $101, %rax
-    ret
+    jmp .L__kefir_func_get_label9
 .L__kefir_func_get_label9:
     mov $-101, %rax
+    ret
+.L__kefir_func_get_label11:
+    mov $101, %rax
     ret
 .L__kefir_text_func_get_end:
 

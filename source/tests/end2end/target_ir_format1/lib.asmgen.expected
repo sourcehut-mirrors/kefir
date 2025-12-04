@@ -574,16 +574,16 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 93,
+#                    "instr_ref": 102,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 14
+#                            "block_ref": 20
 #                        },
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 3
+#                            "block_ref": 18
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1213,16 +1213,16 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 94,
+#                    "instr_ref": 104,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 12
+#                            "block_ref": 19
 #                        },
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 5
+#                            "block_ref": 21
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1706,16 +1706,16 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 95,
+#                    "instr_ref": 106,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 10
+#                            "block_ref": 17
 #                        },
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 8
+#                            "block_ref": 22
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -2576,6 +2576,138 @@ factorial:
 #            "code": [],
 #            "externally_visible": false,
 #            "public_labels": []
+#        },
+#        {
+#            "block_ref": 17,
+#            "code": [
+#                {
+#                    "instr_ref": 97,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 10
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 18,
+#            "code": [
+#                {
+#                    "instr_ref": 99,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 3
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 19,
+#            "code": [
+#                {
+#                    "instr_ref": 101,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 12
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 20,
+#            "code": [
+#                {
+#                    "instr_ref": 103,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 14
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 21,
+#            "code": [
+#                {
+#                    "instr_ref": 105,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 5
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 22,
+#            "code": [
+#                {
+#                    "instr_ref": 107,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 8
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        }
 #    ]
 #}
@@ -2594,10 +2726,14 @@ factorial:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_func_factorial_label17
-    jmp .L__kefir_func_factorial_label3
-.L__kefir_func_factorial_label17:
+    jz .L__kefir_func_factorial_label23
+    jmp .L__kefir_func_factorial_label18
+.L__kefir_func_factorial_label23:
+    jmp .L__kefir_func_factorial_label20
+.L__kefir_func_factorial_label20:
     jmp .L__kefir_func_factorial_label14
+.L__kefir_func_factorial_label18:
+    jmp .L__kefir_func_factorial_label3
 .L__kefir_func_factorial_label14:
     mov $0, %rax
     lea (%rbp), %rsp
@@ -2620,17 +2756,22 @@ factorial:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_func_factorial_label18
+    jz .L__kefir_func_factorial_label24
+    jmp .L__kefir_func_factorial_label21
+.L__kefir_func_factorial_label24:
+    jmp .L__kefir_func_factorial_label19
+.L__kefir_func_factorial_label21:
     jmp .L__kefir_func_factorial_label5
-.L__kefir_func_factorial_label18:
+.L__kefir_func_factorial_label19:
     jmp .L__kefir_func_factorial_label12
+.L__kefir_func_factorial_label5:
+    movl $1, -4(%rbp)
+    jmp .L__kefir_func_factorial_label6
 .L__kefir_func_factorial_label12:
     movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label5:
-    movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
     mov $0, %rcx
@@ -2640,15 +2781,14 @@ factorial:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_func_factorial_label19
-    jmp .L__kefir_func_factorial_label8
-.L__kefir_func_factorial_label19:
+    jz .L__kefir_func_factorial_label25
+    jmp .L__kefir_func_factorial_label22
+.L__kefir_func_factorial_label25:
+    jmp .L__kefir_func_factorial_label17
+.L__kefir_func_factorial_label17:
     jmp .L__kefir_func_factorial_label10
-.L__kefir_func_factorial_label8:
-    movl -4(%rbp), %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+.L__kefir_func_factorial_label22:
+    jmp .L__kefir_func_factorial_label8
 .L__kefir_func_factorial_label10:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
@@ -2658,6 +2798,11 @@ factorial:
     add $-1, %eax
     movl %eax, -8(%rbp)
     jmp .L__kefir_func_factorial_label6
+.L__kefir_func_factorial_label8:
+    movl -4(%rbp), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_factorial_end:
 
 .L__kefir_text_section_end:

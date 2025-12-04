@@ -394,6 +394,8 @@ kefir_result_t kefir_codegen_target_ir_code_drop_instruction(struct kefir_mem *,
 
 kefir_result_t kefir_codegen_target_ir_code_phi_attach(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,
     kefir_codegen_target_ir_block_ref_t, struct kefir_codegen_target_ir_value_ref);
+kefir_result_t kefir_codegen_target_ir_code_phi_drop(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,
+    kefir_codegen_target_ir_block_ref_t);
 kefir_result_t kefir_codegen_target_ir_code_phi_link_for(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,
     kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_value_ref_t *);
 

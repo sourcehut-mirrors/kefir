@@ -178,6 +178,16 @@ op_loop_end:
     cmp $0, %eax
     jne .L__kefir_func_op_loop_end_label4
     jmp .L__kefir_func_op_loop_end_label3
+.L__kefir_func_op_loop_end_label4:
+    lea 5134(%rsi), %rdi
+    movzxb (%rdi), %rax
+    lea 4104(%rsi), %rdi
+    imul $8, %rax, %rax
+    add %rax, %rdi
+    movq (%rdi), %rax
+    lea 5128(%rsi), %rdi
+    sub $1, %rax
+    movl %eax, (%rdi)
 .L__kefir_func_op_loop_end_label3:
     movq (%rsi), %rax
     lea 5128(%rsi), %rdi
@@ -194,17 +204,6 @@ op_loop_end:
     movq (%rcx), %rax
     mov %rsi, %rdi
     jmp *%rax
-.L__kefir_func_op_loop_end_label4:
-    lea 5134(%rsi), %rdi
-    movzxb (%rdi), %rax
-    lea 4104(%rsi), %rdi
-    imul $8, %rax, %rax
-    add %rax, %rdi
-    movq (%rdi), %rax
-    lea 5128(%rsi), %rdi
-    sub $1, %rax
-    movl %eax, (%rdi)
-    jmp .L__kefir_func_op_loop_end_label3
 .L__kefir_text_func_op_loop_end_end:
 
 op_loop_begin:
@@ -271,17 +270,21 @@ op_loop_begin:
 .L__kefir_func_op_loop_begin_label5:
     mov %rcx, %rax
     jmp .L__kefir_func_op_loop_begin_label9
+.L__kefir_func_op_loop_begin_label9:
+    cmp $0, %eax
+    jbe .L__kefir_func_op_loop_begin_label12
+    jmp .L__kefir_func_op_loop_begin_label18
 .L__kefir_func_op_loop_begin_label7:
     movsx %dl, %rax
     cmp $93, %eax
     je .L__kefir_func_op_loop_begin_label13
-    mov %rsi, %rax
-    jmp .L__kefir_func_op_loop_begin_label9
-.L__kefir_func_op_loop_begin_label9:
-    cmp $0, %eax
-    jbe .L__kefir_func_op_loop_begin_label12
+    jmp .L__kefir_func_op_loop_begin_label20
+.L__kefir_func_op_loop_begin_label18:
     mov %rax, %rsi
     jmp .L__kefir_func_op_loop_begin_label3
+.L__kefir_func_op_loop_begin_label20:
+    mov %rsi, %rax
+    jmp .L__kefir_func_op_loop_begin_label9
 .L__kefir_func_op_loop_begin_label13:
     mov %rsi, %rax
     add $-1, %eax

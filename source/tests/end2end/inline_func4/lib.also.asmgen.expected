@@ -24,11 +24,12 @@ addx:
     movq x@GOTPCREL(%rip), %rdx
     movq -16(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
-    je .L__kefir_func_addx_label4
+    je .L__kefir_func_addx_label11
     jmp .L__kefir_func_addx_label3
 .L__kefir_func_addx_label3:
     movq %rax, -16(%rbp)
-.L__kefir_func_addx_label4:
+    jmp .L__kefir_func_addx_label11
+.L__kefir_func_addx_label11:
     sete %al
     test %al, %al
     jnz .L__kefir_func_addx_label7

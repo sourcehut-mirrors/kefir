@@ -170,11 +170,11 @@ divide_f32:
     sub $136, %rsp
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
-    movdqu %xmm1, -80(%rbp)
-    movdqu -80(%rbp), %xmm2
+    movdqu %xmm1, -96(%rbp)
+    movdqu -96(%rbp), %xmm2
     shufps $1, %xmm1, %xmm2
-    movdqu %xmm2, -80(%rbp)
-    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm2, -96(%rbp)
+    movdqu %xmm0, -80(%rbp)
     mov %rdi, %rbx
     fnstenv -64(%rbp)
     stmxcsr -36(%rbp)
@@ -189,8 +189,8 @@ divide_f32:
     movd -140(%rbp), %xmm7
     movaps %xmm6, %xmm1
     insertps $16, %xmm7, %xmm1
-    movdqu -96(%rbp), %xmm0
-    insertps $16, -80(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm0
+    insertps $16, -96(%rbp), %xmm0
     cvtps2pd %xmm0, %xmm2
     cvtps2pd %xmm1, %xmm1
     movaps %xmm2, %xmm3

@@ -50,16 +50,18 @@ test3:
 .L__kefir_text_func_test3_begin:
     mov $1, %rax
     mov %rax, %rcx
-.L__kefir_func_test3_label2:
     mov %rdi, %rdx
-    add $-1, %edx
-    mov %rcx, %rsi
-    imul %edi, %esi
-    cmp $0, %edi
-    jle .L__kefir_func_test3_label6
-.L__kefir_func_test3_label9:
-    mov %rsi, %rcx
+.L__kefir_func_test3_label2:
     mov %rdx, %rdi
+    add $-1, %edi
+    mov %rcx, %rax
+    imul %edx, %eax
+    cmp $0, %edx
+    jg .L__kefir_func_test3_label9
+    jmp .L__kefir_func_test3_label6
+.L__kefir_func_test3_label9:
+    mov %rax, %rcx
+    mov %rdi, %rdx
     jmp .L__kefir_func_test3_label2
 .L__kefir_func_test3_label6:
     mov %rcx, %rax

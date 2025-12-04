@@ -31,6 +31,15 @@ test1:
     cmp $0, %eax
     jne .L__kefir_func_test1_label9
     jmp .L__kefir_func_test1_label4
+.L__kefir_func_test1_label9:
+    xor %eax, %eax
+    lea -32(%rbp), %rsp
+    pop %r14
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_func_test1_label4:
     movq -48(%rbp), %rax
     movq -48(%rbp), %rdi
@@ -52,20 +61,13 @@ test1:
     seta %dil
     and %dil, %al
     jz .L__kefir_func_test1_label7
+    jmp .L__kefir_func_test1_label15
+.L__kefir_func_test1_label15:
     mov %rsi, %rbx
     mov %r8, %r12
     mov %rcx, %r13
     mov %rdx, %r14
     jmp .L__kefir_func_test1_label2
-.L__kefir_func_test1_label9:
-    xor %eax, %eax
-    lea -32(%rbp), %rsp
-    pop %r14
-    pop %r13
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
 .L__kefir_func_test1_label7:
     xor %eax, %eax
     lea -32(%rbp), %rsp

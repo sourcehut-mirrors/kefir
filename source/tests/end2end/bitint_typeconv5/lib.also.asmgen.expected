@@ -163,18 +163,19 @@ get5:
     fildq (%rsp)
     add $8, %rsp
     test %rax, %rax
-    jns .L__kefir_func_get5_label6
+    jns .L__kefir_func_get5_label7
     jmp .L__kefir_func_get5_label2
+.L__kefir_func_get5_label7:
+    jmp .L__kefir_func_get5_label6
 .L__kefir_func_get5_label6:
     jmp .L__kefir_func_get5_label3
+.L__kefir_func_get5_label2:
+    fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_get5_label3:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get5_label2:
-    fadds .L__kefir_constant_uint_to_long_double(%rip)
-    jmp .L__kefir_func_get5_label3
 .L__kefir_text_func_get5_end:
 
 .L__kefir_text_section_end:

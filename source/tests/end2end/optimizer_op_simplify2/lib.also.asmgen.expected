@@ -32,10 +32,14 @@ below_or_equals:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jbe .L__kefir_func_below_or_equals_label8
-    jmp .L__kefir_func_below_or_equals_label3
+    jbe .L__kefir_func_below_or_equals_label10
+    jmp .L__kefir_func_below_or_equals_label9
+.L__kefir_func_below_or_equals_label10:
+    jmp .L__kefir_func_below_or_equals_label8
 .L__kefir_func_below_or_equals_label8:
     jmp .L__kefir_func_below_or_equals_label5
+.L__kefir_func_below_or_equals_label9:
+    jmp .L__kefir_func_below_or_equals_label3
 .L__kefir_func_below_or_equals_label5:
     mov $1, %rax
     lea (%rbp), %rsp
@@ -60,10 +64,14 @@ above_or_equals:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jae .L__kefir_func_above_or_equals_label8
-    jmp .L__kefir_func_above_or_equals_label3
+    jae .L__kefir_func_above_or_equals_label10
+    jmp .L__kefir_func_above_or_equals_label9
+.L__kefir_func_above_or_equals_label10:
+    jmp .L__kefir_func_above_or_equals_label8
 .L__kefir_func_above_or_equals_label8:
     jmp .L__kefir_func_above_or_equals_label5
+.L__kefir_func_above_or_equals_label9:
+    jmp .L__kefir_func_above_or_equals_label3
 .L__kefir_func_above_or_equals_label5:
     mov $1, %rax
     lea (%rbp), %rsp
@@ -145,10 +153,14 @@ less_or_equals:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jle .L__kefir_func_less_or_equals_label8
-    jmp .L__kefir_func_less_or_equals_label3
+    jle .L__kefir_func_less_or_equals_label10
+    jmp .L__kefir_func_less_or_equals_label9
+.L__kefir_func_less_or_equals_label10:
+    jmp .L__kefir_func_less_or_equals_label8
 .L__kefir_func_less_or_equals_label8:
     jmp .L__kefir_func_less_or_equals_label5
+.L__kefir_func_less_or_equals_label9:
+    jmp .L__kefir_func_less_or_equals_label3
 .L__kefir_func_less_or_equals_label5:
     mov $1, %rax
     lea (%rbp), %rsp
@@ -173,10 +185,14 @@ greater_or_equals:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
-    jge .L__kefir_func_greater_or_equals_label8
-    jmp .L__kefir_func_greater_or_equals_label3
+    jge .L__kefir_func_greater_or_equals_label10
+    jmp .L__kefir_func_greater_or_equals_label9
+.L__kefir_func_greater_or_equals_label10:
+    jmp .L__kefir_func_greater_or_equals_label8
 .L__kefir_func_greater_or_equals_label8:
     jmp .L__kefir_func_greater_or_equals_label5
+.L__kefir_func_greater_or_equals_label9:
+    jmp .L__kefir_func_greater_or_equals_label3
 .L__kefir_func_greater_or_equals_label5:
     mov $1, %rax
     lea (%rbp), %rsp

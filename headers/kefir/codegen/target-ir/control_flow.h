@@ -37,6 +37,7 @@ typedef struct kefir_codegen_target_ir_block_control_flow {
 typedef struct kefir_codegen_target_ir_control_flow {
     const struct kefir_codegen_target_ir_code *code;
     struct kefir_codegen_target_ir_block_control_flow *blocks;
+    kefir_size_t blocks_length;
     struct kefir_hashtreeset indirect_jump_sources;
     struct kefir_hashtreeset indirect_jump_targets;
     struct kefir_hashtable dominator_tree;
@@ -51,6 +52,8 @@ kefir_result_t kefir_codegen_target_ir_control_flow_find_dominators(struct kefir
 
 kefir_bool_t kefir_codegen_target_ir_control_flow_is_reachable(const struct kefir_codegen_target_ir_control_flow *,
                                                      kefir_codegen_target_ir_block_ref_t);
+kefir_bool_t kefir_codegen_target_ir_control_flow_is_critical_edge(const struct kefir_codegen_target_ir_control_flow *,
+                                                     kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_block_ref_t);
 kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct kefir_codegen_target_ir_control_flow *,
                                                      kefir_codegen_target_ir_block_ref_t,
                                                      kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);

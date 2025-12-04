@@ -80,35 +80,31 @@ test4:
 .L__kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-    push %rbx
-    push %r12
     sub $16, %rsp
-    movl %edi, -20(%rbp)
-    movq someothervar@GOTPCREL(%rip), %rbx
+    movl %edi, -4(%rbp)
+    movq someothervar@GOTPCREL(%rip), %rsi
     movq someothervar@GOTPCREL(%rip), %rcx
-    leaq -20(%rbp), %rax
+    leaq -4(%rbp), %rax
     sub %rcx, %rax
     cqo
     mov $4, %rcx
     idiv %rcx
-    mov %rax, %r12
+    mov %rax, %rdi
 .L__kefir_func_test4_label2:
-    movl (%rbx), %eax
+    movl (%rsi), %eax
     movsx %eax, %rcx
-    add %r12, %rcx
-    mov %rbx, %rdx
+    add %rdi, %rcx
+    mov %rsi, %rdx
     lock     cmpxchgl %ecx, (%rdx)
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test4_label2
-    jmp .L__kefir_func_test4_label4
-.L__kefir_func_test4_label4:
-    movl -20(%rbp), %edi
+    jmp .L__kefir_func_test4_label8
+.L__kefir_func_test4_label8:
+    movl -4(%rbp), %edi
     add $1, %edi
     call test4
-    lea -16(%rbp), %rsp
-    pop %r12
-    pop %rbx
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_test4_end:

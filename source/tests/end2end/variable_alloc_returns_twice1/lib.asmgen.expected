@@ -17,12 +17,12 @@ test2:
     test %edi, %edi
     jnz .L__kefir_func_test2_label6
     jmp .L__kefir_func_test2_label3
-.L__kefir_func_test2_label3:
-    movq $1, -8(%rbp)
-    jmp .L__kefir_func_test2_label4
 .L__kefir_func_test2_label6:
     movq $0, -16(%rbp)
     call test1@PLT
+    jmp .L__kefir_func_test2_label4
+.L__kefir_func_test2_label3:
+    movq $1, -8(%rbp)
 .L__kefir_func_test2_label4:
     lea (%rbp), %rsp
     pop %rbp
@@ -37,12 +37,12 @@ test3:
     test %edi, %edi
     jnz .L__kefir_func_test3_label6
     jmp .L__kefir_func_test3_label3
-.L__kefir_func_test3_label3:
-    movq $1, -8(%rbp)
-    jmp .L__kefir_func_test3_label4
 .L__kefir_func_test3_label6:
     movq $0, -8(%rbp)
     call test2
+    jmp .L__kefir_func_test3_label4
+.L__kefir_func_test3_label3:
+    movq $1, -8(%rbp)
 .L__kefir_func_test3_label4:
     lea (%rbp), %rsp
     pop %rbp

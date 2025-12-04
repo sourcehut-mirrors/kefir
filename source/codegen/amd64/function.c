@@ -1211,6 +1211,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_transform_copy_elision(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_phi_removal(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_jump_propagate(mem, code));
+    REQUIRE_OK(kefir_codegen_target_ir_transform_split_critical_edges(mem, code));
 
     struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops destructor_ops;
     REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(func, asmcmp_code, &destructor_ops));

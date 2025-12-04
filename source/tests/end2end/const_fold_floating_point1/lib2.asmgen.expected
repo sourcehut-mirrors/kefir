@@ -807,14 +807,13 @@ uint_to_float80:
     test $31415926, %rax
     jns .L__kefir_func_uint_to_float80_label3
     jmp .L__kefir_func_uint_to_float80_label2
+.L__kefir_func_uint_to_float80_label2:
+    fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_uint_to_float80_label3:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_uint_to_float80_label2:
-    fadds .L__kefir_constant_uint_to_long_double(%rip)
-    jmp .L__kefir_func_uint_to_float80_label3
 .L__kefir_text_func_uint_to_float80_end:
 
 float32_eq2_float32:

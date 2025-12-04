@@ -571,6 +571,27 @@ kefir_result_t kefir_codegen_target_ir_code_phi_attach(struct kefir_mem *mem, st
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_code_phi_drop(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+    kefir_codegen_target_ir_instruction_ref_t instr_ref,
+    kefir_codegen_target_ir_block_ref_t block_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
+    REQUIRE(block_ref < code->blocks_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR block reference"));
+    
+    struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
+    REQUIRE(instr->operation.opcode == code->klass->phi_opcode, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to attach a link to non-phi target IR instruction"));
+
+    for (kefir_size_t i = 0; i < instr->operation.phi_node.links_length; i++) {
+        if (instr->operation.phi_node.links[i].link_block_ref == block_ref) {
+            memcpy(&instr->operation.phi_node.links[i], &instr->operation.phi_node.links[i + 1], (instr->operation.phi_node.links_length - (i + 1)) * sizeof(struct kefir_codegen_target_ir_phi_link));
+            instr->operation.phi_node.links_length--;
+            break;
+        }
+    }
+
+    return KEFIR_OK;
+}
 
 kefir_result_t kefir_codegen_target_ir_code_phi_link_for(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t phi_instr_ref,
     kefir_codegen_target_ir_block_ref_t link_block_ref, kefir_codegen_target_ir_value_ref_t *link_value_ref_ptr) {
@@ -883,10 +904,10 @@ static kefir_result_t operand_replace_uses(struct kefir_mem *mem, struct kefir_c
 static kefir_result_t replace_uses(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t user_instr_ref, kefir_codegen_target_ir_instruction_ref_t to_instr_ref, kefir_codegen_target_ir_instruction_ref_t from_instr_ref) {
     struct kefir_codegen_target_ir_instruction *user_instr = &code->code[user_instr_ref];
     if (user_instr->operation.opcode == code->klass->phi_opcode) {
-        kefir_result_t res;
         for (kefir_size_t link_idx = 0; link_idx < user_instr->operation.phi_node.links_length; link_idx++) {
             struct kefir_codegen_target_ir_value_ref value_ref = user_instr->operation.phi_node.links[link_idx].link_value_ref;
             if (value_ref.instr_ref == from_instr_ref) {
+                kefir_result_t res;
                 res = kefir_codegen_target_ir_code_value_props(code, (kefir_codegen_target_ir_value_ref_t) {
                     .instr_ref = to_instr_ref,
                     .aspect = value_ref.aspect
@@ -899,9 +920,6 @@ static kefir_result_t replace_uses(struct kefir_mem *mem, struct kefir_codegen_t
                 user_instr->operation.phi_node.links[link_idx].link_value_ref.instr_ref = to_instr_ref;
                 REQUIRE_OK(track_use_instr(mem, code, user_instr_ref, to_instr_ref, value_ref.aspect, true));
             }
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
         }
     } else if (user_instr->operation.opcode == code->klass->inline_asm_opcode) {
         for (const struct kefir_list_entry *iter = kefir_list_head(&user_instr->operation.inline_asm_node.fragments);

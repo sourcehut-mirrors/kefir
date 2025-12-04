@@ -217,10 +217,14 @@ __kefir_bigint_invert:
     test %eax, %eax
     sete %al
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_invert_label9
-    jmp .L__kefir_runtime_func___kefir_bigint_invert_label4
-.L__kefir_runtime_func___kefir_bigint_invert_label9:
+    jz .L__kefir_runtime_func___kefir_bigint_invert_label11
+    jmp .L__kefir_runtime_func___kefir_bigint_invert_label9
+.L__kefir_runtime_func___kefir_bigint_invert_label11:
+    jmp .L__kefir_runtime_func___kefir_bigint_invert_label10
+.L__kefir_runtime_func___kefir_bigint_invert_label10:
     jmp .L__kefir_runtime_func___kefir_bigint_invert_label6
+.L__kefir_runtime_func___kefir_bigint_invert_label9:
+    jmp .L__kefir_runtime_func___kefir_bigint_invert_label4
 .L__kefir_runtime_func___kefir_bigint_invert_label6:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx

@@ -2031,7 +2031,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 62,
+#                    "instr_ref": 65,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -2040,7 +2040,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 6
+#                            "block_ref": 11
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -2355,6 +2355,28 @@ test2:
 #            "code": [],
 #            "externally_visible": false,
 #            "public_labels": []
+#        },
+#        {
+#            "block_ref": 11,
+#            "code": [
+#                {
+#                    "instr_ref": 66,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 6
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
 #        }
 #    ]
 #}
@@ -2366,29 +2388,31 @@ test2:
 .L__kefir_func_test2_label1:
     movl %esi, -8(%rbp)
     movq %rdi, -16(%rbp)
-    movl -8(%rbp), %edi
-    movq -16(%rbp), %r8
+    movl -8(%rbp), %esi
+    movq -16(%rbp), %rdi
 .L__kefir_func_test2_label2:
-    movl (%r8), %eax
+    movl (%rdi), %eax
     movsx %eax, %rax
-    mov %rax, %rsi
-    add %edi, %esi
-    mov %r8, %rdx
-    mov %rsi, %rcx
+    mov %rax, %r8
+    add %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
-    jz .L__kefir_func_test2_label11
-    jmp .L__kefir_func_test2_label6
-.L__kefir_func_test2_label11:
+    jz .L__kefir_func_test2_label12
+    jmp .L__kefir_func_test2_label11
+.L__kefir_func_test2_label12:
     jmp .L__kefir_func_test2_label4
+.L__kefir_func_test2_label11:
+    jmp .L__kefir_func_test2_label6
+.L__kefir_func_test2_label4:
+    jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label6:
-    mov %rsi, %rax
+    mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test2_label4:
-    jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 
 test3:
