@@ -176,7 +176,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list(struct kefir_mem *,
                                                         kefir_opt_code_debug_info_code_ref_t, kefir_opt_code_debug_info_code_ref_t);
 
 kefir_result_t kefir_codegen_amd64_dwarf_insert_string(
-    struct kefir_mem *, struct kefir_codegen_amd64_dwarf_context *, const char *, kefir_asmcmp_label_index_t *);
+    struct kefir_mem *, struct kefir_codegen_amd64_dwarf_context *, const char *, kefir_codegen_amd64_dwarf_entry_id_t *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_strp(
     struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_amd64_dwarf_context *, const char *);
 
