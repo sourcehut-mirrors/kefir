@@ -35,12 +35,12 @@ int_equals_const:
     jmp .L__kefir_func_int_equals_const_label3
 .L__kefir_func_int_equals_const_label8:
     jmp .L__kefir_func_int_equals_const_label5
-.L__kefir_func_int_equals_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_equals_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_equals_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_equals_const_end:
@@ -56,12 +56,12 @@ int_less_or_equal_const:
     jmp .L__kefir_func_int_less_or_equal_const_label3
 .L__kefir_func_int_less_or_equal_const_label8:
     jmp .L__kefir_func_int_less_or_equal_const_label5
-.L__kefir_func_int_less_or_equal_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_less_or_equal_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_less_or_equal_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_less_or_equal_const_end:
@@ -77,12 +77,12 @@ int_less_const:
     jmp .L__kefir_func_int_less_const_label3
 .L__kefir_func_int_less_const_label8:
     jmp .L__kefir_func_int_less_const_label5
-.L__kefir_func_int_less_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_less_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_less_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_less_const_end:
@@ -98,12 +98,12 @@ int_below_or_equal_const:
     jmp .L__kefir_func_int_below_or_equal_const_label3
 .L__kefir_func_int_below_or_equal_const_label8:
     jmp .L__kefir_func_int_below_or_equal_const_label5
-.L__kefir_func_int_below_or_equal_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_below_or_equal_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_below_or_equal_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_below_or_equal_const_end:
@@ -119,12 +119,12 @@ int_greater_or_equal_const:
     jmp .L__kefir_func_int_greater_or_equal_const_label3
 .L__kefir_func_int_greater_or_equal_const_label8:
     jmp .L__kefir_func_int_greater_or_equal_const_label5
-.L__kefir_func_int_greater_or_equal_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_greater_or_equal_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_greater_or_equal_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_greater_or_equal_const_end:
@@ -140,12 +140,12 @@ int_greater_const:
     jmp .L__kefir_func_int_greater_const_label3
 .L__kefir_func_int_greater_const_label8:
     jmp .L__kefir_func_int_greater_const_label5
-.L__kefir_func_int_greater_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_greater_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_greater_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_greater_const_end:
@@ -161,12 +161,12 @@ int_not_equal_const:
     jmp .L__kefir_func_int_not_equal_const_label3
 .L__kefir_func_int_not_equal_const_label8:
     jmp .L__kefir_func_int_not_equal_const_label5
-.L__kefir_func_int_not_equal_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_not_equal_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_not_equal_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_not_equal_const_end:
@@ -182,12 +182,12 @@ int_above_const:
     jmp .L__kefir_func_int_above_const_label3
 .L__kefir_func_int_above_const_label8:
     jmp .L__kefir_func_int_above_const_label5
-.L__kefir_func_int_above_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_above_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_above_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_above_const_end:
@@ -203,12 +203,12 @@ int_below_const:
     jmp .L__kefir_func_int_below_const_label3
 .L__kefir_func_int_below_const_label8:
     jmp .L__kefir_func_int_below_const_label5
-.L__kefir_func_int_below_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_below_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_below_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_below_const_end:
@@ -224,12 +224,12 @@ int_above_or_equal_const:
     jmp .L__kefir_func_int_above_or_equal_const_label3
 .L__kefir_func_int_above_or_equal_const_label8:
     jmp .L__kefir_func_int_above_or_equal_const_label5
-.L__kefir_func_int_above_or_equal_const_label3:
-    mov $0, %rax
-    pop %rbp
-    ret
 .L__kefir_func_int_above_or_equal_const_label5:
     mov $1, %rax
+    pop %rbp
+    ret
+.L__kefir_func_int_above_or_equal_const_label3:
+    mov $0, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_above_or_equal_const_end:

@@ -44,6 +44,7 @@ typedef struct kefir_hashset {
 kefir_result_t kefir_hashset_init(struct kefir_hashset *, const struct kefir_hashtable_ops *);
 kefir_result_t kefir_hashset_free(struct kefir_mem *, struct kefir_hashset *);
 
+kefir_size_t kefir_hashset_size(const struct kefir_hashset *);
 kefir_result_t kefir_hashset_clear(struct kefir_mem *, struct kefir_hashset *);
 kefir_result_t kefir_hashset_add(struct kefir_mem *, struct kefir_hashset *, kefir_hashset_key_t);
 kefir_result_t kefir_hashset_delete(struct kefir_hashset *, kefir_hashset_key_t);

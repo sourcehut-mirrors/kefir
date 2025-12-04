@@ -148,16 +148,16 @@ get2:
     cmp $48, %eax
     jae .L__kefir_func_get2_label5
     jmp .L__kefir_func_get2_label4
-.L__kefir_func_get2_label4:
-    lea 8(%rax), %rax
-    movl %eax, -32(%rbp)
-    add -16(%rbp), %rax
-    mov -8(%rax), %rax
-    jmp .L__kefir_func_get2_label6
 .L__kefir_func_get2_label5:
     mov -24(%rbp), %rax
     lea 8(%rax), %rax
     mov %rax, -24(%rbp)
+    mov -8(%rax), %rax
+    jmp .L__kefir_func_get2_label6
+.L__kefir_func_get2_label4:
+    lea 8(%rax), %rax
+    movl %eax, -32(%rbp)
+    add -16(%rbp), %rax
     mov -8(%rax), %rax
 .L__kefir_func_get2_label6:
     xor %eax, %eax

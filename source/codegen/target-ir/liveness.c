@@ -198,19 +198,20 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
             REQUIRE_OK(add_value_liveness(mem, liveness, used_value, block_ref, instr->instr_ref, KEFIR_ID_NONE));
         }
         if (block_ref == instr->block_ref || visited_map[block_ref] ||
-            (block_ref != control_flow->code->entry_block && control_flow->blocks[block_ref].immediate_dominator == KEFIR_ID_NONE)) {
+            !kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref)) {
             continue;
         }
         visited_map[block_ref] = true;
         REQUIRE_OK(add_to_entry(mem, &liveness->blocks[block_ref].live_in, value_ref));
         REQUIRE_OK(add_value_liveness(mem, liveness, used_value, block_ref, KEFIR_ID_NONE, kefir_codegen_target_ir_code_block_control_head(liveness->code, block_ref)));
 
-        struct kefir_hashtreeset_iterator predecessor_iter;
+        struct kefir_hashset_iterator predecessor_iter;
         kefir_result_t res;
-        for (res = kefir_hashtreeset_iter(&control_flow->blocks[block_ref].predecessors, &predecessor_iter); res == KEFIR_OK;
-            res = kefir_hashtreeset_next(&predecessor_iter)) {
+        kefir_hashset_key_t key;
+        for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].predecessors, &predecessor_iter, &key); res == KEFIR_OK;
+            res = kefir_hashset_next(&predecessor_iter, &key)) {
             ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, predecessor_block_ref,
-                predecessor_iter.entry);
+                key);
             REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) predecessor_block_ref));
             REQUIRE_OK(add_to_entry(mem, &liveness->blocks[predecessor_block_ref].live_out, value_ref));
             REQUIRE_OK(add_value_liveness(mem, liveness, used_value, predecessor_block_ref, kefir_codegen_target_ir_code_block_control_tail(liveness->code, predecessor_block_ref), KEFIR_ID_NONE));
@@ -248,7 +249,7 @@ kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *mem, con
     kefir_uint8_t *visited_map = KEFIR_MALLOC(mem, sizeof(kefir_uint8_t) * kefir_codegen_target_ir_code_block_count(liveness->code));
     for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(liveness->code); i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(liveness->code, i);
-        if (block_ref != control_flow->code->entry_block && control_flow->blocks[block_ref].immediate_dominator == KEFIR_ID_NONE) {
+        if (!kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref)) {
             continue;
         }
 

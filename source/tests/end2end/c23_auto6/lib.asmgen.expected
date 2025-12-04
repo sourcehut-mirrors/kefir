@@ -37,17 +37,17 @@ fn3:
     cmp $0, %ebx
     jg .L__kefir_func_fn3_label6
     jmp .L__kefir_func_fn3_label4
-.L__kefir_func_fn3_label4:
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
-    ret
 .L__kefir_func_fn3_label6:
     call fn1
     mov %rbx, %rdi
     add $-1, %edi
     mov %rdi, %rbx
     jmp .L__kefir_func_fn3_label2
+.L__kefir_func_fn3_label4:
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_fn3_end:
 
 .L__kefir_text_section_end:

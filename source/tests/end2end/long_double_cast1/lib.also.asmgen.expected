@@ -173,17 +173,6 @@ ldcuint:
     fcomi %st(1)
     jnb .L__kefir_func_ldcuint_label3
     jmp .L__kefir_func_ldcuint_label2
-.L__kefir_func_ldcuint_label2:
-    fstp %st(1)
-    fnstcww -32(%rbp)
-    movzxw -32(%rbp), %eax
-    or $3072, %ax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
-    fldcww -32(%rbp)
-    jmp .L__kefir_func_ldcuint_label4
 .L__kefir_func_ldcuint_label3:
     fnstcww -32(%rbp)
     fsubp
@@ -195,6 +184,17 @@ ldcuint:
     mov -16(%rbp), %rax
     fldcww -32(%rbp)
     btc $63, %rax
+    jmp .L__kefir_func_ldcuint_label4
+.L__kefir_func_ldcuint_label2:
+    fstp %st(1)
+    fnstcww -32(%rbp)
+    movzxw -32(%rbp), %eax
+    or $3072, %ax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
+    fldcww -32(%rbp)
 .L__kefir_func_ldcuint_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -215,13 +215,14 @@ uintcld:
     test %rax, %rax
     jns .L__kefir_func_uintcld_label3
     jmp .L__kefir_func_uintcld_label2
-.L__kefir_func_uintcld_label2:
-    fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_uintcld_label3:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_uintcld_label2:
+    fadds .L__kefir_constant_uint_to_long_double(%rip)
+    jmp .L__kefir_func_uintcld_label3
 .L__kefir_text_func_uintcld_end:
 
 imp_cast:

@@ -108,6 +108,11 @@ static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashset *hashse
     return KEFIR_OK;
 }
 
+kefir_size_t kefir_hashset_size(const struct kefir_hashset *hashset) {
+    REQUIRE(hashset != NULL, 0);
+    return hashset->occupied;
+}
+
 kefir_result_t kefir_hashset_clear(struct kefir_mem *mem, struct kefir_hashset *hashset) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));

@@ -3014,9 +3014,6 @@ __kefir_bigint_invert:
     cmp %rax, %rdx
     jb .L__kefir_runtime_func___kefir_bigint_invert_label6
     jmp .L__kefir_runtime_func___kefir_bigint_invert_label4
-.L__kefir_runtime_func___kefir_bigint_invert_label4:
-    xor %eax, %eax
-    ret
 .L__kefir_runtime_func___kefir_bigint_invert_label6:
     mov %r8, %rdi
     add %rdx, %rdi
@@ -3026,6 +3023,9 @@ __kefir_bigint_invert:
     lea 1(%rdx), %rcx
     mov %rcx, %rdx
     jmp .L__kefir_runtime_func___kefir_bigint_invert_label2
+.L__kefir_runtime_func___kefir_bigint_invert_label4:
+    xor %eax, %eax
+    ret
 .L__kefir_runtime_text_func___kefir_bigint_invert_end:
 
 

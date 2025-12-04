@@ -147,6 +147,25 @@ __kefir_bigint_nonzero_count:
     cmp %rax, %r14
     jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label8
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label6
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label8:
+    movq -64(%rbp), %rdi
+    add %r14, %rdi
+    movzxb (%rdi), %r12
+    lea 1(%r14), %rcx
+    movq -56(%rbp), %rax
+    sub $1, %rax
+    imul $8, %rax, %rdx
+    mov %r15, %rsi
+    sub %rdx, %rsi
+    mov $8, %rdx
+    movq -56(%rbp), %rax
+    cmp %rax, %rcx
+    mov %rdx, %r10
+    cmovae %rsi, %r10
+    xor %ecx, %ecx
+    mov %r13, %r11
+    mov %rcx, %rbx
+    jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label9
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label6:
     mov %r13, %rax
     lea -40(%rbp), %rsp
@@ -157,43 +176,25 @@ __kefir_bigint_nonzero_count:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label8:
-    movq -64(%rbp), %rdi
-    add %r14, %rdi
-    movzxb (%rdi), %r10
-    lea 1(%r14), %rcx
-    movq -56(%rbp), %rax
-    sub $1, %rax
-    imul $8, %rax, %rdx
-    mov %r15, %rsi
-    sub %rdx, %rsi
-    mov $8, %rdx
-    movq -56(%rbp), %rax
-    cmp %rax, %rcx
-    mov %rdx, %r11
-    cmovae %rsi, %r11
-    xor %ecx, %ecx
-    mov %r13, %rbx
-    mov %rcx, %r12
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label9:
     lea 1(%r14), %rdx
-    lea 1(%r12), %r9
-    mov %r12, %rcx
-    mov %r10, %r8
+    lea 1(%rbx), %r9
+    mov %rbx, %rcx
+    mov %r12, %r8
     sar %cl, %r8d
     and $1, %r8d
-    lea 1(%rbx), %rax
+    lea 1(%r11), %rax
     cmp $1, %r8d
-    mov %rbx, %r8
+    mov %r11, %r8
     cmove %rax, %r8
-    cmp %r11, %r12
+    cmp %r10, %rbx
     jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label18
-    mov %rbx, %r13
+    mov %r11, %r13
     mov %rdx, %r14
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label4
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label18:
-    mov %r8, %rbx
-    mov %r9, %r12
+    mov %r8, %r11
+    mov %r9, %rbx
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label9
 .L__kefir_runtime_text_func___kefir_bigint_nonzero_count_end:
 

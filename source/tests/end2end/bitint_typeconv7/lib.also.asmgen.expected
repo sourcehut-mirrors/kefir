@@ -73,13 +73,13 @@ get3:
     jmp .L__kefir_func_get3_label2
 .L__kefir_func_get3_label8:
     jmp .L__kefir_func_get3_label3
-.L__kefir_func_get3_label2:
-    cvttss2si %xmm0, %rax
-    jmp .L__kefir_func_get3_label4
 .L__kefir_func_get3_label3:
     subss .L__kefir_constant_float32_to_uint(%rip), %xmm0
     cvttss2si %xmm0, %rax
     btc $63, %rax
+    jmp .L__kefir_func_get3_label4
+.L__kefir_func_get3_label2:
+    cvttss2si %xmm0, %rax
 .L__kefir_func_get3_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -143,13 +143,13 @@ get6:
     jmp .L__kefir_func_get6_label2
 .L__kefir_func_get6_label8:
     jmp .L__kefir_func_get6_label3
-.L__kefir_func_get6_label2:
-    cvttsd2si %xmm0, %rax
-    jmp .L__kefir_func_get6_label4
 .L__kefir_func_get6_label3:
     subsd .L__kefir_constant_float64_to_uint(%rip), %xmm0
     cvttsd2si %xmm0, %rax
     btc $63, %rax
+    jmp .L__kefir_func_get6_label4
+.L__kefir_func_get6_label2:
+    cvttsd2si %xmm0, %rax
 .L__kefir_func_get6_label4:
     pop %rbp
     ret

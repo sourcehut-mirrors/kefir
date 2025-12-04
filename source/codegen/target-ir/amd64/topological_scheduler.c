@@ -37,15 +37,16 @@ static kefir_result_t do_schedule_impl(struct kefir_mem *mem,
         if (kefir_codegen_target_ir_code_schedule_has_block(schedule, block_ref)) {
             continue;
         }
-        if (block_ref != schedule->code->indirect_jump_gate_block && !kefir_hashset_has(&schedule->code->gate_blocks, (kefir_hashset_key_t) block_ref)) {
+        if (!kefir_codegen_target_ir_code_is_gate_block(schedule->code, block_ref)) {
             REQUIRE_OK(schedule_builder->schedule_block(mem, block_ref, schedule_builder->payload));
         }
 
         kefir_result_t res;
-        struct kefir_hashtreeset_iterator iter;
-        for (res = kefir_hashtreeset_iter(&control_flow->blocks[block_ref].successors, &iter); res == KEFIR_OK;
-            res = kefir_hashtreeset_next(&iter)) {
-            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, iter.entry);
+        struct kefir_hashset_iterator iter;
+        kefir_hashset_key_t key;
+        for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].successors, &iter, &key); res == KEFIR_OK;
+            res = kefir_hashset_next(&iter, &key)) {
+            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, key);
             REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) successor_block_ref));
         }
         if (res != KEFIR_ITERATOR_END) {

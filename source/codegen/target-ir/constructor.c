@@ -670,7 +670,7 @@ static kefir_result_t terminate_current_block(struct constructor_state *state, s
             &operation, &metadata, NULL));
     } else if (terminator_props.undefined_target && !terminator_props.inline_assembly && state->code->indirect_jump_gate_block == KEFIR_ID_NONE) {
         REQUIRE(!terminator_props.fallthrough, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected fallthrough terminator instruction in target IR block"));
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_block(state->mem, state->code, &state->code->indirect_jump_gate_block));
+        REQUIRE_OK(kefir_codegen_target_ir_code_indirect_jump_gate_block(state->mem, state->code, &state->code->indirect_jump_gate_block));
 
         struct code_block_state *gate_block_state = KEFIR_MALLOC(state->mem, sizeof(struct code_block_state));
         REQUIRE(gate_block_state != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate code block state"));
@@ -1059,7 +1059,7 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state, kefir_as
         res = kefir_hashtable_next(&iter, &key, NULL)) {
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref,
             key);
-        if (block_ref != state->control_flow.code->entry_block && state->control_flow.blocks[block_ref].immediate_dominator == KEFIR_ID_NONE) {
+        if (!kefir_codegen_target_ir_control_flow_is_reachable(&state->control_flow, block_ref)) {
             continue;
         }
         REQUIRE_OK(kefir_codegen_target_ir_control_flow_find_closest_common_dominator(&state->control_flow, vreg_state->use_dominator_block_ref, block_ref, &vreg_state->use_dominator_block_ref));
@@ -1212,10 +1212,11 @@ static kefir_result_t find_link_for(struct constructor_state *state, struct phi_
 
 static kefir_result_t link_successor_phis(struct constructor_state *state, struct phi_link_frame *frame, kefir_codegen_target_ir_block_ref_t block_ref) {
     kefir_result_t res;
-    struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&state->control_flow.blocks[block_ref].successors, &iter); res == KEFIR_OK;
-        res = kefir_hashtreeset_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, (kefir_uptr_t) iter.entry);
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t key;
+    for (res = kefir_hashset_iter(&state->control_flow.blocks[block_ref].successors, &iter, &key); res == KEFIR_OK;
+        res = kefir_hashset_next(&iter, &key)) {
+        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, (kefir_uptr_t) key);
 
         struct kefir_hashtree_node *node;
         REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) successor_block_ref, &node));
@@ -1258,15 +1259,7 @@ static kefir_result_t link_successor_phis(struct constructor_state *state, struc
                 value_ref.instr_ref = flag_ref;
                 value_ref.aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS;
             }
-            struct kefir_hashtreeset_iterator pred_iter;
-            REQUIRE_OK(kefir_hashtreeset_iter(&state->control_flow.blocks[successor_block_ref].predecessors, &pred_iter));
-            res = kefir_hashtreeset_next(&pred_iter);
-            kefir_bool_t single_pred = true;
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-                single_pred = false;
-            }
-            if (single_pred) {
+            if (kefir_hashset_size(&state->control_flow.blocks[successor_block_ref].predecessors) <= 1) {
                 REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(state->mem, state->code, value_ref.instr_ref, successor_block_state->input_flags_ref));
                 REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(state->mem, state->code, successor_block_state->input_flags_ref));
             } else {

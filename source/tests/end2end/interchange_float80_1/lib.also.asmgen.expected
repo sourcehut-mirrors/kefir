@@ -104,14 +104,15 @@ conv2:
     jns .L__kefir_func_conv2_label6
     jmp .L__kefir_func_conv2_label4
 .loc 0 87 5
-.L__kefir_func_conv2_label4:
-    fadds .L__kefir_constant_uint_to_long_double(%rip)
-.loc 0 87 5
 .L__kefir_func_conv2_label6:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.loc 0 87 5
+.L__kefir_func_conv2_label4:
+    fadds .L__kefir_constant_uint_to_long_double(%rip)
+    jmp .L__kefir_func_conv2_label6
 .L__kefir_func_conv2_label52:
 .L__kefir_text_func_conv2_end:
 

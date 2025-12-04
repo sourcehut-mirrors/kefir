@@ -26,8 +26,8 @@
 #include "kefir/core/hashset.h"
 
 typedef struct kefir_codegen_target_ir_block_control_flow {
-    struct kefir_hashtreeset predecessors;
-    struct kefir_hashtreeset successors;
+    struct kefir_hashset predecessors;
+    struct kefir_hashset successors;
     kefir_codegen_target_ir_block_ref_t immediate_dominator;
     struct kefir_hashset dominance_frontier;
     kefir_size_t linear_index;
@@ -49,6 +49,8 @@ kefir_result_t kefir_codegen_target_ir_control_flow_free(struct kefir_mem *, str
 kefir_result_t kefir_codegen_target_ir_control_flow_find_dominators(struct kefir_mem *mem,
                                                         struct kefir_codegen_target_ir_control_flow *);
 
+kefir_bool_t kefir_codegen_target_ir_control_flow_is_reachable(const struct kefir_codegen_target_ir_control_flow *,
+                                                     kefir_codegen_target_ir_block_ref_t);
 kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct kefir_codegen_target_ir_control_flow *,
                                                      kefir_codegen_target_ir_block_ref_t,
                                                      kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);

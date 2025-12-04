@@ -38,15 +38,15 @@ get_T2:
     test %eax, %eax
     jnz .L__kefir_func_get_T2_label7
     jmp .L__kefir_func_get_T2_label5
-.L__kefir_func_get_T2_label5:
-    xor %eax, %eax
-    ret
 .L__kefir_func_get_T2_label7:
     lea T1(%rip), %rax
     add $8, %rax
     movsx %edi, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
+    ret
+.L__kefir_func_get_T2_label5:
+    xor %eax, %eax
     ret
 .L__kefir_text_func_get_T2_end:
 

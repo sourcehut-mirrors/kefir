@@ -149,17 +149,17 @@ not_equalsf:
     jmp .L__kefir_func_not_equalsf_label2
 .L__kefir_func_not_equalsf_label9:
     jmp .L__kefir_func_not_equalsf_label6
-.L__kefir_func_not_equalsf_label2:
-    jne .L__kefir_func_not_equalsf_label10
-    jmp .L__kefir_func_not_equalsf_label4
-.L__kefir_func_not_equalsf_label10:
-    jmp .L__kefir_func_not_equalsf_label6
 .L__kefir_func_not_equalsf_label6:
     mov $1, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_not_equalsf_label2:
+    jne .L__kefir_func_not_equalsf_label10
+    jmp .L__kefir_func_not_equalsf_label4
+.L__kefir_func_not_equalsf_label10:
+    jmp .L__kefir_func_not_equalsf_label6
 .L__kefir_func_not_equalsf_label4:
     mov $0, %rax
     ldmxcsr -8(%rbp)

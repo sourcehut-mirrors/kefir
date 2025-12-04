@@ -530,13 +530,13 @@ to_uint_32:
     comiss .L__kefir_constant_float32_to_uint(%rip), %xmm0
     jnb .L__kefir_func_to_uint_32_label3
     jmp .L__kefir_func_to_uint_32_label2
-.L__kefir_func_to_uint_32_label2:
-    cvttss2si %xmm0, %rax
-    jmp .L__kefir_func_to_uint_32_label4
 .L__kefir_func_to_uint_32_label3:
     subss .L__kefir_constant_float32_to_uint(%rip), %xmm0
     cvttss2si %xmm0, %rax
     btc $63, %rax
+    jmp .L__kefir_func_to_uint_32_label4
+.L__kefir_func_to_uint_32_label2:
+    cvttss2si %xmm0, %rax
 .L__kefir_func_to_uint_32_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -555,13 +555,13 @@ to_uint_64:
     comisd .L__kefir_constant_float64_to_uint(%rip), %xmm0
     jnb .L__kefir_func_to_uint_64_label3
     jmp .L__kefir_func_to_uint_64_label2
-.L__kefir_func_to_uint_64_label2:
-    cvttsd2si %xmm0, %rax
-    jmp .L__kefir_func_to_uint_64_label4
 .L__kefir_func_to_uint_64_label3:
     subsd .L__kefir_constant_float64_to_uint(%rip), %xmm0
     cvttsd2si %xmm0, %rax
     btc $63, %rax
+    jmp .L__kefir_func_to_uint_64_label4
+.L__kefir_func_to_uint_64_label2:
+    cvttsd2si %xmm0, %rax
 .L__kefir_func_to_uint_64_label4:
     ret
 .L__kefir_text_func_to_uint_64_end:
@@ -577,13 +577,13 @@ to_uint_80:
     comisd .L__kefir_constant_float64_to_uint(%rip), %xmm0
     jnb .L__kefir_func_to_uint_80_label3
     jmp .L__kefir_func_to_uint_80_label2
-.L__kefir_func_to_uint_80_label2:
-    cvttsd2si %xmm0, %rax
-    jmp .L__kefir_func_to_uint_80_label4
 .L__kefir_func_to_uint_80_label3:
     subsd .L__kefir_constant_float64_to_uint(%rip), %xmm0
     cvttsd2si %xmm0, %rax
     btc $63, %rax
+    jmp .L__kefir_func_to_uint_80_label4
+.L__kefir_func_to_uint_80_label2:
+    cvttsd2si %xmm0, %rax
 .L__kefir_func_to_uint_80_label4:
     ret
 .L__kefir_text_func_to_uint_80_end:
@@ -739,10 +739,6 @@ uint_to_float32:
     test $314159, %rax
     js .L__kefir_func_uint_to_float32_label3
     jmp .L__kefir_func_uint_to_float32_label2
-.L__kefir_func_uint_to_float32_label2:
-    mov $314159, %rax
-    cvtsi2ss %rax, %xmm0
-    jmp .L__kefir_func_uint_to_float32_label4
 .L__kefir_func_uint_to_float32_label3:
     mov $314159, %rax
     mov $314159, %rcx
@@ -753,6 +749,10 @@ uint_to_float32:
     movaps %xmm0, %xmm1
     addss %xmm0, %xmm1
     movaps %xmm1, %xmm0
+    jmp .L__kefir_func_uint_to_float32_label4
+.L__kefir_func_uint_to_float32_label2:
+    mov $314159, %rax
+    cvtsi2ss %rax, %xmm0
 .L__kefir_func_uint_to_float32_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -772,10 +772,6 @@ uint_to_float64:
     test $31415926, %rax
     js .L__kefir_func_uint_to_float64_label3
     jmp .L__kefir_func_uint_to_float64_label2
-.L__kefir_func_uint_to_float64_label2:
-    mov $31415926, %rax
-    cvtsi2sd %rax, %xmm0
-    jmp .L__kefir_func_uint_to_float64_label4
 .L__kefir_func_uint_to_float64_label3:
     mov $31415926, %rax
     mov $31415926, %rcx
@@ -786,6 +782,10 @@ uint_to_float64:
     movaps %xmm0, %xmm1
     addsd %xmm0, %xmm1
     movaps %xmm1, %xmm0
+    jmp .L__kefir_func_uint_to_float64_label4
+.L__kefir_func_uint_to_float64_label2:
+    mov $31415926, %rax
+    cvtsi2sd %rax, %xmm0
 .L__kefir_func_uint_to_float64_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -807,13 +807,14 @@ uint_to_float80:
     test $31415926, %rax
     jns .L__kefir_func_uint_to_float80_label3
     jmp .L__kefir_func_uint_to_float80_label2
-.L__kefir_func_uint_to_float80_label2:
-    fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_uint_to_float80_label3:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_uint_to_float80_label2:
+    fadds .L__kefir_constant_uint_to_long_double(%rip)
+    jmp .L__kefir_func_uint_to_float80_label3
 .L__kefir_text_func_uint_to_float80_end:
 
 float32_eq2_float32:

@@ -66,32 +66,34 @@ conv2:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
+.L__kefir_func_conv2_label26:
+    mov %rdi, %rax
 .L__kefir_func_conv2_label37:
     movaps %xmm1, %xmm0
 .loc 0 87 5
     pxor %xmm1, %xmm0
-    test %rdi, %rdi
+    test %rax, %rax
     js .L__kefir_func_conv2_label6
     jmp .L__kefir_func_conv2_label4
 .loc 0 87 5
-.L__kefir_func_conv2_label4:
-    cvtsi2sd %rdi, %xmm0
-.L__kefir_func_conv2_label40:
-    jmp .L__kefir_func_conv2_label8
-.loc 0 87 5
 .L__kefir_func_conv2_label6:
-    mov %rdi, %rax
-    and $1, %rax
-    shr $1, %rdi
-.L__kefir_func_conv2_label48:
-    or %rdi, %rax
-    cvtsi2sd %rax, %xmm0
-.L__kefir_func_conv2_label52:
+    mov %rax, %rdi
+    and $1, %rdi
+    shr $1, %rax
+.L__kefir_func_conv2_label42:
+    or %rax, %rdi
+    cvtsi2sd %rdi, %xmm0
+.L__kefir_func_conv2_label46:
     movaps %xmm0, %xmm1
 .loc 0 87 5
     addsd %xmm0, %xmm1
-.L__kefir_func_conv2_label54:
+.L__kefir_func_conv2_label48:
     movaps %xmm1, %xmm0
+.loc 0 87 5
+    jmp .L__kefir_func_conv2_label8
+.loc 0 87 5
+.L__kefir_func_conv2_label4:
+    cvtsi2sd %rax, %xmm0
 .loc 0 87 5
 .L__kefir_func_conv2_label8:
     ldmxcsr -8(%rbp)
@@ -1320,31 +1322,43 @@ __kefir_debug_loclist_section_entry_3:
     .byte 0
 __kefir_debug_loclist_section_entry_4:
     .byte 4
-    .uleb128 .L__kefir_func_conv2_label6 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv2_label48 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label4 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label8 - .L__kefir_text_section_begin
+    .byte 2
+    .byte 144
+    .byte 0
+    .byte 4
+    .uleb128 .L__kefir_func_conv2_label17 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label37 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 5
     .byte 4
-    .uleb128 .L__kefir_func_conv2_label17 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv2_label40 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label37 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label42 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 5
+    .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_5:
     .byte 4
-    .uleb128 .L__kefir_func_conv2_label6 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv2_label48 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label4 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label8 - .L__kefir_text_section_begin
+    .byte 2
+    .byte 144
+    .byte 0
+    .byte 4
+    .uleb128 .L__kefir_func_conv2_label17 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label37 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 5
     .byte 4
-    .uleb128 .L__kefir_func_conv2_label17 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv2_label40 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label37 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label42 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 5
+    .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 0

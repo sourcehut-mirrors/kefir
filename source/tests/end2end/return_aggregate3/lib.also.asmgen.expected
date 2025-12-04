@@ -16,6 +16,12 @@ test:
     test %rsi, %rsi
     jnz .L__kefir_func_test_label5
     jmp .L__kefir_func_test_label3
+.L__kefir_func_test_label5:
+    not %rsi
+    mov %rcx, %rdi
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp get@PLT
 .L__kefir_func_test_label3:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
@@ -35,12 +41,6 @@ test:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test_label5:
-    not %rsi
-    mov %rcx, %rdi
-    lea (%rbp), %rsp
-    pop %rbp
-    jmp get@PLT
 .L__kefir_text_func_test_end:
 
 .L__kefir_text_section_end:

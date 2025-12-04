@@ -20,17 +20,18 @@ factorial:
 .L__kefir_func_factorial_label2:
     ja .L__kefir_func_factorial_label6
     jmp .L__kefir_func_factorial_label4
+.L__kefir_func_factorial_label4:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_func_factorial_label6:
     mulsd %xmm2, %xmm0
     movq .L__kefir_func_factorial_label13(%rip), %xmm1
     subsd %xmm1, %xmm2
     movaps %xmm2, %xmm1
     call factorial_helper
-.L__kefir_func_factorial_label4:
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_func_factorial_label4
 .L__kefir_text_func_factorial_end:
 .section .rodata
     .align 8

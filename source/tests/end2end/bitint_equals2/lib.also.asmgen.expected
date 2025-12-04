@@ -285,11 +285,6 @@ __kefir_bigint_unsigned_compare:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label4
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label4:
-    mov $0, %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
     movq -48(%rbp), %rax
     movq -24(%rbp), %rcx
@@ -326,20 +321,11 @@ __kefir_bigint_unsigned_compare:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label18
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
-    mov $0, %rdx
-    cmp %ecx, %eax
-    mov %rdx, %rax
-    seta %al
-    test %eax, %eax
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label10
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23:
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label4:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label18:
     movq -56(%rbp), %rcx
     movq -56(%rbp), %rax
@@ -382,7 +368,25 @@ __kefir_bigint_unsigned_compare:
     movl -12(%rbp), %ecx
     and %eax, %ecx
     movl %ecx, -12(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
+    mov $0, %rdx
+    cmp %ecx, %eax
+    mov %rdx, %rax
+    seta %al
+    test %eax, %eax
+    sete %al
+    test %al, %al
+    jz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23
+    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label10
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23:
+    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label10:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
@@ -397,8 +401,9 @@ __kefir_bigint_unsigned_compare:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label12
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label24:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label14
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label14:
     mov $1, %rax
+    neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -407,12 +412,6 @@ __kefir_bigint_unsigned_compare:
     add $-1, %rax
     movq %rax, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label14:
-    mov $1, %rax
-    neg %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_compare_end:
 
 

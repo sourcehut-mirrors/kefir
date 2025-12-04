@@ -29,13 +29,13 @@ dnot:
     jmp .L__kefir_func_dnot_label3
 .L__kefir_func_dnot_label8:
     jmp .L__kefir_func_dnot_label5
-.L__kefir_func_dnot_label3:
-    mov $0, %rax
+.L__kefir_func_dnot_label5:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_dnot_label5:
-    mov $1, %rax
+.L__kefir_func_dnot_label3:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -57,17 +57,17 @@ dnotd:
     jmp .L__kefir_func_dnotd_label2
 .L__kefir_func_dnotd_label10:
     jmp .L__kefir_func_dnotd_label6
-.L__kefir_func_dnotd_label2:
-    jne .L__kefir_func_dnotd_label11
-    jmp .L__kefir_func_dnotd_label4
-.L__kefir_func_dnotd_label11:
-    jmp .L__kefir_func_dnotd_label6
 .L__kefir_func_dnotd_label6:
     mov $1, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_dnotd_label2:
+    jne .L__kefir_func_dnotd_label11
+    jmp .L__kefir_func_dnotd_label4
+.L__kefir_func_dnotd_label11:
+    jmp .L__kefir_func_dnotd_label6
 .L__kefir_func_dnotd_label4:
     mov $0, %rax
     ldmxcsr -8(%rbp)
@@ -97,17 +97,17 @@ dnotf:
     jmp .L__kefir_func_dnotf_label2
 .L__kefir_func_dnotf_label10:
     jmp .L__kefir_func_dnotf_label6
-.L__kefir_func_dnotf_label2:
-    jne .L__kefir_func_dnotf_label11
-    jmp .L__kefir_func_dnotf_label4
-.L__kefir_func_dnotf_label11:
-    jmp .L__kefir_func_dnotf_label6
 .L__kefir_func_dnotf_label6:
     mov $1, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_dnotf_label2:
+    jne .L__kefir_func_dnotf_label11
+    jmp .L__kefir_func_dnotf_label4
+.L__kefir_func_dnotf_label11:
+    jmp .L__kefir_func_dnotf_label6
 .L__kefir_func_dnotf_label4:
     mov $0, %rax
     ldmxcsr -8(%rbp)
@@ -146,14 +146,14 @@ dnotld:
     jmp .L__kefir_func_dnotld_label3
 .L__kefir_func_dnotld_label9:
     jmp .L__kefir_func_dnotld_label5
-.L__kefir_func_dnotld_label3:
-    mov $0, %rax
+.L__kefir_func_dnotld_label5:
+    mov $1, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_dnotld_label5:
-    mov $1, %rax
+.L__kefir_func_dnotld_label3:
+    mov $0, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

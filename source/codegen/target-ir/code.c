@@ -127,6 +127,17 @@ kefir_result_t kefir_codegen_target_ir_code_new_block(struct kefir_mem *mem, str
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_code_indirect_jump_gate_block(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t *block_ref_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+
+    if (code->indirect_jump_gate_block == KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_block(mem, code, &code->indirect_jump_gate_block));
+    }
+    ASSIGN_PTR(block_ref_ptr, code->indirect_jump_gate_block);
+    return KEFIR_OK;
+}
+
 kefir_size_t kefir_codegen_target_ir_code_block_count(const struct kefir_codegen_target_ir_code *code) {
     REQUIRE(code != NULL, 0);
     return code->blocks_length;
@@ -182,6 +193,12 @@ kefir_codegen_target_ir_instruction_ref_t kefir_codegen_target_ir_code_block_con
 
     struct kefir_codegen_target_ir_block *block = &code->blocks[block_ref];
     return block->control_flow.tail;
+}
+
+kefir_bool_t kefir_codegen_target_ir_code_is_gate_block(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref) {
+    REQUIRE(code != NULL, false);
+
+    return code->indirect_jump_gate_block == block_ref || kefir_hashset_has(&code->gate_blocks, (kefir_hashset_key_t) block_ref);
 }
 
 kefir_result_t kefir_codegen_target_ir_code_instruction(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref, const struct kefir_codegen_target_ir_instruction **instr_ptr) {

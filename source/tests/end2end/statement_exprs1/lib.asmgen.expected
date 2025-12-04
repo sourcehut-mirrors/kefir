@@ -46,15 +46,16 @@ eval2:
 .L__kefir_func_eval2_label6:
     mov %rdx, %rcx
     jmp .L__kefir_func_eval2_label3
-.L__kefir_func_eval2_label2:
-    mov %rdx, %rsp
-    movq (%rsp), %rcx
-    add $16, %rsp
 .L__kefir_func_eval2_label3:
     add %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_eval2_label2:
+    mov %rdx, %rsp
+    movq (%rsp), %rcx
+    add $16, %rsp
+    jmp .L__kefir_func_eval2_label3
 .L__kefir_text_func_eval2_end:
 
 .L__kefir_text_section_end:

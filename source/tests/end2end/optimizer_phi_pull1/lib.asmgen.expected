@@ -19,25 +19,26 @@ somefn:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_somefn_label9(%rip), %xmm0
     movq .L__kefir_func_somefn_label10(%rip), %xmm1
+    mov %rdi, %rax
     movaps %xmm0, %xmm2
 .L__kefir_func_somefn_label2:
-    mov %rdi, %rax
-    add $-1, %eax
-    test %edi, %edi
+    mov %rax, %rdi
+    add $-1, %edi
+    test %eax, %eax
     jnz .L__kefir_func_somefn_label6
     jmp .L__kefir_func_somefn_label4
+.L__kefir_func_somefn_label6:
+    movaps %xmm2, %xmm0
+    addsd %xmm1, %xmm0
+    mov %rdi, %rax
+    movaps %xmm0, %xmm2
+    jmp .L__kefir_func_somefn_label2
 .L__kefir_func_somefn_label4:
     movaps %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_somefn_label6:
-    movaps %xmm2, %xmm0
-    addsd %xmm1, %xmm0
-    mov %rax, %rdi
-    movaps %xmm0, %xmm2
-    jmp .L__kefir_func_somefn_label2
 .L__kefir_text_func_somefn_end:
 .section .rodata
     .align 8
@@ -64,12 +65,12 @@ condition1:
     cmp $0, %edi
     jg .L__kefir_func_condition1_label5
     jmp .L__kefir_func_condition1_label3
-.L__kefir_func_condition1_label3:
-    mov $10, %rax
-    ret
 .L__kefir_func_condition1_label5:
     add $10, %edi
     mov %rdi, %rax
+    ret
+.L__kefir_func_condition1_label3:
+    mov $10, %rax
     ret
 .L__kefir_text_func_condition1_end:
 

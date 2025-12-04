@@ -27,6 +27,12 @@ factorial2:
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
     jmp *%rax
+.L__kefir_func_factorial2_label6:
+_kefir_local_public_label_factorial2_terminate:
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_func_factorial2_label4:
 _kefir_local_public_label_factorial2_round:
     movq -16(%rbp), %rdi
@@ -35,12 +41,6 @@ _kefir_local_public_label_factorial2_round:
     imul %rdi, %rsi
     mov %rax, %rdi
     jmp .L__kefir_func_factorial2_label2
-.L__kefir_func_factorial2_label6:
-_kefir_local_public_label_factorial2_terminate:
-    movq -8(%rbp), %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_text_func_factorial2_end:
 
 run_factorial:

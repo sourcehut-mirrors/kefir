@@ -31,8 +31,6 @@ init_s:
     test %rax, %rax
     jns .L__kefir_func_init_s_label3
     jmp .L__kefir_func_init_s_label2
-.L__kefir_func_init_s_label2:
-    fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_init_s_label3:
     movq $0, 8(%rcx)
     fstpt (%rcx)
@@ -46,6 +44,9 @@ init_s:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_init_s_label2:
+    fadds .L__kefir_constant_uint_to_long_double(%rip)
+    jmp .L__kefir_func_init_s_label3
 .L__kefir_text_func_init_s_end:
 
 .L__kefir_text_section_end:

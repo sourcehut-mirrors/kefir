@@ -41,10 +41,11 @@ static kefir_result_t semi_nca_dfs(struct kefir_codegen_target_ir_control_flow *
     data->counter++;
 
     kefir_result_t res;
-    struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&control_flow->blocks[block_ref].successors, &iter); res == KEFIR_OK;
-         res = kefir_hashtreeset_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, (kefir_uptr_t) iter.entry);
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t key;
+    for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].successors, &iter, &key); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &key)) {
+        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, (kefir_uptr_t) key);
         if (data->dfs_trace[successor_block_ref] == -1) {
             data->dfs_parents[successor_block_ref] = block_ref;
             REQUIRE_OK(semi_nca_dfs(control_flow, data, successor_block_ref));
@@ -89,10 +90,11 @@ static kefir_result_t semi_nca_impl(struct kefir_codegen_target_ir_control_flow 
         data->semi_dominators[block_ref] = block_ref;
 
         kefir_result_t res;
-        struct kefir_hashtreeset_iterator iter;
-        for (res = kefir_hashtreeset_iter(&control_flow->blocks[block_ref].predecessors, &iter); res == KEFIR_OK;
-            res = kefir_hashtreeset_next(&iter)) {
-            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, predecessor_block_ref, (kefir_uptr_t) iter.entry);
+        struct kefir_hashset_iterator iter;
+        kefir_hashset_key_t key;
+        for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].predecessors, &iter, &key); res == KEFIR_OK;
+            res = kefir_hashset_next(&iter, &key)) {
+            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, predecessor_block_ref, (kefir_uptr_t) key);
             if (data->dfs_trace[predecessor_block_ref] != -1) {
                 semi_nca_evaluate(data, predecessor_block_ref, i);
                 if (data->dfs_trace[data->best_candidates[predecessor_block_ref]] <
