@@ -16,11 +16,9 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test1_label1:
     movb %dil, -1(%rbp)
     leaq -2(%rbp), %rcx
     leaq -1(%rbp), %rdx
@@ -37,11 +35,9 @@ addb $1, (%rcx)
 
 test2:
 .L__kefir_text_func_test2_begin:
-.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test2_label1:
     movw %di, -2(%rbp)
     leaq -4(%rbp), %rcx
     leaq -2(%rbp), %rdx
@@ -58,11 +54,9 @@ addw $1, (%rcx)
 
 test3:
 .L__kefir_text_func_test3_begin:
-.L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test3_label1:
     movl %edi, -4(%rbp)
     leaq -8(%rbp), %rcx
     leaq -4(%rbp), %rdx
@@ -79,11 +73,9 @@ addl $1, (%rcx)
 
 test4:
 .L__kefir_text_func_test4_begin:
-.L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test4_label1:
     movq %rdi, -8(%rbp)
     leaq -16(%rbp), %rcx
     leaq -8(%rbp), %rdx
@@ -100,11 +92,9 @@ addq $1, (%rcx)
 
 test5:
 .L__kefir_text_func_test5_begin:
-.L__kefir_func_test5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-.L__kefir_func_test5_label1:
     movq %rdi, -48(%rbp)
     movq %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0

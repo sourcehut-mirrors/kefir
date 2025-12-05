@@ -18,12 +18,10 @@
 .L__kefir_text_section_begin:
 get0:
 .L__kefir_text_func_get0_begin:
-.L__kefir_func_get0_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_get0_label1:
     movabs $3405691582, %rax
     shl $31, %rax
     sar $31, %rax
@@ -36,12 +34,10 @@ get0:
 
 get1:
 .L__kefir_text_func_get1_begin:
-.L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_get1_label1:
     movabs $3405691582, %rax
     shl $32, %rax
     shr $32, %rax
@@ -71,12 +67,10 @@ get1:
 
 get2:
 .L__kefir_text_func_get2_begin:
-.L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_get2_label1:
     movabs $802555952865, %rax
     shl $23, %rax
     sar $23, %rax
@@ -89,12 +83,10 @@ get2:
 
 get3:
 .L__kefir_text_func_get3_begin:
-.L__kefir_func_get3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_get3_label1:
     movabs $802555952865, %rax
     shl $24, %rax
     shr $24, %rax
@@ -124,12 +116,10 @@ get3:
 
 get4:
 .L__kefir_text_func_get4_begin:
-.L__kefir_func_get4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-.L__kefir_func_get4_label1:
     movabs $1152902735017034547, %rax
     shl $3, %rax
     sar $3, %rax
@@ -144,12 +134,10 @@ get4:
 
 get5:
 .L__kefir_text_func_get5_begin:
-.L__kefir_func_get5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-.L__kefir_func_get5_label1:
     movabs $1152902735017034547, %rax
     shl $4, %rax
     shr $4, %rax

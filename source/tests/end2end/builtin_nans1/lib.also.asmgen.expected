@@ -18,10 +18,8 @@
 .L__kefir_text_section_begin:
 get_f32:
 .L__kefir_text_func_get_f32_begin:
-.L__kefir_func_get_f32_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get_f32_label1:
     movd .L__kefir_func_get_f32_label4(%rip), %xmm0
     pop %rbp
     ret
@@ -34,10 +32,8 @@ get_f32:
 
 get_f64:
 .L__kefir_text_func_get_f64_begin:
-.L__kefir_func_get_f64_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get_f64_label1:
     movq .L__kefir_func_get_f64_label4(%rip), %xmm0
     pop %rbp
     ret
@@ -50,10 +46,8 @@ get_f64:
 
 get_f80:
 .L__kefir_text_func_get_f80_begin:
-.L__kefir_func_get_f80_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get_f80_label1:
     fldt .L__kefir_func_get_f80_label4(%rip)
     pop %rbp
     ret

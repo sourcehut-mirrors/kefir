@@ -8,11 +8,9 @@
 .L__kefir_text_section_begin:
 custom_hypot:
 .L__kefir_text_func_custom_hypot_begin:
-.L__kefir_func_custom_hypot_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_func_custom_hypot_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq %xmm0, -8(%rbp)

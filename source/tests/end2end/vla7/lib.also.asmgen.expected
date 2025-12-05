@@ -10,12 +10,10 @@
 .L__kefir_text_section_begin:
 test:
 .L__kefir_text_func_test_begin:
-.L__kefir_func_test_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     mov $0, %rax
-.L__kefir_func_test_label1:
     movl %edi, -32(%rbp)
     mov %rax, %rcx
     sub $16, %rsp
@@ -96,12 +94,10 @@ test:
 
 test2:
 .L__kefir_text_func_test2_begin:
-.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
     mov $0, %rax
-.L__kefir_func_test2_label1:
     movl %edi, -48(%rbp)
     mov %rax, %rcx
     sub $16, %rsp

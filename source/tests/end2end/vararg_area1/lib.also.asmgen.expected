@@ -8,7 +8,6 @@
 .L__kefir_text_section_begin:
 process:
 .L__kefir_text_func_process_begin:
-.L__kefir_func_process_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
@@ -36,7 +35,6 @@ process:
     mov %r8, -224(%rbp)
     mov %r9, -216(%rbp)
     mov $0, %rdx
-.L__kefir_func_process_label3:
     movl %esi, -72(%rbp)
     movq %rdi, -40(%rbp)
     movl $16, -64(%rbp)

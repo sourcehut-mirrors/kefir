@@ -22,11 +22,9 @@
 .L__kefir_text_section_begin:
 set8:
 .L__kefir_text_func_set8_begin:
-.L__kefir_func_set8_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_set8_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %al, %al
@@ -40,11 +38,9 @@ movb %al, (%rcx)
 
 set16:
 .L__kefir_text_func_set16_begin:
-.L__kefir_func_set16_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_set16_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %ax, %ax
@@ -58,11 +54,9 @@ movw %ax, (%rcx)
 
 set32:
 .L__kefir_text_func_set32_begin:
-.L__kefir_func_set32_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_set32_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %eax, %eax
@@ -76,11 +70,9 @@ movl %eax, (%rcx)
 
 set64:
 .L__kefir_text_func_set64_begin:
-.L__kefir_func_set64_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_set64_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %rax, %rax
@@ -94,11 +86,9 @@ movq %rax, (%rcx)
 
 clear8:
 .L__kefir_text_func_clear8_begin:
-.L__kefir_func_clear8_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_clear8_label1:
     movq %rdi, -8(%rbp)
 movb $0, %al
     mov %rax, -8(%rbp)
@@ -110,11 +100,9 @@ movb $0, %al
 
 clear16:
 .L__kefir_text_func_clear16_begin:
-.L__kefir_func_clear16_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_clear16_label1:
     movq %rdi, -8(%rbp)
 movw $0, %ax
     mov %rax, -8(%rbp)
@@ -126,11 +114,9 @@ movw $0, %ax
 
 clear32:
 .L__kefir_text_func_clear32_begin:
-.L__kefir_func_clear32_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_clear32_label1:
     movq %rdi, -8(%rbp)
 movl $0, %eax
     mov %rax, -8(%rbp)
@@ -142,11 +128,9 @@ movl $0, %eax
 
 clear64:
 .L__kefir_text_func_clear64_begin:
-.L__kefir_func_clear64_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_clear64_label1:
     movq %rdi, -8(%rbp)
 movq $0, %rax
     mov %rax, -8(%rbp)

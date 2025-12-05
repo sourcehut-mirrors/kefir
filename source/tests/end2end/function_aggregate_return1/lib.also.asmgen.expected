@@ -9,14 +9,12 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-.L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $144, %rsp
     mov %rdi, %r12
-.L__kefir_func_get1_label1:
     movq %rsi, -152(%rbp)
     movq -152(%rbp), %rax
     mov $0, %rdx

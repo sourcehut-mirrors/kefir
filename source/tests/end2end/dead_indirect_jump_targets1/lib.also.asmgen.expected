@@ -12,11 +12,9 @@
 .L__kefir_text_section_begin:
 test:
 .L__kefir_text_func_test_begin:
-.L__kefir_func_test_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test_label1:
     lea .L__kefir_func_test_label3(%rip), %rax
     movq %rax, -8(%rbp)
     mov $0, %rcx
@@ -31,11 +29,9 @@ _kefir_local_public_label_test_L1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test2_label1:
     lea .L__kefir_func_test2_label3(%rip), %rax
     movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
@@ -50,10 +46,8 @@ _kefir_local_public_label_test2_L1:
 
 test3:
 .L__kefir_text_func_test3_begin:
-.L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test3_label1:
     lea __kefir_function_test3_static_x_4(%rip), %rax
     mov $0, %rdx
     movsx %edx, %rcx

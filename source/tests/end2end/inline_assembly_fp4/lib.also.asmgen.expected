@@ -8,11 +8,9 @@
 .L__kefir_text_section_begin:
 circle_area:
 .L__kefir_text_func_circle_area_begin:
-.L__kefir_func_circle_area_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_circle_area_label1:
     movd %xmm0, -8(%rbp)
     movd .L__kefir_func_circle_area_label4(%rip), %xmm0
     movd %xmm0, -4(%rbp)

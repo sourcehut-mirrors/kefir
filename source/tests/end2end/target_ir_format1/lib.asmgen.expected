@@ -2712,11 +2712,9 @@ factorial:
 #    ]
 #}
 .L__kefir_text_func_factorial_begin:
-.L__kefir_func_factorial_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_factorial_label1:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     mov $0, %rcx

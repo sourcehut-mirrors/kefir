@@ -8,11 +8,9 @@
 .L__kefir_text_section_begin:
 discriminant:
 .L__kefir_text_func_discriminant_begin:
-.L__kefir_func_discriminant_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-.L__kefir_func_discriminant_label1:
     movq %xmm2, -40(%rbp)
     movq %xmm1, -48(%rbp)
     movq %xmm0, -56(%rbp)

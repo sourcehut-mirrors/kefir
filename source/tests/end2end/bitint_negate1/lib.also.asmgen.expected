@@ -18,11 +18,9 @@
 .L__kefir_text_section_begin:
 neg1:
 .L__kefir_text_func_neg1_begin:
-.L__kefir_func_neg1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_neg1_label1:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
     shl $58, %rax
@@ -35,11 +33,9 @@ neg1:
 
 neg2:
 .L__kefir_text_func_neg2_begin:
-.L__kefir_func_neg2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_neg2_label1:
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
     shl $50, %rax
@@ -52,11 +48,9 @@ neg2:
 
 neg3:
 .L__kefir_text_func_neg3_begin:
-.L__kefir_func_neg3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_neg3_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     shl $35, %rax
@@ -69,11 +63,9 @@ neg3:
 
 neg4:
 .L__kefir_text_func_neg4_begin:
-.L__kefir_func_neg4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_neg4_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     shl $6, %rax
@@ -86,11 +78,9 @@ neg4:
 
 neg5:
 .L__kefir_text_func_neg5_begin:
-.L__kefir_func_neg5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_func_neg5_label1:
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movdqu -32(%rbp), %xmm0
@@ -112,13 +102,11 @@ neg5:
 
 neg6:
 .L__kefir_text_func_neg6_begin:
-.L__kefir_func_neg6_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $120, %rsp
     mov %rdi, %rbx
-.L__kefir_func_neg6_label1:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
     movq %rcx, -48(%rbp)
@@ -180,11 +168,9 @@ neg6:
 .section .text
 __kefir_bigint_invert:
 .L__kefir_runtime_text_func___kefir_bigint_invert_begin:
-.L__kefir_runtime_func___kefir_bigint_invert_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_runtime_func___kefir_bigint_invert_label1:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
@@ -249,11 +235,9 @@ __kefir_bigint_invert:
 
 __kefir_bigint_negate:
 .L__kefir_runtime_text_func___kefir_bigint_negate_begin:
-.L__kefir_runtime_func___kefir_bigint_negate_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_runtime_func___kefir_bigint_negate_label1:
     movq %rsi, -16(%rbp)
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rdi
@@ -271,11 +255,9 @@ __kefir_bigint_negate:
 
 __kefir_bigint_util_add_digit_zero_extended:
 .L__kefir_runtime_text_func___kefir_bigint_util_add_digit_zero_extended_begin:
-.L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-.L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label1:
     movq %rdx, -48(%rbp)
     movb %sil, -52(%rbp)
     movq %rdi, -40(%rbp)

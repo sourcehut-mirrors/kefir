@@ -924,11 +924,9 @@ test1:
 #    ]
 #}
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test1_label1:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
@@ -2381,11 +2379,9 @@ test2:
 #    ]
 #}
 .L__kefir_text_func_test2_begin:
-.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test2_label1:
     movl %esi, -8(%rbp)
     movq %rdi, -16(%rbp)
     movl -8(%rbp), %esi
@@ -3753,11 +3749,9 @@ test3:
 #    ]
 #}
 .L__kefir_text_func_test3_begin:
-.L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-.L__kefir_func_test3_label1:
     mov %rdx, -16(%rbp)
     mov %rcx, -8(%rbp)
     mov %rdi, -32(%rbp)
@@ -4516,11 +4510,9 @@ test4:
 #    ]
 #}
 .L__kefir_text_func_test4_begin:
-.L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test4_label1:
     movl %edi, -4(%rbp)
 .L__kefir_func_test4_label2:
 _kefir_local_public_label_test4_label1:
@@ -4995,12 +4987,10 @@ init_array:
 #    ]
 #}
 .L__kefir_text_func_init_array_begin:
-.L__kefir_func_init_array_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-.L__kefir_func_init_array_label1:
 lea test4, %rax
 mov %rax, (__kefir_function_init_array_static_array_13)
 lea __kefir_function_init_array_static_array_13 + 20, %rax

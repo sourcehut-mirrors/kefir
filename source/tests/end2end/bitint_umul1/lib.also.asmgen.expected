@@ -18,11 +18,9 @@
 .L__kefir_text_section_begin:
 mul1:
 .L__kefir_text_func_mul1_begin:
-.L__kefir_func_mul1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_mul1_label1:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
@@ -43,11 +41,9 @@ mul1:
 
 mul2:
 .L__kefir_text_func_mul2_begin:
-.L__kefir_func_mul2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_mul2_label1:
     movw %si, -2(%rbp)
     movw %di, -4(%rbp)
     movw -4(%rbp), %ax
@@ -68,11 +64,9 @@ mul2:
 
 mul3:
 .L__kefir_text_func_mul3_begin:
-.L__kefir_func_mul3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_mul3_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -93,11 +87,9 @@ mul3:
 
 mul4:
 .L__kefir_text_func_mul4_begin:
-.L__kefir_func_mul4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_mul4_label1:
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
@@ -118,11 +110,9 @@ mul4:
 
 mul5:
 .L__kefir_text_func_mul5_begin:
-.L__kefir_func_mul5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
-.L__kefir_func_mul5_label1:
     movq %rdx, -64(%rbp)
     movq %rcx, -56(%rbp)
     movq %rdi, -48(%rbp)
@@ -153,13 +143,11 @@ mul5:
 
 mul6:
 .L__kefir_text_func_mul6_begin:
-.L__kefir_func_mul6_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $200, %rsp
     mov %rdi, %rbx
-.L__kefir_func_mul6_label1:
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
     movq (%rax), %rdx
@@ -237,11 +225,9 @@ mul6:
 .section .text
 __kefir_bigint_zero:
 .L__kefir_runtime_text_func___kefir_bigint_zero_begin:
-.L__kefir_runtime_func___kefir_bigint_zero_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_runtime_func___kefir_bigint_zero_label1:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
@@ -299,11 +285,9 @@ __kefir_bigint_zero:
 
 __kefir_bigint_unsigned_multiply:
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_multiply_begin:
-.L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label0:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
-.L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label1:
     movq %r8, -88(%rbp)
     movq %rcx, -56(%rbp)
     movq %rdx, -96(%rbp)

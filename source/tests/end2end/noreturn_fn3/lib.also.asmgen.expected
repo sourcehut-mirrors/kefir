@@ -10,10 +10,8 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test1_label1:
     movq value@GOTPCREL(%rip), %rax
     movl $2, (%rax)
     call do_exit@PLT

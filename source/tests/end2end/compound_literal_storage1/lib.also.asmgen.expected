@@ -20,10 +20,8 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-.L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get1_label1:
     lea __kefir_function_get1_static___kefir_local_temporary_0_3(%rip), %rax
     pop %rbp
     ret
@@ -32,10 +30,8 @@ get1:
 get2:
 .L__kefir_text_func_get2_begin:
 .extern __tls_get_addr
-.L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get2_label1:
     data16     lea __kefir_function_get2_static___kefir_local_temporary_0_5@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
@@ -45,10 +41,8 @@ get2:
 
 get3:
 .L__kefir_text_func_get3_begin:
-.L__kefir_func_get3_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get3_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, (%rdi)
@@ -84,10 +78,8 @@ get3:
 
 get4:
 .L__kefir_text_func_get4_begin:
-.L__kefir_func_get4_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get4_label1:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, (%rdi)
@@ -123,11 +115,9 @@ get4:
 
 get5:
 .L__kefir_text_func_get5_begin:
-.L__kefir_func_get5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_get5_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     test %eax, %eax
@@ -150,11 +140,9 @@ get5:
 
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test1_label1:
     movq %rdi, -8(%rbp)
     mov $8, %rax
     lea (%rbp), %rsp

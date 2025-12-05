@@ -8,7 +8,6 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
@@ -18,7 +17,6 @@ test1:
     push %r15
     sub $40, %rsp
     stmxcsr -48(%rbp)
-.L__kefir_func_test1_label1:
     movq %xmm0, -64(%rbp)
     movq %rdi, -56(%rbp)
     movq -56(%rbp), %r8

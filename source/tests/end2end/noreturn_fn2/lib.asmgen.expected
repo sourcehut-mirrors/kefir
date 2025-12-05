@@ -15,40 +15,32 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test1_label1:
     call do_exit@PLT
     ud2
 .L__kefir_text_func_test1_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-.L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test3_label1:
     call do_exit@PLT
     ud2
 .L__kefir_text_func_test3_end:
 
 test4:
 .L__kefir_text_func_test4_begin:
-.L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test4_label1:
     call do_exit@PLT
     ud2
 .L__kefir_text_func_test4_end:
 
 test5:
 .L__kefir_text_func_test5_begin:
-.L__kefir_func_test5_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test5_label1:
     call do_exit@PLT
     ud2
 .L__kefir_text_func_test5_end:

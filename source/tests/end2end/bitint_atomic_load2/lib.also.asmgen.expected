@@ -24,10 +24,8 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-.L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get1_label1:
     movq a@GOTPCREL(%rip), %rcx
     movb (%rcx), %al
     shl $58, %rax
@@ -38,10 +36,8 @@ get1:
 
 get2:
 .L__kefir_text_func_get2_begin:
-.L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get2_label1:
     movq b@GOTPCREL(%rip), %rcx
     movw (%rcx), %ax
     shl $51, %rax
@@ -52,10 +48,8 @@ get2:
 
 get3:
 .L__kefir_text_func_get3_begin:
-.L__kefir_func_get3_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get3_label1:
     movq c@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     shl $37, %rax
@@ -66,10 +60,8 @@ get3:
 
 get4:
 .L__kefir_text_func_get4_begin:
-.L__kefir_func_get4_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get4_label1:
     movq d@GOTPCREL(%rip), %rax
     movq (%rax), %rax
     shl $14, %rax
@@ -80,11 +72,9 @@ get4:
 
 get5:
 .L__kefir_text_func_get5_begin:
-.L__kefir_func_get5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_get5_label1:
     movq e@GOTPCREL(%rip), %rsi
     leaq -16(%rbp), %rax
     mov %rax, %rdx
@@ -100,13 +90,11 @@ get5:
 
 get6:
 .L__kefir_text_func_get6_begin:
-.L__kefir_func_get6_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-.L__kefir_func_get6_label1:
     movq f@GOTPCREL(%rip), %rsi
     leaq -64(%rbp), %rax
     mov %rax, %rdx

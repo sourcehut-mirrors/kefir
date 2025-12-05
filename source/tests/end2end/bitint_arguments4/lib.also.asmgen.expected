@@ -10,11 +10,9 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
-.L__kefir_func_test1_label1:
     mov 32(%rbp), %rax
     lea 16(%rbp), %r10
     movq %rcx, -112(%rbp)

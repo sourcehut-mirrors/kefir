@@ -59,6 +59,8 @@
 
 #define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC \
     "amd64-drop-virtual,amd64-propagate-jump,amd64-eliminate-label,amd64-peephole"
+#define KEFIR_CODEGEN_AMD64_PIPELINE_MINI_SPEC \
+    "amd64-drop-virtual,amd64-eliminate-label"
 // clang-format on
 
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
@@ -373,7 +375,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         }
     } else {
         compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC;
-        compiler_config->codegen.pipeline_spec = NULL;
+        compiler_config->codegen.pipeline_spec = KEFIR_CODEGEN_AMD64_PIPELINE_MINI_SPEC;
     }
 
     switch (config->assembler.target) {

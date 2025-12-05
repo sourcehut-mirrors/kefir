@@ -9,12 +9,10 @@
 .L__kefir_text_section_begin:
 test2:
 .L__kefir_text_func_test2_begin:
-.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $136, %rsp
-.L__kefir_func_test2_label1:
     movl %edi, -12(%rbp)
     movl -12(%rbp), %eax
     mov $0, %rcx
@@ -49,11 +47,9 @@ test2:
 .section .text
 __kefir_bigint_cast_signed:
 .L__kefir_runtime_text_func___kefir_bigint_cast_signed_begin:
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label0:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -88(%rbp)
@@ -406,11 +402,9 @@ __kefir_bigint_cast_signed:
 
 __kefir_bigint_set_signed_integer:
 .L__kefir_runtime_text_func___kefir_bigint_set_signed_integer_begin:
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -32(%rbp)

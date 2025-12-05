@@ -15,12 +15,10 @@
 .L__kefir_text_section_begin:
 call1_proxy:
 .L__kefir_text_func_call1_proxy_begin:
-.L__kefir_func_call1_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-.L__kefir_func_call1_proxy_label1:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     leaq -12(%rbp), %rbx
@@ -36,12 +34,10 @@ call1_proxy:
 
 call2_proxy:
 .L__kefir_text_func_call2_proxy_begin:
-.L__kefir_func_call2_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-.L__kefir_func_call2_proxy_label1:
     movd %xmm0, -20(%rbp)
     movl -20(%rbp), %eax
     leaq -16(%rbp), %rbx
@@ -57,12 +53,10 @@ call2_proxy:
 
 call3_proxy:
 .L__kefir_text_func_call3_proxy_begin:
-.L__kefir_func_call3_proxy_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-.L__kefir_func_call3_proxy_label1:
     movd %xmm0, -24(%rbp)
     movl -24(%rbp), %eax
     leaq -20(%rbp), %rbx

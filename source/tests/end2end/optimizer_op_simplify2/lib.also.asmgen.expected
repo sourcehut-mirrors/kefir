@@ -22,11 +22,9 @@
 .L__kefir_text_section_begin:
 below_or_equals:
 .L__kefir_text_func_below_or_equals_begin:
-.L__kefir_func_below_or_equals_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_below_or_equals_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -52,11 +50,9 @@ below_or_equals:
 
 above_or_equals:
 .L__kefir_text_func_above_or_equals_begin:
-.L__kefir_func_above_or_equals_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_above_or_equals_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -82,11 +78,9 @@ above_or_equals:
 
 below_or_equals2:
 .L__kefir_text_func_below_or_equals2_begin:
-.L__kefir_func_below_or_equals2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_below_or_equals2_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %ecx
@@ -101,11 +95,9 @@ below_or_equals2:
 
 above_or_equals2:
 .L__kefir_text_func_above_or_equals2_begin:
-.L__kefir_func_above_or_equals2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_above_or_equals2_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %ecx
@@ -120,11 +112,9 @@ above_or_equals2:
 
 greater_or_equals2:
 .L__kefir_text_func_greater_or_equals2_begin:
-.L__kefir_func_greater_or_equals2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_greater_or_equals2_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %ecx
@@ -139,11 +129,9 @@ greater_or_equals2:
 
 less_or_equals:
 .L__kefir_text_func_less_or_equals_begin:
-.L__kefir_func_less_or_equals_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_less_or_equals_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -169,11 +157,9 @@ less_or_equals:
 
 greater_or_equals:
 .L__kefir_text_func_greater_or_equals_begin:
-.L__kefir_func_greater_or_equals_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_greater_or_equals_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -199,11 +185,9 @@ greater_or_equals:
 
 less_or_equals2:
 .L__kefir_text_func_less_or_equals2_begin:
-.L__kefir_func_less_or_equals2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_less_or_equals2_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %ecx

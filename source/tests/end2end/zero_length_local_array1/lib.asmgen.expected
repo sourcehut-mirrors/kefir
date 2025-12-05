@@ -11,11 +11,9 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -23,11 +21,9 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test2_label1:
     leaq -8(%rbp), %rdi
     leaq -4(%rbp), %rsi
     call fn@PLT

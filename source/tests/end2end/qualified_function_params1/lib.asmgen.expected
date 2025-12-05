@@ -18,11 +18,9 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_func_test1_label1:
     movq %rsi, -8(%rbp)
     movq %xmm0, -16(%rbp)
     movl %edi, -24(%rbp)
@@ -33,11 +31,9 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test2_label1:
     movq %rsi, -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -46,11 +42,9 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-.L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test3_label1:
     mov 16(%rbp), %rax
     movl %eax, -4(%rbp)
     lea (%rbp), %rsp
@@ -60,11 +54,9 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-.L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test4_label1:
     mov $1, %rcx
     movsx %ecx, %rax
     movq %rax, -16(%rbp)
@@ -80,12 +72,10 @@ test4:
 
 test5:
 .L__kefir_text_func_test5_begin:
-.L__kefir_func_test5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_test5_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movq X@GOTPCREL(%rip), %rcx

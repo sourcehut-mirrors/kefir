@@ -10,12 +10,10 @@
 .L__kefir_text_section_begin:
 greater_or_equalsf:
 .L__kefir_text_func_greater_or_equalsf_begin:
-.L__kefir_func_greater_or_equalsf_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_greater_or_equalsf_label1:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %ecx
@@ -33,12 +31,10 @@ greater_or_equalsf:
 
 less_or_equalsf:
 .L__kefir_text_func_less_or_equalsf_begin:
-.L__kefir_func_less_or_equalsf_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_less_or_equalsf_label1:
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %ecx

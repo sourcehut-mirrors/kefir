@@ -14,11 +14,9 @@
 .L__kefir_text_section_begin:
 dnot:
 .L__kefir_text_func_dnot_begin:
-.L__kefir_func_dnot_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_dnot_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     test %eax, %eax
@@ -45,12 +43,10 @@ dnot:
 
 dnotd:
 .L__kefir_text_func_dnotd_begin:
-.L__kefir_func_dnotd_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_dnotd_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movq %rax, %xmm0
@@ -71,7 +67,6 @@ dnotd:
 .L__kefir_func_dnotd_label10:
     jmp .L__kefir_func_dnotd_label6
 .L__kefir_func_dnotd_label9:
-.L__kefir_func_dnotd_label4:
     mov $0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -86,12 +81,10 @@ dnotd:
 
 dnotf:
 .L__kefir_text_func_dnotf_begin:
-.L__kefir_func_dnotf_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_dnotf_label1:
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
     movd %eax, %xmm0
@@ -112,7 +105,6 @@ dnotf:
 .L__kefir_func_dnotf_label10:
     jmp .L__kefir_func_dnotf_label6
 .L__kefir_func_dnotf_label9:
-.L__kefir_func_dnotf_label4:
     mov $0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -127,12 +119,10 @@ dnotf:
 
 dnotld:
 .L__kefir_text_func_dnotld_begin:
-.L__kefir_func_dnotld_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-.L__kefir_func_dnotld_label1:
     fldt 16(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)

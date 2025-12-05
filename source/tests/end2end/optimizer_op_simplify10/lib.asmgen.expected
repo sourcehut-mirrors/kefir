@@ -8,11 +8,9 @@
 .L__kefir_text_section_begin:
 test:
 .L__kefir_text_func_test_begin:
-.L__kefir_func_test_label0:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
-.L__kefir_func_test_label1:
     movq $1, -80(%rbp)
     movq $3, -64(%rbp)
     movq $100, -40(%rbp)

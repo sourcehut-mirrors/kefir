@@ -22,13 +22,11 @@
 .L__kefir_text_section_begin:
 f32_predec:
 .L__kefir_text_func_f32_predec_begin:
-.L__kefir_func_f32_predec_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $104, %rsp
     stmxcsr -16(%rbp)
-.L__kefir_func_f32_predec_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -112(%rbp)
@@ -130,13 +128,11 @@ f32_predec:
 
 f32_preinc:
 .L__kefir_text_func_f32_preinc_begin:
-.L__kefir_func_f32_preinc_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $104, %rsp
     stmxcsr -16(%rbp)
-.L__kefir_func_f32_preinc_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -112(%rbp)
@@ -238,13 +234,11 @@ f32_preinc:
 
 f64_predec:
 .L__kefir_text_func_f64_predec_begin:
-.L__kefir_func_f64_predec_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $120, %rsp
     stmxcsr -16(%rbp)
-.L__kefir_func_f64_predec_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -128(%rbp)
@@ -346,13 +340,11 @@ f64_predec:
 
 f64_preinc:
 .L__kefir_text_func_f64_preinc_begin:
-.L__kefir_func_f64_preinc_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $120, %rsp
     stmxcsr -16(%rbp)
-.L__kefir_func_f64_preinc_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -128(%rbp)
@@ -454,13 +446,11 @@ f64_preinc:
 
 f32_postdec:
 .L__kefir_text_func_f32_postdec_begin:
-.L__kefir_func_f32_postdec_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $104, %rsp
     stmxcsr -16(%rbp)
-.L__kefir_func_f32_postdec_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -112(%rbp)
@@ -560,13 +550,11 @@ f32_postdec:
 
 f32_postinc:
 .L__kefir_text_func_f32_postinc_begin:
-.L__kefir_func_f32_postinc_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $104, %rsp
     stmxcsr -16(%rbp)
-.L__kefir_func_f32_postinc_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -112(%rbp)
@@ -666,13 +654,11 @@ f32_postinc:
 
 f64_postdec:
 .L__kefir_text_func_f64_postdec_begin:
-.L__kefir_func_f64_postdec_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $120, %rsp
     stmxcsr -16(%rbp)
-.L__kefir_func_f64_postdec_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -128(%rbp)
@@ -772,13 +758,11 @@ f64_postdec:
 
 f64_postinc:
 .L__kefir_text_func_f64_postinc_begin:
-.L__kefir_func_f64_postinc_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $120, %rsp
     stmxcsr -16(%rbp)
-.L__kefir_func_f64_postinc_label1:
     movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -128(%rbp)

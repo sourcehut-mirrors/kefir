@@ -10,11 +10,9 @@
 .L__kefir_text_section_begin:
 gety:
 .L__kefir_text_func_gety_begin:
-.L__kefir_func_gety_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_gety_label1:
     movq $0, -8(%rbp)
 mov value(%rip), %rax
 add __kefir_function_gety_static_y_3(%rip), %rax
@@ -31,11 +29,9 @@ add __kefir_function_gety_static_y_3(%rip), %rax
 
 setx:
 .L__kefir_text_func_setx_begin:
-.L__kefir_func_setx_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_setx_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea value(%rip), %rcx

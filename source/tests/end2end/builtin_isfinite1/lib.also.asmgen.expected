@@ -18,12 +18,10 @@
 .L__kefir_text_section_begin:
 is_finite_f32:
 .L__kefir_text_func_is_finite_f32_begin:
-.L__kefir_func_is_finite_f32_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_is_finite_f32_label1:
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
     movq %rax, %xmm0
@@ -44,12 +42,10 @@ is_finite_f32:
 
 is_finite_f64:
 .L__kefir_text_func_is_finite_f64_begin:
-.L__kefir_func_is_finite_f64_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_is_finite_f64_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movq %rax, %xmm0
@@ -70,12 +66,10 @@ is_finite_f64:
 
 is_finite_f80:
 .L__kefir_text_func_is_finite_f80_begin:
-.L__kefir_func_is_finite_f80_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-.L__kefir_func_is_finite_f80_label1:
     fldt 16(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)

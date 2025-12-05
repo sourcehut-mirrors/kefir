@@ -18,12 +18,10 @@
 .L__kefir_text_section_begin:
 is_inf_f32:
 .L__kefir_text_func_is_inf_f32_begin:
-.L__kefir_func_is_inf_f32_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_is_inf_f32_label1:
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
     mov %rax, %rcx
@@ -43,12 +41,10 @@ is_inf_f32:
 
 is_inf_f64:
 .L__kefir_text_func_is_inf_f64_begin:
-.L__kefir_func_is_inf_f64_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_is_inf_f64_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movabs $9223372036854775807, %rcx
@@ -69,12 +65,10 @@ is_inf_f64:
 
 is_inf_f80:
 .L__kefir_text_func_is_inf_f80_begin:
-.L__kefir_func_is_inf_f80_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-.L__kefir_func_is_inf_f80_label1:
     fldt 16(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)

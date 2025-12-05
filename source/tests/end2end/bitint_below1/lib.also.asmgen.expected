@@ -18,11 +18,9 @@
 .L__kefir_text_section_begin:
 below1:
 .L__kefir_text_func_below1_begin:
-.L__kefir_func_below1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_below1_label1:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
@@ -48,11 +46,9 @@ below1:
 
 below2:
 .L__kefir_text_func_below2_begin:
-.L__kefir_func_below2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_below2_label1:
     movw %si, -2(%rbp)
     movw %di, -4(%rbp)
     movw -4(%rbp), %ax
@@ -78,11 +74,9 @@ below2:
 
 below3:
 .L__kefir_text_func_below3_begin:
-.L__kefir_func_below3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_below3_label1:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -108,11 +102,9 @@ below3:
 
 below4:
 .L__kefir_text_func_below4_begin:
-.L__kefir_func_below4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_below4_label1:
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
@@ -138,11 +130,9 @@ below4:
 
 below5:
 .L__kefir_text_func_below5_begin:
-.L__kefir_func_below5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-.L__kefir_func_below5_label1:
     movq %rdx, -64(%rbp)
     movq %rcx, -56(%rbp)
     movq %rdi, -48(%rbp)
@@ -172,11 +162,9 @@ below5:
 
 below6:
 .L__kefir_text_func_below6_begin:
-.L__kefir_func_below6_label0:
     push %rbp
     mov %rsp, %rbp
     sub $160, %rsp
-.L__kefir_func_below6_label1:
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
     movq (%rax), %rdx
@@ -243,11 +231,9 @@ below6:
 .section .text
 __kefir_bigint_unsigned_compare:
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_compare_begin:
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label1:
     movq %rdx, -56(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -48(%rbp)

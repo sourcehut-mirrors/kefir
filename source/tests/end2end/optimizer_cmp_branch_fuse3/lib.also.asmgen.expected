@@ -18,12 +18,10 @@
 .L__kefir_text_section_begin:
 lessd:
 .L__kefir_text_func_lessd_begin:
-.L__kefir_func_lessd_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_lessd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
@@ -58,12 +56,10 @@ lessd:
 
 equalsd:
 .L__kefir_text_func_equalsd_begin:
-.L__kefir_func_equalsd_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
@@ -98,12 +94,10 @@ equalsd:
 
 greaterd:
 .L__kefir_text_func_greaterd_begin:
-.L__kefir_func_greaterd_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_greaterd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
@@ -138,12 +132,10 @@ greaterd:
 
 not_equalsd:
 .L__kefir_text_func_not_equalsd_begin:
-.L__kefir_func_not_equalsd_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_not_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
@@ -167,7 +159,6 @@ not_equalsd:
 .L__kefir_func_not_equalsd_label10:
     jmp .L__kefir_func_not_equalsd_label6
 .L__kefir_func_not_equalsd_label9:
-.L__kefir_func_not_equalsd_label4:
     mov $0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -177,12 +168,10 @@ not_equalsd:
 
 greater_or_equalsd:
 .L__kefir_text_func_greater_or_equalsd_begin:
-.L__kefir_func_greater_or_equalsd_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_greater_or_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
@@ -217,12 +206,10 @@ greater_or_equalsd:
 
 less_or_equalsd:
 .L__kefir_text_func_less_or_equalsd_begin:
-.L__kefir_func_less_or_equalsd_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_less_or_equalsd_label1:
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax

@@ -10,10 +10,8 @@
 .L__kefir_text_section_begin:
 get:
 .L__kefir_text_func_get_begin:
-.L__kefir_func_get_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get_label1:
     lea s0a(%rip), %rax
     pop %rbp
     ret

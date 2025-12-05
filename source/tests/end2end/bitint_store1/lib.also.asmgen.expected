@@ -24,10 +24,8 @@
 .L__kefir_text_section_begin:
 set1:
 .L__kefir_text_func_set1_begin:
-.L__kefir_func_set1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_set1_label1:
     movq a@GOTPCREL(%rip), %rax
     mov $14, %rcx
     shl $59, %rcx
@@ -39,10 +37,8 @@ set1:
 
 set2:
 .L__kefir_text_func_set2_begin:
-.L__kefir_func_set2_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_set2_label1:
     movq b@GOTPCREL(%rip), %rax
     mov $1024, %rcx
     shl $52, %rcx
@@ -54,10 +50,8 @@ set2:
 
 set3:
 .L__kefir_text_func_set3_begin:
-.L__kefir_func_set3_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_set3_label1:
     movq c@GOTPCREL(%rip), %rax
     mov $2047468, %rcx
     shl $42, %rcx
@@ -69,10 +63,8 @@ set3:
 
 set4:
 .L__kefir_text_func_set4_begin:
-.L__kefir_func_set4_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_set4_label1:
     movq d@GOTPCREL(%rip), %rax
     movabs $47426834430, %rcx
     shl $27, %rcx
@@ -84,12 +76,10 @@ set4:
 
 set5:
 .L__kefir_text_func_set5_begin:
-.L__kefir_func_set5_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-.L__kefir_func_set5_label1:
     movq e@GOTPCREL(%rip), %rbx
     movl $3736284861, -32(%rbp)
     movl $1684987308, -28(%rbp)
@@ -112,12 +102,10 @@ set5:
 
 set6:
 .L__kefir_text_func_set6_begin:
-.L__kefir_func_set6_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $88, %rsp
-.L__kefir_func_set6_label1:
     movq f@GOTPCREL(%rip), %rbx
     movl $1735808086, -96(%rbp)
     movl $1734689605, -92(%rbp)
@@ -157,11 +145,9 @@ set6:
 .section .text
 __kefir_bigint_cast_signed:
 .L__kefir_runtime_text_func___kefir_bigint_cast_signed_begin:
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label0:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -88(%rbp)

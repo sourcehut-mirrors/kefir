@@ -16,10 +16,8 @@
 .L__kefir_text_section_begin:
 get_global_uninit_static:
 .L__kefir_text_func_get_global_uninit_static_begin:
-.L__kefir_func_get_global_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get_global_uninit_static_label1:
     lea STRUCT1(%rip), %rax
     pop %rbp
     ret
@@ -28,10 +26,8 @@ get_global_uninit_static:
 get_global_tlocal_uninit_static:
 .L__kefir_text_func_get_global_tlocal_uninit_static_begin:
 .extern __tls_get_addr
-.L__kefir_func_get_global_tlocal_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get_global_tlocal_uninit_static_label1:
     data16     lea STRUCT2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
@@ -42,10 +38,8 @@ get_global_tlocal_uninit_static:
 get_local_tlocal_uninit_static:
 .L__kefir_text_func_get_local_tlocal_uninit_static_begin:
 .extern __tls_get_addr
-.L__kefir_func_get_local_tlocal_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get_local_tlocal_uninit_static_label1:
     data16     lea __kefir_function_get_local_tlocal_uninit_static_static_STRUCT2_7@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
@@ -55,10 +49,8 @@ get_local_tlocal_uninit_static:
 
 get_local_uninit_static:
 .L__kefir_text_func_get_local_uninit_static_begin:
-.L__kefir_func_get_local_uninit_static_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get_local_uninit_static_label1:
     lea __kefir_function_get_local_uninit_static_static_STRUCT2_4(%rip), %rax
     pop %rbp
     ret

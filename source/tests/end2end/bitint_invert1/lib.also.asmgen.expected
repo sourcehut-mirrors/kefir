@@ -18,11 +18,9 @@
 .L__kefir_text_section_begin:
 inv1:
 .L__kefir_text_func_inv1_begin:
-.L__kefir_func_inv1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_inv1_label1:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
     shl $58, %rax
@@ -35,11 +33,9 @@ inv1:
 
 inv2:
 .L__kefir_text_func_inv2_begin:
-.L__kefir_func_inv2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_inv2_label1:
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
     shl $50, %rax
@@ -52,11 +48,9 @@ inv2:
 
 inv3:
 .L__kefir_text_func_inv3_begin:
-.L__kefir_func_inv3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_inv3_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     shl $35, %rax
@@ -69,11 +63,9 @@ inv3:
 
 inv4:
 .L__kefir_text_func_inv4_begin:
-.L__kefir_func_inv4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_inv4_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     shl $6, %rax
@@ -86,11 +78,9 @@ inv4:
 
 inv5:
 .L__kefir_text_func_inv5_begin:
-.L__kefir_func_inv5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_func_inv5_label1:
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movdqu -32(%rbp), %xmm0
@@ -112,13 +102,11 @@ inv5:
 
 inv6:
 .L__kefir_text_func_inv6_begin:
-.L__kefir_func_inv6_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     sub $120, %rsp
     mov %rdi, %rbx
-.L__kefir_func_inv6_label1:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
     movq %rcx, -48(%rbp)
@@ -180,11 +168,9 @@ inv6:
 .section .text
 __kefir_bigint_invert:
 .L__kefir_runtime_text_func___kefir_bigint_invert_begin:
-.L__kefir_runtime_func___kefir_bigint_invert_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_runtime_func___kefir_bigint_invert_label1:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax

@@ -12,10 +12,8 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-.L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get1_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -23,10 +21,8 @@ get1:
 
 get2:
 .L__kefir_text_func_get2_begin:
-.L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_get2_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -34,12 +30,10 @@ get2:
 
 get3:
 .L__kefir_text_func_get3_begin:
-.L__kefir_func_get3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.L__kefir_func_get3_label1:
     movd .L__kefir_func_get3_label4(%rip), %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0
     cvttss2si %xmm0, %rax

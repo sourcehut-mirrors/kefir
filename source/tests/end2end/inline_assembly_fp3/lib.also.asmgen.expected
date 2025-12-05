@@ -8,7 +8,6 @@
 .L__kefir_text_section_begin:
 sumall:
 .L__kefir_text_func_sumall_begin:
-.L__kefir_func_sumall_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
@@ -16,7 +15,6 @@ sumall:
     push %r13
     push %r14
     sub $16, %rsp
-.L__kefir_func_sumall_label1:
     movq %rdi, -48(%rbp)
     movq %xmm0, -40(%rbp)
     movq -48(%rbp), %rdx

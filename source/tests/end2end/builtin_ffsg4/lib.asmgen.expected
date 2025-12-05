@@ -10,11 +10,9 @@
 .L__kefir_text_section_begin:
 get:
 .L__kefir_text_func_get_begin:
-.L__kefir_func_get_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_get_label1:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %ecx
     bsf %ecx, %eax

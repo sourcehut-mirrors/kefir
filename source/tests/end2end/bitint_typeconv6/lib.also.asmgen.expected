@@ -18,11 +18,9 @@
 .L__kefir_text_section_begin:
 get0:
 .L__kefir_text_func_get0_begin:
-.L__kefir_func_get0_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_func_get0_label1:
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
@@ -48,11 +46,9 @@ get0:
 
 get1:
 .L__kefir_text_func_get1_begin:
-.L__kefir_func_get1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_func_get1_label1:
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
     movl $0, -24(%rbp)
@@ -72,11 +68,9 @@ get1:
 
 get2:
 .L__kefir_text_func_get2_begin:
-.L__kefir_func_get2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_func_get2_label1:
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
@@ -102,11 +96,9 @@ get2:
 
 get3:
 .L__kefir_text_func_get3_begin:
-.L__kefir_func_get3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_func_get3_label1:
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
     movl $0, -24(%rbp)
@@ -126,11 +118,9 @@ get3:
 
 get4:
 .L__kefir_text_func_get4_begin:
-.L__kefir_func_get4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_func_get4_label1:
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
@@ -156,11 +146,9 @@ get4:
 
 get5:
 .L__kefir_text_func_get5_begin:
-.L__kefir_func_get5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_func_get5_label1:
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
     movl $0, -24(%rbp)
@@ -187,11 +175,9 @@ get5:
 .section .text
 __kefir_bigint_is_zero:
 .L__kefir_runtime_text_func___kefir_bigint_is_zero_begin:
-.L__kefir_runtime_func___kefir_bigint_is_zero_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-.L__kefir_runtime_func___kefir_bigint_is_zero_label1:
     movq %rsi, -56(%rbp)
     movq %rdi, -48(%rbp)
     movq -56(%rbp), %rax
@@ -347,11 +333,9 @@ __kefir_bigint_is_zero:
 
 __kefir_bigint_invert:
 .L__kefir_runtime_text_func___kefir_bigint_invert_begin:
-.L__kefir_runtime_func___kefir_bigint_invert_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_runtime_func___kefir_bigint_invert_label1:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
@@ -416,11 +400,9 @@ __kefir_bigint_invert:
 
 __kefir_bigint_negate:
 .L__kefir_runtime_text_func___kefir_bigint_negate_begin:
-.L__kefir_runtime_func___kefir_bigint_negate_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_runtime_func___kefir_bigint_negate_label1:
     movq %rsi, -16(%rbp)
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rdi
@@ -438,11 +420,9 @@ __kefir_bigint_negate:
 
 __kefir_bigint_right_shift_whole_digits:
 .L__kefir_runtime_text_func___kefir_bigint_right_shift_whole_digits_begin:
-.L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label1:
     movq %rcx, -32(%rbp)
     movl %edx, -48(%rbp)
     movq %rsi, -40(%rbp)
@@ -625,11 +605,9 @@ __kefir_bigint_right_shift_whole_digits:
 
 __kefir_bigint_get_min_unsigned_width:
 .L__kefir_runtime_text_func___kefir_bigint_get_min_unsigned_width_begin:
-.L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label1:
     movq %rsi, -48(%rbp)
     movq %rdi, -40(%rbp)
     movq -48(%rbp), %rax
@@ -715,13 +693,11 @@ __kefir_bigint_get_min_unsigned_width:
 
 __kefir_bigint_signed_to_double:
 .L__kefir_runtime_text_func___kefir_bigint_signed_to_double_begin:
-.L__kefir_runtime_func___kefir_bigint_signed_to_double_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $80, %rsp
-.L__kefir_runtime_func___kefir_bigint_signed_to_double_label1:
     movq %rdx, -64(%rbp)
     movq %rsi, -88(%rbp)
     movq %rdi, -40(%rbp)
@@ -1087,11 +1063,9 @@ __kefir_bigint_signed_to_double:
 
 __kefir_bigint_or:
 .L__kefir_runtime_text_func___kefir_bigint_or_begin:
-.L__kefir_runtime_func___kefir_bigint_or_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_or_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -32(%rbp)
     movq %rdi, -40(%rbp)
@@ -1169,11 +1143,9 @@ __kefir_bigint_or:
 
 __kefir_bigint_cast_signed:
 .L__kefir_runtime_text_func___kefir_bigint_cast_signed_begin:
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label0:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -88(%rbp)
@@ -1526,11 +1498,9 @@ __kefir_bigint_cast_signed:
 
 __kefir_bigint_right_shift:
 .L__kefir_runtime_text_func___kefir_bigint_right_shift_begin:
-.L__kefir_runtime_func___kefir_bigint_right_shift_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-.L__kefir_runtime_func___kefir_bigint_right_shift_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -56(%rbp)
     movq %rdi, -40(%rbp)
@@ -1755,13 +1725,11 @@ __kefir_bigint_right_shift:
 
 __kefir_bigint_unsigned_to_double:
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_to_double_begin:
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $80, %rsp
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label1:
     movq %rdx, -64(%rbp)
     movq %rsi, -88(%rbp)
     movq %rdi, -40(%rbp)
@@ -2127,13 +2095,11 @@ __kefir_bigint_unsigned_to_double:
 
 __kefir_bigint_unsigned_to_long_double:
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_to_long_double_begin:
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $80, %rsp
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label1:
     movq %rdx, -64(%rbp)
     movq %rsi, -96(%rbp)
     movq %rdi, -40(%rbp)
@@ -2496,11 +2462,9 @@ __kefir_bigint_unsigned_to_long_double:
 
 __kefir_bigint_left_shift:
 .L__kefir_runtime_text_func___kefir_bigint_left_shift_begin:
-.L__kefir_runtime_func___kefir_bigint_left_shift_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_left_shift_label1:
     movq %rdx, -40(%rbp)
     movq %rsi, -48(%rbp)
     movq %rdi, -32(%rbp)
@@ -2679,11 +2643,9 @@ __kefir_bigint_left_shift:
 
 __kefir_bigint_set_unsigned_integer:
 .L__kefir_runtime_text_func___kefir_bigint_set_unsigned_integer_begin:
-.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -32(%rbp)
@@ -2822,11 +2784,9 @@ __kefir_bigint_set_unsigned_integer:
 
 __kefir_bigint_get_unsigned_value:
 .L__kefir_runtime_text_func___kefir_bigint_get_unsigned_value_begin:
-.L__kefir_runtime_func___kefir_bigint_get_unsigned_value_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_get_unsigned_value_label1:
     movq %rdx, -24(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -32(%rbp)
@@ -2961,11 +2921,9 @@ __kefir_bigint_get_unsigned_value:
 
 __kefir_bigint_and:
 .L__kefir_runtime_text_func___kefir_bigint_and_begin:
-.L__kefir_runtime_func___kefir_bigint_and_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_and_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -32(%rbp)
     movq %rdi, -40(%rbp)
@@ -3043,11 +3001,9 @@ __kefir_bigint_and:
 
 __kefir_bigint_get_bits:
 .L__kefir_runtime_text_func___kefir_bigint_get_bits_begin:
-.L__kefir_runtime_func___kefir_bigint_get_bits_label0:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
-.L__kefir_runtime_func___kefir_bigint_get_bits_label1:
     movq %rcx, -80(%rbp)
     movq %rdx, -64(%rbp)
     movq %rsi, -56(%rbp)
@@ -3241,11 +3197,9 @@ __kefir_bigint_get_bits:
 
 __kefir_bigint_get_sign:
 .L__kefir_runtime_text_func___kefir_bigint_get_sign_begin:
-.L__kefir_runtime_func___kefir_bigint_get_sign_label0:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-.L__kefir_runtime_func___kefir_bigint_get_sign_label1:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
@@ -3311,13 +3265,11 @@ __kefir_bigint_get_sign:
 
 __kefir_bigint_unsigned_to_float:
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_to_float_begin:
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $80, %rsp
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label1:
     movq %rdx, -64(%rbp)
     movq %rsi, -88(%rbp)
     movq %rdi, -40(%rbp)
@@ -3682,11 +3634,9 @@ __kefir_bigint_unsigned_to_float:
 
 __kefir_bigint_cast_unsigned:
 .L__kefir_runtime_text_func___kefir_bigint_cast_unsigned_begin:
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label0:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -80(%rbp)
@@ -3927,13 +3877,11 @@ __kefir_bigint_cast_unsigned:
 
 __kefir_bigint_signed_to_long_double:
 .L__kefir_runtime_text_func___kefir_bigint_signed_to_long_double_begin:
-.L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $80, %rsp
-.L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label1:
     movq %rdx, -64(%rbp)
     movq %rsi, -96(%rbp)
     movq %rdi, -40(%rbp)
@@ -4296,11 +4244,9 @@ __kefir_bigint_signed_to_long_double:
 
 __kefir_bigint_util_add_digit_zero_extended:
 .L__kefir_runtime_text_func___kefir_bigint_util_add_digit_zero_extended_begin:
-.L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-.L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label1:
     movq %rdx, -48(%rbp)
     movb %sil, -52(%rbp)
     movq %rdi, -40(%rbp)
@@ -4407,11 +4353,9 @@ __kefir_bigint_util_add_digit_zero_extended:
 
 __kefir_bigint_set_signed_integer:
 .L__kefir_runtime_text_func___kefir_bigint_set_signed_integer_begin:
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label1:
     movq %rdx, -48(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -32(%rbp)
@@ -4550,11 +4494,9 @@ __kefir_bigint_set_signed_integer:
 
 __kefir_bigint_left_shift_whole_digits:
 .L__kefir_runtime_text_func___kefir_bigint_left_shift_whole_digits_begin:
-.L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label1:
     movq %rdx, -40(%rbp)
     movq %rsi, -48(%rbp)
     movq %rdi, -32(%rbp)
@@ -4660,13 +4602,11 @@ __kefir_bigint_left_shift_whole_digits:
 
 __kefir_bigint_signed_to_float:
 .L__kefir_runtime_text_func___kefir_bigint_signed_to_float_begin:
-.L__kefir_runtime_func___kefir_bigint_signed_to_float_label0:
     push %rbp
     mov %rsp, %rbp
     push %rbx
     push %r12
     sub $80, %rsp
-.L__kefir_runtime_func___kefir_bigint_signed_to_float_label1:
     movq %rdx, -64(%rbp)
     movq %rsi, -88(%rbp)
     movq %rdi, -40(%rbp)

@@ -18,13 +18,10 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test1_label1:
     movb %dil, -1(%rbp)
-.L__kefir_func_test1_label2:
     movb -1(%rbp), %al
     shl $58, %rax
     sar $58, %rax
@@ -57,13 +54,10 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test2_label1:
     movw %di, -2(%rbp)
-.L__kefir_func_test2_label2:
     movw -2(%rbp), %ax
     shl $50, %rax
     sar $50, %rax
@@ -96,13 +90,10 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-.L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test3_label1:
     movl %edi, -4(%rbp)
-.L__kefir_func_test3_label2:
     movl -4(%rbp), %eax
     shl $35, %rax
     sar $35, %rax
@@ -135,13 +126,10 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-.L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test4_label1:
     movq %rdi, -8(%rbp)
-.L__kefir_func_test4_label2:
     movq -8(%rbp), %rax
     shl $4, %rax
     sar $4, %rax
@@ -174,16 +162,13 @@ test4:
 
 test5:
 .L__kefir_text_func_test5_begin:
-.L__kefir_func_test5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-.L__kefir_func_test5_label1:
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-.L__kefir_func_test5_label2:
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     leaq -48(%rbp), %rax
@@ -216,11 +201,9 @@ test5:
 
 test6:
 .L__kefir_text_func_test6_begin:
-.L__kefir_func_test6_label0:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-.L__kefir_func_test6_label1:
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -48(%rbp)
@@ -228,7 +211,6 @@ test6:
     movdqu %xmm0, -32(%rbp)
     movdqu 32(%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
-.L__kefir_func_test6_label2:
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
     movdqu -32(%rbp), %xmm0
@@ -272,11 +254,9 @@ test6:
 .section .text
 __kefir_bigint_is_zero:
 .L__kefir_runtime_text_func___kefir_bigint_is_zero_begin:
-.L__kefir_runtime_func___kefir_bigint_is_zero_label0:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-.L__kefir_runtime_func___kefir_bigint_is_zero_label1:
     movq %rsi, -56(%rbp)
     movq %rdi, -48(%rbp)
     movq -56(%rbp), %rax

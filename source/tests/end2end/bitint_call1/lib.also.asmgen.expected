@@ -24,10 +24,8 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-.L__kefir_func_test1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test1_label1:
     mov $23, %rdi
     call fn1@PLT
     pop %rbp
@@ -36,10 +34,8 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-.L__kefir_func_test2_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test2_label1:
     mov $4096, %rdi
     neg %di
     call fn2@PLT
@@ -49,10 +45,8 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-.L__kefir_func_test3_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test3_label1:
     mov $13303330, %rdi
     shl $39, %rdi
     sar $39, %rdi
@@ -63,10 +57,8 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-.L__kefir_func_test4_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_test4_label1:
     movabs $50147889150, %rdi
     shl $27, %rdi
     sar $27, %rdi
@@ -77,11 +69,9 @@ test4:
 
 test5:
 .L__kefir_text_func_test5_begin:
-.L__kefir_func_test5_label0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_test5_label1:
     movl $572705996, -16(%rbp)
     movl $2863267840, -12(%rbp)
     movl $61166, -8(%rbp)
@@ -103,11 +93,9 @@ test5:
 
 test6:
 .L__kefir_text_func_test6_begin:
-.L__kefir_func_test6_label0:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-.L__kefir_func_test6_label1:
     movl $4008623035, -80(%rbp)
     movl $3722291882, -76(%rbp)
     movl $52428, -72(%rbp)
@@ -156,11 +144,9 @@ test6:
 .section .text
 __kefir_bigint_cast_signed:
 .L__kefir_runtime_text_func___kefir_bigint_cast_signed_begin:
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label0:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -40(%rbp)
     movq %rdi, -88(%rbp)

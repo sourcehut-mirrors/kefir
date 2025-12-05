@@ -24,10 +24,8 @@
 .L__kefir_text_section_begin:
 getx:
 .L__kefir_text_func_getx_begin:
-.L__kefir_func_getx_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_getx_label1:
     lea x(%rip), %rax
     pop %rbp
     ret
@@ -36,10 +34,8 @@ getx:
 gety:
 .L__kefir_text_func_gety_begin:
 .extern __tls_get_addr
-.L__kefir_func_gety_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_gety_label1:
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
@@ -49,10 +45,8 @@ gety:
 
 getx1:
 .L__kefir_text_func_getx1_begin:
-.L__kefir_func_getx1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_getx1_label1:
     lea __kefir_function_getx1_static_x_4(%rip), %rax
     pop %rbp
     ret
@@ -60,10 +54,8 @@ getx1:
 
 getx2:
 .L__kefir_text_func_getx2_begin:
-.L__kefir_func_getx2_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_getx2_label1:
     lea __kefir_function_getx2_static_x_6(%rip), %rax
     pop %rbp
     ret
@@ -72,10 +64,8 @@ getx2:
 getx3:
 .L__kefir_text_func_getx3_begin:
 .extern __tls_get_addr
-.L__kefir_func_getx3_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_getx3_label1:
     data16     lea __kefir_function_getx3_static_x_8@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
@@ -85,10 +75,8 @@ getx3:
 
 getx4:
 .L__kefir_text_func_getx4_begin:
-.L__kefir_func_getx4_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_getx4_label1:
     lea __kefir_function_getx4_static_x_12(%rip), %rax
     pop %rbp
     ret
@@ -97,10 +85,8 @@ getx4:
 gety1:
 .L__kefir_text_func_gety1_begin:
 .extern __tls_get_addr
-.L__kefir_func_gety1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_gety1_label1:
     data16     lea __kefir_function_gety1_static_y_14@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
@@ -110,10 +96,8 @@ gety1:
 
 function_name:
 .L__kefir_text_func_function_name_begin:
-.L__kefir_func_function_name_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_function_name_label1:
     lea __kefir_function_function_name_static___func___16(%rip), %rax
     pop %rbp
     ret

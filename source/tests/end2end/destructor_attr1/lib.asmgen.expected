@@ -6,20 +6,16 @@
 .L__kefir_text_section_begin:
 close1:
 .L__kefir_text_func_close1_begin:
-.L__kefir_func_close1_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_close1_label1:
     pop %rbp
     ret
 .L__kefir_text_func_close1_end:
 
 close2:
 .L__kefir_text_func_close2_begin:
-.L__kefir_func_close2_label0:
     push %rbp
     mov %rsp, %rbp
-.L__kefir_func_close2_label1:
     pop %rbp
     ret
 .L__kefir_text_func_close2_end:
