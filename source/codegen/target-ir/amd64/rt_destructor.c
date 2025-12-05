@@ -406,7 +406,9 @@ static kefir_result_t new_value_fragment(struct kefir_mem *mem, kefir_codegen_ta
         payload);
     REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid target IR destructor amd64 ops"));
 
-    REQUIRE_OK(kefir_asmcmp_value_map_add_fragment(mem, &ops->debug_value_map, value_ref, vreg_idx, begin_label, end_label));
+    if (kefir_opt_code_debug_info_is_active_ref(&ops->function->function->debug_info, value_ref)) {
+        REQUIRE_OK(kefir_asmcmp_value_map_add_fragment(mem, &ops->debug_value_map, value_ref, vreg_idx, begin_label, end_label));
+    }
     return KEFIR_OK;
 }
 

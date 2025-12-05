@@ -70,7 +70,6 @@ add32:
 .loc 0 67 5
 .L__kefir_func_add32_label51:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_add32_label55:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -93,7 +92,6 @@ conv1:
     movd .L__kefir_func_conv1_label26(%rip), %xmm1
 .L__kefir_func_conv1_label28:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_conv1_label32:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -128,11 +126,9 @@ conv2:
 .L__kefir_func_conv2_label41:
     or %rdi, %rax
     cvtsi2ss %rax, %xmm0
-.L__kefir_func_conv2_label45:
     movaps %xmm0, %xmm1
 .loc 0 87 5
     addss %xmm0, %xmm1
-.L__kefir_func_conv2_label47:
     movaps %xmm1, %xmm0
 .loc 0 87 5
     jmp .L__kefir_func_conv2_label8
@@ -144,7 +140,6 @@ conv2:
     movd .L__kefir_func_conv2_label62(%rip), %xmm1
 .L__kefir_func_conv2_label64:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_conv2_label68:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -170,7 +165,6 @@ conv3:
     movd .L__kefir_func_conv3_label22(%rip), %xmm1
 .L__kefir_func_conv3_label24:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_conv3_label28:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -198,7 +192,6 @@ conv4:
     movd .L__kefir_func_conv4_label26(%rip), %xmm1
 .L__kefir_func_conv4_label28:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_conv4_label32:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -229,7 +222,6 @@ conv5:
     movd .L__kefir_func_conv5_label28(%rip), %xmm1
 .L__kefir_func_conv5_label30:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_conv5_label34:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -276,7 +268,6 @@ conv7:
     cvtsd2ss %xmm1, %xmm1
 .L__kefir_func_conv7_label37:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_conv7_label41:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -307,7 +298,6 @@ conv8:
     movd -4(%rsp), %xmm1
 .L__kefir_func_conv8_label41:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_conv8_label45:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -440,7 +430,6 @@ sub32:
 .loc 0 71 5
 .L__kefir_func_sub32_label51:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_sub32_label55:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -463,7 +452,6 @@ get32_1:
 .loc 0 55 5
 .L__kefir_func_get32_1_label34:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_get32_1_label25:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -494,7 +482,6 @@ get32_2:
 .loc 0 59 5
 .L__kefir_func_get32_2_label21:
     insertps $16, %xmm1, %xmm0
-.L__kefir_func_get32_2_label25:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1784,20 +1771,8 @@ __kefir_debug_loclist_section_entry_16:
 __kefir_debug_loclist_section_entry_17:
     .byte 0
 __kefir_debug_loclist_section_entry_18:
-    .byte 4
-    .uleb128 .L__kefir_func_conv5_label25 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv5_label30 - .L__kefir_text_section_begin
-    .byte 2
-    .byte 144
-    .byte 33
     .byte 0
 __kefir_debug_loclist_section_entry_19:
-    .byte 4
-    .uleb128 .L__kefir_func_conv5_label25 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv5_label30 - .L__kefir_text_section_begin
-    .byte 2
-    .byte 144
-    .byte 33
     .byte 0
 __kefir_debug_loclist_section_entry_20:
     .byte 0

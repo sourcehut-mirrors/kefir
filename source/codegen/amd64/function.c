@@ -799,6 +799,9 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         node = kefir_hashtree_next(&vreg_iter)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, node->key);
         ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx, node->value);
+        if (!kefir_opt_code_debug_info_is_active_ref(&func->function->debug_info, instr_ref)) {
+            continue;
+        }
 
         struct kefir_opt_code_instruction_linear_liveness_iterator iter;
         kefir_opt_block_id_t block_id;

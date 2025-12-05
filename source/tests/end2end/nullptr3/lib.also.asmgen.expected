@@ -81,7 +81,6 @@ sum:
 .loc 0 29 9
 .L__kefir_func_sum_label151:
     cmp %rcx, %rdx
-.L__kefir_func_sum_label153:
     je .L__kefir_func_sum_label22
     jmp .L__kefir_func_sum_label18
 .L__kefir_func_sum_label157:

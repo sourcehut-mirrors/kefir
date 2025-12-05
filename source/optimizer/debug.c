@@ -239,6 +239,12 @@ kefir_result_t kefir_opt_code_debug_info_code_reference(const struct kefir_opt_c
     return KEFIR_OK;
 }
 
+kefir_bool_t kefir_opt_code_debug_info_is_active_ref(const struct kefir_opt_code_debug_info *debug_info, kefir_opt_instruction_ref_t instr_ref) {
+    REQUIRE(debug_info != NULL, false);
+
+    return kefir_hashset_has(&debug_info->active_refs, (kefir_hashset_key_t) instr_ref);
+}
+
 kefir_result_t kefir_opt_code_debug_info_add_local_variable_allocation(struct kefir_mem *mem, struct kefir_opt_code_debug_info *debug_info,
     kefir_opt_code_debug_info_local_variable_ref_t variable_ref, kefir_opt_instruction_ref_t allocation_ref) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

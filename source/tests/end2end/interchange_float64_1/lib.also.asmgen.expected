@@ -100,11 +100,9 @@ conv2:
 .L__kefir_func_conv2_label41:
     or %rdi, %rax
     cvtsi2sd %rax, %xmm0
-.L__kefir_func_conv2_label45:
     movaps %xmm0, %xmm1
 .loc 0 87 5
     addsd %xmm0, %xmm1
-.L__kefir_func_conv2_label47:
     movaps %xmm1, %xmm0
 .loc 0 87 5
     jmp .L__kefir_func_conv2_label8

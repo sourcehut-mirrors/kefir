@@ -31,7 +31,6 @@ SOMEFN1:
 .L__kefir_func_SOMEFN1_label186:
     movaps %xmm1, %xmm0
 .loc 0 27 5
-.L__kefir_func_SOMEFN1_label188:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

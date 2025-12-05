@@ -64,13 +64,11 @@ conv1:
 .L__kefir_func_conv1_label38:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_conv1_label44:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .L__kefir_func_conv1_label59:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_conv1_label54:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -112,13 +110,11 @@ conv2:
 .L__kefir_func_conv2_label56:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_conv2_label62:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .L__kefir_func_conv2_label77:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_conv2_label72:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -150,13 +146,11 @@ conv3:
 .L__kefir_func_conv3_label38:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_conv3_label44:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .L__kefir_func_conv3_label59:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_conv3_label54:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -188,13 +182,11 @@ conv4:
 .L__kefir_func_conv4_label36:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_conv4_label42:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .L__kefir_func_conv4_label57:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_conv4_label52:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -223,13 +215,11 @@ conv5:
 .L__kefir_func_conv5_label26:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_conv5_label32:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .L__kefir_func_conv5_label38:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_conv5_label42:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -265,13 +255,11 @@ conv6:
 .L__kefir_func_conv6_label51:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_conv6_label57:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .L__kefir_func_conv6_label63:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_conv6_label67:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -298,13 +286,11 @@ conv7:
 .L__kefir_func_conv7_label49:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_conv7_label55:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .L__kefir_func_conv7_label61:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_conv7_label65:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -359,14 +345,12 @@ add64x:
 .L__kefir_func_add64x_label74:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_add64x_label69:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 67 5
 .L__kefir_func_add64x_label75:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_add64x_label79:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -408,9 +392,7 @@ div64x:
     fstpt 32(%rsp)
     fldt -80(%rbp)
     fstpt 48(%rsp)
-.L__kefir_func_div64x_label99:
     call __kefir_softfloat_complex_long_double_div
-.L__kefir_func_div64x_label253:
     fstpt -80(%rbp)
     fstpt -64(%rbp)
     add $64, %rsp
@@ -418,7 +400,6 @@ div64x:
 .L__kefir_func_div64x_label261:
     fldt -64(%rbp)
     fldt -80(%rbp)
-.L__kefir_func_div64x_label265:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -460,9 +441,7 @@ mul64x:
     fstpt 32(%rsp)
     fldt -80(%rbp)
     fstpt 48(%rsp)
-.L__kefir_func_mul64x_label99:
     call __kefir_softfloat_complex_long_double_mul
-.L__kefir_func_mul64x_label253:
     fstpt -80(%rbp)
     fstpt -64(%rbp)
     add $64, %rsp
@@ -470,7 +449,6 @@ mul64x:
 .L__kefir_func_mul64x_label261:
     fldt -64(%rbp)
     fldt -80(%rbp)
-.L__kefir_func_mul64x_label265:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -499,14 +477,12 @@ neg64x:
 .L__kefir_func_neg64x_label52:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_neg64x_label47:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 63 5
 .L__kefir_func_neg64x_label62:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_neg64x_label57:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -543,14 +519,12 @@ sub64x:
 .L__kefir_func_sub64x_label74:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_sub64x_label69:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 71 5
 .L__kefir_func_sub64x_label75:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_sub64x_label79:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -573,13 +547,11 @@ get64x_1:
 .L__kefir_func_get64x_1_label36:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_get64x_1_label31:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .L__kefir_func_get64x_1_label37:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_get64x_1_label41:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -612,14 +584,12 @@ get64x_2:
 .L__kefir_func_get64x_2_label25:
     fxch %st(1)
     fxch %st(1)
-.L__kefir_func_get64x_2_label31:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 59 5
 .L__kefir_func_get64x_2_label37:
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_func_get64x_2_label41:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1901,20 +1871,8 @@ __kefir_debug_loclist_section_entry_11:
 __kefir_debug_loclist_section_entry_12:
     .byte 0
 __kefir_debug_loclist_section_entry_13:
-    .byte 4
-    .uleb128 .L__kefir_func_conv5_label32 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv5_label42 - .L__kefir_text_section_begin
-    .byte 2
-    .byte 144
-    .byte 34
     .byte 0
 __kefir_debug_loclist_section_entry_14:
-    .byte 4
-    .uleb128 .L__kefir_func_conv5_label32 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv5_label42 - .L__kefir_text_section_begin
-    .byte 2
-    .byte 144
-    .byte 34
     .byte 0
 __kefir_debug_loclist_section_entry_15:
     .byte 0

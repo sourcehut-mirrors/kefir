@@ -69,6 +69,7 @@ kefir_result_t kefir_opt_code_debug_info_instruction_code_reference(const struct
                                                               kefir_opt_instruction_ref_t, kefir_opt_code_debug_info_code_ref_t *);
 kefir_result_t kefir_opt_code_debug_info_code_reference(const struct kefir_opt_code_debug_info *,
                                                               kefir_opt_code_debug_info_code_ref_t, const struct kefir_opt_code_debug_info_code_reference **);
+kefir_bool_t kefir_opt_code_debug_info_is_active_ref(const struct kefir_opt_code_debug_info *, kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_debug_info_add_local_variable_allocation(struct kefir_mem *, struct kefir_opt_code_debug_info *, kefir_opt_code_debug_info_local_variable_ref_t, kefir_opt_instruction_ref_t);
 kefir_result_t kefir_opt_code_debug_info_add_allocation_placement(struct kefir_mem *, struct kefir_opt_code_debug_info *, kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);

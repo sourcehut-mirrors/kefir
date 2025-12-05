@@ -27,7 +27,6 @@ getb:
 .loc 0 26 5
 .L__kefir_func_getb_label175:
     movq %rax, %xmm0
-.L__kefir_func_getb_label177:
     ret
 .L__kefir_func_getb_label187:
 .L__kefir_text_func_getb_end:
