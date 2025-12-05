@@ -219,8 +219,6 @@ __kefir_bigint_cast_signed:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label46
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label52
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label52:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label3
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label46:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label32

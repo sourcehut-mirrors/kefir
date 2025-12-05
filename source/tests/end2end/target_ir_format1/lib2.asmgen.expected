@@ -720,16 +720,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "jmp",
-#                "args": [
-#                    {
-#                        "type": "internal_label",
-#                        "label": 21
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "virtual_block_end",
 #                "args": [
 #                    {
@@ -1507,8 +1497,6 @@ factorial:
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label19
-    jmp .L__kefir_func_factorial_label21
-.L__kefir_func_factorial_label21:
     jmp .L__kefir_func_factorial_label5
 .L__kefir_func_factorial_label19:
     jmp .L__kefir_func_factorial_label12

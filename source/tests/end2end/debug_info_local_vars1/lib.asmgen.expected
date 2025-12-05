@@ -44,7 +44,6 @@ fn1:
 .L__kefir_func_fn1_label108:
     test %r9, %r9
     jnz .L__kefir_func_fn1_label10
-    jmp .L__kefir_func_fn1_label6
 .L__kefir_func_fn1_label109:
     jmp .L__kefir_func_fn1_label6
 .L__kefir_func_fn1_label26:

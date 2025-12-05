@@ -1249,8 +1249,6 @@ __kefir_bigint_right_shift_whole_digits:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label34
-    jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label35
-.L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label35:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label8
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label34:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label20
@@ -1499,8 +1497,6 @@ __kefir_bigint_cast_signed:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label46
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label52
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label52:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label3
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label46:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label32
@@ -1900,8 +1896,6 @@ __kefir_bigint_right_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_label21
-    jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label25
-.L__kefir_runtime_func___kefir_bigint_right_shift_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label5
 .L__kefir_runtime_func___kefir_bigint_right_shift_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label16
@@ -2072,8 +2066,6 @@ __kefir_bigint_arithmetic_right_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label42
-    jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label45
-.L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label45:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label5
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label42:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label37
@@ -2241,8 +2233,6 @@ __kefir_bigint_arithmetic_right_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label51
-    jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label55
-.L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label55:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label12
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label51:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label14
@@ -2269,8 +2259,6 @@ __kefir_bigint_arithmetic_right_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label48
-    jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label52
-.L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label52:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label17
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label48:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label31
@@ -2479,8 +2467,6 @@ __kefir_bigint_left_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_left_shift_label21
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label25
-.L__kefir_runtime_func___kefir_bigint_left_shift_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label5
 .L__kefir_runtime_func___kefir_bigint_left_shift_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label16
@@ -2860,8 +2846,6 @@ __kefir_bigint_set_signed_integer:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label22
-    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label26
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label3
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label18
@@ -2931,8 +2915,6 @@ __kefir_bigint_set_signed_integer:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label27
-    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label25
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label8
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label27:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label14
@@ -3131,8 +3113,6 @@ __kefir_bigint_signed_multiply:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_multiply_label39
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label36
-.L__kefir_runtime_func___kefir_bigint_signed_multiply_label36:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label5
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label39:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label28
@@ -3185,8 +3165,6 @@ __kefir_bigint_signed_multiply:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_multiply_label38
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label40
-.L__kefir_runtime_func___kefir_bigint_signed_multiply_label40:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label8
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label38:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label10
@@ -3249,8 +3227,6 @@ __kefir_bigint_signed_multiply:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_multiply_label42
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label35
-.L__kefir_runtime_func___kefir_bigint_signed_multiply_label35:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label14
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label42:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label24

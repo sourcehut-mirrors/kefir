@@ -283,8 +283,6 @@ __kefir_bigint_right_shift_whole_digits:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label34
-    jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label35
-.L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label35:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label8
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label34:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label20
@@ -444,8 +442,6 @@ __kefir_bigint_arithmetic_right_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label42
-    jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label45
-.L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label45:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label5
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label42:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label37
@@ -613,8 +609,6 @@ __kefir_bigint_arithmetic_right_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label51
-    jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label55
-.L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label55:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label12
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label51:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label14
@@ -641,8 +635,6 @@ __kefir_bigint_arithmetic_right_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label48
-    jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label52
-.L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label52:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label17
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label48:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label31

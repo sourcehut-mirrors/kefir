@@ -80,8 +80,6 @@ test:
     sete %al
     test %al, %al
     jz .L__kefir_func_test_label13
-    jmp .L__kefir_func_test_label15
-.L__kefir_func_test_label15:
     jmp .L__kefir_func_test_label6
 .L__kefir_func_test_label13:
     jmp .L__kefir_func_test_label2

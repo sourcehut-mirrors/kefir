@@ -149,7 +149,6 @@ get2:
 .L__kefir_func_get2_label181:
     cmp $7, %r8d
     jl .L__kefir_func_get2_label36
-    jmp .L__kefir_func_get2_label8
 .L__kefir_func_get2_label189:
     jmp .L__kefir_func_get2_label8
 .L__kefir_func_get2_label55:
@@ -269,7 +268,6 @@ get2:
     cmp $1, %esi
 .L__kefir_func_get2_label373:
     jne .L__kefir_func_get2_label24
-    jmp .L__kefir_func_get2_label20
 .L__kefir_func_get2_label377:
     jmp .L__kefir_func_get2_label20
 .L__kefir_func_get2_label44:

@@ -48,8 +48,6 @@ test3:
     stmxcsr -8(%rbp)
     ucomiss .L__kefir_func_test3_label12(%rip), %xmm0
     jp .L__kefir_func_test3_label3
-    jmp .L__kefir_func_test3_label2
-.L__kefir_func_test3_label2:
     ja .L__kefir_func_test3_label3
     jmp .L__kefir_func_test3_label3
 .L__kefir_func_test3_label3:
@@ -72,8 +70,6 @@ test4:
     stmxcsr -8(%rbp)
     ucomisd .L__kefir_func_test4_label12(%rip), %xmm0
     jp .L__kefir_func_test4_label3
-    jmp .L__kefir_func_test4_label2
-.L__kefir_func_test4_label2:
     ja .L__kefir_func_test4_label3
     jmp .L__kefir_func_test4_label3
 .L__kefir_func_test4_label3:

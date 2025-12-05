@@ -176,8 +176,7 @@ op_loop_end:
     add %rax, %rdi
     movzxb (%rdi), %rax
     cmp $0, %eax
-    jne .L__kefir_func_op_loop_end_label4
-    jmp .L__kefir_func_op_loop_end_label3
+    je .L__kefir_func_op_loop_end_label3
 .L__kefir_func_op_loop_end_label4:
     lea 5134(%rsi), %rdi
     movzxb (%rdi), %rax

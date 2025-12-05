@@ -408,8 +408,6 @@ __kefir_bigint_unsigned_multiply:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label42
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label50
-.L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label50:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label8
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label42:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label10
@@ -439,8 +437,6 @@ __kefir_bigint_unsigned_multiply:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label46
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label49
-.L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label49:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label12
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label46:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label31
@@ -468,8 +464,6 @@ __kefir_bigint_unsigned_multiply:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label51
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label39
-.L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label39:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label15
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label51:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label21

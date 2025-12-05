@@ -53,8 +53,6 @@ factorial_helper:
     stmxcsr -8(%rbp)
     ucomisd .L__kefir_func_factorial_helper_label11(%rip), %xmm1
     jp .L__kefir_func_factorial_helper_label4
-    jmp .L__kefir_func_factorial_helper_label2
-.L__kefir_func_factorial_helper_label2:
     ja .L__kefir_func_factorial_helper_label6
     jmp .L__kefir_func_factorial_helper_label4
 .L__kefir_func_factorial_helper_label4:

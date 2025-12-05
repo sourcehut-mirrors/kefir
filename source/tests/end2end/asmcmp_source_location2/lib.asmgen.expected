@@ -609,26 +609,11 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "internal_label",
-#                        "label": 42
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 24,
-#                    "column": 5
-#                }
-#            },
-#            {
-#                "opcode": "jmp",
-#                "args": [
-#                    {
-#                        "type": "internal_label",
 #                        "label": 10
 #                    }
 #                ],
 #                "labels": [
-#                    42
+#                    157
 #                ],
 #                "source_location": null
 #            },
@@ -1237,8 +1222,7 @@ factorial:
 .L__kefir_func_factorial_label156:
     test %al, %al
     jz .L__kefir_func_factorial_label38
-    jmp .L__kefir_func_factorial_label42
-.L__kefir_func_factorial_label42:
+.L__kefir_func_factorial_label157:
     jmp .L__kefir_func_factorial_label10
 .L__kefir_func_factorial_label38:
     jmp .L__kefir_func_factorial_label24
@@ -1569,7 +1553,7 @@ __kefir_debug_loclist_section_entry_6:
     .byte 120
     .byte 4
     .uleb128 .L__kefir_func_factorial_label28 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label42 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label157 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
@@ -1595,7 +1579,7 @@ __kefir_debug_loclist_section_entry_7:
     .byte 124
     .byte 4
     .uleb128 .L__kefir_func_factorial_label28 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label42 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label157 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
@@ -1629,7 +1613,7 @@ __kefir_debug_rnglist_section_entry_2:
 __kefir_debug_rnglist_section_entry_3:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label6 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label42 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label157 - .L__kefir_text_section_begin
     .byte 4
     .uleb128 .L__kefir_func_factorial_label24 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label12 - .L__kefir_text_section_begin

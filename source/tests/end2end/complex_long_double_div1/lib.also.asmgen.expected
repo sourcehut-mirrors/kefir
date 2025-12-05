@@ -235,8 +235,6 @@ __kefir_softfloat_complex_long_double_div:
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label5:
     test %eax, %eax
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label9
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label6
-.L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label6:
     movq -128(%rbp), %rax
     movq %rax, -176(%rbp)
     movq -120(%rbp), %rax
@@ -832,8 +830,6 @@ __kefir_softfloat_scalbnl:
     cmovz %rdx, %rax
     test %eax, %eax
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbnl_label10
-    jmp .L__kefir_runtime_func___kefir_softfloat_scalbnl_label3
-.L__kefir_runtime_func___kefir_softfloat_scalbnl_label3:
     xor %eax, %eax
     movq -48(%rbp), %rcx
     movq %rcx, -64(%rbp)

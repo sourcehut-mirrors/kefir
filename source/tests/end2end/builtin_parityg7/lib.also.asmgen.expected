@@ -186,8 +186,6 @@ __kefir_bigint_nonzero_count:
     cmove %rax, %rdx
     cmp %r12, %r11
     jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label21
-    jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label18
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label18:
     mov %r10, %r9
     mov %r8, %r14
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label4

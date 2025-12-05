@@ -15,8 +15,6 @@ sum:
     sub $208, %rsp
     test %al, %al
     je .L__kefir_func_sum_label30
-    jmp .L__kefir_func_sum_label2
-.L__kefir_func_sum_label2:
     movdqu %xmm0, -160(%rbp)
     movdqu %xmm1, -144(%rbp)
     movdqu %xmm2, -128(%rbp)
@@ -51,9 +49,8 @@ sum:
 .L__kefir_func_sum_label109:
     cmp $48, %ecx
     jae .L__kefir_func_sum_label12
-    jmp .L__kefir_func_sum_label10
 .loc 0 28 21
-.L__kefir_func_sum_label10:
+.L__kefir_func_sum_label115:
     lea 8(%rcx), %rcx
 .L__kefir_func_sum_label117:
     movl %ecx, -32(%rbp)
@@ -584,7 +581,7 @@ __kefir_debug_loclist_section_entry_6:
     .byte 0
     .byte 4
     .uleb128 .L__kefir_func_sum_label8 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_sum_label10 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label115 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 0

@@ -268,8 +268,6 @@ __kefir_bigint_unsigned_compare:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label28
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label27
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label27:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label4
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label28:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
@@ -369,8 +367,6 @@ __kefir_bigint_unsigned_compare:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label10
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16

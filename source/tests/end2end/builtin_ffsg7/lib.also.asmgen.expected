@@ -173,8 +173,6 @@ __kefir_bigint_least_significant_nonzero:
     and $1, %edx
     cmp $1, %edx
     je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label29
-    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label25
-.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label25:
     mov %r8, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label29:

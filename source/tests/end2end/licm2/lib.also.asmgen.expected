@@ -92,8 +92,6 @@ test2:
     shl %cl, %r11d
     cmp %esi, %ebx
     jl .L__kefir_func_test2_label4
-    jmp .L__kefir_func_test2_label3
-.L__kefir_func_test2_label3:
     xor %ecx, %ecx
     mov %rcx, %rbx
     jmp .L__kefir_func_test2_label6

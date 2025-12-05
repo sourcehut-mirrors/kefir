@@ -14,8 +14,6 @@ test:
     stmxcsr -8(%rbp)
     test %al, %al
     je .L__kefir_func_test_label19
-    jmp .L__kefir_func_test_label1
-.L__kefir_func_test_label1:
     movdqu %xmm0, -192(%rbp)
     movdqu %xmm1, -176(%rbp)
     movdqu %xmm2, -160(%rbp)

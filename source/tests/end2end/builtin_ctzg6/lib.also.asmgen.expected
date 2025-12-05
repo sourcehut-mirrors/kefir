@@ -185,8 +185,6 @@ __kefir_bigint_trailing_zeros:
     and $1, %r8d
     cmp $1, %r8d
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label28
-    jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label25
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label25:
     mov %r9, %rcx
     mov %r10, %r11
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label12

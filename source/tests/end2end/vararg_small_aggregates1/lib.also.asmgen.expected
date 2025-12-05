@@ -13,8 +13,6 @@ sum:
     sub $208, %rsp
     test %al, %al
     je .L__kefir_func_sum_label19
-    jmp .L__kefir_func_sum_label1
-.L__kefir_func_sum_label1:
     movdqu %xmm0, -160(%rbp)
     movdqu %xmm1, -144(%rbp)
     movdqu %xmm2, -128(%rbp)

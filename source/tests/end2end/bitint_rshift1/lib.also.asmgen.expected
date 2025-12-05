@@ -283,8 +283,6 @@ __kefir_bigint_right_shift_whole_digits:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label34
-    jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label35
-.L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label35:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label8
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label34:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label20
@@ -499,8 +497,6 @@ __kefir_bigint_right_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_label21
-    jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label25
-.L__kefir_runtime_func___kefir_bigint_right_shift_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label5
 .L__kefir_runtime_func___kefir_bigint_right_shift_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label16

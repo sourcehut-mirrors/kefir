@@ -37,8 +37,6 @@ get:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get_label5
-    jmp .L__kefir_func_get_label2
-.L__kefir_func_get_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get_label3
 .L__kefir_func_get_label3:
@@ -71,8 +69,6 @@ get2:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get2_label5
-    jmp .L__kefir_func_get2_label2
-.L__kefir_func_get2_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get2_label3
 .L__kefir_func_get2_label3:
@@ -105,8 +101,6 @@ get3:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get3_label5
-    jmp .L__kefir_func_get3_label2
-.L__kefir_func_get3_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get3_label3
 .L__kefir_func_get3_label3:
@@ -139,8 +133,6 @@ get4:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get4_label5
-    jmp .L__kefir_func_get4_label2
-.L__kefir_func_get4_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get4_label3
 .L__kefir_func_get4_label3:
@@ -173,8 +165,6 @@ get5:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get5_label5
-    jmp .L__kefir_func_get5_label2
-.L__kefir_func_get5_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get5_label3
 .L__kefir_func_get5_label3:
@@ -207,8 +197,6 @@ get6:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get6_label5
-    jmp .L__kefir_func_get6_label2
-.L__kefir_func_get6_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get6_label3
 .L__kefir_func_get6_label3:
@@ -241,8 +229,6 @@ get7:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get7_label5
-    jmp .L__kefir_func_get7_label2
-.L__kefir_func_get7_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get7_label3
 .L__kefir_func_get7_label3:
@@ -275,8 +261,6 @@ get8:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get8_label5
-    jmp .L__kefir_func_get8_label2
-.L__kefir_func_get8_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get8_label3
 .L__kefir_func_get8_label3:
@@ -309,8 +293,6 @@ get9:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get9_label5
-    jmp .L__kefir_func_get9_label2
-.L__kefir_func_get9_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get9_label3
 .L__kefir_func_get9_label3:
@@ -343,8 +325,6 @@ get10:
     shufps $1, %xmm2, %xmm3
     test %edi, %edi
     jnz .L__kefir_func_get10_label5
-    jmp .L__kefir_func_get10_label2
-.L__kefir_func_get10_label2:
     movaps %xmm3, %xmm1
     jmp .L__kefir_func_get10_label3
 .L__kefir_func_get10_label3:

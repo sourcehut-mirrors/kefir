@@ -626,11 +626,17 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
                 }
             }
 
-            asmcmp_instrs[1].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL;
-            asmcmp_instrs[1].args[0].internal_label = alternative_block_state->asmcmp_label;
-            asmcmp_instrs[1].args[0].segment.present = false;
-            REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx),
-                &asmcmp_instrs[1], NULL));
+            const struct kefir_codegen_target_ir_block_schedule *current_block_schedule, *next_block_schedule;
+            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, block_state->block_ref, &current_block_schedule));
+            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, alternative_block_state->block_ref, &next_block_schedule));
+
+            if (current_block_schedule->linear_position + 1 != next_block_schedule->linear_position) {
+                asmcmp_instrs[1].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL;
+                asmcmp_instrs[1].args[0].internal_label = alternative_block_state->asmcmp_label;
+                asmcmp_instrs[1].args[0].segment.present = false;
+                REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx),
+                    &asmcmp_instrs[1], NULL));
+            }
 
             for (kefir_size_t live_in_idx = 0; live_in_idx < state->liveness.blocks[alternative_block_state->block_ref].live_in.length; live_in_idx++) {
                 kefir_codegen_target_ir_value_ref_t value_ref = state->liveness.blocks[alternative_block_state->block_ref].live_in.content[live_in_idx];

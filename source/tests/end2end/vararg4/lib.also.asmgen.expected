@@ -15,8 +15,6 @@ get:
     stmxcsr -16(%rbp)
     test %al, %al
     je .L__kefir_func_get_label15
-    jmp .L__kefir_func_get_label1
-.L__kefir_func_get_label1:
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
     movdqu %xmm2, -144(%rbp)

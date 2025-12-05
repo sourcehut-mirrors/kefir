@@ -287,8 +287,6 @@ __kefir_bigint_nonzero_count:
     cmove %rax, %rdx
     cmp %r12, %r11
     jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label21
-    jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label18
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label18:
     mov %r10, %r9
     mov %r8, %r14
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label4
@@ -397,8 +395,6 @@ __kefir_bigint_unsigned_compare:
     lea -1(%rbx), %rax
     cmp %r8d, %ecx
     jb .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label21
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label21:
     mov %rax, %rbx
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22:
@@ -653,8 +649,6 @@ __kefir_bigint_least_significant_nonzero:
     and $1, %edx
     cmp $1, %edx
     je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label29
-    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label25
-.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label25:
     mov %r8, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label29:
@@ -765,8 +759,6 @@ __kefir_bigint_trailing_zeros:
     and $1, %r8d
     cmp $1, %r8d
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label28
-    jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label25
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label25:
     mov %r9, %rcx
     mov %r10, %r11
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label12
@@ -997,8 +989,7 @@ __kefir_bigint_redundant_sign_bits:
     sar %cl, %edx
     and $1, %edx
     cmp %r12d, %edx
-    je .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label28
-    jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label16
+    jne .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label16
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label28:
     mov %rax, %r11
     mov %r8, %rbx

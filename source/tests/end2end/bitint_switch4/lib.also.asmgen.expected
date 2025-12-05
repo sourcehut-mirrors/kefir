@@ -184,8 +184,6 @@ test1:
     sete %al
     test %al, %al
     jz .L__kefir_func_test1_label15
-    jmp .L__kefir_func_test1_label5
-.L__kefir_func_test1_label5:
     jmp .L__kefir_func_test1_label6
 .L__kefir_func_test1_label15:
     jmp .L__kefir_func_test1_label9
@@ -474,8 +472,6 @@ __kefir_bigint_unsigned_compare:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label28
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label27
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label27:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label4
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label28:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
@@ -575,8 +571,6 @@ __kefir_bigint_unsigned_compare:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label10
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16
@@ -663,8 +657,6 @@ __kefir_bigint_cast_signed:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label46
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label52
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label52:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label3
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label46:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label32
@@ -1097,8 +1089,6 @@ __kefir_bigint_set_signed_integer:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label22
-    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label26
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label3
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label18
@@ -1168,8 +1158,6 @@ __kefir_bigint_set_signed_integer:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label27
-    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label25
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label8
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label27:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label14

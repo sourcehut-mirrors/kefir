@@ -548,8 +548,7 @@ __kefir_bigint_redundant_sign_bits:
     sar %cl, %edx
     and $1, %edx
     cmp %r12d, %edx
-    je .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label28
-    jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label16
+    jne .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label16
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label28:
     mov %rax, %r11
     mov %r8, %rbx

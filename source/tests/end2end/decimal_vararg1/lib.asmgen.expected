@@ -24,8 +24,6 @@ sum32:
     stmxcsr -16(%rbp)
     test %al, %al
     je .L__kefir_func_sum32_label15
-    jmp .L__kefir_func_sum32_label1
-.L__kefir_func_sum32_label1:
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
     movdqu %xmm2, -144(%rbp)
@@ -101,8 +99,6 @@ sum64:
     stmxcsr -16(%rbp)
     test %al, %al
     je .L__kefir_func_sum64_label15
-    jmp .L__kefir_func_sum64_label1
-.L__kefir_func_sum64_label1:
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
     movdqu %xmm2, -144(%rbp)
@@ -178,8 +174,6 @@ sum128:
     stmxcsr -16(%rbp)
     test %al, %al
     je .L__kefir_func_sum128_label15
-    jmp .L__kefir_func_sum128_label1
-.L__kefir_func_sum128_label1:
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
     movdqu %xmm2, -144(%rbp)
@@ -316,8 +310,6 @@ sum128_2:
     movl -44(%rbp), %eax
     cmp $176, %eax
     jae .L__kefir_func_sum128_2_label13
-    jmp .L__kefir_func_sum128_2_label12
-.L__kefir_func_sum128_2_label12:
     lea 16(%rax), %rax
     movl %eax, -44(%rbp)
     add -32(%rbp), %rax

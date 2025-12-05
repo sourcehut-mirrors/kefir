@@ -52,8 +52,6 @@ process:
     sete %al
     test %al, %al
     jz .L__kefir_func_process_label22
-    jmp .L__kefir_func_process_label21
-.L__kefir_func_process_label21:
     jmp .L__kefir_func_process_label5
 .L__kefir_func_process_label22:
     jmp .L__kefir_func_process_label7
@@ -100,8 +98,6 @@ process:
     sete %al
     test %al, %al
     jz .L__kefir_func_process_label19
-    jmp .L__kefir_func_process_label18
-.L__kefir_func_process_label18:
     jmp .L__kefir_func_process_label10
 .L__kefir_func_process_label19:
     jmp .L__kefir_func_process_label12

@@ -314,8 +314,6 @@ __kefir_bigint_is_zero:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label22
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label26
-.L__kefir_runtime_func___kefir_bigint_is_zero_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label12
 .L__kefir_runtime_func___kefir_bigint_is_zero_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label14
@@ -482,8 +480,6 @@ __kefir_bigint_right_shift_whole_digits:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label34
-    jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label35
-.L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label35:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label8
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label34:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label20
@@ -627,8 +623,6 @@ __kefir_bigint_get_min_unsigned_width:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label15
-    jmp .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label14
-.L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label14:
     jmp .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label4
 .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label15:
     jmp .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label6
@@ -679,8 +673,6 @@ __kefir_bigint_get_min_unsigned_width:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label13
-    jmp .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label16
-.L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label16:
     jmp .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label8
 .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label13:
     jmp .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label4
@@ -708,8 +700,6 @@ __kefir_bigint_signed_to_double:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_double_label60
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_to_double_label62
-.L__kefir_runtime_func___kefir_bigint_signed_to_double_label62:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_double_label3
 .L__kefir_runtime_func___kefir_bigint_signed_to_double_label60:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_double_label46
@@ -731,8 +721,6 @@ __kefir_bigint_signed_to_double:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_double_label63
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_to_double_label64
-.L__kefir_runtime_func___kefir_bigint_signed_to_double_label64:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_double_label6
 .L__kefir_runtime_func___kefir_bigint_signed_to_double_label63:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_double_label40
@@ -1190,8 +1178,6 @@ __kefir_bigint_cast_signed:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label46
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label52
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label52:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label3
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label46:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label32
@@ -1591,8 +1577,6 @@ __kefir_bigint_right_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_label21
-    jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label25
-.L__kefir_runtime_func___kefir_bigint_right_shift_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label5
 .L__kefir_runtime_func___kefir_bigint_right_shift_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label16
@@ -1740,8 +1724,6 @@ __kefir_bigint_unsigned_to_double:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label60
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label62
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label62:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label3
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label60:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label46
@@ -1763,8 +1745,6 @@ __kefir_bigint_unsigned_to_double:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label63
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label64
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label64:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label6
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label63:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label40
@@ -2110,8 +2090,6 @@ __kefir_bigint_unsigned_to_long_double:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label60
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label62
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label62:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label3
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label60:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label46
@@ -2133,8 +2111,6 @@ __kefir_bigint_unsigned_to_long_double:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label63
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label64
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label64:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label6
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label63:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label40
@@ -2524,8 +2500,6 @@ __kefir_bigint_left_shift:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_left_shift_label21
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label25
-.L__kefir_runtime_func___kefir_bigint_left_shift_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label5
 .L__kefir_runtime_func___kefir_bigint_left_shift_label21:
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label16
@@ -2660,8 +2634,6 @@ __kefir_bigint_set_unsigned_integer:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label22
-    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label26
-.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label3
 .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label18
@@ -2731,8 +2703,6 @@ __kefir_bigint_set_unsigned_integer:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label27
-    jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label25
-.L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label8
 .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label27:
     jmp .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label14
@@ -3047,8 +3017,6 @@ __kefir_bigint_get_bits:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_get_bits_label28
-    jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label26
-.L__kefir_runtime_func___kefir_bigint_get_bits_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label6
 .L__kefir_runtime_func___kefir_bigint_get_bits_label28:
     jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label8
@@ -3127,8 +3095,6 @@ __kefir_bigint_get_bits:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_get_bits_label31
-    jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label30
-.L__kefir_runtime_func___kefir_bigint_get_bits_label30:
     jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label15
 .L__kefir_runtime_func___kefir_bigint_get_bits_label31:
     jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label17
@@ -3280,8 +3246,6 @@ __kefir_bigint_unsigned_to_float:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label60
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label62
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label62:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label3
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label60:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label46
@@ -3303,8 +3267,6 @@ __kefir_bigint_unsigned_to_float:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label63
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label64
-.L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label64:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label6
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label63:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label40
@@ -3853,8 +3815,6 @@ __kefir_bigint_cast_unsigned:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label30
-.L__kefir_runtime_func___kefir_bigint_cast_unsigned_label30:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label10
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label28:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label12
@@ -3892,8 +3852,6 @@ __kefir_bigint_signed_to_long_double:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label60
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label62
-.L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label62:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label3
 .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label60:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label46
@@ -3915,8 +3873,6 @@ __kefir_bigint_signed_to_long_double:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label63
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label64
-.L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label64:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label6
 .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label63:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label40
@@ -4370,8 +4326,6 @@ __kefir_bigint_set_signed_integer:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label22
-    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label26
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label26:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label3
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label22:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label18
@@ -4441,8 +4395,6 @@ __kefir_bigint_set_signed_integer:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label27
-    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label25
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label25:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label8
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label27:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label14
@@ -4617,8 +4569,6 @@ __kefir_bigint_signed_to_float:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_float_label60
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_to_float_label62
-.L__kefir_runtime_func___kefir_bigint_signed_to_float_label62:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_float_label3
 .L__kefir_runtime_func___kefir_bigint_signed_to_float_label60:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_float_label46
@@ -4640,8 +4590,6 @@ __kefir_bigint_signed_to_float:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_float_label63
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_to_float_label64
-.L__kefir_runtime_func___kefir_bigint_signed_to_float_label64:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_float_label6
 .L__kefir_runtime_func___kefir_bigint_signed_to_float_label63:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_float_label40

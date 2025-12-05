@@ -25,8 +25,6 @@ addx:
     movq -16(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
     je .L__kefir_func_addx_label11
-    jmp .L__kefir_func_addx_label3
-.L__kefir_func_addx_label3:
     movq %rax, -16(%rbp)
     jmp .L__kefir_func_addx_label11
 .L__kefir_func_addx_label11:
