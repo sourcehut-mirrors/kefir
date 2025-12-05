@@ -584,7 +584,7 @@ kefir_result_t kefir_codegen_target_ir_code_phi_drop(struct kefir_mem *mem, stru
 
     for (kefir_size_t i = 0; i < instr->operation.phi_node.links_length; i++) {
         if (instr->operation.phi_node.links[i].link_block_ref == block_ref) {
-            memcpy(&instr->operation.phi_node.links[i], &instr->operation.phi_node.links[i + 1], (instr->operation.phi_node.links_length - (i + 1)) * sizeof(struct kefir_codegen_target_ir_phi_link));
+            memmove(&instr->operation.phi_node.links[i], &instr->operation.phi_node.links[i + 1], (instr->operation.phi_node.links_length - (i + 1)) * sizeof(struct kefir_codegen_target_ir_phi_link));
             instr->operation.phi_node.links_length--;
             break;
         }
