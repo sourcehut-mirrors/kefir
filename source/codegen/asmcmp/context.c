@@ -464,6 +464,9 @@ kefir_result_t kefir_asmcmp_context_instr_drop_code(struct kefir_mem *mem, struc
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     
     REQUIRE_OK(kefir_hashtree_free(mem, &context->label_positions));
+    for (kefir_size_t i = 0; i < context->labels_length; i++) {
+        REQUIRE_OK(kefir_hashtreeset_free(mem, &context->labels[i].public_labels));
+    }
     KEFIR_FREE(mem, context->code_content);
     KEFIR_FREE(mem, context->labels);
     context->code_content = NULL;
