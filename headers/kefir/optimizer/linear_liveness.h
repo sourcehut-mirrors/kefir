@@ -35,6 +35,7 @@ typedef struct kefir_opt_code_linear_liveness {
 
 kefir_result_t kefir_opt_code_linear_liveness_init(struct kefir_opt_code_linear_liveness *);
 kefir_result_t kefir_opt_code_linear_liveness_free(struct kefir_mem *, struct kefir_opt_code_linear_liveness *);
+kefir_result_t kefir_opt_code_linear_liveness_clear(struct kefir_mem *, struct kefir_opt_code_linear_liveness *);
 kefir_result_t kefir_opt_code_linear_liveness_build(struct kefir_mem *, struct kefir_opt_code_linear_liveness *, const struct kefir_opt_code_container *, const struct kefir_opt_code_structure *, const struct kefir_opt_code_schedule *);
 
 typedef struct kefir_opt_code_instruction_linear_liveness_iterator {

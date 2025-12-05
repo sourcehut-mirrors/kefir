@@ -374,6 +374,7 @@ kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *, struc
 kefir_result_t kefir_asmcmp_context_instr_drop(struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t);
 kefir_result_t kefir_asmcmp_context_instr_replace(struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t,
                                                   const struct kefir_asmcmp_instruction *);
+kefir_result_t kefir_asmcmp_context_instr_drop_code(struct kefir_mem *, struct kefir_asmcmp_context *);
 
 kefir_result_t kefir_asmcmp_context_new_label(struct kefir_mem *, struct kefir_asmcmp_context *,
                                               kefir_asmcmp_instruction_index_t, kefir_asmcmp_label_index_t *);

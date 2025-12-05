@@ -48,6 +48,22 @@ kefir_result_t kefir_opt_code_schedule_free(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_schedule_clear(struct kefir_mem *mem, struct kefir_opt_code_schedule *schedule) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code schedule"));
+
+    for (kefir_size_t i = 0; i < schedule->blocks_length; i++) {
+        KEFIR_FREE(mem, schedule->blocks[i].instructions);
+    }
+    KEFIR_FREE(mem, schedule->blocks);
+    schedule->blocks = NULL;
+    schedule->blocks_length = 0;
+    schedule->blocks_capacity = 0;
+    REQUIRE_OK(kefir_hashtable_clear(&schedule->instructions_by_ref));
+    REQUIRE_OK(kefir_hashtable_clear(&schedule->blocks_by_ref));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_schedule_of_block(const struct kefir_opt_code_schedule *schedule,
                                                 kefir_opt_block_id_t block_id,
                                                 const struct kefir_opt_code_block_schedule **block_schedule) {

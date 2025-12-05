@@ -53,6 +53,16 @@ kefir_result_t kefir_opt_code_linear_liveness_free(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_linear_liveness_clear(struct kefir_mem *mem, struct kefir_opt_code_linear_liveness *liveness) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code linear liveness"));
+
+    REQUIRE_OK(kefir_hashtable_free(mem, &liveness->instructions));
+    REQUIRE_OK(kefir_hashtable_init(&liveness->instructions, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&liveness->instructions, free_instruction_liveness, NULL));
+    return KEFIR_OK;
+}
+
 static kefir_result_t update_liveness_for(struct kefir_mem *mem, struct kefir_opt_code_instruction_linear_liveness *liveness, kefir_opt_block_id_t block_id, kefir_uint32_t begin_index, kefir_uint32_t end_index) {
     kefir_hashtable_value_t *value_ptr;
     kefir_result_t res = kefir_hashtable_at_mut(&liveness->per_block, (kefir_hashtable_key_t) block_id, &value_ptr);

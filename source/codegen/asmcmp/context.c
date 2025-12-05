@@ -459,6 +459,24 @@ kefir_result_t kefir_asmcmp_context_instr_replace(struct kefir_asmcmp_context *c
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_context_instr_drop_code(struct kefir_mem *mem, struct kefir_asmcmp_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->label_positions));
+    KEFIR_FREE(mem, context->code_content);
+    KEFIR_FREE(mem, context->labels);
+    context->code_content = NULL;
+    context->labels = NULL;
+    context->code_length = 0;
+    context->code_capacity = 0;
+    context->labels_length = 0;
+    context->labels_capacity = 0;
+    context->code.head = KEFIR_ASMCMP_INDEX_NONE;
+    context->code.tail = KEFIR_ASMCMP_INDEX_NONE;
+    return KEFIR_OK;
+}
+
 static kefir_result_t attach_label_to_instr(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
                                             kefir_asmcmp_instruction_index_t target_instr,
                                             struct kefir_asmcmp_label *label) {

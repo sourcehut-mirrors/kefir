@@ -1343,6 +1343,10 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
                                                 &func->stack_frame, codegen->symbol_prefix));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_FUNCTION_END, codegen->symbol_prefix, ir_identifier->symbol));
     REQUIRE_OK(generate_constants(mem, func));
+    
+    REQUIRE_OK(kefir_asmcmp_context_instr_drop_code(mem, &func->code.context));
+    REQUIRE_OK(kefir_opt_code_schedule_clear(mem, &func->schedule));
+    REQUIRE_OK(kefir_opt_code_linear_liveness_clear(mem, &func->linear_liveness));
     return KEFIR_OK;
 }
 

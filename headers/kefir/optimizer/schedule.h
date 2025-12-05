@@ -65,6 +65,7 @@ typedef struct kefir_opt_code_schedule {
 
 kefir_result_t kefir_opt_code_schedule_init(struct kefir_opt_code_schedule *);
 kefir_result_t kefir_opt_code_schedule_free(struct kefir_mem *, struct kefir_opt_code_schedule *);
+kefir_result_t kefir_opt_code_schedule_clear(struct kefir_mem *, struct kefir_opt_code_schedule *);
 
 kefir_result_t kefir_opt_code_schedule_run(struct kefir_mem *, struct kefir_opt_code_schedule *,
                                            const struct kefir_opt_code_container *,
