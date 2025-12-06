@@ -1261,7 +1261,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
         struct kefir_json_output json;
         REQUIRE_OK(kefir_json_output_init(&json, output, 4));
         REQUIRE_OK(kefir_json_set_line_prefix(&json, comment_prefix));
-        REQUIRE_OK(kefir_codegen_target_ir_code_format(code, &json));
+        REQUIRE_OK(kefir_codegen_target_ir_code_format(mem, code, &json));
         REQUIRE_OK(kefir_json_output_finalize(&json));
         fprintf(output, "\n");
     }

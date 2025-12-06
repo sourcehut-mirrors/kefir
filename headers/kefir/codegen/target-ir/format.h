@@ -24,6 +24,6 @@
 #include "kefir/codegen/target-ir/code.h"
 #include "kefir/util/json.h"
 
-kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_target_ir_code *, struct kefir_json_output *);
+kefir_result_t kefir_codegen_target_ir_code_format(struct kefir_mem *, const struct kefir_codegen_target_ir_code *, struct kefir_json_output *);
 
 #endif

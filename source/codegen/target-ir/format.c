@@ -19,6 +19,7 @@
 */
 
 #include "kefir/codegen/target-ir/format.h"
+#include "kefir/codegen/target-ir/control_flow.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -342,9 +343,8 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_target_ir_code *code, struct kefir_json_output *json) {
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
-    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
+static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code *code, struct kefir_codegen_target_ir_control_flow *control_flow, struct kefir_json_output *json) {
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, control_flow));
 
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "entry_point"));
@@ -357,6 +357,9 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
+        if (!kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref)) {
+            continue;
+        }
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "block_ref"));
         REQUIRE_OK(id_format(json, block_ref));
@@ -626,5 +629,21 @@ kefir_result_t kefir_codegen_target_ir_code_format(const struct kefir_codegen_ta
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
     REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_format(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code *code, struct kefir_json_output *json) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
+
+    struct kefir_codegen_target_ir_control_flow control_flow;
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&control_flow, code));
+    kefir_result_t res = code_format_impl(mem, code, &control_flow, json);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_codegen_target_ir_control_flow_free(mem, &control_flow);
+        return res;
+    });
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_free(mem, &control_flow));
     return KEFIR_OK;
 }
