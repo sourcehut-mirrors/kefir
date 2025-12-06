@@ -24,18 +24,12 @@ dnot:
     movzx %al, %rax
     test %al, %al
     jnz .L__kefir_func_dnot_label8
-    jmp .L__kefir_func_dnot_label9
-.L__kefir_func_dnot_label8:
-    jmp .L__kefir_func_dnot_label5
-.L__kefir_func_dnot_label9:
-    jmp .L__kefir_func_dnot_label3
-.L__kefir_func_dnot_label5:
-    mov $1, %rax
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_dnot_label3:
-    mov $0, %rax
+.L__kefir_func_dnot_label8:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -52,26 +46,20 @@ dnotd:
     movq %rax, %xmm0
     ucomisd .L__kefir_func_dnotd_label12(%rip), %xmm0
     jp .L__kefir_func_dnotd_label11
-    jmp .L__kefir_func_dnotd_label2
-.L__kefir_func_dnotd_label11:
-    jmp .L__kefir_func_dnotd_label6
-.L__kefir_func_dnotd_label2:
     jne .L__kefir_func_dnotd_label10
-    jmp .L__kefir_func_dnotd_label9
-.L__kefir_func_dnotd_label6:
-    mov $1, %rax
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_dnotd_label10:
-    jmp .L__kefir_func_dnotd_label6
-.L__kefir_func_dnotd_label9:
     mov $0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_dnotd_label10:
+    mov $1, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_dnotd_label11:
+    jmp .L__kefir_func_dnotd_label10
 .L__kefir_text_func_dnotd_end:
 .section .rodata
     .align 8
@@ -90,26 +78,20 @@ dnotf:
     movd %eax, %xmm0
     ucomiss .L__kefir_func_dnotf_label12(%rip), %xmm0
     jp .L__kefir_func_dnotf_label11
-    jmp .L__kefir_func_dnotf_label2
-.L__kefir_func_dnotf_label11:
-    jmp .L__kefir_func_dnotf_label6
-.L__kefir_func_dnotf_label2:
     jne .L__kefir_func_dnotf_label10
-    jmp .L__kefir_func_dnotf_label9
-.L__kefir_func_dnotf_label6:
-    mov $1, %rax
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_dnotf_label10:
-    jmp .L__kefir_func_dnotf_label6
-.L__kefir_func_dnotf_label9:
     mov $0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_dnotf_label10:
+    mov $1, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_dnotf_label11:
+    jmp .L__kefir_func_dnotf_label10
 .L__kefir_text_func_dnotf_end:
 .section .rodata
     .align 4
@@ -137,19 +119,13 @@ dnotld:
     cmovne %rcx, %rax
     test %al, %al
     jz .L__kefir_func_dnotld_label8
-    jmp .L__kefir_func_dnotld_label9
-.L__kefir_func_dnotld_label8:
-    jmp .L__kefir_func_dnotld_label5
-.L__kefir_func_dnotld_label9:
-    jmp .L__kefir_func_dnotld_label3
-.L__kefir_func_dnotld_label5:
-    mov $1, %rax
+    mov $0, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_dnotld_label3:
-    mov $0, %rax
+.L__kefir_func_dnotld_label8:
+    mov $1, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

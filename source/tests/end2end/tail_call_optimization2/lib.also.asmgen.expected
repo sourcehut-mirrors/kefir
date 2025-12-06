@@ -15,23 +15,20 @@ factorial:
     movaps %xmm0, %xmm2
     movq .L__kefir_func_factorial_label12(%rip), %xmm0
     ucomisd .L__kefir_func_factorial_label13(%rip), %xmm2
-    jp .L__kefir_func_factorial_label4
-    jmp .L__kefir_func_factorial_label2
-.L__kefir_func_factorial_label2:
-    ja .L__kefir_func_factorial_label6
-    jmp .L__kefir_func_factorial_label4
-.L__kefir_func_factorial_label4:
+    jp .L__kefir_func_factorial_label3
+    ja .L__kefir_func_factorial_label9
+.L__kefir_func_factorial_label3:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label6:
+.L__kefir_func_factorial_label9:
     mulsd %xmm2, %xmm0
     movq .L__kefir_func_factorial_label14(%rip), %xmm1
     subsd %xmm1, %xmm2
     movaps %xmm2, %xmm1
     call factorial_helper
-    jmp .L__kefir_func_factorial_label4
+    jmp .L__kefir_func_factorial_label3
 .L__kefir_text_func_factorial_end:
 .section .rodata
     .align 8
@@ -53,14 +50,13 @@ factorial_helper:
     stmxcsr -8(%rbp)
     ucomisd .L__kefir_func_factorial_helper_label11(%rip), %xmm1
     jp .L__kefir_func_factorial_helper_label4
-    ja .L__kefir_func_factorial_helper_label6
-    jmp .L__kefir_func_factorial_helper_label4
+    ja .L__kefir_func_factorial_helper_label9
 .L__kefir_func_factorial_helper_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_helper_label6:
+.L__kefir_func_factorial_helper_label9:
     mulsd %xmm1, %xmm0
     movq .L__kefir_func_factorial_helper_label12(%rip), %xmm2
     subsd %xmm2, %xmm1
@@ -68,6 +64,7 @@ factorial_helper:
     lea (%rbp), %rsp
     pop %rbp
     jmp factorial_helper
+    jmp .L__kefir_func_factorial_helper_label4
 .L__kefir_text_func_factorial_helper_end:
 .section .rodata
     .align 8

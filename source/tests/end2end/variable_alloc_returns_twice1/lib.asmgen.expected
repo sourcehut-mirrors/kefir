@@ -15,18 +15,16 @@ test2:
     mov %rsp, %rbp
     sub $16, %rsp
     test %edi, %edi
-    jnz .L__kefir_func_test2_label6
-    jmp .L__kefir_func_test2_label3
-.L__kefir_func_test2_label6:
-    movq $0, -16(%rbp)
-    call test1@PLT
-    jmp .L__kefir_func_test2_label4
-.L__kefir_func_test2_label3:
+    jnz .L__kefir_func_test2_label10
     movq $1, -8(%rbp)
 .L__kefir_func_test2_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_test2_label10:
+    movq $0, -16(%rbp)
+    call test1@PLT
+    jmp .L__kefir_func_test2_label4
 .L__kefir_text_func_test2_end:
 
 test3:
@@ -35,18 +33,16 @@ test3:
     mov %rsp, %rbp
     sub $16, %rsp
     test %edi, %edi
-    jnz .L__kefir_func_test3_label6
-    jmp .L__kefir_func_test3_label3
-.L__kefir_func_test3_label6:
-    movq $0, -8(%rbp)
-    call test2
-    jmp .L__kefir_func_test3_label4
-.L__kefir_func_test3_label3:
+    jnz .L__kefir_func_test3_label10
     movq $1, -8(%rbp)
 .L__kefir_func_test3_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_test3_label10:
+    movq $0, -8(%rbp)
+    call test2
+    jmp .L__kefir_func_test3_label4
 .L__kefir_text_func_test3_end:
 
 .L__kefir_text_section_end:

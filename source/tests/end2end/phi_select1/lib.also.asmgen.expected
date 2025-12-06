@@ -70,8 +70,6 @@ select5:
     fstpt -32(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_select5_label3
-    jmp .L__kefir_func_select5_label2
-.L__kefir_func_select5_label2:
     movq -32(%rbp), %rdi
     movq %rdi, -48(%rbp)
     movq -24(%rbp), %rdi
@@ -82,6 +80,7 @@ select5:
     lea (%rbp), %rsp
     pop %rbp
     ret
+    jmp .L__kefir_func_select5_label3
 .L__kefir_text_func_select5_end:
 
 select6:
@@ -96,11 +95,7 @@ select6:
     movaps %xmm2, %xmm4
     shufps $1, %xmm2, %xmm4
     test %edi, %edi
-    jz .L__kefir_func_select6_label2
-.L__kefir_func_select6_label6:
-    movaps %xmm4, %xmm1
-    jmp .L__kefir_func_select6_label3
-.L__kefir_func_select6_label2:
+    jnz .L__kefir_func_select6_label6
     movaps %xmm1, %xmm0
     movaps %xmm3, %xmm1
 .L__kefir_func_select6_label3:
@@ -108,6 +103,9 @@ select6:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_select6_label6:
+    movaps %xmm4, %xmm1
+    jmp .L__kefir_func_select6_label3
 .L__kefir_text_func_select6_end:
 
 select7:
@@ -117,14 +115,13 @@ select7:
     sub $32, %rsp
     test %edi, %edi
     jnz .L__kefir_func_select7_label3
-    jmp .L__kefir_func_select7_label2
-.L__kefir_func_select7_label2:
     movaps %xmm2, %xmm0
     movaps %xmm3, %xmm1
 .L__kefir_func_select7_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+    jmp .L__kefir_func_select7_label3
 .L__kefir_text_func_select7_end:
 
 select8:

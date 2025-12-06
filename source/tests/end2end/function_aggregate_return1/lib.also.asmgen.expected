@@ -33,18 +33,6 @@ get1:
     movzx %al, %rax
     test %eax, %eax
     jz .L__kefir_func_get1_label10
-    jmp .L__kefir_func_get1_label9
-.L__kefir_func_get1_label10:
-    jmp .L__kefir_func_get1_label6
-.L__kefir_func_get1_label9:
-    jmp .L__kefir_func_get1_label3
-.L__kefir_func_get1_label6:
-    leaq -80(%rbp), %rbx
-    mov %rbx, %rdi
-    call empty1@PLT
-    mov %rax, %rcx
-    jmp .L__kefir_func_get1_label4
-.L__kefir_func_get1_label3:
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -144(%rbp)
@@ -117,6 +105,12 @@ get1:
     pop %rbx
     pop %rbp
     ret
+.L__kefir_func_get1_label10:
+    leaq -80(%rbp), %rbx
+    mov %rbx, %rdi
+    call empty1@PLT
+    mov %rax, %rcx
+    jmp .L__kefir_func_get1_label4
 .L__kefir_text_func_get1_end:
 
 .L__kefir_text_section_end:

@@ -17,14 +17,12 @@ test1:
     movzx %dil, %rax
     cmp $0, %al
     je .L__kefir_func_test1_label6
-    jmp .L__kefir_func_test1_label5
-.L__kefir_func_test1_label6:
-    mov %rsi, %rax
-    ret
-.L__kefir_func_test1_label5:
     bsr %eax, %esi
     xor $31, %esi
     sub $24, %esi
+.L__kefir_func_test1_label6:
+    mov %rsi, %rax
+    ret
     jmp .L__kefir_func_test1_label6
 .L__kefir_text_func_test1_end:
 
@@ -32,15 +30,13 @@ test2:
 .L__kefir_text_func_test2_begin:
     cmp $0, %di
     je .L__kefir_func_test2_label6
-    jmp .L__kefir_func_test2_label5
-.L__kefir_func_test2_label6:
-    mov %rsi, %rax
-    ret
-.L__kefir_func_test2_label5:
     movzx %di, %rax
     bsr %eax, %esi
     xor $31, %esi
     sub $16, %esi
+.L__kefir_func_test2_label6:
+    mov %rsi, %rax
+    ret
     jmp .L__kefir_func_test2_label6
 .L__kefir_text_func_test2_end:
 
@@ -48,13 +44,11 @@ test3:
 .L__kefir_text_func_test3_begin:
     cmp $0, %edi
     je .L__kefir_func_test3_label6
-    jmp .L__kefir_func_test3_label5
+    bsr %edi, %esi
+    xor $31, %esi
 .L__kefir_func_test3_label6:
     mov %rsi, %rax
     ret
-.L__kefir_func_test3_label5:
-    bsr %edi, %esi
-    xor $31, %esi
     jmp .L__kefir_func_test3_label6
 .L__kefir_text_func_test3_end:
 
@@ -62,13 +56,11 @@ test4:
 .L__kefir_text_func_test4_begin:
     cmp $0, %rdi
     je .L__kefir_func_test4_label6
-    jmp .L__kefir_func_test4_label5
+    bsr %rdi, %rsi
+    xor $63, %esi
 .L__kefir_func_test4_label6:
     mov %rsi, %rax
     ret
-.L__kefir_func_test4_label5:
-    bsr %rdi, %rsi
-    xor $63, %esi
     jmp .L__kefir_func_test4_label6
 .L__kefir_text_func_test4_end:
 

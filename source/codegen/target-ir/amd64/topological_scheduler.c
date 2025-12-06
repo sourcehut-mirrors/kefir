@@ -47,10 +47,26 @@ static kefir_result_t do_schedule_impl(struct kefir_mem *mem,
         for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].successors, &iter, &key); res == KEFIR_OK;
             res = kefir_hashset_next(&iter, &key)) {
             ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, key);
-            REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) successor_block_ref));
+            REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) successor_block_ref));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
+        }
+
+        kefir_codegen_target_ir_instruction_ref_t block_tail_ref = kefir_codegen_target_ir_code_block_control_tail(control_flow->code, block_ref);
+        if (block_tail_ref != KEFIR_ID_NONE) {
+            const struct kefir_codegen_target_ir_instruction *block_tail;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, block_tail_ref, &block_tail));
+
+            struct kefir_codegen_target_ir_block_terminator_props terminator_props;
+            REQUIRE_OK(control_flow->code->klass->is_block_terminator(control_flow->code, block_tail, &terminator_props, control_flow->code->klass->payload));
+
+            if (terminator_props.block_terminator && terminator_props.branch) {
+                REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) terminator_props.target_block_refs[0]));
+                REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) terminator_props.target_block_refs[1]));
+            } else if (terminator_props.block_terminator && terminator_props.inline_assembly) {
+                REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) block_tail->operation.inline_asm_node.target_block_ref));
+            }
         }
     }
     return KEFIR_OK;

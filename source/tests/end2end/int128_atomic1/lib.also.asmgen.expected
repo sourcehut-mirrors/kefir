@@ -58,8 +58,6 @@ add_i128:
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add_i128_label2
-    jmp .L__kefir_func_add_i128_label8
-.L__kefir_func_add_i128_label8:
     mov %rbx, %rax
     mov %r12, %rdx
     lea -40(%rbp), %rsp
@@ -70,6 +68,7 @@ add_i128:
     pop %rbx
     pop %rbp
     ret
+    jmp .L__kefir_func_add_i128_label2
 .L__kefir_text_func_add_i128_end:
 
 add_u128:
@@ -114,8 +113,6 @@ add_u128:
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add_u128_label2
-    jmp .L__kefir_func_add_u128_label8
-.L__kefir_func_add_u128_label8:
     mov %rbx, %rax
     mov %r12, %rdx
     lea -40(%rbp), %rsp
@@ -126,6 +123,7 @@ add_u128:
     pop %rbx
     pop %rbp
     ret
+    jmp .L__kefir_func_add_u128_label2
 .L__kefir_text_func_add_u128_end:
 
 load_i128:

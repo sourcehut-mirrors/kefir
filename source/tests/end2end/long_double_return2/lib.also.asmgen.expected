@@ -36,20 +36,18 @@ pnanl:
     add $16, %rsp
     test %eax, %eax
     jz .L__kefir_func_pnanl_label6
-    jmp .L__kefir_func_pnanl_label5
-.L__kefir_func_pnanl_label6:
-    fldt -32(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_pnanl_label5:
     sub $16, %rsp
     fldt -32(%rbp)
     fstpt (%rsp)
     call minus
     add $16, %rsp
     fstpt -32(%rbp)
+.L__kefir_func_pnanl_label6:
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
     jmp .L__kefir_func_pnanl_label6
 .L__kefir_text_func_pnanl_end:
 .section .rodata

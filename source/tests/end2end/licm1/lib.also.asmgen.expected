@@ -8,31 +8,29 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rdi, %r8
+    mov %rdi, %rcx
     imul %esi, %edx
-    mov %rdx, %r9
-    add $1, %r9d
+    mov %rdx, %r8
+    add $1, %r8d
     xor %eax, %eax
-    mov %rax, %rcx
+    mov %rax, %r9
 .L__kefir_func_test1_label2:
-    cmp %esi, %ecx
-    jl .L__kefir_func_test1_label6
-    jmp .L__kefir_func_test1_label4
-.L__kefir_func_test1_label6:
-    movsx %ecx, %rax
+    cmp %esi, %r9d
+    jl .L__kefir_func_test1_label10
+    ret
+.L__kefir_func_test1_label10:
+    movsx %r9d, %rax
     imul $4, %rax, %rax
-    mov %r8, %rdi
+    mov %rcx, %rdi
     add %rax, %rdi
-    imul $2, %ecx, %eax
-    mov %r9, %rdx
+    imul $2, %r9d, %eax
+    mov %r8, %rdx
     add %eax, %edx
     movl %edx, (%rdi)
-    mov %rcx, %rax
+    mov %r9, %rax
     add $1, %eax
-    mov %rax, %rcx
+    mov %rax, %r9
     jmp .L__kefir_func_test1_label2
-.L__kefir_func_test1_label4:
-    ret
 .L__kefir_text_func_test1_end:
 
 .L__kefir_text_section_end:

@@ -99,14 +99,13 @@ test4:
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test4_label2
-    jmp .L__kefir_func_test4_label8
-.L__kefir_func_test4_label8:
     movl -4(%rbp), %edi
     add $1, %edi
     call test4
     lea (%rbp), %rsp
     pop %rbp
     ret
+    jmp .L__kefir_func_test4_label2
 .L__kefir_text_func_test4_end:
 
 test5:

@@ -46,12 +46,11 @@ add_ld1:
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add_ld1_label2
-    jmp .L__kefir_func_add_ld1_label8
-.L__kefir_func_add_ld1_label8:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+    jmp .L__kefir_func_add_ld1_label2
 .L__kefir_text_func_add_ld1_end:
 
 add_cld1:
@@ -97,13 +96,12 @@ add_cld1:
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add_cld1_label2
-    jmp .L__kefir_func_add_cld1_label8
-.L__kefir_func_add_cld1_label8:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
+    jmp .L__kefir_func_add_cld1_label2
 .L__kefir_text_func_add_cld1_end:
 
 .L__kefir_text_section_end:

@@ -24,21 +24,18 @@ test2:
 factorial:
 .L__kefir_text_func_factorial_begin:
     mov $1, %rax
-    mov %rax, %rcx
-    mov %rdi, %rdx
+    mov %rax, %rdx
 .L__kefir_func_factorial_label2:
-    lea -1(%rdx), %rdi
-    mov %rcx, %rax
-    imul %rdx, %rax
-    cmp $1, %rdx
-    jle .L__kefir_func_factorial_label5
-    jmp .L__kefir_func_factorial_label7
-.L__kefir_func_factorial_label7:
-    mov %rax, %rcx
-    mov %rdi, %rdx
+    lea -1(%rdi), %rax
+    mov %rdx, %rcx
+    imul %rdi, %rcx
+    cmp $1, %rdi
+    jle .L__kefir_func_factorial_label8
+    mov %rcx, %rdx
+    mov %rax, %rdi
     jmp .L__kefir_func_factorial_label2
-.L__kefir_func_factorial_label5:
-    mov %rcx, %rdi
+.L__kefir_func_factorial_label8:
+    mov %rdx, %rdi
     jmp set_value@PLT
 .L__kefir_text_func_factorial_end:
 

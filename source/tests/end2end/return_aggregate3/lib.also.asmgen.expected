@@ -14,15 +14,7 @@ test:
     sub $64, %rsp
     mov %rdi, %rcx
     test %rsi, %rsi
-    jnz .L__kefir_func_test_label5
-    jmp .L__kefir_func_test_label3
-.L__kefir_func_test_label5:
-    not %rsi
-    mov %rcx, %rdi
-    lea (%rbp), %rsp
-    pop %rbp
-    jmp get@PLT
-.L__kefir_func_test_label3:
+    jnz .L__kefir_func_test_label7
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -64(%rbp)
@@ -41,6 +33,12 @@ test:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_test_label7:
+    not %rsi
+    mov %rcx, %rdi
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp get@PLT
 .L__kefir_text_func_test_end:
 
 .L__kefir_text_section_end:

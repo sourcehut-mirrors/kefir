@@ -45,7 +45,12 @@ get1:
     pxor %xmm1, %xmm0
     test %rax, %rax
     js .L__kefir_func_get1_label3
-    jmp .L__kefir_func_get1_label2
+    cvtsi2ss %rax, %xmm0
+.L__kefir_func_get1_label4:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_func_get1_label3:
     mov %rax, %rcx
     and $1, %rcx
@@ -56,13 +61,6 @@ get1:
     addss %xmm0, %xmm1
     movaps %xmm1, %xmm0
     jmp .L__kefir_func_get1_label4
-.L__kefir_func_get1_label2:
-    cvtsi2ss %rax, %xmm0
-.L__kefir_func_get1_label4:
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_text_func_get1_end:
 
 get2:
@@ -94,7 +92,12 @@ get3:
     pxor %xmm1, %xmm0
     test %rax, %rax
     js .L__kefir_func_get3_label3
-    jmp .L__kefir_func_get3_label2
+    cvtsi2sd %rax, %xmm0
+.L__kefir_func_get3_label4:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_func_get3_label3:
     mov %rax, %rcx
     and $1, %rcx
@@ -105,13 +108,6 @@ get3:
     addsd %xmm0, %xmm1
     movaps %xmm1, %xmm0
     jmp .L__kefir_func_get3_label4
-.L__kefir_func_get3_label2:
-    cvtsi2sd %rax, %xmm0
-.L__kefir_func_get3_label4:
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_text_func_get3_end:
 
 get4:
@@ -146,16 +142,14 @@ get5:
     add $8, %rsp
     test %rax, %rax
     jns .L__kefir_func_get5_label6
-    jmp .L__kefir_func_get5_label2
-.L__kefir_func_get5_label6:
-    jmp .L__kefir_func_get5_label3
-.L__kefir_func_get5_label2:
     fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_get5_label3:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_get5_label6:
+    jmp .L__kefir_func_get5_label3
 .L__kefir_text_func_get5_end:
 
 .L__kefir_text_section_end:

@@ -2384,27 +2384,25 @@ test2:
     sub $16, %rsp
     movl %esi, -8(%rbp)
     movq %rdi, -16(%rbp)
-    movl -8(%rbp), %esi
-    movq -16(%rbp), %rdi
+    movl -8(%rbp), %edi
+    movq -16(%rbp), %r8
 .L__kefir_func_test2_label2:
-    movl (%rdi), %eax
+    movl (%r8), %eax
     movsx %eax, %rax
-    mov %rax, %r8
-    add %esi, %r8d
-    mov %rdi, %rdx
-    mov %r8, %rcx
+    mov %rax, %rsi
+    add %edi, %esi
+    mov %r8, %rdx
+    mov %rsi, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
     jz .L__kefir_func_test2_label4
-    jmp .L__kefir_func_test2_label6
-.L__kefir_func_test2_label4:
-    jmp .L__kefir_func_test2_label2
-.L__kefir_func_test2_label6:
-    mov %r8, %rax
+    mov %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_test2_label4:
+    jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 
 test3:

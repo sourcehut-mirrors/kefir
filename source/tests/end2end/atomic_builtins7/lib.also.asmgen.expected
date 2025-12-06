@@ -50,111 +50,105 @@ test_is_lock_free:
     sete %al
     mov $1, %rcx
     cmp $2, %ecx
-    je .L__kefir_func_test_is_lock_free_label37
-    jmp .L__kefir_func_test_is_lock_free_label3
-.L__kefir_func_test_is_lock_free_label37:
-    xor %eax, %eax
-    mov $1, %rcx
-    cmp $2, %ecx
-    sete %al
+    je .L__kefir_func_test_is_lock_free_label43
 .L__kefir_func_test_is_lock_free_label3:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jnz .L__kefir_func_test_is_lock_free_label35
-    jmp .L__kefir_func_test_is_lock_free_label5
+    jnz .L__kefir_func_test_is_lock_free_label48
 .L__kefir_func_test_is_lock_free_label5:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jnz .L__kefir_func_test_is_lock_free_label33
-    jmp .L__kefir_func_test_is_lock_free_label7
-.L__kefir_func_test_is_lock_free_label35:
-    xor %eax, %eax
-    mov $1, %rcx
-    cmp $2, %ecx
-    sete %al
-    jmp .L__kefir_func_test_is_lock_free_label5
+    jnz .L__kefir_func_test_is_lock_free_label41
 .L__kefir_func_test_is_lock_free_label7:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jnz .L__kefir_func_test_is_lock_free_label31
-    jmp .L__kefir_func_test_is_lock_free_label9
-.L__kefir_func_test_is_lock_free_label33:
-    xor %eax, %eax
-    mov $1, %rcx
-    cmp $2, %ecx
-    sete %al
-    jmp .L__kefir_func_test_is_lock_free_label7
-.L__kefir_func_test_is_lock_free_label31:
-    xor %eax, %eax
-    mov $1, %rcx
-    cmp $2, %ecx
-    sete %al
+    jnz .L__kefir_func_test_is_lock_free_label47
 .L__kefir_func_test_is_lock_free_label9:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jnz .L__kefir_func_test_is_lock_free_label29
-    jmp .L__kefir_func_test_is_lock_free_label11
+    jnz .L__kefir_func_test_is_lock_free_label46
 .L__kefir_func_test_is_lock_free_label11:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jnz .L__kefir_func_test_is_lock_free_label27
-    jmp .L__kefir_func_test_is_lock_free_label13
-.L__kefir_func_test_is_lock_free_label29:
-    xor %eax, %eax
-    mov $1, %rcx
-    cmp $2, %ecx
-    sete %al
-    jmp .L__kefir_func_test_is_lock_free_label11
-.L__kefir_func_test_is_lock_free_label27:
-    xor %eax, %eax
-    mov $1, %rcx
-    cmp $2, %ecx
-    sete %al
+    jnz .L__kefir_func_test_is_lock_free_label45
 .L__kefir_func_test_is_lock_free_label13:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jnz .L__kefir_func_test_is_lock_free_label25
-    jmp .L__kefir_func_test_is_lock_free_label15
+    jnz .L__kefir_func_test_is_lock_free_label42
 .L__kefir_func_test_is_lock_free_label15:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jnz .L__kefir_func_test_is_lock_free_label23
-    jmp .L__kefir_func_test_is_lock_free_label17
-.L__kefir_func_test_is_lock_free_label25:
-    xor %eax, %eax
-    jmp .L__kefir_func_test_is_lock_free_label15
+    jnz .L__kefir_func_test_is_lock_free_label44
 .L__kefir_func_test_is_lock_free_label17:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jnz .L__kefir_func_test_is_lock_free_label21
-    jmp .L__kefir_func_test_is_lock_free_label19
-.L__kefir_func_test_is_lock_free_label23:
-    xor %eax, %eax
-    jmp .L__kefir_func_test_is_lock_free_label17
+    jnz .L__kefir_func_test_is_lock_free_label40
 .L__kefir_func_test_is_lock_free_label19:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     ret
-.L__kefir_func_test_is_lock_free_label21:
+.L__kefir_func_test_is_lock_free_label40:
     xor %eax, %eax
     jmp .L__kefir_func_test_is_lock_free_label19
+.L__kefir_func_test_is_lock_free_label44:
+    xor %eax, %eax
+    jmp .L__kefir_func_test_is_lock_free_label17
+.L__kefir_func_test_is_lock_free_label42:
+    xor %eax, %eax
+    jmp .L__kefir_func_test_is_lock_free_label15
+.L__kefir_func_test_is_lock_free_label45:
+    xor %eax, %eax
+    mov $1, %rcx
+    cmp $2, %ecx
+    sete %al
+    jmp .L__kefir_func_test_is_lock_free_label13
+.L__kefir_func_test_is_lock_free_label46:
+    xor %eax, %eax
+    mov $1, %rcx
+    cmp $2, %ecx
+    sete %al
+    jmp .L__kefir_func_test_is_lock_free_label11
+.L__kefir_func_test_is_lock_free_label47:
+    xor %eax, %eax
+    mov $1, %rcx
+    cmp $2, %ecx
+    sete %al
+    jmp .L__kefir_func_test_is_lock_free_label9
+.L__kefir_func_test_is_lock_free_label41:
+    xor %eax, %eax
+    mov $1, %rcx
+    cmp $2, %ecx
+    sete %al
+    jmp .L__kefir_func_test_is_lock_free_label7
+.L__kefir_func_test_is_lock_free_label48:
+    xor %eax, %eax
+    mov $1, %rcx
+    cmp $2, %ecx
+    sete %al
+    jmp .L__kefir_func_test_is_lock_free_label5
+.L__kefir_func_test_is_lock_free_label43:
+    xor %eax, %eax
+    mov $1, %rcx
+    cmp $2, %ecx
+    sete %al
+    jmp .L__kefir_func_test_is_lock_free_label3
 .L__kefir_text_func_test_is_lock_free_end:
 
 .L__kefir_text_section_end:

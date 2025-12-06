@@ -23,13 +23,11 @@ test1:
     mov %rdx, %rax
     setle %al
     and %al, %cl
-    jnz .L__kefir_func_test1_label5
-    jmp .L__kefir_func_test1_label3
-.L__kefir_func_test1_label5:
-    mov $1, %rax
-    ret
-.L__kefir_func_test1_label3:
+    jnz .L__kefir_func_test1_label8
     mov $2, %rax
+    ret
+.L__kefir_func_test1_label8:
+    mov $1, %rax
     ret
 .L__kefir_text_func_test1_end:
 
@@ -44,13 +42,11 @@ test2:
     mov %rdx, %rax
     setle %al
     and %al, %cl
-    jnz .L__kefir_func_test2_label5
-    jmp .L__kefir_func_test2_label3
-.L__kefir_func_test2_label5:
-    mov $1, %rax
-    ret
-.L__kefir_func_test2_label3:
+    jnz .L__kefir_func_test2_label8
     mov $2, %rax
+    ret
+.L__kefir_func_test2_label8:
+    mov $1, %rax
     ret
 .L__kefir_text_func_test2_end:
 
@@ -67,13 +63,11 @@ test3:
     mov %rdx, %rcx
     setbe %cl
     and %cl, %al
-    jnz .L__kefir_func_test3_label5
-    jmp .L__kefir_func_test3_label3
-.L__kefir_func_test3_label5:
-    mov $1, %rax
-    ret
-.L__kefir_func_test3_label3:
+    jnz .L__kefir_func_test3_label8
     mov $2, %rax
+    ret
+.L__kefir_func_test3_label8:
+    mov $1, %rax
     ret
 .L__kefir_text_func_test3_end:
 
@@ -86,13 +80,11 @@ test4:
     cmp $-1, %rdi
     setbe %cl
     and %cl, %al
-    jnz .L__kefir_func_test4_label5
-    jmp .L__kefir_func_test4_label3
-.L__kefir_func_test4_label5:
-    mov $1, %rax
-    ret
-.L__kefir_func_test4_label3:
+    jnz .L__kefir_func_test4_label8
     mov $2, %rax
+    ret
+.L__kefir_func_test4_label8:
+    mov $1, %rax
     ret
 .L__kefir_text_func_test4_end:
 

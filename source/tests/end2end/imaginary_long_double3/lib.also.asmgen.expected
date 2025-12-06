@@ -14,8 +14,6 @@ test:
     fstcw -8(%rbp)
     test %al, %al
     je .L__kefir_func_test_label2
-    jmp .L__kefir_func_test_label1
-.L__kefir_func_test_label1:
     movdqu %xmm0, -240(%rbp)
     movdqu %xmm1, -224(%rbp)
     movdqu %xmm2, -208(%rbp)
@@ -47,15 +45,13 @@ test:
     mov %rdi, %rdx
     add $-1, %edx
     test %edi, %edi
-    jnz .L__kefir_func_test_label8
-    jmp .L__kefir_func_test_label6
-.L__kefir_func_test_label6:
+    jnz .L__kefir_func_test_label13
     fldt -304(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test_label8:
+.L__kefir_func_test_label13:
     movq -104(%rbp), %rax
     add $15, %rax
     and $-16, %rax

@@ -2725,17 +2725,6 @@ factorial:
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label20
-    jmp .L__kefir_func_factorial_label18
-.L__kefir_func_factorial_label20:
-    jmp .L__kefir_func_factorial_label14
-.L__kefir_func_factorial_label18:
-    jmp .L__kefir_func_factorial_label3
-.L__kefir_func_factorial_label14:
-    mov $0, %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_factorial_label3:
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $2, %eax
@@ -2753,17 +2742,7 @@ factorial:
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label19
-    jmp .L__kefir_func_factorial_label5
-.L__kefir_func_factorial_label19:
-    jmp .L__kefir_func_factorial_label12
-.L__kefir_func_factorial_label5:
     movl $1, -4(%rbp)
-    jmp .L__kefir_func_factorial_label6
-.L__kefir_func_factorial_label12:
-    movl -8(%rbp), %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
     mov $0, %rcx
@@ -2774,12 +2753,11 @@ factorial:
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label17
-    jmp .L__kefir_func_factorial_label22
+    movl -4(%rbp), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_func_factorial_label17:
-    jmp .L__kefir_func_factorial_label10
-.L__kefir_func_factorial_label22:
-    jmp .L__kefir_func_factorial_label8
-.L__kefir_func_factorial_label10:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     imul %eax, %ecx
@@ -2788,8 +2766,13 @@ factorial:
     add $-1, %eax
     movl %eax, -8(%rbp)
     jmp .L__kefir_func_factorial_label6
-.L__kefir_func_factorial_label8:
-    movl -4(%rbp), %eax
+.L__kefir_func_factorial_label19:
+    movl -8(%rbp), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_factorial_label20:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

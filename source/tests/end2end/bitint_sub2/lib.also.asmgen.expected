@@ -253,12 +253,11 @@ __kefir_bigint_subtract:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_subtract_label10
-    jmp .L__kefir_runtime_func___kefir_bigint_subtract_label9
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_runtime_func___kefir_bigint_subtract_label10:
-    jmp .L__kefir_runtime_func___kefir_bigint_subtract_label6
-.L__kefir_runtime_func___kefir_bigint_subtract_label9:
-    jmp .L__kefir_runtime_func___kefir_bigint_subtract_label4
-.L__kefir_runtime_func___kefir_bigint_subtract_label6:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
@@ -299,11 +298,6 @@ __kefir_bigint_subtract:
     add $1, %rax
     movq %rax, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_label2
-.L__kefir_runtime_func___kefir_bigint_subtract_label4:
-    mov $0, %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_runtime_text_func___kefir_bigint_subtract_end:
 
 
