@@ -12,68 +12,68 @@ get:
     mov %rsp, %rbp
     sub $288, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r9
-    mov %rsi, %r8
-    mov %r9, %rdi
+    mov %rdi, %r8
+    mov %rsi, %r9
+    mov %r8, %rdi
     xor %eax, %eax
     mov $71, %rcx
     mov %rax, %rsi
     rep stosq
-    movw %r8w, (%r9)
-    lea 8(%r9), %rax
-    mov %r8, %rsi
+    movw %r9w, (%r8)
+    lea 8(%r8), %rax
+    mov %r9, %rsi
     add $1, %esi
     movl %esi, (%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $2, %esi
     movsx %esi, %rcx
     movq %rcx, 8(%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $3, %esi
     movsx %esi, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, 16(%rax)
-    lea 32(%r9), %rax
-    mov %r8, %rsi
+    lea 32(%r8), %rax
+    mov %r9, %rsi
     add $4, %esi
     movsx %esi, %rcx
     cvtsi2sd %rcx, %xmm0
     movq %xmm0, (%rax)
-    lea 40(%r9), %rax
-    mov %r8, %rsi
+    lea 40(%r8), %rax
+    mov %r9, %rsi
     add $5, %esi
     movl %esi, (%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $6, %esi
     movsx %esi, %rcx
     movq %rcx, 8(%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $7, %esi
     movsx %esi, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, 16(%rax)
-    lea 112(%r9), %rax
-    mov %r8, %rsi
+    lea 112(%r8), %rax
+    mov %r9, %rsi
     add $8, %esi
     movl %esi, (%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $9, %esi
     movsx %esi, %rcx
     movq %rcx, 8(%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $10, %esi
     movsx %esi, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, 16(%rax)
-    lea 136(%r9), %rax
-    mov %r8, %rsi
+    lea 136(%r8), %rax
+    mov %r9, %rsi
     add $11, %esi
     movl %esi, (%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $12, %esi
     movsx %esi, %rcx
     movq %rcx, 8(%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $13, %esi
     movsx %esi, %rcx
     cvtsi2ss %rcx, %xmm0
@@ -89,54 +89,54 @@ get:
     cld
     mov $17, %rcx
     rep movsq
-    lea 160(%r9), %rdi
+    lea 160(%r8), %rdi
     leaq -280(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    lea 296(%r9), %rdi
+    lea 296(%r8), %rdi
     leaq -144(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    lea 432(%r9), %rax
-    mov %r8, %rsi
+    lea 432(%r8), %rax
+    mov %r9, %rsi
     add $14, %esi
     movw %si, (%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $15, %esi
     movl %esi, 8(%rax)
-    lea 448(%r9), %rcx
-    mov %r8, %rsi
+    lea 448(%r8), %rcx
+    mov %r9, %rsi
     add $16, %esi
     movsx %esi, %rdx
     movq %rdx, (%rcx)
-    lea 456(%r9), %rcx
-    mov %r8, %rsi
+    lea 456(%r8), %rcx
+    mov %r9, %rsi
     add $17, %esi
     movsx %esi, %rdx
     cvtsi2ss %rdx, %xmm0
     movd %xmm0, (%rcx)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $18, %esi
     movsx %esi, %rcx
     cvtsi2sd %rcx, %xmm0
     movq %xmm0, 32(%rax)
-    mov %r8, %rsi
+    mov %r9, %rsi
     add $19, %esi
     movl %esi, 112(%rax)
-    lea 552(%r9), %rax
-    mov %r8, %rsi
+    lea 552(%r8), %rax
+    mov %r9, %rsi
     add $20, %esi
     movsx %esi, %rcx
     movq %rcx, (%rax)
-    lea 560(%r9), %rax
-    mov %r8, %rsi
+    lea 560(%r8), %rax
+    mov %r9, %rsi
     add $21, %esi
     movsx %esi, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, (%rax)
-    mov %r9, %rax
+    mov %r8, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

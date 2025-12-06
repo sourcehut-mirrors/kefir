@@ -30,10 +30,10 @@ get:
     mov %rcx, -200(%rbp)
     mov %r8, -192(%rbp)
     mov %r9, -184(%rbp)
-    fldt .L__kefir_func_get_label17(%rip)
+    fldt .L__kefir_func_get_label18(%rip)
     fstpt -240(%rbp)
     cmp $0, %edi
-    jg .L__kefir_func_get_label16
+    jg .L__kefir_func_get_label15
 .L__kefir_func_get_label5:
     fldt -240(%rbp)
     ldmxcsr -16(%rbp)
@@ -41,7 +41,7 @@ get:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get_label16:
+.L__kefir_func_get_label15:
     movl $8, -48(%rbp)
     movl $48, -44(%rbp)
     lea 16(%rbp), %rax
@@ -69,7 +69,7 @@ get:
 .L__kefir_text_func_get_end:
 .section .rodata
     .align 8
-.L__kefir_func_get_label17:
+.L__kefir_func_get_label18:
     .quad 9223372036854775808
     .quad 49151
 .section .text

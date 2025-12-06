@@ -20,26 +20,26 @@ SOMEFN1:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 27 20
-.L__kefir_func_SOMEFN1_label176:
+.L__kefir_func_SOMEFN1_label174:
     mov $1, %rdi
     call SOMEFN0@PLT
 .loc 0 27 12
-.L__kefir_func_SOMEFN1_label181:
-    movd .L__kefir_func_SOMEFN1_label180(%rip), %xmm1
-.L__kefir_func_SOMEFN1_label185:
+.L__kefir_func_SOMEFN1_label179:
+    movd .L__kefir_func_SOMEFN1_label178(%rip), %xmm1
+.L__kefir_func_SOMEFN1_label183:
     addss %xmm0, %xmm1
-.L__kefir_func_SOMEFN1_label186:
+.L__kefir_func_SOMEFN1_label184:
     movaps %xmm1, %xmm0
 .loc 0 27 5
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_SOMEFN1_label198:
+.L__kefir_func_SOMEFN1_label196:
 .L__kefir_text_func_SOMEFN1_end:
 .section .rodata
     .align 4
-.L__kefir_func_SOMEFN1_label180:
+.L__kefir_func_SOMEFN1_label178:
     .long 1078523331
 .section .text
 

@@ -144,7 +144,7 @@ get2:
     movq %rax, -16(%rbp)
     movl -32(%rbp), %eax
     cmp $48, %eax
-    jae .L__kefir_func_get2_label5
+    jae .L__kefir_func_get2_label11
     lea 8(%rax), %rax
     movl %eax, -32(%rbp)
     add -16(%rbp), %rax
@@ -154,7 +154,7 @@ get2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get2_label5:
+.L__kefir_func_get2_label11:
     mov -24(%rbp), %rax
     lea 8(%rax), %rax
     mov %rax, -24(%rbp)

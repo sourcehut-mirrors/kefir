@@ -1805,75 +1805,75 @@ factorial:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_factorial_label64:
+.L__kefir_func_factorial_label62:
     movl %edi, -8(%rbp)
 .loc 0 22 9
-.L__kefir_func_factorial_label65:
+.L__kefir_func_factorial_label63:
     movl -8(%rbp), %eax
 .loc 0 22 9
-.L__kefir_func_factorial_label69:
+.L__kefir_func_factorial_label67:
     mov $0, %rcx
     cmp $0, %eax
     mov %rcx, %rax
     setl %al
 .loc 0 22 5
-.L__kefir_func_factorial_label81:
+.L__kefir_func_factorial_label79:
     test %eax, %eax
     sete %al
-.L__kefir_func_factorial_label94:
+.L__kefir_func_factorial_label92:
     test %al, %al
     jz .L__kefir_func_factorial_label40
 .loc 0 24 9
-.L__kefir_func_factorial_label100:
+.L__kefir_func_factorial_label98:
     movl -8(%rbp), %eax
 .loc 0 24 9
-.L__kefir_func_factorial_label101:
+.L__kefir_func_factorial_label99:
     mov $0, %rcx
     cmp $2, %eax
     setl %cl
-.L__kefir_func_factorial_label118:
+.L__kefir_func_factorial_label116:
     mov $0, %rdx
     mov $2, %rdi
 .loc 0 24 9
     cmp %eax, %edi
     mov %rdx, %rax
     sete %al
-.L__kefir_func_factorial_label119:
+.L__kefir_func_factorial_label117:
     or %rax, %rcx
     mov %rcx, %rax
     setne %al
     movzx %al, %rax
 .loc 0 24 5
-.L__kefir_func_factorial_label134:
+.L__kefir_func_factorial_label132:
     test %eax, %eax
     sete %al
-.L__kefir_func_factorial_label140:
+.L__kefir_func_factorial_label138:
     test %al, %al
-    jz .L__kefir_func_factorial_label38
+    jz .L__kefir_func_factorial_label44
 .loc 0 27 5
-.L__kefir_func_factorial_label141:
+.L__kefir_func_factorial_label139:
     movl $1, -4(%rbp)
 .loc 0 28 12
 .L__kefir_func_factorial_label12:
     movl -8(%rbp), %eax
 .loc 0 28 12
-.L__kefir_func_factorial_label166:
+.L__kefir_func_factorial_label164:
     mov $0, %rcx
     cmp $1, %eax
     mov %rcx, %rax
     setg %al
 .loc 0 28 5
-.L__kefir_func_factorial_label167:
+.L__kefir_func_factorial_label165:
     test %eax, %eax
     sete %al
-.L__kefir_func_factorial_label180:
+.L__kefir_func_factorial_label178:
     test %al, %al
     jz .L__kefir_func_factorial_label34
 .loc 0 31 12
-.L__kefir_func_factorial_label186:
+.L__kefir_func_factorial_label184:
     movl -4(%rbp), %eax
 .loc 0 31 5
-.L__kefir_func_factorial_label187:
+.L__kefir_func_factorial_label185:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1881,27 +1881,27 @@ factorial:
 .L__kefir_func_factorial_label34:
     movl -8(%rbp), %eax
 .loc 0 29 9
-.L__kefir_func_factorial_label208:
+.L__kefir_func_factorial_label206:
     movl -4(%rbp), %ecx
-.L__kefir_func_factorial_label209:
+.L__kefir_func_factorial_label207:
     imul %eax, %ecx
-.L__kefir_func_factorial_label216:
+.L__kefir_func_factorial_label214:
     movl %ecx, -4(%rbp)
 .loc 0 28 19
-.L__kefir_func_factorial_label217:
+.L__kefir_func_factorial_label215:
     movl -8(%rbp), %eax
-.L__kefir_func_factorial_label226:
+.L__kefir_func_factorial_label224:
     add $-1, %eax
-.L__kefir_func_factorial_label227:
+.L__kefir_func_factorial_label225:
     movl %eax, -8(%rbp)
 .loc 0 28 5
-.L__kefir_func_factorial_label234:
+.L__kefir_func_factorial_label232:
     jmp .L__kefir_func_factorial_label12
 .loc 0 25 16
-.L__kefir_func_factorial_label38:
+.L__kefir_func_factorial_label44:
     movl -8(%rbp), %eax
 .loc 0 25 9
-.L__kefir_func_factorial_label252:
+.L__kefir_func_factorial_label250:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1911,7 +1911,7 @@ factorial:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label269:
+.L__kefir_func_factorial_label267:
 .L__kefir_text_func_factorial_end:
 
 .L__kefir_text_section_end:
@@ -2164,16 +2164,16 @@ __kefir_debug_loclist_section_entry_1:
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label65 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label269 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label63 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label267 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
     .byte 0
 __kefir_debug_loclist_section_entry_7:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label65 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label269 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label63 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label267 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
@@ -2193,31 +2193,31 @@ __kefir_debug_rnglists_section_begin:
 __kefir_debug_rnglist_section_entry_2:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label40 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label269 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label267 - .L__kefir_text_section_begin
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label65 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label100 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label63 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label98 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_3:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label38 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label44 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label40 - .L__kefir_text_section_begin
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label100 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label141 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label98 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label139 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_4:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label12 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label186 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label184 - .L__kefir_text_section_begin
     .byte 4
     .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label38 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label44 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_5:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label217 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label215 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:
 

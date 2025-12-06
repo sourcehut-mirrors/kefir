@@ -25,20 +25,20 @@ get_T2:
     xor %eax, %eax
     cmp $0, %edi
     setge %al
-    jge .L__kefir_func_get_T2_label12
+    jge .L__kefir_func_get_T2_label15
 .L__kefir_func_get_T2_label3:
     test %eax, %eax
-    jnz .L__kefir_func_get_T2_label14
+    jnz .L__kefir_func_get_T2_label13
     xor %eax, %eax
     ret
-.L__kefir_func_get_T2_label14:
+.L__kefir_func_get_T2_label13:
     lea T1(%rip), %rax
     add $8, %rax
     movsx %edi, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
     ret
-.L__kefir_func_get_T2_label12:
+.L__kefir_func_get_T2_label15:
     lea T1(%rip), %rax
     movl (%rax), %eax
     xor %ecx, %ecx

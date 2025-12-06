@@ -40,23 +40,24 @@ get1:
     stmxcsr -8(%rbp)
     movabs $3405691582, %rax
     shl $32, %rax
-    shr $32, %rax
+    mov %rax, %rcx
+    shr $32, %rcx
     movaps %xmm1, %xmm0
     pxor %xmm1, %xmm0
-    test %rax, %rax
-    js .L__kefir_func_get1_label3
-    cvtsi2ss %rax, %xmm0
+    test %rcx, %rcx
+    js .L__kefir_func_get1_label7
+    cvtsi2ss %rcx, %xmm0
 .L__kefir_func_get1_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get1_label3:
-    mov %rax, %rcx
-    and $1, %rcx
-    shr $1, %rax
-    or %rax, %rcx
-    cvtsi2ss %rcx, %xmm0
+.L__kefir_func_get1_label7:
+    mov %rcx, %rax
+    and $1, %rax
+    shr $1, %rcx
+    or %rcx, %rax
+    cvtsi2ss %rax, %xmm0
     movaps %xmm0, %xmm1
     addss %xmm0, %xmm1
     movaps %xmm1, %xmm0
@@ -87,23 +88,24 @@ get3:
     stmxcsr -8(%rbp)
     movabs $802555952865, %rax
     shl $24, %rax
-    shr $24, %rax
+    mov %rax, %rcx
+    shr $24, %rcx
     movaps %xmm1, %xmm0
     pxor %xmm1, %xmm0
-    test %rax, %rax
-    js .L__kefir_func_get3_label3
-    cvtsi2sd %rax, %xmm0
+    test %rcx, %rcx
+    js .L__kefir_func_get3_label7
+    cvtsi2sd %rcx, %xmm0
 .L__kefir_func_get3_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get3_label3:
-    mov %rax, %rcx
-    and $1, %rcx
-    shr $1, %rax
-    or %rax, %rcx
-    cvtsi2sd %rcx, %xmm0
+.L__kefir_func_get3_label7:
+    mov %rcx, %rax
+    and $1, %rax
+    shr $1, %rcx
+    or %rcx, %rax
+    cvtsi2sd %rax, %xmm0
     movaps %xmm0, %xmm1
     addsd %xmm0, %xmm1
     movaps %xmm1, %xmm0

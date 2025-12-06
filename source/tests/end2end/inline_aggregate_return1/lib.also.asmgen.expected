@@ -11,8 +11,8 @@ gets1:
     push %rbp
     mov %rsp, %rbp
     sub $256, %rsp
-    mov %rdi, %r8
-    mov %rsi, %rdx
+    mov %rdi, %rdx
+    mov %rsi, %r8
     movaps %xmm1, %xmm0
     xorps %xmm1, %xmm0
     movdqu %xmm0, -256(%rbp)
@@ -36,11 +36,11 @@ gets1:
     movdqu %xmm0, -96(%rbp)
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
-    movsx %edx, %rax
+    movsx %r8d, %rax
     imul $4, %rax, %rax
     leaq -128(%rbp), %rcx
     add %rax, %rcx
-    mov %rdx, %rsi
+    mov %r8, %rsi
     not %esi
     movl %esi, (%rcx)
     movdqu -128(%rbp), %xmm0
@@ -52,19 +52,19 @@ gets1:
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, (%r8)
+    movdqu %xmm0, (%rdx)
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, 16(%r8)
+    movdqu %xmm0, 16(%rdx)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, 32(%r8)
+    movdqu %xmm0, 32(%rdx)
     movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, 48(%r8)
-    movsx %edx, %rax
+    movdqu %xmm0, 48(%rdx)
+    movsx %r8d, %rax
     imul $4, %rax, %rax
-    mov %r8, %rdi
+    mov %rdx, %rdi
     add %rax, %rdi
-    movl %edx, (%rdi)
-    mov %r8, %rax
+    movl %r8d, (%rdi)
+    mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

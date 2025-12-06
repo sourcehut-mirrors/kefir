@@ -95,9 +95,9 @@ test5:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    movq %rdi, -48(%rbp)
-    movq %rsi, -40(%rbp)
-    movdqu -48(%rbp), %xmm0
+    movq %rdi, -64(%rbp)
+    movq %rsi, -56(%rbp)
+    movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     leaq -32(%rbp), %rcx
     leaq -16(%rbp), %rdx
@@ -109,9 +109,9 @@ addq $1, (%rcx)
 adcq $0, 8(%rcx)
 
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
-    movq -64(%rbp), %rax
-    movq -56(%rbp), %rdx
+    movdqu %xmm0, -48(%rbp)
+    movq -48(%rbp), %rax
+    movq -40(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

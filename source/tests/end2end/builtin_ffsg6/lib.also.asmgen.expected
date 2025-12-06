@@ -103,7 +103,7 @@ __kefir_bigint_least_significant_nonzero:
     mov %rsi, %r13
     mov %rdi, %r14
     cmp $0, %r13
-    je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label22
+    je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label23
     mov %r13, %rsi
     sub $-7, %rsi
     mov %rsi, %rax
@@ -115,14 +115,14 @@ __kefir_bigint_least_significant_nonzero:
     mov %rcx, %r12
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4:
     cmp %rbx, %r12
-    jb .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label26
+    jb .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label27
     xor %eax, %eax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     ret
-.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label26:
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label27:
     mov %r14, %rdi
     add %r12, %rdi
     mov %rcx, %r11
@@ -144,12 +144,12 @@ __kefir_bigint_least_significant_nonzero:
     mov %rcx, %r10
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10:
     cmp %r9, %r10
-    jb .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label24
+    jb .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label25
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12:
     lea 1(%r12), %rcx
     mov %rcx, %r12
     jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4
-.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label24:
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label25:
     lea 1(%r10), %r8
     movzx %r11b, %rdx
     mov %r10, %rcx
@@ -169,7 +169,7 @@ __kefir_bigint_least_significant_nonzero:
     pop %rbx
     ret
     jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12
-.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label22:
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label23:
     xor %eax, %eax
     pop %r14
     pop %r13

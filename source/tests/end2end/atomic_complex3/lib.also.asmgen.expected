@@ -28,14 +28,14 @@ add_f32:
     sub $136, %rsp
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
-    movdqu %xmm1, -96(%rbp)
-    movdqu -96(%rbp), %xmm2
+    movdqu %xmm1, -80(%rbp)
+    movdqu -80(%rbp), %xmm2
     shufps $1, %xmm1, %xmm2
-    movdqu %xmm2, -96(%rbp)
-    movdqu %xmm0, -80(%rbp)
+    movdqu %xmm2, -80(%rbp)
+    movdqu %xmm0, -64(%rbp)
     mov %rdi, %rbx
-    fnstenv -64(%rbp)
-    stmxcsr -36(%rbp)
+    fnstenv -48(%rbp)
+    stmxcsr -20(%rbp)
     fnclex
 .L__kefir_func_add_f32_label2:
     mov %rbx, %rsi
@@ -47,11 +47,11 @@ add_f32:
     movd -140(%rbp), %xmm1
     movdqu %xmm0, -128(%rbp)
     movd -128(%rbp), %xmm2
-    addss -80(%rbp), %xmm2
+    addss -64(%rbp), %xmm2
     movd %xmm2, -128(%rbp)
     movdqu %xmm1, -112(%rbp)
     movd -112(%rbp), %xmm2
-    addss -96(%rbp), %xmm2
+    addss -80(%rbp), %xmm2
     movd %xmm2, -112(%rbp)
     movd %xmm0, -144(%rbp)
     movd %xmm1, -140(%rbp)
@@ -74,8 +74,8 @@ add_f32:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -64(%rbp)
-    ldmxcsr -36(%rbp)
+    fldenv -48(%rbp)
+    ldmxcsr -20(%rbp)
     stmxcsr -144(%rbp)
     orl %eax, -144(%rbp)
     ldmxcsr -144(%rbp)
@@ -98,11 +98,11 @@ add_f64:
     push %rbx
     sub $168, %rsp
     stmxcsr -16(%rbp)
-    movdqu %xmm0, -96(%rbp)
-    movdqu %xmm1, -80(%rbp)
+    movdqu %xmm0, -80(%rbp)
+    movdqu %xmm1, -64(%rbp)
     mov %rdi, %rbx
-    fnstenv -64(%rbp)
-    stmxcsr -36(%rbp)
+    fnstenv -48(%rbp)
+    stmxcsr -20(%rbp)
     fnclex
 .L__kefir_func_add_f64_label2:
     mov %rbx, %rsi
@@ -114,11 +114,11 @@ add_f64:
     movq -160(%rbp), %xmm1
     movdqu %xmm0, -128(%rbp)
     movq -128(%rbp), %xmm2
-    addsd -96(%rbp), %xmm2
+    addsd -80(%rbp), %xmm2
     movq %xmm2, -128(%rbp)
     movdqu %xmm1, -112(%rbp)
     movq -112(%rbp), %xmm2
-    addsd -80(%rbp), %xmm2
+    addsd -64(%rbp), %xmm2
     movq %xmm2, -112(%rbp)
     movq %xmm0, -176(%rbp)
     movq %xmm1, -168(%rbp)
@@ -141,8 +141,8 @@ add_f64:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -64(%rbp)
-    ldmxcsr -36(%rbp)
+    fldenv -48(%rbp)
+    ldmxcsr -20(%rbp)
     stmxcsr -176(%rbp)
     orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)
@@ -166,14 +166,14 @@ divide_f32:
     sub $136, %rsp
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
-    movdqu %xmm1, -96(%rbp)
-    movdqu -96(%rbp), %xmm2
+    movdqu %xmm1, -80(%rbp)
+    movdqu -80(%rbp), %xmm2
     shufps $1, %xmm1, %xmm2
-    movdqu %xmm2, -96(%rbp)
-    movdqu %xmm0, -80(%rbp)
+    movdqu %xmm2, -80(%rbp)
+    movdqu %xmm0, -64(%rbp)
     mov %rdi, %rbx
-    fnstenv -64(%rbp)
-    stmxcsr -36(%rbp)
+    fnstenv -48(%rbp)
+    stmxcsr -20(%rbp)
     fnclex
 .L__kefir_func_divide_f32_label2:
     mov %rbx, %rsi
@@ -185,8 +185,8 @@ divide_f32:
     movd -140(%rbp), %xmm7
     movaps %xmm6, %xmm1
     insertps $16, %xmm7, %xmm1
-    movdqu -80(%rbp), %xmm0
-    insertps $16, -96(%rbp), %xmm0
+    movdqu -64(%rbp), %xmm0
+    insertps $16, -80(%rbp), %xmm0
     cvtps2pd %xmm0, %xmm2
     cvtps2pd %xmm1, %xmm1
     movaps %xmm2, %xmm3
@@ -237,8 +237,8 @@ divide_f32:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -64(%rbp)
-    ldmxcsr -36(%rbp)
+    fldenv -48(%rbp)
+    ldmxcsr -20(%rbp)
     stmxcsr -144(%rbp)
     orl %eax, -144(%rbp)
     ldmxcsr -144(%rbp)
@@ -262,11 +262,11 @@ divide_f64:
     sub $168, %rsp
     fstcw -16(%rbp)
     stmxcsr -24(%rbp)
-    movdqu %xmm0, -112(%rbp)
-    movdqu %xmm1, -96(%rbp)
+    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm1, -80(%rbp)
     mov %rdi, %rbx
-    fnstenv -80(%rbp)
-    stmxcsr -52(%rbp)
+    fnstenv -64(%rbp)
+    stmxcsr -36(%rbp)
     fnclex
 .L__kefir_func_divide_f64_label2:
     mov %rbx, %rsi
@@ -278,9 +278,9 @@ divide_f64:
     movq -168(%rbp), %xmm3
     movq %xmm2, -176(%rbp)
     movq %xmm3, -168(%rbp)
-    movq -112(%rbp), %xmm0
-    movq %xmm0, -160(%rbp)
     movq -96(%rbp), %xmm0
+    movq %xmm0, -160(%rbp)
+    movq -80(%rbp), %xmm0
     movq %xmm0, -152(%rbp)
     fld1
     fldl -160(%rbp)
@@ -335,8 +335,8 @@ divide_f64:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -80(%rbp)
-    ldmxcsr -52(%rbp)
+    fldenv -64(%rbp)
+    ldmxcsr -36(%rbp)
     stmxcsr -176(%rbp)
     orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)
@@ -525,14 +525,14 @@ subtract_f32:
     sub $136, %rsp
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
-    movdqu %xmm1, -96(%rbp)
-    movdqu -96(%rbp), %xmm2
+    movdqu %xmm1, -80(%rbp)
+    movdqu -80(%rbp), %xmm2
     shufps $1, %xmm1, %xmm2
-    movdqu %xmm2, -96(%rbp)
-    movdqu %xmm0, -80(%rbp)
+    movdqu %xmm2, -80(%rbp)
+    movdqu %xmm0, -64(%rbp)
     mov %rdi, %rbx
-    fnstenv -64(%rbp)
-    stmxcsr -36(%rbp)
+    fnstenv -48(%rbp)
+    stmxcsr -20(%rbp)
     fnclex
 .L__kefir_func_subtract_f32_label2:
     mov %rbx, %rsi
@@ -544,11 +544,11 @@ subtract_f32:
     movd -140(%rbp), %xmm1
     movdqu %xmm0, -128(%rbp)
     movd -128(%rbp), %xmm2
-    subss -80(%rbp), %xmm2
+    subss -64(%rbp), %xmm2
     movd %xmm2, -128(%rbp)
     movdqu %xmm1, -112(%rbp)
     movd -112(%rbp), %xmm2
-    subss -96(%rbp), %xmm2
+    subss -80(%rbp), %xmm2
     movd %xmm2, -112(%rbp)
     movd %xmm0, -144(%rbp)
     movd %xmm1, -140(%rbp)
@@ -571,8 +571,8 @@ subtract_f32:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -64(%rbp)
-    ldmxcsr -36(%rbp)
+    fldenv -48(%rbp)
+    ldmxcsr -20(%rbp)
     stmxcsr -144(%rbp)
     orl %eax, -144(%rbp)
     ldmxcsr -144(%rbp)
@@ -595,11 +595,11 @@ subtract_f64:
     push %rbx
     sub $168, %rsp
     stmxcsr -16(%rbp)
-    movdqu %xmm0, -96(%rbp)
-    movdqu %xmm1, -80(%rbp)
+    movdqu %xmm0, -80(%rbp)
+    movdqu %xmm1, -64(%rbp)
     mov %rdi, %rbx
-    fnstenv -64(%rbp)
-    stmxcsr -36(%rbp)
+    fnstenv -48(%rbp)
+    stmxcsr -20(%rbp)
     fnclex
 .L__kefir_func_subtract_f64_label2:
     mov %rbx, %rsi
@@ -611,11 +611,11 @@ subtract_f64:
     movq -160(%rbp), %xmm1
     movdqu %xmm0, -128(%rbp)
     movq -128(%rbp), %xmm2
-    subsd -96(%rbp), %xmm2
+    subsd -80(%rbp), %xmm2
     movq %xmm2, -128(%rbp)
     movdqu %xmm1, -112(%rbp)
     movq -112(%rbp), %xmm2
-    subsd -80(%rbp), %xmm2
+    subsd -64(%rbp), %xmm2
     movq %xmm2, -112(%rbp)
     movq %xmm0, -176(%rbp)
     movq %xmm1, -168(%rbp)
@@ -638,8 +638,8 @@ subtract_f64:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -64(%rbp)
-    ldmxcsr -36(%rbp)
+    fldenv -48(%rbp)
+    ldmxcsr -20(%rbp)
     stmxcsr -176(%rbp)
     orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)
