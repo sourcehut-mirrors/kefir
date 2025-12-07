@@ -279,6 +279,30 @@ kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *mem, con
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_value_liveness_at(const struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_value_ref_t value_ref,
+    kefir_codegen_target_ir_block_ref_t block_ref,
+    kefir_codegen_target_ir_instruction_ref_t *begin_ref_ptr, kefir_codegen_target_ir_instruction_ref_t *end_ref_ptr) {
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&liveness->values, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find liveness for requested target IR value");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(const struct kefir_codegen_target_ir_value_liveness *, value_liveness, table_value);
+    res = kefir_hashtable_at(&value_liveness->per_block, (kefir_hashtable_key_t) block_ref, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find liveness for target IR value in requested block");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(begin_ref_ptr, ((kefir_uint64_t) table_value) >> 32);
+    ASSIGN_PTR(end_ref_ptr, (kefir_uint32_t) table_value);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_value_liveness_iter(const struct kefir_codegen_target_ir_liveness *liveness, struct kefir_codegen_target_ir_value_liveness_iterator *iter,
     kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_block_ref_t *block_ref_ptr,
     kefir_codegen_target_ir_instruction_ref_t *begin_ref_ptr,

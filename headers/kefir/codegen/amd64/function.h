@@ -30,6 +30,9 @@
 #include "kefir/optimizer/linear_liveness.h"
 #include "kefir/target/abi/amd64/function.h"
 #include "kefir/codegen/target-ir/constructor.h"
+#include "kefir/codegen/target-ir/control_flow.h"
+#include "kefir/codegen/target-ir/liveness.h"
+#include "kefir/codegen/target-ir/interference.h"
 #include "kefir/optimizer/module.h"
 
 typedef struct kefir_codegen_amd64_module kefir_codegen_amd64_module_t;
@@ -47,6 +50,13 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_codegen_local_variable_allocator variable_allocator;
     struct kefir_opt_code_schedule schedule;
     struct kefir_opt_code_linear_liveness linear_liveness;
+
+    struct {
+        struct kefir_codegen_target_ir_code code;
+        struct kefir_codegen_target_ir_control_flow control_flow;
+        struct kefir_codegen_target_ir_liveness liveness;
+        struct kefir_codegen_target_ir_interference interference;
+    } target_ir;
 
     struct kefir_hashtreeset translated_instructions;
     struct kefir_hashtree labels;
