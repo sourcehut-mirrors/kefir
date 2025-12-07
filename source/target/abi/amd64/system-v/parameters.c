@@ -265,6 +265,7 @@ static kefir_result_t assign_nested_struct(const struct kefir_ir_type *type, kef
     struct recursive_aggregate_allocation *info = (struct recursive_aggregate_allocation *) payload;
     const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
     REQUIRE_OK(kefir_abi_amd64_type_layout_at(info->layout, index, &layout));
+    REQUIRE_OK(kefir_abi_amd64_sysv_qwords_align(&info->top_allocation->container, layout->alignment));
     struct kefir_abi_sysv_amd64_parameter_allocation *allocation = &info->allocation[(*info->slot)++];
     allocation->type = KEFIR_AMD64_SYSV_INPUT_PARAM_CONTAINER;
     allocation->klass = KEFIR_AMD64_SYSV_PARAM_NO_CLASS;
