@@ -36,7 +36,7 @@
 #include "kefir/codegen/target-ir/rt_destructor.h"
 #include "kefir/codegen/target-ir/amd64/rt_destructor.h"
 #include "kefir/codegen/target-ir/transform.h"
-#include "kefir/codegen/target-ir/interference.h"
+#include "kefir/codegen/target-ir/amd64/regalloc.h"
 #include "kefir/codegen/target-ir/format.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"
@@ -1285,6 +1285,10 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build(mem, &func->target_ir.control_flow, &func->target_ir.liveness));
     REQUIRE_OK(kefir_codegen_target_ir_interference_build(mem, &func->target_ir.interference, &func->target_ir.control_flow, &func->target_ir.liveness));
 
+    struct kefir_codegen_target_ir_amd64_regalloc_class regalloc_class;
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_regalloc_class_init(mem, &regalloc_class, codegen->abi_variant));
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_run(mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.interference, &regalloc_class.klass));
+
     struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops destructor_ops;
     REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(func, asmcmp_code, &destructor_ops));
     kefir_result_t res = kefir_codegen_target_ir_round_trip_destruct(mem, code, &asmcmp_code->context, func->codegen->config->debug_info ? &func->debug.target_ir_metadata : NULL, &destructor_ops.ops);
@@ -1473,6 +1477,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&func->target_ir.control_flow, &func->target_ir.code));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_init(&func->target_ir.liveness));
     REQUIRE_OK(kefir_codegen_target_ir_interference_init(&func->target_ir.interference));
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_init(&func->target_ir.regalloc));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen_module->codegen->abi_variant,
                                                    function->ir_func->declaration, &func->abi_function_declaration));
 
@@ -1484,8 +1489,9 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
 
     REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration));
-    REQUIRE_OK(kefir_codegen_target_ir_interference_free(mem, &func->target_ir.interference));
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_free(mem, &func->target_ir.regalloc));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_free(mem, &func->target_ir.liveness));
+    REQUIRE_OK(kefir_codegen_target_ir_interference_free(mem, &func->target_ir.interference));
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_free(mem, &func->target_ir.control_flow));
     REQUIRE_OK(kefir_codegen_target_ir_code_free(mem, &func->target_ir.code));
     REQUIRE_OK(kefir_codegen_local_variable_allocator_free(mem, &func->variable_allocator));

@@ -81,3 +81,40 @@ kefir_result_t kefir_graph_add_edge(struct kefir_mem *mem, struct kefir_graph *g
     REQUIRE_OK(kefir_hashset_add(mem, &src->edges, (kefir_hashset_key_t) dst_vertex));
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_graph_edge_iter(const struct kefir_graph *graph, struct kefir_graph_edge_iterator *iter, kefir_graph_vertex_id_t vertex_id, kefir_graph_vertex_id_t *dst_vertex_id_ptr) {
+    REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph edge iterator"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&graph->vertices, (kefir_hashtable_key_t) vertex_id, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of graph edge iterator");
+    }
+    REQUIRE_OK(res);
+    ASSIGN_DECL_CAST(const struct kefir_graph_vertex *, vertex, table_value);
+
+    kefir_hashset_key_t key;
+    res = kefir_hashset_iter(&vertex->edges, &iter->iter, &key);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of graph edge iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(dst_vertex_id_ptr, key);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_graph_edge_next(struct kefir_graph_edge_iterator *iter, kefir_graph_vertex_id_t *dst_vertex_id_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph edge iterator"));
+
+    kefir_hashset_key_t key;
+    kefir_result_t res = kefir_hashset_next(&iter->iter, &key);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of graph edge iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(dst_vertex_id_ptr, key);
+    return KEFIR_OK;
+}
