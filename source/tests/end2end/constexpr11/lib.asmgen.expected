@@ -32,7 +32,7 @@ get1:
     lea __kefir_function_get1_static___kefir_local_temporary_0_5(%rip), %rax
     movl (%rax), %eax
     movl %eax, -4(%rbp)
-    movq -4(%rbp), %rax
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

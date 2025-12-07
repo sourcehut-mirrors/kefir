@@ -993,12 +993,12 @@ swap32:
 .L__kefir_func_swap32_label62:
     movd %xmm0, -4(%rbp)
 .loc 0 390 5
-.L__kefir_func_swap32_label76:
+.L__kefir_func_swap32_label80:
     movq -8(%rbp), %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_swap32_label77:
+.L__kefir_func_swap32_label81:
 .L__kefir_text_func_swap32_end:
 
 swap64:
@@ -1031,13 +1031,13 @@ swap64:
 .L__kefir_func_swap64_label64:
     movq %xmm0, -8(%rbp)
 .loc 0 396 5
-.L__kefir_func_swap64_label82:
+.L__kefir_func_swap64_label86:
     movq -16(%rbp), %xmm0
     movq -8(%rbp), %xmm1
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_swap64_label83:
+.L__kefir_func_swap64_label87:
 .L__kefir_text_func_swap64_end:
 
 arg128x:
@@ -5887,7 +5887,7 @@ __kefir_debug_loclist_section_entry_169:
 __kefir_debug_loclist_section_entry_170:
     .byte 4
     .uleb128 .L__kefir_func_swap32_label42 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_swap32_label77 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_swap32_label81 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 112
@@ -5897,7 +5897,7 @@ __kefir_debug_loclist_section_entry_171:
 __kefir_debug_loclist_section_entry_172:
     .byte 4
     .uleb128 .L__kefir_func_swap32_label42 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_swap32_label77 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_swap32_label81 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
@@ -5907,7 +5907,7 @@ __kefir_debug_loclist_section_entry_173:
 __kefir_debug_loclist_section_entry_174:
     .byte 4
     .uleb128 .L__kefir_func_swap64_label44 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_swap64_label83 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_swap64_label87 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 96
@@ -5917,7 +5917,7 @@ __kefir_debug_loclist_section_entry_175:
 __kefir_debug_loclist_section_entry_176:
     .byte 4
     .uleb128 .L__kefir_func_swap64_label44 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_swap64_label83 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_swap64_label87 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 112

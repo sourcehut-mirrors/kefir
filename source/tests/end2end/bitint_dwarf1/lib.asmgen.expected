@@ -69,7 +69,7 @@ get:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get_label233:
+.L__kefir_func_get_label237:
 .L__kefir_text_func_get_end:
 
 get2:
@@ -108,7 +108,7 @@ get2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get2_label233:
+.L__kefir_func_get2_label237:
 .L__kefir_text_func_get2_end:
 
 .L__kefir_text_section_end:
@@ -723,7 +723,7 @@ __kefir_debug_loclists_section_begin:
 __kefir_debug_loclist_section_entry_1:
     .byte 4
     .uleb128 .L__kefir_func_get_label22 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_get_label233 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label237 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
@@ -733,7 +733,7 @@ __kefir_debug_loclist_section_entry_2:
 __kefir_debug_loclist_section_entry_3:
     .byte 4
     .uleb128 .L__kefir_func_get2_label22 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_get2_label233 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label237 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126

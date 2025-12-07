@@ -21,7 +21,7 @@ get:
     neg %edi
     movl %edi, -4(%rbp)
     movq -12(%rbp), %rax
-    movq -4(%rbp), %rdx
+    movl -4(%rbp), %edx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -40,7 +40,7 @@ get2:
     neg %edi
     movl %edi, -4(%rbp)
     movq -12(%rbp), %rax
-    movq -4(%rbp), %rdx
+    movl -4(%rbp), %edx
     lea (%rbp), %rsp
     pop %rbp
     ret

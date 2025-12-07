@@ -25,7 +25,7 @@ call1_proxy:
     movq %rax, %xmm0
     call call1@PLT
     movd %xmm0, (%rbx)
-    movq (%rbx), %xmm0
+    movd (%rbx), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -65,7 +65,7 @@ call3_proxy:
     movq %xmm0, (%rbx)
     movd %xmm1, 8(%rbx)
     movq (%rbx), %xmm0
-    movq 8(%rbx), %xmm1
+    movd 8(%rbx), %xmm1
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

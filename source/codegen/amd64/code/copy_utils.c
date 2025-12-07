@@ -523,6 +523,9 @@ kefir_result_t kefir_codegen_amd64_load_floating_point_register(struct kefir_mem
             kefir_asmcmp_virtual_register_index_t tmp_vreg;
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                tmp_vreg, NULL));
             REQUIRE_OK(kefir_codegen_amd64_load_general_purpose_register(mem, function, tmp_vreg, location_vreg, bytes,
                                                                          offset));
             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(

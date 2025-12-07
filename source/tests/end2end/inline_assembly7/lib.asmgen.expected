@@ -21,7 +21,7 @@ make_s1:
     movl -8(%rbp), %eax
 
     mov %eax, -4(%rbp)
-    movq -4(%rbp), %rax
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
