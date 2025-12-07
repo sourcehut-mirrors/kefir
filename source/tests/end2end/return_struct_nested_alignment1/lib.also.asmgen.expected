@@ -1,0 +1,19 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global gets1
+.type gets1, @function
+.extern value
+
+.section .text
+.L__kefir_text_section_begin:
+gets1:
+.L__kefir_text_func_gets1_begin:
+    movq value@GOTPCREL(%rip), %rcx
+    movq (%rcx), %rax
+    movl 8(%rcx), %edx
+    ret
+.L__kefir_text_func_gets1_end:
+
+.L__kefir_text_section_end:
+
