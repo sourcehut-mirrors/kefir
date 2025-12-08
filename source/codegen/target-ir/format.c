@@ -343,7 +343,8 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
     return KEFIR_OK;
 }
 
-static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code *code, struct kefir_codegen_target_ir_control_flow *control_flow, struct kefir_json_output *json) {
+static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code *code, struct kefir_codegen_target_ir_control_flow *control_flow,
+    const struct kefir_codegen_target_ir_regalloc *regalloc, const struct kefir_codegen_target_ir_regalloc_class *regalloc_class, struct kefir_json_output *json) {
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, control_flow));
 
     REQUIRE_OK(kefir_json_output_object_begin(json));
@@ -511,6 +512,16 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
                 }
                 REQUIRE_OK(kefir_json_output_object_end(json));
 
+                if (regalloc != NULL) {
+                    kefir_codegen_target_ir_regalloc_allocation_t allocation;
+                    kefir_result_t res = kefir_codegen_target_ir_regalloc_get(regalloc, value_ref, &allocation);
+                    if (res != KEFIR_NOT_FOUND) {
+                        REQUIRE_OK(kefir_json_output_object_key(json, "allocation"));
+                        REQUIRE_OK(res);
+                        REQUIRE_OK(regalloc_class->format_allocation(json, allocation, regalloc_class->payload));
+                    }
+                }
+
                 if (value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT) {
                     REQUIRE_OK(kefir_json_output_object_key(json, "constraint"));
                     REQUIRE_OK(kefir_json_output_object_begin(json));
@@ -632,14 +643,15 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_code_format(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code *code, struct kefir_json_output *json) {
+kefir_result_t kefir_codegen_target_ir_code_format(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_regalloc *regalloc, const struct kefir_codegen_target_ir_regalloc_class *regalloc_class, struct kefir_json_output *json) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
+    REQUIRE(regalloc == NULL || regalloc_class != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR register allocator class"));
 
     struct kefir_codegen_target_ir_control_flow control_flow;
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&control_flow, code));
-    kefir_result_t res = code_format_impl(mem, code, &control_flow, json);
+    kefir_result_t res = code_format_impl(mem, code, &control_flow, regalloc, regalloc_class, json);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_target_ir_control_flow_free(mem, &control_flow);
         return res;

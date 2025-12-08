@@ -22,8 +22,9 @@
 #define KEFIR_CODEGEN_TARGET_IR_FORMAT_H_
 
 #include "kefir/codegen/target-ir/code.h"
+#include "kefir/codegen/target-ir/regalloc.h"
 #include "kefir/util/json.h"
 
-kefir_result_t kefir_codegen_target_ir_code_format(struct kefir_mem *, const struct kefir_codegen_target_ir_code *, struct kefir_json_output *);
+kefir_result_t kefir_codegen_target_ir_code_format(struct kefir_mem *, const struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_regalloc *, const struct kefir_codegen_target_ir_regalloc_class *, struct kefir_json_output *);
 
 #endif
