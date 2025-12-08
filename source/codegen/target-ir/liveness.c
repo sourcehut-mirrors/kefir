@@ -161,7 +161,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
             if (user_instr->operation.opcode != control_flow->code->klass->phi_opcode) {
                 REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) user_instr->block_ref));
                 REQUIRE_OK(add_to_entry(mem, &liveness->blocks[user_instr->block_ref].live_in, value_ref));
-                REQUIRE_OK(add_value_liveness(mem, liveness, used_value, user_instr->block_ref, KEFIR_ID_NONE, user_instr->instr_ref));
+                REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, KEFIR_ID_NONE, user_instr->instr_ref));
             } else {
                 struct kefir_codegen_target_ir_value_phi_link_iterator iter;
                 kefir_codegen_target_ir_block_ref_t link_block_ref;
@@ -172,7 +172,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
                     if (link_value_ref.instr_ref == value_ref.instr_ref && link_value_ref.aspect == value_ref.aspect) {
                         REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) link_block_ref));
                         REQUIRE_OK(add_to_entry(mem, &liveness->blocks[link_block_ref].live_out, value_ref));
-                        REQUIRE_OK(add_value_liveness(mem, liveness, used_value, user_instr->block_ref, user_instr->instr_ref, KEFIR_ID_NONE));
+                        REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, user_instr->instr_ref, KEFIR_ID_NONE));
                     }
                 }
                 if (res != KEFIR_ITERATOR_END) {
@@ -180,7 +180,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
                 }
             }
         } else {
-            REQUIRE_OK(add_value_liveness(mem, liveness, used_value, user_instr->block_ref, instr->instr_ref, user_instr->instr_ref));
+            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, instr->instr_ref, user_instr->instr_ref));
         }
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -195,7 +195,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
         REQUIRE_OK(kefir_list_pop(mem, queue, head));
 
         if (block_ref == instr->block_ref) {
-            REQUIRE_OK(add_value_liveness(mem, liveness, used_value, block_ref, instr->instr_ref, KEFIR_ID_NONE));
+            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, block_ref, instr->instr_ref, KEFIR_ID_NONE));
         }
         if (block_ref == instr->block_ref || visited_map[block_ref] ||
             !kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref)) {
@@ -203,7 +203,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
         }
         visited_map[block_ref] = true;
         REQUIRE_OK(add_to_entry(mem, &liveness->blocks[block_ref].live_in, value_ref));
-        REQUIRE_OK(add_value_liveness(mem, liveness, used_value, block_ref, KEFIR_ID_NONE, kefir_codegen_target_ir_code_block_control_head(liveness->code, block_ref)));
+        REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, block_ref, KEFIR_ID_NONE, kefir_codegen_target_ir_code_block_control_head(liveness->code, block_ref)));
 
         struct kefir_hashset_iterator predecessor_iter;
         kefir_result_t res;
@@ -214,7 +214,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
                 key);
             REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) predecessor_block_ref));
             REQUIRE_OK(add_to_entry(mem, &liveness->blocks[predecessor_block_ref].live_out, value_ref));
-            REQUIRE_OK(add_value_liveness(mem, liveness, used_value, predecessor_block_ref, kefir_codegen_target_ir_code_block_control_tail(liveness->code, predecessor_block_ref), KEFIR_ID_NONE));
+            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, predecessor_block_ref, kefir_codegen_target_ir_code_block_control_tail(liveness->code, predecessor_block_ref), KEFIR_ID_NONE));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
