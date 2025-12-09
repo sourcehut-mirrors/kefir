@@ -28,10 +28,37 @@
 
 #define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_CLASS_REGISTERS 16
 
-#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA 0ull
-#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP 1ull
-#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE 2ull
-#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL 3ull
+typedef enum kefir_codegen_target_ir_amd64_regalloc_type {
+    KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA,
+    KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP,
+    KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE,
+    KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
+} kefir_codegen_target_ir_amd64_regalloc_type_t;
+
+kefir_codegen_target_ir_amd64_regalloc_type_t kefir_codegen_target_ir_amd64_regalloc_get_type(kefir_codegen_target_ir_regalloc_allocation_t);
+kefir_asm_amd64_xasmgen_register_t kefir_codegen_target_ir_amd64_regalloc_register(kefir_codegen_target_ir_regalloc_allocation_t);
+kefir_uint32_t kefir_codegen_target_ir_amd64_regalloc_spill_index(kefir_codegen_target_ir_regalloc_allocation_t);
+kefir_uint32_t kefir_codegen_target_ir_amd64_regalloc_spill_length(kefir_codegen_target_ir_regalloc_allocation_t);
+
+
+
+typedef union kefir_codegen_target_ir_amd64_regalloc_entry {
+    kefir_codegen_target_ir_regalloc_allocation_t allocation;
+    struct {
+        kefir_uint8_t type;
+    };
+    struct {
+        kefir_uint8_t type;
+        kefir_asm_amd64_xasmgen_register_t value;
+    } reg;
+    struct {
+        kefir_uint8_t type;
+        kefir_uint32_t length : 24,
+                        index : 32;
+    } spill_area;
+} kefir_codegen_target_ir_amd64_regalloc_entry_t;
+
+_Static_assert(sizeof(union kefir_codegen_target_ir_amd64_regalloc_entry) == sizeof(kefir_codegen_target_ir_regalloc_allocation_t), "Mismatch of target IR amd64 register allocator entry size");
 
 #define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_NA ((kefir_codegen_target_ir_regalloc_allocation_t) (KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA << 56))
 #define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_GP(_reg) (kefir_codegen_target_ir_regalloc_allocation_t) ((KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP << 56) | (kefir_uint32_t) (_reg))

@@ -34,6 +34,7 @@
 #include "kefir/codegen/target-ir/liveness.h"
 #include "kefir/codegen/target-ir/interference.h"
 #include "kefir/codegen/target-ir/regalloc.h"
+#include "kefir/codegen/target-ir/amd64/regalloc.h"
 #include "kefir/optimizer/module.h"
 
 typedef struct kefir_codegen_amd64_module kefir_codegen_amd64_module_t;
@@ -58,6 +59,7 @@ typedef struct kefir_codegen_amd64_function {
         struct kefir_codegen_target_ir_liveness liveness;
         struct kefir_codegen_target_ir_interference interference;
         struct kefir_codegen_target_ir_regalloc regalloc;
+        struct kefir_codegen_target_ir_amd64_regalloc_class regalloc_class;
     } target_ir;
 
     struct kefir_hashtreeset translated_instructions;

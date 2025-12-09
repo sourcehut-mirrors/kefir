@@ -29,13 +29,6 @@
 
 typedef kefir_uint64_t kefir_codegen_target_ir_regalloc_allocation_t;
 
-typedef struct kefir_codegen_target_ir_regalloc {
-    struct kefir_hashtable allocation;
-} kefir_codegen_target_ir_regalloc_t;
-
-kefir_result_t kefir_codegen_target_ir_regalloc_init(struct kefir_codegen_target_ir_regalloc *);
-kefir_result_t kefir_codegen_target_ir_regalloc_free(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *);
-
 typedef struct kefir_codegen_target_ir_regalloc_state {
     kefir_result_t (*reset)(struct kefir_mem *, void *);
     kefir_result_t (*add_conflict)(struct kefir_mem *, kefir_codegen_target_ir_regalloc_allocation_t, void *);
@@ -51,9 +44,16 @@ typedef struct kefir_codegen_target_ir_regalloc_class {
     void *payload;
 } kefir_codegen_target_ir_regalloc_class_t;
 
+typedef struct kefir_codegen_target_ir_regalloc {
+    const struct kefir_codegen_target_ir_regalloc_class *klass;
+    struct kefir_hashtable allocation;
+} kefir_codegen_target_ir_regalloc_t;
+
+kefir_result_t kefir_codegen_target_ir_regalloc_init(struct kefir_codegen_target_ir_regalloc *, const struct kefir_codegen_target_ir_regalloc_class *);
+kefir_result_t kefir_codegen_target_ir_regalloc_free(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *);
+
 kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *,
-    const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_interference *,
-    const struct kefir_codegen_target_ir_regalloc_class *);
+    const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_interference *);
 kefir_result_t kefir_codegen_target_ir_regalloc_get(const struct kefir_codegen_target_ir_regalloc *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_regalloc_allocation_t *);
 
 #endif

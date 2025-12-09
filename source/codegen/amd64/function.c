@@ -1285,9 +1285,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build(mem, &func->target_ir.control_flow, &func->target_ir.liveness));
     REQUIRE_OK(kefir_codegen_target_ir_interference_build(mem, &func->target_ir.interference, &func->target_ir.control_flow, &func->target_ir.liveness));
 
-    struct kefir_codegen_target_ir_amd64_regalloc_class regalloc_class;
-    REQUIRE_OK(kefir_codegen_target_ir_amd64_regalloc_class_init(mem, &regalloc_class, codegen->abi_variant));
-    REQUIRE_OK(kefir_codegen_target_ir_regalloc_run(mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.interference, &regalloc_class.klass));
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_run(mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.interference));
 
     struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops destructor_ops;
     REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(func, asmcmp_code, &destructor_ops));
@@ -1333,7 +1331,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
         struct kefir_json_output json;
         REQUIRE_OK(kefir_json_output_init(&json, output, 4));
         REQUIRE_OK(kefir_json_set_line_prefix(&json, comment_prefix));
-        REQUIRE_OK(kefir_codegen_target_ir_code_format(mem, code, &func->target_ir.regalloc, &regalloc_class.klass, &json));
+        REQUIRE_OK(kefir_codegen_target_ir_code_format(mem, code, &func->target_ir.regalloc, &json));
         REQUIRE_OK(kefir_json_output_finalize(&json));
         fprintf(output, "\n");
     }
@@ -1477,7 +1475,8 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&func->target_ir.control_flow, &func->target_ir.code));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_init(&func->target_ir.liveness));
     REQUIRE_OK(kefir_codegen_target_ir_interference_init(&func->target_ir.interference));
-    REQUIRE_OK(kefir_codegen_target_ir_regalloc_init(&func->target_ir.regalloc));
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_regalloc_class_init(mem, &func->target_ir.regalloc_class, codegen_module->codegen->abi_variant));
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_init(&func->target_ir.regalloc, &func->target_ir.regalloc_class.klass));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen_module->codegen->abi_variant,
                                                    function->ir_func->declaration, &func->abi_function_declaration));
 
