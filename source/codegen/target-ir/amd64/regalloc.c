@@ -34,7 +34,7 @@ struct state_payload {
 
 static kefir_result_t ensure_spill_area(struct kefir_mem *mem, struct state_payload *state_payload, kefir_size_t length) {
     if (state_payload->spill_slots_length < length) {
-        kefir_uint8_t *new_spill_slots = KEFIR_MALLOC(mem, sizeof(kefir_uint8_t) * length);
+        kefir_uint8_t *new_spill_slots = KEFIR_REALLOC(mem, state_payload->spill_slots, sizeof(kefir_uint8_t) * length);
         REQUIRE(new_spill_slots != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR register allocator spill state"));
         state_payload->spill_slots = new_spill_slots;
         state_payload->spill_slots_length = length;
