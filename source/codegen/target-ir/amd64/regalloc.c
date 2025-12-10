@@ -36,6 +36,7 @@ static kefir_result_t ensure_spill_area(struct kefir_mem *mem, struct state_payl
     if (state_payload->spill_slots_length < length) {
         kefir_uint8_t *new_spill_slots = KEFIR_REALLOC(mem, state_payload->spill_slots, sizeof(kefir_uint8_t) * length);
         REQUIRE(new_spill_slots != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR register allocator spill state"));
+        memset(&new_spill_slots[state_payload->spill_slots_length], 0, sizeof(kefir_uint8_t) * (length - state_payload->spill_slots_length));
         state_payload->spill_slots = new_spill_slots;
         state_payload->spill_slots_length = length;
     }
@@ -59,6 +60,7 @@ static kefir_result_t allocate_spill_area(struct kefir_mem *mem, struct state_pa
         }
     }
 
+    index = (state_payload->spill_slots_length + alignment - 1) / alignment * alignment;
     REQUIRE_OK(ensure_spill_area(mem, state_payload, index + length));
     memset(&state_payload->spill_slots[index], 1, sizeof(kefir_uint8_t) * length);
     *index_ptr = index;
@@ -154,7 +156,6 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
             *allocation_ptr = regalloc_entry.allocation;
         } break;
     }
-    *allocation_ptr = 0;
     return KEFIR_OK;
 }
 

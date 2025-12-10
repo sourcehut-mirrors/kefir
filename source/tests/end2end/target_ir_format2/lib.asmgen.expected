@@ -2437,7 +2437,11 @@ test3:
 #                                "alignment": 1,
 #                                "length": 2
 #                            },
-#                            "allocation": null,
+#                            "allocation": {
+#                                "type": "spill_area",
+#                                "index": 0,
+#                                "length": 2
+#                            },
 #                            "metadata": {
 #                                "value_ref": 3
 #                            }
@@ -2588,7 +2592,11 @@ test3:
 #                                "alignment": 1,
 #                                "length": 2
 #                            },
-#                            "allocation": null,
+#                            "allocation": {
+#                                "type": "spill_area",
+#                                "index": 2,
+#                                "length": 2
+#                            },
 #                            "metadata": {
 #                                "value_ref": 9
 #                            }
