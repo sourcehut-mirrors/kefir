@@ -152,6 +152,7 @@ kefir_result_t kefir_codegen_target_ir_regalloc_get(const struct kefir_codegen_t
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find register allocation for requested target IR value");
     }
+    REQUIRE_OK(res);
     *allocation_ptr = (kefir_codegen_target_ir_regalloc_allocation_t) table_value;
     return KEFIR_OK;
 }
