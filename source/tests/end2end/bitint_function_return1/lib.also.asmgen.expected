@@ -2426,7 +2426,8 @@ __kefir_bigint_invert:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []

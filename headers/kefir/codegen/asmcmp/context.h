@@ -108,8 +108,13 @@ typedef struct kefir_asmcmp_value {
     kefir_asmcmp_value_type_t type;
 
     union {
-        kefir_int64_t int_immediate;
-        kefir_uint64_t uint_immediate;
+        struct {
+            union {
+                kefir_int64_t int_immediate;
+                kefir_uint64_t uint_immediate;
+            };
+            kefir_asmcmp_operand_variant_t immediate_variant;
+        };
         struct {
             kefir_asmcmp_virtual_register_index_t index;
             kefir_asmcmp_operand_variant_t variant;
@@ -171,9 +176,9 @@ typedef struct kefir_asmcmp_inline_assembly_fragment {
 
 #define KEFIR_ASMCMP_MAKE_NONE ((struct kefir_asmcmp_value) {.type = KEFI_ASMCMP_VALUE_NONE})
 #define KEFIR_ASMCMP_MAKE_INT(_value) \
-    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INTEGER, .int_immediate = (_value)})
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INTEGER, .int_immediate = (_value), .immediate_variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT})
 #define KEFIR_ASMCMP_MAKE_UINT(_value) \
-    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_UINTEGER, .uint_immediate = (_value)})
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_UINTEGER, .uint_immediate = (_value), .immediate_variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT})
 #define KEFIR_ASMCMP_MAKE_VREG8(_vreg)                                              \
     ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                   .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_8BIT}})

@@ -164,7 +164,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -417,7 +418,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -474,7 +476,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -913,7 +916,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],

@@ -285,6 +285,7 @@ static kefir_result_t resolve_operand(struct rt_destructor_state *state, const s
             if (immediate) {
                 value->type = KEFIR_ASMCMP_VALUE_TYPE_INTEGER;
                 value->int_immediate = operand->immediate.int_immediate;
+                REQUIRE_OK(resolve_variant(operand->immediate.variant, &value->immediate_variant, NULL));
             } else {
                 kefir_asmcmp_virtual_register_index_t vreg_idx;
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_immediate_integer(state->mem, state->asmcmp_ctx, operand->immediate.int_immediate, &vreg_idx));

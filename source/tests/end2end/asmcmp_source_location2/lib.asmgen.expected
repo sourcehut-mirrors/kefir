@@ -71,7 +71,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
@@ -92,7 +93,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -241,7 +243,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
@@ -262,7 +265,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 2
+#                        "value": 2,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -296,7 +300,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
@@ -317,7 +322,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 2
+#                        "value": 2,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -534,7 +540,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 1
+#                        "value": 1,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
@@ -579,7 +586,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
@@ -600,7 +608,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 1
+#                        "value": 1,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -888,7 +897,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": -1
+#                        "value": -1,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
@@ -996,7 +1006,8 @@ factorial:
 #                    },
 #                    {
 #                        "type": "integer",
-#                        "value": 0
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [

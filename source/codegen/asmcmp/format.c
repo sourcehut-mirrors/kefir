@@ -113,6 +113,8 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_string(json, "integer"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
             REQUIRE_OK(kefir_json_output_integer(json, value->int_immediate));
+            REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
+            REQUIRE_OK(variant_format(json, value->immediate_variant, false));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 

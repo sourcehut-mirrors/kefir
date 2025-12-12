@@ -355,10 +355,10 @@ static kefir_bool_t same_operands(const struct kefir_asmcmp_value *arg1, const s
             return true;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-            return arg1->int_immediate == arg2->int_immediate;
+            return arg1->int_immediate == arg2->int_immediate && arg1->immediate_variant == arg2->immediate_variant;
 
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-            return arg1->uint_immediate == arg2->uint_immediate;
+            return arg1->uint_immediate == arg2->uint_immediate && arg1->immediate_variant == arg2->immediate_variant;
 
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             return arg1->phreg == arg2->phreg;
