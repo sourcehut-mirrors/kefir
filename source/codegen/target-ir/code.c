@@ -293,6 +293,15 @@ static kefir_result_t operand_record_uses(struct kefir_mem *mem, struct kefir_co
                     // Intentionally left blank
                     break;
             }
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON: {
+            const struct kefir_codegen_target_ir_instruction *phi_instr;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, operand->upsilon_ref.instr_ref, &phi_instr));
+            REQUIRE(phi_instr->operation.opcode == code->klass->phi_opcode, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected upsilon operand to point at phi instruction"));
+            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, operand->upsilon_ref, NULL));
+            REQUIRE_OK(track_use_instr(mem, code, user_instr_ref, operand->upsilon_ref.instr_ref, operand->upsilon_ref.aspect, add_use));
+        } break;
     }
     return KEFIR_OK;
 }
@@ -377,6 +386,7 @@ static kefir_result_t store_strings_in_operand(struct kefir_mem *mem, struct kef
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
             // Intentionally left blank
             break;
     }
@@ -442,7 +452,14 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
             instr->operation.inline_asm_node.gate_block_ref = KEFIR_ID_NONE;
         }
     } else {
+        if (instr->operation.opcode == code->klass->upsilon_opcode) {
+            REQUIRE(instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected upsilon instruction to have upsilon type operand"));
+        }
         for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+            REQUIRE(instr->operation.parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON ||
+                instr->operation.opcode == code->klass->upsilon_opcode,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Upsilon type parameters may only be used in upsilon instructions"));
             REQUIRE_OK(store_strings_in_operand(mem, code, &instr->operation.parameters[i]));
         }
     }
@@ -969,6 +986,10 @@ static kefir_result_t operand_replace_uses(struct kefir_mem *mem, struct kefir_c
             REQUIRE_OK(value_ref_repace_use(mem, code, user_instr_ref, &operand->direct.value_ref, to_instr_ref, from_instr_ref));
             break;
 
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
+            REQUIRE_OK(value_ref_repace_use(mem, code, user_instr_ref, &operand->upsilon_ref, to_instr_ref, from_instr_ref));
+            break;
+
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
             switch (operand->indirect.type) {
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS:
@@ -1109,6 +1130,10 @@ static kefir_result_t operand_replace_value_uses(struct kefir_mem *mem, struct k
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
             REQUIRE_OK(value_ref_replace(mem, code, user_instr_ref, &operand->direct.value_ref, to_value_ref, from_value_ref));
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
+            REQUIRE_OK(value_ref_replace(mem, code, user_instr_ref, &operand->upsilon_ref, to_value_ref, from_value_ref));
             break;
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:

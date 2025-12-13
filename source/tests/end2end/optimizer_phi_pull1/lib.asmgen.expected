@@ -18,23 +18,23 @@ somefn:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq .L__kefir_func_somefn_label11(%rip), %xmm0
-    movq .L__kefir_func_somefn_label12(%rip), %xmm2
-    movaps %xmm0, %xmm1
+    movq .L__kefir_func_somefn_label12(%rip), %xmm1
+    movaps %xmm0, %xmm2
 .L__kefir_func_somefn_label2:
     mov %rdi, %rax
     add $-1, %eax
     test %edi, %edi
     jnz .L__kefir_func_somefn_label10
-    movaps %xmm1, %xmm0
+    movaps %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_somefn_label10:
-    movaps %xmm1, %xmm0
-    addsd %xmm2, %xmm0
+    movaps %xmm2, %xmm0
+    addsd %xmm1, %xmm0
+    movaps %xmm0, %xmm2
     mov %rax, %rdi
-    movaps %xmm0, %xmm1
     jmp .L__kefir_func_somefn_label2
 .L__kefir_text_func_somefn_end:
 .section .rodata

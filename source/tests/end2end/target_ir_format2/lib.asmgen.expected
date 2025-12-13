@@ -1464,6 +1464,32 @@ test2:
 #                    }
 #                },
 #                {
+#                    "instr_ref": 78,
+#                    "opcode": "upsilon",
+#                    "parameters": [
+#                        {
+#                            "type": "upsilon",
+#                            "instr_ref": 28,
+#                            "aspect": {
+#                                "type": "flags"
+#                            }
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 61,
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
 #                    "instr_ref": 75,
 #                    "opcode": "jmp",
 #                    "parameters": [
@@ -2206,6 +2232,32 @@ test2:
 #                            }
 #                        }
 #                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 79,
+#                    "opcode": "upsilon",
+#                    "parameters": [
+#                        {
+#                            "type": "upsilon",
+#                            "instr_ref": 28,
+#                            "aspect": {
+#                                "type": "flags"
+#                            }
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 36,
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
 #                        "code_ref": null
@@ -3888,6 +3940,32 @@ test4:
 #                            }
 #                        }
 #                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 32,
+#                    "opcode": "upsilon",
+#                    "parameters": [
+#                        {
+#                            "type": "upsilon",
+#                            "instr_ref": 13,
+#                            "aspect": {
+#                                "type": "flags"
+#                            }
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 27,
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
 #                        "code_ref": null

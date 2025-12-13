@@ -676,6 +676,9 @@ static kefir_result_t resolve_operand(struct destructor_state *state, const stru
             value->type = KEFIR_ASMCMP_VALUE_TYPE_X87;
             value->x87 = operand->x87;
             break;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR instruction operand");
     }
     if (operand->segment.present) {
         value->segment.present = true;
@@ -1048,6 +1051,9 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87:
                     // Intentionally left blank
                     break;
+
+                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR instruction operand");
             }
 
             if (value_ref.instr_ref == KEFIR_ID_NONE) {

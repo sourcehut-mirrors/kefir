@@ -871,8 +871,8 @@ test_dec32_sqrt_approx:
     movd .L__kefir_func_test_dec32_sqrt_approx_label19(%rip), %xmm1
     call __bid_addsd3@PLT
     xor %eax, %eax
-    movdqu %xmm0, -48(%rbp)
     mov %rax, %r12
+    movdqu %xmm0, -48(%rbp)
 .L__kefir_func_test_dec32_sqrt_approx_label4:
     cmp $10, %r12d
     jl .L__kefir_func_test_dec32_sqrt_approx_label16
@@ -893,8 +893,8 @@ test_dec32_sqrt_approx:
     call __bid_addsd3@PLT
     movd .L__kefir_func_test_dec32_sqrt_approx_label20(%rip), %xmm1
     call __bid_mulsd3@PLT
-    movdqu %xmm0, -48(%rbp)
     mov %rbx, %r12
+    movdqu %xmm0, -48(%rbp)
     jmp .L__kefir_func_test_dec32_sqrt_approx_label4
 .L__kefir_func_test_dec32_sqrt_approx_label15:
     movd .L__kefir_func_test_dec32_sqrt_approx_label21(%rip), %xmm0
@@ -1316,8 +1316,8 @@ test_dec128_sqrt_approx:
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label19(%rip), %xmm1
     call __bid_addtd3@PLT
     xor %eax, %eax
-    movdqu %xmm0, -48(%rbp)
     mov %rax, %r12
+    movdqu %xmm0, -48(%rbp)
 .L__kefir_func_test_dec128_sqrt_approx_label4:
     cmp $10, %r12d
     jl .L__kefir_func_test_dec128_sqrt_approx_label16
@@ -1338,8 +1338,8 @@ test_dec128_sqrt_approx:
     call __bid_addtd3@PLT
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label20(%rip), %xmm1
     call __bid_multd3@PLT
-    movdqu %xmm0, -48(%rbp)
     mov %rbx, %r12
+    movdqu %xmm0, -48(%rbp)
     jmp .L__kefir_func_test_dec128_sqrt_approx_label4
 .L__kefir_func_test_dec128_sqrt_approx_label15:
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label21(%rip), %xmm0
@@ -1401,8 +1401,8 @@ test_dec64_sqrt_approx:
     movq .L__kefir_func_test_dec64_sqrt_approx_label19(%rip), %xmm1
     call __bid_adddd3@PLT
     xor %eax, %eax
-    movdqu %xmm0, -48(%rbp)
     mov %rax, %r12
+    movdqu %xmm0, -48(%rbp)
 .L__kefir_func_test_dec64_sqrt_approx_label4:
     cmp $10, %r12d
     jl .L__kefir_func_test_dec64_sqrt_approx_label16
@@ -1423,8 +1423,8 @@ test_dec64_sqrt_approx:
     call __bid_adddd3@PLT
     movq .L__kefir_func_test_dec64_sqrt_approx_label20(%rip), %xmm1
     call __bid_muldd3@PLT
-    movdqu %xmm0, -48(%rbp)
     mov %rbx, %r12
+    movdqu %xmm0, -48(%rbp)
     jmp .L__kefir_func_test_dec64_sqrt_approx_label4
 .L__kefir_func_test_dec64_sqrt_approx_label15:
     movq .L__kefir_func_test_dec64_sqrt_approx_label21(%rip), %xmm0

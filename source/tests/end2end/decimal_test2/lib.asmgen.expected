@@ -1791,8 +1791,8 @@ test_dec32_sqrt_approx:
     movaps %xmm0, %xmm1
     movdqu -64(%rbp), %xmm0
     call __bid_mulsd3@PLT
-    movdqu %xmm0, -48(%rbp)
     mov %rbx, %r12
+    movdqu %xmm0, -48(%rbp)
     jmp .L__kefir_func_test_dec32_sqrt_approx_label2
 .L__kefir_text_func_test_dec32_sqrt_approx_end:
 .section .rodata
@@ -1846,8 +1846,8 @@ test_dec128_sqrt_approx:
     movaps %xmm0, %xmm1
     movdqu -64(%rbp), %xmm0
     call __bid_multd3@PLT
-    movdqu %xmm0, -48(%rbp)
     mov %rbx, %r12
+    movdqu %xmm0, -48(%rbp)
     jmp .L__kefir_func_test_dec128_sqrt_approx_label2
 .L__kefir_text_func_test_dec128_sqrt_approx_end:
 .section .rodata
@@ -1901,8 +1901,8 @@ test_dec64_sqrt_approx:
     movaps %xmm0, %xmm1
     movdqu -64(%rbp), %xmm0
     call __bid_muldd3@PLT
-    movdqu %xmm0, -48(%rbp)
     mov %rbx, %r12
+    movdqu %xmm0, -48(%rbp)
     jmp .L__kefir_func_test_dec64_sqrt_approx_label2
 .L__kefir_text_func_test_dec64_sqrt_approx_end:
 .section .rodata

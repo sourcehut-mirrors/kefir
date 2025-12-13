@@ -203,6 +203,7 @@ const struct kefir_codegen_target_ir_code_class KEFIR_TARGET_AMD64_CODE_CLASS = 
     .assign_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(assign),
     .touch_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(touch),
     .phi_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(phi),
+    .upsilon_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(upsilon),
     .placeholder_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(placeholder),
     .inline_asm_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(inline_assembly),
     .payload = NULL

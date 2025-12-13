@@ -16,16 +16,16 @@ test1:
     push %r13
     push %r14
     sub $16, %rsp
-    mov %rsi, %rbx
-    mov %r8, %r12
-    mov %rcx, %r13
-    mov %rdx, %r14
+    mov %rcx, %rbx
+    mov %rdx, %r12
+    mov %r8, %r13
+    mov %rsi, %r14
 .L__kefir_func_test1_label2:
-    movq %r12, -48(%rbp)
-    movq %r14, -40(%rbp)
-    mov %r13, %rdi
+    movq %r13, -48(%rbp)
+    movq %r12, -40(%rbp)
+    mov %rbx, %rdi
     leaq -48(%rbp), %rsi
-    mov %rbx, %rdx
+    mov %r14, %rdx
     leaq -40(%rbp), %rcx
     call somefn@PLT
     cmp $0, %eax
@@ -34,13 +34,13 @@ test1:
     movq -48(%rbp), %rdi
     movq -40(%rbp), %r9
     movq -40(%rbp), %r10
-    mov %r12, %r8
+    mov %r13, %r8
     sub %rdi, %r8
-    mov %r14, %rdx
+    mov %r12, %rdx
     sub %r10, %rdx
-    mov %r13, %rcx
+    mov %rbx, %rcx
     add %rax, %rcx
-    mov %rbx, %rsi
+    mov %r14, %rsi
     add %r9, %rsi
     xor %eax, %eax
     cmp $0, %rdx
@@ -50,10 +50,10 @@ test1:
     seta %dil
     and %dil, %al
     jz .L__kefir_func_test1_label14
-    mov %rsi, %rbx
-    mov %r8, %r12
-    mov %rcx, %r13
-    mov %rdx, %r14
+    mov %rsi, %r14
+    mov %rcx, %rbx
+    mov %rdx, %r12
+    mov %r8, %r13
     jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label14:
     xor %eax, %eax

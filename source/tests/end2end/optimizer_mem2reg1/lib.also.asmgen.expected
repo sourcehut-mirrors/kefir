@@ -57,22 +57,22 @@ factorial64:
     jle .L__kefir_func_factorial64_label22
     mov $1, %rcx
     movsx %ecx, %rax
-    mov %rax, %rdx
-    mov %rdi, %rsi
+    mov %rdi, %rdx
+    mov %rax, %rsi
 .L__kefir_func_factorial64_label6:
     mov $1, %rax
     movsx %eax, %rcx
-    cmp %rcx, %rsi
+    cmp %rcx, %rdx
     jg .L__kefir_func_factorial64_label17
-    mov %rdx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_func_factorial64_label17:
-    mov %rsi, %rdi
+    mov %rdx, %rdi
     add $-1, %rdi
-    mov %rdx, %rax
-    imul %rsi, %rax
-    mov %rax, %rdx
-    mov %rdi, %rsi
+    mov %rsi, %rax
+    imul %rdx, %rax
+    mov %rax, %rsi
+    mov %rdi, %rdx
     jmp .L__kefir_func_factorial64_label6
 .L__kefir_func_factorial64_label22:
     mov %rdi, %rax

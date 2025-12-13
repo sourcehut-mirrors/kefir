@@ -339,6 +339,17 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_uinteger(json, operand->x87));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+            REQUIRE_OK(kefir_json_output_string(json, "upsilon"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "instr_ref"));
+            REQUIRE_OK(id_format(json, operand->upsilon_ref.instr_ref));
+            REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
+            REQUIRE_OK(aspect_format(json, operand->upsilon_ref.aspect));
+            REQUIRE_OK(kefir_json_output_object_end(json));
+            break;
     }
     return KEFIR_OK;
 }

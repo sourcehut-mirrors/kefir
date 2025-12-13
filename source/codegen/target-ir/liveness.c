@@ -157,12 +157,12 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
 
         const struct kefir_codegen_target_ir_instruction *user_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, user_instr_ref, &user_instr));
-        if (instr->block_ref != user_instr->block_ref || user_instr->operation.opcode == control_flow->code->klass->phi_opcode) {
-            if (user_instr->operation.opcode != control_flow->code->klass->phi_opcode) {
-                REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) user_instr->block_ref));
-                REQUIRE_OK(add_to_entry(mem, &liveness->blocks[user_instr->block_ref].live_in, value_ref));
-                REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, KEFIR_ID_NONE, user_instr->instr_ref));
-            } else {
+        if (instr->block_ref != user_instr->block_ref ||
+            user_instr->operation.opcode == control_flow->code->klass->phi_opcode ||
+            (user_instr->operation.opcode == control_flow->code->klass->upsilon_opcode &&
+                instr->operation.opcode == control_flow->code->klass->phi_opcode &&
+                user_instr->operation.parameters[0].upsilon_ref.instr_ref == instr->instr_ref)) {
+            if (user_instr->operation.opcode == control_flow->code->klass->phi_opcode) {
                 struct kefir_codegen_target_ir_value_phi_link_iterator iter;
                 kefir_codegen_target_ir_block_ref_t link_block_ref;
                 struct kefir_codegen_target_ir_value_ref link_value_ref;
@@ -171,13 +171,21 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
                     res = kefir_codegen_target_ir_code_phi_link_next(&iter, &link_block_ref, &link_value_ref)) {
                     if (link_value_ref.instr_ref == value_ref.instr_ref && link_value_ref.aspect == value_ref.aspect) {
                         REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) link_block_ref));
-                        REQUIRE_OK(add_to_entry(mem, &liveness->blocks[link_block_ref].live_out, value_ref));
-                        REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, user_instr->instr_ref, KEFIR_ID_NONE));
                     }
                 }
                 if (res != KEFIR_ITERATOR_END) {
                     REQUIRE_OK(res);
                 }
+            } else if (user_instr->operation.opcode == control_flow->code->klass->upsilon_opcode &&
+                instr->operation.opcode == control_flow->code->klass->phi_opcode &&
+                user_instr->operation.parameters[0].upsilon_ref.instr_ref == instr->instr_ref) {
+                REQUIRE(kefir_hashset_has(&control_flow->blocks[user_instr->block_ref].successors, (kefir_hashset_key_t) instr->block_ref),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected upsilon instruction to be placed in the predecessor block of corresponding phi instruction"));
+                REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, user_instr->instr_ref, KEFIR_ID_NONE));
+            } else {
+                REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) user_instr->block_ref));
+                REQUIRE_OK(add_to_entry(mem, &liveness->blocks[user_instr->block_ref].live_in, value_ref));
+                REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, KEFIR_ID_NONE, user_instr->instr_ref));
             }
         } else {
             REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, instr->instr_ref, user_instr->instr_ref));

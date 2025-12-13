@@ -1280,6 +1280,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_transform_jump_propagate(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_block_merge(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_split_critical_edges(mem, code));
+    REQUIRE_OK(kefir_codegen_target_ir_transform_insert_upsilons(mem, code));
 
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, &func->target_ir.control_flow));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build(mem, &func->target_ir.control_flow, &func->target_ir.liveness));

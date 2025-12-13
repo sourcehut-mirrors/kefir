@@ -120,8 +120,8 @@ __kefir_softfloat_complex_float_div:
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label5:
     test %eax, %eax
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label60
-    movaps %xmm5, %xmm1
     movdqu -128(%rbp), %xmm0
+    movaps %xmm5, %xmm1
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label7:
     insertps $16, %xmm1, %xmm0
     ldmxcsr -32(%rbp)
@@ -211,8 +211,8 @@ __kefir_softfloat_complex_float_div:
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label27:
     test %eax, %eax
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label62
-    movaps %xmm5, %xmm1
     movdqu -128(%rbp), %xmm0
+    movaps %xmm5, %xmm1
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label7
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label62:
     movq -96(%rbp), %rax
@@ -495,11 +495,11 @@ __kefir_softfloat_complex_float_div:
     mov %rbx, %rdi
     call __kefir_softfloat_scalbnf
     movdqu %xmm0, -112(%rbp)
-    mov %r12, %rdi
     movq -144(%rbp), %rax
     movq %rax, -96(%rbp)
     movq -136(%rbp), %rax
     movq %rax, -88(%rbp)
+    mov %r12, %rdi
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label3
 .L__kefir_runtime_text_func___kefir_softfloat_complex_float_div_end:
 .section .rodata
@@ -562,22 +562,22 @@ __kefir_softfloat_scalbnf:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     xor %eax, %eax
-    mov %rdi, %rsi
+    mov %rax, %rsi
+    mov %rdi, %r8
     movaps %xmm0, %xmm2
-    mov %rax, %r8
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label2:
     mov $127, %rax
-    cmp $127, %esi
-    mov %rsi, %rdi
+    cmp $127, %r8d
+    mov %r8, %rdi
     cmovg %rax, %rdi
     xor %eax, %eax
-    cmp $2, %r8d
+    cmp $2, %esi
     setge %al
     xor %ecx, %ecx
-    cmp $2, %r8d
+    cmp $2, %esi
     setl %cl
     xor %edx, %edx
-    cmp $127, %esi
+    cmp $127, %r8d
     setg %dl
     test %al, %al
     mov %rcx, %rax
@@ -585,17 +585,17 @@ __kefir_softfloat_scalbnf:
     test %eax, %eax
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbnf_label15
     xor %eax, %eax
-    mov %rdi, %rsi
-    mov %rax, %r8
+    mov %rax, %rsi
+    mov %rdi, %r8
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label4:
     xor %eax, %eax
-    cmp $2, %r8d
+    cmp $2, %esi
     setge %al
     xor %ecx, %ecx
-    cmp $2, %r8d
+    cmp $2, %esi
     setl %cl
     xor %edx, %edx
-    cmp $-126, %esi
+    cmp $-126, %r8d
     setl %dl
     test %al, %al
     mov %rcx, %rax
@@ -603,8 +603,8 @@ __kefir_softfloat_scalbnf:
     test %eax, %eax
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbnf_label14
     mov $-126, %rax
-    cmp $-126, %esi
-    mov %rsi, %rdi
+    cmp $-126, %r8d
+    mov %r8, %rdi
     cmovl %rax, %rdi
     add $127, %edi
     movsx %edi, %rax
@@ -619,28 +619,28 @@ __kefir_softfloat_scalbnf:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label14:
-    mov %r8, %rax
+    mov %rsi, %rax
     add $1, %eax
-    mov %rsi, %rdi
+    mov %r8, %rdi
     add $102, %edi
     movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label16(%rip), %xmm1
     movaps %xmm2, %xmm0
     mulss %xmm1, %xmm0
+    mov %rax, %rsi
+    mov %rdi, %r8
     movaps %xmm0, %xmm2
-    mov %rdi, %rsi
-    mov %rax, %r8
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label4
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label15:
-    mov %r8, %rax
+    mov %rsi, %rax
     add $1, %eax
-    mov %rsi, %rdi
+    mov %r8, %rdi
     sub $127, %edi
     movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label17(%rip), %xmm1
     movaps %xmm2, %xmm0
     mulss %xmm1, %xmm0
-    mov %rdi, %rsi
+    mov %rax, %rsi
+    mov %rdi, %r8
     movaps %xmm0, %xmm2
-    mov %rax, %r8
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label2
 .L__kefir_runtime_text_func___kefir_softfloat_scalbnf_end:
 .section .rodata
@@ -696,8 +696,8 @@ __kefir_softfloat_ilogbf:
     mov %rsi, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label20:
-    mov %rax, %rsi
     mov %rcx, %rdx
+    mov %rax, %rsi
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label19:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label24(%rip), %xmm0

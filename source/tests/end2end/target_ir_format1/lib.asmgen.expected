@@ -1331,6 +1331,32 @@ factorial:
 #                    }
 #                },
 #                {
+#                    "instr_ref": 122,
+#                    "opcode": "upsilon",
+#                    "parameters": [
+#                        {
+#                            "type": "upsilon",
+#                            "instr_ref": 48,
+#                            "aspect": {
+#                                "type": "flags"
+#                            }
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 38,
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
 #                    "instr_ref": 44,
 #                    "opcode": "jmp",
 #                    "parameters": [
@@ -2256,6 +2282,32 @@ factorial:
 #                            }
 #                        }
 #                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 123,
+#                    "opcode": "upsilon",
+#                    "parameters": [
+#                        {
+#                            "type": "upsilon",
+#                            "instr_ref": 48,
+#                            "aspect": {
+#                                "type": "flags"
+#                            }
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 74,
+#                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
 #                        "code_ref": null

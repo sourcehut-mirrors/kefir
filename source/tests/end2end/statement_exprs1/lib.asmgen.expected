@@ -25,7 +25,7 @@ eval2:
     mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
-    mov %rsp, %rdx
+    mov %rsp, %rsi
     movq %rcx, -24(%rbp)
     movsx %edi, %rax
     imul $8, %rax, %rcx
@@ -33,26 +33,26 @@ eval2:
     sub %rcx, %rsp
     mov $16, %rcx
     cmp $8, %rcx
-    mov $8, %rsi
-    cmovl %rsi, %rcx
+    mov $8, %rdx
+    cmovl %rdx, %rcx
     neg %rcx
     and %rcx, %rsp
     mov %rsp, %rcx
     movq %rcx, -16(%rbp)
-    movq -8(%rbp), %rsi
+    movq -8(%rbp), %rdx
     movq -24(%rbp), %rcx
-    cmp $0, %rdx
+    cmp $0, %rsi
     jz .L__kefir_func_eval2_label6
-    mov %rdx, %rsp
+    mov %rsi, %rsp
     movq (%rsp), %rcx
     add $16, %rsp
 .L__kefir_func_eval2_label3:
-    add %rsi, %rax
+    add %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_eval2_label6:
-    mov %rdx, %rcx
+    mov %rsi, %rcx
     jmp .L__kefir_func_eval2_label3
 .L__kefir_text_func_eval2_end:
 

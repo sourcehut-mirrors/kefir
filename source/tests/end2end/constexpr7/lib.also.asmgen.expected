@@ -49,19 +49,20 @@ test2:
 test3:
 .L__kefir_text_func_test3_begin:
     mov $1, %rax
-    mov %rax, %rcx
+    mov %rdi, %rcx
+    mov %rax, %rdx
 .L__kefir_func_test3_label2:
-    mov %rdi, %rdx
-    add $-1, %edx
-    mov %rcx, %rax
-    imul %edi, %eax
-    cmp $0, %edi
+    mov %rcx, %rdi
+    add $-1, %edi
+    mov %rdx, %rax
+    imul %ecx, %eax
+    cmp $0, %ecx
     jg .L__kefir_func_test3_label9
-    mov %rcx, %rax
+    mov %rdx, %rax
     ret
 .L__kefir_func_test3_label9:
-    mov %rax, %rcx
-    mov %rdx, %rdi
+    mov %rdi, %rcx
+    mov %rax, %rdx
     jmp .L__kefir_func_test3_label2
 .L__kefir_text_func_test3_end:
 

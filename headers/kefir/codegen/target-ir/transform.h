@@ -28,5 +28,6 @@ kefir_result_t kefir_codegen_target_ir_transform_copy_elision(struct kefir_mem *
 kefir_result_t kefir_codegen_target_ir_transform_jump_propagate(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 kefir_result_t kefir_codegen_target_ir_transform_split_critical_edges(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 kefir_result_t kefir_codegen_target_ir_transform_block_merge(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_transform_insert_upsilons(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 
 #endif

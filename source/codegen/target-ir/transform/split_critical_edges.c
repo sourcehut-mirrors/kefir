@@ -35,6 +35,7 @@ static kefir_result_t update_operand(struct kefir_codegen_target_ir_operand *ope
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_EXTERNAL_LABEL:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
             // Intentionally left blank
             break;
 

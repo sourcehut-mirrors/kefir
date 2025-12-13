@@ -41,10 +41,11 @@ test:
     movq %rax, -304(%rbp)
     movq -312(%rbp), %rax
     movq %rax, -296(%rbp)
+    mov %rdi, %rax
 .L__kefir_func_test_label4:
-    mov %rdi, %rdx
-    add $-1, %edx
-    test %edi, %edi
+    mov %rax, %rdi
+    add $-1, %edi
+    test %eax, %eax
     jnz .L__kefir_func_test_label13
     fldt -304(%rbp)
     fldcw -8(%rbp)
@@ -68,11 +69,11 @@ test:
     fldt -304(%rbp)
     faddp
     fstpt -320(%rbp)
-    mov %rdx, %rdi
-    movq -320(%rbp), %rax
-    movq %rax, -304(%rbp)
-    movq -312(%rbp), %rax
-    movq %rax, -296(%rbp)
+    mov %rdi, %rax
+    movq -320(%rbp), %rcx
+    movq %rcx, -304(%rbp)
+    movq -312(%rbp), %rcx
+    movq %rcx, -296(%rbp)
     jmp .L__kefir_func_test_label4
 .L__kefir_text_func_test_end:
 .section .rodata

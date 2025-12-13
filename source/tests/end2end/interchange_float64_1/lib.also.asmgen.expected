@@ -108,16 +108,18 @@ conv2:
     mov %rax, %rdi
     and $1, %rdi
     shr $1, %rax
-.L__kefir_func_conv2_label67:
+.L__kefir_func_conv2_label71:
     or %rax, %rdi
     cvtsi2sd %rdi, %xmm0
     movaps %xmm0, %xmm1
 .loc 0 87 5
     addsd %xmm0, %xmm1
+.L__kefir_func_conv2_label79:
     movaps %xmm1, %xmm0
 .loc 0 87 5
+.L__kefir_func_conv2_label84:
     jmp .L__kefir_func_conv2_label8
-.L__kefir_func_conv2_label77:
+.L__kefir_func_conv2_label85:
 .L__kefir_text_func_conv2_end:
 
 conv3:
@@ -1354,7 +1356,7 @@ __kefir_debug_loclist_section_entry_8:
 __kefir_debug_loclist_section_entry_9:
     .byte 4
     .uleb128 .L__kefir_func_conv2_label14 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv2_label67 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label71 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 0
@@ -1374,7 +1376,7 @@ __kefir_debug_loclist_section_entry_9:
 __kefir_debug_loclist_section_entry_10:
     .byte 4
     .uleb128 .L__kefir_func_conv2_label14 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv2_label67 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label71 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 0

@@ -50,6 +50,7 @@ typedef kefir_uint64_t kefir_codegen_target_ir_metadata_value_ref_t;
     _instr(assign, "assign") _separator \
     _instr(touch, "touch") _separator \
     _instr(phi, "phi") _separator \
+    _instr(upsilon, "upsilon") _separator \
     _instr(placeholder, "placeholder")
 // clang-format on
 
@@ -66,7 +67,8 @@ typedef enum kefir_codegen_target_ir_operand_type {
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL,
     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_EXTERNAL_LABEL,
-    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87
+    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87,
+    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON
 } kefir_codegen_target_ir_operand_type_t;
 
 typedef enum kefir_codegen_target_ir_operand_variant {
@@ -241,6 +243,7 @@ typedef struct kefir_codegen_target_ir_operand {
             kefir_int64_t offset;
         } external_label;
         kefir_size_t x87;
+        kefir_codegen_target_ir_value_ref_t upsilon_ref;
     };
 
     struct {
@@ -341,6 +344,7 @@ typedef struct kefir_codegen_target_ir_code_class {
     kefir_codegen_target_ir_opcode_t assign_opcode;
     kefir_codegen_target_ir_opcode_t touch_opcode;
     kefir_codegen_target_ir_opcode_t phi_opcode;
+    kefir_codegen_target_ir_opcode_t upsilon_opcode;
     kefir_codegen_target_ir_opcode_t placeholder_opcode;
     kefir_codegen_target_ir_opcode_t inline_asm_opcode;
     void *payload;
