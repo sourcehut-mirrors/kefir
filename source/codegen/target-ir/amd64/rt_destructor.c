@@ -46,6 +46,7 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
 
     switch (instruction->operation.opcode) {
         case KEFIR_TARGET_IR_AMD64_OPCODE(assign):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(upsilon):
             classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
             classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
             classification->operands[0].index = 0;

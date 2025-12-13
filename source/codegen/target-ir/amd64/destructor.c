@@ -1453,8 +1453,6 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
         return KEFIR_OK;
     }
 
-    REQUIRE_OK(materialize_attributes(state, instr_ref));
-
     kefir_result_t res;
     struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification classification;
     REQUIRE_OK(state->parameter->classify_instruction(state->code, instr_ref, &classification, state->parameter->payload));
@@ -1462,7 +1460,51 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
     struct kefir_codegen_target_ir_block_terminator_props terminator_props;
     REQUIRE_OK(state->code->klass->is_block_terminator(state->code, instr, &terminator_props, state->code->klass->payload));
     if (terminator_props.block_terminator && !terminator_props.function_terminator) {
-        return KEFIR_OK; // TODO KEFIR_NOT_IMPLEMENTED
+        if (terminator_props.branch) {
+            struct kefir_asmcmp_instruction asmcmp_instrs[2] = {0};
+
+            kefir_hashtable_value_t table_value;
+            REQUIRE_OK(kefir_hashtable_at(&state->blocks, (kefir_hashtable_key_t) terminator_props.target_block_refs[0], &table_value));
+            ASSIGN_DECL_CAST(struct block_state *, target_block_state,
+                table_value);
+            REQUIRE_OK(kefir_hashtable_at(&state->blocks, (kefir_hashtable_key_t) terminator_props.target_block_refs[1], &table_value));
+            ASSIGN_DECL_CAST(struct block_state *, alternative_block_state,
+                table_value);
+
+            REQUIRE(!kefir_codegen_target_ir_control_flow_is_critical_edge(&state->control_flow, instr->block_ref, terminator_props.target_block_refs[0]),
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected critical edges to be split before target IR destruction"));
+            REQUIRE(!kefir_codegen_target_ir_control_flow_is_critical_edge(&state->control_flow, instr->block_ref, terminator_props.target_block_refs[1]),
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected critical edges to be split before target IR destruction"));
+
+            asmcmp_instrs[0].opcode = classification.opcode;
+            asmcmp_instrs[0].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL;
+            asmcmp_instrs[0].args[0].internal_label = target_block_state->asmcmp_label;
+            asmcmp_instrs[0].args[0].segment.present = false;
+            REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, &state->asmcmp_ctx->context, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                &asmcmp_instrs[0], NULL));
+
+            const struct kefir_codegen_target_ir_block_schedule *current_block_schedule, *next_block_schedule;
+            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, instr->block_ref, &current_block_schedule));
+            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, alternative_block_state->block_ref, &next_block_schedule));
+
+            if (current_block_schedule->linear_position + 1 != next_block_schedule->linear_position) {
+                REQUIRE_OK(kefir_asmcmp_amd64_jmp(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(alternative_block_state->asmcmp_label), NULL));
+            }
+        } else if (!terminator_props.undefined_target) {
+            const struct kefir_codegen_target_ir_block_schedule *current_block_schedule, *next_block_schedule;
+            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, instr->block_ref, &current_block_schedule));
+            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, terminator_props.target_block_refs[0], &next_block_schedule));
+            if (current_block_schedule->linear_position + 1 == next_block_schedule->linear_position) {
+                REQUIRE_OK(kefir_asmcmp_amd64_jmp(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(terminator_props.target_block_refs[0]), NULL));
+            }
+        } else if (terminator_props.inline_assembly) {
+            // TODO
+        } else {
+            // TODO
+        }
+        return KEFIR_OK;
     }
 
     if (instr->operation.opcode == state->code->klass->inline_asm_opcode) {
@@ -1479,8 +1521,17 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
             REQUIRE_OK(link_values(state, dst_ref, instr->operation.parameters[0].direct.value_ref));
         }
         return KEFIR_OK;
+    } else if (instr->operation.opcode == state->code->klass->upsilon_opcode) {
+        if (instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
+            REQUIRE_OK(assign_immediate(state, instr->operation.parameters[0].upsilon_ref, instr->operation.parameters[1].immediate.int_immediate));
+        } else {
+            REQUIRE(instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected target IR value reference"));
+            REQUIRE_OK(link_values(state, instr->operation.parameters[0].upsilon_ref, instr->operation.parameters[1].direct.value_ref));
+        }
+        return KEFIR_OK;
     }
 
+    REQUIRE_OK(materialize_attributes(state, instr_ref));
     REQUIRE_OK(build_current_instr_state(state, instr_ref, &classification));
 
     struct kefir_asmcmp_instruction asmcmp_instruction = {
