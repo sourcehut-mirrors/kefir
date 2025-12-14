@@ -131,6 +131,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register64(kefir_asm_amd64_xasmgen_regist
                                                   kefir_asm_amd64_xasmgen_register_t *);
 kefir_bool_t kefir_asm_amd64_xasmgen_register_is_floating_point(kefir_asm_amd64_xasmgen_register_t);
 kefir_bool_t kefir_asm_amd64_xasmgen_register_is_wide(kefir_asm_amd64_xasmgen_register_t, kefir_size_t);
+kefir_bool_t kefir_asm_amd64_xasmgen_register_is_high(kefir_asm_amd64_xasmgen_register_t);
 kefir_result_t kefir_asm_amd64_xasmgen_register_widest(kefir_asm_amd64_xasmgen_register_t,
                                                        kefir_asm_amd64_xasmgen_register_t *);
 const char *kefir_asm_amd64_xasmgen_register_symbolic_name(kefir_asm_amd64_xasmgen_register_t);

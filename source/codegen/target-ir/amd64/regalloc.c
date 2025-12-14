@@ -69,6 +69,7 @@ static kefir_result_t allocate_spill_area(struct kefir_mem *mem, struct state_pa
 
 static kefir_result_t do_allocate(struct kefir_mem *mem,
     const struct kefir_codegen_target_ir_value_type *value_type,
+    const struct kefir_codegen_target_ir_stack_frame *stack_frame,
     void *state,
     kefir_codegen_target_ir_regalloc_allocation_t *allocation_ptr,
     void *payload) {
@@ -101,6 +102,9 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                 regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP;
                 regalloc_entry.reg.value = reg;
                 *allocation_ptr = regalloc_entry.allocation;
+                if (stack_frame != NULL) {
+                    REQUIRE_OK(stack_frame->use_register(mem, reg, stack_frame->payload));
+                }
                 return KEFIR_OK;
             }
             for (kefir_size_t i = 0; i < klass->num_of_gp_registers; i++) {
@@ -109,6 +113,9 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                     regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP;
                     regalloc_entry.reg.value = candidate_reg;
                     *allocation_ptr = regalloc_entry.allocation;
+                    if (stack_frame != NULL) {
+                        REQUIRE_OK(stack_frame->use_register(mem, candidate_reg, stack_frame->payload));
+                    }
                     return KEFIR_OK;
                 }
             }
@@ -118,6 +125,9 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
             regalloc_entry.spill_area.index = spill_index;
             regalloc_entry.spill_area.length = 1;
             *allocation_ptr = regalloc_entry.allocation;
+            if (stack_frame != NULL) {
+                REQUIRE_OK(stack_frame->use_spill_space(mem, regalloc_entry.spill_area.index, regalloc_entry.spill_area.length, stack_frame->payload));
+            }
         } break;
 
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT: {
@@ -128,6 +138,9 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                 regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE;
                 regalloc_entry.reg.value = reg;
                 *allocation_ptr = regalloc_entry.allocation;
+                if (stack_frame != NULL) {
+                    REQUIRE_OK(stack_frame->use_register(mem, reg, stack_frame->payload));
+                }
                 return KEFIR_OK;
             }
             for (kefir_size_t i = 0; i < klass->num_of_sse_registers; i++) {
@@ -136,6 +149,9 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                     regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE;
                     regalloc_entry.reg.value = candidate_reg;
                     *allocation_ptr = regalloc_entry.allocation;
+                    if (stack_frame != NULL) {
+                        REQUIRE_OK(stack_frame->use_register(mem, candidate_reg, stack_frame->payload));
+                    }
                     return KEFIR_OK;
                 }
             }
@@ -145,6 +161,9 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
             regalloc_entry.spill_area.index = spill_index;
             regalloc_entry.spill_area.length = 2;
             *allocation_ptr = regalloc_entry.allocation;
+            if (stack_frame != NULL) {
+                REQUIRE_OK(stack_frame->use_spill_space(mem, regalloc_entry.spill_area.index, regalloc_entry.spill_area.length, stack_frame->payload));
+            }
         } break;
 
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_SPILL_SPACE: {
@@ -154,6 +173,9 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
             regalloc_entry.spill_area.index = spill_index;
             regalloc_entry.spill_area.length = value_type->parameters.spill_space_allocation.length;
             *allocation_ptr = regalloc_entry.allocation;
+            if (stack_frame != NULL) {
+                REQUIRE_OK(stack_frame->use_spill_space(mem, regalloc_entry.spill_area.index, regalloc_entry.spill_area.length, stack_frame->payload));
+            }
         } break;
     }
     return KEFIR_OK;
@@ -312,11 +334,13 @@ static kefir_result_t new_state(struct kefir_mem *mem, struct kefir_codegen_targ
     return KEFIR_OK;
 }
 
+static kefir_result_t amd64_regalloc_format_allocation(struct kefir_json_output *, kefir_codegen_target_ir_regalloc_allocation_t);
+
 kefir_result_t format_allocation(struct kefir_json_output *json, kefir_codegen_target_ir_regalloc_allocation_t allocation, void *payload) {
     UNUSED(payload);
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
 
-    REQUIRE_OK(kefir_codegen_target_ir_amd64_regalloc_format_allocation(json, allocation));
+    REQUIRE_OK(amd64_regalloc_format_allocation(json, allocation));
     return KEFIR_OK;
 }
 
@@ -368,7 +392,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_me
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_amd64_regalloc_format_allocation(struct kefir_json_output *json, kefir_codegen_target_ir_regalloc_allocation_t allocation) {
+static kefir_result_t amd64_regalloc_format_allocation(struct kefir_json_output *json, kefir_codegen_target_ir_regalloc_allocation_t allocation) {
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
 
     union kefir_codegen_target_ir_amd64_regalloc_entry entry = {

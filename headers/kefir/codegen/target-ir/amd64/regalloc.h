@@ -75,6 +75,5 @@ typedef struct kefir_codegen_target_ir_amd64_regalloc_class {
 } kefir_codegen_target_ir_amd64_regalloc_class_t;
 
 kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_mem *, struct kefir_codegen_target_ir_amd64_regalloc_class *, kefir_abi_amd64_variant_t);
-kefir_result_t kefir_codegen_target_ir_amd64_regalloc_format_allocation(struct kefir_json_output *, kefir_codegen_target_ir_regalloc_allocation_t);
 
 #endif

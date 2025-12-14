@@ -838,6 +838,19 @@ kefir_bool_t kefir_asm_amd64_xasmgen_register_is_wide(kefir_asm_amd64_xasmgen_re
     }
 }
 
+kefir_bool_t kefir_asm_amd64_xasmgen_register_is_high(kefir_asm_amd64_xasmgen_register_t reg) {
+    switch (reg) {
+        case KEFIR_AMD64_XASMGEN_REGISTER_AH:
+        case KEFIR_AMD64_XASMGEN_REGISTER_BH:
+        case KEFIR_AMD64_XASMGEN_REGISTER_CH:
+        case KEFIR_AMD64_XASMGEN_REGISTER_DH:
+            return true;
+            
+        default:
+            return false;
+    }
+}
+
 kefir_result_t kefir_asm_amd64_xasmgen_register_widest(kefir_asm_amd64_xasmgen_register_t src,
                                                        kefir_asm_amd64_xasmgen_register_t *dst) {
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AMD64 xasmgen register"));
