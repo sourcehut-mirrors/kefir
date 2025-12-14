@@ -641,22 +641,22 @@ __kefir_softfloat_scalbn:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     xor %eax, %eax
-    mov %rax, %rsi
-    mov %rdi, %r8
+    mov %rdi, %rsi
     movaps %xmm0, %xmm2
+    mov %rax, %r8
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label2:
     mov $1023, %rax
-    cmp $1023, %r8d
-    mov %r8, %rdi
+    cmp $1023, %esi
+    mov %rsi, %rdi
     cmovg %rax, %rdi
     xor %eax, %eax
-    cmp $2, %esi
+    cmp $2, %r8d
     setge %al
     xor %ecx, %ecx
-    cmp $2, %esi
+    cmp $2, %r8d
     setl %cl
     xor %edx, %edx
-    cmp $1023, %r8d
+    cmp $1023, %esi
     setg %dl
     test %al, %al
     mov %rcx, %rax
@@ -710,15 +710,15 @@ __kefir_softfloat_scalbn:
     movaps %xmm0, %xmm2
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbn_label4
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label15:
-    mov %rsi, %rax
+    mov %r8, %rax
     add $1, %eax
-    mov %r8, %rdi
+    mov %rsi, %rdi
     sub $1023, %edi
     movq .L__kefir_runtime_func___kefir_softfloat_scalbn_label17(%rip), %xmm1
     movaps %xmm2, %xmm0
     mulsd %xmm1, %xmm0
-    mov %rax, %rsi
-    mov %rdi, %r8
+    mov %rax, %r8
+    mov %rdi, %rsi
     movaps %xmm0, %xmm2
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbn_label2
 .L__kefir_runtime_text_func___kefir_softfloat_scalbn_end:
@@ -819,8 +819,8 @@ __kefir_softfloat_ilogb:
     and $2047, %rax
     mov %rax, %rdx
     sub $1023, %edx
-    mov %rcx, %rdi
-    shl $12, %rdi
+    mov %rcx, %rsi
+    shl $12, %rsi
     cmp $2047, %eax
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label18
     cmp $0, %eax
@@ -832,11 +832,11 @@ __kefir_softfloat_ilogb:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label23:
-    cmp $0, %rdi
+    cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label19
     mov $-1023, %rax
+    mov %rsi, %rdx
     mov %rax, %rsi
-    mov %rdi, %rdx
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label9:
     mov %rdx, %rcx
     shl $1, %rcx
@@ -867,7 +867,7 @@ __kefir_softfloat_ilogb:
     movq -16(%rbp), %rax
     mov $-2147483648, %rax
     mov $2147483647, %rcx
-    test %rdi, %rdi
+    test %rsi, %rsi
     cmovz %rcx, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label5
 .L__kefir_runtime_text_func___kefir_softfloat_ilogb_end:

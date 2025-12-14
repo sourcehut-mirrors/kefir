@@ -42,54 +42,88 @@ static kefir_result_t get_phi_output(const struct kefir_codegen_target_ir_code *
     return KEFIR_OK;
 }
 
-static kefir_result_t insert_upsilons_step(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashtable *phis, kefir_codegen_target_ir_block_ref_t block_ref) {
+static kefir_result_t insert_upsilons_step(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashtable *phis, struct kefir_list *queue, kefir_codegen_target_ir_block_ref_t block_ref) {
     kefir_result_t res;
     kefir_hashtable_key_t phis_key;
     kefir_hashtable_value_t phis_value;
     struct kefir_hashtable_iterator phis_iter;
-    for (res = kefir_hashtable_iter(phis, &phis_iter, &phis_key, &phis_value);
+    for (res = kefir_hashtable_iter(phis, &phis_iter, &phis_key, NULL);
         res == KEFIR_OK;
-        res = kefir_hashtable_next(&phis_iter, &phis_key, &phis_value)) {
+        res = kefir_hashtable_next(&phis_iter, &phis_key, NULL)) {
         kefir_codegen_target_ir_value_ref_t phi_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(phis_key);
-        kefir_codegen_target_ir_value_ref_t linked_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(phis_value);
-        if (phi_value_ref.instr_ref == linked_value_ref.instr_ref && phi_value_ref.aspect == linked_value_ref.aspect) {
-            REQUIRE_OK(kefir_hashtable_delete(mem, phis, phis_key));
-            return KEFIR_OK;
-        }
 
+        kefir_result_t res;
+        kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+        struct kefir_codegen_target_ir_use_iterator use_iter;
         kefir_bool_t used_elsewhere = false;
-        kefir_hashtable_value_t phis2_value;
-        struct kefir_hashtable_iterator phis2_iter;
-        for (res = kefir_hashtable_iter(phis, &phis2_iter, NULL, &phis2_value);
+        for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, phi_value_ref.instr_ref, &use_instr_ref, NULL);
             res == KEFIR_OK && !used_elsewhere;
-            res = kefir_hashtable_next(&phis2_iter, NULL, &phis2_value)) {
-            used_elsewhere = phis2_value == phis_key;
+            res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
+            kefir_codegen_target_ir_value_ref_t user_direct_value_ref = {
+                .instr_ref = use_instr_ref,
+                .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
+            }, user_flag_value_ref = {
+                .instr_ref = use_instr_ref,
+                .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS
+            };
+
+            kefir_hashtable_value_t table_value;
+            res = kefir_hashtable_at(phis, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&user_direct_value_ref), &table_value);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                if (table_value == phis_key) {
+                    used_elsewhere = true;
+                    continue;
+                }
+            }
+            res = kefir_hashtable_at(phis, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&user_flag_value_ref), &table_value);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                if (table_value == phis_key) {
+                    used_elsewhere = true;
+                    continue;
+                }
+            }
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
         }
 
         if (!used_elsewhere) {
-            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref,
-                kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
-                &(struct kefir_codegen_target_ir_operation) {
-                    .opcode = code->klass->upsilon_opcode,
-                    .parameters[0] = {
-                        .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON,
-                        .upsilon_ref = phi_value_ref
-                    },
-                    .parameters[1] = {
-                        .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                        .direct.value_ref = linked_value_ref,
-                        .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
-                    }
-                }, NULL, NULL));
-            REQUIRE_OK(kefir_hashtable_delete(mem, phis, phis_key));
-            return KEFIR_OK;
+            REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) phis_key));
         }
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
+    }
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(queue);
+        iter != NULL;
+        kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_uint64_t, phis_key,
+            (kefir_uptr_t) iter->value);
+        REQUIRE_OK(kefir_hashtable_at(phis, (kefir_hashtable_key_t) phis_key, &phis_value));
+        kefir_codegen_target_ir_value_ref_t phi_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(phis_key),
+                                            linked_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(phis_value);
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref,
+            kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
+            &(struct kefir_codegen_target_ir_operation) {
+                .opcode = code->klass->upsilon_opcode,
+                .parameters[0] = {
+                    .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON,
+                    .upsilon_ref = phi_value_ref
+                },
+                .parameters[1] = {
+                    .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                    .direct.value_ref = linked_value_ref,
+                    .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+                }
+            }, NULL, NULL));
+        REQUIRE_OK(kefir_hashtable_delete(mem, phis, phis_key));   
+    }
+    if (kefir_list_length(queue) > 0) {
+        REQUIRE_OK(kefir_list_clear(mem, queue));
+        return KEFIR_OK;
     }
 
     REQUIRE_OK(kefir_hashtable_iter(phis, &phis_iter, &phis_key, &phis_value));
@@ -150,9 +184,17 @@ static kefir_result_t insert_upsilons_step(struct kefir_mem *mem, struct kefir_c
 }
 
 static kefir_result_t insert_upsilons_into(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashtable *phis, kefir_codegen_target_ir_block_ref_t block_ref) {
-    for (; phis->occupied > 0;) {
-        REQUIRE_OK(insert_upsilons_step(mem, code, phis, block_ref));
+    struct kefir_list queue;
+    REQUIRE_OK(kefir_list_init(&queue));
+    kefir_result_t res = KEFIR_OK;
+    for (; res == KEFIR_OK && phis->occupied > 0;) {
+        REQUIRE_CHAIN(&res, insert_upsilons_step(mem, code, phis, &queue, block_ref));
     }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &queue);
+        return res;
+    });
+    REQUIRE_OK(kefir_list_free(mem, &queue));
     return KEFIR_OK;
 }
 
@@ -181,6 +223,21 @@ static kefir_result_t insert_upsilons(struct kefir_mem *mem, struct kefir_codege
             kefir_codegen_target_ir_value_ref_t value_ref, link_value_ref;
             REQUIRE_OK(get_phi_output(code, phi_ref, &value_ref, NULL));
             REQUIRE_OK(kefir_codegen_target_ir_code_phi_link_for(code, value_ref.instr_ref, block_ref, &link_value_ref));
+
+            if (value_ref.instr_ref == link_value_ref.instr_ref && value_ref.aspect == link_value_ref.aspect) {
+                continue;
+            }
+            
+            const struct kefir_codegen_target_ir_instruction *linked_instr;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, link_value_ref.instr_ref, &linked_instr));
+            if (linked_instr->operation.opcode == code->klass->placeholder_opcode) {
+                const struct kefir_codegen_target_ir_value_type *value_type;
+                REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, link_value_ref, &value_type));
+                if (value_type->kind != KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_SPILL_SPACE && value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+                    continue;
+                }
+            }
+
             REQUIRE_OK(kefir_hashtable_insert(mem, phis, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&link_value_ref)));
         }
         if (res != KEFIR_ITERATOR_END) {
@@ -188,6 +245,9 @@ static kefir_result_t insert_upsilons(struct kefir_mem *mem, struct kefir_codege
         }
 
         REQUIRE_OK(insert_upsilons_into(mem, code, phis, block_ref));
+
+        REQUIRE_OK(kefir_hashtable_free(mem, phis));
+        REQUIRE_OK(kefir_hashtable_init(phis, &kefir_hashtable_uint_ops));
     }
     return KEFIR_OK;
 }

@@ -71,8 +71,8 @@ factorial64:
     add $-1, %rdi
     mov %rsi, %rax
     imul %rdx, %rax
-    mov %rax, %rsi
     mov %rdi, %rdx
+    mov %rax, %rsi
     jmp .L__kefir_func_factorial64_label6
 .L__kefir_func_factorial64_label22:
     mov %rdi, %rax

@@ -2114,14 +2114,10 @@ __kefir_softfloat_complex_long_double_mul:
     movq -200(%rbp), %rax
     movq %rax, -136(%rbp)
     mov %r8, %rax
-    movq -176(%rbp), %rcx
+    movq -192(%rbp), %rcx
     movq %rcx, -208(%rbp)
-    movq -168(%rbp), %rcx
+    movq -184(%rbp), %rcx
     movq %rcx, -200(%rbp)
-    movq -160(%rbp), %rcx
-    movq %rcx, -176(%rbp)
-    movq -152(%rbp), %rcx
-    movq %rcx, -168(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label15:
     test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label85
@@ -2145,22 +2141,22 @@ __kefir_softfloat_complex_long_double_mul:
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label5
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label85:
     fldt .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label95(%rip)
-    fldt -208(%rbp)
+    fldt -176(%rbp)
     fldt -144(%rbp)
     fmulp
-    fldt -176(%rbp)
-    fldt -192(%rbp)
+    fldt -160(%rbp)
+    fldt -208(%rbp)
     fmulp
     fxch %st(1)
     fsubp
     fxch %st(1)
     fmulp
     fldt .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label96(%rip)
-    fldt -176(%rbp)
+    fldt -160(%rbp)
     fldt -144(%rbp)
     fmulp
+    fldt -176(%rbp)
     fldt -208(%rbp)
-    fldt -192(%rbp)
     fmulp
     fxch %st(1)
     faddp
@@ -2255,14 +2251,10 @@ __kefir_softfloat_complex_long_double_mul:
     movq %rcx, -144(%rbp)
     movq -200(%rbp), %rcx
     movq %rcx, -136(%rbp)
-    movq -176(%rbp), %rcx
+    movq -192(%rbp), %rcx
     movq %rcx, -208(%rbp)
-    movq -168(%rbp), %rcx
+    movq -184(%rbp), %rcx
     movq %rcx, -200(%rbp)
-    movq -160(%rbp), %rcx
-    movq %rcx, -176(%rbp)
-    movq -152(%rbp), %rcx
-    movq %rcx, -168(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label15
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label80:
     fldt .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label97(%rip)

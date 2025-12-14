@@ -1899,8 +1899,8 @@ __kefir_bigint_get_unsigned_value:
     mov %r9, %r8
     shl $8, %r8
     or %rcx, %r8
-    mov %rax, %r10
     mov %r8, %r9
+    mov %rax, %r10
     jmp .L__kefir_runtime_func___kefir_bigint_get_unsigned_value_label2
 .L__kefir_runtime_text_func___kefir_bigint_get_unsigned_value_end:
 
@@ -2345,8 +2345,8 @@ __kefir_bigint_util_add_digit_zero_extended:
     movb %dl, (%rdi)
     lea 1(%r9), %rcx
     shr $8, %edx
-    mov %rdx, %r10
     mov %rcx, %r9
+    mov %rdx, %r10
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2
 .L__kefir_runtime_text_func___kefir_bigint_util_add_digit_zero_extended_end:
 

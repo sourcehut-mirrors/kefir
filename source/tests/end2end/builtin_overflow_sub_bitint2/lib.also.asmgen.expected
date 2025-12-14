@@ -493,8 +493,8 @@ __kefir_bigint_subtract:
     lea 1(%r9), %rdx
     shr $8, %ecx
     and $1, %ecx
-    mov %rdx, %r9
     mov %rcx, %r8
+    mov %rdx, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_label2
 .L__kefir_runtime_text_func___kefir_bigint_subtract_end:
 
