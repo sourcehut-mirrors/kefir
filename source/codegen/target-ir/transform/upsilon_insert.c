@@ -183,7 +183,48 @@ static kefir_result_t insert_upsilons_step(struct kefir_mem *mem, struct kefir_c
     return KEFIR_OK;
 }
 
+static kefir_result_t verify_terminator_instruction(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref) {
+    kefir_codegen_target_ir_instruction_ref_t tail_instr_ref = kefir_codegen_target_ir_code_block_control_tail(code, block_ref);
+    const struct kefir_codegen_target_ir_instruction *tail_instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, tail_instr_ref, &tail_instr));
+
+    if (tail_instr->operation.opcode == code->klass->phi_opcode) {
+        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR block terminator instruction");
+    } else if (tail_instr->operation.opcode == code->klass->inline_asm_opcode) {
+        kefir_result_t res;
+        struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
+        const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
+        for (res = kefir_codegen_target_ir_code_inline_assembly_fragment_iter(code, &iter, tail_instr_ref, &fragment);
+            res == KEFIR_OK;
+            res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
+            switch (fragment->type) {
+                case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND: {
+                    REQUIRE(fragment->operand.type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR block terminator instruction parameter"));
+                    REQUIRE(fragment->operand.type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT ||
+                        fragment->operand.indirect.type != KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR block terminator instruction parameter"));
+                } break;
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+    } else {
+        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+            REQUIRE(tail_instr->operation.parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR block terminator instruction parameter"));
+            REQUIRE(tail_instr->operation.parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT ||
+                tail_instr->operation.parameters[i].indirect.type != KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR block terminator instruction parameter"));
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t insert_upsilons_into(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashtable *phis, kefir_codegen_target_ir_block_ref_t block_ref) {
+    REQUIRE_OK(verify_terminator_instruction(code, block_ref));
+
     struct kefir_list queue;
     REQUIRE_OK(kefir_list_init(&queue));
     kefir_result_t res = KEFIR_OK;
@@ -244,10 +285,12 @@ static kefir_result_t insert_upsilons(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(res);
         }
 
-        REQUIRE_OK(insert_upsilons_into(mem, code, phis, block_ref));
+        if (phis->occupied > 0) {
+            REQUIRE_OK(insert_upsilons_into(mem, code, phis, block_ref));
 
-        REQUIRE_OK(kefir_hashtable_free(mem, phis));
-        REQUIRE_OK(kefir_hashtable_init(phis, &kefir_hashtable_uint_ops));
+            REQUIRE_OK(kefir_hashtable_free(mem, phis));
+            REQUIRE_OK(kefir_hashtable_init(phis, &kefir_hashtable_uint_ops));
+        }
     }
     return KEFIR_OK;
 }
