@@ -245,6 +245,7 @@ static kefir_result_t insert_upsilons(struct kefir_mem *mem, struct kefir_codege
     for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
         if (!kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref) ||
+            kefir_codegen_target_ir_code_is_gate_block(control_flow->code, block_ref) ||
             kefir_hashset_size(&control_flow->blocks[block_ref].successors) != 1 /* Assuming critical edges are split */) {
             continue;
         }
