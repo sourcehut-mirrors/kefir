@@ -22,11 +22,6 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-struct liveness_index {
-    struct kefir_hashset begin_liveness;
-    struct kefir_hashset end_liveness;
-};
-
 kefir_result_t kefir_codegen_target_ir_interference_init(struct kefir_codegen_target_ir_interference *interference) {
     REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR interference"));
 
@@ -43,14 +38,14 @@ kefir_result_t kefir_codegen_target_ir_interference_free(struct kefir_mem *mem, 
 }
 
 static kefir_result_t get_liveness_index_for(struct kefir_mem *mem,
-    kefir_codegen_target_ir_instruction_ref_t instr_ref, struct kefir_hashtree *per_block_ranges, struct liveness_index **liveness_index_ptr) {
+    kefir_codegen_target_ir_instruction_ref_t instr_ref, struct kefir_hashtree *per_block_ranges, struct kefir_codegen_target_ir_interference_liveness_index **liveness_index_ptr) {
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(per_block_ranges, (kefir_hashtree_key_t) instr_ref, &node);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
-        *liveness_index_ptr = (struct liveness_index *) node->value;
+        *liveness_index_ptr = (struct kefir_codegen_target_ir_interference_liveness_index *) node->value;
     } else {
-        struct liveness_index *liveness_index = KEFIR_MALLOC(mem, sizeof(struct liveness_index));
+        struct kefir_codegen_target_ir_interference_liveness_index *liveness_index = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_interference_liveness_index));
         REQUIRE(liveness_index != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR per block liveness index"));
         res = kefir_hashset_init(&liveness_index->begin_liveness, &kefir_hashtable_uint_ops);
         REQUIRE_CHAIN(&res, kefir_hashset_init(&liveness_index->end_liveness, &kefir_hashtable_uint_ops));
@@ -74,7 +69,7 @@ static kefir_result_t register_liveness_at(struct kefir_mem *mem,
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
 
-    struct liveness_index *begin_liveness, *end_liveness;
+    struct kefir_codegen_target_ir_interference_liveness_index *begin_liveness, *end_liveness;
     REQUIRE_OK(get_liveness_index_for(mem, begin_ref, per_block_ranges, &begin_liveness));
     REQUIRE_OK(get_liveness_index_for(mem, end_ref, per_block_ranges, &end_liveness));
 
@@ -83,7 +78,12 @@ static kefir_result_t register_liveness_at(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t build_per_block_liveness(struct kefir_mem *mem, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_hashtree *per_block_ranges) {
+kefir_result_t kefir_codegen_target_ir_interference_build_per_block_liveness(struct kefir_mem *mem, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_hashtree *per_block_ranges) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
+    REQUIRE(per_block_ranges != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR per-block liveness ranges"));
+
     REQUIRE_OK(kefir_hashtree_clean(mem, per_block_ranges));
     for (kefir_size_t i = 0; i < liveness->blocks[block_ref].live_in.length; i++) {
         REQUIRE_OK(register_liveness_at(mem, liveness, liveness->blocks[block_ref].live_in.content[i], block_ref, per_block_ranges));
@@ -109,13 +109,17 @@ static kefir_result_t build_per_block_liveness(struct kefir_mem *mem, const stru
     return KEFIR_OK;
 }
 
-static kefir_result_t update_alive_set(struct kefir_mem *mem, kefir_codegen_target_ir_instruction_ref_t instr_ref, struct kefir_hashtree *per_block_ranges, struct kefir_hashset *alive_values) {
+kefir_result_t kefir_codegen_target_ir_interference_build_update_alive_set(struct kefir_mem *mem, kefir_codegen_target_ir_instruction_ref_t instr_ref, struct kefir_hashtree *per_block_ranges, struct kefir_hashset *alive_values) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(per_block_ranges != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR per-block liveness ranges"));
+    REQUIRE(alive_values != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR alive value set"));
+
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(per_block_ranges, (kefir_hashtree_key_t) instr_ref, &node);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
 
-    ASSIGN_DECL_CAST(struct liveness_index *, liveness_index,
+    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_interference_liveness_index *, liveness_index,
         node->value);
     if (instr_ref != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_hashset_subtract(alive_values, &liveness_index->end_liveness));
@@ -145,11 +149,11 @@ static kefir_result_t record_interference(struct kefir_mem *mem, struct kefir_co
 }
 
 static kefir_result_t build_block_interference_impl(struct kefir_mem *mem, struct kefir_codegen_target_ir_interference *interference, const struct kefir_codegen_target_ir_control_flow *control_flow, kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_hashtree *per_block_ranges, struct kefir_hashset *alive_values) {
-    REQUIRE_OK(update_alive_set(mem, KEFIR_ID_NONE, per_block_ranges, alive_values));
+    REQUIRE_OK(kefir_codegen_target_ir_interference_build_update_alive_set(mem, KEFIR_ID_NONE, per_block_ranges, alive_values));
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(control_flow->code, block_ref);
         instr_ref != KEFIR_ID_NONE;
         instr_ref = kefir_codegen_target_ir_code_control_next(control_flow->code, instr_ref)) {
-        REQUIRE_OK(update_alive_set(mem, instr_ref, per_block_ranges, alive_values));
+        REQUIRE_OK(kefir_codegen_target_ir_interference_build_update_alive_set(mem, instr_ref, per_block_ranges, alive_values));
 
         struct kefir_codegen_target_ir_value_iterator value_iter;
         struct kefir_codegen_target_ir_value_ref value_ref;
@@ -168,7 +172,7 @@ static kefir_result_t build_block_interference_impl(struct kefir_mem *mem, struc
 
 static kefir_result_t build_block_interference(struct kefir_mem *mem, struct kefir_codegen_target_ir_interference *interference, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_hashtree *per_block_ranges) {
     UNUSED(interference);
-    REQUIRE_OK(build_per_block_liveness(mem, control_flow, liveness, block_ref, per_block_ranges));
+    REQUIRE_OK(kefir_codegen_target_ir_interference_build_per_block_liveness(mem, control_flow, liveness, block_ref, per_block_ranges));
 
     struct kefir_hashset alive_values;
     REQUIRE_OK(kefir_hashset_init(&alive_values, &kefir_hashtable_uint_ops));
@@ -181,12 +185,12 @@ static kefir_result_t build_block_interference(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
-static kefir_result_t free_liveness_index(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+kefir_result_t kefir_codegen_target_ir_interference_free_liveness_index(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct liveness_index *, liveness_index,
+    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_interference_liveness_index *, liveness_index,
         value);
     REQUIRE(liveness_index != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness index"));
 
@@ -204,7 +208,7 @@ kefir_result_t kefir_codegen_target_ir_interference_build(struct kefir_mem *mem,
 
     struct kefir_hashtree per_block_ranges;
     REQUIRE_OK(kefir_hashtree_init(&per_block_ranges, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&per_block_ranges, free_liveness_index, NULL));
+    REQUIRE_OK(kefir_hashtree_on_removal(&per_block_ranges, kefir_codegen_target_ir_interference_free_liveness_index, NULL));
     for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(control_flow->code); i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(control_flow->code, i);
         if (kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref)) {

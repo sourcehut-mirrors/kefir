@@ -544,6 +544,11 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
             REQUIRE_OK(link_virtual_registers(state, kefir_asmcmp_context_instr_tail(state->asmcmp_ctx), dst_vreg, src_vreg, NULL));
         }
         return KEFIR_OK;
+    } else if (instr->operation.opcode == state->code->klass->touch_opcode) {
+        if (instr->operation.parameters[0].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF || 
+            !KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(instr->operation.parameters[0].direct.value_ref.aspect)) {
+            return KEFIR_OK;
+        }
     }
     kefir_result_t res;
     kefir_codegen_target_ir_native_id_t attribute;

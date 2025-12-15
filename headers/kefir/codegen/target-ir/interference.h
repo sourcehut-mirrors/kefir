@@ -33,4 +33,13 @@ kefir_result_t kefir_codegen_target_ir_interference_init(struct kefir_codegen_ta
 kefir_result_t kefir_codegen_target_ir_interference_free(struct kefir_mem *, struct kefir_codegen_target_ir_interference *);
 kefir_result_t kefir_codegen_target_ir_interference_build(struct kefir_mem *, struct kefir_codegen_target_ir_interference *, const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_liveness *);
 
+typedef struct kefir_codegen_target_ir_interference_liveness_index {
+    struct kefir_hashset begin_liveness;
+    struct kefir_hashset end_liveness;
+} kefir_codegen_target_ir_interference_liveness_index_t;
+
+kefir_result_t kefir_codegen_target_ir_interference_build_per_block_liveness(struct kefir_mem *, const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_liveness *, kefir_codegen_target_ir_block_ref_t, struct kefir_hashtree *);
+kefir_result_t kefir_codegen_target_ir_interference_build_update_alive_set(struct kefir_mem *, kefir_codegen_target_ir_instruction_ref_t, struct kefir_hashtree *, struct kefir_hashset *);
+kefir_result_t kefir_codegen_target_ir_interference_free_liveness_index(struct kefir_mem *, struct kefir_hashtree *, kefir_hashtree_key_t, kefir_hashtree_value_t, void *);
+
 #endif
