@@ -64,17 +64,19 @@ static kefir_result_t register_liveness_at(struct kefir_mem *mem,
     const struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_value_ref_t value_ref,
     kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_hashtree *per_block_ranges) {
 
+    kefir_result_t res;
     kefir_codegen_target_ir_instruction_ref_t begin_ref, end_ref;
-    kefir_result_t res = kefir_codegen_target_ir_value_liveness_at(liveness, value_ref, block_ref, &begin_ref, &end_ref);
-    REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
-    REQUIRE_OK(res);
+    struct kefir_codegen_target_ir_value_liveness_block_iterator iter;
+    for (res = kefir_codegen_target_ir_value_liveness_at(liveness, &iter, value_ref, block_ref, &begin_ref, &end_ref);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_value_liveness_at_next(&iter, &begin_ref, &end_ref)) {
+            struct kefir_codegen_target_ir_interference_liveness_index *begin_liveness, *end_liveness;
+            REQUIRE_OK(get_liveness_index_for(mem, begin_ref, per_block_ranges, &begin_liveness));
+            REQUIRE_OK(get_liveness_index_for(mem, end_ref, per_block_ranges, &end_liveness));
 
-    struct kefir_codegen_target_ir_interference_liveness_index *begin_liveness, *end_liveness;
-    REQUIRE_OK(get_liveness_index_for(mem, begin_ref, per_block_ranges, &begin_liveness));
-    REQUIRE_OK(get_liveness_index_for(mem, end_ref, per_block_ranges, &end_liveness));
-
-    REQUIRE_OK(kefir_hashset_add(mem, &begin_liveness->begin_liveness, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
-    REQUIRE_OK(kefir_hashset_add(mem, &end_liveness->end_liveness, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
+            REQUIRE_OK(kefir_hashset_add(mem, &begin_liveness->begin_liveness, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
+            REQUIRE_OK(kefir_hashset_add(mem, &end_liveness->end_liveness, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
+    }
     return KEFIR_OK;
 }
 
@@ -165,7 +167,13 @@ static kefir_result_t build_block_interference_impl(struct kefir_mem *mem, struc
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
-        }   
+        }
+
+        const struct kefir_codegen_target_ir_instruction *instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, instr_ref, &instr));
+        if (instr->operation.opcode == control_flow->code->klass->upsilon_opcode) {
+            REQUIRE_OK(record_interference(mem, interference, instr->operation.parameters[0].upsilon_ref, alive_values));
+        }
     }
     return KEFIR_OK;
 }

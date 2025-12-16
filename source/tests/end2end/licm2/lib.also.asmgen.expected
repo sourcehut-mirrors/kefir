@@ -74,30 +74,30 @@ test2:
     mov %rcx, %r12
     mov %rdi, %r13
     xor %eax, %eax
-    mov %rax, %r11
+    mov %rax, %r9
 .L__kefir_func_test2_label2:
-    movsx %r11d, %rax
+    movsx %r9d, %rax
     imul $40, %rax, %rax
-    mov %r13, %rbx
-    add %rax, %rbx
-    mov %r12, %r9
-    or %esi, %r9d
+    mov %r13, %r10
+    add %rax, %r10
+    mov %r12, %r11
+    or %esi, %r11d
     mov %rdx, %rcx
-    mov %r11, %r10
-    shl %cl, %r10d
-    cmp %esi, %r11d
+    mov %r9, %rbx
+    shl %cl, %ebx
+    cmp %esi, %r9d
     jl .L__kefir_func_test2_label4
     xor %ecx, %ecx
-    mov %rcx, %r10
+    mov %rcx, %rbx
 .L__kefir_func_test2_label6:
-    movsx %r10d, %rax
+    movsx %ebx, %rax
     imul $40, %rax, %rax
-    mov %r13, %r11
-    add %rax, %r11
-    mov %r10, %rcx
-    mov %r12, %rbx
-    shl %cl, %ebx
-    cmp %esi, %r10d
+    mov %r13, %r10
+    add %rax, %r10
+    mov %rbx, %rcx
+    mov %r12, %r11
+    shl %cl, %r11d
+    cmp %esi, %ebx
     jl .L__kefir_func_test2_label8
     lea -24(%rbp), %rsp
     pop %r13
@@ -109,20 +109,20 @@ test2:
     xor %ecx, %ecx
     mov %rcx, %r9
 .L__kefir_func_test2_label12:
-    mov %r10, %rcx
+    mov %rbx, %rcx
     add $1, %ecx
     cmp %edx, %r9d
     jl .L__kefir_func_test2_label27
-    mov %rcx, %r10
+    mov %rcx, %rbx
     jmp .L__kefir_func_test2_label6
 .L__kefir_func_test2_label27:
     movsx %r9d, %rax
     imul $4, %rax, %rax
-    mov %r11, %rdi
+    mov %r10, %rdi
     add %rax, %rdi
     movl (%rdi), %eax
     mov %r9, %rcx
-    mov %rbx, %r8
+    mov %r11, %r8
     sar %cl, %r8d
     xor %r8d, %eax
     movl %eax, (%rdi)
@@ -134,20 +134,20 @@ test2:
     xor %eax, %eax
     mov %rax, %r8
 .L__kefir_func_test2_label17:
-    mov %r11, %rax
+    mov %r9, %rax
     add $1, %eax
     cmp %edx, %r8d
     jl .L__kefir_func_test2_label26
-    mov %rax, %r11
+    mov %rax, %r9
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label26:
     movsx %r8d, %rax
     imul $4, %rax, %rax
-    mov %rbx, %rdi
+    mov %r10, %rdi
     add %rax, %rdi
-    mov %r9, %rcx
+    mov %r11, %rcx
     sub %r8d, %ecx
-    add %r10d, %ecx
+    add %ebx, %ecx
     movl %ecx, (%rdi)
     mov %r8, %rax
     add $1, %eax

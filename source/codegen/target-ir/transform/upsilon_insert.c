@@ -228,7 +228,9 @@ static kefir_result_t insert_upsilons_step(struct kefir_mem *mem, struct kefir_c
     
     const struct kefir_codegen_target_ir_value_type *phi_value_type;
     REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, phi_value_ref, &phi_value_type));
-    REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, copy_value_ref, phi_value_type));
+    struct kefir_codegen_target_ir_value_type copy_value_type = *phi_value_type;
+    copy_value_type.constraint.type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT;
+    REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, copy_value_ref, &copy_value_type));
 
     REQUIRE_OK(patch_terminator_instruction(mem, code, phi_value_ref, copy_value_ref, block_ref));
     REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref,
@@ -314,12 +316,35 @@ static kefir_result_t insert_upsilons(struct kefir_mem *mem, struct kefir_codege
             
             const struct kefir_codegen_target_ir_instruction *linked_instr;
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, link_value_ref.instr_ref, &linked_instr));
+
+            const struct kefir_codegen_target_ir_value_type *value_type;
+            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, link_value_ref, &value_type));
             if (linked_instr->operation.opcode == code->klass->placeholder_opcode) {
-                const struct kefir_codegen_target_ir_value_type *value_type;
-                REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, link_value_ref, &value_type));
                 if (value_type->kind != KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_SPILL_SPACE && value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
                     continue;
                 }
+            }
+
+            if (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+                struct kefir_codegen_target_ir_value_type copy_type = *value_type;
+                copy_type.constraint.type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT;
+                kefir_codegen_target_ir_instruction_ref_t copy_instr_ref;
+                REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref,
+                    kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
+                    &(struct kefir_codegen_target_ir_operation) {
+                        .opcode = code->klass->assign_opcode,
+                        .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                        .parameters[0].direct.value_ref = link_value_ref,
+                        .parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+                    }, NULL, &copy_instr_ref));
+                kefir_codegen_target_ir_value_ref_t copy_value_ref = {
+                    .instr_ref = copy_instr_ref,
+                    .aspect = link_value_ref.aspect
+                };
+
+                REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, copy_value_ref, &copy_type));
+                REQUIRE_OK(patch_terminator_instruction(mem, code, link_value_ref, copy_value_ref, block_ref));
+                link_value_ref = copy_value_ref;
             }
 
             REQUIRE_OK(kefir_hashtable_insert(mem, phis, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&link_value_ref)));

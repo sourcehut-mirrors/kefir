@@ -91,7 +91,13 @@ static kefir_bool_t is_scheduled_earlier(const struct kefir_codegen_target_ir_co
     return false;
 }
 
-static kefir_result_t add_value_liveness(struct kefir_mem *mem, struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t begin_ref, kefir_codegen_target_ir_instruction_ref_t end_ref) {
+enum liveness_class {
+    LIVENESS_NORMAL = 0,
+    LIVENESS_UPSILON,
+    LIVENESS_END
+};
+
+static kefir_result_t add_value_liveness(struct kefir_mem *mem, struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_block_ref_t block_ref, enum liveness_class klass, kefir_codegen_target_ir_instruction_ref_t begin_ref, kefir_codegen_target_ir_instruction_ref_t end_ref) {
     kefir_hashtable_key_t key = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref);
 
     kefir_hashtable_value_t table_value;
@@ -111,8 +117,9 @@ static kefir_result_t add_value_liveness(struct kefir_mem *mem, struct kefir_cod
         });
     }
 
+    kefir_hashtable_key_t per_block_key = (((kefir_uint64_t) block_ref) << 32) | klass;
     kefir_hashtable_value_t *table_value_ptr;
-    res = kefir_hashtable_at_mut(&value_liveness->per_block, (kefir_hashtable_key_t) block_ref, &table_value_ptr);
+    res = kefir_hashtable_at_mut(&value_liveness->per_block, (kefir_hashtable_key_t) per_block_key, &table_value_ptr);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         kefir_codegen_target_ir_instruction_ref_t current_begin_ref = ((kefir_uint64_t) *table_value_ptr) >> 32,
@@ -126,8 +133,30 @@ static kefir_result_t add_value_liveness(struct kefir_mem *mem, struct kefir_cod
         *table_value_ptr = (((kefir_uint64_t) current_begin_ref) << 32) | (kefir_uint32_t) current_end_ref;
     } else {
         table_value = (((kefir_uint64_t) begin_ref) << 32) | (kefir_uint32_t) end_ref;
-        REQUIRE_OK(kefir_hashtable_insert(mem, &value_liveness->per_block, (kefir_hashtable_key_t) block_ref, table_value));
+        REQUIRE_OK(kefir_hashtable_insert(mem, &value_liveness->per_block, (kefir_hashtable_key_t) per_block_key, table_value));
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t has_upsilon_for(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_block_ref_t block_ref, kefir_bool_t *has_upsilon) {
+    *has_upsilon = false;
+    kefir_result_t res;
+    kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+    struct kefir_codegen_target_ir_use_iterator use_iter;
+    for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, &use_instr_ref, NULL);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
+        const struct kefir_codegen_target_ir_instruction *use_instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &use_instr));
+        if (use_instr->operation.opcode == code->klass->upsilon_opcode && use_instr->block_ref == block_ref) {
+            *has_upsilon = true;
+            return KEFIR_OK;
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
     return KEFIR_OK;
 }
 
@@ -157,38 +186,49 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
 
         const struct kefir_codegen_target_ir_instruction *user_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, user_instr_ref, &user_instr));
-        if (instr->block_ref != user_instr->block_ref ||
-            user_instr->operation.opcode == control_flow->code->klass->phi_opcode ||
-            (user_instr->operation.opcode == control_flow->code->klass->upsilon_opcode &&
-                instr->operation.opcode == control_flow->code->klass->phi_opcode &&
-                user_instr->operation.parameters[0].upsilon_ref.instr_ref == instr->instr_ref)) {
-            if (user_instr->operation.opcode == control_flow->code->klass->phi_opcode) {
-                struct kefir_codegen_target_ir_value_phi_link_iterator iter;
-                kefir_codegen_target_ir_block_ref_t link_block_ref;
-                struct kefir_codegen_target_ir_value_ref link_value_ref;
-                for (res = kefir_codegen_target_ir_code_phi_link_iter(control_flow->code, &iter, user_instr_ref, &link_block_ref, &link_value_ref);
-                    res == KEFIR_OK;
-                    res = kefir_codegen_target_ir_code_phi_link_next(&iter, &link_block_ref, &link_value_ref)) {
-                    if (link_value_ref.instr_ref == value_ref.instr_ref && link_value_ref.aspect == value_ref.aspect) {
-                        REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) link_block_ref));
-                    }
-                }
-                if (res != KEFIR_ITERATOR_END) {
-                    REQUIRE_OK(res);
-                }
-            } else if (user_instr->operation.opcode == control_flow->code->klass->upsilon_opcode &&
-                instr->operation.opcode == control_flow->code->klass->phi_opcode &&
-                user_instr->operation.parameters[0].upsilon_ref.instr_ref == instr->instr_ref) {
+        if (user_instr->operation.opcode == control_flow->code->klass->upsilon_opcode) {
+            if (KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&user_instr->operation.parameters[0].upsilon_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
                 REQUIRE(kefir_hashset_has(&control_flow->blocks[user_instr->block_ref].successors, (kefir_hashset_key_t) instr->block_ref),
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected upsilon instruction to be placed in the predecessor block of corresponding phi instruction"));
-                REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, user_instr->instr_ref, KEFIR_ID_NONE));
-            } else {
-                REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) user_instr->block_ref));
-                REQUIRE_OK(add_to_entry(mem, &liveness->blocks[user_instr->block_ref].live_in, value_ref));
-                REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, KEFIR_ID_NONE, user_instr->instr_ref));
+                REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, LIVENESS_UPSILON, user_instr->instr_ref, KEFIR_ID_NONE));
+                REQUIRE_OK(add_to_entry(mem, &liveness->blocks[user_instr->block_ref].live_out, value_ref));
             }
+
+            if (KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&user_instr->operation.parameters[1].direct.value_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
+                if (instr->block_ref != user_instr->block_ref) {
+                    REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) user_instr->block_ref));
+                    REQUIRE_OK(add_to_entry(mem, &liveness->blocks[user_instr->block_ref].live_in, value_ref));
+                    REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, LIVENESS_NORMAL, KEFIR_ID_NONE, user_instr->instr_ref));
+                } else {
+                    REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, LIVENESS_NORMAL, instr->instr_ref, user_instr->instr_ref));
+                }
+            }
+        } else if (user_instr->operation.opcode == control_flow->code->klass->phi_opcode) {
+            struct kefir_codegen_target_ir_value_phi_link_iterator iter;
+            kefir_codegen_target_ir_block_ref_t link_block_ref;
+            struct kefir_codegen_target_ir_value_ref link_value_ref;
+            for (res = kefir_codegen_target_ir_code_phi_link_iter(control_flow->code, &iter, user_instr_ref, &link_block_ref, &link_value_ref);
+                res == KEFIR_OK;
+                res = kefir_codegen_target_ir_code_phi_link_next(&iter, &link_block_ref, &link_value_ref)) {
+                if (link_value_ref.instr_ref == value_ref.instr_ref && link_value_ref.aspect == value_ref.aspect) {
+                    kefir_bool_t has_upsilon = false;
+                    REQUIRE_OK(has_upsilon_for(control_flow->code, user_instr_ref, link_block_ref, &has_upsilon));
+                    if (!has_upsilon) {
+                        REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) link_block_ref));
+                        REQUIRE_OK(add_to_entry(mem, &liveness->blocks[link_block_ref].live_out, value_ref));
+                        REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, LIVENESS_NORMAL, user_instr->instr_ref, KEFIR_ID_NONE));
+                    }
+                }
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+        } else if (instr->block_ref != user_instr->block_ref) {
+            REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) user_instr->block_ref));
+            REQUIRE_OK(add_to_entry(mem, &liveness->blocks[user_instr->block_ref].live_in, value_ref));
+            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, LIVENESS_NORMAL, KEFIR_ID_NONE, user_instr->instr_ref));
         } else {
-            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, instr->instr_ref, user_instr->instr_ref));
+            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, LIVENESS_NORMAL, instr->instr_ref, user_instr->instr_ref));
         }
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -203,7 +243,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
         REQUIRE_OK(kefir_list_pop(mem, queue, head));
 
         if (block_ref == instr->block_ref) {
-            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, block_ref, instr->instr_ref, KEFIR_ID_NONE));
+            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, block_ref, LIVENESS_NORMAL, instr->instr_ref, KEFIR_ID_NONE));
         }
         if (block_ref == instr->block_ref || visited_map[block_ref] ||
             !kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref)) {
@@ -211,7 +251,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
         }
         visited_map[block_ref] = true;
         REQUIRE_OK(add_to_entry(mem, &liveness->blocks[block_ref].live_in, value_ref));
-        REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, block_ref, KEFIR_ID_NONE, kefir_codegen_target_ir_code_block_control_head(liveness->code, block_ref)));
+        REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, block_ref, LIVENESS_NORMAL, KEFIR_ID_NONE, kefir_codegen_target_ir_code_block_control_head(liveness->code, block_ref)));
 
         struct kefir_hashset_iterator predecessor_iter;
         kefir_result_t res;
@@ -222,7 +262,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
                 key);
             REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) predecessor_block_ref));
             REQUIRE_OK(add_to_entry(mem, &liveness->blocks[predecessor_block_ref].live_out, value_ref));
-            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, predecessor_block_ref, kefir_codegen_target_ir_code_block_control_tail(liveness->code, predecessor_block_ref), KEFIR_ID_NONE));
+            REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, predecessor_block_ref, LIVENESS_NORMAL, kefir_codegen_target_ir_code_block_control_tail(liveness->code, predecessor_block_ref), KEFIR_ID_NONE));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -287,7 +327,71 @@ kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *mem, con
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_value_liveness_at(const struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_value_ref_t value_ref,
+kefir_result_t kefir_codegen_target_ir_value_liveness_at(const struct kefir_codegen_target_ir_liveness *liveness,
+    struct kefir_codegen_target_ir_value_liveness_block_iterator *iter,
+    kefir_codegen_target_ir_value_ref_t value_ref,
+    kefir_codegen_target_ir_block_ref_t block_ref,
+    kefir_codegen_target_ir_instruction_ref_t *begin_ref_ptr, kefir_codegen_target_ir_instruction_ref_t *end_ref_ptr) {
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR liveness per-block iterator"));
+
+    iter->liveness = liveness;
+    iter->block_ref = block_ref;
+    iter->value_ref = value_ref;
+    iter->klass = LIVENESS_NORMAL;
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&liveness->values, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&iter->value_ref), &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find liveness for requested target IR value");
+    }
+    REQUIRE_OK(res);
+
+    for (; iter->klass != LIVENESS_END; iter->klass++) {
+        ASSIGN_DECL_CAST(const struct kefir_codegen_target_ir_value_liveness *, value_liveness, table_value);
+        kefir_hashtable_key_t key = (((kefir_uint64_t) iter->block_ref) << 32) | iter->klass;
+        res = kefir_hashtable_at(&value_liveness->per_block, key, &table_value);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+
+        ASSIGN_PTR(begin_ref_ptr, ((kefir_uint64_t) table_value) >> 32);
+        ASSIGN_PTR(end_ref_ptr, (kefir_uint32_t) table_value);
+        return KEFIR_OK;
+    }
+    return KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of per-block target IR value liveness iterator");
+}
+
+kefir_result_t kefir_codegen_target_ir_value_liveness_at_next(struct kefir_codegen_target_ir_value_liveness_block_iterator *iter,
+    kefir_codegen_target_ir_instruction_ref_t *begin_ref_ptr, kefir_codegen_target_ir_instruction_ref_t *end_ref_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness per-block iterator"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&iter->liveness->values, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&iter->value_ref), &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find liveness for requested target IR value");
+    }
+    REQUIRE_OK(res);
+
+    iter->klass++;
+    for (; iter->klass != LIVENESS_END; iter->klass++) {
+        ASSIGN_DECL_CAST(const struct kefir_codegen_target_ir_value_liveness *, value_liveness, table_value);
+        kefir_hashtable_key_t key = (((kefir_uint64_t) iter->block_ref) << 32) | iter->klass;
+        res = kefir_hashtable_at(&value_liveness->per_block, key, &table_value);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+
+        ASSIGN_PTR(begin_ref_ptr, ((kefir_uint64_t) table_value) >> 32);
+        ASSIGN_PTR(end_ref_ptr, (kefir_uint32_t) table_value);
+        return KEFIR_OK;
+    }
+    return KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of per-block target IR value liveness iterator");
+}
+
+kefir_result_t kefir_codegen_target_ir_value_liveness_upsilon_at(const struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_value_ref_t value_ref,
     kefir_codegen_target_ir_block_ref_t block_ref,
     kefir_codegen_target_ir_instruction_ref_t *begin_ref_ptr, kefir_codegen_target_ir_instruction_ref_t *end_ref_ptr) {
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
@@ -300,7 +404,8 @@ kefir_result_t kefir_codegen_target_ir_value_liveness_at(const struct kefir_code
     REQUIRE_OK(res);
 
     ASSIGN_DECL_CAST(const struct kefir_codegen_target_ir_value_liveness *, value_liveness, table_value);
-    res = kefir_hashtable_at(&value_liveness->per_block, (kefir_hashtable_key_t) block_ref, &table_value);
+    kefir_hashtable_key_t key = (((kefir_uint64_t) block_ref) << 32) | LIVENESS_NORMAL;
+    res = kefir_hashtable_at(&value_liveness->per_block, key, &table_value);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find liveness for target IR value in requested block");
     }
@@ -333,7 +438,7 @@ kefir_result_t kefir_codegen_target_ir_value_liveness_iter(const struct kefir_co
         res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR value liveness iterator");
     }
     REQUIRE_OK(res);
-    ASSIGN_PTR(block_ref_ptr, table_key);
+    ASSIGN_PTR(block_ref_ptr, ((kefir_uint64_t) table_key) >> 32);
     ASSIGN_PTR(begin_ref_ptr, ((kefir_uint64_t) table_value) >> 32);
     ASSIGN_PTR(end_ref_ptr, (kefir_uint32_t) table_value);
     return KEFIR_OK;
@@ -353,7 +458,7 @@ kefir_result_t kefir_codegen_target_ir_value_liveness_next(struct kefir_codegen_
         res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR value liveness iterator");
     }
     REQUIRE_OK(res);
-    ASSIGN_PTR(block_ref_ptr, table_key);
+    ASSIGN_PTR(block_ref_ptr, ((kefir_uint64_t) table_key) >> 32);
     ASSIGN_PTR(begin_ref_ptr, ((kefir_uint64_t) table_value) >> 32);
     ASSIGN_PTR(end_ref_ptr, (kefir_uint32_t) table_value);
     return KEFIR_OK;

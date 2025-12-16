@@ -541,7 +541,7 @@ __kefir_debug_loclist_section_entry_5:
     .byte 2
     .byte 4
     .uleb128 .L__kefir_func_sum_label189 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_sum_label205 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label204 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 2
@@ -555,7 +555,7 @@ __kefir_debug_loclist_section_entry_5:
 __kefir_debug_loclist_section_entry_6:
     .byte 4
     .uleb128 .L__kefir_func_sum_label8 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_sum_label175 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label163 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 4
@@ -572,8 +572,14 @@ __kefir_debug_loclist_section_entry_6:
     .byte 144
     .byte 0
     .byte 4
+    .uleb128 .L__kefir_func_sum_label170 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label175 - .L__kefir_text_section_begin
+    .byte 2
+    .byte 144
+    .byte 4
+    .byte 4
     .uleb128 .L__kefir_func_sum_label163 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_sum_label32 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label170 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 0

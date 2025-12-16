@@ -1053,6 +1053,56 @@ static kefir_result_t translate_blocks(struct rt_destructor_state *state) {
     return KEFIR_OK;
 }
 
+static kefir_result_t generate_liveness_fragment(struct rt_destructor_state *state, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t begin_ref, kefir_codegen_target_ir_instruction_ref_t end_ref, const struct kefir_codegen_target_ir_value_type *value_type, kefir_asmcmp_virtual_register_index_t vreg_idx) {
+    if (!kefir_codegen_target_ir_control_flow_is_reachable(&state->control_flow, block_ref) ||
+        kefir_codegen_target_ir_code_is_gate_block(state->code, block_ref)) {
+        return KEFIR_OK;
+    }
+
+    kefir_hashtable_value_t table_value;
+    REQUIRE_OK(kefir_hashtable_at(&state->blocks, (kefir_hashtable_key_t) block_ref, &table_value));
+    ASSIGN_DECL_CAST(struct block_state *, block_state,
+        table_value);
+
+    kefir_result_t res;
+    kefir_asmcmp_label_index_t begin_label, end_label;
+    if (begin_ref == KEFIR_ID_NONE) {
+        begin_label = block_state->asmcmp_label;
+    } else {
+        res = kefir_hashtable_at(&state->instruction_labels, (kefir_hashtable_key_t) begin_ref, &table_value);
+        if (res == KEFIR_NOT_FOUND) {
+            return KEFIR_OK;
+        }
+        REQUIRE_OK(res);
+        begin_label = (kefir_uint32_t) table_value;
+    }
+    if (end_ref == KEFIR_ID_NONE) {
+        end_label = block_state->asmcmp_end_label;
+    } else {
+        res = kefir_hashtable_at(&state->instruction_labels, (kefir_hashtable_key_t) end_ref, &table_value);
+        if (res == KEFIR_NOT_FOUND) {
+            return KEFIR_OK;
+        }
+        REQUIRE_OK(res);
+        end_label = (kefir_uint32_t) table_value;
+    }
+
+    struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator value_ref_iter;
+    kefir_codegen_target_ir_metadata_value_ref_t metadata_value_ref;
+    for (res = kefir_codegen_target_ir_code_constructor_metadata_value_ref_iter(state->constructor_metadata, &value_ref_iter, value_type->metadata.value_ref, &metadata_value_ref);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_constructor_metadata_value_ref_next(&value_ref_iter, &metadata_value_ref)) {
+        REQUIRE_OK(state->parameter->new_value_fragment(state->mem, metadata_value_ref, vreg_idx, begin_label, end_label, state->parameter->payload));
+    }
+    if (res == KEFIR_NOT_FOUND) {
+        return KEFIR_OK;
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t generate_metadata(struct rt_destructor_state *state) {
     REQUIRE(state->constructor_metadata != NULL, KEFIR_OK);
 
@@ -1078,57 +1128,9 @@ static kefir_result_t generate_metadata(struct rt_destructor_state *state) {
         for (res = kefir_codegen_target_ir_value_liveness_iter(&state->liveness, &liveness_iter, value_ref, &block_ref, &begin_ref, &end_ref);
             res == KEFIR_OK;
             res = kefir_codegen_target_ir_value_liveness_next(&liveness_iter, &block_ref, &begin_ref, &end_ref)) {
-
-            if (!kefir_codegen_target_ir_control_flow_is_reachable(&state->control_flow, block_ref) ||
-                kefir_codegen_target_ir_code_is_gate_block(state->code, block_ref)) {
-                continue;
-            }
-
-            kefir_hashtable_value_t table_value;
-            REQUIRE_OK(kefir_hashtable_at(&state->blocks, (kefir_hashtable_key_t) block_ref, &table_value));
-            ASSIGN_DECL_CAST(struct block_state *, block_state,
-                table_value);
-
-            kefir_asmcmp_label_index_t begin_label, end_label;
-            if (begin_ref == KEFIR_ID_NONE) {
-                begin_label = block_state->asmcmp_label;
-            } else {
-                res = kefir_hashtable_at(&state->instruction_labels, (kefir_hashtable_key_t) begin_ref, &table_value);
-                if (res == KEFIR_NOT_FOUND) {
-                    continue;
-                }
-                REQUIRE_OK(res);
-                begin_label = (kefir_uint32_t) table_value;
-            }
-            if (end_ref == KEFIR_ID_NONE) {
-                end_label = block_state->asmcmp_end_label;
-            } else {
-                res = kefir_hashtable_at(&state->instruction_labels, (kefir_hashtable_key_t) end_ref, &table_value);
-                if (res == KEFIR_NOT_FOUND) {
-                    continue;
-                }
-                REQUIRE_OK(res);
-                end_label = (kefir_uint32_t) table_value;
-            }
-
-            struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator value_ref_iter;
-            kefir_codegen_target_ir_metadata_value_ref_t metadata_value_ref;
-            for (res = kefir_codegen_target_ir_code_constructor_metadata_value_ref_iter(state->constructor_metadata, &value_ref_iter, value_type->metadata.value_ref, &metadata_value_ref);
-                res == KEFIR_OK;
-                res = kefir_codegen_target_ir_code_constructor_metadata_value_ref_next(&value_ref_iter, &metadata_value_ref)) {
-                REQUIRE_OK(state->parameter->new_value_fragment(state->mem, metadata_value_ref, vreg_idx, begin_label, end_label, state->parameter->payload));
-            }
-            if (res == KEFIR_NOT_FOUND) {
-                continue;
-            }
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-            }
+            REQUIRE_OK(generate_liveness_fragment(state, block_ref, begin_ref, end_ref, value_type, vreg_idx));
         }
-        if (res == KEFIR_NOT_FOUND) {
-            continue;
-        }
-        if (res != KEFIR_ITERATOR_END) {
+        if (res != KEFIR_NOT_FOUND && res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
         }
     }
