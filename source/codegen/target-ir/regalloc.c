@@ -43,9 +43,6 @@ static kefir_result_t do_regalloc(struct kefir_mem *mem, struct regalloc_state *
         kefir_codegen_target_ir_value_ref_t conflict_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interference_vertex);
         const struct kefir_codegen_target_ir_value_type *conflict_value_type = NULL;
         REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->control_flow->code, conflict_value_ref, &conflict_value_type));
-        if (conflict_value_type->kind != value_type->kind) {
-            continue;
-        }
         if (conflict_value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
             REQUIRE_OK(state->regalloc_state.reserve(mem, conflict_value_type, state->regalloc_state.payload));
         }
