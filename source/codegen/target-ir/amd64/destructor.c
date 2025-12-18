@@ -1196,11 +1196,9 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL:
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_EXTERNAL_LABEL:
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_X87:
+                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
                     // Intentionally left blank
                     break;
-
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR instruction operand");
             }
 
             if (value_ref.instr_ref == KEFIR_ID_NONE) {
@@ -1267,6 +1265,68 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
+    }
+
+    if (instr->operation.opcode == state->code->klass->upsilon_opcode) {
+        kefir_codegen_target_ir_regalloc_allocation_t allocation;
+        res = kefir_codegen_target_ir_regalloc_get(state->regalloc, instr->operation.parameters[0].upsilon_ref, &allocation);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+
+            union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+                .allocation = allocation
+            };
+            switch (entry.type) {
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
+                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length));
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
+                    REQUIRE_OK(kefir_hashset_add(state->mem, &state->current_instr.output_registers, (kefir_hashset_key_t) entry.reg.value));
+                    break;
+            }
+        }
+
+        struct kefir_graph_edge_iterator iter;
+        kefir_graph_vertex_id_t interfere_vertex_id;
+        for (res = kefir_graph_edge_iter(&state->interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[0].upsilon_ref), &interfere_vertex_id);
+            res == KEFIR_OK;
+            res = kefir_graph_edge_next(&iter, &interfere_vertex_id)) {
+            kefir_codegen_target_ir_value_ref_t interfere_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interfere_vertex_id);
+
+            kefir_codegen_target_ir_regalloc_allocation_t allocation;
+            res = kefir_codegen_target_ir_regalloc_get(state->regalloc, interfere_value_ref, &allocation);
+            if (res == KEFIR_NOT_FOUND) {
+                continue;
+            }
+            REQUIRE_OK(res);
+
+            union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+                .allocation = allocation
+            };
+            switch (entry.type) {
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
+                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length));
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
+                    REQUIRE_OK(kefir_hashset_add(state->mem, &state->current_instr.interfere_registers, (kefir_hashset_key_t) entry.reg.value));
+                    break;
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
     }
 
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
@@ -1697,6 +1757,10 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
     struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification classification;
     REQUIRE_OK(state->destructor_ops->classify_instruction(state->code, instr_ref, &classification, state->destructor_ops->payload));
 
+
+    REQUIRE_OK(materialize_attributes(state, instr_ref));
+    REQUIRE_OK(build_current_instr_state(state, instr_ref, &classification));
+
     struct kefir_codegen_target_ir_block_terminator_props terminator_props;
     REQUIRE_OK(state->code->klass->is_block_terminator(state->code, instr, &terminator_props, state->code->klass->payload));
     if (terminator_props.block_terminator && !terminator_props.function_terminator) {
@@ -1811,9 +1875,6 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
         }
         return KEFIR_OK;
     }
-
-    REQUIRE_OK(materialize_attributes(state, instr_ref));
-    REQUIRE_OK(build_current_instr_state(state, instr_ref, &classification));
 
     struct kefir_asmcmp_instruction asmcmp_instruction = {
         .opcode = classification.opcode,
