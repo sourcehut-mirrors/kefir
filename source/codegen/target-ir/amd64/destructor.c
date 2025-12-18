@@ -2093,7 +2093,14 @@ static kefir_result_t translate_block(struct destructor_state *state, kefir_code
         table_value);
 
     REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(state->mem, &state->asmcmp_ctx->context, block_state->asmcmp_label));
-
+    struct kefir_asmcmp_instruction instr = {
+        .opcode = state->destructor_ops->noop_opcode,
+        .args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+        .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+        .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE
+    };
+    REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, &state->asmcmp_ctx->context, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context), &instr, NULL));
+    
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(state->code, block_ref);
         instr_ref != KEFIR_ID_NONE;
         instr_ref = kefir_codegen_target_ir_code_control_next(state->code, instr_ref)) {
