@@ -1957,7 +1957,9 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                             case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER: {
                                 kefir_asm_amd64_xasmgen_register_t widest;
                                 REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(output_value.phreg, &widest));
-                                if (kefir_hashset_has(&state->current_instr.input_registers, (kefir_hashset_key_t) widest) ||
+                                if (input_value.type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER && input_value.phreg == output_value.phreg) {
+                                    // Intentionally left blank
+                                } else if (kefir_hashset_has(&state->current_instr.input_registers, (kefir_hashset_key_t) widest) ||
                                     kefir_hashset_has(&state->current_instr.implicit_input_registers, (kefir_hashset_key_t) widest)) {
                                     kefir_asm_amd64_xasmgen_register_t phreg;
                                     if (kefir_asm_amd64_xasmgen_register_is_floating_point(output_value.phreg)) {
@@ -1972,8 +1974,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                                     REQUIRE_OK(link_into_phreg(state, false, phreg, &input_value));
                                     REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->current_instr.tmp_output_registers, (kefir_hashtable_key_t) widest, (kefir_hashtable_value_t) phreg));
                                     output_value = KEFIR_ASMCMP_MAKE_PHREG(phreg);
-                                } else if (input_value.type != KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER ||
-                                    input_value.phreg != output_value.phreg) {
+                                } else {
                                     REQUIRE_OK(link_into_phreg(state, false, output_value.phreg, &input_value));
                                 }
                             } break;
