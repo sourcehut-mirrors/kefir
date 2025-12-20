@@ -222,6 +222,7 @@ static kefir_result_t allocate_scratch_register(struct destructor_state *state, 
 
 static kefir_result_t acquire_scratch_register(struct destructor_state *state, kefir_asm_amd64_xasmgen_register_t reg) {
     REQUIRE(kefir_hashset_has(&state->current_instr.interfere_registers, (kefir_hashset_key_t) reg), KEFIR_OK);
+    REQUIRE(!kefir_hashset_has(&state->current_instr.output_registers, (kefir_hashset_key_t) reg), KEFIR_OK);
 
     kefir_size_t spill_index;
     if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg)) {
@@ -804,6 +805,9 @@ static kefir_result_t copy_spill_area(struct destructor_state *state,
 }
 
 static kefir_result_t build_current_instr_state(struct destructor_state *state, kefir_codegen_target_ir_instruction_ref_t instr_ref, const struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification *classification) {
+    const struct kefir_codegen_target_ir_instruction *instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, instr_ref, &instr));
+
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->current_instr.interfere_registers));
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->current_instr.input_registers));
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->current_instr.implicit_input_registers));
@@ -816,17 +820,20 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
     }
 
     kefir_result_t res;
-    struct kefir_codegen_target_ir_value_iterator value_iter;
-    kefir_codegen_target_ir_value_ref_t value_ref;
-    for (res = kefir_codegen_target_ir_code_value_iter(state->code, &value_iter, instr_ref, &value_ref, NULL);
-        res == KEFIR_OK;
-        res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, NULL)) {
+    {
+        kefir_codegen_target_ir_value_ref_t empty_ref = {
+            .instr_ref = instr_ref,
+            .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_NONE
+        };
         struct kefir_graph_edge_iterator iter;
         kefir_graph_vertex_id_t interfere_vertex_id;
-        for (res = kefir_graph_edge_iter(&state->interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &interfere_vertex_id);
+        for (res = kefir_graph_edge_iter(&state->interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&empty_ref), &interfere_vertex_id);
             res == KEFIR_OK;
             res = kefir_graph_edge_next(&iter, &interfere_vertex_id)) {
             kefir_codegen_target_ir_value_ref_t interfere_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interfere_vertex_id);
+            if (interfere_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
+                continue;
+            }
 
             kefir_codegen_target_ir_regalloc_allocation_t allocation;
             res = kefir_codegen_target_ir_regalloc_get(state->regalloc, interfere_value_ref, &allocation);
@@ -857,12 +864,7 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
             REQUIRE_OK(res);
         }
     }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
 
-    const struct kefir_codegen_target_ir_instruction *instr;
-    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, instr_ref, &instr));
     if (instr->operation.opcode == state->code->klass->phi_opcode ||
         instr->operation.opcode == state->code->klass->inline_asm_opcode) {
         // Intentionally left blank
@@ -949,7 +951,7 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
         res = kefir_codegen_target_ir_code_value_next(&output_value_iter, &output_value_ref, NULL)) {
         
         kefir_codegen_target_ir_regalloc_allocation_t allocation;
-        res = kefir_codegen_target_ir_regalloc_get(state->regalloc, value_ref, &allocation);
+        res = kefir_codegen_target_ir_regalloc_get(state->regalloc, output_value_ref, &allocation);
         if (res == KEFIR_NOT_FOUND) {
             continue;
         }
@@ -1008,6 +1010,9 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
             res == KEFIR_OK;
             res = kefir_graph_edge_next(&iter, &interfere_vertex_id)) {
             kefir_codegen_target_ir_value_ref_t interfere_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interfere_vertex_id);
+            if (interfere_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
+                continue;
+            }
 
             kefir_codegen_target_ir_regalloc_allocation_t allocation;
             res = kefir_codegen_target_ir_regalloc_get(state->regalloc, interfere_value_ref, &allocation);
@@ -1110,14 +1115,14 @@ static kefir_result_t resolve_implicit_conflict(struct destructor_state *state, 
     return KEFIR_OK;
 }
 
-static kefir_result_t materialize_attributes(struct destructor_state *state, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
+static kefir_result_t materialize_attributes(struct destructor_state *state, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_asmcmp_instruction_index_t *insert_at) {
     kefir_result_t res;
     kefir_codegen_target_ir_native_id_t attribute;
     struct kefir_codegen_target_ir_code_attribute_iterator attr_iter;
     for (res = kefir_codegen_target_ir_code_instruction_attribute_iter(state->code, &attr_iter, instr_ref, &attribute);
         res == KEFIR_OK;
         res = kefir_codegen_target_ir_code_instruction_attribute_next(&attr_iter, &attribute)) {
-        REQUIRE_OK(state->destructor_ops->materialize_attribute(state->mem, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context), attribute, NULL, state->destructor_ops->payload));
+        REQUIRE_OK(state->destructor_ops->materialize_attribute(state->mem, *insert_at, attribute, insert_at, state->destructor_ops->payload));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -1774,7 +1779,6 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
     REQUIRE_OK(state->destructor_ops->classify_instruction(state->code, instr_ref, &classification, state->destructor_ops->payload));
 
 
-    REQUIRE_OK(materialize_attributes(state, instr_ref));
     REQUIRE_OK(build_current_instr_state(state, instr_ref, &classification));
 
     struct kefir_codegen_target_ir_block_terminator_props terminator_props;
@@ -2112,13 +2116,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                 if (classification.operands[i].implicit) {
                     struct kefir_asmcmp_value operand_value;
                     REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx], &operand_value));
-                    if (operand_value.type != KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER) {
-                        kefir_asm_amd64_xasmgen_register_t phreg;
-                        REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(operand_value.phreg, &phreg));
-                        if (phreg != classification.operands[i].implicit_params.phreg) {
-                            REQUIRE_OK(acquire_scratch_register(state, classification.operands[i].implicit_params.phreg));
-                        }
-                    }
+                    REQUIRE_OK(acquire_scratch_register(state, classification.operands[i].implicit_params.phreg));
                     REQUIRE_OK(load_into_allocation(state, &(struct kefir_codegen_target_ir_value_type) {
                         .kind = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_params.phreg)
                                 ? KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE
@@ -2161,13 +2159,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
 
                     struct kefir_asmcmp_value operand_value;
                     REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx], &operand_value));
-                    if (operand_value.type != KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER) {
-                        kefir_asm_amd64_xasmgen_register_t phreg;
-                        REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(operand_value.phreg, &phreg));
-                        if (phreg != classification.operands[i].implicit_params.phreg) {
-                            REQUIRE_OK(acquire_scratch_register(state, classification.operands[i].implicit_params.phreg));
-                        }
-                    }
+                    REQUIRE_OK(acquire_scratch_register(state, classification.operands[i].implicit_params.phreg));
                     REQUIRE_OK(load_into_allocation(state, &(struct kefir_codegen_target_ir_value_type) {
                         .kind = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_params.phreg)
                                 ? KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE
@@ -2246,6 +2238,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
             break;
     }
 
+    REQUIRE_OK(materialize_attributes(state, instr_ref, &insert_idx));
     REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(state->mem, &state->asmcmp_ctx->context, insert_idx,
         &asmcmp_instruction, NULL));
 

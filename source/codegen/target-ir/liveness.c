@@ -216,7 +216,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
                     if (!has_upsilon) {
                         REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) link_block_ref));
                         REQUIRE_OK(add_to_entry(mem, &liveness->blocks[link_block_ref].live_out, value_ref));
-                        REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, user_instr->block_ref, LIVENESS_NORMAL, user_instr->instr_ref, KEFIR_ID_NONE));
+                        REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, link_block_ref, LIVENESS_NORMAL, kefir_codegen_target_ir_code_block_control_tail(liveness->code, link_block_ref), KEFIR_ID_NONE));
                     }
                 }
             }
