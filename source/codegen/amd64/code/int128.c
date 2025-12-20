@@ -391,9 +391,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int128_lshift)(struct kefir_
         tmp2_vreg, arg1_lower_half_vreg, NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_shld(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG(result_upper_half_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg1_lower_half_vreg), &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
+        &KEFIR_ASMCMP_MAKE_VREG64(result_upper_half_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg1_lower_half_vreg), &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_shl(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG(tmp2_vreg), &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
+        &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg), &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         result_lower_half_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_xor(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -483,9 +483,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int128_rshift)(struct kefir_
         tmp2_vreg, arg1_upper_half_vreg, NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_shrd(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG(result_lower_half_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg1_upper_half_vreg), &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
+        &KEFIR_ASMCMP_MAKE_VREG64(result_lower_half_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg1_upper_half_vreg), &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_shr(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG(tmp2_vreg), &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
+        &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg), &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         result_upper_half_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_xor(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

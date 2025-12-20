@@ -700,7 +700,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     &KEFIR_ASMCMP_MAKE_VREG32(packed_vreg), &KEFIR_ASMCMP_MAKE_VREG(imaginary_vreg), NULL));
                 REQUIRE_OK(kefir_asmcmp_amd64_shl(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                    &KEFIR_ASMCMP_MAKE_VREG(packed_vreg), &KEFIR_ASMCMP_MAKE_UINT(32), NULL));
+                    &KEFIR_ASMCMP_MAKE_VREG64(packed_vreg), &KEFIR_ASMCMP_MAKE_UINT(32), NULL));
                 REQUIRE_OK(kefir_asmcmp_amd64_or(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                     &KEFIR_ASMCMP_MAKE_VREG(packed_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
