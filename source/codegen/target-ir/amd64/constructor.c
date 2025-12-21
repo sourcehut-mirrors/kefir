@@ -321,7 +321,7 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
         } while (0)
         case KEFIR_ASMCMP_AMD64_OPCODE(cmpxchg): {
             REQUIRE(num_of_params == 2 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
-            classification->operands[2].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[2].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
             classification->operands[2].implicit = true;
             classification->operands[2].implicit_parameter.phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
             MATCH_VARIANT(&classification->operands[2], &instruction->args[0]);

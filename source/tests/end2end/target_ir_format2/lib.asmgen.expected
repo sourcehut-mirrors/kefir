@@ -1958,6 +1958,27 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 1
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rax"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 16
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "flags"
 #                            },
 #                            "type": {
