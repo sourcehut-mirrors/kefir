@@ -34,7 +34,8 @@ const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {
     .debug_info = false,
     .valgrind_compatible_x87 = true,
     .runtime_function_generator_mode = false,
-    .enable_target_ir = false};
+    .enable_target_ir = false,
+    .enable_target_ir_direct_destruction = false};
 
 kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *mem, struct kefir_codegen *codegen,
                                           struct kefir_ir_module *ir_module) {

@@ -38,6 +38,7 @@
 #include "kefir/codegen/target-ir/transform.h"
 #include "kefir/codegen/target-ir/amd64/regalloc.h"
 #include "kefir/codegen/target-ir/format.h"
+#include "kefir/codegen/target-ir/amd64/destructor.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -1266,6 +1267,21 @@ static kefir_result_t construct_target_ir_get_native_id_by_label(kefir_asmcmp_la
     return KEFIR_OK;
 }
 
+static kefir_result_t target_ir_use_register(struct kefir_mem *mem, kefir_codegen_target_ir_physical_register_t phreg, void *payload) {
+    ASSIGN_DECL_CAST(struct kefir_codegen_amd64_stack_frame *, stack_frame,
+        payload);
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, stack_frame, (kefir_asm_amd64_xasmgen_register_t) phreg));
+    return KEFIR_OK;
+}
+
+static kefir_result_t target_ir_use_spill_space(struct kefir_mem *mem, kefir_size_t index, kefir_size_t length, void *payload) {
+    UNUSED(mem);
+    ASSIGN_DECL_CAST(struct kefir_codegen_amd64_stack_frame *, stack_frame,
+        payload);
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_ensure_spill_area(stack_frame, index + length));
+    return KEFIR_OK;
+}
+
 static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_function *func, struct kefir_codegen_target_ir_code *code, struct kefir_asmcmp_amd64 *asmcmp_code) {
     struct kefir_codegen_target_ir_code_constructor_ops ops = {
         .klass = &KEFIR_TARGET_AMD64_CODE_CONSTRUCTOR_CLASS,
@@ -1287,11 +1303,21 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build(mem, &func->target_ir.control_flow, &func->target_ir.liveness));
     REQUIRE_OK(kefir_codegen_target_ir_interference_build(mem, &func->target_ir.interference, &func->target_ir.control_flow, &func->target_ir.liveness));
 
-    REQUIRE_OK(kefir_codegen_target_ir_regalloc_run(mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.interference, NULL));
+    struct kefir_codegen_target_ir_stack_frame stack_frame = {
+        .use_register = target_ir_use_register,
+        .use_spill_space = target_ir_use_spill_space,
+        .payload = &func->stack_frame
+    };
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_run(mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.interference, codegen->config->enable_target_ir_direct_destruction ? &stack_frame : NULL));
 
     struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops destructor_ops;
     REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(func, asmcmp_code, &destructor_ops));
-    kefir_result_t res = kefir_codegen_target_ir_round_trip_destruct(mem, code, &asmcmp_code->context, func->codegen->config->debug_info ? &func->debug.target_ir_metadata : NULL, &destructor_ops.ops);
+    kefir_result_t res;
+    if (codegen->config->enable_target_ir_direct_destruction) {
+        res = kefir_codegen_target_ir_amd64_destruct(mem, code, asmcmp_code, &stack_frame, &func->target_ir.interference, &func->target_ir.regalloc, func->codegen->config->debug_info ? &func->debug.target_ir_metadata : NULL, &destructor_ops.ops);
+    } else {
+        res = kefir_codegen_target_ir_round_trip_destruct(mem, code, &asmcmp_code->context, func->codegen->config->debug_info ? &func->debug.target_ir_metadata : NULL, &destructor_ops.ops);   
+    }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_target_ir_round_trip_destructor_amd64_ops_free(mem, &destructor_ops);
         return res;
@@ -1393,7 +1419,9 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
         REQUIRE_OK(output_asm(codegen, &func->code.context, &func->xregalloc, codegen->config->debug_info));
     }
 
-    REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->xregalloc, &func->stack_frame));
+    if (!codegen->config->enable_target_ir_direct_destruction) {
+        REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->xregalloc, &func->stack_frame));
+    }
     REQUIRE_OK(kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
                                            &func->code.context));
     REQUIRE_OK(kefir_asmcmp_code_map_coalesce(mem, &func->code.context.debug_info.code_map));

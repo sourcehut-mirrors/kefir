@@ -44,6 +44,7 @@ typedef struct kefir_codegen_configuration {
     kefir_bool_t valgrind_compatible_x87;
     kefir_bool_t runtime_function_generator_mode;
     kefir_bool_t enable_target_ir;
+    kefir_bool_t enable_target_ir_direct_destruction;
 } kefir_codegen_configuration_t;
 
 typedef struct kefir_codegen {
