@@ -402,14 +402,14 @@ static kefir_result_t new_code_fragment(struct kefir_mem *mem, kefir_codegen_tar
     return KEFIR_OK;
 }
 
-static kefir_result_t new_value_fragment(struct kefir_mem *mem, kefir_codegen_target_ir_metadata_value_ref_t value_ref, kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_asmcmp_label_index_t begin_label, kefir_asmcmp_label_index_t end_label, void *payload) {
+static kefir_result_t new_value_fragment(struct kefir_mem *mem, kefir_codegen_target_ir_metadata_value_ref_t value_ref, kefir_asmcmp_debug_info_value_location_reference_t location_ref, kefir_asmcmp_label_index_t begin_label, kefir_asmcmp_label_index_t end_label, void *payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid memory allocator"));
     ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops *, ops,
         payload);
     REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid target IR destructor amd64 ops"));
 
     if (kefir_opt_code_debug_info_is_active_ref(&ops->function->function->debug_info, value_ref)) {
-        REQUIRE_OK(kefir_asmcmp_value_map_add_fragment(mem, &ops->debug_value_map, value_ref, (kefir_asmcmp_debug_info_value_location_reference_t) vreg_idx, begin_label, end_label));
+        REQUIRE_OK(kefir_asmcmp_value_map_add_fragment(mem, &ops->debug_value_map, value_ref, location_ref, begin_label, end_label));
     }
     return KEFIR_OK;
 }

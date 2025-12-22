@@ -1092,7 +1092,7 @@ static kefir_result_t generate_liveness_fragment(struct rt_destructor_state *sta
     for (res = kefir_codegen_target_ir_code_constructor_metadata_value_ref_iter(state->constructor_metadata, &value_ref_iter, value_type->metadata.value_ref, &metadata_value_ref);
         res == KEFIR_OK;
         res = kefir_codegen_target_ir_code_constructor_metadata_value_ref_next(&value_ref_iter, &metadata_value_ref)) {
-        REQUIRE_OK(state->parameter->new_value_fragment(state->mem, metadata_value_ref, vreg_idx, begin_label, end_label, state->parameter->payload));
+        REQUIRE_OK(state->parameter->new_value_fragment(state->mem, metadata_value_ref, (kefir_asmcmp_debug_info_value_location_reference_t) vreg_idx, begin_label, end_label, state->parameter->payload));
     }
     if (res == KEFIR_NOT_FOUND) {
         return KEFIR_OK;
