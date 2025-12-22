@@ -29,6 +29,7 @@
 
 typedef kefir_uint64_t kefir_asmcmp_debug_info_code_reference_t;
 typedef kefir_uint64_t kefir_asmcmp_debug_info_value_reference_t;
+typedef kefir_uint64_t kefir_asmcmp_debug_info_value_location_reference_t;
 
 typedef struct kefir_asmcmp_debug_info_source_map {
     struct kefir_hashtree map;
@@ -49,8 +50,37 @@ typedef struct kefir_asmcmp_debug_info_code_map {
     struct kefir_hashtable fragments;
 } kefir_asmcmp_debug_info_code_map_t;
 
+typedef enum kefir_asmcmp_debug_info_value_location_type {
+    KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_NONE,
+    KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_REGISTER,
+    KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_SPILL_AREA,
+    KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_LOCAL_VARIABLE,
+    KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_IMMEDIATE,
+    KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_MEMORY_POINTER
+} kefir_asmcmp_debug_info_value_location_type_t;
+
+typedef struct kefir_asmcmp_debug_info_value_location {
+    kefir_asmcmp_debug_info_value_location_type_t type;
+    union {
+        kefir_asmcmp_physical_register_index_t reg;
+        struct {
+            kefir_size_t index;
+            kefir_size_t length;
+        } spill_area;
+        struct {
+            kefir_id_t identifier;
+            kefir_int64_t offset;
+        } local_variable;
+        kefir_int64_t immediate;
+        struct {
+            kefir_asmcmp_physical_register_index_t base_reg;
+            kefir_int64_t offset;
+        } memory;
+    };
+} kefir_asmcmp_debug_info_value_location_t;
+
 typedef struct kefir_asmcmp_debug_info_value_fragment {
-    kefir_asmcmp_virtual_register_index_t vreg_idx;
+    kefir_asmcmp_debug_info_value_location_reference_t location_ref;
     kefir_asmcmp_label_index_t begin_label;
     kefir_asmcmp_label_index_t end_label;
 } kefir_asmcmp_debug_info_value_fragment_t;
@@ -91,7 +121,7 @@ kefir_result_t kefir_asmcmp_debug_info_source_map_at(const struct kefir_asmcmp_d
                                           const struct kefir_source_location **);
 
 kefir_result_t kefir_asmcmp_code_map_add_fragment(struct kefir_mem *, struct kefir_asmcmp_debug_info_code_map *, kefir_asmcmp_debug_info_code_reference_t, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t);
-kefir_result_t kefir_asmcmp_value_map_add_fragment(struct kefir_mem *, struct kefir_asmcmp_debug_info_value_map *, kefir_asmcmp_debug_info_value_reference_t, kefir_asmcmp_virtual_register_index_t, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t);
+kefir_result_t kefir_asmcmp_value_map_add_fragment(struct kefir_mem *, struct kefir_asmcmp_debug_info_value_map *, kefir_asmcmp_debug_info_value_reference_t, kefir_asmcmp_debug_info_value_location_reference_t, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t);
 
 kefir_result_t kefir_asmcmp_code_map_coalesce(struct kefir_mem *, struct kefir_asmcmp_debug_info_code_map *);
 

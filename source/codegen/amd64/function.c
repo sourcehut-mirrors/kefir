@@ -557,6 +557,69 @@ static kefir_result_t alias_return_space_allocation(struct kefir_codegen_amd64_f
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_amd64_function_location_map_get(const struct kefir_codegen_amd64_function *func, kefir_asmcmp_debug_info_value_location_reference_t location_ref, struct kefir_asmcmp_debug_info_value_location *location) {
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen function"));
+    ASSIGN_DECL_CAST(kefir_asmcmp_debug_info_value_location_reference_t, vreg_idx, location_ref);
+    REQUIRE(location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp debug value location"));
+
+    const struct kefir_asmcmp_virtual_register *vreg;
+    kefir_result_t res = kefir_asmcmp_virtual_register_get(&func->code.context, vreg_idx, &vreg);
+    if (res == KEFIR_NOT_FOUND) {
+        location->type = KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_NONE;
+        return KEFIR_OK;
+    }
+    REQUIRE_OK(res);
+
+    const struct kefir_codegen_amd64_register_allocation *reg_allocation;
+    res = kefir_codegen_amd64_xregalloc_allocation_of(
+        &func->xregalloc, vreg_idx,
+        &reg_allocation);
+    if (res == KEFIR_NOT_FOUND) {
+        location->type = KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_NONE;
+        return KEFIR_OK;
+    }
+    REQUIRE_OK(res);
+
+    switch (reg_allocation->type) {
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
+            location->type = KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_NONE;
+            break;
+
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
+            location->type = KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_REGISTER;
+            location->reg = reg_allocation->direct_reg;
+            break;
+
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
+            location->type = KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_SPILL_AREA;
+            location->spill_area.index = reg_allocation->spill_area.index;
+            location->spill_area.length = reg_allocation->spill_area.length;
+            break;
+
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
+            location->type = KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_LOCAL_VARIABLE;
+            location->local_variable.identifier = vreg->parameters.local_variable.identifier;
+            location->local_variable.offset = vreg->parameters.local_variable.offset;
+            break;
+
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
+            location->type = KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_IMMEDIATE;
+            location->immediate = vreg->parameters.immediate_int;
+            break;
+
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
+            location->type = KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_MEMORY_POINTER;
+            location->memory.base_reg = vreg->parameters.memory.base_reg;
+            location->memory.offset = vreg->parameters.memory.offset;
+            break;
+
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected allocation of asmcmp virtual register");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
     kefir_bool_t implicit_parameter_present;
     kefir_asm_amd64_xasmgen_register_t implicit_parameter_reg;
@@ -838,7 +901,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             }
 
             if (begin_label != KEFIR_ASMCMP_INDEX_NONE && end_label != KEFIR_ASMCMP_INDEX_NONE && begin_label != end_label) {
-                REQUIRE_OK(kefir_asmcmp_value_map_add_fragment(mem, &func->code.context.debug_info.value_map, (kefir_asmcmp_debug_info_value_reference_t) instr_ref, vreg_idx, begin_label, end_label));
+                REQUIRE_OK(kefir_asmcmp_value_map_add_fragment(mem, &func->code.context.debug_info.value_map, (kefir_asmcmp_debug_info_value_reference_t) instr_ref, (kefir_asmcmp_debug_info_value_location_reference_t) vreg_idx, begin_label, end_label));
             }
         }
         if (res != KEFIR_ITERATOR_END) {

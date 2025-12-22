@@ -252,11 +252,10 @@ kefir_result_t kefir_asmcmp_code_map_add_fragment(struct kefir_mem *mem, struct 
 }
 
 kefir_result_t kefir_asmcmp_value_map_add_fragment(struct kefir_mem *mem, struct kefir_asmcmp_debug_info_value_map *value_map,
-    kefir_asmcmp_debug_info_value_reference_t value_reference, kefir_asmcmp_virtual_register_index_t vreg_idx,
+    kefir_asmcmp_debug_info_value_reference_t value_reference, kefir_asmcmp_debug_info_value_location_reference_t location_ref,
     kefir_asmcmp_label_index_t begin_label, kefir_asmcmp_label_index_t end_label) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(value_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info value map"));
-    REQUIRE(vreg_idx != KEFIR_ASMCMP_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp virtual register index"));
     REQUIRE(begin_label != KEFIR_ASMCMP_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp label index"));
     REQUIRE(end_label != KEFIR_ASMCMP_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp label index"));
 
@@ -287,7 +286,7 @@ kefir_result_t kefir_asmcmp_value_map_add_fragment(struct kefir_mem *mem, struct
         entry->fragments_capacity = new_capacity;
     }
 
-    entry->fragments[entry->fragments_length].vreg_idx = vreg_idx;
+    entry->fragments[entry->fragments_length].location_ref = location_ref;
     entry->fragments[entry->fragments_length].begin_label = begin_label;
     entry->fragments[entry->fragments_length].end_label = end_label;
     entry->fragments_length++;

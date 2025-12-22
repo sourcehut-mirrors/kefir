@@ -680,6 +680,8 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 kefir_result_t kefir_codegen_amd64_do_call_direct(
     struct kefir_mem *, struct kefir_codegen_amd64_function *, const char *, kefir_asmcmp_instruction_index_t *);
 
+kefir_result_t kefir_codegen_amd64_function_location_map_get(const struct kefir_codegen_amd64_function *, kefir_asmcmp_debug_info_value_location_reference_t, struct kefir_asmcmp_debug_info_value_location *);
+
 #define BIGINT_GET_SET_SIGNED_INTEGER_FN "__kefir_bigint_set_signed_integer"
 #define BIGINT_GET_SET_UNSIGNED_INTEGER_FN "__kefir_bigint_set_unsigned_integer"
 #define BIGINT_CAST_SIGNED_FN "__kefir_bigint_cast_signed"
