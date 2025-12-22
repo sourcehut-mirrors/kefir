@@ -140,21 +140,19 @@ static kefir_result_t add_value_liveness(struct kefir_mem *mem, struct kefir_cod
 
 static kefir_result_t has_upsilon_for(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_block_ref_t block_ref, kefir_bool_t *has_upsilon) {
     *has_upsilon = false;
-    kefir_result_t res;
-    kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
-    struct kefir_codegen_target_ir_use_iterator use_iter;
-    for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, &use_instr_ref, NULL);
-        res == KEFIR_OK;
-        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
-        const struct kefir_codegen_target_ir_instruction *use_instr;
-        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &use_instr));
-        if (use_instr->operation.opcode == code->klass->upsilon_opcode && use_instr->block_ref == block_ref) {
-            *has_upsilon = true;
-            return KEFIR_OK;
+
+    kefir_codegen_target_ir_instruction_ref_t iter_ref = kefir_codegen_target_ir_code_block_control_tail(code, block_ref);
+    iter_ref = kefir_codegen_target_ir_code_control_prev(code, iter_ref);
+    for (; iter_ref != KEFIR_ID_NONE && !*has_upsilon; iter_ref = kefir_codegen_target_ir_code_control_prev(code, iter_ref)) {
+        const struct kefir_codegen_target_ir_instruction *iter_instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, iter_ref, &iter_instr));
+        if (iter_instr->operation.opcode != code->klass->upsilon_opcode) {
+            break;
         }
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
+
+        if (iter_instr->operation.parameters[0].upsilon_ref.instr_ref == instr_ref) {
+            *has_upsilon = true;
+        }
     }
 
     return KEFIR_OK;
