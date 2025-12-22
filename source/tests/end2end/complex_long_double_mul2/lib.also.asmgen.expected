@@ -10,7 +10,7 @@ mul:
 .L__kefir_text_func_mul_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx

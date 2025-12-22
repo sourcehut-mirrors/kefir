@@ -48,8 +48,8 @@ copy16:
 
 copy32:
 .L__kefir_text_func_copy32_begin:
-    movq src32@GOTPCREL(%rip), %rax
-    movl (%rax), %eax
+    movq src32@GOTPCREL(%rip), %rcx
+    movl (%rcx), %eax
     movq dst32@GOTPCREL(%rip), %rcx
     xchgl (%rcx), %eax
     ret
@@ -57,8 +57,8 @@ copy32:
 
 copy64:
 .L__kefir_text_func_copy64_begin:
-    movq src64@GOTPCREL(%rip), %rax
-    movq (%rax), %rax
+    movq src64@GOTPCREL(%rip), %rcx
+    movq (%rcx), %rax
     movq dst64@GOTPCREL(%rip), %rcx
     xchgq (%rcx), %rax
     ret

@@ -60,7 +60,8 @@ int_int:
 
 char_int:
 .L__kefir_text_func_char_int_begin:
-    movsx %dil, %rax
+    mov %rdi, %rax
+    movsx %al, %rax
     ret
 .L__kefir_text_func_char_int_end:
 
@@ -84,19 +85,22 @@ char_char:
 
 char_uint:
 .L__kefir_text_func_char_uint_begin:
-    movsx %dil, %rax
+    mov %rdi, %rax
+    movsx %al, %rax
     ret
 .L__kefir_text_func_char_uint_end:
 
 short_int:
 .L__kefir_text_func_short_int_begin:
-    movsx %di, %rax
+    mov %rdi, %rax
+    movsx %ax, %rax
     ret
 .L__kefir_text_func_short_int_end:
 
 uchar_int:
 .L__kefir_text_func_uchar_int_begin:
-    movzx %dil, %rax
+    mov %rdi, %rax
+    movzx %al, %rax
     ret
 .L__kefir_text_func_uchar_int_end:
 
@@ -108,7 +112,8 @@ uint_uint:
 
 char_short:
 .L__kefir_text_func_char_short_begin:
-    movsx %dil, %rax
+    mov %rdi, %rax
+    movsx %al, %rax
     ret
 .L__kefir_text_func_char_short_end:
 
@@ -120,7 +125,8 @@ char_uchar:
 
 short_uint:
 .L__kefir_text_func_short_uint_begin:
-    movsx %di, %rax
+    mov %rdi, %rax
+    movsx %ax, %rax
     ret
 .L__kefir_text_func_short_uint_end:
 
@@ -132,19 +138,22 @@ uchar_char:
 
 uchar_uint:
 .L__kefir_text_func_uchar_uint_begin:
-    movzx %dil, %rax
+    mov %rdi, %rax
+    movzx %al, %rax
     ret
 .L__kefir_text_func_uchar_uint_end:
 
 ushort_int:
 .L__kefir_text_func_ushort_int_begin:
-    movzx %di, %rax
+    mov %rdi, %rax
+    movzx %ax, %rax
     ret
 .L__kefir_text_func_ushort_int_end:
 
 char_ushort:
 .L__kefir_text_func_char_ushort_begin:
-    movsx %dil, %rax
+    mov %rdi, %rax
+    movsx %al, %rax
     ret
 .L__kefir_text_func_char_ushort_end:
 
@@ -156,7 +165,8 @@ short_short:
 
 uchar_short:
 .L__kefir_text_func_uchar_short_begin:
-    movzx %dil, %rax
+    mov %rdi, %rax
+    movzx %al, %rax
     ret
 .L__kefir_text_func_uchar_short_end:
 
@@ -168,7 +178,8 @@ uchar_uchar:
 
 ushort_uint:
 .L__kefir_text_func_ushort_uint_begin:
-    movzx %di, %rax
+    mov %rdi, %rax
+    movzx %ax, %rax
     ret
 .L__kefir_text_func_ushort_uint_end:
 
@@ -186,7 +197,8 @@ short_ushort:
 
 uchar_ushort:
 .L__kefir_text_func_uchar_ushort_begin:
-    movzx %dil, %rax
+    mov %rdi, %rax
+    movzx %al, %rax
     ret
 .L__kefir_text_func_uchar_ushort_end:
 

@@ -18,8 +18,8 @@ test2:
     movl $2, -24(%rbp)
     movl %ebx, -20(%rbp)
     mov $2, %rdi
-    leaq -28(%rbp), %rsi
-    leaq -24(%rbp), %rdx
+    lea -28(%rbp), %rsi
+    lea -24(%rbp), %rdx
     xor %eax, %eax
     call test@PLT
     test %ebx, %ebx
@@ -28,19 +28,19 @@ test2:
     movl $11, -16(%rbp)
     movl $12, -12(%rbp)
     mov $5, %rdi
-    leaq -28(%rbp), %rsi
-    leaq -24(%rbp), %rdx
-    leaq -20(%rbp), %rcx
-    leaq -16(%rbp), %r8
-    leaq -12(%rbp), %r9
+    lea -28(%rbp), %rsi
+    lea -24(%rbp), %rdx
+    lea -20(%rbp), %rcx
+    lea -16(%rbp), %r8
+    lea -12(%rbp), %r9
     xor %eax, %eax
     call test@PLT
 .L__kefir_func_test2_label4:
     movl $100, -32(%rbp)
     mov $3, %rdi
-    leaq -28(%rbp), %rsi
-    leaq -24(%rbp), %rdx
-    leaq -32(%rbp), %rcx
+    lea -28(%rbp), %rsi
+    lea -24(%rbp), %rdx
+    lea -32(%rbp), %rcx
     xor %eax, %eax
     call test@PLT
     lea -8(%rbp), %rsp
@@ -51,10 +51,10 @@ test2:
     movl $3, -16(%rbp)
     movl $4, -20(%rbp)
     mov $4, %rdi
-    leaq -28(%rbp), %rsi
-    leaq -24(%rbp), %rdx
-    leaq -16(%rbp), %rcx
-    leaq -20(%rbp), %r8
+    lea -28(%rbp), %rsi
+    lea -24(%rbp), %rdx
+    lea -16(%rbp), %rcx
+    lea -20(%rbp), %r8
     xor %eax, %eax
     call test@PLT
     movl $0, -12(%rbp)
@@ -64,11 +64,11 @@ test2:
     jge .L__kefir_func_test2_label4
 .L__kefir_func_test2_label16:
     mov $5, %rdi
-    leaq -28(%rbp), %rsi
-    leaq -24(%rbp), %rdx
-    leaq -16(%rbp), %rcx
-    leaq -20(%rbp), %r8
-    leaq -12(%rbp), %r9
+    lea -28(%rbp), %rsi
+    lea -24(%rbp), %rdx
+    lea -16(%rbp), %rcx
+    lea -20(%rbp), %r8
+    lea -12(%rbp), %r9
     xor %eax, %eax
     call test@PLT
     movl -12(%rbp), %eax

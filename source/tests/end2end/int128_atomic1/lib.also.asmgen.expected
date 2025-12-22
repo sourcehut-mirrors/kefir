@@ -25,41 +25,39 @@ add_i128:
     push %r13
     push %r14
     push %r15
-    sub $56, %rsp
-    mov %rsi, %r13
-    mov %rdx, %r14
-    mov %rdi, %r15
+    sub $72, %rsp
+    mov %rsi, %rbx
+    mov %rdx, %r12
+    mov %rdi, %r13
 .L__kefir_func_add_i128_label2:
-    leaq -96(%rbp), %rax
-    mov %rax, %rdx
-    mov %r15, %rsi
+    lea -96(%rbp), %rdx
+    mov %r13, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     mov -96(%rbp), %rax
-    mov -88(%rbp), %rdx
-    mov %rax, -96(%rbp)
-    mov %rdx, -88(%rbp)
-    mov %rax, %rbx
-    add %r13, %rbx
-    mov %rdx, %r12
-    adc %r14, %r12
-    mov %rbx, -80(%rbp)
-    mov %r12, -72(%rbp)
-    movdqu -96(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    mov %r15, %rsi
+    mov -88(%rbp), %rcx
+    mov %rax, -80(%rbp)
+    mov %rcx, -72(%rbp)
+    mov %rax, %r14
+    add %rbx, %r14
+    mov %rcx, %r15
+    adc %r12, %r15
+    mov %r14, -96(%rbp)
+    mov %r15, -88(%rbp)
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    mov %r13, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
-    lea -96(%rbp), %rdx
-    leaq -80(%rbp), %rax
-    mov %rax, %rcx
+    lea -64(%rbp), %rdx
+    lea -96(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add_i128_label2
-    mov %rbx, %rax
-    mov %r12, %rdx
+    mov %r14, %rax
+    mov %r15, %rdx
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -80,41 +78,39 @@ add_u128:
     push %r13
     push %r14
     push %r15
-    sub $56, %rsp
-    mov %rsi, %r13
-    mov %rdx, %r14
-    mov %rdi, %r15
+    sub $72, %rsp
+    mov %rsi, %rbx
+    mov %rdx, %r12
+    mov %rdi, %r13
 .L__kefir_func_add_u128_label2:
-    leaq -96(%rbp), %rax
-    mov %rax, %rdx
-    mov %r15, %rsi
+    lea -96(%rbp), %rdx
+    mov %r13, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     mov -96(%rbp), %rax
-    mov -88(%rbp), %rdx
-    mov %rax, -96(%rbp)
-    mov %rdx, -88(%rbp)
-    mov %rax, %rbx
-    add %r13, %rbx
-    mov %rdx, %r12
-    adc %r14, %r12
-    mov %rbx, -80(%rbp)
-    mov %r12, -72(%rbp)
-    movdqu -96(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    mov %r15, %rsi
+    mov -88(%rbp), %rcx
+    mov %rax, -80(%rbp)
+    mov %rcx, -72(%rbp)
+    mov %rax, %r14
+    add %rbx, %r14
+    mov %rcx, %r15
+    adc %r12, %r15
+    mov %r14, -96(%rbp)
+    mov %r15, -88(%rbp)
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    mov %r13, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
-    lea -96(%rbp), %rdx
-    leaq -80(%rbp), %rax
-    mov %rax, %rcx
+    lea -64(%rbp), %rdx
+    lea -96(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add_u128_label2
-    mov %rbx, %rax
-    mov %r12, %rdx
+    mov %r14, %rax
+    mov %r15, %rdx
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -131,14 +127,15 @@ load_i128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
-    mov %rax, %rdx
-    mov %rdi, %rsi
+    mov %rdi, %rax
+    lea -16(%rbp), %rdx
+    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     mov -16(%rbp), %rax
-    mov -8(%rbp), %rdx
+    mov -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -149,14 +146,15 @@ load_u128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
-    mov %rax, %rdx
-    mov %rdi, %rsi
+    mov %rdi, %rax
+    lea -16(%rbp), %rdx
+    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     mov -16(%rbp), %rax
-    mov -8(%rbp), %rdx
+    mov -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -167,11 +165,13 @@ store_i128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, -32(%rbp)
-    mov %rdx, -24(%rbp)
-    mov %rdi, %rsi
-    leaq -32(%rbp), %rax
-    mov %rax, %rdx
+    mov %rsi, %rax
+    mov %rdx, %rcx
+    mov %rdi, %rdx
+    mov %rax, -16(%rbp)
+    mov %rcx, -8(%rbp)
+    mov %rdx, %rsi
+    lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -185,11 +185,13 @@ store_u128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, -32(%rbp)
-    mov %rdx, -24(%rbp)
-    mov %rdi, %rsi
-    leaq -32(%rbp), %rax
-    mov %rax, %rdx
+    mov %rsi, %rax
+    mov %rdx, %rcx
+    mov %rdi, %rdx
+    mov %rax, -16(%rbp)
+    mov %rcx, -8(%rbp)
+    mov %rdx, %rsi
+    lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT

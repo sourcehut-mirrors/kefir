@@ -12,16 +12,23 @@
 .L__kefir_text_section_begin:
 clear:
 .L__kefir_text_func_clear_begin:
-    xor %eax, %eax
-    xchgb %al, (%rdi)
+    mov %rdi, %rax
+    xor %ecx, %ecx
+    mov %rcx, %rdx
+    xchgb %dl, (%rax)
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_clear_end:
 
 test_and_set:
 .L__kefir_text_func_test_and_set_begin:
-    mov $1, %rax
-    xchgb (%rdi), %al
+    mov %rdi, %rax
+    mov $1, %rcx
+    mov %rcx, %rdx
+    xchgb (%rax), %dl
+    mov %rdx, %rax
     test %al, %al
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     ret

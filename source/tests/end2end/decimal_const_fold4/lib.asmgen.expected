@@ -26,7 +26,8 @@ dec32_to_unsigned:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -42,7 +43,8 @@ dec64_to_unsigned:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -58,7 +60,8 @@ dec32_to_signed:
     movl $4294967295, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -74,7 +77,8 @@ dec64_to_signed:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -90,7 +94,8 @@ dec128_to_unsigned:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -106,7 +111,8 @@ dec128_to_signed:
     movl $4294967295, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -21,8 +21,10 @@ or1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movb %sil, -1(%rbp)
-    movb %dil, -2(%rbp)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movb %al, -1(%rbp)
+    movb %cl, -2(%rbp)
     movb -2(%rbp), %al
     movb -1(%rbp), %cl
     shl $58, %rax
@@ -40,8 +42,10 @@ or2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movw %si, -2(%rbp)
-    movw %di, -4(%rbp)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movw %ax, -2(%rbp)
+    movw %cx, -4(%rbp)
     movw -4(%rbp), %ax
     movw -2(%rbp), %cx
     shl $50, %rax
@@ -59,8 +63,10 @@ or3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movl %eax, -4(%rbp)
+    movl %ecx, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     shl $35, %rax
@@ -78,8 +84,10 @@ or4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rsi, -8(%rbp)
-    movq %rdi, -16(%rbp)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movq %rax, -8(%rbp)
+    movq %rcx, -16(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rcx
     shl $6, %rax
@@ -96,29 +104,28 @@ or5:
 .L__kefir_text_func_or5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
-    movq %rdx, -64(%rbp)
-    movq %rcx, -56(%rbp)
-    movq %rdi, -48(%rbp)
-    movq %rsi, -40(%rbp)
-    movdqu -64(%rbp), %xmm0
+    sub $112, %rsp
+    movq %rdx, -112(%rbp)
+    movq %rcx, -104(%rbp)
+    movq %rdi, -96(%rbp)
+    movq %rsi, -88(%rbp)
+    movdqu -112(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    movdqu -48(%rbp), %xmm0
+    movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
-    movdqu -96(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    leaq -96(%rbp), %rax
-    mov %rax, %rdi
-    leaq -80(%rbp), %rax
-    mov %rax, %rsi
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
+    lea -48(%rbp), %rdi
+    lea -64(%rbp), %rsi
     mov $120, %rdx
     call __kefir_bigint_or
-    movq -96(%rbp), %rax
-    movq -88(%rbp), %rdx
+    movq -48(%rbp), %rax
+    movq -40(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -183,10 +190,8 @@ or6:
     movq %rax, -104(%rbp)
     movq -176(%rbp), %rax
     movq %rax, -96(%rbp)
-    leaq -128(%rbp), %rax
-    mov %rax, %rdi
-    leaq -168(%rbp), %rax
-    mov %rax, %rsi
+    lea -128(%rbp), %rdi
+    lea -168(%rbp), %rsi
     mov $310, %rdx
     call __kefir_bigint_or
     mov %rbx, %rax
@@ -218,27 +223,33 @@ __kefir_bigint_or:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    movq %rdx, -48(%rbp)
-    movq %rsi, -32(%rbp)
-    movq %rdi, -40(%rbp)
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rdi, %rdx
+    movq %rax, -48(%rbp)
+    movq %rcx, -32(%rbp)
+    movq %rdx, -40(%rbp)
     movq -48(%rbp), %rax
-    mov $8, %rdx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    imul %rcx, %rdx
-    add %rdx, %rax
-    mov $1, %rdx
-    movsx %edx, %rcx
-    sub %rcx, %rax
-    mov $8, %rdx
+    mov $8, %edx
     movsx %edx, %rcx
     mov $1, %rdx
     mov %rdx, %rsi
     imul %rcx, %rsi
+    mov %rsi, %rcx
+    add %rcx, %rax
+    mov $1, %edx
+    movsx %edx, %rcx
+    sub %rcx, %rax
+    mov $8, %edx
+    movsx %edx, %rcx
+    mov $1, %rdx
+    mov %rdx, %rsi
+    imul %rcx, %rsi
+    mov %rsi, %rcx
     mov $0, %rdx
-    div %rsi
+    div %rcx
     movq %rax, -24(%rbp)
-    mov $0, %rcx
+    mov $0, %ecx
     movsx %ecx, %rax
     movq %rax, -16(%rbp)
 .L__kefir_runtime_func___kefir_bigint_or_label2:
@@ -249,6 +260,7 @@ __kefir_bigint_or:
     mov %rdx, %rax
     setb %al
     test %eax, %eax
+    mov %rcx, %rax
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_or_label10
@@ -261,16 +273,18 @@ __kefir_bigint_or:
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
-    movb (%rax), %cl
-    mov %rcx, %rax
+    mov %rcx, %rdx
+    movb (%rax), %dl
+    mov %rdx, %rax
     and $255, %rax
     movl %eax, -8(%rbp)
     movq -32(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
-    movb (%rax), %cl
-    mov %rcx, %rax
+    mov %rcx, %rdx
+    movb (%rax), %dl
+    mov %rdx, %rax
     and $255, %rax
     movl %eax, -4(%rbp)
     movl -8(%rbp), %eax

@@ -14,17 +14,16 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    movsx %dil, %rcx
-    mov %ecx, %eax
-    mov %rax, %rdx
-    add %eax, %edx
-    sar $31, %ecx
+    mov %rdi, %rax
+    movsx %al, %rax
+    mov %eax, %ecx
+    add %ecx, %ecx
+    sar $31, %eax
+    mov %rcx, %rdx
+    xor %eax, %edx
     mov %rdx, %rax
-    xor %ecx, %eax
     or $1, %eax
-    mov %rax, %rcx
-    bsr %eax, %ecx
-    mov %rcx, %rax
+    bsr %eax, %eax
     xor $31, %eax
     sub $24, %eax
     ret
@@ -32,17 +31,16 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    movsx %di, %rcx
-    mov %ecx, %eax
-    mov %rax, %rdx
-    add %eax, %edx
-    sar $31, %ecx
+    mov %rdi, %rax
+    movsx %ax, %rax
+    mov %eax, %ecx
+    add %ecx, %ecx
+    sar $31, %eax
+    mov %rcx, %rdx
+    xor %eax, %edx
     mov %rdx, %rax
-    xor %ecx, %eax
     or $1, %eax
-    mov %rax, %rcx
-    bsr %eax, %ecx
-    mov %rcx, %rax
+    bsr %eax, %eax
     xor $31, %eax
     sub $16, %eax
     ret
@@ -50,16 +48,15 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %edi, %eax
-    mov %rax, %rcx
-    add %eax, %ecx
-    sar $31, %edi
-    mov %rcx, %rax
-    xor %edi, %eax
+    mov %rdi, %rax
+    mov %eax, %ecx
+    add %ecx, %ecx
+    sar $31, %eax
+    mov %rcx, %rdx
+    xor %eax, %edx
+    mov %rdx, %rax
     or $1, %eax
-    mov %rax, %rcx
-    bsr %eax, %ecx
-    mov %rcx, %rax
+    bsr %eax, %eax
     xor $31, %eax
     ret
 .L__kefir_text_func_test3_end:
@@ -68,14 +65,13 @@ test4:
 .L__kefir_text_func_test4_begin:
     mov %rdi, %rax
     mov %rax, %rcx
-    add %rax, %rcx
-    sar $63, %rdi
-    mov %rcx, %rax
-    xor %rdi, %rax
+    add %rcx, %rcx
+    sar $63, %rax
+    mov %rcx, %rdx
+    xor %rax, %rdx
+    mov %rdx, %rax
     or $1, %rax
-    mov %rax, %rcx
-    bsr %rax, %rcx
-    mov %rcx, %rax
+    bsr %rax, %rax
     xor $63, %eax
     ret
 .L__kefir_text_func_test4_end:

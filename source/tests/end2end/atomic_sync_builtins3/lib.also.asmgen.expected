@@ -26,8 +26,9 @@ test_sync_bool_compare_and_swap16:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdx, %rax
-    movw %si, -2(%rbp)
+    mov %rsi, %rcx
     mov %rdi, %rdx
+    movw %cx, -2(%rbp)
     mov %rax, %rcx
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
@@ -47,8 +48,9 @@ test_sync_bool_compare_and_swap32:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdx, %rax
-    movl %esi, -4(%rbp)
+    mov %rsi, %rcx
     mov %rdi, %rdx
+    movl %ecx, -4(%rbp)
     mov %rax, %rcx
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
@@ -68,8 +70,9 @@ test_sync_bool_compare_and_swap64:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdx, %rax
-    movq %rsi, -8(%rbp)
+    mov %rsi, %rcx
     mov %rdi, %rdx
+    movq %rcx, -8(%rbp)
     mov %rax, %rcx
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
@@ -89,8 +92,9 @@ test_sync_bool_compare_and_swap8:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdx, %rax
-    movb %sil, -1(%rbp)
+    mov %rsi, %rcx
     mov %rdi, %rdx
+    movb %cl, -1(%rbp)
     mov %rax, %rcx
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
@@ -110,8 +114,9 @@ test_sync_val_compare_and_swap8:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdx, %rax
-    movb %sil, -1(%rbp)
+    mov %rsi, %rcx
     mov %rdi, %rdx
+    movb %cl, -1(%rbp)
     mov %rax, %rcx
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
@@ -132,8 +137,9 @@ test_sync_val_compare_and_swap16:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdx, %rax
-    movw %si, -2(%rbp)
+    mov %rsi, %rcx
     mov %rdi, %rdx
+    movw %cx, -2(%rbp)
     mov %rax, %rcx
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
@@ -154,8 +160,9 @@ test_sync_val_compare_and_swap32:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdx, %rax
-    movl %esi, -4(%rbp)
+    mov %rsi, %rcx
     mov %rdi, %rdx
+    movl %ecx, -4(%rbp)
     mov %rax, %rcx
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
@@ -176,8 +183,9 @@ test_sync_val_compare_and_swap64:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdx, %rax
-    movq %rsi, -8(%rbp)
+    mov %rsi, %rcx
     mov %rdi, %rdx
+    movq %rcx, -8(%rbp)
     mov %rax, %rcx
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)

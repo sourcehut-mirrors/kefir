@@ -10,17 +10,17 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    shl $60, %rdi
-    shr $60, %rdi
     mov %rdi, %rax
+    shl $60, %rax
+    shr $60, %rax
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    shl $59, %rdi
-    shr $59, %rdi
     mov %rdi, %rax
+    shl $59, %rax
+    shr $59, %rax
     ret
 .L__kefir_text_func_test2_end:
 

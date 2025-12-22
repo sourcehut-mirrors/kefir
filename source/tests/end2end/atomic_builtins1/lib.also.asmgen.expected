@@ -33,14 +33,14 @@ test_atomic_store128:
 .L__kefir_text_func_test_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
     fldt 16(%rbp)
     mov %rdi, %rax
     movq $0, -8(%rbp)
     fstpt -16(%rbp)
     mov $16, %rdi
     mov %rax, %rsi
-    leaq -16(%rbp), %rdx
+    lea -16(%rbp), %rdx
     mov $5, %rcx
     call __atomic_store@PLT
     lea (%rbp), %rsp
@@ -52,7 +52,7 @@ test_atomic_store256:
 .L__kefir_text_func_test_atomic_store256_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     mov %rdi, %rcx
@@ -64,7 +64,7 @@ test_atomic_store256:
     fstpt -48(%rbp)
     mov $32, %rdi
     mov %rcx, %rsi
-    leaq -48(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $5, %rcx
     call __atomic_store@PLT
     fldcw -8(%rbp)
@@ -77,14 +77,14 @@ test2_atomic_store128:
 .L__kefir_text_func_test2_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
     fldt 16(%rbp)
     mov %rdi, %rax
     movq $0, -8(%rbp)
     fstpt -16(%rbp)
     mov $16, %rdi
     mov %rax, %rsi
-    leaq -16(%rbp), %rdx
+    lea -16(%rbp), %rdx
     mov $5, %rcx
     call __atomic_store@PLT
     lea (%rbp), %rsp
@@ -96,7 +96,7 @@ test2_atomic_store256:
 .L__kefir_text_func_test2_atomic_store256_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     mov %rdi, %rcx
@@ -108,7 +108,7 @@ test2_atomic_store256:
     fstpt -48(%rbp)
     mov $32, %rdi
     mov %rcx, %rsi
-    leaq -48(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $5, %rcx
     call __atomic_store@PLT
     fldcw -8(%rbp)
@@ -119,55 +119,71 @@ test2_atomic_store256:
 
 test2_atomic_store16:
 .L__kefir_text_func_test2_atomic_store16_begin:
-    movsx %si, %rax
-    xchgw %ax, (%rdi)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movsx %ax, %rax
+    xchgw %ax, (%rcx)
     ret
 .L__kefir_text_func_test2_atomic_store16_end:
 
 test2_atomic_store32:
 .L__kefir_text_func_test2_atomic_store32_begin:
-    movsx %esi, %rax
-    xchgl %eax, (%rdi)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movsx %eax, %rax
+    xchgl %eax, (%rcx)
     ret
 .L__kefir_text_func_test2_atomic_store32_end:
 
 test2_atomic_store64:
 .L__kefir_text_func_test2_atomic_store64_begin:
-    xchgq %rsi, (%rdi)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgq %rax, (%rcx)
     ret
 .L__kefir_text_func_test2_atomic_store64_end:
 
 test_atomic_store8:
 .L__kefir_text_func_test_atomic_store8_begin:
-    movsx %sil, %rax
-    xchgb %al, (%rdi)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movsx %al, %rax
+    xchgb %al, (%rcx)
     ret
 .L__kefir_text_func_test_atomic_store8_end:
 
 test_atomic_store16:
 .L__kefir_text_func_test_atomic_store16_begin:
-    movsx %si, %rax
-    xchgw %ax, (%rdi)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movsx %ax, %rax
+    xchgw %ax, (%rcx)
     ret
 .L__kefir_text_func_test_atomic_store16_end:
 
 test_atomic_store32:
 .L__kefir_text_func_test_atomic_store32_begin:
-    movsx %esi, %rax
-    xchgl %eax, (%rdi)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movsx %eax, %rax
+    xchgl %eax, (%rcx)
     ret
 .L__kefir_text_func_test_atomic_store32_end:
 
 test_atomic_store64:
 .L__kefir_text_func_test_atomic_store64_begin:
-    xchgq %rsi, (%rdi)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgq %rax, (%rcx)
     ret
 .L__kefir_text_func_test_atomic_store64_end:
 
 test2_atomic_store8:
 .L__kefir_text_func_test2_atomic_store8_begin:
-    movsx %sil, %rax
-    xchgb %al, (%rdi)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movsx %al, %rax
+    xchgb %al, (%rcx)
     ret
 .L__kefir_text_func_test2_atomic_store8_end:
 

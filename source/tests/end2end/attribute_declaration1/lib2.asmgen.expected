@@ -8,8 +8,11 @@
 .L__kefir_text_section_begin:
 sum:
 .L__kefir_text_func_sum_begin:
-    add %esi, %edi
-    mov %rdi, %rax
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    mov %rcx, %rdx
+    add %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_sum_end:
 

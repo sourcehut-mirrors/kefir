@@ -28,17 +28,18 @@ is_inf_f32:
     and $2147483647, %ecx
     sar $31, %eax
     or $1, %eax
-    mov %rsi, %rdx
-    xor %esi, %edx
+    xor %edx, %edx
     cmp $2139095040, %ecx
     mov %rdx, %rcx
     cmove %eax, %ecx
-    mov $0, %rax
-    cmp $0, %ecx
-    mov %rax, %rcx
-    sete %cl
-    mov $0, %rax
-    test %cl, %cl
+    mov %rcx, %rax
+    mov $0, %rcx
+    cmp $0, %eax
+    mov %rcx, %rax
+    sete %al
+    mov $0, %rcx
+    test %al, %al
+    mov %rcx, %rax
     sete %al
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -58,18 +59,19 @@ is_inf_f64:
     and %rax, %rcx
     sar $63, %rax
     or $1, %rax
-    mov %rsi, %rdx
-    xor %esi, %edx
+    xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
     mov %rdx, %rcx
     cmove %eax, %ecx
-    mov $0, %rax
-    cmp $0, %ecx
-    mov %rax, %rcx
-    sete %cl
-    mov $0, %rax
-    test %cl, %cl
+    mov %rcx, %rax
+    mov $0, %rcx
+    cmp $0, %eax
+    mov %rcx, %rax
+    sete %al
+    mov $0, %rcx
+    test %al, %al
+    mov %rcx, %rax
     sete %al
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -81,32 +83,33 @@ is_inf_f80:
 .L__kefir_text_func_is_inf_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fstpt -48(%rbp)
-    movsxw -40(%rbp), %rax
+    fstpt -64(%rbp)
+    movsxw -56(%rbp), %rax
     mov %rax, %rcx
     not %ecx
     movabs $-9223372036854775808, %rdx
-    xorq -48(%rbp), %rdx
+    xorq -64(%rbp), %rdx
     and $32767, %ecx
     shr $15, %rax
     or $1, %eax
-    mov %rdi, %rsi
-    xor %edi, %esi
+    xor %esi, %esi
     or %rdx, %rcx
     mov %rsi, %rcx
     cmove %eax, %ecx
-    mov $0, %rax
-    cmp $0, %ecx
-    mov %rax, %rcx
-    sete %cl
-    mov $0, %rax
-    test %cl, %cl
+    mov %rcx, %rax
+    mov $0, %rcx
+    cmp $0, %eax
+    mov %rcx, %rax
+    sete %al
+    mov $0, %rcx
+    test %al, %al
+    mov %rcx, %rax
     sete %al
     fldcw -8(%rbp)
     lea (%rbp), %rsp

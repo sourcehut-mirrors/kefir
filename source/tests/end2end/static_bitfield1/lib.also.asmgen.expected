@@ -12,8 +12,10 @@ getfield40:
 .L__kefir_text_func_getfield40_begin:
     push %rbp
     mov %rsp, %rbp
-    movq struct1@GOTPCREL(%rip), %rcx
-    movb 8(%rcx), %al
+    movq struct1@GOTPCREL(%rip), %rax
+    mov %rcx, %rdx
+    movb 8(%rax), %dl
+    mov %rdx, %rax
     and $255, %rax
     shl $63, %rax
     shr $63, %rax

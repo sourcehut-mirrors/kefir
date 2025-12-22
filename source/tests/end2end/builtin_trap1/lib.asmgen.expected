@@ -8,6 +8,8 @@
 .L__kefir_text_section_begin:
 sum:
 .L__kefir_text_func_sum_begin:
+    mov %rsi, %rax
+    mov %rdi, %rax
     ud2
 .L__kefir_text_func_sum_end:
 

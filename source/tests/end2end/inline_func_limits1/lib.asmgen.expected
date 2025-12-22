@@ -59,19 +59,25 @@ main:
 
 test1:
 .L__kefir_text_func_test1_begin:
-    movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    add %edi, %ecx
-    movl %ecx, (%rax)
+    mov %rdi, %rax
+    movq A@GOTPCREL(%rip), %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rsi
+    add %eax, %esi
+    mov %rsi, %rax
+    movl %eax, (%rcx)
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    sub %edi, %ecx
-    movl %ecx, (%rax)
+    mov %rdi, %rax
+    movq A@GOTPCREL(%rip), %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rsi
+    sub %eax, %esi
+    mov %rsi, %rax
+    movl %eax, (%rcx)
     ret
 .L__kefir_text_func_test2_end:
 

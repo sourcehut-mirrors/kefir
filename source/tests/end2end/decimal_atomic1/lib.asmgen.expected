@@ -31,35 +31,35 @@ add32:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $64, %rsp
-    movdqu %xmm0, -64(%rbp)
-    mov %rdi, %r12
+    sub $48, %rsp
+    movaps %xmm0, -64(%rbp)
+    mov %rdi, %rbx
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
 .L__kefir_func_add32_label2:
-    movl (%r12), %eax
-    mov %rax, %rbx
-    movq %rbx, %xmm0
-    movdqu -64(%rbp), %xmm1
+    movl (%rbx), %eax
+    mov %rax, %r12
+    movq %r12, %xmm0
+    movaps -64(%rbp), %xmm1
     call __bid_addsd3@PLT
-    mov %r12, %rdx
+    mov %rbx, %rdx
     movq %xmm0, %rcx
-    mov %rbx, %rax
+    mov %r12, %rax
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
     jz .L__kefir_func_add32_label10
-    stmxcsr -80(%rbp)
-    mov -80(%rbp), %rcx
+    stmxcsr -64(%rbp)
+    mov -64(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
     fldenv -48(%rbp)
     ldmxcsr -20(%rbp)
-    stmxcsr -80(%rbp)
-    orl %eax, -80(%rbp)
-    ldmxcsr -80(%rbp)
+    stmxcsr -64(%rbp)
+    orl %eax, -64(%rbp)
+    ldmxcsr -64(%rbp)
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -76,35 +76,35 @@ add64:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $64, %rsp
-    movdqu %xmm0, -64(%rbp)
-    mov %rdi, %r12
+    sub $48, %rsp
+    movaps %xmm0, -64(%rbp)
+    mov %rdi, %rbx
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
 .L__kefir_func_add64_label2:
-    movq (%r12), %rax
-    mov %rax, %rbx
-    movq %rbx, %xmm0
-    movdqu -64(%rbp), %xmm1
+    movq (%rbx), %rax
+    mov %rax, %r12
+    movq %r12, %xmm0
+    movaps -64(%rbp), %xmm1
     call __bid_adddd3@PLT
-    mov %r12, %rdx
+    mov %rbx, %rdx
     movq %xmm0, %rcx
-    mov %rbx, %rax
+    mov %r12, %rax
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
     test %al, %al
     jz .L__kefir_func_add64_label10
-    stmxcsr -80(%rbp)
-    mov -80(%rbp), %rcx
+    stmxcsr -64(%rbp)
+    mov -64(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
     fldenv -48(%rbp)
     ldmxcsr -20(%rbp)
-    stmxcsr -80(%rbp)
-    orl %eax, -80(%rbp)
-    ldmxcsr -80(%rbp)
+    stmxcsr -64(%rbp)
+    orl %eax, -64(%rbp)
+    ldmxcsr -64(%rbp)
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -120,49 +120,47 @@ add128:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $104, %rsp
-    movdqu %xmm0, -64(%rbp)
+    sub $120, %rsp
+    movaps %xmm0, -128(%rbp)
     mov %rdi, %rbx
-    fnstenv -48(%rbp)
-    stmxcsr -20(%rbp)
+    fnstenv -112(%rbp)
+    stmxcsr -84(%rbp)
     fnclex
 .L__kefir_func_add128_label2:
-    leaq -112(%rbp), %rax
-    mov %rax, %rdx
+    lea -80(%rbp), %rdx
     mov %rbx, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -112(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movdqu -64(%rbp), %xmm1
-    call __bid_addtd3@PLT
-    movdqu %xmm0, -80(%rbp)
     movdqu -80(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    movdqu -96(%rbp), %xmm1
-    movdqu %xmm1, -96(%rbp)
+    movdqu %xmm0, -64(%rbp)
+    movaps -128(%rbp), %xmm1
+    call __bid_addtd3@PLT
+    movaps %xmm0, -48(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
     mov %rbx, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
-    lea -96(%rbp), %rdx
-    leaq -112(%rbp), %rax
-    mov %rax, %rcx
+    lea -32(%rbp), %rdx
+    lea -80(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add128_label10
-    stmxcsr -112(%rbp)
-    mov -112(%rbp), %rcx
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -48(%rbp)
-    ldmxcsr -20(%rbp)
-    stmxcsr -112(%rbp)
-    orl %eax, -112(%rbp)
-    ldmxcsr -112(%rbp)
-    movdqu -80(%rbp), %xmm0
+    fldenv -112(%rbp)
+    ldmxcsr -84(%rbp)
+    stmxcsr -128(%rbp)
+    orl %eax, -128(%rbp)
+    ldmxcsr -128(%rbp)
+    movaps -48(%rbp), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -174,14 +172,16 @@ add128:
 
 load32:
 .L__kefir_text_func_load32_begin:
-    movl (%rdi), %eax
+    mov %rdi, %rcx
+    movl (%rcx), %eax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_load32_end:
 
 load64:
 .L__kefir_text_func_load64_begin:
-    movq (%rdi), %rax
+    mov %rdi, %rcx
+    movq (%rcx), %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_load64_end:
@@ -191,9 +191,9 @@ load128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
-    mov %rax, %rdx
-    mov %rdi, %rsi
+    mov %rdi, %rax
+    lea -16(%rbp), %rdx
+    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
@@ -205,15 +205,17 @@ load128:
 
 store32:
 .L__kefir_text_func_store32_begin:
+    mov %rdi, %rcx
     movq %xmm0, %rax
-    xchgl (%rdi), %eax
+    xchgl (%rcx), %eax
     ret
 .L__kefir_text_func_store32_end:
 
 store64:
 .L__kefir_text_func_store64_begin:
+    mov %rdi, %rcx
     movq %xmm0, %rax
-    xchgq (%rdi), %rax
+    xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_store64_end:
 
@@ -222,10 +224,10 @@ store128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    mov %rdi, %rax
     movdqu %xmm0, -16(%rbp)
-    mov %rdi, %rsi
-    leaq -16(%rbp), %rax
-    mov %rax, %rdx
+    mov %rax, %rsi
+    lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT

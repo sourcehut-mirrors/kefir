@@ -29,13 +29,13 @@ get_a:
     movzxw (%rcx), %rdx
     mov $48, %rcx
     shld %cl, %rax, %rdx
-    mov %rax, %rsi
-    shl %cl, %rsi
-    mov %rdi, %rax
-    xor %edi, %eax
+    shl %cl, %rax
+    xor %esi, %esi
     test $64, %cl
-    cmovne %rsi, %rdx
-    cmove %rsi, %rax
+    cmovne %rax, %rdx
+    mov %rsi, %rcx
+    cmove %rax, %rcx
+    mov %rcx, %rax
     mov $48, %rcx
     shrd %cl, %rdx, %rax
     mov %rdx, %rsi
@@ -58,13 +58,13 @@ get_b:
     xor %ecx, %edx
     mov $68, %rcx
     shld %cl, %rax, %rdx
-    mov %rax, %rsi
-    shl %cl, %rsi
-    mov %rdi, %rax
-    xor %edi, %eax
+    shl %cl, %rax
+    xor %esi, %esi
     test $64, %cl
-    cmovne %rsi, %rdx
-    cmove %rsi, %rax
+    cmovne %rax, %rdx
+    mov %rsi, %rcx
+    cmove %rax, %rcx
+    mov %rcx, %rax
     mov $68, %rcx
     shrd %cl, %rdx, %rax
     mov %rdx, %rsi
@@ -88,13 +88,13 @@ get_c:
     movzxw (%rcx), %rdx
     mov $52, %rcx
     shld %cl, %rax, %rdx
-    mov %rax, %rsi
-    shl %cl, %rsi
-    mov %rdi, %rax
-    xor %edi, %eax
+    shl %cl, %rax
+    xor %esi, %esi
     test $64, %cl
-    cmovne %rsi, %rdx
-    cmove %rsi, %rax
+    cmovne %rax, %rdx
+    mov %rsi, %rcx
+    cmove %rax, %rcx
+    mov %rcx, %rax
     mov $52, %rcx
     shrd %cl, %rdx, %rax
     mov %rdx, %rsi
@@ -122,13 +122,13 @@ get_d:
     xor %ecx, %edx
     mov $89, %rcx
     shld %cl, %rax, %rdx
-    mov %rax, %rsi
-    shl %cl, %rsi
-    mov %rdi, %rax
-    xor %edi, %eax
+    shl %cl, %rax
+    xor %esi, %esi
     test $64, %cl
-    cmovne %rsi, %rdx
-    cmove %rsi, %rax
+    cmovne %rax, %rdx
+    mov %rsi, %rcx
+    cmove %rax, %rcx
+    mov %rcx, %rax
     mov $93, %rcx
     shrd %cl, %rdx, %rax
     mov %rdx, %rsi
@@ -146,65 +146,68 @@ set_a:
 .L__kefir_text_func_set_a_begin:
     push %rbp
     mov %rsp, %rbp
-    push %rbx
-    sub $24, %rsp
-    lea value(%rip), %rax
-    movq (%rax), %r10
-    lea value(%rip), %rax
-    add $8, %rax
-    movzxw (%rax), %r11
-    lea value(%rip), %rbx
-    mov $1, %rax
-    xor %edx, %edx
+    sub $16, %rsp
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    lea value(%rip), %rcx
+    movq (%rcx), %rsi
+    lea value(%rip), %rcx
+    add $8, %rcx
+    movzxw (%rcx), %rdi
+    lea value(%rip), %r8
+    mov $1, %r9
+    xor %r10d, %r10d
     mov $80, %rcx
+    shld %cl, %r9, %r10
+    shl %cl, %r9
+    xor %r11d, %r11d
+    test $64, %cl
+    mov %r10, %rcx
+    cmovne %r9, %rcx
+    mov %r11, %r10
+    cmove %r9, %r10
+    mov %r10, %r9
+    mov $1, %r10
+    xor %r11d, %r11d
+    sub %r10, %r9
+    mov %rcx, %r10
+    sbb %r11, %r10
+    and %r9, %rax
+    and %r10, %rdx
+    xor %ecx, %ecx
     shld %cl, %rax, %rdx
     shl %cl, %rax
-    mov %r9, %r8
-    xor %r9d, %r8d
+    xor %r11d, %r11d
     test $64, %cl
-    mov %rdx, %rcx
-    cmovne %rax, %rcx
-    mov %r8, %rdx
-    cmove %rax, %rdx
-    mov $1, %rax
-    xor %r8d, %r8d
-    sub %rax, %rdx
-    mov %rcx, %rax
-    sbb %r8, %rax
-    and %rdx, %rdi
-    and %rax, %rsi
-    xor %ecx, %ecx
-    shld %cl, %rdi, %rsi
-    shl %cl, %rdi
-    mov %r9, %r8
-    xor %r9d, %r8d
-    test $64, %cl
-    cmovne %rdi, %rsi
-    cmove %rdi, %r8
-    xor %ecx, %ecx
-    shld %cl, %rdx, %rax
-    shl %cl, %rdx
-    mov %r9, %rdi
-    xor %r9d, %edi
-    test $64, %cl
-    cmovne %rdx, %rax
-    mov %rdi, %rcx
-    cmove %rdx, %rcx
-    not %rcx
-    not %rax
-    mov %r10, %rdx
-    and %rcx, %rdx
+    cmovne %rax, %rdx
     mov %r11, %rcx
-    and %rax, %rcx
-    mov %r8, %rax
-    or %rdx, %rax
+    cmove %rax, %rcx
+    mov %rcx, %rax
+    xor %ecx, %ecx
+    shld %cl, %r9, %r10
+    shl %cl, %r9
+    xor %r11d, %r11d
+    test $64, %cl
+    mov %r10, %rcx
+    cmovne %r9, %rcx
+    mov %r11, %r10
+    cmove %r9, %r10
+    mov %r10, %r9
+    not %r9
+    not %rcx
+    and %r9, %rsi
+    mov %rdi, %r9
+    and %rcx, %r9
+    mov %r9, %rcx
+    or %rsi, %rax
+    mov %rdx, %rsi
     or %rcx, %rsi
-    movq %rax, (%rbx)
+    mov %rsi, %rcx
+    movq %rax, (%r8)
     lea value(%rip), %rax
     add $8, %rax
-    movw %si, (%rax)
-    lea -8(%rbp), %rsp
-    pop %rbx
+    movw %cx, (%rax)
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_set_a_end:
@@ -213,63 +216,66 @@ set_b:
 .L__kefir_text_func_set_b_begin:
     push %rbp
     mov %rsp, %rbp
-    push %rbx
-    sub $24, %rsp
-    lea value(%rip), %rax
-    add $16, %rax
-    movq (%rax), %r11
-    lea value(%rip), %rax
-    lea 16(%rax), %rbx
-    mov $1, %rax
-    xor %edx, %edx
+    sub $16, %rsp
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    lea value(%rip), %rcx
+    add $16, %rcx
+    movq (%rcx), %rsi
+    lea value(%rip), %rcx
+    lea 16(%rcx), %rdi
+    mov $1, %r8
+    xor %r9d, %r9d
     mov $60, %rcx
+    shld %cl, %r8, %r9
+    shl %cl, %r8
+    xor %r10d, %r10d
+    test $64, %cl
+    mov %r9, %rcx
+    cmovne %r8, %rcx
+    mov %r10, %r9
+    cmove %r8, %r9
+    mov %r9, %r8
+    mov $1, %r9
+    xor %r10d, %r10d
+    sub %r9, %r8
+    mov %rcx, %r9
+    sbb %r10, %r9
+    and %r8, %rax
+    and %r9, %rdx
+    xor %ecx, %ecx
     shld %cl, %rax, %rdx
     shl %cl, %rax
-    mov %r9, %r8
-    xor %r9d, %r8d
+    xor %r10d, %r10d
     test $64, %cl
-    mov %rdx, %rcx
-    cmovne %rax, %rcx
-    mov %r8, %rdx
-    cmove %rax, %rdx
-    mov $1, %rax
-    xor %r8d, %r8d
-    sub %rax, %rdx
+    cmovne %rax, %rdx
+    mov %r10, %rcx
+    cmove %rax, %rcx
     mov %rcx, %rax
-    sbb %r8, %rax
-    and %rdx, %rdi
-    and %rax, %rsi
+    mov %rcx, %r10
+    xor %ecx, %r10d
     xor %ecx, %ecx
-    shld %cl, %rdi, %rsi
-    shl %cl, %rdi
-    mov %r9, %r8
-    xor %r9d, %r8d
+    shld %cl, %r8, %r9
+    shl %cl, %r8
+    xor %r11d, %r11d
     test $64, %cl
-    cmovne %rdi, %rsi
-    cmove %rdi, %r8
-    mov %rcx, %rdi
-    xor %ecx, %edi
-    xor %ecx, %ecx
-    shld %cl, %rdx, %rax
-    shl %cl, %rdx
-    mov %r10, %r9
-    xor %r10d, %r9d
-    test $64, %cl
-    cmovne %rdx, %rax
     mov %r9, %rcx
-    cmove %rdx, %rcx
+    cmovne %r8, %rcx
+    mov %r11, %r9
+    cmove %r8, %r9
+    mov %r9, %r8
+    not %r8
     not %rcx
-    not %rax
-    mov %r11, %rdx
-    and %rcx, %rdx
-    mov %rdi, %rcx
-    and %rax, %rcx
-    mov %r8, %rax
-    or %rdx, %rax
+    and %r8, %rsi
+    mov %r10, %r8
+    and %rcx, %r8
+    mov %r8, %rcx
+    or %rsi, %rax
+    mov %rdx, %rsi
     or %rcx, %rsi
-    movq %rax, (%rbx)
-    lea -8(%rbp), %rsp
-    pop %rbx
+    mov %rsi, %rcx
+    movq %rax, (%rdi)
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_set_b_end:
@@ -278,67 +284,70 @@ set_c:
 .L__kefir_text_func_set_c_begin:
     push %rbp
     mov %rsp, %rbp
-    push %rbx
-    sub $24, %rsp
-    lea value(%rip), %rax
-    add $32, %rax
-    movq (%rax), %r10
-    lea value(%rip), %rax
-    add $40, %rax
-    movzxw (%rax), %r11
-    lea value(%rip), %rax
-    lea 32(%rax), %rbx
-    mov $1, %rax
-    xor %edx, %edx
+    sub $16, %rsp
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    lea value(%rip), %rcx
+    add $32, %rcx
+    movq (%rcx), %rsi
+    lea value(%rip), %rcx
+    add $40, %rcx
+    movzxw (%rcx), %rdi
+    lea value(%rip), %rcx
+    lea 32(%rcx), %r8
+    mov $1, %r9
+    xor %r10d, %r10d
     mov $76, %rcx
+    shld %cl, %r9, %r10
+    shl %cl, %r9
+    xor %r11d, %r11d
+    test $64, %cl
+    mov %r10, %rcx
+    cmovne %r9, %rcx
+    mov %r11, %r10
+    cmove %r9, %r10
+    mov %r10, %r9
+    mov $1, %r10
+    xor %r11d, %r11d
+    sub %r10, %r9
+    mov %rcx, %r10
+    sbb %r11, %r10
+    and %r9, %rax
+    and %r10, %rdx
+    xor %ecx, %ecx
     shld %cl, %rax, %rdx
     shl %cl, %rax
-    mov %r9, %r8
-    xor %r9d, %r8d
+    xor %r11d, %r11d
     test $64, %cl
-    mov %rdx, %rcx
-    cmovne %rax, %rcx
-    mov %r8, %rdx
-    cmove %rax, %rdx
-    mov $1, %rax
-    xor %r8d, %r8d
-    sub %rax, %rdx
-    mov %rcx, %rax
-    sbb %r8, %rax
-    and %rdx, %rdi
-    and %rax, %rsi
-    xor %ecx, %ecx
-    shld %cl, %rdi, %rsi
-    shl %cl, %rdi
-    mov %r9, %r8
-    xor %r9d, %r8d
-    test $64, %cl
-    cmovne %rdi, %rsi
-    cmove %rdi, %r8
-    xor %ecx, %ecx
-    shld %cl, %rdx, %rax
-    shl %cl, %rdx
-    mov %r9, %rdi
-    xor %r9d, %edi
-    test $64, %cl
-    cmovne %rdx, %rax
-    mov %rdi, %rcx
-    cmove %rdx, %rcx
-    not %rcx
-    not %rax
-    mov %r10, %rdx
-    and %rcx, %rdx
+    cmovne %rax, %rdx
     mov %r11, %rcx
-    and %rax, %rcx
-    mov %r8, %rax
-    or %rdx, %rax
+    cmove %rax, %rcx
+    mov %rcx, %rax
+    xor %ecx, %ecx
+    shld %cl, %r9, %r10
+    shl %cl, %r9
+    xor %r11d, %r11d
+    test $64, %cl
+    mov %r10, %rcx
+    cmovne %r9, %rcx
+    mov %r11, %r10
+    cmove %r9, %r10
+    mov %r10, %r9
+    not %r9
+    not %rcx
+    and %r9, %rsi
+    mov %rdi, %r9
+    and %rcx, %r9
+    mov %r9, %rcx
+    or %rsi, %rax
+    mov %rdx, %rsi
     or %rcx, %rsi
-    movq %rax, (%rbx)
+    mov %rsi, %rcx
+    movq %rax, (%r8)
     lea value(%rip), %rax
     add $40, %rax
-    movw %si, (%rax)
-    lea -8(%rbp), %rsp
-    pop %rbx
+    movw %cx, (%rax)
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_set_c_end:
@@ -347,75 +356,78 @@ set_d:
 .L__kefir_text_func_set_d_begin:
     push %rbp
     mov %rsp, %rbp
-    push %rbx
-    sub $24, %rsp
-    lea value(%rip), %rax
-    add $45, %rax
-    movzxb (%rax), %r10
-    lea value(%rip), %rax
-    add $41, %rax
-    movl (%rax), %r11d
-    lea value(%rip), %rax
-    lea 45(%rax), %rbx
-    mov $1, %rax
-    xor %edx, %edx
+    sub $16, %rsp
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    lea value(%rip), %rcx
+    add $45, %rcx
+    movzxb (%rcx), %rsi
+    lea value(%rip), %rcx
+    add $41, %rcx
+    movl (%rcx), %edi
+    lea value(%rip), %rcx
+    lea 45(%rcx), %r8
+    mov $1, %r9
+    xor %r10d, %r10d
     mov $35, %rcx
+    shld %cl, %r9, %r10
+    shl %cl, %r9
+    xor %r11d, %r11d
+    test $64, %cl
+    mov %r10, %rcx
+    cmovne %r9, %rcx
+    mov %r11, %r10
+    cmove %r9, %r10
+    mov %r10, %r9
+    mov $1, %r10
+    xor %r11d, %r11d
+    sub %r10, %r9
+    mov %rcx, %r10
+    sbb %r11, %r10
+    and %r9, %rax
+    and %r10, %rdx
+    mov $4, %rcx
     shld %cl, %rax, %rdx
     shl %cl, %rax
-    mov %r9, %r8
-    xor %r9d, %r8d
+    xor %r11d, %r11d
     test $64, %cl
-    mov %rdx, %rcx
-    cmovne %rax, %rcx
-    mov %r8, %rdx
-    cmove %rax, %rdx
-    mov $1, %rax
-    xor %r8d, %r8d
-    sub %rax, %rdx
+    cmovne %rax, %rdx
+    mov %r11, %rcx
+    cmove %rax, %rcx
     mov %rcx, %rax
-    sbb %r8, %rax
-    and %rdx, %rdi
-    and %rax, %rsi
-    mov $4, %rcx
-    shld %cl, %rdi, %rsi
-    shl %cl, %rdi
-    mov %r9, %r8
-    xor %r9d, %r8d
-    test $64, %cl
-    cmovne %rdi, %rsi
-    cmove %rdi, %r8
-    mov %r10, %rcx
+    mov %rsi, %rcx
     shl $32, %rcx
+    mov %rcx, %rsi
+    or %rdi, %rsi
     mov %rcx, %rdi
-    or %r11, %rdi
-    mov %rcx, %r9
-    xor %ecx, %r9d
+    xor %ecx, %edi
     mov $4, %rcx
-    shld %cl, %rdx, %rax
-    shl %cl, %rdx
-    mov %r11, %r10
-    xor %r11d, %r10d
+    shld %cl, %r9, %r10
+    shl %cl, %r9
+    xor %r11d, %r11d
     test $64, %cl
-    cmovne %rdx, %rax
     mov %r10, %rcx
-    cmove %rdx, %rcx
+    cmovne %r9, %rcx
+    mov %r11, %r10
+    cmove %r9, %r10
+    mov %r10, %r9
+    not %r9
     not %rcx
-    not %rax
-    mov %rdi, %rdx
-    and %rcx, %rdx
+    and %r9, %rsi
+    mov %rdi, %r9
+    and %rcx, %r9
     mov %r9, %rcx
-    and %rax, %rcx
-    mov %r8, %rax
-    or %rdx, %rax
+    or %rsi, %rax
+    mov %rdx, %rsi
     or %rcx, %rsi
+    mov %rsi, %rcx
     mov %rax, %rcx
     shr $32, %rcx
-    movb %cl, (%rbx)
+    movb %cl, (%r8)
     lea value(%rip), %rcx
     add $41, %rcx
     movl %eax, (%rcx)
-    lea -8(%rbp), %rsp
-    pop %rbx
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_set_d_end:

@@ -24,8 +24,9 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
+    mov %rdi, %rax
 .L__kefir_func_test1_label2:
-    test %rdi, %rdi
+    test %rax, %rax
     jnz .L__kefir_func_test1_label2
     ret
     jmp .L__kefir_func_test1_label2
@@ -33,8 +34,9 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
+    mov %rdi, %rax
 .L__kefir_func_test2_label2:
-    cmp $0, %rdi
+    cmp $0, %rax
     jg .L__kefir_func_test2_label2
     ret
     jmp .L__kefir_func_test2_label2
@@ -42,8 +44,9 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
+    mov %rdi, %rax
 .L__kefir_func_test3_label2:
-    cmp $0, %rdi
+    cmp $0, %rax
     jge .L__kefir_func_test3_label2
     ret
     jmp .L__kefir_func_test3_label2
@@ -51,8 +54,9 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
+    mov %rdi, %rax
 .L__kefir_func_test4_label2:
-    cmp $0, %rdi
+    cmp $0, %rax
     jl .L__kefir_func_test4_label2
     ret
     jmp .L__kefir_func_test4_label2
@@ -60,8 +64,9 @@ test4:
 
 test5:
 .L__kefir_text_func_test5_begin:
+    mov %rdi, %rax
 .L__kefir_func_test5_label2:
-    cmp $0, %rdi
+    cmp $0, %rax
     jle .L__kefir_func_test5_label2
     ret
     jmp .L__kefir_func_test5_label2
@@ -69,8 +74,9 @@ test5:
 
 test6:
 .L__kefir_text_func_test6_begin:
+    mov %rdi, %rax
 .L__kefir_func_test6_label2:
-    cmp $0, %rdi
+    cmp $0, %rax
     ja .L__kefir_func_test6_label2
     ret
     jmp .L__kefir_func_test6_label2
@@ -78,8 +84,9 @@ test6:
 
 test7:
 .L__kefir_text_func_test7_begin:
+    mov %rdi, %rax
 .L__kefir_func_test7_label2:
-    cmp $0, %rdi
+    cmp $0, %rax
     jae .L__kefir_func_test7_label2
     ret
     jmp .L__kefir_func_test7_label2
@@ -87,8 +94,9 @@ test7:
 
 test8:
 .L__kefir_text_func_test8_begin:
+    mov %rdi, %rax
 .L__kefir_func_test8_label2:
-    cmp $0, %rdi
+    cmp $0, %rax
     jb .L__kefir_func_test8_label2
     ret
     jmp .L__kefir_func_test8_label2
@@ -96,8 +104,9 @@ test8:
 
 test9:
 .L__kefir_text_func_test9_begin:
+    mov %rdi, %rax
 .L__kefir_func_test9_label2:
-    cmp $0, %rdi
+    cmp $0, %rax
     jbe .L__kefir_func_test9_label2
     ret
     jmp .L__kefir_func_test9_label2

@@ -8,8 +8,7 @@
 .L__kefir_text_section_begin:
 get:
 .L__kefir_text_func_get_begin:
-    add $4, %rdi
-    mov %rdi, %rax
+    lea 4(%rdi), %rax
     ret
 .L__kefir_text_func_get_end:
 

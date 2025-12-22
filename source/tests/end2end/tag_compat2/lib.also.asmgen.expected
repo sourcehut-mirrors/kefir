@@ -10,61 +10,65 @@ get:
 .L__kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    mov %rdi, %r10
-    mov %rsi, %r9
-    mov %r10, %rdi
+    mov %rdi, %rdx
+    mov %rdx, %rdi
     xor %eax, %eax
     mov $14, %rcx
+    movq %rsi, -32(%rbp)
     mov %rax, %rsi
     rep stosq
-    movl %r9d, (%r10)
-    lea 4(%r10), %rax
+    movq -32(%rbp), %rsi
+    movl %esi, (%rdx)
+    lea 4(%rdx), %rax
     movzxb 2(%rax), %rcx
-    movzxw (%rax), %rdx
+    movzxw (%rax), %rdi
     shl $16, %rcx
-    or %rdx, %rcx
-    mov %r9, %rsi
-    add $1, %esi
-    movsx %esi, %rdx
+    or %rdi, %rcx
+    mov %rsi, %rdi
+    add $1, %edi
+    movsx %edi, %rdi
     movabs $-8388608, %r8
-    and %rcx, %r8
-    mov %rdx, %rcx
-    shl $41, %rcx
-    shr $41, %rcx
-    or %r8, %rcx
-    mov %rcx, %rdx
-    shr $16, %rdx
-    movb %dl, 2(%rax)
+    mov %r8, %r9
+    and %rcx, %r9
+    mov %r9, %rcx
+    shl $41, %rdi
+    shr $41, %rdi
+    mov %rdi, %r8
+    or %rcx, %r8
+    mov %r8, %rcx
+    mov %rcx, %rdi
+    shr $16, %rdi
+    movb %dil, 2(%rax)
     movw %cx, (%rax)
-    lea 8(%r10), %rax
-    mov %r9, %rsi
-    add $2, %esi
-    movsx %esi, %rcx
+    lea 8(%rdx), %rax
+    mov %rsi, %rcx
+    add $2, %ecx
+    movsx %ecx, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, (%rax)
-    lea 16(%r10), %rax
-    mov %r9, %rsi
-    add $3, %esi
-    movsx %esi, %rcx
+    lea 16(%rdx), %rax
+    mov %rsi, %rcx
+    add $3, %ecx
+    movsx %ecx, %rcx
     push %rcx
     fildq (%rsp)
     add $8, %rsp
     movq $0, 8(%rax)
     fstpt (%rax)
-    lea 96(%r10), %rax
-    mov %r9, %rsi
-    add $4, %esi
-    movb %sil, (%rax)
-    lea 104(%r10), %rax
-    mov %r9, %rsi
-    add $5, %esi
-    movsx %esi, %rcx
+    lea 96(%rdx), %rax
+    mov %rsi, %rcx
+    add $4, %ecx
+    movb %cl, (%rax)
+    lea 104(%rdx), %rax
+    mov %rsi, %rcx
+    add $5, %ecx
+    movsx %ecx, %rcx
     cvtsi2sd %rcx, %xmm0
     movq %xmm0, (%rax)
-    mov %r10, %rax
+    mov %rdx, %rax
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

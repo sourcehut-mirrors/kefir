@@ -26,7 +26,8 @@ lshift1:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -42,7 +43,8 @@ lshift2:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -58,7 +60,8 @@ rshift1:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -74,7 +77,8 @@ rshift2:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -90,7 +94,8 @@ rshift3:
     movl $4294967295, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -106,7 +111,8 @@ rshift4:
     movl $4294967295, -8(%rbp)
     movl $1048575, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

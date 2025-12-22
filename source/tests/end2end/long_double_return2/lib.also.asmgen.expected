@@ -11,7 +11,7 @@ minus:
 .L__kefir_text_func_minus_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     fchs
@@ -25,29 +25,38 @@ pnanl:
 .L__kefir_text_func_pnanl_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_pnanl_label11(%rip)
-    fstpt -32(%rbp)
+    fstpt -64(%rbp)
     sub $16, %rsp
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     fstpt (%rsp)
     call mysignbit@PLT
     add $16, %rsp
     test %eax, %eax
-    jz .L__kefir_func_pnanl_label6
+    jz .L__kefir_func_pnanl_label9
     sub $16, %rsp
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     fstpt (%rsp)
     call minus
     add $16, %rsp
-    fstpt -32(%rbp)
+    fstpt -64(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -40(%rbp)
 .L__kefir_func_pnanl_label6:
-    fldt -32(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_pnanl_label9:
+    movq -64(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -40(%rbp)
     jmp .L__kefir_func_pnanl_label6
 .L__kefir_text_func_pnanl_end:
 .section .rodata

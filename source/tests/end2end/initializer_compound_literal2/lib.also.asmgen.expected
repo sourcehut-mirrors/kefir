@@ -41,24 +41,26 @@ get:
     movq $22, 8(%rax)
     movd .L__kefir_func_get_label8(%rip), %xmm0
     movd %xmm0, 16(%rax)
-    leaq -272(%rbp), %rdi
+    lea -272(%rbp), %rdi
     xor %eax, %eax
     mov $17, %rcx
     mov %rax, %rsi
     rep stosq
     movw $-1, -272(%rbp)
-    leaq -136(%rbp), %rdi
-    leaq -272(%rbp), %rsi
+    lea -136(%rbp), %rdi
+    lea -272(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    lea 160(%rdx), %rdi
-    leaq -272(%rbp), %rsi
+    lea 160(%rdx), %rax
+    mov %rax, %rdi
+    lea -272(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    lea 296(%rdx), %rdi
-    leaq -136(%rbp), %rsi
+    lea 296(%rdx), %rax
+    mov %rax, %rdi
+    lea -136(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq

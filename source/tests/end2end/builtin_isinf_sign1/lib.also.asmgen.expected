@@ -27,12 +27,12 @@ is_inf_f32:
     mov %rax, %rcx
     and $2147483647, %ecx
     sar $31, %eax
-    mov %rax, %rdx
-    or $1, %edx
-    mov %rsi, %rax
-    xor %esi, %eax
+    or $1, %eax
+    xor %edx, %edx
     cmp $2139095040, %ecx
-    cmove %edx, %eax
+    mov %rdx, %rcx
+    cmove %eax, %ecx
+    mov %rcx, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -50,13 +50,13 @@ is_inf_f64:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    mov %rax, %rdx
-    or $1, %rdx
-    mov %rsi, %rax
-    xor %esi, %eax
+    or $1, %rax
+    xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
-    cmove %edx, %eax
+    mov %rdx, %rcx
+    cmove %eax, %ecx
+    mov %rcx, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -67,26 +67,26 @@ is_inf_f80:
 .L__kefir_text_func_is_inf_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fstpt -48(%rbp)
-    movsxw -40(%rbp), %rax
+    fstpt -64(%rbp)
+    movsxw -56(%rbp), %rax
     mov %rax, %rcx
     not %ecx
     movabs $-9223372036854775808, %rdx
-    xorq -48(%rbp), %rdx
+    xorq -64(%rbp), %rdx
     and $32767, %ecx
     shr $15, %rax
-    mov %rax, %rsi
-    or $1, %esi
-    mov %rdi, %rax
-    xor %edi, %eax
+    or $1, %eax
+    xor %esi, %esi
     or %rdx, %rcx
-    cmove %esi, %eax
+    mov %rsi, %rcx
+    cmove %eax, %ecx
+    mov %rcx, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

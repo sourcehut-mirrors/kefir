@@ -15,9 +15,10 @@ get1:
     push %r12
     sub $144, %rsp
     mov %rdi, %r12
-    movq %rsi, -152(%rbp)
+    mov %rsi, %rax
+    movq %rax, -152(%rbp)
     movq -152(%rbp), %rax
-    mov $0, %rdx
+    mov $0, %edx
     movsx %edx, %rcx
     mov $0, %rdx
     cmp %rcx, %rax
@@ -33,62 +34,63 @@ get1:
     movzx %al, %rax
     test %eax, %eax
     jz .L__kefir_func_get1_label10
-    movaps %xmm1, %xmm0
-    xorps %xmm1, %xmm0
+    xorps %xmm0, %xmm0
     movdqu %xmm0, -144(%rbp)
     movdqu %xmm0, -128(%rbp)
     movdqu %xmm0, -112(%rbp)
     movdqu %xmm0, -96(%rbp)
     movq -152(%rbp), %rax
     movq %rax, -144(%rbp)
-    movq -152(%rbp), %rcx
-    leaq -144(%rbp), %rax
-    add $8, %rax
-    not %rcx
-    movq %rcx, (%rax)
-    movq -152(%rbp), %rcx
-    leaq -144(%rbp), %rax
-    add $16, %rax
-    mov $1, %rsi
-    movsx %esi, %rdx
-    add %rdx, %rcx
-    movq %rcx, (%rax)
-    movq -152(%rbp), %rcx
-    leaq -144(%rbp), %rax
-    add $24, %rax
-    neg %rcx
-    movq %rcx, (%rax)
-    movq -152(%rbp), %rcx
-    leaq -144(%rbp), %rax
-    add $32, %rax
-    mov $1, %rsi
-    movsx %esi, %rdx
-    sub %rdx, %rcx
-    movq %rcx, (%rax)
-    movq -152(%rbp), %rcx
-    leaq -144(%rbp), %rax
-    add $40, %rax
-    mov $2, %rsi
-    movsx %esi, %rdx
-    imul %rdx, %rcx
-    movq %rcx, (%rax)
     movq -152(%rbp), %rax
-    leaq -144(%rbp), %rcx
+    lea -144(%rbp), %rcx
+    add $8, %rcx
+    not %rax
+    movq %rax, (%rcx)
+    movq -152(%rbp), %rax
+    lea -144(%rbp), %rcx
+    add $16, %rcx
+    mov $1, %esi
+    movsx %esi, %rdx
+    add %rdx, %rax
+    movq %rax, (%rcx)
+    movq -152(%rbp), %rax
+    lea -144(%rbp), %rcx
+    add $24, %rcx
+    neg %rax
+    movq %rax, (%rcx)
+    movq -152(%rbp), %rax
+    lea -144(%rbp), %rcx
+    add $32, %rcx
+    mov $1, %esi
+    movsx %esi, %rdx
+    sub %rdx, %rax
+    movq %rax, (%rcx)
+    movq -152(%rbp), %rax
+    lea -144(%rbp), %rcx
+    add $40, %rcx
+    mov $2, %esi
+    movsx %esi, %rdx
+    imul %rdx, %rax
+    movq %rax, (%rcx)
+    movq -152(%rbp), %rax
+    lea -144(%rbp), %rcx
     add $48, %rcx
-    mov $2, %rdx
+    mov $2, %edx
     movsx %edx, %rsi
+    movq %rax, -160(%rbp)
     cqo
+    movq -160(%rbp), %rax
     idiv %rsi
     movq %rax, (%rcx)
-    movq -152(%rbp), %rcx
-    leaq -144(%rbp), %rax
-    add $56, %rax
+    movq -152(%rbp), %rax
+    lea -144(%rbp), %rcx
+    add $56, %rcx
     movabs $3405691582, %rdx
     movabs $4294967295, %rsi
     and %rsi, %rdx
-    xor %rdx, %rcx
-    movq %rcx, (%rax)
-    leaq -144(%rbp), %rax
+    xor %rdx, %rax
+    movq %rax, (%rcx)
+    lea -144(%rbp), %rax
     mov %rax, %rcx
 .L__kefir_func_get1_label4:
     mov %r12, %rax
@@ -106,7 +108,7 @@ get1:
     pop %rbp
     ret
 .L__kefir_func_get1_label10:
-    leaq -80(%rbp), %rbx
+    lea -80(%rbp), %rbx
     mov %rbx, %rdi
     call empty1@PLT
     mov %rax, %rcx

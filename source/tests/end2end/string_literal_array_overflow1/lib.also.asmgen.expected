@@ -11,8 +11,7 @@ somefn:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rcx, %rax
-    xor %ecx, %eax
+    xor %eax, %eax
     movq %rax, -8(%rbp)
     lea .L__kefir_string_literal0(%rip), %rax
     movq (%rax), %rax

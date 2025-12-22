@@ -17,7 +17,7 @@ test:
     sub $16, %rsp
     lea .L__kefir_func_test_label3(%rip), %rax
     movq %rax, -8(%rbp)
-    mov $0, %rcx
+    mov $0, %ecx
     movsx %ecx, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -49,7 +49,7 @@ test3:
     push %rbp
     mov %rsp, %rbp
     lea __kefir_function_test3_static_x_4(%rip), %rax
-    mov $0, %rdx
+    mov $0, %edx
     movsx %edx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax

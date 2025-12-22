@@ -8,8 +8,8 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    neg %edi
     mov %rdi, %rax
+    neg %eax
     ret
 .L__kefir_text_func_test1_end:
 

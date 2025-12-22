@@ -24,13 +24,13 @@ is_lessequal_f32:
     stmxcsr -8(%rbp)
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %ecx
-    movl -12(%rbp), %edx
-    mov %rsi, %rax
-    xor %esi, %eax
-    movd %edx, %xmm0
-    movd %ecx, %xmm1
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
+    xor %edx, %edx
+    movd %ecx, %xmm0
+    movd %eax, %xmm1
     ucomiss %xmm1, %xmm0
+    mov %rdx, %rax
     setnb %al
     and $255, %rax
     ldmxcsr -8(%rbp)
@@ -47,13 +47,13 @@ is_lessequal_f64:
     stmxcsr -8(%rbp)
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rcx
-    movq -16(%rbp), %rdx
-    mov %rsi, %rax
-    xor %esi, %eax
-    movq %rdx, %xmm0
-    movq %rcx, %xmm1
+    movq -24(%rbp), %rax
+    movq -16(%rbp), %rcx
+    xor %edx, %edx
+    movq %rcx, %xmm0
+    movq %rax, %xmm1
     ucomisd %xmm1, %xmm0
+    mov %rdx, %rax
     setnb %al
     and $255, %rax
     ldmxcsr -8(%rbp)
@@ -66,7 +66,7 @@ is_lessequal_f80:
 .L__kefir_text_func_is_lessequal_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -79,8 +79,7 @@ is_lessequal_f80:
     fldt -32(%rbp)
     fxch %st(1)
     fxch %st(1)
-    mov %rcx, %rax
-    xor %ecx, %eax
+    xor %eax, %eax
     fucomi %st(1)
     setnb %al
     and $255, %rax

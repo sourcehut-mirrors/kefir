@@ -22,7 +22,8 @@ add1:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -38,7 +39,8 @@ add2:
     movl $4294967295, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -54,7 +56,8 @@ sub1:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -70,7 +73,8 @@ sub2:
     movl $4294967295, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

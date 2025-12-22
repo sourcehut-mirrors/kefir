@@ -13,28 +13,22 @@ mul:
     sub $32, %rsp
     stmxcsr -8(%rbp)
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
-    movaps %xmm2, %xmm4
-    shufps $1, %xmm2, %xmm4
-    insertps $16, %xmm4, %xmm0
-    insertps $16, %xmm3, %xmm1
+    shufps $1, %xmm2, %xmm2
+    movaps %xmm0, %xmm3
+    shufps $1, %xmm3, %xmm3
+    insertps $16, %xmm3, %xmm0
+    insertps $16, %xmm2, %xmm1
     movaps %xmm1, %xmm2
     shufps $160, %xmm1, %xmm2
     mulps %xmm0, %xmm2
     xorps .L__kefir_constant_complex_float32_mul(%rip), %xmm0
-    movaps %xmm0, %xmm3
-    shufps $177, %xmm0, %xmm3
-    movaps %xmm1, %xmm4
-    shufps $245, %xmm1, %xmm4
-    movaps %xmm3, %xmm0
-    mulps %xmm4, %xmm0
+    shufps $177, %xmm0, %xmm0
+    shufps $245, %xmm1, %xmm1
+    mulps %xmm1, %xmm0
     addps %xmm2, %xmm0
     movaps %xmm0, %xmm1
-    movaps %xmm1, %xmm2
-    shufps $1, %xmm1, %xmm2
-    insertps $16, %xmm2, %xmm0
+    shufps $1, %xmm1, %xmm1
+    insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

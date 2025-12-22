@@ -18,11 +18,12 @@ test:
     mov %rdi, %r12
     mov %rsi, %rbx
     movb $0, -17(%rbp)
-    leaq -17(%rbp), %rdi
+    lea -17(%rbp), %rdi
     call leak@PLT
-    mov %rbx, %rsi
-    not %rsi
+    mov %rbx, %rax
+    not %rax
     mov %r12, %rbx
+    mov %rax, %rsi
     mov %rbx, %rdi
     call get@PLT
     mov %r12, %rax

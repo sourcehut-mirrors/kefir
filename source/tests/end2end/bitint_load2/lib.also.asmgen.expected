@@ -26,8 +26,10 @@ get1:
 .L__kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
-    movq a@GOTPCREL(%rip), %rcx
-    movb (%rcx), %al
+    movq a@GOTPCREL(%rip), %rax
+    mov %rcx, %rdx
+    movb (%rax), %dl
+    mov %rdx, %rax
     shl $58, %rax
     sar $58, %rax
     pop %rbp
@@ -38,8 +40,10 @@ get2:
 .L__kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
-    movq b@GOTPCREL(%rip), %rcx
-    movw (%rcx), %ax
+    movq b@GOTPCREL(%rip), %rax
+    mov %rcx, %rdx
+    movw (%rax), %dx
+    mov %rdx, %rax
     shl $51, %rax
     sar $51, %rax
     pop %rbp
@@ -79,7 +83,8 @@ get5:
     movdqu (%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -90,6 +95,7 @@ get6:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
+    mov %rdi, %rcx
     movq f@GOTPCREL(%rip), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -48(%rbp)
@@ -97,7 +103,7 @@ get6:
     movdqu %xmm0, -32(%rbp)
     movdqu 32(%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rdi, %rax
+    mov %rcx, %rax
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0

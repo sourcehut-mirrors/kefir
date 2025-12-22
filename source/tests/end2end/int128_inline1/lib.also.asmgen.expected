@@ -9,7 +9,8 @@
 test1:
 .L__kefir_text_func_test1_begin:
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     ret
 .L__kefir_text_func_test1_end:
 

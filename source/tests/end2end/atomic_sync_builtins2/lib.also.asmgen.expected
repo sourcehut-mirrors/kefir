@@ -52,10 +52,10 @@ test_fetch_add_short:
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
 .L__kefir_func_test_fetch_add_short_label2:
-    movsxw -2(%rbp), %rcx
-    movsx %si, %rax
-    mov %rcx, %r8
-    add %eax, %r8d
+    movsxw -2(%rbp), %rax
+    movsx %si, %rcx
+    mov %rax, %r8
+    add %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movw -2(%rbp), %ax
@@ -82,10 +82,10 @@ test_fetch_and_short:
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
 .L__kefir_func_test_fetch_and_short_label2:
-    movsxw -2(%rbp), %rcx
-    movsx %si, %rax
-    mov %rcx, %r8
-    and %eax, %r8d
+    movsxw -2(%rbp), %rax
+    movsx %si, %rcx
+    mov %rax, %r8
+    and %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movw -2(%rbp), %ax
@@ -112,10 +112,10 @@ test_fetch_sub_short:
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
 .L__kefir_func_test_fetch_sub_short_label2:
-    movsxw -2(%rbp), %rcx
-    movsx %si, %rax
-    mov %rcx, %r8
-    sub %eax, %r8d
+    movsxw -2(%rbp), %rax
+    movsx %si, %rcx
+    mov %rax, %r8
+    sub %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movw -2(%rbp), %ax
@@ -142,10 +142,10 @@ test_fetch_xor_short:
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
 .L__kefir_func_test_fetch_xor_short_label2:
-    movsxw -2(%rbp), %rcx
-    movsx %si, %rax
-    mov %rcx, %r8
-    xor %eax, %r8d
+    movsxw -2(%rbp), %rax
+    movsx %si, %rcx
+    mov %rax, %r8
+    xor %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movw -2(%rbp), %ax
@@ -172,8 +172,8 @@ test_fetch_or_int:
     movl (%rdi), %eax
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_or_int_label2:
-    movl -4(%rbp), %ecx
-    mov %rcx, %r8
+    movl -4(%rbp), %eax
+    mov %rax, %r8
     or %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -201,10 +201,10 @@ test_fetch_add_char:
     movb (%rdi), %al
     movb %al, -1(%rbp)
 .L__kefir_func_test_fetch_add_char_label2:
-    movsxb -1(%rbp), %rcx
-    movsx %sil, %rax
-    mov %rcx, %r8
-    add %eax, %r8d
+    movsxb -1(%rbp), %rax
+    movsx %sil, %rcx
+    mov %rax, %r8
+    add %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movb -1(%rbp), %al
@@ -231,8 +231,8 @@ test_fetch_add_long:
     movq (%rdi), %rax
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_add_long_label2:
-    movq -8(%rbp), %rcx
-    mov %rcx, %r8
+    movq -8(%rbp), %rax
+    mov %rax, %r8
     add %rsi, %r8
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -260,10 +260,10 @@ test_fetch_and_char:
     movb (%rdi), %al
     movb %al, -1(%rbp)
 .L__kefir_func_test_fetch_and_char_label2:
-    movsxb -1(%rbp), %rcx
-    movsx %sil, %rax
-    mov %rcx, %r8
-    and %eax, %r8d
+    movsxb -1(%rbp), %rax
+    movsx %sil, %rcx
+    mov %rax, %r8
+    and %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movb -1(%rbp), %al
@@ -290,8 +290,8 @@ test_fetch_and_long:
     movq (%rdi), %rax
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_and_long_label2:
-    movq -8(%rbp), %rcx
-    mov %rcx, %r8
+    movq -8(%rbp), %rax
+    mov %rax, %r8
     and %rsi, %r8
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -319,10 +319,10 @@ test_fetch_or_short:
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
 .L__kefir_func_test_fetch_or_short_label2:
-    movsxw -2(%rbp), %rcx
-    movsx %si, %rax
-    mov %rcx, %r8
-    or %eax, %r8d
+    movsxw -2(%rbp), %rax
+    movsx %si, %rcx
+    mov %rax, %r8
+    or %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movw -2(%rbp), %ax
@@ -349,10 +349,10 @@ test_fetch_sub_char:
     movb (%rdi), %al
     movb %al, -1(%rbp)
 .L__kefir_func_test_fetch_sub_char_label2:
-    movsxb -1(%rbp), %rcx
-    movsx %sil, %rax
-    mov %rcx, %r8
-    sub %eax, %r8d
+    movsxb -1(%rbp), %rax
+    movsx %sil, %rcx
+    mov %rax, %r8
+    sub %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movb -1(%rbp), %al
@@ -379,8 +379,8 @@ test_fetch_sub_long:
     movq (%rdi), %rax
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_sub_long_label2:
-    movq -8(%rbp), %rcx
-    mov %rcx, %r8
+    movq -8(%rbp), %rax
+    mov %rax, %r8
     sub %rsi, %r8
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -408,10 +408,10 @@ test_fetch_xor_char:
     movb (%rdi), %al
     movb %al, -1(%rbp)
 .L__kefir_func_test_fetch_xor_char_label2:
-    movsxb -1(%rbp), %rcx
-    movsx %sil, %rax
-    mov %rcx, %r8
-    xor %eax, %r8d
+    movsxb -1(%rbp), %rax
+    movsx %sil, %rcx
+    mov %rax, %r8
+    xor %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movb -1(%rbp), %al
@@ -438,8 +438,8 @@ test_fetch_xor_long:
     movq (%rdi), %rax
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_xor_long_label2:
-    movq -8(%rbp), %rcx
-    mov %rcx, %r8
+    movq -8(%rbp), %rax
+    mov %rax, %r8
     xor %rsi, %r8
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -467,8 +467,8 @@ test_fetch_add_int:
     movl (%rdi), %eax
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_add_int_label2:
-    movl -4(%rbp), %ecx
-    mov %rcx, %r8
+    movl -4(%rbp), %eax
+    mov %rax, %r8
     add %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -496,8 +496,8 @@ test_fetch_and_int:
     movl (%rdi), %eax
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_and_int_label2:
-    movl -4(%rbp), %ecx
-    mov %rcx, %r8
+    movl -4(%rbp), %eax
+    mov %rax, %r8
     and %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -525,10 +525,10 @@ test_fetch_or_char:
     movb (%rdi), %al
     movb %al, -1(%rbp)
 .L__kefir_func_test_fetch_or_char_label2:
-    movsxb -1(%rbp), %rcx
-    movsx %sil, %rax
-    mov %rcx, %r8
-    or %eax, %r8d
+    movsxb -1(%rbp), %rax
+    movsx %sil, %rcx
+    mov %rax, %r8
+    or %ecx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     movb -1(%rbp), %al
@@ -555,8 +555,8 @@ test_fetch_or_long:
     movq (%rdi), %rax
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_or_long_label2:
-    movq -8(%rbp), %rcx
-    mov %rcx, %r8
+    movq -8(%rbp), %rax
+    mov %rax, %r8
     or %rsi, %r8
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -584,8 +584,8 @@ test_fetch_sub_int:
     movl (%rdi), %eax
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_sub_int_label2:
-    movl -4(%rbp), %ecx
-    mov %rcx, %r8
+    movl -4(%rbp), %eax
+    mov %rax, %r8
     sub %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
@@ -613,8 +613,8 @@ test_fetch_xor_int:
     movl (%rdi), %eax
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_xor_int_label2:
-    movl -4(%rbp), %ecx
-    mov %rcx, %r8
+    movl -4(%rbp), %eax
+    mov %rax, %r8
     xor %esi, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx

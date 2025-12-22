@@ -19,9 +19,10 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movb %dil, -1(%rbp)
-    leaq -2(%rbp), %rcx
-    leaq -1(%rbp), %rdx
+    mov %rdi, %rax
+    movb %al, -1(%rbp)
+    lea -2(%rbp), %rcx
+    lea -1(%rbp), %rdx
 mov (%rdx), %al
 mov %al, (%rcx)
 addb $1, (%rcx)
@@ -38,9 +39,10 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movw %di, -2(%rbp)
-    leaq -4(%rbp), %rcx
-    leaq -2(%rbp), %rdx
+    mov %rdi, %rax
+    movw %ax, -2(%rbp)
+    lea -4(%rbp), %rcx
+    lea -2(%rbp), %rdx
 mov (%rdx), %ax
 mov %ax, (%rcx)
 addw $1, (%rcx)
@@ -57,9 +59,10 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -4(%rbp)
-    leaq -8(%rbp), %rcx
-    leaq -4(%rbp), %rdx
+    mov %rdi, %rax
+    movl %eax, -4(%rbp)
+    lea -8(%rbp), %rcx
+    lea -4(%rbp), %rdx
 mov (%rdx), %eax
 mov %eax, (%rcx)
 addl $1, (%rcx)
@@ -76,9 +79,10 @@ test4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -8(%rbp)
-    leaq -16(%rbp), %rcx
-    leaq -8(%rbp), %rdx
+    mov %rdi, %rax
+    movq %rax, -8(%rbp)
+    lea -16(%rbp), %rcx
+    lea -8(%rbp), %rdx
 mov (%rdx), %rax
 mov %rax, (%rcx)
 addq $1, (%rcx)
@@ -99,8 +103,8 @@ test5:
     movq %rsi, -56(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    leaq -32(%rbp), %rcx
-    leaq -16(%rbp), %rdx
+    lea -32(%rbp), %rcx
+    lea -16(%rbp), %rdx
 mov (%rdx), %rax
 mov %rax, (%rcx)
 mov 8(%rdx), %rax
@@ -111,7 +115,8 @@ adcq $0, 8(%rcx)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     movq -48(%rbp), %rax
-    movq -40(%rbp), %rdx
+    movq -40(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

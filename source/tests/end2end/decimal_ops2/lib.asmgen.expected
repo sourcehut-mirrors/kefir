@@ -366,10 +366,10 @@ postdec32:
     movd (%rbx), %xmm0
     movd %xmm0, -32(%rbp)
     movd .L__kefir_func_postdec32_label4(%rip), %xmm1
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     call __bid_addsd3@PLT
     movd %xmm0, (%rbx)
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -391,10 +391,10 @@ postdec64:
     movq (%rbx), %xmm0
     movq %xmm0, -32(%rbp)
     movq .L__kefir_func_postdec64_label4(%rip), %xmm1
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     call __bid_adddd3@PLT
     movq %xmm0, (%rbx)
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -416,10 +416,10 @@ postinc32:
     movd (%rbx), %xmm0
     movd %xmm0, -32(%rbp)
     movd .L__kefir_func_postinc32_label4(%rip), %xmm1
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     call __bid_addsd3@PLT
     movd %xmm0, (%rbx)
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -441,10 +441,10 @@ postinc64:
     movq (%rbx), %xmm0
     movq %xmm0, -32(%rbp)
     movq .L__kefir_func_postinc64_label4(%rip), %xmm1
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     call __bid_adddd3@PLT
     movq %xmm0, (%rbx)
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -510,10 +510,10 @@ postdec128:
     movdqu (%rbx), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu .L__kefir_func_postdec128_label4(%rip), %xmm1
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     call __bid_addtd3@PLT
     movdqu %xmm0, (%rbx)
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -535,10 +535,10 @@ postinc128:
     movdqu (%rbx), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu .L__kefir_func_postinc128_label4(%rip), %xmm1
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     call __bid_addtd3@PLT
     movdqu %xmm0, (%rbx)
-    movdqu -32(%rbp), %xmm0
+    movaps -32(%rbp), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

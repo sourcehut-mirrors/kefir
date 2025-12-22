@@ -18,18 +18,17 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    shl $47, %rdi
-    sar $47, %rdi
-    mov %edi, %eax
-    mov %rax, %rcx
-    add %eax, %ecx
-    sar $31, %edi
-    mov %rcx, %rax
-    xor %edi, %eax
+    mov %rdi, %rax
+    shl $47, %rax
+    sar $47, %rax
+    mov %eax, %ecx
+    add %ecx, %ecx
+    sar $31, %eax
+    mov %rcx, %rdx
+    xor %eax, %edx
+    mov %rdx, %rax
     or $1, %eax
-    mov %rax, %rcx
-    bsr %eax, %ecx
-    mov %rcx, %rax
+    bsr %eax, %eax
     xor $31, %eax
     sub $15, %eax
     ret
@@ -37,34 +36,32 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %edi, %eax
-    mov %rax, %rcx
-    add %eax, %ecx
-    sar $31, %edi
-    mov %rcx, %rax
-    xor %edi, %eax
+    mov %rdi, %rax
+    mov %eax, %ecx
+    add %ecx, %ecx
+    sar $31, %eax
+    mov %rcx, %rdx
+    xor %eax, %edx
+    mov %rdx, %rax
     or $1, %eax
-    mov %rax, %rcx
-    bsr %eax, %ecx
-    mov %rcx, %rax
+    bsr %eax, %eax
     xor $31, %eax
     ret
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    shl $5, %rdi
-    sar $5, %rdi
     mov %rdi, %rax
+    shl $5, %rax
+    sar $5, %rax
     mov %rax, %rcx
-    add %rax, %rcx
-    sar $63, %rdi
-    mov %rcx, %rax
-    xor %rdi, %rax
+    add %rcx, %rcx
+    sar $63, %rax
+    mov %rcx, %rdx
+    xor %rax, %rdx
+    mov %rdx, %rax
     or $1, %rax
-    mov %rax, %rcx
-    bsr %rax, %rcx
-    mov %rcx, %rax
+    bsr %rax, %rax
     xor $63, %eax
     sub $5, %eax
     ret
@@ -74,14 +71,13 @@ test4:
 .L__kefir_text_func_test4_begin:
     mov %rdi, %rax
     mov %rax, %rcx
-    add %rax, %rcx
-    sar $63, %rdi
-    mov %rcx, %rax
-    xor %rdi, %rax
+    add %rcx, %rcx
+    sar $63, %rax
+    mov %rcx, %rdx
+    xor %rax, %rdx
+    mov %rdx, %rax
     or $1, %rax
-    mov %rax, %rcx
-    bsr %rax, %rcx
-    mov %rcx, %rax
+    bsr %rax, %rax
     xor $63, %eax
     ret
 .L__kefir_text_func_test4_end:
@@ -93,8 +89,7 @@ test5:
     sub $16, %rsp
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    lea -16(%rbp), %rdi
     mov $120, %rsi
     call __kefir_bigint_redundant_sign_bits
     lea (%rbp), %rsp
@@ -106,7 +101,8 @@ test6:
 .L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rdi
+    lea 16(%rbp), %rax
+    mov %rax, %rdi
     mov $315, %rsi
     call __kefir_bigint_redundant_sign_bits
     pop %rbp
@@ -127,106 +123,96 @@ __kefir_bigint_redundant_sign_bits:
     push %rbx
     push %r12
     push %r13
-    push %r14
-    push %r15
     sub $8, %rsp
-    mov %rsi, %r15
-    movq %rdi, -48(%rbp)
-    cmp $0, %r15
+    cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label21
-    mov %r15, %rsi
-    sub $-7, %rsi
     mov %rsi, %rax
+    sub $-7, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    mov %rax, %r12
-    mov %r12, %rax
-    sub $1, %rax
-    movq -48(%rbp), %rdi
-    add %rax, %rdi
-    movzxb (%rdi), %rdx
-    mov %r15, %rsi
-    sub $1, %rsi
-    imul $8, %rax, %rcx
-    sub %rcx, %rsi
-    mov %rsi, %rcx
-    sar %cl, %edx
-    mov %rdx, %r13
-    and $1, %r13d
+    mov %rax, %rcx
+    sub $1, %rcx
+    mov %rdi, %rdx
+    add %rcx, %rdx
+    movzxb (%rdx), %rdx
+    mov %rsi, %r8
+    sub $1, %r8
+    imul $8, %rcx, %rcx
+    mov %r8, %r9
+    sub %rcx, %r9
+    mov %r9, %rcx
+    mov %rdx, %r8
+    sar %cl, %r8d
+    mov %r8, %rcx
+    mov %rcx, %rdx
+    and $1, %edx
     xor %ecx, %ecx
-    xor %eax, %eax
-    mov %rax, %r8
-    mov %rcx, %r14
+    xor %r8d, %r8d
+    mov %rcx, %r9
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label4:
-    cmp %r12, %r14
+    cmp %rax, %r9
     jb .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label24
     mov %r8, %rax
     sub $1, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
-    pop %r14
+    lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label24:
-    mov %r12, %rax
-    sub %r14, %rax
-    sub $1, %rax
-    movq -48(%rbp), %rdi
-    add %rax, %rdi
-    movzxb (%rdi), %r9
-    mov %r12, %rax
-    sub $1, %rax
-    imul $8, %rax, %rcx
-    mov %r15, %rsi
-    sub %rcx, %rsi
-    mov $8, %rcx
-    cmp $0, %r14
-    mov %rcx, %r10
-    cmovbe %rsi, %r10
-    xor %edx, %edx
-    mov %rdx, %r11
-    mov %r8, %rbx
+    mov %rax, %rcx
+    sub %r9, %rcx
+    sub $1, %rcx
+    mov %rdi, %r10
+    add %rcx, %r10
+    mov %r10, %rcx
+    movzxb (%rcx), %r10
+    mov %rax, %rcx
+    sub $1, %rcx
+    imul $8, %rcx, %rcx
+    mov %rsi, %r11
+    sub %rcx, %r11
+    mov %r11, %rcx
+    mov $8, %r11
+    cmp $0, %r9
+    cmovbe %rcx, %r11
+    xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label9:
-    lea 1(%r14), %rdx
-    cmp %r10, %r11
+    lea 1(%r9), %rbx
+    cmp %r11, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label22
-    mov %rbx, %r8
-    mov %rdx, %r14
+    mov %rbx, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label4
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label22:
-    lea 1(%r11), %r8
-    lea 1(%rbx), %rax
-    mov %r10, %rcx
-    sub %r11, %rcx
+    lea 1(%rcx), %rbx
+    lea 1(%r8), %r12
+    mov %r11, %r13
+    sub %rcx, %r13
+    mov %r13, %rcx
     sub $1, %rcx
-    mov %r9, %rdx
-    sar %cl, %edx
-    and $1, %edx
-    cmp %r13d, %edx
+    mov %r10, %r13
+    sar %cl, %r13d
+    mov %r13, %rcx
+    and $1, %ecx
+    cmp %edx, %ecx
     je .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label28
-    mov %rbx, %rax
+    mov %r8, %rax
     sub $1, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
-    pop %r14
+    lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label28:
-    mov %r8, %r11
-    mov %rax, %rbx
+    mov %rbx, %rcx
+    mov %r12, %r8
     jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label9
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label21:
     xor %eax, %eax
-    lea -40(%rbp), %rsp
-    pop %r15
-    pop %r14
+    lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx

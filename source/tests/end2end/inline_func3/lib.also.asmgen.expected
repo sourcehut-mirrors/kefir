@@ -10,7 +10,7 @@ test1:
 .L__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $160, %rsp
+    sub $176, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
     mov %rdi, %rdx
@@ -22,14 +22,14 @@ test1:
     fldt .L__kefir_func_test1_label6(%rip)
     movq $0, 40(%rdx)
     fstpt 32(%rdx)
-    lea 48(%rdx), %rdi
+    lea 48(%rdx), %rax
     movd .L__kefir_func_test1_label7(%rip), %xmm0
-    movd %xmm0, (%rdi)
-    movd %xmm0, 4(%rdi)
-    lea 56(%rdx), %rdi
+    movd %xmm0, (%rax)
+    movd %xmm0, 4(%rax)
+    lea 56(%rdx), %rax
     movq .L__kefir_func_test1_label8(%rip), %xmm0
-    movq %xmm0, (%rdi)
-    movq %xmm0, 8(%rdi)
+    movq %xmm0, (%rax)
+    movq %xmm0, 8(%rax)
     fldt .L__kefir_func_test1_label9(%rip)
     movq $0, 104(%rdx)
     fld %st(0)
@@ -40,13 +40,14 @@ test1:
     fld %st(0)
     fstpt -160(%rbp)
     fstpt 80(%rdx)
-    leaq -144(%rbp), %rdi
+    lea -144(%rbp), %rdi
     xor %eax, %eax
     mov $16, %rcx
     mov %rax, %rsi
     rep stosq
-    lea 112(%rdx), %rdi
-    leaq -144(%rbp), %rsi
+    lea 112(%rdx), %rax
+    mov %rax, %rdi
+    lea -144(%rbp), %rsi
     cld
     mov $16, %rcx
     rep movsq

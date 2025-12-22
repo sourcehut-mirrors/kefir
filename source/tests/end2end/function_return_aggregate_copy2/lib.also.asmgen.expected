@@ -15,21 +15,24 @@ get2:
     push %r12
     sub $512, %rsp
     mov %rsi, %r12
-    leaq -272(%rbp), %rbx
-    leaq -528(%rbp), %rsi
-    mov %rdi, %rdx
+    mov %rdi, %rax
+    lea -272(%rbp), %rbx
+    lea -528(%rbp), %rsi
+    mov %rax, %rdx
     mov %rbx, %rdi
     call get@PLT
-    leaq -528(%rbp), %rdi
+    lea -528(%rbp), %rdi
     mov %rax, %rsi
     cld
     mov $32, %rcx
     rep movsq
     movsx %r12d, %rax
     imul $4, %rax, %rax
-    leaq -528(%rbp), %rsi
-    add %rax, %rsi
-    movl (%rsi), %eax
+    lea -528(%rbp), %rcx
+    mov %rcx, %rdx
+    add %rax, %rdx
+    mov %rdx, %rax
+    movl (%rax), %eax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

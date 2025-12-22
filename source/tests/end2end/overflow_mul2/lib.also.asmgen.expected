@@ -18,50 +18,72 @@
 .L__kefir_text_section_begin:
 overflow_smul:
 .L__kefir_text_func_overflow_smul_begin:
-    movsx %edi, %rax
-    movsx %esi, %rcx
-    mov %rax, %rsi
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rdi, %rdx
+    movsx %edx, %rdx
+    movsx %ecx, %rcx
+    mov %rdx, %rsi
     imul %rcx, %rsi
-    seto %al
-    movsx %esi, %rcx
-    cmp %rcx, %rsi
-    setne %cl
-    or %cl, %al
-    and $1, %eax
-    movl %esi, (%rdx)
+    mov %rsi, %rcx
+    mov %rsi, %rdx
+    seto %dl
+    movsx %ecx, %rsi
+    cmp %rsi, %rcx
+    setne %sil
+    or %sil, %dl
+    and $1, %edx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_overflow_smul_end:
 
 overflow_umul:
 .L__kefir_text_func_overflow_umul_begin:
-    mov %edi, %eax
-    mov %esi, %ecx
-    mov %rax, %rsi
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rdi, %rdx
+    mov %edx, %edx
+    mov %ecx, %ecx
+    mov %rdx, %rsi
     imul %rcx, %rsi
-    seto %al
-    mov %esi, %ecx
-    cmp %rcx, %rsi
-    setne %cl
-    or %cl, %al
-    and $1, %eax
-    movl %esi, (%rdx)
+    mov %rsi, %rcx
+    mov %rsi, %rdx
+    seto %dl
+    mov %ecx, %esi
+    cmp %rsi, %rcx
+    setne %sil
+    or %sil, %dl
+    and $1, %edx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_overflow_umul_end:
 
 overflow_smull:
 .L__kefir_text_func_overflow_smull_begin:
-    imul %rsi, %rdi
-    seto %al
-    and $1, %eax
-    movq %rdi, (%rdx)
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rdi, %rdx
+    mov %rdx, %rsi
+    imul %rcx, %rsi
+    mov %rsi, %rcx
+    mov %rsi, %rdx
+    seto %dl
+    and $1, %edx
+    movq %rcx, (%rax)
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_overflow_smull_end:
 
 overflow_umull:
 .L__kefir_text_func_overflow_umull_begin:
     mov %rdx, %rcx
-    mov %rdi, %rax
-    mul %rsi
+    mov %rsi, %rdx
+    mov %rdi, %rsi
+    mov %rsi, %rax
+    mul %rdx
+    mov %rax, %rdx
     seto %dl
     and $1, %edx
     movq %rax, (%rcx)
@@ -71,18 +93,28 @@ overflow_umull:
 
 overflow_smulll:
 .L__kefir_text_func_overflow_smulll_begin:
-    imul %rsi, %rdi
-    seto %al
-    and $1, %eax
-    movq %rdi, (%rdx)
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rdi, %rdx
+    mov %rdx, %rsi
+    imul %rcx, %rsi
+    mov %rsi, %rcx
+    mov %rsi, %rdx
+    seto %dl
+    and $1, %edx
+    movq %rcx, (%rax)
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_overflow_smulll_end:
 
 overflow_umulll:
 .L__kefir_text_func_overflow_umulll_begin:
     mov %rdx, %rcx
-    mov %rdi, %rax
-    mul %rsi
+    mov %rsi, %rdx
+    mov %rdi, %rsi
+    mov %rsi, %rax
+    mul %rdx
+    mov %rax, %rdx
     seto %dl
     and $1, %edx
     movq %rax, (%rcx)

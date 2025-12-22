@@ -14,8 +14,11 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    movsx %dil, %rcx
-    bsf %ecx, %eax
+    mov %rdi, %rax
+    movsx %al, %rax
+    mov %rcx, %rdx
+    bsf %eax, %edx
+    mov %rdx, %rax
     mov $-1, %ecx
     cmove %ecx, %eax
     add $1, %eax
@@ -24,8 +27,11 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    movsx %di, %rcx
-    bsf %ecx, %eax
+    mov %rdi, %rax
+    movsx %ax, %rax
+    mov %rcx, %rdx
+    bsf %eax, %edx
+    mov %rdx, %rax
     mov $-1, %ecx
     cmove %ecx, %eax
     add $1, %eax
@@ -34,7 +40,10 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    bsf %edi, %eax
+    mov %rdi, %rax
+    mov %rcx, %rdx
+    bsf %eax, %edx
+    mov %rdx, %rax
     mov $-1, %ecx
     cmove %ecx, %eax
     add $1, %eax
@@ -43,12 +52,11 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov %rdi, %rcx
-    bsf %rdi, %rcx
-    mov $-1, %rax
-    mov %rcx, %rdi
-    cmove %rax, %rdi
-    lea 1(%rdi), %eax
+    mov %rdi, %rax
+    bsf %rax, %rax
+    mov $-1, %rcx
+    cmove %rcx, %rax
+    lea 1(%rax), %eax
     ret
 .L__kefir_text_func_test4_end:
 

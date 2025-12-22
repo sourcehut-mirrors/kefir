@@ -45,13 +45,11 @@ c32_to_bool:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movaps %xmm0, %xmm1
-    movaps %xmm1, %xmm2
-    shufps $1, %xmm1, %xmm2
-    movaps %xmm3, %xmm1
-    pxor %xmm3, %xmm1
-    cmpneqps %xmm1, %xmm0
-    cmpneqps %xmm1, %xmm2
-    orps %xmm2, %xmm0
+    shufps $1, %xmm1, %xmm1
+    pxor %xmm2, %xmm2
+    cmpneqps %xmm2, %xmm0
+    cmpneqps %xmm2, %xmm1
+    orps %xmm1, %xmm0
     movd %xmm0, %eax
     and $1, %rax
     ldmxcsr -8(%rbp)
@@ -66,8 +64,7 @@ c64_to_bool:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movaps %xmm3, %xmm2
-    pxor %xmm3, %xmm2
+    pxor %xmm2, %xmm2
     cmpneqpd %xmm2, %xmm0
     cmpneqpd %xmm2, %xmm1
     orpd %xmm1, %xmm0
@@ -83,7 +80,7 @@ c80_to_bool:
 .L__kefir_text_func_c80_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     fldt (%rax)
@@ -92,16 +89,18 @@ c80_to_bool:
     fucomi %st(1)
     fstp %st(0)
     setp %al
+    mov %rax, %rcx
     setne %cl
     or %al, %cl
     fxch %st(1)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    mov %rax, %rdx
-    setp %dl
-    setne %al
-    or %dl, %al
+    setp %al
+    setne %dl
+    mov %rdx, %rsi
+    or %al, %sil
+    mov %rsi, %rax
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
@@ -118,13 +117,11 @@ c32_to_bool2:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movaps %xmm0, %xmm1
-    movaps %xmm1, %xmm2
-    shufps $1, %xmm1, %xmm2
-    movaps %xmm3, %xmm1
-    pxor %xmm3, %xmm1
-    cmpneqps %xmm1, %xmm0
-    cmpneqps %xmm1, %xmm2
-    orps %xmm2, %xmm0
+    shufps $1, %xmm1, %xmm1
+    pxor %xmm2, %xmm2
+    cmpneqps %xmm2, %xmm0
+    cmpneqps %xmm2, %xmm1
+    orps %xmm1, %xmm0
     movd %xmm0, %eax
     and $1, %rax
     ldmxcsr -8(%rbp)
@@ -139,8 +136,7 @@ c64_to_bool2:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movaps %xmm3, %xmm2
-    pxor %xmm3, %xmm2
+    pxor %xmm2, %xmm2
     cmpneqpd %xmm2, %xmm0
     cmpneqpd %xmm2, %xmm1
     orpd %xmm1, %xmm0
@@ -158,8 +154,7 @@ c64_to_bool3:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movaps %xmm3, %xmm2
-    pxor %xmm3, %xmm2
+    pxor %xmm2, %xmm2
     cmpneqpd %xmm2, %xmm0
     cmpneqpd %xmm2, %xmm1
     orpd %xmm1, %xmm0
@@ -175,7 +170,7 @@ c80_to_bool2:
 .L__kefir_text_func_c80_to_bool2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     fldt (%rax)
@@ -184,16 +179,18 @@ c80_to_bool2:
     fucomi %st(1)
     fstp %st(0)
     setp %al
+    mov %rax, %rcx
     setne %cl
     or %al, %cl
     fxch %st(1)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    mov %rax, %rdx
-    setp %dl
-    setne %al
-    or %dl, %al
+    setp %al
+    setne %dl
+    mov %rdx, %rsi
+    or %al, %sil
+    mov %rsi, %rax
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
@@ -207,7 +204,7 @@ c80_to_bool3:
 .L__kefir_text_func_c80_to_bool3_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     fldt (%rax)
@@ -216,16 +213,18 @@ c80_to_bool3:
     fucomi %st(1)
     fstp %st(0)
     setp %al
+    mov %rax, %rcx
     setne %cl
     or %al, %cl
     fxch %st(1)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    mov %rax, %rdx
-    setp %dl
-    setne %al
-    or %dl, %al
+    setp %al
+    setne %dl
+    mov %rdx, %rsi
+    or %al, %sil
+    mov %rsi, %rax
     or %cl, %al
     fstp %st(0)
     fstp %st(0)

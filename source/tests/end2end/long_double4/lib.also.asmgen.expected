@@ -10,7 +10,7 @@ init_s:
 .L__kefir_text_func_init_s_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rdx
     fldt 16(%rbp)
@@ -21,40 +21,40 @@ init_s:
     rep stosq
     movq $0, 8(%rdx)
     fld %st(0)
-    fstpt -32(%rbp)
+    fstpt -64(%rbp)
     fstpt (%rdx)
     lea 64(%rdx), %rax
     fldt .L__kefir_func_init_s_label4(%rip)
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     faddp
     movq $0, 8(%rax)
     fstpt (%rax)
     lea 80(%rdx), %rax
     fldt .L__kefir_func_init_s_label5(%rip)
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     fsubp
     movq $0, 8(%rax)
     fstpt (%rax)
     lea 16(%rdx), %rax
     fldt .L__kefir_func_init_s_label6(%rip)
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     fdivp
     movq $0, 24(%rax)
     fstpt 16(%rax)
     fldt .L__kefir_func_init_s_label7(%rip)
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     fmulp
     movq $0, 40(%rax)
     fstpt 32(%rax)
     lea 16(%rdx), %rax
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     fld %st(0)
-    fstpt -32(%rbp)
+    fstpt -64(%rbp)
     fchs
     movq $0, 8(%rax)
     fstpt (%rax)
     lea 96(%rdx), %rax
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     fld %st(0)
     fmulp
     movq $0, 8(%rax)

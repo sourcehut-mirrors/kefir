@@ -16,8 +16,7 @@ get4:
     movq %rdi, -32(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -16(%rbp)
-    mov %rcx, %rax
-    xor %ecx, %eax
+    xor %eax, %eax
     movq %rax, -8(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
@@ -39,15 +38,18 @@ test:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    mov %rcx, %rax
-    xor %ecx, %eax
-    movq %rax, -16(%rbp)
-    movl %edi, -16(%rbp)
-    movl %esi, -12(%rbp)
-    leaq -24(%rbp), %rbx
-    movq -16(%rbp), %rdi
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    xor %edx, %edx
+    movq %rdx, -16(%rbp)
+    movl %ecx, -16(%rbp)
+    movl %eax, -12(%rbp)
+    lea -24(%rbp), %rbx
+    movq -16(%rbp), %rax
+    mov %rax, %rdi
     call get4
-    movq %rax, (%rbx)
+    mov %rbx, %rcx
+    movq %rax, (%rcx)
     movl -24(%rbp), %eax
     movl -20(%rbp), %ecx
     xor %ecx, %eax

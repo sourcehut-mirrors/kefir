@@ -24,36 +24,48 @@
 .L__kefir_text_section_begin:
 select1:
 .L__kefir_text_func_select1_begin:
-    test %edi, %edi
-    cmovz %rdx, %rsi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rdi, %rdx
+    test %edx, %edx
+    mov %rcx, %rdx
+    cmovz %rax, %rdx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_select1_end:
 
 select2:
 .L__kefir_text_func_select2_begin:
-    test %edi, %edi
-    cmovz %rdx, %rsi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rdi, %rdx
+    test %edx, %edx
+    mov %rcx, %rdx
+    cmovz %rax, %rdx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_select2_end:
 
 select3:
 .L__kefir_text_func_select3_begin:
-    movq %xmm0, %rax
-    movq %xmm1, %rcx
-    test %edi, %edi
-    cmovz %rcx, %rax
+    mov %rdi, %rax
+    movq %xmm0, %rcx
+    movq %xmm1, %rdx
+    test %eax, %eax
+    mov %rcx, %rax
+    cmovz %rdx, %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_select3_end:
 
 select4:
 .L__kefir_text_func_select4_begin:
-    movq %xmm0, %rax
-    movq %xmm1, %rcx
-    test %edi, %edi
-    cmovz %rcx, %rax
+    mov %rdi, %rax
+    movq %xmm0, %rcx
+    movq %xmm1, %rdx
+    test %eax, %eax
+    mov %rcx, %rax
+    cmovz %rdx, %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_select4_end:
@@ -62,24 +74,26 @@ select5:
 .L__kefir_text_func_select5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    fstpt -48(%rbp)
-    fstpt -32(%rbp)
-    test %edi, %edi
-    jnz .L__kefir_func_select5_label3
-    movq -32(%rbp), %rdi
-    movq %rdi, -48(%rbp)
-    movq -24(%rbp), %rdi
-    movq %rdi, -40(%rbp)
+    mov %rdi, %rax
+    fstpt -64(%rbp)
+    fstpt -80(%rbp)
+    test %eax, %eax
+    jnz .L__kefir_func_select5_label6
 .L__kefir_func_select5_label3:
-    fldt -48(%rbp)
+    fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_select5_label6:
+    movq -64(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -72(%rbp)
     jmp .L__kefir_func_select5_label3
 .L__kefir_text_func_select5_end:
 
@@ -89,22 +103,21 @@ select6:
     mov %rsp, %rbp
     sub $16, %rsp
     movaps %xmm1, %xmm2
-    movaps %xmm2, %xmm3
-    shufps $1, %xmm2, %xmm3
-    movaps %xmm0, %xmm2
-    movaps %xmm2, %xmm4
-    shufps $1, %xmm2, %xmm4
-    test %edi, %edi
+    shufps $1, %xmm2, %xmm2
+    movaps %xmm0, %xmm3
+    shufps $1, %xmm3, %xmm3
+    mov %rdi, %rax
+    test %eax, %eax
     jnz .L__kefir_func_select6_label6
     movaps %xmm1, %xmm0
-    movaps %xmm3, %xmm1
+    movaps %xmm2, %xmm1
 .L__kefir_func_select6_label3:
     insertps $16, %xmm1, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_select6_label6:
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     jmp .L__kefir_func_select6_label3
 .L__kefir_text_func_select6_end:
 
@@ -113,7 +126,8 @@ select7:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    test %edi, %edi
+    mov %rdi, %rax
+    test %eax, %eax
     jnz .L__kefir_func_select7_label3
     movaps %xmm2, %xmm0
     movaps %xmm3, %xmm1
@@ -130,10 +144,13 @@ select8:
     mov %rsp, %rbp
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
-    test %edi, %edi
-    cmovz %rax, %rcx
-    fldt 16(%rcx)
-    fldt (%rcx)
+    mov %rdi, %rdx
+    test %edx, %edx
+    mov %rcx, %rdx
+    cmovz %rax, %rdx
+    mov %rdx, %rax
+    fldt 16(%rax)
+    fldt (%rax)
     pop %rbp
     ret
 .L__kefir_text_func_select8_end:
@@ -143,26 +160,27 @@ select9:
     push %rbp
     mov %rsp, %rbp
     sub $256, %rsp
-    mov %rdi, %r9
+    mov %rdi, %rdx
     lea 144(%rbp), %rax
-    lea 16(%rbp), %rdx
-    mov %rsi, %r8
-    leaq -128(%rbp), %rdi
+    lea 16(%rbp), %r8
+    mov %rsi, %r9
+    lea -128(%rbp), %rdi
     mov %rax, %rsi
     cld
     mov $16, %rcx
     rep movsq
-    leaq -256(%rbp), %rdi
-    mov %rdx, %rsi
+    lea -256(%rbp), %rdi
+    mov %r8, %rsi
     cld
     mov $16, %rcx
     rep movsq
-    leaq -256(%rbp), %rdi
-    leaq -128(%rbp), %rax
-    test %r8d, %r8d
-    mov %rdi, %rcx
-    cmovz %rax, %rcx
-    mov %r9, %rax
+    lea -256(%rbp), %rax
+    lea -128(%rbp), %rcx
+    test %r9d, %r9d
+    mov %rax, %rsi
+    cmovz %rcx, %rsi
+    mov %rsi, %rcx
+    mov %rdx, %rax
     mov %rax, %rdi
     mov %rcx, %rsi
     cld

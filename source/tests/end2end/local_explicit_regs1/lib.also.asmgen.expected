@@ -11,12 +11,13 @@ testfn:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
+    mov %rdx, %rcx
+    mov %rsi, %r8
+    mov %rdi, %r9
     movq $0, -8(%rbp)
-    mov %rdx, %rdi
-    mov %rcx, %rsi
-    mov %rax, %rdx
+    mov %rcx, %rdi
+    mov %r9, %rsi
+    mov %r8, %rdx
 call somefn
     mov %rax, -8(%rbp)
     movq -8(%rbp), %rax

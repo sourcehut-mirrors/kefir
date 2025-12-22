@@ -15,74 +15,84 @@ test1:
     push %r13
     push %r14
     push %r15
-    sub $40, %rsp
+    sub $56, %rsp
     stmxcsr -48(%rbp)
+    mov %rdi, %rax
     movq %xmm0, -64(%rbp)
-    movq %rdi, -56(%rbp)
-    movq -56(%rbp), %r8
-    movq -64(%rbp), %r9
+    movq %rax, -56(%rbp)
     movq -56(%rbp), %rax
     movq -64(%rbp), %rcx
     movq -56(%rbp), %rdx
     movq -64(%rbp), %rsi
     movq -56(%rbp), %rdi
-    movq -64(%rbp), %r11
-    movq -56(%rbp), %rbx
-    movq -64(%rbp), %r12
-    movq -56(%rbp), %r13
-    movq -64(%rbp), %r14
-    movq -56(%rbp), %r15
-    mov %r15, %r10
-    add $1, %r10
-    movq %r10, -56(%rbp)
+    movq -64(%rbp), %r8
+    movq -56(%rbp), %r9
     movq -64(%rbp), %r10
-    movq %r10, -80(%rbp)
+    movq -56(%rbp), %r11
+    movq -64(%rbp), %rbx
+    movq -56(%rbp), %r12
+    movq -64(%rbp), %r13
+    movq -56(%rbp), %r15
+    mov %r15, %r14
+    add $1, %r14
+    movq %r14, -56(%rbp)
+    movq -64(%rbp), %r14
+    movq %r14, -96(%rbp)
     movq .L__kefir_func_test1_label4(%rip), %xmm0
-    movq -80(%rbp), %xmm5
-    addsd %xmm0, %xmm5
-    movq %xmm5, -64(%rbp)
-    movq %rax, -72(%rbp)
-    mov $1, %rax
-    movsx %eax, %r10
-    movq -72(%rbp), %rax
-    add %r10, %r8
-    movq %rax, -72(%rbp)
-    mov $1, %rax
-    movsx %eax, %r10
-    movq -72(%rbp), %rax
-    cvtsi2sd %r10, %xmm0
-    movq %r9, %xmm1
-    movaps %xmm1, %xmm3
-    addsd %xmm0, %xmm3
-    cvtsi2sd %rax, %xmm0
+    movq -96(%rbp), %xmm1
+    movaps %xmm1, %xmm2
+    addsd %xmm0, %xmm2
+    movaps %xmm2, %xmm0
+    movq %xmm0, -64(%rbp)
+    movq %rax, -88(%rbp)
+    mov $1, %eax
+    movsx %eax, %r14
+    movq -88(%rbp), %rax
+    add %r14, %rax
+    movq %rax, -80(%rbp)
+    mov $1, %eax
+    movsx %eax, %r14
+    movq -80(%rbp), %rax
+    cvtsi2sd %r14, %xmm0
     movq %rcx, %xmm1
-    addsd %xmm1, %xmm0
+    movaps %xmm1, %xmm2
+    addsd %xmm0, %xmm2
+    movaps %xmm2, %xmm0
     cvtsi2sd %rdx, %xmm1
-    movaps %xmm1, %xmm6
-    movq %rsi, %xmm1
-    mulsd %xmm1, %xmm6
+    movaps %xmm1, %xmm3
+    movq %rsi, %xmm2
+    addsd %xmm2, %xmm3
     cvtsi2sd %rdi, %xmm1
+    movaps %xmm1, %xmm6
+    movq %r8, %xmm2
+    mulsd %xmm2, %xmm6
+    cvtsi2sd %r9, %xmm1
     movaps %xmm1, %xmm7
-    movq %r11, %xmm1
-    divsd %xmm1, %xmm7
-    mov %rbx, %rax
-    neg %rax
-    cvtsi2sd %rax, %xmm1
-    movq %r12, %xmm2
-    subsd %xmm2, %xmm1
-    mov %r13, %rax
-    neg %rax
-    cvtsi2sd %rax, %xmm2
-    movq %r14, %xmm4
-    divsd %xmm4, %xmm2
+    movq %r10, %xmm2
+    divsd %xmm2, %xmm7
+    mov %r11, %rcx
+    neg %rcx
+    cvtsi2sd %rcx, %xmm1
+    movaps %xmm1, %xmm8
+    movq %rbx, %xmm2
+    subsd %xmm2, %xmm8
+    mov %r12, %rcx
+    neg %rcx
+    cvtsi2sd %rcx, %xmm1
+    movaps %xmm1, %xmm9
+    movq %r13, %xmm2
+    divsd %xmm2, %xmm9
     mov -56(%rbp), %rsi
     mov -64(%rbp), %rdi
-    movq %xmm3, %r9
-    movq %xmm0, %r10
+    mov %rax, %r8
+    movq %xmm0, %r9
+    movq %xmm3, %r10
     movq %xmm6, %r12
     movq %xmm7, %r14
+    movaps %xmm8, %xmm1
+    movaps %xmm9, %xmm2
     movq %r15, %xmm4
-    movq -80(%rbp), %xmm5
+    movq -96(%rbp), %xmm5
 # %rsi, %rdi, %r8, %r9, %r10, %r12, %r14, %xmm1, %xmm2, %xmm4, %xmm5
     ldmxcsr -48(%rbp)
     lea -40(%rbp), %rsp

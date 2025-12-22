@@ -32,7 +32,8 @@ fn3:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    mov %rdi, %rbx
+    mov %rdi, %rax
+    mov %rax, %rbx
 .L__kefir_func_fn3_label2:
     cmp $0, %ebx
     jg .L__kefir_func_fn3_label10
@@ -42,9 +43,9 @@ fn3:
     ret
 .L__kefir_func_fn3_label10:
     call fn1
-    mov %rbx, %rdi
-    add $-1, %edi
-    mov %rdi, %rbx
+    mov %rbx, %rax
+    add $-1, %eax
+    mov %rax, %rbx
     jmp .L__kefir_func_fn3_label2
 .L__kefir_text_func_fn3_end:
 

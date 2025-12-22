@@ -14,22 +14,27 @@ test:
     mov %rsp, %rbp
     sub $48, %rsp
     mov $0, %rax
-    movl %edi, -32(%rbp)
+    mov %rdi, %rcx
+    movl %ecx, -32(%rbp)
     mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
-    mov %rsp, %rsi
-    mov $0, %rdx
-    imul $8, %rdx, %rax
-    leaq -48(%rbp), %rdx
-    add %rax, %rdx
-    movq %rcx, (%rdx)
+    mov %rsp, %rdx
+    mov $0, %rsi
+    imul $8, %rsi, %rax
+    lea -48(%rbp), %rsi
+    mov %rsi, %rdi
+    add %rax, %rdi
+    mov %rdi, %rax
+    movq %rcx, (%rax)
     movl -32(%rbp), %eax
     movsx %eax, %rax
     mov $4, %rcx
-    imul %rax, %rcx
-    movq %rcx, -16(%rbp)
-    sub %rcx, %rsp
+    mov %rcx, %rsi
+    imul %rax, %rsi
+    mov %rsi, %rax
+    movq %rax, -16(%rbp)
+    sub %rax, %rsp
     mov $16, %rax
     cmp $4, %rax
     mov $4, %rcx
@@ -44,19 +49,20 @@ test:
     movl -32(%rbp), %eax
     add $-1, %eax
     movl %eax, -32(%rbp)
-    leaq -24(%rbp), %rax
+    lea -24(%rbp), %rax
     add $0, %rax
     movq (%rax), %rax
     movq -8(%rbp), %rcx
-    mov $0, %rdx
+    mov $0, %rsi
     cmp %rcx, %rax
-    mov %rdx, %rax
+    mov %rsi, %rax
     sete %al
     mov $0, %rcx
     test %al, %al
     mov %rcx, %rax
     sete %al
     test %eax, %eax
+    mov %rcx, %rax
     sete %al
     test %al, %al
     jz .L__kefir_func_test_label16
@@ -66,6 +72,7 @@ test:
     mov %rcx, %rax
     setg %al
     test %eax, %eax
+    mov %rcx, %rax
     sete %al
     test %al, %al
     jz .L__kefir_func_test_label13
@@ -88,22 +95,27 @@ test2:
     mov %rsp, %rbp
     sub $64, %rsp
     mov $0, %rax
-    movl %edi, -48(%rbp)
+    mov %rdi, %rcx
+    movl %ecx, -48(%rbp)
     mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rax
     mov $0, %rsi
     imul $8, %rsi, %rdx
-    leaq -64(%rbp), %rsi
-    add %rdx, %rsi
-    movq %rcx, (%rsi)
+    lea -64(%rbp), %rsi
+    mov %rsi, %rdi
+    add %rdx, %rdi
+    mov %rdi, %rdx
+    movq %rcx, (%rdx)
     movl -48(%rbp), %ecx
     movsx %ecx, %rcx
     mov $4, %rdx
-    imul %rcx, %rdx
-    movq %rdx, -32(%rbp)
-    sub %rdx, %rsp
+    mov %rdx, %rsi
+    imul %rcx, %rsi
+    mov %rsi, %rcx
+    movq %rcx, -32(%rbp)
+    sub %rcx, %rsp
     mov $16, %rcx
     cmp $4, %rcx
     mov $4, %rdx
@@ -112,50 +124,53 @@ test2:
     and %rcx, %rsp
     mov %rsp, %rcx
     movq %rcx, -40(%rbp)
-    mov %rax, %rcx
 .L__kefir_func_test2_label2:
-    mov %rcx, %rax
+    mov %rax, %rcx
     sub $16, %rsp
-    movq %rcx, (%rsp)
-    mov %rsp, %rsi
-    mov $1, %rdx
-    imul $8, %rdx, %rcx
-    leaq -64(%rbp), %rdx
-    add %rcx, %rdx
-    movq %rax, (%rdx)
-    movl -48(%rbp), %eax
-    leaq -24(%rbp), %rcx
-    add $8, %rcx
-    movsx %eax, %rax
-    mov $4, %rdx
-    imul %rax, %rdx
-    movq %rdx, (%rcx)
-    leaq -24(%rbp), %rax
-    add $0, %rax
-    sub %rdx, %rsp
+    movq %rax, (%rsp)
+    mov %rsp, %rax
+    mov $1, %rsi
+    imul $8, %rsi, %rdx
+    lea -64(%rbp), %rsi
+    mov %rsi, %rdi
+    add %rdx, %rdi
+    mov %rdi, %rdx
+    movq %rcx, (%rdx)
+    movl -48(%rbp), %ecx
+    lea -24(%rbp), %rdx
+    add $8, %rdx
+    movsx %ecx, %rcx
+    mov $4, %rsi
+    mov %rsi, %rdi
+    imul %rcx, %rdi
+    mov %rdi, %rcx
+    movq %rcx, (%rdx)
+    lea -24(%rbp), %rdx
+    add $0, %rdx
+    sub %rcx, %rsp
     mov $16, %rcx
     cmp $4, %rcx
-    mov $4, %rdx
-    cmovl %rdx, %rcx
+    mov $4, %rsi
+    cmovl %rsi, %rcx
     neg %rcx
     and %rcx, %rsp
     mov %rsp, %rcx
-    movq %rcx, (%rax)
-    mov $1, %rcx
-    imul $8, %rcx, %rax
-    leaq -64(%rbp), %rcx
-    add %rax, %rcx
-    movq (%rcx), %rax
-    cmp $0, %rsi
+    movq %rcx, (%rdx)
+    mov $1, %rdx
+    imul $8, %rdx, %rcx
+    lea -64(%rbp), %rdx
+    mov %rdx, %rsi
+    add %rcx, %rsi
+    mov %rsi, %rcx
+    movq (%rcx), %rcx
+    cmp $0, %rax
     jz .L__kefir_func_test2_label7
-    mov %rsi, %rsp
+    mov %rax, %rsp
     movq (%rsp), %rax
     add $16, %rsp
 .L__kefir_func_test2_label4:
-    mov %rax, %rcx
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label7:
-    mov %rsi, %rax
     jmp .L__kefir_func_test2_label4
 .L__kefir_text_func_test2_end:
 

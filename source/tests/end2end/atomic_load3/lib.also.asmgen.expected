@@ -29,8 +29,9 @@ get_a1:
     push %rbx
     sub $72, %rsp
     mov %rdi, %rbx
-    add $32, %rsi
-    leaq -72(%rbp), %rdx
+    lea 32(%rsi), %rax
+    lea -72(%rbp), %rdx
+    mov %rax, %rsi
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
@@ -51,57 +52,64 @@ get_a1:
 
 get_i8:
 .L__kefir_text_func_get_i8_begin:
-    movb (%rdi), %al
+    mov %rdi, %rcx
+    movb (%rcx), %al
     movsx %al, %rax
     ret
 .L__kefir_text_func_get_i8_end:
 
 get_f32:
 .L__kefir_text_func_get_f32_begin:
-    add $16, %rdi
-    movl (%rdi), %eax
+    mov %rdi, %rax
+    lea 16(%rax), %rcx
+    movl (%rcx), %eax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_get_f32_end:
 
 get_f64:
 .L__kefir_text_func_get_f64_begin:
-    add $24, %rdi
-    movq (%rdi), %rax
+    mov %rdi, %rax
+    lea 24(%rax), %rcx
+    movq (%rcx), %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_get_f64_end:
 
 get_i16:
 .L__kefir_text_func_get_i16_begin:
-    add $2, %rdi
-    movw (%rdi), %ax
+    mov %rdi, %rax
+    lea 2(%rax), %rcx
+    movw (%rcx), %ax
     movsx %ax, %rax
     ret
 .L__kefir_text_func_get_i16_end:
 
 get_i32:
 .L__kefir_text_func_get_i32_begin:
-    add $4, %rdi
-    movl (%rdi), %eax
+    mov %rdi, %rax
+    lea 4(%rax), %rcx
+    movl (%rcx), %eax
     movsx %eax, %rax
     ret
 .L__kefir_text_func_get_i32_end:
 
 get_i64:
 .L__kefir_text_func_get_i64_begin:
-    add $8, %rdi
-    movq (%rdi), %rax
+    mov %rdi, %rax
+    lea 8(%rax), %rcx
+    movq (%rcx), %rax
     ret
 .L__kefir_text_func_get_i64_end:
 
 get_arr1_el:
 .L__kefir_text_func_get_arr1_el_begin:
-    add $96, %rdi
-    movsx %esi, %rax
+    mov %rsi, %rax
+    lea 96(%rdi), %rcx
+    movsx %eax, %rax
     imul $8, %rax, %rax
-    add %rax, %rdi
-    movq (%rdi), %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
     ret
 .L__kefir_text_func_get_arr1_el_end:
 
@@ -112,11 +120,15 @@ get_arr2_el:
     push %rbx
     sub $72, %rsp
     mov %rdi, %rbx
-    add $160, %rsi
-    movsx %edx, %rax
+    mov %rdx, %rax
+    lea 160(%rsi), %rcx
+    movsx %eax, %rax
     imul $64, %rax, %rax
-    add %rax, %rsi
-    leaq -72(%rbp), %rdx
+    mov %rcx, %rdx
+    add %rax, %rdx
+    mov %rdx, %rax
+    lea -72(%rbp), %rdx
+    mov %rax, %rsi
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_load@PLT

@@ -26,7 +26,9 @@ test1:
 .L__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $16, %rsp
     call fn1@PLT
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_test1_end:
@@ -35,7 +37,9 @@ test2:
 .L__kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $16, %rsp
     call fn2@PLT
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_test2_end:
@@ -44,7 +48,9 @@ test3:
 .L__kefir_text_func_test3_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $16, %rsp
     call fn3@PLT
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_test3_end:
@@ -53,7 +59,9 @@ test4:
 .L__kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $16, %rsp
     call fn4@PLT
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_test4_end:
@@ -62,12 +70,13 @@ test5:
 .L__kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
     call fn5@PLT
     movq %rax, -16(%rbp)
     movq %rdx, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -80,8 +89,7 @@ test6:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    leaq -64(%rbp), %rax
-    mov %rax, %rdi
+    lea -64(%rbp), %rdi
     call fn6@PLT
     mov %rbx, %rax
     movdqu -64(%rbp), %xmm0

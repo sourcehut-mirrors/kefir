@@ -56,7 +56,8 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movaps %xmm0, %xmm1
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm1
 movdqu %xmm1, %xmm0
     movd %xmm0, -4(%rbp)
     movd -4(%rbp), %xmm0
@@ -70,7 +71,9 @@ test4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -4(%rbp), %rax
+    movaps %xmm0, %xmm1
+    lea -4(%rbp), %rax
+    movaps %xmm1, %xmm0
 movd %xmm0, (%rax)
     movd -4(%rbp), %xmm0
     lea (%rbp), %rsp
@@ -97,7 +100,8 @@ test6:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movaps %xmm0, %xmm1
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm1
 movdqu %xmm1, %xmm0
     movq %xmm0, -8(%rbp)
     movq -8(%rbp), %xmm0
@@ -111,7 +115,9 @@ test7:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -8(%rbp), %rax
+    movaps %xmm0, %xmm1
+    lea -8(%rbp), %rax
+    movaps %xmm1, %xmm0
 movq %xmm0, (%rax)
     movq -8(%rbp), %xmm0
     lea (%rbp), %rsp
@@ -124,7 +130,8 @@ test8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movaps %xmm0, %xmm1
+    movaps %xmm0, %xmm2
+    movaps %xmm2, %xmm1
 movdqu %xmm1, %xmm0
     movdqu %xmm0, -16(%rbp)
     movdqu -16(%rbp), %xmm0
@@ -138,7 +145,9 @@ test9:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
+    movaps %xmm0, %xmm1
+    lea -16(%rbp), %rax
+    movaps %xmm1, %xmm0
 movdqu %xmm0, (%rax)
     movdqu -16(%rbp), %xmm0
     lea (%rbp), %rsp

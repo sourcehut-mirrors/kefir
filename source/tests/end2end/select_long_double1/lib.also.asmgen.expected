@@ -10,27 +10,34 @@ get:
 .L__kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    fstpt -48(%rbp)
-    fstpt -32(%rbp)
-    test %edi, %edi
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    fstpt -64(%rbp)
+    fstpt -80(%rbp)
+    test %ecx, %ecx
     jnz .L__kefir_func_get_label10
+    movq -64(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -72(%rbp)
 .L__kefir_func_get_label3:
-    fldt -48(%rbp)
+    fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_get_label10:
-    test %esi, %esi
-    jnz .L__kefir_func_get_label3
-    movq -32(%rbp), %rsi
-    movq %rsi, -48(%rbp)
-    movq -24(%rbp), %rsi
-    movq %rsi, -40(%rbp)
+    test %eax, %eax
+    jz .L__kefir_func_get_label3
+.L__kefir_func_get_label12:
+    movq -64(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -72(%rbp)
     jmp .L__kefir_func_get_label3
 .L__kefir_text_func_get_end:
 

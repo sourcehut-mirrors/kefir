@@ -95,7 +95,7 @@ mygetd:
 .L__kefir_text_func_mygetd_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_mygetd_label4(%rip)
     fldt .L__kefir_func_mygetd_label5(%rip)
@@ -123,7 +123,7 @@ mygete:
 .L__kefir_text_func_mygete_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_mygete_label4(%rip)
     fldt .L__kefir_func_mygete_label5(%rip)

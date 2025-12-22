@@ -14,12 +14,13 @@ test32:
     sub $24, %rsp
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
-    movaps %xmm1, %xmm2
-    shufps $1, %xmm1, %xmm2
-    movd %xmm0, %eax
-    movd %xmm2, %ecx
-    shl $32, %rcx
-    or %rax, %rcx
+    shufps $1, %xmm1, %xmm1
+    movd %xmm0, %ecx
+    movd %xmm1, %edx
+    shl $32, %rdx
+    mov %rdx, %rsi
+    or %rcx, %rsi
+    mov %rsi, %rcx
 mov %rcx, %rbx
 mov %rcx, %rax
 shr $32, %rax

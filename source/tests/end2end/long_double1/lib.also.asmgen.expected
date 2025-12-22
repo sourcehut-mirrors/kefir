@@ -10,7 +10,7 @@ hypot_sq:
 .L__kefir_text_func_hypot_sq_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)

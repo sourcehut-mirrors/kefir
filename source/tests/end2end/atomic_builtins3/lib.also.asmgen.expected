@@ -22,57 +22,65 @@
 .L__kefir_text_section_begin:
 test2_atomic_exchange16:
 .L__kefir_text_func_test2_atomic_exchange16_begin:
-    xchgw (%rdi), %si
     mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgw (%rcx), %ax
     ret
 .L__kefir_text_func_test2_atomic_exchange16_end:
 
 test2_atomic_exchange32:
 .L__kefir_text_func_test2_atomic_exchange32_begin:
-    xchgl (%rdi), %esi
     mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgl (%rcx), %eax
     ret
 .L__kefir_text_func_test2_atomic_exchange32_end:
 
 test2_atomic_exchange64:
 .L__kefir_text_func_test2_atomic_exchange64_begin:
-    xchgq (%rdi), %rsi
     mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_test2_atomic_exchange64_end:
 
 test_atomic_exchange8:
 .L__kefir_text_func_test_atomic_exchange8_begin:
-    xchgb (%rdi), %sil
     mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgb (%rcx), %al
     ret
 .L__kefir_text_func_test_atomic_exchange8_end:
 
 test2_atomic_exchange8:
 .L__kefir_text_func_test2_atomic_exchange8_begin:
-    xchgb (%rdi), %sil
     mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgb (%rcx), %al
     ret
 .L__kefir_text_func_test2_atomic_exchange8_end:
 
 test_atomic_exchange16:
 .L__kefir_text_func_test_atomic_exchange16_begin:
-    xchgw (%rdi), %si
     mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgw (%rcx), %ax
     ret
 .L__kefir_text_func_test_atomic_exchange16_end:
 
 test_atomic_exchange32:
 .L__kefir_text_func_test_atomic_exchange32_begin:
-    xchgl (%rdi), %esi
     mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgl (%rcx), %eax
     ret
 .L__kefir_text_func_test_atomic_exchange32_end:
 
 test_atomic_exchange64:
 .L__kefir_text_func_test_atomic_exchange64_begin:
-    xchgq (%rdi), %rsi
     mov %rsi, %rax
+    mov %rdi, %rcx
+    xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_test_atomic_exchange64_end:
 

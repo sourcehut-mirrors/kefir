@@ -43,7 +43,7 @@ geta:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -1(%rbp), %rax
+    lea -1(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -54,7 +54,7 @@ getb:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -2(%rbp), %rax
+    lea -2(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -65,7 +65,7 @@ getc:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -4(%rbp), %rax
+    lea -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -76,7 +76,7 @@ getd:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -8(%rbp), %rax
+    lea -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -87,7 +87,7 @@ gete:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -15(%rbp), %rax
+    lea -15(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -98,7 +98,7 @@ getf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
+    lea -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -109,7 +109,7 @@ getg:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    leaq -32(%rbp), %rax
+    lea -32(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -120,7 +120,7 @@ geth:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    leaq -32(%rbp), %rax
+    lea -32(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -132,12 +132,13 @@ vla1:
     mov %rsp, %rbp
     sub $32, %rsp
     xor %eax, %eax
-    mov %rax, %rcx
+    mov %rdi, %rcx
+    mov %rax, %rdx
     sub $16, %rsp
     movq %rax, (%rsp)
-    mov %rsp, %rdx
-    movq %rcx, -24(%rbp)
-    movsx %edi, %rax
+    mov %rsp, %rsi
+    movq %rdx, -24(%rbp)
+    movsx %ecx, %rax
     movq %rax, -8(%rbp)
     sub %rax, %rsp
     mov $16, %rax

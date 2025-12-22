@@ -17,9 +17,11 @@ dnot:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -4(%rbp)
+    mov %rdi, %rax
+    movl %eax, -4(%rbp)
     movl -4(%rbp), %eax
     test %eax, %eax
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     test %al, %al
@@ -103,7 +105,7 @@ dnotld:
 .L__kefir_text_func_dnotld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)

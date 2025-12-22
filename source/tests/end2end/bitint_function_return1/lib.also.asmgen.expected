@@ -2198,15 +2198,15 @@ test1:
     push %rbx
     sub $72, %rsp
     mov %rdi, %rbx
-    leaq -80(%rbp), %rax
-    mov %rax, %rdi
+    mov %rsi, %rax
+    mov %rax, %rsi
+    lea -80(%rbp), %rdi
     call get1@PLT
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
-    leaq -48(%rbp), %rax
-    mov %rax, %rdi
+    lea -48(%rbp), %rdi
     mov $250, %rsi
     call __kefir_bigint_invert
     mov %rbx, %rax
@@ -3003,27 +3003,25 @@ __kefir_bigint_invert:
 #    }
 #}
 .L__kefir_runtime_text_func___kefir_bigint_invert_begin:
-    mov %rdi, %r8
-    sub $-7, %rsi
     mov %rsi, %rax
+    mov %rdi, %rcx
+    sub $-7, %rax
     xor %edx, %edx
-    mov $8, %rcx
-    div %rcx
-    xor %ecx, %ecx
-    mov %rcx, %rdx
+    mov $8, %rsi
+    div %rsi
+    xor %edx, %edx
 .L__kefir_runtime_func___kefir_bigint_invert_label2:
     cmp %rax, %rdx
     jb .L__kefir_runtime_func___kefir_bigint_invert_label10
     xor %eax, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_invert_label10:
-    mov %r8, %rdi
-    add %rdx, %rdi
-    movzxb (%rdi), %rcx
-    not %ecx
-    movb %cl, (%rdi)
-    lea 1(%rdx), %rcx
-    mov %rcx, %rdx
+    mov %rcx, %rsi
+    add %rdx, %rsi
+    movzxb (%rsi), %rdi
+    not %edi
+    movb %dil, (%rsi)
+    add $1, %rdx
     jmp .L__kefir_runtime_func___kefir_bigint_invert_label2
 .L__kefir_runtime_text_func___kefir_bigint_invert_end:
 

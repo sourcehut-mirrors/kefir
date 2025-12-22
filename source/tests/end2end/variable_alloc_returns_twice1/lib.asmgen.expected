@@ -14,7 +14,8 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    test %edi, %edi
+    mov %rdi, %rax
+    test %eax, %eax
     jnz .L__kefir_func_test2_label10
     movq $1, -8(%rbp)
 .L__kefir_func_test2_label4:
@@ -32,7 +33,8 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    test %edi, %edi
+    mov %rdi, %rax
+    test %eax, %eax
     jnz .L__kefir_func_test3_label10
     movq $1, -8(%rbp)
 .L__kefir_func_test3_label4:
@@ -41,6 +43,7 @@ test3:
     ret
 .L__kefir_func_test3_label10:
     movq $0, -8(%rbp)
+    mov %rax, %rdi
     call test2
     jmp .L__kefir_func_test3_label4
 .L__kefir_text_func_test3_end:

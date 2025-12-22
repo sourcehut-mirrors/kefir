@@ -30,7 +30,7 @@ inc:
 .L__kefir_text_func_inc_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     fldt .L__kefir_func_inc_label4(%rip)
@@ -52,7 +52,7 @@ neg:
 .L__kefir_text_func_neg_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     fchs
@@ -66,10 +66,10 @@ f32cld:
 .L__kefir_text_func_f32cld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
-    movq %xmm0, -16(%rbp)
-    flds -16(%rbp)
+    movq %xmm0, -48(%rbp)
+    flds -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -80,10 +80,10 @@ f64cld:
 .L__kefir_text_func_f64cld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
-    movq %xmm0, -16(%rbp)
-    fldl -16(%rbp)
+    movq %xmm0, -48(%rbp)
+    fldl -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -94,9 +94,10 @@ intcld:
 .L__kefir_text_func_intcld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
-    movsx %edi, %rax
+    mov %rdi, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -110,7 +111,7 @@ ldcf32:
 .L__kefir_text_func_ldcf32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
     fldt 16(%rbp)
@@ -127,7 +128,7 @@ ldcf64:
 .L__kefir_text_func_ldcf64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
     fldt 16(%rbp)
@@ -150,8 +151,8 @@ ldcint:
     fnstcww -32(%rbp)
     movzxw -32(%rbp), %eax
     or $3072, %eax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
+    movw %ax, -16(%rbp)
+    fldcww -16(%rbp)
     fistpq -24(%rbp)
     mov -24(%rbp), %rax
     fldcww -32(%rbp)
@@ -176,10 +177,10 @@ ldcuint:
     fnstcww -32(%rbp)
     movzxw -32(%rbp), %eax
     or $3072, %ax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
+    movw %ax, -16(%rbp)
+    fldcww -16(%rbp)
+    fistpq -24(%rbp)
+    mov -24(%rbp), %rax
     fldcww -32(%rbp)
 .L__kefir_func_ldcuint_label4:
     fldcw -8(%rbp)
@@ -191,10 +192,10 @@ ldcuint:
     fsubp
     movzxw -32(%rbp), %eax
     or $3072, %ax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
+    movw %ax, -16(%rbp)
+    fldcww -16(%rbp)
+    fistpq -24(%rbp)
+    mov -24(%rbp), %rax
     fldcww -32(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_ldcuint_label4
@@ -204,9 +205,10 @@ uintcld:
 .L__kefir_text_func_uintcld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
-    mov %edi, %eax
+    mov %rdi, %rax
+    mov %eax, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -225,9 +227,10 @@ imp_cast:
 .L__kefir_text_func_imp_cast_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
-    movsx %edi, %rax
+    mov %rdi, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp

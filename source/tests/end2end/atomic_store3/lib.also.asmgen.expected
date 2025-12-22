@@ -28,6 +28,7 @@ set_a1:
     mov %rsp, %rbp
     sub $64, %rsp
     lea 16(%rbp), %rax
+    mov %rdi, %rcx
     movdqu (%rax), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu 16(%rax), %xmm0
@@ -36,9 +37,9 @@ set_a1:
     movdqu %xmm0, -32(%rbp)
     movdqu 48(%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
-    add $32, %rdi
-    mov %rdi, %rsi
-    leaq -64(%rbp), %rdx
+    lea 32(%rcx), %rax
+    mov %rax, %rsi
+    lea -64(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -50,58 +51,64 @@ set_a1:
 set_i8:
 .L__kefir_text_func_set_i8_begin:
     mov %rsi, %rax
-    xchgb (%rdi), %al
+    mov %rdi, %rcx
+    xchgb (%rcx), %al
     ret
 .L__kefir_text_func_set_i8_end:
 
 set_f32:
 .L__kefir_text_func_set_f32_begin:
-    add $16, %rdi
+    mov %rdi, %rax
+    lea 16(%rax), %rcx
     movq %xmm0, %rax
-    xchgl (%rdi), %eax
+    xchgl (%rcx), %eax
     ret
 .L__kefir_text_func_set_f32_end:
 
 set_f64:
 .L__kefir_text_func_set_f64_begin:
-    add $24, %rdi
+    mov %rdi, %rax
+    lea 24(%rax), %rcx
     movq %xmm0, %rax
-    xchgq (%rdi), %rax
+    xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_set_f64_end:
 
 set_i16:
 .L__kefir_text_func_set_i16_begin:
-    add $2, %rdi
     mov %rsi, %rax
-    xchgw (%rdi), %ax
+    lea 2(%rdi), %rcx
+    xchgw (%rcx), %ax
     ret
 .L__kefir_text_func_set_i16_end:
 
 set_i32:
 .L__kefir_text_func_set_i32_begin:
-    add $4, %rdi
     mov %rsi, %rax
-    xchgl (%rdi), %eax
+    lea 4(%rdi), %rcx
+    xchgl (%rcx), %eax
     ret
 .L__kefir_text_func_set_i32_end:
 
 set_i64:
 .L__kefir_text_func_set_i64_begin:
-    add $8, %rdi
     mov %rsi, %rax
-    xchgq (%rdi), %rax
+    lea 8(%rdi), %rcx
+    xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_set_i64_end:
 
 set_arr1_el:
 .L__kefir_text_func_set_arr1_el_begin:
-    add $96, %rdi
-    movsx %esi, %rax
-    imul $8, %rax, %rax
-    add %rax, %rdi
     mov %rdx, %rax
-    xchgq (%rdi), %rax
+    mov %rsi, %rcx
+    lea 96(%rdi), %rdx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    mov %rdx, %rsi
+    add %rcx, %rsi
+    mov %rsi, %rcx
+    xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_set_arr1_el_end:
 
@@ -111,6 +118,8 @@ set_arr2_el:
     mov %rsp, %rbp
     sub $64, %rsp
     lea 16(%rbp), %rax
+    mov %rsi, %rcx
+    mov %rdi, %rdx
     movdqu (%rax), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu 16(%rax), %xmm0
@@ -119,12 +128,12 @@ set_arr2_el:
     movdqu %xmm0, -32(%rbp)
     movdqu 48(%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
-    add $160, %rdi
-    movsx %esi, %rax
-    imul $64, %rax, %rax
-    add %rax, %rdi
-    mov %rdi, %rsi
-    leaq -64(%rbp), %rdx
+    lea 160(%rdx), %rax
+    movsx %ecx, %rcx
+    imul $64, %rcx, %rcx
+    add %rcx, %rax
+    mov %rax, %rsi
+    lea -64(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_store@PLT

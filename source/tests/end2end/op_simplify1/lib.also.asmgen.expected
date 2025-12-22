@@ -30,101 +30,137 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    add %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    add %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    add %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    add %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    sub %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    sub %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test3_end:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    imul %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    imul %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test4_end:
 
 test5:
 .L__kefir_text_func_test5_begin:
-    imul %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    imul %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test5_end:
 
 test6:
 .L__kefir_text_func_test6_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
     mov %rdx, %rcx
-    test %edi, %edi
-    jnz .L__kefir_func_test6_label10
     mov %rsi, %rax
+    mov %rdi, %rdx
+    test %edx, %edx
+    jnz .L__kefir_func_test6_label10
+    movq %rax, -16(%rbp)
     cdq
+    movq -16(%rbp), %rax
     idiv %ecx
 .L__kefir_func_test6_label4:
+    lea (%rbp), %rsp
+    pop %rbp
     ret
 .L__kefir_func_test6_label10:
-    mov %rsi, %rax
+    movq %rax, -8(%rbp)
     cdq
+    movq -8(%rbp), %rax
     idiv %ecx
     jmp .L__kefir_func_test6_label4
 .L__kefir_text_func_test6_end:
 
 test7:
 .L__kefir_text_func_test7_begin:
-    mov %rdx, %rcx
-    shl %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdx, %rax
+    shl %cl, %eax
     ret
 .L__kefir_text_func_test7_end:
 
 test8:
 .L__kefir_text_func_test8_begin:
-    mov %rdx, %rcx
-    shl %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdx, %rax
+    shl %cl, %eax
     ret
 .L__kefir_text_func_test8_end:
 
 test9:
 .L__kefir_text_func_test9_begin:
-    mov %rdx, %rcx
-    sar %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdx, %rax
+    sar %cl, %eax
     ret
 .L__kefir_text_func_test9_end:
 
 test10:
 .L__kefir_text_func_test10_begin:
-    mov %rdx, %rcx
-    sar %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdx, %rax
+    sar %cl, %eax
     ret
 .L__kefir_text_func_test10_end:
 
 test11:
 .L__kefir_text_func_test11_begin:
-    mov %rdx, %rcx
-    shr %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdx, %rax
+    shr %cl, %eax
     ret
 .L__kefir_text_func_test11_end:
 
 test12:
 .L__kefir_text_func_test12_begin:
-    mov %rdx, %rcx
-    shr %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdx, %rax
+    shr %cl, %eax
     ret
 .L__kefir_text_func_test12_end:
 

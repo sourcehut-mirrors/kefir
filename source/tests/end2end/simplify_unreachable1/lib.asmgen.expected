@@ -130,6 +130,9 @@ test12:
 
 test13:
 .L__kefir_text_func_test13_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
     movq ld@GOTPCREL(%rip), %rax
     fldt .L__kefir_func_test13_label4(%rip)
     movq $0, 8(%rax)
@@ -189,6 +192,9 @@ test15:
 
 test16:
 .L__kefir_text_func_test16_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
     movq c80@GOTPCREL(%rip), %rax
     add $16, %rax
     fldt .L__kefir_func_test16_label4(%rip)

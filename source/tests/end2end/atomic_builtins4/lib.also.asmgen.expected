@@ -23,7 +23,8 @@
 test_atomic_compare_exchange8:
 .L__kefir_text_func_test_atomic_compare_exchange8_begin:
     mov %rdx, %rax
-    mov %rdi, %rdx
+    mov %rdi, %rcx
+    mov %rcx, %rdx
     mov %rax, %rcx
     movb (%rsi), %al
     lock     cmpxchgb %cl, (%rdx)
@@ -38,7 +39,8 @@ test_atomic_compare_exchange8:
 test2_atomic_compare_exchange16:
 .L__kefir_text_func_test2_atomic_compare_exchange16_begin:
     mov %rdx, %rax
-    mov %rdi, %rdx
+    mov %rdi, %rcx
+    mov %rcx, %rdx
     mov %rax, %rcx
     movw (%rsi), %ax
     lock     cmpxchgw %cx, (%rdx)
@@ -53,7 +55,8 @@ test2_atomic_compare_exchange16:
 test2_atomic_compare_exchange32:
 .L__kefir_text_func_test2_atomic_compare_exchange32_begin:
     mov %rdx, %rax
-    mov %rdi, %rdx
+    mov %rdi, %rcx
+    mov %rcx, %rdx
     mov %rax, %rcx
     movl (%rsi), %eax
     lock     cmpxchgl %ecx, (%rdx)
@@ -68,7 +71,8 @@ test2_atomic_compare_exchange32:
 test2_atomic_compare_exchange64:
 .L__kefir_text_func_test2_atomic_compare_exchange64_begin:
     mov %rdx, %rax
-    mov %rdi, %rdx
+    mov %rdi, %rcx
+    mov %rcx, %rdx
     mov %rax, %rcx
     movq (%rsi), %rax
     lock     cmpxchgq %rcx, (%rdx)
@@ -83,7 +87,8 @@ test2_atomic_compare_exchange64:
 test2_atomic_compare_exchange8:
 .L__kefir_text_func_test2_atomic_compare_exchange8_begin:
     mov %rdx, %rax
-    mov %rdi, %rdx
+    mov %rdi, %rcx
+    mov %rcx, %rdx
     mov %rax, %rcx
     movb (%rsi), %al
     lock     cmpxchgb %cl, (%rdx)
@@ -98,7 +103,8 @@ test2_atomic_compare_exchange8:
 test_atomic_compare_exchange16:
 .L__kefir_text_func_test_atomic_compare_exchange16_begin:
     mov %rdx, %rax
-    mov %rdi, %rdx
+    mov %rdi, %rcx
+    mov %rcx, %rdx
     mov %rax, %rcx
     movw (%rsi), %ax
     lock     cmpxchgw %cx, (%rdx)
@@ -113,7 +119,8 @@ test_atomic_compare_exchange16:
 test_atomic_compare_exchange32:
 .L__kefir_text_func_test_atomic_compare_exchange32_begin:
     mov %rdx, %rax
-    mov %rdi, %rdx
+    mov %rdi, %rcx
+    mov %rcx, %rdx
     mov %rax, %rcx
     movl (%rsi), %eax
     lock     cmpxchgl %ecx, (%rdx)
@@ -128,7 +135,8 @@ test_atomic_compare_exchange32:
 test_atomic_compare_exchange64:
 .L__kefir_text_func_test_atomic_compare_exchange64_begin:
     mov %rdx, %rax
-    mov %rdi, %rdx
+    mov %rdi, %rcx
+    mov %rcx, %rdx
     mov %rax, %rcx
     movq (%rsi), %rax
     lock     cmpxchgq %rcx, (%rdx)

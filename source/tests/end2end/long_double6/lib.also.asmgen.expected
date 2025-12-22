@@ -10,21 +10,23 @@ init_s:
 .L__kefir_text_func_init_s_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
-    movaps %xmm2, %xmm1
-    xorps %xmm2, %xmm1
-    movdqu %xmm1, (%rdi)
-    movdqu %xmm1, 16(%rdi)
-    movdqu %xmm1, 32(%rdi)
-    movsx %esi, %rax
-    push %rax
+    mov %rdi, %rcx
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    xorps %xmm1, %xmm1
+    movdqu %xmm1, (%rcx)
+    movdqu %xmm1, 16(%rcx)
+    movdqu %xmm1, 32(%rcx)
+    movsx %edx, %rdx
+    push %rdx
     fildq (%rsp)
     add $8, %rsp
-    movq $0, 8(%rdi)
-    fstpt (%rdi)
-    lea 16(%rdi), %rcx
-    mov %edx, %eax
+    movq $0, 8(%rcx)
+    fstpt (%rcx)
+    lea 16(%rcx), %rdx
+    mov %eax, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -32,14 +34,14 @@ init_s:
     jns .L__kefir_func_init_s_label3
     fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_init_s_label3:
-    movq $0, 8(%rcx)
-    fstpt (%rcx)
-    lea 32(%rdi), %rax
-    movq %xmm0, -16(%rbp)
-    fldl -16(%rbp)
+    movq $0, 8(%rdx)
+    fstpt (%rdx)
+    lea 32(%rcx), %rax
+    movq %xmm0, -64(%rbp)
+    fldl -64(%rbp)
     movq $0, 8(%rax)
     fstpt (%rax)
-    mov %rdi, %rax
+    mov %rcx, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

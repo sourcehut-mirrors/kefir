@@ -9,9 +9,10 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rdi, %rax
-    mov %rsi, %rdi
-    mov %rax, %rsi
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    mov %rax, %rdi
+    mov %rcx, %rsi
     jmp mod@PLT
 .L__kefir_text_func_test1_end:
 

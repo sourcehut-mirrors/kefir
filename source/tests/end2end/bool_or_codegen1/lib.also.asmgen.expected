@@ -8,24 +8,36 @@
 .L__kefir_text_section_begin:
 test:
 .L__kefir_text_func_test_begin:
-    xor %eax, %eax
-    cmp $0, %edi
-    setg %al
-    xor %edi, %edi
-    cmp $1, %esi
-    mov %rdi, %rsi
-    setge %sil
-    or %sil, %al
-    setne %al
-    xor %esi, %esi
-    cmp $0, %edx
+    mov %rcx, %rax
+    mov %rdx, %rcx
     mov %rsi, %rdx
+    mov %rdi, %rsi
+    xor %edi, %edi
+    cmp $0, %esi
+    mov %rdi, %rsi
+    setg %sil
+    xor %edi, %edi
+    cmp $1, %edx
+    mov %rdi, %rdx
+    setge %dl
+    mov %rsi, %rdi
+    or %dl, %dil
+    mov %rdi, %rdx
     setne %dl
-    or %dl, %al
-    setne %al
-    test %ecx, %ecx
-    sete %cl
-    or %cl, %al
+    xor %esi, %esi
+    cmp $0, %ecx
+    mov %rsi, %rcx
+    setne %cl
+    mov %rdx, %rsi
+    or %cl, %sil
+    mov %rsi, %rcx
+    setne %cl
+    test %eax, %eax
+    mov %rdx, %rax
+    sete %al
+    mov %rcx, %rdx
+    or %al, %dl
+    mov %rdx, %rax
     setne %al
     movzx %al, %rax
     ret

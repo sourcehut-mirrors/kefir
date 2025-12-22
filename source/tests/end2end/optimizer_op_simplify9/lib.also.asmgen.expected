@@ -14,8 +14,8 @@ int_sar_const:
 .L__kefir_text_func_int_sar_const_begin:
     push %rbp
     mov %rsp, %rbp
-    sar $4, %rdi
     mov %rdi, %rax
+    sar $4, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_sar_const_end:
@@ -24,8 +24,8 @@ int_shl_const:
 .L__kefir_text_func_int_shl_const_begin:
     push %rbp
     mov %rsp, %rbp
-    shl $6, %rdi
     mov %rdi, %rax
+    shl $6, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_shl_const_end:
@@ -34,8 +34,8 @@ int_shr_const:
 .L__kefir_text_func_int_shr_const_begin:
     push %rbp
     mov %rsp, %rbp
-    shr $4, %rdi
     mov %rdi, %rax
+    shr $4, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_shr_const_end:

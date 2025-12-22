@@ -21,49 +21,56 @@
 store_b:
 .L__kefir_text_func_store_b_begin:
     mov %rsi, %rax
-    xchgb (%rdi), %al
+    mov %rdi, %rcx
+    xchgb (%rcx), %al
     ret
 .L__kefir_text_func_store_b_end:
 
 store_u8:
 .L__kefir_text_func_store_u8_begin:
     mov %rsi, %rax
-    xchgb (%rdi), %al
+    mov %rdi, %rcx
+    xchgb (%rcx), %al
     ret
 .L__kefir_text_func_store_u8_end:
 
 store_f32:
 .L__kefir_text_func_store_f32_begin:
+    mov %rdi, %rcx
     movq %xmm0, %rax
-    xchgl (%rdi), %eax
+    xchgl (%rcx), %eax
     ret
 .L__kefir_text_func_store_f32_end:
 
 store_f64:
 .L__kefir_text_func_store_f64_begin:
+    mov %rdi, %rcx
     movq %xmm0, %rax
-    xchgq (%rdi), %rax
+    xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_store_f64_end:
 
 store_u16:
 .L__kefir_text_func_store_u16_begin:
     mov %rsi, %rax
-    xchgw (%rdi), %ax
+    mov %rdi, %rcx
+    xchgw (%rcx), %ax
     ret
 .L__kefir_text_func_store_u16_end:
 
 store_u32:
 .L__kefir_text_func_store_u32_begin:
     mov %rsi, %rax
-    xchgl (%rdi), %eax
+    mov %rdi, %rcx
+    xchgl (%rcx), %eax
     ret
 .L__kefir_text_func_store_u32_end:
 
 store_u64:
 .L__kefir_text_func_store_u64_begin:
     mov %rsi, %rax
-    xchgq (%rdi), %rax
+    mov %rdi, %rcx
+    xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_store_u64_end:
 

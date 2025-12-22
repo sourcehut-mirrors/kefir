@@ -13,15 +13,16 @@ get:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rcx, %rax
-    xor %ecx, %eax
-    movq %rax, -12(%rbp)
+    mov %rdi, %rax
+    xor %ecx, %ecx
+    movq %rcx, -12(%rbp)
+    movl %ecx, -4(%rbp)
+    movl %eax, -12(%rbp)
+    neg %eax
     movl %eax, -4(%rbp)
-    movl %edi, -12(%rbp)
-    neg %edi
-    movl %edi, -4(%rbp)
     movq -12(%rbp), %rax
-    movl -4(%rbp), %edx
+    movl -4(%rbp), %ecx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -32,15 +33,16 @@ get2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rcx, %rax
-    xor %ecx, %eax
-    movq %rax, -12(%rbp)
+    mov %rdi, %rax
+    xor %ecx, %ecx
+    movq %rcx, -12(%rbp)
+    movl %ecx, -4(%rbp)
+    movl %eax, -12(%rbp)
+    neg %eax
     movl %eax, -4(%rbp)
-    movl %edi, -12(%rbp)
-    neg %edi
-    movl %edi, -4(%rbp)
     movq -12(%rbp), %rax
-    movl -4(%rbp), %edx
+    movl -4(%rbp), %ecx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

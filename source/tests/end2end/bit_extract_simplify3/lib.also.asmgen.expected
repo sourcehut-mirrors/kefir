@@ -14,43 +14,43 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    shl $52, %rdi
-    shr $52, %rdi
     mov %rdi, %rax
+    shl $52, %rax
+    shr $52, %rax
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    shl $59, %rdi
-    shr $59, %rdi
     mov %rdi, %rax
+    shl $59, %rax
+    shr $59, %rax
     ret
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    shl $57, %rdi
-    shr $57, %rdi
     mov %rdi, %rax
+    shl $57, %rax
+    shr $57, %rax
     ret
 .L__kefir_text_func_test3_end:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    shl $57, %rdi
-    sar $57, %rdi
-    shl $50, %rdi
-    shr $50, %rdi
-    shl $35, %rdi
-    sar $35, %rdi
-    shl $27, %rdi
-    shr $27, %rdi
-    shl $14, %rdi
-    sar $14, %rdi
-    shl $4, %rdi
-    shr $4, %rdi
     mov %rdi, %rax
+    shl $57, %rax
+    sar $57, %rax
+    shl $50, %rax
+    shr $50, %rax
+    shl $35, %rax
+    sar $35, %rax
+    shl $27, %rax
+    shr $27, %rax
+    shl $14, %rax
+    sar $14, %rax
+    shl $4, %rax
+    shr $4, %rax
     ret
 .L__kefir_text_func_test4_end:
 

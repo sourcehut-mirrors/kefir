@@ -27,11 +27,11 @@ is_finite_f32:
     movq %rax, %xmm0
     andps .L__kefir_constant_isfinitef32_mask(%rip), %xmm0
     movdqu .L__kefir_constant_isfinitef32_cmp(%rip), %xmm1
-    mov %rcx, %rax
-    xor %ecx, %eax
+    xor %eax, %eax
     ucomiss %xmm0, %xmm1
     setnb %al
     test %eax, %eax
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     ldmxcsr -8(%rbp)
@@ -51,11 +51,11 @@ is_finite_f64:
     movq %rax, %xmm0
     andpd .L__kefir_constant_isfinitef64_mask(%rip), %xmm0
     movdqu .L__kefir_constant_isfinitef64_cmp(%rip), %xmm1
-    mov %rcx, %rax
-    xor %ecx, %eax
+    xor %eax, %eax
     ucomisd %xmm0, %xmm1
     setnb %al
     test %eax, %eax
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     ldmxcsr -8(%rbp)
@@ -68,20 +68,20 @@ is_finite_f80:
 .L__kefir_text_func_is_finite_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
     fabs
-    mov %rcx, %rax
-    xor %ecx, %eax
+    xor %eax, %eax
     fldt .L__kefir_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al
     fstp %st(0)
     test %eax, %eax
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     fldcw -8(%rbp)

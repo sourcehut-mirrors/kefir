@@ -10,26 +10,36 @@
 .L__kefir_text_section_begin:
 get:
 .L__kefir_text_func_get_begin:
-    test %edi, %edi
-    setne %al
-    test %esi, %esi
-    setne %cl
-    and %cl, %al
-    cmovz %rsi, %rdi
-    mov %rdi, %rax
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    test %ecx, %ecx
+    setne %dl
+    test %eax, %eax
+    setne %sil
+    and %sil, %dl
+    mov %rcx, %rdx
+    cmovz %rax, %rdx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_get_end:
 
 get2:
 .L__kefir_text_func_get2_begin:
-    test %edi, %edi
-    setne %al
-    test %esi, %esi
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    test %ecx, %ecx
+    mov %rdx, %rcx
     setne %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
-    cmovz %rsi, %rax
+    test %eax, %eax
+    setne %dl
+    mov %rdx, %rsi
+    and %cl, %sil
+    mov %rsi, %rcx
+    movzx %cl, %rcx
+    test %cl, %cl
+    mov %rcx, %rdx
+    cmovz %rax, %rdx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_get2_end:
 

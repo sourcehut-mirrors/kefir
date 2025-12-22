@@ -34,16 +34,16 @@
 .L__kefir_text_section_begin:
 set_b:
 .L__kefir_text_func_set_b_begin:
-    movq b@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
+    movq b@GOTPCREL(%rip), %rcx
     xchgb (%rcx), %al
     ret
 .L__kefir_text_func_set_b_end:
 
 set_u8:
 .L__kefir_text_func_set_u8_begin:
-    movq u8@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
+    movq u8@GOTPCREL(%rip), %rcx
     xchgb (%rcx), %al
     ret
 .L__kefir_text_func_set_u8_end:
@@ -66,24 +66,24 @@ set_f64:
 
 set_u16:
 .L__kefir_text_func_set_u16_begin:
-    movq u16@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
+    movq u16@GOTPCREL(%rip), %rcx
     xchgw (%rcx), %ax
     ret
 .L__kefir_text_func_set_u16_end:
 
 set_u32:
 .L__kefir_text_func_set_u32_begin:
-    movq u32@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
+    movq u32@GOTPCREL(%rip), %rcx
     xchgl (%rcx), %eax
     ret
 .L__kefir_text_func_set_u32_end:
 
 set_u64:
 .L__kefir_text_func_set_u64_begin:
-    movq u64@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
+    movq u64@GOTPCREL(%rip), %rcx
     xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_set_u64_end:

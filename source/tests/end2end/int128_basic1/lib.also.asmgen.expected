@@ -13,9 +13,10 @@
 .L__kefir_text_section_begin:
 get:
 .L__kefir_text_func_get_begin:
-    movq value@GOTPCREL(%rip), %rcx
-    mov (%rcx), %rax
-    mov 8(%rcx), %rdx
+    movq value@GOTPCREL(%rip), %rax
+    mov (%rax), %rcx
+    mov 8(%rax), %rdx
+    mov %rcx, %rax
     ret
 .L__kefir_text_func_get_end:
 
@@ -24,9 +25,11 @@ set:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq value@GOTPCREL(%rip), %rax
-    mov %rdi, (%rax)
-    mov %rsi, 8(%rax)
+    mov %rdi, %rax
+    mov %rsi, %rcx
+    movq value@GOTPCREL(%rip), %rdx
+    mov %rax, (%rdx)
+    mov %rcx, 8(%rdx)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -38,7 +41,8 @@ test:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    mov %rsi, %rdx
+    mov %rsi, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

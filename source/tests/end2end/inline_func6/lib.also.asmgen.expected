@@ -12,13 +12,14 @@ init_s1:
     push %rbp
     mov %rsp, %rbp
     sub $512, %rsp
-    leaq -512(%rbp), %rdi
+    lea -512(%rbp), %rdi
     xor %eax, %eax
     mov $64, %rcx
     mov %rax, %rsi
     rep stosq
-    movq s1@GOTPCREL(%rip), %rdi
-    leaq -512(%rbp), %rsi
+    movq s1@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    lea -512(%rbp), %rsi
     cld
     mov $64, %rcx
     rep movsq

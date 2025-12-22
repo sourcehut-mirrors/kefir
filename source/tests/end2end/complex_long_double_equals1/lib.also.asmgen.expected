@@ -12,7 +12,7 @@ cld_eq:
 .L__kefir_text_func_cld_eq_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
@@ -36,7 +36,9 @@ cld_eq:
     cmovne %rcx, %rax
     mov %rdx, %rcx
     and %rax, %rcx
-    test %ecx, %ecx
+    mov %rcx, %rax
+    test %eax, %eax
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     fldcw -8(%rbp)
@@ -49,7 +51,7 @@ cld_trunc:
 .L__kefir_text_func_cld_trunc_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     fldt (%rax)
@@ -58,16 +60,18 @@ cld_trunc:
     fucomi %st(1)
     fstp %st(0)
     setp %al
+    mov %rax, %rcx
     setne %cl
     or %al, %cl
     fxch %st(1)
     fldz
     fucomi %st(1)
     fstp %st(0)
-    mov %rax, %rdx
-    setp %dl
-    setne %al
-    or %dl, %al
+    setp %al
+    setne %dl
+    mov %rdx, %rsi
+    or %al, %sil
+    mov %rsi, %rax
     or %cl, %al
     fstp %st(0)
     fstp %st(0)

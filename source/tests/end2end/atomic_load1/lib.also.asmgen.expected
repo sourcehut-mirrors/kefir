@@ -48,16 +48,16 @@ get_u8:
 
 get_f32:
 .L__kefir_text_func_get_f32_begin:
-    movq f32@GOTPCREL(%rip), %rax
-    movl (%rax), %eax
+    movq f32@GOTPCREL(%rip), %rcx
+    movl (%rcx), %eax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_get_f32_end:
 
 get_f64:
 .L__kefir_text_func_get_f64_begin:
-    movq f64@GOTPCREL(%rip), %rax
-    movq (%rax), %rax
+    movq f64@GOTPCREL(%rip), %rcx
+    movq (%rcx), %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_get_f64_end:
@@ -71,15 +71,15 @@ get_u16:
 
 get_u32:
 .L__kefir_text_func_get_u32_begin:
-    movq u32@GOTPCREL(%rip), %rax
-    movl (%rax), %eax
+    movq u32@GOTPCREL(%rip), %rcx
+    movl (%rcx), %eax
     ret
 .L__kefir_text_func_get_u32_end:
 
 get_u64:
 .L__kefir_text_func_get_u64_begin:
-    movq u64@GOTPCREL(%rip), %rax
-    movq (%rax), %rax
+    movq u64@GOTPCREL(%rip), %rcx
+    movq (%rcx), %rax
     ret
 .L__kefir_text_func_get_u64_end:
 

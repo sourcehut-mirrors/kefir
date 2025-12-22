@@ -13,9 +13,12 @@ get:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -4(%rbp)
-    movl -4(%rbp), %ecx
-    bsf %ecx, %eax
+    mov %rdi, %rax
+    movl %eax, -4(%rbp)
+    movl -4(%rbp), %eax
+    mov %rcx, %rdx
+    bsf %eax, %edx
+    mov %rdx, %rax
     mov $-1, %ecx
     cmove %ecx, %eax
     add $1, %eax

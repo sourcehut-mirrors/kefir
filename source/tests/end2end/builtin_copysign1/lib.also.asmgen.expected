@@ -66,7 +66,7 @@ my_copysignl:
 .L__kefir_text_func_my_copysignl_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)

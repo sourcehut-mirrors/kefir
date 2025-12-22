@@ -18,13 +18,14 @@ add_ld1:
 .L__kefir_text_func_add_ld1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $96, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
-    movq ld1@GOTPCREL(%rip), %rsi
-    fstpt -64(%rbp)
+    movq ld1@GOTPCREL(%rip), %rax
+    fstpt -96(%rbp)
     mov $16, %rdi
-    leaq -32(%rbp), %rdx
+    mov %rax, %rsi
+    lea -32(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     fldt -32(%rbp)
@@ -32,15 +33,16 @@ add_ld1:
     fstpt -48(%rbp)
 .L__kefir_func_add_ld1_label2:
     fldt -48(%rbp)
-    fldt -64(%rbp)
+    fldt -96(%rbp)
     fxch %st(1)
     faddp
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    movq ld1@GOTPCREL(%rip), %rsi
+    movq ld1@GOTPCREL(%rip), %rax
     mov $16, %rdi
-    leaq -48(%rbp), %rdx
-    leaq -32(%rbp), %rcx
+    mov %rax, %rsi
+    lea -48(%rbp), %rdx
+    lea -32(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
     call __atomic_compare_exchange@PLT
@@ -58,12 +60,13 @@ add_cld1:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $72, %rsp
+    sub $104, %rsp
     fstcw -16(%rbp)
     lea 16(%rbp), %rbx
-    movq cld1@GOTPCREL(%rip), %rsi
+    movq cld1@GOTPCREL(%rip), %rax
     mov $32, %rdi
-    leaq -48(%rbp), %rdx
+    mov %rax, %rsi
+    lea -48(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     fldt -32(%rbp)
@@ -87,10 +90,11 @@ add_cld1:
     faddp
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
-    movq cld1@GOTPCREL(%rip), %rsi
+    movq cld1@GOTPCREL(%rip), %rax
     mov $32, %rdi
-    leaq -80(%rbp), %rdx
-    leaq -48(%rbp), %rcx
+    mov %rax, %rsi
+    lea -80(%rbp), %rdx
+    lea -48(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
     call __atomic_compare_exchange@PLT

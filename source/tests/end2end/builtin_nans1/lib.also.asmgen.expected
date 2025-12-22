@@ -48,7 +48,9 @@ get_f80:
 .L__kefir_text_func_get_f80_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $16, %rsp
     fldt .L__kefir_func_get_f80_label4(%rip)
+    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_get_f80_end:

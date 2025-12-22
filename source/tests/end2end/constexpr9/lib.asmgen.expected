@@ -23,19 +23,20 @@ get_b:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
+    mov %rdi, %rcx
     movl $4369, -32(%rbp)
     movl $4008640511, -28(%rbp)
     movl $3435978205, -24(%rbp)
     movl $2863315899, -20(%rbp)
     movl $5, -16(%rbp)
     movl $0, -12(%rbp)
-    mov %rdi, %rax
-    movq -32(%rbp), %rcx
-    movq %rcx, (%rax)
-    movq -24(%rbp), %rcx
-    movq %rcx, 8(%rax)
-    movq -16(%rbp), %rcx
-    movq %rcx, 16(%rax)
+    mov %rcx, %rax
+    movq -32(%rbp), %rdx
+    movq %rdx, (%rax)
+    movq -24(%rbp), %rdx
+    movq %rdx, 8(%rax)
+    movq -16(%rbp), %rdx
+    movq %rdx, 16(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -49,16 +50,17 @@ get_c:
 
 get_d:
 .L__kefir_text_func_get_d_begin:
-    lea d(%rip), %rcx
-    mov %rdi, %rax
-    movq (%rcx), %rdx
-    movq %rdx, (%rax)
-    movq 8(%rcx), %rdx
-    movq %rdx, 8(%rax)
-    movq 16(%rcx), %rdx
-    movq %rdx, 16(%rax)
-    movl 24(%rcx), %ecx
-    movl %ecx, 24(%rax)
+    mov %rdi, %rcx
+    lea d(%rip), %rdx
+    mov %rcx, %rax
+    movq (%rdx), %rsi
+    movq %rsi, (%rax)
+    movq 8(%rdx), %rsi
+    movq %rsi, 8(%rax)
+    movq 16(%rdx), %rsi
+    movq %rsi, 16(%rax)
+    movl 24(%rdx), %edx
+    movl %edx, 24(%rax)
     ret
 .L__kefir_text_func_get_d_end:
 

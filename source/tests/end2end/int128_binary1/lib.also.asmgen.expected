@@ -77,11 +77,17 @@ i128_eq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    xor %rdx, %rdi
-    xor %rcx, %rsi
-    mov %rcx, %rax
-    xor %ecx, %eax
-    or %rsi, %rdi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    xor %rax, %rdi
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    xor %rcx, %rdx
+    mov %rdx, %rcx
+    xor %edx, %edx
+    or %rcx, %rax
+    mov %rdx, %rax
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -93,10 +99,15 @@ i128_or:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    or %rdx, %rdi
-    or %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    or %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    or %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -107,11 +118,17 @@ u128_eq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    xor %rdx, %rdi
-    xor %rcx, %rsi
-    mov %rcx, %rax
-    xor %ecx, %eax
-    or %rsi, %rdi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    xor %rax, %rdi
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    xor %rcx, %rdx
+    mov %rdx, %rcx
+    xor %edx, %edx
+    or %rcx, %rax
+    mov %rdx, %rax
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -123,10 +140,15 @@ u128_or:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    or %rdx, %rdi
-    or %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    or %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    or %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -137,10 +159,15 @@ i128_add:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    add %rdx, %rdi
-    adc %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    add %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    adc %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -151,10 +178,15 @@ i128_and:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    and %rdx, %rdi
-    and %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    and %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    and %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -165,7 +197,13 @@ i128_div:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    mov %rax, %rdx
     call __divti3@PLT
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -176,7 +214,13 @@ i128_mod:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    mov %rax, %rdx
     call __modti3@PLT
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -187,13 +231,17 @@ i128_mul:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
+    mov %rcx, %rax
+    mov %rdi, %rcx
     imul %rdx, %rsi
-    imul %rdi, %rcx
-    mov %rdi, %rax
+    mov %rax, %rdi
+    imul %rcx, %rdi
+    mov %rcx, %rax
     mul %rdx
-    add %rcx, %rsi
-    add %rdx, %rsi
-    mov %rsi, %rdx
+    mov %rsi, %rcx
+    add %rdi, %rcx
+    add %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -204,15 +252,21 @@ i128_neq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    xor %rdx, %rdi
-    xor %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    xor %rax, %rdi
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    xor %rcx, %rdx
+    mov %rdx, %rcx
+    xor %edx, %edx
+    or %rcx, %rax
+    mov %rdx, %rax
+    sete %al
+    xor %ecx, %ecx
+    test %al, %al
     mov %rcx, %rax
-    xor %ecx, %eax
-    or %rsi, %rdi
-    mov %rax, %rcx
-    sete %cl
-    xor %eax, %eax
-    test %cl, %cl
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -224,15 +278,19 @@ i128_shl:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdx, %rcx
-    shld %cl, %rdi, %rsi
-    shl %cl, %rdi
     mov %rdx, %rax
-    xor %edx, %eax
+    mov %rdi, %rdx
+    mov %rax, %rcx
+    mov %rsi, %rax
+    shld %cl, %rdx, %rax
+    shl %cl, %rdx
+    xor %esi, %esi
     test $64, %cl
-    cmovne %rdi, %rsi
-    cmove %rdi, %rax
-    mov %rsi, %rdx
+    mov %rax, %rcx
+    cmovne %rdx, %rcx
+    mov %rsi, %rax
+    cmove %rdx, %rax
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -243,16 +301,18 @@ i128_shr:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdx, %rcx
-    shrd %cl, %rsi, %rdi
-    mov %rsi, %rax
-    sar %cl, %rax
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rax, %rcx
+    mov %rdx, %rax
+    shrd %cl, %rsi, %rax
+    mov %rsi, %rdx
+    sar %cl, %rdx
     sar $63, %rsi
     test $64, %cl
-    cmovne %rax, %rdi
-    mov %rax, %rcx
+    cmovne %rdx, %rax
+    mov %rdx, %rcx
     cmovne %rsi, %rcx
-    mov %rdi, %rax
     mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
@@ -264,10 +324,15 @@ i128_sub:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    sub %rdx, %rdi
-    sbb %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    sub %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    sbb %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -278,10 +343,15 @@ i128_xor:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    xor %rdx, %rdi
-    xor %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    xor %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    xor %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -292,10 +362,15 @@ u128_add:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    add %rdx, %rdi
-    adc %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    add %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    adc %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -306,10 +381,15 @@ u128_and:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    and %rdx, %rdi
-    and %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    and %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    and %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -320,7 +400,13 @@ u128_div:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    mov %rax, %rdx
     call __udivti3@PLT
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -331,7 +417,13 @@ u128_mod:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    mov %rax, %rdx
     call __umodti3@PLT
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -342,13 +434,17 @@ u128_mul:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
+    mov %rcx, %rax
+    mov %rdi, %rcx
     imul %rdx, %rsi
-    imul %rdi, %rcx
-    mov %rdi, %rax
+    mov %rax, %rdi
+    imul %rcx, %rdi
+    mov %rcx, %rax
     mul %rdx
-    add %rcx, %rsi
-    add %rdx, %rsi
-    mov %rsi, %rdx
+    mov %rsi, %rcx
+    add %rdi, %rcx
+    add %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -359,15 +455,21 @@ u128_neq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    xor %rdx, %rdi
-    xor %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    xor %rax, %rdi
+    mov %rdi, %rax
+    mov %rsi, %rdx
+    xor %rcx, %rdx
+    mov %rdx, %rcx
+    xor %edx, %edx
+    or %rcx, %rax
+    mov %rdx, %rax
+    sete %al
+    xor %ecx, %ecx
+    test %al, %al
     mov %rcx, %rax
-    xor %ecx, %eax
-    or %rsi, %rdi
-    mov %rax, %rcx
-    sete %cl
-    xor %eax, %eax
-    test %cl, %cl
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -379,15 +481,19 @@ u128_shl:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdx, %rcx
-    shld %cl, %rdi, %rsi
-    shl %cl, %rdi
     mov %rdx, %rax
-    xor %edx, %eax
+    mov %rdi, %rdx
+    mov %rax, %rcx
+    mov %rsi, %rax
+    shld %cl, %rdx, %rax
+    shl %cl, %rdx
+    xor %esi, %esi
     test $64, %cl
-    cmovne %rdi, %rsi
-    cmove %rdi, %rax
-    mov %rsi, %rdx
+    mov %rax, %rcx
+    cmovne %rdx, %rcx
+    mov %rsi, %rax
+    cmove %rdx, %rax
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -398,15 +504,19 @@ u128_shr:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdx, %rcx
-    shrd %cl, %rsi, %rdi
-    shr %cl, %rsi
-    mov %rax, %rdx
-    xor %eax, %edx
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rax, %rcx
+    mov %rdx, %rax
+    shrd %cl, %rsi, %rax
+    mov %rsi, %rdx
+    shr %cl, %rdx
+    xor %esi, %esi
     test $64, %cl
-    cmovne %rsi, %rdi
-    cmove %rsi, %rdx
-    mov %rdi, %rax
+    cmovne %rdx, %rax
+    mov %rsi, %rcx
+    cmove %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -417,10 +527,15 @@ u128_sub:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    sub %rdx, %rdi
-    sbb %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    sub %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    sbb %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -431,10 +546,15 @@ u128_xor:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    xor %rdx, %rdi
-    xor %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    mov %rdx, %rdi
+    xor %rax, %rdi
     mov %rdi, %rax
     mov %rsi, %rdx
+    xor %rcx, %rdx
+    mov %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -445,8 +565,11 @@ i128_less:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    cmp %rdx, %rdi
-    sbb %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    cmp %rax, %rdx
+    mov %rsi, %rax
+    sbb %rcx, %rax
     setl %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -459,8 +582,11 @@ i128_above:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    cmp %rdi, %rdx
-    sbb %rsi, %rcx
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    cmp %rdx, %rax
+    mov %rcx, %rax
+    sbb %rsi, %rax
     setb %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -473,8 +599,11 @@ i128_below:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    cmp %rdx, %rdi
-    sbb %rcx, %rsi
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    cmp %rax, %rdx
+    mov %rsi, %rax
+    sbb %rcx, %rax
     setb %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -487,19 +616,22 @@ i128_greater_eq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    cmp %rdi, %rdx
-    mov %rcx, %rax
-    sbb %rsi, %rax
-    setl %al
-    movzx %al, %rax
-    xor %rdi, %rdx
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    cmp %rdx, %rax
+    mov %rcx, %rdi
+    sbb %rsi, %rdi
+    setl %dil
+    movzx %dil, %rdi
+    xor %rdx, %rax
     xor %rsi, %rcx
-    mov %rdi, %rsi
-    xor %edi, %esi
-    or %rcx, %rdx
-    mov %rsi, %rcx
-    sete %cl
+    xor %edx, %edx
     or %rcx, %rax
+    mov %rdx, %rax
+    sete %al
+    mov %rdi, %rcx
+    or %rax, %rcx
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -512,8 +644,11 @@ i128_greater:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    cmp %rdi, %rdx
-    sbb %rsi, %rcx
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    cmp %rdx, %rax
+    mov %rcx, %rax
+    sbb %rsi, %rax
     setl %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -526,19 +661,22 @@ i128_less_eq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    cmp %rdx, %rdi
-    mov %rsi, %rax
-    sbb %rcx, %rax
-    setl %al
-    movzx %al, %rax
-    xor %rdi, %rdx
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    cmp %rax, %rdx
+    mov %rsi, %rdi
+    sbb %rcx, %rdi
+    setl %dil
+    movzx %dil, %rdi
+    xor %rdx, %rax
     xor %rsi, %rcx
-    mov %rdi, %rsi
-    xor %edi, %esi
-    or %rcx, %rdx
-    mov %rsi, %rcx
-    sete %cl
+    xor %edx, %edx
     or %rcx, %rax
+    mov %rdx, %rax
+    sete %al
+    mov %rdi, %rcx
+    or %rax, %rcx
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -551,19 +689,22 @@ i128_above_eq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    cmp %rdi, %rdx
-    mov %rcx, %rax
-    sbb %rsi, %rax
-    setb %al
-    movzx %al, %rax
-    xor %rdi, %rdx
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    cmp %rdx, %rax
+    mov %rcx, %rdi
+    sbb %rsi, %rdi
+    setb %dil
+    movzx %dil, %rdi
+    xor %rdx, %rax
     xor %rsi, %rcx
-    mov %rdi, %rsi
-    xor %edi, %esi
-    or %rcx, %rdx
-    mov %rsi, %rcx
-    sete %cl
+    xor %edx, %edx
     or %rcx, %rax
+    mov %rdx, %rax
+    sete %al
+    mov %rdi, %rcx
+    or %rax, %rcx
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -576,19 +717,22 @@ i128_below_eq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    cmp %rdx, %rdi
-    mov %rsi, %rax
-    sbb %rcx, %rax
-    setb %al
-    movzx %al, %rax
-    xor %rdi, %rdx
+    mov %rdx, %rax
+    mov %rdi, %rdx
+    cmp %rax, %rdx
+    mov %rsi, %rdi
+    sbb %rcx, %rdi
+    setb %dil
+    movzx %dil, %rdi
+    xor %rdx, %rax
     xor %rsi, %rcx
-    mov %rdi, %rsi
-    xor %edi, %esi
-    or %rcx, %rdx
-    mov %rsi, %rcx
-    sete %cl
+    xor %edx, %edx
     or %rcx, %rax
+    mov %rdx, %rax
+    sete %al
+    mov %rdi, %rcx
+    or %rax, %rcx
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     lea (%rbp), %rsp

@@ -17,8 +17,7 @@ test2:
     movq %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
-    movaps %xmm1, %xmm0
-    xorps %xmm1, %xmm0
+    xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
@@ -44,8 +43,7 @@ test8:
     movdqu %xmm0, -96(%rbp)
     movdqu 48(%rax), %xmm0
     movdqu %xmm0, -80(%rbp)
-    movaps %xmm1, %xmm0
-    xorps %xmm1, %xmm0
+    xorps %xmm0, %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu %xmm0, -48(%rbp)
     movdqu %xmm0, -32(%rbp)

@@ -30,7 +30,12 @@
 .L__kefir_text_section_begin:
 d32_to_fi80:
 .L__kefir_text_func_d32_to_fi80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
     fldt .L__kefir_func_d32_to_fi80_label4(%rip)
+    lea (%rbp), %rsp
+    pop %rbp
     ret
 .L__kefir_text_func_d32_to_fi80_end:
 .section .rodata
@@ -42,7 +47,12 @@ d32_to_fi80:
 
 d64_to_fi80:
 .L__kefir_text_func_d64_to_fi80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
     fldt .L__kefir_func_d64_to_fi80_label4(%rip)
+    lea (%rbp), %rsp
+    pop %rbp
     ret
 .L__kefir_text_func_d64_to_fi80_end:
 .section .rodata
@@ -76,7 +86,12 @@ fi80_to_d64:
 
 d128_to_fi80:
 .L__kefir_text_func_d128_to_fi80_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
     fldt .L__kefir_func_d128_to_fi80_label4(%rip)
+    lea (%rbp), %rsp
+    pop %rbp
     ret
 .L__kefir_text_func_d128_to_fi80_end:
 .section .rodata

@@ -16,8 +16,7 @@ test:
     movq $100, -40(%rbp)
     movq $-1000, -8(%rbp)
     movl $-314159, -112(%rbp)
-    mov %rcx, %rax
-    xor %ecx, %eax
+    xor %eax, %eax
     movq %rax, -104(%rbp)
     movq %rax, -96(%rbp)
     movq %rax, -88(%rbp)

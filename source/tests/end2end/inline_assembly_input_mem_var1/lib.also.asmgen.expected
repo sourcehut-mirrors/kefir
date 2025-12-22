@@ -13,11 +13,12 @@ add:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rsi, -8(%rbp)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movq %rax, -8(%rbp)
     pushfq
     sub $8, %rsp
     mov -8(%rbp), %rax
-    mov %rdi, %rcx
 addq  %rax, (%rcx)
     add $8, %rsp
     popfq
@@ -33,11 +34,12 @@ add2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rsi, -8(%rbp)
+    mov %rsi, %rax
+    mov %rdi, %rcx
+    movq %rax, -8(%rbp)
     pushfq
     sub $8, %rsp
     mov -8(%rbp), %rax
-    mov %rdi, %rcx
 addq  %rax, (%rcx)
     add $8, %rsp
     popfq

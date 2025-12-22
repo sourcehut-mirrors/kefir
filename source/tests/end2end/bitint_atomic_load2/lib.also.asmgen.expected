@@ -50,8 +50,8 @@ get3:
 .L__kefir_text_func_get3_begin:
     push %rbp
     mov %rsp, %rbp
-    movq c@GOTPCREL(%rip), %rax
-    movl (%rax), %eax
+    movq c@GOTPCREL(%rip), %rcx
+    movl (%rcx), %eax
     shl $37, %rax
     sar $37, %rax
     pop %rbp
@@ -62,8 +62,8 @@ get4:
 .L__kefir_text_func_get4_begin:
     push %rbp
     mov %rsp, %rbp
-    movq d@GOTPCREL(%rip), %rax
-    movq (%rax), %rax
+    movq d@GOTPCREL(%rip), %rcx
+    movq (%rcx), %rax
     shl $14, %rax
     sar $14, %rax
     pop %rbp
@@ -75,14 +75,15 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq e@GOTPCREL(%rip), %rsi
-    leaq -16(%rbp), %rax
-    mov %rax, %rdx
+    movq e@GOTPCREL(%rip), %rax
+    lea -16(%rbp), %rdx
+    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -95,9 +96,9 @@ get6:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    movq f@GOTPCREL(%rip), %rsi
-    leaq -64(%rbp), %rax
-    mov %rax, %rdx
+    movq f@GOTPCREL(%rip), %rax
+    lea -64(%rbp), %rdx
+    mov %rax, %rsi
     mov $48, %rdi
     mov $5, %rcx
     call __atomic_load@PLT

@@ -25,8 +25,9 @@ set8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -8(%rbp)
-    leaq -8(%rbp), %rcx
+    mov %rdi, %rax
+    movq %rax, -8(%rbp)
+    lea -8(%rbp), %rcx
 xor %al, %al
 not %al
 movb %al, (%rcx)
@@ -41,8 +42,9 @@ set16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -8(%rbp)
-    leaq -8(%rbp), %rcx
+    mov %rdi, %rax
+    movq %rax, -8(%rbp)
+    lea -8(%rbp), %rcx
 xor %ax, %ax
 not %ax
 movw %ax, (%rcx)
@@ -57,8 +59,9 @@ set32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -8(%rbp)
-    leaq -8(%rbp), %rcx
+    mov %rdi, %rax
+    movq %rax, -8(%rbp)
+    lea -8(%rbp), %rcx
 xor %eax, %eax
 not %eax
 movl %eax, (%rcx)
@@ -73,8 +76,9 @@ set64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -8(%rbp)
-    leaq -8(%rbp), %rcx
+    mov %rdi, %rax
+    movq %rax, -8(%rbp)
+    lea -8(%rbp), %rcx
 xor %rax, %rax
 not %rax
 movq %rax, (%rcx)
@@ -89,7 +93,8 @@ clear8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -8(%rbp)
+    mov %rdi, %rax
+    movq %rax, -8(%rbp)
 movb $0, %al
     mov %rax, -8(%rbp)
     movq -8(%rbp), %rax
@@ -103,7 +108,8 @@ clear16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -8(%rbp)
+    mov %rdi, %rax
+    movq %rax, -8(%rbp)
 movw $0, %ax
     mov %rax, -8(%rbp)
     movq -8(%rbp), %rax
@@ -117,7 +123,8 @@ clear32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -8(%rbp)
+    mov %rdi, %rax
+    movq %rax, -8(%rbp)
 movl $0, %eax
     mov %rax, -8(%rbp)
     movq -8(%rbp), %rax
@@ -131,7 +138,8 @@ clear64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -8(%rbp)
+    mov %rdi, %rax
+    movq %rax, -8(%rbp)
 movq $0, %rax
     mov %rax, -8(%rbp)
     movq -8(%rbp), %rax

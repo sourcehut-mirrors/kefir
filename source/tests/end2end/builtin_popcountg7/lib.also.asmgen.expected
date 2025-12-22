@@ -18,20 +18,23 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    shl $47, %rdi
-    shr $47, %rdi
-    mov %edi, %eax
-    shr $1, %eax
-    and $1431655765, %eax
-    sub %eax, %edi
-    mov %edi, %eax
+    mov %rdi, %rax
+    shl $47, %rax
+    shr $47, %rax
+    mov %eax, %ecx
+    shr $1, %ecx
+    and $1431655765, %ecx
+    sub %ecx, %eax
+    mov %eax, %ecx
+    and $858993459, %ecx
+    shr $2, %eax
     and $858993459, %eax
-    shr $2, %edi
-    and $858993459, %edi
-    add %eax, %edi
-    mov %edi, %eax
-    shr $4, %eax
-    add %edi, %eax
+    add %ecx, %eax
+    mov %eax, %ecx
+    shr $4, %ecx
+    mov %rcx, %rdx
+    add %eax, %edx
+    mov %rdx, %rax
     and $252645135, %eax
     imul $16843009, %eax, %eax
     shr $24, %eax
@@ -40,18 +43,21 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %edi, %eax
-    shr $1, %eax
-    and $1431655765, %eax
-    sub %eax, %edi
-    mov %edi, %eax
+    mov %rdi, %rax
+    mov %eax, %ecx
+    shr $1, %ecx
+    and $1431655765, %ecx
+    sub %ecx, %eax
+    mov %eax, %ecx
+    and $858993459, %ecx
+    shr $2, %eax
     and $858993459, %eax
-    shr $2, %edi
-    and $858993459, %edi
-    add %eax, %edi
-    mov %edi, %eax
-    shr $4, %eax
-    add %edi, %eax
+    add %ecx, %eax
+    mov %eax, %ecx
+    shr $4, %ecx
+    mov %rcx, %rdx
+    add %eax, %edx
+    mov %rdx, %rax
     and $252645135, %eax
     imul $16843009, %eax, %eax
     shr $24, %eax
@@ -60,26 +66,37 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    shl $5, %rdi
-    shr $5, %rdi
     mov %rdi, %rax
-    shr $1, %rax
-    movabs $6148914691236517205, %rcx
-    and %rax, %rcx
-    sub %rcx, %rdi
-    movabs $3689348814741910323, %rax
-    mov %rdi, %rcx
-    and %rax, %rcx
-    shr $2, %rdi
-    and %rdi, %rax
-    add %rcx, %rax
+    shl $5, %rax
+    shr $5, %rax
+    mov %rax, %rcx
+    shr $1, %rcx
+    movabs $6148914691236517205, %rdx
+    mov %rdx, %rsi
+    and %rcx, %rsi
+    mov %rsi, %rcx
+    sub %rcx, %rax
+    movabs $3689348814741910323, %rcx
+    mov %rax, %rdx
+    and %rcx, %rdx
+    shr $2, %rax
+    mov %rcx, %rsi
+    and %rax, %rsi
+    mov %rsi, %rax
+    add %rdx, %rax
     mov %rax, %rcx
     shr $4, %rcx
-    add %rax, %rcx
-    movabs $1085102592571150095, %rdi
-    and %rcx, %rdi
-    movabs $72340172838076673, %rax
-    imul %rdi, %rax
+    mov %rcx, %rdx
+    add %rax, %rdx
+    mov %rdx, %rax
+    movabs $1085102592571150095, %rcx
+    mov %rcx, %rdx
+    and %rax, %rdx
+    mov %rdx, %rax
+    movabs $72340172838076673, %rcx
+    mov %rcx, %rdx
+    imul %rax, %rdx
+    mov %rdx, %rax
     shr $56, %rax
     ret
 .L__kefir_text_func_test3_end:
@@ -87,23 +104,34 @@ test3:
 test4:
 .L__kefir_text_func_test4_begin:
     mov %rdi, %rax
-    shr $1, %rax
-    movabs $6148914691236517205, %rcx
-    and %rax, %rcx
-    sub %rcx, %rdi
-    movabs $3689348814741910323, %rax
-    mov %rdi, %rcx
-    and %rax, %rcx
-    shr $2, %rdi
-    and %rdi, %rax
-    add %rcx, %rax
+    mov %rax, %rcx
+    shr $1, %rcx
+    movabs $6148914691236517205, %rdx
+    mov %rdx, %rsi
+    and %rcx, %rsi
+    mov %rsi, %rcx
+    sub %rcx, %rax
+    movabs $3689348814741910323, %rcx
+    mov %rax, %rdx
+    and %rcx, %rdx
+    shr $2, %rax
+    mov %rcx, %rsi
+    and %rax, %rsi
+    mov %rsi, %rax
+    add %rdx, %rax
     mov %rax, %rcx
     shr $4, %rcx
-    add %rax, %rcx
-    movabs $1085102592571150095, %rdi
-    and %rcx, %rdi
-    movabs $72340172838076673, %rax
-    imul %rdi, %rax
+    mov %rcx, %rdx
+    add %rax, %rdx
+    mov %rdx, %rax
+    movabs $1085102592571150095, %rcx
+    mov %rcx, %rdx
+    and %rax, %rdx
+    mov %rdx, %rax
+    movabs $72340172838076673, %rcx
+    mov %rcx, %rdx
+    imul %rax, %rdx
+    mov %rdx, %rax
     shr $56, %rax
     ret
 .L__kefir_text_func_test4_end:
@@ -115,8 +143,7 @@ test5:
     sub $16, %rsp
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    lea -16(%rbp), %rdi
     mov $120, %rsi
     call __kefir_bigint_nonzero_count
     lea (%rbp), %rsp
@@ -128,7 +155,8 @@ test6:
 .L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rdi
+    lea 16(%rbp), %rax
+    mov %rax, %rdi
     mov $315, %rsi
     call __kefir_bigint_nonzero_count
     pop %rbp
@@ -149,78 +177,69 @@ __kefir_bigint_nonzero_count:
     push %rbx
     push %r12
     push %r13
-    push %r14
-    push %r15
     sub $8, %rsp
-    mov %rsi, %r15
-    movq %rdi, -48(%rbp)
-    cmp $0, %r15
+    cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_nonzero_count_label21
-    mov %r15, %rsi
-    sub $-7, %rsi
     mov %rsi, %rax
+    sub $-7, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    mov %rax, %r13
     xor %ecx, %ecx
-    xor %eax, %eax
-    mov %rcx, %r14
-    mov %rax, %r8
+    xor %edx, %edx
+    mov %rcx, %r8
+    mov %rdx, %rcx
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label4:
-    cmp %r13, %r14
+    cmp %rax, %r8
     jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label20
-    mov %r8, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
-    pop %r14
+    mov %rcx, %rax
+    lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label20:
-    movq -48(%rbp), %rdi
-    add %r14, %rdi
-    movzxb (%rdi), %r12
-    lea 1(%r14), %rcx
-    mov %r13, %rax
-    sub $1, %rax
-    imul $8, %rax, %rdx
-    mov %r15, %rsi
-    sub %rdx, %rsi
-    mov $8, %rdx
-    cmp %r13, %rcx
-    mov %rdx, %r10
-    cmovae %rsi, %r10
-    xor %ecx, %ecx
-    mov %r8, %r11
-    mov %rcx, %rbx
+    mov %rdi, %rdx
+    add %r8, %rdx
+    movzxb (%rdx), %rdx
+    lea 1(%r8), %r9
+    mov %rax, %r10
+    sub $1, %r10
+    imul $8, %r10, %r10
+    mov %rsi, %r11
+    sub %r10, %r11
+    mov %r11, %r10
+    mov $8, %r11
+    cmp %rax, %r9
+    mov %r11, %r9
+    cmovae %r10, %r9
+    xor %r10d, %r10d
+    mov %rcx, %r11
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label9:
-    lea 1(%r14), %r8
-    lea 1(%rbx), %r9
-    mov %rbx, %rcx
-    mov %r12, %rdx
-    sar %cl, %edx
-    and $1, %edx
-    lea 1(%r11), %rax
-    cmp $1, %edx
-    mov %r11, %rdx
-    cmove %rax, %rdx
-    cmp %r10, %rbx
+    lea 1(%r8), %rbx
+    lea 1(%r10), %r12
+    mov %r10, %rcx
+    mov %rdx, %r13
+    sar %cl, %r13d
+    mov %r13, %rcx
+    and $1, %ecx
+    lea 1(%r11), %r13
+    cmp $1, %ecx
+    mov %r11, %rcx
+    cmove %r13, %rcx
+    cmp %r9, %r10
     jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label16
-    mov %r8, %r14
-    mov %r11, %r8
+    mov %rbx, %r8
+    mov %r11, %rcx
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label4
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label16:
-    mov %rdx, %r11
-    mov %r9, %rbx
+    mov %rcx, %r11
+    mov %r12, %r10
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label9
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label21:
     xor %eax, %eax
-    lea -40(%rbp), %rsp
-    pop %r15
-    pop %r14
+    lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx

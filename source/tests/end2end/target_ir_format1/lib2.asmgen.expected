@@ -11,27 +11,11 @@ factorial:
 #    "function": {
 #        "code": [
 #            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 0
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    0
 #                ]
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 0,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
 #            },
 #            {
 #                "opcode": "function_prologue",
@@ -39,17 +23,15 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 1,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 0,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rdi"
 #                    }
 #                ],
 #                "labels": []
@@ -65,9 +47,8 @@ factorial:
 #                        "variant": "32bit"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 1,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    }
 #                ],
 #                "labels": []
@@ -76,9 +57,8 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 2,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -94,13 +74,12 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "64bit"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
+#                        "type": "integer",
+#                        "value": 0,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -110,30 +89,27 @@ factorial:
 #                "opcode": "cmp",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 2,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 5,
+#                        "type": "integer",
+#                        "value": 0,
 #                        "variant": "32bit"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 6,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    }
 #                ],
 #                "labels": []
@@ -142,9 +118,8 @@ factorial:
 #                "opcode": "setl",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 6,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -153,30 +128,26 @@ factorial:
 #                "opcode": "test",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 6,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 6,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 7,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 8,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    }
 #                ],
 #                "labels": []
@@ -185,9 +156,8 @@ factorial:
 #                "opcode": "sete",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 7,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -196,14 +166,12 @@ factorial:
 #                "opcode": "test",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 7,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 7,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -219,45 +187,15 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 0
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 18
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    18
 #                ]
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 18
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 3
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    3
 #                ]
@@ -266,9 +204,8 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 9,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -284,13 +221,12 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "64bit"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 11,
+#                        "type": "integer",
+#                        "value": 0,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -300,30 +236,13 @@ factorial:
 #                "opcode": "cmp",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 9,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 12,
+#                        "type": "integer",
+#                        "value": 2,
 #                        "variant": "32bit"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_register_link",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 13,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -332,9 +251,8 @@ factorial:
 #                "opcode": "setl",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 13,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": []
@@ -343,14 +261,28 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 14,
-#                        "variant": "64bit"
+#                        "type": "physical_register",
+#                        "reg": "rdx"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 15,
+#                        "type": "integer",
+#                        "value": 0,
 #                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "esi"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 2,
+#                        "variant": "32bit"
 #                    }
 #                ],
 #                "labels": []
@@ -359,30 +291,26 @@ factorial:
 #                "opcode": "cmp",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 16,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "esi"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 9,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 17,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 14,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rdx"
 #                    }
 #                ],
 #                "labels": []
@@ -391,25 +319,22 @@ factorial:
 #                "opcode": "sete",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 17,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 18,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rdx"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 13,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    }
 #                ],
 #                "labels": []
@@ -418,30 +343,26 @@ factorial:
 #                "opcode": "or",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 18,
-#                        "variant": "64bit"
+#                        "type": "physical_register",
+#                        "reg": "rdx"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 17,
-#                        "variant": "64bit"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 19,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 18,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rdx"
 #                    }
 #                ],
 #                "labels": []
@@ -450,9 +371,8 @@ factorial:
 #                "opcode": "setne",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 19,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -461,14 +381,12 @@ factorial:
 #                "opcode": "movzx",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 20,
-#                        "variant": "64bit"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 19,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -477,30 +395,26 @@ factorial:
 #                "opcode": "test",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 20,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 20,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 21,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 22,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    }
 #                ],
 #                "labels": []
@@ -509,9 +423,8 @@ factorial:
 #                "opcode": "sete",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 21,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -520,14 +433,12 @@ factorial:
 #                "opcode": "test",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 21,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 21,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -543,45 +454,15 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 3
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 21
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    21
 #                ]
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 21
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 5
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    5
 #                ]
@@ -597,31 +478,16 @@ factorial:
 #                        "variant": "32bit"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 23,
+#                        "type": "integer",
+#                        "value": 1,
 #                        "variant": "32bit"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 5
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 6
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    6
 #                ]
@@ -630,9 +496,8 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 24,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -648,13 +513,12 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 25,
-#                        "variant": "64bit"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 26,
+#                        "type": "integer",
+#                        "value": 0,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -664,30 +528,27 @@ factorial:
 #                "opcode": "cmp",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 24,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 27,
+#                        "type": "integer",
+#                        "value": 1,
 #                        "variant": "32bit"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 28,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 25,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    }
 #                ],
 #                "labels": []
@@ -696,9 +557,8 @@ factorial:
 #                "opcode": "setg",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 28,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -707,30 +567,26 @@ factorial:
 #                "opcode": "test",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 28,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 28,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    }
 #                ],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 29,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 30,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    }
 #                ],
 #                "labels": []
@@ -739,9 +595,8 @@ factorial:
 #                "opcode": "sete",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 29,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -750,14 +605,12 @@ factorial:
 #                "opcode": "test",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 29,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 29,
-#                        "variant": "8bit"
+#                        "type": "physical_register",
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -773,45 +626,15 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 6
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 19
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    19
 #                ]
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 19
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 8
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    8
 #                ]
@@ -820,9 +643,8 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 31,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -830,22 +652,6 @@ factorial:
 #                        "identifier": 2,
 #                        "offset": 0,
 #                        "variant": "32bit"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_register_link",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 32,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 31,
-#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -856,72 +662,20 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 32,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 32,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "ret",
 #                "args": [],
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 8
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 17
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    17
 #                ]
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 17
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 10
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    10
 #                ]
@@ -930,9 +684,8 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 33,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -948,9 +701,8 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 34,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "ecx"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -963,17 +715,15 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 35,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rdx"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 34,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rcx"
 #                    }
 #                ],
 #                "labels": []
@@ -982,14 +732,26 @@ factorial:
 #                "opcode": "imul",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 35,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "edx"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 33,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rdx"
 #                    }
 #                ],
 #                "labels": []
@@ -1005,9 +767,8 @@ factorial:
 #                        "variant": "32bit"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 35,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    }
 #                ],
 #                "labels": []
@@ -1016,9 +777,8 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 36,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -1026,22 +786,6 @@ factorial:
 #                        "identifier": 0,
 #                        "offset": 0,
 #                        "variant": "32bit"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_register_link",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 37,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 36,
-#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -1050,13 +794,12 @@ factorial:
 #                "opcode": "add",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 37,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 38,
+#                        "type": "integer",
+#                        "value": -1,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -1073,9 +816,8 @@ factorial:
 #                        "variant": "32bit"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 37,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    }
 #                ],
 #                "labels": []
@@ -1091,45 +833,15 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 10
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 22
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    22
 #                ]
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 22
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 12
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    12
 #                ]
@@ -1138,9 +850,8 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 39,
-#                        "variant": "32bit"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -1153,46 +864,8 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 40,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 39,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "function_epilogue",
 #                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 40,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 40,
-#                        "variant": "default"
-#                    }
-#                ],
 #                "labels": []
 #            },
 #            {
@@ -1201,60 +874,29 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 12
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 20
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    20
 #                ]
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 20
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 14
-#                    }
-#                ],
+#                "opcode": "noop",
+#                "args": [],
 #                "labels": [
 #                    14
 #                ]
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 41,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "rax"
 #                    },
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 42,
+#                        "type": "integer",
+#                        "value": 0,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -1266,40 +908,8 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 41,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 41,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "ret",
 #                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [
-#                    {
-#                        "type": "uinteger",
-#                        "value": 14
-#                    }
-#                ],
 #                "labels": []
 #            },
 #            {
@@ -1314,13 +924,15 @@ factorial:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -8(%rbp)
+    mov %rdi, %rax
+    movl %eax, -8(%rbp)
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $0, %eax
     mov %rcx, %rax
     setl %al
     test %eax, %eax
+    mov %rcx, %rax
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label20
@@ -1329,15 +941,17 @@ factorial:
     cmp $2, %eax
     setl %cl
     mov $0, %rdx
-    mov $2, %rdi
-    cmp %eax, %edi
+    mov $2, %esi
+    cmp %eax, %esi
     mov %rdx, %rax
     sete %al
-    or %rax, %rcx
-    mov %rcx, %rax
+    mov %rcx, %rdx
+    or %rax, %rdx
+    mov %rdx, %rax
     setne %al
     movzx %al, %rax
     test %eax, %eax
+    mov %rcx, %rax
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label22
@@ -1349,6 +963,7 @@ factorial:
     mov %rcx, %rax
     setg %al
     test %eax, %eax
+    mov %rcx, %rax
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label17
@@ -1359,8 +974,10 @@ factorial:
 .L__kefir_func_factorial_label17:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
-    imul %eax, %ecx
-    movl %ecx, -4(%rbp)
+    mov %rcx, %rdx
+    imul %eax, %edx
+    mov %rdx, %rax
+    movl %eax, -4(%rbp)
     movl -8(%rbp), %eax
     add $-1, %eax
     movl %eax, -8(%rbp)

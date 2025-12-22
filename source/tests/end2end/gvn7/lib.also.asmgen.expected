@@ -42,162 +42,217 @@
 .L__kefir_text_section_begin:
 or:
 .L__kefir_text_func_or_begin:
-    or %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    or %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_or_end:
 
 add:
 .L__kefir_text_func_add_begin:
-    add %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    add %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_add_end:
 
 and:
 .L__kefir_text_func_and_begin:
-    and %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    and %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_and_end:
 
 mul:
 .L__kefir_text_func_mul_begin:
-    shl $45, %rsi
-    sar $45, %rsi
-    shl $45, %rdx
-    sar $45, %rdx
-    imul %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    shl $45, %rcx
+    sar $45, %rcx
+    shl $45, %rax
+    sar $45, %rax
+    mov %rcx, %rdx
+    imul %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_mul_end:
 
 shl:
 .L__kefir_text_func_shl_begin:
-    shl $45, %rdx
-    sar $45, %rdx
-    mov %rdx, %rcx
-    shl %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    shl $45, %rax
+    sar $45, %rax
+    mov %rax, %rcx
+    mov %rdx, %rax
+    shl %cl, %eax
     ret
 .L__kefir_text_func_shl_end:
 
 shr:
 .L__kefir_text_func_shr_begin:
-    shl $45, %rdx
-    sar $45, %rdx
-    mov %rdx, %rcx
-    sar %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    shl $45, %rax
+    sar $45, %rax
+    mov %rax, %rcx
+    mov %rdx, %rax
+    sar %cl, %eax
     ret
 .L__kefir_text_func_shr_end:
 
 sub:
 .L__kefir_text_func_sub_begin:
-    sub %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    sub %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_sub_end:
 
 uor:
 .L__kefir_text_func_uor_begin:
-    or %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    or %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_uor_end:
 
 xor:
 .L__kefir_text_func_xor_begin:
-    xor %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    xor %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_xor_end:
 
 test:
 .L__kefir_text_func_test_begin:
-    mov %rsi, %rax
-    shl $57, %rax
-    sar $57, %rax
-    mov %rdx, %rcx
-    shl $57, %rcx
-    sar $57, %rcx
-    add %cl, %al
-    shl $57, %rax
-    sar $57, %rax
-    add %edx, %esi
-    test %dil, %dil
-    cmovnz %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rdi, %rdx
+    mov %rcx, %rsi
+    shl $57, %rsi
+    sar $57, %rsi
+    mov %rax, %rdi
+    shl $57, %rdi
+    sar $57, %rdi
+    add %dil, %sil
+    shl $57, %rsi
+    sar $57, %rsi
+    mov %rcx, %rdi
+    add %eax, %edi
+    mov %rdi, %rax
+    test %dl, %dl
+    mov %rsi, %rcx
+    cmovnz %rax, %rcx
+    mov %rcx, %rax
     ret
 .L__kefir_text_func_test_end:
 
 uadd:
 .L__kefir_text_func_uadd_begin:
-    add %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    add %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_uadd_end:
 
 uand:
 .L__kefir_text_func_uand_begin:
-    and %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    and %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_uand_end:
 
 umul:
 .L__kefir_text_func_umul_begin:
-    shl $45, %rsi
-    shr $45, %rsi
-    shl $45, %rdx
-    shr $45, %rdx
-    imul %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    shl $45, %rcx
+    shr $45, %rcx
+    shl $45, %rax
+    shr $45, %rax
+    mov %rcx, %rdx
+    imul %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_umul_end:
 
 ushl:
 .L__kefir_text_func_ushl_begin:
-    shl $45, %rdx
-    shr $45, %rdx
-    mov %rdx, %rcx
-    shl %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    shl $45, %rax
+    shr $45, %rax
+    mov %rax, %rcx
+    mov %rdx, %rax
+    shl %cl, %eax
     ret
 .L__kefir_text_func_ushl_end:
 
 ushr:
 .L__kefir_text_func_ushr_begin:
-    shl $45, %rdx
-    shr $45, %rdx
-    mov %rdx, %rcx
-    shr %cl, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    shl $45, %rax
+    shr $45, %rax
+    mov %rax, %rcx
+    mov %rdx, %rax
+    shr %cl, %eax
     ret
 .L__kefir_text_func_ushr_end:
 
 usub:
 .L__kefir_text_func_usub_begin:
-    sub %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    sub %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_usub_end:
 
 uxor:
 .L__kefir_text_func_uxor_begin:
-    xor %edx, %esi
-    mov %rsi, %rax
+    mov %rdx, %rax
+    mov %rsi, %rcx
+    mov %rcx, %rdx
+    xor %eax, %edx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_uxor_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
     mov %rsi, %rax
-    shl $60, %rax
-    sar $60, %rax
-    shl $45, %rsi
-    sar $45, %rsi
-    test %dil, %dil
-    cmovnz %rsi, %rax
+    mov %rdi, %rcx
+    mov %rax, %rdx
+    shl $60, %rdx
+    sar $60, %rdx
+    shl $45, %rax
+    sar $45, %rax
+    test %cl, %cl
+    mov %rdx, %rcx
+    cmovnz %rax, %rcx
+    mov %rcx, %rax
     ret
 .L__kefir_text_func_test2_end:
 

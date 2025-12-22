@@ -11,7 +11,7 @@ sum_progression:
 .L__kefir_text_func_sum_progression_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $256, %rsp
+    sub $384, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -35,7 +35,7 @@ sum_progression:
     fxch %st(5)
     fxch %st(6)
     fxch %st(7)
-    fstpt -64(%rbp)
+    fstpt -384(%rbp)
     fldt -32(%rbp)
     fxch %st(1)
     fxch %st(2)
@@ -44,7 +44,61 @@ sum_progression:
     fxch %st(5)
     fxch %st(6)
     fxch %st(7)
-    fstpt -144(%rbp)
+    fstpt -368(%rbp)
+    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -352(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -336(%rbp)
+    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -320(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -304(%rbp)
+    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -288(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -272(%rbp)
     fldt -48(%rbp)
     fxch %st(1)
     fxch %st(2)
@@ -62,25 +116,7 @@ sum_progression:
     fxch %st(5)
     fxch %st(6)
     fxch %st(7)
-    fstpt -128(%rbp)
-    fldt -48(%rbp)
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
     fstpt -240(%rbp)
-    fldt -32(%rbp)
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -112(%rbp)
     fldt -48(%rbp)
     fxch %st(1)
     fxch %st(2)
@@ -91,6 +127,120 @@ sum_progression:
     fxch %st(7)
     fstpt -224(%rbp)
     fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -208(%rbp)
+    fldt -352(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -192(%rbp)
+    fldt -368(%rbp)
+    faddp
+    mov $2, %ecx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -176(%rbp)
+    fldt -320(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -336(%rbp)
+    faddp
+    mov $3, %ecx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -160(%rbp)
+    fldt -288(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -304(%rbp)
+    faddp
+    mov $4, %ecx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -144(%rbp)
+    fldt -256(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -272(%rbp)
+    faddp
+    mov $5, %ecx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -128(%rbp)
+    fldt -224(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -240(%rbp)
+    faddp
+    mov $6, %ecx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -112(%rbp)
+    fldt -192(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -208(%rbp)
+    faddp
+    mov $7, %ecx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
     fxch %st(1)
     fxch %st(2)
     fxch %st(3)
@@ -99,16 +249,16 @@ sum_progression:
     fxch %st(6)
     fxch %st(7)
     fstpt -96(%rbp)
-    fldt -48(%rbp)
+    fldt -160(%rbp)
     fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -208(%rbp)
-    fldt -32(%rbp)
+    fmulp
+    fldt -176(%rbp)
+    faddp
+    mov $8, %ecx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
     fxch %st(1)
     fxch %st(2)
     fxch %st(3)
@@ -117,36 +267,12 @@ sum_progression:
     fxch %st(6)
     fxch %st(7)
     fstpt -80(%rbp)
-    fldt -48(%rbp)
+    fldt -128(%rbp)
     fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -192(%rbp)
-    fldt -32(%rbp)
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -176(%rbp)
-    fldt -256(%rbp)
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -160(%rbp)
+    fmulp
     fldt -144(%rbp)
     faddp
-    mov $2, %rcx
+    mov $9, %ecx
     movsx %ecx, %rax
     push %rax
     fildq (%rsp)
@@ -158,165 +284,39 @@ sum_progression:
     fxch %st(5)
     fxch %st(6)
     fxch %st(7)
-    fstpt -144(%rbp)
-    fldt -240(%rbp)
-    fxch %st(1)
-    fmulp
-    fldt -128(%rbp)
-    faddp
-    mov $3, %rcx
-    movsx %ecx, %rax
-    push %rax
-    fildq (%rsp)
-    add $8, %rsp
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -128(%rbp)
-    fldt -224(%rbp)
-    fxch %st(1)
-    fmulp
-    fldt -112(%rbp)
-    faddp
-    mov $4, %rcx
-    movsx %ecx, %rax
-    push %rax
-    fildq (%rsp)
-    add $8, %rsp
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -112(%rbp)
-    fldt -208(%rbp)
-    fxch %st(1)
-    fmulp
+    fstpt -368(%rbp)
     fldt -96(%rbp)
-    faddp
-    mov $5, %rcx
-    movsx %ecx, %rax
-    push %rax
-    fildq (%rsp)
-    add $8, %rsp
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -256(%rbp)
-    fldt -192(%rbp)
-    fxch %st(1)
-    fmulp
-    fldt -80(%rbp)
-    faddp
-    mov $6, %rcx
-    movsx %ecx, %rax
-    push %rax
-    fildq (%rsp)
-    add $8, %rsp
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -240(%rbp)
-    fldt -160(%rbp)
-    fxch %st(1)
-    fmulp
-    fldt -176(%rbp)
-    faddp
-    mov $7, %rcx
-    movsx %ecx, %rax
-    push %rax
-    fildq (%rsp)
-    add $8, %rsp
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -224(%rbp)
-    fldt -128(%rbp)
-    fxch %st(1)
-    fmulp
-    fldt -144(%rbp)
-    faddp
-    mov $8, %rcx
-    movsx %ecx, %rax
-    push %rax
-    fildq (%rsp)
-    add $8, %rsp
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -192(%rbp)
-    fldt -256(%rbp)
     fxch %st(1)
     fmulp
     fldt -112(%rbp)
     faddp
-    mov $9, %rcx
-    movsx %ecx, %rax
-    push %rax
-    fildq (%rsp)
-    add $8, %rsp
-    fxch %st(1)
-    fxch %st(2)
-    fxch %st(3)
-    fxch %st(4)
-    fxch %st(5)
-    fxch %st(6)
-    fxch %st(7)
-    fstpt -176(%rbp)
-    fldt -224(%rbp)
-    fxch %st(1)
-    fmulp
-    fldt -240(%rbp)
-    faddp
-    fstpt -160(%rbp)
-    fstpt -144(%rbp)
-    fstpt -128(%rbp)
     fstpt -256(%rbp)
-    fstpt -240(%rbp)
-    fstpt -224(%rbp)
-    fstpt -208(%rbp)
+    fstpt -272(%rbp)
+    fstpt -288(%rbp)
+    fstpt -304(%rbp)
+    fstpt -320(%rbp)
+    fstpt -336(%rbp)
+    fstpt -352(%rbp)
     sub $160, %rsp
-    fldt -64(%rbp)
+    fldt -384(%rbp)
     fstpt (%rsp)
-    fldt -192(%rbp)
+    fldt -80(%rbp)
     fstpt 16(%rsp)
-    fldt -176(%rbp)
+    fldt -368(%rbp)
     fstpt 32(%rsp)
-    fldt -208(%rbp)
+    fldt -352(%rbp)
     fstpt 48(%rsp)
-    fldt -224(%rbp)
+    fldt -336(%rbp)
     fstpt 64(%rsp)
-    fldt -240(%rbp)
+    fldt -320(%rbp)
     fstpt 80(%rsp)
-    fldt -256(%rbp)
+    fldt -304(%rbp)
     fstpt 96(%rsp)
-    fldt -128(%rbp)
+    fldt -288(%rbp)
     fstpt 112(%rsp)
-    fldt -144(%rbp)
+    fldt -272(%rbp)
     fstpt 128(%rsp)
-    fldt -160(%rbp)
+    fldt -256(%rbp)
     fstpt 144(%rsp)
     call sum10@PLT
     add $160, %rsp

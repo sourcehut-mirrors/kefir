@@ -79,6 +79,7 @@ test7:
     mov %rsp, %rbp
     mov $0, %rax
     test %eax, %eax
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     pop %rbp

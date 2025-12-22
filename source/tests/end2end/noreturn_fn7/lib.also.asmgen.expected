@@ -13,7 +13,7 @@ test1:
     mov %rsp, %rbp
     sub $16, %rsp
     movl $0, -4(%rbp)
-    leaq -4(%rbp), %rdi
+    lea -4(%rbp), %rdi
     call do_exit@PLT
     ud2
 .L__kefir_text_func_test1_end:

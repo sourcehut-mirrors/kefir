@@ -125,6 +125,8 @@ int_to_d32:
 .L__kefir_text_func_int_to_d32_begin:
     push %rbp
     mov %rsp, %rbp
+    mov %rdi, %rax
+    mov %rax, %rdi
     call __bid_floatdisd@PLT
     pop %rbp
     ret
@@ -134,6 +136,8 @@ int_to_d64:
 .L__kefir_text_func_int_to_d64_begin:
     push %rbp
     mov %rsp, %rbp
+    mov %rdi, %rax
+    mov %rax, %rdi
     call __bid_floatdidd@PLT
     pop %rbp
     ret
@@ -155,6 +159,7 @@ d32_to_bool:
     movd .L__kefir_func_d32_to_bool_label4(%rip), %xmm1
     call __bid_eqsd2@PLT
     test %eax, %eax
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -182,6 +187,7 @@ d64_to_bool:
     movq .L__kefir_func_d64_to_bool_label4(%rip), %xmm1
     call __bid_eqdd2@PLT
     test %eax, %eax
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -206,6 +212,8 @@ int_to_d128:
 .L__kefir_text_func_int_to_d128_begin:
     push %rbp
     mov %rsp, %rbp
+    mov %rdi, %rax
+    mov %rax, %rdi
     call __bid_floatditd@PLT
     pop %rbp
     ret
@@ -215,6 +223,8 @@ uint_to_d32:
 .L__kefir_text_func_uint_to_d32_begin:
     push %rbp
     mov %rsp, %rbp
+    mov %rdi, %rax
+    mov %rax, %rdi
     call __bid_floatunsdisd@PLT
     pop %rbp
     ret
@@ -224,6 +234,8 @@ uint_to_d64:
 .L__kefir_text_func_uint_to_d64_begin:
     push %rbp
     mov %rsp, %rbp
+    mov %rdi, %rax
+    mov %rax, %rdi
     call __bid_floatunsdidd@PLT
     pop %rbp
     ret
@@ -236,8 +248,7 @@ d64_to_bitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    leaq -40(%rbp), %rax
-    mov %rax, %rdi
+    lea -40(%rbp), %rdi
     mov $-180, %rsi
     call __bid_fixddbitint@PLT
     movq -40(%rbp), %rax
@@ -264,8 +275,7 @@ d64_to_ubitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    lea -16(%rbp), %rdi
     mov $24, %rsi
     call __bid_fixddbitint@PLT
     movl -16(%rbp), %eax
@@ -281,8 +291,7 @@ d64_to_ubitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    leaq -40(%rbp), %rax
-    mov %rax, %rdi
+    lea -40(%rbp), %rdi
     mov $180, %rsi
     call __bid_fixddbitint@PLT
     movq -40(%rbp), %rax
@@ -316,8 +325,7 @@ ubitint180_to_d128:
     movq %rcx, -24(%rbp)
     movq 16(%rax), %rax
     movq %rax, -16(%rbp)
-    leaq -32(%rbp), %rax
-    mov %rax, %rdi
+    lea -32(%rbp), %rdi
     mov $180, %rsi
     call __bid_floatbitinttd@PLT
     lea (%rbp), %rsp
@@ -332,8 +340,7 @@ d128_to_bitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    leaq -40(%rbp), %rax
-    mov %rax, %rdi
+    lea -40(%rbp), %rdi
     mov $-180, %rsi
     call __bid_fixtdbitint@PLT
     movq -40(%rbp), %rax
@@ -360,8 +367,7 @@ d128_to_ubitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    lea -16(%rbp), %rdi
     mov $24, %rsi
     call __bid_fixtdbitint@PLT
     movl -16(%rbp), %eax
@@ -382,8 +388,7 @@ ubitint180_to_d32:
     movq %rcx, -24(%rbp)
     movq 16(%rax), %rax
     movq %rax, -16(%rbp)
-    leaq -32(%rbp), %rax
-    mov %rax, %rdi
+    lea -32(%rbp), %rdi
     mov $180, %rsi
     call __bid_floatbitintsd@PLT
     lea (%rbp), %rsp
@@ -403,8 +408,7 @@ ubitint180_to_d64:
     movq %rcx, -24(%rbp)
     movq 16(%rax), %rax
     movq %rax, -16(%rbp)
-    leaq -32(%rbp), %rax
-    mov %rax, %rdi
+    lea -32(%rbp), %rdi
     mov $180, %rsi
     call __bid_floatbitintdd@PLT
     lea (%rbp), %rsp
@@ -417,9 +421,9 @@ ubitint24_to_d128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movl %eax, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $24, %rsi
     call __bid_floatbitinttd@PLT
     lea (%rbp), %rsp
@@ -434,8 +438,7 @@ d32_to_bitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    leaq -40(%rbp), %rax
-    mov %rax, %rdi
+    lea -40(%rbp), %rdi
     mov $-180, %rsi
     call __bid_fixsdbitint@PLT
     movq -40(%rbp), %rax
@@ -462,8 +465,7 @@ d32_to_ubitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    lea -16(%rbp), %rdi
     mov $24, %rsi
     call __bid_fixsdbitint@PLT
     movl -16(%rbp), %eax
@@ -479,6 +481,7 @@ d128_to_bool:
     movdqu .L__kefir_func_d128_to_bool_label4(%rip), %xmm1
     call __bid_eqtd2@PLT
     test %eax, %eax
+    mov %rcx, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -503,6 +506,8 @@ uint_to_d128:
 .L__kefir_text_func_uint_to_d128_begin:
     push %rbp
     mov %rsp, %rbp
+    mov %rdi, %rax
+    mov %rax, %rdi
     call __bid_floatunsditd@PLT
     pop %rbp
     ret
@@ -513,8 +518,7 @@ d32_to_bitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    lea -16(%rbp), %rdi
     mov $-24, %rsi
     call __bid_fixsdbitint@PLT
     movl -16(%rbp), %eax
@@ -528,9 +532,9 @@ ubitint24_to_d32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movl %eax, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $24, %rsi
     call __bid_floatbitintsd@PLT
     lea (%rbp), %rsp
@@ -543,9 +547,9 @@ ubitint24_to_d64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movl %eax, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $24, %rsi
     call __bid_floatbitintdd@PLT
     lea (%rbp), %rsp
@@ -558,8 +562,7 @@ d64_to_bitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    lea -16(%rbp), %rdi
     mov $-24, %rsi
     call __bid_fixddbitint@PLT
     movl -16(%rbp), %eax
@@ -573,8 +576,7 @@ d128_to_bitint24:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    lea -16(%rbp), %rdi
     mov $-24, %rsi
     call __bid_fixtdbitint@PLT
     movl -16(%rbp), %eax
@@ -595,8 +597,7 @@ bitint180_to_d128:
     movq %rcx, -24(%rbp)
     movq 16(%rax), %rax
     movq %rax, -16(%rbp)
-    leaq -32(%rbp), %rax
-    mov %rax, %rdi
+    lea -32(%rbp), %rdi
     mov $-180, %rsi
     call __bid_floatbitinttd@PLT
     lea (%rbp), %rsp
@@ -609,9 +610,9 @@ bitint24_to_d32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movl %eax, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $-24, %rsi
     call __bid_floatbitintsd@PLT
     lea (%rbp), %rsp
@@ -624,9 +625,9 @@ bitint24_to_d64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movl %eax, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $-24, %rsi
     call __bid_floatbitintdd@PLT
     lea (%rbp), %rsp
@@ -641,8 +642,7 @@ d128_to_ubitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    leaq -40(%rbp), %rax
-    mov %rax, %rdi
+    lea -40(%rbp), %rdi
     mov $180, %rsi
     call __bid_fixtdbitint@PLT
     movq -40(%rbp), %rax
@@ -676,8 +676,7 @@ bitint180_to_d32:
     movq %rcx, -24(%rbp)
     movq 16(%rax), %rax
     movq %rax, -16(%rbp)
-    leaq -32(%rbp), %rax
-    mov %rax, %rdi
+    lea -32(%rbp), %rdi
     mov $-180, %rsi
     call __bid_floatbitintsd@PLT
     lea (%rbp), %rsp
@@ -697,8 +696,7 @@ bitint180_to_d64:
     movq %rcx, -24(%rbp)
     movq 16(%rax), %rax
     movq %rax, -16(%rbp)
-    leaq -32(%rbp), %rax
-    mov %rax, %rdi
+    lea -32(%rbp), %rdi
     mov $-180, %rsi
     call __bid_floatbitintdd@PLT
     lea (%rbp), %rsp
@@ -711,9 +709,9 @@ bitint24_to_d128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -16(%rbp)
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movl %eax, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $-24, %rsi
     call __bid_floatbitinttd@PLT
     lea (%rbp), %rsp
@@ -728,8 +726,7 @@ d32_to_ubitint180:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    leaq -40(%rbp), %rax
-    mov %rax, %rdi
+    lea -40(%rbp), %rdi
     mov $180, %rsi
     call __bid_fixsdbitint@PLT
     movq -40(%rbp), %rax

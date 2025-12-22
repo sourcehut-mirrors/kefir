@@ -13,10 +13,10 @@ test:
     mov %rsp, %rbp
     sub $64, %rsp
     mov %rdi, %rcx
-    test %rsi, %rsi
+    mov %rsi, %rax
+    test %rax, %rax
     jnz .L__kefir_func_test_label7
-    movaps %xmm1, %xmm0
-    xorps %xmm1, %xmm0
+    xorps %xmm0, %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu %xmm0, -48(%rbp)
     movdqu %xmm0, -32(%rbp)
@@ -34,7 +34,8 @@ test:
     pop %rbp
     ret
 .L__kefir_func_test_label7:
-    not %rsi
+    not %rax
+    mov %rax, %rsi
     mov %rcx, %rdi
     lea (%rbp), %rsp
     pop %rbp

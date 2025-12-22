@@ -30,85 +30,97 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    add $3, %rdi
-    mov %rdi, %rax
+    lea 3(%rdi), %rax
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    add $7, %rdi
-    mov %rdi, %rax
+    lea 7(%rdi), %rax
     ret
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    sub $-5, %rdi
     mov %rdi, %rax
+    sub $-5, %rax
     ret
 .L__kefir_text_func_test3_end:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov $18, %rax
-    sub %rdi, %rax
+    mov %rdi, %rax
+    mov $18, %rcx
+    mov %rcx, %rdx
+    sub %rax, %rdx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test4_end:
 
 test5:
 .L__kefir_text_func_test5_begin:
-    sub $-7, %rdi
     mov %rdi, %rax
+    sub $-7, %rax
     ret
 .L__kefir_text_func_test5_end:
 
 test6:
 .L__kefir_text_func_test6_begin:
-    mov $42, %rax
-    sub %rdi, %rax
+    mov %rdi, %rax
+    mov $42, %rcx
+    mov %rcx, %rdx
+    sub %rax, %rdx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test6_end:
 
 test7:
 .L__kefir_text_func_test7_begin:
-    sub $101, %rdi
     mov %rdi, %rax
+    sub $101, %rax
     ret
 .L__kefir_text_func_test7_end:
 
 test8:
 .L__kefir_text_func_test8_begin:
-    mov $121, %rax
-    sub %rdi, %rax
+    mov %rdi, %rax
+    mov $121, %rcx
+    mov %rcx, %rdx
+    sub %rax, %rdx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test8_end:
 
 test9:
 .L__kefir_text_func_test9_begin:
-    sub $55, %rdi
     mov %rdi, %rax
+    sub $55, %rax
     ret
 .L__kefir_text_func_test9_end:
 
 test10:
 .L__kefir_text_func_test10_begin:
-    mov $250, %rax
-    sub %rdi, %rax
+    mov %rdi, %rax
+    mov $250, %rcx
+    mov %rcx, %rdx
+    sub %rax, %rdx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test10_end:
 
 test11:
 .L__kefir_text_func_test11_begin:
-    mov $95, %rax
-    sub %rdi, %rax
+    mov %rdi, %rax
+    mov $95, %rcx
+    mov %rcx, %rdx
+    sub %rax, %rdx
+    mov %rdx, %rax
     ret
 .L__kefir_text_func_test11_end:
 
 test12:
 .L__kefir_text_func_test12_begin:
-    add $325, %rdi
-    mov %rdi, %rax
+    lea 325(%rdi), %rax
     ret
 .L__kefir_text_func_test12_end:
 

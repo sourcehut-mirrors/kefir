@@ -10,17 +10,19 @@ run_op:
 .L__kefir_text_func_run_op_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $48, %rsp
     mov %rdx, %r8
-    lea __kefir_function_run_op_static_branches_6(%rip), %r9
     mov %rdi, %rax
+    lea __kefir_function_run_op_static_branches_6(%rip), %rdi
     xor %edx, %edx
-    mov $5, %rdi
-    div %rdi
-    imul $8, %rdx, %rax
-    mov %r9, %rdx
+    mov $5, %r9
+    div %r9
+    mov %rdx, %rax
+    imul $8, %rax, %rax
+    mov %rdi, %rdx
     add %rax, %rdx
-    movq (%rdx), %rax
+    mov %rdx, %rax
+    movq (%rax), %rax
     movq %r8, -24(%rbp)
     movq %rcx, -16(%rbp)
     movq %rsi, -8(%rbp)
@@ -34,7 +36,8 @@ _kefir_local_public_label_run_op_add:
     add %rcx, %rax
     mov %rdx, %rcx
     add %rax, %rcx
-    movq %rcx, -32(%rbp)
+    mov %rcx, %rax
+    movq %rax, -32(%rbp)
 .L__kefir_func_run_op_label3:
 _kefir_local_public_label_run_op_ret:
     movq -32(%rbp), %rax
@@ -56,7 +59,8 @@ _kefir_local_public_label_run_op_mul:
     imul %rcx, %rax
     mov %rdx, %rcx
     add %rax, %rcx
-    movq %rcx, -32(%rbp)
+    mov %rcx, %rax
+    movq %rax, -32(%rbp)
     jmp .L__kefir_func_run_op_label3
 .L__kefir_func_run_op_label11:
 _kefir_local_public_label_run_op_sub:
@@ -66,18 +70,22 @@ _kefir_local_public_label_run_op_sub:
     sub %rcx, %rax
     mov %rdx, %rcx
     add %rax, %rcx
-    movq %rcx, -32(%rbp)
+    mov %rcx, %rax
+    movq %rax, -32(%rbp)
     jmp .L__kefir_func_run_op_label3
 .L__kefir_func_run_op_label7:
 _kefir_local_public_label_run_op_div:
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
     movq -32(%rbp), %rsi
+    movq %rax, -48(%rbp)
     cqo
+    movq -48(%rbp), %rax
     idiv %rcx
     mov %rsi, %rcx
     add %rax, %rcx
-    movq %rcx, -32(%rbp)
+    mov %rcx, %rax
+    movq %rax, -32(%rbp)
     jmp .L__kefir_func_run_op_label3
 .L__kefir_text_func_run_op_end:
 
