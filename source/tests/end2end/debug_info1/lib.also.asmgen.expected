@@ -10,30 +10,48 @@ factorial64:
 .file 0 "source/tests/end2end/debug_info1/lib.kefir.c"
 .loc 0 23 1
 .L__kefir_text_func_factorial64_begin:
+.L__kefir_func_factorial64_label52:
     mov %rdi, %rax
+.loc 0 24 5
+.L__kefir_func_factorial64_label60:
     cmp $0, %rax
     jl .L__kefir_func_factorial64_label40
+.loc 0 29 9
+.L__kefir_func_factorial64_label72:
     cmp $2, %rax
     jle .L__kefir_func_factorial64_label34
+.loc 0 29 9
+.L__kefir_func_factorial64_label73:
     mov $1, %rcx
+.L__kefir_func_factorial64_label81:
     mov %rax, %rdx
     mov %rcx, %rax
+.loc 0 30 23
 .L__kefir_func_factorial64_label10:
     lea -1(%rdx), %rcx
+.loc 0 31 13
+.L__kefir_func_factorial64_label104:
     mov %rax, %rsi
     imul %rdx, %rsi
+.loc 0 30 23
+.L__kefir_func_factorial64_label105:
     cmp $1, %rdx
     jg .L__kefir_func_factorial64_label38
+.loc 0 33 9
+.L__kefir_func_factorial64_label113:
     ret
 .L__kefir_func_factorial64_label38:
     mov %rcx, %rdx
     mov %rsi, %rax
     jmp .L__kefir_func_factorial64_label10
+.loc 0 27 9
 .L__kefir_func_factorial64_label34:
     ret
+.loc 0 25 9
 .L__kefir_func_factorial64_label40:
     xor %eax, %eax
     ret
+.L__kefir_func_factorial64_label165:
 .L__kefir_text_func_factorial64_end:
 
 .L__kefir_text_section_end:
@@ -313,18 +331,54 @@ __kefir_debug_rnglists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_rnglist_section_entry_2:
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label10 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label38 - .L__kefir_text_section_begin
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label34 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label165 - .L__kefir_text_section_begin
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label60 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label81 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_3:
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label40 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label165 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_4:
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label10 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label38 - .L__kefir_text_section_begin
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label34 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label40 - .L__kefir_text_section_begin
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label72 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label81 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_5:
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label34 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label40 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_6:
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label10 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label38 - .L__kefir_text_section_begin
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label72 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label81 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_7:
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label10 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label113 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_8:
+    .byte 4
+    .uleb128 .L__kefir_func_factorial64_label104 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label105 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:
 
