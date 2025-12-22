@@ -1414,12 +1414,11 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     });
     REQUIRE_OK(kefir_asmcmp_amd64_free(mem, &asmcmp_code));
 
-    REQUIRE_OK(kefir_codegen_amd64_xregalloc_run(mem, &func->code, &func->stack_frame, &func->xregalloc));
-    if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm+regs") == 0) {
-        REQUIRE_OK(output_asm(codegen, &func->code.context, &func->xregalloc, codegen->config->debug_info));
-    }
-
     if (!codegen->config->enable_target_ir_direct_destruction) {
+        REQUIRE_OK(kefir_codegen_amd64_xregalloc_run(mem, &func->code, &func->stack_frame, &func->xregalloc));
+        if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm+regs") == 0) {
+            REQUIRE_OK(output_asm(codegen, &func->code.context, &func->xregalloc, codegen->config->debug_info));
+        }
         REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->xregalloc, &func->stack_frame));
     }
     REQUIRE_OK(kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
