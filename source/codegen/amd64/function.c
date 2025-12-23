@@ -1367,6 +1367,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, &func->target_ir.control_flow));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build(mem, &func->target_ir.control_flow, &func->target_ir.liveness));
     REQUIRE_OK(kefir_codegen_target_ir_interference_build(mem, &func->target_ir.interference, &func->target_ir.control_flow, &func->target_ir.liveness));
+    REQUIRE_OK(kefir_codegen_target_ir_coalesce_build(mem, &func->target_ir.coalesce, &func->target_ir.control_flow, &func->target_ir.interference));
 
     struct kefir_codegen_target_ir_stack_frame stack_frame = {
         .use_register = target_ir_use_register,
@@ -1569,6 +1570,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&func->target_ir.control_flow, &func->target_ir.code));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_init(&func->target_ir.liveness));
     REQUIRE_OK(kefir_codegen_target_ir_interference_init(&func->target_ir.interference));
+    REQUIRE_OK(kefir_codegen_target_ir_coalesce_init(&func->target_ir.coalesce));
     REQUIRE_OK(kefir_codegen_target_ir_amd64_regalloc_class_init(mem, &func->target_ir.regalloc_class, codegen_module->codegen->abi_variant));
     REQUIRE_OK(kefir_codegen_target_ir_regalloc_init(&func->target_ir.regalloc, &func->target_ir.regalloc_class.klass));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen_module->codegen->abi_variant,
@@ -1583,6 +1585,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
 
     REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration));
     REQUIRE_OK(kefir_codegen_target_ir_regalloc_free(mem, &func->target_ir.regalloc));
+    REQUIRE_OK(kefir_codegen_target_ir_coalesce_free(mem, &func->target_ir.coalesce));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_free(mem, &func->target_ir.liveness));
     REQUIRE_OK(kefir_codegen_target_ir_interference_free(mem, &func->target_ir.interference));
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_free(mem, &func->target_ir.control_flow));

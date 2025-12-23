@@ -218,6 +218,8 @@ kefir_result_t kefir_codegen_target_ir_interference_build(struct kefir_mem *mem,
     REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference"));
     REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
+    
+    REQUIRE_OK(kefir_graph_clear(&interference->interference_graph));
 
     struct kefir_hashtree per_block_ranges;
     REQUIRE_OK(kefir_hashtree_init(&per_block_ranges, &kefir_hashtree_uint_ops));
@@ -234,5 +236,17 @@ kefir_result_t kefir_codegen_target_ir_interference_build(struct kefir_mem *mem,
         }
     }
     REQUIRE_OK(kefir_hashtree_free(mem, &per_block_ranges));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_interference_has(const struct kefir_codegen_target_ir_interference *interference,
+    kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_value_ref_t other_value_ref,
+    kefir_bool_t *has_interference) {
+    REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference"));
+    REQUIRE(has_interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR interference flag"));
+    
+    *has_interference = kefir_graph_has_edge(&interference->interference_graph,
+        (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref),
+        (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref));
     return KEFIR_OK;
 }

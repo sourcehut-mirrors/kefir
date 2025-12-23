@@ -39,7 +39,16 @@ typedef struct kefir_graph {
 kefir_result_t kefir_graph_init(struct kefir_graph *);
 kefir_result_t kefir_graph_free(struct kefir_mem *, struct kefir_graph *);
 
+kefir_result_t kefir_graph_clear(struct kefir_graph *);
+kefir_bool_t kefir_graph_has_edge(const struct kefir_graph *, kefir_graph_vertex_id_t, kefir_graph_vertex_id_t);
 kefir_result_t kefir_graph_add_edge(struct kefir_mem *, struct kefir_graph *, kefir_graph_vertex_id_t, kefir_graph_vertex_id_t);
+
+typedef struct kefir_graph_vertex_iterator {
+    struct kefir_hashtable_iterator iter;
+} kefir_graph_vertex_iterator_t;
+
+kefir_result_t kefir_graph_iter(const struct kefir_graph *, struct kefir_graph_vertex_iterator *, kefir_graph_vertex_id_t *);
+kefir_result_t kefir_graph_next(struct kefir_graph_vertex_iterator *, kefir_graph_vertex_id_t *);
 
 typedef struct kefir_graph_edge_iterator {
     struct kefir_hashset_iterator iter;
