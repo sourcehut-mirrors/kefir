@@ -26,11 +26,11 @@
 #include "kefir/codegen/target-ir/interference.h"
 
 typedef struct kefir_codegen_target_ir_coalesce_group {
-    kefir_codegen_target_ir_value_ref_t leader_ref;
     struct kefir_hashset members;
 } kefir_codegen_target_ir_coalesce_group_t;
 
 typedef struct kefir_codegen_target_ir_coalesce {
+    struct kefir_list group_list;
     struct kefir_hashtable groups;
 } kefir_codegen_target_ir_coalesce_t;
 

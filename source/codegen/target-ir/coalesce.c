@@ -22,20 +22,18 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static  kefir_result_t free_coalesce_group(struct kefir_mem *mem, struct kefir_hashtable *table,
-                                                          kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
-    UNUSED(table);
+static  kefir_result_t free_coalesce_group(struct kefir_mem *mem, struct kefir_list *list,
+                                                          struct kefir_list_entry *entry, void *payload) {
+    UNUSED(list);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    kefir_codegen_target_ir_value_ref_t leader_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(key);
+    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
     ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_coalesce_group *, group,
-        value);
+        entry->value);
     REQUIRE(group != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR coalesce group"));
 
-    if (group->leader_ref.instr_ref == leader_ref.instr_ref && group->leader_ref.aspect == leader_ref.aspect) {
-        REQUIRE_OK(kefir_hashset_free(mem, &group->members));
-        KEFIR_FREE(mem, group);
-    }
+    REQUIRE_OK(kefir_hashset_free(mem, &group->members));
+    KEFIR_FREE(mem, group);
     return KEFIR_OK;
 }
 
@@ -43,7 +41,8 @@ kefir_result_t kefir_codegen_target_ir_coalesce_init(struct kefir_codegen_target
     REQUIRE(coalesce != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR coalescing"));
 
     REQUIRE_OK(kefir_hashtable_init(&coalesce->groups, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashtable_on_removal(&coalesce->groups, free_coalesce_group, NULL));
+    REQUIRE_OK(kefir_list_init(&coalesce->group_list));
+    REQUIRE_OK(kefir_list_on_remove(&coalesce->group_list, free_coalesce_group, NULL));
     return KEFIR_OK;
 }
 
@@ -52,6 +51,7 @@ kefir_result_t kefir_codegen_target_ir_coalesce_free(struct kefir_mem *mem, stru
     REQUIRE(coalesce != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR coalescing"));
 
     REQUIRE_OK(kefir_hashtable_free(mem, &coalesce->groups));
+    REQUIRE_OK(kefir_list_free(mem, &coalesce->group_list));
     return KEFIR_OK;
 }
 
@@ -71,9 +71,8 @@ static kefir_result_t try_coalesce(struct kefir_mem *mem, const struct kefir_cod
         struct kefir_codegen_target_ir_coalesce_group *group = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_coalesce_group));
         REQUIRE(group != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR coalesce group"));
 
-        group->leader_ref = value_ref;
         res = kefir_hashset_init(&group->members, &kefir_hashtable_uint_ops);
-        REQUIRE_CHAIN(&res, kefir_hashtable_insert(mem, &coalesce->groups, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), (kefir_hashtable_value_t) group));
+        REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &coalesce->group_list, NULL, group));
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_FREE(mem, group);
             return res;
@@ -81,6 +80,7 @@ static kefir_result_t try_coalesce(struct kefir_mem *mem, const struct kefir_cod
 
         REQUIRE_OK(kefir_hashset_add(mem, &group->members, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
         REQUIRE_OK(kefir_hashset_add(mem, &group->members, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref)));
+        REQUIRE_OK(kefir_hashtable_insert(mem, &coalesce->groups, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), (kefir_hashtable_value_t) group));
         REQUIRE_OK(kefir_hashtable_insert(mem, &coalesce->groups, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref), (kefir_hashtable_value_t) group));
     } else {
         REQUIRE_OK(res);
