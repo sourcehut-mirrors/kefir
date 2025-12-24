@@ -8,16 +8,15 @@
 .L__kefir_text_section_begin:
 func1:
 .L__kefir_text_func_func1_begin:
+.L__kefir_func_func1_label0:
     push %rbp
     mov %rbp, %rsp
     sub %rsp, 16
-.L__kefir_func_func1_label0:
     mov QWORD PTR [%rbp - 16], %rsi
-    lea %rcx, QWORD PTR [%rbp - 16]
-    mov %rax, %rcx
+    lea %rax, [%rbp - 16]
     add %rax, 8
-    mov %rsi, 5
-    imul %rcx, %rsi, 8
+    mov %rdx, 5
+    imul %rcx, %rdx, 8
     add %rax, %rcx
     add %rax, 0
     mov %rcx, 0
@@ -25,7 +24,6 @@ func1:
     lea %rsp, [%rbp]
     pop %rbp
     ret
-.L__kefir_func_func1_label1:
 .L__kefir_text_func_func1_end:
 
 .L__kefir_text_section_end:

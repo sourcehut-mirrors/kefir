@@ -8,9 +8,9 @@
 .L__kefir_text_section_begin:
 fn1:
 .L__kefir_text_func_fn1_begin:
+.L__kefir_func_fn1_label0:
     push %rbp
     mov %rbp, %rsp
-.L__kefir_func_fn1_label0:
     mov %rcx, 0
     mov %rax, [%rcx]
     mov %rcx, 0
@@ -24,7 +24,6 @@ mov QWORD PTR [%rdx], %rcx
     xor %rax, %rax
     pop %rbp
     ret
-.L__kefir_func_fn1_label1:
 .L__kefir_text_func_fn1_end:
 
 .L__kefir_text_section_end:

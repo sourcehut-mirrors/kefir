@@ -8,13 +8,12 @@
 .L__kefir_text_section_begin:
 func1:
 .L__kefir_text_func_func1_begin:
+.L__kefir_func_func1_label0:
     push %rbp
     mov %rbp, %rsp
-.L__kefir_func_func1_label0:
     pxor %xmm0, %xmm0
     pop %rbp
     ret
-.L__kefir_func_func1_label1:
 .L__kefir_text_func_func1_end:
 
 .L__kefir_text_section_end:

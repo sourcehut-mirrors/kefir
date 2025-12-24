@@ -8,16 +8,16 @@
 .L__kefir_text_section_begin:
 proxyadd:
 .L__kefir_text_func_proxyadd_begin:
+.L__kefir_func_proxyadd_label0:
     push %rbp
     mov %rbp, %rsp
     push %rbx
     push %r12
     sub %rsp, 32
-.L__kefir_func_proxyadd_label0:
     mov %r12, %rdi
     mov QWORD PTR [%rbp - 48], %rsi
     movq [%rbp - 40], %xmm0
-    lea %rbx, QWORD PTR [%rbp - 32]
+    lea %rbx, [%rbp - 32]
     mov %rdi, 7
     mov %rsi, QWORD PTR [%rbp - 48]
     movq %xmm0, [%rbp - 40]
@@ -31,7 +31,6 @@ proxyadd:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_proxyadd_label1:
 .L__kefir_text_func_proxyadd_end:
 
 .L__kefir_text_section_end:

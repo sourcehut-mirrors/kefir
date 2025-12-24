@@ -12,11 +12,11 @@
 .L__kefir_text_section_begin:
 insert:
 .L__kefir_text_func_insert_begin:
+.L__kefir_func_insert_label0:
     push %rbp
     mov %rbp, %rsp
-.L__kefir_func_insert_label0:
     mov %rax, 0
-    movabs %rcx, 18446744073709551615
+    movabs %rcx, -1
     and %rcx, 0
     shl %rax, 64
     shr %rax, 64
@@ -24,7 +24,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551614
+    movabs %rcx, -2
     and %rcx, 0
     shl %rax, 63
     shr %rax, 63
@@ -32,7 +32,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551612
+    movabs %rcx, -4
     and %rcx, 0
     shl %rax, 62
     shr %rax, 62
@@ -40,7 +40,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551608
+    movabs %rcx, -8
     and %rcx, 0
     shl %rax, 61
     shr %rax, 61
@@ -48,7 +48,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551600
+    movabs %rcx, -16
     and %rcx, 0
     shl %rax, 60
     shr %rax, 60
@@ -56,7 +56,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551584
+    movabs %rcx, -32
     and %rcx, 0
     shl %rax, 59
     shr %rax, 59
@@ -64,7 +64,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551552
+    movabs %rcx, -64
     and %rcx, 0
     shl %rax, 58
     shr %rax, 58
@@ -72,7 +72,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551488
+    movabs %rcx, -128
     and %rcx, 0
     shl %rax, 57
     shr %rax, 57
@@ -80,7 +80,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551360
+    movabs %rcx, -256
     and %rcx, 0
     shl %rax, 56
     shr %rax, 56
@@ -88,7 +88,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551104
+    movabs %rcx, -512
     and %rcx, 0
     shl %rax, 55
     shr %rax, 55
@@ -96,7 +96,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709550592
+    movabs %rcx, -1024
     and %rcx, 0
     shl %rax, 54
     shr %rax, 54
@@ -104,7 +104,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551615
+    movabs %rcx, -1
     and %rcx, 0
     shl %rax, 64
     shr %rax, 63
@@ -112,7 +112,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551611
+    movabs %rcx, -5
     and %rcx, 0
     shl %rax, 63
     shr %rax, 61
@@ -120,7 +120,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551567
+    movabs %rcx, -49
     and %rcx, 0
     shl %rax, 62
     shr %rax, 58
@@ -128,7 +128,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709549823
+    movabs %rcx, -1793
     and %rcx, 0
     shl %rax, 61
     shr %rax, 53
@@ -136,7 +136,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073708568575
+    movabs %rcx, -983041
     and %rcx, 0
     shl %rax, 60
     shr %rax, 44
@@ -144,7 +144,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446743940565565439
+    movabs %rcx, -133143986177
     and %rcx, 0
     shl %rax, 59
     shr %rax, 27
@@ -152,7 +152,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551489
+    movabs %rcx, -127
     and %rcx, 0
     shl %rax, 58
     shr %rax, 57
@@ -160,7 +160,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709551107
+    movabs %rcx, -509
     and %rcx, 0
     shl %rax, 57
     shr %rax, 55
@@ -168,7 +168,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709547535
+    movabs %rcx, -4081
     and %rcx, 0
     shl %rax, 56
     shr %rax, 52
@@ -176,7 +176,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073709420799
+    movabs %rcx, -130817
     and %rcx, 0
     shl %rax, 55
     shr %rax, 47
@@ -184,7 +184,7 @@ insert:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, 18446744073642508287
+    movabs %rcx, -67043329
     and %rcx, 0
     shl %rax, 54
     shr %rax, 38
@@ -193,14 +193,13 @@ insert:
     mov QWORD PTR [%rcx], %rax
     pop %rbp
     ret
-.L__kefir_func_insert_label1:
 .L__kefir_text_func_insert_end:
 
 extracts:
 .L__kefir_text_func_extracts_begin:
+.L__kefir_func_extracts_label0:
     push %rbp
     mov %rbp, %rsp
-.L__kefir_func_extracts_label0:
     mov %rax, 0
     shl %rax, 64
     sar %rax, 64
@@ -313,14 +312,13 @@ extracts:
     mov QWORD PTR [%rcx], %rax
     pop %rbp
     ret
-.L__kefir_func_extracts_label1:
 .L__kefir_text_func_extracts_end:
 
 extractu:
 .L__kefir_text_func_extractu_begin:
+.L__kefir_func_extractu_label0:
     push %rbp
     mov %rbp, %rsp
-.L__kefir_func_extractu_label0:
     mov %rax, 0
     shl %rax, 64
     shr %rax, 64
@@ -433,7 +431,6 @@ extractu:
     mov QWORD PTR [%rcx], %rax
     pop %rbp
     ret
-.L__kefir_func_extractu_label1:
 .L__kefir_text_func_extractu_end:
 
 .L__kefir_text_section_end:

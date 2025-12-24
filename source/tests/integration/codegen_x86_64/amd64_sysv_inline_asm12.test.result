@@ -8,11 +8,11 @@
 .L__kefir_text_section_begin:
 fn1:
 .L__kefir_text_func_fn1_begin:
+.L__kefir_func_fn1_label0:
     push %rbp
     mov %rbp, %rsp
-.L__kefir_func_fn1_label0:
-    mov %rax, 0
-    mov %rcx, [%rax]
+    mov %rdx, 0
+    mov %rcx, [%rdx]
 mov %rax, 1234
 add %rcx, -39219
     mov %rdx, 0
@@ -22,7 +22,6 @@ add %rcx, -39219
     xor %rax, %rax
     pop %rbp
     ret
-.L__kefir_func_fn1_label1:
 .L__kefir_text_func_fn1_end:
 
 .L__kefir_text_section_end:
