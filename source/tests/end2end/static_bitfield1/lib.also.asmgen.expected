@@ -13,11 +13,10 @@ getfield40:
     push %rbp
     mov %rsp, %rbp
     movq struct1@GOTPCREL(%rip), %rax
-    mov %rcx, %rdx
-    movb 8(%rax), %dl
-    mov %rdx, %rax
-    and $255, %rax
-    shl $63, %rax
+    movb 8(%rax), %cl
+    and $255, %rcx
+    shl $63, %rcx
+    mov %rcx, %rax
     shr $63, %rax
     pop %rbp
     ret

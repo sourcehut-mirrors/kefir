@@ -41,15 +41,15 @@ overflow_mul_schar_schar_schar:
     movsx %dil, %rax
     movsx %sil, %rcx
     imul %rcx, %rax
+    seto %sil
+    movsx %al, %rcx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    movsx %al, %rsi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movb %al, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_mul_schar_schar_schar_end:
 
@@ -58,15 +58,15 @@ overflow_mul_schar_schar_uchar:
     movsx %dil, %rax
     movsx %sil, %rcx
     imul %rcx, %rax
+    seto %sil
+    movzx %al, %rcx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    movzx %al, %rsi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movb %al, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_mul_schar_schar_uchar_end:
 
@@ -75,15 +75,15 @@ overflow_mul_schar_uchar_uchar:
     movsx %dil, %rax
     movzx %sil, %rcx
     imul %rcx, %rax
+    seto %sil
+    movzx %al, %rcx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    movzx %al, %rsi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movb %al, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_mul_schar_uchar_uchar_end:
 
@@ -105,12 +105,10 @@ overflow_mul_ulong_long_long:
     mov %rax, %rdi
     neg %rdi
     test %rsi, %rsi
-    mov %rdi, %rsi
-    cmovns %rax, %rsi
-    mov %rsi, %rax
-    and $1, %edx
-    movq %rax, (%rcx)
+    cmovns %rax, %rdi
     mov %rdx, %rax
+    and $1, %eax
+    movq %rdi, (%rcx)
     ret
 .L__kefir_text_func_overflow_mul_ulong_long_long_end:
 
@@ -119,33 +117,31 @@ overflow_mul_uint_short_ushort:
     mov %edi, %eax
     movsx %si, %rcx
     imul %rcx, %rax
+    seto %sil
+    movzx %ax, %rcx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    movzx %ax, %rsi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movw %ax, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_mul_uint_short_ushort_end:
 
 overflow_mul_long_int_int:
 .L__kefir_text_func_overflow_mul_long_int_int_begin:
     movsx %esi, %rax
-    mov %rdi, %rcx
-    imul %rax, %rcx
-    mov %rcx, %rax
+    imul %rax, %rdi
     seto %cl
-    movsx %eax, %rsi
-    cmp %rsi, %rax
-    mov %rcx, %rsi
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
-    movl %eax, (%rdx)
+    movsx %edi, %rax
+    cmp %rax, %rdi
     mov %rcx, %rax
+    setne %al
+    or %al, %cl
+    mov %rcx, %rax
+    and $1, %eax
+    movl %edi, (%rdx)
     ret
 .L__kefir_text_func_overflow_mul_long_int_int_end:
 
@@ -154,15 +150,15 @@ overflow_mul_uchar_schar_uchar:
     movzx %dil, %rax
     movsx %sil, %rcx
     imul %rcx, %rax
+    seto %sil
+    movzx %al, %rcx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    movzx %al, %rsi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movb %al, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_mul_uchar_schar_uchar_end:
 
@@ -171,27 +167,24 @@ overflow_mul_int_short_uint:
     movsx %edi, %rax
     movsx %si, %rcx
     imul %rcx, %rax
+    seto %sil
+    mov %eax, %ecx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    mov %eax, %esi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movl %eax, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_mul_int_short_uint_end:
 
 overflow_mul_long_long_long:
 .L__kefir_text_func_overflow_mul_long_long_long_begin:
-    mov %rdi, %rax
-    imul %rsi, %rax
-    mov %rax, %rcx
-    seto %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    imul %rsi, %rdi
+    seto %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_mul_long_long_long_end:
 
@@ -208,14 +201,12 @@ overflow_mul_long_ulong_ulong:
     setb %r9b
     test %rdi, %rdi
     sets %dl
-    mov %r8, %rdi
-    cmovns %rax, %rdi
-    mov %rdi, %rax
+    cmovns %rax, %r8
     and %r9b, %dl
     or %sil, %dl
-    and $1, %edx
-    movq %rax, (%rcx)
     mov %rdx, %rax
+    and $1, %eax
+    movq %r8, (%rcx)
     ret
 .L__kefir_text_func_overflow_mul_long_ulong_ulong_end:
 
@@ -232,14 +223,12 @@ overflow_mul_ulong_long_ulong:
     setb %r9b
     test %rsi, %rsi
     sets %dl
-    mov %r8, %rsi
-    cmovns %rax, %rsi
-    mov %rsi, %rax
+    cmovns %rax, %r8
     and %r9b, %dl
     or %dil, %dl
-    and $1, %edx
-    movq %rax, (%rcx)
     mov %rdx, %rax
+    and $1, %eax
+    movq %r8, (%rcx)
     ret
 .L__kefir_text_func_overflow_mul_ulong_long_ulong_end:
 
@@ -269,12 +258,10 @@ overflow_mul_long_long_ulong:
     mov %rdi, %rdx
     xor %rsi, %rdx
     js .L__kefir_func_overflow_mul_long_long_ulong_label7
-    mov %rsi, %rdx
-    mov %r8, %rsi
 .L__kefir_func_overflow_mul_long_long_ulong_label3:
-    mul %rdx
+    mul %rsi
     jo .L__kefir_func_overflow_mul_long_long_ulong_label6
-    mov %rsi, %rdx
+    mov %r8, %rdx
 .L__kefir_func_overflow_mul_long_long_ulong_label9:
     and $1, %edx
     movq %rax, (%rcx)
@@ -285,24 +272,14 @@ overflow_mul_long_long_ulong:
     jmp .L__kefir_func_overflow_mul_long_long_ulong_label9
 .L__kefir_func_overflow_mul_long_long_ulong_label7:
     test %rdi, %rdi
-    je .L__kefir_func_overflow_mul_long_long_ulong_label12
-    mov %r8, %rdx
-    xor %r8d, %edx
+    je .L__kefir_func_overflow_mul_long_long_ulong_label3
+    xor %r8d, %r8d
     test %rsi, %rsi
-    mov %rdx, %rdi
-    setne %dil
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    jmp .L__kefir_func_overflow_mul_long_long_ulong_label3
-.L__kefir_func_overflow_mul_long_long_ulong_label12:
-    mov %rsi, %rdx
-    mov %r8, %rsi
+    setne %r8b
     jmp .L__kefir_func_overflow_mul_long_long_ulong_label3
 .L__kefir_func_overflow_mul_long_long_ulong_label14:
     neg %rax
-    mov %rsi, %rdx
-    neg %rdx
-    mov %r8, %rsi
+    neg %rsi
     jmp .L__kefir_func_overflow_mul_long_long_ulong_label3
 .L__kefir_text_func_overflow_mul_long_long_ulong_end:
 
@@ -324,12 +301,10 @@ overflow_mul_long_ulong_long:
     mov %rax, %rsi
     neg %rsi
     test %rdi, %rdi
-    mov %rsi, %rdi
-    cmovns %rax, %rdi
-    mov %rdi, %rax
-    and $1, %edx
-    movq %rax, (%rcx)
+    cmovns %rax, %rsi
     mov %rdx, %rax
+    and $1, %eax
+    movq %rsi, (%rcx)
     ret
 .L__kefir_text_func_overflow_mul_long_ulong_long_end:
 
@@ -347,9 +322,8 @@ overflow_mul_ulong_ulong_short:
     cmp %rax, %rsi
     mov %rdx, %rax
     setne %al
-    mov %rdx, %rdi
-    or %al, %dil
-    mov %rdi, %rax
+    or %al, %dl
+    mov %rdx, %rax
     and $1, %eax
     movw %si, (%rcx)
     ret

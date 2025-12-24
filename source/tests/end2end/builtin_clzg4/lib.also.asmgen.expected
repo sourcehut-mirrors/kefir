@@ -17,10 +17,9 @@ test1:
     movzx %dil, %rax
     cmp $0, %al
     je .L__kefir_func_test1_label9
-    mov %rcx, %rdx
-    bsr %eax, %edx
-    mov %rdx, %rax
-    xor $31, %eax
+    bsr %eax, %ecx
+    xor $31, %ecx
+    mov %rcx, %rax
     sub $24, %eax
 .L__kefir_func_test1_label6:
     ret
@@ -34,10 +33,9 @@ test2:
     cmp $0, %di
     je .L__kefir_func_test2_label9
     movzx %di, %rax
-    mov %rcx, %rdx
-    bsr %eax, %edx
-    mov %rdx, %rax
-    xor $31, %eax
+    bsr %eax, %ecx
+    xor $31, %ecx
+    mov %rcx, %rax
     sub $16, %eax
 .L__kefir_func_test2_label6:
     ret

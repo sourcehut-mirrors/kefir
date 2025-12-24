@@ -31,12 +31,10 @@ divide:
     movaps %xmm1, %xmm3
     xorps .L__kefir_constant_complex_float32_div(%rip), %xmm0
     shufpd $1, %xmm1, %xmm3
-    movaps %xmm2, %xmm4
-    addpd %xmm0, %xmm4
-    movaps %xmm4, %xmm0
+    addpd %xmm0, %xmm2
     addpd %xmm3, %xmm1
-    divpd %xmm1, %xmm0
-    cvtpd2ps %xmm0, %xmm0
+    divpd %xmm1, %xmm2
+    cvtpd2ps %xmm2, %xmm0
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     insertps $16, %xmm1, %xmm0

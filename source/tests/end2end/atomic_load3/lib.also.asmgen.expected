@@ -58,52 +58,50 @@ get_i8:
 
 get_f32:
 .L__kefir_text_func_get_f32_begin:
-    lea 16(%rdi), %rcx
-    movl (%rcx), %eax
+    add $16, %rdi
+    movl (%rdi), %eax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_get_f32_end:
 
 get_f64:
 .L__kefir_text_func_get_f64_begin:
-    lea 24(%rdi), %rcx
-    movq (%rcx), %rax
+    add $24, %rdi
+    movq (%rdi), %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_get_f64_end:
 
 get_i16:
 .L__kefir_text_func_get_i16_begin:
-    lea 2(%rdi), %rcx
-    movw (%rcx), %ax
+    add $2, %rdi
+    movw (%rdi), %ax
     movsx %ax, %rax
     ret
 .L__kefir_text_func_get_i16_end:
 
 get_i32:
 .L__kefir_text_func_get_i32_begin:
-    lea 4(%rdi), %rcx
-    movl (%rcx), %eax
+    add $4, %rdi
+    movl (%rdi), %eax
     movsx %eax, %rax
     ret
 .L__kefir_text_func_get_i32_end:
 
 get_i64:
 .L__kefir_text_func_get_i64_begin:
-    lea 8(%rdi), %rcx
-    movq (%rcx), %rax
+    add $8, %rdi
+    movq (%rdi), %rax
     ret
 .L__kefir_text_func_get_i64_end:
 
 get_arr1_el:
 .L__kefir_text_func_get_arr1_el_begin:
-    lea 96(%rdi), %rax
-    movsx %esi, %rcx
-    imul $8, %rcx, %rcx
-    mov %rax, %rdx
-    add %rcx, %rdx
-    mov %rdx, %rcx
-    movq (%rcx), %rax
+    add $96, %rdi
+    movsx %esi, %rax
+    imul $8, %rax, %rax
+    add %rax, %rdi
+    movq (%rdi), %rax
     ret
 .L__kefir_text_func_get_arr1_el_end:
 
@@ -114,11 +112,10 @@ get_arr2_el:
     push %rbx
     sub $72, %rsp
     mov %rdi, %rbx
-    lea 160(%rsi), %rax
-    movsx %edx, %rcx
-    imul $64, %rcx, %rcx
-    mov %rax, %rsi
-    add %rcx, %rsi
+    add $160, %rsi
+    movsx %edx, %rax
+    imul $64, %rax, %rax
+    add %rax, %rsi
     lea -72(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx

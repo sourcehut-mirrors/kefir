@@ -222,13 +222,11 @@ divide_f32:
     movaps %xmm3, %xmm5
     xorps .L__kefir_constant_complex_float32_div(%rip), %xmm2
     shufpd $1, %xmm3, %xmm5
-    movaps %xmm4, %xmm6
-    addpd %xmm2, %xmm6
-    movaps %xmm6, %xmm2
+    addpd %xmm2, %xmm4
     addpd %xmm5, %xmm3
-    divpd %xmm3, %xmm2
-    cvtpd2ps %xmm2, %xmm3
-    movdqu %xmm3, -64(%rbp)
+    divpd %xmm3, %xmm4
+    cvtpd2ps %xmm4, %xmm2
+    movdqu %xmm2, -64(%rbp)
     movaps -64(%rbp), %xmm2
     movaps %xmm2, -32(%rbp)
     movdqu -32(%rbp), %xmm3
@@ -497,21 +495,15 @@ multiply_f64:
     unpcklpd -144(%rbp), %xmm4
     movaps -128(%rbp), %xmm5
     unpcklpd -128(%rbp), %xmm5
-    movaps %xmm4, %xmm6
-    mulpd %xmm2, %xmm6
-    movaps %xmm6, %xmm2
-    movaps %xmm5, %xmm4
-    mulpd %xmm3, %xmm4
-    movaps %xmm4, %xmm3
-    movaps %xmm3, %xmm4
-    addpd %xmm2, %xmm4
-    movaps %xmm4, %xmm2
-    movaps %xmm2, %xmm3
-    movaps %xmm2, -64(%rbp)
-    movaps %xmm3, -48(%rbp)
-    movdqu -48(%rbp), %xmm4
-    unpckhpd %xmm2, %xmm4
-    movdqu %xmm4, -48(%rbp)
+    mulpd %xmm2, %xmm4
+    mulpd %xmm3, %xmm5
+    addpd %xmm4, %xmm5
+    movaps %xmm5, %xmm2
+    movaps %xmm5, -64(%rbp)
+    movaps %xmm2, -48(%rbp)
+    movdqu -48(%rbp), %xmm3
+    unpckhpd %xmm5, %xmm3
+    movdqu %xmm3, -48(%rbp)
     movq -48(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -40(%rbp), %rax

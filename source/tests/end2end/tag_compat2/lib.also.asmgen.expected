@@ -31,18 +31,14 @@ get:
     add $1, %edi
     movsx %edi, %rdi
     movabs $-8388608, %r8
-    mov %r8, %r9
-    and %rcx, %r9
-    mov %r9, %rcx
+    and %rcx, %r8
     shl $41, %rdi
     shr $41, %rdi
-    mov %rdi, %r8
-    or %rcx, %r8
-    mov %r8, %rcx
-    mov %rcx, %rdi
-    shr $16, %rdi
-    movb %dil, 2(%rax)
-    movw %cx, (%rax)
+    or %r8, %rdi
+    mov %rdi, %rcx
+    shr $16, %rcx
+    movb %cl, 2(%rax)
+    movw %di, (%rax)
     lea 8(%rdx), %rax
     mov %rsi, %rcx
     add $2, %ecx
@@ -63,9 +59,8 @@ get:
     add $4, %ecx
     movb %cl, (%rax)
     lea 104(%rdx), %rax
-    mov %rsi, %rcx
-    add $5, %ecx
-    movsx %ecx, %rcx
+    add $5, %esi
+    movsx %esi, %rcx
     cvtsi2sd %rcx, %xmm0
     movq %xmm0, (%rax)
     mov %rdx, %rax

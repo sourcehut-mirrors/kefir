@@ -46,10 +46,9 @@ test1:
     movq (%rax), %rax
 .loc 0 26 12
 .L__kefir_func_test1_label362:
-    mov %rbx, %rcx
-    add %r12, %rcx
+    add %r12, %rbx
 .L__kefir_func_test1_label363:
-    cvtsi2ss %rcx, %xmm0
+    cvtsi2ss %rbx, %xmm0
 .L__kefir_func_test1_label370:
     movd %r13d, %xmm1
     addss %xmm1, %xmm0

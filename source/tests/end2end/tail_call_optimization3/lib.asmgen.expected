@@ -47,8 +47,8 @@ test:
     lea -4(%rbp), %rcx
     movq %rcx, (%rax)
     movl -4(%rbp), %eax
+    add $1, %eax
     mov %rax, %rdi
-    add $1, %edi
     call test
     lea (%rbp), %rsp
     pop %rbp
@@ -70,8 +70,8 @@ test3:
     lea -4(%rbp), %rdi
     call somefn@PLT
     movl -4(%rbp), %eax
+    add $1, %eax
     mov %rax, %rdi
-    add $1, %edi
     call test3
     lea (%rbp), %rsp
     pop %rbp
@@ -106,8 +106,8 @@ test4:
     test %al, %al
     jz .L__kefir_func_test4_label2
     movl -4(%rbp), %eax
+    add $1, %eax
     mov %rax, %rdi
-    add $1, %edi
     call test4
     lea (%rbp), %rsp
     pop %rbp
@@ -124,8 +124,8 @@ test5:
     lea -4(%rbp), %rax
 
     movl -4(%rbp), %eax
+    add $1, %eax
     mov %rax, %rdi
-    add $1, %edi
     call test5
     lea (%rbp), %rsp
     pop %rbp
@@ -153,12 +153,12 @@ test7:
     lea -4(%rbp), %rcx
     xor %edx, %edx
     cmp $0, %eax
+    cmovle %rdx, %rcx
     mov %rcx, %rdi
-    cmovle %rdx, %rdi
     call somefn@PLT
     movl -4(%rbp), %eax
+    add $1, %eax
     mov %rax, %rdi
-    add $1, %edi
     call test7
     lea (%rbp), %rsp
     pop %rbp
@@ -179,8 +179,8 @@ test8:
     mov %rcx, %rax
     movsx %eax, %rdi
     call somefn@PLT
+    add $1, %ebx
     mov %rbx, %rdi
-    add $1, %edi
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -212,8 +212,8 @@ test10:
     sub $8, %rsp
     mov %rdi, %rbx
     call somejmp2@PLT
+    add $1, %ebx
     mov %rbx, %rdi
-    add $1, %edi
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

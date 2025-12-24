@@ -30,8 +30,8 @@ is_lessequal_f32:
     movd %ecx, %xmm0
     movd %eax, %xmm1
     ucomiss %xmm1, %xmm0
+    setnb %dl
     mov %rdx, %rax
-    setnb %al
     and $255, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -53,8 +53,8 @@ is_lessequal_f64:
     movq %rcx, %xmm0
     movq %rax, %xmm1
     ucomisd %xmm1, %xmm0
+    setnb %dl
     mov %rdx, %rax
-    setnb %al
     and $255, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp

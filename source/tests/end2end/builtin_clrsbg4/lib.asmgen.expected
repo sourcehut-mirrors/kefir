@@ -18,11 +18,10 @@ get:
     mov %eax, %ecx
     add %ecx, %ecx
     sar $31, %eax
-    mov %rcx, %rdx
-    xor %eax, %edx
-    mov %rdx, %rax
-    or $1, %eax
-    bsr %eax, %eax
+    xor %eax, %ecx
+    or $1, %ecx
+    bsr %ecx, %ecx
+    mov %rcx, %rax
     xor $31, %eax
     lea (%rbp), %rsp
     pop %rbp

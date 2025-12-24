@@ -34,9 +34,8 @@ int_or:
     mov %rsp, %rbp
     mov %rdi, %rax
     or $10291, %rax
-    mov %rdi, %rcx
-    or $81712, %rcx
-    and %rcx, %rax
+    or $81712, %rdi
+    and %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_or_end:
@@ -47,9 +46,8 @@ int_add:
     mov %rsp, %rbp
     mov %rdi, %rax
     add $1, %rax
-    mov %rdi, %rcx
-    add $12344, %rcx
-    imul %rcx, %rax
+    add $12344, %rdi
+    imul %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_add_end:
@@ -60,9 +58,8 @@ int_and:
     mov %rsp, %rbp
     mov %rdi, %rax
     and $-381, %rax
-    mov %rdi, %rcx
-    and $12356, %rcx
-    or %rcx, %rax
+    and $12356, %rdi
+    or %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_and_end:
@@ -94,9 +91,8 @@ int_xor:
     mov %rsp, %rbp
     mov %rdi, %rax
     xor $76, %rax
-    mov %rdi, %rcx
-    xor $7894, %rcx
-    add %rcx, %rax
+    xor $7894, %rdi
+    add %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_xor_end:
@@ -107,9 +103,8 @@ uint_or:
     mov %rsp, %rbp
     mov %rdi, %rax
     or $10291, %rax
-    mov %rdi, %rcx
-    or $81712, %rcx
-    and %rcx, %rax
+    or $81712, %rdi
+    and %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_or_end:
@@ -120,9 +115,8 @@ uint_add:
     mov %rsp, %rbp
     mov %rdi, %rax
     add $1, %rax
-    mov %rdi, %rcx
-    add $12344, %rcx
-    imul %rcx, %rax
+    add $12344, %rdi
+    imul %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_add_end:
@@ -133,9 +127,8 @@ uint_and:
     mov %rsp, %rbp
     mov %rdi, %rax
     and $381, %rax
-    mov %rdi, %rcx
-    and $12356, %rcx
-    or %rcx, %rax
+    and $12356, %rdi
+    or %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_and_end:
@@ -167,9 +160,8 @@ uint_xor:
     mov %rsp, %rbp
     mov %rdi, %rax
     xor $76, %rax
-    mov %rdi, %rcx
-    xor $7894, %rcx
-    add %rcx, %rax
+    xor $7894, %rdi
+    add %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_xor_end:

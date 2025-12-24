@@ -194,7 +194,7 @@ somefn:
     push %r13
     push %r14
     push %r15
-    sub $152, %rsp
+    sub $136, %rsp
     mov 144(%rbp), %rax
     mov 152(%rbp), %r10
     mov 128(%rbp), %r11
@@ -203,76 +203,70 @@ somefn:
     mov 120(%rbp), %r13
     mov 96(%rbp), %r14
     mov 104(%rbp), %r15
-    movq %rax, -136(%rbp)
-    mov 80(%rbp), %rax
-    mov %rax, -144(%rbp)
-    movq -136(%rbp), %rax
-    movq %rax, -128(%rbp)
-    mov 88(%rbp), %rax
-    mov %rax, -136(%rbp)
-    movq -128(%rbp), %rax
     movq %rax, -120(%rbp)
-    mov 64(%rbp), %rax
+    mov 80(%rbp), %rax
     mov %rax, -128(%rbp)
     movq -120(%rbp), %rax
     movq %rax, -112(%rbp)
-    mov 72(%rbp), %rax
+    mov 88(%rbp), %rax
     mov %rax, -120(%rbp)
     movq -112(%rbp), %rax
     movq %rax, -104(%rbp)
-    mov 48(%rbp), %rax
+    mov 64(%rbp), %rax
     mov %rax, -112(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -96(%rbp)
-    mov 56(%rbp), %rax
+    mov 72(%rbp), %rax
     mov %rax, -104(%rbp)
     movq -96(%rbp), %rax
     movq %rax, -88(%rbp)
-    mov 32(%rbp), %rax
+    mov 48(%rbp), %rax
     mov %rax, -96(%rbp)
     movq -88(%rbp), %rax
     movq %rax, -80(%rbp)
-    mov 40(%rbp), %rax
+    mov 56(%rbp), %rax
     mov %rax, -88(%rbp)
     movq -80(%rbp), %rax
     movq %rax, -72(%rbp)
-    mov 16(%rbp), %rax
+    mov 32(%rbp), %rax
     mov %rax, -80(%rbp)
     movq -72(%rbp), %rax
     movq %rax, -64(%rbp)
-    mov 24(%rbp), %rax
+    mov 40(%rbp), %rax
     mov %rax, -72(%rbp)
     movq -64(%rbp), %rax
     movq %rax, -56(%rbp)
-    mov %rdi, %rax
-    xor %rdx, %rax
-    mov %rax, %rdx
+    mov 16(%rbp), %rax
+    mov %rax, -64(%rbp)
     movq -56(%rbp), %rax
-    mov %rsi, %rdi
-    xor %rcx, %rdi
+    movq %rax, -48(%rbp)
+    mov 24(%rbp), %rax
+    mov %rax, -56(%rbp)
+    movq -48(%rbp), %rax
+    xor %rdx, %rdi
+    xor %rcx, %rsi
+    xor %r8, %rdi
+    xor %r9, %rsi
+    xor -64(%rbp), %rdi
+    xor -56(%rbp), %rsi
+    xor -80(%rbp), %rdi
+    xor -72(%rbp), %rsi
+    xor -96(%rbp), %rdi
+    xor -88(%rbp), %rsi
+    xor -112(%rbp), %rdi
+    xor -104(%rbp), %rsi
+    xor -128(%rbp), %rdi
+    xor -120(%rbp), %rsi
+    xor %r14, %rdi
+    xor %r15, %rsi
+    xor %r12, %rdi
+    xor %r13, %rsi
+    xor %r11, %rdi
+    xor %rbx, %rsi
     mov %rdi, %rcx
-    xor %r8, %rdx
-    xor %r9, %rcx
-    xor -80(%rbp), %rdx
-    xor -72(%rbp), %rcx
-    xor -96(%rbp), %rdx
-    xor -88(%rbp), %rcx
-    xor -112(%rbp), %rdx
-    xor -104(%rbp), %rcx
-    xor -128(%rbp), %rdx
-    xor -120(%rbp), %rcx
-    xor -144(%rbp), %rdx
-    xor -136(%rbp), %rcx
-    xor %r14, %rdx
-    xor %r15, %rcx
-    xor %r12, %rdx
-    xor %r13, %rcx
-    xor %r11, %rdx
-    xor %rbx, %rcx
-    mov %rdx, %rsi
-    xor %rax, %rsi
-    mov %rsi, %rax
-    mov %rcx, %rdx
+    xor %rax, %rcx
+    mov %rcx, %rax
+    mov %rsi, %rdx
     xor %r10, %rdx
     lea -40(%rbp), %rsp
     pop %r15

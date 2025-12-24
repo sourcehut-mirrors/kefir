@@ -24,10 +24,8 @@ get2:
     movsx %r12d, %rax
     imul $4, %rax, %rax
     lea -272(%rbp), %rcx
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
-    movl (%rax), %eax
+    add %rax, %rcx
+    movl (%rcx), %eax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -58,10 +56,8 @@ get3:
     movsx %r12d, %rax
     imul $4, %rax, %rax
     lea -528(%rbp), %rcx
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
-    movl (%rax), %eax
+    add %rax, %rcx
+    movl (%rcx), %eax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

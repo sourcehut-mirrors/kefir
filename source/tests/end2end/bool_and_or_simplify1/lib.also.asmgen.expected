@@ -10,10 +10,9 @@
 .L__kefir_text_section_begin:
 or:
 .L__kefir_text_func_or_begin:
-    mov %rdi, %rax
-    or %esi, %eax
-    setne %al
-    movzx %al, %rax
+    or %esi, %edi
+    setne %dil
+    movzx %dil, %rax
     or %esi, %eax
     setne %al
     movzx %al, %rax
@@ -29,10 +28,8 @@ and:
     setne %al
     test %esi, %esi
     setne %cl
-    mov %rcx, %rdx
-    and %al, %dl
-    mov %rdx, %rax
-    movzx %al, %rax
+    and %al, %cl
+    movzx %cl, %rax
     ret
 .L__kefir_text_func_and_end:
 

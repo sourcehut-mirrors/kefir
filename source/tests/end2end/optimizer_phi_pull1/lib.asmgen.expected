@@ -19,11 +19,10 @@ somefn:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_somefn_label11(%rip), %xmm0
     movq .L__kefir_func_somefn_label12(%rip), %xmm1
-    mov %rdi, %rax
 .L__kefir_func_somefn_label2:
-    mov %rax, %rcx
-    add $-1, %ecx
-    test %eax, %eax
+    mov %rdi, %rax
+    add $-1, %eax
+    test %edi, %edi
     jnz .L__kefir_func_somefn_label10
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -31,7 +30,7 @@ somefn:
     ret
 .L__kefir_func_somefn_label10:
     addsd %xmm1, %xmm0
-    mov %rcx, %rax
+    mov %rax, %rdi
     jmp .L__kefir_func_somefn_label2
 .L__kefir_text_func_somefn_end:
 .section .rodata
@@ -49,10 +48,8 @@ assign_abs:
     mov %rdi, %rcx
     neg %rcx
     cmp $0, %rdi
-    mov %rdi, %rdx
-    cmovle %rcx, %rdx
-    mov %rdx, %rcx
-    movq %rcx, (%rax)
+    cmovle %rcx, %rdi
+    movq %rdi, (%rax)
     ret
 .L__kefir_text_func_assign_abs_end:
 

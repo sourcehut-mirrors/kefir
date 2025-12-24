@@ -30,8 +30,12 @@ get:
     ret
 .L__kefir_func_get_label10:
     test %esi, %esi
-    jz .L__kefir_func_get_label3
-.L__kefir_func_get_label12:
+    jnz .L__kefir_func_get_label7
+    movq -80(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -56(%rbp)
+.L__kefir_func_get_label7:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax

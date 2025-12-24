@@ -117,13 +117,11 @@ test1:
     xor %r8, %rcx
     mov $11, %rdx
     xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
-    mov %r9, %rdx
+    add %rdx, %rdi
     adc %r8, %rsi
-    xor %rdx, %rax
+    xor %rdi, %rax
+    xor %rsi, %rcx
     mov %rcx, %rdx
-    xor %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -8,13 +8,10 @@
 .L__kefir_text_section_begin:
 overflow_add:
 .L__kefir_text_func_overflow_add_begin:
-    mov %rdi, %rax
-    add %rsi, %rax
-    mov %rax, %rcx
-    seto %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    add %rsi, %rdi
+    seto %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_add_end:
 

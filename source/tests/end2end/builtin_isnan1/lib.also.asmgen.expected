@@ -28,10 +28,8 @@ is_nan_f32:
     movd %eax, %xmm0
     movd %eax, %xmm1
     ucomiss %xmm1, %xmm0
-    mov %rcx, %rax
-    setp %al
-    test %eax, %eax
-    mov %rcx, %rax
+    setp %cl
+    test %ecx, %ecx
     setne %al
     movzx %al, %rax
     ldmxcsr -8(%rbp)
@@ -52,10 +50,8 @@ is_nan_f64:
     movq %rax, %xmm0
     movq %rax, %xmm1
     ucomisd %xmm1, %xmm0
-    mov %rcx, %rax
-    setp %al
-    test %eax, %eax
-    mov %rcx, %rax
+    setp %cl
+    test %ecx, %ecx
     setne %al
     movzx %al, %rax
     ldmxcsr -8(%rbp)
@@ -78,9 +74,8 @@ is_nan_f80:
     fucomi %st(0)
     setp %al
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     fstp %st(0)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

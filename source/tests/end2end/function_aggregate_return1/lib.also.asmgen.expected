@@ -24,13 +24,10 @@ get1:
     setg %dl
     mov $0, %rsi
     cmp %rax, %rcx
-    mov %rsi, %rax
-    sete %al
-    mov %rdx, %rcx
-    or %rax, %rcx
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    sete %sil
+    or %rsi, %rdx
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     jz .L__kefir_func_get1_label10
     xorps %xmm0, %xmm0
@@ -89,8 +86,7 @@ get1:
     and %rsi, %rdx
     xor %rdx, %rax
     movq %rax, (%rcx)
-    lea -144(%rbp), %rax
-    mov %rax, %rcx
+    lea -144(%rbp), %rcx
 .L__kefir_func_get1_label4:
     mov %r12, %rax
     movdqu (%rcx), %xmm0

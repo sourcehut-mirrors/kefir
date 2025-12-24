@@ -18,12 +18,9 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rdi, %rax
-    shl $47, %rax
-    shr $47, %rax
-    mov %rcx, %rdx
-    bsr %eax, %edx
-    mov %rdx, %rax
+    shl $47, %rdi
+    shr $47, %rdi
+    bsr %edi, %eax
     xor $31, %eax
     sub $15, %eax
     ret
@@ -38,12 +35,9 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rdi, %rax
-    shl $5, %rax
-    shr $5, %rax
-    mov %rcx, %rdx
-    bsr %rax, %rdx
-    mov %rdx, %rax
+    shl $5, %rdi
+    shr $5, %rdi
+    bsr %rdi, %rax
     xor $63, %eax
     sub $5, %eax
     ret

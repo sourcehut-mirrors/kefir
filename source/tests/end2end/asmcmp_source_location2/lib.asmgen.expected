@@ -105,30 +105,11 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 22,
-#                    "column": 9
-#                }
-#            },
-#            {
 #                "opcode": "setl",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": [],
@@ -143,35 +124,16 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "ecx"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "ecx"
 #                    }
 #                ],
 #                "labels": [
 #                    77
 #                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 22,
-#                    "column": 5
-#                }
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    }
-#                ],
-#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
 #                    "line": 22,
@@ -372,30 +334,11 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdx"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 24,
-#                    "column": 9
-#                }
-#            },
-#            {
 #                "opcode": "sete",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "dl"
 #                    }
 #                ],
 #                "labels": [],
@@ -406,15 +349,15 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
+#                "opcode": "or",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "rdx"
+#                        "reg": "rcx"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "rcx"
+#                        "reg": "rdx"
 #                    }
 #                ],
 #                "labels": [
@@ -427,49 +370,11 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "or",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdx"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 24,
-#                    "column": 9
-#                }
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdx"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 24,
-#                    "column": 9
-#                }
-#            },
-#            {
 #                "opcode": "setne",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": [],
@@ -488,7 +393,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": [],
@@ -520,30 +425,11 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 24,
-#                    "column": 5
-#                }
-#            },
-#            {
 #                "opcode": "sete",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": [],
@@ -558,11 +444,11 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": [
@@ -681,30 +567,11 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 28,
-#                    "column": 12
-#                }
-#            },
-#            {
 #                "opcode": "setg",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": [],
@@ -719,35 +586,16 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "ecx"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "ecx"
 #                    }
 #                ],
 #                "labels": [
 #                    172
 #                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 28,
-#                    "column": 5
-#                }
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    }
-#                ],
-#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
 #                    "line": 28,
@@ -900,58 +748,20 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdx"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    }
-#                ],
-#                "labels": [
-#                    207
-#                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 29,
-#                    "column": 9
-#                }
-#            },
-#            {
 #                "opcode": "imul",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "edx"
+#                        "reg": "ecx"
 #                    },
 #                    {
 #                        "type": "physical_register",
 #                        "reg": "eax"
 #                    }
 #                ],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 29,
-#                    "column": 9
-#                }
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdx"
-#                    }
+#                "labels": [
+#                    207
 #                ],
-#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
 #                    "line": 29,
@@ -970,7 +780,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "ecx"
 #                    }
 #                ],
 #                "labels": [
@@ -1181,12 +991,10 @@ factorial:
 .L__kefir_func_factorial_label65:
     mov $0, %rcx
     cmp $0, %eax
-    mov %rcx, %rax
-    setl %al
+    setl %cl
 .loc 0 22 5
 .L__kefir_func_factorial_label77:
-    test %eax, %eax
-    mov %rcx, %rax
+    test %ecx, %ecx
     sete %al
 .L__kefir_func_factorial_label90:
     test %al, %al
@@ -1203,21 +1011,17 @@ factorial:
     mov $0, %rdx
     mov $2, %esi
     cmp %eax, %esi
-    mov %rdx, %rax
-    sete %al
+    sete %dl
 .L__kefir_func_factorial_label115:
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
-    setne %al
-    movzx %al, %rax
+    or %rdx, %rcx
+    setne %cl
+    movzx %cl, %rax
 .loc 0 24 5
 .L__kefir_func_factorial_label130:
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
+    sete %cl
 .L__kefir_func_factorial_label136:
-    test %al, %al
+    test %cl, %cl
     jz .L__kefir_func_factorial_label44
 .loc 0 27 5
 .L__kefir_func_factorial_label137:
@@ -1229,12 +1033,10 @@ factorial:
 .L__kefir_func_factorial_label155:
     mov $0, %rcx
     cmp $1, %eax
-    mov %rcx, %rax
-    setg %al
+    setg %cl
 .loc 0 28 5
 .L__kefir_func_factorial_label172:
-    test %eax, %eax
-    mov %rcx, %rax
+    test %ecx, %ecx
     sete %al
 .L__kefir_func_factorial_label173:
     test %al, %al
@@ -1254,11 +1056,9 @@ factorial:
 .L__kefir_func_factorial_label206:
     movl -4(%rbp), %ecx
 .L__kefir_func_factorial_label207:
-    mov %rcx, %rdx
-    imul %eax, %edx
-    mov %rdx, %rax
+    imul %eax, %ecx
 .L__kefir_func_factorial_label214:
-    movl %eax, -4(%rbp)
+    movl %ecx, -4(%rbp)
 .loc 0 28 19
 .L__kefir_func_factorial_label215:
     movl -8(%rbp), %eax

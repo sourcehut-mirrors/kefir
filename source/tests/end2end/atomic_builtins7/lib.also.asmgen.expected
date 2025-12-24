@@ -52,65 +52,56 @@ test_is_lock_free:
     je .L__kefir_func_test_is_lock_free_label41
 .L__kefir_func_test_is_lock_free_label3:
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %al, %al
     jnz .L__kefir_func_test_is_lock_free_label44
 .L__kefir_func_test_is_lock_free_label5:
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %al, %al
     jnz .L__kefir_func_test_is_lock_free_label42
 .L__kefir_func_test_is_lock_free_label7:
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %al, %al
     jnz .L__kefir_func_test_is_lock_free_label49
 .L__kefir_func_test_is_lock_free_label9:
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %al, %al
     jnz .L__kefir_func_test_is_lock_free_label48
 .L__kefir_func_test_is_lock_free_label11:
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %al, %al
     jnz .L__kefir_func_test_is_lock_free_label47
 .L__kefir_func_test_is_lock_free_label13:
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %al, %al
     jnz .L__kefir_func_test_is_lock_free_label43
 .L__kefir_func_test_is_lock_free_label15:
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %al, %al
     jnz .L__kefir_func_test_is_lock_free_label45
 .L__kefir_func_test_is_lock_free_label17:
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %al, %al
     jnz .L__kefir_func_test_is_lock_free_label40
 .L__kefir_func_test_is_lock_free_label19:
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     ret
 .L__kefir_func_test_is_lock_free_label40:
     xor %eax, %eax

@@ -282,10 +282,8 @@ generate_buf_0:
     lea -1(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_0_label2
 .L__kefir_text_func_generate_buf_0_end:
@@ -312,10 +310,8 @@ generate_buf_1:
     lea -2(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_1_label2
 .L__kefir_text_func_generate_buf_1_end:
@@ -348,10 +344,8 @@ generate_buf_2:
     lea -3(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_2_label2
 .L__kefir_text_func_generate_buf_2_end:
@@ -378,10 +372,8 @@ generate_buf_3:
     lea -4(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_3_label2
 .L__kefir_text_func_generate_buf_3_end:
@@ -412,10 +404,8 @@ generate_buf_4:
     lea -5(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_4_label2
 .L__kefir_text_func_generate_buf_4_end:
@@ -446,10 +436,8 @@ generate_buf_5:
     lea -6(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_5_label2
 .L__kefir_text_func_generate_buf_5_end:
@@ -485,10 +473,8 @@ generate_buf_6:
     lea -7(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_6_label2
 .L__kefir_text_func_generate_buf_6_end:
@@ -515,10 +501,8 @@ generate_buf_7:
     lea -8(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_7_label2
 .L__kefir_text_func_generate_buf_7_end:
@@ -538,8 +522,8 @@ generate_buf_8:
     cmp $9, %ecx
     jl .L__kefir_func_generate_buf_8_label10
     movq -9(%rbp), %rax
+    movb -1(%rbp), %cl
     mov %rcx, %rdx
-    movb -1(%rbp), %dl
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -548,10 +532,8 @@ generate_buf_8:
     lea -9(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_8_label2
 .L__kefir_text_func_generate_buf_8_end:
@@ -571,8 +553,8 @@ generate_buf_9:
     cmp $10, %ecx
     jl .L__kefir_func_generate_buf_9_label10
     movq -10(%rbp), %rax
+    movw -2(%rbp), %cx
     mov %rcx, %rdx
-    movw -2(%rbp), %dx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -581,10 +563,8 @@ generate_buf_9:
     lea -10(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_9_label2
 .L__kefir_text_func_generate_buf_9_end:
@@ -610,9 +590,8 @@ generate_buf_10:
     mov %rcx, %rdx
     movb -1(%rbp), %dl
     shl $16, %edx
-    mov %rcx, %rsi
-    or %rdx, %rsi
-    mov %rsi, %rdx
+    or %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -621,10 +600,8 @@ generate_buf_10:
     lea -11(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_10_label2
 .L__kefir_text_func_generate_buf_10_end:
@@ -653,10 +630,8 @@ generate_buf_11:
     lea -12(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_11_label2
 .L__kefir_text_func_generate_buf_11_end:
@@ -680,9 +655,8 @@ generate_buf_12:
     movl -5(%rbp), %ecx
     movb -1(%rbp), %dl
     shl $32, %rdx
-    mov %rcx, %rsi
-    or %rdx, %rsi
-    mov %rsi, %rdx
+    or %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -691,10 +665,8 @@ generate_buf_12:
     lea -13(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_12_label2
 .L__kefir_text_func_generate_buf_12_end:
@@ -718,9 +690,8 @@ generate_buf_13:
     movl -6(%rbp), %ecx
     movw -2(%rbp), %dx
     shl $32, %rdx
-    mov %rcx, %rsi
-    or %rdx, %rsi
-    mov %rsi, %rdx
+    or %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -729,10 +700,8 @@ generate_buf_13:
     lea -14(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_13_label2
 .L__kefir_text_func_generate_buf_13_end:
@@ -761,9 +730,8 @@ generate_buf_14:
     or %rdx, %rcx
     movb -1(%rbp), %dl
     shl $48, %rdx
-    mov %rcx, %rsi
-    or %rdx, %rsi
-    mov %rsi, %rdx
+    or %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -772,10 +740,8 @@ generate_buf_14:
     lea -15(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_14_label2
 .L__kefir_text_func_generate_buf_14_end:
@@ -803,10 +769,8 @@ generate_buf_15:
     lea -16(%rbp), %rdx
     add %rcx, %rdx
     movzx %dil, %rsi
-    mov %rsi, %r8
-    add %ecx, %r8d
-    mov %r8, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %esi
+    movb %sil, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_15_label2
 .L__kefir_text_func_generate_buf_15_end:
@@ -830,10 +794,8 @@ generate_buf_16:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_16_label2
 .L__kefir_text_func_generate_buf_16_end:
@@ -857,10 +819,8 @@ generate_buf_17:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_17_label2
 .L__kefir_text_func_generate_buf_17_end:
@@ -885,10 +845,8 @@ generate_buf_18:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_18_label2
 .L__kefir_text_func_generate_buf_18_end:
@@ -912,10 +870,8 @@ generate_buf_19:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_19_label2
 .L__kefir_text_func_generate_buf_19_end:
@@ -940,10 +896,8 @@ generate_buf_20:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_20_label2
 .L__kefir_text_func_generate_buf_20_end:
@@ -968,10 +922,8 @@ generate_buf_21:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_21_label2
 .L__kefir_text_func_generate_buf_21_end:
@@ -997,10 +949,8 @@ generate_buf_22:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_22_label2
 .L__kefir_text_func_generate_buf_22_end:
@@ -1024,10 +974,8 @@ generate_buf_23:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_23_label2
 .L__kefir_text_func_generate_buf_23_end:
@@ -1052,10 +1000,8 @@ generate_buf_24:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_24_label2
 .L__kefir_text_func_generate_buf_24_end:
@@ -1080,10 +1026,8 @@ generate_buf_25:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_25_label2
 .L__kefir_text_func_generate_buf_25_end:
@@ -1109,10 +1053,8 @@ generate_buf_26:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_26_label2
 .L__kefir_text_func_generate_buf_26_end:
@@ -1137,10 +1079,8 @@ generate_buf_27:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_27_label2
 .L__kefir_text_func_generate_buf_27_end:
@@ -1166,10 +1106,8 @@ generate_buf_28:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_28_label2
 .L__kefir_text_func_generate_buf_28_end:
@@ -1195,10 +1133,8 @@ generate_buf_29:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_29_label2
 .L__kefir_text_func_generate_buf_29_end:
@@ -1225,10 +1161,8 @@ generate_buf_30:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_30_label2
 .L__kefir_text_func_generate_buf_30_end:
@@ -1251,10 +1185,8 @@ generate_buf_31:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_31_label2
 .L__kefir_text_func_generate_buf_31_end:
@@ -1280,10 +1212,8 @@ generate_buf_32:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_32_label2
 .L__kefir_text_func_generate_buf_32_end:
@@ -1309,10 +1239,8 @@ generate_buf_33:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_33_label2
 .L__kefir_text_func_generate_buf_33_end:
@@ -1339,10 +1267,8 @@ generate_buf_34:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_34_label2
 .L__kefir_text_func_generate_buf_34_end:
@@ -1368,10 +1294,8 @@ generate_buf_35:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_35_label2
 .L__kefir_text_func_generate_buf_35_end:
@@ -1398,10 +1322,8 @@ generate_buf_36:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_36_label2
 .L__kefir_text_func_generate_buf_36_end:
@@ -1428,10 +1350,8 @@ generate_buf_37:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_37_label2
 .L__kefir_text_func_generate_buf_37_end:
@@ -1459,10 +1379,8 @@ generate_buf_38:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_38_label2
 .L__kefir_text_func_generate_buf_38_end:
@@ -1488,10 +1406,8 @@ generate_buf_39:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_39_label2
 .L__kefir_text_func_generate_buf_39_end:
@@ -1518,10 +1434,8 @@ generate_buf_40:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_40_label2
 .L__kefir_text_func_generate_buf_40_end:
@@ -1548,10 +1462,8 @@ generate_buf_41:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_41_label2
 .L__kefir_text_func_generate_buf_41_end:
@@ -1579,10 +1491,8 @@ generate_buf_42:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_42_label2
 .L__kefir_text_func_generate_buf_42_end:
@@ -1609,10 +1519,8 @@ generate_buf_43:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_43_label2
 .L__kefir_text_func_generate_buf_43_end:
@@ -1640,10 +1548,8 @@ generate_buf_44:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_44_label2
 .L__kefir_text_func_generate_buf_44_end:
@@ -1671,10 +1577,8 @@ generate_buf_45:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_45_label2
 .L__kefir_text_func_generate_buf_45_end:
@@ -1703,10 +1607,8 @@ generate_buf_46:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_46_label2
 .L__kefir_text_func_generate_buf_46_end:
@@ -1730,10 +1632,8 @@ generate_buf_47:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_47_label2
 .L__kefir_text_func_generate_buf_47_end:
@@ -1761,10 +1661,8 @@ generate_buf_48:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_48_label2
 .L__kefir_text_func_generate_buf_48_end:
@@ -1792,10 +1690,8 @@ generate_buf_49:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_49_label2
 .L__kefir_text_func_generate_buf_49_end:
@@ -1824,10 +1720,8 @@ generate_buf_50:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_50_label2
 .L__kefir_text_func_generate_buf_50_end:
@@ -1855,10 +1749,8 @@ generate_buf_51:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_51_label2
 .L__kefir_text_func_generate_buf_51_end:
@@ -1887,10 +1779,8 @@ generate_buf_52:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_52_label2
 .L__kefir_text_func_generate_buf_52_end:
@@ -1919,10 +1809,8 @@ generate_buf_53:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_53_label2
 .L__kefir_text_func_generate_buf_53_end:
@@ -1952,10 +1840,8 @@ generate_buf_54:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_54_label2
 .L__kefir_text_func_generate_buf_54_end:
@@ -1983,10 +1869,8 @@ generate_buf_55:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_55_label2
 .L__kefir_text_func_generate_buf_55_end:
@@ -2015,10 +1899,8 @@ generate_buf_56:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_56_label2
 .L__kefir_text_func_generate_buf_56_end:
@@ -2047,10 +1929,8 @@ generate_buf_57:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_57_label2
 .L__kefir_text_func_generate_buf_57_end:
@@ -2080,10 +1960,8 @@ generate_buf_58:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_58_label2
 .L__kefir_text_func_generate_buf_58_end:
@@ -2112,10 +1990,8 @@ generate_buf_59:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_59_label2
 .L__kefir_text_func_generate_buf_59_end:
@@ -2145,10 +2021,8 @@ generate_buf_60:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_60_label2
 .L__kefir_text_func_generate_buf_60_end:
@@ -2178,10 +2052,8 @@ generate_buf_61:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_61_label2
 .L__kefir_text_func_generate_buf_61_end:
@@ -2212,10 +2084,8 @@ generate_buf_62:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_62_label2
 .L__kefir_text_func_generate_buf_62_end:
@@ -2240,10 +2110,8 @@ generate_buf_63:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdx)
+    add %ecx, %r8d
+    movb %r8b, (%rdx)
     add $1, %al
     jmp .L__kefir_func_generate_buf_63_label2
 .L__kefir_text_func_generate_buf_63_end:
@@ -2276,10 +2144,8 @@ generate_buf_64:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_64_label2
 .L__kefir_text_func_generate_buf_64_end:
@@ -2312,10 +2178,8 @@ generate_buf_65:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_65_label2
 .L__kefir_text_func_generate_buf_65_end:
@@ -2348,10 +2212,8 @@ generate_buf_66:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_66_label2
 .L__kefir_text_func_generate_buf_66_end:
@@ -2384,10 +2246,8 @@ generate_buf_67:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_67_label2
 .L__kefir_text_func_generate_buf_67_end:
@@ -2420,10 +2280,8 @@ generate_buf_68:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_68_label2
 .L__kefir_text_func_generate_buf_68_end:
@@ -2456,10 +2314,8 @@ generate_buf_69:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_69_label2
 .L__kefir_text_func_generate_buf_69_end:
@@ -2492,10 +2348,8 @@ generate_buf_70:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_70_label2
 .L__kefir_text_func_generate_buf_70_end:
@@ -2528,10 +2382,8 @@ generate_buf_71:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_71_label2
 .L__kefir_text_func_generate_buf_71_end:
@@ -2564,10 +2416,8 @@ generate_buf_72:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_72_label2
 .L__kefir_text_func_generate_buf_72_end:
@@ -2600,10 +2450,8 @@ generate_buf_73:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_73_label2
 .L__kefir_text_func_generate_buf_73_end:
@@ -2636,10 +2484,8 @@ generate_buf_74:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_74_label2
 .L__kefir_text_func_generate_buf_74_end:
@@ -2672,10 +2518,8 @@ generate_buf_75:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_75_label2
 .L__kefir_text_func_generate_buf_75_end:
@@ -2708,10 +2552,8 @@ generate_buf_76:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_76_label2
 .L__kefir_text_func_generate_buf_76_end:
@@ -2744,10 +2586,8 @@ generate_buf_77:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_77_label2
 .L__kefir_text_func_generate_buf_77_end:
@@ -2780,10 +2620,8 @@ generate_buf_78:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_78_label2
 .L__kefir_text_func_generate_buf_78_end:
@@ -2816,10 +2654,8 @@ generate_buf_79:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_79_label2
 .L__kefir_text_func_generate_buf_79_end:
@@ -2852,10 +2688,8 @@ generate_buf_80:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_80_label2
 .L__kefir_text_func_generate_buf_80_end:
@@ -2888,10 +2722,8 @@ generate_buf_81:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_81_label2
 .L__kefir_text_func_generate_buf_81_end:
@@ -2924,10 +2756,8 @@ generate_buf_82:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_82_label2
 .L__kefir_text_func_generate_buf_82_end:
@@ -2960,10 +2790,8 @@ generate_buf_83:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_83_label2
 .L__kefir_text_func_generate_buf_83_end:
@@ -2996,10 +2824,8 @@ generate_buf_84:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_84_label2
 .L__kefir_text_func_generate_buf_84_end:
@@ -3032,10 +2858,8 @@ generate_buf_85:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_85_label2
 .L__kefir_text_func_generate_buf_85_end:
@@ -3068,10 +2892,8 @@ generate_buf_86:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_86_label2
 .L__kefir_text_func_generate_buf_86_end:
@@ -3104,10 +2926,8 @@ generate_buf_87:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_87_label2
 .L__kefir_text_func_generate_buf_87_end:
@@ -3140,10 +2960,8 @@ generate_buf_88:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_88_label2
 .L__kefir_text_func_generate_buf_88_end:
@@ -3176,10 +2994,8 @@ generate_buf_89:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_89_label2
 .L__kefir_text_func_generate_buf_89_end:
@@ -3212,10 +3028,8 @@ generate_buf_90:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_90_label2
 .L__kefir_text_func_generate_buf_90_end:
@@ -3248,10 +3062,8 @@ generate_buf_91:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_91_label2
 .L__kefir_text_func_generate_buf_91_end:
@@ -3284,10 +3096,8 @@ generate_buf_92:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_92_label2
 .L__kefir_text_func_generate_buf_92_end:
@@ -3320,10 +3130,8 @@ generate_buf_93:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_93_label2
 .L__kefir_text_func_generate_buf_93_end:
@@ -3356,10 +3164,8 @@ generate_buf_94:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_94_label2
 .L__kefir_text_func_generate_buf_94_end:
@@ -3392,10 +3198,8 @@ generate_buf_95:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_95_label2
 .L__kefir_text_func_generate_buf_95_end:
@@ -3428,10 +3232,8 @@ generate_buf_96:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_96_label2
 .L__kefir_text_func_generate_buf_96_end:
@@ -3464,10 +3266,8 @@ generate_buf_97:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_97_label2
 .L__kefir_text_func_generate_buf_97_end:
@@ -3500,10 +3300,8 @@ generate_buf_98:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_98_label2
 .L__kefir_text_func_generate_buf_98_end:
@@ -3536,10 +3334,8 @@ generate_buf_99:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_99_label2
 .L__kefir_text_func_generate_buf_99_end:
@@ -3572,10 +3368,8 @@ generate_buf_100:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_100_label2
 .L__kefir_text_func_generate_buf_100_end:
@@ -3608,10 +3402,8 @@ generate_buf_101:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_101_label2
 .L__kefir_text_func_generate_buf_101_end:
@@ -3644,10 +3436,8 @@ generate_buf_102:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_102_label2
 .L__kefir_text_func_generate_buf_102_end:
@@ -3680,10 +3470,8 @@ generate_buf_103:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_103_label2
 .L__kefir_text_func_generate_buf_103_end:
@@ -3716,10 +3504,8 @@ generate_buf_104:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_104_label2
 .L__kefir_text_func_generate_buf_104_end:
@@ -3752,10 +3538,8 @@ generate_buf_105:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_105_label2
 .L__kefir_text_func_generate_buf_105_end:
@@ -3788,10 +3572,8 @@ generate_buf_106:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_106_label2
 .L__kefir_text_func_generate_buf_106_end:
@@ -3824,10 +3606,8 @@ generate_buf_107:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_107_label2
 .L__kefir_text_func_generate_buf_107_end:
@@ -3860,10 +3640,8 @@ generate_buf_108:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_108_label2
 .L__kefir_text_func_generate_buf_108_end:
@@ -3896,10 +3674,8 @@ generate_buf_109:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_109_label2
 .L__kefir_text_func_generate_buf_109_end:
@@ -3932,10 +3708,8 @@ generate_buf_110:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_110_label2
 .L__kefir_text_func_generate_buf_110_end:
@@ -3968,10 +3742,8 @@ generate_buf_111:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_111_label2
 .L__kefir_text_func_generate_buf_111_end:
@@ -4004,10 +3776,8 @@ generate_buf_112:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_112_label2
 .L__kefir_text_func_generate_buf_112_end:
@@ -4040,10 +3810,8 @@ generate_buf_113:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_113_label2
 .L__kefir_text_func_generate_buf_113_end:
@@ -4076,10 +3844,8 @@ generate_buf_114:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_114_label2
 .L__kefir_text_func_generate_buf_114_end:
@@ -4112,10 +3878,8 @@ generate_buf_115:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_115_label2
 .L__kefir_text_func_generate_buf_115_end:
@@ -4148,10 +3912,8 @@ generate_buf_116:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_116_label2
 .L__kefir_text_func_generate_buf_116_end:
@@ -4184,10 +3946,8 @@ generate_buf_117:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_117_label2
 .L__kefir_text_func_generate_buf_117_end:
@@ -4220,10 +3980,8 @@ generate_buf_118:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_118_label2
 .L__kefir_text_func_generate_buf_118_end:
@@ -4256,10 +4014,8 @@ generate_buf_119:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_119_label2
 .L__kefir_text_func_generate_buf_119_end:
@@ -4292,10 +4048,8 @@ generate_buf_120:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_120_label2
 .L__kefir_text_func_generate_buf_120_end:
@@ -4328,10 +4082,8 @@ generate_buf_121:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_121_label2
 .L__kefir_text_func_generate_buf_121_end:
@@ -4364,10 +4116,8 @@ generate_buf_122:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_122_label2
 .L__kefir_text_func_generate_buf_122_end:
@@ -4400,10 +4150,8 @@ generate_buf_123:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_123_label2
 .L__kefir_text_func_generate_buf_123_end:
@@ -4436,10 +4184,8 @@ generate_buf_124:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_124_label2
 .L__kefir_text_func_generate_buf_124_end:
@@ -4472,10 +4218,8 @@ generate_buf_125:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_125_label2
 .L__kefir_text_func_generate_buf_125_end:
@@ -4508,10 +4252,8 @@ generate_buf_126:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_126_label2
 .L__kefir_text_func_generate_buf_126_end:
@@ -4544,10 +4286,8 @@ generate_buf_127:
     mov %rdx, %rdi
     add %rcx, %rdi
     movzx %sil, %r8
-    mov %r8, %r9
-    add %ecx, %r9d
-    mov %r9, %rcx
-    movb %cl, (%rdi)
+    add %ecx, %r8d
+    movb %r8b, (%rdi)
     add $1, %al
     jmp .L__kefir_func_generate_buf_127_label2
 .L__kefir_text_func_generate_buf_127_end:

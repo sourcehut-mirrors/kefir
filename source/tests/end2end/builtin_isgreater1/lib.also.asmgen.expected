@@ -30,8 +30,8 @@ is_greater_f32:
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
+    seta %dl
     mov %rdx, %rax
-    seta %al
     and $255, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -53,8 +53,8 @@ is_greater_f64:
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
+    seta %dl
     mov %rdx, %rax
-    seta %al
     and $255, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp

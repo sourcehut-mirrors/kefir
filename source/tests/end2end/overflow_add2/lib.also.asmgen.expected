@@ -21,15 +21,15 @@ overflow_sadd:
     movsx %edi, %rax
     movsx %esi, %rcx
     add %rcx, %rax
+    seto %sil
+    movsx %eax, %rcx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    movsx %eax, %rsi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movl %eax, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_sadd_end:
 
@@ -38,63 +38,51 @@ overflow_uadd:
     mov %edi, %eax
     mov %esi, %ecx
     add %rcx, %rax
+    seto %sil
+    mov %eax, %ecx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    mov %eax, %esi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movl %eax, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_uadd_end:
 
 overflow_saddl:
 .L__kefir_text_func_overflow_saddl_begin:
-    mov %rdi, %rax
-    add %rsi, %rax
-    mov %rax, %rcx
-    seto %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    add %rsi, %rdi
+    seto %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_saddl_end:
 
 overflow_uaddl:
 .L__kefir_text_func_overflow_uaddl_begin:
-    mov %rdi, %rax
-    add %rsi, %rax
-    mov %rax, %rcx
-    setc %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    add %rsi, %rdi
+    setc %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_uaddl_end:
 
 overflow_saddll:
 .L__kefir_text_func_overflow_saddll_begin:
-    mov %rdi, %rax
-    add %rsi, %rax
-    mov %rax, %rcx
-    seto %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    add %rsi, %rdi
+    seto %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_saddll_end:
 
 overflow_uaddll:
 .L__kefir_text_func_overflow_uaddll_begin:
-    mov %rdi, %rax
-    add %rsi, %rax
-    mov %rax, %rcx
-    setc %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    add %rsi, %rdi
+    setc %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_uaddll_end:
 

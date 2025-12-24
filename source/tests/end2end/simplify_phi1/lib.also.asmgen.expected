@@ -34,31 +34,18 @@ test1:
     movq -48(%rbp), %rcx
     movq -40(%rbp), %rdx
     movq -40(%rbp), %rsi
-    mov %r14, %rdi
-    sub %rcx, %rdi
-    mov %rdi, %rcx
-    mov %r13, %rdi
-    sub %rsi, %rdi
-    mov %rdi, %rsi
-    mov %r12, %rdi
-    add %rax, %rdi
-    mov %rdi, %rax
-    mov %rbx, %rdi
-    add %rdx, %rdi
-    mov %rdi, %rdx
-    xor %edi, %edi
-    cmp $0, %rsi
-    seta %dil
-    xor %r8d, %r8d
-    cmp $0, %rcx
-    seta %r8b
-    and %r8b, %dil
-    jz .L__kefir_func_test1_label14
-    mov %rax, %r12
-    mov %rsi, %r13
-    mov %rcx, %r14
-    mov %rdx, %rbx
-    jmp .L__kefir_func_test1_label2
+    sub %rcx, %r14
+    sub %rsi, %r13
+    add %rax, %r12
+    add %rdx, %rbx
+    xor %eax, %eax
+    cmp $0, %r13
+    seta %al
+    xor %ecx, %ecx
+    cmp $0, %r14
+    seta %cl
+    and %cl, %al
+    jnz .L__kefir_func_test1_label2
 .L__kefir_func_test1_label14:
     xor %eax, %eax
     lea -32(%rbp), %rsp

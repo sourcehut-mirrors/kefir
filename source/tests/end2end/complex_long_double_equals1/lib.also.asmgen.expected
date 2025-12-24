@@ -34,11 +34,8 @@ cld_eq:
     fstp %st(0)
     setnp %al
     cmovne %rcx, %rax
-    mov %rdx, %rcx
-    and %rax, %rcx
-    mov %rcx, %rax
-    test %eax, %eax
-    mov %rcx, %rax
+    and %rax, %rdx
+    test %edx, %edx
     setne %al
     movzx %al, %rax
     fldcw -8(%rbp)
@@ -69,9 +66,8 @@ cld_trunc:
     fstp %st(0)
     setp %al
     setne %dl
-    mov %rdx, %rsi
-    or %al, %sil
-    mov %rsi, %rax
+    or %al, %dl
+    mov %rdx, %rax
     or %cl, %al
     fstp %st(0)
     fstp %st(0)

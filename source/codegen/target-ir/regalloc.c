@@ -81,7 +81,7 @@ static kefir_result_t do_regalloc(struct kefir_mem *mem, struct regalloc_state *
             }
 
             kefir_hashtable_value_t table_value;
-            res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) interference_vertex, &table_value);
+            res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&coalesce_value_ref), &table_value);
             if (res == KEFIR_NOT_FOUND) {
                 continue;
             }

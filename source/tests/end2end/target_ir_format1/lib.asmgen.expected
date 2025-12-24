@@ -398,7 +398,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 6
@@ -426,7 +426,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rax"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 7
@@ -908,7 +908,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rdx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 11
@@ -963,7 +963,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 12
@@ -1022,7 +1022,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 12
@@ -1185,7 +1185,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 13
@@ -1582,7 +1582,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 17
@@ -1610,7 +1610,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rax"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 18
@@ -2068,7 +2068,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 23
@@ -2738,10 +2738,8 @@ factorial:
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $0, %eax
-    mov %rcx, %rax
-    setl %al
-    test %eax, %eax
-    mov %rcx, %rax
+    setl %cl
+    test %ecx, %ecx
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label20
@@ -2752,27 +2750,21 @@ factorial:
     mov $0, %rdx
     mov $2, %esi
     cmp %eax, %esi
-    mov %rdx, %rax
-    sete %al
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
-    setne %al
-    movzx %al, %rax
+    sete %dl
+    or %rdx, %rcx
+    setne %cl
+    movzx %cl, %rax
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz .L__kefir_func_factorial_label22
     movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $1, %eax
-    mov %rcx, %rax
-    setg %al
-    test %eax, %eax
-    mov %rcx, %rax
+    setg %cl
+    test %ecx, %ecx
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label17
@@ -2783,10 +2775,8 @@ factorial:
 .L__kefir_func_factorial_label17:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
-    mov %rcx, %rdx
-    imul %eax, %edx
-    mov %rdx, %rax
-    movl %eax, -4(%rbp)
+    imul %eax, %ecx
+    movl %ecx, -4(%rbp)
     movl -8(%rbp), %eax
     add $-1, %eax
     movl %eax, -8(%rbp)

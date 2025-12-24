@@ -822,9 +822,7 @@ test_dec32_simulate:
     movaps -176(%rbp), %xmm0
     movaps -192(%rbp), %xmm1
     call test_dec32_rk4_step
-    mov %r12, %rax
-    add $1, %eax
-    mov %rax, %r12
+    add $1, %r12d
     jmp .L__kefir_func_test_dec32_simulate_label2
 .L__kefir_text_func_test_dec32_simulate_end:
 .section .rodata
@@ -1664,9 +1662,7 @@ test_dec64_simulate:
     movaps -208(%rbp), %xmm0
     movaps -224(%rbp), %xmm1
     call test_dec64_rk4_step
-    mov %r12, %rax
-    add $1, %eax
-    mov %rax, %r12
+    add $1, %r12d
     jmp .L__kefir_func_test_dec64_simulate_label2
 .L__kefir_text_func_test_dec64_simulate_end:
 .section .rodata
@@ -3008,9 +3004,7 @@ test_dec128_simulate:
     movaps -288(%rbp), %xmm0
     movaps -304(%rbp), %xmm1
     call test_dec128_rk4_step
-    mov %r12, %rax
-    add $1, %eax
-    mov %rax, %r12
+    add $1, %r12d
     jmp .L__kefir_func_test_dec128_simulate_label2
 .L__kefir_text_func_test_dec128_simulate_end:
 .section .rodata

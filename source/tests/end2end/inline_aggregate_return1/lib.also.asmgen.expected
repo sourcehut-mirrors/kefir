@@ -36,12 +36,10 @@ gets1:
     movsx %esi, %rax
     imul $4, %rax, %rax
     lea -128(%rbp), %rcx
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    not %ecx
-    movl %ecx, (%rax)
+    add %rax, %rcx
+    mov %rsi, %rax
+    not %eax
+    movl %eax, (%rcx)
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu -112(%rbp), %xmm0

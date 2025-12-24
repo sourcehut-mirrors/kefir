@@ -54,10 +54,8 @@ get1:
     mov %rax, %rcx
     and $1, %rcx
     shr $1, %rax
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
-    cvtsi2ss %rax, %xmm0
+    or %rax, %rcx
+    cvtsi2ss %rcx, %xmm0
     addss %xmm0, %xmm0
     jmp .L__kefir_func_get1_label4
 .L__kefir_text_func_get1_end:
@@ -100,10 +98,8 @@ get3:
     mov %rax, %rcx
     and $1, %rcx
     shr $1, %rax
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
-    cvtsi2sd %rax, %xmm0
+    or %rax, %rcx
+    cvtsi2sd %rcx, %xmm0
     addsd %xmm0, %xmm0
     jmp .L__kefir_func_get3_label4
 .L__kefir_text_func_get3_end:

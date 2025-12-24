@@ -84,10 +84,9 @@ conv2:
 .L__kefir_func_conv2_label14:
     mov %rdi, %rax
     and $1, %rax
-    mov %rdi, %rcx
-    shr $1, %rcx
+    shr $1, %rdi
 .L__kefir_func_conv2_label67:
-    or %rcx, %rax
+    or %rdi, %rax
     cvtsi2sd %rax, %xmm0
     addsd %xmm0, %xmm0
 .loc 0 87 5

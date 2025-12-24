@@ -63,21 +63,19 @@ and:
 
 mul:
 .L__kefir_text_func_mul_begin:
+    shl $45, %rsi
+    sar $45, %rsi
+    shl $45, %rdx
+    sar $45, %rdx
     mov %rsi, %rax
-    shl $45, %rax
-    sar $45, %rax
-    mov %rdx, %rcx
-    shl $45, %rcx
-    sar $45, %rcx
-    imul %ecx, %eax
+    imul %edx, %eax
     ret
 .L__kefir_text_func_mul_end:
 
 shl:
 .L__kefir_text_func_shl_begin:
-    mov %rdx, %rax
-    shl $45, %rax
-    mov %rax, %rcx
+    shl $45, %rdx
+    mov %rdx, %rcx
     sar $45, %rcx
     mov %rsi, %rax
     shl %cl, %eax
@@ -86,9 +84,8 @@ shl:
 
 shr:
 .L__kefir_text_func_shr_begin:
-    mov %rdx, %rax
-    shl $45, %rax
-    mov %rax, %rcx
+    shl $45, %rdx
+    mov %rdx, %rcx
     sar $45, %rcx
     mov %rsi, %rax
     sar %cl, %eax
@@ -127,10 +124,9 @@ test:
     add %cl, %al
     shl $57, %rax
     sar $57, %rax
-    mov %rsi, %rcx
-    add %edx, %ecx
+    add %edx, %esi
     test %dil, %dil
-    cmovnz %rcx, %rax
+    cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test_end:
 
@@ -150,21 +146,19 @@ uand:
 
 umul:
 .L__kefir_text_func_umul_begin:
+    shl $45, %rsi
+    shr $45, %rsi
+    shl $45, %rdx
+    shr $45, %rdx
     mov %rsi, %rax
-    shl $45, %rax
-    shr $45, %rax
-    mov %rdx, %rcx
-    shl $45, %rcx
-    shr $45, %rcx
-    imul %ecx, %eax
+    imul %edx, %eax
     ret
 .L__kefir_text_func_umul_end:
 
 ushl:
 .L__kefir_text_func_ushl_begin:
-    mov %rdx, %rax
-    shl $45, %rax
-    mov %rax, %rcx
+    shl $45, %rdx
+    mov %rdx, %rcx
     shr $45, %rcx
     mov %rsi, %rax
     shl %cl, %eax
@@ -173,9 +167,8 @@ ushl:
 
 ushr:
 .L__kefir_text_func_ushr_begin:
-    mov %rdx, %rax
-    shl $45, %rax
-    mov %rax, %rcx
+    shl $45, %rdx
+    mov %rdx, %rcx
     shr $45, %rcx
     mov %rsi, %rax
     shr %cl, %eax
@@ -201,11 +194,10 @@ test2:
     mov %rsi, %rax
     shl $60, %rax
     sar $60, %rax
-    mov %rsi, %rcx
-    shl $45, %rcx
-    sar $45, %rcx
+    shl $45, %rsi
+    sar $45, %rsi
     test %dil, %dil
-    cmovnz %rcx, %rax
+    cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test2_end:
 

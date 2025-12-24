@@ -20,9 +20,8 @@ dnot:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %al, %al
     jnz .L__kefir_func_dnot_label8
     mov $0, %rax

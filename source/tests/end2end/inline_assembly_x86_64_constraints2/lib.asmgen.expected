@@ -39,10 +39,8 @@ test1:
     movq %r14, -96(%rbp)
     movq .L__kefir_func_test1_label4(%rip), %xmm0
     movq -96(%rbp), %xmm1
-    movaps %xmm1, %xmm2
-    addsd %xmm0, %xmm2
-    movaps %xmm2, %xmm0
-    movq %xmm0, -64(%rbp)
+    addsd %xmm0, %xmm1
+    movq %xmm1, -64(%rbp)
     movq %rax, -88(%rbp)
     mov $1, %eax
     movsx %eax, %r14
@@ -69,15 +67,13 @@ test1:
     movaps %xmm1, %xmm7
     movq %r10, %xmm2
     divsd %xmm2, %xmm7
-    mov %r11, %rcx
-    neg %rcx
-    cvtsi2sd %rcx, %xmm1
+    neg %r11
+    cvtsi2sd %r11, %xmm1
     movaps %xmm1, %xmm8
     movq %rbx, %xmm2
     subsd %xmm2, %xmm8
-    mov %r12, %rcx
-    neg %rcx
-    cvtsi2sd %rcx, %xmm1
+    neg %r12
+    cvtsi2sd %r12, %xmm1
     movaps %xmm1, %xmm9
     movq %r13, %xmm2
     divsd %xmm2, %xmm9

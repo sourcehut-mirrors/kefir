@@ -13,21 +13,16 @@ test:
     setg %al
     xor %edi, %edi
     cmp $1, %esi
-    mov %rdi, %rsi
-    setge %sil
-    and %sil, %al
+    setge %dil
+    and %dil, %al
     xor %esi, %esi
     cmp $0, %edx
-    mov %rsi, %rdx
-    setne %dl
-    and %dl, %al
+    setne %sil
+    and %sil, %al
     test %ecx, %ecx
-    mov %rdx, %rcx
-    sete %cl
-    mov %rcx, %rdx
+    sete %dl
     and %al, %dl
-    mov %rdx, %rax
-    movzx %al, %rax
+    movzx %dl, %rax
     ret
 .L__kefir_text_func_test_end:
 

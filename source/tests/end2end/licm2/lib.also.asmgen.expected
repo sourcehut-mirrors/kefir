@@ -117,13 +117,9 @@ test2:
     mov %r10, %r13
     sar %cl, %r13d
     mov %r13, %rcx
-    mov %r12, %r13
-    xor %ecx, %r13d
-    mov %r13, %rcx
-    movl %ecx, (%rbx)
-    mov %r11, %rcx
-    add $1, %ecx
-    mov %rcx, %r11
+    xor %ecx, %r12d
+    movl %r12d, (%rbx)
+    add $1, %r11d
     jmp .L__kefir_func_test2_label12
 .L__kefir_func_test2_label4:
     xor %r11d, %r11d

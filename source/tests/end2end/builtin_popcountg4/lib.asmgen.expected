@@ -26,11 +26,9 @@ get:
     add %ecx, %eax
     mov %eax, %ecx
     shr $4, %ecx
-    mov %rcx, %rdx
-    add %eax, %edx
-    mov %rdx, %rax
-    and $252645135, %eax
-    imul $16843009, %eax, %eax
+    add %eax, %ecx
+    and $252645135, %ecx
+    imul $16843009, %ecx, %eax
     shr $24, %eax
     lea (%rbp), %rsp
     pop %rbp

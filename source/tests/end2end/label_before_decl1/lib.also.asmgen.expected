@@ -9,15 +9,14 @@
 factorial:
 .L__kefir_text_func_factorial_begin:
     mov $1, %rax
-    mov %rdi, %rcx
 .L__kefir_func_factorial_label2:
-    lea -1(%rcx), %rdx
-    mov %rax, %rsi
-    imul %rcx, %rsi
-    cmp $1, %rcx
+    lea -1(%rdi), %rcx
+    mov %rax, %rdx
+    imul %rdi, %rdx
+    cmp $1, %rdi
     jle .L__kefir_func_factorial_label9
-    mov %rdx, %rcx
-    mov %rsi, %rax
+    mov %rcx, %rdi
+    mov %rdx, %rax
     jmp .L__kefir_func_factorial_label2
 .L__kefir_func_factorial_label9:
     ret

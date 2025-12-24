@@ -225,11 +225,9 @@ postdec_f32:
     mov %rax, %rdi
     movd .L__kefir_func_postdec_f32_label11(%rip), %xmm0
     movq %rdi, %xmm1
-    movaps %xmm1, %xmm2
-    addss %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    addss %xmm0, %xmm1
     mov %rsi, %rdx
-    movq %xmm0, %rcx
+    movq %xmm1, %rcx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
@@ -275,11 +273,9 @@ postdec_f64:
     mov %rax, %rdi
     movq .L__kefir_func_postdec_f64_label11(%rip), %xmm0
     movq %rdi, %xmm1
-    movaps %xmm1, %xmm2
-    addsd %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    addsd %xmm0, %xmm1
     mov %rsi, %rdx
-    movq %xmm0, %rcx
+    movq %xmm1, %rcx
     mov %rdi, %rax
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
@@ -401,11 +397,9 @@ postinc_f32:
     mov %rax, %rdi
     movd .L__kefir_func_postinc_f32_label11(%rip), %xmm0
     movq %rdi, %xmm1
-    movaps %xmm1, %xmm2
-    addss %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    addss %xmm0, %xmm1
     mov %rsi, %rdx
-    movq %xmm0, %rcx
+    movq %xmm1, %rcx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
@@ -451,11 +445,9 @@ postinc_f64:
     mov %rax, %rdi
     movq .L__kefir_func_postinc_f64_label11(%rip), %xmm0
     movq %rdi, %xmm1
-    movaps %xmm1, %xmm2
-    addsd %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    addsd %xmm0, %xmm1
     mov %rsi, %rdx
-    movq %xmm0, %rcx
+    movq %xmm1, %rcx
     mov %rdi, %rax
     lock     cmpxchgq %rcx, (%rdx)
     sete %al

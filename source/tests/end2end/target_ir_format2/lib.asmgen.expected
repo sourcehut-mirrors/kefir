@@ -3479,7 +3479,7 @@ test3:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rdx"
+#                                "register": "rcx"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -3731,8 +3731,8 @@ test3:
     mov -16(%rbp), %rdx
     mov -8(%rbp), %rsi
     add %rdx, %rax
+    adc %rsi, %rcx
     mov %rcx, %rdx
-    adc %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -4243,7 +4243,7 @@ test4:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 8
@@ -4470,10 +4470,8 @@ _kefir_local_public_label_test4_label1:
     lea __kefir_function_test4_static_arr_10(%rip), %rcx
     movsx %eax, %rax
     imul $8, %rax, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
-    movq (%rax), %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
     jmp *%rax
 .L__kefir_func_test4_label4:
 _kefir_local_public_label_test4_label2:

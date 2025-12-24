@@ -26,10 +26,8 @@ get2:
     setne %al
     test %esi, %esi
     setne %cl
-    mov %rcx, %rdx
-    and %al, %dl
-    mov %rdx, %rax
-    movzx %al, %rax
+    and %al, %cl
+    movzx %cl, %rax
     test %al, %al
     cmovz %rsi, %rax
     ret

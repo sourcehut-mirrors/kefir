@@ -45,13 +45,9 @@ test1:
     mov %r8, %rbx
     shl %cl, %ebx
     mov %rbx, %rcx
-    mov %r11, %rbx
-    add %ecx, %ebx
-    mov %rbx, %rcx
-    movl %ecx, (%r10)
-    mov %r9, %rcx
-    add $1, %ecx
-    mov %rcx, %r9
+    add %ecx, %r11d
+    movl %r11d, (%r10)
+    add $1, %r9d
     jmp .L__kefir_func_test1_label4
 .L__kefir_func_test1_label13:
     mov %rcx, %r8
@@ -101,13 +97,9 @@ _kefir_local_public_label_test2_outer:
     mov %r8, %rbx
     shl %cl, %ebx
     mov %rbx, %rcx
-    mov %r11, %rbx
-    add %ecx, %ebx
-    mov %rbx, %rcx
-    movl %ecx, (%r10)
-    mov %r9, %rcx
-    add $1, %ecx
-    mov %rcx, %r9
+    add %ecx, %r11d
+    movl %r11d, (%r10)
+    add $1, %r9d
     jmp .L__kefir_func_test2_label4
 .L__kefir_func_test2_label13:
     mov %rcx, %r8

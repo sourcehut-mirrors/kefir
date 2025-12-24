@@ -9,10 +9,8 @@
 get_element:
 .L__kefir_text_func_get_element_begin:
     imul $8, %rdx, %rax
-    mov %rdi, %rcx
-    add %rax, %rcx
-    mov %rcx, %rax
-    movq (%rax), %rax
+    add %rax, %rdi
+    movq (%rdi), %rax
     ret
 .L__kefir_text_func_get_element_end:
 

@@ -38,11 +38,10 @@ i128_neg:
     mov %rsp, %rbp
     sub $16, %rsp
     xor %eax, %eax
-    mov %rdi, %rcx
-    neg %rcx
+    neg %rdi
     mov %rax, %rdx
     sbb %rsi, %rdx
-    mov %rcx, %rax
+    mov %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -68,11 +67,10 @@ u128_neg:
     mov %rsp, %rbp
     sub $16, %rsp
     xor %eax, %eax
-    mov %rdi, %rcx
-    neg %rcx
+    neg %rdi
     mov %rax, %rdx
     sbb %rsi, %rdx
-    mov %rcx, %rax
+    mov %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -97,10 +95,9 @@ i128_bnot:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    or %rsi, %rax
-    sete %al
-    movzx %al, %rax
+    or %rsi, %rdi
+    sete %dil
+    movzx %dil, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -111,10 +108,9 @@ u128_bnot:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    or %rsi, %rax
-    sete %al
-    movzx %al, %rax
+    or %rsi, %rdi
+    sete %dil
+    movzx %dil, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -127,10 +123,10 @@ i128_predec:
     mov $-1, %rdx
     mov $-1, %rsi
     add %rdx, %rax
-    mov %rcx, %rdx
-    adc %rsi, %rdx
+    adc %rsi, %rcx
     mov %rax, (%rdi)
-    mov %rdx, 8(%rdi)
+    mov %rcx, 8(%rdi)
+    mov %rcx, %rdx
     ret
 .L__kefir_text_func_i128_predec_end:
 
@@ -141,10 +137,10 @@ i128_preinc:
     mov $1, %rdx
     xor %esi, %esi
     add %rdx, %rax
-    mov %rcx, %rdx
-    adc %rsi, %rdx
+    adc %rsi, %rcx
     mov %rax, (%rdi)
-    mov %rdx, 8(%rdi)
+    mov %rcx, 8(%rdi)
+    mov %rcx, %rdx
     ret
 .L__kefir_text_func_i128_preinc_end:
 
@@ -155,10 +151,10 @@ u128_predec:
     mov $-1, %rdx
     mov $-1, %rsi
     add %rdx, %rax
-    mov %rcx, %rdx
-    adc %rsi, %rdx
+    adc %rsi, %rcx
     mov %rax, (%rdi)
-    mov %rdx, 8(%rdi)
+    mov %rcx, 8(%rdi)
+    mov %rcx, %rdx
     ret
 .L__kefir_text_func_u128_predec_end:
 
@@ -169,10 +165,10 @@ u128_preinc:
     mov $1, %rdx
     xor %esi, %esi
     add %rdx, %rax
-    mov %rcx, %rdx
-    adc %rsi, %rdx
+    adc %rsi, %rcx
     mov %rax, (%rdi)
-    mov %rdx, 8(%rdi)
+    mov %rcx, 8(%rdi)
+    mov %rcx, %rdx
     ret
 .L__kefir_text_func_u128_preinc_end:
 

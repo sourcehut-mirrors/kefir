@@ -98,9 +98,8 @@ c80_to_bool:
     fstp %st(0)
     setp %al
     setne %dl
-    mov %rdx, %rsi
-    or %al, %sil
-    mov %rsi, %rax
+    or %al, %dl
+    mov %rdx, %rax
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
@@ -188,9 +187,8 @@ c80_to_bool2:
     fstp %st(0)
     setp %al
     setne %dl
-    mov %rdx, %rsi
-    or %al, %sil
-    mov %rsi, %rax
+    or %al, %dl
+    mov %rdx, %rax
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
@@ -222,9 +220,8 @@ c80_to_bool3:
     fstp %st(0)
     setp %al
     setne %dl
-    mov %rdx, %rsi
-    or %al, %sil
-    mov %rsi, %rax
+    or %al, %dl
+    mov %rdx, %rax
     or %cl, %al
     fstp %st(0)
     fstp %st(0)

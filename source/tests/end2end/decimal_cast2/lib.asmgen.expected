@@ -155,9 +155,8 @@ d32_to_bool:
     movd .L__kefir_func_d32_to_bool_label4(%rip), %xmm1
     call __bid_eqsd2@PLT
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     pop %rbp
     ret
 .L__kefir_text_func_d32_to_bool_end:
@@ -183,9 +182,8 @@ d64_to_bool:
     movq .L__kefir_func_d64_to_bool_label4(%rip), %xmm1
     call __bid_eqdd2@PLT
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     pop %rbp
     ret
 .L__kefir_text_func_d64_to_bool_end:
@@ -470,9 +468,8 @@ d128_to_bool:
     movdqu .L__kefir_func_d128_to_bool_label4(%rip), %xmm1
     call __bid_eqtd2@PLT
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     pop %rbp
     ret
 .L__kefir_text_func_d128_to_bool_end:

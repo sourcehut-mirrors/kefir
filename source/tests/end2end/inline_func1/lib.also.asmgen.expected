@@ -8,11 +8,10 @@
 .L__kefir_text_section_begin:
 hypot_sq:
 .L__kefir_text_func_hypot_sq_begin:
+    imul %rdi, %rdi
+    imul %rsi, %rsi
     mov %rdi, %rax
-    imul %rdi, %rax
-    mov %rsi, %rcx
-    imul %rsi, %rcx
-    add %rcx, %rax
+    add %rsi, %rax
     ret
 .L__kefir_text_func_hypot_sq_end:
 

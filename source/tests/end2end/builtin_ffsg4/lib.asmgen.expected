@@ -15,11 +15,10 @@ get:
     sub $16, %rsp
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
-    mov %rcx, %rdx
-    bsf %eax, %edx
-    mov %rdx, %rax
-    mov $-1, %ecx
-    cmove %ecx, %eax
+    bsf %eax, %ecx
+    mov $-1, %eax
+    cmove %eax, %ecx
+    mov %rcx, %rax
     add $1, %eax
     lea (%rbp), %rsp
     pop %rbp

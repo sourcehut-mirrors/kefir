@@ -15,10 +15,9 @@
 test1:
 .L__kefir_text_func_test1_begin:
     movzx %dil, %rax
-    mov %rcx, %rdx
-    bsr %eax, %edx
-    mov %rdx, %rax
-    xor $31, %eax
+    bsr %eax, %ecx
+    xor $31, %ecx
+    mov %rcx, %rax
     sub $24, %eax
     ret
 .L__kefir_text_func_test1_end:
@@ -26,10 +25,9 @@ test1:
 test2:
 .L__kefir_text_func_test2_begin:
     movzx %di, %rax
-    mov %rcx, %rdx
-    bsr %eax, %edx
-    mov %rdx, %rax
-    xor $31, %eax
+    bsr %eax, %ecx
+    xor $31, %ecx
+    mov %rcx, %rax
     sub $16, %eax
     ret
 .L__kefir_text_func_test2_end:

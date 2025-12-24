@@ -12,8 +12,8 @@ get1:
 .L__kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
+    shl $53, %rsi
     mov %rsi, %rax
-    shl $53, %rax
     sar $53, %rax
     pop %rbp
     ret
@@ -23,8 +23,8 @@ get2:
 .L__kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
+    shl $53, %rsi
     mov %rsi, %rax
-    shl $53, %rax
     shr $53, %rax
     pop %rbp
     ret

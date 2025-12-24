@@ -20,12 +20,8 @@ test1:
     setge %cl
     xor %edx, %edx
     cmp $255, %eax
-    mov %rdx, %rax
-    setle %al
-    mov %rcx, %rdx
-    and %al, %dl
-    mov %rdx, %rax
-    test %al, %al
+    setle %dl
+    and %dl, %cl
     jnz .L__kefir_func_test1_label8
     mov $2, %rax
     ret
@@ -42,12 +38,8 @@ test2:
     setge %cl
     xor %edx, %edx
     cmp $65535, %eax
-    mov %rdx, %rax
-    setle %al
-    mov %rcx, %rdx
-    and %al, %dl
-    mov %rdx, %rax
-    test %al, %al
+    setle %dl
+    and %dl, %cl
     jnz .L__kefir_func_test2_label8
     mov $2, %rax
     ret
@@ -61,14 +53,12 @@ test3:
     movabs $4294967040, %rax
     xor %ecx, %ecx
     cmp %eax, %edi
-    mov %rcx, %rax
-    setae %al
-    movabs $4294967295, %rcx
+    setae %cl
+    movabs $4294967295, %rax
     xor %edx, %edx
-    cmp %ecx, %edi
-    mov %rdx, %rcx
-    setbe %cl
-    and %cl, %al
+    cmp %eax, %edi
+    setbe %dl
+    and %dl, %cl
     jnz .L__kefir_func_test3_label8
     mov $2, %rax
     ret

@@ -91,10 +91,9 @@ negint:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rdi, %rax
-    neg %eax
-    movl %eax, -16(%rbp)
-    movl %eax, -12(%rbp)
+    neg %edi
+    movl %edi, -16(%rbp)
+    movl %edi, -12(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp
@@ -109,10 +108,9 @@ notint:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rdi, %rax
-    not %eax
-    movl %eax, -16(%rbp)
-    movl %eax, -12(%rbp)
+    not %edi
+    movl %edi, -16(%rbp)
+    movl %edi, -12(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp
@@ -184,10 +182,9 @@ neglong:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rdi, %rax
-    neg %rax
-    movq %rax, -16(%rbp)
-    movq %rax, -8(%rbp)
+    neg %rdi
+    movq %rdi, -16(%rbp)
+    movq %rdi, -8(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp
@@ -220,10 +217,9 @@ notlong:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rdi, %rax
-    not %rax
-    movq %rax, -16(%rbp)
-    movq %rax, -8(%rbp)
+    not %rdi
+    movq %rdi, -16(%rbp)
+    movq %rdi, -8(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp

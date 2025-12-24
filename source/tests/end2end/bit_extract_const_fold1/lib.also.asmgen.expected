@@ -8,27 +8,23 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rdi, %rax
-    shl $50, %rax
-    sar $50, %rax
-    mov $-3, %cx
-    imul %cx, %ax
-    add $10, %ax
+    shl $50, %rdi
+    sar $50, %rdi
+    mov $-3, %ax
+    imul %ax, %di
+    add $10, %di
+    shl $50, %rdi
+    shr $50, %rdi
+    shl $50, %rsi
+    shr $50, %rsi
+    mov $16382, %rax
+    imul %si, %ax
+    sub $2, %ax
     shl $50, %rax
     shr $50, %rax
-    mov %rsi, %rcx
-    shl $50, %rcx
-    shr $50, %rcx
-    mov $16382, %rdx
-    mov %rdx, %rsi
-    imul %cx, %si
-    mov %rsi, %rcx
-    sub $2, %cx
-    shl $50, %rcx
-    shr $50, %rcx
-    xor %edx, %edx
-    cmp %cx, %ax
-    mov %rdx, %rax
+    xor %ecx, %ecx
+    cmp %ax, %di
+    mov %rcx, %rax
     setb %al
     ret
 .L__kefir_text_func_test1_end:

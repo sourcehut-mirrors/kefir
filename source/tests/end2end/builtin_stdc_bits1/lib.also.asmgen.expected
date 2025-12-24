@@ -20,17 +20,12 @@ bit_ceil:
 .L__kefir_func_bit_ceil_label3:
     ret
 .L__kefir_func_bit_ceil_label8:
-    mov %rdi, %rax
-    sub $1, %rax
-    mov %rcx, %rdx
-    bsr %rax, %rdx
-    mov %rdx, %rax
+    sub $1, %rdi
+    bsr %rdi, %rax
     xor $63, %eax
     mov $63, %rcx
-    mov %rcx, %rdx
-    sub %eax, %edx
-    mov %rdx, %rax
-    movsx %eax, %rcx
+    sub %eax, %ecx
+    movsx %ecx, %rcx
     mov $2, %rax
     shl %cl, %rax
     jmp .L__kefir_func_bit_ceil_label3
@@ -47,10 +42,8 @@ bit_floor:
     bsr %rdi, %rax
     xor $63, %eax
     mov $63, %rcx
-    mov %rcx, %rdx
-    sub %eax, %edx
-    mov %rdx, %rax
-    movsx %eax, %rcx
+    sub %eax, %ecx
+    movsx %ecx, %rcx
     mov $1, %rax
     shl %cl, %rax
     jmp .L__kefir_func_bit_floor_label3
@@ -79,11 +72,9 @@ rotate_left:
     mov $64, %ecx
     idiv %ecx
     movsx %edx, %rcx
-    mov %rdi, %rax
-    shr %cl, %rax
-    mov %r8, %rcx
-    or %rax, %rcx
-    mov %rcx, %rax
+    shr %cl, %rdi
+    mov %r8, %rax
+    or %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -112,11 +103,9 @@ rotate_right:
     mov $64, %ecx
     idiv %ecx
     movsx %edx, %rcx
-    mov %rdi, %rax
-    shl %cl, %rax
-    mov %r8, %rcx
-    or %rax, %rcx
-    mov %rcx, %rax
+    shl %cl, %rdi
+    mov %r8, %rax
+    or %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

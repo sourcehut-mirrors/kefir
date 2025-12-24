@@ -13,20 +13,17 @@ test:
     setg %al
     xor %edi, %edi
     cmp $1, %esi
-    mov %rdi, %rsi
-    setge %sil
-    or %sil, %al
+    setge %dil
+    or %dil, %al
     setne %al
     xor %esi, %esi
     cmp $0, %edx
-    mov %rsi, %rdx
-    setne %dl
-    or %dl, %al
+    setne %sil
+    or %sil, %al
     setne %al
     test %ecx, %ecx
-    mov %rdx, %rcx
-    sete %cl
-    or %cl, %al
+    sete %dl
+    or %dl, %al
     setne %al
     movzx %al, %rax
     ret

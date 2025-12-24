@@ -77,10 +77,10 @@ get1:
     lea 56(%rdi), %rax
 .loc 0 31 16
 .L__kefir_func_get1_label123:
-    lea 6(%rsi), %rcx
+    add $6, %rsi
 .loc 0 31 5
 .L__kefir_func_get1_label132:
-    movq %rcx, (%rax)
+    movq %rsi, (%rax)
 .loc 0 32 5
 .L__kefir_func_get1_label146:
     mov %rdi, %rax
@@ -141,10 +141,9 @@ get2:
     jl .L__kefir_func_get2_label56
 .loc 0 43 5
 .L__kefir_func_get2_label194:
-    mov %r8, %rax
-    and %cl, %al
+    and %cl, %r8b
 .L__kefir_func_get2_label195:
-    test %al, %al
+    test %r8b, %r8b
     jnz .L__kefir_func_get2_label46
 .loc 0 45 12
 .L__kefir_func_get2_label201:
@@ -233,16 +232,14 @@ get2:
     imul $8, %rcx, %rcx
 .L__kefir_func_get2_label372:
     lea -128(%rbp), %r9
-    mov %r9, %r10
-    add %rcx, %r10
-    mov %r10, %rcx
+    add %rcx, %r9
 .loc 0 39 25
 .L__kefir_func_get2_label373:
-    mov %r8, %r9
-    neg %r9
+    mov %r8, %rcx
+    neg %rcx
 .loc 0 39 9
 .L__kefir_func_get2_label377:
-    movq %r9, (%rcx)
+    movq %rcx, (%r9)
 .loc 0 40 16
 .L__kefir_func_get2_label381:
     mov %rax, %rcx
@@ -254,15 +251,13 @@ get2:
     imul $8, %rcx, %rcx
 .L__kefir_func_get2_label402:
     lea -64(%rbp), %r9
-    mov %r9, %r10
-    add %rcx, %r10
-    mov %r10, %rcx
+    add %rcx, %r9
 .loc 0 40 25
 .L__kefir_func_get2_label406:
     not %r8
 .loc 0 40 9
 .L__kefir_func_get2_label407:
-    movq %r8, (%rcx)
+    movq %r8, (%r9)
 .loc 0 37 28
 .L__kefir_func_get2_label411:
     add $1, %eax

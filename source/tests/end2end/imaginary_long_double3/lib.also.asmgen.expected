@@ -37,11 +37,10 @@ test:
     movq %rax, -96(%rbp)
     fldt .L__kefir_func_test_label14(%rip)
     fstpt -160(%rbp)
-    mov %rdi, %rax
 .L__kefir_func_test_label4:
-    mov %rax, %rcx
-    add $-1, %ecx
-    test %eax, %eax
+    mov %rdi, %rax
+    add $-1, %eax
+    test %edi, %edi
     jnz .L__kefir_func_test_label13
     fldt -160(%rbp)
     fldcw -8(%rbp)
@@ -49,14 +48,14 @@ test:
     pop %rbp
     ret
 .L__kefir_func_test_label13:
-    movq -104(%rbp), %rax
-    add $15, %rax
-    and $-16, %rax
-    lea 32(%rax), %rdx
+    movq -104(%rbp), %rcx
+    add $15, %rcx
+    and $-16, %rcx
+    lea 32(%rcx), %rdx
     movq %rdx, -104(%rbp)
-    movdqu (%rax), %xmm0
+    movdqu (%rcx), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movdqu 16(%rax), %xmm0
+    movdqu 16(%rcx), %xmm0
     movdqu %xmm0, -32(%rbp)
     fldt -48(%rbp)
     fldt -32(%rbp)
@@ -65,11 +64,11 @@ test:
     fldt -160(%rbp)
     faddp
     fstpt -144(%rbp)
-    movq -144(%rbp), %rax
-    movq %rax, -160(%rbp)
-    movq -136(%rbp), %rax
-    movq %rax, -152(%rbp)
-    mov %rcx, %rax
+    movq -144(%rbp), %rcx
+    movq %rcx, -160(%rbp)
+    movq -136(%rbp), %rcx
+    movq %rcx, -152(%rbp)
+    mov %rax, %rdi
     jmp .L__kefir_func_test_label4
 .L__kefir_text_func_test_end:
 .section .rodata

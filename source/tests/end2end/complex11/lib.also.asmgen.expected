@@ -21,10 +21,8 @@ test32:
     movd %xmm3, %eax
     movd %xmm2, %ecx
     shl $32, %rcx
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
-    movq %rax, %xmm1
+    or %rax, %rcx
+    movq %rcx, %xmm1
 movaps %xmm1, %xmm0
 shufps $1, %xmm0, %xmm0
     movq %xmm0, -16(%rbp)

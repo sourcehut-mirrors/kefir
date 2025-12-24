@@ -21,15 +21,15 @@ overflow_ssub:
     movsx %edi, %rax
     movsx %esi, %rcx
     sub %rcx, %rax
+    seto %sil
+    movsx %eax, %rcx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    movsx %eax, %rsi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movl %eax, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_ssub_end:
 
@@ -38,63 +38,51 @@ overflow_usub:
     mov %edi, %eax
     mov %esi, %ecx
     sub %rcx, %rax
+    seto %sil
+    mov %eax, %ecx
+    cmp %rcx, %rax
     mov %rsi, %rcx
-    seto %cl
-    mov %eax, %esi
-    cmp %rsi, %rax
-    setne %sil
-    or %sil, %cl
-    and $1, %ecx
+    setne %cl
+    or %cl, %sil
+    and $1, %esi
     movl %eax, (%rdx)
-    mov %rcx, %rax
+    mov %rsi, %rax
     ret
 .L__kefir_text_func_overflow_usub_end:
 
 overflow_ssubl:
 .L__kefir_text_func_overflow_ssubl_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
-    mov %rax, %rcx
-    seto %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    sub %rsi, %rdi
+    seto %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_ssubl_end:
 
 overflow_usubl:
 .L__kefir_text_func_overflow_usubl_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
-    mov %rax, %rcx
-    setb %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    sub %rsi, %rdi
+    setb %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_usubl_end:
 
 overflow_ssubll:
 .L__kefir_text_func_overflow_ssubll_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
-    mov %rax, %rcx
-    seto %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    sub %rsi, %rdi
+    seto %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_ssubll_end:
 
 overflow_usubll:
 .L__kefir_text_func_overflow_usubll_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
-    mov %rax, %rcx
-    setb %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    sub %rsi, %rdi
+    setb %al
+    and $1, %eax
+    movq %rdi, (%rdx)
     ret
 .L__kefir_text_func_overflow_usubll_end:
 

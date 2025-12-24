@@ -17,9 +17,8 @@ get:
     movq %rax, -12(%rbp)
     movl %eax, -4(%rbp)
     movl %edi, -12(%rbp)
-    mov %rdi, %rax
-    neg %eax
-    movl %eax, -4(%rbp)
+    neg %edi
+    movl %edi, -4(%rbp)
     movq -12(%rbp), %rax
     movl -4(%rbp), %edx
     lea (%rbp), %rsp
@@ -36,9 +35,8 @@ get2:
     movq %rax, -12(%rbp)
     movl %eax, -4(%rbp)
     movl %edi, -12(%rbp)
-    mov %rdi, %rax
-    neg %eax
-    movl %eax, -4(%rbp)
+    neg %edi
+    movl %edi, -4(%rbp)
     movq -12(%rbp), %rax
     movl -4(%rbp), %edx
     lea (%rbp), %rsp

@@ -131,9 +131,8 @@ get:
     movsx %ecx, %rcx
     movq %rcx, (%rax)
     lea 560(%rdx), %rax
-    mov %r8, %rcx
-    add $21, %ecx
-    movsx %ecx, %rcx
+    add $21, %r8d
+    movsx %r8d, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, (%rax)
     mov %rdx, %rax

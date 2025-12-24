@@ -87,25 +87,11 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "setl",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": []
@@ -115,25 +101,11 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "ecx"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
+#                        "reg": "ecx"
 #                    }
 #                ],
 #                "labels": []
@@ -288,39 +260,11 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdx"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "sete",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdx"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
+#                        "reg": "dl"
 #                    }
 #                ],
 #                "labels": []
@@ -330,21 +274,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "rdx"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
+#                        "reg": "rcx"
 #                    },
 #                    {
 #                        "type": "physical_register",
@@ -358,7 +288,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": []
@@ -372,7 +302,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": []
@@ -387,20 +317,6 @@ factorial:
 #                    {
 #                        "type": "physical_register",
 #                        "reg": "eax"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
 #                    }
 #                ],
 #                "labels": []
@@ -410,7 +326,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": []
@@ -420,11 +336,11 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": []
@@ -526,25 +442,11 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "setg",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": []
@@ -554,25 +456,11 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "ecx"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
+#                        "reg": "ecx"
 #                    }
 #                ],
 #                "labels": []
@@ -701,43 +589,15 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdx"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "imul",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "edx"
+#                        "reg": "ecx"
 #                    },
 #                    {
 #                        "type": "physical_register",
 #                        "reg": "eax"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdx"
 #                    }
 #                ],
 #                "labels": []
@@ -754,7 +614,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "ecx"
 #                    }
 #                ],
 #                "labels": []
@@ -914,10 +774,8 @@ factorial:
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $0, %eax
-    mov %rcx, %rax
-    setl %al
-    test %eax, %eax
-    mov %rcx, %rax
+    setl %cl
+    test %ecx, %ecx
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label20
@@ -928,27 +786,21 @@ factorial:
     mov $0, %rdx
     mov $2, %esi
     cmp %eax, %esi
-    mov %rdx, %rax
-    sete %al
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
-    setne %al
-    movzx %al, %rax
+    sete %dl
+    or %rdx, %rcx
+    setne %cl
+    movzx %cl, %rax
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    test %al, %al
+    sete %cl
+    test %cl, %cl
     jz .L__kefir_func_factorial_label22
     movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $1, %eax
-    mov %rcx, %rax
-    setg %al
-    test %eax, %eax
-    mov %rcx, %rax
+    setg %cl
+    test %ecx, %ecx
     sete %al
     test %al, %al
     jz .L__kefir_func_factorial_label17
@@ -959,10 +811,8 @@ factorial:
 .L__kefir_func_factorial_label17:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
-    mov %rcx, %rdx
-    imul %eax, %edx
-    mov %rdx, %rax
-    movl %eax, -4(%rbp)
+    imul %eax, %ecx
+    movl %ecx, -4(%rbp)
     movl -8(%rbp), %eax
     add $-1, %eax
     movl %eax, -8(%rbp)

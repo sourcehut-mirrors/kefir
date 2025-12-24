@@ -42,10 +42,8 @@ process:
     movl -72(%rbp), %ecx
     mov $0, %rdx
     cmp $0, %ecx
-    mov %rdx, %rcx
-    setg %cl
-    test %ecx, %ecx
-    mov %rdx, %rcx
+    setg %dl
+    test %edx, %edx
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_process_label20
@@ -63,18 +61,14 @@ process:
     mov $0, %rdx
     imul $8, %rdx, %rax
     lea -80(%rbp), %rdx
-    mov %rdx, %rsi
-    add %rax, %rsi
-    mov %rsi, %rax
-    movq %rcx, (%rax)
+    add %rax, %rdx
+    movq %rcx, (%rdx)
     movl -72(%rbp), %eax
     movsx %eax, %rax
     mov $4, %rcx
-    mov %rcx, %rdx
-    imul %rax, %rdx
-    mov %rdx, %rax
-    movq %rax, -24(%rbp)
-    sub %rax, %rsp
+    imul %rax, %rcx
+    movq %rcx, -24(%rbp)
+    sub %rcx, %rsp
     mov $16, %rax
     cmp $4, %rax
     mov $4, %rcx
@@ -89,10 +83,8 @@ process:
     movl -72(%rbp), %ecx
     mov $0, %rdx
     cmp %ecx, %eax
-    mov %rdx, %rax
-    setl %al
-    test %eax, %eax
-    mov %rcx, %rax
+    setl %dl
+    test %edx, %edx
     sete %al
     test %al, %al
     jz .L__kefir_func_process_label19

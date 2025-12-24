@@ -175,10 +175,8 @@ __kefir_bigint_invert:
     mov $8, %edx
     movsx %edx, %rcx
     mov $1, %rdx
-    mov %rdx, %rsi
-    imul %rcx, %rsi
-    mov %rsi, %rcx
-    add %rcx, %rax
+    imul %rcx, %rdx
+    add %rdx, %rax
     mov $1, %edx
     movsx %edx, %rcx
     sub %rcx, %rax
@@ -199,10 +197,8 @@ __kefir_bigint_invert:
     movq -16(%rbp), %rcx
     mov $0, %rdx
     cmp %rcx, %rax
-    mov %rdx, %rax
-    setb %al
-    test %eax, %eax
-    mov %rcx, %rax
+    setb %dl
+    test %edx, %edx
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_invert_label10
@@ -215,16 +211,14 @@ __kefir_bigint_invert:
     movq -8(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
-    mov %rcx, %rdx
-    movb (%rax), %dl
-    mov %rdx, %rax
-    movq -24(%rbp), %rcx
+    movb (%rax), %cl
+    movq -24(%rbp), %rax
     movq -8(%rbp), %rdx
     imul $1, %rdx, %rdx
-    add %rdx, %rcx
-    and $255, %rax
-    not %eax
-    movb %al, (%rcx)
+    add %rdx, %rax
+    and $255, %rcx
+    not %ecx
+    movb %cl, (%rax)
     movq -8(%rbp), %rax
     add $1, %rax
     movq %rax, -8(%rbp)
@@ -263,10 +257,8 @@ __kefir_bigint_util_add_digit_zero_extended:
     mov $8, %edx
     movsx %edx, %rcx
     mov $1, %rdx
-    mov %rdx, %rsi
-    imul %rcx, %rsi
-    mov %rsi, %rcx
-    add %rcx, %rax
+    imul %rcx, %rdx
+    add %rdx, %rax
     mov $1, %edx
     movsx %edx, %rcx
     sub %rcx, %rax
@@ -289,10 +281,8 @@ __kefir_bigint_util_add_digit_zero_extended:
     movq -24(%rbp), %rcx
     mov $0, %rdx
     cmp %rcx, %rax
-    mov %rdx, %rax
-    setb %al
-    test %eax, %eax
-    mov %rcx, %rax
+    setb %dl
+    test %edx, %edx
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label18
@@ -305,19 +295,16 @@ __kefir_bigint_util_add_digit_zero_extended:
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
-    mov %rcx, %rdx
-    movb (%rax), %dl
-    mov %rdx, %rax
-    and $255, %rax
-    movl %eax, -4(%rbp)
+    movb (%rax), %cl
+    and $255, %rcx
+    movl %ecx, -4(%rbp)
     movq -16(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
     mov $0, %rdx
     cmp %rcx, %rax
-    mov %rdx, %rax
-    sete %al
-    test %eax, %eax
+    sete %dl
+    test %edx, %edx
     jz .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label19
     movb -52(%rbp), %al
     and $255, %rax

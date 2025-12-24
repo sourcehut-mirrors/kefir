@@ -18,12 +18,11 @@ test1:
     mov %eax, %ecx
     add %ecx, %ecx
     sar $31, %eax
-    mov %rcx, %rdx
-    xor %eax, %edx
-    mov %rdx, %rax
-    or $1, %eax
-    bsr %eax, %eax
-    xor $31, %eax
+    xor %eax, %ecx
+    or $1, %ecx
+    bsr %ecx, %ecx
+    xor $31, %ecx
+    mov %rcx, %rax
     sub $24, %eax
     ret
 .L__kefir_text_func_test1_end:
@@ -34,12 +33,11 @@ test2:
     mov %eax, %ecx
     add %ecx, %ecx
     sar $31, %eax
-    mov %rcx, %rdx
-    xor %eax, %edx
-    mov %rdx, %rax
-    or $1, %eax
-    bsr %eax, %eax
-    xor $31, %eax
+    xor %eax, %ecx
+    or $1, %ecx
+    bsr %ecx, %ecx
+    xor $31, %ecx
+    mov %rcx, %rax
     sub $16, %eax
     ret
 .L__kefir_text_func_test2_end:
@@ -48,9 +46,8 @@ test3:
 .L__kefir_text_func_test3_begin:
     mov %edi, %eax
     add %eax, %eax
-    mov %rdi, %rcx
-    sar $31, %ecx
-    xor %ecx, %eax
+    sar $31, %edi
+    xor %edi, %eax
     or $1, %eax
     bsr %eax, %eax
     xor $31, %eax
@@ -61,9 +58,8 @@ test4:
 .L__kefir_text_func_test4_begin:
     mov %rdi, %rax
     add %rax, %rax
-    mov %rdi, %rcx
-    sar $63, %rcx
-    xor %rcx, %rax
+    sar $63, %rdi
+    xor %rdi, %rax
     or $1, %rax
     bsr %rax, %rax
     xor $63, %eax

@@ -42,9 +42,7 @@ fn3:
     ret
 .L__kefir_func_fn3_label10:
     call fn1
-    mov %rbx, %rax
-    add $-1, %eax
-    mov %rax, %rbx
+    add $-1, %ebx
     jmp .L__kefir_func_fn3_label2
 .L__kefir_text_func_fn3_end:
 

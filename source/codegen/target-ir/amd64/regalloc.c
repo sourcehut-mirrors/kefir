@@ -93,9 +93,7 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
         payload);
     UNUSED(klass);
 
-    union kefir_codegen_target_ir_amd64_regalloc_entry regalloc_entry = {
-        .type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA
-    };
+    union kefir_codegen_target_ir_amd64_regalloc_entry regalloc_entry = {0};
     switch (value_type->kind) {
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY:
@@ -442,14 +440,11 @@ static kefir_result_t add_register_hint(struct kefir_mem *mem, kefir_codegen_tar
         payload);
     REQUIRE(state_payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR register allocator state payload"));
 
-    union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
-        .reg = {
-            .type = kefir_asm_amd64_xasmgen_register_is_floating_point(reg)
+    union kefir_codegen_target_ir_amd64_regalloc_entry entry = {0};
+    entry.reg.type = kefir_asm_amd64_xasmgen_register_is_floating_point(reg)
                 ? KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE
-                : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP,
-            .value = reg
-        }
-    };
+                : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP;
+    entry.reg.value = reg;
     REQUIRE_OK(kefir_hashtreeset_add(mem, &state_payload->hints, (kefir_hashtreeset_entry_t) entry.allocation));
     return KEFIR_OK;
 }

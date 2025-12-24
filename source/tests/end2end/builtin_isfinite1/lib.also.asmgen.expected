@@ -31,9 +31,8 @@ is_finite_f32:
     ucomiss %xmm0, %xmm1
     setnb %al
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -55,9 +54,8 @@ is_finite_f64:
     ucomisd %xmm0, %xmm1
     setnb %al
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -81,9 +79,8 @@ is_finite_f80:
     setnb %al
     fstp %st(0)
     test %eax, %eax
-    mov %rcx, %rax
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

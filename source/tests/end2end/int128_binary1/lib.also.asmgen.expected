@@ -77,14 +77,10 @@ i128_eq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rax
-    xor %rdx, %rax
-    mov %rsi, %rdx
-    xor %rcx, %rdx
-    mov %rdx, %rcx
-    xor %edx, %edx
-    or %rcx, %rax
-    mov %rdx, %rax
+    xor %rdx, %rdi
+    xor %rcx, %rsi
+    xor %eax, %eax
+    or %rsi, %rdi
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -110,14 +106,10 @@ u128_eq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rax
-    xor %rdx, %rax
-    mov %rsi, %rdx
-    xor %rcx, %rdx
-    mov %rdx, %rcx
-    xor %edx, %edx
-    or %rcx, %rax
-    mov %rdx, %rax
+    xor %rdx, %rdi
+    xor %rcx, %rsi
+    xor %eax, %eax
+    or %rsi, %rdi
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -197,12 +189,10 @@ i128_mul:
     imul %rdx, %rsi
     imul %rax, %rcx
     mul %rdx
-    mov %rsi, %rdi
-    add %rcx, %rdi
-    mov %rdi, %rcx
-    mov %rcx, %rsi
-    add %rdx, %rsi
-    mov %rsi, %rdx
+    add %rcx, %rsi
+    mov %rsi, %rcx
+    add %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -213,14 +203,10 @@ i128_neq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rax
-    xor %rdx, %rax
-    mov %rsi, %rdx
-    xor %rcx, %rdx
-    mov %rdx, %rcx
-    xor %edx, %edx
-    or %rcx, %rax
-    mov %rdx, %rax
+    xor %rdx, %rdi
+    xor %rcx, %rsi
+    xor %eax, %eax
+    or %rsi, %rdi
     sete %al
     xor %ecx, %ecx
     test %al, %al
@@ -237,17 +223,13 @@ i128_shl:
     mov %rsp, %rbp
     sub $32, %rsp
     mov %rdx, %rcx
-    mov %rsi, %rax
-    shld %cl, %rdi, %rax
-    mov %rdi, %rdx
-    shl %cl, %rdx
-    xor %esi, %esi
+    shld %cl, %rdi, %rsi
+    shl %cl, %rdi
+    xor %eax, %eax
     test $64, %cl
-    mov %rax, %rcx
-    cmovne %rdx, %rcx
-    mov %rsi, %rax
-    cmove %rdx, %rax
-    mov %rcx, %rdx
+    mov %rsi, %rdx
+    cmovne %rdi, %rdx
+    cmove %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -259,14 +241,15 @@ i128_shr:
     mov %rsp, %rbp
     sub $32, %rsp
     mov %rdx, %rcx
-    mov %rdi, %rax
-    shrd %cl, %rsi, %rax
-    mov %rsi, %rdx
-    sar %cl, %rdx
+    shrd %cl, %rsi, %rdi
+    mov %rsi, %rax
+    sar %cl, %rax
     sar $63, %rsi
     test $64, %cl
-    cmovne %rdx, %rax
+    cmovne %rax, %rdi
+    mov %rax, %rdx
     cmovne %rsi, %rdx
+    mov %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -359,12 +342,10 @@ u128_mul:
     imul %rdx, %rsi
     imul %rax, %rcx
     mul %rdx
-    mov %rsi, %rdi
-    add %rcx, %rdi
-    mov %rdi, %rcx
-    mov %rcx, %rsi
-    add %rdx, %rsi
-    mov %rsi, %rdx
+    add %rcx, %rsi
+    mov %rsi, %rcx
+    add %rdx, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -375,14 +356,10 @@ u128_neq:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rax
-    xor %rdx, %rax
-    mov %rsi, %rdx
-    xor %rcx, %rdx
-    mov %rdx, %rcx
-    xor %edx, %edx
-    or %rcx, %rax
-    mov %rdx, %rax
+    xor %rdx, %rdi
+    xor %rcx, %rsi
+    xor %eax, %eax
+    or %rsi, %rdi
     sete %al
     xor %ecx, %ecx
     test %al, %al
@@ -399,17 +376,13 @@ u128_shl:
     mov %rsp, %rbp
     sub $32, %rsp
     mov %rdx, %rcx
-    mov %rsi, %rax
-    shld %cl, %rdi, %rax
-    mov %rdi, %rdx
-    shl %cl, %rdx
-    xor %esi, %esi
+    shld %cl, %rdi, %rsi
+    shl %cl, %rdi
+    xor %eax, %eax
     test $64, %cl
-    mov %rax, %rcx
-    cmovne %rdx, %rcx
-    mov %rsi, %rax
-    cmove %rdx, %rax
-    mov %rcx, %rdx
+    mov %rsi, %rdx
+    cmovne %rdi, %rdx
+    cmove %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -421,16 +394,14 @@ u128_shr:
     mov %rsp, %rbp
     sub $32, %rsp
     mov %rdx, %rcx
-    mov %rdi, %rax
-    shrd %cl, %rsi, %rax
-    mov %rsi, %rdx
-    shr %cl, %rdx
-    xor %esi, %esi
+    shrd %cl, %rsi, %rdi
+    shr %cl, %rsi
+    xor %eax, %eax
     test $64, %cl
-    cmovne %rdx, %rax
-    mov %rsi, %rcx
-    cmove %rdx, %rcx
-    mov %rcx, %rdx
+    cmovne %rsi, %rdi
+    mov %rax, %rdx
+    cmove %rsi, %rdx
+    mov %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -470,8 +441,7 @@ i128_less:
     mov %rsp, %rbp
     sub $32, %rsp
     cmp %rdx, %rdi
-    mov %rsi, %rax
-    sbb %rcx, %rax
+    sbb %rcx, %rsi
     setl %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -485,8 +455,7 @@ i128_above:
     mov %rsp, %rbp
     sub $32, %rsp
     cmp %rdi, %rdx
-    mov %rcx, %rax
-    sbb %rsi, %rax
+    sbb %rsi, %rcx
     setb %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -500,8 +469,7 @@ i128_below:
     mov %rsp, %rbp
     sub $32, %rsp
     cmp %rdx, %rdi
-    mov %rsi, %rax
-    sbb %rcx, %rax
+    sbb %rcx, %rsi
     setb %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -522,12 +490,9 @@ i128_greater_eq:
     xor %rdi, %rdx
     xor %rsi, %rcx
     xor %esi, %esi
-    mov %rdx, %rdi
-    or %rcx, %rdi
-    mov %rdi, %rcx
-    mov %rsi, %rcx
-    sete %cl
-    or %rcx, %rax
+    or %rcx, %rdx
+    sete %sil
+    or %rsi, %rax
     setne %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -541,8 +506,7 @@ i128_greater:
     mov %rsp, %rbp
     sub $32, %rsp
     cmp %rdi, %rdx
-    mov %rcx, %rax
-    sbb %rsi, %rax
+    sbb %rsi, %rcx
     setl %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -563,12 +527,9 @@ i128_less_eq:
     xor %rdi, %rdx
     xor %rsi, %rcx
     xor %esi, %esi
-    mov %rdx, %rdi
-    or %rcx, %rdi
-    mov %rdi, %rcx
-    mov %rsi, %rcx
-    sete %cl
-    or %rcx, %rax
+    or %rcx, %rdx
+    sete %sil
+    or %rsi, %rax
     setne %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -589,12 +550,9 @@ i128_above_eq:
     xor %rdi, %rdx
     xor %rsi, %rcx
     xor %esi, %esi
-    mov %rdx, %rdi
-    or %rcx, %rdi
-    mov %rdi, %rcx
-    mov %rsi, %rcx
-    sete %cl
-    or %rcx, %rax
+    or %rcx, %rdx
+    sete %sil
+    or %rsi, %rax
     setne %al
     movzx %al, %rax
     lea (%rbp), %rsp
@@ -615,12 +573,9 @@ i128_below_eq:
     xor %rdi, %rdx
     xor %rsi, %rcx
     xor %esi, %esi
-    mov %rdx, %rdi
-    or %rcx, %rdi
-    mov %rdi, %rcx
-    mov %rsi, %rcx
-    sete %cl
-    or %rcx, %rax
+    or %rcx, %rdx
+    sete %sil
+    or %rsi, %rax
     setne %al
     movzx %al, %rax
     lea (%rbp), %rsp

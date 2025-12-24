@@ -18,15 +18,12 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rdi, %rax
-    shl $47, %rax
-    sar $47, %rax
-    mov %eax, %ecx
-    add %ecx, %ecx
-    sar $31, %eax
-    mov %rcx, %rdx
-    xor %eax, %edx
-    mov %rdx, %rax
+    shl $47, %rdi
+    sar $47, %rdi
+    mov %edi, %eax
+    add %eax, %eax
+    sar $31, %edi
+    xor %edi, %eax
     or $1, %eax
     bsr %eax, %eax
     xor $31, %eax
@@ -38,9 +35,8 @@ test2:
 .L__kefir_text_func_test2_begin:
     mov %edi, %eax
     add %eax, %eax
-    mov %rdi, %rcx
-    sar $31, %ecx
-    xor %ecx, %eax
+    sar $31, %edi
+    xor %edi, %eax
     or $1, %eax
     bsr %eax, %eax
     xor $31, %eax
@@ -49,15 +45,12 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
+    shl $5, %rdi
+    sar $5, %rdi
     mov %rdi, %rax
-    shl $5, %rax
-    sar $5, %rax
-    mov %rax, %rcx
-    add %rcx, %rcx
-    sar $63, %rax
-    mov %rcx, %rdx
-    xor %rax, %rdx
-    mov %rdx, %rax
+    add %rax, %rax
+    sar $63, %rdi
+    xor %rdi, %rax
     or $1, %rax
     bsr %rax, %rax
     xor $63, %eax
@@ -69,9 +62,8 @@ test4:
 .L__kefir_text_func_test4_begin:
     mov %rdi, %rax
     add %rax, %rax
-    mov %rdi, %rcx
-    sar $63, %rcx
-    xor %rcx, %rax
+    sar $63, %rdi
+    xor %rdi, %rax
     or $1, %rax
     bsr %rax, %rax
     xor $63, %eax
@@ -137,10 +129,7 @@ __kefir_bigint_redundant_sign_bits:
     mov %r8, %r9
     sub %rcx, %r9
     mov %r9, %rcx
-    mov %rdx, %r8
-    sar %cl, %r8d
-    mov %r8, %rcx
-    mov %rcx, %rdx
+    sar %cl, %edx
     and $1, %edx
     xor %ecx, %ecx
     xor %r8d, %r8d

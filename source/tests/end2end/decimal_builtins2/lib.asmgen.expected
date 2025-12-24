@@ -47,15 +47,11 @@ dec32_isinf:
     call __bid_eqsd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    imul $-1, %eax, %eax
-    mov %rbx, %rcx
-    or %eax, %ecx
-    mov %rcx, %rax
-    xor %ecx, %ecx
-    cmp $0, %eax
-    mov %rcx, %rax
+    sete %cl
+    imul $-1, %ecx, %eax
+    or %eax, %ebx
+    xor %eax, %eax
+    cmp $0, %ebx
     setne %al
     lea -8(%rbp), %rsp
     pop %rbx
@@ -90,15 +86,11 @@ dec64_isinf:
     call __bid_eqdd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    imul $-1, %eax, %eax
-    mov %rbx, %rcx
-    or %eax, %ecx
-    mov %rcx, %rax
-    xor %ecx, %ecx
-    cmp $0, %eax
-    mov %rcx, %rax
+    sete %cl
+    imul $-1, %ecx, %eax
+    or %eax, %ebx
+    xor %eax, %eax
+    cmp $0, %ebx
     setne %al
     lea -8(%rbp), %rsp
     pop %rbx
@@ -136,19 +128,13 @@ dec32_isfinite:
     movaps -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    mov %r12, %rcx
-    or %al, %cl
-    mov %rcx, %rax
-    setne %al
-    mov %rbx, %rcx
-    or %al, %cl
-    mov %rcx, %rax
-    setne %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    sete %cl
+    or %cl, %r12b
+    setne %r12b
+    or %r12b, %bl
+    setne %bl
+    xor %eax, %eax
+    test %bl, %bl
     sete %al
     lea -16(%rbp), %rsp
     pop %r12
@@ -187,19 +173,13 @@ dec64_isfinite:
     movaps -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    mov %r12, %rcx
-    or %al, %cl
-    mov %rcx, %rax
-    setne %al
-    mov %rbx, %rcx
-    or %al, %cl
-    mov %rcx, %rax
-    setne %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    sete %cl
+    or %cl, %r12b
+    setne %r12b
+    or %r12b, %bl
+    setne %bl
+    xor %eax, %eax
+    test %bl, %bl
     sete %al
     lea -16(%rbp), %rsp
     pop %r12
@@ -235,9 +215,8 @@ dec64_isinf_sign:
     call __bid_eqdd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    imul $-1, %eax, %eax
+    sete %cl
+    imul $-1, %ecx, %eax
     mov %rbx, %rcx
     or %eax, %ecx
     mov %rcx, %rax
@@ -274,15 +253,11 @@ dec128_isinf:
     call __bid_eqtd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    imul $-1, %eax, %eax
-    mov %rbx, %rcx
-    or %eax, %ecx
-    mov %rcx, %rax
-    xor %ecx, %ecx
-    cmp $0, %eax
-    mov %rcx, %rax
+    sete %cl
+    imul $-1, %ecx, %eax
+    or %eax, %ebx
+    xor %eax, %eax
+    cmp $0, %ebx
     setne %al
     lea -8(%rbp), %rsp
     pop %rbx
@@ -317,9 +292,8 @@ dec128_isinf_sign:
     call __bid_eqtd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    imul $-1, %eax, %eax
+    sete %cl
+    imul $-1, %ecx, %eax
     mov %rbx, %rcx
     or %eax, %ecx
     mov %rcx, %rax
@@ -359,19 +333,13 @@ dec128_isfinite:
     movaps -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    mov %r12, %rcx
-    or %al, %cl
-    mov %rcx, %rax
-    setne %al
-    mov %rbx, %rcx
-    or %al, %cl
-    mov %rcx, %rax
-    setne %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    sete %cl
+    or %cl, %r12b
+    setne %r12b
+    or %r12b, %bl
+    setne %bl
+    xor %eax, %eax
+    test %bl, %bl
     sete %al
     lea -16(%rbp), %rsp
     pop %r12
@@ -407,9 +375,8 @@ dec32_isinf_sign:
     call __bid_eqsd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
-    mov %rcx, %rax
-    sete %al
-    imul $-1, %eax, %eax
+    sete %cl
+    imul $-1, %ecx, %eax
     mov %rbx, %rcx
     or %eax, %ecx
     mov %rcx, %rax

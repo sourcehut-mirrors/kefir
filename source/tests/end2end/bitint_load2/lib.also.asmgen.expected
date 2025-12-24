@@ -27,10 +27,9 @@ get1:
     push %rbp
     mov %rsp, %rbp
     movq a@GOTPCREL(%rip), %rax
-    mov %rcx, %rdx
-    movb (%rax), %dl
-    mov %rdx, %rax
-    shl $58, %rax
+    movb (%rax), %cl
+    shl $58, %rcx
+    mov %rcx, %rax
     sar $58, %rax
     pop %rbp
     ret
@@ -41,10 +40,9 @@ get2:
     push %rbp
     mov %rsp, %rbp
     movq b@GOTPCREL(%rip), %rax
-    mov %rcx, %rdx
-    movw (%rax), %dx
-    mov %rdx, %rax
-    shl $51, %rax
+    movw (%rax), %cx
+    shl $51, %rcx
+    mov %rcx, %rax
     sar $51, %rax
     pop %rbp
     ret
