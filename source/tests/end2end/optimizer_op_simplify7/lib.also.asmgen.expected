@@ -66,8 +66,7 @@ int_mul:
 .L__kefir_text_func_int_mul_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    imul $100, %rax, %rax
+    imul $100, %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_mul_end:
@@ -136,8 +135,7 @@ uint_mul:
 .L__kefir_text_func_uint_mul_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    imul $100, %rax, %rax
+    imul $100, %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_mul_end:

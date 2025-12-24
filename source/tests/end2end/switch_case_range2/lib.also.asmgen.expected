@@ -14,8 +14,7 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rdi, %rax
-    movzx %al, %rax
+    movzx %dil, %rax
     xor %ecx, %ecx
     cmp $240, %eax
     setge %cl
@@ -37,8 +36,7 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rdi, %rax
-    movzx %ax, %rax
+    movzx %di, %rax
     xor %ecx, %ecx
     cmp $65280, %eax
     setge %cl
@@ -60,21 +58,17 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rdi, %rax
-    movabs $4294967040, %rcx
+    movabs $4294967040, %rax
+    xor %ecx, %ecx
+    cmp %eax, %edi
+    mov %rcx, %rax
+    setae %al
+    movabs $4294967295, %rcx
     xor %edx, %edx
-    cmp %ecx, %eax
+    cmp %ecx, %edi
     mov %rdx, %rcx
-    setae %cl
-    movabs $4294967295, %rdx
-    xor %esi, %esi
-    cmp %edx, %eax
-    mov %rsi, %rax
-    setbe %al
-    mov %rcx, %rdx
-    and %al, %dl
-    mov %rdx, %rax
-    test %al, %al
+    setbe %cl
+    and %cl, %al
     jnz .L__kefir_func_test3_label8
     mov $2, %rax
     ret
@@ -85,18 +79,13 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov %rdi, %rax
+    xor %eax, %eax
+    cmp $-256, %rdi
+    setae %al
     xor %ecx, %ecx
-    cmp $-256, %rax
-    setae %cl
-    xor %edx, %edx
-    cmp $-1, %rax
-    mov %rdx, %rax
-    setbe %al
-    mov %rcx, %rdx
-    and %al, %dl
-    mov %rdx, %rax
-    test %al, %al
+    cmp $-1, %rdi
+    setbe %cl
+    and %cl, %al
     jnz .L__kefir_func_test4_label8
     mov $2, %rax
     ret

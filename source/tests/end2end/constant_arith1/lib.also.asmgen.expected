@@ -49,11 +49,8 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov %rdi, %rax
-    mov $18, %rcx
-    mov %rcx, %rdx
-    sub %rax, %rdx
-    mov %rdx, %rax
+    mov $18, %rax
+    sub %rdi, %rax
     ret
 .L__kefir_text_func_test4_end:
 
@@ -66,11 +63,8 @@ test5:
 
 test6:
 .L__kefir_text_func_test6_begin:
-    mov %rdi, %rax
-    mov $42, %rcx
-    mov %rcx, %rdx
-    sub %rax, %rdx
-    mov %rdx, %rax
+    mov $42, %rax
+    sub %rdi, %rax
     ret
 .L__kefir_text_func_test6_end:
 
@@ -83,11 +77,8 @@ test7:
 
 test8:
 .L__kefir_text_func_test8_begin:
-    mov %rdi, %rax
-    mov $121, %rcx
-    mov %rcx, %rdx
-    sub %rax, %rdx
-    mov %rdx, %rax
+    mov $121, %rax
+    sub %rdi, %rax
     ret
 .L__kefir_text_func_test8_end:
 
@@ -100,21 +91,15 @@ test9:
 
 test10:
 .L__kefir_text_func_test10_begin:
-    mov %rdi, %rax
-    mov $250, %rcx
-    mov %rcx, %rdx
-    sub %rax, %rdx
-    mov %rdx, %rax
+    mov $250, %rax
+    sub %rdi, %rax
     ret
 .L__kefir_text_func_test10_end:
 
 test11:
 .L__kefir_text_func_test11_begin:
-    mov %rdi, %rax
-    mov $95, %rcx
-    mov %rcx, %rdx
-    sub %rax, %rdx
-    mov %rdx, %rax
+    mov $95, %rax
+    sub %rdi, %rax
     ret
 .L__kefir_text_func_test11_end:
 

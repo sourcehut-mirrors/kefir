@@ -572,16 +572,14 @@ __kefir_softfloat_scalbnf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %rax
-    xor %ecx, %ecx
-    mov %rax, %rdx
-    mov %rcx, %rax
+    xor %eax, %eax
+    mov %rdi, %rcx
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label2:
-    mov $127, %rcx
-    cmp $127, %edx
-    mov %rdx, %rsi
-    cmovg %rcx, %rsi
-    mov %rsi, %rcx
+    mov $127, %rdx
+    cmp $127, %ecx
+    mov %rcx, %rsi
+    cmovg %rdx, %rsi
+    mov %rsi, %rdx
     xor %esi, %esi
     cmp $2, %eax
     setge %sil
@@ -589,7 +587,7 @@ __kefir_softfloat_scalbnf:
     cmp $2, %eax
     setl %dil
     xor %r8d, %r8d
-    cmp $127, %edx
+    cmp $127, %ecx
     setg %r8b
     test %sil, %sil
     mov %rdi, %rsi
@@ -597,22 +595,22 @@ __kefir_softfloat_scalbnf:
     test %esi, %esi
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbnf_label15
     xor %eax, %eax
-    mov %rax, %rdx
-    mov %rcx, %rax
+    mov %rax, %rcx
+    mov %rdx, %rax
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label4:
-    xor %ecx, %ecx
-    cmp $2, %edx
-    setge %cl
+    xor %edx, %edx
+    cmp $2, %ecx
+    setge %dl
     xor %esi, %esi
-    cmp $2, %edx
+    cmp $2, %ecx
     setl %sil
     xor %edi, %edi
     cmp $-126, %eax
     setl %dil
-    test %cl, %cl
-    mov %rsi, %rcx
-    cmovz %rdi, %rcx
-    test %ecx, %ecx
+    test %dl, %dl
+    mov %rsi, %rdx
+    cmovz %rdi, %rdx
+    test %edx, %edx
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbnf_label14
     mov $-126, %rcx
     cmp $-126, %eax
@@ -629,20 +627,16 @@ __kefir_softfloat_scalbnf:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label14:
-    mov %rdx, %rcx
     add $1, %ecx
     add $102, %eax
     movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label16(%rip), %xmm1
     mulss %xmm1, %xmm0
-    mov %rcx, %rdx
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label4
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label15:
     add $1, %eax
-    mov %rdx, %rcx
     sub $127, %ecx
     movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label17(%rip), %xmm1
     mulss %xmm1, %xmm0
-    mov %rcx, %rdx
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label2
 .L__kefir_runtime_text_func___kefir_softfloat_scalbnf_end:
 .section .rodata

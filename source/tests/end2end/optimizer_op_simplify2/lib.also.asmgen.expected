@@ -25,10 +25,8 @@ below_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
@@ -49,10 +47,8 @@ above_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
@@ -73,10 +69,8 @@ below_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     mov $0, %rdx
@@ -93,10 +87,8 @@ above_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     mov $0, %rdx
@@ -113,10 +105,8 @@ greater_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     mov $0, %rdx
@@ -133,10 +123,8 @@ less_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
@@ -157,10 +145,8 @@ greater_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
@@ -181,10 +167,8 @@ less_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     mov $0, %rdx

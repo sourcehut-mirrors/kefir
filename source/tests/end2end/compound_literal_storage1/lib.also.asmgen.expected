@@ -43,35 +43,34 @@ get3:
 .L__kefir_text_func_get3_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
-    movdqu %xmm0, (%rcx)
-    movdqu %xmm0, 16(%rcx)
+    movdqu %xmm0, (%rdi)
+    movdqu %xmm0, 16(%rdi)
     mov $1, %rax
     neg %eax
-    movl %eax, (%rcx)
+    movl %eax, (%rdi)
     mov $2, %rax
     neg %eax
-    movl %eax, 4(%rcx)
+    movl %eax, 4(%rdi)
     mov $3, %rax
     neg %eax
-    movl %eax, 8(%rcx)
+    movl %eax, 8(%rdi)
     mov $4, %rax
     neg %eax
-    movl %eax, 12(%rcx)
+    movl %eax, 12(%rdi)
     mov $5, %rax
     neg %eax
-    movl %eax, 16(%rcx)
+    movl %eax, 16(%rdi)
     mov $6, %rax
     neg %eax
-    movl %eax, 20(%rcx)
+    movl %eax, 20(%rdi)
     mov $7, %rax
     neg %eax
-    movl %eax, 24(%rcx)
+    movl %eax, 24(%rdi)
     mov $8, %rax
     neg %eax
-    movl %eax, 28(%rcx)
-    mov %rcx, %rax
+    movl %eax, 28(%rdi)
+    mov %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_get3_end:
@@ -80,35 +79,34 @@ get4:
 .L__kefir_text_func_get4_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
-    movdqu %xmm0, (%rcx)
-    movdqu %xmm0, 16(%rcx)
+    movdqu %xmm0, (%rdi)
+    movdqu %xmm0, 16(%rdi)
     mov $8, %rax
     neg %eax
-    movl %eax, (%rcx)
+    movl %eax, (%rdi)
     mov $7, %rax
     neg %eax
-    movl %eax, 4(%rcx)
+    movl %eax, 4(%rdi)
     mov $6, %rax
     neg %eax
-    movl %eax, 8(%rcx)
+    movl %eax, 8(%rdi)
     mov $5, %rax
     neg %eax
-    movl %eax, 12(%rcx)
+    movl %eax, 12(%rdi)
     mov $4, %rax
     neg %eax
-    movl %eax, 16(%rcx)
+    movl %eax, 16(%rdi)
     mov $3, %rax
     neg %eax
-    movl %eax, 20(%rcx)
+    movl %eax, 20(%rdi)
     mov $2, %rax
     neg %eax
-    movl %eax, 24(%rcx)
+    movl %eax, 24(%rdi)
     mov $1, %rax
     neg %eax
-    movl %eax, 28(%rcx)
-    mov %rcx, %rax
+    movl %eax, 28(%rdi)
+    mov %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_get4_end:
@@ -118,8 +116,7 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movl %eax, -4(%rbp)
+    movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     test %eax, %eax
     jz .L__kefir_func_get5_label10
@@ -138,8 +135,7 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movq %rax, -8(%rbp)
+    movq %rdi, -8(%rbp)
     mov $8, %rax
     lea (%rbp), %rsp
     pop %rbp

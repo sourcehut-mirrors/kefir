@@ -14,26 +14,26 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movzx %cl, %rcx
-    cmp $0, %cl
-    je .L__kefir_func_test1_label6
-    bsr %ecx, %eax
+    movzx %dil, %rax
+    cmp $0, %al
+    je .L__kefir_func_test1_label9
+    mov %rcx, %rdx
+    bsr %eax, %edx
+    mov %rdx, %rax
     xor $31, %eax
     sub $24, %eax
 .L__kefir_func_test1_label6:
     ret
+.L__kefir_func_test1_label9:
+    mov %rsi, %rax
     jmp .L__kefir_func_test1_label6
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    cmp $0, %cx
-    je .L__kefir_func_test2_label6
-    movzx %cx, %rax
+    cmp $0, %di
+    je .L__kefir_func_test2_label9
+    movzx %di, %rax
     mov %rcx, %rdx
     bsr %eax, %edx
     mov %rdx, %rax
@@ -41,32 +41,34 @@ test2:
     sub $16, %eax
 .L__kefir_func_test2_label6:
     ret
+.L__kefir_func_test2_label9:
+    mov %rsi, %rax
     jmp .L__kefir_func_test2_label6
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    cmp $0, %ecx
-    je .L__kefir_func_test3_label6
-    bsr %ecx, %eax
+    cmp $0, %edi
+    je .L__kefir_func_test3_label9
+    bsr %edi, %eax
     xor $31, %eax
 .L__kefir_func_test3_label6:
     ret
+.L__kefir_func_test3_label9:
+    mov %rsi, %rax
     jmp .L__kefir_func_test3_label6
 .L__kefir_text_func_test3_end:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    cmp $0, %rcx
-    je .L__kefir_func_test4_label6
-    bsr %rcx, %rax
+    cmp $0, %rdi
+    je .L__kefir_func_test4_label9
+    bsr %rdi, %rax
     xor $63, %eax
 .L__kefir_func_test4_label6:
     ret
+.L__kefir_func_test4_label9:
+    mov %rsi, %rax
     jmp .L__kefir_func_test4_label6
 .L__kefir_text_func_test4_end:
 

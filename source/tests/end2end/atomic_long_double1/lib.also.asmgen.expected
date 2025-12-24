@@ -14,9 +14,8 @@ get_ld1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq ld1@GOTPCREL(%rip), %rax
+    movq ld1@GOTPCREL(%rip), %rsi
     lea -16(%rbp), %rdx
-    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
@@ -33,9 +32,8 @@ set_ld1:
     sub $32, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
-    movq ld1@GOTPCREL(%rip), %rax
+    movq ld1@GOTPCREL(%rip), %rsi
     fstpt -32(%rbp)
-    mov %rax, %rsi
     lea -32(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx

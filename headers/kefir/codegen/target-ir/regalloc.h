@@ -24,6 +24,7 @@
 #include "kefir/codegen/target-ir/control_flow.h"
 #include "kefir/codegen/target-ir/liveness.h"
 #include "kefir/codegen/target-ir/interference.h"
+#include "kefir/codegen/target-ir/coalesce.h"
 #include "kefir/core/hashtable.h"
 #include "kefir/util/json.h"
 
@@ -33,6 +34,8 @@ typedef struct kefir_codegen_target_ir_regalloc_state {
     kefir_result_t (*reset)(struct kefir_mem *, void *);
     kefir_result_t (*add_conflict)(struct kefir_mem *, kefir_codegen_target_ir_regalloc_allocation_t, void *);
     kefir_result_t (*reserve)(struct kefir_mem *, const struct kefir_codegen_target_ir_value_type *, void *);
+    kefir_result_t (*add_allocation_hint)(struct kefir_mem *, kefir_codegen_target_ir_regalloc_allocation_t, void *);
+    kefir_result_t (*add_register_hint)(struct kefir_mem *, kefir_codegen_target_ir_physical_register_t, void *);
     kefir_result_t (*free_state)(struct kefir_mem *, void *);
     void *payload;
 } kefir_codegen_target_ir_regalloc_state_t;
@@ -59,7 +62,7 @@ kefir_result_t kefir_codegen_target_ir_regalloc_init(struct kefir_codegen_target
 kefir_result_t kefir_codegen_target_ir_regalloc_free(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *);
 
 kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *,
-    const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_interference *, const struct kefir_codegen_target_ir_stack_frame *);
+    const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_interference *, const struct kefir_codegen_target_ir_coalesce *, const struct kefir_codegen_target_ir_stack_frame *);
 kefir_result_t kefir_codegen_target_ir_regalloc_get(const struct kefir_codegen_target_ir_regalloc *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_regalloc_allocation_t *);
 
 #endif

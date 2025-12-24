@@ -73,11 +73,9 @@ set_a:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rdx
-    lea value(%rip), %rcx
-    movl (%rcx), %esi
-    lea value(%rip), %rdi
+    lea value(%rip), %rax
+    movl (%rax), %eax
+    lea value(%rip), %rdx
     mov $1, %r8
     xor %r9d, %r9d
     mov $32, %rcx
@@ -95,17 +93,17 @@ set_a:
     sub %r9, %r8
     mov %rcx, %r9
     sbb %r10, %r9
-    and %r8, %rax
-    and %r9, %rdx
+    and %r8, %rdi
+    and %r9, %rsi
     xor %ecx, %ecx
-    shld %cl, %rax, %rdx
-    shl %cl, %rax
+    shld %cl, %rdi, %rsi
+    shl %cl, %rdi
     xor %r10d, %r10d
     test $64, %cl
-    cmovne %rax, %rdx
+    cmovne %rdi, %rsi
     mov %r10, %rcx
-    cmove %rax, %rcx
-    mov %rcx, %rax
+    cmove %rdi, %rcx
+    mov %rcx, %rdi
     mov %rcx, %r10
     xor %ecx, %r10d
     xor %ecx, %ecx
@@ -120,15 +118,17 @@ set_a:
     mov %r9, %r8
     not %r8
     not %rcx
-    and %r8, %rsi
+    and %r8, %rax
     mov %r10, %r8
     and %rcx, %r8
     mov %r8, %rcx
-    or %rsi, %rax
-    mov %rdx, %rsi
-    or %rcx, %rsi
-    mov %rsi, %rcx
-    movl %eax, (%rdi)
+    mov %rdi, %r8
+    or %rax, %r8
+    mov %r8, %rax
+    mov %rsi, %rdi
+    or %rcx, %rdi
+    mov %rdi, %rcx
+    movl %eax, (%rdx)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -139,14 +139,12 @@ set_b:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rdx
-    lea value(%rip), %rcx
-    add $4, %rcx
-    movq (%rcx), %rsi
+    lea value(%rip), %rax
+    add $4, %rax
+    movq (%rax), %rax
     lea value(%rip), %rcx
     add $12, %rcx
-    movzxw (%rcx), %rdi
+    movzxw (%rcx), %rdx
     lea value(%rip), %rcx
     lea 4(%rcx), %r8
     mov $1, %r9
@@ -166,17 +164,17 @@ set_b:
     sub %r10, %r9
     mov %rcx, %r10
     sbb %r11, %r10
-    and %r9, %rax
-    and %r10, %rdx
+    and %r9, %rdi
+    and %r10, %rsi
     mov $3, %rcx
-    shld %cl, %rax, %rdx
-    shl %cl, %rax
+    shld %cl, %rdi, %rsi
+    shl %cl, %rdi
     xor %r11d, %r11d
     test $64, %cl
-    cmovne %rax, %rdx
+    cmovne %rdi, %rsi
     mov %r11, %rcx
-    cmove %rax, %rcx
-    mov %rcx, %rax
+    cmove %rdi, %rcx
+    mov %rcx, %rdi
     mov $3, %rcx
     shld %cl, %r9, %r10
     shl %cl, %r9
@@ -189,14 +187,16 @@ set_b:
     mov %r10, %r9
     not %r9
     not %rcx
-    and %r9, %rsi
-    mov %rdi, %r9
+    and %r9, %rax
+    mov %rdx, %r9
     and %rcx, %r9
     mov %r9, %rcx
-    or %rsi, %rax
-    mov %rdx, %rsi
-    or %rcx, %rsi
-    mov %rsi, %rcx
+    mov %rdi, %rdx
+    or %rax, %rdx
+    mov %rdx, %rax
+    mov %rsi, %rdx
+    or %rcx, %rdx
+    mov %rdx, %rcx
     movq %rax, (%r8)
     lea value(%rip), %rax
     add $12, %rax

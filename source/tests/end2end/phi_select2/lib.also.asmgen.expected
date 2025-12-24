@@ -26,131 +26,81 @@
 .L__kefir_text_section_begin:
 select_above_or_equals:
 .L__kefir_text_func_select_above_or_equals_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmovb %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmovb %rcx, %rax
     ret
 .L__kefir_text_func_select_above_or_equals_end:
 
 select_not_equals:
 .L__kefir_text_func_select_not_equals_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmove %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmove %rcx, %rax
     ret
 .L__kefir_text_func_select_not_equals_end:
 
 select_lesser_or_equals:
 .L__kefir_text_func_select_lesser_or_equals_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmovg %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmovg %rcx, %rax
     ret
 .L__kefir_text_func_select_lesser_or_equals_end:
 
 select_equals:
 .L__kefir_text_func_select_equals_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmovne %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmovne %rcx, %rax
     ret
 .L__kefir_text_func_select_equals_end:
 
 select_lesser:
 .L__kefir_text_func_select_lesser_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmovge %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmovge %rcx, %rax
     ret
 .L__kefir_text_func_select_lesser_end:
 
 select_greater_or_equals:
 .L__kefir_text_func_select_greater_or_equals_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmovl %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmovl %rcx, %rax
     ret
 .L__kefir_text_func_select_greater_or_equals_end:
 
 select_above:
 .L__kefir_text_func_select_above_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmovbe %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmovbe %rcx, %rax
     ret
 .L__kefir_text_func_select_above_end:
 
 select_below:
 .L__kefir_text_func_select_below_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmovae %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmovae %rcx, %rax
     ret
 .L__kefir_text_func_select_below_end:
 
 select_greater:
 .L__kefir_text_func_select_greater_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmovle %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmovle %rcx, %rax
     ret
 .L__kefir_text_func_select_greater_end:
 
 select_below_or_equals:
 .L__kefir_text_func_select_below_or_equals_begin:
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    cmp %rdx, %rsi
-    mov %rcx, %rdx
-    cmova %rax, %rdx
+    cmp %rsi, %rdi
     mov %rdx, %rax
+    cmova %rcx, %rax
     ret
 .L__kefir_text_func_select_below_or_equals_end:
 

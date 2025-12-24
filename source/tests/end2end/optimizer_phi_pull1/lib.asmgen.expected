@@ -17,9 +17,9 @@ somefn:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %rax
     movq .L__kefir_func_somefn_label11(%rip), %xmm0
     movq .L__kefir_func_somefn_label12(%rip), %xmm1
+    mov %rdi, %rax
 .L__kefir_func_somefn_label2:
     mov %rax, %rcx
     add $-1, %ecx
@@ -45,24 +45,25 @@ somefn:
 
 assign_abs:
 .L__kefir_text_func_assign_abs_begin:
-    mov %rdi, %rax
-    movq somevar@GOTPCREL(%rip), %rcx
-    mov %rax, %rdx
-    neg %rdx
-    cmp $0, %rax
-    cmovle %rdx, %rax
-    movq %rax, (%rcx)
+    movq somevar@GOTPCREL(%rip), %rax
+    mov %rdi, %rcx
+    neg %rcx
+    cmp $0, %rdi
+    mov %rdi, %rdx
+    cmovle %rcx, %rdx
+    mov %rdx, %rcx
+    movq %rcx, (%rax)
     ret
 .L__kefir_text_func_assign_abs_end:
 
 condition1:
 .L__kefir_text_func_condition1_begin:
-    mov %rdi, %rax
-    cmp $0, %eax
+    cmp $0, %edi
     jg .L__kefir_func_condition1_label8
     mov $10, %rax
     ret
 .L__kefir_func_condition1_label8:
+    mov %rdi, %rax
     add $10, %eax
     ret
 .L__kefir_text_func_condition1_end:

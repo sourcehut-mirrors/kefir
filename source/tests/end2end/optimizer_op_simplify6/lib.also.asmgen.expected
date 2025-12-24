@@ -33,12 +33,10 @@ int_or:
     push %rbp
     mov %rsp, %rbp
     mov %rdi, %rax
-    mov %rax, %rcx
-    or $10291, %rcx
-    or $81712, %rax
-    mov %rcx, %rdx
-    and %rax, %rdx
-    mov %rdx, %rax
+    or $10291, %rax
+    mov %rdi, %rcx
+    or $81712, %rcx
+    and %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_or_end:
@@ -48,12 +46,10 @@ int_add:
     push %rbp
     mov %rsp, %rbp
     mov %rdi, %rax
-    mov %rax, %rcx
-    add $1, %rcx
-    add $12344, %rax
-    mov %rcx, %rdx
-    imul %rax, %rdx
-    mov %rdx, %rax
+    add $1, %rax
+    mov %rdi, %rcx
+    add $12344, %rcx
+    imul %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_add_end:
@@ -63,12 +59,10 @@ int_and:
     push %rbp
     mov %rsp, %rbp
     mov %rdi, %rax
-    mov %rax, %rcx
-    and $-381, %rcx
-    and $12356, %rax
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
+    and $-381, %rax
+    mov %rdi, %rcx
+    and $12356, %rcx
+    or %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_and_end:
@@ -77,12 +71,9 @@ int_mul:
 .L__kefir_text_func_int_mul_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    imul $5, %rax, %rcx
-    imul $6, %rax, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
+    imul $5, %rdi, %rax
+    imul $6, %rdi, %rcx
+    add %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_mul_end:
@@ -102,12 +93,10 @@ int_xor:
     push %rbp
     mov %rsp, %rbp
     mov %rdi, %rax
-    mov %rax, %rcx
-    xor $76, %rcx
-    xor $7894, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
+    xor $76, %rax
+    mov %rdi, %rcx
+    xor $7894, %rcx
+    add %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_xor_end:
@@ -117,12 +106,10 @@ uint_or:
     push %rbp
     mov %rsp, %rbp
     mov %rdi, %rax
-    mov %rax, %rcx
-    or $10291, %rcx
-    or $81712, %rax
-    mov %rcx, %rdx
-    and %rax, %rdx
-    mov %rdx, %rax
+    or $10291, %rax
+    mov %rdi, %rcx
+    or $81712, %rcx
+    and %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_or_end:
@@ -132,12 +119,10 @@ uint_add:
     push %rbp
     mov %rsp, %rbp
     mov %rdi, %rax
-    mov %rax, %rcx
-    add $1, %rcx
-    add $12344, %rax
-    mov %rcx, %rdx
-    imul %rax, %rdx
-    mov %rdx, %rax
+    add $1, %rax
+    mov %rdi, %rcx
+    add $12344, %rcx
+    imul %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_add_end:
@@ -147,12 +132,10 @@ uint_and:
     push %rbp
     mov %rsp, %rbp
     mov %rdi, %rax
-    mov %rax, %rcx
-    and $381, %rcx
-    and $12356, %rax
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
+    and $381, %rax
+    mov %rdi, %rcx
+    and $12356, %rcx
+    or %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_and_end:
@@ -161,12 +144,9 @@ uint_mul:
 .L__kefir_text_func_uint_mul_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    imul $5, %rax, %rcx
-    imul $6, %rax, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
+    imul $5, %rdi, %rax
+    imul $6, %rdi, %rcx
+    add %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_mul_end:
@@ -186,12 +166,10 @@ uint_xor:
     push %rbp
     mov %rsp, %rbp
     mov %rdi, %rax
-    mov %rax, %rcx
-    xor $76, %rcx
-    xor $7894, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
+    xor $76, %rax
+    mov %rdi, %rcx
+    xor $7894, %rcx
+    add %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_xor_end:

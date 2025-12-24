@@ -31,10 +31,8 @@ process:
     mov %r8, -224(%rbp)
     mov %r9, -216(%rbp)
     mov $0, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    movl %ecx, -72(%rbp)
-    movq %rdx, -40(%rbp)
+    movl %esi, -72(%rbp)
+    movq %rdi, -40(%rbp)
     movl $16, -64(%rbp)
     movl $48, -60(%rbp)
     lea 16(%rbp), %rcx
@@ -101,10 +99,8 @@ process:
     movq -40(%rbp), %r12
     lea -32(%rbp), %rax
     add $0, %rax
-    movq (%rax), %rax
-    movl -72(%rbp), %ecx
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    movq (%rax), %rdi
+    movl -72(%rbp), %esi
     call *%r12
     lea -16(%rbp), %rsp
     pop %r12

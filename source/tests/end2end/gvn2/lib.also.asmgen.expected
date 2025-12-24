@@ -137,18 +137,14 @@ orint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    or %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %esi, %eax
     movl %eax, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -159,18 +155,14 @@ addint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    add %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    add %esi, %eax
     movl %eax, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -181,18 +173,14 @@ andint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    and %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    and %esi, %eax
     movl %eax, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -203,20 +191,16 @@ borint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    or %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %esi, %eax
     setne %al
     movzx %al, %rax
     movl %eax, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -227,25 +211,22 @@ divint:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rcx
-    mov %rdi, %rsi
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rsi, %rax
+    mov %rdi, %rax
     movq %rax, -32(%rbp)
     cdq
     movq -32(%rbp), %rax
-    idiv %ecx
+    idiv %esi
     movl %eax, -16(%rbp)
-    mov %rcx, %rax
+    mov %rsi, %rax
     movq %rax, -24(%rbp)
     cdq
     movq -24(%rbp), %rax
-    idiv %esi
+    idiv %edi
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -256,27 +237,22 @@ modint:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rcx
-    mov %rdi, %rsi
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rsi, %rax
+    mov %rdi, %rax
     movq %rax, -32(%rbp)
     cdq
     movq -32(%rbp), %rax
-    idiv %ecx
-    mov %rdx, %rax
-    movl %eax, -16(%rbp)
-    mov %rcx, %rax
+    idiv %esi
+    movl %edx, -16(%rbp)
+    mov %rsi, %rax
     movq %rax, -24(%rbp)
     cdq
     movq -24(%rbp), %rax
-    idiv %esi
-    mov %rdx, %rax
-    movl %eax, -12(%rbp)
+    idiv %edi
+    movl %edx, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -287,18 +263,14 @@ mulint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    imul %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    imul %esi, %eax
     movl %eax, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -309,20 +281,15 @@ orchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rcx
-    movsx %al, %rax
-    mov %rcx, %rdx
-    or %eax, %edx
-    mov %rdx, %rax
+    movsx %dil, %rax
+    movsx %sil, %rcx
+    or %ecx, %eax
     movb %al, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -333,18 +300,14 @@ orlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %rsi, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -355,21 +318,18 @@ sarint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rdx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rax, %rcx
-    mov %rdx, %rsi
-    sar %cl, %esi
     mov %rsi, %rcx
-    movl %ecx, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rdi, %rax
+    sar %cl, %eax
+    movl %eax, -16(%rbp)
+    mov %rdi, %rcx
+    mov %rsi, %rax
     sar %cl, %eax
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -380,21 +340,18 @@ shlint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rdx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rax, %rcx
-    mov %rdx, %rsi
-    shl %cl, %esi
     mov %rsi, %rcx
-    movl %ecx, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rdi, %rax
+    shl %cl, %eax
+    movl %eax, -16(%rbp)
+    mov %rdi, %rcx
+    mov %rsi, %rax
     shl %cl, %eax
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -405,18 +362,16 @@ subint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    sub %eax, %edx
-    movl %edx, -16(%rbp)
-    sub %ecx, %eax
+    mov %rdi, %rax
+    sub %esi, %eax
+    movl %eax, -16(%rbp)
+    mov %rsi, %rax
+    sub %edi, %eax
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -427,18 +382,14 @@ xorint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    xor %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    xor %esi, %eax
     movl %eax, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -449,20 +400,15 @@ addchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rcx
-    movsx %al, %rax
-    mov %rcx, %rdx
-    add %eax, %edx
-    mov %rdx, %rax
+    movsx %dil, %rax
+    movsx %sil, %rcx
+    add %ecx, %eax
     movb %al, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -473,18 +419,14 @@ addlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    add %rsi, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -495,20 +437,15 @@ andchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rcx
-    movsx %al, %rax
-    mov %rcx, %rdx
-    and %eax, %edx
-    mov %rdx, %rax
+    movsx %dil, %rax
+    movsx %sil, %rcx
+    and %ecx, %eax
     movb %al, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -519,18 +456,14 @@ andlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    and %rax, %rdx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    and %rsi, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -541,23 +474,20 @@ bandint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    test %ecx, %ecx
-    mov %rdx, %rcx
-    setne %cl
-    test %eax, %eax
-    mov %rdx, %rax
+    test %edi, %edi
     setne %al
-    and %cl, %al
+    test %esi, %esi
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     movl %eax, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -568,20 +498,16 @@ borchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    or %al, %dl
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %sil, %al
     setne %al
     movzx %al, %rax
     movb %al, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -592,13 +518,10 @@ borlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %rsi, %rax
     setne %al
     movzx %al, %rax
     movsx %eax, %rcx
@@ -606,8 +529,7 @@ borlong:
     movsx %eax, %rax
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -618,12 +540,10 @@ divchar:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rcx
-    movsx %al, %rsi
+    movsx %dil, %rcx
+    movsx %sil, %rsi
     mov %rcx, %rax
     movq %rax, -32(%rbp)
     cdq
@@ -637,8 +557,7 @@ divchar:
     idiv %ecx
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -649,25 +568,22 @@ divlong:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rcx
-    mov %rdi, %rsi
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rsi, %rax
+    mov %rdi, %rax
     movq %rax, -32(%rbp)
     cqo
     movq -32(%rbp), %rax
-    idiv %rcx
+    idiv %rsi
     movq %rax, -16(%rbp)
-    mov %rcx, %rax
+    mov %rsi, %rax
     movq %rax, -24(%rbp)
     cqo
     movq -24(%rbp), %rax
-    idiv %rsi
+    idiv %rdi
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -678,29 +594,24 @@ modchar:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rcx
-    movsx %al, %rsi
+    movsx %dil, %rcx
+    movsx %sil, %rsi
     mov %rcx, %rax
     movq %rax, -32(%rbp)
     cdq
     movq -32(%rbp), %rax
     idiv %esi
-    mov %rdx, %rax
-    movb %al, -16(%rbp)
+    movb %dl, -16(%rbp)
     mov %rsi, %rax
     movq %rax, -24(%rbp)
     cdq
     movq -24(%rbp), %rax
     idiv %ecx
-    mov %rdx, %rax
-    movb %al, -15(%rbp)
+    movb %dl, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -711,27 +622,22 @@ modlong:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rcx
-    mov %rdi, %rsi
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rsi, %rax
+    mov %rdi, %rax
     movq %rax, -32(%rbp)
     cqo
     movq -32(%rbp), %rax
-    idiv %rcx
-    mov %rdx, %rax
-    movq %rax, -16(%rbp)
-    mov %rcx, %rax
+    idiv %rsi
+    movq %rdx, -16(%rbp)
+    mov %rsi, %rax
     movq %rax, -24(%rbp)
     cqo
     movq -24(%rbp), %rax
-    idiv %rsi
-    mov %rdx, %rax
-    movq %rax, -8(%rbp)
+    idiv %rdi
+    movq %rdx, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -742,20 +648,15 @@ mulchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rcx
-    movsx %al, %rax
-    mov %rcx, %rdx
-    imul %eax, %edx
-    mov %rdx, %rax
+    movsx %dil, %rax
+    movsx %sil, %rcx
+    imul %ecx, %eax
     movb %al, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -766,18 +667,14 @@ mullong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    imul %rax, %rdx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    imul %rsi, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -788,20 +685,15 @@ orshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rcx
-    movsx %ax, %rax
-    mov %rcx, %rdx
-    or %eax, %edx
-    mov %rdx, %rax
+    movsx %di, %rax
+    movsx %si, %rcx
+    or %ecx, %eax
     movw %ax, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -812,23 +704,21 @@ sarchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rdx
-    movsx %al, %rax
-    mov %rax, %rcx
-    mov %rdx, %rsi
+    movsx %dil, %rax
+    movsx %sil, %rdx
+    mov %rdx, %rcx
+    mov %rax, %rsi
     sar %cl, %esi
     mov %rsi, %rcx
     movb %cl, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    mov %rdx, %rax
     sar %cl, %eax
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -839,21 +729,18 @@ sarlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rdx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rax, %rcx
-    mov %rdx, %rsi
-    sar %cl, %rsi
     mov %rsi, %rcx
-    movq %rcx, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rdi, %rax
+    sar %cl, %rax
+    movq %rax, -16(%rbp)
+    mov %rdi, %rcx
+    mov %rsi, %rax
     sar %cl, %rax
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -864,23 +751,21 @@ shlchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rdx
-    movsx %al, %rax
-    mov %rax, %rcx
-    mov %rdx, %rsi
+    movsx %dil, %rax
+    movsx %sil, %rdx
+    mov %rdx, %rcx
+    mov %rax, %rsi
     shl %cl, %esi
     mov %rsi, %rcx
     movb %cl, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    mov %rdx, %rax
     shl %cl, %eax
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -891,21 +776,18 @@ shllong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rdx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rax, %rcx
-    mov %rdx, %rsi
-    shl %cl, %rsi
     mov %rsi, %rcx
-    movq %rcx, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rdi, %rax
+    shl %cl, %rax
+    movq %rax, -16(%rbp)
+    mov %rdi, %rcx
+    mov %rsi, %rax
     shl %cl, %rax
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -916,21 +798,18 @@ shruint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rdx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rax, %rcx
-    mov %rdx, %rsi
-    shr %cl, %esi
     mov %rsi, %rcx
-    movl %ecx, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rdi, %rax
+    shr %cl, %eax
+    movl %eax, -16(%rbp)
+    mov %rdi, %rcx
+    mov %rsi, %rax
     shr %cl, %eax
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -941,20 +820,19 @@ subchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rcx
-    movsx %al, %rax
+    movsx %dil, %rax
+    movsx %sil, %rcx
+    mov %rax, %rdx
+    sub %ecx, %edx
+    movb %dl, -16(%rbp)
     mov %rcx, %rdx
     sub %eax, %edx
-    movb %dl, -16(%rbp)
-    sub %ecx, %eax
+    mov %rdx, %rax
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -965,18 +843,16 @@ sublong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    sub %rax, %rdx
-    movq %rdx, -16(%rbp)
-    sub %rcx, %rax
+    mov %rdi, %rax
+    sub %rsi, %rax
+    movq %rax, -16(%rbp)
+    mov %rsi, %rax
+    sub %rdi, %rax
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -987,20 +863,15 @@ xorchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cl, %rcx
-    movsx %al, %rax
-    mov %rcx, %rdx
-    xor %eax, %edx
-    mov %rdx, %rax
+    movsx %dil, %rax
+    movsx %sil, %rcx
+    xor %ecx, %eax
     movb %al, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1011,18 +882,14 @@ xorlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    xor %rax, %rdx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    xor %rsi, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1033,20 +900,15 @@ addshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rcx
-    movsx %ax, %rax
-    mov %rcx, %rdx
-    add %eax, %edx
-    mov %rdx, %rax
+    movsx %di, %rax
+    movsx %si, %rcx
+    add %ecx, %eax
     movw %ax, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1057,20 +919,15 @@ andshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rcx
-    movsx %ax, %rax
-    mov %rcx, %rdx
-    and %eax, %edx
-    mov %rdx, %rax
+    movsx %di, %rax
+    movsx %si, %rcx
+    and %ecx, %eax
     movw %ax, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1081,23 +938,20 @@ bandchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    test %cl, %cl
-    mov %rdx, %rcx
-    setne %cl
-    test %al, %al
-    mov %rdx, %rax
+    test %dil, %dil
     setne %al
-    and %cl, %al
+    test %sil, %sil
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     movb %al, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1108,25 +962,22 @@ bandlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    test %rcx, %rcx
-    mov %rdx, %rcx
-    setne %cl
-    test %rax, %rax
-    mov %rdx, %rax
+    test %rdi, %rdi
     setne %al
-    and %cl, %al
+    test %rsi, %rsi
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     movsx %eax, %rcx
     movq %rcx, -16(%rbp)
     movsx %eax, %rax
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1137,20 +988,16 @@ borshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    or %ax, %dx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %si, %ax
     setne %al
     movzx %al, %rax
     movw %ax, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1161,12 +1008,10 @@ divshort:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rcx
-    movsx %ax, %rsi
+    movsx %di, %rcx
+    movsx %si, %rsi
     mov %rcx, %rax
     movq %rax, -32(%rbp)
     cdq
@@ -1180,8 +1025,7 @@ divshort:
     idiv %ecx
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1192,29 +1036,24 @@ modshort:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rcx
-    movsx %ax, %rsi
+    movsx %di, %rcx
+    movsx %si, %rsi
     mov %rcx, %rax
     movq %rax, -32(%rbp)
     cdq
     movq -32(%rbp), %rax
     idiv %esi
-    mov %rdx, %rax
-    movw %ax, -16(%rbp)
+    movw %dx, -16(%rbp)
     mov %rsi, %rax
     movq %rax, -24(%rbp)
     cdq
     movq -24(%rbp), %rax
     idiv %ecx
-    mov %rdx, %rax
-    movw %ax, -14(%rbp)
+    movw %dx, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1225,20 +1064,15 @@ mulshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rcx
-    movsx %ax, %rax
-    mov %rcx, %rdx
-    imul %eax, %edx
-    mov %rdx, %rax
+    movsx %di, %rax
+    movsx %si, %rcx
+    imul %ecx, %eax
     movw %ax, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1249,23 +1083,21 @@ sarshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rdx
-    movsx %ax, %rax
-    mov %rax, %rcx
-    mov %rdx, %rsi
+    movsx %di, %rax
+    movsx %si, %rdx
+    mov %rdx, %rcx
+    mov %rax, %rsi
     sar %cl, %esi
     mov %rsi, %rcx
     movw %cx, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    mov %rdx, %rax
     sar %cl, %eax
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1276,23 +1108,21 @@ shlshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rdx
-    movsx %ax, %rax
-    mov %rax, %rcx
-    mov %rdx, %rsi
+    movsx %di, %rax
+    movsx %si, %rdx
+    mov %rdx, %rcx
+    mov %rax, %rsi
     shl %cl, %esi
     mov %rsi, %rcx
     movw %cx, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    mov %rdx, %rax
     shl %cl, %eax
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1303,23 +1133,21 @@ shruchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movzx %cl, %rdx
-    movzx %al, %rax
-    mov %rax, %rcx
-    mov %rdx, %rsi
+    movzx %dil, %rax
+    movzx %sil, %rdx
+    mov %rdx, %rcx
+    mov %rax, %rsi
     sar %cl, %esi
     mov %rsi, %rcx
     movb %cl, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    mov %rdx, %rax
     sar %cl, %eax
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1330,21 +1158,18 @@ shrulong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rdx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rax, %rcx
-    mov %rdx, %rsi
-    shr %cl, %rsi
     mov %rsi, %rcx
-    movq %rcx, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rdi, %rax
+    shr %cl, %rax
+    movq %rax, -16(%rbp)
+    mov %rdi, %rcx
+    mov %rsi, %rax
     shr %cl, %rax
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1355,20 +1180,19 @@ subshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rcx
-    movsx %ax, %rax
+    movsx %di, %rax
+    movsx %si, %rcx
+    mov %rax, %rdx
+    sub %ecx, %edx
+    movw %dx, -16(%rbp)
     mov %rcx, %rdx
     sub %eax, %edx
-    movw %dx, -16(%rbp)
-    sub %ecx, %eax
+    mov %rdx, %rax
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1379,21 +1203,18 @@ udivuint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rcx
-    mov %rdi, %rsi
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rsi, %rax
-    xor %edx, %edx
-    div %ecx
-    movl %eax, -16(%rbp)
-    mov %rcx, %rax
+    mov %rdi, %rax
     xor %edx, %edx
     div %esi
+    movl %eax, -16(%rbp)
+    mov %rsi, %rax
+    xor %edx, %edx
+    div %edi
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1404,23 +1225,18 @@ umoduint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rcx
-    mov %rdi, %rsi
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rsi, %rax
-    xor %edx, %edx
-    div %ecx
-    mov %rdx, %rax
-    movl %eax, -16(%rbp)
-    mov %rcx, %rax
+    mov %rdi, %rax
     xor %edx, %edx
     div %esi
-    mov %rdx, %rax
-    movl %eax, -12(%rbp)
+    movl %edx, -16(%rbp)
+    mov %rsi, %rax
+    xor %edx, %edx
+    div %edi
+    movl %edx, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1431,18 +1247,14 @@ umuluint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    imul %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    imul %esi, %eax
     movl %eax, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1453,20 +1265,15 @@ xorshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movsx %cx, %rcx
-    movsx %ax, %rax
-    mov %rcx, %rdx
-    xor %eax, %edx
-    mov %rdx, %rax
+    movsx %di, %rax
+    movsx %si, %rcx
+    xor %ecx, %eax
     movw %ax, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1477,23 +1284,20 @@ bandshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    test %cx, %cx
-    mov %rdx, %rcx
-    setne %cl
-    test %ax, %ax
-    mov %rdx, %rax
+    test %di, %di
     setne %al
-    and %cl, %al
+    test %si, %si
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     movw %ax, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1504,23 +1308,21 @@ shrushort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movzx %cx, %rdx
-    movzx %ax, %rax
-    mov %rax, %rcx
-    mov %rdx, %rsi
+    movzx %di, %rax
+    movzx %si, %rdx
+    mov %rdx, %rcx
+    mov %rax, %rsi
     sar %cl, %esi
     mov %rsi, %rcx
     movw %cx, -16(%rbp)
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    mov %rdx, %rax
     sar %cl, %eax
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1531,12 +1333,10 @@ udivuchar:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movzx %cl, %rcx
-    movzx %al, %rsi
+    movzx %dil, %rcx
+    movzx %sil, %rsi
     mov %rcx, %rax
     movq %rax, -32(%rbp)
     cdq
@@ -1550,8 +1350,7 @@ udivuchar:
     idiv %ecx
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1562,21 +1361,18 @@ udivulong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rcx
-    mov %rdi, %rsi
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rsi, %rax
-    xor %edx, %edx
-    div %rcx
-    movq %rax, -16(%rbp)
-    mov %rcx, %rax
+    mov %rdi, %rax
     xor %edx, %edx
     div %rsi
+    movq %rax, -16(%rbp)
+    mov %rsi, %rax
+    xor %edx, %edx
+    div %rdi
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1587,29 +1383,24 @@ umoduchar:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movzx %cl, %rcx
-    movzx %al, %rsi
+    movzx %dil, %rcx
+    movzx %sil, %rsi
     mov %rcx, %rax
     movq %rax, -32(%rbp)
     cdq
     movq -32(%rbp), %rax
     idiv %esi
-    mov %rdx, %rax
-    movb %al, -16(%rbp)
+    movb %dl, -16(%rbp)
     mov %rsi, %rax
     movq %rax, -24(%rbp)
     cdq
     movq -24(%rbp), %rax
     idiv %ecx
-    mov %rdx, %rax
-    movb %al, -15(%rbp)
+    movb %dl, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1620,23 +1411,18 @@ umodulong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rcx
-    mov %rdi, %rsi
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rsi, %rax
-    xor %edx, %edx
-    div %rcx
-    mov %rdx, %rax
-    movq %rax, -16(%rbp)
-    mov %rcx, %rax
+    mov %rdi, %rax
     xor %edx, %edx
     div %rsi
-    mov %rdx, %rax
-    movq %rax, -8(%rbp)
+    movq %rdx, -16(%rbp)
+    mov %rsi, %rax
+    xor %edx, %edx
+    div %rdi
+    movq %rdx, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1647,20 +1433,15 @@ umuluchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movzx %cl, %rcx
-    movzx %al, %rax
-    mov %rcx, %rdx
-    imul %eax, %edx
-    mov %rdx, %rax
+    movzx %dil, %rax
+    movzx %sil, %rcx
+    imul %ecx, %eax
     movb %al, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1671,18 +1452,14 @@ umululong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rdx
-    imul %rax, %rdx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    imul %rsi, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1693,12 +1470,10 @@ udivushort:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movzx %cx, %rcx
-    movzx %ax, %rsi
+    movzx %di, %rcx
+    movzx %si, %rsi
     mov %rcx, %rax
     movq %rax, -32(%rbp)
     cdq
@@ -1712,8 +1487,7 @@ udivushort:
     idiv %ecx
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1724,29 +1498,24 @@ umodushort:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movzx %cx, %rcx
-    movzx %ax, %rsi
+    movzx %di, %rcx
+    movzx %si, %rsi
     mov %rcx, %rax
     movq %rax, -32(%rbp)
     cdq
     movq -32(%rbp), %rax
     idiv %esi
-    mov %rdx, %rax
-    movw %ax, -16(%rbp)
+    movw %dx, -16(%rbp)
     mov %rsi, %rax
     movq %rax, -24(%rbp)
     cdq
     movq -24(%rbp), %rax
     idiv %ecx
-    mov %rdx, %rax
-    movw %ax, -14(%rbp)
+    movw %dx, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1757,20 +1526,15 @@ umulushort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
-    movzx %cx, %rcx
-    movzx %ax, %rax
-    mov %rcx, %rdx
-    imul %eax, %edx
-    mov %rdx, %rax
+    movzx %di, %rax
+    movzx %si, %rcx
+    imul %ecx, %eax
     movw %ax, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

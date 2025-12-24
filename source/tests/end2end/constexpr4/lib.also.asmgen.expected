@@ -8,9 +8,8 @@
 .L__kefir_text_section_begin:
 getarr:
 .L__kefir_text_func_getarr_begin:
-    mov %rdi, %rax
-    lea __kefir_function_getarr_static_arr_0(%rip), %rcx
-    movq %rcx, (%rax)
+    lea __kefir_function_getarr_static_arr_0(%rip), %rax
+    movq %rax, (%rdi)
     mov $1000, %rax
     ret
 .L__kefir_text_func_getarr_end:

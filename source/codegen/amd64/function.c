@@ -1374,7 +1374,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
         .use_spill_space = target_ir_use_spill_space,
         .payload = &func->stack_frame
     };
-    REQUIRE_OK(kefir_codegen_target_ir_regalloc_run(mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.interference, codegen->config->enable_target_ir_direct_destruction ? &stack_frame : NULL));
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_run(mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.interference, &func->target_ir.coalesce, codegen->config->enable_target_ir_direct_destruction ? &stack_frame : NULL));
 
     struct kefir_codegen_target_ir_round_trip_destructor_amd64_ops destructor_ops;
     REQUIRE_OK(kefir_codegen_target_ir_round_trip_destructor_amd64_ops_init(func, asmcmp_code, &destructor_ops));

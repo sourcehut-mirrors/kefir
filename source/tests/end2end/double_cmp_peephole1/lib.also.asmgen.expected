@@ -8,17 +8,14 @@
 .L__kefir_text_section_begin:
 test:
 .L__kefir_text_func_test_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    xor %edx, %edx
-    cmp $0, %ecx
-    setg %dl
+    xor %eax, %eax
+    cmp $0, %edi
+    setg %al
     jg .L__kefir_func_test_label8
-    mov %rdx, %rax
 .L__kefir_func_test_label3:
     ret
 .L__kefir_func_test_label8:
-    movl (%rax), %eax
+    movl (%rsi), %eax
     xor %ecx, %ecx
     cmp $0, %eax
     mov %rcx, %rax

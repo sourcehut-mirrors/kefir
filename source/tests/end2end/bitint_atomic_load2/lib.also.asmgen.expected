@@ -75,15 +75,13 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq e@GOTPCREL(%rip), %rax
+    movq e@GOTPCREL(%rip), %rsi
     lea -16(%rbp), %rdx
-    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -96,9 +94,8 @@ get6:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    movq f@GOTPCREL(%rip), %rax
+    movq f@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
-    mov %rax, %rsi
     mov $48, %rdi
     mov $5, %rcx
     call __atomic_load@PLT

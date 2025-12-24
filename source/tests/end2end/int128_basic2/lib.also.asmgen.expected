@@ -25,11 +25,9 @@ set:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
-    movq value@GOTPCREL(%rip), %rdx
-    mov %rax, (%rdx)
-    mov %rcx, 8(%rdx)
+    movq value@GOTPCREL(%rip), %rax
+    mov %rdi, (%rax)
+    mov %rsi, 8(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -41,8 +39,7 @@ test:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    mov %rsi, %rcx
-    mov %rcx, %rdx
+    mov %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

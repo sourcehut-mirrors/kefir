@@ -21,10 +21,8 @@ less1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movb %al, -1(%rbp)
-    movb %cl, -2(%rbp)
+    movb %sil, -1(%rbp)
+    movb %dil, -2(%rbp)
     movb -2(%rbp), %al
     movb -1(%rbp), %cl
     shl $58, %rax
@@ -49,10 +47,8 @@ less2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movw %ax, -2(%rbp)
-    movw %cx, -4(%rbp)
+    movw %si, -2(%rbp)
+    movw %di, -4(%rbp)
     movw -4(%rbp), %ax
     movw -2(%rbp), %cx
     shl $50, %rax
@@ -77,10 +73,8 @@ less3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     shl $35, %rax
@@ -105,10 +99,8 @@ less4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movq %rax, -8(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %rsi, -8(%rbp)
+    movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rcx
     shl $6, %rax
@@ -230,12 +222,9 @@ __kefir_bigint_signed_compare:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    movq %rax, -48(%rbp)
-    movq %rcx, -8(%rbp)
-    movq %rdx, -24(%rbp)
+    movq %rdx, -48(%rbp)
+    movq %rsi, -8(%rbp)
+    movq %rdi, -24(%rbp)
     movq -48(%rbp), %rax
     mov $1, %edx
     movsx %edx, %rcx
@@ -317,11 +306,9 @@ __kefir_bigint_signed_compare:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_compare_label24
-    movq -24(%rbp), %rax
-    movq -8(%rbp), %rcx
+    movq -24(%rbp), %rdi
+    movq -8(%rbp), %rsi
     movq -48(%rbp), %rdx
-    mov %rax, %rdi
-    mov %rcx, %rsi
     call __kefir_bigint_unsigned_compare
     lea (%rbp), %rsp
     pop %rbp
@@ -358,12 +345,9 @@ __kefir_bigint_unsigned_compare:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    movq %rax, -56(%rbp)
-    movq %rcx, -40(%rbp)
-    movq %rdx, -48(%rbp)
+    movq %rdx, -56(%rbp)
+    movq %rsi, -40(%rbp)
+    movq %rdi, -48(%rbp)
     movq -56(%rbp), %rax
     mov $8, %edx
     movsx %edx, %rcx
@@ -513,10 +497,10 @@ __kefir_bigint_unsigned_compare:
     movl %eax, -8(%rbp)
     movl -8(%rbp), %eax
     movabs $4294967295, %rcx
-    and %rcx, %rax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    mov %rax, %rdx
+    and %rcx, %rdx
+    mov %rdx, %rcx
+    mov $1, %rax
     shl %cl, %rax
     mov $1, %edx
     movsx %edx, %rcx

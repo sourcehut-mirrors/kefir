@@ -125,7 +125,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rdi"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -2734,8 +2734,7 @@ factorial:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movl %eax, -8(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $0, %eax

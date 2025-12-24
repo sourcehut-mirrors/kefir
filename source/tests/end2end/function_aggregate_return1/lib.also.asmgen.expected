@@ -15,8 +15,7 @@ get1:
     push %r12
     sub $144, %rsp
     mov %rdi, %r12
-    mov %rsi, %rax
-    movq %rax, -152(%rbp)
+    movq %rsi, -152(%rbp)
     movq -152(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx

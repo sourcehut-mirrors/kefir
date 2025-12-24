@@ -22,8 +22,7 @@ mod1:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -39,8 +38,7 @@ mod2:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -56,8 +54,7 @@ mod3:
     movl $4294967295, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -73,8 +70,7 @@ mod4:
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

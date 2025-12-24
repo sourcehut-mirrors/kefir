@@ -11,12 +11,9 @@ test:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    movl %edx, -8(%rbp)
-    movl %ecx, -12(%rbp)
-    movl %eax, -4(%rbp)
+    movl %edi, -8(%rbp)
+    movl %esi, -12(%rbp)
+    movl %edx, -4(%rbp)
 .L__kefir_func_test_label2:
 _kefir_local_public_label_test_label3:
     movsxl -8(%rbp), %rax

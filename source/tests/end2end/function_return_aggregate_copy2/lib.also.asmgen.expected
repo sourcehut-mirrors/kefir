@@ -15,10 +15,9 @@ get2:
     push %r12
     sub $512, %rsp
     mov %rsi, %r12
-    mov %rdi, %rax
+    mov %rdi, %rdx
     lea -272(%rbp), %rbx
     lea -528(%rbp), %rsi
-    mov %rax, %rdx
     mov %rbx, %rdi
     call get@PLT
     lea -528(%rbp), %rdi

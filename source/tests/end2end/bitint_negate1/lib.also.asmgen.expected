@@ -21,8 +21,7 @@ neg1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movb %al, -1(%rbp)
+    movb %dil, -1(%rbp)
     movb -1(%rbp), %al
     shl $58, %rax
     sar $58, %rax
@@ -37,8 +36,7 @@ neg2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movw %ax, -2(%rbp)
+    movw %di, -2(%rbp)
     movw -2(%rbp), %ax
     shl $50, %rax
     sar $50, %rax
@@ -53,8 +51,7 @@ neg3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movl %eax, -4(%rbp)
+    movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     shl $35, %rax
     sar $35, %rax
@@ -69,8 +66,7 @@ neg4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movq %rax, -8(%rbp)
+    movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     shl $6, %rax
     sar $6, %rax
@@ -97,8 +93,7 @@ neg5:
     mov $119, %rsi
     call __kefir_bigint_negate
     movq -32(%rbp), %rax
-    movq -24(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -174,10 +169,8 @@ __kefir_bigint_invert:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movq %rax, -32(%rbp)
-    movq %rcx, -24(%rbp)
+    movq %rsi, -32(%rbp)
+    movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
     mov $8, %edx
     movsx %edx, %rcx
@@ -243,20 +236,14 @@ __kefir_bigint_negate:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movq %rax, -16(%rbp)
-    movq %rcx, -8(%rbp)
-    movq -8(%rbp), %rax
-    movq -16(%rbp), %rcx
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    movq %rsi, -16(%rbp)
+    movq %rdi, -8(%rbp)
+    movq -8(%rbp), %rdi
+    movq -16(%rbp), %rsi
     call __kefir_bigint_invert
-    movq -8(%rbp), %rax
-    movq -16(%rbp), %rcx
-    mov %rax, %rdi
+    movq -8(%rbp), %rdi
+    movq -16(%rbp), %rdx
     mov $1, %rsi
-    mov %rcx, %rdx
     call __kefir_bigint_util_add_digit_zero_extended
     mov $0, %rax
     lea (%rbp), %rsp
@@ -269,12 +256,9 @@ __kefir_bigint_util_add_digit_zero_extended:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    movq %rax, -48(%rbp)
-    movb %cl, -52(%rbp)
-    movq %rdx, -40(%rbp)
+    movq %rdx, -48(%rbp)
+    movb %sil, -52(%rbp)
+    movq %rdi, -40(%rbp)
     movq -48(%rbp), %rax
     mov $8, %edx
     movsx %edx, %rcx

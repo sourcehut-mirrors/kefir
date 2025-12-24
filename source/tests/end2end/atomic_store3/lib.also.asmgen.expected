@@ -28,7 +28,6 @@ set_a1:
     mov %rsp, %rbp
     sub $64, %rsp
     lea 16(%rbp), %rax
-    mov %rdi, %rcx
     movdqu (%rax), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu 16(%rax), %xmm0
@@ -37,8 +36,7 @@ set_a1:
     movdqu %xmm0, -32(%rbp)
     movdqu 48(%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
-    lea 32(%rcx), %rax
-    mov %rax, %rsi
+    lea 32(%rdi), %rsi
     lea -64(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx
@@ -51,15 +49,13 @@ set_a1:
 set_i8:
 .L__kefir_text_func_set_i8_begin:
     mov %rsi, %rax
-    mov %rdi, %rcx
-    xchgb (%rcx), %al
+    xchgb (%rdi), %al
     ret
 .L__kefir_text_func_set_i8_end:
 
 set_f32:
 .L__kefir_text_func_set_f32_begin:
-    mov %rdi, %rax
-    lea 16(%rax), %rcx
+    lea 16(%rdi), %rcx
     movq %xmm0, %rax
     xchgl (%rcx), %eax
     ret
@@ -67,8 +63,7 @@ set_f32:
 
 set_f64:
 .L__kefir_text_func_set_f64_begin:
-    mov %rdi, %rax
-    lea 24(%rax), %rcx
+    lea 24(%rdi), %rcx
     movq %xmm0, %rax
     xchgq (%rcx), %rax
     ret
@@ -101,13 +96,10 @@ set_i64:
 set_arr1_el:
 .L__kefir_text_func_set_arr1_el_begin:
     mov %rdx, %rax
-    mov %rsi, %rcx
-    lea 96(%rdi), %rdx
-    movsx %ecx, %rcx
-    imul $8, %rcx, %rcx
-    mov %rdx, %rsi
-    add %rcx, %rsi
-    mov %rsi, %rcx
+    lea 96(%rdi), %rcx
+    movsx %esi, %rdx
+    imul $8, %rdx, %rdx
+    add %rdx, %rcx
     xchgq (%rcx), %rax
     ret
 .L__kefir_text_func_set_arr1_el_end:
@@ -118,8 +110,6 @@ set_arr2_el:
     mov %rsp, %rbp
     sub $64, %rsp
     lea 16(%rbp), %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
     movdqu (%rax), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu 16(%rax), %xmm0
@@ -128,11 +118,11 @@ set_arr2_el:
     movdqu %xmm0, -32(%rbp)
     movdqu 48(%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
-    lea 160(%rdx), %rax
-    movsx %ecx, %rcx
+    lea 160(%rdi), %rax
+    movsx %esi, %rcx
     imul $64, %rcx, %rcx
-    add %rcx, %rax
     mov %rax, %rsi
+    add %rcx, %rsi
     lea -64(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx

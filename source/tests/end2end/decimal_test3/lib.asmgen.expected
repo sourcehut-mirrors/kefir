@@ -53,12 +53,10 @@ test_dec128_timestep_implicit:
     movq (%r12), %rcx
     mov %rax, %r13
     imul %rcx, %r13
-    imul $16, %r13, %rax
-    mov %rax, %rdi
+    imul $16, %r13, %rdi
     call malloc@PLT
     mov %rax, %r14
-    imul $16, %r13, %rax
-    mov %rax, %rdi
+    imul $16, %r13, %rdi
     call malloc@PLT
     mov %rax, %r15
     lea 48(%r12), %rax
@@ -146,13 +144,11 @@ test_dec128_timestep_implicit:
 
 test_dec32_total_energy:
 .L__kefir_text_func_test_dec32_total_energy_begin:
-    mov %rdi, %rax
-    movq (%rax), %rcx
-    movq (%rax), %rdx
-    movq 16(%rax), %rax
-    imul %rdx, %rcx
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    movq (%rdi), %rax
+    movq (%rdi), %rcx
+    movq 16(%rdi), %rdi
+    mov %rax, %rsi
+    imul %rcx, %rsi
     jmp test_dec32_norm
 .L__kefir_text_func_test_dec32_total_energy_end:
 
@@ -212,11 +208,9 @@ test_dec32_norm:
 .L__kefir_text_func_test_dec32_norm_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdi
-    mov %rcx, %rsi
-    mov %rax, %rdx
+    mov %rsi, %rdx
+    mov %rdi, %rsi
+    mov %rsi, %rdi
     call test_dec32_dot
     pop %rbp
     jmp test_dec32_sqrt_approx
@@ -226,11 +220,9 @@ test_dec64_norm:
 .L__kefir_text_func_test_dec64_norm_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdi
-    mov %rcx, %rsi
-    mov %rax, %rdx
+    mov %rsi, %rdx
+    mov %rdi, %rsi
+    mov %rsi, %rdi
     call test_dec64_dot
     pop %rbp
     jmp test_dec64_sqrt_approx
@@ -256,16 +248,13 @@ test_dec32_cg_solve:
     movq (%r14), %rcx
     mov %rax, %r15
     imul %rcx, %r15
-    imul $4, %r15, %rax
-    mov %rax, %rdi
+    imul $4, %r15, %rdi
     call malloc@PLT
     mov %rax, -192(%rbp)
-    imul $4, %r15, %rax
-    mov %rax, %rdi
+    imul $4, %r15, %rdi
     call malloc@PLT
     mov %rax, -184(%rbp)
-    imul $4, %r15, %rax
-    mov %rax, %rdi
+    imul $4, %r15, %rdi
     call malloc@PLT
     mov %rax, -176(%rbp)
     xor %eax, %eax
@@ -585,16 +574,13 @@ test_dec64_cg_solve:
     movq (%r14), %rcx
     mov %rax, %r15
     imul %rcx, %r15
-    imul $8, %r15, %rax
-    mov %rax, %rdi
+    imul $8, %r15, %rdi
     call malloc@PLT
     mov %rax, -192(%rbp)
-    imul $8, %r15, %rax
-    mov %rax, %rdi
+    imul $8, %r15, %rdi
     call malloc@PLT
     mov %rax, -184(%rbp)
-    imul $8, %r15, %rax
-    mov %rax, %rdi
+    imul $8, %r15, %rdi
     call malloc@PLT
     mov %rax, -176(%rbp)
     xor %eax, %eax
@@ -993,8 +979,7 @@ test_dec128_ax:
     movq (%r13), %rax
     mov %rax, %r14
     imul %rax, %r14
-    imul $16, %r14, %rax
-    mov %rax, %rdi
+    imul $16, %r14, %rdi
     call malloc@PLT
     mov %rax, %r15
     test %r15, %r15
@@ -1520,8 +1505,7 @@ test_dec32_ax:
     movq (%r13), %rax
     mov %rax, %r14
     imul %rax, %r14
-    imul $4, %r14, %rax
-    mov %rax, %rdi
+    imul $4, %r14, %rdi
     call malloc@PLT
     mov %rax, %r15
     test %r15, %r15
@@ -1599,8 +1583,7 @@ test_dec64_ax:
     movq (%r13), %rax
     mov %rax, %r14
     imul %rax, %r14
-    imul $8, %r14, %rax
-    mov %rax, %rdi
+    imul $8, %r14, %rdi
     call malloc@PLT
     mov %rax, %r15
     test %r15, %r15
@@ -1848,11 +1831,9 @@ test_dec128_grid_free:
     push %rbx
     sub $8, %rsp
     mov %rdi, %rbx
-    movq 48(%rbx), %rax
-    mov %rax, %rdi
+    movq 48(%rbx), %rdi
     call free@PLT
-    movq 56(%rbx), %rax
-    mov %rax, %rdi
+    movq 56(%rbx), %rdi
     call free@PLT
     movq $0, 56(%rbx)
     movq $0, 48(%rbx)
@@ -1876,8 +1857,7 @@ test_dec128_grid_init:
     lea 16(%r12), %r13
     movdqu .L__kefir_func_test_dec128_grid_init_label15(%rip), %xmm0
     movdqu %xmm0, -64(%rbp)
-    lea 1(%rbx), %rax
-    mov %rax, %rdi
+    lea 1(%rbx), %rdi
     call __bid_floatunsditd@PLT
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
@@ -2143,16 +2123,13 @@ test_dec128_cg_solve:
     movq (%r14), %rcx
     mov %rax, %r15
     imul %rcx, %r15
-    imul $16, %r15, %rax
-    mov %rax, %rdi
+    imul $16, %r15, %rdi
     call malloc@PLT
     mov %rax, -192(%rbp)
-    imul $16, %r15, %rax
-    mov %rax, %rdi
+    imul $16, %r15, %rdi
     call malloc@PLT
     mov %rax, -184(%rbp)
-    imul $16, %r15, %rax
-    mov %rax, %rdi
+    imul $16, %r15, %rdi
     call malloc@PLT
     mov %rax, -176(%rbp)
     xor %eax, %eax
@@ -2459,11 +2436,9 @@ test_dec32_grid_free:
     push %rbx
     sub $8, %rsp
     mov %rdi, %rbx
-    movq 16(%rbx), %rax
-    mov %rax, %rdi
+    movq 16(%rbx), %rdi
     call free@PLT
-    movq 24(%rbx), %rax
-    mov %rax, %rdi
+    movq 24(%rbx), %rdi
     call free@PLT
     movq $0, 24(%rbx)
     movq $0, 16(%rbx)
@@ -2487,8 +2462,7 @@ test_dec32_grid_init:
     lea 8(%r12), %r13
     movd .L__kefir_func_test_dec32_grid_init_label15(%rip), %xmm0
     movd %xmm0, -64(%rbp)
-    lea 1(%rbx), %rax
-    mov %rax, %rdi
+    lea 1(%rbx), %rdi
     call __bid_floatunsdisd@PLT
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
@@ -2561,11 +2535,9 @@ test_dec64_grid_free:
     push %rbx
     sub $8, %rsp
     mov %rdi, %rbx
-    movq 24(%rbx), %rax
-    mov %rax, %rdi
+    movq 24(%rbx), %rdi
     call free@PLT
-    movq 32(%rbx), %rax
-    mov %rax, %rdi
+    movq 32(%rbx), %rdi
     call free@PLT
     movq $0, 32(%rbx)
     movq $0, 24(%rbx)
@@ -2589,8 +2561,7 @@ test_dec64_grid_init:
     lea 8(%r12), %r13
     movq .L__kefir_func_test_dec64_grid_init_label15(%rip), %xmm0
     movq %xmm0, -64(%rbp)
-    lea 1(%rbx), %rax
-    mov %rax, %rdi
+    lea 1(%rbx), %rdi
     call __bid_floatunsdidd@PLT
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
@@ -2668,9 +2639,8 @@ test_dec32_run_simulation:
     mov %rdx, %rbx
     movaps %xmm0, -96(%rbp)
     mov %rsi, %r12
-    mov %rdi, %rax
+    mov %rdi, %rsi
     lea -56(%rbp), %rdi
-    mov %rax, %rsi
     call test_dec32_grid_init
     movd .L__kefir_func_test_dec32_run_simulation_label22(%rip), %xmm0
     lea -56(%rbp), %rdi
@@ -2746,13 +2716,11 @@ test_dec32_run_simulation:
 
 test_dec64_total_energy:
 .L__kefir_text_func_test_dec64_total_energy_begin:
-    mov %rdi, %rax
-    movq (%rax), %rcx
-    movq (%rax), %rdx
-    movq 24(%rax), %rax
-    imul %rdx, %rcx
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    movq (%rdi), %rax
+    movq (%rdi), %rcx
+    movq 24(%rdi), %rdi
+    mov %rax, %rsi
+    imul %rcx, %rsi
     jmp test_dec64_norm
 .L__kefir_text_func_test_dec64_total_energy_end:
 
@@ -2829,9 +2797,8 @@ test_dec128_initialize_gaussian:
     movaps %xmm1, %xmm0
     call __bid_multd3@PLT
     movaps %xmm0, -64(%rbp)
-    mov -104(%rbp), %rax
-    add $1, %rax
-    mov %rax, %rdi
+    mov -104(%rbp), %rdi
+    add $1, %rdi
     call __bid_floatunsditd@PLT
     movaps -160(%rbp), %xmm1
     call __bid_multd3@PLT
@@ -2888,13 +2855,11 @@ test_dec128_initialize_gaussian:
 
 test_dec128_total_energy:
 .L__kefir_text_func_test_dec128_total_energy_begin:
-    mov %rdi, %rax
-    movq (%rax), %rcx
-    movq (%rax), %rdx
-    movq 48(%rax), %rax
-    imul %rdx, %rcx
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    movq (%rdi), %rax
+    movq (%rdi), %rcx
+    movq 48(%rdi), %rdi
+    mov %rax, %rsi
+    imul %rcx, %rsi
     jmp test_dec128_norm
 .L__kefir_text_func_test_dec128_total_energy_end:
 
@@ -2916,12 +2881,10 @@ test_dec32_timestep_implicit:
     movq (%r12), %rcx
     mov %rax, %r13
     imul %rcx, %r13
-    imul $4, %r13, %rax
-    mov %rax, %rdi
+    imul $4, %r13, %rdi
     call malloc@PLT
     mov %rax, %r14
-    imul $4, %r13, %rax
-    mov %rax, %rdi
+    imul $4, %r13, %rdi
     call malloc@PLT
     mov %rax, %r15
     lea 16(%r12), %rax
@@ -3011,11 +2974,9 @@ test_dec128_norm:
 .L__kefir_text_func_test_dec128_norm_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdi
-    mov %rcx, %rsi
-    mov %rax, %rdx
+    mov %rsi, %rdx
+    mov %rdi, %rsi
+    mov %rsi, %rdi
     call test_dec128_dot
     pop %rbp
     jmp test_dec128_sqrt_approx
@@ -3033,9 +2994,8 @@ test_dec64_run_simulation:
     mov %rdx, %rbx
     movaps %xmm0, -96(%rbp)
     mov %rsi, %r12
-    mov %rdi, %rax
+    mov %rdi, %rsi
     lea -64(%rbp), %rdi
-    mov %rax, %rsi
     call test_dec64_grid_init
     movq .L__kefir_func_test_dec64_run_simulation_label22(%rip), %xmm0
     lea -64(%rbp), %rdi
@@ -3121,9 +3081,8 @@ test_dec128_run_simulation:
     mov %rdx, %rbx
     movaps %xmm0, -128(%rbp)
     mov %rsi, %r12
-    mov %rdi, %rax
+    mov %rdi, %rsi
     lea -96(%rbp), %rdi
-    mov %rax, %rsi
     call test_dec128_grid_init
     movdqu .L__kefir_func_test_dec128_run_simulation_label22(%rip), %xmm0
     lea -96(%rbp), %rdi
@@ -3215,12 +3174,10 @@ test_dec64_timestep_implicit:
     movq (%r12), %rcx
     mov %rax, %r13
     imul %rcx, %r13
-    imul $8, %r13, %rax
-    mov %rax, %rdi
+    imul $8, %r13, %rdi
     call malloc@PLT
     mov %rax, %r14
-    imul $8, %r13, %rax
-    mov %rax, %rdi
+    imul $8, %r13, %rdi
     call malloc@PLT
     mov %rax, %r15
     lea 24(%r12), %rax
@@ -3379,9 +3336,8 @@ test_dec64_initialize_gaussian:
     movaps %xmm1, %xmm0
     call __bid_muldd3@PLT
     movaps %xmm0, -64(%rbp)
-    mov -104(%rbp), %rax
-    add $1, %rax
-    mov %rax, %rdi
+    mov -104(%rbp), %rdi
+    add $1, %rdi
     call __bid_floatunsdidd@PLT
     movaps -160(%rbp), %xmm1
     call __bid_muldd3@PLT
@@ -3509,9 +3465,8 @@ test_dec32_initialize_gaussian:
     movaps %xmm1, %xmm0
     call __bid_mulsd3@PLT
     movaps %xmm0, -64(%rbp)
-    mov -104(%rbp), %rax
-    add $1, %rax
-    mov %rax, %rdi
+    mov -104(%rbp), %rdi
+    add $1, %rdi
     call __bid_floatunsdisd@PLT
     movaps -160(%rbp), %xmm1
     call __bid_mulsd3@PLT

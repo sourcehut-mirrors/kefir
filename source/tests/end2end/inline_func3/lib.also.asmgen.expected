@@ -45,8 +45,7 @@ test1:
     mov $16, %rcx
     mov %rax, %rsi
     rep stosq
-    lea 112(%rdx), %rax
-    mov %rax, %rdi
+    lea 112(%rdx), %rdi
     lea -144(%rbp), %rsi
     cld
     mov $16, %rcx

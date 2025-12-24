@@ -50,10 +50,9 @@ postdec_i8:
 .L__kefir_func_postdec_i8_label2:
     movb (%rsi), %al
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $-1, %al
+    mov %rdi, %rcx
+    add $-1, %cl
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgb %cl, (%rdx)
     sete %al
@@ -134,10 +133,9 @@ postinc_i8:
 .L__kefir_func_postinc_i8_label2:
     movb (%rsi), %al
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $1, %al
+    mov %rdi, %rcx
+    add $1, %cl
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgb %cl, (%rdx)
     sete %al
@@ -318,10 +316,9 @@ postdec_i16:
 .L__kefir_func_postdec_i16_label2:
     movw (%rsi), %ax
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $-1, %ax
+    mov %rdi, %rcx
+    add $-1, %cx
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgw %cx, (%rdx)
     sete %al
@@ -339,10 +336,9 @@ postdec_i32:
 .L__kefir_func_postdec_i32_label2:
     movl (%rsi), %eax
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $-1, %eax
+    mov %rdi, %rcx
+    add $-1, %ecx
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
@@ -360,9 +356,8 @@ postdec_i64:
 .L__kefir_func_postdec_i64_label2:
     movq (%rsi), %rax
     mov %rax, %rdi
-    lea -1(%rdi), %rax
+    lea -1(%rdi), %rcx
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
@@ -379,9 +374,8 @@ postdec_ptr:
 .L__kefir_func_postdec_ptr_label2:
     movq (%rsi), %rax
     mov %rax, %rdi
-    lea -8(%rdi), %rax
+    lea -8(%rdi), %rcx
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
@@ -498,10 +492,9 @@ postinc_i16:
 .L__kefir_func_postinc_i16_label2:
     movw (%rsi), %ax
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $1, %ax
+    mov %rdi, %rcx
+    add $1, %cx
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgw %cx, (%rdx)
     sete %al
@@ -519,10 +512,9 @@ postinc_i32:
 .L__kefir_func_postinc_i32_label2:
     movl (%rsi), %eax
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $1, %eax
+    mov %rdi, %rcx
+    add $1, %ecx
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
@@ -540,9 +532,8 @@ postinc_i64:
 .L__kefir_func_postinc_i64_label2:
     movq (%rsi), %rax
     mov %rax, %rdi
-    lea 1(%rdi), %rax
+    lea 1(%rdi), %rcx
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgq %rcx, (%rdx)
     sete %al
@@ -559,9 +550,8 @@ postinc_ptr:
 .L__kefir_func_postinc_ptr_label2:
     movq (%rsi), %rax
     mov %rax, %rdi
-    lea 8(%rdi), %rax
+    lea 8(%rdi), %rcx
     mov %rsi, %rdx
-    mov %rax, %rcx
     mov %rdi, %rax
     lock     cmpxchgq %rcx, (%rdx)
     sete %al

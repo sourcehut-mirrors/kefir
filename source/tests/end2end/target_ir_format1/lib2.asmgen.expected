@@ -26,20 +26,6 @@ factorial:
 #                "opcode": "mov",
 #                "args": [
 #                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rdi"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
 #                        "identifier": 0,
@@ -48,7 +34,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "edi"
 #                    }
 #                ],
 #                "labels": []
@@ -924,8 +910,7 @@ factorial:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movl %eax, -8(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $0, %eax

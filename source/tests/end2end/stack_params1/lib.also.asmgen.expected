@@ -14,17 +14,18 @@ test1:
     push %rbx
     sub $8, %rsp
     mov 32(%rbp), %rbx
-    mov %rbx, %rax
+    mov %rbx, %rdi
 .L__kefir_func_test1_label2:
-    mov %rax, %rdi
     call callback1@PLT
     cmp $100, %rax
-    jl .L__kefir_func_test1_label2
+    jl .L__kefir_func_test1_label9
     add %rbx, %rax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
+.L__kefir_func_test1_label9:
+    mov %rax, %rdi
     jmp .L__kefir_func_test1_label2
 .L__kefir_text_func_test1_end:
 

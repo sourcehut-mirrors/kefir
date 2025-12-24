@@ -43,11 +43,12 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rdi, %rax
-    mov %eax, %ecx
-    shr $1, %ecx
-    and $1431655765, %ecx
-    sub %ecx, %eax
+    mov %edi, %eax
+    shr $1, %eax
+    and $1431655765, %eax
+    mov %rdi, %rcx
+    sub %eax, %ecx
+    mov %rcx, %rax
     mov %eax, %ecx
     and $858993459, %ecx
     shr $2, %eax
@@ -104,13 +105,14 @@ test3:
 test4:
 .L__kefir_text_func_test4_begin:
     mov %rdi, %rax
-    mov %rax, %rcx
-    shr $1, %rcx
-    movabs $6148914691236517205, %rdx
-    mov %rdx, %rsi
-    and %rcx, %rsi
-    mov %rsi, %rcx
-    sub %rcx, %rax
+    shr $1, %rax
+    movabs $6148914691236517205, %rcx
+    mov %rcx, %rdx
+    and %rax, %rdx
+    mov %rdx, %rax
+    mov %rdi, %rcx
+    sub %rax, %rcx
+    mov %rcx, %rax
     movabs $3689348814741910323, %rcx
     mov %rax, %rdx
     and %rcx, %rdx
@@ -155,8 +157,7 @@ test6:
 .L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rax
-    mov %rax, %rdi
+    lea 16(%rbp), %rdi
     mov $315, %rsi
     call __kefir_bigint_nonzero_count
     pop %rbp

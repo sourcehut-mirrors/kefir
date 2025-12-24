@@ -30,11 +30,8 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rdi, %rax
-    xor %ecx, %ecx
-    mov %rcx, %rdx
-    rep bsf %eax, %edx
-    mov %rdx, %rax
+    xor %eax, %eax
+    rep bsf %edi, %eax
     ret
 .L__kefir_text_func_test2_end:
 
@@ -52,11 +49,8 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov %rdi, %rax
-    xor %ecx, %ecx
-    mov %rcx, %rdx
-    rep bsf %rax, %rdx
-    mov %rdx, %rax
+    xor %eax, %eax
+    rep bsf %rdi, %rax
     ret
 .L__kefir_text_func_test4_end:
 
@@ -80,8 +74,7 @@ test6:
 .L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rax
-    mov %rax, %rdi
+    lea 16(%rbp), %rdi
     mov $315, %rsi
     xor %edx, %edx
     call __kefir_bigint_trailing_zeros

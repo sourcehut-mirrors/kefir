@@ -174,32 +174,28 @@ uint_shl8:
 
 schar_shl1:
 .L__kefir_text_func_schar_shl1_begin:
-    mov %rdi, %rax
-    movsx %al, %rax
+    movsx %dil, %rax
     shl $1, %eax
     ret
 .L__kefir_text_func_schar_shl1_end:
 
 schar_shl2:
 .L__kefir_text_func_schar_shl2_begin:
-    mov %rdi, %rax
-    movsx %al, %rax
+    movsx %dil, %rax
     shl $2, %eax
     ret
 .L__kefir_text_func_schar_shl2_end:
 
 schar_shl4:
 .L__kefir_text_func_schar_shl4_begin:
-    mov %rdi, %rax
-    movsx %al, %rax
+    movsx %dil, %rax
     shl $4, %eax
     ret
 .L__kefir_text_func_schar_shl4_end:
 
 schar_shl8:
 .L__kefir_text_func_schar_shl8_begin:
-    mov %rdi, %rax
-    movsx %al, %rax
+    movsx %dil, %rax
     shl $8, %eax
     ret
 .L__kefir_text_func_schar_shl8_end:
@@ -253,32 +249,28 @@ slong_shl8:
 
 uchar_shl1:
 .L__kefir_text_func_uchar_shl1_begin:
-    mov %rdi, %rax
-    movzx %al, %rax
+    movzx %dil, %rax
     shl $1, %eax
     ret
 .L__kefir_text_func_uchar_shl1_end:
 
 uchar_shl2:
 .L__kefir_text_func_uchar_shl2_begin:
-    mov %rdi, %rax
-    movzx %al, %rax
+    movzx %dil, %rax
     shl $2, %eax
     ret
 .L__kefir_text_func_uchar_shl2_end:
 
 uchar_shl4:
 .L__kefir_text_func_uchar_shl4_begin:
-    mov %rdi, %rax
-    movzx %al, %rax
+    movzx %dil, %rax
     shl $4, %eax
     ret
 .L__kefir_text_func_uchar_shl4_end:
 
 uchar_shl8:
 .L__kefir_text_func_uchar_shl8_begin:
-    mov %rdi, %rax
-    movzx %al, %rax
+    movzx %dil, %rax
     shl $8, %eax
     ret
 .L__kefir_text_func_uchar_shl8_end:
@@ -332,8 +324,7 @@ ulong_shl8:
 
 schar_shl16:
 .L__kefir_text_func_schar_shl16_begin:
-    mov %rdi, %rax
-    movsx %al, %rax
+    movsx %dil, %rax
     shl $16, %eax
     ret
 .L__kefir_text_func_schar_shl16_end:
@@ -372,40 +363,35 @@ slong_shl64:
 
 sshort_shl1:
 .L__kefir_text_func_sshort_shl1_begin:
-    mov %rdi, %rax
-    movsx %ax, %rax
+    movsx %di, %rax
     shl $1, %eax
     ret
 .L__kefir_text_func_sshort_shl1_end:
 
 sshort_shl2:
 .L__kefir_text_func_sshort_shl2_begin:
-    mov %rdi, %rax
-    movsx %ax, %rax
+    movsx %di, %rax
     shl $2, %eax
     ret
 .L__kefir_text_func_sshort_shl2_end:
 
 sshort_shl4:
 .L__kefir_text_func_sshort_shl4_begin:
-    mov %rdi, %rax
-    movsx %ax, %rax
+    movsx %di, %rax
     shl $4, %eax
     ret
 .L__kefir_text_func_sshort_shl4_end:
 
 sshort_shl8:
 .L__kefir_text_func_sshort_shl8_begin:
-    mov %rdi, %rax
-    movsx %ax, %rax
+    movsx %di, %rax
     shl $8, %eax
     ret
 .L__kefir_text_func_sshort_shl8_end:
 
 uchar_shl16:
 .L__kefir_text_func_uchar_shl16_begin:
-    mov %rdi, %rax
-    movzx %al, %rax
+    movzx %dil, %rax
     shl $16, %eax
     ret
 .L__kefir_text_func_uchar_shl16_end:
@@ -444,40 +430,35 @@ ulong_shl64:
 
 ushort_shl1:
 .L__kefir_text_func_ushort_shl1_begin:
-    mov %rdi, %rax
-    movzx %ax, %rax
+    movzx %di, %rax
     shl $1, %eax
     ret
 .L__kefir_text_func_ushort_shl1_end:
 
 ushort_shl2:
 .L__kefir_text_func_ushort_shl2_begin:
-    mov %rdi, %rax
-    movzx %ax, %rax
+    movzx %di, %rax
     shl $2, %eax
     ret
 .L__kefir_text_func_ushort_shl2_end:
 
 ushort_shl4:
 .L__kefir_text_func_ushort_shl4_begin:
-    mov %rdi, %rax
-    movzx %ax, %rax
+    movzx %di, %rax
     shl $4, %eax
     ret
 .L__kefir_text_func_ushort_shl4_end:
 
 ushort_shl8:
 .L__kefir_text_func_ushort_shl8_begin:
-    mov %rdi, %rax
-    movzx %ax, %rax
+    movzx %di, %rax
     shl $8, %eax
     ret
 .L__kefir_text_func_ushort_shl8_end:
 
 sshort_shl16:
 .L__kefir_text_func_sshort_shl16_begin:
-    mov %rdi, %rax
-    movsx %ax, %rax
+    movsx %di, %rax
     shl $16, %eax
     ret
 .L__kefir_text_func_sshort_shl16_end:
@@ -496,8 +477,7 @@ sshort_shl64:
 
 ushort_shl16:
 .L__kefir_text_func_ushort_shl16_begin:
-    mov %rdi, %rax
-    movzx %ax, %rax
+    movzx %di, %rax
     shl $16, %eax
     ret
 .L__kefir_text_func_ushort_shl16_end:

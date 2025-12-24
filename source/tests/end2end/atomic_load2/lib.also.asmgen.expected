@@ -20,52 +20,45 @@
 .L__kefir_text_section_begin:
 load_b:
 .L__kefir_text_func_load_b_begin:
-    mov %rdi, %rcx
-    movb (%rcx), %al
+    movb (%rdi), %al
     ret
 .L__kefir_text_func_load_b_end:
 
 load_u8:
 .L__kefir_text_func_load_u8_begin:
-    mov %rdi, %rcx
-    movb (%rcx), %al
+    movb (%rdi), %al
     ret
 .L__kefir_text_func_load_u8_end:
 
 load_f32:
 .L__kefir_text_func_load_f32_begin:
-    mov %rdi, %rcx
-    movl (%rcx), %eax
+    movl (%rdi), %eax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_load_f32_end:
 
 load_f64:
 .L__kefir_text_func_load_f64_begin:
-    mov %rdi, %rcx
-    movq (%rcx), %rax
+    movq (%rdi), %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_load_f64_end:
 
 load_u16:
 .L__kefir_text_func_load_u16_begin:
-    mov %rdi, %rcx
-    movw (%rcx), %ax
+    movw (%rdi), %ax
     ret
 .L__kefir_text_func_load_u16_end:
 
 load_u32:
 .L__kefir_text_func_load_u32_begin:
-    mov %rdi, %rcx
-    movl (%rcx), %eax
+    movl (%rdi), %eax
     ret
 .L__kefir_text_func_load_u32_end:
 
 load_u64:
 .L__kefir_text_func_load_u64_begin:
-    mov %rdi, %rcx
-    movq (%rcx), %rax
+    movq (%rdi), %rax
     ret
 .L__kefir_text_func_load_u64_end:
 

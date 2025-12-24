@@ -96,8 +96,7 @@ intcld:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    mov %rdi, %rax
-    movsx %eax, %rax
+    movsx %edi, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -207,8 +206,7 @@ uintcld:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    mov %rdi, %rax
-    mov %eax, %eax
+    mov %edi, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -229,8 +227,7 @@ imp_cast:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    mov %rdi, %rax
-    movsx %eax, %rax
+    movsx %edi, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp

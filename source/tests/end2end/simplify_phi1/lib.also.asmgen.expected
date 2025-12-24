@@ -16,11 +16,10 @@ test1:
     push %r13
     push %r14
     sub $16, %rsp
-    mov %r8, %rax
     mov %rsi, %rbx
     mov %rcx, %r12
     mov %rdx, %r13
-    mov %rax, %r14
+    mov %r8, %r14
 .L__kefir_func_test1_label2:
     movq %r14, -48(%rbp)
     movq %r13, -40(%rbp)

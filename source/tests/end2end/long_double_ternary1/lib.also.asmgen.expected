@@ -18,12 +18,11 @@ test1:
     movq -80(%rbp), %rax
     mov $2, %ecx
     idiv %ecx
-    mov %rdx, %rax
     fldt .L__kefir_func_test1_label8(%rip)
     fldt .L__kefir_func_test1_label9(%rip)
     fstpt -64(%rbp)
     fstpt -80(%rbp)
-    cmp $0, %eax
+    cmp $0, %edx
     je .L__kefir_func_test1_label3
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)

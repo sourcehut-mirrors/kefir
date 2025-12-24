@@ -28,8 +28,7 @@ test1:
     mov %rcx, -248(%rbp)
     mov %r8, -240(%rbp)
     mov %r9, -232(%rbp)
-    mov %rdi, %rax
-    movl %eax, -64(%rbp)
+    movl %edi, -64(%rbp)
     movl $8, -32(%rbp)
     movl $48, -28(%rbp)
     lea 16(%rbp), %rax
@@ -63,8 +62,7 @@ test1:
     movdqu -56(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
     movq -80(%rbp), %rax
-    movq -72(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -72(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

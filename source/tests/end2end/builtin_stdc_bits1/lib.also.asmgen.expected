@@ -14,13 +14,13 @@
 .L__kefir_text_section_begin:
 bit_ceil:
 .L__kefir_text_func_bit_ceil_begin:
-    mov %rdi, %rax
-    cmp $1, %rax
+    cmp $1, %rdi
     jg .L__kefir_func_bit_ceil_label8
     mov $1, %rax
 .L__kefir_func_bit_ceil_label3:
     ret
 .L__kefir_func_bit_ceil_label8:
+    mov %rdi, %rax
     sub $1, %rax
     mov %rcx, %rdx
     bsr %rax, %rdx
@@ -30,35 +30,28 @@ bit_ceil:
     mov %rcx, %rdx
     sub %eax, %edx
     mov %rdx, %rax
-    movsx %eax, %rax
-    mov $2, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    movsx %eax, %rcx
+    mov $2, %rax
     shl %cl, %rax
     jmp .L__kefir_func_bit_ceil_label3
 .L__kefir_text_func_bit_ceil_end:
 
 bit_floor:
 .L__kefir_text_func_bit_floor_begin:
-    mov %rdi, %rax
-    cmp $0, %rax
+    cmp $0, %rdi
     jne .L__kefir_func_bit_floor_label8
     xor %eax, %eax
 .L__kefir_func_bit_floor_label3:
     ret
 .L__kefir_func_bit_floor_label8:
-    mov %rcx, %rdx
-    bsr %rax, %rdx
-    mov %rdx, %rax
+    bsr %rdi, %rax
     xor $63, %eax
     mov $63, %rcx
     mov %rcx, %rdx
     sub %eax, %edx
     mov %rdx, %rax
-    movsx %eax, %rax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    movsx %eax, %rcx
+    mov $1, %rax
     shl %cl, %rax
     jmp .L__kefir_func_bit_floor_label3
 .L__kefir_text_func_bit_floor_end:
@@ -68,31 +61,25 @@ rotate_left:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    movzx %sil, %rsi
     mov %rsi, %rax
-    mov %rdi, %rsi
-    movzx %al, %rdi
-    mov %rdi, %rax
     movq %rax, -16(%rbp)
     cdq
     movq -16(%rbp), %rax
     mov $64, %ecx
     idiv %ecx
-    mov %rdx, %rax
-    movsx %eax, %rax
-    mov %rax, %rcx
-    mov %rsi, %r8
+    movsx %edx, %rcx
+    mov %rdi, %r8
     shl %cl, %r8
-    mov %rdi, %rax
+    mov %rsi, %rax
     neg %eax
     movq %rax, -8(%rbp)
     cdq
     movq -8(%rbp), %rax
     mov $64, %ecx
     idiv %ecx
-    mov %rdx, %rax
-    movsx %eax, %rax
-    mov %rax, %rcx
-    mov %rsi, %rax
+    movsx %edx, %rcx
+    mov %rdi, %rax
     shr %cl, %rax
     mov %r8, %rcx
     or %rax, %rcx
@@ -107,31 +94,25 @@ rotate_right:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    movzx %sil, %rsi
     mov %rsi, %rax
-    mov %rdi, %rsi
-    movzx %al, %rdi
-    mov %rdi, %rax
     movq %rax, -16(%rbp)
     cdq
     movq -16(%rbp), %rax
     mov $64, %ecx
     idiv %ecx
-    mov %rdx, %rax
-    movsx %eax, %rax
-    mov %rax, %rcx
-    mov %rsi, %r8
+    movsx %edx, %rcx
+    mov %rdi, %r8
     shr %cl, %r8
-    mov %rdi, %rax
+    mov %rsi, %rax
     neg %eax
     movq %rax, -8(%rbp)
     cdq
     movq -8(%rbp), %rax
     mov $64, %ecx
     idiv %ecx
-    mov %rdx, %rax
-    movsx %eax, %rax
-    mov %rax, %rcx
-    mov %rsi, %rax
+    movsx %edx, %rcx
+    mov %rdi, %rax
     shl %cl, %rax
     mov %r8, %rcx
     or %rax, %rcx

@@ -146,12 +146,9 @@ __kefir_bigint_cast_signed:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    movq %rax, -32(%rbp)
-    movq %rcx, -40(%rbp)
-    movq %rdx, -88(%rbp)
+    movq %rdx, -32(%rbp)
+    movq %rsi, -40(%rbp)
+    movq %rdi, -88(%rbp)
     movq -32(%rbp), %rax
     mov $1, %edx
     movsx %edx, %rcx
@@ -330,10 +327,8 @@ __kefir_bigint_cast_signed:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label45
-    movq -64(%rbp), %rax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    movq -64(%rbp), %rcx
+    mov $1, %rax
     shl %cl, %rax
     mov $1, %edx
     movsx %edx, %rcx
@@ -352,10 +347,8 @@ __kefir_bigint_cast_signed:
     movb %al, (%rcx)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label7
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label45:
-    movq -64(%rbp), %rax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    movq -64(%rbp), %rcx
+    mov $1, %rax
     shl %cl, %rax
     mov $1, %edx
     movsx %edx, %rcx
@@ -431,10 +424,8 @@ __kefir_bigint_cast_signed:
     sete %al
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label53
-    movq -56(%rbp), %rax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    movq -56(%rbp), %rcx
+    mov $1, %rax
     shl %cl, %rax
     mov $1, %edx
     movsx %edx, %rcx
@@ -457,10 +448,8 @@ __kefir_bigint_cast_signed:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label53:
-    movq -56(%rbp), %rax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    movq -56(%rbp), %rcx
+    mov $1, %rax
     shl %cl, %rax
     mov $1, %edx
     movsx %edx, %rcx

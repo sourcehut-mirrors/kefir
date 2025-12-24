@@ -45,8 +45,7 @@ add_ld:
     sub $104, %rsp
     fstcw -16(%rbp)
     mov %rdi, %rbx
-    movq ld_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq ld_1@GOTPCREL(%rip), %rsi
     lea -112(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -83,8 +82,7 @@ div_ld:
     sub $120, %rsp
     fstcw -16(%rbp)
     mov %rdi, %rbx
-    movq ld_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq ld_1@GOTPCREL(%rip), %rsi
     lea -128(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -162,8 +160,7 @@ mul_ld:
     sub $104, %rsp
     fstcw -16(%rbp)
     mov %rdi, %rbx
-    movq ld_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq ld_1@GOTPCREL(%rip), %rsi
     lea -112(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -216,8 +213,7 @@ neg_ld:
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-    movq ld_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq ld_1@GOTPCREL(%rip), %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -244,8 +240,7 @@ sub_ld:
     sub $104, %rsp
     fstcw -16(%rbp)
     mov %rdi, %rbx
-    movq ld_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq ld_1@GOTPCREL(%rip), %rsi
     lea -112(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -282,8 +277,7 @@ add_f32:
     sub $56, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
-    movq f32_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f32_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -321,8 +315,7 @@ add_f64:
     sub $56, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
-    movq f64_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f64_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -359,8 +352,7 @@ div_f32:
     sub $56, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
-    movq f32_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f32_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -419,8 +411,7 @@ div_f64:
     fstcw -16(%rbp)
     stmxcsr -24(%rbp)
     mov %rdi, %rbx
-    movq f64_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f64_1@GOTPCREL(%rip), %rsi
     lea -112(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -488,8 +479,7 @@ mul_f32:
     sub $56, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
-    movq f32_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f32_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -536,8 +526,7 @@ mul_f64:
     sub $56, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
-    movq f64_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f64_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -582,8 +571,7 @@ neg_f32:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movq f32_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f32_1@GOTPCREL(%rip), %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -607,8 +595,7 @@ neg_f64:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq f64_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f64_1@GOTPCREL(%rip), %rsi
     lea -32(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -631,8 +618,7 @@ sub_f32:
     sub $56, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
-    movq f32_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f32_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -670,8 +656,7 @@ sub_f64:
     sub $56, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
-    movq f64_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f64_1@GOTPCREL(%rip), %rsi
     lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx

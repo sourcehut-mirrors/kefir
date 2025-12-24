@@ -21,10 +21,9 @@ add_ld1:
     sub $96, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
-    movq ld1@GOTPCREL(%rip), %rax
+    movq ld1@GOTPCREL(%rip), %rsi
     fstpt -96(%rbp)
     mov $16, %rdi
-    mov %rax, %rsi
     lea -32(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
@@ -38,9 +37,8 @@ add_ld1:
     faddp
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    movq ld1@GOTPCREL(%rip), %rax
+    movq ld1@GOTPCREL(%rip), %rsi
     mov $16, %rdi
-    mov %rax, %rsi
     lea -48(%rbp), %rdx
     lea -32(%rbp), %rcx
     mov $5, %r8
@@ -63,9 +61,8 @@ add_cld1:
     sub $104, %rsp
     fstcw -16(%rbp)
     lea 16(%rbp), %rbx
-    movq cld1@GOTPCREL(%rip), %rax
+    movq cld1@GOTPCREL(%rip), %rsi
     mov $32, %rdi
-    mov %rax, %rsi
     lea -48(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
@@ -90,9 +87,8 @@ add_cld1:
     faddp
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
-    movq cld1@GOTPCREL(%rip), %rax
+    movq cld1@GOTPCREL(%rip), %rsi
     mov $32, %rdi
-    mov %rax, %rsi
     lea -80(%rbp), %rdx
     lea -48(%rbp), %rcx
     mov $5, %r8

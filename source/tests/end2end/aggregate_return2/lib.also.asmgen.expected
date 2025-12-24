@@ -49,17 +49,15 @@ testsmall:
     lea -64(%rbp), %rbx
     mov %r12, %rdi
     call getsmall@PLT
-    mov %rbx, %rcx
-    movq %rax, (%rcx)
-    movq %xmm0, 8(%rcx)
-    movq (%rcx), %r13
+    movq %rax, (%rbx)
+    movq %xmm0, 8(%rbx)
+    movq (%rbx), %r13
     lea -48(%rbp), %rbx
     mov %r12, %rdi
     call getsmall@PLT
-    mov %rbx, %rcx
-    movq %rax, (%rcx)
-    movq %xmm0, 8(%rcx)
-    movl 8(%rcx), %eax
+    movq %rax, (%rbx)
+    movq %xmm0, 8(%rbx)
+    movl 8(%rbx), %eax
     cvtsi2ss %r13, %xmm0
     movd %eax, %xmm1
     addss %xmm1, %xmm0
@@ -80,9 +78,8 @@ testlarge2:
     push %r12
     sub $1024, %rsp
     mov %rsi, %r12
-    mov %rdi, %rax
+    mov %rdi, %rsi
     lea -1040(%rbp), %rbx
-    mov %rax, %rsi
     mov %rbx, %rdi
     call getlarge@PLT
     lea -528(%rbp), %rbx

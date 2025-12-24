@@ -50,10 +50,8 @@
 .L__kefir_text_section_begin:
 is:
 .L__kefir_text_func_is_begin:
-    mov %rdi, %rax
-    xor %ecx, %ecx
-    cmp $0, %rax
-    mov %rcx, %rax
+    xor %eax, %eax
+    cmp $0, %rdi
     sete %al
     ret
 .L__kefir_text_func_is_end:
@@ -72,9 +70,7 @@ is2:
 
 or1:
 .L__kefir_text_func_or1_begin:
-    mov %rdi, %rax
-    test %al, %al
-    mov %rcx, %rax
+    test %dil, %dil
     setne %al
     movzx %al, %rax
     ret
@@ -82,9 +78,7 @@ or1:
 
 or2:
 .L__kefir_text_func_or2_begin:
-    mov %rdi, %rax
-    test %al, %al
-    mov %rcx, %rax
+    test %dil, %dil
     setne %al
     movzx %al, %rax
     ret
@@ -170,22 +164,19 @@ get2:
 
 set1:
 .L__kefir_text_func_set1_begin:
-    mov %rdi, %rax
-    movq $0, (%rax)
+    movq $0, (%rdi)
     ret
 .L__kefir_text_func_set1_end:
 
 set2:
 .L__kefir_text_func_set2_begin:
-    mov %rdi, %rax
-    movb $0, (%rax)
+    movb $0, (%rdi)
     ret
 .L__kefir_text_func_set2_end:
 
 set3:
 .L__kefir_text_func_set3_begin:
-    mov %rdi, %rax
-    movq $0, (%rax)
+    movq $0, (%rdi)
     ret
 .L__kefir_text_func_set3_end:
 
@@ -209,26 +200,25 @@ conv3:
 
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rdi, %rax
-    movl $1, (%rax)
-    movl $1, 4(%rax)
-    movl $1, 8(%rax)
-    movl $0, 12(%rax)
-    movl $0, 16(%rax)
-    movl $1, 20(%rax)
-    movl $1, 24(%rax)
-    movl $0, 28(%rax)
-    movl $0, 32(%rax)
-    movl $1, 36(%rax)
-    movl $1, 40(%rax)
-    movl $0, 44(%rax)
-    movl $0, 48(%rax)
-    movl $0, 52(%rax)
-    movl $0, 56(%rax)
-    movl $1, 60(%rax)
-    movl $0, 64(%rax)
-    movl $0, 68(%rax)
-    movl $1, 72(%rax)
+    movl $1, (%rdi)
+    movl $1, 4(%rdi)
+    movl $1, 8(%rdi)
+    movl $0, 12(%rdi)
+    movl $0, 16(%rdi)
+    movl $1, 20(%rdi)
+    movl $1, 24(%rdi)
+    movl $0, 28(%rdi)
+    movl $0, 32(%rdi)
+    movl $1, 36(%rdi)
+    movl $1, 40(%rdi)
+    movl $0, 44(%rdi)
+    movl $0, 48(%rdi)
+    movl $0, 52(%rdi)
+    movl $0, 56(%rdi)
+    movl $1, 60(%rdi)
+    movl $0, 64(%rdi)
+    movl $0, 68(%rdi)
+    movl $1, 72(%rdi)
     ret
 .L__kefir_text_func_test1_end:
 

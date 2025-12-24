@@ -21,8 +21,7 @@ bnot1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movb %al, -1(%rbp)
+    movb %dil, -1(%rbp)
     movb -1(%rbp), %al
     shl $58, %rax
     shr $58, %rax
@@ -42,8 +41,7 @@ bnot2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movw %ax, -2(%rbp)
+    movw %di, -2(%rbp)
     movw -2(%rbp), %ax
     shl $50, %rax
     shr $50, %rax
@@ -63,8 +61,7 @@ bnot3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movl %eax, -4(%rbp)
+    movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     shl $35, %rax
     shr $35, %rax
@@ -84,8 +81,7 @@ bnot4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movq %rax, -8(%rbp)
+    movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     shl $6, %rax
     shr $6, %rax
@@ -173,10 +169,8 @@ __kefir_bigint_is_zero:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movq %rax, -56(%rbp)
-    movq %rcx, -48(%rbp)
+    movq %rsi, -56(%rbp)
+    movq %rdi, -48(%rbp)
     movq -56(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
@@ -298,10 +292,10 @@ __kefir_bigint_is_zero:
     movq -8(%rbp), %rax
     mov $1, %edx
     movsx %edx, %rcx
-    add %rcx, %rax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    mov %rax, %rdx
+    add %rcx, %rdx
+    mov %rdx, %rcx
+    mov $1, %rax
     shl %cl, %rax
     mov $1, %edx
     movsx %edx, %rcx

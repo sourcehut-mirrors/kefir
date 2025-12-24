@@ -11,8 +11,7 @@ gets1:
 .L__kefir_text_func_gets1_begin:
     movq value@GOTPCREL(%rip), %rcx
     movq (%rcx), %rax
-    movl 8(%rcx), %ecx
-    mov %rcx, %rdx
+    movl 8(%rcx), %edx
     ret
 .L__kefir_text_func_gets1_end:
 

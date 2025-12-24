@@ -17,7 +17,6 @@ test1:
     lea 16(%rbp), %r10
     movq %rcx, -144(%rbp)
     movq %r8, -136(%rbp)
-    mov %rdx, %rcx
     movq %rdi, -128(%rbp)
     movq %rsi, -120(%rbp)
     movq %rax, -8(%rbp)
@@ -26,7 +25,7 @@ test1:
     movq %r9, -32(%rbp)
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movq %rcx, -56(%rbp)
+    movq %rdx, -56(%rbp)
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -72(%rbp)
     movdqu -72(%rbp), %xmm0

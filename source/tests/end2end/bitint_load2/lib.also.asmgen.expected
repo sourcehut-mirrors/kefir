@@ -83,8 +83,7 @@ get5:
     movdqu (%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -95,7 +94,6 @@ get6:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %rcx
     movq f@GOTPCREL(%rip), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -48(%rbp)
@@ -103,7 +101,7 @@ get6:
     movdqu %xmm0, -32(%rbp)
     movdqu 32(%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rcx, %rax
+    mov %rdi, %rax
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0

@@ -26,42 +26,39 @@ getx3:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rdi, %rcx
     xor %eax, %eax
-    movq %rax, (%rcx)
-    movq %rax, 8(%rcx)
-    movq %rax, 16(%rcx)
-    movl $-100, (%rcx)
-    lea 4(%rcx), %rax
+    movq %rax, (%rdi)
+    movq %rax, 8(%rdi)
+    movq %rax, 16(%rdi)
+    movl $-100, (%rdi)
+    lea 4(%rdi), %rax
     movl $3, (%rax)
-    lea 8(%rcx), %rax
+    lea 8(%rdi), %rax
     movl $5, (%rax)
-    lea 12(%rcx), %rax
+    lea 12(%rdi), %rax
     movl $0, (%rax)
-    lea 16(%rcx), %rax
+    lea 16(%rdi), %rax
     movl $6, (%rax)
-    lea 20(%rcx), %rax
+    lea 20(%rdi), %rax
     movl $-5, (%rax)
-    mov %rcx, %rax
+    mov %rdi, %rax
     ret
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rdi, %rax
-    mov $1, %rcx
-    mov %rax, %rdx
-    mov %rcx, %rax
+    mov $1, %rax
+    mov %rdi, %rcx
 .L__kefir_func_test3_label2:
-    mov %rdx, %rcx
-    add $-1, %ecx
+    mov %rcx, %rdx
+    add $-1, %edx
     mov %rax, %rsi
-    imul %edx, %esi
-    cmp $0, %edx
+    imul %ecx, %esi
+    cmp $0, %ecx
     jg .L__kefir_func_test3_label9
     ret
 .L__kefir_func_test3_label9:
-    mov %rcx, %rdx
+    mov %rdx, %rcx
     mov %rsi, %rax
     jmp .L__kefir_func_test3_label2
 .L__kefir_text_func_test3_end:

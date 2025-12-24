@@ -89,14 +89,12 @@ get:
     cld
     mov $17, %rcx
     rep movsq
-    lea 160(%rdx), %rax
-    mov %rax, %rdi
+    lea 160(%rdx), %rdi
     lea -280(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    lea 296(%rdx), %rax
-    mov %rax, %rdi
+    lea 296(%rdx), %rdi
     lea -144(%rbp), %rsi
     cld
     mov $17, %rcx

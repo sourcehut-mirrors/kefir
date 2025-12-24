@@ -21,10 +21,8 @@ xor1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movb %al, -1(%rbp)
-    movb %cl, -2(%rbp)
+    movb %sil, -1(%rbp)
+    movb %dil, -2(%rbp)
     movb -2(%rbp), %al
     movb -1(%rbp), %cl
     shl $58, %rax
@@ -42,10 +40,8 @@ xor2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movw %ax, -2(%rbp)
-    movw %cx, -4(%rbp)
+    movw %si, -2(%rbp)
+    movw %di, -4(%rbp)
     movw -4(%rbp), %ax
     movw -2(%rbp), %cx
     shl $50, %rax
@@ -63,10 +59,8 @@ xor3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     shl $35, %rax
@@ -84,10 +78,8 @@ xor4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movq %rax, -8(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %rsi, -8(%rbp)
+    movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rcx
     shl $6, %rax
@@ -124,8 +116,7 @@ xor5:
     mov $120, %rdx
     call __kefir_bigint_xor
     movq -48(%rbp), %rax
-    movq -40(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -40(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -223,12 +214,9 @@ __kefir_bigint_xor:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    movq %rax, -48(%rbp)
-    movq %rcx, -32(%rbp)
-    movq %rdx, -40(%rbp)
+    movq %rdx, -48(%rbp)
+    movq %rsi, -32(%rbp)
+    movq %rdi, -40(%rbp)
     movq -48(%rbp), %rax
     mov $8, %edx
     movsx %edx, %rcx

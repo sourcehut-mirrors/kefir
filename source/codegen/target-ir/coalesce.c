@@ -22,27 +22,10 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static  kefir_result_t free_coalesce_group(struct kefir_mem *mem, struct kefir_list *list,
-                                                          struct kefir_list_entry *entry, void *payload) {
-    UNUSED(list);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
-    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_coalesce_group *, group,
-        entry->value);
-    REQUIRE(group != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR coalesce group"));
-
-    REQUIRE_OK(kefir_hashset_free(mem, &group->members));
-    KEFIR_FREE(mem, group);
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_codegen_target_ir_coalesce_init(struct kefir_codegen_target_ir_coalesce *coalesce) {
     REQUIRE(coalesce != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR coalescing"));
 
-    REQUIRE_OK(kefir_hashtable_init(&coalesce->groups, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_list_init(&coalesce->group_list));
-    REQUIRE_OK(kefir_list_on_remove(&coalesce->group_list, free_coalesce_group, NULL));
+    REQUIRE_OK(kefir_graph_init(&coalesce->coalesce_graph));
     return KEFIR_OK;
 }
 
@@ -50,59 +33,23 @@ kefir_result_t kefir_codegen_target_ir_coalesce_free(struct kefir_mem *mem, stru
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(coalesce != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR coalescing"));
 
-    REQUIRE_OK(kefir_hashtable_free(mem, &coalesce->groups));
-    REQUIRE_OK(kefir_list_free(mem, &coalesce->group_list));
+    REQUIRE_OK(kefir_graph_free(mem, &coalesce->coalesce_graph));
     return KEFIR_OK;
 }
 
-static kefir_result_t try_coalesce(struct kefir_mem *mem, const struct kefir_codegen_target_ir_interference *interference, struct kefir_codegen_target_ir_coalesce *coalesce,
+static kefir_result_t record_coalesce(struct kefir_mem *mem, const struct kefir_codegen_target_ir_interference *interference, struct kefir_codegen_target_ir_coalesce *coalesce,
     kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_value_ref_t other_value_ref) {
     REQUIRE(KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref) != KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref), KEFIR_OK);
 
-    if (kefir_hashtable_has(&coalesce->groups, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref))) {
-        REQUIRE(!kefir_hashtable_has(&coalesce->groups, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)), KEFIR_OK);
-        REQUIRE_OK(try_coalesce(mem, interference, coalesce, other_value_ref, value_ref));
-        return KEFIR_OK;
-    }
-
-    kefir_hashtable_value_t table_value;
-    kefir_result_t res = kefir_hashtable_at(&coalesce->groups, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &table_value);   
-    if (res == KEFIR_NOT_FOUND) {
-        struct kefir_codegen_target_ir_coalesce_group *group = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_coalesce_group));
-        REQUIRE(group != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR coalesce group"));
-
-        res = kefir_hashset_init(&group->members, &kefir_hashtable_uint_ops);
-        REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &coalesce->group_list, NULL, group));
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_FREE(mem, group);
-            return res;
-        });
-
-        REQUIRE_OK(kefir_hashset_add(mem, &group->members, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
-        REQUIRE_OK(kefir_hashset_add(mem, &group->members, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref)));
-        REQUIRE_OK(kefir_hashtable_insert(mem, &coalesce->groups, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), (kefir_hashtable_value_t) group));
-        REQUIRE_OK(kefir_hashtable_insert(mem, &coalesce->groups, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref), (kefir_hashtable_value_t) group));
-    } else {
-        REQUIRE_OK(res);
-        ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_coalesce_group *, group,
-            table_value);
-        
-        kefir_bool_t interferes = false;
-        kefir_hashset_key_t key;
-        struct kefir_hashset_iterator iter;
-        for (res = kefir_hashset_iter(&group->members, &iter, &key);
-            res == KEFIR_OK && !interferes;
-            res = kefir_hashset_next(&iter, &key)) {
-            REQUIRE_OK(kefir_codegen_target_ir_interference_has(interference, other_value_ref, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(key), &interferes));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-        
-        if (!interferes) {
-            REQUIRE_OK(kefir_hashset_add(mem, &group->members, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref)));
-            REQUIRE_OK(kefir_hashtable_insert(mem, &coalesce->groups, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref), (kefir_hashtable_value_t) group));
-        }
+    kefir_bool_t interferes = false;
+    REQUIRE_OK(kefir_codegen_target_ir_interference_has(interference, value_ref, other_value_ref, &interferes));
+    if (!interferes) {
+        REQUIRE_OK(kefir_graph_add_edge(mem, &coalesce->coalesce_graph,
+            (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref),
+            (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref)));
+        REQUIRE_OK(kefir_graph_add_edge(mem, &coalesce->coalesce_graph,
+            (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref),
+            (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
     }
     return KEFIR_OK;
 }
@@ -137,7 +84,7 @@ static kefir_result_t do_coalesce_build(struct kefir_mem *mem, struct kefir_code
                 for (res = kefir_codegen_target_ir_code_phi_link_iter(control_flow->code, &iter, instr_ref, &link_block_ref, &link_value_ref);
                     res == KEFIR_OK;
                     res = kefir_codegen_target_ir_code_phi_link_next(&iter, &link_block_ref, &link_value_ref)) {
-                    REQUIRE_OK(try_coalesce(mem, interference, coalesce, value_ref, link_value_ref));
+                    REQUIRE_OK(record_coalesce(mem, interference, coalesce, value_ref, link_value_ref));
                 }
                 if (res != KEFIR_ITERATOR_END) {
                     REQUIRE_OK(res);
@@ -151,10 +98,10 @@ static kefir_result_t do_coalesce_build(struct kefir_mem *mem, struct kefir_code
                 }
                 REQUIRE_OK(res);
 
-                REQUIRE_OK(try_coalesce(mem, interference, coalesce, instr->operation.parameters[0].direct.value_ref, value_ref));
+                REQUIRE_OK(record_coalesce(mem, interference, coalesce, instr->operation.parameters[0].direct.value_ref, value_ref));
             } else if (instr->operation.opcode == control_flow->code->klass->upsilon_opcode &&
                 instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
-                REQUIRE_OK(try_coalesce(mem, interference, coalesce, instr->operation.parameters[0].upsilon_ref, instr->operation.parameters[1].direct.value_ref));
+                REQUIRE_OK(record_coalesce(mem, interference, coalesce, instr->operation.parameters[0].upsilon_ref, instr->operation.parameters[1].direct.value_ref));
             }
         }
 
@@ -190,5 +137,39 @@ kefir_result_t kefir_codegen_target_ir_coalesce_build(struct kefir_mem *mem, str
         return res;
     });
     REQUIRE_OK(kefir_list_free(mem, &queue));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_coalesce_iter(const struct kefir_codegen_target_ir_coalesce *coalesce,
+    struct kefir_codegen_target_ir_coalesce_iterator *iter,
+    kefir_codegen_target_ir_value_ref_t value_ref,
+    kefir_codegen_target_ir_value_ref_t *coalesce_value_ref_ptr) {
+    REQUIRE(coalesce != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR coalesce"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR coalesce iterator"));
+
+    kefir_graph_vertex_id_t vertex;
+    kefir_result_t res = kefir_graph_edge_iter(&coalesce->coalesce_graph, &iter->iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref),
+        &vertex);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR coalesce iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(coalesce_value_ref_ptr, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(vertex));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_coalesce_next(struct kefir_codegen_target_ir_coalesce_iterator *iter,
+    kefir_codegen_target_ir_value_ref_t *coalesce_value_ref_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR coalesce iterator"));
+
+    kefir_graph_vertex_id_t vertex;
+    kefir_result_t res = kefir_graph_edge_next(&iter->iter, &vertex);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR coalesce iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(coalesce_value_ref_ptr, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(vertex));
     return KEFIR_OK;
 }

@@ -27,8 +27,7 @@ f32_predec:
     push %rbx
     sub $136, %rsp
     stmxcsr -16(%rbp)
-    mov %rdi, %rax
-    movq %rax, -24(%rbp)
+    movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -144(%rbp)
     stmxcsr -116(%rbp)
@@ -111,8 +110,7 @@ f32_preinc:
     push %rbx
     sub $136, %rsp
     stmxcsr -16(%rbp)
-    mov %rdi, %rax
-    movq %rax, -24(%rbp)
+    movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -144(%rbp)
     stmxcsr -116(%rbp)
@@ -195,8 +193,7 @@ f64_predec:
     push %rbx
     sub $152, %rsp
     stmxcsr -16(%rbp)
-    mov %rdi, %rax
-    movq %rax, -24(%rbp)
+    movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -160(%rbp)
     stmxcsr -132(%rbp)
@@ -279,8 +276,7 @@ f64_preinc:
     push %rbx
     sub $152, %rsp
     stmxcsr -16(%rbp)
-    mov %rdi, %rax
-    movq %rax, -24(%rbp)
+    movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -160(%rbp)
     stmxcsr -132(%rbp)
@@ -363,8 +359,7 @@ f32_postdec:
     push %rbx
     sub $136, %rsp
     stmxcsr -16(%rbp)
-    mov %rdi, %rax
-    movq %rax, -24(%rbp)
+    movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -144(%rbp)
     stmxcsr -116(%rbp)
@@ -439,8 +434,7 @@ f32_postinc:
     push %rbx
     sub $136, %rsp
     stmxcsr -16(%rbp)
-    mov %rdi, %rax
-    movq %rax, -24(%rbp)
+    movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -144(%rbp)
     stmxcsr -116(%rbp)
@@ -515,8 +509,7 @@ f64_postdec:
     push %rbx
     sub $152, %rsp
     stmxcsr -16(%rbp)
-    mov %rdi, %rax
-    movq %rax, -24(%rbp)
+    movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -160(%rbp)
     stmxcsr -132(%rbp)
@@ -591,8 +584,7 @@ f64_postinc:
     push %rbx
     sub $152, %rsp
     stmxcsr -16(%rbp)
-    mov %rdi, %rax
-    movq %rax, -24(%rbp)
+    movq %rdi, -24(%rbp)
     movq -24(%rbp), %rbx
     fnstenv -160(%rbp)
     stmxcsr -132(%rbp)

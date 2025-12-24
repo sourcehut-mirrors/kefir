@@ -18,95 +18,81 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rsi, %rax
+    mov %rdi, %rax
+    shl $47, %rax
+    shr $47, %rax
+    xor %ecx, %ecx
+    cmp $0, %eax
+    mov %rcx, %rax
+    sete %al
     mov %rdi, %rcx
-    mov %rcx, %rdx
-    shl $47, %rdx
-    shr $47, %rdx
-    xor %esi, %esi
-    cmp $0, %edx
-    mov %rsi, %rdx
-    sete %dl
     shl $47, %rcx
     shr $47, %rcx
-    mov %rsi, %rdi
+    mov %rdx, %rdi
     bsr %ecx, %edi
     mov %rdi, %rcx
     xor $31, %ecx
     sub $15, %ecx
-    test %dl, %dl
-    mov %rcx, %rdx
-    cmovnz %rax, %rdx
-    mov %rdx, %rax
+    test %al, %al
+    mov %rcx, %rax
+    cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdx
-    shl $32, %rdx
-    shr $32, %rdx
-    xor %esi, %esi
-    cmp $0, %edx
-    mov %rsi, %rdx
-    sete %dl
-    mov %rsi, %rdi
-    bsr %ecx, %edi
-    mov %rdi, %rcx
+    mov %rdi, %rax
+    shl $32, %rax
+    shr $32, %rax
+    xor %ecx, %ecx
+    cmp $0, %eax
+    mov %rcx, %rax
+    sete %al
+    bsr %edi, %ecx
     xor $31, %ecx
-    test %dl, %dl
-    mov %rcx, %rdx
-    cmovnz %rax, %rdx
-    mov %rdx, %rax
+    test %al, %al
+    mov %rcx, %rax
+    cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rsi, %rax
+    mov %rdi, %rax
+    shl $5, %rax
+    shr $5, %rax
+    xor %ecx, %ecx
+    cmp $0, %rax
+    mov %rcx, %rax
+    sete %al
     mov %rdi, %rcx
-    mov %rcx, %rdx
-    shl $5, %rdx
-    shr $5, %rdx
-    xor %esi, %esi
-    cmp $0, %rdx
-    mov %rsi, %rdx
-    sete %dl
     shl $5, %rcx
     shr $5, %rcx
-    mov %rsi, %rdi
+    mov %rdx, %rdi
     bsr %rcx, %rdi
     mov %rdi, %rcx
     xor $63, %ecx
     sub $5, %ecx
-    test %dl, %dl
-    mov %rcx, %rdx
-    cmovnz %rax, %rdx
-    mov %rdx, %rax
+    test %al, %al
+    mov %rcx, %rax
+    cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test3_end:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdx
-    shl $0, %rdx
-    shr $0, %rdx
-    xor %esi, %esi
-    cmp $0, %rdx
-    mov %rsi, %rdx
-    sete %dl
-    mov %rsi, %rdi
-    bsr %rcx, %rdi
-    mov %rdi, %rcx
+    mov %rdi, %rax
+    shl $0, %rax
+    shr $0, %rax
+    xor %ecx, %ecx
+    cmp $0, %rax
+    mov %rcx, %rax
+    sete %al
+    bsr %rdi, %rcx
     xor $63, %ecx
-    test %dl, %dl
-    mov %rcx, %rdx
-    cmovnz %rax, %rdx
-    mov %rdx, %rax
+    test %al, %al
+    mov %rcx, %rax
+    cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test4_end:
 
@@ -260,10 +246,8 @@ __kefir_bigint_unsigned_compare:
     mov %rcx, %rdx
     sub %rax, %rdx
     lea 1(%rdx), %rax
-    mov %eax, %eax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    mov %eax, %ecx
+    mov $1, %rax
     shl %cl, %rax
     sub $1, %rax
     mov %r11, %rcx

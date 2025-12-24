@@ -33,10 +33,9 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rdi, %rcx
-    mov %ecx, %eax
+    mov %edi, %eax
     shr $16, %eax
-    xor %ecx, %eax
+    xor %edi, %eax
     xor %ah, %al
     setnp %al
     movzx %al, %eax
@@ -63,10 +62,9 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov %rdi, %rcx
-    mov %rcx, %rax
+    mov %rdi, %rax
     shr $32, %rax
-    xor %ecx, %eax
+    xor %edi, %eax
     mov %eax, %ecx
     shr $16, %ecx
     xor %ecx, %eax
@@ -95,8 +93,7 @@ test6:
 .L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rax
-    mov %rax, %rdi
+    lea 16(%rbp), %rdi
     mov $315, %rsi
     call __kefir_bigint_parity
     pop %rbp
@@ -191,10 +188,6 @@ __kefir_bigint_parity:
 .L__kefir_runtime_text_func___kefir_bigint_parity_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdi
-    mov %rax, %rsi
     call __kefir_bigint_nonzero_count
     xor %edx, %edx
     mov $2, %rcx

@@ -24,9 +24,8 @@ call1_proxy:
     lea -12(%rbp), %rbx
     movq %rax, %xmm0
     call call1@PLT
-    mov %rbx, %rax
-    movd %xmm0, (%rax)
-    movd (%rax), %xmm0
+    movd %xmm0, (%rbx)
+    movd (%rbx), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -44,9 +43,8 @@ call2_proxy:
     lea -16(%rbp), %rbx
     movq %rax, %xmm0
     call call2@PLT
-    mov %rbx, %rax
-    movq %xmm0, (%rax)
-    movq (%rax), %xmm0
+    movq %xmm0, (%rbx)
+    movq (%rbx), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -64,11 +62,10 @@ call3_proxy:
     lea -20(%rbp), %rbx
     movq %rax, %xmm0
     call call3@PLT
-    mov %rbx, %rax
-    movq %xmm0, (%rax)
-    movd %xmm1, 8(%rax)
-    movq (%rax), %xmm0
-    movd 8(%rax), %xmm1
+    movq %xmm0, (%rbx)
+    movd %xmm1, 8(%rbx)
+    movq (%rbx), %xmm0
+    movd 8(%rbx), %xmm1
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

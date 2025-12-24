@@ -15,9 +15,7 @@ load_buffer:
     push %rbx
     sub $72, %rsp
     mov %rdi, %rbx
-    mov %rsi, %rax
     lea -72(%rbp), %rdx
-    mov %rax, %rsi
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
@@ -38,10 +36,8 @@ load_buffer:
 
 store_buffer:
 .L__kefir_text_func_store_buffer_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rsi
-    mov %rax, %rdx
+    mov %rsi, %rdx
+    mov %rdi, %rsi
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_store@PLT

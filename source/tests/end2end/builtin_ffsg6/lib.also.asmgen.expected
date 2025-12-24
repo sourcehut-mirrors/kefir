@@ -32,10 +32,7 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rdi, %rax
-    mov %rcx, %rdx
-    bsf %eax, %edx
-    mov %rdx, %rax
+    bsf %edi, %eax
     mov $-1, %ecx
     cmove %ecx, %eax
     add $1, %eax
@@ -57,7 +54,7 @@ test3:
 test4:
 .L__kefir_text_func_test4_begin:
     mov %rdi, %rax
-    bsf %rax, %rax
+    bsf %rdi, %rax
     mov $-1, %rcx
     cmove %rcx, %rax
     lea 1(%rax), %eax
@@ -83,8 +80,7 @@ test6:
 .L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rax
-    mov %rax, %rdi
+    lea 16(%rbp), %rdi
     mov $315, %rsi
     call __kefir_bigint_least_significant_nonzero
     pop %rbp

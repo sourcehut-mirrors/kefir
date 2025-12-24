@@ -36,13 +36,11 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rdi, %rax
-    mov %eax, %ecx
-    add %ecx, %ecx
-    sar $31, %eax
-    mov %rcx, %rdx
-    xor %eax, %edx
-    mov %rdx, %rax
+    mov %edi, %eax
+    add %eax, %eax
+    mov %rdi, %rcx
+    sar $31, %ecx
+    xor %ecx, %eax
     or $1, %eax
     bsr %eax, %eax
     xor $31, %eax
@@ -70,12 +68,10 @@ test3:
 test4:
 .L__kefir_text_func_test4_begin:
     mov %rdi, %rax
-    mov %rax, %rcx
-    add %rcx, %rcx
-    sar $63, %rax
-    mov %rcx, %rdx
-    xor %rax, %rdx
-    mov %rdx, %rax
+    add %rax, %rax
+    mov %rdi, %rcx
+    sar $63, %rcx
+    xor %rcx, %rax
     or $1, %rax
     bsr %rax, %rax
     xor $63, %eax
@@ -101,8 +97,7 @@ test6:
 .L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rax
-    mov %rax, %rdi
+    lea 16(%rbp), %rdi
     mov $315, %rsi
     call __kefir_bigint_redundant_sign_bits
     pop %rbp

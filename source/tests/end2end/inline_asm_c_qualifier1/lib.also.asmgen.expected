@@ -11,8 +11,7 @@ init:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movq %rax, -8(%rbp)
+    movq %rdi, -8(%rbp)
     movq -8(%rbp), %rcx
     mov %rcx, %rax
 movl $1, 0(%rax)

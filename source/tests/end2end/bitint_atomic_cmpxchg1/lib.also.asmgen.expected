@@ -27,8 +27,7 @@ add1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movb %al, -1(%rbp)
+    movb %dil, -1(%rbp)
     movb -1(%rbp), %al
     movq a@GOTPCREL(%rip), %rsi
     shl $58, %rax
@@ -59,8 +58,7 @@ add2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movw %ax, -2(%rbp)
+    movw %di, -2(%rbp)
     movw -2(%rbp), %ax
     movq b@GOTPCREL(%rip), %rsi
     shl $51, %rax
@@ -91,8 +89,7 @@ add3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movl %eax, -4(%rbp)
+    movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     movq c@GOTPCREL(%rip), %rsi
     shl $37, %rax
@@ -123,8 +120,7 @@ add4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movq %rax, -8(%rbp)
+    movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movq d@GOTPCREL(%rip), %rsi
     shl $14, %rax
@@ -187,8 +183,7 @@ add5:
     test %al, %al
     jz .L__kefir_func_add5_label4
     movq -80(%rbp), %rax
-    movq -72(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -72(%rbp), %rdx
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -278,12 +273,9 @@ __kefir_bigint_add:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    movq %rax, -48(%rbp)
-    movq %rcx, -32(%rbp)
-    movq %rdx, -40(%rbp)
+    movq %rdx, -48(%rbp)
+    movq %rsi, -32(%rbp)
+    movq %rdi, -40(%rbp)
     movq -48(%rbp), %rax
     mov $8, %edx
     movsx %edx, %rcx

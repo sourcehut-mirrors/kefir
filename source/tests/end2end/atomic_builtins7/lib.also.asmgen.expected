@@ -16,11 +16,8 @@
 .L__kefir_text_section_begin:
 clear:
 .L__kefir_text_func_clear_begin:
-    mov %rdi, %rax
-    xor %ecx, %ecx
-    mov %rcx, %rdx
-    lock     xchgb %dl, (%rax)
-    mov %rdx, %rax
+    xor %eax, %eax
+    lock     xchgb %al, (%rdi)
     ret
 .L__kefir_text_func_clear_end:
 
@@ -38,11 +35,8 @@ test_atomic_thread_fence:
 
 test_and_set:
 .L__kefir_text_func_test_and_set_begin:
-    mov %rdi, %rax
-    mov $1, %ecx
-    mov %rcx, %rdx
-    lock     xchgb %dl, (%rax)
-    mov %rdx, %rax
+    mov $1, %eax
+    lock     xchgb %al, (%rdi)
     movzx %al, %eax
     ret
 .L__kefir_text_func_test_and_set_end:

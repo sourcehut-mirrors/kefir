@@ -17,9 +17,8 @@ test1:
     push %r15
     sub $56, %rsp
     stmxcsr -48(%rbp)
-    mov %rdi, %rax
     movq %xmm0, -64(%rbp)
-    movq %rax, -56(%rbp)
+    movq %rdi, -56(%rbp)
     movq -56(%rbp), %rax
     movq -64(%rbp), %rcx
     movq -56(%rbp), %rdx

@@ -52,14 +52,13 @@ f32_op:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %rax
-    cmp $0, %eax
+    cmp $0, %edi
     je .L__kefir_func_f32_op_label20
-    cmp $1, %eax
+    cmp $1, %edi
     je .L__kefir_func_f32_op_label25
-    cmp $2, %eax
+    cmp $2, %edi
     je .L__kefir_func_f32_op_label26
-    cmp $3, %eax
+    cmp $3, %edi
     je .L__kefir_func_f32_op_label23
     movd .L__kefir_func_f32_op_label28(%rip), %xmm1
     movaps %xmm0, %xmm2
@@ -134,14 +133,13 @@ f64_op:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %rax
-    cmp $0, %eax
+    cmp $0, %edi
     je .L__kefir_func_f64_op_label20
-    cmp $1, %eax
+    cmp $1, %edi
     je .L__kefir_func_f64_op_label25
-    cmp $2, %eax
+    cmp $2, %edi
     je .L__kefir_func_f64_op_label26
-    cmp $3, %eax
+    cmp $3, %edi
     je .L__kefir_func_f64_op_label23
     movq .L__kefir_func_f64_op_label28(%rip), %xmm1
     movaps %xmm0, %xmm2
@@ -214,16 +212,15 @@ f80_op:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    mov %rdi, %rax
     fstpt -64(%rbp)
     fstpt -80(%rbp)
-    cmp $0, %eax
+    cmp $0, %edi
     je .L__kefir_func_f80_op_label20
-    cmp $1, %eax
+    cmp $1, %edi
     je .L__kefir_func_f80_op_label25
-    cmp $2, %eax
+    cmp $2, %edi
     je .L__kefir_func_f80_op_label26
-    cmp $3, %eax
+    cmp $3, %edi
     je .L__kefir_func_f80_op_label23
     fldt .L__kefir_func_f80_op_label28(%rip)
     fldt -64(%rbp)
@@ -321,14 +318,13 @@ f32x_op:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %rax
-    cmp $0, %eax
+    cmp $0, %edi
     je .L__kefir_func_f32x_op_label20
-    cmp $1, %eax
+    cmp $1, %edi
     je .L__kefir_func_f32x_op_label25
-    cmp $2, %eax
+    cmp $2, %edi
     je .L__kefir_func_f32x_op_label26
-    cmp $3, %eax
+    cmp $3, %edi
     je .L__kefir_func_f32x_op_label23
     movq .L__kefir_func_f32x_op_label28(%rip), %xmm1
     movaps %xmm0, %xmm2
@@ -401,16 +397,15 @@ f64x_op:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    mov %rdi, %rax
     fstpt -64(%rbp)
     fstpt -80(%rbp)
-    cmp $0, %eax
+    cmp $0, %edi
     je .L__kefir_func_f64x_op_label20
-    cmp $1, %eax
+    cmp $1, %edi
     je .L__kefir_func_f64x_op_label25
-    cmp $2, %eax
+    cmp $2, %edi
     je .L__kefir_func_f64x_op_label26
-    cmp $3, %eax
+    cmp $3, %edi
     je .L__kefir_func_f64x_op_label23
     fldt .L__kefir_func_f64x_op_label28(%rip)
     fldt -64(%rbp)

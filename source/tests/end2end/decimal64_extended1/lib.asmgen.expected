@@ -51,8 +51,6 @@ conv1:
 .L__kefir_text_func_conv1_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    mov %rax, %rdi
     call __bid_floatditd@PLT
     pop %rbp
     ret
@@ -62,8 +60,6 @@ conv2:
 .L__kefir_text_func_conv2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    mov %rax, %rdi
     call __bid_floatunsditd@PLT
     pop %rbp
     ret

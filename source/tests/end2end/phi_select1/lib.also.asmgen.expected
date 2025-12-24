@@ -24,48 +24,36 @@
 .L__kefir_text_section_begin:
 select1:
 .L__kefir_text_func_select1_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    test %edx, %edx
-    mov %rcx, %rdx
-    cmovz %rax, %rdx
-    mov %rdx, %rax
+    test %edi, %edi
+    mov %rsi, %rax
+    cmovz %rdx, %rax
     ret
 .L__kefir_text_func_select1_end:
 
 select2:
 .L__kefir_text_func_select2_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    test %edx, %edx
-    mov %rcx, %rdx
-    cmovz %rax, %rdx
-    mov %rdx, %rax
+    test %edi, %edi
+    mov %rsi, %rax
+    cmovz %rdx, %rax
     ret
 .L__kefir_text_func_select2_end:
 
 select3:
 .L__kefir_text_func_select3_begin:
-    mov %rdi, %rax
-    movq %xmm0, %rcx
-    movq %xmm1, %rdx
-    test %eax, %eax
-    mov %rcx, %rax
-    cmovz %rdx, %rax
+    movq %xmm0, %rax
+    movq %xmm1, %rcx
+    test %edi, %edi
+    cmovz %rcx, %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_select3_end:
 
 select4:
 .L__kefir_text_func_select4_begin:
-    mov %rdi, %rax
-    movq %xmm0, %rcx
-    movq %xmm1, %rdx
-    test %eax, %eax
-    mov %rcx, %rax
-    cmovz %rdx, %rax
+    movq %xmm0, %rax
+    movq %xmm1, %rcx
+    test %edi, %edi
+    cmovz %rcx, %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_select4_end:
@@ -78,10 +66,9 @@ select5:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    mov %rdi, %rax
     fstpt -64(%rbp)
     fstpt -80(%rbp)
-    test %eax, %eax
+    test %edi, %edi
     jnz .L__kefir_func_select5_label6
 .L__kefir_func_select5_label3:
     fldt -80(%rbp)
@@ -106,8 +93,7 @@ select6:
     shufps $1, %xmm2, %xmm2
     movaps %xmm0, %xmm3
     shufps $1, %xmm3, %xmm3
-    mov %rdi, %rax
-    test %eax, %eax
+    test %edi, %edi
     jnz .L__kefir_func_select6_label6
     movaps %xmm1, %xmm0
     movaps %xmm2, %xmm1
@@ -126,8 +112,7 @@ select7:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rax
-    test %eax, %eax
+    test %edi, %edi
     jnz .L__kefir_func_select7_label3
     movaps %xmm2, %xmm0
     movaps %xmm3, %xmm1
@@ -144,8 +129,7 @@ select8:
     mov %rsp, %rbp
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
-    mov %rdi, %rdx
-    test %edx, %edx
+    test %edi, %edi
     mov %rcx, %rdx
     cmovz %rax, %rdx
     mov %rdx, %rax
@@ -179,10 +163,8 @@ select9:
     test %r9d, %r9d
     mov %rax, %rsi
     cmovz %rcx, %rsi
-    mov %rsi, %rcx
     mov %rdx, %rax
     mov %rax, %rdi
-    mov %rcx, %rsi
     cld
     mov $16, %rcx
     rep movsq

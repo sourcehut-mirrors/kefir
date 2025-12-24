@@ -62,9 +62,8 @@ get:
     movq -224(%rbp), %rax
     mov $2, %ecx
     idiv %ecx
-    mov %rdx, %rax
     fstpt -240(%rbp)
-    cmp $0, %eax
+    cmp $0, %edx
     jne .L__kefir_func_get_label5
 .L__kefir_func_get_label14:
     mov -40(%rbp), %rax

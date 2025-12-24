@@ -132,13 +132,12 @@ vla1:
     mov %rsp, %rbp
     sub $32, %rsp
     xor %eax, %eax
-    mov %rdi, %rcx
-    mov %rax, %rdx
+    mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
-    mov %rsp, %rsi
-    movq %rdx, -24(%rbp)
-    movsx %ecx, %rax
+    mov %rsp, %rdx
+    movq %rcx, -24(%rbp)
+    movsx %edi, %rax
     movq %rax, -8(%rbp)
     sub %rax, %rsp
     mov $16, %rax

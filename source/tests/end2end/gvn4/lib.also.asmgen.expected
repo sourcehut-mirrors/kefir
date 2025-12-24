@@ -8,11 +8,8 @@
 .L__kefir_text_section_begin:
 test:
 .L__kefir_text_func_test_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rcx, %rdx
-    add %eax, %edx
-    mov %rdx, %rax
+    mov %rsi, %rax
+    add %edx, %eax
     ret
 .L__kefir_text_func_test_end:
 

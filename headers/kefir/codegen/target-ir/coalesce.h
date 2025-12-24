@@ -25,13 +25,8 @@
 #include "kefir/codegen/target-ir/control_flow.h"
 #include "kefir/codegen/target-ir/interference.h"
 
-typedef struct kefir_codegen_target_ir_coalesce_group {
-    struct kefir_hashset members;
-} kefir_codegen_target_ir_coalesce_group_t;
-
 typedef struct kefir_codegen_target_ir_coalesce {
-    struct kefir_list group_list;
-    struct kefir_hashtable groups;
+    struct kefir_graph coalesce_graph;
 } kefir_codegen_target_ir_coalesce_t;
 
 kefir_result_t kefir_codegen_target_ir_coalesce_init(struct kefir_codegen_target_ir_coalesce *);
@@ -40,5 +35,16 @@ kefir_result_t kefir_codegen_target_ir_coalesce_free(struct kefir_mem *, struct 
 kefir_result_t kefir_codegen_target_ir_coalesce_build(struct kefir_mem *, struct kefir_codegen_target_ir_coalesce *,
     const struct kefir_codegen_target_ir_control_flow *,
     const struct kefir_codegen_target_ir_interference *);
+
+typedef struct kefir_codegen_target_ir_coalesce_iterator {
+    struct kefir_graph_edge_iterator iter;
+} kefir_codegen_target_ir_coalesce_iterator_t;
+
+kefir_result_t kefir_codegen_target_ir_coalesce_iter(const struct kefir_codegen_target_ir_coalesce *,
+    struct kefir_codegen_target_ir_coalesce_iterator *,
+    kefir_codegen_target_ir_value_ref_t,
+    kefir_codegen_target_ir_value_ref_t *);
+kefir_result_t kefir_codegen_target_ir_coalesce_next(struct kefir_codegen_target_ir_coalesce_iterator *,
+    kefir_codegen_target_ir_value_ref_t *);
 
 #endif

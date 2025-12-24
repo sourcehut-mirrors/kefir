@@ -11,11 +11,10 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    lea __kefir_function_test1_static___kefir_local_temporary_0_3(%rip), %rcx
-    movl (%rcx), %ecx
-    movl %ecx, -4(%rbp)
-    test %eax, %eax
+    lea __kefir_function_test1_static___kefir_local_temporary_0_3(%rip), %rax
+    movl (%rax), %eax
+    movl %eax, -4(%rbp)
+    test %edi, %edi
     jnz .L__kefir_func_test1_label8
     movl -4(%rbp), %eax
     lea (%rbp), %rsp

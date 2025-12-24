@@ -24,10 +24,8 @@ int128_clz:
     push %r12
     sub $64, %rsp
     mov %rdx, %rbx
-    mov %rdi, %rax
-    mov %rsi, %rcx
-    mov %rax, -48(%rbp)
-    mov %rcx, -40(%rbp)
+    mov %rdi, -48(%rbp)
+    mov %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     lea -64(%rbp), %rdi
@@ -67,10 +65,8 @@ int128_ctz:
     push %r12
     sub $64, %rsp
     mov %rdx, %rbx
-    mov %rdi, %rax
-    mov %rsi, %rcx
-    mov %rax, -48(%rbp)
-    mov %rcx, -40(%rbp)
+    mov %rdi, -48(%rbp)
+    mov %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     lea -64(%rbp), %rdi
@@ -107,10 +103,8 @@ int128_ffs:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
-    mov %rax, -16(%rbp)
-    mov %rcx, -8(%rbp)
+    mov %rdi, -16(%rbp)
+    mov %rsi, -8(%rbp)
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -32(%rbp), %rdi
@@ -130,10 +124,8 @@ int128_clrsb:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
-    mov %rax, -16(%rbp)
-    mov %rcx, -8(%rbp)
+    mov %rdi, -16(%rbp)
+    mov %rsi, -8(%rbp)
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -32(%rbp), %rdi
@@ -153,10 +145,8 @@ int128_popcount:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
-    mov %rax, -16(%rbp)
-    mov %rcx, -8(%rbp)
+    mov %rdi, -16(%rbp)
+    mov %rsi, -8(%rbp)
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -32(%rbp), %rdi
@@ -176,10 +166,8 @@ int128_parity:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
-    mov %rax, -16(%rbp)
-    mov %rcx, -8(%rbp)
+    mov %rdi, -16(%rbp)
+    mov %rsi, -8(%rbp)
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -32(%rbp), %rdi
@@ -282,10 +270,6 @@ __kefir_bigint_parity:
 .L__kefir_runtime_text_func___kefir_bigint_parity_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdi
-    mov %rax, %rsi
     call __kefir_bigint_nonzero_count
     xor %edx, %edx
     mov $2, %rcx
@@ -361,10 +345,8 @@ __kefir_bigint_unsigned_compare:
     mov %rcx, %rdx
     sub %rax, %rdx
     lea 1(%rdx), %rax
-    mov %eax, %eax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    mov %eax, %ecx
+    mov $1, %rax
     shl %cl, %rax
     sub $1, %rax
     mov %r11, %rcx

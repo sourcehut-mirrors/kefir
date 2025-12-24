@@ -51,8 +51,7 @@ u128_from_i256:
     mov $256, %rdx
     call __kefir_bigint_cast_signed
     mov -32(%rbp), %rax
-    mov -24(%rbp), %rcx
-    mov %rcx, %rdx
+    mov -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -71,8 +70,7 @@ u128_from_u256:
     mov $256, %rdx
     call __kefir_bigint_cast_unsigned
     mov -32(%rbp), %rax
-    mov -24(%rbp), %rcx
-    mov %rcx, %rdx
+    mov -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -83,8 +81,6 @@ u128_from_f32:
     push %rbp
     mov %rsp, %rbp
     call __fixunssfti@PLT
-    mov %rdx, %rcx
-    mov %rcx, %rdx
     pop %rbp
     ret
 .L__kefir_text_func_u128_from_f32_end:
@@ -94,8 +90,6 @@ u128_from_f64:
     push %rbp
     mov %rsp, %rbp
     call __fixunsdfti@PLT
-    mov %rdx, %rcx
-    mov %rcx, %rdx
     pop %rbp
     ret
 .L__kefir_text_func_u128_from_f64_end:
@@ -112,9 +106,7 @@ u128_from_f80:
     fldt -32(%rbp)
     fstpt (%rsp)
     call __fixunsxfti@PLT
-    mov %rdx, %rcx
     add $16, %rsp
-    mov %rcx, %rdx
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -134,8 +126,7 @@ i128_from_i256:
     mov $256, %rdx
     call __kefir_bigint_cast_signed
     mov -32(%rbp), %rax
-    mov -24(%rbp), %rcx
-    mov %rcx, %rdx
+    mov -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -154,8 +145,7 @@ i128_from_u256:
     mov $256, %rdx
     call __kefir_bigint_cast_unsigned
     mov -32(%rbp), %rax
-    mov -24(%rbp), %rcx
-    mov %rcx, %rdx
+    mov -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -166,9 +156,8 @@ i128_from_i9:
     mov %rdi, %rax
     shl $55, %rax
     sar $55, %rax
-    mov %rax, %rcx
-    sar $63, %rcx
-    mov %rcx, %rdx
+    mov %rax, %rdx
+    sar $63, %rdx
     ret
 .L__kefir_text_func_i128_from_i9_end:
 
@@ -177,8 +166,8 @@ i128_from_u9:
     mov %rdi, %rax
     shl $55, %rax
     shr $55, %rax
-    xor %ecx, %ecx
     mov %rcx, %rdx
+    xor %ecx, %edx
     ret
 .L__kefir_text_func_i128_from_u9_end:
 
@@ -187,9 +176,8 @@ u128_from_i9:
     mov %rdi, %rax
     shl $55, %rax
     sar $55, %rax
-    mov %rax, %rcx
-    sar $63, %rcx
-    mov %rcx, %rdx
+    mov %rax, %rdx
+    sar $63, %rdx
     ret
 .L__kefir_text_func_u128_from_i9_end:
 
@@ -198,8 +186,8 @@ u128_from_u9:
     mov %rdi, %rax
     shl $55, %rax
     shr $55, %rax
-    xor %ecx, %ecx
     mov %rcx, %rdx
+    xor %ecx, %edx
     ret
 .L__kefir_text_func_u128_from_u9_end:
 
@@ -208,8 +196,6 @@ i128_from_f32:
     push %rbp
     mov %rsp, %rbp
     call __fixsfti@PLT
-    mov %rdx, %rcx
-    mov %rcx, %rdx
     pop %rbp
     ret
 .L__kefir_text_func_i128_from_f32_end:
@@ -219,8 +205,6 @@ i128_from_f64:
     push %rbp
     mov %rsp, %rbp
     call __fixdfti@PLT
-    mov %rdx, %rcx
-    mov %rcx, %rdx
     pop %rbp
     ret
 .L__kefir_text_func_i128_from_f64_end:
@@ -237,9 +221,7 @@ i128_from_f80:
     fldt -32(%rbp)
     fstpt (%rsp)
     call __fixxfti@PLT
-    mov %rdx, %rcx
     add $16, %rsp
-    mov %rcx, %rdx
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

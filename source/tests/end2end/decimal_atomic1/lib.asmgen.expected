@@ -172,16 +172,14 @@ add128:
 
 load32:
 .L__kefir_text_func_load32_begin:
-    mov %rdi, %rcx
-    movl (%rcx), %eax
+    movl (%rdi), %eax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_load32_end:
 
 load64:
 .L__kefir_text_func_load64_begin:
-    mov %rdi, %rcx
-    movq (%rcx), %rax
+    movq (%rdi), %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_load64_end:
@@ -191,9 +189,8 @@ load128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
+    mov %rdi, %rsi
     lea -16(%rbp), %rdx
-    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
@@ -205,17 +202,15 @@ load128:
 
 store32:
 .L__kefir_text_func_store32_begin:
-    mov %rdi, %rcx
     movq %xmm0, %rax
-    xchgl (%rcx), %eax
+    xchgl (%rdi), %eax
     ret
 .L__kefir_text_func_store32_end:
 
 store64:
 .L__kefir_text_func_store64_begin:
-    mov %rdi, %rcx
     movq %xmm0, %rax
-    xchgq (%rcx), %rax
+    xchgq (%rdi), %rax
     ret
 .L__kefir_text_func_store64_end:
 
@@ -224,9 +219,8 @@ store128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
+    mov %rdi, %rsi
     movdqu %xmm0, -16(%rbp)
-    mov %rax, %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx

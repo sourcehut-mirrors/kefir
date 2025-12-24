@@ -45,8 +45,7 @@ str1_a:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -64,8 +63,7 @@ str1_b:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    lea 16(%rdi), %rax
-    mov %rax, %rsi
+    lea 16(%rdi), %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -82,8 +80,7 @@ str1_c:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea 32(%rdi), %rax
-    mov %rax, %rsi
+    lea 32(%rdi), %rsi
     lea -32(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -100,8 +97,7 @@ ld_load:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
     lea -32(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -118,8 +114,7 @@ f32_load:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -137,8 +132,7 @@ f64_load:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -154,10 +148,8 @@ ld_store:
 .L__kefir_text_func_ld_store_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rax
-    mov %rdi, %rcx
-    mov %rcx, %rsi
-    mov %rax, %rdx
+    lea 16(%rbp), %rdx
+    mov %rdi, %rsi
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -172,8 +164,7 @@ f32_store:
     sub $16, %rsp
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-    mov %rdi, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
     movd %xmm0, -8(%rbp)
     movd %xmm1, -4(%rbp)
     lea -8(%rbp), %rdx
@@ -190,8 +181,7 @@ f64_store:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
     movq %xmm0, -16(%rbp)
     movq %xmm1, -8(%rbp)
     lea -16(%rbp), %rdx
@@ -210,8 +200,7 @@ str1_set_a:
     sub $16, %rsp
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-    mov %rdi, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
     movd %xmm0, -8(%rbp)
     movd %xmm1, -4(%rbp)
     lea -8(%rbp), %rdx
@@ -228,8 +217,7 @@ str1_set_b:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea 16(%rdi), %rax
-    mov %rax, %rsi
+    lea 16(%rdi), %rsi
     movq %xmm0, -16(%rbp)
     movq %xmm1, -8(%rbp)
     lea -16(%rbp), %rdx
@@ -245,10 +233,8 @@ str1_set_c:
 .L__kefir_text_func_str1_set_c_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rax
-    lea 32(%rdi), %rcx
-    mov %rcx, %rsi
-    mov %rax, %rdx
+    lea 16(%rbp), %rdx
+    lea 32(%rdi), %rsi
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -261,14 +247,10 @@ ld_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %eax, %eax
+    mov %esi, %eax
     imul $32, %rax, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
+    add %rax, %rsi
     lea -32(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -285,14 +267,10 @@ f32_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %eax, %eax
+    mov %esi, %eax
     imul $8, %rax, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
+    add %rax, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -309,16 +287,11 @@ ld_store_index:
 .L__kefir_text_func_ld_store_index_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    mov %ecx, %ecx
-    imul $32, %rcx, %rcx
-    mov %rdx, %rsi
-    add %rcx, %rsi
-    mov %rsi, %rcx
-    mov %rcx, %rsi
-    mov %rax, %rdx
+    lea 16(%rbp), %rdx
+    mov %esi, %eax
+    imul $32, %rax, %rax
+    mov %rdi, %rsi
+    add %rax, %rsi
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -333,14 +306,10 @@ f32_store_index:
     sub $16, %rsp
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %eax, %eax
+    mov %esi, %eax
     imul $8, %rax, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
+    add %rax, %rsi
     movd %xmm0, -8(%rbp)
     movd %xmm1, -4(%rbp)
     lea -8(%rbp), %rdx
@@ -357,14 +326,10 @@ f64_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %eax, %eax
+    mov %esi, %eax
     imul $16, %rax, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
+    add %rax, %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -381,14 +346,10 @@ f64_store_index:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %eax, %eax
+    mov %esi, %eax
     imul $16, %rax, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
-    mov %rax, %rsi
+    mov %rdi, %rsi
+    add %rax, %rsi
     movq %xmm0, -16(%rbp)
     movq %xmm1, -8(%rbp)
     lea -16(%rbp), %rdx

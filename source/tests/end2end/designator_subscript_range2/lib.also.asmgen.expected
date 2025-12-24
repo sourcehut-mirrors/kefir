@@ -14,15 +14,13 @@ getb:
     push %rbx
     sub $24, %rsp
     mov %rdi, %rbx
-    mov %rsi, %rax
-    movl %eax, -20(%rbp)
+    movl %esi, -20(%rbp)
     mov %rbx, %rdi
     mov $0, %rax
     mov $30, %rcx
     mov %rax, %rsi
     rep stosq
-    movl -20(%rbp), %eax
-    mov %rax, %rdi
+    movl -20(%rbp), %edi
     call getinteger@PLT
     movl %eax, -16(%rbp)
     movl %eax, (%rbx)
@@ -125,8 +123,7 @@ getb:
     movl -16(%rbp), %eax
     movl %eax, 196(%rbx)
     movl -20(%rbp), %eax
-    imul $2, %eax, %eax
-    mov %rax, %rdi
+    imul $2, %eax, %edi
     call getinteger@PLT
     movl %eax, -12(%rbp)
     movl %eax, 200(%rbx)

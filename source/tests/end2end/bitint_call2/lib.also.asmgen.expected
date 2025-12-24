@@ -75,8 +75,7 @@ test5:
     movq %rax, -16(%rbp)
     movq %rdx, -8(%rbp)
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

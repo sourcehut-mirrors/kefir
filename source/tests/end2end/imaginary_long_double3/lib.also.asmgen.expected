@@ -29,15 +29,15 @@ test:
     mov %rcx, -312(%rbp)
     mov %r8, -304(%rbp)
     mov %r9, -296(%rbp)
-    mov %rdi, %rax
     movl $8, -112(%rbp)
     movl $48, -108(%rbp)
-    lea 16(%rbp), %rcx
-    movq %rcx, -104(%rbp)
-    lea -336(%rbp), %rcx
-    movq %rcx, -96(%rbp)
+    lea 16(%rbp), %rax
+    movq %rax, -104(%rbp)
+    lea -336(%rbp), %rax
+    movq %rax, -96(%rbp)
     fldt .L__kefir_func_test_label14(%rip)
     fstpt -160(%rbp)
+    mov %rdi, %rax
 .L__kefir_func_test_label4:
     mov %rax, %rcx
     add $-1, %ecx

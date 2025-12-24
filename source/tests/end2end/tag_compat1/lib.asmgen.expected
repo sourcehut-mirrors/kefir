@@ -10,8 +10,7 @@ fn1:
 .L__kefir_text_func_fn1_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rcx
-    mov %rcx, %rax
+    mov %rdi, %rax
     pop %rbp
     ret
 .L__kefir_text_func_fn1_end:

@@ -25,8 +25,7 @@ int_not:
 
 char_not:
 .L__kefir_text_func_char_not_begin:
-    mov %rdi, %rax
-    movsx %al, %rax
+    movsx %dil, %rax
     not %eax
     ret
 .L__kefir_text_func_char_not_end:
@@ -40,24 +39,21 @@ uint_not:
 
 short_not:
 .L__kefir_text_func_short_not_begin:
-    mov %rdi, %rax
-    movsx %ax, %rax
+    movsx %di, %rax
     not %eax
     ret
 .L__kefir_text_func_short_not_end:
 
 uchar_not:
 .L__kefir_text_func_uchar_not_begin:
-    mov %rdi, %rax
-    movzx %al, %rax
+    movzx %dil, %rax
     not %eax
     ret
 .L__kefir_text_func_uchar_not_end:
 
 ushort_not:
 .L__kefir_text_func_ushort_not_begin:
-    mov %rdi, %rax
-    movzx %ax, %rax
+    movzx %di, %rax
     not %eax
     ret
 .L__kefir_text_func_ushort_not_end:

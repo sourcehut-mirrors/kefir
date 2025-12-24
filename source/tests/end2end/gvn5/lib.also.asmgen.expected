@@ -118,166 +118,134 @@
 .L__kefir_text_section_begin:
 less_sint:
 .L__kefir_text_func_less_sint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     setg %al
     ret
 .L__kefir_text_func_less_sint_end:
 
 less_uint:
 .L__kefir_text_func_less_uint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     seta %al
     ret
 .L__kefir_text_func_less_uint_end:
 
 test_sint:
 .L__kefir_text_func_test_sint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    cmp $0, %edx
+    cmp $0, %edi
     je .L__kefir_func_test_sint_label37
-    cmp $1, %edx
+    cmp $1, %edi
     je .L__kefir_func_test_sint_label31
-    cmp $2, %edx
+    cmp $2, %edi
     je .L__kefir_func_test_sint_label33
-    cmp $3, %edx
+    cmp $3, %edi
     je .L__kefir_func_test_sint_label38
-    cmp $4, %edx
+    cmp $4, %edi
     je .L__kefir_func_test_sint_label36
-    cmp $5, %edx
+    cmp $5, %edi
     je .L__kefir_func_test_sint_label39
     ud2
 .L__kefir_func_test_sint_label39:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     setle %al
     ret
 .L__kefir_func_test_sint_label36:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     setl %al
     ret
 .L__kefir_func_test_sint_label38:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     setge %al
     ret
 .L__kefir_func_test_sint_label33:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     setg %al
     ret
 .L__kefir_func_test_sint_label31:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     setne %al
     ret
 .L__kefir_func_test_sint_label37:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     sete %al
     ret
 .L__kefir_text_func_test_sint_end:
 
 test_uint:
 .L__kefir_text_func_test_uint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    cmp $0, %edx
+    cmp $0, %edi
     je .L__kefir_func_test_uint_label37
-    cmp $1, %edx
+    cmp $1, %edi
     je .L__kefir_func_test_uint_label31
-    cmp $2, %edx
+    cmp $2, %edi
     je .L__kefir_func_test_uint_label33
-    cmp $3, %edx
+    cmp $3, %edi
     je .L__kefir_func_test_uint_label38
-    cmp $4, %edx
+    cmp $4, %edi
     je .L__kefir_func_test_uint_label36
-    cmp $5, %edx
+    cmp $5, %edi
     je .L__kefir_func_test_uint_label39
     ud2
 .L__kefir_func_test_uint_label39:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     setbe %al
     ret
 .L__kefir_func_test_uint_label36:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     setb %al
     ret
 .L__kefir_func_test_uint_label38:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     setae %al
     ret
 .L__kefir_func_test_uint_label33:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     seta %al
     ret
 .L__kefir_func_test_uint_label31:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     setne %al
     ret
 .L__kefir_func_test_uint_label37:
-    xor %edx, %edx
-    cmp %eax, %ecx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %edx, %esi
     sete %al
     ret
 .L__kefir_text_func_test_uint_end:
 
 equal_sint:
 .L__kefir_text_func_equal_sint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     sete %al
     ret
 .L__kefir_text_func_equal_sint_end:
 
 equal_uint:
 .L__kefir_text_func_equal_uint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     sete %al
     ret
 .L__kefir_text_func_equal_uint_end:
 
 less_schar:
 .L__kefir_text_func_less_schar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %al, %rax
-    movsx %cl, %rcx
+    movsx %dl, %rax
+    movsx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -287,21 +255,16 @@ less_schar:
 
 less_slong:
 .L__kefir_text_func_less_slong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     setg %al
     ret
 .L__kefir_text_func_less_slong_end:
 
 less_uchar:
 .L__kefir_text_func_less_uchar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %al, %rax
-    movzx %cl, %rcx
+    movzx %dl, %rax
+    movzx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -311,78 +274,72 @@ less_uchar:
 
 less_ulong:
 .L__kefir_text_func_less_ulong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     seta %al
     ret
 .L__kefir_text_func_less_ulong_end:
 
 test_schar:
 .L__kefir_text_func_test_schar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    cmp $0, %edx
+    cmp $0, %edi
     je .L__kefir_func_test_schar_label37
-    cmp $1, %edx
+    cmp $1, %edi
     je .L__kefir_func_test_schar_label31
-    cmp $2, %edx
+    cmp $2, %edi
     je .L__kefir_func_test_schar_label33
-    cmp $3, %edx
+    cmp $3, %edi
     je .L__kefir_func_test_schar_label38
-    cmp $4, %edx
+    cmp $4, %edi
     je .L__kefir_func_test_schar_label36
-    cmp $5, %edx
+    cmp $5, %edi
     je .L__kefir_func_test_schar_label39
     ud2
 .L__kefir_func_test_schar_label39:
-    movsx %cl, %rcx
-    movsx %al, %rax
+    movsx %sil, %rax
+    movsx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setle %al
     ret
 .L__kefir_func_test_schar_label36:
-    movsx %cl, %rcx
-    movsx %al, %rax
+    movsx %sil, %rax
+    movsx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setl %al
     ret
 .L__kefir_func_test_schar_label38:
-    movsx %cl, %rcx
-    movsx %al, %rax
+    movsx %sil, %rax
+    movsx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setge %al
     ret
 .L__kefir_func_test_schar_label33:
-    movsx %cl, %rcx
-    movsx %al, %rax
+    movsx %sil, %rax
+    movsx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setg %al
     ret
 .L__kefir_func_test_schar_label31:
-    movsx %cl, %rcx
-    movsx %al, %rax
+    movsx %sil, %rax
+    movsx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setne %al
     ret
 .L__kefir_func_test_schar_label37:
-    movsx %cl, %rcx
-    movsx %al, %rax
+    movsx %sil, %rax
+    movsx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     sete %al
     ret
@@ -390,123 +347,111 @@ test_schar:
 
 test_slong:
 .L__kefir_text_func_test_slong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    cmp $0, %edx
+    cmp $0, %edi
     je .L__kefir_func_test_slong_label37
-    cmp $1, %edx
+    cmp $1, %edi
     je .L__kefir_func_test_slong_label31
-    cmp $2, %edx
+    cmp $2, %edi
     je .L__kefir_func_test_slong_label33
-    cmp $3, %edx
+    cmp $3, %edi
     je .L__kefir_func_test_slong_label38
-    cmp $4, %edx
+    cmp $4, %edi
     je .L__kefir_func_test_slong_label36
-    cmp $5, %edx
+    cmp $5, %edi
     je .L__kefir_func_test_slong_label39
     ud2
 .L__kefir_func_test_slong_label39:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     setle %al
     ret
 .L__kefir_func_test_slong_label36:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     setl %al
     ret
 .L__kefir_func_test_slong_label38:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     setge %al
     ret
 .L__kefir_func_test_slong_label33:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     setg %al
     ret
 .L__kefir_func_test_slong_label31:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     setne %al
     ret
 .L__kefir_func_test_slong_label37:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     sete %al
     ret
 .L__kefir_text_func_test_slong_end:
 
 test_uchar:
 .L__kefir_text_func_test_uchar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    cmp $0, %edx
+    cmp $0, %edi
     je .L__kefir_func_test_uchar_label37
-    cmp $1, %edx
+    cmp $1, %edi
     je .L__kefir_func_test_uchar_label31
-    cmp $2, %edx
+    cmp $2, %edi
     je .L__kefir_func_test_uchar_label33
-    cmp $3, %edx
+    cmp $3, %edi
     je .L__kefir_func_test_uchar_label38
-    cmp $4, %edx
+    cmp $4, %edi
     je .L__kefir_func_test_uchar_label36
-    cmp $5, %edx
+    cmp $5, %edi
     je .L__kefir_func_test_uchar_label39
     ud2
 .L__kefir_func_test_uchar_label39:
-    movzx %cl, %rcx
-    movzx %al, %rax
+    movzx %sil, %rax
+    movzx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setle %al
     ret
 .L__kefir_func_test_uchar_label36:
-    movzx %cl, %rcx
-    movzx %al, %rax
+    movzx %sil, %rax
+    movzx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setl %al
     ret
 .L__kefir_func_test_uchar_label38:
-    movzx %cl, %rcx
-    movzx %al, %rax
+    movzx %sil, %rax
+    movzx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setge %al
     ret
 .L__kefir_func_test_uchar_label33:
-    movzx %cl, %rcx
-    movzx %al, %rax
+    movzx %sil, %rax
+    movzx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setg %al
     ret
 .L__kefir_func_test_uchar_label31:
-    movzx %cl, %rcx
-    movzx %al, %rax
+    movzx %sil, %rax
+    movzx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setne %al
     ret
 .L__kefir_func_test_uchar_label37:
-    movzx %cl, %rcx
-    movzx %al, %rax
+    movzx %sil, %rax
+    movzx %dl, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     sete %al
     ret
@@ -514,66 +459,55 @@ test_uchar:
 
 test_ulong:
 .L__kefir_text_func_test_ulong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    cmp $0, %edx
+    cmp $0, %edi
     je .L__kefir_func_test_ulong_label37
-    cmp $1, %edx
+    cmp $1, %edi
     je .L__kefir_func_test_ulong_label31
-    cmp $2, %edx
+    cmp $2, %edi
     je .L__kefir_func_test_ulong_label33
-    cmp $3, %edx
+    cmp $3, %edi
     je .L__kefir_func_test_ulong_label38
-    cmp $4, %edx
+    cmp $4, %edi
     je .L__kefir_func_test_ulong_label36
-    cmp $5, %edx
+    cmp $5, %edi
     je .L__kefir_func_test_ulong_label39
     ud2
 .L__kefir_func_test_ulong_label39:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     setbe %al
     ret
 .L__kefir_func_test_ulong_label36:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     setb %al
     ret
 .L__kefir_func_test_ulong_label38:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     setae %al
     ret
 .L__kefir_func_test_ulong_label33:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     seta %al
     ret
 .L__kefir_func_test_ulong_label31:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     setne %al
     ret
 .L__kefir_func_test_ulong_label37:
-    xor %edx, %edx
-    cmp %rax, %rcx
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rdx, %rsi
     sete %al
     ret
 .L__kefir_text_func_test_ulong_end:
 
 equal_schar:
 .L__kefir_text_func_equal_schar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %al, %rax
-    movsx %cl, %rcx
+    movsx %dl, %rax
+    movsx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -583,21 +517,16 @@ equal_schar:
 
 equal_slong:
 .L__kefir_text_func_equal_slong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     sete %al
     ret
 .L__kefir_text_func_equal_slong_end:
 
 equal_uchar:
 .L__kefir_text_func_equal_uchar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %al, %rax
-    movzx %cl, %rcx
+    movzx %dl, %rax
+    movzx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -607,21 +536,16 @@ equal_uchar:
 
 equal_ulong:
 .L__kefir_text_func_equal_ulong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     sete %al
     ret
 .L__kefir_text_func_equal_ulong_end:
 
 less_sshort:
 .L__kefir_text_func_less_sshort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %ax, %rax
-    movsx %cx, %rcx
+    movsx %dx, %rax
+    movsx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -631,10 +555,8 @@ less_sshort:
 
 less_ushort:
 .L__kefir_text_func_less_ushort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %ax, %rax
-    movzx %cx, %rcx
+    movzx %dx, %rax
+    movzx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -644,67 +566,64 @@ less_ushort:
 
 test_sshort:
 .L__kefir_text_func_test_sshort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    cmp $0, %edx
+    cmp $0, %edi
     je .L__kefir_func_test_sshort_label37
-    cmp $1, %edx
+    cmp $1, %edi
     je .L__kefir_func_test_sshort_label31
-    cmp $2, %edx
+    cmp $2, %edi
     je .L__kefir_func_test_sshort_label33
-    cmp $3, %edx
+    cmp $3, %edi
     je .L__kefir_func_test_sshort_label38
-    cmp $4, %edx
+    cmp $4, %edi
     je .L__kefir_func_test_sshort_label36
-    cmp $5, %edx
+    cmp $5, %edi
     je .L__kefir_func_test_sshort_label39
     ud2
 .L__kefir_func_test_sshort_label39:
-    movsx %cx, %rcx
-    movsx %ax, %rax
+    movsx %si, %rax
+    movsx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setle %al
     ret
 .L__kefir_func_test_sshort_label36:
-    movsx %cx, %rcx
-    movsx %ax, %rax
+    movsx %si, %rax
+    movsx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setl %al
     ret
 .L__kefir_func_test_sshort_label38:
-    movsx %cx, %rcx
-    movsx %ax, %rax
+    movsx %si, %rax
+    movsx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setge %al
     ret
 .L__kefir_func_test_sshort_label33:
-    movsx %cx, %rcx
-    movsx %ax, %rax
+    movsx %si, %rax
+    movsx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setg %al
     ret
 .L__kefir_func_test_sshort_label31:
-    movsx %cx, %rcx
-    movsx %ax, %rax
+    movsx %si, %rax
+    movsx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setne %al
     ret
 .L__kefir_func_test_sshort_label37:
-    movsx %cx, %rcx
-    movsx %ax, %rax
+    movsx %si, %rax
+    movsx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     sete %al
     ret
@@ -712,67 +631,64 @@ test_sshort:
 
 test_ushort:
 .L__kefir_text_func_test_ushort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    cmp $0, %edx
+    cmp $0, %edi
     je .L__kefir_func_test_ushort_label37
-    cmp $1, %edx
+    cmp $1, %edi
     je .L__kefir_func_test_ushort_label31
-    cmp $2, %edx
+    cmp $2, %edi
     je .L__kefir_func_test_ushort_label33
-    cmp $3, %edx
+    cmp $3, %edi
     je .L__kefir_func_test_ushort_label38
-    cmp $4, %edx
+    cmp $4, %edi
     je .L__kefir_func_test_ushort_label36
-    cmp $5, %edx
+    cmp $5, %edi
     je .L__kefir_func_test_ushort_label39
     ud2
 .L__kefir_func_test_ushort_label39:
-    movzx %cx, %rcx
-    movzx %ax, %rax
+    movzx %si, %rax
+    movzx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setle %al
     ret
 .L__kefir_func_test_ushort_label36:
-    movzx %cx, %rcx
-    movzx %ax, %rax
+    movzx %si, %rax
+    movzx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setl %al
     ret
 .L__kefir_func_test_ushort_label38:
-    movzx %cx, %rcx
-    movzx %ax, %rax
+    movzx %si, %rax
+    movzx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setge %al
     ret
 .L__kefir_func_test_ushort_label33:
-    movzx %cx, %rcx
-    movzx %ax, %rax
+    movzx %si, %rax
+    movzx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setg %al
     ret
 .L__kefir_func_test_ushort_label31:
-    movzx %cx, %rcx
-    movzx %ax, %rax
+    movzx %si, %rax
+    movzx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     setne %al
     ret
 .L__kefir_func_test_ushort_label37:
-    movzx %cx, %rcx
-    movzx %ax, %rax
+    movzx %si, %rax
+    movzx %dx, %rcx
     xor %edx, %edx
-    cmp %eax, %ecx
+    cmp %ecx, %eax
     mov %rdx, %rax
     sete %al
     ret
@@ -780,32 +696,24 @@ test_ushort:
 
 less_or_equal_sint:
 .L__kefir_text_func_less_or_equal_sint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     setge %al
     ret
 .L__kefir_text_func_less_or_equal_sint_end:
 
 less_or_equal_uint:
 .L__kefir_text_func_less_or_equal_uint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     setae %al
     ret
 .L__kefir_text_func_less_or_equal_uint_end:
 
 not_equal_schar:
 .L__kefir_text_func_not_equal_schar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %al, %rax
-    movsx %cl, %rcx
+    movsx %dl, %rax
+    movsx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -815,21 +723,16 @@ not_equal_schar:
 
 not_equal_slong:
 .L__kefir_text_func_not_equal_slong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     setne %al
     ret
 .L__kefir_text_func_not_equal_slong_end:
 
 not_equal_uchar:
 .L__kefir_text_func_not_equal_uchar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %al, %rax
-    movzx %cl, %rcx
+    movzx %dl, %rax
+    movzx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -839,21 +742,16 @@ not_equal_uchar:
 
 not_equal_ulong:
 .L__kefir_text_func_not_equal_ulong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     setne %al
     ret
 .L__kefir_text_func_not_equal_ulong_end:
 
 less_or_equal_sshort:
 .L__kefir_text_func_less_or_equal_sshort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %ax, %rax
-    movsx %cx, %rcx
+    movsx %dx, %rax
+    movsx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -863,10 +761,8 @@ less_or_equal_sshort:
 
 less_or_equal_ushort:
 .L__kefir_text_func_less_or_equal_ushort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %ax, %rax
-    movzx %cx, %rcx
+    movzx %dx, %rax
+    movzx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -876,10 +772,8 @@ less_or_equal_ushort:
 
 not_equal_sshort:
 .L__kefir_text_func_not_equal_sshort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %ax, %rax
-    movsx %cx, %rcx
+    movsx %dx, %rax
+    movsx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -889,10 +783,8 @@ not_equal_sshort:
 
 not_equal_ushort:
 .L__kefir_text_func_not_equal_ushort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %ax, %rax
-    movzx %cx, %rcx
+    movzx %dx, %rax
+    movzx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -902,32 +794,24 @@ not_equal_ushort:
 
 greater_or_equal_sint:
 .L__kefir_text_func_greater_or_equal_sint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     setle %al
     ret
 .L__kefir_text_func_greater_or_equal_sint_end:
 
 greater_or_equal_uint:
 .L__kefir_text_func_greater_or_equal_uint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     setbe %al
     ret
 .L__kefir_text_func_greater_or_equal_uint_end:
 
 equal_sshort:
 .L__kefir_text_func_equal_sshort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %ax, %rax
-    movsx %cx, %rcx
+    movsx %dx, %rax
+    movsx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -937,10 +821,8 @@ equal_sshort:
 
 equal_ushort:
 .L__kefir_text_func_equal_ushort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %ax, %rax
-    movzx %cx, %rcx
+    movzx %dx, %rax
+    movzx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -950,32 +832,24 @@ equal_ushort:
 
 greater_sint:
 .L__kefir_text_func_greater_sint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     setl %al
     ret
 .L__kefir_text_func_greater_sint_end:
 
 greater_uint:
 .L__kefir_text_func_greater_uint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     setb %al
     ret
 .L__kefir_text_func_greater_uint_end:
 
 greater_or_equal_sshort:
 .L__kefir_text_func_greater_or_equal_sshort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %ax, %rax
-    movsx %cx, %rcx
+    movsx %dx, %rax
+    movsx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -985,10 +859,8 @@ greater_or_equal_sshort:
 
 greater_or_equal_ushort:
 .L__kefir_text_func_greater_or_equal_ushort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %ax, %rax
-    movzx %cx, %rcx
+    movzx %dx, %rax
+    movzx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -998,10 +870,8 @@ greater_or_equal_ushort:
 
 greater_sshort:
 .L__kefir_text_func_greater_sshort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %ax, %rax
-    movsx %cx, %rcx
+    movsx %dx, %rax
+    movsx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -1011,10 +881,8 @@ greater_sshort:
 
 greater_ushort:
 .L__kefir_text_func_greater_ushort_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %ax, %rax
-    movzx %cx, %rcx
+    movzx %dx, %rax
+    movzx %si, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -1024,32 +892,24 @@ greater_ushort:
 
 not_equal_sint:
 .L__kefir_text_func_not_equal_sint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     setne %al
     ret
 .L__kefir_text_func_not_equal_sint_end:
 
 not_equal_uint:
 .L__kefir_text_func_not_equal_uint_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %esi, %edx
     setne %al
     ret
 .L__kefir_text_func_not_equal_uint_end:
 
 less_or_equal_schar:
 .L__kefir_text_func_less_or_equal_schar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %al, %rax
-    movsx %cl, %rcx
+    movsx %dl, %rax
+    movsx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -1059,21 +919,16 @@ less_or_equal_schar:
 
 less_or_equal_slong:
 .L__kefir_text_func_less_or_equal_slong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     setge %al
     ret
 .L__kefir_text_func_less_or_equal_slong_end:
 
 less_or_equal_uchar:
 .L__kefir_text_func_less_or_equal_uchar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %al, %rax
-    movzx %cl, %rcx
+    movzx %dl, %rax
+    movzx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -1083,21 +938,16 @@ less_or_equal_uchar:
 
 less_or_equal_ulong:
 .L__kefir_text_func_less_or_equal_ulong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     setae %al
     ret
 .L__kefir_text_func_less_or_equal_ulong_end:
 
 greater_or_equal_schar:
 .L__kefir_text_func_greater_or_equal_schar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %al, %rax
-    movsx %cl, %rcx
+    movsx %dl, %rax
+    movsx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -1107,21 +957,16 @@ greater_or_equal_schar:
 
 greater_or_equal_slong:
 .L__kefir_text_func_greater_or_equal_slong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     setle %al
     ret
 .L__kefir_text_func_greater_or_equal_slong_end:
 
 greater_or_equal_uchar:
 .L__kefir_text_func_greater_or_equal_uchar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %al, %rax
-    movzx %cl, %rcx
+    movzx %dl, %rax
+    movzx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -1131,21 +976,16 @@ greater_or_equal_uchar:
 
 greater_or_equal_ulong:
 .L__kefir_text_func_greater_or_equal_ulong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     setbe %al
     ret
 .L__kefir_text_func_greater_or_equal_ulong_end:
 
 greater_schar:
 .L__kefir_text_func_greater_schar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movsx %al, %rax
-    movsx %cl, %rcx
+    movsx %dl, %rax
+    movsx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -1155,21 +995,16 @@ greater_schar:
 
 greater_slong:
 .L__kefir_text_func_greater_slong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     setl %al
     ret
 .L__kefir_text_func_greater_slong_end:
 
 greater_uchar:
 .L__kefir_text_func_greater_uchar_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    movzx %al, %rax
-    movzx %cl, %rcx
+    movzx %dl, %rax
+    movzx %sil, %rcx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -1179,11 +1014,8 @@ greater_uchar:
 
 greater_ulong:
 .L__kefir_text_func_greater_ulong_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    xor %eax, %eax
+    cmp %rsi, %rdx
     setb %al
     ret
 .L__kefir_text_func_greater_ulong_end:

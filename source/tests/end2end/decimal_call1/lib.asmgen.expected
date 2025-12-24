@@ -21,61 +21,52 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rdi, %rax
-    movd (%rax), %xmm0
-    add $4, %rax
+    movd (%rdi), %xmm0
+    lea 4(%rdi), %rax
     movd (%rax), %xmm1
     jmp fn1@PLT
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movd (%rax), %xmm0
-    add $4, %rax
-    movd (%rax), %xmm1
-    mov %rcx, %rax
+    mov %rdi, %rax
+    movd (%rsi), %xmm0
+    lea 4(%rsi), %rcx
+    movd (%rcx), %xmm1
     jmp *%rax
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rdi, %rax
-    movq (%rax), %xmm0
-    add $8, %rax
+    movq (%rdi), %xmm0
+    lea 8(%rdi), %rax
     movq (%rax), %xmm1
     jmp fn3@PLT
 .L__kefir_text_func_test3_end:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movq (%rax), %xmm0
-    add $8, %rax
-    movq (%rax), %xmm1
-    mov %rcx, %rax
+    mov %rdi, %rax
+    movq (%rsi), %xmm0
+    lea 8(%rsi), %rcx
+    movq (%rcx), %xmm1
     jmp *%rax
 .L__kefir_text_func_test4_end:
 
 test5:
 .L__kefir_text_func_test5_begin:
-    mov %rdi, %rax
-    movdqu (%rax), %xmm0
-    add $16, %rax
+    movdqu (%rdi), %xmm0
+    lea 16(%rdi), %rax
     movdqu (%rax), %xmm1
     jmp fn5@PLT
 .L__kefir_text_func_test5_end:
 
 test6:
 .L__kefir_text_func_test6_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movdqu (%rax), %xmm0
-    add $16, %rax
-    movdqu (%rax), %xmm1
-    mov %rcx, %rax
+    mov %rdi, %rax
+    movdqu (%rsi), %xmm0
+    lea 16(%rsi), %rcx
+    movdqu (%rcx), %xmm1
     jmp *%rax
 .L__kefir_text_func_test6_end:
 

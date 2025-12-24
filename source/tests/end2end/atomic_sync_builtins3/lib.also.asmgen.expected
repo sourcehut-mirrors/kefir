@@ -25,11 +25,9 @@ test_sync_bool_compare_and_swap16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
+    mov %rdx, %rcx
     mov %rdi, %rdx
-    movw %cx, -2(%rbp)
-    mov %rax, %rcx
+    movw %si, -2(%rbp)
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
     je .L__kefir_func_test_sync_bool_compare_and_swap16_label3
@@ -47,11 +45,9 @@ test_sync_bool_compare_and_swap32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
+    mov %rdx, %rcx
     mov %rdi, %rdx
-    movl %ecx, -4(%rbp)
-    mov %rax, %rcx
+    movl %esi, -4(%rbp)
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
     je .L__kefir_func_test_sync_bool_compare_and_swap32_label3
@@ -69,11 +65,9 @@ test_sync_bool_compare_and_swap64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
+    mov %rdx, %rcx
     mov %rdi, %rdx
-    movq %rcx, -8(%rbp)
-    mov %rax, %rcx
+    movq %rsi, -8(%rbp)
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
     je .L__kefir_func_test_sync_bool_compare_and_swap64_label3
@@ -91,11 +85,9 @@ test_sync_bool_compare_and_swap8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
+    mov %rdx, %rcx
     mov %rdi, %rdx
-    movb %cl, -1(%rbp)
-    mov %rax, %rcx
+    movb %sil, -1(%rbp)
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
     je .L__kefir_func_test_sync_bool_compare_and_swap8_label3
@@ -113,11 +105,9 @@ test_sync_val_compare_and_swap8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
+    mov %rdx, %rcx
     mov %rdi, %rdx
-    movb %cl, -1(%rbp)
-    mov %rax, %rcx
+    movb %sil, -1(%rbp)
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
     je .L__kefir_func_test_sync_val_compare_and_swap8_label3
@@ -136,11 +126,9 @@ test_sync_val_compare_and_swap16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
+    mov %rdx, %rcx
     mov %rdi, %rdx
-    movw %cx, -2(%rbp)
-    mov %rax, %rcx
+    movw %si, -2(%rbp)
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
     je .L__kefir_func_test_sync_val_compare_and_swap16_label3
@@ -159,11 +147,9 @@ test_sync_val_compare_and_swap32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
+    mov %rdx, %rcx
     mov %rdi, %rdx
-    movl %ecx, -4(%rbp)
-    mov %rax, %rcx
+    movl %esi, -4(%rbp)
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
     je .L__kefir_func_test_sync_val_compare_and_swap32_label3
@@ -182,11 +168,9 @@ test_sync_val_compare_and_swap64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
+    mov %rdx, %rcx
     mov %rdi, %rdx
-    movq %rcx, -8(%rbp)
-    mov %rax, %rcx
+    movq %rsi, -8(%rbp)
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
     je .L__kefir_func_test_sync_val_compare_and_swap64_label3

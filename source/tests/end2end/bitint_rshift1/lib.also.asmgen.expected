@@ -21,10 +21,8 @@ shr1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movb %al, -1(%rbp)
-    movb %cl, -2(%rbp)
+    movb %sil, -1(%rbp)
+    movb %dil, -2(%rbp)
     movb -2(%rbp), %al
     movb -1(%rbp), %cl
     shl $58, %rax
@@ -44,10 +42,8 @@ shr2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movw %ax, -2(%rbp)
-    movw %cx, -4(%rbp)
+    movw %si, -2(%rbp)
+    movw %di, -4(%rbp)
     movw -4(%rbp), %ax
     movw -2(%rbp), %cx
     shl $50, %rax
@@ -67,10 +63,8 @@ shr3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -4(%rbp)
-    movl %ecx, -8(%rbp)
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     shl $35, %rax
@@ -90,10 +84,8 @@ shr4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movq %rax, -8(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %rsi, -8(%rbp)
+    movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rcx
     shl $6, %rax
@@ -127,14 +119,12 @@ shr5:
     movdqu %xmm0, -64(%rbp)
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movq -64(%rbp), %rax
+    movq -64(%rbp), %rsi
     lea -48(%rbp), %rdi
-    mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_right_shift
     movq -48(%rbp), %rax
-    movq -40(%rbp), %rcx
-    mov %rcx, %rdx
+    movq -40(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -199,9 +189,8 @@ shr6:
     movq %rax, -104(%rbp)
     movq -176(%rbp), %rax
     movq %rax, -96(%rbp)
-    movq -168(%rbp), %rax
+    movq -168(%rbp), %rsi
     lea -128(%rbp), %rdi
-    mov %rax, %rsi
     mov $310, %rdx
     call __kefir_bigint_right_shift
     mov %rbx, %rax
@@ -233,14 +222,10 @@ __kefir_bigint_right_shift_whole_digits:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rcx, %rax
-    mov %rdx, %rcx
-    mov %rsi, %rdx
-    mov %rdi, %rsi
-    movq %rax, -32(%rbp)
-    movl %ecx, -48(%rbp)
-    movq %rdx, -40(%rbp)
-    movq %rsi, -24(%rbp)
+    movq %rcx, -32(%rbp)
+    movl %edx, -48(%rbp)
+    movq %rsi, -40(%rbp)
+    movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
     mov $8, %edx
     movsx %edx, %rcx
@@ -403,12 +388,9 @@ __kefir_bigint_right_shift:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    movq %rax, -48(%rbp)
-    movq %rcx, -56(%rbp)
-    movq %rdx, -40(%rbp)
+    movq %rdx, -48(%rbp)
+    movq %rsi, -56(%rbp)
+    movq %rdi, -40(%rbp)
     movq -56(%rbp), %rax
     movq -48(%rbp), %rcx
     mov $0, %rdx
@@ -465,10 +447,8 @@ __kefir_bigint_right_shift:
     imul %rdx, %rcx
     sub %rcx, %rax
     movq %rax, -32(%rbp)
-    movq -32(%rbp), %rax
-    mov $1, %rdx
-    mov %rax, %rcx
-    mov %rdx, %rax
+    movq -32(%rbp), %rcx
+    mov $1, %rax
     shl %cl, %rax
     mov $1, %edx
     movsx %edx, %rcx
@@ -551,22 +531,19 @@ __kefir_bigint_right_shift:
     and %eax, %esi
     mov %rsi, %rax
     movb %al, (%rcx)
-    movq -56(%rbp), %rax
-    movq -40(%rbp), %rcx
+    movq -56(%rbp), %rcx
+    movq -40(%rbp), %rax
     movq -16(%rbp), %rdx
     mov $1, %edi
     movsx %edi, %rsi
     sub %rsi, %rdx
     imul $1, %rdx, %rdx
-    mov %rcx, %rsi
-    add %rdx, %rsi
-    mov %rsi, %rdx
-    mov %rcx, %rsi
-    movb (%rdx), %sil
-    mov %rax, %rcx
-    mov %rsi, %rax
-    shr %cl, %al
-    movb %al, (%rdx)
+    add %rdx, %rax
+    movb (%rax), %dl
+    mov %rdx, %rsi
+    shr %cl, %sil
+    mov %rsi, %rcx
+    movb %cl, (%rax)
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label7
 .L__kefir_runtime_func___kefir_bigint_right_shift_label27:
     movq -40(%rbp), %rax
@@ -612,13 +589,10 @@ __kefir_bigint_right_shift:
     movq %rax, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label10
 .L__kefir_runtime_func___kefir_bigint_right_shift_label22:
-    movq -40(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq -48(%rbp), %r8
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    movq -40(%rbp), %rdi
+    movq -24(%rbp), %rsi
+    movq -48(%rbp), %rcx
     mov $0, %rdx
-    mov %r8, %rcx
     call __kefir_bigint_right_shift_whole_digits
     movq -24(%rbp), %rax
     movq -56(%rbp), %rcx

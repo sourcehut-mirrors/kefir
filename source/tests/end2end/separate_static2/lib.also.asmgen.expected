@@ -32,8 +32,7 @@ setx:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movq %rax, -8(%rbp)
+    movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea value(%rip), %rcx
     movq %rax, (%rcx)

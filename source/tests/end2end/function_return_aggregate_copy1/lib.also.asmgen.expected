@@ -17,9 +17,8 @@ get2:
     push %r12
     sub $256, %rsp
     mov %rsi, %r12
-    mov %rdi, %rax
+    mov %rdi, %rsi
     lea -272(%rbp), %rbx
-    mov %rax, %rsi
     mov %rbx, %rdi
     call get@PLT
     movsx %r12d, %rax
@@ -44,12 +43,11 @@ get3:
     push %r12
     sub $512, %rsp
     mov %rsi, %r12
-    mov %rdi, %rax
-    lea ptr(%rip), %rcx
-    lea -528(%rbp), %rdx
-    movq %rdx, (%rcx)
+    mov %rdi, %rsi
+    lea ptr(%rip), %rax
+    lea -528(%rbp), %rcx
+    movq %rcx, (%rax)
     lea -272(%rbp), %rbx
-    mov %rax, %rsi
     mov %rbx, %rdi
     call get@PLT
     lea -528(%rbp), %rdi

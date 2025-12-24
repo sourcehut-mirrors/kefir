@@ -14,8 +14,7 @@ test:
     mov %rsp, %rbp
     sub $48, %rsp
     mov $0, %rax
-    mov %rdi, %rcx
-    movl %ecx, -32(%rbp)
+    movl %edi, -32(%rbp)
     mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
@@ -95,8 +94,7 @@ test2:
     mov %rsp, %rbp
     sub $64, %rsp
     mov $0, %rax
-    mov %rdi, %rcx
-    movl %ecx, -48(%rbp)
+    movl %edi, -48(%rbp)
     mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)

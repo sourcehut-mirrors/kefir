@@ -10,17 +10,14 @@
 .L__kefir_text_section_begin:
 or:
 .L__kefir_text_func_or_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    or %eax, %ecx
-    setne %cl
-    movzx %cl, %rcx
-    or %eax, %ecx
-    setne %cl
-    movzx %cl, %rcx
-    mov %rcx, %rdx
-    or %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %esi, %eax
+    setne %al
+    movzx %al, %rax
+    or %esi, %eax
+    setne %al
+    movzx %al, %rax
+    or %esi, %eax
     setne %al
     movzx %al, %rax
     ret
@@ -28,15 +25,13 @@ or:
 
 and:
 .L__kefir_text_func_and_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    test %ecx, %ecx
-    mov %rdx, %rcx
-    setne %cl
-    test %eax, %eax
-    mov %rdx, %rax
+    test %edi, %edi
     setne %al
-    and %cl, %al
+    test %esi, %esi
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     ret
 .L__kefir_text_func_and_end:

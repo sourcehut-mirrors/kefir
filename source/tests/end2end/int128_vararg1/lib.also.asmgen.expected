@@ -30,24 +30,21 @@ sum:
     mov %rcx, -184(%rbp)
     mov %r8, -176(%rbp)
     mov %r9, -168(%rbp)
-    mov %rdi, %rax
     movl $8, -32(%rbp)
     movl $48, -28(%rbp)
-    lea 16(%rbp), %rcx
-    movq %rcx, -24(%rbp)
-    lea -208(%rbp), %rcx
-    movq %rcx, -16(%rbp)
+    lea 16(%rbp), %rax
+    movq %rax, -24(%rbp)
+    lea -208(%rbp), %rax
+    movq %rax, -16(%rbp)
+    xor %eax, %eax
     xor %ecx, %ecx
-    xor %edx, %edx
-    mov %rax, %rsi
-    mov %rcx, %rax
-    mov %rdx, %rcx
+    mov %rdi, %rsi
+    mov %rcx, %rdx
 .L__kefir_func_sum_label4:
-    mov %rsi, %rdx
-    add $-1, %edx
+    mov %rsi, %rcx
+    add $-1, %ecx
     test %esi, %esi
     jnz .L__kefir_func_sum_label16
-    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -66,8 +63,8 @@ sum:
     addl $16, -32(%rbp)
 .L__kefir_func_sum_label11:
     add %rdi, %rax
-    adc %rsi, %rcx
-    mov %rdx, %rsi
+    adc %rsi, %rdx
+    mov %rcx, %rsi
     jmp .L__kefir_func_sum_label4
 .L__kefir_func_sum_label10:
     movq -24(%rbp), %rsi
@@ -104,24 +101,21 @@ sum2:
     mov %rcx, -184(%rbp)
     mov %r8, -176(%rbp)
     mov %r9, -168(%rbp)
-    mov %rdi, %rax
     movl $8, -32(%rbp)
     movl $48, -28(%rbp)
-    lea 16(%rbp), %rcx
-    movq %rcx, -24(%rbp)
-    lea -208(%rbp), %rcx
-    movq %rcx, -16(%rbp)
+    lea 16(%rbp), %rax
+    movq %rax, -24(%rbp)
+    lea -208(%rbp), %rax
+    movq %rax, -16(%rbp)
+    xor %eax, %eax
     xor %ecx, %ecx
-    xor %edx, %edx
-    mov %rax, %rsi
-    mov %rcx, %rax
-    mov %rdx, %rcx
+    mov %rdi, %rsi
+    mov %rcx, %rdx
 .L__kefir_func_sum2_label4:
-    mov %rsi, %rdx
-    add $-1, %edx
+    mov %rsi, %rcx
+    add $-1, %ecx
     test %esi, %esi
     jnz .L__kefir_func_sum2_label16
-    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -140,8 +134,8 @@ sum2:
     addl $16, -32(%rbp)
 .L__kefir_func_sum2_label11:
     add %rdi, %rax
-    adc %rsi, %rcx
-    mov %rdx, %rsi
+    adc %rsi, %rdx
+    mov %rcx, %rsi
     jmp .L__kefir_func_sum2_label4
 .L__kefir_func_sum2_label10:
     movq -24(%rbp), %rsi

@@ -31,10 +31,7 @@
 .L__kefir_text_section_begin:
 test2_atomic_load8:
 .L__kefir_text_func_test2_atomic_load8_begin:
-    mov %rdi, %rax
-    mov %rcx, %rdx
-    movb (%rax), %dl
-    mov %rdx, %rax
+    movb (%rdi), %al
     ret
 .L__kefir_text_func_test2_atomic_load8_end:
 
@@ -43,9 +40,8 @@ test2_atomic_load128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rax
+    mov %rdi, %rsi
     mov $16, %rdi
-    mov %rax, %rsi
     lea -16(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
@@ -61,9 +57,8 @@ test2_atomic_load256:
     mov %rsp, %rbp
     sub $112, %rsp
     fstcw -8(%rbp)
-    mov %rdi, %rax
+    mov %rdi, %rsi
     mov $32, %rdi
-    mov %rax, %rsi
     lea -48(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
@@ -82,33 +77,25 @@ test2_atomic_load256:
 
 test_atomic_load8:
 .L__kefir_text_func_test_atomic_load8_begin:
-    mov %rdi, %rax
-    mov %rcx, %rdx
-    movb (%rax), %dl
-    mov %rdx, %rax
+    movb (%rdi), %al
     ret
 .L__kefir_text_func_test_atomic_load8_end:
 
 test_atomic_load16:
 .L__kefir_text_func_test_atomic_load16_begin:
-    mov %rdi, %rax
-    mov %rcx, %rdx
-    movw (%rax), %dx
-    mov %rdx, %rax
+    movw (%rdi), %ax
     ret
 .L__kefir_text_func_test_atomic_load16_end:
 
 test_atomic_load32:
 .L__kefir_text_func_test_atomic_load32_begin:
-    mov %rdi, %rax
-    movl (%rax), %eax
+    movl (%rdi), %eax
     ret
 .L__kefir_text_func_test_atomic_load32_end:
 
 test_atomic_load64:
 .L__kefir_text_func_test_atomic_load64_begin:
-    mov %rdi, %rax
-    movq (%rax), %rax
+    movq (%rdi), %rax
     ret
 .L__kefir_text_func_test_atomic_load64_end:
 
@@ -117,9 +104,8 @@ test_atomic_load128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rax
+    mov %rdi, %rsi
     mov $16, %rdi
-    mov %rax, %rsi
     lea -16(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
@@ -135,9 +121,8 @@ test_atomic_load256:
     mov %rsp, %rbp
     sub $112, %rsp
     fstcw -8(%rbp)
-    mov %rdi, %rax
+    mov %rdi, %rsi
     mov $32, %rdi
-    mov %rax, %rsi
     lea -48(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
@@ -156,24 +141,19 @@ test_atomic_load256:
 
 test2_atomic_load16:
 .L__kefir_text_func_test2_atomic_load16_begin:
-    mov %rdi, %rax
-    mov %rcx, %rdx
-    movw (%rax), %dx
-    mov %rdx, %rax
+    movw (%rdi), %ax
     ret
 .L__kefir_text_func_test2_atomic_load16_end:
 
 test2_atomic_load32:
 .L__kefir_text_func_test2_atomic_load32_begin:
-    mov %rdi, %rax
-    movl (%rax), %eax
+    movl (%rdi), %eax
     ret
 .L__kefir_text_func_test2_atomic_load32_end:
 
 test2_atomic_load64:
 .L__kefir_text_func_test2_atomic_load64_begin:
-    mov %rdi, %rax
-    movq (%rax), %rax
+    movq (%rdi), %rax
     ret
 .L__kefir_text_func_test2_atomic_load64_end:
 

@@ -38,11 +38,8 @@
 .L__kefir_text_section_begin:
 int_or:
 .L__kefir_text_func_int_or_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdx
-    or %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %esi, %eax
     setne %al
     movzx %al, %rax
     ret
@@ -50,11 +47,8 @@ int_or:
 
 char_or:
 .L__kefir_text_func_char_or_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdx
-    or %al, %dl
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %sil, %al
     setne %al
     movzx %al, %rax
     ret
@@ -62,32 +56,24 @@ char_or:
 
 int_and:
 .L__kefir_text_func_int_and_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    test %ecx, %ecx
-    mov %rdx, %rcx
-    setne %cl
-    test %eax, %eax
-    mov %rdx, %rax
+    test %edi, %edi
     setne %al
-    and %cl, %al
+    test %esi, %esi
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     ret
 .L__kefir_text_func_int_and_end:
 
 int_or3:
 .L__kefir_text_func_int_or3_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    mov %rdx, %rsi
-    or %ecx, %esi
-    mov %rsi, %rcx
-    setne %cl
-    movzx %cl, %rcx
-    mov %rcx, %rdx
-    or %eax, %edx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %esi, %eax
+    setne %al
+    movzx %al, %rax
+    or %edx, %eax
     setne %al
     movzx %al, %rax
     ret
@@ -95,11 +81,8 @@ int_or3:
 
 long_or:
 .L__kefir_text_func_long_or_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %rsi, %rax
     setne %al
     movzx %al, %rax
     movsx %eax, %rax
@@ -108,31 +91,23 @@ long_or:
 
 char_and:
 .L__kefir_text_func_char_and_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    test %cl, %cl
-    mov %rdx, %rcx
-    setne %cl
-    test %al, %al
-    mov %rdx, %rax
+    test %dil, %dil
     setne %al
-    and %cl, %al
+    test %sil, %sil
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     ret
 .L__kefir_text_func_char_and_end:
 
 char_or3:
 .L__kefir_text_func_char_or3_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    mov %rdx, %rsi
-    or %cl, %sil
-    mov %rsi, %rcx
-    setne %cl
-    mov %rcx, %rdx
-    or %al, %dl
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %sil, %al
+    setne %al
+    or %dl, %al
     setne %al
     movzx %al, %rax
     ret
@@ -140,36 +115,32 @@ char_or3:
 
 int_and3:
 .L__kefir_text_func_int_and3_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    test %edx, %edx
-    mov %rsi, %rdx
-    setne %dl
-    test %ecx, %ecx
-    mov %rsi, %rcx
-    setne %cl
-    and %dl, %cl
-    movzx %cl, %rcx
-    test %eax, %eax
-    mov %rdx, %rax
+    test %edi, %edi
     setne %al
-    and %cl, %al
+    test %esi, %esi
+    setne %cl
+    mov %rcx, %rsi
+    and %al, %sil
+    mov %rsi, %rax
+    movzx %al, %rax
+    test %edx, %edx
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     ret
 .L__kefir_text_func_int_and3_end:
 
 long_and:
 .L__kefir_text_func_long_and_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    test %rcx, %rcx
-    mov %rdx, %rcx
-    setne %cl
-    test %rax, %rax
-    mov %rdx, %rax
+    test %rdi, %rdi
     setne %al
-    and %cl, %al
+    test %rsi, %rsi
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     movsx %eax, %rax
     ret
@@ -177,17 +148,11 @@ long_and:
 
 long_or3:
 .L__kefir_text_func_long_or3_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    mov %rdx, %rsi
-    or %rcx, %rsi
-    mov %rsi, %rcx
-    setne %cl
-    movzx %cl, %rcx
-    mov %rcx, %rdx
-    or %rax, %rdx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %rsi, %rax
+    setne %al
+    movzx %al, %rax
+    or %rdx, %rax
     setne %al
     movzx %al, %rax
     movsx %eax, %rax
@@ -196,11 +161,8 @@ long_or3:
 
 short_or:
 .L__kefir_text_func_short_or_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    mov %rcx, %rdx
-    or %ax, %dx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %si, %ax
     setne %al
     movzx %al, %rax
     ret
@@ -208,43 +170,35 @@ short_or:
 
 char_and3:
 .L__kefir_text_func_char_and3_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    test %dl, %dl
-    mov %rsi, %rdx
-    setne %dl
-    test %cl, %cl
-    mov %rsi, %rcx
-    setne %cl
-    mov %rdx, %rsi
-    and %cl, %sil
-    mov %rsi, %rcx
-    test %al, %al
-    mov %rdx, %rax
+    test %dil, %dil
     setne %al
+    test %sil, %sil
+    setne %cl
     and %cl, %al
+    test %dl, %dl
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     ret
 .L__kefir_text_func_char_and3_end:
 
 long_and3:
 .L__kefir_text_func_long_and3_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    test %rdx, %rdx
-    mov %rsi, %rdx
-    setne %dl
-    test %rcx, %rcx
-    mov %rsi, %rcx
-    setne %cl
-    and %dl, %cl
-    movzx %cl, %rcx
-    test %rax, %rax
-    mov %rdx, %rax
+    test %rdi, %rdi
     setne %al
-    and %cl, %al
+    test %rsi, %rsi
+    setne %cl
+    mov %rcx, %rsi
+    and %al, %sil
+    mov %rsi, %rax
+    movzx %al, %rax
+    test %rdx, %rdx
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     movsx %eax, %rax
     ret
@@ -252,32 +206,24 @@ long_and3:
 
 short_and:
 .L__kefir_text_func_short_and_begin:
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    test %cx, %cx
-    mov %rdx, %rcx
-    setne %cl
-    test %ax, %ax
-    mov %rdx, %rax
+    test %di, %di
     setne %al
-    and %cl, %al
+    test %si, %si
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     ret
 .L__kefir_text_func_short_and_end:
 
 short_or3:
 .L__kefir_text_func_short_or3_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    mov %rdx, %rsi
-    or %cx, %si
-    mov %rsi, %rcx
-    setne %cl
-    movzx %cl, %rcx
-    mov %rcx, %rdx
-    or %ax, %dx
-    mov %rdx, %rax
+    mov %rdi, %rax
+    or %si, %ax
+    setne %al
+    movzx %al, %rax
+    or %dx, %ax
     setne %al
     movzx %al, %rax
     ret
@@ -285,21 +231,19 @@ short_or3:
 
 short_and3:
 .L__kefir_text_func_short_and3_begin:
-    mov %rdx, %rax
-    mov %rsi, %rcx
-    mov %rdi, %rdx
-    test %dx, %dx
-    mov %rsi, %rdx
-    setne %dl
-    test %cx, %cx
-    mov %rsi, %rcx
-    setne %cl
-    and %dl, %cl
-    movzx %cl, %rcx
-    test %ax, %ax
-    mov %rdx, %rax
+    test %di, %di
     setne %al
-    and %cl, %al
+    test %si, %si
+    setne %cl
+    mov %rcx, %rsi
+    and %al, %sil
+    mov %rsi, %rax
+    movzx %al, %rax
+    test %dx, %dx
+    setne %cl
+    mov %rcx, %rdx
+    and %al, %dl
+    mov %rdx, %rax
     movzx %al, %rax
     ret
 .L__kefir_text_func_short_and3_end:

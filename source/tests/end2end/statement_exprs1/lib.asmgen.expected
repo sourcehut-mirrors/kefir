@@ -11,11 +11,8 @@
 eval1:
 .L__kefir_text_func_eval1_begin:
     mov %rdi, %rax
-    mov %rax, %rcx
-    add $1, %ecx
-    mov %rcx, %rdx
-    add %eax, %edx
-    mov %rdx, %rax
+    add $1, %eax
+    add %edi, %eax
     ret
 .L__kefir_text_func_eval1_end:
 
@@ -25,13 +22,12 @@ eval2:
     mov %rsp, %rbp
     sub $32, %rsp
     xor %eax, %eax
-    mov %rdi, %rcx
-    mov %rax, %rdx
+    mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rax
-    movq %rdx, -24(%rbp)
-    movsx %ecx, %rcx
+    movq %rcx, -24(%rbp)
+    movsx %edi, %rcx
     imul $8, %rcx, %rdx
     movq %rdx, -8(%rbp)
     sub %rdx, %rsp

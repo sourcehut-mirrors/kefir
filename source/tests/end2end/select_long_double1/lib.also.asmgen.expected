@@ -14,11 +14,9 @@ get:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    mov %rsi, %rax
-    mov %rdi, %rcx
     fstpt -64(%rbp)
     fstpt -80(%rbp)
-    test %ecx, %ecx
+    test %edi, %edi
     jnz .L__kefir_func_get_label10
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
@@ -31,7 +29,7 @@ get:
     pop %rbp
     ret
 .L__kefir_func_get_label10:
-    test %eax, %eax
+    test %esi, %esi
     jz .L__kefir_func_get_label3
 .L__kefir_func_get_label12:
     movq -64(%rbp), %rax

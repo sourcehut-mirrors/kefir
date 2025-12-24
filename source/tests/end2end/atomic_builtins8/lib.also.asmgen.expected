@@ -9,8 +9,7 @@
 exchange_ptr:
 .L__kefir_text_func_exchange_ptr_begin:
     mov %rsi, %rax
-    mov %rdi, %rcx
-    xchgq (%rcx), %rax
+    xchgq (%rdi), %rax
     ret
 .L__kefir_text_func_exchange_ptr_end:
 

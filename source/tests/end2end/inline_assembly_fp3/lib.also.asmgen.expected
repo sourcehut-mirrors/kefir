@@ -14,8 +14,7 @@ sumall:
     push %r12
     push %r13
     sub $24, %rsp
-    mov %rdi, %rax
-    movq %rax, -40(%rbp)
+    movq %rdi, -40(%rbp)
     movq %xmm0, -32(%rbp)
     movq -40(%rbp), %rax
     movq -40(%rbp), %rcx

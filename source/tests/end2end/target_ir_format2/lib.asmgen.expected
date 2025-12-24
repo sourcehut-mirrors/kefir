@@ -185,7 +185,7 @@ test1:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rsi"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -227,7 +227,7 @@ test1:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rdi"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -947,10 +947,8 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movb %al, -1(%rbp)
-    movb %cl, -2(%rbp)
+    movb %sil, -1(%rbp)
+    movb %dil, -2(%rbp)
     movb -2(%rbp), %al
     movb -1(%rbp), %cl
     movsx %al, %rax
@@ -1135,7 +1133,7 @@ test2:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rsi"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -1177,7 +1175,7 @@ test2:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rdi"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -2418,10 +2416,8 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
-    movl %eax, -8(%rbp)
-    movq %rcx, -16(%rbp)
+    movl %esi, -8(%rbp)
+    movq %rdi, -16(%rbp)
     movl -8(%rbp), %esi
     movq -16(%rbp), %rdi
 .L__kefir_func_test2_label2:
@@ -2820,7 +2816,7 @@ test3:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rdx"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -2904,7 +2900,7 @@ test3:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rdx"
+#                                "register": "rdi"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -3483,7 +3479,7 @@ test3:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rdx"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -3726,19 +3722,17 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov %rdx, %rax
-    mov %rdi, %rdx
-    mov %rax, -16(%rbp)
+    mov %rdx, -16(%rbp)
     mov %rcx, -8(%rbp)
-    mov %rdx, -32(%rbp)
+    mov %rdi, -32(%rbp)
     mov %rsi, -24(%rbp)
     mov -32(%rbp), %rax
     mov -24(%rbp), %rcx
     mov -16(%rbp), %rdx
     mov -8(%rbp), %rsi
     add %rdx, %rax
-    adc %rsi, %rcx
     mov %rcx, %rdx
+    adc %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -3864,7 +3858,7 @@ test4:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rdi"
 #                            },
 #                            "constraint": {
 #                                "type": "hint",
@@ -4469,8 +4463,7 @@ test4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    movl %eax, -4(%rbp)
+    movl %edi, -4(%rbp)
 .L__kefir_func_test4_label2:
 _kefir_local_public_label_test4_label1:
     movl -4(%rbp), %eax

@@ -10,9 +10,7 @@
 test:
 .L__kefir_text_func_test_begin:
     mov %rdi, %rax
-    mov %rsi, %rcx
-    not %rcx
-    mov %rcx, %rsi
+    not %rsi
     mov %rax, %rdi
     jmp get@PLT
 .L__kefir_text_func_test_end:

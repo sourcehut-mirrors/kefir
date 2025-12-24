@@ -127,15 +127,13 @@ load_i128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
+    mov %rdi, %rsi
     lea -16(%rbp), %rdx
-    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     mov -16(%rbp), %rax
-    mov -8(%rbp), %rcx
-    mov %rcx, %rdx
+    mov -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -146,15 +144,13 @@ load_u128:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
+    mov %rdi, %rsi
     lea -16(%rbp), %rdx
-    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     mov -16(%rbp), %rax
-    mov -8(%rbp), %rcx
-    mov %rcx, %rdx
+    mov -8(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -165,12 +161,9 @@ store_i128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdx, %rcx
-    mov %rdi, %rdx
-    mov %rax, -16(%rbp)
-    mov %rcx, -8(%rbp)
-    mov %rdx, %rsi
+    mov %rsi, -16(%rbp)
+    mov %rdx, -8(%rbp)
+    mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -185,12 +178,9 @@ store_u128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rsi, %rax
-    mov %rdx, %rcx
-    mov %rdi, %rdx
-    mov %rax, -16(%rbp)
-    mov %rcx, -8(%rbp)
-    mov %rdx, %rsi
+    mov %rsi, -16(%rbp)
+    mov %rdx, -8(%rbp)
+    mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
