@@ -29,6 +29,7 @@ typedef struct kefir_codegen_target_ir_block_control_flow {
     struct kefir_hashset predecessors;
     struct kefir_hashset successors;
     kefir_codegen_target_ir_block_ref_t immediate_dominator;
+    kefir_codegen_target_ir_block_ref_t immediate_postdominator;
     struct kefir_hashset dominance_frontier;
     kefir_size_t linear_index;
     kefir_size_t dominated_block_max_linear;
@@ -48,6 +49,8 @@ kefir_result_t kefir_codegen_target_ir_control_flow_init(struct kefir_codegen_ta
 kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *, struct kefir_codegen_target_ir_control_flow *);
 kefir_result_t kefir_codegen_target_ir_control_flow_free(struct kefir_mem *, struct kefir_codegen_target_ir_control_flow *);
 kefir_result_t kefir_codegen_target_ir_control_flow_find_dominators(struct kefir_mem *mem,
+                                                        struct kefir_codegen_target_ir_control_flow *);
+kefir_result_t kefir_codegen_target_ir_control_flow_find_postdominators(struct kefir_mem *mem,
                                                         struct kefir_codegen_target_ir_control_flow *);
 
 kefir_bool_t kefir_codegen_target_ir_control_flow_is_reachable(const struct kefir_codegen_target_ir_control_flow *,

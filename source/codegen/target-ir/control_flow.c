@@ -257,6 +257,7 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
         });
 
         control_flow->blocks[i].immediate_dominator = KEFIR_ID_NONE;
+        control_flow->blocks[i].immediate_postdominator = KEFIR_ID_NONE;
         control_flow->blocks[i].linear_index = (kefir_size_t) -1ll;
         control_flow->blocks[i].dominated_block_max_linear = (kefir_size_t) -1ll;
     }
@@ -359,6 +360,7 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
     }
 
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_find_dominators(mem, control_flow));
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_find_postdominators(mem, control_flow));
     REQUIRE_OK(find_dominance_frontier(mem, control_flow));
     REQUIRE_OK(build_dominance_tree(mem, control_flow));
     REQUIRE_OK(walk_dominance_tree(mem, control_flow));
