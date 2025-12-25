@@ -520,6 +520,28 @@ kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct ke
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_control_flow_is_postdominator(const struct kefir_codegen_target_ir_control_flow *structure,
+                                                     kefir_codegen_target_ir_block_ref_t dominated_block,
+                                                     kefir_codegen_target_ir_block_ref_t dominator_block, kefir_bool_t *result_ptr) {
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
+    REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    if (dominated_block == dominator_block) {
+        *result_ptr = true;
+    } else if (dominated_block != KEFIR_ID_NONE && dominator_block != KEFIR_ID_NONE && structure->blocks[dominated_block].immediate_postdominator != KEFIR_ID_NONE) {
+        kefir_size_t linear_index = structure->blocks[dominator_block].postdominance_linear_index;
+        kefir_size_t postdominated_block_max_linear = structure->blocks[dominator_block].postdominated_block_max_linear;
+        kefir_size_t postdominated_linear = structure->blocks[dominated_block].postdominance_linear_index;
+        *result_ptr = linear_index != (kefir_size_t) -1ll &&
+            postdominated_block_max_linear != (kefir_size_t) -1ll &&
+            linear_index < postdominated_linear &&
+            postdominated_linear < postdominated_block_max_linear;
+    } else {
+        *result_ptr = false;
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_control_flow_find_closest_common_dominator(struct kefir_codegen_target_ir_control_flow *control_flow,
                                                        kefir_codegen_target_ir_block_ref_t block_ref,
                                                        kefir_codegen_target_ir_block_ref_t other_block_ref,

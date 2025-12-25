@@ -1913,16 +1913,19 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
         }
         return KEFIR_OK;
     } else if (instr->operation.opcode == state->code->klass->assign_opcode) {
-        kefir_codegen_target_ir_value_ref_t dst_ref;
-        const struct kefir_codegen_target_ir_value_type *dst_type;
-        REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(state->code, instr_ref, 0, &dst_ref, &dst_type));
+        if (instr->operation.parameters[0].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF ||
+            instr->operation.parameters[0].direct.value_ref.aspect != KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
+            kefir_codegen_target_ir_value_ref_t dst_ref;
+            const struct kefir_codegen_target_ir_value_type *dst_type;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(state->code, instr_ref, 0, &dst_ref, &dst_type));
 
-        kefir_codegen_target_ir_regalloc_allocation_t dst_alloc;
-        REQUIRE_OK(kefir_codegen_target_ir_regalloc_get(state->regalloc, dst_ref, &dst_alloc));
-        union kefir_codegen_target_ir_amd64_regalloc_entry dst_alloc_entry = {
-            .allocation = dst_alloc
-        };
-        REQUIRE_OK(load_into_allocation(state, dst_type, &dst_alloc_entry, &instr->operation.parameters[0]));
+            kefir_codegen_target_ir_regalloc_allocation_t dst_alloc;
+            REQUIRE_OK(kefir_codegen_target_ir_regalloc_get(state->regalloc, dst_ref, &dst_alloc));
+            union kefir_codegen_target_ir_amd64_regalloc_entry dst_alloc_entry = {
+                .allocation = dst_alloc
+            };
+            REQUIRE_OK(load_into_allocation(state, dst_type, &dst_alloc_entry, &instr->operation.parameters[0]));
+        }
         return KEFIR_OK;
     } else if (instr->operation.opcode == state->code->klass->upsilon_opcode) {
         if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(instr->operation.parameters[0].upsilon_ref.aspect)) {

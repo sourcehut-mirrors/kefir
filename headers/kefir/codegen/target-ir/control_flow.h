@@ -63,6 +63,9 @@ kefir_bool_t kefir_codegen_target_ir_control_flow_is_critical_edge(const struct 
 kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct kefir_codegen_target_ir_control_flow *,
                                                      kefir_codegen_target_ir_block_ref_t,
                                                      kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_control_flow_is_postdominator(const struct kefir_codegen_target_ir_control_flow *,
+                                                     kefir_codegen_target_ir_block_ref_t,
+                                                     kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);
 kefir_result_t kefir_codegen_target_ir_control_flow_find_closest_common_dominator(struct kefir_codegen_target_ir_control_flow *,
                                                        kefir_codegen_target_ir_block_ref_t,
                                                        kefir_codegen_target_ir_block_ref_t,
