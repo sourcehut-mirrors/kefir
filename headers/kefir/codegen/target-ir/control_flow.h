@@ -31,8 +31,10 @@ typedef struct kefir_codegen_target_ir_block_control_flow {
     kefir_codegen_target_ir_block_ref_t immediate_dominator;
     kefir_codegen_target_ir_block_ref_t immediate_postdominator;
     struct kefir_hashset dominance_frontier;
-    kefir_size_t linear_index;
+    kefir_size_t dominance_linear_index;
     kefir_size_t dominated_block_max_linear;
+    kefir_size_t postdominance_linear_index;
+    kefir_size_t postdominated_block_max_linear;
 } kefir_codegen_target_ir_block_control_flow_t;
 
 typedef struct kefir_codegen_target_ir_control_flow {
@@ -42,6 +44,7 @@ typedef struct kefir_codegen_target_ir_control_flow {
     struct kefir_hashtreeset indirect_jump_sources;
     struct kefir_hashtreeset indirect_jump_targets;
     struct kefir_hashtable dominator_tree;
+    struct kefir_hashtable postdominator_tree;
     struct kefir_hashtable dominator_cache;
 } kefir_codegen_target_ir_control_flow_t;
 
@@ -71,5 +74,8 @@ typedef struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator {
 
 kefir_result_t kefir_codegen_target_ir_control_flow_dominator_tree_iter(const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_block_ref_t *);
 kefir_result_t kefir_codegen_target_ir_control_flow_dominator_tree_next(struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t *);
+
+kefir_result_t kefir_codegen_target_ir_control_flow_postdominator_tree_iter(const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_block_ref_t *);
+kefir_result_t kefir_codegen_target_ir_control_flow_postdominator_tree_next(struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t *);
 
 #endif
