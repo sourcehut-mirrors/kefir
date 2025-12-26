@@ -71,6 +71,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_hashtree constants;
     struct kefir_hashtree type_layouts;
     struct kefir_hashtreeset preserve_vregs;
+    struct kefir_hashtree entry_registers;
 
     struct kefir_list x87_stack;
 
@@ -108,6 +109,10 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
 kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         kefir_opt_instruction_ref_t,
                                                         kefir_asmcmp_virtual_register_index_t);
+
+kefir_result_t kefir_codegen_amd64_get_argument_register(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                        kefir_asm_amd64_xasmgen_register_t,
+                                                        kefir_asmcmp_virtual_register_index_t *);
 
 // clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \

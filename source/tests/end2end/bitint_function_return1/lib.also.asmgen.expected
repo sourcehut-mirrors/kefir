@@ -16,6 +16,28 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
 #                        "index": 2,
 #                        "variant": "default"
 #                    }
@@ -36,17 +58,6 @@ test1:
 #            {
 #                "opcode": "function_prologue",
 #                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "produce_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 1,
-#                        "variant": "default"
-#                    }
-#                ],
 #                "labels": []
 #            },
 #            {

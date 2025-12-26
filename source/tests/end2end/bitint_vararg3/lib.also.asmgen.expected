@@ -11,6 +11,7 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $416, %rsp
+    mov %rdi, %r10
     test %al, %al
     je .L__kefir_func_test1_label15
     movdqu %xmm0, -368(%rbp)
@@ -85,7 +86,7 @@ test1:
     movdqu %xmm0, -144(%rbp)
     movdqu -56(%rbp), %xmm0
     movdqu %xmm0, -128(%rbp)
-    mov %rdi, %rax
+    mov %r10, %rax
     movdqu -176(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -160(%rbp), %xmm0
