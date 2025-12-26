@@ -188,6 +188,9 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
 
         const struct kefir_codegen_target_ir_instruction *user_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, user_instr_ref, &user_instr));
+        if (!kefir_codegen_target_ir_control_flow_is_reachable(control_flow, user_instr->block_ref)) {
+            continue;
+        }
         if (user_instr->operation.opcode == control_flow->code->klass->upsilon_opcode) {
             if (KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&user_instr->operation.parameters[0].upsilon_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
                 REQUIRE(kefir_hashset_has(&control_flow->blocks[user_instr->block_ref].successors, (kefir_hashset_key_t) instr->block_ref),
@@ -262,6 +265,9 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
             res = kefir_hashset_next(&predecessor_iter, &key)) {
             ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, predecessor_block_ref,
                 key);
+            if (!kefir_codegen_target_ir_control_flow_is_reachable(control_flow, predecessor_block_ref)) {
+                continue;
+            }
             REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) predecessor_block_ref));
             REQUIRE_OK(add_to_entry(mem, &liveness->blocks[predecessor_block_ref].live_out, value_ref));
             REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, predecessor_block_ref, LIVENESS_NORMAL, kefir_codegen_target_ir_code_block_control_tail(liveness->code, predecessor_block_ref), KEFIR_ID_NONE));
