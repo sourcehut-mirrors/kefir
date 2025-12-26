@@ -171,6 +171,10 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem, const stru
         }
     }
 
+    if (instr->operation.opcode == control_flow->code->klass->phi_opcode) {
+        REQUIRE_OK(add_value_liveness(mem, liveness, value_ref, instr->block_ref, LIVENESS_NORMAL, KEFIR_ID_NONE, instr->instr_ref));
+    }
+
     kefir_result_t res;
     struct kefir_codegen_target_ir_use_iterator use_iter;
     kefir_codegen_target_ir_instruction_ref_t user_instr_ref;
