@@ -796,6 +796,25 @@ kefir_result_t kefir_codegen_target_ir_code_phi_node_next(struct kefir_codegen_t
     return KEFIR_OK; 
 }
 
+kefir_size_t kefir_codegen_target_ir_code_num_of_uses(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref) {
+    REQUIRE(code != NULL, 0);
+
+    kefir_result_t res;
+    struct kefir_codegen_target_ir_use_iterator use_iter;
+    kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+    kefir_codegen_target_ir_value_ref_t use_value_ref;
+    kefir_size_t count = 0;
+    for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, value_ref.instr_ref, &use_instr_ref, &use_value_ref);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &use_value_ref)) {
+        if (use_value_ref.aspect == value_ref.aspect) {
+            count++;
+        }
+    }
+    
+    return count;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_use_iter(const struct kefir_codegen_target_ir_code *code,
     struct kefir_codegen_target_ir_use_iterator *iter,
     kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_instruction_ref_t *user_instr_ref_ptr,

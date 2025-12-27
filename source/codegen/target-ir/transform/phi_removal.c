@@ -295,7 +295,7 @@ static kefir_result_t remove_unused_phis_from_block(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct phi_scc_traversal *traversal, struct kefir_hashset *removal_set, const struct kefir_codegen_target_ir_control_flow *control_flow) {
+static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct phi_scc_traversal *traversal, struct kefir_hashset *removal_set, const struct kefir_codegen_target_ir_control_flow *control_flow, kefir_bool_t coalesce_phis) {
     UNUSED(mem);
     UNUSED(traversal);
 
@@ -333,7 +333,9 @@ static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_co
         }
 
         REQUIRE_OK(scan_scc_uses(mem, code, traversal, removal_set));
-        REQUIRE_OK(scan_scc_inputs(mem, code, traversal, removal_set));
+        if (coalesce_phis) {
+            REQUIRE_OK(scan_scc_inputs(mem, code, traversal, removal_set));
+        }
         fixpoint_reached = kefir_hashset_size(removal_set) == 0;
 
         struct kefir_hashset_iterator removal_iter;
@@ -370,7 +372,7 @@ static kefir_result_t free_scc(struct kefir_mem *mem, struct kefir_list *list, s
     return KEFIR_OK;
 }
 
-static kefir_result_t phi_scc_tarjan(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashset *removal_set, const struct kefir_codegen_target_ir_control_flow *control_flow) {
+static kefir_result_t phi_scc_tarjan(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashset *removal_set, const struct kefir_codegen_target_ir_control_flow *control_flow, kefir_bool_t coealsce_phis) {
     struct phi_scc_traversal traversal = {
         .current_index = 0
     };
@@ -380,7 +382,7 @@ static kefir_result_t phi_scc_tarjan(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(kefir_list_init(&traversal.scc_list));
     REQUIRE_OK(kefir_list_on_remove(&traversal.scc_list, free_scc, NULL));
 
-    kefir_result_t res = phi_scc_tarjan_impl(mem, code, &traversal, removal_set, control_flow);
+    kefir_result_t res = phi_scc_tarjan_impl(mem, code, &traversal, removal_set, control_flow, coealsce_phis);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &traversal.scc_list);
         kefir_hashset_free(mem, &traversal.on_stack);
@@ -410,13 +412,13 @@ static kefir_result_t phi_scc_tarjan(struct kefir_mem *mem, struct kefir_codegen
     return KEFIR_OK;
 }
 
-static kefir_result_t remove_phis(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashset *removal_set, struct kefir_codegen_target_ir_control_flow *control_flow) {
+static kefir_result_t remove_phis(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashset *removal_set, struct kefir_codegen_target_ir_control_flow *control_flow, kefir_bool_t coalesce_phis) {
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, control_flow));
-    REQUIRE_OK(phi_scc_tarjan(mem, code, removal_set, control_flow));
+    REQUIRE_OK(phi_scc_tarjan(mem, code, removal_set, control_flow, coalesce_phis));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_transform_phi_removal(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code) {
+kefir_result_t kefir_codegen_target_ir_transform_phi_removal(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_bool_t coalesce_phis) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
 
@@ -426,7 +428,7 @@ kefir_result_t kefir_codegen_target_ir_transform_phi_removal(struct kefir_mem *m
     struct kefir_codegen_target_ir_control_flow control_flow;
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&control_flow, code));
 
-    kefir_result_t res = remove_phis(mem, code, &removal_set, &control_flow);
+    kefir_result_t res = remove_phis(mem, code, &removal_set, &control_flow, coalesce_phis);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_target_ir_control_flow_free(mem, &control_flow);
         kefir_hashset_free(mem, &removal_set);

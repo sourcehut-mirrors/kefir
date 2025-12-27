@@ -53,7 +53,7 @@ static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops 
     KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops, entries, entry_states, capacity, key, position_ptr, collisions_ptr);
 }
 
-static kefir_result_t rehash(struct kefir_mem *, struct kefir_hashset *);
+static kefir_result_t rehash(struct kefir_mem *, struct kefir_hashset *, kefir_size_t);
 
 static kefir_result_t insert_entry(struct kefir_mem *mem, struct kefir_hashset *hashset,
                                    struct kefir_hashset_entry *entries, kefir_uint8_t *entry_states, kefir_size_t capacity, kefir_size_t *occupied,
@@ -63,7 +63,7 @@ static kefir_result_t insert_entry(struct kefir_mem *mem, struct kefir_hashset *
     REQUIRE_OK(find_position_for_insert(hashset->ops, entries, entry_states, capacity, key, &index, &found_collisions));
     if (do_rehash && entry_states[index] != KEFIR_HASHTABLE_ENTRY_OCCUPIED &&
         found_collisions >= KEFIR_REHASH_COLLISION_THRESHOLD) {
-        REQUIRE_OK(rehash(mem, hashset));
+        REQUIRE_OK(rehash(mem, hashset, KEFIR_HASHTABLE_CAPACITY_GROW(hashset->capacity)));
         return insert_entry(mem, hashset, hashset->entries, hashset->entry_states, hashset->capacity, &hashset->occupied, key, false);
     }
 
@@ -75,8 +75,7 @@ static kefir_result_t insert_entry(struct kefir_mem *mem, struct kefir_hashset *
     return KEFIR_OK;
 }
 
-static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashset *hashset) {
-    const kefir_size_t new_capacity = KEFIR_HASHTABLE_CAPACITY_GROW(hashset->capacity);
+static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashset *hashset, kefir_size_t new_capacity) {
     kefir_size_t new_occupied = 0;
     kefir_uint8_t *new_entry_states = KEFIR_MALLOC(mem, sizeof(kefir_uint8_t) * new_capacity);
     REQUIRE(new_entry_states != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate hashset entry states"));
@@ -130,11 +129,37 @@ kefir_result_t kefir_hashset_add(struct kefir_mem *mem, struct kefir_hashset *ha
 
     kefir_bool_t did_rehash = false;
     if (hashset->capacity == 0 || hashset->occupied >= KEFIR_REHASH_OCCUPATION_THRESHOLD * hashset->capacity) {
-        REQUIRE_OK(rehash(mem, hashset));
+        REQUIRE_OK(rehash(mem, hashset, KEFIR_HASHTABLE_CAPACITY_GROW(hashset->capacity)));
         did_rehash = true;
     }
 
     REQUIRE_OK(insert_entry(mem, hashset, hashset->entries, hashset->entry_states, hashset->capacity, &hashset->occupied, key, !did_rehash));
+    return KEFIR_OK;
+}
+
+kefir_uint64_t next_power_of_2(kefir_uint64_t x) {
+    REQUIRE(x != 0, 1);
+
+    x |= x >> 1;
+    x |= x >> 2;
+    x |= x >> 4;
+    x |= x >> 8;
+    x |= x >> 16;
+    x |= x >> 32;
+
+    return x + 1;
+}
+
+kefir_result_t kefir_hashset_trim(struct kefir_mem *mem, struct kefir_hashset *hashset) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
+
+    if (hashset->capacity * KEFIR_REHASH_TRIM_THRESHOLD > hashset->occupied) {
+        kefir_size_t trimmed_capacity = next_power_of_2(KEFIR_HASHTABLE_CAPACITY_TRIM(hashset->occupied));
+        if (trimmed_capacity < hashset->capacity) {
+            REQUIRE_OK(rehash(mem, hashset, trimmed_capacity));
+        }
+    }
     return KEFIR_OK;
 }
 

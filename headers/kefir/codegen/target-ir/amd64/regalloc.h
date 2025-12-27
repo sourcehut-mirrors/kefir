@@ -72,6 +72,7 @@ typedef struct kefir_codegen_target_ir_amd64_regalloc_class {
     kefir_size_t num_of_gp_registers;
     kefir_asm_amd64_xasmgen_register_t sse_registers[KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_CLASS_REGISTERS];
     kefir_size_t num_of_sse_registers;
+    struct kefir_codegen_target_ir_split_live_ranges_profile split_profile;
 } kefir_codegen_target_ir_amd64_regalloc_class_t;
 
 kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_mem *, struct kefir_codegen_target_ir_amd64_regalloc_class *, kefir_abi_amd64_variant_t);

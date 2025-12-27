@@ -425,6 +425,7 @@ typedef struct kefir_codegen_target_ir_use_iterator {
     kefir_size_t use_entry_index;
 } kefir_codegen_target_ir_use_iterator_t;
 
+kefir_size_t kefir_codegen_target_ir_code_num_of_uses(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t);
 kefir_result_t kefir_codegen_target_ir_code_use_iter(const struct kefir_codegen_target_ir_code *, struct kefir_codegen_target_ir_use_iterator *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_value_ref_t *);
 kefir_result_t kefir_codegen_target_ir_code_use_next(struct kefir_codegen_target_ir_use_iterator *, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_value_ref_t *);
 

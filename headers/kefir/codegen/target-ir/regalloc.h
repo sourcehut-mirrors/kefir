@@ -25,6 +25,7 @@
 #include "kefir/codegen/target-ir/liveness.h"
 #include "kefir/codegen/target-ir/interference.h"
 #include "kefir/codegen/target-ir/coalesce.h"
+#include "kefir/codegen/target-ir/split.h"
 #include "kefir/core/hashtable.h"
 #include "kefir/util/json.h"
 
@@ -50,6 +51,7 @@ typedef struct kefir_codegen_target_ir_regalloc_class {
     kefir_result_t (*new_state)(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc_state *, void *);
     kefir_result_t (*do_allocate)(struct kefir_mem *, const struct kefir_codegen_target_ir_value_type *, const struct kefir_codegen_target_ir_stack_frame *, void *, kefir_codegen_target_ir_regalloc_allocation_t *, void *);
     kefir_result_t (*format_allocation)(struct kefir_json_output *, kefir_codegen_target_ir_regalloc_allocation_t, void *);
+    const struct kefir_codegen_target_ir_split_live_ranges_profile *split_profile;
     void *payload;
 } kefir_codegen_target_ir_regalloc_class_t;
 

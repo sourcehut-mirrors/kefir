@@ -96,8 +96,10 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
 
 #define KEFIR_REHASH_OCCUPATION_THRESHOLD 0.8
 #define KEFIR_REHASH_COLLISION_THRESHOLD 32
+#define KEFIR_REHASH_TRIM_THRESHOLD 0.15
 
 #define KEFIR_HASHTABLE_CAPACITY_GROW(_capacity) ((_capacity) == 0 ? 4 : (_capacity) * 2)
+#define KEFIR_HASHTABLE_CAPACITY_TRIM(_occupied) MAX(4, (kefir_size_t) ((_occupied) * 4))
 #define KEFIR_HASHTABLE_WRAPAROUND(_index, _capacity) ((_index) & ((_capacity) - 1))
 
 #define KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(_ops, _entries, _entry_states, _capacity, _key, _position_ptr, _collisions_ptr) \

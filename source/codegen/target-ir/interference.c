@@ -116,6 +116,10 @@ kefir_result_t kefir_codegen_target_ir_interference_build_update_alive_set(struc
     REQUIRE(per_block_ranges != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR per-block liveness ranges"));
     REQUIRE(alive_values != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR alive value set"));
 
+    if (instr_ref == KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_hashset_trim(mem, alive_values));
+    }
+
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(per_block_ranges, (kefir_hashtree_key_t) instr_ref, &node);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);

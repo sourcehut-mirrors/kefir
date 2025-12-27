@@ -22,9 +22,17 @@
 #define KEFIR_CODEGEN_TARGET_IR_SPLIT_H_
 
 #include "kefir/codegen/target-ir/code.h"
-#include "kefir/codegen/target-ir/control_flow.h"
 
-kefir_result_t kefir_codegen_target_ir_split_live_range_after(struct kefir_mem *, struct kefir_codegen_target_ir_code *,
-    const struct kefir_codegen_target_ir_control_flow *, kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_instruction_ref_t);
+typedef struct kefir_codegen_target_ir_split_live_ranges_profile {
+    kefir_uint32_t general_purpose_interference_threshold;
+    kefir_uint32_t floating_point_interference_threshold;
+    kefir_uint32_t max_splits_per_use_pct;
+    kefir_uint32_t max_splits_baseline;
+    kefir_uint32_t max_blocks;
+    kefir_uint32_t max_branching;
+    kefir_uint32_t max_code;
+} kefir_codegen_target_ir_split_live_ranges_profile_t;
+
+kefir_result_t kefir_codegen_target_ir_transform_split_live_ranges(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_split_live_ranges_profile *);
 
 #endif
