@@ -18,25 +18,27 @@ get:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
 .L__kefir_func_get_label3:
-    fldt -80(%rbp)
+    fldt -64(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_get_label10:
     test %esi, %esi
-    jz .L__kefir_func_get_label3
+    jnz .L__kefir_func_get_label12
+.L__kefir_func_get_label7:
+    movq -80(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -56(%rbp)
+    jmp .L__kefir_func_get_label3
 .L__kefir_func_get_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
     movq %rax, -72(%rbp)
-    jmp .L__kefir_func_get_label3
+    jmp .L__kefir_func_get_label7
 .L__kefir_text_func_get_end:
 
 .L__kefir_text_section_end:

@@ -895,22 +895,22 @@ __kefir_softfloat_fmaximum_numl:
     fucomi %st(1)
     seta %al
     fstpt -96(%rbp)
-    fstpt -64(%rbp)
+    fstpt -80(%rbp)
     test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label27
     fldt -96(%rbp)
-    fldt -64(%rbp)
+    fldt -80(%rbp)
     xor %eax, %eax
     fucomi %st(1)
     seta %al
-    fstpt -64(%rbp)
+    fstpt -80(%rbp)
     fstpt -96(%rbp)
     test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label33
     fldt -96(%rbp)
-    fldt -64(%rbp)
+    fldt -80(%rbp)
     fld %st(0)
-    fstpt -64(%rbp)
+    fstpt -80(%rbp)
     fld %st(1)
     fstpt -96(%rbp)
     xor %eax, %eax
@@ -927,37 +927,38 @@ __kefir_softfloat_fmaximum_numl:
     setp %al
     fstpt -96(%rbp)
     test %eax, %eax
-    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
-    fldt -64(%rbp)
+    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label9
+    fldt -80(%rbp)
     xor %eax, %eax
     fucomi %st(0)
     setp %al
-    fstpt -64(%rbp)
-    test %eax, %eax
-    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label13
-    fldt -96(%rbp)
-    fldt -64(%rbp)
-    faddp
     fstpt -80(%rbp)
-    movq -80(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -88(%rbp)
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16:
+    test %eax, %eax
+    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
     fldt -96(%rbp)
+    fldt -80(%rbp)
+    faddp
+    fstpt -64(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -72(%rbp)
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16:
+    fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label13:
-    movq -64(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -88(%rbp)
+    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label9:
+    movq -96(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -88(%rbp), %rax
+    movq %rax, -72(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label32:
     fldt .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label36(%rip)
-    fldt -64(%rbp)
+    fldt -80(%rbp)
     fxam
     fnstsw %ax
     fxch %st(1)
@@ -981,19 +982,19 @@ __kefir_softfloat_fmaximum_numl:
     fxch %st(1)
     fxch %st(2)
     fld %st(0)
-    fstpt -80(%rbp)
+    fstpt -64(%rbp)
     fld %st(1)
-    fstpt -32(%rbp)
+    fstpt -48(%rbp)
     xor %eax, %eax
     fcomip %st(1)
     fstp %st(0)
     seta %al
-    fldt -80(%rbp)
-    fldt -32(%rbp)
+    fldt -64(%rbp)
+    fldt -48(%rbp)
     fld %st(0)
-    fstpt -32(%rbp)
+    fstpt -48(%rbp)
     fld %st(1)
-    fstpt -80(%rbp)
+    fstpt -64(%rbp)
     xor %ecx, %ecx
     xor %edx, %edx
     fucomip %st(1)
@@ -1003,7 +1004,7 @@ __kefir_softfloat_fmaximum_numl:
     or %rcx, %rax
     setne %al
     fstpt -96(%rbp)
-    fstpt -64(%rbp)
+    fstpt -80(%rbp)
     test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label34
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20:
@@ -1013,13 +1014,13 @@ __kefir_softfloat_fmaximum_numl:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label34:
-    movq -64(%rbp), %rax
+    movq -80(%rbp), %rax
     movq %rax, -96(%rbp)
-    movq -56(%rbp), %rax
+    movq -72(%rbp), %rax
     movq %rax, -88(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label33:
-    fldt -64(%rbp)
+    fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

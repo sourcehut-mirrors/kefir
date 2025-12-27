@@ -82,6 +82,7 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
     const struct kefir_codegen_target_ir_value_type *value_type,
     const struct kefir_codegen_target_ir_stack_frame *stack_frame,
     void *state,
+    kefir_bool_t try_optimistic,
     kefir_codegen_target_ir_regalloc_allocation_t *allocation_ptr,
     void *payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -165,6 +166,8 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                     return KEFIR_OK;
                 }
             }
+
+            REQUIRE(!try_optimistic, KEFIR_SET_ERROR(KEFIR_OUT_OF_SPACE, "Unable to optimistically allocate general purpose register for target IR value"));
             kefir_size_t spill_index = 0;
             REQUIRE_OK(allocate_spill_area(mem, state_payload, 1, 1, &spill_index));
             regalloc_entry.spill_area.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL;
@@ -239,6 +242,7 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                     return KEFIR_OK;
                 }
             }
+            REQUIRE(!try_optimistic, KEFIR_SET_ERROR(KEFIR_OUT_OF_SPACE, "Unable to optimistically allocate floating point register for target IR value"));
             kefir_size_t spill_index = 0;
             REQUIRE_OK(allocate_spill_area(mem, state_payload, 2, 2, &spill_index));
             regalloc_entry.spill_area.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL;
@@ -476,6 +480,18 @@ static kefir_result_t new_state(struct kefir_mem *mem, struct kefir_codegen_targ
     return KEFIR_OK;
 }
 
+static kefir_result_t amd64_regalloc_is_evictable(kefir_codegen_target_ir_regalloc_allocation_t allocation, kefir_bool_t *evictable, void *payload) {
+    UNUSED(payload);
+    REQUIRE(evictable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolea flag"));
+    
+    union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+        .allocation = allocation
+    };
+    *evictable = entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP ||
+        entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE;
+    return KEFIR_OK;
+}
+
 static kefir_result_t amd64_regalloc_format_allocation(struct kefir_json_output *, kefir_codegen_target_ir_regalloc_allocation_t);
 
 kefir_result_t format_allocation(struct kefir_json_output *json, kefir_codegen_target_ir_regalloc_allocation_t allocation, void *payload) {
@@ -536,6 +552,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_me
 
     klass->klass.do_allocate = do_allocate;
     klass->klass.new_state = new_state;
+    klass->klass.is_evictable = amd64_regalloc_is_evictable;
     klass->klass.format_allocation = format_allocation;
     klass->klass.split_profile = &klass->split_profile;
     klass->klass.payload = klass;

@@ -10,128 +10,46 @@ sum32:
 .L__kefir_text_func_sum32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $240, %rsp
+    sub $224, %rsp
     stmxcsr -8(%rbp)
     movd 40(%rbp), %xmm8
-    movd 44(%rbp), %xmm9
-    movd 32(%rbp), %xmm10
-    movd 36(%rbp), %xmm11
-    movd 24(%rbp), %xmm12
-    movd 28(%rbp), %xmm13
+    movd %xmm8, -112(%rbp)
+    movd 44(%rbp), %xmm8
+    movd %xmm8, -160(%rbp)
+    movd 32(%rbp), %xmm8
+    movd %xmm8, -80(%rbp)
+    movd 36(%rbp), %xmm8
+    movd %xmm8, -144(%rbp)
+    movd 24(%rbp), %xmm8
+    movd %xmm8, -48(%rbp)
+    movd 28(%rbp), %xmm8
+    movd %xmm8, -128(%rbp)
     movd 16(%rbp), %xmm14
-    movd 20(%rbp), %xmm15
-    movaps %xmm7, -176(%rbp)
-    movq -176(%rbp), %rax
-    movq %rax, -160(%rbp)
-    movq -168(%rbp), %rax
-    movq %rax, -152(%rbp)
-    movaps %xmm0, -144(%rbp)
-    movdqu -160(%rbp), %xmm0
-    shufps $1, -176(%rbp), %xmm0
-    movdqu %xmm0, -160(%rbp)
-    movq -160(%rbp), %rax
-    movq %rax, -176(%rbp)
-    movq -152(%rbp), %rax
-    movq %rax, -168(%rbp)
-    movaps -144(%rbp), %xmm0
-    movaps %xmm6, -160(%rbp)
-    movq -160(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -152(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movaps %xmm0, -144(%rbp)
-    movdqu -128(%rbp), %xmm0
-    shufps $1, -160(%rbp), %xmm0
-    movdqu %xmm0, -128(%rbp)
-    movq -128(%rbp), %rax
-    movq %rax, -160(%rbp)
-    movq -120(%rbp), %rax
-    movq %rax, -152(%rbp)
-    movaps -144(%rbp), %xmm0
-    movaps %xmm5, -144(%rbp)
-    movq -144(%rbp), %rax
-    movq %rax, -112(%rbp)
-    movq -136(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movaps %xmm0, -128(%rbp)
-    movdqu -112(%rbp), %xmm0
-    shufps $1, -144(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -144(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -136(%rbp)
-    movaps -128(%rbp), %xmm0
-    movaps %xmm4, -128(%rbp)
-    movq -128(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -120(%rbp), %rax
-    movq %rax, -88(%rbp)
-    movaps %xmm0, -112(%rbp)
-    movdqu -96(%rbp), %xmm0
-    shufps $1, -128(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movaps -112(%rbp), %xmm0
-    movaps %xmm3, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movaps %xmm0, -96(%rbp)
-    movdqu -80(%rbp), %xmm0
-    shufps $1, -112(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
-    movq -80(%rbp), %rax
-    movq %rax, -112(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movaps -96(%rbp), %xmm0
-    movaps %xmm2, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movaps %xmm0, -80(%rbp)
-    movdqu -64(%rbp), %xmm0
-    shufps $1, -96(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -88(%rbp)
-    movaps -80(%rbp), %xmm0
-    movaps %xmm1, -80(%rbp)
-    movq -80(%rbp), %rax
-    movq %rax, -48(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -40(%rbp)
-    movaps %xmm0, -64(%rbp)
-    movdqu -48(%rbp), %xmm0
-    shufps $1, -80(%rbp), %xmm0
-    movdqu %xmm0, -48(%rbp)
-    movq -48(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -40(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movaps -64(%rbp), %xmm0
-    movaps %xmm0, -64(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -24(%rbp)
-    movaps %xmm0, -48(%rbp)
-    movdqu -32(%rbp), %xmm0
-    shufps $1, -64(%rbp), %xmm0
-    movdqu %xmm0, -32(%rbp)
+    movd 20(%rbp), %xmm8
+    movd %xmm8, -96(%rbp)
+    movaps %xmm7, %xmm9
+    movaps %xmm9, -32(%rbp)
+    movdqu -32(%rbp), %xmm8
+    shufps $1, %xmm9, %xmm8
+    movdqu %xmm8, -32(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -64(%rbp)
     movq -24(%rbp), %rax
     movq %rax, -56(%rbp)
-    movaps -48(%rbp), %xmm0
+    movaps %xmm6, %xmm11
+    shufps $1, %xmm11, %xmm11
+    movaps %xmm5, %xmm13
+    shufps $1, %xmm13, %xmm13
+    movaps %xmm4, %xmm8
+    shufps $1, %xmm8, %xmm8
+    movaps %xmm3, %xmm15
+    shufps $1, %xmm15, %xmm15
+    movaps %xmm2, %xmm10
+    shufps $1, %xmm10, %xmm10
+    movaps %xmm1, %xmm9
+    shufps $1, %xmm9, %xmm9
+    movaps %xmm0, %xmm12
+    shufps $1, %xmm12, %xmm12
     addss %xmm1, %xmm0
     addss %xmm2, %xmm0
     addss %xmm3, %xmm0
@@ -140,131 +58,21 @@ sum32:
     addss %xmm6, %xmm0
     addss %xmm7, %xmm0
     addss %xmm14, %xmm0
-    addss %xmm12, %xmm0
-    addss %xmm10, %xmm0
-    addss %xmm8, %xmm0
-    movq -64(%rbp), %rax
-    movq %rax, -48(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -40(%rbp)
-    movd -48(%rbp), %xmm1
-    addss -80(%rbp), %xmm1
-    movd %xmm1, -48(%rbp)
-    movq -48(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -40(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movd -80(%rbp), %xmm1
-    addss -96(%rbp), %xmm1
-    movd %xmm1, -80(%rbp)
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -88(%rbp)
-    movd -96(%rbp), %xmm1
-    addss -112(%rbp), %xmm1
-    movd %xmm1, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -112(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movd -112(%rbp), %xmm1
-    addss -128(%rbp), %xmm1
-    movd %xmm1, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movd -128(%rbp), %xmm1
-    addss -144(%rbp), %xmm1
-    movd %xmm1, -128(%rbp)
-    movq -128(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -120(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -144(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -136(%rbp)
-    movd -144(%rbp), %xmm1
-    addss -160(%rbp), %xmm1
-    movd %xmm1, -144(%rbp)
-    movq -144(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -136(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -160(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -152(%rbp)
-    movd -160(%rbp), %xmm1
-    addss -176(%rbp), %xmm1
-    movd %xmm1, -160(%rbp)
-    movq -160(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -152(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -176(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -168(%rbp)
-    movd -176(%rbp), %xmm1
-    addss %xmm15, %xmm1
-    movd %xmm1, -176(%rbp)
-    movq -176(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -168(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -176(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -168(%rbp)
-    movd -176(%rbp), %xmm1
-    addss %xmm13, %xmm1
-    movd %xmm1, -176(%rbp)
-    movq -176(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -168(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -176(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -168(%rbp)
-    movd -176(%rbp), %xmm1
-    addss %xmm11, %xmm1
-    movd %xmm1, -176(%rbp)
-    movq -176(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -168(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -176(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -168(%rbp)
-    movd -176(%rbp), %xmm1
-    addss %xmm9, %xmm1
-    movd %xmm1, -176(%rbp)
-    movq -176(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -168(%rbp), %rax
-    movq %rax, -56(%rbp)
-    insertps $16, -64(%rbp), %xmm0
+    addss -48(%rbp), %xmm0
+    addss -80(%rbp), %xmm0
+    addss -112(%rbp), %xmm0
+    addss %xmm9, %xmm12
+    addss %xmm10, %xmm12
+    addss %xmm15, %xmm12
+    addss %xmm8, %xmm12
+    addss %xmm13, %xmm12
+    addss %xmm11, %xmm12
+    addss -64(%rbp), %xmm12
+    addss -96(%rbp), %xmm12
+    addss -128(%rbp), %xmm12
+    addss -144(%rbp), %xmm12
+    addss -160(%rbp), %xmm12
+    insertps $16, %xmm12, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
