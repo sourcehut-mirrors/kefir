@@ -241,7 +241,7 @@ static kefir_result_t track_use_instr(struct kefir_mem *mem, struct kefir_codege
         for (kefir_size_t use_entry_idx = instr->use_entry_top; use_entry_idx != (kefir_size_t) ~0ull;) {
             struct kefir_codegen_target_ir_use_entry *use_entry = &code->use_entries[use_entry_idx];
             kefir_size_t next_use_entry = use_entry->next_entry;
-            if (use_entry->user_instr_ref != user_instr_ref) {
+            if (use_entry->user_instr_ref != user_instr_ref || (use_entry->used_aspect != used_aspect && used_aspect != ~0ull)) {
                 prev_use_entry_idx = use_entry_idx;
                 use_entry_idx = next_use_entry;
             } else if (prev_use_entry_idx != (kefir_size_t) ~0ull) {
@@ -689,6 +689,20 @@ kefir_result_t kefir_codegen_target_ir_code_phi_drop(struct kefir_mem *mem, stru
 
     for (kefir_size_t i = 0; i < instr->operation.phi_node.links_length; i++) {
         if (instr->operation.phi_node.links[i].link_block_ref == block_ref) {
+            kefir_bool_t has_other_uses = false;
+            for (kefir_size_t j = 0; !has_other_uses && j < instr->operation.phi_node.links_length; j++) {
+                if (i == j) {
+                    continue;
+                }
+
+                if (instr->operation.phi_node.links[i].link_value_ref.instr_ref == instr->operation.phi_node.links[j].link_value_ref.instr_ref &&
+                    instr->operation.phi_node.links[i].link_value_ref.aspect == instr->operation.phi_node.links[j].link_value_ref.aspect) {
+                    has_other_uses = true;
+                }
+            }
+            if (!has_other_uses) {
+                REQUIRE_OK(track_use_instr(mem, code, instr_ref, instr->operation.phi_node.links[i].link_value_ref.instr_ref, instr->operation.phi_node.links[i].link_value_ref.aspect, false));
+            }
             memmove(&instr->operation.phi_node.links[i], &instr->operation.phi_node.links[i + 1], (instr->operation.phi_node.links_length - (i + 1)) * sizeof(struct kefir_codegen_target_ir_phi_link));
             instr->operation.phi_node.links_length--;
             break;
@@ -1050,7 +1064,7 @@ static kefir_result_t replace_uses(struct kefir_mem *mem, struct kefir_codegen_t
             REQUIRE_OK(operand_replace_uses(mem, code, user_instr_ref, &user_instr->operation.parameters[i], to_instr_ref, from_instr_ref));
         }
     }
-    REQUIRE_OK(track_use_instr(mem, code, user_instr_ref, from_instr_ref, 0, false));
+    REQUIRE_OK(track_use_instr(mem, code, user_instr_ref, from_instr_ref, ~0ull, false));
     return KEFIR_OK;
 }
 
