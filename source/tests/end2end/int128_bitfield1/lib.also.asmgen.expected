@@ -27,15 +27,15 @@ get_a:
     cmove %rax, %rsi
     mov $96, %rcx
     shrd %cl, %rdx, %rsi
-    mov %rdx, %rax
-    sar %cl, %rax
+    mov %rdx, %rdi
+    sar %cl, %rdi
     sar $63, %rdx
     test $64, %cl
-    cmovne %rax, %rsi
-    mov %rax, %rcx
+    mov %rsi, %rax
+    cmovne %rdi, %rax
+    mov %rdi, %rcx
     cmovne %rdx, %rcx
     mov %rcx, %rdx
-    mov %rsi, %rax
     ret
 .L__kefir_text_func_get_a_end:
 
@@ -56,15 +56,15 @@ get_b:
     cmove %rax, %rsi
     mov $58, %rcx
     shrd %cl, %rdx, %rsi
-    mov %rdx, %rax
-    sar %cl, %rax
+    mov %rdx, %rdi
+    sar %cl, %rdi
     sar $63, %rdx
     test $64, %cl
-    cmovne %rax, %rsi
-    mov %rax, %rcx
+    mov %rsi, %rax
+    cmovne %rdi, %rax
+    mov %rdi, %rcx
     cmovne %rdx, %rcx
     mov %rcx, %rdx
-    mov %rsi, %rax
     ret
 .L__kefir_text_func_get_b_end:
 

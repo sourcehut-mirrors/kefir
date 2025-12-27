@@ -63,10 +63,10 @@ test:
     fsubp
     fldt -160(%rbp)
     faddp
-    fstpt -144(%rbp)
-    movq -144(%rbp), %rcx
+    fstpt -128(%rbp)
+    movq -128(%rbp), %rcx
     movq %rcx, -160(%rbp)
-    movq -136(%rbp), %rcx
+    movq -120(%rbp), %rcx
     movq %rcx, -152(%rbp)
     mov %rax, %rdi
     jmp .L__kefir_func_test_label4

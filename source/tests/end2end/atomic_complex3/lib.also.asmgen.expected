@@ -28,15 +28,15 @@ add_f32:
     sub $136, %rsp
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
-    movaps %xmm1, -112(%rbp)
-    movdqu -112(%rbp), %xmm2
+    movaps %xmm1, -128(%rbp)
+    movdqu -128(%rbp), %xmm2
     shufps $1, %xmm1, %xmm2
-    movdqu %xmm2, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movaps %xmm0, -112(%rbp)
+    movdqu %xmm2, -128(%rbp)
+    movq -128(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -104(%rbp)
+    movaps %xmm0, -128(%rbp)
     mov %rdi, %rbx
     fnstenv -96(%rbp)
     stmxcsr -68(%rbp)
@@ -51,7 +51,7 @@ add_f32:
     movd -132(%rbp), %xmm1
     movaps %xmm0, -48(%rbp)
     movd -48(%rbp), %xmm2
-    addss -112(%rbp), %xmm2
+    addss -128(%rbp), %xmm2
     movd %xmm2, -48(%rbp)
     movq -48(%rbp), %rax
     movq %rax, -64(%rbp)
@@ -59,7 +59,7 @@ add_f32:
     movq %rax, -56(%rbp)
     movaps %xmm1, -32(%rbp)
     movd -32(%rbp), %xmm2
-    addss -128(%rbp), %xmm2
+    addss -112(%rbp), %xmm2
     movd %xmm2, -32(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -48(%rbp)
@@ -184,15 +184,15 @@ divide_f32:
     sub $136, %rsp
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
-    movaps %xmm1, -112(%rbp)
-    movdqu -112(%rbp), %xmm2
+    movaps %xmm1, -128(%rbp)
+    movdqu -128(%rbp), %xmm2
     shufps $1, %xmm1, %xmm2
-    movdqu %xmm2, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movaps %xmm0, -112(%rbp)
+    movdqu %xmm2, -128(%rbp)
+    movq -128(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -104(%rbp)
+    movaps %xmm0, -128(%rbp)
     mov %rdi, %rbx
     fnstenv -96(%rbp)
     stmxcsr -68(%rbp)
@@ -207,8 +207,8 @@ divide_f32:
     movd -132(%rbp), %xmm1
     movaps %xmm0, %xmm2
     insertps $16, %xmm1, %xmm2
-    movaps -112(%rbp), %xmm3
-    insertps $16, -128(%rbp), %xmm3
+    movaps -128(%rbp), %xmm3
+    insertps $16, -112(%rbp), %xmm3
     cvtps2pd %xmm3, %xmm3
     cvtps2pd %xmm2, %xmm2
     movaps %xmm3, %xmm4
@@ -379,15 +379,15 @@ multiply_f32:
     sub $136, %rsp
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
-    movaps %xmm1, -112(%rbp)
-    movdqu -112(%rbp), %xmm2
+    movaps %xmm1, -128(%rbp)
+    movdqu -128(%rbp), %xmm2
     shufps $1, %xmm1, %xmm2
-    movdqu %xmm2, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movaps %xmm0, -112(%rbp)
+    movdqu %xmm2, -128(%rbp)
+    movq -128(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -104(%rbp)
+    movaps %xmm0, -128(%rbp)
     mov %rdi, %rbx
     fnstenv -96(%rbp)
     stmxcsr -68(%rbp)
@@ -402,8 +402,8 @@ multiply_f32:
     movd -132(%rbp), %xmm1
     movaps %xmm0, %xmm2
     insertps $16, %xmm1, %xmm2
-    movaps -112(%rbp), %xmm3
-    insertps $16, -128(%rbp), %xmm3
+    movaps -128(%rbp), %xmm3
+    insertps $16, -112(%rbp), %xmm3
     movaps %xmm3, %xmm4
     shufps $160, %xmm3, %xmm4
     mulps %xmm2, %xmm4
@@ -499,20 +499,20 @@ multiply_f64:
     mulpd %xmm3, %xmm5
     addpd %xmm4, %xmm5
     movaps %xmm5, %xmm2
-    movaps %xmm5, -64(%rbp)
+    movaps %xmm5, -80(%rbp)
     movaps %xmm2, -48(%rbp)
     movdqu -48(%rbp), %xmm3
     unpckhpd %xmm5, %xmm3
     movdqu %xmm3, -48(%rbp)
     movq -48(%rbp), %rax
-    movq %rax, -80(%rbp)
+    movq %rax, -64(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movq %rax, -56(%rbp)
     movq %xmm0, -48(%rbp)
     movq %xmm1, -40(%rbp)
-    movq -64(%rbp), %xmm0
-    movq %xmm0, -32(%rbp)
     movq -80(%rbp), %xmm0
+    movq %xmm0, -32(%rbp)
+    movq -64(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
     mov %rbx, %rsi
     mov $5, %r8
@@ -533,8 +533,8 @@ multiply_f64:
     stmxcsr -144(%rbp)
     orl %eax, -144(%rbp)
     ldmxcsr -144(%rbp)
-    movaps -64(%rbp), %xmm0
-    movaps -80(%rbp), %xmm1
+    movaps -80(%rbp), %xmm0
+    movaps -64(%rbp), %xmm1
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -553,15 +553,15 @@ subtract_f32:
     sub $136, %rsp
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
-    movaps %xmm1, -112(%rbp)
-    movdqu -112(%rbp), %xmm2
+    movaps %xmm1, -128(%rbp)
+    movdqu -128(%rbp), %xmm2
     shufps $1, %xmm1, %xmm2
-    movdqu %xmm2, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movaps %xmm0, -112(%rbp)
+    movdqu %xmm2, -128(%rbp)
+    movq -128(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -104(%rbp)
+    movaps %xmm0, -128(%rbp)
     mov %rdi, %rbx
     fnstenv -96(%rbp)
     stmxcsr -68(%rbp)
@@ -576,7 +576,7 @@ subtract_f32:
     movd -132(%rbp), %xmm1
     movaps %xmm0, -48(%rbp)
     movd -48(%rbp), %xmm2
-    subss -112(%rbp), %xmm2
+    subss -128(%rbp), %xmm2
     movd %xmm2, -48(%rbp)
     movq -48(%rbp), %rax
     movq %rax, -64(%rbp)
@@ -584,7 +584,7 @@ subtract_f32:
     movq %rax, -56(%rbp)
     movaps %xmm1, -32(%rbp)
     movd -32(%rbp), %xmm2
-    subss -128(%rbp), %xmm2
+    subss -112(%rbp), %xmm2
     movd %xmm2, -32(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -48(%rbp)

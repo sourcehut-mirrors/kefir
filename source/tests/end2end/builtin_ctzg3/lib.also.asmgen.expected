@@ -14,13 +14,11 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    movzx %dil, %rax
-    cmp $0, %al
+    movzx %dil, %rcx
+    cmp $0, %cl
     je .L__kefir_func_test1_label9
-    xor %ecx, %ecx
-    mov %rcx, %rdx
-    rep bsf %eax, %edx
-    mov %rdx, %rax
+    xor %eax, %eax
+    rep bsf %ecx, %eax
 .L__kefir_func_test1_label6:
     ret
 .L__kefir_func_test1_label9:
@@ -30,13 +28,11 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    movzx %di, %rax
-    cmp $0, %ax
+    movzx %di, %rcx
+    cmp $0, %cx
     je .L__kefir_func_test2_label9
-    xor %ecx, %ecx
-    mov %rcx, %rdx
-    rep bsf %eax, %edx
-    mov %rdx, %rax
+    xor %eax, %eax
+    rep bsf %ecx, %eax
 .L__kefir_func_test2_label6:
     ret
 .L__kefir_func_test2_label9:

@@ -112,14 +112,14 @@ testx:
 .L__kefir_func_testx_label8:
     movq -24(%rbp), %rax
     add $15, %rax
-    and $-16, %rax
-    lea 16(%rax), %rcx
-    movq %rcx, -24(%rbp)
-    movq (%rax), %rcx
-    mov %rcx, %rcx
-    movq 8(%rax), %rax
-    mov %rax, %rdx
-    mov %rcx, %rax
+    mov %rax, %rcx
+    and $-16, %rcx
+    lea 16(%rcx), %rax
+    movq %rax, -24(%rbp)
+    movq (%rcx), %rax
+    mov %rax, %rax
+    movq 8(%rcx), %rcx
+    mov %rcx, %rdx
     jmp .L__kefir_func_testx_label9
 .L__kefir_func_testx_label19:
     movl -32(%rbp), %ecx

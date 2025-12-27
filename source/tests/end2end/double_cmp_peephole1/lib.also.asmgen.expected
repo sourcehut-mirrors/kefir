@@ -15,10 +15,9 @@ test:
 .L__kefir_func_test_label3:
     ret
 .L__kefir_func_test_label8:
-    movl (%rsi), %eax
-    xor %ecx, %ecx
-    cmp $0, %eax
-    mov %rcx, %rax
+    movl (%rsi), %ecx
+    xor %eax, %eax
+    cmp $0, %ecx
     setg %al
     jmp .L__kefir_func_test_label3
 .L__kefir_text_func_test_end:

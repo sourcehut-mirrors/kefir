@@ -213,16 +213,14 @@ overflow_add_schar_uchar_uchar:
 
 overflow_add_ulong_long_long:
 .L__kefir_text_func_overflow_add_ulong_long_long_begin:
-    mov %rdi, %rax
-    add %rsi, %rax
-    movabs $-9223372036854775808, %rcx
-    add %rax, %rcx
-    cmp %rdi, %rcx
-    mov %rax, %rcx
-    setb %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    mov %rdi, %rcx
+    add %rsi, %rcx
+    movabs $-9223372036854775808, %rax
+    add %rcx, %rax
+    cmp %rdi, %rax
+    setb %al
+    and $1, %eax
+    movq %rcx, (%rdx)
     ret
 .L__kefir_text_func_overflow_add_ulong_long_long_end:
 

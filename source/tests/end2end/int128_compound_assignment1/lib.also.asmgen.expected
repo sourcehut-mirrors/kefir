@@ -165,16 +165,18 @@ i128_mul:
     sub $16, %rsp
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
-    imul %rsi, %rcx
-    mov %rdx, %r8
-    imul %rax, %r8
+    mov %rcx, %r8
+    imul %rsi, %r8
+    mov %rdx, %rcx
+    imul %rax, %rcx
     mov %rsi, %rdx
     mul %rdx
-    add %r8, %rcx
+    add %rcx, %r8
+    mov %r8, %rcx
     add %rdx, %rcx
-    mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
     mov %rcx, %rdx
+    mov %rax, (%rdi)
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -344,16 +346,18 @@ u128_mul:
     sub $16, %rsp
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
-    imul %rsi, %rcx
-    mov %rdx, %r8
-    imul %rax, %r8
+    mov %rcx, %r8
+    imul %rsi, %r8
+    mov %rdx, %rcx
+    imul %rax, %rcx
     mov %rsi, %rdx
     mul %rdx
-    add %r8, %rcx
+    add %rcx, %r8
+    mov %r8, %rcx
     add %rdx, %rcx
-    mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
     mov %rcx, %rdx
+    mov %rax, (%rdi)
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret

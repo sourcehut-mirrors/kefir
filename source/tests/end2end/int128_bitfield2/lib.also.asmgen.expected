@@ -28,13 +28,14 @@ get_a:
     mov $96, %rcx
     shrd %cl, %rdx, %rsi
     shr %cl, %rdx
-    xor %eax, %eax
+    mov %rax, %rdi
+    xor %eax, %edi
     test $64, %cl
-    cmovne %rdx, %rsi
-    mov %rax, %rcx
+    mov %rsi, %rax
+    cmovne %rdx, %rax
+    mov %rdi, %rcx
     cmove %rdx, %rcx
     mov %rcx, %rdx
-    mov %rsi, %rax
     ret
 .L__kefir_text_func_get_a_end:
 
@@ -56,13 +57,14 @@ get_b:
     mov $58, %rcx
     shrd %cl, %rdx, %rsi
     shr %cl, %rdx
-    xor %eax, %eax
+    mov %rax, %rdi
+    xor %eax, %edi
     test $64, %cl
-    cmovne %rdx, %rsi
-    mov %rax, %rcx
+    mov %rsi, %rax
+    cmovne %rdx, %rax
+    mov %rdi, %rcx
     cmove %rdx, %rcx
     mov %rcx, %rdx
-    mov %rsi, %rax
     ret
 .L__kefir_text_func_get_b_end:
 

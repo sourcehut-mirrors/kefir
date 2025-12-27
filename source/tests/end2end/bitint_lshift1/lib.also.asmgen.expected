@@ -322,33 +322,36 @@ __kefir_bigint_left_shift:
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
-    movq -48(%rbp), %rax
-    movq -32(%rbp), %rdx
+    movq -48(%rbp), %rdx
+    movq -32(%rbp), %rax
     movq -8(%rbp), %rsi
     mov $1, %r8d
     movsx %r8d, %rdi
     sub %rdi, %rsi
     imul $1, %rsi, %rsi
-    add %rsi, %rdx
-    movb (%rdx), %sil
-    movq -48(%rbp), %rdx
-    movq -32(%rbp), %rdi
+    add %rsi, %rax
+    movb (%rax), %sil
+    movq -48(%rbp), %rdi
+    movq -32(%rbp), %rax
     movq -8(%rbp), %r8
     imul $1, %r8, %r8
-    add %r8, %rdi
-    mov %rcx, %r8
-    and $255, %r8
-    mov %rax, %rcx
-    shl %cl, %r8d
+    mov %rax, %r9
+    add %r8, %r9
+    mov %r9, %r8
+    mov %rcx, %rax
+    and $255, %rax
+    mov %rdx, %rcx
+    shl %cl, %eax
     and $255, %rsi
-    mov $8, %ecx
-    movsx %ecx, %rax
-    mov $1, %rcx
-    imul %rax, %rcx
-    sub %rdx, %rcx
+    mov $8, %edx
+    movsx %edx, %rcx
+    mov $1, %rdx
+    imul %rcx, %rdx
+    mov %rdx, %rcx
+    sub %rdi, %rcx
     sar %cl, %esi
-    or %esi, %r8d
-    movb %r8b, (%rdi)
+    or %esi, %eax
+    movb %al, (%r8)
     movq -8(%rbp), %rax
     add $-1, %rax
     movq %rax, -8(%rbp)

@@ -54,19 +54,18 @@ factorial64:
     jle .L__kefir_func_factorial64_label22
     mov $1, %edx
     movsx %edx, %rcx
-    mov %rax, %rdx
-    mov %rcx, %rax
 .L__kefir_func_factorial64_label6:
     mov $1, %esi
-    movsx %esi, %rcx
-    cmp %rcx, %rdx
+    movsx %esi, %rdx
+    cmp %rdx, %rax
     jg .L__kefir_func_factorial64_label17
+    mov %rcx, %rax
     ret
 .L__kefir_func_factorial64_label17:
-    mov %rdx, %rcx
-    add $-1, %rcx
-    imul %rdx, %rax
-    mov %rcx, %rdx
+    mov %rax, %rdx
+    add $-1, %rdx
+    imul %rax, %rcx
+    mov %rdx, %rax
     jmp .L__kefir_func_factorial64_label6
 .L__kefir_func_factorial64_label22:
     ret
@@ -85,13 +84,13 @@ quad_equation:
     sub $80, %rsp
     stmxcsr -24(%rbp)
     mov %rdi, %rbx
-    movaps %xmm0, -96(%rbp)
+    movaps %xmm0, -80(%rbp)
     movaps %xmm1, %xmm0
     mulsd %xmm1, %xmm0
     mov $4, %ecx
     movsx %ecx, %rax
     cvtsi2sd %rax, %xmm3
-    mulsd -96(%rbp), %xmm3
+    mulsd -80(%rbp), %xmm3
     mulsd %xmm2, %xmm3
     subsd %xmm3, %xmm0
     mov $1, %rax
@@ -102,9 +101,9 @@ quad_equation:
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm2
     movdqu %xmm2, -64(%rbp)
     movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
+    movq %rax, -96(%rbp)
     movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movq %rax, -88(%rbp)
     test %ebx, %ebx
     jz .L__kefir_func_quad_equation_label10
 .L__kefir_func_quad_equation_label4:
@@ -115,33 +114,33 @@ quad_equation:
     movsx %eax, %rax
     cvtsi2sd %rax, %xmm1
     mulsd %xmm0, %xmm1
-    movq -80(%rbp), %rax
+    movq -96(%rbp), %rax
     movq %rax, -48(%rbp)
-    movq -72(%rbp), %rax
+    movq -88(%rbp), %rax
     movq %rax, -40(%rbp)
     movq -48(%rbp), %xmm0
     addsd %xmm1, %xmm0
     movq %xmm0, -48(%rbp)
     movq -48(%rbp), %rax
-    movq %rax, -80(%rbp)
+    movq %rax, -96(%rbp)
     movq -40(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movq %rax, -88(%rbp)
     mov $2, %ecx
     movsx %ecx, %rax
     cvtsi2sd %rax, %xmm0
-    mulsd -96(%rbp), %xmm0
-    movq -80(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -88(%rbp)
-    movq -96(%rbp), %xmm1
-    divsd %xmm0, %xmm1
-    movq %xmm1, -96(%rbp)
+    mulsd -80(%rbp), %xmm0
     movq -96(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -88(%rbp), %rax
     movq %rax, -72(%rbp)
-    movaps -80(%rbp), %xmm0
+    movq -80(%rbp), %xmm1
+    divsd %xmm0, %xmm1
+    movq %xmm1, -80(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -96(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -88(%rbp)
+    movaps -96(%rbp), %xmm0
     ldmxcsr -24(%rbp)
     lea -16(%rbp), %rsp
     pop %r12
@@ -173,24 +172,23 @@ factorialf32:
     jbe .L__kefir_func_factorialf32_label27
 .L__kefir_func_factorialf32_label7:
     movd .L__kefir_func_factorialf32_label30(%rip), %xmm1
-    movaps %xmm0, %xmm2
-    movaps %xmm1, %xmm0
 .L__kefir_func_factorialf32_label8:
-    ucomiss .L__kefir_func_factorialf32_label31(%rip), %xmm2
+    ucomiss .L__kefir_func_factorialf32_label31(%rip), %xmm0
     jp .L__kefir_func_factorialf32_label25
     ja .L__kefir_func_factorialf32_label24
 .L__kefir_func_factorialf32_label11:
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_factorialf32_label24:
-    movd .L__kefir_func_factorialf32_label32(%rip), %xmm1
-    movaps %xmm2, %xmm3
-    addss %xmm1, %xmm3
-    movaps %xmm3, %xmm1
-    mulss %xmm2, %xmm0
-    movaps %xmm1, %xmm2
+    movd .L__kefir_func_factorialf32_label32(%rip), %xmm2
+    movaps %xmm0, %xmm3
+    addss %xmm2, %xmm3
+    movaps %xmm3, %xmm2
+    mulss %xmm0, %xmm1
+    movaps %xmm2, %xmm0
     jmp .L__kefir_func_factorialf32_label8
 .L__kefir_func_factorialf32_label25:
     jmp .L__kefir_func_factorialf32_label11
@@ -247,24 +245,23 @@ factorialf64:
 .L__kefir_func_factorialf64_label7:
     movd .L__kefir_func_factorialf64_label30(%rip), %xmm1
     cvtss2sd %xmm1, %xmm1
-    movaps %xmm0, %xmm2
-    movaps %xmm1, %xmm0
 .L__kefir_func_factorialf64_label8:
-    ucomisd .L__kefir_func_factorialf64_label31(%rip), %xmm2
+    ucomisd .L__kefir_func_factorialf64_label31(%rip), %xmm0
     jp .L__kefir_func_factorialf64_label25
     ja .L__kefir_func_factorialf64_label24
 .L__kefir_func_factorialf64_label11:
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_factorialf64_label24:
-    movq .L__kefir_func_factorialf64_label32(%rip), %xmm1
-    movaps %xmm2, %xmm3
-    addsd %xmm1, %xmm3
-    movaps %xmm3, %xmm1
-    mulsd %xmm2, %xmm0
-    movaps %xmm1, %xmm2
+    movq .L__kefir_func_factorialf64_label32(%rip), %xmm2
+    movaps %xmm0, %xmm3
+    addsd %xmm2, %xmm3
+    movaps %xmm3, %xmm2
+    mulsd %xmm0, %xmm1
+    movaps %xmm2, %xmm0
     jmp .L__kefir_func_factorialf64_label8
 .L__kefir_func_factorialf64_label25:
     jmp .L__kefir_func_factorialf64_label11

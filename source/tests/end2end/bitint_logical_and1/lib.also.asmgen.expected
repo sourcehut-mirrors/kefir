@@ -192,9 +192,9 @@ and5:
     lea -48(%rbp), %rdi
     mov $120, %rsi
     call __kefir_bigint_is_zero
-    mov $0, %rcx
-    test %al, %al
-    mov %rcx, %rax
+    mov %rax, %rcx
+    mov $0, %rax
+    test %cl, %cl
     sete %al
     jmp .L__kefir_func_and5_label3
 .L__kefir_text_func_and5_end:
@@ -265,9 +265,9 @@ and6:
     lea -120(%rbp), %rdi
     mov $310, %rsi
     call __kefir_bigint_is_zero
-    mov $0, %rcx
-    test %al, %al
-    mov %rcx, %rax
+    mov %rax, %rcx
+    mov $0, %rax
+    test %cl, %cl
     sete %al
     jmp .L__kefir_func_and6_label3
 .L__kefir_text_func_and6_end:

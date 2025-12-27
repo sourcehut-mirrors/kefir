@@ -242,14 +242,13 @@ i128_shr:
     sub $32, %rsp
     mov %rdx, %rcx
     shrd %cl, %rsi, %rdi
-    mov %rsi, %rax
-    sar %cl, %rax
+    mov %rsi, %rdx
+    sar %cl, %rdx
     sar $63, %rsi
     test $64, %cl
-    cmovne %rax, %rdi
-    mov %rax, %rdx
-    cmovne %rsi, %rdx
     mov %rdi, %rax
+    cmovne %rdx, %rax
+    cmovne %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -396,12 +395,12 @@ u128_shr:
     mov %rdx, %rcx
     shrd %cl, %rsi, %rdi
     shr %cl, %rsi
-    xor %eax, %eax
-    test $64, %cl
-    cmovne %rsi, %rdi
     mov %rax, %rdx
-    cmove %rsi, %rdx
+    xor %eax, %edx
+    test $64, %cl
     mov %rdi, %rax
+    cmovne %rsi, %rax
+    cmove %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

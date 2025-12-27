@@ -50,11 +50,9 @@ test1:
     mov $1, %eax
     movsx %eax, %r14
     movq -80(%rbp), %rax
-    cvtsi2sd %r14, %xmm0
-    movq %rcx, %xmm1
-    movaps %xmm1, %xmm2
-    addsd %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    cvtsi2sd %r14, %xmm1
+    movq %rcx, %xmm0
+    addsd %xmm1, %xmm0
     cvtsi2sd %rdx, %xmm1
     movaps %xmm1, %xmm3
     movq %rsi, %xmm2

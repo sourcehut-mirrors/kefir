@@ -513,34 +513,33 @@ __kefir_bigint_unsigned_compare:
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label26:
     movq -56(%rbp), %rax
-    movq -56(%rbp), %rcx
+    movq -56(%rbp), %rdx
     mov $1, %esi
-    movsx %esi, %rdx
+    movsx %esi, %rcx
     mov %rax, %rsi
-    sub %rdx, %rsi
+    sub %rcx, %rsi
+    mov %rsi, %rcx
+    mov $1, %esi
+    movsx %esi, %rax
+    mov %rdx, %rsi
+    sub %rax, %rsi
+    mov %rsi, %rax
+    mov $8, %esi
+    movsx %esi, %rdx
+    mov $1, %rsi
+    imul %rdx, %rsi
+    mov $0, %rdx
+    div %rsi
+    mov $8, %esi
+    movsx %esi, %rdx
+    mov $1, %rsi
+    imul %rdx, %rsi
+    imul %rsi, %rax
+    sub %rax, %rcx
     mov $1, %edx
     movsx %edx, %rax
-    mov %rcx, %rdx
-    sub %rax, %rdx
-    mov %rdx, %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    mov %rdx, %rdi
-    imul %rcx, %rdi
-    mov %rdi, %rcx
-    mov $0, %rdx
-    div %rcx
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    imul %rcx, %rdx
-    imul %rdx, %rax
-    sub %rax, %rsi
-    mov $1, %ecx
-    movsx %ecx, %rax
-    add %rax, %rsi
-    movl %esi, -8(%rbp)
+    add %rax, %rcx
+    movl %ecx, -8(%rbp)
     movl -8(%rbp), %eax
     movabs $4294967295, %rcx
     and %rcx, %rax
@@ -648,13 +647,13 @@ __kefir_bigint_cast_signed:
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
-    movq -64(%rbp), %rax
-    mov %rcx, %rdx
-    and $255, %rdx
-    mov %rax, %rcx
-    sar %cl, %edx
-    and $1, %edx
-    movl %edx, -80(%rbp)
+    movq -64(%rbp), %rdx
+    mov %rcx, %rax
+    and $255, %rax
+    mov %rdx, %rcx
+    sar %cl, %eax
+    and $1, %eax
+    movl %eax, -80(%rbp)
     movq -64(%rbp), %rax
     mov $1, %edx
     movsx %edx, %rcx
@@ -804,13 +803,13 @@ __kefir_bigint_cast_signed:
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
-    movq -56(%rbp), %rax
-    mov %rcx, %rdx
-    and $255, %rdx
-    mov %rax, %rcx
-    sar %cl, %edx
-    and $1, %edx
-    movl %edx, -76(%rbp)
+    movq -56(%rbp), %rdx
+    mov %rcx, %rax
+    and $255, %rax
+    mov %rdx, %rcx
+    sar %cl, %eax
+    and $1, %eax
+    movl %eax, -76(%rbp)
     movl -76(%rbp), %eax
     test %eax, %eax
     sete %cl

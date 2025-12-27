@@ -297,13 +297,13 @@ __kefir_bigint_cast_signed:
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
-    movq -64(%rbp), %rax
-    mov %rcx, %rdx
-    and $255, %rdx
-    mov %rax, %rcx
-    sar %cl, %edx
-    and $1, %edx
-    movl %edx, -80(%rbp)
+    movq -64(%rbp), %rdx
+    mov %rcx, %rax
+    and $255, %rax
+    mov %rdx, %rcx
+    sar %cl, %eax
+    and $1, %eax
+    movl %eax, -80(%rbp)
     movq -64(%rbp), %rax
     mov $1, %edx
     movsx %edx, %rcx
@@ -453,13 +453,13 @@ __kefir_bigint_cast_signed:
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
-    movq -56(%rbp), %rax
-    mov %rcx, %rdx
-    and $255, %rdx
-    mov %rax, %rcx
-    sar %cl, %edx
-    and $1, %edx
-    movl %edx, -76(%rbp)
+    movq -56(%rbp), %rdx
+    mov %rcx, %rax
+    and $255, %rax
+    mov %rdx, %rcx
+    sar %cl, %eax
+    and $1, %eax
+    movl %eax, -76(%rbp)
     movl -76(%rbp), %eax
     test %eax, %eax
     sete %cl

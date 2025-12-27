@@ -123,27 +123,13 @@ test_dec64_gradient_descent:
     movq .L__kefir_func_test_dec64_gradient_descent_label18(%rip), %xmm0
     movq .L__kefir_func_test_dec64_gradient_descent_label19(%rip), %xmm1
     xor %eax, %eax
-    movaps %xmm1, -144(%rbp)
-    movaps %xmm0, -128(%rbp)
+    movaps %xmm1, -128(%rbp)
+    movaps %xmm0, -144(%rbp)
 .L__kefir_func_test_dec64_gradient_descent_label7:
     cmp %r14, %rax
     jb .L__kefir_func_test_dec64_gradient_descent_label17
     movq (%r13), %xmm0
     movq %xmm0, -112(%rbp)
-    mov %r14, %rdi
-    call __bid_floatunsdidd@PLT
-    movaps %xmm0, %xmm1
-    movaps -144(%rbp), %xmm0
-    call __bid_divdd3@PLT
-    movaps %xmm0, %xmm1
-    movaps -176(%rbp), %xmm0
-    call __bid_muldd3@PLT
-    movaps %xmm0, %xmm1
-    movaps -112(%rbp), %xmm0
-    call __bid_subdd3@PLT
-    movq %xmm0, (%r13)
-    movq (%r12), %xmm0
-    movq %xmm0, -144(%rbp)
     mov %r14, %rdi
     call __bid_floatunsdidd@PLT
     movaps %xmm0, %xmm1
@@ -153,7 +139,21 @@ test_dec64_gradient_descent:
     movaps -176(%rbp), %xmm0
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
+    movaps -112(%rbp), %xmm0
+    call __bid_subdd3@PLT
+    movq %xmm0, (%r13)
+    movq (%r12), %xmm0
+    movq %xmm0, -128(%rbp)
+    mov %r14, %rdi
+    call __bid_floatunsdidd@PLT
+    movaps %xmm0, %xmm1
     movaps -144(%rbp), %xmm0
+    call __bid_divdd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -176(%rbp), %xmm0
+    call __bid_muldd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -128(%rbp), %xmm0
     call __bid_subdd3@PLT
     movq %xmm0, (%r12)
     movq -160(%rbp), %rax
@@ -201,18 +201,18 @@ test_dec64_gradient_descent:
     movaps -112(%rbp), %xmm1
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movaps -128(%rbp), %xmm0
+    movaps -144(%rbp), %xmm0
     call __bid_adddd3@PLT
-    movaps %xmm0, -128(%rbp)
+    movaps %xmm0, -144(%rbp)
     movq .L__kefir_func_test_dec64_gradient_descent_label21(%rip), %xmm0
     movaps -112(%rbp), %xmm1
     call __bid_muldd3@PLT
     movaps -80(%rbp), %xmm1
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movaps -144(%rbp), %xmm0
+    movaps -128(%rbp), %xmm0
     call __bid_adddd3@PLT
-    movaps %xmm0, -144(%rbp)
+    movaps %xmm0, -128(%rbp)
     mov -152(%rbp), %rax
     jmp .L__kefir_func_test_dec64_gradient_descent_label7
 .L__kefir_text_func_test_dec64_gradient_descent_end:
@@ -553,27 +553,13 @@ test_dec128_gradient_descent:
     movdqu .L__kefir_func_test_dec128_gradient_descent_label18(%rip), %xmm0
     movdqu .L__kefir_func_test_dec128_gradient_descent_label19(%rip), %xmm1
     xor %eax, %eax
-    movaps %xmm1, -144(%rbp)
-    movaps %xmm0, -128(%rbp)
+    movaps %xmm1, -128(%rbp)
+    movaps %xmm0, -144(%rbp)
 .L__kefir_func_test_dec128_gradient_descent_label7:
     cmp %r14, %rax
     jb .L__kefir_func_test_dec128_gradient_descent_label17
     movdqu (%r13), %xmm0
     movdqu %xmm0, -112(%rbp)
-    mov %r14, %rdi
-    call __bid_floatunsditd@PLT
-    movaps %xmm0, %xmm1
-    movaps -144(%rbp), %xmm0
-    call __bid_divtd3@PLT
-    movaps %xmm0, %xmm1
-    movaps -176(%rbp), %xmm0
-    call __bid_multd3@PLT
-    movaps %xmm0, %xmm1
-    movaps -112(%rbp), %xmm0
-    call __bid_subtd3@PLT
-    movdqu %xmm0, (%r13)
-    movdqu (%r12), %xmm0
-    movdqu %xmm0, -144(%rbp)
     mov %r14, %rdi
     call __bid_floatunsditd@PLT
     movaps %xmm0, %xmm1
@@ -583,7 +569,21 @@ test_dec128_gradient_descent:
     movaps -176(%rbp), %xmm0
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
+    movaps -112(%rbp), %xmm0
+    call __bid_subtd3@PLT
+    movdqu %xmm0, (%r13)
+    movdqu (%r12), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    mov %r14, %rdi
+    call __bid_floatunsditd@PLT
+    movaps %xmm0, %xmm1
     movaps -144(%rbp), %xmm0
+    call __bid_divtd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -176(%rbp), %xmm0
+    call __bid_multd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -128(%rbp), %xmm0
     call __bid_subtd3@PLT
     movdqu %xmm0, (%r12)
     movq -160(%rbp), %rax
@@ -631,18 +631,18 @@ test_dec128_gradient_descent:
     movaps -112(%rbp), %xmm1
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
-    movaps -128(%rbp), %xmm0
+    movaps -144(%rbp), %xmm0
     call __bid_addtd3@PLT
-    movaps %xmm0, -128(%rbp)
+    movaps %xmm0, -144(%rbp)
     movdqu .L__kefir_func_test_dec128_gradient_descent_label21(%rip), %xmm0
     movaps -112(%rbp), %xmm1
     call __bid_multd3@PLT
     movaps -80(%rbp), %xmm1
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
-    movaps -144(%rbp), %xmm0
+    movaps -128(%rbp), %xmm0
     call __bid_addtd3@PLT
-    movaps %xmm0, -144(%rbp)
+    movaps %xmm0, -128(%rbp)
     mov -152(%rbp), %rax
     jmp .L__kefir_func_test_dec128_gradient_descent_label7
 .L__kefir_text_func_test_dec128_gradient_descent_end:
@@ -694,27 +694,13 @@ test_dec32_gradient_descent:
     movd .L__kefir_func_test_dec32_gradient_descent_label18(%rip), %xmm0
     movd .L__kefir_func_test_dec32_gradient_descent_label19(%rip), %xmm1
     xor %eax, %eax
-    movaps %xmm1, -144(%rbp)
-    movaps %xmm0, -128(%rbp)
+    movaps %xmm1, -128(%rbp)
+    movaps %xmm0, -144(%rbp)
 .L__kefir_func_test_dec32_gradient_descent_label7:
     cmp %r14, %rax
     jb .L__kefir_func_test_dec32_gradient_descent_label17
     movd (%r13), %xmm0
     movd %xmm0, -112(%rbp)
-    mov %r14, %rdi
-    call __bid_floatunsdisd@PLT
-    movaps %xmm0, %xmm1
-    movaps -144(%rbp), %xmm0
-    call __bid_divsd3@PLT
-    movaps %xmm0, %xmm1
-    movaps -176(%rbp), %xmm0
-    call __bid_mulsd3@PLT
-    movaps %xmm0, %xmm1
-    movaps -112(%rbp), %xmm0
-    call __bid_subsd3@PLT
-    movd %xmm0, (%r13)
-    movd (%r12), %xmm0
-    movd %xmm0, -144(%rbp)
     mov %r14, %rdi
     call __bid_floatunsdisd@PLT
     movaps %xmm0, %xmm1
@@ -724,7 +710,21 @@ test_dec32_gradient_descent:
     movaps -176(%rbp), %xmm0
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
+    movaps -112(%rbp), %xmm0
+    call __bid_subsd3@PLT
+    movd %xmm0, (%r13)
+    movd (%r12), %xmm0
+    movd %xmm0, -128(%rbp)
+    mov %r14, %rdi
+    call __bid_floatunsdisd@PLT
+    movaps %xmm0, %xmm1
     movaps -144(%rbp), %xmm0
+    call __bid_divsd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -176(%rbp), %xmm0
+    call __bid_mulsd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -128(%rbp), %xmm0
     call __bid_subsd3@PLT
     movd %xmm0, (%r12)
     movq -160(%rbp), %rax
@@ -772,18 +772,18 @@ test_dec32_gradient_descent:
     movaps -112(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -128(%rbp), %xmm0
+    movaps -144(%rbp), %xmm0
     call __bid_addsd3@PLT
-    movaps %xmm0, -128(%rbp)
+    movaps %xmm0, -144(%rbp)
     movd .L__kefir_func_test_dec32_gradient_descent_label21(%rip), %xmm0
     movaps -112(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movaps -80(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -144(%rbp), %xmm0
+    movaps -128(%rbp), %xmm0
     call __bid_addsd3@PLT
-    movaps %xmm0, -144(%rbp)
+    movaps %xmm0, -128(%rbp)
     mov -152(%rbp), %rax
     jmp .L__kefir_func_test_dec32_gradient_descent_label7
 .L__kefir_text_func_test_dec32_gradient_descent_end:

@@ -24,13 +24,13 @@ factorial:
     pop %rbp
     ret
 .L__kefir_func_factorial_label12:
-    mulsd %xmm0, %xmm1
-    movq .L__kefir_func_factorial_label15(%rip), %xmm2
+    movaps %xmm1, %xmm2
+    mulsd %xmm0, %xmm2
+    movq .L__kefir_func_factorial_label15(%rip), %xmm1
     movaps %xmm0, %xmm3
-    subsd %xmm2, %xmm3
-    movaps %xmm3, %xmm2
-    movaps %xmm1, %xmm0
-    movaps %xmm2, %xmm1
+    subsd %xmm1, %xmm3
+    movaps %xmm3, %xmm1
+    movaps %xmm2, %xmm0
     call factorial_helper
     jmp .L__kefir_func_factorial_label4
 .L__kefir_text_func_factorial_end:

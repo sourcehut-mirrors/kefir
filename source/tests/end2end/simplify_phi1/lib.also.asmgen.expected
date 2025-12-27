@@ -16,16 +16,16 @@ test1:
     push %r13
     push %r14
     sub $16, %rsp
-    mov %rsi, %rbx
+    mov %rsi, %r14
     mov %rcx, %r12
     mov %rdx, %r13
-    mov %r8, %r14
+    mov %r8, %rbx
 .L__kefir_func_test1_label2:
-    movq %r14, -48(%rbp)
+    movq %rbx, -48(%rbp)
     movq %r13, -40(%rbp)
     mov %r12, %rdi
     lea -48(%rbp), %rsi
-    mov %rbx, %rdx
+    mov %r14, %rdx
     lea -40(%rbp), %rcx
     call somefn@PLT
     cmp $0, %eax
@@ -34,15 +34,15 @@ test1:
     movq -48(%rbp), %rcx
     movq -40(%rbp), %rdx
     movq -40(%rbp), %rsi
-    sub %rcx, %r14
+    sub %rcx, %rbx
     sub %rsi, %r13
     add %rax, %r12
-    add %rdx, %rbx
+    add %rdx, %r14
     xor %eax, %eax
     cmp $0, %r13
     seta %al
     xor %ecx, %ecx
-    cmp $0, %r14
+    cmp $0, %rbx
     seta %cl
     and %cl, %al
     jnz .L__kefir_func_test1_label2

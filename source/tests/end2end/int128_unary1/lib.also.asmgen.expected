@@ -37,11 +37,12 @@ i128_neg:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xor %eax, %eax
-    neg %rdi
-    mov %rax, %rdx
-    sbb %rsi, %rdx
+    mov %rax, %rcx
+    xor %eax, %ecx
     mov %rdi, %rax
+    neg %rax
+    sbb %rsi, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -66,11 +67,12 @@ u128_neg:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xor %eax, %eax
-    neg %rdi
-    mov %rax, %rdx
-    sbb %rsi, %rdx
+    mov %rax, %rcx
+    xor %eax, %ecx
     mov %rdi, %rax
+    neg %rax
+    sbb %rsi, %rcx
+    mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

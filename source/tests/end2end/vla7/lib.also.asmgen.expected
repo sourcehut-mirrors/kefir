@@ -19,11 +19,11 @@ test:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rdx
-    mov $0, %rsi
-    imul $8, %rsi, %rax
-    lea -48(%rbp), %rsi
-    add %rax, %rsi
-    movq %rcx, (%rsi)
+    mov $0, %rax
+    imul $8, %rax, %rsi
+    lea -48(%rbp), %rax
+    add %rsi, %rax
+    movq %rcx, (%rax)
     movl -32(%rbp), %eax
     movsx %eax, %rax
     mov $4, %rcx
@@ -90,11 +90,11 @@ test2:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rax
-    mov $0, %rsi
-    imul $8, %rsi, %rdx
-    lea -64(%rbp), %rsi
-    add %rdx, %rsi
-    movq %rcx, (%rsi)
+    mov $0, %rdx
+    imul $8, %rdx, %rsi
+    lea -64(%rbp), %rdx
+    add %rsi, %rdx
+    movq %rcx, (%rdx)
     movl -48(%rbp), %ecx
     movsx %ecx, %rcx
     mov $4, %rdx
@@ -110,22 +110,22 @@ test2:
     mov %rsp, %rcx
     movq %rcx, -40(%rbp)
 .L__kefir_func_test2_label2:
-    mov %rax, %rcx
+    mov %rax, %rdx
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rax
-    mov $1, %rsi
-    imul $8, %rsi, %rdx
-    lea -64(%rbp), %rsi
-    add %rdx, %rsi
-    movq %rcx, (%rsi)
-    movl -48(%rbp), %ecx
-    lea -24(%rbp), %rdx
-    add $8, %rdx
-    movsx %ecx, %rcx
+    mov $1, %rcx
+    imul $8, %rcx, %rsi
+    lea -64(%rbp), %rcx
+    add %rsi, %rcx
+    movq %rdx, (%rcx)
+    movl -48(%rbp), %edx
+    lea -24(%rbp), %rcx
+    add $8, %rcx
+    movsx %edx, %rdx
     mov $4, %rsi
-    imul %rcx, %rsi
-    movq %rsi, (%rdx)
+    imul %rdx, %rsi
+    movq %rsi, (%rcx)
     lea -24(%rbp), %rcx
     add $0, %rcx
     sub %rsi, %rsp
@@ -137,11 +137,11 @@ test2:
     and %rdx, %rsp
     mov %rsp, %rdx
     movq %rdx, (%rcx)
-    mov $1, %rdx
-    imul $8, %rdx, %rcx
-    lea -64(%rbp), %rdx
-    add %rcx, %rdx
-    movq (%rdx), %rcx
+    mov $1, %rcx
+    imul $8, %rcx, %rdx
+    lea -64(%rbp), %rcx
+    add %rdx, %rcx
+    movq (%rcx), %rcx
     cmp $0, %rax
     jz .L__kefir_func_test2_label7
     mov %rax, %rsp

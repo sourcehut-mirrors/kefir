@@ -48,12 +48,8 @@ get:
     ret
 .L__kefir_func_get_label10:
     cmp $1, %rsi
-    je .L__kefir_func_get_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get_label7:
+    jne .L__kefir_func_get_label3
+.L__kefir_func_get_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
@@ -85,12 +81,8 @@ get2:
     ret
 .L__kefir_func_get2_label10:
     cmp $2, %rsi
-    jne .L__kefir_func_get2_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get2_label7:
+    je .L__kefir_func_get2_label3
+.L__kefir_func_get2_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
@@ -122,12 +114,8 @@ get3:
     ret
 .L__kefir_func_get3_label10:
     cmp $3, %rsi
-    jg .L__kefir_func_get3_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get3_label7:
+    jle .L__kefir_func_get3_label3
+.L__kefir_func_get3_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
@@ -159,12 +147,8 @@ get4:
     ret
 .L__kefir_func_get4_label10:
     cmp $4, %rsi
-    jge .L__kefir_func_get4_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get4_label7:
+    jl .L__kefir_func_get4_label3
+.L__kefir_func_get4_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
@@ -196,12 +180,8 @@ get5:
     ret
 .L__kefir_func_get5_label10:
     cmp $-3, %rsi
-    jl .L__kefir_func_get5_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get5_label7:
+    jge .L__kefir_func_get5_label3
+.L__kefir_func_get5_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
@@ -233,12 +213,8 @@ get6:
     ret
 .L__kefir_func_get6_label10:
     cmp $-4, %rsi
-    jle .L__kefir_func_get6_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get6_label7:
+    jg .L__kefir_func_get6_label3
+.L__kefir_func_get6_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
@@ -270,12 +246,8 @@ get7:
     ret
 .L__kefir_func_get7_label10:
     cmp $30, %rsi
-    ja .L__kefir_func_get7_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get7_label7:
+    jbe .L__kefir_func_get7_label3
+.L__kefir_func_get7_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
@@ -307,12 +279,8 @@ get8:
     ret
 .L__kefir_func_get8_label10:
     cmp $40, %rsi
-    jae .L__kefir_func_get8_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get8_label7:
+    jb .L__kefir_func_get8_label3
+.L__kefir_func_get8_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
@@ -344,12 +312,8 @@ get9:
     ret
 .L__kefir_func_get9_label10:
     cmp $100, %rsi
-    jb .L__kefir_func_get9_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get9_label7:
+    jae .L__kefir_func_get9_label3
+.L__kefir_func_get9_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax
@@ -381,12 +345,8 @@ get10:
     ret
 .L__kefir_func_get10_label10:
     cmp $200, %rsi
-    jbe .L__kefir_func_get10_label7
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
-.L__kefir_func_get10_label7:
+    ja .L__kefir_func_get10_label3
+.L__kefir_func_get10_label12:
     movq -64(%rbp), %rax
     movq %rax, -80(%rbp)
     movq -56(%rbp), %rax

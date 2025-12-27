@@ -21,28 +21,28 @@ fn1:
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
 .L__kefir_func_fn1_label58:
-    lea 16(%rbp), %rax
+    lea 16(%rbp), %rcx
 .L__kefir_func_fn1_label66:
-    mov %rsi, %r8
+    mov %rsi, %rax
 .L__kefir_func_fn1_label67:
-    mov %rdi, %r9
+    mov %rdi, %r8
 .L__kefir_func_fn1_label71:
     lea -1616(%rbp), %rdi
-    mov %rax, %rsi
+    mov %rcx, %rsi
     cld
     mov $100, %rcx
     rep movsq
 .loc 0 26 16
 .L__kefir_func_fn1_label88:
-    movsx %r9d, %rax
+    movsx %r8d, %rcx
 .L__kefir_func_fn1_label89:
-    add %r8, %rax
+    add %rax, %rcx
 .loc 0 26 5
 .L__kefir_func_fn1_label96:
-    cvtsi2sd %rax, %xmm1
+    cvtsi2sd %rcx, %xmm1
 .loc 0 28 9
 .L__kefir_func_fn1_label102:
-    test %r8, %r8
+    test %rax, %rax
     jnz .L__kefir_func_fn1_label26
 .L__kefir_func_fn1_label103:
     pxor %xmm0, %xmm0
@@ -53,17 +53,17 @@ fn1:
     ret
 .loc 0 30 33
 .L__kefir_func_fn1_label26:
-    movq (%rdx), %rax
+    movq (%rdx), %rcx
 .loc 0 32 24
 .L__kefir_func_fn1_label132:
-    movsx %r9d, %rcx
+    movsx %r8d, %rsi
 .L__kefir_func_fn1_label133:
-    imul $8, %rcx, %rcx
+    imul $8, %rsi, %rdi
 .L__kefir_func_fn1_label144:
     lea -816(%rbp), %rsi
-    add %rcx, %rsi
+    add %rdi, %rsi
 .L__kefir_func_fn1_label145:
-    movq (%rsi), %rcx
+    movq (%rsi), %rsi
 .loc 0 31 24
 .L__kefir_func_fn1_label158:
     movq %xmm1, -1664(%rbp)
@@ -73,7 +73,7 @@ fn1:
 .L__kefir_func_fn1_label159:
     cvtss2sd %xmm0, %xmm0
 .L__kefir_func_fn1_label166:
-    movq %rax, %xmm1
+    movq %rcx, %xmm1
     addsd %xmm1, %xmm0
 .loc 0 30 13
 .L__kefir_func_fn1_label167:
@@ -89,7 +89,7 @@ fn1:
     movq -8(%rsp), %xmm0
 .loc 0 32 20
 .L__kefir_func_fn1_label191:
-    cvtsi2sd %rcx, %xmm1
+    cvtsi2sd %rsi, %xmm1
 .L__kefir_func_fn1_label198:
     mulsd %xmm1, %xmm0
 .loc 0 32 34
@@ -99,12 +99,12 @@ fn1:
     je .L__kefir_func_fn1_label30
 .loc 0 32 44
 .L__kefir_func_fn1_label207:
-    imul $8, %r8, %rax
+    imul $8, %rax, %rcx
 .L__kefir_func_fn1_label215:
-    lea -1616(%rbp), %rcx
-    add %rax, %rcx
+    lea -1616(%rbp), %rax
+    add %rcx, %rax
 .L__kefir_func_fn1_label224:
-    movq (%rcx), %rax
+    movq (%rax), %rax
 .loc 0 32 20
 .L__kefir_func_fn1_label16:
     cvtsi2sd %rax, %xmm1
@@ -1366,7 +1366,7 @@ __kefir_debug_loclist_section_entry_1:
     .uleb128 .L__kefir_func_fn1_label133 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 9
+    .byte 8
     .byte 4
     .uleb128 .L__kefir_func_fn1_label49 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_fn1_label71 - .L__kefir_text_section_begin
@@ -1378,7 +1378,7 @@ __kefir_debug_loclist_section_entry_1:
     .uleb128 .L__kefir_func_fn1_label103 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 9
+    .byte 8
     .byte 0
 __kefir_debug_loclist_section_entry_2:
     .byte 4
@@ -1386,7 +1386,7 @@ __kefir_debug_loclist_section_entry_2:
     .uleb128 .L__kefir_func_fn1_label215 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 8
+    .byte 0
     .byte 4
     .uleb128 .L__kefir_func_fn1_label49 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_fn1_label67 - .L__kefir_text_section_begin
@@ -1398,7 +1398,7 @@ __kefir_debug_loclist_section_entry_2:
     .uleb128 .L__kefir_func_fn1_label103 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 8
+    .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_3:
     .byte 4
@@ -1459,7 +1459,7 @@ __kefir_debug_loclist_section_entry_13:
     .uleb128 .L__kefir_func_fn1_label133 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 9
+    .byte 8
     .byte 4
     .uleb128 .L__kefir_func_fn1_label49 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_fn1_label71 - .L__kefir_text_section_begin
@@ -1471,7 +1471,7 @@ __kefir_debug_loclist_section_entry_13:
     .uleb128 .L__kefir_func_fn1_label103 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 9
+    .byte 8
     .byte 0
 __kefir_debug_loclist_section_entry_14:
     .byte 4
@@ -1479,7 +1479,7 @@ __kefir_debug_loclist_section_entry_14:
     .uleb128 .L__kefir_func_fn1_label215 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 8
+    .byte 0
     .byte 4
     .uleb128 .L__kefir_func_fn1_label49 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_fn1_label67 - .L__kefir_text_section_begin
@@ -1491,7 +1491,7 @@ __kefir_debug_loclist_section_entry_14:
     .uleb128 .L__kefir_func_fn1_label103 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
-    .byte 8
+    .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_15:
     .byte 4

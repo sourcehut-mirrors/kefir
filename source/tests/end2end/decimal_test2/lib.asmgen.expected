@@ -72,18 +72,18 @@ test_dec32_mulv:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    movaps %xmm1, -32(%rbp)
-    movq %xmm0, -48(%rbp)
-    movq -48(%rbp), %rax
+    movaps %xmm1, -48(%rbp)
+    movq %xmm0, -32(%rbp)
+    movq -32(%rbp), %rax
     movq %rax, -16(%rbp)
     xor %eax, %eax
     movq %rax, -8(%rbp)
     movd -16(%rbp), %xmm0
-    movaps -32(%rbp), %xmm1
+    movaps -48(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movd %xmm0, -8(%rbp)
     movd -12(%rbp), %xmm0
-    movaps -32(%rbp), %xmm1
+    movaps -48(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movd %xmm0, -4(%rbp)
     movq -8(%rbp), %xmm0
@@ -127,19 +127,19 @@ test_dec64_mulv:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    movaps %xmm2, -48(%rbp)
-    movq %xmm0, -64(%rbp)
-    movq %xmm1, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
+    movaps %xmm2, -64(%rbp)
+    movq %xmm0, -48(%rbp)
+    movq %xmm1, -40(%rbp)
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movq -32(%rbp), %xmm0
-    movaps -48(%rbp), %xmm1
+    movaps -64(%rbp), %xmm1
     call __bid_muldd3@PLT
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %xmm0
-    movaps -48(%rbp), %xmm1
+    movaps -64(%rbp), %xmm1
     call __bid_muldd3@PLT
     movq %xmm0, -8(%rbp)
     movq -16(%rbp), %xmm0

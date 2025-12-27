@@ -35,12 +35,8 @@ get:
     fstpt -64(%rbp)
     cmp $0, %eax
     jg .L__kefir_func_get_label15
-    movq -64(%rbp), %rax
-    movq %rax, -240(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -232(%rbp)
 .L__kefir_func_get_label5:
-    fldt -240(%rbp)
+    fldt -64(%rbp)
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -57,12 +53,12 @@ get:
     lea 16(%rcx), %rcx
     mov %rcx, -40(%rbp)
     fldt -16(%rcx)
-    movq %rax, -224(%rbp)
+    movq %rax, -240(%rbp)
     cdq
-    movq -224(%rbp), %rax
+    movq -240(%rbp), %rax
     mov $2, %ecx
     idiv %ecx
-    fstpt -240(%rbp)
+    fstpt -64(%rbp)
     cmp $0, %edx
     jne .L__kefir_func_get_label5
 .L__kefir_func_get_label14:
@@ -70,7 +66,7 @@ get:
     lea 16(%rax), %rax
     mov %rax, -40(%rbp)
     fldt -16(%rax)
-    fstpt -240(%rbp)
+    fstpt -64(%rbp)
     jmp .L__kefir_func_get_label5
 .L__kefir_text_func_get_end:
 .section .rodata

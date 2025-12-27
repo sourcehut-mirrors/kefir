@@ -24,18 +24,19 @@ mod1:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
-    movb -1(%rbp), %cl
+    mov %rcx, %rdx
+    movb -1(%rbp), %dl
     shl $58, %rax
     shr $58, %rax
     shl $58, %rax
-    mov %rax, %rdx
+    mov %rax, %rcx
+    shr $58, %rcx
+    shl $58, %rdx
     shr $58, %rdx
-    shl $58, %rcx
-    shr $58, %rcx
-    shl $58, %rcx
-    shr $58, %rcx
-    movzx %dl, %ax
-    div %cl
+    shl $58, %rdx
+    shr $58, %rdx
+    movzx %cl, %ax
+    div %dl
     mov %rsi, %rcx
     mov %ah, %cl
     mov %rcx, %rax
@@ -462,13 +463,13 @@ __kefir_bigint_unsigned_divide:
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
-    movq -40(%rbp), %rax
-    mov %rcx, %rdx
-    and $255, %rdx
-    mov %rax, %rcx
-    sar %cl, %edx
-    and $1, %edx
-    movl %edx, -4(%rbp)
+    movq -40(%rbp), %rdx
+    mov %rcx, %rax
+    and $255, %rax
+    mov %rdx, %rcx
+    sar %cl, %eax
+    and $1, %eax
+    movl %eax, -4(%rbp)
     movq -32(%rbp), %rdi
     movq -72(%rbp), %rdx
     mov $1, %eax
@@ -499,13 +500,13 @@ __kefir_bigint_unsigned_divide:
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
-    movq -40(%rbp), %rax
-    mov %rcx, %rdx
-    and $255, %rdx
-    mov %rax, %rcx
-    sar %cl, %edx
-    and $1, %edx
-    movl %edx, -8(%rbp)
+    movq -40(%rbp), %rdx
+    mov %rcx, %rax
+    and $255, %rax
+    mov %rdx, %rcx
+    sar %cl, %eax
+    and $1, %eax
+    movl %eax, -8(%rbp)
     movl -8(%rbp), %eax
     test %eax, %eax
     sete %cl
@@ -834,33 +835,36 @@ __kefir_bigint_left_shift:
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
-    movq -48(%rbp), %rax
-    movq -32(%rbp), %rdx
+    movq -48(%rbp), %rdx
+    movq -32(%rbp), %rax
     movq -8(%rbp), %rsi
     mov $1, %r8d
     movsx %r8d, %rdi
     sub %rdi, %rsi
     imul $1, %rsi, %rsi
-    add %rsi, %rdx
-    movb (%rdx), %sil
-    movq -48(%rbp), %rdx
-    movq -32(%rbp), %rdi
+    add %rsi, %rax
+    movb (%rax), %sil
+    movq -48(%rbp), %rdi
+    movq -32(%rbp), %rax
     movq -8(%rbp), %r8
     imul $1, %r8, %r8
-    add %r8, %rdi
-    mov %rcx, %r8
-    and $255, %r8
-    mov %rax, %rcx
-    shl %cl, %r8d
+    mov %rax, %r9
+    add %r8, %r9
+    mov %r9, %r8
+    mov %rcx, %rax
+    and $255, %rax
+    mov %rdx, %rcx
+    shl %cl, %eax
     and $255, %rsi
-    mov $8, %ecx
-    movsx %ecx, %rax
-    mov $1, %rcx
-    imul %rax, %rcx
-    sub %rdx, %rcx
+    mov $8, %edx
+    movsx %edx, %rcx
+    mov $1, %rdx
+    imul %rcx, %rdx
+    mov %rdx, %rcx
+    sub %rdi, %rcx
     sar %cl, %esi
-    or %esi, %r8d
-    movb %r8b, (%rdi)
+    or %esi, %eax
+    movb %al, (%r8)
     movq -8(%rbp), %rax
     add $-1, %rax
     movq %rax, -8(%rbp)

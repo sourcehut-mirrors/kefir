@@ -40,10 +40,9 @@ get_T2:
     ret
 .L__kefir_func_get_T2_label15:
     lea T1(%rip), %rax
-    movl (%rax), %eax
-    xor %ecx, %ecx
-    cmp %eax, %edi
-    mov %rcx, %rax
+    movl (%rax), %ecx
+    xor %eax, %eax
+    cmp %ecx, %edi
     setl %al
     jmp .L__kefir_func_get_T2_label3
 .L__kefir_text_func_get_T2_end:

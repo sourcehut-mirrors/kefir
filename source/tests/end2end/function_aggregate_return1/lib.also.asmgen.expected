@@ -37,56 +37,59 @@ get1:
     movdqu %xmm0, -96(%rbp)
     movq -152(%rbp), %rax
     movq %rax, -144(%rbp)
-    movq -152(%rbp), %rax
-    lea -144(%rbp), %rcx
-    add $8, %rcx
-    not %rax
-    movq %rax, (%rcx)
-    movq -152(%rbp), %rax
-    lea -144(%rbp), %rcx
-    add $16, %rcx
+    movq -152(%rbp), %rcx
+    lea -144(%rbp), %rax
+    add $8, %rax
+    not %rcx
+    movq %rcx, (%rax)
+    movq -152(%rbp), %rcx
+    lea -144(%rbp), %rax
+    add $16, %rax
     mov $1, %esi
     movsx %esi, %rdx
-    add %rdx, %rax
-    movq %rax, (%rcx)
-    movq -152(%rbp), %rax
-    lea -144(%rbp), %rcx
-    add $24, %rcx
-    neg %rax
-    movq %rax, (%rcx)
-    movq -152(%rbp), %rax
-    lea -144(%rbp), %rcx
-    add $32, %rcx
+    add %rdx, %rcx
+    movq %rcx, (%rax)
+    movq -152(%rbp), %rcx
+    lea -144(%rbp), %rax
+    add $24, %rax
+    neg %rcx
+    movq %rcx, (%rax)
+    movq -152(%rbp), %rcx
+    lea -144(%rbp), %rax
+    add $32, %rax
     mov $1, %esi
     movsx %esi, %rdx
-    sub %rdx, %rax
-    movq %rax, (%rcx)
-    movq -152(%rbp), %rax
-    lea -144(%rbp), %rcx
-    add $40, %rcx
+    sub %rdx, %rcx
+    movq %rcx, (%rax)
+    movq -152(%rbp), %rcx
+    lea -144(%rbp), %rax
+    add $40, %rax
     mov $2, %esi
     movsx %esi, %rdx
-    imul %rdx, %rax
-    movq %rax, (%rcx)
-    movq -152(%rbp), %rax
-    lea -144(%rbp), %rcx
+    imul %rdx, %rcx
+    movq %rcx, (%rax)
+    movq -152(%rbp), %rdx
+    lea -144(%rbp), %rax
+    mov %rax, %rcx
     add $48, %rcx
-    mov $2, %edx
-    movsx %edx, %rsi
+    mov $2, %eax
+    movsx %eax, %rsi
+    mov %rdx, %rax
     movq %rax, -160(%rbp)
     cqo
     movq -160(%rbp), %rax
     idiv %rsi
     movq %rax, (%rcx)
-    movq -152(%rbp), %rax
-    lea -144(%rbp), %rcx
-    add $56, %rcx
+    movq -152(%rbp), %rcx
+    lea -144(%rbp), %rax
+    add $56, %rax
     movabs $3405691582, %rdx
     movabs $4294967295, %rsi
     and %rsi, %rdx
-    xor %rdx, %rax
-    movq %rax, (%rcx)
-    lea -144(%rbp), %rcx
+    xor %rdx, %rcx
+    movq %rcx, (%rax)
+    lea -144(%rbp), %rax
+    mov %rax, %rcx
 .L__kefir_func_get1_label4:
     mov %r12, %rax
     movdqu (%rcx), %xmm0

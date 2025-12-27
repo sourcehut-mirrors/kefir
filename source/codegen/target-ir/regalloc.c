@@ -8,6 +8,7 @@ struct regalloc_state {
     const struct kefir_codegen_target_ir_interference *interference;
     const struct kefir_codegen_target_ir_coalesce *coalesce;
     struct kefir_list block_queue;
+    struct kefir_list value_queue;
     struct kefir_codegen_target_ir_regalloc_state regalloc_state;
     const struct kefir_codegen_target_ir_stack_frame *stack_frame;
 };
@@ -29,73 +30,103 @@ kefir_result_t kefir_codegen_target_ir_regalloc_free(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
-static kefir_result_t do_regalloc(struct kefir_mem *mem, struct regalloc_state *state, kefir_codegen_target_ir_value_ref_t value_ref) {
-    const struct kefir_codegen_target_ir_value_type *value_type = NULL;
-    REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->control_flow->code, value_ref, &value_type));
+static kefir_result_t do_regalloc(struct kefir_mem *mem, struct regalloc_state *state) {
+    for (struct kefir_list_entry *head = kefir_list_head(&state->value_queue);
+        head != NULL;
+        head = kefir_list_head(&state->value_queue)) {
+        kefir_codegen_target_ir_value_ref_t value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM((kefir_uptr_t) head->value);
+        REQUIRE_OK(kefir_list_pop(mem, &state->value_queue, head));
 
-    REQUIRE_OK(state->regalloc_state.reset(mem, state->regalloc_state.payload));
-    
-    kefir_result_t res;
-    struct kefir_graph_edge_iterator iter;
-    kefir_graph_vertex_id_t interference_vertex;
-    for (res = kefir_graph_edge_iter(&state->interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &interference_vertex);
-        res == KEFIR_OK;
-        res = kefir_graph_edge_next(&iter, &interference_vertex)) {
-        kefir_codegen_target_ir_value_ref_t conflict_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interference_vertex);
-        const struct kefir_codegen_target_ir_value_type *conflict_value_type = NULL;
-        res = kefir_codegen_target_ir_code_value_props(state->control_flow->code, conflict_value_ref, &conflict_value_type);
-        if (res == KEFIR_NOT_FOUND) {
+        kefir_result_t res;
+        if (state->coalesce != NULL) {
+            struct kefir_codegen_target_ir_coalesce_iterator iter;
+            kefir_codegen_target_ir_value_ref_t coalesce_value_ref;
+            for (res = kefir_codegen_target_ir_coalesce_iter(state->coalesce, &iter, value_ref, &coalesce_value_ref);
+                res == KEFIR_OK;
+                res = kefir_codegen_target_ir_coalesce_next(&iter, &coalesce_value_ref)) {
+                kefir_hashtable_value_t table_value;
+                res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&coalesce_value_ref), &table_value);
+                if (res == KEFIR_NOT_FOUND) {
+                    REQUIRE_OK(kefir_list_insert_after(mem, &state->value_queue, kefir_list_tail(&state->value_queue), (void *) (kefir_uptr_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&coalesce_value_ref)));
+                } else {
+                    REQUIRE_OK(res);
+                }
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+        }
+
+        if (kefir_hashtable_has(&state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref))) {
             continue;
         }
-        REQUIRE_OK(res);
-        if (conflict_value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
-            REQUIRE_OK(state->regalloc_state.reserve(mem, conflict_value_type, state->regalloc_state.payload));
-        }
 
-        kefir_hashtable_value_t table_value;
-        res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) interference_vertex, &table_value);
-        if (res == KEFIR_NOT_FOUND) {
-            continue;
-        }
-        REQUIRE_OK(res);
-        REQUIRE_OK(state->regalloc_state.add_conflict(mem, (kefir_codegen_target_ir_regalloc_allocation_t) table_value, state->regalloc_state.payload));
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
+        const struct kefir_codegen_target_ir_value_type *value_type = NULL;
+        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->control_flow->code, value_ref, &value_type));
 
-    if (state->coalesce != NULL) {
-        struct kefir_codegen_target_ir_coalesce_iterator iter;
-        kefir_codegen_target_ir_value_ref_t coalesce_value_ref;
-        for (res = kefir_codegen_target_ir_coalesce_iter(state->coalesce, &iter, value_ref, &coalesce_value_ref);
+        REQUIRE_OK(state->regalloc_state.reset(mem, state->regalloc_state.payload));
+        
+        struct kefir_graph_edge_iterator iter;
+        kefir_graph_vertex_id_t interference_vertex;
+        for (res = kefir_graph_edge_iter(&state->interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &interference_vertex);
             res == KEFIR_OK;
-            res = kefir_codegen_target_ir_coalesce_next(&iter, &coalesce_value_ref)) {
-            const struct kefir_codegen_target_ir_value_type *coalesce_value_type = NULL;
-            res = kefir_codegen_target_ir_code_value_props(state->control_flow->code, coalesce_value_ref, &coalesce_value_type);
-            if (res == KEFIR_NOT_FOUND) {
-                continue;
-            }
-            
-            if (coalesce_value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
-                REQUIRE_OK(state->regalloc_state.add_register_hint(mem, coalesce_value_type->constraint.physical_register, state->regalloc_state.payload));
-            }
-
-            kefir_hashtable_value_t table_value;
-            res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&coalesce_value_ref), &table_value);
+            res = kefir_graph_edge_next(&iter, &interference_vertex)) {
+            kefir_codegen_target_ir_value_ref_t conflict_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interference_vertex);
+            const struct kefir_codegen_target_ir_value_type *conflict_value_type = NULL;
+            res = kefir_codegen_target_ir_code_value_props(state->control_flow->code, conflict_value_ref, &conflict_value_type);
             if (res == KEFIR_NOT_FOUND) {
                 continue;
             }
             REQUIRE_OK(res);
-            REQUIRE_OK(state->regalloc_state.add_allocation_hint(mem, (kefir_codegen_target_ir_regalloc_allocation_t) table_value, state->regalloc_state.payload));
+            if (conflict_value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+                REQUIRE_OK(state->regalloc_state.reserve(mem, conflict_value_type, state->regalloc_state.payload));
+            }
+
+            kefir_hashtable_value_t table_value;
+            res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) interference_vertex, &table_value);
+            if (res == KEFIR_NOT_FOUND) {
+                continue;
+            }
+            REQUIRE_OK(res);
+            REQUIRE_OK(state->regalloc_state.add_conflict(mem, (kefir_codegen_target_ir_regalloc_allocation_t) table_value, state->regalloc_state.payload));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
         }
-    }
 
-    kefir_codegen_target_ir_regalloc_allocation_t allocation;
-    REQUIRE_OK(state->regalloc->klass->do_allocate(mem, value_type, state->stack_frame, state->regalloc_state.payload, &allocation, state->regalloc->klass->payload));
-    REQUIRE_OK(kefir_hashtable_insert(mem, &state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), (kefir_hashtable_value_t) allocation));
+        if (state->coalesce != NULL) {
+            struct kefir_codegen_target_ir_coalesce_iterator iter;
+            kefir_codegen_target_ir_value_ref_t coalesce_value_ref;
+            for (res = kefir_codegen_target_ir_coalesce_iter(state->coalesce, &iter, value_ref, &coalesce_value_ref);
+                res == KEFIR_OK;
+                res = kefir_codegen_target_ir_coalesce_next(&iter, &coalesce_value_ref)) {
+                const struct kefir_codegen_target_ir_value_type *coalesce_value_type = NULL;
+                res = kefir_codegen_target_ir_code_value_props(state->control_flow->code, coalesce_value_ref, &coalesce_value_type);
+                if (res == KEFIR_NOT_FOUND) {
+                    continue;
+                }
+                
+                if (coalesce_value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+                    REQUIRE_OK(state->regalloc_state.add_register_hint(mem, coalesce_value_type->constraint.physical_register, state->regalloc_state.payload));
+                }
+
+                kefir_hashtable_value_t table_value;
+                res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&coalesce_value_ref), &table_value);
+                if (res == KEFIR_NOT_FOUND) {
+                    continue;
+                }
+                REQUIRE_OK(res);
+                REQUIRE_OK(state->regalloc_state.add_allocation_hint(mem, (kefir_codegen_target_ir_regalloc_allocation_t) table_value, state->regalloc_state.payload));
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+        }
+
+        kefir_codegen_target_ir_regalloc_allocation_t allocation;
+        REQUIRE_OK(state->regalloc->klass->do_allocate(mem, value_type, state->stack_frame, state->regalloc_state.payload, &allocation, state->regalloc->klass->payload));
+        REQUIRE_OK(kefir_hashtable_insert(mem, &state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), (kefir_hashtable_value_t) allocation));   
+    }
     return KEFIR_OK;
 }
 
@@ -109,7 +140,8 @@ static kefir_result_t do_regalloc_block(struct kefir_mem *mem, struct regalloc_s
         for (res = kefir_codegen_target_ir_code_value_iter(state->control_flow->code, &value_iter, instr_ref, &value_ref, NULL);
             res == KEFIR_OK;
             res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, NULL)) {
-            REQUIRE_OK(do_regalloc(mem, state, value_ref));
+            REQUIRE_OK(kefir_list_insert_after(mem, &state->value_queue, NULL, (void *) (kefir_uptr_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
+            REQUIRE_OK(do_regalloc(mem, state));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -160,14 +192,22 @@ kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *mem, struc
         .stack_frame = stack_frame
     };
     REQUIRE_OK(kefir_list_init(&state.block_queue));
+    REQUIRE_OK(kefir_list_init(&state.value_queue));
     REQUIRE_OK(regalloc->klass->new_state(mem, &state.regalloc_state, regalloc->klass->payload));
     kefir_result_t res = regalloc_run_impl(mem, &state, control_flow->code->entry_block);
     REQUIRE_ELSE(res == KEFIR_OK, {
         state.regalloc_state.free_state(mem, state.regalloc_state.payload);
         kefir_list_free(mem, &state.block_queue);
+        kefir_list_free(mem, &state.value_queue);
         return res;
     });
     res = kefir_list_free(mem, &state.block_queue);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &state.value_queue);
+        state.regalloc_state.free_state(mem, state.regalloc_state.payload);
+        return res;
+    });
+    res = kefir_list_free(mem, &state.value_queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
         state.regalloc_state.free_state(mem, state.regalloc_state.payload);
         return res;

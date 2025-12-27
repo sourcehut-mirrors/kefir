@@ -253,14 +253,14 @@ test_dec32_norm:
     push %r12
     push %r13
     sub $24, %rsp
-    mov %rdi, %rbx
+    mov %rdi, %r12
     movd .L__kefir_func_test_dec32_norm_label11(%rip), %xmm0
-    mov %rsi, %r12
-    imul %rsi, %r12
+    mov %rsi, %rbx
+    imul %rsi, %rbx
     xor %eax, %eax
     movaps %xmm0, -48(%rbp)
 .L__kefir_func_test_dec32_norm_label2:
-    cmp %r12, %rax
+    cmp %rbx, %rax
     jb .L__kefir_func_test_dec32_norm_label10
     movaps -48(%rbp), %xmm0
     lea -24(%rbp), %rsp
@@ -271,12 +271,12 @@ test_dec32_norm:
     ret
 .L__kefir_func_test_dec32_norm_label10:
     imul $4, %rax, %rcx
-    mov %rbx, %rdx
+    mov %r12, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
     movd (%rcx), %xmm0
     imul $4, %rax, %rcx
-    mov %rbx, %rdx
+    mov %r12, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
     movd (%rcx), %xmm1
@@ -716,14 +716,14 @@ test_dec64_norm:
     push %r12
     push %r13
     sub $24, %rsp
-    mov %rdi, %rbx
+    mov %rdi, %r12
     movq .L__kefir_func_test_dec64_norm_label11(%rip), %xmm0
-    mov %rsi, %r12
-    imul %rsi, %r12
+    mov %rsi, %rbx
+    imul %rsi, %rbx
     xor %eax, %eax
     movaps %xmm0, -48(%rbp)
 .L__kefir_func_test_dec64_norm_label2:
-    cmp %r12, %rax
+    cmp %rbx, %rax
     jb .L__kefir_func_test_dec64_norm_label10
     movaps -48(%rbp), %xmm0
     lea -24(%rbp), %rsp
@@ -734,12 +734,12 @@ test_dec64_norm:
     ret
 .L__kefir_func_test_dec64_norm_label10:
     imul $8, %rax, %rcx
-    mov %rbx, %rdx
+    mov %r12, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
     movq (%rcx), %xmm0
     imul $8, %rax, %rcx
-    mov %rbx, %rdx
+    mov %r12, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
     movq (%rcx), %xmm1
@@ -1827,14 +1827,14 @@ test_dec128_norm:
     push %r12
     push %r13
     sub $24, %rsp
-    mov %rdi, %rbx
+    mov %rdi, %r12
     movdqu .L__kefir_func_test_dec128_norm_label11(%rip), %xmm0
-    mov %rsi, %r12
-    imul %rsi, %r12
+    mov %rsi, %rbx
+    imul %rsi, %rbx
     xor %eax, %eax
     movaps %xmm0, -48(%rbp)
 .L__kefir_func_test_dec128_norm_label2:
-    cmp %r12, %rax
+    cmp %rbx, %rax
     jb .L__kefir_func_test_dec128_norm_label10
     movaps -48(%rbp), %xmm0
     lea -24(%rbp), %rsp
@@ -1845,12 +1845,12 @@ test_dec128_norm:
     ret
 .L__kefir_func_test_dec128_norm_label10:
     imul $16, %rax, %rcx
-    mov %rbx, %rdx
+    mov %r12, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
     movdqu (%rcx), %xmm0
     imul $16, %rax, %rcx
-    mov %rbx, %rdx
+    mov %r12, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
     movdqu (%rcx), %xmm1

@@ -261,14 +261,13 @@ overflow_mul_long_long_ulong:
 .L__kefir_func_overflow_mul_long_long_ulong_label3:
     mul %rsi
     jo .L__kefir_func_overflow_mul_long_long_ulong_label6
-    mov %r8, %rdx
 .L__kefir_func_overflow_mul_long_long_ulong_label9:
-    and $1, %edx
+    and $1, %r8d
     movq %rax, (%rcx)
-    mov %rdx, %rax
+    mov %r8, %rax
     ret
 .L__kefir_func_overflow_mul_long_long_ulong_label6:
-    mov $1, %rdx
+    mov $1, %r8
     jmp .L__kefir_func_overflow_mul_long_long_ulong_label9
 .L__kefir_func_overflow_mul_long_long_ulong_label7:
     test %rdi, %rdi
@@ -317,13 +316,13 @@ overflow_mul_ulong_ulong_short:
     test %rax, %rax
     sets %dl
     or %sil, %dl
+    mov %rdx, %rdi
     mov %rax, %rsi
     movsx %si, %rax
     cmp %rax, %rsi
-    mov %rdx, %rax
-    setne %al
-    or %al, %dl
-    mov %rdx, %rax
+    setne %dl
+    or %dl, %dil
+    mov %rdi, %rax
     and $1, %eax
     movw %si, (%rcx)
     ret

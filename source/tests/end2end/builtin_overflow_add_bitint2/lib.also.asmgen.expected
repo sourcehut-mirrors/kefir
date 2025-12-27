@@ -476,9 +476,10 @@ __kefir_bigint_leading_zeros:
     div %rcx
     xor %ecx, %ecx
     xor %edx, %edx
-    mov %rcx, %r9
+    mov %rdx, %r9
+    mov %rcx, %rdx
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label4:
-    cmp %rax, %r9
+    cmp %rax, %rdx
     jb .L__kefir_runtime_func___kefir_bigint_leading_zeros_label24
     mov %r8, %rax
     lea -24(%rbp), %rsp
@@ -489,7 +490,7 @@ __kefir_bigint_leading_zeros:
     ret
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label24:
     mov %rax, %rcx
-    sub %r9, %rcx
+    sub %rdx, %rcx
     sub $1, %rcx
     mov %rdi, %r10
     add %rcx, %r10
@@ -502,18 +503,18 @@ __kefir_bigint_leading_zeros:
     sub %rcx, %r11
     mov %r11, %rcx
     mov $8, %r11
-    cmp $0, %r9
+    cmp $0, %rdx
     cmovbe %rcx, %r11
     xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label9:
-    lea 1(%r9), %rbx
+    lea 1(%rdx), %rbx
     cmp %r11, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_leading_zeros_label22
-    mov %rbx, %r9
+    mov %rbx, %rdx
     jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label4
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label22:
     lea 1(%rcx), %rbx
-    lea 1(%rdx), %r12
+    lea 1(%r9), %r12
     mov %r11, %r13
     sub %rcx, %r13
     mov %r13, %rcx
@@ -525,10 +526,10 @@ __kefir_bigint_leading_zeros:
     cmp $1, %ecx
     je .L__kefir_runtime_func___kefir_bigint_leading_zeros_label21
     mov %rbx, %rcx
-    mov %r12, %rdx
+    mov %r12, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label9
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label21:
-    mov %rdx, %rax
+    mov %r9, %rax
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12

@@ -15,11 +15,11 @@ test32:
     sub $32, %rsp
     stmxcsr -8(%rbp)
     movaps %xmm0, %xmm1
-    movaps %xmm1, %xmm2
-    shufps $1, %xmm1, %xmm2
-    movaps %xmm0, %xmm3
-    movd %xmm3, %eax
-    movd %xmm2, %ecx
+    movaps %xmm1, %xmm3
+    shufps $1, %xmm1, %xmm3
+    movaps %xmm0, %xmm2
+    movd %xmm2, %eax
+    movd %xmm3, %ecx
     shl $32, %rcx
     or %rax, %rcx
     movq %rcx, %xmm1

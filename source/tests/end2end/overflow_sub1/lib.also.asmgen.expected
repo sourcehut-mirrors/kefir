@@ -38,18 +38,16 @@
 .L__kefir_text_section_begin:
 overflow_sub_long_ulong_ulong:
 .L__kefir_text_func_overflow_sub_long_ulong_ulong_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
+    mov %rdi, %r8
+    sub %rsi, %r8
     test %rdi, %rdi
-    mov %rax, %rcx
-    sets %cl
+    sets %al
     cmp %rsi, %rdi
-    mov %rax, %rsi
-    setb %sil
-    or %sil, %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    mov %rax, %rcx
+    setb %cl
+    or %cl, %al
+    and $1, %eax
+    movq %r8, (%rdx)
     ret
 .L__kefir_text_func_overflow_sub_long_ulong_ulong_end:
 
@@ -108,16 +106,14 @@ overflow_sub_ulong_ulong_ulong:
 
 overflow_sub_ulong_long_long:
 .L__kefir_text_func_overflow_sub_ulong_long_long_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
-    movabs $-9223372036854775808, %rcx
-    add %rcx, %rsi
+    mov %rdi, %rcx
+    sub %rsi, %rcx
+    movabs $-9223372036854775808, %rax
+    add %rax, %rsi
     cmp %rsi, %rdi
-    mov %rax, %rcx
-    setnb %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    setnb %al
+    and $1, %eax
+    movq %rcx, (%rdx)
     ret
 .L__kefir_text_func_overflow_sub_ulong_long_long_end:
 
@@ -263,16 +259,14 @@ overflow_sub_long_long_ulong:
 
 overflow_sub_long_ulong_long:
 .L__kefir_text_func_overflow_sub_long_ulong_long_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
-    movabs $-9223372036854775808, %rcx
-    add %rcx, %rdi
+    mov %rdi, %rcx
+    sub %rsi, %rcx
+    movabs $-9223372036854775808, %rax
+    add %rax, %rdi
     cmp %rsi, %rdi
-    mov %rax, %rcx
-    setb %cl
-    and $1, %ecx
-    movq %rax, (%rdx)
-    mov %rcx, %rax
+    setb %al
+    and $1, %eax
+    movq %rcx, (%rdx)
     ret
 .L__kefir_text_func_overflow_sub_long_ulong_long_end:
 

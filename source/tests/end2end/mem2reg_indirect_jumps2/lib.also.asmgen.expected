@@ -30,10 +30,9 @@ factorial2:
 .L__kefir_func_factorial2_label4:
 _kefir_local_public_label_factorial2_round:
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
+    movq -8(%rbp), %rsi
     lea -1(%rax), %rdi
-    imul %rax, %rcx
-    mov %rcx, %rsi
+    imul %rax, %rsi
     jmp .L__kefir_func_factorial2_label2
 .L__kefir_func_factorial2_label6:
 _kefir_local_public_label_factorial2_terminate:

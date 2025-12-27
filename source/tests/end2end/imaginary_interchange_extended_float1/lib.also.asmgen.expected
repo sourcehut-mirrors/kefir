@@ -60,11 +60,11 @@ f32_op:
     je .L__kefir_func_f32_op_label26
     cmp $3, %edi
     je .L__kefir_func_f32_op_label23
-    movd .L__kefir_func_f32_op_label28(%rip), %xmm1
-    movaps %xmm0, %xmm2
-    xorps .L__kefir_constant_float32_neg(%rip), %xmm2
-    movaps %xmm1, %xmm0
-    insertps $16, %xmm2, %xmm0
+    movd .L__kefir_func_f32_op_label28(%rip), %xmm2
+    movaps %xmm0, %xmm1
+    xorps .L__kefir_constant_float32_neg(%rip), %xmm1
+    movaps %xmm2, %xmm0
+    insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -141,11 +141,10 @@ f64_op:
     je .L__kefir_func_f64_op_label26
     cmp $3, %edi
     je .L__kefir_func_f64_op_label23
-    movq .L__kefir_func_f64_op_label28(%rip), %xmm1
-    movaps %xmm0, %xmm2
-    xorpd .L__kefir_constant_float64_neg(%rip), %xmm2
-    movaps %xmm1, %xmm0
-    movaps %xmm2, %xmm1
+    movq .L__kefir_func_f64_op_label28(%rip), %xmm2
+    movaps %xmm0, %xmm1
+    xorpd .L__kefir_constant_float64_neg(%rip), %xmm1
+    movaps %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -326,11 +325,10 @@ f32x_op:
     je .L__kefir_func_f32x_op_label26
     cmp $3, %edi
     je .L__kefir_func_f32x_op_label23
-    movq .L__kefir_func_f32x_op_label28(%rip), %xmm1
-    movaps %xmm0, %xmm2
-    xorpd .L__kefir_constant_float64_neg(%rip), %xmm2
-    movaps %xmm1, %xmm0
-    movaps %xmm2, %xmm1
+    movq .L__kefir_func_f32x_op_label28(%rip), %xmm2
+    movaps %xmm0, %xmm1
+    xorpd .L__kefir_constant_float64_neg(%rip), %xmm1
+    movaps %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
