@@ -1,4 +1,5 @@
 #include "kefir/codegen/target-ir/regalloc.h"
+#include "kefir/codegen/target-ir/hotness.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -8,11 +9,9 @@ struct regalloc_state {
     const struct kefir_codegen_target_ir_liveness *liveness;
     const struct kefir_codegen_target_ir_interference *interference;
     const struct kefir_codegen_target_ir_coalesce *coalesce;
+    struct kefir_codegen_target_ir_hotness hotness;
     struct kefir_list block_queue;
     struct kefir_list value_queue;
-    struct kefir_hashtable value_scores;
-    struct kefir_hashtree per_block_ranges;
-    struct kefir_hashtable alive_values;
     struct kefir_codegen_target_ir_regalloc_state regalloc_state;
     const struct kefir_codegen_target_ir_stack_frame *stack_frame;
 };
@@ -98,22 +97,20 @@ static kefir_result_t build_constraints_and_hints(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
-static kefir_result_t compute_eviction_score(struct regalloc_state *state, kefir_codegen_target_ir_value_ref_t value_ref, kefir_uint64_t *score) {
-    kefir_hashtable_value_t table_value;
-    kefir_result_t res = kefir_hashtable_at(&state->value_scores, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &table_value);
+static kefir_result_t get_value_hotness(struct regalloc_state *state, kefir_codegen_target_ir_value_ref_t value_ref, struct kefir_codegen_target_ir_value_hotness_fragment *hotness_fragment) {
+    kefir_result_t res = kefir_codegen_target_ir_hotness_get_global(&state->hotness, value_ref, hotness_fragment);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
-        *score = ((table_value >> 32) << 32) / ((kefir_uint32_t) table_value);
     } else {
-        *score = ~0ull;
+        *hotness_fragment = KEFIR_CODEGEN_TARGET_IR_HOTNESS_MAX;
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t try_evict_neighbor(struct kefir_mem *mem, struct regalloc_state *state, kefir_codegen_target_ir_value_ref_t value_ref) {
-    kefir_uint64_t evict_score;
-    REQUIRE_OK(compute_eviction_score(state, value_ref, &evict_score));
-    REQUIRE(evict_score != ~0ull, KEFIR_OK);
+    struct kefir_codegen_target_ir_value_hotness_fragment hotness_fragment;
+    REQUIRE_OK(get_value_hotness(state, value_ref, &hotness_fragment));
+    REQUIRE(!KEFIR_CODEGEN_TARGET_IR_HOTNESS_IS_MAX(&hotness_fragment), KEFIR_OK);
     kefir_codegen_target_ir_value_ref_t evict_value = value_ref;
 
     kefir_result_t res;
@@ -148,10 +145,10 @@ static kefir_result_t try_evict_neighbor(struct kefir_mem *mem, struct regalloc_
             continue;
         }
 
-        kefir_uint64_t score;
-        REQUIRE_OK(compute_eviction_score(state, conflict_value_ref, &score));
-        if (score < evict_score) {
-            evict_score = score;
+        struct kefir_codegen_target_ir_value_hotness_fragment conflict_hotness_fragment;
+        REQUIRE_OK(get_value_hotness(state, conflict_value_ref, &conflict_hotness_fragment));
+        if (kefir_codegen_target_ir_value_hotness_compare(conflict_hotness_fragment, hotness_fragment) < 0) {
+            hotness_fragment = conflict_hotness_fragment;
             evict_value = conflict_value_ref;
         }
     }
@@ -238,98 +235,8 @@ static kefir_result_t do_regalloc_block(struct kefir_mem *mem, struct regalloc_s
     return KEFIR_OK;
 }
 
-static kefir_result_t update_value_score(struct kefir_mem *mem, struct regalloc_state *state, kefir_codegen_target_ir_value_ref_t value_ref, kefir_size_t local_lifetime) {
-    kefir_hashtable_value_t *table_value_ptr;
-    kefir_result_t res = kefir_hashtable_at_mut(&state->value_scores, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &table_value_ptr);
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
-        kefir_uint32_t uses = (*table_value_ptr) >> 32;
-        kefir_uint32_t lifetime = *table_value_ptr;
-        lifetime += local_lifetime;
-        *table_value_ptr = (((kefir_uint64_t) uses) << 32) | lifetime;
-    } else {
-        kefir_uint32_t uses = kefir_codegen_target_ir_code_num_of_uses(state->control_flow->code, value_ref);
-        kefir_uint64_t value = (((kefir_uint64_t) uses) << 32) | (kefir_uint32_t) local_lifetime;
-        REQUIRE_OK(kefir_hashtable_insert(mem, &state->value_scores, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), (kefir_hashtable_value_t) value));
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t update_lifetimes(struct kefir_mem *mem, struct regalloc_state *state, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_size_t local_index) {
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&state->per_block_ranges, (kefir_hashtree_key_t) instr_ref, &node);
-    REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
-    REQUIRE_OK(res);
-
-    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_interference_liveness_index *, liveness_index,
-        node->value);
-    struct kefir_hashset_iterator iter;
-    kefir_hashset_key_t iter_key;
-    if (instr_ref != KEFIR_ID_NONE) {
-        for (res = kefir_hashset_iter(&liveness_index->end_liveness, &iter, &iter_key); res == KEFIR_OK;
-            res = kefir_hashset_next(&iter, &iter_key)) {
-            kefir_hashtable_value_t table_value;
-            REQUIRE_OK(kefir_hashtable_at(&state->alive_values, (kefir_hashtable_key_t) iter_key, &table_value));
-            REQUIRE_OK(kefir_hashtable_delete(mem, &state->alive_values, (kefir_hashtable_key_t) iter_key));
-            REQUIRE_OK(update_value_score(mem, state, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(iter_key), local_index - table_value));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-    }
-    for (res = kefir_hashset_iter(&liveness_index->begin_liveness, &iter, &iter_key); res == KEFIR_OK;
-        res = kefir_hashset_next(&iter, &iter_key)) {
-        REQUIRE_OK(kefir_hashtable_insert(mem, &state->alive_values, (kefir_hashtable_key_t) iter_key, (kefir_hashtable_value_t) local_index));
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t regalloc_run_impl(struct kefir_mem *mem, struct regalloc_state *state, kefir_codegen_target_ir_block_ref_t block_ref) {
-    REQUIRE_OK(kefir_list_insert_after(mem, &state->block_queue, kefir_list_tail(&state->block_queue), (void *) (kefir_uptr_t) block_ref));
-    for (struct kefir_list_entry *head = kefir_list_head(&state->block_queue);
-        head != NULL;
-        head = kefir_list_head(&state->block_queue)) {
-        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref, (kefir_uptr_t) head->value);
-        REQUIRE_OK(kefir_list_pop(mem, &state->block_queue, head));
-
-        REQUIRE_OK(kefir_codegen_target_ir_interference_build_per_block_liveness(mem, state->control_flow, state->liveness, block_ref, &state->per_block_ranges));
-        REQUIRE_OK(kefir_hashtable_clear(&state->alive_values));
-
-        kefir_size_t local_index = 0;
-        REQUIRE_OK(update_lifetimes(mem, state, KEFIR_ID_NONE, local_index));
-
-        for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(state->control_flow->code, block_ref);
-            instr_ref != KEFIR_ID_NONE;
-            instr_ref = kefir_codegen_target_ir_code_control_next(state->control_flow->code, instr_ref), local_index++) {
-            REQUIRE_OK(update_lifetimes(mem, state, instr_ref, local_index));
-        }
-
-        kefir_result_t res;
-        struct kefir_hashtable_iterator alive_iter;
-        kefir_hashtable_key_t alive_iter_key;
-        kefir_hashtable_value_t alive_iter_value;
-        for (res = kefir_hashtable_iter(&state->alive_values, &alive_iter, &alive_iter_key, &alive_iter_value); res == KEFIR_OK;
-            res = kefir_hashtable_next(&alive_iter, &alive_iter_key, &alive_iter_value)) {
-            REQUIRE_OK(update_value_score(mem, state, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(alive_iter_key), local_index - alive_iter_value));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-
-        struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator iter;
-        kefir_codegen_target_ir_block_ref_t dominated_block_ref;
-        for (res = kefir_codegen_target_ir_control_flow_dominator_tree_iter(state->control_flow, &iter, block_ref, &dominated_block_ref);
-            res == KEFIR_OK;
-            res = kefir_codegen_target_ir_control_flow_dominator_tree_next(&iter, &dominated_block_ref)) {
-            REQUIRE_OK(kefir_list_insert_after(mem, &state->block_queue, kefir_list_tail(&state->block_queue), (void *) (kefir_uptr_t) dominated_block_ref));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-    }
+    REQUIRE_OK(kefir_codegen_target_ir_hotness_build(mem, &state->hotness, state->control_flow, state->liveness));
 
     REQUIRE_OK(kefir_list_insert_after(mem, &state->block_queue, kefir_list_tail(&state->block_queue), (void *) (kefir_uptr_t) block_ref));
     for (struct kefir_list_entry *head = kefir_list_head(&state->block_queue);
@@ -375,38 +282,17 @@ kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *mem, struc
     };
     REQUIRE_OK(kefir_list_init(&state.block_queue));
     REQUIRE_OK(kefir_list_init(&state.value_queue));
-    REQUIRE_OK(kefir_hashtable_init(&state.value_scores, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&state.per_block_ranges, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtable_init(&state.alive_values, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_codegen_target_ir_hotness_init(&state.hotness));
     REQUIRE_OK(regalloc->klass->new_state(mem, &state.regalloc_state, regalloc->klass->payload));
     kefir_result_t res = regalloc_run_impl(mem, &state, control_flow->code->entry_block);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtable_free(mem, &state.alive_values);
-        kefir_hashtree_free(mem, &state.per_block_ranges);
-        kefir_hashtable_free(mem, &state.value_scores);
+        kefir_codegen_target_ir_hotness_free(mem, &state.hotness);
         kefir_list_free(mem, &state.block_queue);
         kefir_list_free(mem, &state.value_queue);
         state.regalloc_state.free_state(mem, state.regalloc_state.payload);
         return res;
     });
-    res = kefir_hashtable_free(mem, &state.alive_values);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtree_free(mem, &state.per_block_ranges);
-        kefir_hashtable_free(mem, &state.value_scores);
-        kefir_list_free(mem, &state.block_queue);
-        kefir_list_free(mem, &state.value_queue);
-        state.regalloc_state.free_state(mem, state.regalloc_state.payload);
-        return res;
-    });
-    res = kefir_hashtree_free(mem, &state.per_block_ranges);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtable_free(mem, &state.value_scores);
-        kefir_list_free(mem, &state.block_queue);
-        kefir_list_free(mem, &state.value_queue);
-        state.regalloc_state.free_state(mem, state.regalloc_state.payload);
-        return res;
-    });
-    res = kefir_hashtable_free(mem, &state.value_scores);
+    res = kefir_codegen_target_ir_hotness_free(mem, &state.hotness);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.block_queue);
         kefir_list_free(mem, &state.value_queue);
