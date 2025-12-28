@@ -59,7 +59,7 @@ struct try_coalesce_payload {
     const struct kefir_codegen_target_ir_interference *interference;
 };
 
-static kefir_result_t try_coalesce(struct kefir_mem *mem, kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_value_ref_t other_value_ref, void *payload) {
+static kefir_result_t coalesce_callback(struct kefir_mem *mem, kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_value_ref_t other_value_ref, void *payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     ASSIGN_DECL_CAST(struct try_coalesce_payload *, coalesce_payload, payload);
     REQUIRE(coalesce_payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR coalesce payload"));
@@ -122,8 +122,8 @@ static kefir_result_t do_coalesce_build(struct kefir_mem *mem, struct kefir_code
                     .coalesce = coalesce,
                     .interference = interference
                 };
-                REQUIRE_OK(klass->extract_coalesce(mem, control_flow->code, instr, &(struct kefir_codegen_target_ir_coalesce_callback) {
-                    .try_coalesce = try_coalesce,
+                REQUIRE_OK(klass->extract_coalescing(mem, control_flow->code, instr, &(struct kefir_codegen_target_ir_coalesce_callback) {
+                    .coalesce = coalesce_callback,
                     .payload = &payload
                 }, klass->payload));
             }

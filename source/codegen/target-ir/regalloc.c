@@ -50,7 +50,9 @@ static kefir_result_t build_constraints_and_hints(struct kefir_mem *mem, struct 
         }
         REQUIRE_OK(res);
         if (conflict_value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
-            REQUIRE_OK(state->regalloc_state.reserve(mem, conflict_value_type, state->regalloc_state.payload));
+            kefir_codegen_target_ir_regalloc_allocation_t allocation;
+            REQUIRE_OK(state->regalloc->klass->register_allocation(conflict_value_type->constraint.physical_register, &allocation, state->regalloc->klass->payload));
+            REQUIRE_OK(state->regalloc_state.add_conflict(mem, allocation, state->regalloc_state.payload));
         }
 
         kefir_hashtable_value_t table_value;
@@ -78,7 +80,9 @@ static kefir_result_t build_constraints_and_hints(struct kefir_mem *mem, struct 
             }
             
             if (coalesce_value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
-                REQUIRE_OK(state->regalloc_state.add_register_hint(mem, coalesce_value_type->constraint.physical_register, state->regalloc_state.payload));
+                kefir_codegen_target_ir_regalloc_allocation_t allocation;
+                REQUIRE_OK(state->regalloc->klass->register_allocation(coalesce_value_type->constraint.physical_register, &allocation, state->regalloc->klass->payload));
+                REQUIRE_OK(state->regalloc_state.add_allocation_hint(mem, allocation, state->regalloc_state.payload));
             }
 
             kefir_hashtable_value_t table_value;

@@ -47,7 +47,7 @@ static kefir_result_t extract_coalesce(struct kefir_mem *mem,
                 const struct kefir_codegen_target_ir_value_type *output_value_type;
                 REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instruction->instr_ref, output_index++, &output_value_ref, &output_value_type));
                 if (instruction->operation.parameters[parameter_idx].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
-                    REQUIRE_OK(callback->try_coalesce(mem, instruction->operation.parameters[parameter_idx].direct.value_ref, output_value_ref, callback->payload));
+                    REQUIRE_OK(callback->coalesce(mem, instruction->operation.parameters[parameter_idx].direct.value_ref, output_value_ref, callback->payload));
                 }
                 parameter_idx++;
             } break;
@@ -61,7 +61,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_coalesce_init(struct kefir_codegen_
     REQUIRE(klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR amd64 coalesce class"));
     REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR destructor ops"));
 
-    klass->klass.extract_coalesce = extract_coalesce;
+    klass->klass.extract_coalescing = extract_coalesce;
     klass->klass.payload = klass;
     klass->destructor_ops = ops;
     return KEFIR_OK;

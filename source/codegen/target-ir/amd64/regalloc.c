@@ -26,8 +26,7 @@
 #include <string.h>
 
 struct state_payload {
-    struct kefir_hashset register_conflicts;
-    struct kefir_hashset reserved_registers;
+    kefir_uint8_t *register_conflicts;
     struct kefir_hashtreeset hints;
     kefir_uint8_t *spill_slots;
     kefir_size_t spill_slots_length;
@@ -107,7 +106,7 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE: {
             if (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
                 kefir_asm_amd64_xasmgen_register_t reg = value_type->constraint.physical_register;
-                REQUIRE(!kefir_hashset_has(&state_payload->register_conflicts, (kefir_hashset_key_t) reg),
+                REQUIRE(!state_payload->register_conflicts[reg],
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Conflict in target IR amd64 register allocation constraints"));
                 regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP;
                 regalloc_entry.reg.value = reg;
@@ -128,8 +127,7 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                 };
 
                 if (entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP &&
-                    !kefir_hashset_has(&state_payload->register_conflicts, (kefir_hashset_key_t) entry.reg.value) &&
-                    !kefir_hashset_has(&state_payload->reserved_registers, (kefir_hashset_key_t) entry.reg.value)) {
+                    !state_payload->register_conflicts[entry.reg.value]) {
                     regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP;
                     regalloc_entry.reg.value = entry.reg.value;
                     *allocation_ptr = regalloc_entry.allocation;
@@ -137,7 +135,34 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                         REQUIRE_OK(stack_frame->use_register(mem, entry.reg.value, stack_frame->payload));
                     }
                     return KEFIR_OK;
-                } else if (entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL &&
+                }
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+
+            for (kefir_size_t i = 0; i < klass->num_of_gp_registers; i++) {
+                kefir_asm_amd64_xasmgen_register_t candidate_reg = klass->gp_registers[i];
+                if (!state_payload->register_conflicts[candidate_reg]) {
+                    regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP;
+                    regalloc_entry.reg.value = candidate_reg;
+                    *allocation_ptr = regalloc_entry.allocation;
+                    if (stack_frame != NULL) {
+                        REQUIRE_OK(stack_frame->use_register(mem, candidate_reg, stack_frame->payload));
+                    }
+                    return KEFIR_OK;
+                }
+            }
+
+            REQUIRE(!try_optimistic, KEFIR_SET_ERROR(KEFIR_OUT_OF_SPACE, "Unable to optimistically allocate general purpose register for target IR value"));
+            for (res = kefir_hashtreeset_iter(&state_payload->hints, &hint_iter);
+                res == KEFIR_OK;
+                res = kefir_hashtreeset_next(&hint_iter)) {
+                union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+                    .allocation = hint_iter.entry
+                };
+
+                if (entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL &&
                     entry.spill_area.length == 1 &&
                     is_spill_available(state_payload, entry.spill_area.index, entry.spill_area.length)) {
                     regalloc_entry.spill_area.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL;
@@ -154,20 +179,6 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                 REQUIRE_OK(res);
             }
 
-            for (kefir_size_t i = 0; i < klass->num_of_gp_registers; i++) {
-                kefir_asm_amd64_xasmgen_register_t candidate_reg = klass->gp_registers[i];
-                if (!kefir_hashset_has(&state_payload->register_conflicts, (kefir_hashset_key_t) candidate_reg) && !kefir_hashset_has(&state_payload->reserved_registers, (kefir_hashset_key_t) candidate_reg)) {
-                    regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP;
-                    regalloc_entry.reg.value = candidate_reg;
-                    *allocation_ptr = regalloc_entry.allocation;
-                    if (stack_frame != NULL) {
-                        REQUIRE_OK(stack_frame->use_register(mem, candidate_reg, stack_frame->payload));
-                    }
-                    return KEFIR_OK;
-                }
-            }
-
-            REQUIRE(!try_optimistic, KEFIR_SET_ERROR(KEFIR_OUT_OF_SPACE, "Unable to optimistically allocate general purpose register for target IR value"));
             kefir_size_t spill_index = 0;
             REQUIRE_OK(allocate_spill_area(mem, state_payload, 1, 1, &spill_index));
             regalloc_entry.spill_area.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL;
@@ -182,7 +193,7 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT: {
             if (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
                 kefir_asm_amd64_xasmgen_register_t reg = value_type->constraint.physical_register;
-                REQUIRE(!kefir_hashset_has(&state_payload->register_conflicts, (kefir_hashset_key_t) reg),
+                REQUIRE(!state_payload->register_conflicts[reg],
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Conflict in target IR amd64 register allocation constraints"));
                 regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE;
                 regalloc_entry.reg.value = reg;
@@ -203,8 +214,7 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                 };
 
                 if (entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE &&
-                    !kefir_hashset_has(&state_payload->register_conflicts, (kefir_hashset_key_t) entry.reg.value) &&
-                    !kefir_hashset_has(&state_payload->reserved_registers, (kefir_hashset_key_t) entry.reg.value)) {
+                    !state_payload->register_conflicts[entry.reg.value]) {
                     regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE;
                     regalloc_entry.reg.value = entry.reg.value;
                     *allocation_ptr = regalloc_entry.allocation;
@@ -212,7 +222,33 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                         REQUIRE_OK(stack_frame->use_register(mem, entry.reg.value, stack_frame->payload));
                     }
                     return KEFIR_OK;
-                } else if (entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL &&
+                }
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+
+            for (kefir_size_t i = 0; i < klass->num_of_sse_registers; i++) {
+                kefir_asm_amd64_xasmgen_register_t candidate_reg = klass->sse_registers[i];
+                if (!state_payload->register_conflicts[candidate_reg]) {
+                    regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE;
+                    regalloc_entry.reg.value = candidate_reg;
+                    *allocation_ptr = regalloc_entry.allocation;
+                    if (stack_frame != NULL) {
+                        REQUIRE_OK(stack_frame->use_register(mem, candidate_reg, stack_frame->payload));
+                    }
+                    return KEFIR_OK;
+                }
+            }
+            REQUIRE(!try_optimistic, KEFIR_SET_ERROR(KEFIR_OUT_OF_SPACE, "Unable to optimistically allocate floating point register for target IR value"));
+            for (res = kefir_hashtreeset_iter(&state_payload->hints, &hint_iter);
+                res == KEFIR_OK;
+                res = kefir_hashtreeset_next(&hint_iter)) {
+                union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+                    .allocation = hint_iter.entry
+                };
+
+                if (entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL &&
                     entry.spill_area.length == 2 &&
                     entry.spill_area.index % 2 == 0 &&
                     is_spill_available(state_payload, entry.spill_area.index, entry.spill_area.length)) {
@@ -230,19 +266,6 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
                 REQUIRE_OK(res);
             }
 
-            for (kefir_size_t i = 0; i < klass->num_of_sse_registers; i++) {
-                kefir_asm_amd64_xasmgen_register_t candidate_reg = klass->sse_registers[i];
-                if (!kefir_hashset_has(&state_payload->register_conflicts, (kefir_hashset_key_t) candidate_reg) && !kefir_hashset_has(&state_payload->reserved_registers, (kefir_hashset_key_t) candidate_reg)) {
-                    regalloc_entry.reg.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE;
-                    regalloc_entry.reg.value = candidate_reg;
-                    *allocation_ptr = regalloc_entry.allocation;
-                    if (stack_frame != NULL) {
-                        REQUIRE_OK(stack_frame->use_register(mem, candidate_reg, stack_frame->payload));
-                    }
-                    return KEFIR_OK;
-                }
-            }
-            REQUIRE(!try_optimistic, KEFIR_SET_ERROR(KEFIR_OUT_OF_SPACE, "Unable to optimistically allocate floating point register for target IR value"));
             kefir_size_t spill_index = 0;
             REQUIRE_OK(allocate_spill_area(mem, state_payload, 2, 2, &spill_index));
             regalloc_entry.spill_area.type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL;
@@ -349,8 +372,7 @@ static kefir_result_t state_reset(struct kefir_mem *mem, void *payload) {
     REQUIRE(state_payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR register allocator state payload"));
     
     REQUIRE_OK(kefir_hashtreeset_clean(mem, &state_payload->hints));
-    REQUIRE_OK(kefir_hashset_clear(mem, &state_payload->register_conflicts));
-    REQUIRE_OK(kefir_hashset_clear(mem, &state_payload->reserved_registers));
+    memset(state_payload->register_conflicts, 0, sizeof(kefir_uint8_t) * KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES);
     if (state_payload->spill_slots_length > 0) {
         memset(state_payload->spill_slots, 0, sizeof(kefir_uint8_t) * state_payload->spill_slots_length);
     }
@@ -373,7 +395,7 @@ static kefir_result_t state_add_conflict(struct kefir_mem *mem, kefir_codegen_ta
 
         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
-            REQUIRE_OK(kefir_hashset_add(mem, &state_payload->register_conflicts, (kefir_hashset_key_t) entry.reg.value));
+            state_payload->register_conflicts[entry.reg.value] = 1;
             break;
 
         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL: {
@@ -384,36 +406,6 @@ static kefir_result_t state_add_conflict(struct kefir_mem *mem, kefir_codegen_ta
     return KEFIR_OK;
 }
 
-static kefir_result_t state_reserve(struct kefir_mem *mem, const struct kefir_codegen_target_ir_value_type *value_type, void *payload) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct state_payload *, state_payload,
-        payload);
-    REQUIRE(value_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR value type"));
-    REQUIRE(state_payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR register allocator state payload"));
-    
-    REQUIRE(value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Expected requirement type target IR value constraint"));
-
-    switch (value_type->kind) {
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY:
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE:
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_SPILL_SPACE:
-            return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Expected requirement type target IR value constraint");
-
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE:
-            REQUIRE_OK(kefir_hashset_add(mem, &state_payload->reserved_registers, value_type->constraint.physical_register));
-            break;
-
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT:
-            REQUIRE_OK(kefir_hashset_add(mem, &state_payload->reserved_registers, value_type->constraint.physical_register));
-            break;
-    }
-    return KEFIR_OK;
-
-}
-
 static kefir_result_t state_free(struct kefir_mem *mem, void *payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     ASSIGN_DECL_CAST(struct state_payload *, state_payload,
@@ -421,8 +413,7 @@ static kefir_result_t state_free(struct kefir_mem *mem, void *payload) {
     REQUIRE(state_payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR register allocator state payload"));
     
     REQUIRE_OK(kefir_hashtreeset_free(mem, &state_payload->hints));
-    REQUIRE_OK(kefir_hashset_free(mem, &state_payload->register_conflicts));
-    REQUIRE_OK(kefir_hashset_free(mem, &state_payload->reserved_registers));
+    KEFIR_FREE(mem, state_payload->register_conflicts);
     KEFIR_FREE(mem, state_payload->spill_slots);
     KEFIR_FREE(mem, state_payload);
     return KEFIR_OK;
@@ -438,21 +429,6 @@ static kefir_result_t add_allocation_hint(struct kefir_mem *mem, kefir_codegen_t
     return KEFIR_OK;
 }
 
-static kefir_result_t add_register_hint(struct kefir_mem *mem, kefir_codegen_target_ir_physical_register_t reg, void *payload) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct state_payload *, state_payload,
-        payload);
-    REQUIRE(state_payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR register allocator state payload"));
-
-    union kefir_codegen_target_ir_amd64_regalloc_entry entry = {0};
-    entry.reg.type = kefir_asm_amd64_xasmgen_register_is_floating_point(reg)
-                ? KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE
-                : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP;
-    entry.reg.value = reg;
-    REQUIRE_OK(kefir_hashtreeset_add(mem, &state_payload->hints, (kefir_hashtreeset_entry_t) entry.allocation));
-    return KEFIR_OK;
-}
-
 static kefir_result_t new_state(struct kefir_mem *mem, struct kefir_codegen_target_ir_regalloc_state *state, void *payload) {
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -462,19 +438,20 @@ static kefir_result_t new_state(struct kefir_mem *mem, struct kefir_codegen_targ
     REQUIRE(state_payload != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR amd64 register allocator state"));
     state_payload->spill_slots = NULL;
     state_payload->spill_slots_length = 0;
-    kefir_result_t res = kefir_hashset_init(&state_payload->register_conflicts, &kefir_hashtable_uint_ops);
-    REQUIRE_CHAIN(&res, kefir_hashset_init(&state_payload->reserved_registers, &kefir_hashtable_uint_ops));
+    state_payload->register_conflicts = KEFIR_MALLOC(mem, sizeof(kefir_uint8_t) * KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES);
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN_SET(&res, state_payload->register_conflicts != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR amd64 register allocator state"));
     REQUIRE_CHAIN(&res, kefir_hashtreeset_init(&state_payload->hints, &kefir_hashtree_uint_ops));
     REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, state_payload->register_conflicts);
         KEFIR_FREE(mem, state_payload);
         return res;
     });
+    memset(state_payload->register_conflicts, 0, sizeof(kefir_uint8_t) * KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES);
 
     state->reset = state_reset;
     state->add_conflict = state_add_conflict;
-    state->reserve = state_reserve;
     state->add_allocation_hint = add_allocation_hint;
-    state->add_register_hint = add_register_hint;
     state->free_state = state_free;
     state->payload = state_payload;
     return KEFIR_OK;
@@ -489,6 +466,22 @@ static kefir_result_t amd64_regalloc_is_evictable(kefir_codegen_target_ir_regall
     };
     *evictable = entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP ||
         entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE;
+    return KEFIR_OK;
+}
+
+static kefir_result_t amd64_regalloc_register_allocation(kefir_codegen_target_ir_physical_register_t phreg, kefir_codegen_target_ir_regalloc_allocation_t *allocation_ptr, void *payload) {
+    UNUSED(payload);
+    REQUIRE(allocation_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR register allocation"));
+    
+    union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+        .reg = {
+            .type = kefir_asm_amd64_xasmgen_register_is_floating_point(phreg)
+                ? KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE
+                :KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP,
+            .value = phreg
+        }
+    };
+    *allocation_ptr = entry.allocation;
     return KEFIR_OK;
 }
 
@@ -553,6 +546,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_me
     klass->klass.do_allocate = do_allocate;
     klass->klass.new_state = new_state;
     klass->klass.is_evictable = amd64_regalloc_is_evictable;
+    klass->klass.register_allocation = amd64_regalloc_register_allocation;
     klass->klass.format_allocation = format_allocation;
     klass->klass.split_profile = &klass->split_profile;
     klass->klass.payload = klass;

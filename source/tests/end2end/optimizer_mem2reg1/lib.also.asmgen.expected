@@ -81,29 +81,29 @@ quad_equation:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $80, %rsp
+    sub $64, %rsp
     stmxcsr -24(%rbp)
     mov %rdi, %rbx
-    movaps %xmm0, -80(%rbp)
+    movaps %xmm0, -64(%rbp)
     movaps %xmm1, %xmm0
     mulsd %xmm1, %xmm0
     mov $4, %ecx
     movsx %ecx, %rax
     cvtsi2sd %rax, %xmm3
-    mulsd -80(%rbp), %xmm3
+    mulsd -64(%rbp), %xmm3
     mulsd %xmm2, %xmm3
     subsd %xmm3, %xmm0
     mov $1, %rax
     mov %rax, %r12
     neg %r12d
-    movaps %xmm1, -64(%rbp)
-    movdqu -64(%rbp), %xmm2
+    movaps %xmm1, -48(%rbp)
+    movdqu -48(%rbp), %xmm2
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm2
-    movdqu %xmm2, -64(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -88(%rbp)
+    movdqu %xmm2, -48(%rbp)
+    movq -48(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -72(%rbp)
     test %ebx, %ebx
     jz .L__kefir_func_quad_equation_label10
 .L__kefir_func_quad_equation_label4:
@@ -114,33 +114,13 @@ quad_equation:
     movsx %eax, %rax
     cvtsi2sd %rax, %xmm1
     mulsd %xmm0, %xmm1
-    movq -96(%rbp), %rax
-    movq %rax, -48(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -40(%rbp)
-    movq -48(%rbp), %xmm0
+    movaps -80(%rbp), %xmm0
     addsd %xmm1, %xmm0
-    movq %xmm0, -48(%rbp)
-    movq -48(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -40(%rbp), %rax
-    movq %rax, -88(%rbp)
     mov $2, %ecx
     movsx %ecx, %rax
-    cvtsi2sd %rax, %xmm0
-    mulsd -80(%rbp), %xmm0
-    movq -96(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movq -80(%rbp), %xmm1
-    divsd %xmm0, %xmm1
-    movq %xmm1, -80(%rbp)
-    movq -80(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -88(%rbp)
-    movaps -96(%rbp), %xmm0
+    cvtsi2sd %rax, %xmm1
+    mulsd -64(%rbp), %xmm1
+    divsd %xmm1, %xmm0
     ldmxcsr -24(%rbp)
     lea -16(%rbp), %rsp
     pop %r12

@@ -176,6 +176,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register8(kefir_asm_amd64_xasmgen_registe
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM13:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM14:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM15:
+        case KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Cannot obtain 8-bit variant of XMM register");
     }
     return KEFIR_OK;
@@ -281,6 +282,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register8_high(kefir_asm_amd64_xasmgen_re
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM13:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM14:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM15:
+        case KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Cannot obtain 8-bit high-half variant of the register");
     }
     return KEFIR_OK;
@@ -423,6 +425,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register16(kefir_asm_amd64_xasmgen_regist
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM13:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM14:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM15:
+        case KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Cannot obtain 16-bit variant of XMM register");
     }
     return KEFIR_OK;
@@ -565,6 +568,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register32(kefir_asm_amd64_xasmgen_regist
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM13:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM14:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM15:
+        case KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Cannot obtain 32-bit variant of XMM register");
     }
     return KEFIR_OK;
@@ -707,6 +711,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register64(kefir_asm_amd64_xasmgen_regist
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM13:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM14:
         case KEFIR_AMD64_XASMGEN_REGISTER_XMM15:
+        case KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Cannot obtain 64-bit variant of XMM register");
     }
     return KEFIR_OK;

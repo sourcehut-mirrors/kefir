@@ -116,7 +116,9 @@ typedef enum kefir_asm_amd64_xasmgen_register {
     KEFIR_AMD64_XASMGEN_REGISTER_XMM12,
     KEFIR_AMD64_XASMGEN_REGISTER_XMM13,
     KEFIR_AMD64_XASMGEN_REGISTER_XMM14,
-    KEFIR_AMD64_XASMGEN_REGISTER_XMM15
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM15,
+
+    KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES
 } kefir_asm_amd64_xasmgen_register_t;
 
 kefir_result_t kefir_asm_amd64_xasmgen_register8(kefir_asm_amd64_xasmgen_register_t,
