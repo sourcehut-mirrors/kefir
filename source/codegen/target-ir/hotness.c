@@ -1,5 +1,26 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2025  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "kefir/codegen/target-ir/hotness.h"
 #include "kefir/codegen/target-ir/interference.h"
+#include "kefir/codegen/target-ir/numbering.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -8,11 +29,11 @@ struct hotness_payload {
     struct kefir_codegen_target_ir_hotness *hotness;
     const struct kefir_codegen_target_ir_control_flow *control_flow;
     const struct kefir_codegen_target_ir_liveness *liveness;
+    struct kefir_codegen_target_ir_numbering numbering;
 
     struct kefir_list queue;
     struct kefir_hashtree per_block_ranges;
     struct kefir_hashtable alive_values;
-    kefir_size_t local_index;
 };
 
 kefir_int_t kefir_codegen_target_ir_value_hotness_compare(struct kefir_codegen_target_ir_value_hotness_fragment left,
@@ -76,13 +97,15 @@ static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_co
         node->value);
     struct kefir_hashset_iterator iter;
     kefir_hashset_key_t iter_key;
+    kefir_size_t seq_index = 0;
     if (instr_ref != KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_codegen_target_ir_numbering_instruction_seq_index(&payload->numbering, instr_ref, &seq_index));
         for (res = kefir_hashset_iter(&liveness_index->end_liveness, &iter, &iter_key); res == KEFIR_OK;
             res = kefir_hashset_next(&iter, &iter_key)) {
             kefir_hashtable_value_t table_value;
             REQUIRE_OK(kefir_hashtable_at(&payload->alive_values, (kefir_hashtable_key_t) iter_key, &table_value));
             REQUIRE_OK(kefir_hashtable_delete(payload->mem, &payload->alive_values, (kefir_hashtable_key_t) iter_key));
-            REQUIRE_OK(update_value_score(payload, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(iter_key), payload->local_index - table_value));
+            REQUIRE_OK(update_value_score(payload, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(iter_key), seq_index - table_value));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -90,7 +113,7 @@ static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_co
     }
     for (res = kefir_hashset_iter(&liveness_index->begin_liveness, &iter, &iter_key); res == KEFIR_OK;
         res = kefir_hashset_next(&iter, &iter_key)) {
-        REQUIRE_OK(kefir_hashtable_insert(payload->mem, &payload->alive_values, (kefir_hashtable_key_t) iter_key, (kefir_hashtable_value_t) payload->local_index));
+        REQUIRE_OK(kefir_hashtable_insert(payload->mem, &payload->alive_values, (kefir_hashtable_key_t) iter_key, (kefir_hashtable_value_t) seq_index));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -99,6 +122,7 @@ static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_co
 }
 
 static kefir_result_t build_hotness(struct hotness_payload *payload) {
+    REQUIRE_OK(kefir_codegen_target_ir_numbering_build(payload->mem, &payload->numbering, payload->control_flow->code));
     REQUIRE_OK(kefir_list_insert_after(payload->mem, &payload->queue, kefir_list_tail(&payload->queue), (void *) (kefir_uptr_t) payload->control_flow->code->entry_block));
     for (struct kefir_list_entry *head = kefir_list_head(&payload->queue);
         head != NULL;
@@ -113,9 +137,12 @@ static kefir_result_t build_hotness(struct hotness_payload *payload) {
 
         for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(payload->control_flow->code, block_ref);
             instr_ref != KEFIR_ID_NONE;
-            instr_ref = kefir_codegen_target_ir_code_control_next(payload->control_flow->code, instr_ref), payload->local_index++) {
+            instr_ref = kefir_codegen_target_ir_code_control_next(payload->control_flow->code, instr_ref)) {
             REQUIRE_OK(update_lifetimes(payload, instr_ref));
         }
+
+        kefir_size_t block_length;
+        REQUIRE_OK(kefir_codegen_target_ir_numbering_block_length(&payload->numbering, block_ref, &block_length));
 
         kefir_result_t res;
         struct kefir_hashtable_iterator alive_iter;
@@ -123,7 +150,7 @@ static kefir_result_t build_hotness(struct hotness_payload *payload) {
         kefir_hashtable_value_t alive_iter_value;
         for (res = kefir_hashtable_iter(&payload->alive_values, &alive_iter, &alive_iter_key, &alive_iter_value); res == KEFIR_OK;
             res = kefir_hashtable_next(&alive_iter, &alive_iter_key, &alive_iter_value)) {
-            REQUIRE_OK(update_value_score(payload, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(alive_iter_key), payload->local_index - alive_iter_value));
+            REQUIRE_OK(update_value_score(payload, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(alive_iter_key), block_length - alive_iter_value));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -159,8 +186,17 @@ kefir_result_t kefir_codegen_target_ir_hotness_build(struct kefir_mem *mem, stru
     REQUIRE_OK(kefir_hashtree_init(&payload.per_block_ranges, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&payload.alive_values, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&payload.queue));
+    REQUIRE_OK(kefir_codegen_target_ir_numbering_init(&payload.numbering));
 
     kefir_result_t res = build_hotness(&payload);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_codegen_target_ir_numbering_free(mem, &payload.numbering);
+        kefir_list_free(mem, &payload.queue);
+        kefir_hashtable_free(mem, &payload.alive_values);
+        kefir_hashtree_free(mem, &payload.per_block_ranges);
+        return res;
+    });
+    res = kefir_codegen_target_ir_numbering_free(mem, &payload.numbering);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &payload.queue);
         kefir_hashtable_free(mem, &payload.alive_values);
