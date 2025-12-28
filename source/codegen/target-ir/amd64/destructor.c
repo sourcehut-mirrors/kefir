@@ -429,7 +429,7 @@ static kefir_result_t native_id_to_label(struct destructor_state *state, kefir_c
     return KEFIR_OK;
 }
 
-static kefir_result_t resolve_value_ref(struct destructor_state *state, kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_operand_variant_t variant, struct kefir_asmcmp_value *value) {
+static kefir_result_t resolve_value_ref(struct destructor_state *state, kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_operand_variant_t variant, struct kefir_asmcmp_value *value, kefir_bool_t output) {
     const struct kefir_codegen_target_ir_value_type *value_type;
     REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, value_ref, &value_type));
     kefir_asmcmp_operand_variant_t asmcmp_variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT;
@@ -459,7 +459,7 @@ static kefir_result_t resolve_value_ref(struct destructor_state *state, kefir_co
 
                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
                     *value = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(entry.spill_area.index, 0, asmcmp_variant);
-                    value->internal.write64_to_spill = value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE &&
+                    value->internal.write64_to_spill = output && value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE &&
                                                     value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT;
                     break;
             }
@@ -564,7 +564,7 @@ static kefir_result_t resolve_operand(struct destructor_state *state, const stru
             break;
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
-            REQUIRE_OK(resolve_value_ref(state, operand->direct.value_ref, operand->direct.variant, value));
+            REQUIRE_OK(resolve_value_ref(state, operand->direct.value_ref, operand->direct.variant, value, false));
             break;
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT: {
@@ -1976,7 +1976,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                         REQUIRE_OK(resolve_implicit_conflict(state, &value));
                         asmcmp_instruction.args[i] = value;
                     } else {
-                        REQUIRE_OK(resolve_value_ref(state, output_value_ref, output_value_type->variant, &asmcmp_instruction.args[i]));
+                        REQUIRE_OK(resolve_value_ref(state, output_value_ref, output_value_type->variant, &asmcmp_instruction.args[i], true));
                     }
                 } else {
                     output_index++;
@@ -1997,7 +1997,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                         REQUIRE(KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(output_value_ref.aspect), KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected either output register or indirect output value"));
                         struct kefir_asmcmp_value output_value, input_value;
                         REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx++], &input_value));
-                        REQUIRE_OK(resolve_value_ref(state, output_value_ref, output_value_type->variant, &output_value));
+                        REQUIRE_OK(resolve_value_ref(state, output_value_ref, output_value_type->variant, &output_value, true));
                         kefir_codegen_target_ir_regalloc_allocation_t allocation;
                         res = kefir_codegen_target_ir_regalloc_get(state->regalloc, output_value_ref, &allocation);
                         if (res == KEFIR_NOT_FOUND) {
