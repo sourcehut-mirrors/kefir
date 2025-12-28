@@ -146,7 +146,8 @@ static kefir_result_t has_upsilon_for(const struct kefir_codegen_target_ir_code 
     for (; iter_ref != KEFIR_ID_NONE && !*has_upsilon; iter_ref = kefir_codegen_target_ir_code_control_prev(code, iter_ref)) {
         const struct kefir_codegen_target_ir_instruction *iter_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, iter_ref, &iter_instr));
-        if (iter_instr->operation.opcode != code->klass->upsilon_opcode) {
+        if (iter_instr->operation.opcode != code->klass->upsilon_opcode &&
+            iter_instr->operation.opcode != code->klass->assign_opcode) {
             break;
         }
 
