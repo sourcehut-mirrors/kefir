@@ -277,22 +277,22 @@ arg32x:
     mov %rsp, %rbp
 .L__kefir_func_arg32x_label196:
     movd 40(%rbp), %xmm8
-.L__kefir_func_arg32x_label202:
+.L__kefir_func_arg32x_label197:
     movd 32(%rbp), %xmm9
 .L__kefir_func_arg32x_label203:
     movd 24(%rbp), %xmm10
 .L__kefir_func_arg32x_label214:
     movd 16(%rbp), %xmm11
-.L__kefir_func_arg32x_label240:
+.L__kefir_func_arg32x_label215:
     cmp $0, %edi
     je .L__kefir_func_arg32x_label150
-.L__kefir_func_arg32x_label241:
+.L__kefir_func_arg32x_label250:
     cmp $1, %edi
     je .L__kefir_func_arg32x_label108
-.L__kefir_func_arg32x_label260:
+.L__kefir_func_arg32x_label251:
     cmp $2, %edi
     je .L__kefir_func_arg32x_label142
-.L__kefir_func_arg32x_label270:
+.L__kefir_func_arg32x_label261:
     cmp $3, %edi
     je .L__kefir_func_arg32x_label128
 .L__kefir_func_arg32x_label271:
@@ -304,23 +304,23 @@ arg32x:
 .L__kefir_func_arg32x_label300:
     cmp $6, %edi
     je .L__kefir_func_arg32x_label140
-.L__kefir_func_arg32x_label310:
+.L__kefir_func_arg32x_label301:
     cmp $7, %edi
     je .L__kefir_func_arg32x_label116
-.L__kefir_func_arg32x_label320:
+.L__kefir_func_arg32x_label311:
     cmp $8, %edi
     je .L__kefir_func_arg32x_label122
-.L__kefir_func_arg32x_label321:
+.L__kefir_func_arg32x_label330:
     cmp $9, %edi
     je .L__kefir_func_arg32x_label146
-.L__kefir_func_arg32x_label331:
+.L__kefir_func_arg32x_label340:
     cmp $10, %edi
     je .L__kefir_func_arg32x_label124
-.L__kefir_func_arg32x_label350:
+.L__kefir_func_arg32x_label341:
     cmp $11, %edi
 .L__kefir_func_arg32x_label347:
     je .L__kefir_func_arg32x_label148
-.L__kefir_func_arg32x_label351:
+.L__kefir_func_arg32x_label368:
     pxor %xmm0, %xmm0
     pop %rbp
     ret
@@ -413,13 +413,13 @@ arg32y:
     movdqu %xmm0, -32(%rbp)
     movdqu 32(%rax), %xmm0
     movdqu %xmm0, -16(%rbp)
-.L__kefir_func_arg32y_label190:
+.L__kefir_func_arg32y_label183:
     cmp $0, %edi
     je .L__kefir_func_arg32y_label150
 .L__kefir_func_arg32y_label191:
     cmp $1, %edi
     je .L__kefir_func_arg32y_label108
-.L__kefir_func_arg32y_label201:
+.L__kefir_func_arg32y_label210:
     cmp $2, %edi
     je .L__kefir_func_arg32y_label142
 .L__kefir_func_arg32y_label220:
@@ -437,20 +437,20 @@ arg32y:
 .L__kefir_func_arg32y_label251:
     cmp $7, %edi
     je .L__kefir_func_arg32y_label116
-.L__kefir_func_arg32y_label261:
+.L__kefir_func_arg32y_label270:
     cmp $8, %edi
     je .L__kefir_func_arg32y_label122
-.L__kefir_func_arg32y_label280:
+.L__kefir_func_arg32y_label271:
     cmp $9, %edi
     je .L__kefir_func_arg32y_label146
 .L__kefir_func_arg32y_label281:
     cmp $10, %edi
     je .L__kefir_func_arg32y_label124
-.L__kefir_func_arg32y_label300:
+.L__kefir_func_arg32y_label291:
     cmp $11, %edi
 .L__kefir_func_arg32y_label297:
     je .L__kefir_func_arg32y_label148
-.L__kefir_func_arg32y_label301:
+.L__kefir_func_arg32y_label318:
     pxor %xmm0, %xmm0
     lea (%rbp), %rsp
     pop %rbp
@@ -459,7 +459,7 @@ arg32y:
 .L__kefir_func_arg32y_label148:
     movd -4(%rbp), %xmm0
 .loc 0 272 13
-.L__kefir_func_arg32y_label327:
+.L__kefir_func_arg32y_label338:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -467,7 +467,7 @@ arg32y:
 .L__kefir_func_arg32y_label124:
     movd -8(%rbp), %xmm0
 .loc 0 269 13
-.L__kefir_func_arg32y_label358:
+.L__kefir_func_arg32y_label347:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -475,7 +475,7 @@ arg32y:
 .L__kefir_func_arg32y_label146:
     movd -12(%rbp), %xmm0
 .loc 0 266 13
-.L__kefir_func_arg32y_label367:
+.L__kefir_func_arg32y_label378:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -523,7 +523,7 @@ arg32y:
 .L__kefir_func_arg32y_label128:
     movd -36(%rbp), %xmm0
 .loc 0 248 13
-.L__kefir_func_arg32y_label498:
+.L__kefir_func_arg32y_label487:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -531,7 +531,7 @@ arg32y:
 .L__kefir_func_arg32y_label142:
     movd -40(%rbp), %xmm0
 .loc 0 245 13
-.L__kefir_func_arg32y_label518:
+.L__kefir_func_arg32y_label507:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -539,7 +539,7 @@ arg32y:
 .L__kefir_func_arg32y_label108:
     movd -44(%rbp), %xmm0
 .loc 0 242 13
-.L__kefir_func_arg32y_label538:
+.L__kefir_func_arg32y_label527:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -547,7 +547,7 @@ arg32y:
 .L__kefir_func_arg32y_label150:
     movd -48(%rbp), %xmm0
 .loc 0 239 13
-.L__kefir_func_arg32y_label545:
+.L__kefir_func_arg32y_label556:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -562,22 +562,22 @@ arg64x:
     mov %rsp, %rbp
 .L__kefir_func_arg64x_label196:
     movq 40(%rbp), %xmm8
-.L__kefir_func_arg64x_label202:
+.L__kefir_func_arg64x_label197:
     movq 32(%rbp), %xmm9
 .L__kefir_func_arg64x_label203:
     movq 24(%rbp), %xmm10
 .L__kefir_func_arg64x_label214:
     movq 16(%rbp), %xmm11
-.L__kefir_func_arg64x_label240:
+.L__kefir_func_arg64x_label215:
     cmp $0, %edi
     je .L__kefir_func_arg64x_label150
-.L__kefir_func_arg64x_label241:
+.L__kefir_func_arg64x_label250:
     cmp $1, %edi
     je .L__kefir_func_arg64x_label108
-.L__kefir_func_arg64x_label260:
+.L__kefir_func_arg64x_label251:
     cmp $2, %edi
     je .L__kefir_func_arg64x_label142
-.L__kefir_func_arg64x_label270:
+.L__kefir_func_arg64x_label261:
     cmp $3, %edi
     je .L__kefir_func_arg64x_label128
 .L__kefir_func_arg64x_label271:
@@ -589,23 +589,23 @@ arg64x:
 .L__kefir_func_arg64x_label300:
     cmp $6, %edi
     je .L__kefir_func_arg64x_label140
-.L__kefir_func_arg64x_label310:
+.L__kefir_func_arg64x_label301:
     cmp $7, %edi
     je .L__kefir_func_arg64x_label116
-.L__kefir_func_arg64x_label320:
+.L__kefir_func_arg64x_label311:
     cmp $8, %edi
     je .L__kefir_func_arg64x_label122
-.L__kefir_func_arg64x_label321:
+.L__kefir_func_arg64x_label330:
     cmp $9, %edi
     je .L__kefir_func_arg64x_label146
-.L__kefir_func_arg64x_label331:
+.L__kefir_func_arg64x_label340:
     cmp $10, %edi
     je .L__kefir_func_arg64x_label124
-.L__kefir_func_arg64x_label350:
+.L__kefir_func_arg64x_label341:
     cmp $11, %edi
 .L__kefir_func_arg64x_label347:
     je .L__kefir_func_arg64x_label148
-.L__kefir_func_arg64x_label351:
+.L__kefir_func_arg64x_label368:
     pxor %xmm0, %xmm0
     pop %rbp
     ret
@@ -698,13 +698,13 @@ arg64y:
     cld
     mov $12, %rcx
     rep movsq
-.L__kefir_func_arg64y_label190:
+.L__kefir_func_arg64y_label183:
     cmp $0, %eax
     je .L__kefir_func_arg64y_label150
-.L__kefir_func_arg64y_label191:
+.L__kefir_func_arg64y_label200:
     cmp $1, %eax
     je .L__kefir_func_arg64y_label108
-.L__kefir_func_arg64y_label201:
+.L__kefir_func_arg64y_label210:
     cmp $2, %eax
     je .L__kefir_func_arg64y_label142
 .L__kefir_func_arg64y_label220:
@@ -722,7 +722,7 @@ arg64y:
 .L__kefir_func_arg64y_label251:
     cmp $7, %eax
     je .L__kefir_func_arg64y_label116
-.L__kefir_func_arg64y_label261:
+.L__kefir_func_arg64y_label270:
     cmp $8, %eax
     je .L__kefir_func_arg64y_label122
 .L__kefir_func_arg64y_label280:
@@ -731,11 +731,11 @@ arg64y:
 .L__kefir_func_arg64y_label281:
     cmp $10, %eax
     je .L__kefir_func_arg64y_label124
-.L__kefir_func_arg64y_label300:
+.L__kefir_func_arg64y_label291:
     cmp $11, %eax
 .L__kefir_func_arg64y_label297:
     je .L__kefir_func_arg64y_label148
-.L__kefir_func_arg64y_label301:
+.L__kefir_func_arg64y_label318:
     pxor %xmm0, %xmm0
     lea (%rbp), %rsp
     pop %rbp
@@ -744,7 +744,7 @@ arg64y:
 .L__kefir_func_arg64y_label148:
     movq -8(%rbp), %xmm0
 .loc 0 312 13
-.L__kefir_func_arg64y_label327:
+.L__kefir_func_arg64y_label338:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -760,7 +760,7 @@ arg64y:
 .L__kefir_func_arg64y_label146:
     movq -24(%rbp), %xmm0
 .loc 0 306 13
-.L__kefir_func_arg64y_label367:
+.L__kefir_func_arg64y_label378:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -808,7 +808,7 @@ arg64y:
 .L__kefir_func_arg64y_label128:
     movq -72(%rbp), %xmm0
 .loc 0 288 13
-.L__kefir_func_arg64y_label498:
+.L__kefir_func_arg64y_label487:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -824,7 +824,7 @@ arg64y:
 .L__kefir_func_arg64y_label108:
     movq -88(%rbp), %xmm0
 .loc 0 282 13
-.L__kefir_func_arg64y_label538:
+.L__kefir_func_arg64y_label527:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1041,22 +1041,22 @@ arg128x:
     mov %rsp, %rbp
 .L__kefir_func_arg128x_label196:
     movdqu 64(%rbp), %xmm8
-.L__kefir_func_arg128x_label202:
+.L__kefir_func_arg128x_label197:
     movdqu 48(%rbp), %xmm9
 .L__kefir_func_arg128x_label203:
     movdqu 32(%rbp), %xmm10
 .L__kefir_func_arg128x_label214:
     movdqu 16(%rbp), %xmm11
-.L__kefir_func_arg128x_label240:
+.L__kefir_func_arg128x_label215:
     cmp $0, %edi
     je .L__kefir_func_arg128x_label150
-.L__kefir_func_arg128x_label241:
+.L__kefir_func_arg128x_label250:
     cmp $1, %edi
     je .L__kefir_func_arg128x_label108
-.L__kefir_func_arg128x_label260:
+.L__kefir_func_arg128x_label251:
     cmp $2, %edi
     je .L__kefir_func_arg128x_label142
-.L__kefir_func_arg128x_label270:
+.L__kefir_func_arg128x_label261:
     cmp $3, %edi
     je .L__kefir_func_arg128x_label128
 .L__kefir_func_arg128x_label271:
@@ -1068,23 +1068,23 @@ arg128x:
 .L__kefir_func_arg128x_label300:
     cmp $6, %edi
     je .L__kefir_func_arg128x_label140
-.L__kefir_func_arg128x_label310:
+.L__kefir_func_arg128x_label301:
     cmp $7, %edi
     je .L__kefir_func_arg128x_label116
-.L__kefir_func_arg128x_label320:
+.L__kefir_func_arg128x_label311:
     cmp $8, %edi
     je .L__kefir_func_arg128x_label122
-.L__kefir_func_arg128x_label321:
+.L__kefir_func_arg128x_label330:
     cmp $9, %edi
     je .L__kefir_func_arg128x_label146
-.L__kefir_func_arg128x_label331:
+.L__kefir_func_arg128x_label340:
     cmp $10, %edi
     je .L__kefir_func_arg128x_label124
-.L__kefir_func_arg128x_label350:
+.L__kefir_func_arg128x_label341:
     cmp $11, %edi
 .L__kefir_func_arg128x_label347:
     je .L__kefir_func_arg128x_label148
-.L__kefir_func_arg128x_label351:
+.L__kefir_func_arg128x_label368:
     pxor %xmm0, %xmm0
     pop %rbp
     ret
@@ -1177,13 +1177,13 @@ arg128y:
     cld
     mov $24, %rcx
     rep movsq
-.L__kefir_func_arg128y_label190:
+.L__kefir_func_arg128y_label183:
     cmp $0, %eax
     je .L__kefir_func_arg128y_label150
-.L__kefir_func_arg128y_label191:
+.L__kefir_func_arg128y_label200:
     cmp $1, %eax
     je .L__kefir_func_arg128y_label108
-.L__kefir_func_arg128y_label201:
+.L__kefir_func_arg128y_label210:
     cmp $2, %eax
     je .L__kefir_func_arg128y_label142
 .L__kefir_func_arg128y_label220:
@@ -1201,7 +1201,7 @@ arg128y:
 .L__kefir_func_arg128y_label251:
     cmp $7, %eax
     je .L__kefir_func_arg128y_label116
-.L__kefir_func_arg128y_label261:
+.L__kefir_func_arg128y_label270:
     cmp $8, %eax
     je .L__kefir_func_arg128y_label122
 .L__kefir_func_arg128y_label280:
@@ -1210,11 +1210,11 @@ arg128y:
 .L__kefir_func_arg128y_label281:
     cmp $10, %eax
     je .L__kefir_func_arg128y_label124
-.L__kefir_func_arg128y_label300:
+.L__kefir_func_arg128y_label291:
     cmp $11, %eax
 .L__kefir_func_arg128y_label297:
     je .L__kefir_func_arg128y_label148
-.L__kefir_func_arg128y_label301:
+.L__kefir_func_arg128y_label318:
     pxor %xmm0, %xmm0
     lea (%rbp), %rsp
     pop %rbp
@@ -1223,7 +1223,7 @@ arg128y:
 .L__kefir_func_arg128y_label148:
     movdqu -16(%rbp), %xmm0
 .loc 0 352 13
-.L__kefir_func_arg128y_label327:
+.L__kefir_func_arg128y_label338:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1239,7 +1239,7 @@ arg128y:
 .L__kefir_func_arg128y_label146:
     movdqu -48(%rbp), %xmm0
 .loc 0 346 13
-.L__kefir_func_arg128y_label367:
+.L__kefir_func_arg128y_label378:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1287,7 +1287,7 @@ arg128y:
 .L__kefir_func_arg128y_label128:
     movdqu -144(%rbp), %xmm0
 .loc 0 328 13
-.L__kefir_func_arg128y_label498:
+.L__kefir_func_arg128y_label487:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1303,7 +1303,7 @@ arg128y:
 .L__kefir_func_arg128y_label108:
     movdqu -176(%rbp), %xmm0
 .loc 0 322 13
-.L__kefir_func_arg128y_label538:
+.L__kefir_func_arg128y_label527:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -4889,7 +4889,7 @@ __kefir_debug_loclist_section_entry_64:
 __kefir_debug_loclist_section_entry_65:
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label241 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label250 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 17
@@ -4903,7 +4903,7 @@ __kefir_debug_loclist_section_entry_66:
     .byte 18
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label260 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label251 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 18
@@ -4917,7 +4917,7 @@ __kefir_debug_loclist_section_entry_67:
     .byte 19
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label270 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label261 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 19
@@ -4973,7 +4973,7 @@ __kefir_debug_loclist_section_entry_71:
     .byte 23
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label310 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label301 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 23
@@ -4987,7 +4987,7 @@ __kefir_debug_loclist_section_entry_72:
     .byte 24
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label320 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label311 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 24
@@ -5000,8 +5000,8 @@ __kefir_debug_loclist_section_entry_73:
     .byte 144
     .byte 28
     .byte 4
-    .uleb128 .L__kefir_func_arg32x_label240 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label321 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label215 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label330 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 28
@@ -5015,7 +5015,7 @@ __kefir_debug_loclist_section_entry_74:
     .byte 27
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label214 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label331 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label340 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 27
@@ -5029,7 +5029,7 @@ __kefir_debug_loclist_section_entry_75:
     .byte 26
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label203 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label350 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label341 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 26
@@ -5042,8 +5042,8 @@ __kefir_debug_loclist_section_entry_76:
     .byte 144
     .byte 25
     .byte 4
-    .uleb128 .L__kefir_func_arg32x_label202 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label351 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label197 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label368 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 25
@@ -5085,7 +5085,7 @@ __kefir_debug_loclist_section_entry_81:
     .byte 23
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label310 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label301 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 23
@@ -5099,7 +5099,7 @@ __kefir_debug_loclist_section_entry_82:
     .byte 24
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label320 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label311 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 24
@@ -5112,8 +5112,8 @@ __kefir_debug_loclist_section_entry_83:
     .byte 144
     .byte 28
     .byte 4
-    .uleb128 .L__kefir_func_arg32x_label240 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label321 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label215 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label330 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 28
@@ -5127,7 +5127,7 @@ __kefir_debug_loclist_section_entry_84:
     .byte 27
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label214 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label331 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label340 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 27
@@ -5141,7 +5141,7 @@ __kefir_debug_loclist_section_entry_85:
     .byte 26
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label203 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label350 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label341 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 26
@@ -5154,8 +5154,8 @@ __kefir_debug_loclist_section_entry_86:
     .byte 144
     .byte 25
     .byte 4
-    .uleb128 .L__kefir_func_arg32x_label202 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label351 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label197 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label368 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 25
@@ -5185,7 +5185,7 @@ __kefir_debug_loclist_section_entry_88:
 __kefir_debug_loclist_section_entry_89:
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label241 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label250 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 17
@@ -5199,7 +5199,7 @@ __kefir_debug_loclist_section_entry_90:
     .byte 18
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label260 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label251 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 18
@@ -5213,7 +5213,7 @@ __kefir_debug_loclist_section_entry_91:
     .byte 19
     .byte 4
     .uleb128 .L__kefir_func_arg32x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg32x_label270 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg32x_label261 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 19
@@ -5259,7 +5259,7 @@ __kefir_debug_loclist_section_entry_100:
 __kefir_debug_loclist_section_entry_101:
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label241 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label250 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 17
@@ -5273,7 +5273,7 @@ __kefir_debug_loclist_section_entry_102:
     .byte 18
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label260 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label251 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 18
@@ -5287,7 +5287,7 @@ __kefir_debug_loclist_section_entry_103:
     .byte 19
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label270 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label261 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 19
@@ -5343,7 +5343,7 @@ __kefir_debug_loclist_section_entry_107:
     .byte 23
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label310 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label301 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 23
@@ -5357,7 +5357,7 @@ __kefir_debug_loclist_section_entry_108:
     .byte 24
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label320 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label311 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 24
@@ -5370,8 +5370,8 @@ __kefir_debug_loclist_section_entry_109:
     .byte 144
     .byte 28
     .byte 4
-    .uleb128 .L__kefir_func_arg64x_label240 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label321 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label215 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label330 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 28
@@ -5385,7 +5385,7 @@ __kefir_debug_loclist_section_entry_110:
     .byte 27
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label214 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label331 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label340 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 27
@@ -5399,7 +5399,7 @@ __kefir_debug_loclist_section_entry_111:
     .byte 26
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label203 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label350 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label341 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 26
@@ -5412,8 +5412,8 @@ __kefir_debug_loclist_section_entry_112:
     .byte 144
     .byte 25
     .byte 4
-    .uleb128 .L__kefir_func_arg64x_label202 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label351 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label197 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label368 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 25
@@ -5455,7 +5455,7 @@ __kefir_debug_loclist_section_entry_117:
     .byte 23
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label310 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label301 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 23
@@ -5469,7 +5469,7 @@ __kefir_debug_loclist_section_entry_118:
     .byte 24
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label320 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label311 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 24
@@ -5482,8 +5482,8 @@ __kefir_debug_loclist_section_entry_119:
     .byte 144
     .byte 28
     .byte 4
-    .uleb128 .L__kefir_func_arg64x_label240 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label321 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label215 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label330 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 28
@@ -5497,7 +5497,7 @@ __kefir_debug_loclist_section_entry_120:
     .byte 27
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label214 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label331 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label340 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 27
@@ -5511,7 +5511,7 @@ __kefir_debug_loclist_section_entry_121:
     .byte 26
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label203 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label350 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label341 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 26
@@ -5524,8 +5524,8 @@ __kefir_debug_loclist_section_entry_122:
     .byte 144
     .byte 25
     .byte 4
-    .uleb128 .L__kefir_func_arg64x_label202 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label351 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label197 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label368 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 25
@@ -5555,7 +5555,7 @@ __kefir_debug_loclist_section_entry_124:
 __kefir_debug_loclist_section_entry_125:
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label241 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label250 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 17
@@ -5569,7 +5569,7 @@ __kefir_debug_loclist_section_entry_126:
     .byte 18
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label260 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label251 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 18
@@ -5583,7 +5583,7 @@ __kefir_debug_loclist_section_entry_127:
     .byte 19
     .byte 4
     .uleb128 .L__kefir_func_arg64x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg64x_label270 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg64x_label261 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 19
@@ -5923,7 +5923,7 @@ __kefir_debug_loclist_section_entry_177:
 __kefir_debug_loclist_section_entry_178:
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label241 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label250 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 17
@@ -5937,7 +5937,7 @@ __kefir_debug_loclist_section_entry_179:
     .byte 18
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label260 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label251 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 18
@@ -5951,7 +5951,7 @@ __kefir_debug_loclist_section_entry_180:
     .byte 19
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label270 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label261 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 19
@@ -6007,7 +6007,7 @@ __kefir_debug_loclist_section_entry_184:
     .byte 23
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label310 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label301 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 23
@@ -6021,7 +6021,7 @@ __kefir_debug_loclist_section_entry_185:
     .byte 24
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label320 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label311 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 24
@@ -6034,8 +6034,8 @@ __kefir_debug_loclist_section_entry_186:
     .byte 144
     .byte 28
     .byte 4
-    .uleb128 .L__kefir_func_arg128x_label240 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label321 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label215 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label330 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 28
@@ -6049,7 +6049,7 @@ __kefir_debug_loclist_section_entry_187:
     .byte 27
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label214 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label331 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label340 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 27
@@ -6063,7 +6063,7 @@ __kefir_debug_loclist_section_entry_188:
     .byte 26
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label203 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label350 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label341 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 26
@@ -6076,8 +6076,8 @@ __kefir_debug_loclist_section_entry_189:
     .byte 144
     .byte 25
     .byte 4
-    .uleb128 .L__kefir_func_arg128x_label202 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label351 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label197 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label368 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 25
@@ -6119,7 +6119,7 @@ __kefir_debug_loclist_section_entry_194:
     .byte 23
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label310 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label301 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 23
@@ -6133,7 +6133,7 @@ __kefir_debug_loclist_section_entry_195:
     .byte 24
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label320 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label311 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 24
@@ -6146,8 +6146,8 @@ __kefir_debug_loclist_section_entry_196:
     .byte 144
     .byte 28
     .byte 4
-    .uleb128 .L__kefir_func_arg128x_label240 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label321 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label215 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label330 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 28
@@ -6161,7 +6161,7 @@ __kefir_debug_loclist_section_entry_197:
     .byte 27
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label214 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label331 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label340 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 27
@@ -6175,7 +6175,7 @@ __kefir_debug_loclist_section_entry_198:
     .byte 26
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label203 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label350 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label341 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 26
@@ -6188,8 +6188,8 @@ __kefir_debug_loclist_section_entry_199:
     .byte 144
     .byte 25
     .byte 4
-    .uleb128 .L__kefir_func_arg128x_label202 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label351 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label197 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label368 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 25
@@ -6219,7 +6219,7 @@ __kefir_debug_loclist_section_entry_201:
 __kefir_debug_loclist_section_entry_202:
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label241 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label250 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 17
@@ -6233,7 +6233,7 @@ __kefir_debug_loclist_section_entry_203:
     .byte 18
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label260 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label251 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 18
@@ -6247,7 +6247,7 @@ __kefir_debug_loclist_section_entry_204:
     .byte 19
     .byte 4
     .uleb128 .L__kefir_func_arg128x_label175 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_arg128x_label270 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_arg128x_label261 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 19

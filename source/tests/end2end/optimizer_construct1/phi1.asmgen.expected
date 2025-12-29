@@ -906,42 +906,42 @@
                     },
                     {
                         "id": 1,
-                        "control_flow": 39,
+                        "control_flow": 38,
                         "code": [
+                            {
+                                "id": 38,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 39,
+                                "ir_instruction": 57
+                            },
                             {
                                 "id": 39,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 0,
+                                "arg": 2,
                                 "control_next": 40,
-                                "ir_instruction": 58
+                                "ir_instruction": 59
                             },
                             {
                                 "id": 40,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 41,
-                                "ir_instruction": 60
+                                "arg": 4,
+                                "control_next": 42,
+                                "ir_instruction": 61
                             },
                             {
                                 "id": 41,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 42,
-                                "ir_instruction": 62
-                            },
-                            {
-                                "id": 38,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "ir_instruction": 56
+                                "ir_instruction": 62
                             },
                             {
                                 "id": 42,
                                 "opcode": "return",
-                                "arg": 38,
+                                "arg": 41,
                                 "control_next": null,
-                                "ir_instruction": 63
+                                "ir_instruction": 69
                             }
                         ],
                         "public_labels": [
@@ -968,42 +968,42 @@
                     },
                     {
                         "id": 2,
-                        "control_flow": 48,
+                        "control_flow": 47,
                         "code": [
+                            {
+                                "id": 47,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 48,
+                                "ir_instruction": 77
+                            },
                             {
                                 "id": 48,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 0,
+                                "arg": 2,
                                 "control_next": 49,
-                                "ir_instruction": 72
+                                "ir_instruction": 79
                             },
                             {
                                 "id": 49,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 50,
-                                "ir_instruction": 74
+                                "arg": 4,
+                                "control_next": 51,
+                                "ir_instruction": 81
                             },
                             {
                                 "id": 50,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 51,
-                                "ir_instruction": 76
-                            },
-                            {
-                                "id": 47,
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "ir_instruction": 70
+                                "ir_instruction": 82
                             },
                             {
                                 "id": 51,
                                 "opcode": "return",
-                                "arg": 47,
+                                "arg": 50,
                                 "control_next": null,
-                                "ir_instruction": 77
+                                "ir_instruction": 89
                             }
                         ],
                         "public_labels": [
@@ -1019,12 +1019,12 @@
                             "alive_instructions": [
                                 4,
                                 50,
-                                48,
+                                49,
                                 0,
                                 51,
                                 47,
                                 2,
-                                49
+                                48
                             ]
                         }
                     },
