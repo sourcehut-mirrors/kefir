@@ -184,6 +184,7 @@ kefir_result_t kefir_codegen_target_ir_hotness_build(struct kefir_mem *mem, stru
         .liveness = liveness
     };
     REQUIRE_OK(kefir_hashtree_init(&payload.per_block_ranges, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&payload.per_block_ranges, kefir_codegen_target_ir_interference_free_liveness_index, NULL));
     REQUIRE_OK(kefir_hashtable_init(&payload.alive_values, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&payload.queue));
     REQUIRE_OK(kefir_codegen_target_ir_numbering_init(&payload.numbering));

@@ -34,6 +34,7 @@ kefir_result_t kefir_codegen_target_ir_numbering_free(struct kefir_mem *mem, str
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(numbering != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR numbering"));
 
+    KEFIR_FREE(mem, numbering->block_lengths);
     KEFIR_FREE(mem, numbering->instruction_seq_nums);
     numbering->instruction_seq_nums = NULL;
     numbering->length = 0;
