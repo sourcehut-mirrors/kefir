@@ -115,7 +115,7 @@ static kefir_result_t do_coalesce_build(struct kefir_mem *mem, struct kefir_code
 
                 REQUIRE_OK(record_coalesce(mem, interference, coalesce, instr->operation.parameters[0].direct.value_ref, value_ref));
             } else if (instr->operation.opcode == control_flow->code->klass->upsilon_opcode &&
-                instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
+                instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
                 REQUIRE_OK(record_coalesce(mem, interference, coalesce, instr->operation.parameters[0].upsilon_ref, instr->operation.parameters[1].direct.value_ref));
             } else {
                 struct try_coalesce_payload payload = {

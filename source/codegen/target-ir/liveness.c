@@ -151,7 +151,8 @@ static kefir_result_t has_upsilon_for(const struct kefir_codegen_target_ir_code 
             break;
         }
 
-        if (iter_instr->operation.parameters[0].upsilon_ref.instr_ref == instr_ref) {
+        if (iter_instr->operation.opcode == code->klass->upsilon_opcode &&
+            iter_instr->operation.parameters[0].upsilon_ref.instr_ref == instr_ref) {
             *has_upsilon = true;
         }
     }
