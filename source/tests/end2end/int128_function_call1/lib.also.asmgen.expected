@@ -16,13 +16,11 @@ test1:
     push %r13
     push %r14
     push %r15
-    sub $136, %rsp
+    sub $120, %rsp
     mov $1, %rax
     xor %ecx, %ecx
-    mov %rdi, -160(%rbp)
-    add %rax, -160(%rbp)
-    movq -160(%rbp), %rdx
-    movq %rdx, -152(%rbp)
+    mov %rdi, -136(%rbp)
+    add %rax, -136(%rbp)
     mov %rsi, %rax
     adc %rcx, %rax
     mov %rax, %rcx
@@ -58,73 +56,41 @@ test1:
     xor %r15d, %r15d
     mov %rdi, -144(%rbp)
     add %r8, -144(%rbp)
-    movq -144(%rbp), %rdx
-    movq %rdx, -160(%rbp)
     mov %rsi, %rdx
     adc %r15, %rdx
     mov %rdx, %r15
     mov $7, %r8
     xor %edx, %edx
-    mov %rdi, -136(%rbp)
-    add %r8, -136(%rbp)
-    movq %rax, -128(%rbp)
-    movq -136(%rbp), %rax
-    movq %rax, -144(%rbp)
-    movq -128(%rbp), %rax
+    mov %rdi, -128(%rbp)
+    add %r8, -128(%rbp)
     mov %rsi, -120(%rbp)
     adc %rdx, -120(%rbp)
-    movq -120(%rbp), %r8
-    movq %r8, -136(%rbp)
     mov $8, %rdx
     xor %r8d, %r8d
     mov %rdi, -112(%rbp)
     add %rdx, -112(%rbp)
-    movq %rax, -120(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -120(%rbp), %rax
     mov %rsi, -104(%rbp)
     adc %r8, -104(%rbp)
-    movq -104(%rbp), %rdx
-    movq %rdx, -120(%rbp)
     mov $9, %rdx
     xor %r8d, %r8d
     mov %rdi, -96(%rbp)
     add %rdx, -96(%rbp)
-    movq %rax, -104(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -112(%rbp)
-    movq -104(%rbp), %rax
     mov %rsi, -88(%rbp)
     adc %r8, -88(%rbp)
-    movq -88(%rbp), %rdx
-    movq %rdx, -104(%rbp)
     mov $10, %rdx
     xor %r8d, %r8d
     mov %rdi, -80(%rbp)
     add %rdx, -80(%rbp)
-    movq %rax, -88(%rbp)
-    movq -80(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -88(%rbp), %rax
     mov %rsi, -72(%rbp)
     adc %r8, -72(%rbp)
-    movq -72(%rbp), %rdx
-    movq %rdx, -88(%rbp)
     mov $11, %rdx
     xor %r8d, %r8d
     mov %rdi, -64(%rbp)
     add %rdx, -64(%rbp)
-    movq %rax, -72(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -72(%rbp), %rax
     mov %rsi, -56(%rbp)
     adc %r8, -56(%rbp)
-    movq -56(%rbp), %rdx
-    movq %rdx, -72(%rbp)
     sub $144, %rsp
-    mov -152(%rbp), %rdx
+    mov -136(%rbp), %rdx
     mov %rax, %r8
     movq %r11, (%rsp)
     movq %r10, 8(%rsp)
@@ -132,28 +98,28 @@ test1:
     movq %rbx, 24(%rsp)
     movq %r14, 32(%rsp)
     movq %r13, 40(%rsp)
-    movq -160(%rbp), %rax
+    movq -144(%rbp), %rax
     movq %rax, 48(%rsp)
     movq %r15, 56(%rsp)
-    movq -144(%rbp), %rax
-    movq %rax, 64(%rsp)
-    movq -136(%rbp), %rax
-    movq %rax, 72(%rsp)
     movq -128(%rbp), %rax
-    movq %rax, 80(%rsp)
+    movq %rax, 64(%rsp)
     movq -120(%rbp), %rax
-    movq %rax, 88(%rsp)
+    movq %rax, 72(%rsp)
     movq -112(%rbp), %rax
-    movq %rax, 96(%rsp)
+    movq %rax, 80(%rsp)
     movq -104(%rbp), %rax
-    movq %rax, 104(%rsp)
+    movq %rax, 88(%rsp)
     movq -96(%rbp), %rax
-    movq %rax, 112(%rsp)
+    movq %rax, 96(%rsp)
     movq -88(%rbp), %rax
-    movq %rax, 120(%rsp)
+    movq %rax, 104(%rsp)
     movq -80(%rbp), %rax
-    movq %rax, 128(%rsp)
+    movq %rax, 112(%rsp)
     movq -72(%rbp), %rax
+    movq %rax, 120(%rsp)
+    movq -64(%rbp), %rax
+    movq %rax, 128(%rsp)
+    movq -56(%rbp), %rax
     movq %rax, 136(%rsp)
     call somefn@PLT
     add $144, %rsp

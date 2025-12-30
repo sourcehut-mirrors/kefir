@@ -42,22 +42,14 @@ f32_predec:
     movd -108(%rbp), %xmm1
     movd .L__kefir_func_f32_predec_label11(%rip), %xmm2
     movd .L__kefir_func_f32_predec_label12(%rip), %xmm3
-    movaps %xmm0, -96(%rbp)
-    movd -96(%rbp), %xmm4
+    movaps %xmm0, -112(%rbp)
+    movd -112(%rbp), %xmm4
     addss %xmm2, %xmm4
-    movd %xmm4, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -112(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movaps %xmm1, -96(%rbp)
-    movd -96(%rbp), %xmm2
+    movd %xmm4, -112(%rbp)
+    movaps %xmm1, -80(%rbp)
+    movd -80(%rbp), %xmm2
     addss %xmm3, %xmm2
-    movd %xmm2, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movd %xmm2, -80(%rbp)
     movd %xmm0, -96(%rbp)
     movd %xmm1, -92(%rbp)
     movd -112(%rbp), %xmm0
@@ -125,22 +117,14 @@ f32_preinc:
     movd -108(%rbp), %xmm1
     movd .L__kefir_func_f32_preinc_label11(%rip), %xmm2
     movd .L__kefir_func_f32_preinc_label12(%rip), %xmm3
-    movaps %xmm0, -96(%rbp)
-    movd -96(%rbp), %xmm4
+    movaps %xmm0, -112(%rbp)
+    movd -112(%rbp), %xmm4
     addss %xmm2, %xmm4
-    movd %xmm4, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -112(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movaps %xmm1, -96(%rbp)
-    movd -96(%rbp), %xmm2
+    movd %xmm4, -112(%rbp)
+    movaps %xmm1, -80(%rbp)
+    movd -80(%rbp), %xmm2
     addss %xmm3, %xmm2
-    movd %xmm2, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movd %xmm2, -80(%rbp)
     movd %xmm0, -96(%rbp)
     movd %xmm1, -92(%rbp)
     movd -112(%rbp), %xmm0
@@ -208,22 +192,14 @@ f64_predec:
     movq -120(%rbp), %xmm1
     movq .L__kefir_func_f64_predec_label11(%rip), %xmm2
     movq .L__kefir_func_f64_predec_label12(%rip), %xmm3
-    movaps %xmm0, -112(%rbp)
-    movq -112(%rbp), %xmm4
+    movaps %xmm0, -128(%rbp)
+    movq -128(%rbp), %xmm4
     addsd %xmm2, %xmm4
-    movq %xmm4, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movaps %xmm1, -112(%rbp)
-    movq -112(%rbp), %xmm2
+    movq %xmm4, -128(%rbp)
+    movaps %xmm1, -96(%rbp)
+    movq -96(%rbp), %xmm2
     addsd %xmm3, %xmm2
-    movq %xmm2, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -88(%rbp)
+    movq %xmm2, -96(%rbp)
     movq %xmm0, -112(%rbp)
     movq %xmm1, -104(%rbp)
     movq -128(%rbp), %xmm0
@@ -291,22 +267,14 @@ f64_preinc:
     movq -120(%rbp), %xmm1
     movq .L__kefir_func_f64_preinc_label11(%rip), %xmm2
     movq .L__kefir_func_f64_preinc_label12(%rip), %xmm3
-    movaps %xmm0, -112(%rbp)
-    movq -112(%rbp), %xmm4
+    movaps %xmm0, -128(%rbp)
+    movq -128(%rbp), %xmm4
     addsd %xmm2, %xmm4
-    movq %xmm4, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movaps %xmm1, -112(%rbp)
-    movq -112(%rbp), %xmm2
+    movq %xmm4, -128(%rbp)
+    movaps %xmm1, -96(%rbp)
+    movq -96(%rbp), %xmm2
     addsd %xmm3, %xmm2
-    movq %xmm2, -112(%rbp)
-    movq -112(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -88(%rbp)
+    movq %xmm2, -96(%rbp)
     movq %xmm0, -112(%rbp)
     movq %xmm1, -104(%rbp)
     movq -128(%rbp), %xmm0

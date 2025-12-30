@@ -1979,10 +1979,8 @@ __kefir_bigint_signed_to_long_double:
     mov %rbx, %rsi
     call __kefir_bigint_get_sign
     mov %eax, %eax
-    mov %rax, -104(%rbp)
-    negq -104(%rbp)
-    movq -104(%rbp), %rcx
-    movq %rcx, -112(%rbp)
+    mov %rax, -112(%rbp)
+    negq -112(%rbp)
     movq -112(%rbp), %rax
     movq -112(%rbp), %rcx
     test %rcx, %rax

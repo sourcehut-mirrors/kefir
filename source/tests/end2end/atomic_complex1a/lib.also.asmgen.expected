@@ -631,14 +631,10 @@ __kefir_softfloat_complex_float_div:
     mulss -160(%rbp), %xmm1
     movaps -176(%rbp), %xmm2
     mulss -176(%rbp), %xmm2
-    movaps %xmm1, -80(%rbp)
-    movd -80(%rbp), %xmm3
+    movaps %xmm1, -112(%rbp)
+    movd -112(%rbp), %xmm3
     addss %xmm2, %xmm3
-    movd %xmm3, -80(%rbp)
-    movq -80(%rbp), %rcx
-    movq %rcx, -112(%rbp)
-    movq -72(%rbp), %rcx
-    movq %rcx, -104(%rbp)
+    movd %xmm3, -112(%rbp)
     divss -112(%rbp), %xmm0
     mov %rax, %rbx
     neg %ebx
@@ -1553,14 +1549,10 @@ __kefir_softfloat_complex_double_div:
     mulsd -160(%rbp), %xmm1
     movaps -176(%rbp), %xmm2
     mulsd -176(%rbp), %xmm2
-    movaps %xmm1, -80(%rbp)
-    movq -80(%rbp), %xmm3
+    movaps %xmm1, -112(%rbp)
+    movq -112(%rbp), %xmm3
     addsd %xmm2, %xmm3
-    movq %xmm3, -80(%rbp)
-    movq -80(%rbp), %rcx
-    movq %rcx, -112(%rbp)
-    movq -72(%rbp), %rcx
-    movq %rcx, -104(%rbp)
+    movq %xmm3, -112(%rbp)
     divsd -112(%rbp), %xmm0
     mov %rax, %rbx
     neg %ebx

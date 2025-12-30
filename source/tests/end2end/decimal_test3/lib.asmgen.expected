@@ -1189,10 +1189,8 @@ test_dec32_laplacian_apply:
     add %rbx, %rax
     imul $4, %rax, %rax
     movq -112(%rbp), %rcx
-    movq %rcx, -48(%rbp)
-    addq %rax, -48(%rbp)
-    movq -48(%rbp), %rcx
     movq %rcx, -104(%rbp)
+    addq %rax, -104(%rbp)
     call __bid_addsd3@PLT
     movaps -80(%rbp), %xmm1
     call __bid_addsd3@PLT
@@ -1666,10 +1664,8 @@ test_dec64_laplacian_apply:
     add %rbx, %rax
     imul $8, %rax, %rax
     movq -112(%rbp), %rcx
-    movq %rcx, -48(%rbp)
-    addq %rax, -48(%rbp)
-    movq -48(%rbp), %rcx
     movq %rcx, -104(%rbp)
+    addq %rax, -104(%rbp)
     call __bid_adddd3@PLT
     movaps -80(%rbp), %xmm1
     call __bid_adddd3@PLT
@@ -1934,10 +1930,8 @@ test_dec128_laplacian_apply:
     add %rbx, %rax
     imul $16, %rax, %rax
     movq -112(%rbp), %rcx
-    movq %rcx, -48(%rbp)
-    addq %rax, -48(%rbp)
-    movq -48(%rbp), %rcx
     movq %rcx, -104(%rbp)
+    addq %rax, -104(%rbp)
     call __bid_addtd3@PLT
     movaps -80(%rbp), %xmm1
     call __bid_addtd3@PLT
@@ -2595,18 +2589,12 @@ test_dec128_initialize_gaussian:
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test_dec128_initialize_gaussian_label2:
-    mov %r13, -104(%rbp)
-    addq $1, -104(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -112(%rbp)
+    mov %r13, -112(%rbp)
+    addq $1, -112(%rbp)
+    mov %rbx, -104(%rbp)
+    addq $56, -104(%rbp)
     mov %rbx, -96(%rbp)
-    addq $56, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -104(%rbp)
-    mov %rbx, -88(%rbp)
-    addq $48, -88(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -96(%rbp)
+    addq $48, -96(%rbp)
     cmp %r12, %r13
     jb .L__kefir_func_test_dec128_initialize_gaussian_label4
     lea -40(%rbp), %rsp
@@ -3131,18 +3119,12 @@ test_dec64_initialize_gaussian:
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test_dec64_initialize_gaussian_label2:
-    mov %r13, -104(%rbp)
-    addq $1, -104(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -112(%rbp)
+    mov %r13, -112(%rbp)
+    addq $1, -112(%rbp)
+    mov %rbx, -104(%rbp)
+    addq $32, -104(%rbp)
     mov %rbx, -96(%rbp)
-    addq $32, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -104(%rbp)
-    mov %rbx, -88(%rbp)
-    addq $24, -88(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -96(%rbp)
+    addq $24, -96(%rbp)
     cmp %r12, %r13
     jb .L__kefir_func_test_dec64_initialize_gaussian_label4
     lea -40(%rbp), %rsp
@@ -3261,18 +3243,12 @@ test_dec32_initialize_gaussian:
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test_dec32_initialize_gaussian_label2:
-    mov %r13, -104(%rbp)
-    addq $1, -104(%rbp)
-    movq -104(%rbp), %rax
-    movq %rax, -112(%rbp)
+    mov %r13, -112(%rbp)
+    addq $1, -112(%rbp)
+    mov %rbx, -104(%rbp)
+    addq $24, -104(%rbp)
     mov %rbx, -96(%rbp)
-    addq $24, -96(%rbp)
-    movq -96(%rbp), %rax
-    movq %rax, -104(%rbp)
-    mov %rbx, -88(%rbp)
-    addq $16, -88(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -96(%rbp)
+    addq $16, -96(%rbp)
     cmp %r12, %r13
     jb .L__kefir_func_test_dec32_initialize_gaussian_label4
     lea -40(%rbp), %rsp

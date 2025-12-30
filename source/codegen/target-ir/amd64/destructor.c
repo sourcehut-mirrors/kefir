@@ -112,17 +112,24 @@ enum temporary_register_type {
     TEMPORARY_REGISTER_SSE,
 };
 
-static kefir_result_t mark_spill_space_occupied(struct destructor_state *state, kefir_size_t index, kefir_size_t length) {
+enum spill_space_owner {
+    SPILL_SPACE_FREE = 0,
+    SPILL_SPACE_OTHER,
+    SPILL_SPACE_OWN_OUTPUT,
+    SPILL_SPACE_OWN_ALLOCATED
+};
+
+static kefir_result_t mark_spill_space_occupied(struct destructor_state *state, kefir_size_t index, kefir_size_t length, enum spill_space_owner owner) {
     if (state->current_instr.occupied_spill_slots_length < index + length) {
         kefir_size_t new_length = index + length;
         kefir_uint8_t *new_spill_slots = KEFIR_REALLOC(state->mem, state->current_instr.occupied_spill_slots, sizeof(kefir_uint8_t) * new_length);
         REQUIRE(new_spill_slots != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate spill space slots"));
-        memset(&new_spill_slots[state->current_instr.occupied_spill_slots_length], 0, sizeof(kefir_uint8_t) * (new_length - state->current_instr.occupied_spill_slots_length));
+        memset(&new_spill_slots[state->current_instr.occupied_spill_slots_length], SPILL_SPACE_FREE, sizeof(kefir_uint8_t) * (new_length - state->current_instr.occupied_spill_slots_length));
         state->current_instr.occupied_spill_slots = new_spill_slots;
         state->current_instr.occupied_spill_slots_length = new_length;
     }
 
-    memset(&state->current_instr.occupied_spill_slots[index], 1, sizeof(kefir_uint8_t) * length);
+    memset(&state->current_instr.occupied_spill_slots[index], owner, sizeof(kefir_uint8_t) * length);
     return KEFIR_OK;
 }
 
@@ -134,19 +141,19 @@ static kefir_result_t allocate_spill_space(struct destructor_state *state, kefir
     for (; i + length < state->current_instr.occupied_spill_slots_length; i += alignment) {
         kefir_bool_t available = true;
         for (kefir_size_t j = 0; available && j < length; j++) {
-            if (state->current_instr.occupied_spill_slots[i + j]) {
+            if (state->current_instr.occupied_spill_slots[i + j] != SPILL_SPACE_FREE) {
                 available = false;
             }
         }
 
         if (available) {
-            REQUIRE_OK(mark_spill_space_occupied(state, i, length));
+            REQUIRE_OK(mark_spill_space_occupied(state, i, length, SPILL_SPACE_OWN_ALLOCATED));
             *index = i;
             return KEFIR_OK;
         }
     }
     i = (state->current_instr.occupied_spill_slots_length + alignment - 1) / alignment * alignment;
-    REQUIRE_OK(mark_spill_space_occupied(state, i, length));
+    REQUIRE_OK(mark_spill_space_occupied(state, i, length, SPILL_SPACE_OWN_ALLOCATED));
     *index = i;
     REQUIRE_OK(state->stack_frame->use_spill_space(state->mem, i, length, state->stack_frame->payload));
     return KEFIR_OK;
@@ -835,10 +842,73 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
     REQUIRE_OK(kefir_hashtable_clear(&state->current_instr.tmp_output_registers));
     REQUIRE_OK(kefir_hashtable_clear(&state->current_instr.tmp_output_spill));
     if (state->current_instr.occupied_spill_slots_length > 0) {
-        memset(state->current_instr.occupied_spill_slots, 0, sizeof(kefir_uint8_t) * state->current_instr.occupied_spill_slots_length);
+        memset(state->current_instr.occupied_spill_slots, SPILL_SPACE_FREE, sizeof(kefir_uint8_t) * state->current_instr.occupied_spill_slots_length);
     }
 
     kefir_result_t res;
+
+    struct kefir_codegen_target_ir_value_iterator output_value_iter;
+    struct kefir_codegen_target_ir_value_ref output_value_ref;
+    for (res = kefir_codegen_target_ir_code_value_iter(state->code, &output_value_iter, instr_ref, &output_value_ref, NULL);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_value_next(&output_value_iter, &output_value_ref, NULL)) {
+        
+        kefir_codegen_target_ir_regalloc_allocation_t allocation;
+        res = kefir_codegen_target_ir_regalloc_get(state->regalloc, output_value_ref, &allocation);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+
+        union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+            .allocation = allocation
+        };
+        switch (entry.type) {
+            case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
+                // Intentionally left blank
+                break;
+
+            case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
+                REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length, SPILL_SPACE_OWN_OUTPUT));
+                break;
+
+            case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
+            case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
+                REQUIRE_OK(kefir_hashset_add(state->mem, &state->current_instr.output_registers, (kefir_hashset_key_t) entry.reg.value));
+                break;
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+
+    if (instr->operation.opcode == state->code->klass->upsilon_opcode) {
+        kefir_codegen_target_ir_regalloc_allocation_t allocation;
+        res = kefir_codegen_target_ir_regalloc_get(state->regalloc, instr->operation.parameters[0].upsilon_ref, &allocation);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+
+            union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+                .allocation = allocation
+            };
+            switch (entry.type) {
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
+                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length, SPILL_SPACE_OWN_OUTPUT));
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
+                    REQUIRE_OK(kefir_hashset_add(state->mem, &state->current_instr.output_registers, (kefir_hashset_key_t) entry.reg.value));
+                    break;
+            }
+        }
+    }
+
     {
         kefir_codegen_target_ir_value_ref_t empty_ref = {
             .instr_ref = instr_ref,
@@ -850,7 +920,8 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
             res == KEFIR_OK;
             res = kefir_graph_edge_next(&iter, &interfere_vertex_id)) {
             kefir_codegen_target_ir_value_ref_t interfere_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interfere_vertex_id);
-            if (interfere_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
+            if (interfere_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE ||
+                interfere_value_ref.instr_ref == instr_ref) {
                 continue;
             }
 
@@ -870,7 +941,7 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
-                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length));
+                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length, SPILL_SPACE_OTHER));
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
@@ -952,7 +1023,7 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
-                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length));
+                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length, SPILL_SPACE_OTHER));
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
@@ -963,66 +1034,7 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
         }
     }
 
-    struct kefir_codegen_target_ir_value_iterator output_value_iter;
-    struct kefir_codegen_target_ir_value_ref output_value_ref;
-    for (res = kefir_codegen_target_ir_code_value_iter(state->code, &output_value_iter, instr_ref, &output_value_ref, NULL);
-        res == KEFIR_OK;
-        res = kefir_codegen_target_ir_code_value_next(&output_value_iter, &output_value_ref, NULL)) {
-        
-        kefir_codegen_target_ir_regalloc_allocation_t allocation;
-        res = kefir_codegen_target_ir_regalloc_get(state->regalloc, output_value_ref, &allocation);
-        if (res == KEFIR_NOT_FOUND) {
-            continue;
-        }
-        REQUIRE_OK(res);
-
-        union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
-            .allocation = allocation
-        };
-        switch (entry.type) {
-            case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
-                // Intentionally left blank
-                break;
-
-            case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
-                REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length));
-                break;
-
-            case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
-            case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
-                REQUIRE_OK(kefir_hashset_add(state->mem, &state->current_instr.output_registers, (kefir_hashset_key_t) entry.reg.value));
-                break;
-        }
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
-
     if (instr->operation.opcode == state->code->klass->upsilon_opcode) {
-        kefir_codegen_target_ir_regalloc_allocation_t allocation;
-        res = kefir_codegen_target_ir_regalloc_get(state->regalloc, instr->operation.parameters[0].upsilon_ref, &allocation);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-
-            union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
-                .allocation = allocation
-            };
-            switch (entry.type) {
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
-                    // Intentionally left blank
-                    break;
-
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
-                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length));
-                    break;
-
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
-                    REQUIRE_OK(kefir_hashset_add(state->mem, &state->current_instr.output_registers, (kefir_hashset_key_t) entry.reg.value));
-                    break;
-            }
-        }
-
         struct kefir_graph_edge_iterator iter;
         kefir_graph_vertex_id_t interfere_vertex_id;
         for (res = kefir_graph_edge_iter(&state->interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[0].upsilon_ref), &interfere_vertex_id);
@@ -1049,7 +1061,7 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
-                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length));
+                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length, SPILL_SPACE_OTHER));
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
@@ -1150,11 +1162,12 @@ static kefir_result_t materialize_attributes(struct destructor_state *state, kef
     return KEFIR_OK;
 }
 
-static kefir_result_t is_spill_range_available(struct destructor_state *state, kefir_size_t index, kefir_size_t length, kefir_bool_t *available) {
+static kefir_result_t is_spill_range_available_for_output(struct destructor_state *state, kefir_size_t index, kefir_size_t length, kefir_bool_t *available) {
     *available = true;
     for (kefir_size_t i = 0; *available && i < length; i++) {
         if (index + i >= state->current_instr.occupied_spill_slots_length ||
-            state->current_instr.occupied_spill_slots[index + i]) {
+            state->current_instr.occupied_spill_slots[index + i] == SPILL_SPACE_OTHER ||
+            state->current_instr.occupied_spill_slots[index + i] == SPILL_SPACE_OWN_ALLOCATED) {
             *available = false;
         }
     }
@@ -2140,54 +2153,64 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                                         kefir_bool_t available = false;
                                         switch (output_value_type->kind) {
                                             case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE:
-                                                REQUIRE_OK(is_spill_range_available(state, output_value.indirect.base.spill_index, 1, &available));
-                                                if (!available) {
-                                                    kefir_size_t index = 0;
-                                                    REQUIRE_OK(allocate_spill_space(state, 1, 1, &index));
-                                                    REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->current_instr.tmp_output_spill, (kefir_hashtable_key_t) output_value.indirect.base.spill_index, (kefir_hashtable_value_t) (((kefir_uint64_t) index) << 32) | 1));
-                                                    output_value.indirect.base.spill_index = index;
-                                                    REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
-                                                        .spill_area = {
-                                                            .type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
-                                                            .index = index,
-                                                            .length = 1
-                                                        }
-                                                    }, &instr->operation.parameters[parameter_idx - 1]));
-                                                } else if ((input_value.type != KEFIR_ASMCMP_VALUE_TYPE_INDIRECT && input_value.indirect.type != KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS) ||
-                                                    input_value.indirect.base.spill_index != output_value.indirect.base.spill_index) {
-                                                    REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
-                                                        .spill_area = {
-                                                            .type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
-                                                            .index = output_value.indirect.base.spill_index,
-                                                            .length = 1
-                                                        }
-                                                    }, &instr->operation.parameters[parameter_idx - 1]));
+                                                if (input_value.type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT &&
+                                                    input_value.indirect.type == KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS &&
+                                                    input_value.indirect.base.spill_index == output_value.indirect.base.spill_index) {
+                                                    // Intentionally left blank
+                                                } else {
+                                                    REQUIRE_OK(is_spill_range_available_for_output(state, output_value.indirect.base.spill_index, 1, &available));
+                                                    if (!available) {
+                                                        kefir_size_t index = 0;
+                                                        REQUIRE_OK(allocate_spill_space(state, 1, 1, &index));
+                                                        REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->current_instr.tmp_output_spill, (kefir_hashtable_key_t) output_value.indirect.base.spill_index, (kefir_hashtable_value_t) (((kefir_uint64_t) index) << 32) | 1));
+                                                        output_value.indirect.base.spill_index = index;
+                                                        REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
+                                                            .spill_area = {
+                                                                .type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
+                                                                .index = index,
+                                                                .length = 1
+                                                            }
+                                                        }, &instr->operation.parameters[parameter_idx - 1]));
+                                                    } else {
+                                                        REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
+                                                            .spill_area = {
+                                                                .type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
+                                                                .index = output_value.indirect.base.spill_index,
+                                                                .length = 1
+                                                            }
+                                                        }, &instr->operation.parameters[parameter_idx - 1]));
+                                                    }
                                                 }
                                                 break;
 
                                             case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT:
-                                                REQUIRE_OK(is_spill_range_available(state, output_value.indirect.base.spill_index, 2, &available));
-                                                if (!available) {
-                                                    kefir_size_t index = 0;
-                                                    REQUIRE_OK(allocate_spill_space(state, 2, 2, &index));
-                                                    REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->current_instr.tmp_output_spill, (kefir_hashtable_key_t) output_value.indirect.base.spill_index, (kefir_hashtable_value_t) (((kefir_uint64_t) index) << 32) | 2));
-                                                    output_value.indirect.base.spill_index = index;
-                                                    REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
-                                                        .spill_area = {
-                                                            .type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
-                                                            .index = index,
-                                                            .length = 2
-                                                        }
-                                                    }, &instr->operation.parameters[parameter_idx - 1]));
-                                                } else if ((input_value.type != KEFIR_ASMCMP_VALUE_TYPE_INDIRECT && input_value.indirect.type != KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS) ||
-                                                    input_value.indirect.base.spill_index != output_value.indirect.base.spill_index) {
-                                                    REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
-                                                        .spill_area = {
-                                                            .type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
-                                                            .index = output_value.indirect.base.spill_index,
-                                                            .length = 2
-                                                        }
-                                                    }, &instr->operation.parameters[parameter_idx - 1]));
+                                                if (input_value.type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT &&
+                                                    input_value.indirect.type == KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS &&
+                                                    input_value.indirect.base.spill_index == output_value.indirect.base.spill_index) {
+                                                    // Intentionally left blank
+                                                } else {
+                                                    REQUIRE_OK(is_spill_range_available_for_output(state, output_value.indirect.base.spill_index, 2, &available));
+                                                    if (!available) {
+                                                        kefir_size_t index = 0;
+                                                        REQUIRE_OK(allocate_spill_space(state, 2, 2, &index));
+                                                        REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->current_instr.tmp_output_spill, (kefir_hashtable_key_t) output_value.indirect.base.spill_index, (kefir_hashtable_value_t) (((kefir_uint64_t) index) << 32) | 2));
+                                                        output_value.indirect.base.spill_index = index;
+                                                        REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
+                                                            .spill_area = {
+                                                                .type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
+                                                                .index = index,
+                                                                .length = 2
+                                                            }
+                                                        }, &instr->operation.parameters[parameter_idx - 1]));
+                                                    } else {
+                                                        REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
+                                                            .spill_area = {
+                                                                .type = KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
+                                                                .index = output_value.indirect.base.spill_index,
+                                                                .length = 2
+                                                            }
+                                                        }, &instr->operation.parameters[parameter_idx - 1]));
+                                                    }
                                                 }
                                                 break;
 
