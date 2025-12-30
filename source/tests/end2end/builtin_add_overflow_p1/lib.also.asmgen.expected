@@ -31,7 +31,7 @@ test1:
     mov %rdx, %rbx
     and $1, %ebx
     call callback@PLT
-    mov %rbx, %rax
+    mov %ebx, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

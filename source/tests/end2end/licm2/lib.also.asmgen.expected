@@ -39,7 +39,7 @@ test1:
     add $1, %ebx
     cmp %edx, %r11d
     jl .L__kefir_func_test1_label16
-    mov %rbx, %r8
+    mov %ebx, %r8d
     jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label16:
     movsx %r11d, %rbx
@@ -47,7 +47,7 @@ test1:
     mov %r10, %r12
     add %rbx, %r12
     mov %r12, %rbx
-    mov %r9, %r12
+    mov %r9d, %r12d
     sub %r11d, %r12d
     add %ecx, %r12d
     movl %r12d, (%rbx)
@@ -105,7 +105,7 @@ test2:
     add $1, %ecx
     cmp %edx, %r11d
     jl .L__kefir_func_test2_label27
-    mov %rcx, %r8
+    mov %ecx, %r8d
     jmp .L__kefir_func_test2_label6
 .L__kefir_func_test2_label27:
     movsx %r11d, %rcx
@@ -114,7 +114,7 @@ test2:
     add %rcx, %rbx
     movl (%rbx), %r12d
     mov %r11, %rcx
-    mov %r10, %r13
+    mov %r10d, %r13d
     sar %cl, %r13d
     mov %r13, %rcx
     xor %ecx, %r12d
@@ -128,7 +128,7 @@ test2:
     add $1, %ebx
     cmp %edx, %r11d
     jl .L__kefir_func_test2_label26
-    mov %rbx, %r8
+    mov %ebx, %r8d
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label26:
     movsx %r11d, %rbx
@@ -136,7 +136,7 @@ test2:
     mov %r9, %r12
     add %rbx, %r12
     mov %r12, %rbx
-    mov %r10, %r12
+    mov %r10d, %r12d
     sub %r11d, %r12d
     add %ecx, %r12d
     movl %r12d, (%rbx)

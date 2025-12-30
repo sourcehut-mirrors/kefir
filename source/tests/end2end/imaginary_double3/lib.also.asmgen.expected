@@ -71,7 +71,7 @@ test:
     movq %rdx, %xmm2
     subsd %xmm2, %xmm1
     addsd %xmm1, %xmm0
-    mov %rax, %rdi
+    mov %eax, %edi
     jmp .L__kefir_func_test_label4
 .L__kefir_func_test_label11:
     movq -56(%rbp), %rcx

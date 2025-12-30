@@ -71,7 +71,7 @@ test1:
     movdqu -192(%rbp), %xmm0
     movdqu %xmm0, -56(%rbp)
     movl -112(%rbp), %eax
-    mov %rax, %rcx
+    mov %eax, %ecx
     add $-1, %ecx
     movl %ecx, -112(%rbp)
     test %eax, %eax

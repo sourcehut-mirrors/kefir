@@ -195,7 +195,7 @@ i128_shl:
     xor %esi, %esi
     test $64, %cl
     cmovne %rax, %rdx
-    mov %rsi, %rcx
+    mov %esi, %ecx
     cmove %rax, %rcx
     mov %rcx, %rax
     mov %rax, (%rdi)
@@ -376,7 +376,7 @@ u128_shl:
     xor %esi, %esi
     test $64, %cl
     cmovne %rax, %rdx
-    mov %rsi, %rcx
+    mov %esi, %ecx
     cmove %rax, %rcx
     mov %rcx, %rax
     mov %rax, (%rdi)
@@ -399,7 +399,7 @@ u128_shr:
     xor %esi, %esi
     test $64, %cl
     cmovne %rdx, %rax
-    mov %rsi, %rcx
+    mov %esi, %ecx
     cmove %rdx, %rcx
     mov %rcx, %rdx
     mov %rax, (%rdi)

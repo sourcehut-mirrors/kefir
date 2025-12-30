@@ -22,7 +22,7 @@ test1:
     add %rcx, %r8
     mov %r8, %rcx
     imul $2, %eax, %r8d
-    mov %rdx, %r9
+    mov %edx, %r9d
     add %r8d, %r9d
     mov %r9, %r8
     movl %r8d, (%rcx)

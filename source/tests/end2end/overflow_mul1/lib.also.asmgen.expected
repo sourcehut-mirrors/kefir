@@ -49,7 +49,7 @@ overflow_mul_schar_schar_schar:
     or %cl, %sil
     and $1, %esi
     movb %al, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_mul_schar_schar_schar_end:
 
@@ -66,7 +66,7 @@ overflow_mul_schar_schar_uchar:
     or %cl, %sil
     and $1, %esi
     movb %al, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_mul_schar_schar_uchar_end:
 
@@ -83,7 +83,7 @@ overflow_mul_schar_uchar_uchar:
     or %cl, %sil
     and $1, %esi
     movb %al, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_mul_schar_uchar_uchar_end:
 
@@ -125,7 +125,7 @@ overflow_mul_uint_short_ushort:
     or %cl, %sil
     and $1, %esi
     movw %ax, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_mul_uint_short_ushort_end:
 
@@ -158,7 +158,7 @@ overflow_mul_uchar_schar_uchar:
     or %cl, %sil
     and $1, %esi
     movb %al, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_mul_uchar_schar_uchar_end:
 
@@ -175,7 +175,7 @@ overflow_mul_int_short_uint:
     or %cl, %sil
     and $1, %esi
     movl %eax, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_mul_int_short_uint_end:
 
@@ -243,7 +243,7 @@ overflow_mul_ulong_ulong_long:
     or %sil, %dl
     and $1, %edx
     movq %rax, (%rcx)
-    mov %rdx, %rax
+    mov %edx, %eax
     ret
 .L__kefir_text_func_overflow_mul_ulong_ulong_long_end:
 
@@ -264,7 +264,7 @@ overflow_mul_long_long_ulong:
 .L__kefir_func_overflow_mul_long_long_ulong_label9:
     and $1, %r8d
     movq %rax, (%rcx)
-    mov %r8, %rax
+    mov %r8d, %eax
     ret
 .L__kefir_func_overflow_mul_long_long_ulong_label6:
     mov $1, %r8
@@ -337,7 +337,7 @@ overflow_mul_ulong_ulong_ulong:
     seto %dl
     and $1, %edx
     movq %rax, (%rcx)
-    mov %rdx, %rax
+    mov %edx, %eax
     ret
 .L__kefir_text_func_overflow_mul_ulong_ulong_ulong_end:
 

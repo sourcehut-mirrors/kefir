@@ -18,8 +18,7 @@ test1:
     bsf %eax, %ecx
     mov $-1, %eax
     cmove %eax, %ecx
-    mov %rcx, %rax
-    add $1, %eax
+    lea 1(%ecx), %eax
     ret
 .L__kefir_text_func_test1_end:
 
@@ -29,8 +28,7 @@ test2:
     bsf %eax, %ecx
     mov $-1, %eax
     cmove %eax, %ecx
-    mov %rcx, %rax
-    add $1, %eax
+    lea 1(%ecx), %eax
     ret
 .L__kefir_text_func_test2_end:
 

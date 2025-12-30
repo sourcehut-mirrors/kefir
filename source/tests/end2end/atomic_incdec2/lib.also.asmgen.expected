@@ -222,7 +222,7 @@ postdec_f32:
     movq f32@GOTPCREL(%rip), %rsi
 .L__kefir_func_postdec_f32_label2:
     movl (%rsi), %eax
-    mov %rax, %rdi
+    mov %eax, %edi
     movd .L__kefir_func_postdec_f32_label11(%rip), %xmm0
     movq %rdi, %xmm1
     addss %xmm0, %xmm1
@@ -331,7 +331,7 @@ postdec_i32:
     movq i32@GOTPCREL(%rip), %rsi
 .L__kefir_func_postdec_i32_label2:
     movl (%rsi), %eax
-    mov %rax, %rdi
+    mov %eax, %edi
     mov %rdi, %rcx
     add $-1, %ecx
     mov %rsi, %rdx
@@ -394,7 +394,7 @@ postinc_f32:
     movq f32@GOTPCREL(%rip), %rsi
 .L__kefir_func_postinc_f32_label2:
     movl (%rsi), %eax
-    mov %rax, %rdi
+    mov %eax, %edi
     movd .L__kefir_func_postinc_f32_label11(%rip), %xmm0
     movq %rdi, %xmm1
     addss %xmm0, %xmm1
@@ -503,7 +503,7 @@ postinc_i32:
     movq i32@GOTPCREL(%rip), %rsi
 .L__kefir_func_postinc_i32_label2:
     movl (%rsi), %eax
-    mov %rax, %rdi
+    mov %eax, %edi
     mov %rdi, %rcx
     add $1, %ecx
     mov %rsi, %rdx

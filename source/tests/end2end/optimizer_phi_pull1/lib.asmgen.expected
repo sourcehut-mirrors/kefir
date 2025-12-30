@@ -30,7 +30,7 @@ somefn:
     ret
 .L__kefir_func_somefn_label10:
     addsd %xmm1, %xmm0
-    mov %rax, %rdi
+    mov %eax, %edi
     jmp .L__kefir_func_somefn_label2
 .L__kefir_text_func_somefn_end:
 .section .rodata

@@ -326,12 +326,12 @@ predec_i32:
     mov %rax, %rdi
     add $-1, %edi
     mov %rsi, %rdx
-    mov %rdi, %rcx
+    mov %edi, %ecx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
     jz .L__kefir_func_predec_i32_label2
-    mov %rdi, %rax
+    mov %edi, %eax
     ret
     jmp .L__kefir_func_predec_i32_label2
 .L__kefir_text_func_predec_i32_end:
@@ -490,12 +490,12 @@ preinc_i32:
     mov %rax, %rdi
     add $1, %edi
     mov %rsi, %rdx
-    mov %rdi, %rcx
+    mov %edi, %ecx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
     jz .L__kefir_func_preinc_i32_label2
-    mov %rdi, %rax
+    mov %edi, %eax
     ret
     jmp .L__kefir_func_preinc_i32_label2
 .L__kefir_text_func_preinc_i32_end:

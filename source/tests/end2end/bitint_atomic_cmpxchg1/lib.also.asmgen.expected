@@ -102,12 +102,12 @@ add3:
     mov %rax, %r8
     add %esi, %r8d
     mov %rdi, %rdx
-    mov %r8, %rcx
+    mov %r8d, %ecx
     lock     cmpxchgl %ecx, (%rdx)
     sete %al
     test %al, %al
     jz .L__kefir_func_add3_label4
-    mov %r8, %rax
+    mov %r8d, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

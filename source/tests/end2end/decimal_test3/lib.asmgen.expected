@@ -867,7 +867,7 @@ test_dec32_sqrt_approx:
     call __bid_addsd3@PLT
     movd .L__kefir_func_test_dec32_sqrt_approx_label20(%rip), %xmm1
     call __bid_mulsd3@PLT
-    mov %rbx, %rax
+    mov %ebx, %eax
     movaps %xmm0, -32(%rbp)
     jmp .L__kefir_func_test_dec32_sqrt_approx_label4
 .L__kefir_func_test_dec32_sqrt_approx_label15:
@@ -1295,7 +1295,7 @@ test_dec128_sqrt_approx:
     call __bid_addtd3@PLT
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label20(%rip), %xmm1
     call __bid_multd3@PLT
-    mov %rbx, %rax
+    mov %ebx, %eax
     movaps %xmm0, -32(%rbp)
     jmp .L__kefir_func_test_dec128_sqrt_approx_label4
 .L__kefir_func_test_dec128_sqrt_approx_label15:
@@ -1374,7 +1374,7 @@ test_dec64_sqrt_approx:
     call __bid_adddd3@PLT
     movq .L__kefir_func_test_dec64_sqrt_approx_label20(%rip), %xmm1
     call __bid_muldd3@PLT
-    mov %rbx, %rax
+    mov %ebx, %eax
     movaps %xmm0, -32(%rbp)
     jmp .L__kefir_func_test_dec64_sqrt_approx_label4
 .L__kefir_func_test_dec64_sqrt_approx_label15:

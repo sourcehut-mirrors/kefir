@@ -32,7 +32,7 @@ factorial:
     mov %rax, %rdx
     add $-1, %edx
     imul %eax, %ecx
-    mov %rdx, %rax
+    mov %edx, %eax
     jmp .L__kefir_func_factorial_label6
 .L__kefir_func_factorial_label22:
     ret

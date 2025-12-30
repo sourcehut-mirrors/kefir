@@ -63,7 +63,7 @@ sum:
 .L__kefir_func_sum_label11:
     add %rdi, %rax
     adc %rsi, %rcx
-    mov %rdx, %rdi
+    mov %edx, %edi
     jmp .L__kefir_func_sum_label4
 .L__kefir_func_sum_label10:
     movq -24(%rbp), %rsi
@@ -133,7 +133,7 @@ sum2:
 .L__kefir_func_sum2_label11:
     add %rdi, %rax
     adc %rsi, %rcx
-    mov %rdx, %rdi
+    mov %edx, %edi
     jmp .L__kefir_func_sum2_label4
 .L__kefir_func_sum2_label10:
     movq -24(%rbp), %rsi

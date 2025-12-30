@@ -24,7 +24,7 @@ is_inf_f32:
     stmxcsr -8(%rbp)
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
-    mov %rax, %rcx
+    mov %eax, %ecx
     and $2147483647, %ecx
     sar $31, %eax
     or $1, %eax

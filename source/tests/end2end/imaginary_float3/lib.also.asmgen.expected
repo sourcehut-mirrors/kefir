@@ -69,7 +69,7 @@ test:
     movd %edx, %xmm2
     subss %xmm2, %xmm1
     addss %xmm1, %xmm0
-    mov %rax, %rdi
+    mov %eax, %edi
     jmp .L__kefir_func_test_label4
 .L__kefir_func_test_label11:
     movq -40(%rbp), %rcx

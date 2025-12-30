@@ -33,7 +33,7 @@ get_a:
     test $64, %cl
     mov %rsi, %rax
     cmovne %rdx, %rax
-    mov %rdi, %rcx
+    mov %edi, %ecx
     cmove %rdx, %rcx
     mov %rcx, %rdx
     ret
@@ -62,7 +62,7 @@ get_b:
     test $64, %cl
     mov %rsi, %rax
     cmovne %rdx, %rax
-    mov %rdi, %rcx
+    mov %edi, %ecx
     cmove %rdx, %rcx
     mov %rcx, %rdx
     ret

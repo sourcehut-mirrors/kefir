@@ -46,7 +46,7 @@ test1:
 .L__kefir_func_test1_label7:
     movq %rax, -40(%rbp)
     movl -48(%rbp), %eax
-    mov %rax, %rcx
+    mov %eax, %ecx
     add $-1, %ecx
     movl %ecx, -48(%rbp)
     test %eax, %eax

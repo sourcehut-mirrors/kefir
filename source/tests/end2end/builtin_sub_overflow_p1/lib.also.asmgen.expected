@@ -344,7 +344,7 @@ __kefir_bigint_subtract:
     add %rcx, %r10
     movzxb (%r10), %r10
     sub %r10d, %r8d
-    mov %r8, %r10
+    mov %r8d, %r10d
     sub %edx, %r10d
     mov %r10, %rdx
     movb %dl, (%r9)

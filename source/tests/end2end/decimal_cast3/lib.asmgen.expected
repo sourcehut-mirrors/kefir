@@ -1007,7 +1007,7 @@ __kefir_bigint_right_shift_whole_digits:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label7
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label22:
     mov %r8d, %r9d
-    mov %r9, %r10
+    mov %r9d, %r10d
     add %rsi, %r10
     mov %rdi, %r11
     add %r10, %r11
@@ -1871,7 +1871,7 @@ __kefir_bigint_get_sign:
     mov %rsi, %rcx
     sub %rax, %rcx
     sar %cl, %edx
-    mov %rdx, %rax
+    mov %edx, %eax
     and $1, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_get_sign_label8:

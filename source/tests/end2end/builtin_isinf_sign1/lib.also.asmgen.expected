@@ -24,13 +24,13 @@ is_inf_f32:
     stmxcsr -8(%rbp)
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
-    mov %rax, %rcx
+    mov %eax, %ecx
     and $2147483647, %ecx
     sar $31, %eax
     or $1, %eax
     xor %edx, %edx
     cmp $2139095040, %ecx
-    mov %rdx, %rcx
+    mov %edx, %ecx
     cmove %eax, %ecx
     mov %rcx, %rax
     ldmxcsr -8(%rbp)
@@ -54,7 +54,7 @@ is_inf_f64:
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
-    mov %rdx, %rcx
+    mov %edx, %ecx
     cmove %eax, %ecx
     mov %rcx, %rax
     ldmxcsr -8(%rbp)
@@ -84,7 +84,7 @@ is_inf_f80:
     or $1, %eax
     xor %esi, %esi
     or %rdx, %rcx
-    mov %rsi, %rcx
+    mov %esi, %ecx
     cmove %eax, %ecx
     mov %rcx, %rax
     fldcw -8(%rbp)

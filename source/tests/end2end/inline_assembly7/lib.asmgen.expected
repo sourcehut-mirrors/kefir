@@ -19,7 +19,7 @@ make_s1:
     sub $16, %rsp
     movl %edi, -8(%rbp)
     movl -8(%rbp), %ecx
-    mov %rcx, %rax
+    mov %ecx, %eax
 
     mov %eax, -4(%rbp)
     movl -4(%rbp), %eax

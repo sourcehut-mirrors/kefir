@@ -73,7 +73,7 @@ preinc3:
     sar $35, %rdx
     add %edx, %ecx
     movl %ecx, (%rax)
-    mov %rcx, %rax
+    mov %ecx, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

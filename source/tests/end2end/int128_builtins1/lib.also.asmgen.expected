@@ -584,7 +584,7 @@ __kefir_bigint_right_shift_whole_digits:
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label7
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label22:
     mov %r8d, %r9d
-    mov %r9, %r10
+    mov %r9d, %r10d
     add %rsi, %r10
     mov %rdi, %r11
     add %r10, %r11
@@ -1194,7 +1194,7 @@ __kefir_bigint_subtract:
     add %rcx, %r10
     movzxb (%r10), %r10
     sub %r10d, %r8d
-    mov %r8, %r10
+    mov %r8d, %r10d
     sub %edx, %r10d
     mov %r10, %rdx
     movb %dl, (%r9)
@@ -1629,7 +1629,7 @@ __kefir_bigint_signed_multiply:
     or %eax, %esi
     movb %sil, (%rdx)
     add $1, %r14
-    mov %r12, %rcx
+    mov %r12d, %ecx
     jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label4
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label23:
     mov %r15, %rdi

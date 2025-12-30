@@ -29,7 +29,7 @@ overflow_smul:
     or %cl, %sil
     and $1, %esi
     movl %eax, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_smul_end:
 
@@ -46,7 +46,7 @@ overflow_umul:
     or %cl, %sil
     and $1, %esi
     movl %eax, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_umul_end:
 
@@ -68,7 +68,7 @@ overflow_umull:
     seto %dl
     and $1, %edx
     movq %rax, (%rcx)
-    mov %rdx, %rax
+    mov %edx, %eax
     ret
 .L__kefir_text_func_overflow_umull_end:
 
@@ -90,7 +90,7 @@ overflow_umulll:
     seto %dl
     and $1, %edx
     movq %rax, (%rcx)
-    mov %rdx, %rax
+    mov %edx, %eax
     ret
 .L__kefir_text_func_overflow_umulll_end:
 

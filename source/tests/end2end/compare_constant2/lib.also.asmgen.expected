@@ -110,7 +110,7 @@ compare3:
     xor %edx, %edx
     cmp %rdi, %rax
     setle %dl
-    mov %rcx, %rax
+    mov %ecx, %eax
     add %edx, %eax
     ret
 .L__kefir_text_func_compare3_end:
@@ -145,7 +145,7 @@ compare4:
     xor %edx, %edx
     cmp %rdi, %rax
     setbe %dl
-    mov %rcx, %rax
+    mov %ecx, %eax
     add %edx, %eax
     ret
 .L__kefir_text_func_compare4_end:

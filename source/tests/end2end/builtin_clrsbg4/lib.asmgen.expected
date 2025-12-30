@@ -21,7 +21,7 @@ get:
     xor %eax, %ecx
     or $1, %ecx
     bsr %ecx, %ecx
-    mov %rcx, %rax
+    mov %ecx, %eax
     xor $31, %eax
     lea (%rbp), %rsp
     pop %rbp

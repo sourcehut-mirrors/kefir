@@ -29,7 +29,7 @@ overflow_ssub:
     or %cl, %sil
     and $1, %esi
     movl %eax, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_ssub_end:
 
@@ -46,7 +46,7 @@ overflow_usub:
     or %cl, %sil
     and $1, %esi
     movl %eax, (%rdx)
-    mov %rsi, %rax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_overflow_usub_end:
 

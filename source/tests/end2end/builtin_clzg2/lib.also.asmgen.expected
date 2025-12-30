@@ -17,7 +17,7 @@ test1:
     movzx %dil, %rax
     bsr %eax, %ecx
     xor $31, %ecx
-    mov %rcx, %rax
+    mov %ecx, %eax
     sub $24, %eax
     ret
 .L__kefir_text_func_test1_end:
@@ -27,7 +27,7 @@ test2:
     movzx %di, %rax
     bsr %eax, %ecx
     xor $31, %ecx
-    mov %rcx, %rax
+    mov %ecx, %eax
     sub $16, %eax
     ret
 .L__kefir_text_func_test2_end:

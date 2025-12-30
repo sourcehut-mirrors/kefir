@@ -2242,7 +2242,7 @@ __kefir_softfloat_complex_long_double_div:
     sub $16, %rsp
     fldt -80(%rbp)
     fstpt (%rsp)
-    mov %rbx, %rdi
+    mov %ebx, %edi
     call __kefir_softfloat_scalbnl
     add $16, %rsp
     fldt -176(%rbp)
@@ -2261,7 +2261,7 @@ __kefir_softfloat_complex_long_double_div:
     sub $16, %rsp
     fldt -80(%rbp)
     fstpt (%rsp)
-    mov %rbx, %rdi
+    mov %ebx, %edi
     call __kefir_softfloat_scalbnl
     add $16, %rsp
     fldt -96(%rbp)
@@ -2723,14 +2723,14 @@ __kefir_softfloat_complex_long_double_div:
     sub $16, %rsp
     fldt -176(%rbp)
     fstpt (%rsp)
-    mov %r12, %rdi
+    mov %r12d, %edi
     call __kefir_softfloat_scalbnl
     add $16, %rsp
     fstpt -176(%rbp)
     sub $16, %rsp
     fldt -192(%rbp)
     fstpt (%rsp)
-    mov %r12, %rdi
+    mov %r12d, %edi
     call __kefir_softfloat_scalbnl
     add $16, %rsp
     fstpt -192(%rbp)
@@ -3587,7 +3587,7 @@ __kefir_softfloat_ilogbl:
     sub $16383, %edx
     cmp $32767, %rcx
     je .L__kefir_runtime_func___kefir_softfloat_ilogbl_label22
-    mov %rdx, %rax
+    mov %edx, %eax
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -3622,7 +3622,7 @@ __kefir_softfloat_ilogbl:
     movabs $-9223372036854775808, %rdi
     and %rdi, %rax
     jz .L__kefir_runtime_func___kefir_softfloat_ilogbl_label24
-    mov %rcx, %rax
+    mov %ecx, %eax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label24:
     mov %rsi, %rax

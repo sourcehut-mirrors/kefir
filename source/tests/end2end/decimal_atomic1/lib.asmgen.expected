@@ -39,7 +39,7 @@ add32:
     fnclex
 .L__kefir_func_add32_label2:
     movl (%rbx), %eax
-    mov %rax, %r12
+    mov %eax, %r12d
     movq %r12, %xmm0
     movaps -64(%rbp), %xmm1
     call __bid_addsd3@PLT

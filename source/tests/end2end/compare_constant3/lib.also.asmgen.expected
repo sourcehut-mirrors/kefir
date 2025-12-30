@@ -46,7 +46,7 @@ compare1:
     xor %eax, %eax
     comiss %xmm0, %xmm1
     setae %al
-    mov %rcx, %rdx
+    mov %ecx, %edx
     add %eax, %edx
     mov %rdx, %rax
     ldmxcsr -8(%rbp)
@@ -112,7 +112,7 @@ compare2:
     xor %eax, %eax
     comisd .L__kefir_func_compare2_label9(%rip), %xmm0
     setae %al
-    mov %rcx, %rdx
+    mov %ecx, %edx
     add %eax, %edx
     mov %rdx, %rax
     ldmxcsr -8(%rbp)
@@ -175,7 +175,7 @@ compare3:
     xor %eax, %eax
     comisd %xmm0, %xmm1
     setae %al
-    mov %rcx, %rdx
+    mov %ecx, %edx
     add %eax, %edx
     mov %rdx, %rax
     ldmxcsr -8(%rbp)
@@ -240,7 +240,7 @@ compare4:
     xor %eax, %eax
     comisd .L__kefir_func_compare4_label9(%rip), %xmm0
     setae %al
-    mov %rcx, %rdx
+    mov %ecx, %edx
     add %eax, %edx
     mov %rdx, %rax
     ldmxcsr -8(%rbp)

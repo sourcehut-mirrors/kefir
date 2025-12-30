@@ -39,7 +39,7 @@ test1:
     mov %r11, %r10
     mov %rax, %rcx
     or %esi, %ecx
-    mov %rcx, %r11
+    mov %ecx, %r11d
     sub %r9d, %r11d
     mov %rdx, %rcx
     mov %r8, %rbx
@@ -50,7 +50,7 @@ test1:
     add $1, %r9d
     jmp .L__kefir_func_test1_label4
 .L__kefir_func_test1_label13:
-    mov %rcx, %r8
+    mov %ecx, %r8d
     jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label15:
     lea -8(%rbp), %rsp
@@ -91,7 +91,7 @@ _kefir_local_public_label_test2_outer:
     mov %r11, %r10
     mov %rax, %rcx
     or %esi, %ecx
-    mov %rcx, %r11
+    mov %ecx, %r11d
     sub %r9d, %r11d
     mov %rdx, %rcx
     mov %r8, %rbx
@@ -102,7 +102,7 @@ _kefir_local_public_label_test2_outer:
     add $1, %r9d
     jmp .L__kefir_func_test2_label4
 .L__kefir_func_test2_label13:
-    mov %rcx, %r8
+    mov %ecx, %r8d
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label15:
     lea -8(%rbp), %rsp
