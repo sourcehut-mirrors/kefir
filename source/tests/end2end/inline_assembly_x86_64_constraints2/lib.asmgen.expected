@@ -36,11 +36,11 @@ test1:
     add $1, %r14
     movq %r14, -56(%rbp)
     movq -64(%rbp), %r14
-    movq %r14, -96(%rbp)
-    movq .L__kefir_func_test1_label4(%rip), %xmm0
-    movq -96(%rbp), %xmm1
-    addsd %xmm0, %xmm1
-    movq %xmm1, -64(%rbp)
+    mov %r14, -96(%rbp)
+    movq .L__kefir_func_test1_label4(%rip), %xmm1
+    movq %r14, %xmm0
+    addsd %xmm1, %xmm0
+    movq %xmm0, -64(%rbp)
     movq %rax, -88(%rbp)
     mov $1, %eax
     movsx %eax, %r14

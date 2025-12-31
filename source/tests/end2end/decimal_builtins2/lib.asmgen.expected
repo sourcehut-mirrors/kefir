@@ -36,7 +36,6 @@ dec32_isinf:
     sub $24, %rsp
     movaps %xmm0, -32(%rbp)
     movd .L__kefir_func_dec32_isinf_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -75,7 +74,6 @@ dec64_isinf:
     sub $24, %rsp
     movaps %xmm0, -32(%rbp)
     movq .L__kefir_func_dec64_isinf_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -115,7 +113,6 @@ dec32_isfinite:
     sub $16, %rsp
     movaps %xmm0, -32(%rbp)
     movd .L__kefir_func_dec32_isfinite_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
     test %eax, %eax
     mov %rax, %rbx
@@ -160,7 +157,6 @@ dec64_isfinite:
     sub $16, %rsp
     movaps %xmm0, -32(%rbp)
     movq .L__kefir_func_dec64_isfinite_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
     test %eax, %eax
     mov %rax, %rbx
@@ -204,7 +200,6 @@ dec64_isinf_sign:
     sub $24, %rsp
     movaps %xmm0, -32(%rbp)
     movq .L__kefir_func_dec64_isinf_sign_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -242,7 +237,6 @@ dec128_isinf:
     sub $24, %rsp
     movaps %xmm0, -32(%rbp)
     movdqu .L__kefir_func_dec128_isinf_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -281,7 +275,6 @@ dec128_isinf_sign:
     sub $24, %rsp
     movaps %xmm0, -32(%rbp)
     movdqu .L__kefir_func_dec128_isinf_sign_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
     xor %ecx, %ecx
     test %eax, %eax
@@ -320,7 +313,6 @@ dec128_isfinite:
     sub $16, %rsp
     movaps %xmm0, -32(%rbp)
     movdqu .L__kefir_func_dec128_isfinite_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
     test %eax, %eax
     mov %rax, %rbx
@@ -364,7 +356,6 @@ dec32_isinf_sign:
     sub $24, %rsp
     movaps %xmm0, -32(%rbp)
     movd .L__kefir_func_dec32_isinf_sign_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
     xor %ecx, %ecx
     test %eax, %eax

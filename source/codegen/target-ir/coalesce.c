@@ -155,6 +155,8 @@ kefir_result_t kefir_codegen_target_ir_coalesce_build(struct kefir_mem *mem, str
     REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference"));
     REQUIRE(klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR coalesce class"));
 
+    REQUIRE_OK(kefir_graph_clear(&coalesce->coalesce_graph));
+
     struct kefir_list queue;
     REQUIRE_OK(kefir_list_init(&queue));
     kefir_result_t res = do_coalesce_build(mem, coalesce, control_flow, interference, klass, &queue);

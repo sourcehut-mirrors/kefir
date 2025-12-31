@@ -364,9 +364,8 @@ postdec32:
     sub $24, %rsp
     mov %rdi, %rbx
     movd (%rbx), %xmm0
-    movd %xmm0, -32(%rbp)
+    movaps %xmm0, -32(%rbp)
     movd .L__kefir_func_postdec32_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_addsd3@PLT
     movd %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
@@ -389,9 +388,8 @@ postdec64:
     sub $24, %rsp
     mov %rdi, %rbx
     movq (%rbx), %xmm0
-    movq %xmm0, -32(%rbp)
+    movaps %xmm0, -32(%rbp)
     movq .L__kefir_func_postdec64_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_adddd3@PLT
     movq %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
@@ -414,9 +412,8 @@ postinc32:
     sub $24, %rsp
     mov %rdi, %rbx
     movd (%rbx), %xmm0
-    movd %xmm0, -32(%rbp)
+    movaps %xmm0, -32(%rbp)
     movd .L__kefir_func_postinc32_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_addsd3@PLT
     movd %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
@@ -439,9 +436,8 @@ postinc64:
     sub $24, %rsp
     mov %rdi, %rbx
     movq (%rbx), %xmm0
-    movq %xmm0, -32(%rbp)
+    movaps %xmm0, -32(%rbp)
     movq .L__kefir_func_postinc64_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_adddd3@PLT
     movq %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
@@ -508,9 +504,8 @@ postdec128:
     sub $24, %rsp
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
-    movdqu %xmm0, -32(%rbp)
+    movaps %xmm0, -32(%rbp)
     movdqu .L__kefir_func_postdec128_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_addtd3@PLT
     movdqu %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
@@ -533,9 +528,8 @@ postinc128:
     sub $24, %rsp
     mov %rdi, %rbx
     movdqu (%rbx), %xmm0
-    movdqu %xmm0, -32(%rbp)
+    movaps %xmm0, -32(%rbp)
     movdqu .L__kefir_func_postinc128_label4(%rip), %xmm1
-    movaps -32(%rbp), %xmm0
     call __bid_addtd3@PLT
     movdqu %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0

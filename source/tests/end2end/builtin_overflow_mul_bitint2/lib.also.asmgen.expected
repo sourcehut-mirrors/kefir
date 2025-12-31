@@ -651,9 +651,9 @@ __kefir_bigint_arithmetic_right_shift:
     mov %r8, %rax
     sub $1, %rax
     imul $8, %rcx, %rcx
+    sub %rcx, %rax
     mov %rax, -48(%rbp)
-    subq %rcx, -48(%rbp)
-    mov -48(%rbp), %rcx
+    mov %rax, %rcx
     sar %cl, %edi
     and $1, %edi
     movsx %edi, %r15
@@ -1161,11 +1161,11 @@ __kefir_bigint_signed_multiply:
     mov $8, %rcx
     div %rcx
     mov %rax, -88(%rbp)
-    mov %rbx, %rax
-    sub $1, %rax
-    imulq $8, -88(%rbp), %rcx
-    mov %rax, -80(%rbp)
-    subq %rcx, -80(%rbp)
+    mov %rbx, %rcx
+    sub $1, %rcx
+    imul $8, %rax, %rax
+    mov %rcx, -80(%rbp)
+    subq %rax, -80(%rbp)
     xor %eax, %eax
     xor %ecx, %ecx
     mov %rax, %r14

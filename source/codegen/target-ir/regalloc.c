@@ -285,6 +285,14 @@ static kefir_result_t regalloc_run_impl(struct kefir_mem *mem, struct regalloc_s
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_regalloc_reset(struct kefir_mem *mem, struct kefir_codegen_target_ir_regalloc *regalloc) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(regalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR register allocator"));
+
+    REQUIRE_OK(kefir_hashtable_clear(&regalloc->allocation));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *mem, struct kefir_codegen_target_ir_regalloc *regalloc,
     const struct kefir_codegen_target_ir_control_flow *control_flow,
     const struct kefir_codegen_target_ir_liveness *liveness,

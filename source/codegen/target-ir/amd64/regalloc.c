@@ -536,6 +536,11 @@ kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_me
         mem, klass->sse_registers, sizeof(kefir_asm_amd64_xasmgen_register_t),
         klass->num_of_sse_registers, abi_register_comparator, klass));
 
+    static const struct kefir_codegen_target_ir_regalloc_transforms TRANSFORMS = {
+        .hot_copy_locality = 4
+    };
+    klass->klass.transforms = &TRANSFORMS;
+
     klass->split_profile.general_purpose_interference_threshold = klass->num_of_gp_registers + 6;
     klass->split_profile.floating_point_interference_threshold = klass->num_of_sse_registers + 8;
     klass->split_profile.max_splits_per_use_pct = 15;

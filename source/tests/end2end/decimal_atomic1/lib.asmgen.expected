@@ -137,7 +137,6 @@ add128:
     movaps -112(%rbp), %xmm1
     call __bid_addtd3@PLT
     movaps %xmm0, -64(%rbp)
-    movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)

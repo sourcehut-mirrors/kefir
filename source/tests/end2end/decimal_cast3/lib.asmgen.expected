@@ -1979,11 +1979,9 @@ __kefir_bigint_signed_to_long_double:
     mov %rbx, %rsi
     call __kefir_bigint_get_sign
     mov %eax, %eax
+    neg %rax
     mov %rax, -112(%rbp)
-    negq -112(%rbp)
-    movq -112(%rbp), %rax
-    movq -112(%rbp), %rcx
-    test %rcx, %rax
+    test %rax, %rax
     jnz .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label46
 .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label5:
     mov %r13, %rdi
