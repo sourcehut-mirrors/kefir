@@ -55,7 +55,7 @@ test2_atomic_load256:
 .L__kefir_text_func_test2_atomic_load256_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rsi
     mov $32, %rdi
@@ -119,7 +119,7 @@ test_atomic_load256:
 .L__kefir_text_func_test_atomic_load256_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rsi
     mov $32, %rdi

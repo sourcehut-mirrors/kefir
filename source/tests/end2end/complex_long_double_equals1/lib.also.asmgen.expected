@@ -57,7 +57,6 @@ cld_trunc:
     fucomi %st(1)
     fstp %st(0)
     setp %al
-    mov %rax, %rcx
     setne %cl
     or %al, %cl
     fxch %st(1)

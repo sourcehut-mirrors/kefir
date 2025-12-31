@@ -89,7 +89,6 @@ c80_to_bool:
     fucomi %st(1)
     fstp %st(0)
     setp %al
-    mov %rax, %rcx
     setne %cl
     or %al, %cl
     fxch %st(1)
@@ -178,7 +177,6 @@ c80_to_bool2:
     fucomi %st(1)
     fstp %st(0)
     setp %al
-    mov %rax, %rcx
     setne %cl
     or %al, %cl
     fxch %st(1)
@@ -211,7 +209,6 @@ c80_to_bool3:
     fucomi %st(1)
     fstp %st(0)
     setp %al
-    mov %rax, %rcx
     setne %cl
     or %al, %cl
     fxch %st(1)

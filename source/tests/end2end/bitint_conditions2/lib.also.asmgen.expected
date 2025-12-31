@@ -28,8 +28,8 @@ test1:
     shl $58, %rax
     shr $58, %rax
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_test1_label8
     mov $1, %rax
     neg %eax
@@ -55,8 +55,8 @@ test2:
     shl $50, %rax
     shr $50, %rax
     test %ax, %ax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_test2_label8
     mov $1, %rax
     neg %eax
@@ -82,8 +82,8 @@ test3:
     shl $35, %rax
     shr $35, %rax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_test3_label8
     mov $1, %rax
     neg %eax
@@ -109,8 +109,8 @@ test4:
     shl $4, %rax
     shr $4, %rax
     test %rax, %rax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_test4_label8
     mov $1, %rax
     neg %eax
@@ -268,8 +268,8 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     movb -24(%rbp), %al
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
     movq -32(%rbp), %rax
     add $1, %rax

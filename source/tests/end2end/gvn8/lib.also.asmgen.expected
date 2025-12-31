@@ -128,8 +128,8 @@ test6:
     mov $120, %rsi
     call __kefir_bigint_is_zero
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

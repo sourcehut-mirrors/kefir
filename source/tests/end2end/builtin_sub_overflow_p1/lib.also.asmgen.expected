@@ -17,13 +17,12 @@ test1:
     movsx %edi, %rax
     movsx %esi, %rcx
     sub %rcx, %rax
-    seto %dl
-    movsx %eax, %rcx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    seto %cl
+    movsx %eax, %rdx
+    cmp %rdx, %rax
     setne %al
-    or %al, %dl
-    mov %rdx, %rax
+    or %al, %cl
+    mov %rcx, %rax
     and $1, %eax
     ret
 .L__kefir_text_func_test1_end:
@@ -33,13 +32,12 @@ test2:
     movsx %edi, %rax
     movsx %esi, %rcx
     sub %rcx, %rax
-    seto %dl
-    mov %eax, %ecx
-    cmp %rcx, %rax
-    mov %rdx, %rax
+    seto %cl
+    mov %eax, %edx
+    cmp %rdx, %rax
     setne %al
-    or %al, %dl
-    mov %rdx, %rax
+    or %al, %cl
+    mov %rcx, %rax
     and $1, %eax
     ret
 .L__kefir_text_func_test2_end:
@@ -49,23 +47,23 @@ test3:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $56, %rsp
+    sub $40, %rsp
     mov %rsi, %rbx
     movsx %edi, %rdx
     lea -48(%rbp), %rdi
     mov $66, %rsi
     call __kefir_bigint_set_signed_integer
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
+    movdqu %xmm0, -32(%rbp)
     movsx %ebx, %rdx
-    lea -32(%rbp), %rdi
+    lea -48(%rbp), %rdi
     mov $66, %rsi
     call __kefir_bigint_set_signed_integer
-    lea -64(%rbp), %rdi
-    lea -32(%rbp), %rsi
+    lea -32(%rbp), %rdi
+    lea -48(%rbp), %rsi
     mov $66, %rdx
     call __kefir_bigint_subtract
-    lea -64(%rbp), %rdi
+    lea -32(%rbp), %rdi
     mov $66, %rsi
     call __kefir_bigint_redundant_sign_bits
     mov $66, %rcx
@@ -84,27 +82,27 @@ test4:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $56, %rsp
+    sub $40, %rsp
     mov %rsi, %rbx
     movsx %edi, %rdx
     lea -48(%rbp), %rdi
     mov $66, %rsi
     call __kefir_bigint_set_signed_integer
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
+    movdqu %xmm0, -32(%rbp)
     movsx %ebx, %rdx
-    lea -32(%rbp), %rdi
+    lea -48(%rbp), %rdi
     mov $66, %rsi
     call __kefir_bigint_set_signed_integer
-    lea -64(%rbp), %rdi
-    lea -32(%rbp), %rsi
+    lea -32(%rbp), %rdi
+    lea -48(%rbp), %rsi
     mov $66, %rdx
     call __kefir_bigint_subtract
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
     movl $0, -36(%rbp)
-    lea -64(%rbp), %rdi
+    lea -32(%rbp), %rdi
     lea -48(%rbp), %rsi
     mov $66, %rdx
     call __kefir_bigint_unsigned_compare
@@ -112,7 +110,7 @@ test4:
     cmp $0, %al
     mov %rcx, %rbx
     sete %bl
-    lea -64(%rbp), %rdi
+    lea -32(%rbp), %rdi
     mov $66, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros

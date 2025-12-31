@@ -111,8 +111,8 @@ bnot5:
     mov $119, %rsi
     call __kefir_bigint_is_zero
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -148,8 +148,8 @@ bnot6:
     mov $310, %rsi
     call __kefir_bigint_is_zero
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -236,8 +236,8 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     movb -24(%rbp), %al
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
     movq -32(%rbp), %rax
     add $1, %rax

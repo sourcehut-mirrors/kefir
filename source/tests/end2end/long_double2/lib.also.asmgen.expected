@@ -13,17 +13,17 @@ increment:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $56, %rsp
+    sub $40, %rsp
     fstcw -16(%rbp)
     mov %rdi, %rbx
     call *%rbx
     movq LAST_VALUE@GOTPCREL(%rip), %rax
     movq $0, 8(%rax)
     fld %st(0)
-    fstpt -64(%rbp)
+    fstpt -48(%rbp)
     fstpt (%rax)
     fldt .L__kefir_func_increment_label4(%rip)
-    fldt -64(%rbp)
+    fldt -48(%rbp)
     faddp
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp

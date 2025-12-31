@@ -22,29 +22,29 @@ int128_clz:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $64, %rsp
+    sub $48, %rsp
     mov %rdx, %rbx
     mov %rdi, -48(%rbp)
     mov %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
-    lea -64(%rbp), %rdi
+    movdqu %xmm0, -32(%rbp)
+    lea -32(%rbp), %rdi
     mov $128, %rsi
     mov $128, %rdx
     call __kefir_bigint_cast_signed
-    movl $0, -32(%rbp)
-    movl $0, -28(%rbp)
-    movl $0, -24(%rbp)
-    movl $0, -20(%rbp)
-    lea -64(%rbp), %rdi
-    lea -32(%rbp), %rsi
+    movl $0, -48(%rbp)
+    movl $0, -44(%rbp)
+    movl $0, -40(%rbp)
+    movl $0, -36(%rbp)
+    lea -32(%rbp), %rdi
+    lea -48(%rbp), %rsi
     mov $128, %rdx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $0, %al
     mov %rcx, %r12
     sete %r12b
-    lea -64(%rbp), %rdi
+    lea -32(%rbp), %rdi
     mov $128, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
@@ -63,29 +63,29 @@ int128_ctz:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $64, %rsp
+    sub $48, %rsp
     mov %rdx, %rbx
     mov %rdi, -48(%rbp)
     mov %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
-    lea -64(%rbp), %rdi
+    movdqu %xmm0, -32(%rbp)
+    lea -32(%rbp), %rdi
     mov $128, %rsi
     mov $128, %rdx
     call __kefir_bigint_cast_signed
-    movl $0, -32(%rbp)
-    movl $0, -28(%rbp)
-    movl $0, -24(%rbp)
-    movl $0, -20(%rbp)
-    lea -64(%rbp), %rdi
-    lea -32(%rbp), %rsi
+    movl $0, -48(%rbp)
+    movl $0, -44(%rbp)
+    movl $0, -40(%rbp)
+    movl $0, -36(%rbp)
+    lea -32(%rbp), %rdi
+    lea -48(%rbp), %rsi
     mov $128, %rdx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $0, %al
     mov %rcx, %r12
     sete %r12b
-    lea -64(%rbp), %rdi
+    lea -32(%rbp), %rdi
     mov $128, %rsi
     xor %edx, %edx
     call __kefir_bigint_trailing_zeros
@@ -103,15 +103,15 @@ int128_ffs:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, -16(%rbp)
-    mov %rsi, -8(%rbp)
-    movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -32(%rbp)
-    lea -32(%rbp), %rdi
+    mov %rdi, -32(%rbp)
+    mov %rsi, -24(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $128, %rsi
     mov $128, %rdx
     call __kefir_bigint_cast_signed
-    lea -32(%rbp), %rdi
+    lea -16(%rbp), %rdi
     mov $128, %rsi
     call __kefir_bigint_least_significant_nonzero
     lea (%rbp), %rsp
@@ -124,15 +124,15 @@ int128_clrsb:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, -16(%rbp)
-    mov %rsi, -8(%rbp)
-    movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -32(%rbp)
-    lea -32(%rbp), %rdi
+    mov %rdi, -32(%rbp)
+    mov %rsi, -24(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $128, %rsi
     mov $128, %rdx
     call __kefir_bigint_cast_signed
-    lea -32(%rbp), %rdi
+    lea -16(%rbp), %rdi
     mov $128, %rsi
     call __kefir_bigint_redundant_sign_bits
     lea (%rbp), %rsp
@@ -145,15 +145,15 @@ int128_popcount:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, -16(%rbp)
-    mov %rsi, -8(%rbp)
-    movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -32(%rbp)
-    lea -32(%rbp), %rdi
+    mov %rdi, -32(%rbp)
+    mov %rsi, -24(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $128, %rsi
     mov $128, %rdx
     call __kefir_bigint_cast_signed
-    lea -32(%rbp), %rdi
+    lea -16(%rbp), %rdi
     mov $128, %rsi
     call __kefir_bigint_nonzero_count
     lea (%rbp), %rsp
@@ -166,15 +166,15 @@ int128_parity:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, -16(%rbp)
-    mov %rsi, -8(%rbp)
-    movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -32(%rbp)
-    lea -32(%rbp), %rdi
+    mov %rdi, -32(%rbp)
+    mov %rsi, -24(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    lea -16(%rbp), %rdi
     mov $128, %rsi
     mov $128, %rdx
     call __kefir_bigint_cast_signed
-    lea -32(%rbp), %rdi
+    lea -16(%rbp), %rdi
     mov $128, %rsi
     call __kefir_bigint_parity
     lea (%rbp), %rsp

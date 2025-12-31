@@ -28,11 +28,11 @@ test1:
     shl $58, %rax
     shr $58, %rax
     test %al, %al
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_test1_label9
     mov $1, %rax
     neg %eax
@@ -58,11 +58,11 @@ test2:
     shl $50, %rax
     shr $50, %rax
     test %ax, %ax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_test2_label9
     mov $1, %rax
     neg %eax
@@ -88,11 +88,11 @@ test3:
     shl $35, %rax
     shr $35, %rax
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_test3_label9
     mov $1, %rax
     neg %eax
@@ -118,11 +118,11 @@ test4:
     shl $4, %rax
     shr $4, %rax
     test %rax, %rax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_test4_label9
     mov $1, %rax
     neg %eax
@@ -151,8 +151,8 @@ test5:
     mov $120, %rsi
     call __kefir_bigint_is_zero
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     sete %al
     test %al, %al
     jz .L__kefir_func_test5_label9
@@ -190,8 +190,8 @@ test6:
     mov $360, %rsi
     call __kefir_bigint_is_zero
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     sete %al
     test %al, %al
     jz .L__kefir_func_test6_label9
@@ -288,8 +288,8 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     movb -24(%rbp), %al
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
     movq -32(%rbp), %rax
     add $1, %rax

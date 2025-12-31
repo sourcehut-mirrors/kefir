@@ -132,19 +132,21 @@ conv5:
     sub $32, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-.L__kefir_func_conv5_label16:
+.L__kefir_func_conv5_label14:
     fldt 16(%rbp)
 .loc 0 99 5
-.L__kefir_func_conv5_label22:
+.L__kefir_func_conv5_label20:
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
-.L__kefir_func_conv5_label23:
+.L__kefir_func_conv5_label21:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
+.loc 0 99 5
+.L__kefir_func_conv5_label31:
     ret
-.L__kefir_func_conv5_label35:
+.L__kefir_func_conv5_label37:
 .L__kefir_text_func_conv5_end:
 
 add32x:

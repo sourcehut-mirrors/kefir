@@ -40,35 +40,37 @@ get:
     mov %rsp, %rbp
     sub $32, %rsp
 .loc 0 29 5
-.L__kefir_func_get_label22:
+.L__kefir_func_get_label20:
     mov $0, %rax
     shl $62, %rax
     sar $62, %rax
-.L__kefir_func_get_label26:
+.L__kefir_func_get_label24:
     movw %ax, -2(%rbp)
 .loc 0 30 12
-.L__kefir_func_get_label27:
+.L__kefir_func_get_label25:
     movw -2(%rbp), %ax
 .loc 0 30 12
-.L__kefir_func_get_label42:
+.L__kefir_func_get_label38:
     shl $55, %rax
     sar $55, %rax
 .loc 0 30 5
-.L__kefir_func_get_label48:
+.L__kefir_func_get_label44:
     shl $55, %rax
     sar $55, %rax
-.L__kefir_func_get_label216:
+.L__kefir_func_get_label214:
     lea -32(%rbp), %rdi
     mov $90, %rsi
     mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
-.L__kefir_func_get_label217:
+.L__kefir_func_get_label215:
     movq -32(%rbp), %rax
     movq -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
+.loc 0 30 5
+.L__kefir_func_get_label233:
     ret
-.L__kefir_func_get_label237:
+.L__kefir_func_get_label239:
 .L__kefir_text_func_get_end:
 
 get2:
@@ -78,35 +80,37 @@ get2:
     mov %rsp, %rbp
     sub $32, %rsp
 .loc 0 41 5
-.L__kefir_func_get2_label22:
+.L__kefir_func_get2_label20:
     mov $0, %rax
     shl $63, %rax
     shr $63, %rax
-.L__kefir_func_get2_label26:
+.L__kefir_func_get2_label24:
     movw %ax, -2(%rbp)
 .loc 0 42 12
-.L__kefir_func_get2_label27:
+.L__kefir_func_get2_label25:
     movw -2(%rbp), %ax
 .loc 0 42 12
-.L__kefir_func_get2_label42:
+.L__kefir_func_get2_label38:
     shl $55, %rax
     shr $55, %rax
 .loc 0 42 5
-.L__kefir_func_get2_label48:
+.L__kefir_func_get2_label44:
     shl $55, %rax
     shr $55, %rax
-.L__kefir_func_get2_label216:
+.L__kefir_func_get2_label214:
     lea -32(%rbp), %rdi
     mov $90, %rsi
     mov %rax, %rdx
     call __kefir_bigint_set_unsigned_integer
-.L__kefir_func_get2_label217:
+.L__kefir_func_get2_label215:
     movq -32(%rbp), %rax
     movq -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
+.loc 0 42 5
+.L__kefir_func_get2_label233:
     ret
-.L__kefir_func_get2_label237:
+.L__kefir_func_get2_label239:
 .L__kefir_text_func_get2_end:
 
 .L__kefir_text_section_end:
@@ -720,8 +724,8 @@ __kefir_debug_loclists_section_begin:
     .long 0
 __kefir_debug_loclist_section_entry_1:
     .byte 4
-    .uleb128 .L__kefir_func_get_label22 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_get_label237 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label20 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get_label239 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
@@ -730,8 +734,8 @@ __kefir_debug_loclist_section_entry_2:
     .byte 0
 __kefir_debug_loclist_section_entry_3:
     .byte 4
-    .uleb128 .L__kefir_func_get2_label22 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_get2_label237 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label20 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get2_label239 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 126
@@ -883,8 +887,8 @@ __kefir_bigint_cast_signed:
     setne %dl
     movzx %dl, %rax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label44
     movq -40(%rbp), %rax
     mov $0, %edx
@@ -966,8 +970,8 @@ __kefir_bigint_cast_signed:
     setne %dl
     movzx %dl, %rax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label41
     mov $0, %rax
     lea (%rbp), %rsp
@@ -976,8 +980,8 @@ __kefir_bigint_cast_signed:
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label41:
     movl -80(%rbp), %eax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label48
     movq -88(%rbp), %rax
     movq -8(%rbp), %rcx
@@ -1002,8 +1006,8 @@ __kefir_bigint_cast_signed:
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label50:
     movl -80(%rbp), %eax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label45
     movq -64(%rbp), %rcx
     mov $1, %rax
@@ -1058,8 +1062,8 @@ __kefir_bigint_cast_signed:
     setne %dl
     movzx %dl, %rax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label54
     mov $0, %rax
     lea (%rbp), %rsp
@@ -1090,8 +1094,8 @@ __kefir_bigint_cast_signed:
     movl %eax, -76(%rbp)
     movl -76(%rbp), %eax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_signed_label53
     movq -56(%rbp), %rcx
     mov $1, %rax
@@ -1297,8 +1301,8 @@ __kefir_bigint_cast_unsigned:
     setne %dl
     movzx %dl, %rax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label26
     movq -40(%rbp), %rax
     mov $0, %edx
@@ -1365,8 +1369,8 @@ __kefir_bigint_cast_unsigned:
     setne %dl
     movzx %dl, %rax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label29
     mov $0, %rax
     lea (%rbp), %rsp
@@ -1417,8 +1421,8 @@ __kefir_bigint_cast_unsigned:
     setne %dl
     movzx %dl, %rax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label32
     mov $0, %rax
     lea (%rbp), %rsp

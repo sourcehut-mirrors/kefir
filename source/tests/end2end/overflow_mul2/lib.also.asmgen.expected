@@ -21,15 +21,14 @@ overflow_smul:
     movsx %edi, %rax
     movsx %esi, %rcx
     imul %rcx, %rax
-    seto %sil
-    movsx %eax, %rcx
-    cmp %rcx, %rax
-    mov %rsi, %rcx
-    setne %cl
-    or %cl, %sil
-    and $1, %esi
+    seto %cl
+    movsx %eax, %rsi
+    cmp %rsi, %rax
+    setne %sil
+    or %sil, %cl
+    and $1, %ecx
     movl %eax, (%rdx)
-    mov %esi, %eax
+    mov %ecx, %eax
     ret
 .L__kefir_text_func_overflow_smul_end:
 
@@ -38,15 +37,14 @@ overflow_umul:
     mov %edi, %eax
     mov %esi, %ecx
     imul %rcx, %rax
-    seto %sil
-    mov %eax, %ecx
-    cmp %rcx, %rax
-    mov %rsi, %rcx
-    setne %cl
-    or %cl, %sil
-    and $1, %esi
+    seto %cl
+    mov %eax, %esi
+    cmp %rsi, %rax
+    setne %sil
+    or %sil, %cl
+    and $1, %ecx
     movl %eax, (%rdx)
-    mov %esi, %eax
+    mov %ecx, %eax
     ret
 .L__kefir_text_func_overflow_umul_end:
 
@@ -64,7 +62,6 @@ overflow_umull:
     mov %rdx, %rcx
     mov %rdi, %rax
     mul %rsi
-    mov %rax, %rdx
     seto %dl
     and $1, %edx
     movq %rax, (%rcx)
@@ -86,7 +83,6 @@ overflow_umulll:
     mov %rdx, %rcx
     mov %rdi, %rax
     mul %rsi
-    mov %rax, %rdx
     seto %dl
     and $1, %edx
     movq %rax, (%rcx)

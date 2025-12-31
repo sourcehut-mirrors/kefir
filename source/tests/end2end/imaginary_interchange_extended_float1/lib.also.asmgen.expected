@@ -211,8 +211,8 @@ f80_op:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    fstpt -64(%rbp)
     fstpt -80(%rbp)
+    fstpt -64(%rbp)
     cmp $0, %edi
     je .L__kefir_func_f80_op_label20
     cmp $1, %edi
@@ -222,9 +222,9 @@ f80_op:
     cmp $3, %edi
     je .L__kefir_func_f80_op_label23
     fldt .L__kefir_func_f80_op_label28(%rip)
-    fldt -64(%rbp)
+    fldt -80(%rbp)
     fld %st(0)
-    fstpt -64(%rbp)
+    fstpt -80(%rbp)
     fchs
     fstpt -64(%rbp)
     fstpt -80(%rbp)
@@ -235,8 +235,8 @@ f80_op:
     pop %rbp
     ret
 .L__kefir_func_f80_op_label23:
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
     fdivp
     fldt .L__kefir_func_f80_op_label29(%rip)
     fstpt -64(%rbp)
@@ -248,8 +248,8 @@ f80_op:
     pop %rbp
     ret
 .L__kefir_func_f80_op_label26:
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
     fmulp
     fchs
     fldt .L__kefir_func_f80_op_label30(%rip)
@@ -263,8 +263,8 @@ f80_op:
     ret
 .L__kefir_func_f80_op_label25:
     fldt .L__kefir_func_f80_op_label31(%rip)
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
     fsubp
     fstpt -64(%rbp)
     fstpt -80(%rbp)
@@ -276,13 +276,13 @@ f80_op:
     ret
 .L__kefir_func_f80_op_label20:
     fldt .L__kefir_func_f80_op_label32(%rip)
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
     faddp
-    fstpt -64(%rbp)
-    fstpt -80(%rbp)
-    fldt -64(%rbp)
-    fldt -80(%rbp)
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -395,8 +395,8 @@ f64x_op:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    fstpt -64(%rbp)
     fstpt -80(%rbp)
+    fstpt -64(%rbp)
     cmp $0, %edi
     je .L__kefir_func_f64x_op_label20
     cmp $1, %edi
@@ -406,9 +406,9 @@ f64x_op:
     cmp $3, %edi
     je .L__kefir_func_f64x_op_label23
     fldt .L__kefir_func_f64x_op_label28(%rip)
-    fldt -64(%rbp)
+    fldt -80(%rbp)
     fld %st(0)
-    fstpt -64(%rbp)
+    fstpt -80(%rbp)
     fchs
     fstpt -64(%rbp)
     fstpt -80(%rbp)
@@ -419,8 +419,8 @@ f64x_op:
     pop %rbp
     ret
 .L__kefir_func_f64x_op_label23:
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
     fdivp
     fldt .L__kefir_func_f64x_op_label29(%rip)
     fstpt -64(%rbp)
@@ -432,8 +432,8 @@ f64x_op:
     pop %rbp
     ret
 .L__kefir_func_f64x_op_label26:
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
     fmulp
     fchs
     fldt .L__kefir_func_f64x_op_label30(%rip)
@@ -447,8 +447,8 @@ f64x_op:
     ret
 .L__kefir_func_f64x_op_label25:
     fldt .L__kefir_func_f64x_op_label31(%rip)
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
     fsubp
     fstpt -64(%rbp)
     fstpt -80(%rbp)
@@ -460,13 +460,13 @@ f64x_op:
     ret
 .L__kefir_func_f64x_op_label20:
     fldt .L__kefir_func_f64x_op_label32(%rip)
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
     faddp
-    fstpt -64(%rbp)
-    fstpt -80(%rbp)
-    fldt -64(%rbp)
-    fldt -80(%rbp)
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

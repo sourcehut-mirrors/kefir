@@ -42,31 +42,31 @@ add_ld:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $104, %rsp
+    sub $72, %rsp
     fstcw -16(%rbp)
     mov %rdi, %rbx
     movq ld_1@GOTPCREL(%rip), %rsi
-    lea -112(%rbp), %rdx
-    mov $32, %rdi
-    mov $5, %rcx
-    call __atomic_load@PLT
-    mov %rbx, %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -112(%rbp)
+    mov %rbx, %rsi
+    lea -48(%rbp), %rdx
+    mov $32, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
     fldt -80(%rbp)
+    fldt -48(%rbp)
     fxch %st(1)
     faddp
-    fldt -96(%rbp)
     fldt -64(%rbp)
+    fldt -32(%rbp)
     fxch %st(1)
     faddp
-    fstpt -96(%rbp)
-    fstpt -112(%rbp)
-    fldt -96(%rbp)
-    fldt -112(%rbp)
+    fstpt -64(%rbp)
+    fstpt -80(%rbp)
+    fldt -64(%rbp)
+    fldt -80(%rbp)
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -79,26 +79,26 @@ div_ld:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $120, %rsp
+    sub $72, %rsp
     fstcw -16(%rbp)
     mov %rdi, %rbx
     movq ld_1@GOTPCREL(%rip), %rsi
-    lea -128(%rbp), %rdx
+    lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     mov %rbx, %rsi
-    lea -96(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -128(%rbp)
-    fldt -96(%rbp)
+    fldt -80(%rbp)
+    fldt -48(%rbp)
     fld %st(0)
     fld %st(2)
     fmulp
-    fldt -112(%rbp)
-    fldt -80(%rbp)
+    fldt -64(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
     fld %st(2)
     fmulp
@@ -129,22 +129,22 @@ div_ld:
     fxch %st(5)
     fxch %st(6)
     fxch %st(7)
-    fstpt -64(%rbp)
-    fldt -64(%rbp)
+    fstpt -80(%rbp)
+    fldt -80(%rbp)
     fmulp
     fxch %st(1)
     fsubp
     fld %st(2)
     fxch %st(1)
     fdivp
-    fstpt -112(%rbp)
-    fstpt -128(%rbp)
+    fstpt -64(%rbp)
+    fstpt -80(%rbp)
     fstp %st(0)
     fstp %st(0)
     fstp %st(0)
     fstp %st(0)
-    fldt -112(%rbp)
-    fldt -128(%rbp)
+    fldt -64(%rbp)
+    fldt -80(%rbp)
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -157,26 +157,26 @@ mul_ld:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $104, %rsp
+    sub $72, %rsp
     fstcw -16(%rbp)
     mov %rdi, %rbx
     movq ld_1@GOTPCREL(%rip), %rsi
-    lea -112(%rbp), %rdx
-    mov $32, %rdi
-    mov $5, %rcx
-    call __atomic_load@PLT
-    mov %rbx, %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -112(%rbp)
+    mov %rbx, %rsi
+    lea -48(%rbp), %rdx
+    mov $32, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
     fldt -80(%rbp)
+    fldt -48(%rbp)
     fld %st(0)
     fld %st(2)
     fmulp
-    fldt -96(%rbp)
     fldt -64(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
     fld %st(2)
     fmulp
@@ -192,14 +192,14 @@ mul_ld:
     fmulp
     fxch %st(1)
     faddp
-    fstpt -96(%rbp)
-    fstpt -112(%rbp)
+    fstpt -64(%rbp)
+    fstpt -80(%rbp)
     fstp %st(0)
     fstp %st(0)
     fstp %st(0)
     fstp %st(0)
-    fldt -96(%rbp)
-    fldt -112(%rbp)
+    fldt -64(%rbp)
+    fldt -80(%rbp)
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -222,10 +222,10 @@ neg_ld:
     fchs
     fldt -64(%rbp)
     fchs
-    fstpt -64(%rbp)
-    fstpt -80(%rbp)
-    fldt -64(%rbp)
-    fldt -80(%rbp)
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -237,31 +237,31 @@ sub_ld:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $104, %rsp
+    sub $72, %rsp
     fstcw -16(%rbp)
     mov %rdi, %rbx
     movq ld_1@GOTPCREL(%rip), %rsi
-    lea -112(%rbp), %rdx
-    mov $32, %rdi
-    mov $5, %rcx
-    call __atomic_load@PLT
-    mov %rbx, %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -112(%rbp)
+    mov %rbx, %rsi
+    lea -48(%rbp), %rdx
+    mov $32, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
     fldt -80(%rbp)
+    fldt -48(%rbp)
     fxch %st(1)
     fsubp
-    fldt -96(%rbp)
     fldt -64(%rbp)
+    fldt -32(%rbp)
     fxch %st(1)
     fsubp
-    fstpt -96(%rbp)
-    fstpt -112(%rbp)
-    fldt -96(%rbp)
-    fldt -112(%rbp)
+    fstpt -64(%rbp)
+    fstpt -80(%rbp)
+    fldt -64(%rbp)
+    fldt -80(%rbp)
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -403,62 +403,62 @@ div_f64:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $104, %rsp
+    sub $88, %rsp
     fstcw -16(%rbp)
     stmxcsr -24(%rbp)
     mov %rdi, %rbx
     movq f64_1@GOTPCREL(%rip), %rsi
-    lea -112(%rbp), %rdx
+    lea -96(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %xmm0
-    movq %xmm0, -96(%rbp)
-    movq -104(%rbp), %xmm0
-    movq %xmm0, -112(%rbp)
-    mov %rbx, %rsi
-    lea -80(%rbp), %rdx
-    mov $16, %rdi
-    mov $5, %rcx
-    call __atomic_load@PLT
-    movq -80(%rbp), %xmm0
-    movq -72(%rbp), %xmm1
-    movq -96(%rbp), %xmm2
-    movq %xmm2, -64(%rbp)
-    movq -112(%rbp), %xmm2
-    movq %xmm2, -56(%rbp)
+    movq -96(%rbp), %xmm0
     movq %xmm0, -80(%rbp)
-    movq %xmm1, -72(%rbp)
+    movq -88(%rbp), %xmm0
+    movq %xmm0, -96(%rbp)
+    mov %rbx, %rsi
+    lea -64(%rbp), %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -64(%rbp), %xmm0
+    movq -56(%rbp), %xmm1
+    movq -80(%rbp), %xmm2
+    movq %xmm2, -48(%rbp)
+    movq -96(%rbp), %xmm2
+    movq %xmm2, -40(%rbp)
+    movq %xmm0, -96(%rbp)
+    movq %xmm1, -88(%rbp)
     fld1
-    fldl -80(%rbp)
+    fldl -96(%rbp)
     fld %st(0)
     fmul %st(1)
-    fldl -72(%rbp)
+    fldl -88(%rbp)
     fld %st(0)
     fmul %st(1)
     faddp %st(2)
     fxch %st(1)
     fdivrp %st(3)
-    fldl -64(%rbp)
+    fldl -48(%rbp)
     fld %st(0)
     fmul %st(3)
     fxch %st(1)
     fmul %st(2)
-    fldl -56(%rbp)
+    fldl -40(%rbp)
     fld %st(0)
     fmulp %st(4)
     fxch %st(3)
     faddp %st(2)
     fxch %st(1)
     fmul %st(4)
-    fstpl -48(%rbp)
+    fstpl -96(%rbp)
     fxch %st(2)
     fmulp %st(1)
     fsubp
     fmulp
-    fstpl -40(%rbp)
-    movq -48(%rbp), %xmm0
-    movq -40(%rbp), %xmm1
+    fstpl -88(%rbp)
+    movq -96(%rbp), %xmm0
+    movq -88(%rbp), %xmm1
     ldmxcsr -24(%rbp)
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp

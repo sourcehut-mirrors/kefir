@@ -10,43 +10,43 @@ divide:
 .L__kefir_text_func_divide_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    movq %xmm0, -64(%rbp)
-    movq %xmm1, -56(%rbp)
-    movq %xmm2, -48(%rbp)
-    movq %xmm3, -40(%rbp)
+    movq %xmm0, -48(%rbp)
+    movq %xmm1, -40(%rbp)
+    movq %xmm2, -32(%rbp)
+    movq %xmm3, -24(%rbp)
     fld1
-    fldl -48(%rbp)
+    fldl -32(%rbp)
     fld %st(0)
     fmul %st(1)
-    fldl -40(%rbp)
+    fldl -24(%rbp)
     fld %st(0)
     fmul %st(1)
     faddp %st(2)
     fxch %st(1)
     fdivrp %st(3)
-    fldl -64(%rbp)
+    fldl -48(%rbp)
     fld %st(0)
     fmul %st(3)
     fxch %st(1)
     fmul %st(2)
-    fldl -56(%rbp)
+    fldl -40(%rbp)
     fld %st(0)
     fmulp %st(4)
     fxch %st(3)
     faddp %st(2)
     fxch %st(1)
     fmul %st(4)
-    fstpl -32(%rbp)
+    fstpl -48(%rbp)
     fxch %st(2)
     fmulp %st(1)
     fsubp
     fmulp
-    fstpl -24(%rbp)
-    movq -32(%rbp), %xmm0
-    movq -24(%rbp), %xmm1
+    fstpl -40(%rbp)
+    movq -48(%rbp), %xmm0
+    movq -40(%rbp), %xmm1
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

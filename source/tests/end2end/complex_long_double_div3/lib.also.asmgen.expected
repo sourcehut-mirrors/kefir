@@ -59,14 +59,14 @@ divide:
     fld %st(2)
     fxch %st(1)
     fdivp
+    fstpt -32(%rbp)
     fstpt -48(%rbp)
-    fstpt -64(%rbp)
     fstp %st(0)
     fstp %st(0)
     fstp %st(0)
     fstp %st(0)
+    fldt -32(%rbp)
     fldt -48(%rbp)
-    fldt -64(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

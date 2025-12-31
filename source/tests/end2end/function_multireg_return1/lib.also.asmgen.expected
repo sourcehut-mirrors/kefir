@@ -79,7 +79,6 @@ call3_proxy:
     movb %al, 2(%rbx)
     xor %eax, %eax
     movw (%rbx), %ax
-    mov %rax, %rcx
     movb 2(%rbx), %cl
     shl $16, %ecx
     or %rcx, %rax

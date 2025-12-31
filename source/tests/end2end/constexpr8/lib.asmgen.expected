@@ -118,7 +118,7 @@ get_g:
 .L__kefir_text_func_get_g_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_get_g_label4(%rip)
     fldt .L__kefir_func_get_g_label5(%rip)

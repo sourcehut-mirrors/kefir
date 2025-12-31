@@ -72,10 +72,10 @@ test5:
     mov %rsp, %rbp
     sub $32, %rsp
     call fn5@PLT
-    movq %rax, -16(%rbp)
-    movq %rdx, -8(%rbp)
-    movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    movq %rax, -32(%rbp)
+    movq %rdx, -24(%rbp)
+    movq -32(%rbp), %rax
+    movq -24(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

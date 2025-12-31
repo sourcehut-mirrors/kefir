@@ -83,7 +83,7 @@ add80:
 .L__kefir_text_func_add80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_add80_label4(%rip)
     fldt .L__kefir_func_add80_label5(%rip)
@@ -156,7 +156,7 @@ div80:
 .L__kefir_text_func_div80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_div80_label4(%rip)
     fldt .L__kefir_func_div80_label5(%rip)
@@ -229,7 +229,7 @@ mul80:
 .L__kefir_text_func_mul80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_mul80_label4(%rip)
     fldt .L__kefir_func_mul80_label5(%rip)
@@ -302,7 +302,7 @@ neg80:
 .L__kefir_text_func_neg80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_neg80_label4(%rip)
     fldt .L__kefir_func_neg80_label5(%rip)
@@ -375,7 +375,7 @@ sub80:
 .L__kefir_text_func_sub80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_sub80_label4(%rip)
     fldt .L__kefir_func_sub80_label5(%rip)

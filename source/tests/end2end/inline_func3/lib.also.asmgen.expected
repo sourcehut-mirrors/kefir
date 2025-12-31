@@ -33,12 +33,12 @@ test1:
     fldt .L__kefir_func_test1_label9(%rip)
     movq $0, 104(%rdx)
     fld %st(0)
-    fstpt -160(%rbp)
+    fstpt -176(%rbp)
     fstpt 96(%rdx)
     movq $0, 88(%rdx)
-    fldt -160(%rbp)
+    fldt -176(%rbp)
     fld %st(0)
-    fstpt -160(%rbp)
+    fstpt -176(%rbp)
     fstpt 80(%rdx)
     lea -144(%rbp), %rdi
     xor %eax, %eax

@@ -23,61 +23,61 @@ uint128_add_overflow:
     push %rbx
     push %r12
     push %r13
-    sub $152, %rsp
+    sub $104, %rsp
     mov %r8, %rbx
     mov %rdx, %r12
     mov %rcx, %r13
-    mov %rdi, -64(%rbp)
-    mov %rsi, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    lea -96(%rbp), %rdi
+    mov %rdi, -96(%rbp)
+    mov %rsi, -88(%rbp)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    lea -80(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_unsigned
-    movq -96(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -112(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -104(%rbp)
-    mov %r12, -48(%rbp)
-    mov %r13, -40(%rbp)
-    movdqu -48(%rbp), %xmm0
+    movq %rax, -56(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -40(%rbp)
+    mov %r12, -96(%rbp)
+    mov %r13, -88(%rbp)
+    movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
     lea -96(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_unsigned
-    lea -120(%rbp), %rdi
+    lea -56(%rbp), %rdi
     lea -96(%rbp), %rsi
     mov $130, %rdx
     call __kefir_bigint_add
-    movdqu -120(%rbp), %xmm0
-    movdqu %xmm0, -144(%rbp)
-    lea -144(%rbp), %rdi
+    movdqu -56(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    lea -96(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_signed
-    mov -144(%rbp), %rax
-    mov -136(%rbp), %rcx
+    mov -96(%rbp), %rax
+    mov -88(%rbp), %rcx
     mov %rax, (%rbx)
     mov %rcx, 8(%rbx)
-    movl $0, -144(%rbp)
-    movl $0, -140(%rbp)
-    movl $0, -136(%rbp)
-    movl $0, -132(%rbp)
-    movl $0, -128(%rbp)
-    movl $0, -124(%rbp)
-    lea -120(%rbp), %rdi
-    lea -144(%rbp), %rsi
+    movl $0, -96(%rbp)
+    movl $0, -92(%rbp)
+    movl $0, -88(%rbp)
+    movl $0, -84(%rbp)
+    movl $0, -80(%rbp)
+    movl $0, -76(%rbp)
+    lea -56(%rbp), %rdi
+    lea -96(%rbp), %rsi
     mov $130, %rdx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $0, %al
     mov %rcx, %rbx
     sete %bl
-    lea -120(%rbp), %rdi
+    lea -56(%rbp), %rdi
     mov $130, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
@@ -105,72 +105,72 @@ uint128_mul_overflow:
     push %rbx
     push %r12
     push %r13
-    sub $280, %rsp
+    sub $216, %rsp
     mov %r8, %rbx
     mov %rdx, %r12
     mov %rcx, %r13
-    mov %rdi, -64(%rbp)
-    mov %rsi, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    lea -112(%rbp), %rdi
+    mov %rdi, -208(%rbp)
+    mov %rsi, -200(%rbp)
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -192(%rbp)
+    lea -192(%rbp), %rdi
     mov $128, %rsi
     mov $257, %rdx
     call __kefir_bigint_cast_unsigned
-    movq -112(%rbp), %rax
+    movq -192(%rbp), %rax
     movq %rax, -152(%rbp)
-    movq -104(%rbp), %rax
+    movq -184(%rbp), %rax
     movq %rax, -144(%rbp)
-    movq -96(%rbp), %rax
+    movq -176(%rbp), %rax
     movq %rax, -136(%rbp)
-    movq -88(%rbp), %rax
+    movq -168(%rbp), %rax
     movq %rax, -128(%rbp)
-    movq -80(%rbp), %rax
+    movq -160(%rbp), %rax
     movq %rax, -120(%rbp)
-    mov %r12, -48(%rbp)
-    mov %r13, -40(%rbp)
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    lea -112(%rbp), %rdi
+    mov %r12, -208(%rbp)
+    mov %r13, -200(%rbp)
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -208(%rbp)
+    lea -208(%rbp), %rdi
     mov $128, %rsi
     mov $257, %rdx
     call __kefir_bigint_cast_unsigned
-    lea -232(%rbp), %rdi
-    lea -192(%rbp), %rsi
+    lea -112(%rbp), %rdi
+    lea -72(%rbp), %rsi
     lea -152(%rbp), %rdx
-    lea -112(%rbp), %rcx
+    lea -208(%rbp), %rcx
     mov $257, %r8
     mov $257, %r9
     call __kefir_bigint_signed_multiply
-    movdqu -232(%rbp), %xmm0
-    movdqu %xmm0, -272(%rbp)
-    lea -272(%rbp), %rdi
+    movdqu -112(%rbp), %xmm0
+    movdqu %xmm0, -208(%rbp)
+    lea -208(%rbp), %rdi
     mov $128, %rsi
     mov $257, %rdx
     call __kefir_bigint_cast_signed
-    mov -272(%rbp), %rax
-    mov -264(%rbp), %rcx
+    mov -208(%rbp), %rax
+    mov -200(%rbp), %rcx
     mov %rax, (%rbx)
     mov %rcx, 8(%rbx)
-    movl $0, -272(%rbp)
-    movl $0, -268(%rbp)
-    movl $0, -264(%rbp)
-    movl $0, -260(%rbp)
-    movl $0, -256(%rbp)
-    movl $0, -252(%rbp)
-    movl $0, -248(%rbp)
-    movl $0, -244(%rbp)
-    movl $0, -240(%rbp)
-    movl $0, -236(%rbp)
-    lea -232(%rbp), %rdi
-    lea -272(%rbp), %rsi
+    movl $0, -208(%rbp)
+    movl $0, -204(%rbp)
+    movl $0, -200(%rbp)
+    movl $0, -196(%rbp)
+    movl $0, -192(%rbp)
+    movl $0, -188(%rbp)
+    movl $0, -184(%rbp)
+    movl $0, -180(%rbp)
+    movl $0, -176(%rbp)
+    movl $0, -172(%rbp)
+    lea -112(%rbp), %rdi
+    lea -208(%rbp), %rsi
     mov $257, %rdx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $0, %al
     mov %rcx, %rbx
     sete %bl
-    lea -232(%rbp), %rdi
+    lea -112(%rbp), %rdi
     mov $257, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
@@ -198,61 +198,61 @@ uint128_sub_overflow:
     push %rbx
     push %r12
     push %r13
-    sub $152, %rsp
+    sub $104, %rsp
     mov %r8, %rbx
     mov %rdx, %r12
     mov %rcx, %r13
-    mov %rdi, -64(%rbp)
-    mov %rsi, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    lea -96(%rbp), %rdi
+    mov %rdi, -96(%rbp)
+    mov %rsi, -88(%rbp)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    lea -80(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_unsigned
-    movq -96(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -112(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -104(%rbp)
-    mov %r12, -48(%rbp)
-    mov %r13, -40(%rbp)
-    movdqu -48(%rbp), %xmm0
+    movq %rax, -56(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -40(%rbp)
+    mov %r12, -96(%rbp)
+    mov %r13, -88(%rbp)
+    movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
     lea -96(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_unsigned
-    lea -120(%rbp), %rdi
+    lea -56(%rbp), %rdi
     lea -96(%rbp), %rsi
     mov $130, %rdx
     call __kefir_bigint_subtract
-    movdqu -120(%rbp), %xmm0
-    movdqu %xmm0, -144(%rbp)
-    lea -144(%rbp), %rdi
+    movdqu -56(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    lea -96(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_signed
-    mov -144(%rbp), %rax
-    mov -136(%rbp), %rcx
+    mov -96(%rbp), %rax
+    mov -88(%rbp), %rcx
     mov %rax, (%rbx)
     mov %rcx, 8(%rbx)
-    movl $0, -144(%rbp)
-    movl $0, -140(%rbp)
-    movl $0, -136(%rbp)
-    movl $0, -132(%rbp)
-    movl $0, -128(%rbp)
-    movl $0, -124(%rbp)
-    lea -120(%rbp), %rdi
-    lea -144(%rbp), %rsi
+    movl $0, -96(%rbp)
+    movl $0, -92(%rbp)
+    movl $0, -88(%rbp)
+    movl $0, -84(%rbp)
+    movl $0, -80(%rbp)
+    movl $0, -76(%rbp)
+    lea -56(%rbp), %rdi
+    lea -96(%rbp), %rsi
     mov $130, %rdx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $0, %al
     mov %rcx, %rbx
     sete %bl
-    lea -120(%rbp), %rdi
+    lea -56(%rbp), %rdi
     mov $130, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
@@ -280,47 +280,47 @@ int128_add_overflow:
     push %rbx
     push %r12
     push %r13
-    sub $152, %rsp
+    sub $104, %rsp
     mov %r8, %rbx
     mov %rdx, %r12
     mov %rcx, %r13
-    mov %rdi, -64(%rbp)
-    mov %rsi, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    lea -96(%rbp), %rdi
+    mov %rdi, -96(%rbp)
+    mov %rsi, -88(%rbp)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    lea -80(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_signed
-    movq -96(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -112(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -104(%rbp)
-    mov %r12, -48(%rbp)
-    mov %r13, -40(%rbp)
-    movdqu -48(%rbp), %xmm0
+    movq %rax, -56(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -40(%rbp)
+    mov %r12, -96(%rbp)
+    mov %r13, -88(%rbp)
+    movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
     lea -96(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_signed
-    lea -120(%rbp), %rdi
+    lea -56(%rbp), %rdi
     lea -96(%rbp), %rsi
     mov $130, %rdx
     call __kefir_bigint_add
-    movdqu -120(%rbp), %xmm0
-    movdqu %xmm0, -144(%rbp)
-    lea -144(%rbp), %rdi
+    movdqu -56(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    lea -96(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_signed
-    mov -144(%rbp), %rax
-    mov -136(%rbp), %rcx
+    mov -96(%rbp), %rax
+    mov -88(%rbp), %rcx
     mov %rax, (%rbx)
     mov %rcx, 8(%rbx)
-    lea -120(%rbp), %rdi
+    lea -56(%rbp), %rdi
     mov $130, %rsi
     call __kefir_bigint_redundant_sign_bits
     mov $130, %rcx
@@ -343,54 +343,54 @@ int128_mul_overflow:
     push %rbx
     push %r12
     push %r13
-    sub $280, %rsp
+    sub $216, %rsp
     mov %r8, %rbx
     mov %rdx, %r12
     mov %rcx, %r13
-    mov %rdi, -64(%rbp)
-    mov %rsi, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    lea -112(%rbp), %rdi
+    mov %rdi, -208(%rbp)
+    mov %rsi, -200(%rbp)
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -192(%rbp)
+    lea -192(%rbp), %rdi
     mov $128, %rsi
     mov $257, %rdx
     call __kefir_bigint_cast_signed
-    movq -112(%rbp), %rax
+    movq -192(%rbp), %rax
     movq %rax, -152(%rbp)
-    movq -104(%rbp), %rax
+    movq -184(%rbp), %rax
     movq %rax, -144(%rbp)
-    movq -96(%rbp), %rax
+    movq -176(%rbp), %rax
     movq %rax, -136(%rbp)
-    movq -88(%rbp), %rax
+    movq -168(%rbp), %rax
     movq %rax, -128(%rbp)
-    movq -80(%rbp), %rax
+    movq -160(%rbp), %rax
     movq %rax, -120(%rbp)
-    mov %r12, -48(%rbp)
-    mov %r13, -40(%rbp)
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    lea -112(%rbp), %rdi
+    mov %r12, -208(%rbp)
+    mov %r13, -200(%rbp)
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -208(%rbp)
+    lea -208(%rbp), %rdi
     mov $128, %rsi
     mov $257, %rdx
     call __kefir_bigint_cast_signed
-    lea -232(%rbp), %rdi
-    lea -192(%rbp), %rsi
+    lea -112(%rbp), %rdi
+    lea -72(%rbp), %rsi
     lea -152(%rbp), %rdx
-    lea -112(%rbp), %rcx
+    lea -208(%rbp), %rcx
     mov $257, %r8
     mov $257, %r9
     call __kefir_bigint_signed_multiply
-    movdqu -232(%rbp), %xmm0
-    movdqu %xmm0, -272(%rbp)
-    lea -272(%rbp), %rdi
+    movdqu -112(%rbp), %xmm0
+    movdqu %xmm0, -208(%rbp)
+    lea -208(%rbp), %rdi
     mov $128, %rsi
     mov $257, %rdx
     call __kefir_bigint_cast_signed
-    mov -272(%rbp), %rax
-    mov -264(%rbp), %rcx
+    mov -208(%rbp), %rax
+    mov -200(%rbp), %rcx
     mov %rax, (%rbx)
     mov %rcx, 8(%rbx)
-    lea -232(%rbp), %rdi
+    lea -112(%rbp), %rdi
     mov $257, %rsi
     call __kefir_bigint_redundant_sign_bits
     mov $257, %rcx
@@ -413,47 +413,47 @@ int128_sub_overflow:
     push %rbx
     push %r12
     push %r13
-    sub $152, %rsp
+    sub $104, %rsp
     mov %r8, %rbx
     mov %rdx, %r12
     mov %rcx, %r13
-    mov %rdi, -64(%rbp)
-    mov %rsi, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    lea -96(%rbp), %rdi
+    mov %rdi, -96(%rbp)
+    mov %rsi, -88(%rbp)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    lea -80(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_signed
-    movq -96(%rbp), %rax
-    movq %rax, -120(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -112(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -104(%rbp)
-    mov %r12, -48(%rbp)
-    mov %r13, -40(%rbp)
-    movdqu -48(%rbp), %xmm0
+    movq %rax, -56(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -40(%rbp)
+    mov %r12, -96(%rbp)
+    mov %r13, -88(%rbp)
+    movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
     lea -96(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_signed
-    lea -120(%rbp), %rdi
+    lea -56(%rbp), %rdi
     lea -96(%rbp), %rsi
     mov $130, %rdx
     call __kefir_bigint_subtract
-    movdqu -120(%rbp), %xmm0
-    movdqu %xmm0, -144(%rbp)
-    lea -144(%rbp), %rdi
+    movdqu -56(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    lea -96(%rbp), %rdi
     mov $128, %rsi
     mov $130, %rdx
     call __kefir_bigint_cast_signed
-    mov -144(%rbp), %rax
-    mov -136(%rbp), %rcx
+    mov -96(%rbp), %rax
+    mov -88(%rbp), %rcx
     mov %rax, (%rbx)
     mov %rcx, 8(%rbx)
-    lea -120(%rbp), %rdi
+    lea -56(%rbp), %rdi
     mov $130, %rsi
     call __kefir_bigint_redundant_sign_bits
     mov $130, %rcx
@@ -1598,8 +1598,8 @@ __kefir_bigint_signed_multiply:
     test %r12d, %r12d
     sete %dl
     test %ecx, %ecx
-    setne %sil
-    movzx %sil, %rcx
+    setne %cl
+    movzx %cl, %rcx
     test %al, %al
     cmovz %rcx, %rdx
     test %edx, %edx

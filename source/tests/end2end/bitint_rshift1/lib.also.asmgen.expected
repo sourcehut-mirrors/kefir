@@ -104,27 +104,27 @@ shr5:
 .L__kefir_text_func_shr5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
-    movq %rdx, -112(%rbp)
-    movq %rcx, -104(%rbp)
-    movq %rdi, -96(%rbp)
-    movq %rsi, -88(%rbp)
-    movdqu -112(%rbp), %xmm0
-    movdqu %xmm0, -16(%rbp)
+    sub $96, %rsp
+    movq %rdx, -96(%rbp)
+    movq %rcx, -88(%rbp)
+    movq %rdi, -80(%rbp)
+    movq %rsi, -72(%rbp)
     movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
-    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
-    movdqu -80(%rbp), %xmm0
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movq -64(%rbp), %rsi
-    lea -48(%rbp), %rdi
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    movq -48(%rbp), %rsi
+    lea -64(%rbp), %rdi
     mov $120, %rdx
     call __kefir_bigint_right_shift
-    movq -48(%rbp), %rax
-    movq -40(%rbp), %rdx
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -265,8 +265,8 @@ __kefir_bigint_right_shift_whole_digits:
     setne %dl
     movzx %dl, %rax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label34
     movl $0, -8(%rbp)
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label9:

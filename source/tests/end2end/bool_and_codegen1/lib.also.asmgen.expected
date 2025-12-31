@@ -20,9 +20,9 @@ test:
     setne %sil
     and %sil, %al
     test %ecx, %ecx
-    sete %dl
-    and %al, %dl
-    movzx %dl, %rax
+    sete %cl
+    and %al, %cl
+    movzx %cl, %rax
     ret
 .L__kefir_text_func_test_end:
 

@@ -29,8 +29,8 @@ or1:
     shl $58, %rax
     shr $58, %rax
     test %al, %al
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
     jz .L__kefir_func_or1_label8
 .L__kefir_func_or1_label3:
@@ -44,8 +44,8 @@ or1:
     shl $58, %rax
     shr $58, %rax
     test %al, %al
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     jmp .L__kefir_func_or1_label3
 .L__kefir_text_func_or1_end:
 
@@ -62,8 +62,8 @@ or2:
     shl $50, %rax
     shr $50, %rax
     test %ax, %ax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
     jz .L__kefir_func_or2_label8
 .L__kefir_func_or2_label3:
@@ -77,8 +77,8 @@ or2:
     shl $50, %rax
     shr $50, %rax
     test %ax, %ax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     jmp .L__kefir_func_or2_label3
 .L__kefir_text_func_or2_end:
 
@@ -95,8 +95,8 @@ or3:
     shl $35, %rax
     shr $35, %rax
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
     jz .L__kefir_func_or3_label8
 .L__kefir_func_or3_label3:
@@ -110,8 +110,8 @@ or3:
     shl $35, %rax
     shr $35, %rax
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     jmp .L__kefir_func_or3_label3
 .L__kefir_text_func_or3_end:
 
@@ -128,8 +128,8 @@ or4:
     shl $6, %rax
     shr $6, %rax
     test %rax, %rax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
     jz .L__kefir_func_or4_label8
 .L__kefir_func_or4_label3:
@@ -143,8 +143,8 @@ or4:
     shl $6, %rax
     shr $6, %rax
     test %rax, %rax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     jmp .L__kefir_func_or4_label3
 .L__kefir_text_func_or4_end:
 
@@ -341,8 +341,8 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     movb -24(%rbp), %al
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
     movq -32(%rbp), %rax
     add $1, %rax

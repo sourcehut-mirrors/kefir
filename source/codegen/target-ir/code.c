@@ -1250,6 +1250,71 @@ kefir_result_t kefir_codegen_target_ir_code_replace_value_in(struct kefir_mem *m
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_code_move_after(struct kefir_codegen_target_ir_code *code,kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t move_after_ref, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(block_ref != KEFIR_ID_NONE || block_ref < code->blocks_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR block reference"));
+    REQUIRE(move_after_ref == KEFIR_ID_NONE || move_after_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction reference"));
+    REQUIRE(instr_ref != KEFIR_ID_NONE || instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction reference"));
+    REQUIRE(instr_ref != move_after_ref, KEFIR_OK);
+
+    struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
+    REQUIRE(instr->block_ref != KEFIR_ID_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Target IR instruction has already been dropped"));
+
+    struct kefir_codegen_target_ir_instruction *after_instr = NULL;
+    if (move_after_ref != KEFIR_ID_NONE) {
+        after_instr = &code->code[move_after_ref];
+        REQUIRE(after_instr->block_ref == block_ref, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with target IR instructon block reference"));
+    }
+
+    struct kefir_codegen_target_ir_block *source_block = &code->blocks[instr->block_ref];
+    struct kefir_codegen_target_ir_block *target_block = &code->blocks[block_ref];
+    if (source_block->control_flow.head == instr->instr_ref) {
+        source_block->control_flow.head = instr->control_flow.next;
+    }
+
+    if (source_block->control_flow.tail == instr->instr_ref) {
+        source_block->control_flow.tail = instr->control_flow.prev;
+    }
+
+    if (instr->control_flow.prev != KEFIR_ID_NONE) {
+        struct kefir_codegen_target_ir_instruction *prev_instr = &code->code[instr->control_flow.prev];
+        prev_instr->control_flow.next = instr->control_flow.next;
+    }
+
+    if (instr->control_flow.next != KEFIR_ID_NONE) {
+        struct kefir_codegen_target_ir_instruction *next_instr = &code->code[instr->control_flow.next];
+        next_instr->control_flow.prev = instr->control_flow.prev;
+    }
+    
+    if (after_instr == NULL) {
+        if (target_block->control_flow.head != KEFIR_ID_NONE) {
+            struct kefir_codegen_target_ir_instruction *head_instr = &code->code[target_block->control_flow.head];
+            head_instr->control_flow.prev = instr->instr_ref;
+        }
+        instr->control_flow.prev = KEFIR_ID_NONE;
+        instr->control_flow.next = target_block->control_flow.head;
+        target_block->control_flow.head = instr->instr_ref;
+        if (target_block->control_flow.tail == KEFIR_ID_NONE) {
+            target_block->control_flow.tail = instr->instr_ref;
+        }
+    } else {
+        if (after_instr->control_flow.next != KEFIR_ID_NONE) {
+            struct kefir_codegen_target_ir_instruction *next_instr = &code->code[after_instr->control_flow.next];
+            next_instr->control_flow.prev = instr->instr_ref;
+        }
+
+        instr->control_flow.prev = after_instr->instr_ref;
+        instr->control_flow.next = after_instr->control_flow.next;
+        after_instr->control_flow.next = instr->instr_ref;
+
+        if (target_block->control_flow.tail == after_instr->instr_ref) {
+            target_block->control_flow.tail = instr->instr_ref;
+        }
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_inline_assembly_text_fragment(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref,
     const char *text) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

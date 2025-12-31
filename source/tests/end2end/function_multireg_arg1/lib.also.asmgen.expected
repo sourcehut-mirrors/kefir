@@ -67,11 +67,9 @@ call3_proxy:
     movq -8(%rbp), %rax
     xor %ecx, %ecx
     movw (%rax), %cx
-    mov %rcx, %rdx
     movb 2(%rax), %dl
-    mov %rdx, %rax
-    shl $16, %eax
-    or %rax, %rcx
+    shl $16, %edx
+    or %rdx, %rcx
     mov %rcx, %rdi
     call call3@PLT
     lea (%rbp), %rsp

@@ -74,8 +74,8 @@ is_nan_f80:
     fucomi %st(0)
     setp %al
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     fstp %st(0)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

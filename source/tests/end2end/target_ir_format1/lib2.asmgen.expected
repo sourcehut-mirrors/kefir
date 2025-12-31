@@ -326,7 +326,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "cl"
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -336,11 +336,11 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "cl"
+#                        "reg": "al"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "cl"
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -791,8 +791,8 @@ factorial:
     setne %cl
     movzx %cl, %rax
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_factorial_label22
     movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:

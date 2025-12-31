@@ -66,19 +66,18 @@ select5:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    fstpt -64(%rbp)
     fstpt -80(%rbp)
+    fstpt -64(%rbp)
     test %edi, %edi
-    jnz .L__kefir_func_select5_label6
+    jnz .L__kefir_func_select5_label3
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_select5_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_select5_label6:
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_select5_label3
 .L__kefir_text_func_select5_end:
 

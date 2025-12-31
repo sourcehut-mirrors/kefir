@@ -120,47 +120,47 @@ add128:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $120, %rsp
-    movaps %xmm0, -128(%rbp)
+    sub $104, %rsp
+    movaps %xmm0, -112(%rbp)
     mov %rdi, %rbx
-    fnstenv -112(%rbp)
-    stmxcsr -84(%rbp)
+    fnstenv -96(%rbp)
+    stmxcsr -68(%rbp)
     fnclex
 .L__kefir_func_add128_label2:
-    lea -80(%rbp), %rdx
+    lea -64(%rbp), %rdx
     mov %rbx, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -80(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
-    movaps -128(%rbp), %xmm1
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
+    movaps -112(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movaps %xmm0, -48(%rbp)
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
+    movaps %xmm0, -64(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
     mov %rbx, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
-    lea -32(%rbp), %rdx
-    lea -80(%rbp), %rcx
+    lea -48(%rbp), %rdx
+    lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add128_label10
-    stmxcsr -128(%rbp)
-    mov -128(%rbp), %rcx
+    stmxcsr -112(%rbp)
+    mov -112(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -112(%rbp)
-    ldmxcsr -84(%rbp)
-    stmxcsr -128(%rbp)
-    orl %eax, -128(%rbp)
-    ldmxcsr -128(%rbp)
-    movaps -48(%rbp), %xmm0
+    fldenv -96(%rbp)
+    ldmxcsr -68(%rbp)
+    stmxcsr -112(%rbp)
+    orl %eax, -112(%rbp)
+    ldmxcsr -112(%rbp)
+    movaps -64(%rbp), %xmm0
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

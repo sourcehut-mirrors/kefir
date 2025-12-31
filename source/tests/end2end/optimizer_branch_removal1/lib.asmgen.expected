@@ -79,8 +79,8 @@ test7:
     mov %rsp, %rbp
     mov $0, %rax
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     pop %rbp
     ret
 .L__kefir_text_func_test7_end:

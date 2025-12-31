@@ -372,8 +372,8 @@ test_dec32_cg_solve:
     movaps -112(%rbp), %xmm1
     call __bid_eqsd2@PLT
     test %eax, %eax
-    sete %cl
-    or %cl, %r12b
+    sete %al
+    or %al, %r12b
     setne %r12b
     test %r12b, %r12b
     jnz .L__kefir_func_test_dec32_cg_solve_label12
@@ -662,8 +662,8 @@ test_dec64_cg_solve:
     movaps -112(%rbp), %xmm1
     call __bid_eqdd2@PLT
     test %eax, %eax
-    sete %cl
-    or %cl, %r12b
+    sete %al
+    or %al, %r12b
     setne %r12b
     test %r12b, %r12b
     jnz .L__kefir_func_test_dec64_cg_solve_label12
@@ -828,8 +828,8 @@ test_dec32_sqrt_approx:
     movaps -64(%rbp), %xmm1
     call __bid_eqsd2@PLT
     test %eax, %eax
-    sete %cl
-    or %cl, %bl
+    sete %al
+    or %al, %bl
     setne %bl
     test %bl, %bl
     jnz .L__kefir_func_test_dec32_sqrt_approx_label15
@@ -1254,8 +1254,8 @@ test_dec128_sqrt_approx:
     movaps -64(%rbp), %xmm1
     call __bid_eqtd2@PLT
     test %eax, %eax
-    sete %cl
-    or %cl, %bl
+    sete %al
+    or %al, %bl
     setne %bl
     test %bl, %bl
     jnz .L__kefir_func_test_dec128_sqrt_approx_label15
@@ -1333,8 +1333,8 @@ test_dec64_sqrt_approx:
     movaps -64(%rbp), %xmm1
     call __bid_eqdd2@PLT
     test %eax, %eax
-    sete %cl
-    or %cl, %bl
+    sete %al
+    or %al, %bl
     setne %bl
     test %bl, %bl
     jnz .L__kefir_func_test_dec64_sqrt_approx_label15
@@ -2119,8 +2119,8 @@ test_dec128_cg_solve:
     movaps -112(%rbp), %xmm1
     call __bid_eqtd2@PLT
     test %eax, %eax
-    sete %cl
-    or %cl, %r12b
+    sete %al
+    or %al, %r12b
     setne %r12b
     test %r12b, %r12b
     jnz .L__kefir_func_test_dec128_cg_solve_label12

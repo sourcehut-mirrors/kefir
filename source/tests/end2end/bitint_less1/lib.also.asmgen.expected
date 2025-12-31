@@ -276,16 +276,16 @@ __kefir_bigint_signed_compare:
     movl %eax, -36(%rbp)
     movl -40(%rbp), %eax
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
     sete %cl
     test %cl, %cl
     jz .L__kefir_runtime_func___kefir_bigint_signed_compare_label20
 .L__kefir_runtime_func___kefir_bigint_signed_compare_label3:
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_compare_label22
     movl -40(%rbp), %eax
     mov $0, %rcx
@@ -315,8 +315,8 @@ __kefir_bigint_signed_compare:
 .L__kefir_runtime_func___kefir_bigint_signed_compare_label23:
     movl -36(%rbp), %eax
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rcx
+    setne %al
+    movzx %al, %rcx
     jmp .L__kefir_runtime_func___kefir_bigint_signed_compare_label7
 .L__kefir_runtime_func___kefir_bigint_signed_compare_label22:
     mov $1, %rax

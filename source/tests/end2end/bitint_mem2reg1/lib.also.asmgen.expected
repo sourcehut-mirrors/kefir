@@ -11,37 +11,37 @@ test1:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $136, %rsp
+    sub $104, %rsp
     lea 16(%rbp), %rbx
-    movq %r8, -144(%rbp)
-    movq %r9, -136(%rbp)
-    movq %rdx, -128(%rbp)
-    movq %rcx, -120(%rbp)
-    movq %rdi, -112(%rbp)
-    movq %rsi, -104(%rbp)
-    movdqu -112(%rbp), %xmm0
-    movdqu %xmm0, -32(%rbp)
-    lea -64(%rbp), %rdi
-    lea -48(%rbp), %rsi
-    lea -32(%rbp), %rdx
-    lea -128(%rbp), %rcx
+    movq %r8, -112(%rbp)
+    movq %r9, -104(%rbp)
+    movq %rdx, -96(%rbp)
+    movq %rcx, -88(%rbp)
+    movq %rdi, -80(%rbp)
+    movq %rsi, -72(%rbp)
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    lea -48(%rbp), %rdi
+    lea -32(%rbp), %rsi
+    lea -64(%rbp), %rdx
+    lea -96(%rbp), %rcx
     mov $120, %r8
     mov $120, %r9
     call __kefir_bigint_signed_multiply
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
-    lea -80(%rbp), %rdi
-    lea -144(%rbp), %rsi
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    lea -64(%rbp), %rdi
+    lea -112(%rbp), %rsi
     mov $120, %rdx
     call __kefir_bigint_add
-    movdqu -80(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    lea -96(%rbp), %rdi
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    lea -64(%rbp), %rdi
     mov %rbx, %rsi
     mov $120, %rdx
     call __kefir_bigint_xor
-    movq -96(%rbp), %rax
-    movq -88(%rbp), %rdx
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %rdx
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -866,8 +866,8 @@ __kefir_bigint_signed_multiply:
     test %r12d, %r12d
     sete %dl
     test %ecx, %ecx
-    setne %sil
-    movzx %sil, %rcx
+    setne %cl
+    movzx %cl, %rcx
     test %al, %al
     cmovz %rcx, %rdx
     test %edx, %edx

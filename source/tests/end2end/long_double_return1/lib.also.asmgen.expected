@@ -16,7 +16,15 @@ my_hypot:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
+    fstpt -64(%rbp)
     fstpt -48(%rbp)
+    sub $32, %rsp
+    fldt -64(%rbp)
+    fstpt (%rsp)
+    fldt -64(%rbp)
+    fstpt 16(%rsp)
+    call mul@PLT
+    add $32, %rsp
     fstpt -64(%rbp)
     sub $32, %rsp
     fldt -48(%rbp)
@@ -29,15 +37,7 @@ my_hypot:
     sub $32, %rsp
     fldt -64(%rbp)
     fstpt (%rsp)
-    fldt -64(%rbp)
-    fstpt 16(%rsp)
-    call mul@PLT
-    add $32, %rsp
-    fstpt -64(%rbp)
-    sub $32, %rsp
     fldt -32(%rbp)
-    fstpt (%rsp)
-    fldt -64(%rbp)
     fstpt 16(%rsp)
     call sum@PLT
     fstpt -64(%rbp)

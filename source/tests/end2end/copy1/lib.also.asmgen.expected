@@ -335,7 +335,6 @@ generate_buf_2:
     jl .L__kefir_func_generate_buf_2_label10
     xor %eax, %eax
     movw -3(%rbp), %ax
-    mov %rax, %rcx
     movb -1(%rbp), %cl
     shl $16, %ecx
     or %rcx, %rax
@@ -598,7 +597,6 @@ generate_buf_10:
     movq -11(%rbp), %rax
     xor %ecx, %ecx
     movw -3(%rbp), %cx
-    mov %rcx, %rdx
     movb -1(%rbp), %dl
     shl $16, %edx
     or %rdx, %rcx

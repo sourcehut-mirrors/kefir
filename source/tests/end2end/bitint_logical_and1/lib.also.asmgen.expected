@@ -29,8 +29,8 @@ and1:
     shl $58, %rax
     shr $58, %rax
     test %al, %al
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
     sete %cl
     test %cl, %cl
@@ -46,8 +46,8 @@ and1:
     shl $58, %rax
     shr $58, %rax
     test %al, %al
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     jmp .L__kefir_func_and1_label3
 .L__kefir_text_func_and1_end:
 
@@ -64,8 +64,8 @@ and2:
     shl $50, %rax
     shr $50, %rax
     test %ax, %ax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
     sete %cl
     test %cl, %cl
@@ -81,8 +81,8 @@ and2:
     shl $50, %rax
     shr $50, %rax
     test %ax, %ax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     jmp .L__kefir_func_and2_label3
 .L__kefir_text_func_and2_end:
 
@@ -99,8 +99,8 @@ and3:
     shl $35, %rax
     shr $35, %rax
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
     sete %cl
     test %cl, %cl
@@ -116,8 +116,8 @@ and3:
     shl $35, %rax
     shr $35, %rax
     test %eax, %eax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     jmp .L__kefir_func_and3_label3
 .L__kefir_text_func_and3_end:
 
@@ -134,8 +134,8 @@ and4:
     shl $6, %rax
     shr $6, %rax
     test %rax, %rax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %al, %al
     sete %cl
     test %cl, %cl
@@ -151,8 +151,8 @@ and4:
     shl $6, %rax
     shr $6, %rax
     test %rax, %rax
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     jmp .L__kefir_func_and4_label3
 .L__kefir_text_func_and4_end:
 
@@ -353,8 +353,8 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     movb -24(%rbp), %al
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
     movq -32(%rbp), %rax
     add $1, %rax

@@ -150,10 +150,10 @@ ldcint:
     fnstcww -32(%rbp)
     movzxw -32(%rbp), %eax
     or $3072, %eax
-    movw %ax, -16(%rbp)
-    fldcww -16(%rbp)
-    fistpq -24(%rbp)
-    mov -24(%rbp), %rax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
     fldcww -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -176,10 +176,10 @@ ldcuint:
     fnstcww -32(%rbp)
     movzxw -32(%rbp), %eax
     or $3072, %ax
-    movw %ax, -16(%rbp)
-    fldcww -16(%rbp)
-    fistpq -24(%rbp)
-    mov -24(%rbp), %rax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
     fldcww -32(%rbp)
 .L__kefir_func_ldcuint_label4:
     fldcw -8(%rbp)
@@ -191,10 +191,10 @@ ldcuint:
     fsubp
     movzxw -32(%rbp), %eax
     or $3072, %ax
-    movw %ax, -16(%rbp)
-    fldcww -16(%rbp)
-    fistpq -24(%rbp)
-    mov -24(%rbp), %rax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
     fldcww -32(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_ldcuint_label4

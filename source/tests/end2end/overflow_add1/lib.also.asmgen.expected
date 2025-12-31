@@ -41,15 +41,14 @@ overflow_add_uchar_schar_uchar:
     movzx %dil, %rax
     movsx %sil, %rcx
     add %rcx, %rax
-    seto %sil
-    movzx %al, %rcx
-    cmp %rcx, %rax
-    mov %rsi, %rcx
-    setne %cl
-    or %cl, %sil
-    and $1, %esi
+    seto %cl
+    movzx %al, %rsi
+    cmp %rsi, %rax
+    setne %sil
+    or %sil, %cl
+    and $1, %ecx
     movb %al, (%rdx)
-    mov %esi, %eax
+    mov %ecx, %eax
     ret
 .L__kefir_text_func_overflow_add_uchar_schar_uchar_end:
 
@@ -84,7 +83,6 @@ overflow_add_ulong_ulong_long:
     add %rsi, %rdi
     sets %al
     cmp %rsi, %rdi
-    mov %rax, %rcx
     setb %cl
     or %cl, %al
     and $1, %eax
@@ -122,13 +120,11 @@ overflow_add_long_int_int:
 .L__kefir_text_func_overflow_add_long_int_int_begin:
     movsx %esi, %rax
     add %rax, %rdi
-    seto %cl
-    movsx %edi, %rax
-    cmp %rax, %rdi
-    mov %rcx, %rax
-    setne %al
-    or %al, %cl
-    mov %rcx, %rax
+    seto %al
+    movsx %edi, %rcx
+    cmp %rcx, %rdi
+    setne %cl
+    or %cl, %al
     and $1, %eax
     movl %edi, (%rdx)
     ret
@@ -139,7 +135,6 @@ overflow_add_ulong_ulong_short:
     add %rsi, %rdi
     sets %al
     cmp %rsi, %rdi
-    mov %rax, %rcx
     setb %cl
     or %cl, %al
     movsx %di, %rsi
@@ -165,15 +160,14 @@ overflow_add_schar_schar_schar:
     movsx %dil, %rax
     movsx %sil, %rcx
     add %rcx, %rax
-    seto %sil
-    movsx %al, %rcx
-    cmp %rcx, %rax
-    mov %rsi, %rcx
-    setne %cl
-    or %cl, %sil
-    and $1, %esi
+    seto %cl
+    movsx %al, %rsi
+    cmp %rsi, %rax
+    setne %sil
+    or %sil, %cl
+    and $1, %ecx
     movb %al, (%rdx)
-    mov %esi, %eax
+    mov %ecx, %eax
     ret
 .L__kefir_text_func_overflow_add_schar_schar_schar_end:
 
@@ -182,15 +176,14 @@ overflow_add_schar_schar_uchar:
     movsx %dil, %rax
     movsx %sil, %rcx
     add %rcx, %rax
-    seto %sil
-    movzx %al, %rcx
-    cmp %rcx, %rax
-    mov %rsi, %rcx
-    setne %cl
-    or %cl, %sil
-    and $1, %esi
+    seto %cl
+    movzx %al, %rsi
+    cmp %rsi, %rax
+    setne %sil
+    or %sil, %cl
+    and $1, %ecx
     movb %al, (%rdx)
-    mov %esi, %eax
+    mov %ecx, %eax
     ret
 .L__kefir_text_func_overflow_add_schar_schar_uchar_end:
 
@@ -199,28 +192,28 @@ overflow_add_schar_uchar_uchar:
     movsx %dil, %rax
     movzx %sil, %rcx
     add %rcx, %rax
-    seto %sil
-    movzx %al, %rcx
-    cmp %rcx, %rax
-    mov %rsi, %rcx
-    setne %cl
-    or %cl, %sil
-    and $1, %esi
+    seto %cl
+    movzx %al, %rsi
+    cmp %rsi, %rax
+    setne %sil
+    or %sil, %cl
+    and $1, %ecx
     movb %al, (%rdx)
-    mov %esi, %eax
+    mov %ecx, %eax
     ret
 .L__kefir_text_func_overflow_add_schar_uchar_uchar_end:
 
 overflow_add_ulong_long_long:
 .L__kefir_text_func_overflow_add_ulong_long_long_begin:
-    mov %rdi, %rcx
-    add %rsi, %rcx
-    movabs $-9223372036854775808, %rax
-    add %rcx, %rax
-    cmp %rdi, %rax
-    setb %al
-    and $1, %eax
-    movq %rcx, (%rdx)
+    mov %rdi, %rax
+    add %rsi, %rax
+    movabs $-9223372036854775808, %rcx
+    add %rax, %rcx
+    cmp %rdi, %rcx
+    setb %cl
+    and $1, %ecx
+    movq %rax, (%rdx)
+    mov %ecx, %eax
     ret
 .L__kefir_text_func_overflow_add_ulong_long_long_end:
 
@@ -229,15 +222,14 @@ overflow_add_int_short_uint:
     movsx %edi, %rax
     movsx %si, %rcx
     add %rcx, %rax
-    seto %sil
-    mov %eax, %ecx
-    cmp %rcx, %rax
-    mov %rsi, %rcx
-    setne %cl
-    or %cl, %sil
-    and $1, %esi
+    seto %cl
+    mov %eax, %esi
+    cmp %rsi, %rax
+    setne %sil
+    or %sil, %cl
+    and $1, %ecx
     movl %eax, (%rdx)
-    mov %esi, %eax
+    mov %ecx, %eax
     ret
 .L__kefir_text_func_overflow_add_int_short_uint_end:
 
@@ -255,15 +247,14 @@ overflow_add_uint_short_ushort:
     mov %edi, %eax
     movsx %si, %rcx
     add %rcx, %rax
-    seto %sil
-    movzx %ax, %rcx
-    cmp %rcx, %rax
-    mov %rsi, %rcx
-    setne %cl
-    or %cl, %sil
-    and $1, %esi
+    seto %cl
+    movzx %ax, %rsi
+    cmp %rsi, %rax
+    setne %sil
+    or %sil, %cl
+    and $1, %ecx
     movw %ax, (%rdx)
-    mov %esi, %eax
+    mov %ecx, %eax
     ret
 .L__kefir_text_func_overflow_add_uint_short_ushort_end:
 

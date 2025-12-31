@@ -22,8 +22,8 @@ test:
     or %sil, %al
     setne %al
     test %ecx, %ecx
-    sete %dl
-    or %dl, %al
+    sete %cl
+    or %cl, %al
     setne %al
     movzx %al, %rax
     ret

@@ -19,11 +19,11 @@ test:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rdx
-    mov $0, %rax
-    imul $8, %rax, %rsi
-    lea -48(%rbp), %rax
-    add %rsi, %rax
-    movq %rcx, (%rax)
+    mov $0, %rsi
+    imul $8, %rsi, %rax
+    lea -48(%rbp), %rsi
+    add %rax, %rsi
+    movq %rcx, (%rsi)
     movl -32(%rbp), %eax
     movsx %eax, %rax
     mov $4, %rcx
@@ -55,8 +55,8 @@ test:
     test %sil, %sil
     sete %al
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz .L__kefir_func_test_label16
     movl -32(%rbp), %eax
     mov $0, %rcx
@@ -90,11 +90,11 @@ test2:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rax
-    mov $0, %rdx
-    imul $8, %rdx, %rsi
-    lea -64(%rbp), %rdx
-    add %rsi, %rdx
-    movq %rcx, (%rdx)
+    mov $0, %rsi
+    imul $8, %rsi, %rdx
+    lea -64(%rbp), %rsi
+    add %rdx, %rsi
+    movq %rcx, (%rsi)
     movl -48(%rbp), %ecx
     movsx %ecx, %rcx
     mov $4, %rdx

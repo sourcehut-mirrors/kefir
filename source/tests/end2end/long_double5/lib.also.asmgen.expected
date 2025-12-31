@@ -45,19 +45,19 @@ ge:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fld %st(0)
-    fstpt -32(%rbp)
-    fld %st(1)
     fstpt -48(%rbp)
+    fld %st(1)
+    fstpt -32(%rbp)
     xor %eax, %eax
     fcomip %st(1)
     fstp %st(0)
     seta %al
-    fldt -32(%rbp)
     fldt -48(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
-    fstpt -48(%rbp)
-    fld %st(1)
     fstpt -32(%rbp)
+    fld %st(1)
+    fstpt -48(%rbp)
     xor %ecx, %ecx
     xor %edx, %edx
     fucomip %st(1)

@@ -16,7 +16,7 @@ less_or_equalsld:
 .L__kefir_text_func_less_or_equalsld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -30,19 +30,19 @@ less_or_equalsld:
     fxch %st(1)
     fxch %st(1)
     fld %st(0)
-    fstpt -96(%rbp)
+    fstpt -80(%rbp)
     fld %st(1)
-    fstpt -112(%rbp)
+    fstpt -64(%rbp)
     mov $0, %rax
     fcomip %st(1)
     fstp %st(0)
     seta %al
-    fldt -112(%rbp)
-    fldt -96(%rbp)
+    fldt -64(%rbp)
+    fldt -80(%rbp)
     fld %st(0)
-    fstpt -96(%rbp)
+    fstpt -80(%rbp)
     fld %st(1)
-    fstpt -112(%rbp)
+    fstpt -64(%rbp)
     mov $0, %rcx
     mov $0, %rdx
     fucomip %st(1)
@@ -106,7 +106,7 @@ greater_or_equalsld:
 .L__kefir_text_func_greater_or_equalsld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -119,19 +119,19 @@ greater_or_equalsld:
     fldt -32(%rbp)
     fxch %st(1)
     fld %st(0)
-    fstpt -112(%rbp)
+    fstpt -80(%rbp)
     fld %st(1)
-    fstpt -96(%rbp)
+    fstpt -64(%rbp)
     mov $0, %rax
     fcomip %st(1)
     fstp %st(0)
     seta %al
-    fldt -112(%rbp)
-    fldt -96(%rbp)
+    fldt -80(%rbp)
+    fldt -64(%rbp)
     fld %st(0)
-    fstpt -96(%rbp)
+    fstpt -64(%rbp)
     fld %st(1)
-    fstpt -112(%rbp)
+    fstpt -80(%rbp)
     mov $0, %rcx
     mov $0, %rdx
     fucomip %st(1)
