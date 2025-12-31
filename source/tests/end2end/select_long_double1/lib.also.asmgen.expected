@@ -28,16 +28,12 @@ get:
     test %esi, %esi
     jnz .L__kefir_func_get_label12
 .L__kefir_func_get_label7:
-    movq -80(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -72(%rbp), %rax
-    movq %rax, -56(%rbp)
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get_label3
 .L__kefir_func_get_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get_label7
 .L__kefir_text_func_get_end:
 

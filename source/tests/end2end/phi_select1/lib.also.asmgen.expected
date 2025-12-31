@@ -77,10 +77,8 @@ select5:
     pop %rbp
     ret
 .L__kefir_func_select5_label6:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_select5_label3
 .L__kefir_text_func_select5_end:
 

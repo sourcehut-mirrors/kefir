@@ -36,10 +36,8 @@ get:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -50,10 +48,8 @@ get:
     cmp $1, %esi
     jne .L__kefir_func_get_label3
 .L__kefir_func_get_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get_label3
 .L__kefir_text_func_get_end:
 
@@ -69,10 +65,8 @@ get2:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get2_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get2_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -83,10 +77,8 @@ get2:
     cmp $2, %esi
     je .L__kefir_func_get2_label3
 .L__kefir_func_get2_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get2_label3
 .L__kefir_text_func_get2_end:
 
@@ -102,10 +94,8 @@ get3:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get3_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get3_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -116,10 +106,8 @@ get3:
     cmp $3, %esi
     jle .L__kefir_func_get3_label3
 .L__kefir_func_get3_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get3_label3
 .L__kefir_text_func_get3_end:
 
@@ -135,10 +123,8 @@ get4:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get4_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get4_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -149,10 +135,8 @@ get4:
     cmp $4, %esi
     jl .L__kefir_func_get4_label3
 .L__kefir_func_get4_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get4_label3
 .L__kefir_text_func_get4_end:
 
@@ -168,10 +152,8 @@ get5:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get5_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get5_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -182,10 +164,8 @@ get5:
     cmp $-3, %esi
     jge .L__kefir_func_get5_label3
 .L__kefir_func_get5_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get5_label3
 .L__kefir_text_func_get5_end:
 
@@ -201,10 +181,8 @@ get6:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get6_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get6_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -215,10 +193,8 @@ get6:
     cmp $-4, %esi
     jg .L__kefir_func_get6_label3
 .L__kefir_func_get6_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get6_label3
 .L__kefir_text_func_get6_end:
 
@@ -234,10 +210,8 @@ get7:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get7_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get7_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -248,10 +222,8 @@ get7:
     cmp $30, %esi
     jbe .L__kefir_func_get7_label3
 .L__kefir_func_get7_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get7_label3
 .L__kefir_text_func_get7_end:
 
@@ -267,10 +239,8 @@ get8:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get8_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get8_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -281,10 +251,8 @@ get8:
     cmp $40, %esi
     jb .L__kefir_func_get8_label3
 .L__kefir_func_get8_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get8_label3
 .L__kefir_text_func_get8_end:
 
@@ -300,10 +268,8 @@ get9:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get9_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get9_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -314,10 +280,8 @@ get9:
     cmp $100, %esi
     jae .L__kefir_func_get9_label3
 .L__kefir_func_get9_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get9_label3
 .L__kefir_text_func_get9_end:
 
@@ -333,10 +297,8 @@ get10:
     fstpt -80(%rbp)
     test %edi, %edi
     jnz .L__kefir_func_get10_label10
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
 .L__kefir_func_get10_label3:
     fldt -80(%rbp)
     fldcw -8(%rbp)
@@ -347,10 +309,8 @@ get10:
     cmp $200, %esi
     ja .L__kefir_func_get10_label3
 .L__kefir_func_get10_label12:
-    movq -64(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_func_get10_label3
 .L__kefir_text_func_get10_end:
 

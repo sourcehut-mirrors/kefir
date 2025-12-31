@@ -813,18 +813,35 @@ static kefir_result_t copy_spill_area(struct destructor_state *state,
     }
 
     kefir_asm_amd64_xasmgen_register_t tmp_reg;
-    REQUIRE_OK(allocate_scratch_register(state, &tmp_reg, TEMPORARY_REGISTER_GP, NULL));
-    for (kefir_size_t i = 0; i < length; i++) {
-        const kefir_size_t index = forward_direction ? i : length - i - 1;
+    kefir_size_t qwords = 1;
+    if (length % 2 == 0) {
+        qwords = 2;
+        REQUIRE_OK(allocate_scratch_register(state, &tmp_reg, TEMPORARY_REGISTER_SSE, NULL));
+    } else {
+        REQUIRE_OK(allocate_scratch_register(state, &tmp_reg, TEMPORARY_REGISTER_GP, NULL));
+    }
+    for (kefir_size_t i = 0; i < length; i += qwords) {
+        const kefir_size_t index = forward_direction ? i : length - i - qwords;
         kefir_size_t new_position;
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(
-            state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-            &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(from + index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), &new_position));
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(
-            state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(to + index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-            &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), NULL));
+        if (qwords == 1) {
+            REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(from + index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), &new_position));
+            REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(to + index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), NULL));
+        } else {
+            REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(from + index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_128BIT), &new_position));
+            REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(to + index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_128BIT),
+                &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), NULL));
+        }
     }
     REQUIRE_OK(release_scratch_register(state, tmp_reg));
     return KEFIR_OK;
