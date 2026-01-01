@@ -289,7 +289,7 @@ kefir_result_t kefir_codegen_target_ir_regalloc_reset(struct kefir_mem *mem, str
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(regalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR register allocator"));
 
-    REQUIRE_OK(kefir_hashtable_clear(&regalloc->allocation));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &regalloc->allocation));
     return KEFIR_OK;
 }
 

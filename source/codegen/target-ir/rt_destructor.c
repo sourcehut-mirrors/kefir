@@ -720,8 +720,8 @@ static kefir_result_t translate_instruction(struct rt_destructor_state *state, s
         kefir_size_t input_index = 0, output_index = 0;
         struct kefir_codegen_target_ir_value_ref output_value_ref;
         const struct kefir_codegen_target_ir_value_type *output_value_type;
-        REQUIRE_OK(kefir_hashtable_clear(&state->implicit_read_vregs));
-        REQUIRE_OK(kefir_hashtable_clear(&state->implicit_write_vregs));
+        REQUIRE_OK(kefir_hashtable_clear(state->mem, &state->implicit_read_vregs));
+        REQUIRE_OK(kefir_hashtable_clear(state->mem, &state->implicit_write_vregs));
         for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
             switch (classification.operands[i].class) {
                 case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE:

@@ -167,11 +167,19 @@ kefir_result_t kefir_hashtable_delete(struct kefir_mem *mem, struct kefir_hashta
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Entry with provided key does not exist in the hashtable"););
 }
 
-kefir_result_t kefir_hashtable_clear(struct kefir_hashtable *hashtable) {
+kefir_result_t kefir_hashtable_clear(struct kefir_mem *mem, struct kefir_hashtable *hashtable) {
     REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
 
-    for (kefir_size_t i = 0; i < hashtable->capacity; i++) {
-        hashtable->entry_states[i] = KEFIR_HASHTABLE_ENTRY_EMPTY;
+    if (hashtable->cleanup.callback != NULL) {
+        for (kefir_size_t i = 0; i < hashtable->capacity; i++) {
+            if (hashtable->entry_states[i] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {
+                REQUIRE_OK(hashtable->cleanup.callback(mem, hashtable, hashtable->entries[i].key,
+                                                       hashtable->entries[i].value, hashtable->cleanup.payload));
+            }
+            hashtable->entry_states[i] = KEFIR_HASHTABLE_ENTRY_EMPTY;
+        }
+    } else if (hashtable->capacity > 0) {
+        memset(hashtable->entry_states, KEFIR_HASHTABLE_ENTRY_EMPTY, sizeof(kefir_uint8_t) * hashtable->capacity);
     }
     hashtable->occupied = 0;
     return KEFIR_OK;

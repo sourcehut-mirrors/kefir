@@ -59,8 +59,8 @@ kefir_result_t kefir_opt_code_schedule_clear(struct kefir_mem *mem, struct kefir
     schedule->blocks = NULL;
     schedule->blocks_length = 0;
     schedule->blocks_capacity = 0;
-    REQUIRE_OK(kefir_hashtable_clear(&schedule->instructions_by_ref));
-    REQUIRE_OK(kefir_hashtable_clear(&schedule->blocks_by_ref));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &schedule->instructions_by_ref));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &schedule->blocks_by_ref));
     return KEFIR_OK;
 }
 

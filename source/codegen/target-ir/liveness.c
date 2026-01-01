@@ -288,7 +288,7 @@ kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *mem, con
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
 
     if (liveness->blocks != NULL) {
-        REQUIRE_OK(kefir_hashtable_clear(&liveness->values));
+        REQUIRE_OK(kefir_hashtable_clear(mem, &liveness->values));
         if (liveness->blocks != NULL) {
             for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(liveness->code); i++) {
                 kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(liveness->code, i);

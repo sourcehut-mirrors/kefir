@@ -223,7 +223,7 @@ kefir_result_t kefir_codegen_target_ir_interference_build(struct kefir_mem *mem,
     REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
     
-    REQUIRE_OK(kefir_graph_clear(&interference->interference_graph));
+    REQUIRE_OK(kefir_graph_clear(mem, &interference->interference_graph));
 
     struct kefir_hashtree per_block_ranges;
     REQUIRE_OK(kefir_hashtree_init(&per_block_ranges, &kefir_hashtree_uint_ops));

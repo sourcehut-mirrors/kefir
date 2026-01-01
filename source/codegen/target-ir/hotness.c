@@ -131,7 +131,7 @@ static kefir_result_t build_hotness(struct hotness_payload *payload) {
         REQUIRE_OK(kefir_list_pop(payload->mem, &payload->queue, head));
 
         REQUIRE_OK(kefir_codegen_target_ir_interference_build_per_block_liveness(payload->mem, payload->control_flow, payload->liveness, block_ref, &payload->per_block_ranges));
-        REQUIRE_OK(kefir_hashtable_clear(&payload->alive_values));
+        REQUIRE_OK(kefir_hashtable_clear(payload->mem, &payload->alive_values));
 
         REQUIRE_OK(update_lifetimes(payload, KEFIR_ID_NONE));
 

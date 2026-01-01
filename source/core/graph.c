@@ -72,10 +72,11 @@ static kefir_result_t get_vertex(struct kefir_mem *mem, struct kefir_graph *grap
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_graph_clear(struct kefir_graph *graph) {
+kefir_result_t kefir_graph_clear(struct kefir_mem *mem, struct kefir_graph *graph) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph"));
 
-    REQUIRE_OK(kefir_hashtable_clear(&graph->vertices));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &graph->vertices));
     return KEFIR_OK;
 }
 

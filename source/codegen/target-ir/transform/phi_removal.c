@@ -301,7 +301,7 @@ static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_co
         REQUIRE_OK(remove_unused_phis_from_block(mem, code, block_ref, removal_set));
     }
 
-    REQUIRE_OK(kefir_hashtable_clear(&traversal->indices));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &traversal->indices));
     REQUIRE_OK(kefir_hashset_clear(mem, &traversal->on_stack));
     REQUIRE_OK(kefir_list_clear(mem, &traversal->stack));
     REQUIRE_OK(kefir_list_clear(mem, &traversal->scc_list));

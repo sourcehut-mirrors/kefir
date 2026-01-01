@@ -855,9 +855,9 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->current_instr.input_registers));
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->current_instr.implicit_input_registers));
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->current_instr.output_registers));
-    REQUIRE_OK(kefir_hashtable_clear(&state->current_instr.scratch_registers));
-    REQUIRE_OK(kefir_hashtable_clear(&state->current_instr.tmp_output_registers));
-    REQUIRE_OK(kefir_hashtable_clear(&state->current_instr.tmp_output_spill));
+    REQUIRE_OK(kefir_hashtable_clear(state->mem, &state->current_instr.scratch_registers));
+    REQUIRE_OK(kefir_hashtable_clear(state->mem, &state->current_instr.tmp_output_registers));
+    REQUIRE_OK(kefir_hashtable_clear(state->mem, &state->current_instr.tmp_output_spill));
     if (state->current_instr.occupied_spill_slots_length > 0) {
         memset(state->current_instr.occupied_spill_slots, SPILL_SPACE_FREE, sizeof(kefir_uint8_t) * state->current_instr.occupied_spill_slots_length);
     }
