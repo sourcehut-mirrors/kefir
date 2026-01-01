@@ -537,7 +537,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_me
         klass->num_of_sse_registers, abi_register_comparator, klass));
 
     static const struct kefir_codegen_target_ir_regalloc_transforms TRANSFORMS = {
-        .hot_copy_locality = 4
+        .hot_copy_locality = 4,
+        .hot_copy_pass_max_regs = 64000
     };
     klass->klass.transforms = &TRANSFORMS;
 

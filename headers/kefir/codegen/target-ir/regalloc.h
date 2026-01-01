@@ -47,6 +47,7 @@ typedef struct kefir_codegen_target_ir_stack_frame {
 
 typedef struct kefir_codegen_target_ir_regalloc_transforms {
     kefir_uint32_t hot_copy_locality;
+    kefir_uint32_t hot_copy_pass_max_regs;
 } kefir_codegen_target_ir_regalloc_transforms_t;
 
 typedef struct kefir_codegen_target_ir_regalloc_class {
@@ -68,6 +69,7 @@ typedef struct kefir_codegen_target_ir_regalloc {
 kefir_result_t kefir_codegen_target_ir_regalloc_init(struct kefir_codegen_target_ir_regalloc *, const struct kefir_codegen_target_ir_regalloc_class *);
 kefir_result_t kefir_codegen_target_ir_regalloc_free(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *);
 
+kefir_size_t kefir_codegen_target_ir_regalloc_num_of_allocations(const struct kefir_codegen_target_ir_regalloc *);
 kefir_result_t kefir_codegen_target_ir_regalloc_reset(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *);
 kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *,
     const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_liveness *, const struct kefir_codegen_target_ir_interference *, const struct kefir_codegen_target_ir_coalesce *, const struct kefir_codegen_target_ir_stack_frame *);
