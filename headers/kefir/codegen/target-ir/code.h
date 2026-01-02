@@ -32,6 +32,7 @@
 
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 4
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE 4
+#define KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE 2
 
 typedef kefir_id_t kefir_codegen_target_ir_block_ref_t;
 typedef kefir_id_t kefir_codegen_target_ir_instruction_ref_t;
@@ -299,6 +300,8 @@ typedef struct kefir_codegen_target_ir_instruction {
 
     struct {
         kefir_size_t direct_output[KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE];
+        kefir_size_t indirect_output[KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE];
+        kefir_size_t flags;
         struct kefir_hashtable all;
     } aspects;
     kefir_size_t use_entry_top;

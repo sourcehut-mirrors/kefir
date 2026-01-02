@@ -464,9 +464,13 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
         }
     }
     REQUIRE_OK(kefir_hashtable_init(&instr->aspects.all, &kefir_hashtable_uint_ops));
-    instr->aspects.direct_output[0] = ~0ull;
-    instr->aspects.direct_output[1] = ~0ull;
-    instr->aspects.direct_output[2] = ~0ull;
+    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE; i++) {
+        instr->aspects.direct_output[i] = ~0ull;
+    }
+    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE; i++) {
+        instr->aspects.indirect_output[i] = ~0ull;
+    }
+    instr->aspects.flags = ~0ull;
     instr->use_entry_top = (kefir_size_t) ~0ull;
 
     if (after_instr == NULL) {
@@ -875,10 +879,19 @@ kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *mem, st
 
     code->value_types[code->value_types_length] = *value_type;
 
-    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(value_ref.aspect) && KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(value_ref.aspect) < KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE) {
+    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(value_ref.aspect) &&
+        KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(value_ref.aspect) < KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE) {
         kefir_size_t index = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(value_ref.aspect);
         REQUIRE(code->code[value_ref.instr_ref].aspects.direct_output[index] == ~0ull, KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Target IR value aspect already exists"));
         code->code[value_ref.instr_ref].aspects.direct_output[index] = code->value_types_length;
+    } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(value_ref.aspect) &&
+        KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(value_ref.aspect) < KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE) {
+        kefir_size_t index = KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(value_ref.aspect);
+        REQUIRE(code->code[value_ref.instr_ref].aspects.indirect_output[index] == ~0ull, KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Target IR value aspect already exists"));
+        code->code[value_ref.instr_ref].aspects.indirect_output[index] = code->value_types_length;
+    } else if (value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
+        REQUIRE(code->code[value_ref.instr_ref].aspects.flags == ~0ull, KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Target IR value aspect already exists"));
+        code->code[value_ref.instr_ref].aspects.flags = code->value_types_length;
     }
 
     kefir_result_t res = kefir_hashtable_insert(mem, &code->code[value_ref.instr_ref].aspects.all, (kefir_hashtable_key_t) value_ref.aspect, (kefir_hashtable_value_t) code->value_types_length);
@@ -944,10 +957,19 @@ kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codeg
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE && value_ref.instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR value reference"));
 
-    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(value_ref.aspect) && KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(value_ref.aspect) < KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE) {
+    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(value_ref.aspect) &&
+        KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(value_ref.aspect) < KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE) {
         kefir_size_t index = code->code[value_ref.instr_ref].aspects.direct_output[KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(value_ref.aspect)];
         REQUIRE(index != ~0ull, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find target IR value reference"));
         ASSIGN_PTR(value_type_ptr, &code->value_types[index]);
+    } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(value_ref.aspect) &&
+        KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(value_ref.aspect) < KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE) {
+        kefir_size_t index = code->code[value_ref.instr_ref].aspects.indirect_output[KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(value_ref.aspect)];
+        REQUIRE(index != ~0ull, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find target IR value reference"));
+        ASSIGN_PTR(value_type_ptr, &code->value_types[index]);
+    } else if (value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
+        REQUIRE(code->code[value_ref.instr_ref].aspects.flags != ~0ull, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find target IR value reference"));
+        ASSIGN_PTR(value_type_ptr, &code->value_types[code->code[value_ref.instr_ref].aspects.flags]);
     } else {
         kefir_hashtable_value_t table_value;
         kefir_result_t res = kefir_hashtable_at(&code->code[value_ref.instr_ref].aspects.all, (kefir_hashtable_key_t) value_ref.aspect, &table_value);
