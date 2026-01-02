@@ -31,6 +31,7 @@
 #include "kefir/core/source_location.h"
 
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 4
+#define KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE 4
 
 typedef kefir_id_t kefir_codegen_target_ir_block_ref_t;
 typedef kefir_id_t kefir_codegen_target_ir_instruction_ref_t;
@@ -298,7 +299,10 @@ typedef struct kefir_codegen_target_ir_instruction {
         kefir_codegen_target_ir_instruction_ref_t next;
     } control_flow;
 
-    struct kefir_hashtable aspects;
+    struct {
+        kefir_size_t direct_output[KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE];
+        struct kefir_hashtable all;
+    } aspects;
     kefir_size_t use_entry_top;
 
     struct kefir_codegen_target_ir_instruction_metadata metadata;
@@ -430,7 +434,6 @@ kefir_result_t kefir_codegen_target_ir_code_use_iter(const struct kefir_codegen_
 kefir_result_t kefir_codegen_target_ir_code_use_next(struct kefir_codegen_target_ir_use_iterator *, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_value_ref_t *);
 
 kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type *);
-kefir_result_t kefir_codegen_target_ir_code_add_constraint(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_allocation_constraint *);
 kefir_result_t kefir_codegen_target_ir_code_add_instruction_attribute(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, kefir_codegen_target_ir_native_id_t);
 kefir_result_t kefir_codegen_target_ir_code_instruction_output(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, kefir_size_t, kefir_codegen_target_ir_value_ref_t *, const struct kefir_codegen_target_ir_value_type **);
 kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, const struct kefir_codegen_target_ir_value_type **);
