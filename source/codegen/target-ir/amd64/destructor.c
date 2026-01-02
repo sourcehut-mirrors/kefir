@@ -32,13 +32,13 @@ struct destructor_state {
     const struct kefir_codegen_target_ir_code *code;
     struct kefir_asmcmp_amd64 *asmcmp_ctx;
     const struct kefir_codegen_target_ir_stack_frame *stack_frame;
+    const struct kefir_codegen_target_ir_control_flow *control_flow;
+    const struct kefir_codegen_target_ir_liveness *liveness;
     const struct kefir_codegen_target_ir_interference *interference;
     const struct kefir_codegen_target_ir_regalloc *regalloc;
     const struct kefir_codegen_target_ir_code_constructor_metadata *constructor_metadata;
     const struct kefir_codegen_target_ir_round_trip_destructor_ops *destructor_ops;
 
-    struct kefir_codegen_target_ir_control_flow control_flow;
-    struct kefir_codegen_target_ir_liveness liveness;
     struct kefir_codegen_target_ir_code_schedule schedule;
     struct kefir_hashtable blocks;
     struct kefir_hashtable native_labels;
@@ -1924,9 +1924,9 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
             ASSIGN_DECL_CAST(struct block_state *, alternative_block_state,
                 table_value);
 
-            REQUIRE(!kefir_codegen_target_ir_control_flow_is_critical_edge(&state->control_flow, instr->block_ref, terminator_props.target_block_refs[0]),
+            REQUIRE(!kefir_codegen_target_ir_control_flow_is_critical_edge(state->control_flow, instr->block_ref, terminator_props.target_block_refs[0]),
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected critical edges to be split before target IR destruction"));
-            REQUIRE(!kefir_codegen_target_ir_control_flow_is_critical_edge(&state->control_flow, instr->block_ref, terminator_props.target_block_refs[1]),
+            REQUIRE(!kefir_codegen_target_ir_control_flow_is_critical_edge(state->control_flow, instr->block_ref, terminator_props.target_block_refs[1]),
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected critical edges to be split before target IR destruction"));
 
             asmcmp_instrs[0].opcode = classification.opcode;
@@ -2484,7 +2484,7 @@ static kefir_result_t translate_block(struct destructor_state *state, kefir_code
     } while (0)
 
     const struct kefir_hashtree *liveness_ranges;
-    REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(state->mem, &state->control_flow, &state->liveness, block_ref, &liveness_ranges));
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(state->mem, state->control_flow, state->liveness, block_ref, &liveness_ranges));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(state->mem, KEFIR_ID_NONE, liveness_ranges, &state->alive_values));
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(state->code, block_ref);
         instr_ref != KEFIR_ID_NONE;
@@ -2558,10 +2558,10 @@ static kefir_result_t translate_blocks(struct destructor_state *state) {
 
     kefir_result_t res;
     struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&state->control_flow.indirect_jump_targets, &iter); res == KEFIR_OK;
+    for (res = kefir_hashtreeset_iter(&state->control_flow->indirect_jump_targets, &iter); res == KEFIR_OK;
          res = kefir_hashtreeset_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref, iter.entry);
-        if (!kefir_codegen_target_ir_control_flow_is_reachable(&state->control_flow, block_ref)) {
+        if (!kefir_codegen_target_ir_control_flow_is_reachable(state->control_flow, block_ref)) {
             kefir_hashtable_value_t table_value;
             REQUIRE_OK(kefir_hashtable_at(&state->blocks, (kefir_hashtable_key_t) block_ref, &table_value));
             ASSIGN_DECL_CAST(struct block_state *, block_state,
@@ -2593,7 +2593,7 @@ static kefir_result_t translate_blocks(struct destructor_state *state) {
 }
 
 static kefir_result_t generate_liveness_fragment(struct destructor_state *state, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t begin_ref, kefir_codegen_target_ir_instruction_ref_t end_ref, kefir_codegen_target_ir_value_ref_t value_ref, const struct kefir_codegen_target_ir_value_type *value_type) {
-    if (!kefir_codegen_target_ir_control_flow_is_reachable(&state->control_flow, block_ref) ||
+    if (!kefir_codegen_target_ir_control_flow_is_reachable(state->control_flow, block_ref) ||
         kefir_codegen_target_ir_code_is_gate_block(state->code, block_ref) ||
         value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED ||
         value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT ||
@@ -2664,7 +2664,7 @@ static kefir_result_t generate_metadata(struct destructor_state *state) {
                 struct kefir_codegen_target_ir_value_liveness_iterator liveness_iter;
                 kefir_codegen_target_ir_block_ref_t block_ref;
                 kefir_codegen_target_ir_instruction_ref_t begin_ref, end_ref;
-                for (res = kefir_codegen_target_ir_value_liveness_iter(&state->liveness, &liveness_iter, value_ref, &block_ref, &begin_ref, &end_ref);
+                for (res = kefir_codegen_target_ir_value_liveness_iter(state->liveness, &liveness_iter, value_ref, &block_ref, &begin_ref, &end_ref);
                     res == KEFIR_OK;
                     res = kefir_codegen_target_ir_value_liveness_next(&liveness_iter, &block_ref, &begin_ref, &end_ref)) {
                     REQUIRE_OK(generate_liveness_fragment(state, block_ref, begin_ref, end_ref, value_ref, value_type));
@@ -2682,9 +2682,7 @@ static kefir_result_t generate_metadata(struct destructor_state *state) {
 }
 
 static kefir_result_t destruct_impl(struct destructor_state *state) {
-    REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(state->mem, &state->control_flow));
-    REQUIRE_OK(kefir_codegen_target_ir_liveness_build(state->mem, &state->control_flow, &state->liveness));
-    REQUIRE_OK(state->destructor_ops->schedule_code(state->mem, &state->control_flow, &state->schedule, state->destructor_ops->payload));
+    REQUIRE_OK(state->destructor_ops->schedule_code(state->mem, state->control_flow, &state->schedule, state->destructor_ops->payload));
     REQUIRE_OK(map_block_labels(state));
     REQUIRE_OK(translate_blocks(state));
     REQUIRE_OK(generate_metadata(state));
@@ -2709,6 +2707,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
     const struct kefir_codegen_target_ir_code *code,
     struct kefir_asmcmp_amd64 *asmcmp_ctx,
     const struct kefir_codegen_target_ir_stack_frame *stack_frame,
+    const struct kefir_codegen_target_ir_control_flow *control_flow,
+    const struct kefir_codegen_target_ir_liveness *liveness,
     const struct kefir_codegen_target_ir_interference *interference,
     const struct kefir_codegen_target_ir_regalloc *regalloc,
     const struct kefir_codegen_target_ir_code_constructor_metadata *constructor_metadata,
@@ -2717,6 +2717,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(asmcmp_ctx != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp context"));
     REQUIRE(stack_frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR stack frame"));
+    REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
     REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference"));
     REQUIRE(regalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR register allocator"));
     REQUIRE(parameter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR round trip destructor parameter"));
@@ -2726,6 +2728,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         .code = code,
         .asmcmp_ctx = asmcmp_ctx,
         .stack_frame = stack_frame,
+        .control_flow = control_flow,
+        .liveness = liveness,
         .interference = interference,
         .regalloc = regalloc,
         .destructor_ops = parameter,
@@ -2734,8 +2738,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
     REQUIRE_OK(kefir_hashtable_init(&state.blocks, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&state.blocks, free_block_state, NULL));
     REQUIRE_OK(kefir_hashtable_init(&state.native_labels, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&state.control_flow, state.code));
-    REQUIRE_OK(kefir_codegen_target_ir_liveness_init(&state.liveness));
     REQUIRE_OK(kefir_codegen_target_ir_code_schedule_init(&state.schedule, state.code));
     REQUIRE_OK(kefir_hashset_init(&state.current_instr.interfere_registers, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashset_init(&state.current_instr.input_registers, &kefir_hashtable_uint_ops));
@@ -2760,8 +2762,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         kefir_hashset_free(mem, &state.current_instr.implicit_input_registers);
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2777,8 +2777,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         kefir_hashset_free(mem, &state.current_instr.implicit_input_registers);
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2793,8 +2791,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         kefir_hashset_free(mem, &state.current_instr.implicit_input_registers);
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2809,8 +2805,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         kefir_hashset_free(mem, &state.current_instr.implicit_input_registers);
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2824,8 +2818,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         kefir_hashset_free(mem, &state.current_instr.implicit_input_registers);
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2838,8 +2830,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         kefir_hashset_free(mem, &state.current_instr.implicit_input_registers);
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2851,8 +2841,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         kefir_hashset_free(mem, &state.current_instr.implicit_input_registers);
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2863,8 +2851,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         kefir_hashset_free(mem, &state.current_instr.implicit_input_registers);
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2874,8 +2860,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         kefir_hashset_free(mem, &state.current_instr.implicit_input_registers);
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2884,8 +2868,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashset_free(mem, &state.current_instr.output_registers);
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
@@ -2893,28 +2875,11 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
     kefir_hashset_free(mem, &state.current_instr.output_registers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);
         return res;
     });
     res = kefir_codegen_target_ir_code_schedule_free(mem, &state.schedule);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
-        kefir_hashtable_free(mem, &state.blocks);
-        kefir_hashtable_free(mem, &state.native_labels);
-        return res;
-    });
-    res = kefir_codegen_target_ir_liveness_free(mem, &state.liveness);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
-        kefir_hashtable_free(mem, &state.blocks);
-        kefir_hashtable_free(mem, &state.native_labels);
-        return res;
-    });
-    res = kefir_codegen_target_ir_control_flow_free(mem, &state.control_flow);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtable_free(mem, &state.blocks);
         kefir_hashtable_free(mem, &state.native_labels);

@@ -28,6 +28,11 @@
 #include "kefir/codegen/target-ir/rt_destructor.h"
 #include "kefir/codegen/amd64/asmcmp.h"
 
-kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *, const struct kefir_codegen_target_ir_code *, struct kefir_asmcmp_amd64 *, const struct kefir_codegen_target_ir_stack_frame *, const struct kefir_codegen_target_ir_interference *, const struct kefir_codegen_target_ir_regalloc *, const struct kefir_codegen_target_ir_code_constructor_metadata *, const struct kefir_codegen_target_ir_round_trip_destructor_ops *);
+kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *, const struct kefir_codegen_target_ir_code *,
+    struct kefir_asmcmp_amd64 *, const struct kefir_codegen_target_ir_stack_frame *,
+    const struct kefir_codegen_target_ir_control_flow *,
+    const struct kefir_codegen_target_ir_liveness *,
+    const struct kefir_codegen_target_ir_interference *,
+    const struct kefir_codegen_target_ir_regalloc *, const struct kefir_codegen_target_ir_code_constructor_metadata *, const struct kefir_codegen_target_ir_round_trip_destructor_ops *);
 
 #endif
