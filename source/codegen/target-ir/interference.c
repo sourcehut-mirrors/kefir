@@ -37,6 +37,14 @@ kefir_result_t kefir_codegen_target_ir_interference_free(struct kefir_mem *mem, 
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_interference_reset(struct kefir_mem *mem, struct kefir_codegen_target_ir_interference *interference) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference"));
+
+    REQUIRE_OK(kefir_graph_clear(mem, &interference->interference_graph));
+    return KEFIR_OK;
+}
+
 static kefir_result_t get_liveness_index_for(struct kefir_mem *mem,
     kefir_codegen_target_ir_instruction_ref_t instr_ref, struct kefir_hashtree *per_block_ranges, struct kefir_codegen_target_ir_interference_liveness_index **liveness_index_ptr) {
     struct kefir_hashtree_node *node;
