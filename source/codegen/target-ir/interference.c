@@ -148,6 +148,7 @@ static kefir_result_t record_interference(struct kefir_mem *mem, struct kefir_co
     kefir_hashset_key_t iter_key;
     kefir_result_t res;
     kefir_graph_vertex_id_t vertex1 = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref);
+    REQUIRE_OK(kefir_graph_ensure(mem, &interference->interference_graph, vertex1, kefir_hashset_size(alive_values) * 2));
     for (res = kefir_hashset_iter(alive_values, &iter, &iter_key); res == KEFIR_OK;
          res = kefir_hashset_next(&iter, &iter_key)) {
         kefir_codegen_target_ir_value_ref_t conflict_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(iter_key);

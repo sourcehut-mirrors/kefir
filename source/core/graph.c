@@ -101,6 +101,16 @@ kefir_result_t kefir_graph_add_edge(struct kefir_mem *mem, struct kefir_graph *g
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_graph_ensure(struct kefir_mem *mem, struct kefir_graph *graph, kefir_graph_vertex_id_t vertex_id, kefir_size_t edges) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph"));
+
+    struct kefir_graph_vertex *vertex = NULL;
+    REQUIRE_OK(get_vertex(mem, graph, vertex_id, &vertex));
+    REQUIRE_OK(kefir_hashset_ensure(mem, &vertex->edges, edges));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_graph_iter(const struct kefir_graph *graph, struct kefir_graph_vertex_iterator *iter, kefir_graph_vertex_id_t *vertex_id_ptr) {
     REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph vertex iterator"));

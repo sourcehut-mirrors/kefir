@@ -163,6 +163,17 @@ kefir_result_t kefir_hashset_trim(struct kefir_mem *mem, struct kefir_hashset *h
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_hashset_ensure(struct kefir_mem *mem, struct kefir_hashset *hashset, kefir_size_t min_capacity) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
+
+    min_capacity = next_power_of_2(min_capacity);
+    if (hashset->capacity < min_capacity) {
+        REQUIRE_OK(rehash(mem, hashset, min_capacity));
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_hashset_delete(struct kefir_hashset *hashset,
                                       kefir_hashset_key_t key) {
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
