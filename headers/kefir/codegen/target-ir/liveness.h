@@ -32,6 +32,8 @@ typedef struct kefir_codegen_target_ir_liveness_entry {
 typedef struct kefir_codegen_target_ir_block_liveness {
     struct kefir_codegen_target_ir_liveness_entry live_in;
     struct kefir_codegen_target_ir_liveness_entry live_out;
+    kefir_bool_t value_liveness_ranges_ready;
+    struct kefir_hashtree value_liveness_ranges;
 } kefir_codegen_target_ir_block_liveness_t;
 
 typedef struct kefir_codegen_target_ir_value_liveness {
@@ -48,6 +50,13 @@ kefir_result_t kefir_codegen_target_ir_liveness_init(struct kefir_codegen_target
 kefir_result_t kefir_codegen_target_ir_liveness_free(struct kefir_mem *, struct kefir_codegen_target_ir_liveness *);
 
 kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *, const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_liveness *);
+kefir_result_t kefir_codegen_target_ir_liveness_value_ranges(struct kefir_mem *, const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_liveness *, kefir_codegen_target_ir_block_ref_t, const struct kefir_hashtree **);
+kefir_result_t kefir_codegen_target_ir_liveness_build_update_alive_set(struct kefir_mem *, kefir_codegen_target_ir_instruction_ref_t, const struct kefir_hashtree *, struct kefir_hashset *);
+
+typedef struct kefir_codegen_target_ir_liveness_index {
+    struct kefir_hashset begin_liveness;
+    struct kefir_hashset end_liveness;
+} kefir_codegen_target_ir_liveness_index_t;
 
 typedef struct kefir_codegen_target_ir_value_liveness_block_iterator {
     const struct kefir_codegen_target_ir_liveness *liveness;

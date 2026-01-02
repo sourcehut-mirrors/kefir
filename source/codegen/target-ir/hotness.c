@@ -32,7 +32,6 @@ struct hotness_payload {
     struct kefir_codegen_target_ir_numbering numbering;
 
     struct kefir_list queue;
-    struct kefir_hashtree per_block_ranges;
     struct kefir_hashtable alive_values;
 };
 
@@ -87,13 +86,15 @@ static kefir_result_t update_value_score(struct hotness_payload *payload, kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
+static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
     struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&payload->per_block_ranges, (kefir_hashtree_key_t) instr_ref, &node);
+    const struct kefir_hashtree *liveness_ranges;
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(payload->mem, payload->control_flow, payload->liveness, block_ref, &liveness_ranges));
+    kefir_result_t res = kefir_hashtree_at(liveness_ranges, (kefir_hashtree_key_t) instr_ref, &node);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
 
-    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_interference_liveness_index *, liveness_index,
+    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_liveness_index *, liveness_index,
         node->value);
     struct kefir_hashset_iterator iter;
     kefir_hashset_key_t iter_key;
@@ -130,15 +131,14 @@ static kefir_result_t build_hotness(struct hotness_payload *payload) {
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref, (kefir_uptr_t) head->value);
         REQUIRE_OK(kefir_list_pop(payload->mem, &payload->queue, head));
 
-        REQUIRE_OK(kefir_codegen_target_ir_interference_build_per_block_liveness(payload->mem, payload->control_flow, payload->liveness, block_ref, &payload->per_block_ranges));
         REQUIRE_OK(kefir_hashtable_clear(payload->mem, &payload->alive_values));
 
-        REQUIRE_OK(update_lifetimes(payload, KEFIR_ID_NONE));
+        REQUIRE_OK(update_lifetimes(payload, block_ref, KEFIR_ID_NONE));
 
         for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(payload->control_flow->code, block_ref);
             instr_ref != KEFIR_ID_NONE;
             instr_ref = kefir_codegen_target_ir_code_control_next(payload->control_flow->code, instr_ref)) {
-            REQUIRE_OK(update_lifetimes(payload, instr_ref));
+            REQUIRE_OK(update_lifetimes(payload, block_ref, instr_ref));
         }
 
         kefir_size_t block_length;
@@ -183,8 +183,6 @@ kefir_result_t kefir_codegen_target_ir_hotness_build(struct kefir_mem *mem, stru
         .control_flow = control_flow,
         .liveness = liveness
     };
-    REQUIRE_OK(kefir_hashtree_init(&payload.per_block_ranges, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&payload.per_block_ranges, kefir_codegen_target_ir_interference_free_liveness_index, NULL));
     REQUIRE_OK(kefir_hashtable_init(&payload.alive_values, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&payload.queue));
     REQUIRE_OK(kefir_codegen_target_ir_numbering_init(&payload.numbering));
@@ -194,28 +192,20 @@ kefir_result_t kefir_codegen_target_ir_hotness_build(struct kefir_mem *mem, stru
         kefir_codegen_target_ir_numbering_free(mem, &payload.numbering);
         kefir_list_free(mem, &payload.queue);
         kefir_hashtable_free(mem, &payload.alive_values);
-        kefir_hashtree_free(mem, &payload.per_block_ranges);
         return res;
     });
     res = kefir_codegen_target_ir_numbering_free(mem, &payload.numbering);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &payload.queue);
         kefir_hashtable_free(mem, &payload.alive_values);
-        kefir_hashtree_free(mem, &payload.per_block_ranges);
         return res;
     });
     res = kefir_list_free(mem, &payload.queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtable_free(mem, &payload.alive_values);
-        kefir_hashtree_free(mem, &payload.per_block_ranges);
         return res;
     });
-    res = kefir_hashtable_free(mem, &payload.alive_values);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtree_free(mem, &payload.per_block_ranges);
-        return res;
-    });
-    REQUIRE_OK(kefir_hashtree_free(mem, &payload.per_block_ranges));
+    REQUIRE_OK(kefir_hashtable_free(mem, &payload.alive_values));
 
     return KEFIR_OK;
 }

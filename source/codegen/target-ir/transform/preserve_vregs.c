@@ -26,13 +26,14 @@
 #include "kefir/core/util.h"
 
 static kefir_result_t process_block_at(struct kefir_mem *mem, struct kefir_hashset *preserve, struct kefir_codegen_target_ir_code *code, struct kefir_codegen_target_ir_control_flow *control_flow, struct kefir_codegen_target_ir_liveness *liveness,
-    kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_opcode_t preserve_virtual_regs_opcode, struct kefir_hashtree *per_block_ranges, struct kefir_hashset *alive_values) {
-    REQUIRE_OK(kefir_codegen_target_ir_interference_build_per_block_liveness(mem, control_flow, liveness, block_ref, per_block_ranges));
+    kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_opcode_t preserve_virtual_regs_opcode, struct kefir_hashset *alive_values) {
+    const struct kefir_hashtree *liveness_ranges;
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(mem, control_flow, liveness, block_ref, &liveness_ranges));
 
-    REQUIRE_OK(kefir_codegen_target_ir_interference_build_update_alive_set(mem, KEFIR_ID_NONE, per_block_ranges, alive_values));
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, KEFIR_ID_NONE, liveness_ranges, alive_values));
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
         instr_ref != KEFIR_ID_NONE;) {
-        REQUIRE_OK(kefir_codegen_target_ir_interference_build_update_alive_set(mem, instr_ref, per_block_ranges, alive_values));
+        REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, instr_ref, liveness_ranges, alive_values));
 
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
@@ -59,25 +60,15 @@ static kefir_result_t preserve_virtual_regs(struct kefir_mem *mem, struct kefir_
             continue;
         }
 
-        struct kefir_hashtree per_block_ranges;
-        REQUIRE_OK(kefir_hashtree_init(&per_block_ranges, &kefir_hashtree_uint_ops));
-        REQUIRE_OK(kefir_hashtree_on_removal(&per_block_ranges, kefir_codegen_target_ir_interference_free_liveness_index, NULL));
-
         struct kefir_hashset alive_values;
         REQUIRE_OK(kefir_hashset_init(&alive_values, &kefir_hashtable_uint_ops));
 
-        kefir_result_t res = process_block_at(mem, preserve, code, control_flow, liveness, block_ref, preserve_vregs_opcode, &per_block_ranges, &alive_values);
+        kefir_result_t res = process_block_at(mem, preserve, code, control_flow, liveness, block_ref, preserve_vregs_opcode, &alive_values);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_hashset_free(mem, &alive_values);
-            kefir_hashtree_free(mem, &per_block_ranges);
             return res;
         });
-        res = kefir_hashset_free(mem, &alive_values);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_hashtree_free(mem, &per_block_ranges);
-            return res;
-        });
-        REQUIRE_OK(kefir_hashtree_free(mem, &per_block_ranges));
+        REQUIRE_OK(kefir_hashset_free(mem, &alive_values));
     }
 
     REQUIRE(kefir_hashset_size(preserve) > 0, KEFIR_OK);

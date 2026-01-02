@@ -43,7 +43,6 @@ struct destructor_state {
     struct kefir_hashtable blocks;
     struct kefir_hashtable native_labels;
     struct kefir_hashtable instruction_labels;
-    struct kefir_hashtree per_block_ranges;
     struct kefir_hashset alive_values;
 
     struct {
@@ -2445,8 +2444,6 @@ static kefir_result_t translate_block(struct destructor_state *state, kefir_code
     ASSIGN_DECL_CAST(struct block_state *, block_state,
         table_value);
 
-    REQUIRE_OK(kefir_codegen_target_ir_interference_build_per_block_liveness(state->mem, &state->control_flow, &state->liveness, block_ref, &state->per_block_ranges));
-
     REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(state->mem, &state->asmcmp_ctx->context, block_state->asmcmp_label));
     struct kefir_asmcmp_instruction instr = {
         .opcode = state->destructor_ops->noop_opcode,
@@ -2486,14 +2483,16 @@ static kefir_result_t translate_block(struct destructor_state *state, kefir_code
         } \
     } while (0)
 
-    REQUIRE_OK(kefir_codegen_target_ir_interference_build_update_alive_set(state->mem, KEFIR_ID_NONE, &state->per_block_ranges, &state->alive_values));
+    const struct kefir_hashtree *liveness_ranges;
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(state->mem, &state->control_flow, &state->liveness, block_ref, &liveness_ranges));
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(state->mem, KEFIR_ID_NONE, liveness_ranges, &state->alive_values));
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(state->code, block_ref);
         instr_ref != KEFIR_ID_NONE;
         instr_ref = kefir_codegen_target_ir_code_control_next(state->code, instr_ref)) {    
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, instr_ref, &instr));
 
-        REQUIRE_OK(kefir_codegen_target_ir_interference_build_update_alive_set(state->mem, instr_ref, &state->per_block_ranges, &state->alive_values));
+        REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(state->mem, instr_ref, liveness_ranges, &state->alive_values));
 
         if (instr->metadata.source_location.source != NULL) {
             if (current_source_location != NULL && current_source_location->source != NULL &&
@@ -2746,13 +2745,10 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
     REQUIRE_OK(kefir_hashtable_init(&state.current_instr.tmp_output_registers, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&state.current_instr.tmp_output_spill, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&state.instruction_labels, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&state.per_block_ranges, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&state.per_block_ranges, kefir_codegen_target_ir_interference_free_liveness_index, NULL));
     REQUIRE_OK(kefir_hashset_init(&state.alive_values, &kefir_hashtable_uint_ops));
 
     kefir_result_t res = destruct_impl(&state);
     KEFIR_FREE(mem, state.current_instr.occupied_spill_slots);
-    res = kefir_hashtree_free(mem, &state.per_block_ranges);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashset_free(mem, &state.alive_values);
         kefir_hashtable_free(mem, &state.instruction_labels);
@@ -2788,7 +2784,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
         return res;
     });
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtree_free(mem, &state.per_block_ranges);
         kefir_hashtable_free(mem, &state.instruction_labels);
         kefir_hashtable_free(mem, &state.current_instr.tmp_output_spill);
         kefir_hashtable_free(mem, &state.current_instr.tmp_output_registers);
