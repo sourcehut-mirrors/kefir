@@ -175,7 +175,9 @@ static kefir_result_t build_block_interference_impl(struct kefir_mem *mem, struc
         for (res = kefir_codegen_target_ir_code_value_iter(control_flow->code, &value_iter, instr_ref, &value_ref, NULL);
             res == KEFIR_OK;
             res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, NULL)) {
-            REQUIRE_OK(record_interference(mem, interference, value_ref, alive_values));
+            if (!KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(value_ref.aspect)) {
+                REQUIRE_OK(record_interference(mem, interference, value_ref, alive_values));
+            }
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
