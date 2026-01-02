@@ -26,7 +26,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -172,7 +171,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -299,7 +297,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -396,7 +393,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -521,7 +517,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -736,7 +731,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -863,7 +857,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -977,7 +970,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1112,7 +1104,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1237,7 +1228,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1319,7 +1309,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1410,7 +1399,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1537,7 +1525,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1634,7 +1621,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1759,7 +1745,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -2082,7 +2067,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -2124,7 +2108,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -2234,7 +2217,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -2276,7 +2258,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }

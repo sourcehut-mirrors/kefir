@@ -34,7 +34,6 @@ test1:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -274,7 +273,6 @@ test1:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -316,7 +314,6 @@ test1:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -728,7 +725,6 @@ test1:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -982,7 +978,6 @@ test2:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1222,7 +1217,6 @@ test2:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1264,7 +1258,6 @@ test2:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1546,7 +1539,6 @@ test2:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1778,7 +1770,6 @@ test2:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -1987,7 +1978,6 @@ test2:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -2001,7 +1991,6 @@ test2:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -2129,7 +2118,6 @@ test2:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -2459,7 +2447,6 @@ test3:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -3020,7 +3007,6 @@ test3:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -3066,7 +3052,6 @@ test3:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -3139,7 +3124,6 @@ test3:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -3185,7 +3169,6 @@ test3:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -3425,7 +3408,6 @@ test3:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -3497,7 +3479,6 @@ test3:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -3759,7 +3740,6 @@ test4:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -3905,7 +3885,6 @@ test4:
 #                                "variant": "default",
 #                                "kind": "indirect"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -4006,7 +3985,6 @@ test4:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -4189,7 +4167,6 @@ test4:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
@@ -4257,7 +4234,6 @@ test4:
 #                                "variant": "default",
 #                                "kind": "flags"
 #                            },
-#                            "allocation": null,
 #                            "metadata": {
 #                                "value_ref": null
 #                            }
