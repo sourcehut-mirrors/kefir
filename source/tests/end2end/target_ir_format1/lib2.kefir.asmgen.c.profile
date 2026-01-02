@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -Wcodegen-details=rt_vasm -Wcodegen-target-ir"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -Wcodegen-details=devasm -Wcodegen-target-ir"

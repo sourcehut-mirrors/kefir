@@ -11,13 +11,6 @@ factorial:
 #    "function": {
 #        "code": [
 #            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    0
-#                ]
-#            },
-#            {
 #                "opcode": "function_prologue",
 #                "args": [],
 #                "labels": []
@@ -143,20 +136,6 @@ factorial:
 #                    }
 #                ],
 #                "labels": []
-#            },
-#            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    18
-#                ]
-#            },
-#            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    3
-#                ]
 #            },
 #            {
 #                "opcode": "mov",
@@ -356,20 +335,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    21
-#                ]
-#            },
-#            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    5
-#                ]
-#            },
-#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -388,13 +353,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    6
-#                ]
-#            },
-#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -409,7 +367,9 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    6
+#                ]
 #            },
 #            {
 #                "opcode": "mov",
@@ -500,20 +460,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    19
-#                ]
-#            },
-#            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    8
-#                ]
-#            },
-#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -541,20 +487,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    17
-#                ]
-#            },
-#            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    10
-#                ]
-#            },
-#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -569,7 +501,9 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    17
+#                ]
 #            },
 #            {
 #                "opcode": "mov",
@@ -679,20 +613,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    22
-#                ]
-#            },
-#            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    12
-#                ]
-#            },
-#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -707,7 +627,9 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    22
+#                ]
 #            },
 #            {
 #                "opcode": "function_epilogue",
@@ -718,20 +640,6 @@ factorial:
 #                "opcode": "ret",
 #                "args": [],
 #                "labels": []
-#            },
-#            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    20
-#                ]
-#            },
-#            {
-#                "opcode": "noop",
-#                "args": [],
-#                "labels": [
-#                    14
-#                ]
 #            },
 #            {
 #                "opcode": "mov",
@@ -746,7 +654,9 @@ factorial:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    20
+#                ]
 #            },
 #            {
 #                "opcode": "function_epilogue",

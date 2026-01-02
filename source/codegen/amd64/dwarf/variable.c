@@ -424,8 +424,7 @@ static kefir_result_t generate_return_space_location(struct kefir_codegen_amd64_
             REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, location.local_variable.offset));
         } break;
 
-        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
-        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT: {
+        case KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_SPILL_AREA: {
             const kefir_int64_t vreg_offset =
                 location.spill_area.index * KEFIR_AMD64_ABI_QWORD +
                 codegen_function->stack_frame.offsets.spill_area;

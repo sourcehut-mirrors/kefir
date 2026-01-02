@@ -19,7 +19,6 @@
 */
 
 #include "kefir/codegen/amd64/asmcmp.h"
-#include "kefir/codegen/amd64/xregalloc.h"
 #include "kefir/codegen/amd64/stack_frame.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
