@@ -3561,8 +3561,8 @@ __kefir_softfloat_complex_long_double_mul:
     test %sil, %sil
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label76
     xor %eax, %eax
-    movdqu -208(%rbp), %xmm2
-    movdqu %xmm2, -176(%rbp)
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -176(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label9:
     or %r9d, %r8d
     setne %r8b

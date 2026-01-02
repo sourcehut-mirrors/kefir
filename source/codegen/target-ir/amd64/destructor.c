@@ -1047,43 +1047,6 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
         }
     }
 
-    if (instr->operation.opcode == state->code->klass->upsilon_opcode) {
-        struct kefir_graph_edge_iterator iter;
-        kefir_graph_vertex_id_t interfere_vertex_id;
-        for (res = kefir_graph_edge_iter(&state->interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[0].upsilon_ref), &interfere_vertex_id);
-            res == KEFIR_OK;
-            res = kefir_graph_edge_next(&iter, &interfere_vertex_id)) {
-            kefir_codegen_target_ir_value_ref_t interfere_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interfere_vertex_id);
-
-            kefir_codegen_target_ir_regalloc_allocation_t allocation;
-            res = kefir_codegen_target_ir_regalloc_get(state->regalloc, interfere_value_ref, &allocation);
-            if (res == KEFIR_NOT_FOUND) {
-                continue;
-            }
-            REQUIRE_OK(res);
-
-            union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
-                .allocation = allocation
-            };
-            switch (entry.type) {
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
-                    // Intentionally left blank
-                    break;
-
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
-                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length, SPILL_SPACE_OTHER));
-                    break;
-
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
-                    REQUIRE_OK(kefir_hashset_add(state->mem, &state->current_instr.interfere_registers, (kefir_hashset_key_t) entry.reg.value));
-                    break;
-            }
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-    }
 
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         if ((classification->operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ ||
