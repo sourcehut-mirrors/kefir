@@ -25,7 +25,7 @@
 #include "kefir/codegen/target-ir/control_flow.h"
 #include "kefir/codegen/target-ir/schedule.h"
 #include "kefir/codegen/target-ir/regalloc.h"
-#include "kefir/codegen/target-ir/rt_destructor.h"
+#include "kefir/codegen/target-ir/destructor_ops.h"
 #include "kefir/codegen/amd64/asmcmp.h"
 
 kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *, const struct kefir_codegen_target_ir_code *,
@@ -33,6 +33,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *, const 
     const struct kefir_codegen_target_ir_control_flow *,
     const struct kefir_codegen_target_ir_liveness *,
     const struct kefir_codegen_target_ir_interference *,
-    const struct kefir_codegen_target_ir_regalloc *, const struct kefir_codegen_target_ir_code_constructor_metadata *, const struct kefir_codegen_target_ir_round_trip_destructor_ops *);
+    const struct kefir_codegen_target_ir_regalloc *, const struct kefir_codegen_target_ir_code_constructor_metadata *, const struct kefir_codegen_target_ir_destructor_ops *);
 
 #endif

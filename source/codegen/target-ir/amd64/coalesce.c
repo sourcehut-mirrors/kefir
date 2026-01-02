@@ -19,7 +19,7 @@ static kefir_result_t extract_coalesce(struct kefir_mem *mem,
         instruction->operation.opcode != code->klass->inline_asm_opcode &&
         instruction->operation.opcode != code->klass->placeholder_opcode, KEFIR_OK);
     
-    struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification classification;
+    struct kefir_codegen_target_ir_instruction_destructor_classification classification;
     REQUIRE_OK(klass->destructor_ops->classify_instruction(code, instruction->instr_ref, &classification, klass->destructor_ops->payload));
 
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
@@ -57,7 +57,7 @@ static kefir_result_t extract_coalesce(struct kefir_mem *mem,
 }
 
 kefir_result_t kefir_codegen_target_ir_amd64_coalesce_init(struct kefir_codegen_target_ir_amd64_coalesce_class *klass,
-    const struct kefir_codegen_target_ir_round_trip_destructor_ops *ops) {
+    const struct kefir_codegen_target_ir_destructor_ops *ops) {
     REQUIRE(klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR amd64 coalesce class"));
     REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR destructor ops"));
 

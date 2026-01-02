@@ -37,7 +37,7 @@ struct destructor_state {
     const struct kefir_codegen_target_ir_interference *interference;
     const struct kefir_codegen_target_ir_regalloc *regalloc;
     const struct kefir_codegen_target_ir_code_constructor_metadata *constructor_metadata;
-    const struct kefir_codegen_target_ir_round_trip_destructor_ops *destructor_ops;
+    const struct kefir_codegen_target_ir_destructor_ops *destructor_ops;
 
     struct kefir_codegen_target_ir_code_schedule schedule;
     struct kefir_hashtable blocks;
@@ -848,7 +848,7 @@ static kefir_result_t copy_spill_area(struct destructor_state *state,
     return KEFIR_OK;
 }
 
-static kefir_result_t build_current_instr_state(struct destructor_state *state, kefir_codegen_target_ir_instruction_ref_t instr_ref, const struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification *classification) {
+static kefir_result_t build_current_instr_state(struct destructor_state *state, kefir_codegen_target_ir_instruction_ref_t instr_ref, const struct kefir_codegen_target_ir_instruction_destructor_classification *classification) {
     const struct kefir_codegen_target_ir_instruction *instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, instr_ref, &instr));
 
@@ -1867,7 +1867,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
     }
 
     kefir_result_t res;
-    struct kefir_codegen_target_ir_target_ir_instruction_destructor_classification classification;
+    struct kefir_codegen_target_ir_instruction_destructor_classification classification;
     REQUIRE_OK(state->destructor_ops->classify_instruction(state->code, instr_ref, &classification, state->destructor_ops->payload));
 
 
@@ -2675,7 +2675,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_destruct(struct kefir_mem *mem,
     const struct kefir_codegen_target_ir_interference *interference,
     const struct kefir_codegen_target_ir_regalloc *regalloc,
     const struct kefir_codegen_target_ir_code_constructor_metadata *constructor_metadata,
-    const struct kefir_codegen_target_ir_round_trip_destructor_ops *parameter) {
+    const struct kefir_codegen_target_ir_destructor_ops *parameter) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(asmcmp_ctx != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp context"));
