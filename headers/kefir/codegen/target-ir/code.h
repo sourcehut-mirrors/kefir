@@ -383,6 +383,7 @@ typedef struct kefir_codegen_target_ir_code {
 
 kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_code_class *);
 kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_code_reset(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 
 kefir_result_t kefir_codegen_target_ir_code_new_block(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t *);
 kefir_result_t kefir_codegen_target_ir_code_indirect_jump_gate_block(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t *);

@@ -66,6 +66,24 @@ kefir_result_t kefir_codegen_target_ir_liveness_free(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_liveness_reset(struct kefir_mem *mem, struct kefir_codegen_target_ir_liveness *liveness) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
+
+    REQUIRE_OK(kefir_hashtable_clear(mem, &liveness->values));
+    if (liveness->blocks != NULL) {
+        for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(liveness->code); i++) {
+            kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(liveness->code, i);
+            KEFIR_FREE(mem, liveness->blocks[block_ref].live_in.content);
+            KEFIR_FREE(mem, liveness->blocks[block_ref].live_out.content);
+            REQUIRE_OK(kefir_hashtree_free(mem, &liveness->blocks[block_ref].value_liveness_ranges));
+        }
+        KEFIR_FREE(mem, liveness->blocks);
+        memset(liveness, 0, sizeof(struct kefir_codegen_target_ir_liveness));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t add_to_entry(struct kefir_mem *mem, struct kefir_codegen_target_ir_liveness_entry *entry, kefir_codegen_target_ir_value_ref_t value_ref) {
     if (entry->length > 0 &&
         entry->content[entry->length - 1].instr_ref == value_ref.instr_ref &&

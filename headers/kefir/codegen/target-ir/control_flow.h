@@ -51,6 +51,7 @@ typedef struct kefir_codegen_target_ir_control_flow {
 kefir_result_t kefir_codegen_target_ir_control_flow_init(struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_code *);
 kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *, struct kefir_codegen_target_ir_control_flow *);
 kefir_result_t kefir_codegen_target_ir_control_flow_free(struct kefir_mem *, struct kefir_codegen_target_ir_control_flow *);
+kefir_result_t kefir_codegen_target_ir_control_flow_reset(struct kefir_mem *, struct kefir_codegen_target_ir_control_flow *);
 kefir_result_t kefir_codegen_target_ir_control_flow_find_dominators(struct kefir_mem *mem,
                                                         struct kefir_codegen_target_ir_control_flow *);
 kefir_result_t kefir_codegen_target_ir_control_flow_find_postdominators(struct kefir_mem *mem,

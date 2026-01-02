@@ -31,6 +31,7 @@ typedef struct kefir_codegen_target_ir_coalesce {
 
 kefir_result_t kefir_codegen_target_ir_coalesce_init(struct kefir_codegen_target_ir_coalesce *);
 kefir_result_t kefir_codegen_target_ir_coalesce_free(struct kefir_mem *, struct kefir_codegen_target_ir_coalesce *);
+kefir_result_t kefir_codegen_target_ir_coalesce_reset(struct kefir_mem *, struct kefir_codegen_target_ir_coalesce *);
 
 typedef struct kefir_codegen_target_ir_coalesce_callback {
     kefir_result_t (*coalesce)(struct kefir_mem *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_value_ref_t, void *);

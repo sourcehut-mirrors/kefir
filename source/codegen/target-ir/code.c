@@ -97,6 +97,33 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_code_reset(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+
+    for (kefir_size_t i = 0; i < code->code_length; i++) {
+        if (code->code[i].operation.opcode == code->klass->phi_opcode) {
+            KEFIR_FREE(mem, code->code[i].operation.phi_node.links);
+        } else if (code->code[i].operation.opcode == code->klass->inline_asm_opcode) {   
+            REQUIRE_OK(kefir_list_free(mem, &code->code[i].operation.inline_asm_node.fragments));
+        }
+        REQUIRE_OK(kefir_hashtable_free(mem, &code->code[i].aspects.all));
+    }
+    for (kefir_size_t i = 0; i < code->blocks_length; i++) {
+        REQUIRE_OK(kefir_hashtreeset_free(mem, &code->blocks[i].public_labels));
+        REQUIRE_OK(kefir_hashset_free(mem, &code->blocks[i].phi_refs));
+    }
+    REQUIRE_OK(kefir_hashset_free(mem, &code->gate_blocks));
+    REQUIRE_OK(kefir_hashtable_free(mem, &code->attributes));
+    REQUIRE_OK(kefir_string_pool_free(mem, &code->strings));
+    KEFIR_FREE(mem, code->use_entries);
+    KEFIR_FREE(mem, code->value_types);
+    KEFIR_FREE(mem, code->blocks);
+    KEFIR_FREE(mem, code->code);
+    memset(code, 0, sizeof(struct kefir_codegen_target_ir_code));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_new_block(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t *block_ref_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));

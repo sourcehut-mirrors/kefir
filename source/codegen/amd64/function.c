@@ -1407,7 +1407,10 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
         return res;
     });
 
+    REQUIRE_OK(kefir_codegen_target_ir_coalesce_reset(mem, &func->target_ir.coalesce));
     REQUIRE_OK(kefir_codegen_target_ir_interference_reset(mem, &func->target_ir.interference));
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_reset(mem, &func->target_ir.liveness));
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_reset(mem, &func->target_ir.control_flow));
     if (codegen->config->enable_target_ir) {
         REQUIRE_CHAIN(&res, kefir_hashtreeset_merge(mem, &asmcmp_code->externals, &func->code.externals, NULL, NULL));
         REQUIRE_CHAIN(&res, kefir_asmcmp_amd64_free(mem, &func->code));

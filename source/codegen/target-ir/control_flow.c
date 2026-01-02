@@ -476,6 +476,29 @@ kefir_result_t kefir_codegen_target_ir_control_flow_free(struct kefir_mem *mem, 
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_control_flow_reset(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
+
+    if (control_flow->blocks != NULL) {
+        for (kefir_size_t i = 0; i < control_flow->blocks_length; i++) {
+            REQUIRE_OK(kefir_hashset_free(mem, &control_flow->blocks[i].predecessors));
+            REQUIRE_OK(kefir_hashset_free(mem, &control_flow->blocks[i].successors));
+            REQUIRE_OK(kefir_hashset_free(mem, &control_flow->blocks[i].dominance_frontier));
+        }
+        KEFIR_FREE(mem, control_flow->blocks);
+    }
+    REQUIRE_OK(kefir_hashtable_clear(mem, &control_flow->dominator_cache));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &control_flow->dominator_tree));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &control_flow->postdominator_tree));
+    REQUIRE_OK(kefir_hashtreeset_clean(mem, &control_flow->indirect_jump_sources));
+    REQUIRE_OK(kefir_hashtreeset_clean(mem, &control_flow->indirect_jump_targets));
+
+    control_flow->blocks = NULL;
+    control_flow->code = NULL;
+    return KEFIR_OK;
+}
+
 kefir_bool_t kefir_codegen_target_ir_control_flow_is_reachable(const struct kefir_codegen_target_ir_control_flow *control_flow,
                                                      kefir_codegen_target_ir_block_ref_t block_ref) {
     REQUIRE(control_flow != NULL, false);

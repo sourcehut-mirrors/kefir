@@ -37,6 +37,14 @@ kefir_result_t kefir_codegen_target_ir_coalesce_free(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_coalesce_reset(struct kefir_mem *mem, struct kefir_codegen_target_ir_coalesce *coalesce) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(coalesce != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR coalescing"));
+
+    REQUIRE_OK(kefir_graph_clear(mem, &coalesce->coalesce_graph));
+    return KEFIR_OK;
+}
+
 static kefir_result_t record_coalesce(struct kefir_mem *mem, const struct kefir_codegen_target_ir_interference *interference, struct kefir_codegen_target_ir_coalesce *coalesce,
     kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_value_ref_t other_value_ref) {
     REQUIRE(KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref) != KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref), KEFIR_OK);
