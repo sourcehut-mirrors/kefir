@@ -299,8 +299,8 @@ __kefir_softfloat_complex_float_mul:
     movq %xmm11, %rsi
     test %al, %al
     cmovz %rsi, %rdx
-    movq %rdx, %xmm0
-    cvtsd2ss %xmm0, %xmm11
+    movq %rdx, %xmm12
+    cvtsd2ss %xmm12, %xmm11
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm0
     movaps %xmm0, %xmm12
     andps %xmm2, %xmm12
@@ -313,8 +313,8 @@ __kefir_softfloat_complex_float_mul:
     movq %xmm11, %rdx
     test %cl, %cl
     cmovz %rdx, %rax
-    movq %rax, %xmm0
-    cvtsd2ss %xmm0, %xmm11
+    movq %rax, %xmm12
+    cvtsd2ss %xmm12, %xmm11
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm0
     movaps %xmm0, %xmm12
     andps %xmm3, %xmm12
@@ -360,8 +360,8 @@ __kefir_softfloat_complex_float_mul:
     movq %xmm11, %rsi
     test %r9b, %r9b
     cmovz %rsi, %rdx
-    movq %rdx, %xmm4
-    cvtsd2ss %xmm4, %xmm11
+    movq %rdx, %xmm12
+    cvtsd2ss %xmm12, %xmm11
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm4
     movaps %xmm4, %xmm12
     andps %xmm0, %xmm12
@@ -374,8 +374,8 @@ __kefir_softfloat_complex_float_mul:
     movq %xmm11, %rsi
     test %r10b, %r10b
     cmovz %rsi, %rdx
-    movq %rdx, %xmm0
-    cvtsd2ss %xmm0, %xmm11
+    movq %rdx, %xmm12
+    cvtsd2ss %xmm12, %xmm11
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm0
     movaps %xmm0, %xmm12
     andps %xmm1, %xmm12

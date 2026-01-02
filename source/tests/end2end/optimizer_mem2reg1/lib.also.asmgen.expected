@@ -70,8 +70,8 @@ factorial64:
 .L__kefir_func_factorial64_label22:
     ret
 .L__kefir_func_factorial64_label20:
-    mov $0, %ecx
-    movsx %ecx, %rax
+    mov $0, %edx
+    movsx %edx, %rax
     ret
 .L__kefir_text_func_factorial64_end:
 

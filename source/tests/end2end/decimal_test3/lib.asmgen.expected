@@ -100,9 +100,9 @@ test_dec128_timestep_implicit:
     jmp free@PLT
 .L__kefir_func_test_dec128_timestep_implicit_label9:
     imul $16, %rax, %rcx
-    mov %r15, %rdx
-    add %rcx, %rdx
-    mov %rdx, %rcx
+    mov %r15, %rsi
+    add %rcx, %rsi
+    mov %rsi, %rcx
     movdqu (%rcx), %xmm0
     movq (%r12), %rcx
     imul $16, %rax, %rdx
@@ -304,9 +304,9 @@ test_dec32_cg_solve:
     movdqu %xmm0, -144(%rbp)
     movaps -80(%rbp), %xmm0
 .L__kefir_func_test_dec32_cg_solve_label10:
-    movl -184(%rbp), %eax
-    movl -208(%rbp), %ecx
-    cmp %ecx, %eax
+    movl -184(%rbp), %ecx
+    movl -208(%rbp), %edx
+    cmp %edx, %ecx
     jl .L__kefir_func_test_dec32_cg_solve_label49
 .L__kefir_func_test_dec32_cg_solve_label12:
     mov %rbx, %rdi
@@ -589,9 +589,9 @@ test_dec64_cg_solve:
     movdqu %xmm0, -144(%rbp)
     movaps -80(%rbp), %xmm0
 .L__kefir_func_test_dec64_cg_solve_label10:
-    movl -184(%rbp), %eax
-    movl -208(%rbp), %ecx
-    cmp %ecx, %eax
+    movl -184(%rbp), %ecx
+    movl -208(%rbp), %edx
+    cmp %edx, %ecx
     jl .L__kefir_func_test_dec64_cg_solve_label49
 .L__kefir_func_test_dec64_cg_solve_label12:
     mov %rbx, %rdi
@@ -2035,9 +2035,9 @@ test_dec128_cg_solve:
     movdqu %xmm0, -144(%rbp)
     movaps -80(%rbp), %xmm0
 .L__kefir_func_test_dec128_cg_solve_label10:
-    movl -184(%rbp), %eax
-    movl -208(%rbp), %ecx
-    cmp %ecx, %eax
+    movl -184(%rbp), %ecx
+    movl -208(%rbp), %edx
+    cmp %edx, %ecx
     jl .L__kefir_func_test_dec128_cg_solve_label49
 .L__kefir_func_test_dec128_cg_solve_label12:
     mov %rbx, %rdi
@@ -2732,9 +2732,9 @@ test_dec32_timestep_implicit:
     jmp free@PLT
 .L__kefir_func_test_dec32_timestep_implicit_label9:
     imul $4, %rax, %rcx
-    mov %r15, %rdx
-    add %rcx, %rdx
-    mov %rdx, %rcx
+    mov %r15, %rsi
+    add %rcx, %rsi
+    mov %rsi, %rcx
     movd (%rcx), %xmm0
     movq (%r12), %rcx
     imul $4, %rax, %rdx
@@ -3021,9 +3021,9 @@ test_dec64_timestep_implicit:
     jmp free@PLT
 .L__kefir_func_test_dec64_timestep_implicit_label9:
     imul $8, %rax, %rcx
-    mov %r15, %rdx
-    add %rcx, %rdx
-    mov %rdx, %rcx
+    mov %r15, %rsi
+    add %rcx, %rsi
+    mov %rsi, %rcx
     movq (%rcx), %xmm0
     movq (%r12), %rcx
     imul $8, %rax, %rdx

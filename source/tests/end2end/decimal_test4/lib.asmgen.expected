@@ -145,8 +145,8 @@ test_dec32_init:
     jb .L__kefir_func_test_dec32_init_label7
     mov %rbx, %rax
     xor %edx, %edx
-    mov $2, %rcx
-    div %rcx
+    mov $2, %rdi
+    div %rdi
     mov %rax, %rcx
     sub $1, %rcx
     lea 1(%rax), %rdx
@@ -585,8 +585,8 @@ test_dec64_init:
     jb .L__kefir_func_test_dec64_init_label7
     mov %rbx, %rax
     xor %edx, %edx
-    mov $2, %rcx
-    div %rcx
+    mov $2, %rdi
+    div %rdi
     mov %rax, %rcx
     sub $1, %rcx
     lea 1(%rax), %rdx
@@ -1652,8 +1652,8 @@ test_dec128_init:
     jb .L__kefir_func_test_dec128_init_label7
     mov %rbx, %rax
     xor %edx, %edx
-    mov $2, %rcx
-    div %rcx
+    mov $2, %rdi
+    div %rdi
     mov %rax, %rcx
     sub $1, %rcx
     lea 1(%rax), %rdx

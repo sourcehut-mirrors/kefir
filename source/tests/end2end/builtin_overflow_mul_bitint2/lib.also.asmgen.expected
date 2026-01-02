@@ -328,9 +328,9 @@ __kefir_bigint_right_shift_whole_digits:
     ret
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label23:
     mov %r8d, %ecx
-    mov %rdi, %rsi
-    add %rcx, %rsi
-    mov %rsi, %rcx
+    mov %rdi, %r9
+    add %rcx, %r9
+    mov %r9, %rcx
     movb %dl, (%rcx)
     add $1, %r8d
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label7
@@ -356,9 +356,9 @@ __kefir_bigint_right_shift_whole_digits:
     jae .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label9
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label21:
     mov %ecx, %esi
-    mov %rdi, %r8
-    add %rsi, %r8
-    mov %r8, %rsi
+    mov %rdi, %r9
+    add %rsi, %r9
+    mov %r9, %rsi
     movb %dl, (%rsi)
     add $1, %ecx
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label15
