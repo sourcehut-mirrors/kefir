@@ -678,27 +678,6 @@ test1:
 #                        {
 #                            "aspect": {
 #                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 11
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
 #                                "index": 1
 #                            },
 #                            "type": {
@@ -715,6 +694,27 @@ test1:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 10
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rax"
+#                            },
+#                            "constraint": {
+#                                "type": "requirement",
+#                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 11
 #                            }
 #                        },
 #                        {
@@ -1743,6 +1743,18 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
@@ -1760,18 +1772,6 @@ test2:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 13
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -3381,6 +3381,18 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
@@ -3398,18 +3410,6 @@ test3:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 20
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -3452,6 +3452,18 @@ test3:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
@@ -3469,18 +3481,6 @@ test3:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 21
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -4144,6 +4144,18 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
@@ -4157,18 +4169,6 @@ test4:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 7
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -4211,6 +4211,18 @@ test4:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
@@ -4224,18 +4236,6 @@ test4:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 8
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
 #                            }
 #                        }
 #                    ],

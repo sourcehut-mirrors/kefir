@@ -101,9 +101,8 @@ testx:
     movq (%rax), %rcx
     mov %rcx, %rcx
     movq 8(%rax), %rax
-    mov %rax, %rax
-    addl $16, -32(%rbp)
     mov %rax, %rdx
+    addl $16, -32(%rbp)
     mov %rcx, %rax
 .L__kefir_func_testx_label9:
     lea (%rbp), %rsp

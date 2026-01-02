@@ -64,8 +64,7 @@ static kefir_result_t build_constraints_and_hints(struct kefir_mem *mem, struct 
         res = kefir_graph_edge_next(&iter, &interference_vertex)) {
         kefir_codegen_target_ir_value_ref_t conflict_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interference_vertex);
         if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(conflict_value_ref.aspect) ||
-            conflict_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS ||
-            conflict_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
+            conflict_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
             continue;
         }
         const struct kefir_codegen_target_ir_value_type *conflict_value_type = NULL;
@@ -212,8 +211,7 @@ static kefir_result_t do_regalloc(struct kefir_mem *mem, struct regalloc_state *
                 res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&coalesce_value_ref), &table_value);
                 if (res == KEFIR_NOT_FOUND) {
                 if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(coalesce_value_ref.aspect) ||
-                    coalesce_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS ||
-                    coalesce_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
+                    coalesce_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
                     continue;
                 }
                     REQUIRE_OK(kefir_list_insert_after(mem, &state->value_queue, NULL, (void *) (kefir_uptr_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&coalesce_value_ref)));
@@ -259,8 +257,7 @@ static kefir_result_t do_regalloc_block(struct kefir_mem *mem, struct regalloc_s
             res == KEFIR_OK;
             res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, NULL)) {
             if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(value_ref.aspect) ||
-                value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS ||
-                value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
+                value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
                 continue;
             }
             REQUIRE_OK(kefir_list_insert_after(mem, &state->value_queue, NULL, (void *) (kefir_uptr_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));

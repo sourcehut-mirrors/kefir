@@ -1296,8 +1296,7 @@ __kefir_bigint_leading_zeros:
     mov $8, %rcx
     div %rcx
     xor %ecx, %ecx
-    xor %edx, %edx
-    mov %rdx, %r9
+    xor %r9d, %r9d
     mov %rcx, %rdx
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label4:
     cmp %rax, %rdx

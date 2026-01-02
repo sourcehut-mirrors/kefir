@@ -947,6 +947,18 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
@@ -960,18 +972,6 @@ factorial:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 12
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -2044,6 +2044,18 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
@@ -2057,18 +2069,6 @@ factorial:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 23
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -2194,6 +2194,18 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "flags"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "flags"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
@@ -2207,18 +2219,6 @@ factorial:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 26
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "flags"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "flags"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
 #                            }
 #                        }
 #                    ],

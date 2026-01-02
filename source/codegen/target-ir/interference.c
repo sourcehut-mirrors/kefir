@@ -181,11 +181,6 @@ static kefir_result_t build_block_interference_impl(struct kefir_mem *mem, struc
             REQUIRE_OK(res);
         }
 
-        REQUIRE_OK(record_interference(mem, interference, (kefir_codegen_target_ir_value_ref_t) {
-            .instr_ref = instr_ref,
-            .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_NONE
-        }, alive_values));
-
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, instr_ref, &instr));
         if (instr->operation.opcode == control_flow->code->klass->upsilon_opcode) {

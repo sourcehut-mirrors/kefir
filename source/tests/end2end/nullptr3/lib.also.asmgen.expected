@@ -517,8 +517,14 @@ __kefir_debug_loclists_section_begin:
     .long 0
 __kefir_debug_loclist_section_entry_5:
     .byte 4
-    .uleb128 .L__kefir_func_sum_label169 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label14 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_sum_label215 - .L__kefir_text_section_begin
+    .byte 2
+    .byte 144
+    .byte 2
+    .byte 4
+    .uleb128 .L__kefir_func_sum_label169 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label181 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 2

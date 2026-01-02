@@ -106,7 +106,6 @@ typedef enum kefir_codegen_target_ir_external_label_relocation {
 } kefir_codegen_target_ir_external_label_relocation_t;
 
 typedef enum kefir_codegen_target_ir_value_aspect {
-    KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_NONE,
     KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_DIRECT_OUTPUT,
     KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_FLAGS,
     KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_INDIRECT_OUTPUT
@@ -168,7 +167,6 @@ typedef struct kefir_codegen_target_ir_value_type {
     struct kefir_codegen_target_ir_value_type_metadata metadata;
 } kefir_codegen_target_ir_value_type_t;
 
-#define KEFIR_CODEGEN_TARGET_IR_VALUE_NONE ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_NONE) << 16))
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(_idx) ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_DIRECT_OUTPUT) << 16) | (kefir_uint16_t) (_idx))
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(_idx) ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_INDIRECT_OUTPUT) << 16) | (kefir_uint16_t) (_idx))
 #define KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS ((((kefir_uint32_t) KEFIR_CODEGEN_TARGET_IR_VALUE_ASPECT_FLAGS) << 16))

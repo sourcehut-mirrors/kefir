@@ -2708,28 +2708,27 @@ __kefir_softfloat_fmaximum_numl:
     setp %al
     fstpt -80(%rbp)
     test %eax, %eax
-    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label9
+    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
     fldt -64(%rbp)
     xor %eax, %eax
     fucomi %st(0)
     setp %al
     fstpt -64(%rbp)
     test %eax, %eax
-    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
+    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label13
     fldt -80(%rbp)
     fldt -64(%rbp)
     faddp
-    fstpt -64(%rbp)
+    fstpt -80(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16:
-    fldt -64(%rbp)
+    fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label9:
-    movdqu -80(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label13:
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label32:
     fldt .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label36(%rip)
@@ -2781,16 +2780,15 @@ __kefir_softfloat_fmaximum_numl:
     fstpt -80(%rbp)
     fstpt -64(%rbp)
     test %al, %al
-    jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label34
+    jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20:
-    fldt -80(%rbp)
+    fldt -64(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label34:
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label33:
     fldt -64(%rbp)

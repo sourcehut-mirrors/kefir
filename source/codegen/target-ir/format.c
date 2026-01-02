@@ -78,9 +78,7 @@ static kefir_result_t variant_format(struct kefir_json_output *json, kefir_codeg
 }
 
 static kefir_result_t aspect_format(struct kefir_json_output *json, kefir_uint32_t aspect) {
-    if (aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
-        REQUIRE_OK(kefir_json_output_null(json));
-    } else if (aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
+    if (aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "type"));
         REQUIRE_OK(kefir_json_output_string(json, "flags"));

@@ -935,8 +935,7 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
             res == KEFIR_OK;
             res = kefir_hashset_next(&iter, &key)) {
             kefir_codegen_target_ir_value_ref_t interfere_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(key);
-            if (interfere_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE ||
-                interfere_value_ref.instr_ref == instr_ref) {
+            if (interfere_value_ref.instr_ref == instr_ref) {
                 continue;
             }
 
@@ -1056,9 +1055,6 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
             res == KEFIR_OK;
             res = kefir_graph_edge_next(&iter, &interfere_vertex_id)) {
             kefir_codegen_target_ir_value_ref_t interfere_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interfere_vertex_id);
-            if (interfere_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_NONE) {
-                continue;
-            }
 
             kefir_codegen_target_ir_regalloc_allocation_t allocation;
             res = kefir_codegen_target_ir_regalloc_get(state->regalloc, interfere_value_ref, &allocation);

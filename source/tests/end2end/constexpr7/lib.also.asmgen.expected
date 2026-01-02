@@ -57,8 +57,8 @@ test3:
     jg .L__kefir_func_test3_label9
     ret
 .L__kefir_func_test3_label9:
-    mov %ecx, %edi
     mov %edx, %eax
+    mov %ecx, %edi
     jmp .L__kefir_func_test3_label2
 .L__kefir_text_func_test3_end:
 

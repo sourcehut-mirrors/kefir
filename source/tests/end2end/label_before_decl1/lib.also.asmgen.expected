@@ -15,8 +15,8 @@ factorial:
     imul %rdi, %rdx
     cmp $1, %rdi
     jle .L__kefir_func_factorial_label9
-    mov %rcx, %rdi
     mov %rdx, %rax
+    mov %rcx, %rdi
     jmp .L__kefir_func_factorial_label2
 .L__kefir_func_factorial_label9:
     ret
