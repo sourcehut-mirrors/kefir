@@ -70,6 +70,7 @@ kefir_result_t kefir_codegen_target_ir_regalloc_init(struct kefir_codegen_target
 kefir_result_t kefir_codegen_target_ir_regalloc_free(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *);
 
 kefir_size_t kefir_codegen_target_ir_regalloc_num_of_allocations(const struct kefir_codegen_target_ir_regalloc *);
+kefir_result_t kefir_codegen_target_ir_regalloc_forget(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *, kefir_codegen_target_ir_value_ref_t);
 kefir_result_t kefir_codegen_target_ir_regalloc_reset(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *);
 kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *, struct kefir_codegen_target_ir_regalloc *,
     const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_liveness *, const struct kefir_codegen_target_ir_interference *, const struct kefir_codegen_target_ir_coalesce *, const struct kefir_codegen_target_ir_stack_frame *);

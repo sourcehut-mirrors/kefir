@@ -128,8 +128,26 @@ static kefir_result_t insert_copy(struct kefir_mem *mem, struct kefir_codegen_ta
     return KEFIR_OK;
 }
 
-static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_regalloc *regalloc, kefir_codegen_target_ir_block_ref_t block_ref,
-    struct kefir_hashset *local_hot_uses) {
+static kefir_result_t forget_regalloc(struct kefir_mem *mem, const struct kefir_codegen_target_ir_interference *interference, struct kefir_codegen_target_ir_regalloc *regalloc, kefir_codegen_target_ir_value_ref_t value_ref) {
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_forget(mem, regalloc, value_ref));
+
+    kefir_result_t res;
+    struct kefir_graph_edge_iterator iter;
+    kefir_graph_vertex_id_t interference_vertex;
+    for (res = kefir_graph_edge_iter(&interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &interference_vertex);
+        res == KEFIR_OK;
+        res = kefir_graph_edge_next(&iter, &interference_vertex)) {
+        kefir_codegen_target_ir_value_ref_t conflict_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interference_vertex);
+        REQUIRE_OK(kefir_codegen_target_ir_regalloc_forget(mem, regalloc, conflict_value_ref));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_codegen_target_ir_regalloc *regalloc, kefir_codegen_target_ir_block_ref_t block_ref,
+    struct kefir_hashset *local_hot_uses, struct kefir_list *split_list) {
 
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
         instr_ref != KEFIR_ID_NONE;
@@ -142,7 +160,7 @@ static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir
         }
 
         if (instr->operation.opcode == code->klass->upsilon_opcode) {
-            break;;
+            break;
         }
 
         kefir_result_t res;
@@ -176,6 +194,7 @@ static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir
             REQUIRE_OK(collect_local_hot_uses(mem, code, regalloc->klass, instr_ref, value_ref, local_hot_uses));
             if (kefir_hashset_size(local_hot_uses) > 0) {
                 REQUIRE_OK(insert_copy(mem, code, block_ref, instr_ref, value_ref, local_hot_uses));
+                REQUIRE_OK(kefir_list_insert_after(mem, split_list, NULL, (void *) (kefir_uptr_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
                 break;
             }
         }
@@ -186,18 +205,32 @@ static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_transform_insert_local_hot_copy(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_regalloc *regalloc) {
+kefir_result_t kefir_codegen_target_ir_transform_insert_local_hot_copy(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_interference *interference, struct kefir_codegen_target_ir_regalloc *regalloc) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference"));
     REQUIRE(regalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR register allocator"));
 
     struct kefir_hashset local_hot_uses;
+    struct kefir_list split_list;
     REQUIRE_OK(kefir_hashset_init(&local_hot_uses, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_list_init(&split_list));
     kefir_result_t res = KEFIR_OK;
     for (kefir_size_t i = 0; res == KEFIR_OK && i < kefir_codegen_target_ir_code_block_count(code); i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
-        REQUIRE_CHAIN(&res, do_insert_local_copies(mem, code, regalloc, block_ref, &local_hot_uses));
+        REQUIRE_CHAIN(&res, do_insert_local_copies(mem, code, regalloc, block_ref, &local_hot_uses, &split_list));
     }
+    for (const struct kefir_list_entry *iter = kefir_list_head(&split_list);
+        iter != NULL && res == KEFIR_OK;
+        kefir_list_next(&iter)) {
+        REQUIRE_CHAIN(&res, forget_regalloc(mem, interference, regalloc, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM((kefir_uptr_t) iter->value)));
+    }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &split_list);
+        kefir_hashset_free(mem, &local_hot_uses);
+        return res;
+    });
+    res = kefir_list_free(mem, &split_list);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashset_free(mem, &local_hot_uses);
         return res;
