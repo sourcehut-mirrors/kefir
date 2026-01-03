@@ -132,12 +132,11 @@ static kefir_result_t forget_regalloc(struct kefir_mem *mem, const struct kefir_
     REQUIRE_OK(kefir_codegen_target_ir_regalloc_forget(mem, regalloc, value_ref));
 
     kefir_result_t res;
-    struct kefir_graph_edge_iterator iter;
-    kefir_graph_vertex_id_t interference_vertex;
-    for (res = kefir_graph_edge_iter(&interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &interference_vertex);
+    struct kefir_codegen_target_ir_interference_iterator iter;
+    kefir_codegen_target_ir_value_ref_t conflict_value_ref;
+    for (res = kefir_codegen_target_ir_interference_iter(interference, &iter, value_ref, &conflict_value_ref);
         res == KEFIR_OK;
-        res = kefir_graph_edge_next(&iter, &interference_vertex)) {
-        kefir_codegen_target_ir_value_ref_t conflict_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interference_vertex);
+        res = kefir_codegen_target_ir_interference_next(&iter, &conflict_value_ref)) {
         REQUIRE_OK(kefir_codegen_target_ir_regalloc_forget(mem, regalloc, conflict_value_ref));
     }
     if (res != KEFIR_ITERATOR_END) {

@@ -36,4 +36,11 @@ kefir_result_t kefir_codegen_target_ir_interference_build(struct kefir_mem *, st
 
 kefir_result_t kefir_codegen_target_ir_interference_has(const struct kefir_codegen_target_ir_interference *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_value_ref_t, kefir_bool_t *);
 
+typedef struct kefir_codegen_target_ir_interference_iterator {
+    struct kefir_graph_edge_iterator iter;
+} kefir_codegen_target_ir_interference_iterator_t;
+
+kefir_result_t kefir_codegen_target_ir_interference_iter(const struct kefir_codegen_target_ir_interference *, struct kefir_codegen_target_ir_interference_iterator *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_value_ref_t *);
+kefir_result_t kefir_codegen_target_ir_interference_next(struct kefir_codegen_target_ir_interference_iterator *, kefir_codegen_target_ir_value_ref_t *);
+
 #endif

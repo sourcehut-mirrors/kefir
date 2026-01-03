@@ -138,3 +138,36 @@ kefir_result_t kefir_codegen_target_ir_interference_has(const struct kefir_codeg
         (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&other_value_ref));
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_codegen_target_ir_interference_iter(const struct kefir_codegen_target_ir_interference *interference,
+    struct kefir_codegen_target_ir_interference_iterator *iter,
+    kefir_codegen_target_ir_value_ref_t value_ref,
+    kefir_codegen_target_ir_value_ref_t *interfere_value_ref_ptr) {
+    REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR interference iterator"));
+
+    kefir_graph_vertex_id_t vertex;
+    kefir_result_t res = kefir_graph_edge_iter(&interference->interference_graph, &iter->iter, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &vertex);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR interference iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(interfere_value_ref_ptr, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(vertex));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_interference_next(struct kefir_codegen_target_ir_interference_iterator *iter,
+    kefir_codegen_target_ir_value_ref_t *interfere_value_ref_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference iterator"));
+    
+    kefir_graph_vertex_id_t vertex;
+    kefir_result_t res = kefir_graph_edge_next(&iter->iter, &vertex);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR interference iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(interfere_value_ref_ptr, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(vertex));
+    return KEFIR_OK;
+}

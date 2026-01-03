@@ -57,12 +57,11 @@ static kefir_result_t build_constraints_and_hints(struct kefir_mem *mem, struct 
     REQUIRE_OK(state->regalloc_state.reset(mem, state->regalloc_state.payload));
     
     kefir_result_t res;
-    struct kefir_graph_edge_iterator iter;
-    kefir_graph_vertex_id_t interference_vertex;
-    for (res = kefir_graph_edge_iter(&state->interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &interference_vertex);
+    struct kefir_codegen_target_ir_interference_iterator iter;
+    kefir_codegen_target_ir_value_ref_t conflict_value_ref;
+    for (res = kefir_codegen_target_ir_interference_iter(state->interference, &iter, value_ref, &conflict_value_ref);
         res == KEFIR_OK;
-        res = kefir_graph_edge_next(&iter, &interference_vertex)) {
-        kefir_codegen_target_ir_value_ref_t conflict_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interference_vertex);
+        res = kefir_codegen_target_ir_interference_next(&iter, &conflict_value_ref)) {
         if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(conflict_value_ref.aspect) ||
             conflict_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
             continue;
@@ -80,7 +79,7 @@ static kefir_result_t build_constraints_and_hints(struct kefir_mem *mem, struct 
         }
 
         kefir_hashtable_value_t table_value;
-        res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) interference_vertex, &table_value);
+        res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&conflict_value_ref), &table_value);
         if (res == KEFIR_NOT_FOUND) {
             continue;
         }
@@ -142,12 +141,11 @@ static kefir_result_t try_evict_neighbor(struct kefir_mem *mem, struct regalloc_
     kefir_codegen_target_ir_value_ref_t evict_value = value_ref;
 
     kefir_result_t res;
-    struct kefir_graph_edge_iterator iter;
-    kefir_graph_vertex_id_t interference_vertex;
-    for (res = kefir_graph_edge_iter(&state->interference->interference_graph, &iter, (kefir_graph_vertex_id_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &interference_vertex);
+    struct kefir_codegen_target_ir_interference_iterator iter;
+    kefir_codegen_target_ir_value_ref_t conflict_value_ref;
+    for (res = kefir_codegen_target_ir_interference_iter(state->interference, &iter, value_ref, &conflict_value_ref);
         res == KEFIR_OK;
-        res = kefir_graph_edge_next(&iter, &interference_vertex)) {
-        kefir_codegen_target_ir_value_ref_t conflict_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(interference_vertex);
+        res = kefir_codegen_target_ir_interference_next(&iter, &conflict_value_ref)) {
         const struct kefir_codegen_target_ir_value_type *conflict_value_type = NULL;
         res = kefir_codegen_target_ir_code_value_props(state->control_flow->code, conflict_value_ref, &conflict_value_type);
         if (res == KEFIR_NOT_FOUND) {
@@ -161,7 +159,7 @@ static kefir_result_t try_evict_neighbor(struct kefir_mem *mem, struct regalloc_
         }
 
         kefir_hashtable_value_t table_value;
-        res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) interference_vertex, &table_value);
+        res = kefir_hashtable_at(&state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&conflict_value_ref), &table_value);
         if (res == KEFIR_NOT_FOUND) {
             continue;
         }
