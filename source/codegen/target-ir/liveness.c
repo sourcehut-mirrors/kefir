@@ -79,7 +79,7 @@ kefir_result_t kefir_codegen_target_ir_liveness_reset(struct kefir_mem *mem, str
             REQUIRE_OK(kefir_hashtree_free(mem, &liveness->blocks[block_ref].value_liveness_ranges));
         }
         KEFIR_FREE(mem, liveness->blocks);
-        memset(liveness, 0, sizeof(struct kefir_codegen_target_ir_liveness));
+        liveness->blocks = NULL;
     }
     return KEFIR_OK;
 }
@@ -396,17 +396,7 @@ kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *mem, con
     REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
 
-    if (liveness->blocks != NULL) {
-        REQUIRE_OK(kefir_hashtable_clear(mem, &liveness->values));
-        if (liveness->blocks != NULL) {
-            for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(liveness->code); i++) {
-                kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(liveness->code, i);
-                KEFIR_FREE(mem, liveness->blocks[block_ref].live_in.content);
-                KEFIR_FREE(mem, liveness->blocks[block_ref].live_out.content);
-            }
-            KEFIR_FREE(mem, liveness->blocks);
-        }
-    }
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_reset(mem, liveness));
 
     liveness->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_block_liveness) * kefir_codegen_target_ir_code_block_count(control_flow->code));
     REQUIRE(liveness->blocks != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR liveness information"));
