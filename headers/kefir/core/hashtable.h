@@ -117,7 +117,7 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
                                                                                                                   \
         kefir_bool_t equal; \
         if ((_entry_states)[index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
-            equal = (_ops)->equal((_key), (_entries)[index].key, (_ops)->payload);                       \
+            equal = (_key) == (_entries)[index].key || (_ops)->equal((_key), (_entries)[index].key, (_ops)->payload);                       \
             if (equal) {                                                                                              \
                 *(_position_ptr) = index;                                                                             \
                 return KEFIR_OK;                                                                                      \
@@ -136,7 +136,7 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
                     deleted_index = current_index; \
                 } \
             } else if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
-                equal = (_ops)->equal((_key), (_entries)[current_index].key, (_ops)->payload);                                    \
+                equal = (_key) == (_entries)[current_index].key || (_ops)->equal((_key), (_entries)[current_index].key, (_ops)->payload);                                    \
                 if (equal) {                                                                                          \
                     *(_position_ptr) = current_index;                                                                             \
                     return KEFIR_OK;                                                                                  \
@@ -166,7 +166,8 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
                 }                                                                                                     \
                                                                                                                       \
                 if ((_hashtable)->entry_states[index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED &&                           \
-                    (_hashtable)->ops->equal((_key), (_hashtable)->entries[index].key, (_hashtable)->ops->payload)) { \
+                    ((_key) == (_hashtable)->entries[index].key || \
+                    (_hashtable)->ops->equal((_key), (_hashtable)->entries[index].key, (_hashtable)->ops->payload))) { \
                     on_found                                                                                          \
                 }                                                                                                     \
             }                                                                            \
