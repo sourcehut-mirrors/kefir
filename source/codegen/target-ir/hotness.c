@@ -91,7 +91,7 @@ static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(payload->mem, payload->control_flow, payload->liveness, block_ref, &liveness_ranges));
 
     const struct kefir_codegen_target_ir_liveness_index *liveness_index;
-    kefir_result_t res = kefir_codegen_target_ir_liveness_range_get(liveness_ranges, instr_ref, &liveness_index);
+    kefir_result_t res = kefir_codegen_target_ir_liveness_range_get(payload->liveness, liveness_ranges, instr_ref, &liveness_index);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
     struct kefir_hashset_iterator iter;

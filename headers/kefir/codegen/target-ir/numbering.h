@@ -32,6 +32,7 @@ typedef struct kefir_codegen_target_ir_numbering {
 
 kefir_result_t kefir_codegen_target_ir_numbering_init(struct kefir_codegen_target_ir_numbering *);
 kefir_result_t kefir_codegen_target_ir_numbering_free(struct kefir_mem *, struct kefir_codegen_target_ir_numbering *);
+kefir_result_t kefir_codegen_target_ir_numbering_reset(struct kefir_mem *, struct kefir_codegen_target_ir_numbering *);
 
 kefir_result_t kefir_codegen_target_ir_numbering_build(struct kefir_mem *, struct kefir_codegen_target_ir_numbering *, const struct kefir_codegen_target_ir_code *);
 

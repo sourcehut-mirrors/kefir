@@ -30,10 +30,10 @@ static kefir_result_t process_block_at(struct kefir_mem *mem, struct kefir_hashs
     const struct kefir_codegen_target_ir_liveness_value_block_ranges *liveness_ranges;
     REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(mem, control_flow, liveness, block_ref, &liveness_ranges));
 
-    REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, KEFIR_ID_NONE, liveness_ranges, alive_values));
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, liveness, KEFIR_ID_NONE, liveness_ranges, alive_values));
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
         instr_ref != KEFIR_ID_NONE;) {
-        REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, instr_ref, liveness_ranges, alive_values));
+        REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, liveness, instr_ref, liveness_ranges, alive_values));
 
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));

@@ -133,11 +133,11 @@ static kefir_result_t record_interference(struct kefir_mem *mem, struct kefir_co
 static kefir_result_t build_block_interference_impl(struct kefir_mem *mem, const struct kefir_codegen_target_ir_liveness *liveness, struct kefir_codegen_target_ir_interference *interference, const struct kefir_codegen_target_ir_control_flow *control_flow, kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_hashset *alive_values) {
     const struct kefir_codegen_target_ir_liveness_value_block_ranges *liveness_ranges;
     REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(mem, control_flow, liveness, block_ref, &liveness_ranges));
-    REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, KEFIR_ID_NONE, liveness_ranges, alive_values));
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, liveness, KEFIR_ID_NONE, liveness_ranges, alive_values));
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(control_flow->code, block_ref);
         instr_ref != KEFIR_ID_NONE;
         instr_ref = kefir_codegen_target_ir_code_control_next(control_flow->code, instr_ref)) {
-        REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, instr_ref, liveness_ranges, alive_values));
+        REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, liveness, instr_ref, liveness_ranges, alive_values));
 
         struct kefir_codegen_target_ir_value_iterator value_iter;
         struct kefir_codegen_target_ir_value_ref value_ref;

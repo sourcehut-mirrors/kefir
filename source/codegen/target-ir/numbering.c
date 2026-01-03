@@ -26,7 +26,9 @@ kefir_result_t kefir_codegen_target_ir_numbering_init(struct kefir_codegen_targe
     REQUIRE(numbering != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR numbering"));
 
     numbering->instruction_seq_nums = NULL;
+    numbering->block_lengths = NULL;
     numbering->length = 0;
+    numbering->block_count = 0;
     return KEFIR_OK;
 }
 
@@ -37,7 +39,22 @@ kefir_result_t kefir_codegen_target_ir_numbering_free(struct kefir_mem *mem, str
     KEFIR_FREE(mem, numbering->block_lengths);
     KEFIR_FREE(mem, numbering->instruction_seq_nums);
     numbering->instruction_seq_nums = NULL;
+    numbering->block_lengths = NULL;
     numbering->length = 0;
+    numbering->block_count = 0;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_numbering_reset(struct kefir_mem *mem, struct kefir_codegen_target_ir_numbering *numbering) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(numbering != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR numbering"));
+
+    KEFIR_FREE(mem, numbering->block_lengths);
+    KEFIR_FREE(mem, numbering->instruction_seq_nums);
+    numbering->instruction_seq_nums = NULL;
+    numbering->block_lengths = NULL;
+    numbering->length = 0;
+    numbering->block_count = 0;
     return KEFIR_OK;
 }
 
