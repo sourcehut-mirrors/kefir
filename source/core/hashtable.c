@@ -209,6 +209,16 @@ kefir_result_t kefir_hashtable_trim(struct kefir_mem *mem, struct kefir_hashtabl
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_hashtable_ensure(struct kefir_mem *mem, struct kefir_hashtable *hashtable, kefir_size_t capacity) {
+    REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
+
+    capacity = next_power_of_2(capacity);
+    if (hashtable->capacity < capacity) {
+        REQUIRE_OK(rehash(mem, hashtable, capacity));
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_hashtable_at_mut(const struct kefir_hashtable *hashtable, kefir_hashtable_key_t key,
                                       kefir_hashtable_value_t **value_ptr) {
     REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));

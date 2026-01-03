@@ -24,6 +24,7 @@
 #include "kefir/codegen/target-ir/code.h"
 #include "kefir/codegen/target-ir/control_flow.h"
 #include "kefir/codegen/target-ir/interference.h"
+#include "kefir/core/graph.h"
 
 typedef struct kefir_codegen_target_ir_coalesce {
     struct kefir_graph coalesce_graph;

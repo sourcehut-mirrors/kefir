@@ -23,10 +23,14 @@
 
 #include "kefir/codegen/target-ir/liveness.h"
 #include "kefir/codegen/target-ir/control_flow.h"
-#include "kefir/core/graph.h"
+
+typedef struct kefir_codegen_target_ir_instruction_interference {
+    struct kefir_hashtable value_entries;
+} kefir_codegen_target_ir_instruction_interference_t;
 
 typedef struct kefir_codegen_target_ir_interference {
-    struct kefir_graph interference_graph;
+    kefir_size_t length;
+    struct kefir_codegen_target_ir_instruction_interference *interference;
 } kefir_codegen_target_ir_interference_t;
 
 kefir_result_t kefir_codegen_target_ir_interference_init(struct kefir_codegen_target_ir_interference *);
@@ -37,7 +41,8 @@ kefir_result_t kefir_codegen_target_ir_interference_build(struct kefir_mem *, st
 kefir_result_t kefir_codegen_target_ir_interference_has(const struct kefir_codegen_target_ir_interference *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_value_ref_t, kefir_bool_t *);
 
 typedef struct kefir_codegen_target_ir_interference_iterator {
-    struct kefir_graph_edge_iterator iter;
+    void *entry;
+    kefir_size_t index;
 } kefir_codegen_target_ir_interference_iterator_t;
 
 kefir_result_t kefir_codegen_target_ir_interference_iter(const struct kefir_codegen_target_ir_interference *, struct kefir_codegen_target_ir_interference_iterator *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_value_ref_t *);
