@@ -26,17 +26,17 @@
 #include <string.h>
 
 struct state_payload {
-    kefir_uint8_t *register_conflicts;
+    kefir_uint32_t *register_conflicts;
     struct kefir_hashtreeset hints;
-    kefir_uint8_t *spill_slots;
+    kefir_uint32_t *spill_slots;
     kefir_size_t spill_slots_length;
 };
 
 static kefir_result_t ensure_spill_area(struct kefir_mem *mem, struct state_payload *state_payload, kefir_size_t length) {
     if (state_payload->spill_slots_length < length) {
-        kefir_uint8_t *new_spill_slots = KEFIR_REALLOC(mem, state_payload->spill_slots, sizeof(kefir_uint8_t) * length);
+        kefir_uint32_t *new_spill_slots = KEFIR_REALLOC(mem, state_payload->spill_slots, sizeof(kefir_uint32_t) * length);
         REQUIRE(new_spill_slots != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR register allocator spill state"));
-        memset(&new_spill_slots[state_payload->spill_slots_length], 0, sizeof(kefir_uint8_t) * (length - state_payload->spill_slots_length));
+        memset(&new_spill_slots[state_payload->spill_slots_length], 0, sizeof(kefir_uint32_t) * (length - state_payload->spill_slots_length));
         state_payload->spill_slots = new_spill_slots;
         state_payload->spill_slots_length = length;
     }
@@ -54,7 +54,7 @@ static kefir_result_t allocate_spill_area(struct kefir_mem *mem, struct state_pa
         }
 
         if (available) {
-            memset(&state_payload->spill_slots[index], 1, sizeof(kefir_uint8_t) * length);
+            memset(&state_payload->spill_slots[index], 1, sizeof(kefir_uint32_t) * length);
             *index_ptr = index;
             return KEFIR_OK;
         }
@@ -62,7 +62,7 @@ static kefir_result_t allocate_spill_area(struct kefir_mem *mem, struct state_pa
 
     index = (state_payload->spill_slots_length + alignment - 1) / alignment * alignment;
     REQUIRE_OK(ensure_spill_area(mem, state_payload, index + length));
-    memset(&state_payload->spill_slots[index], 1, sizeof(kefir_uint8_t) * length);
+    memset(&state_payload->spill_slots[index], 1, sizeof(kefir_uint32_t) * length);
     *index_ptr = index;
     return KEFIR_OK;
 }
@@ -372,9 +372,9 @@ static kefir_result_t state_reset(struct kefir_mem *mem, void *payload) {
     REQUIRE(state_payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR register allocator state payload"));
     
     REQUIRE_OK(kefir_hashtreeset_clean(mem, &state_payload->hints));
-    memset(state_payload->register_conflicts, 0, sizeof(kefir_uint8_t) * KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES);
+    memset(state_payload->register_conflicts, 0, sizeof(kefir_uint32_t) * KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES);
     if (state_payload->spill_slots_length > 0) {
-        memset(state_payload->spill_slots, 0, sizeof(kefir_uint8_t) * state_payload->spill_slots_length);
+        memset(state_payload->spill_slots, 0, sizeof(kefir_uint32_t) * state_payload->spill_slots_length);
     }
     return KEFIR_OK;
 }
@@ -395,14 +395,50 @@ static kefir_result_t state_add_conflict(struct kefir_mem *mem, kefir_codegen_ta
 
         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
-            state_payload->register_conflicts[entry.reg.value] = 1;
+            state_payload->register_conflicts[entry.reg.value]++;
             break;
 
         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL: {
             REQUIRE_OK(ensure_spill_area(mem, state_payload, entry.spill_area.index + entry.spill_area.length));
-            memset(&state_payload->spill_slots[entry.spill_area.index], 1, sizeof(kefir_uint8_t) * entry.spill_area.length);
+            for (kefir_size_t i = 0; i < entry.spill_area.length; i++) {
+                state_payload->spill_slots[entry.spill_area.index + i]++;
+            }
         } break;
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t state_remove_conflict(struct kefir_mem *mem, kefir_codegen_target_ir_regalloc_allocation_t allocation, void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct state_payload *, state_payload,
+        payload);
+    REQUIRE(state_payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR register allocator state payload"));
+    
+    union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+        .allocation = allocation
+    };
+    switch (entry.type) {
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
+            if (state_payload->register_conflicts[entry.reg.value] > 0) {
+                state_payload->register_conflicts[entry.reg.value]--;
+            }
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL: {
+            REQUIRE_OK(ensure_spill_area(mem, state_payload, entry.spill_area.index + entry.spill_area.length));
+            for (kefir_size_t i = 0; i < entry.spill_area.length; i++) {
+                if (state_payload->spill_slots[entry.spill_area.index] > 0) {
+                    state_payload->spill_slots[entry.spill_area.index + i]--;
+                }
+            }
+        } break;
+    }
+    
     return KEFIR_OK;
 }
 
@@ -438,7 +474,7 @@ static kefir_result_t new_state(struct kefir_mem *mem, struct kefir_codegen_targ
     REQUIRE(state_payload != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR amd64 register allocator state"));
     state_payload->spill_slots = NULL;
     state_payload->spill_slots_length = 0;
-    state_payload->register_conflicts = KEFIR_MALLOC(mem, sizeof(kefir_uint8_t) * KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES);
+    state_payload->register_conflicts = KEFIR_MALLOC(mem, sizeof(kefir_uint32_t) * KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES);
     kefir_result_t res = KEFIR_OK;
     REQUIRE_CHAIN_SET(&res, state_payload->register_conflicts != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR amd64 register allocator state"));
     REQUIRE_CHAIN(&res, kefir_hashtreeset_init(&state_payload->hints, &kefir_hashtree_uint_ops));
@@ -447,10 +483,11 @@ static kefir_result_t new_state(struct kefir_mem *mem, struct kefir_codegen_targ
         KEFIR_FREE(mem, state_payload);
         return res;
     });
-    memset(state_payload->register_conflicts, 0, sizeof(kefir_uint8_t) * KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES);
+    memset(state_payload->register_conflicts, 0, sizeof(kefir_uint32_t) * KEFIR_AMD64_XASMGEN_REGISTER_NUM_OF_ENTRIES);
 
     state->reset = state_reset;
     state->add_conflict = state_add_conflict;
+    state->remove_conflict = state_remove_conflict;
     state->add_allocation_hint = add_allocation_hint;
     state->free_state = state_free;
     state->payload = state_payload;

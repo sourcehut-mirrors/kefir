@@ -34,6 +34,7 @@ typedef kefir_uint64_t kefir_codegen_target_ir_regalloc_allocation_t;
 typedef struct kefir_codegen_target_ir_regalloc_state {
     kefir_result_t (*reset)(struct kefir_mem *, void *);
     kefir_result_t (*add_conflict)(struct kefir_mem *, kefir_codegen_target_ir_regalloc_allocation_t, void *);
+    kefir_result_t (*remove_conflict)(struct kefir_mem *, kefir_codegen_target_ir_regalloc_allocation_t, void *);
     kefir_result_t (*add_allocation_hint)(struct kefir_mem *, kefir_codegen_target_ir_regalloc_allocation_t, void *);
     kefir_result_t (*free_state)(struct kefir_mem *, void *);
     void *payload;

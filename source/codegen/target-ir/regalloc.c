@@ -76,6 +76,7 @@ static kefir_result_t build_constraints_and_hints(struct kefir_mem *mem, struct 
             kefir_codegen_target_ir_regalloc_allocation_t allocation;
             REQUIRE_OK(state->regalloc->klass->register_allocation(conflict_value_type->constraint.physical_register, &allocation, state->regalloc->klass->payload));
             REQUIRE_OK(state->regalloc_state.add_conflict(mem, allocation, state->regalloc_state.payload));
+            continue;
         }
 
         kefir_hashtable_value_t table_value;
@@ -84,7 +85,7 @@ static kefir_result_t build_constraints_and_hints(struct kefir_mem *mem, struct 
             continue;
         }
         REQUIRE_OK(res);
-        REQUIRE_OK(state->regalloc_state.add_conflict(mem, (kefir_codegen_target_ir_regalloc_allocation_t) table_value, state->regalloc_state.payload));
+        REQUIRE_OK(state->regalloc_state.add_conflict(mem, (kefir_codegen_target_ir_regalloc_allocation_t) table_value, state->regalloc_state.payload));        
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -106,6 +107,7 @@ static kefir_result_t build_constraints_and_hints(struct kefir_mem *mem, struct 
                 kefir_codegen_target_ir_regalloc_allocation_t allocation;
                 REQUIRE_OK(state->regalloc->klass->register_allocation(coalesce_value_type->constraint.physical_register, &allocation, state->regalloc->klass->payload));
                 REQUIRE_OK(state->regalloc_state.add_allocation_hint(mem, allocation, state->regalloc_state.payload));
+                continue;
             }
 
             kefir_hashtable_value_t table_value;
@@ -139,6 +141,7 @@ static kefir_result_t try_evict_neighbor(struct kefir_mem *mem, struct regalloc_
     REQUIRE_OK(get_value_hotness(state, value_ref, &hotness_fragment));
     REQUIRE(!KEFIR_CODEGEN_TARGET_IR_HOTNESS_IS_MAX(&hotness_fragment), KEFIR_OK);
     kefir_codegen_target_ir_value_ref_t evict_value = value_ref;
+    kefir_codegen_target_ir_regalloc_allocation_t evict_allocation = 0;
 
     kefir_result_t res;
     struct kefir_codegen_target_ir_interference_iterator iter;
@@ -176,6 +179,7 @@ static kefir_result_t try_evict_neighbor(struct kefir_mem *mem, struct regalloc_
         if (kefir_codegen_target_ir_value_hotness_compare(conflict_hotness_fragment, hotness_fragment) < 0) {
             hotness_fragment = conflict_hotness_fragment;
             evict_value = conflict_value_ref;
+            evict_allocation = table_value;
         }
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -185,7 +189,7 @@ static kefir_result_t try_evict_neighbor(struct kefir_mem *mem, struct regalloc_
     if (KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&evict_value) != KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
         REQUIRE_OK(kefir_hashtable_delete(mem, &state->regalloc->allocation, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&evict_value)));
         REQUIRE_OK(kefir_list_insert_after(mem, &state->value_queue, kefir_list_tail(&state->value_queue), (void *) (kefir_uptr_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&evict_value)));
-        REQUIRE_OK(build_constraints_and_hints(mem, state, value_ref));
+        REQUIRE_OK(state->regalloc_state.remove_conflict(mem, evict_allocation, state->regalloc_state.payload));
     }
 
     return KEFIR_OK;
