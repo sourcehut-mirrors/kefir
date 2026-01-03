@@ -50,6 +50,21 @@ static kefir_result_t process_block_at(struct kefir_mem *mem, struct kefir_hashs
 }
 
 static kefir_result_t preserve_virtual_regs(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashset *preserve, struct kefir_codegen_target_ir_control_flow *control_flow, struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_opcode_t preserve_vregs_opcode) {
+    kefir_bool_t has_preserve_vregs_instr = false;
+    for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code) && !has_preserve_vregs_instr; i++) {
+        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
+        for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
+            instr_ref != KEFIR_ID_NONE && !has_preserve_vregs_instr;
+            instr_ref = kefir_codegen_target_ir_code_control_next(control_flow->code, instr_ref)) {
+            const struct kefir_codegen_target_ir_instruction *instr;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
+            if (instr->operation.opcode == preserve_vregs_opcode) {
+                has_preserve_vregs_instr = true;
+            }
+        }
+    }
+    REQUIRE(has_preserve_vregs_instr, KEFIR_OK);
+
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, control_flow));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build(mem, control_flow, liveness));
 
