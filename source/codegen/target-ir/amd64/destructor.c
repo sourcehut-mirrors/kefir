@@ -2446,7 +2446,7 @@ static kefir_result_t translate_block(struct destructor_state *state, kefir_code
         } \
     } while (0)
 
-    const struct kefir_hashtree *liveness_ranges;
+    const struct kefir_codegen_target_ir_liveness_value_block_ranges *liveness_ranges;
     REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(state->mem, state->control_flow, state->liveness, block_ref, &liveness_ranges));
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(state->mem, KEFIR_ID_NONE, liveness_ranges, &state->alive_values));
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(state->code, block_ref);

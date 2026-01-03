@@ -87,15 +87,13 @@ static kefir_result_t update_value_score(struct hotness_payload *payload, kefir_
 }
 
 static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
-    struct kefir_hashtree_node *node;
-    const struct kefir_hashtree *liveness_ranges;
+    const struct kefir_codegen_target_ir_liveness_value_block_ranges *liveness_ranges;
     REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(payload->mem, payload->control_flow, payload->liveness, block_ref, &liveness_ranges));
-    kefir_result_t res = kefir_hashtree_at(liveness_ranges, (kefir_hashtree_key_t) instr_ref, &node);
+
+    const struct kefir_codegen_target_ir_liveness_index *liveness_index;
+    kefir_result_t res = kefir_codegen_target_ir_liveness_range_get(liveness_ranges, instr_ref, &liveness_index);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
-
-    ASSIGN_DECL_CAST(struct kefir_codegen_target_ir_liveness_index *, liveness_index,
-        node->value);
     struct kefir_hashset_iterator iter;
     kefir_hashset_key_t iter_key;
     kefir_size_t seq_index = 0;

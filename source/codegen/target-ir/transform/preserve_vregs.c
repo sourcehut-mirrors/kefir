@@ -27,7 +27,7 @@
 
 static kefir_result_t process_block_at(struct kefir_mem *mem, struct kefir_hashset *preserve, struct kefir_codegen_target_ir_code *code, struct kefir_codegen_target_ir_control_flow *control_flow, struct kefir_codegen_target_ir_liveness *liveness,
     kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_opcode_t preserve_virtual_regs_opcode, struct kefir_hashset *alive_values) {
-    const struct kefir_hashtree *liveness_ranges;
+    const struct kefir_codegen_target_ir_liveness_value_block_ranges *liveness_ranges;
     REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(mem, control_flow, liveness, block_ref, &liveness_ranges));
 
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, KEFIR_ID_NONE, liveness_ranges, alive_values));
