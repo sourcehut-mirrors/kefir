@@ -28,6 +28,16 @@ static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_t
     struct kefir_codegen_target_ir_operation base_oper = instr->operation;
     kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
 
+    if (instr->operation.parameters[0].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS) {
+        const struct kefir_codegen_target_ir_value_type *value_type = NULL;
+        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, base_oper.parameters[0].indirect.base.value_ref, &value_type));
+        REQUIRE(value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_OK);
+    }
+
+    const struct kefir_codegen_target_ir_value_type *output_type;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr->instr_ref, 0, NULL, &output_type));
+    REQUIRE(output_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_OK);
+
     kefir_result_t res;
     struct kefir_codegen_target_ir_use_iterator use_iter;
     kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
@@ -65,29 +75,7 @@ static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_t
         }
 
         if (replace) {
-            kefir_codegen_target_ir_instruction_ref_t inserted_ref;
-            struct kefir_codegen_target_ir_instruction_metadata metadata = user_instr->metadata;
-            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, user_instr->block_ref,
-                use_instr_ref, &oper, &metadata, &inserted_ref));
-
-            struct kefir_codegen_target_ir_value_iterator value_iter;
-            struct kefir_codegen_target_ir_value_ref value_ref;
-            const struct kefir_codegen_target_ir_value_type *value_type;
-            kefir_result_t res;
-            for (res = kefir_codegen_target_ir_code_value_iter(code, &value_iter, use_instr_ref, &value_ref, &value_type);
-                res == KEFIR_OK;
-                res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, &value_type)) {
-                REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, (kefir_codegen_target_ir_value_ref_t) {
-                    .instr_ref = inserted_ref,
-                    .aspect = value_ref.aspect
-                }, value_type));
-            }
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-            }
-
-            REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, inserted_ref, use_instr_ref));
-            REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, use_instr_ref));
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, use_instr_ref, &oper));
             *replaced = true;
         }
     }
@@ -109,10 +97,15 @@ static kefir_result_t peephole_add(struct kefir_mem *mem, struct kefir_codegen_t
     kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
     struct kefir_codegen_target_ir_operation base_oper = instr->operation;
 
+    const struct kefir_codegen_target_ir_value_type *value_type = NULL;
+    REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, base_oper.parameters[0].direct.value_ref, &value_type));
+    REQUIRE(value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_OK);
+
     const struct kefir_codegen_target_ir_value_type *output_type;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr->instr_ref, 0, NULL, &output_type));
-    REQUIRE(output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
-            output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT, KEFIR_OK);
+    REQUIRE((output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+            output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT) &&
+            output_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_OK);
 
     const struct kefir_codegen_target_ir_instruction *base_instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr->operation.parameters[0].direct.value_ref.instr_ref, &base_instr));
@@ -179,31 +172,8 @@ static kefir_result_t peephole_add(struct kefir_mem *mem, struct kefir_codegen_t
                 }
             }
 
-
             if (replace) {
-                kefir_codegen_target_ir_instruction_ref_t inserted_ref;
-                struct kefir_codegen_target_ir_instruction_metadata metadata = user_instr->metadata;
-                REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, user_instr->block_ref,
-                    use_instr_ref, &oper, &metadata, &inserted_ref));
-
-                struct kefir_codegen_target_ir_value_iterator value_iter;
-                struct kefir_codegen_target_ir_value_ref value_ref;
-                const struct kefir_codegen_target_ir_value_type *value_type;
-                kefir_result_t res;
-                for (res = kefir_codegen_target_ir_code_value_iter(code, &value_iter, use_instr_ref, &value_ref, &value_type);
-                    res == KEFIR_OK;
-                    res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, &value_type)) {
-                    REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, (kefir_codegen_target_ir_value_ref_t) {
-                        .instr_ref = inserted_ref,
-                        .aspect = value_ref.aspect
-                    }, value_type));
-                }
-                if (res != KEFIR_ITERATOR_END) {
-                    REQUIRE_OK(res);
-                }
-
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, inserted_ref, use_instr_ref));
-                REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, use_instr_ref));
+                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, use_instr_ref, &oper));
                 *replaced = true;
             }
         }

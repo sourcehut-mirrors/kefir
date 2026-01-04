@@ -1113,6 +1113,41 @@ static kefir_result_t replace_uses(struct kefir_mem *mem, struct kefir_codegen_t
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_code_replace_operation(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref, const struct kefir_codegen_target_ir_operation *operation) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(operation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR operation"));
+
+    const struct kefir_codegen_target_ir_instruction *instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
+
+    kefir_codegen_target_ir_instruction_ref_t inserted_ref;
+    struct kefir_codegen_target_ir_instruction_metadata metadata = instr->metadata;
+    REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, instr->block_ref,
+        instr_ref, operation, &metadata, &inserted_ref));
+
+    struct kefir_codegen_target_ir_value_iterator value_iter;
+    struct kefir_codegen_target_ir_value_ref value_ref;
+    const struct kefir_codegen_target_ir_value_type *value_type;
+    kefir_result_t res;
+    for (res = kefir_codegen_target_ir_code_value_iter(code, &value_iter, instr_ref, &value_ref, &value_type);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, &value_type)) {
+        struct kefir_codegen_target_ir_value_type value_type_copy = *value_type;
+        REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, (kefir_codegen_target_ir_value_ref_t) {
+            .instr_ref = inserted_ref,
+            .aspect = value_ref.aspect
+        }, &value_type_copy));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, inserted_ref, instr_ref));
+    REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_replace_instruction(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t to_instr_ref, kefir_codegen_target_ir_instruction_ref_t from_instr_ref) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
