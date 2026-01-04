@@ -147,7 +147,6 @@ get2:
     jae .L__kefir_func_get2_label11
     lea 8(%rax), %rax
     movl %eax, -32(%rbp)
-    add -16(%rbp), %rax
 .L__kefir_func_get2_label6:
     xor %eax, %eax
     lea (%rbp), %rsp

@@ -126,7 +126,6 @@ testx:
     jae .L__kefir_func_testx_label13
     lea 8(%rcx), %rcx
     movl %ecx, -32(%rbp)
-    add -16(%rbp), %rcx
     mov %eax, %edi
     jmp .L__kefir_func_testx_label4
 .L__kefir_func_testx_label13:
