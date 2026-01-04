@@ -547,19 +547,6 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
                             REQUIRE_OK(kefir_json_output_object_key(json, "register"));
                             REQUIRE_OK(kefir_json_output_string(json, mnemonic));
                         } break;
-
-                        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT: {
-                            REQUIRE_OK(kefir_json_output_string(json, "hint"));
-                            const char *mnemonic;
-                            REQUIRE_OK(code->klass->register_mnemonic(value_type->constraint.physical_register, &mnemonic, code->klass->payload));
-                            REQUIRE_OK(kefir_json_output_object_key(json, "register"));
-                            REQUIRE_OK(kefir_json_output_string(json, mnemonic));
-                        } break;
-
-                        case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS:
-                            REQUIRE_OK(kefir_json_output_string(json, "same_as"));
-                            // TODO KEFIR_NOT_IMPLEMENTED
-                            break;
                     }
                     REQUIRE_OK(kefir_json_output_object_end(json));
                 }

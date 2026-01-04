@@ -186,10 +186,6 @@ test1:
 #                                "type": "register",
 #                                "register": "rsi"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rsi"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 1
 #                            }
@@ -226,10 +222,6 @@ test1:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rdi"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
 #                                "register": "rdi"
 #                            },
 #                            "metadata": {
@@ -498,10 +490,6 @@ test1:
 #                                "type": "register",
 #                                "register": "rax"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rax"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 8
 #                            }
@@ -761,10 +749,6 @@ test1:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
 #                                "register": "rax"
 #                            },
 #                            "metadata": {
@@ -1130,10 +1114,6 @@ test2:
 #                                "type": "register",
 #                                "register": "rsi"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rsi"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 1
 #                            }
@@ -1170,10 +1150,6 @@ test2:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rdi"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
 #                                "register": "rdi"
 #                            },
 #                            "metadata": {
@@ -1330,10 +1306,6 @@ test2:
 #                                "type": "register",
 #                                "register": "rdi"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 7
 #                            }
@@ -1443,10 +1415,6 @@ test2:
 #                            "allocation": {
 #                                "type": "register",
 #                                "register": "rax"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 8
@@ -1653,10 +1621,6 @@ test2:
 #                                "type": "register",
 #                                "register": "rax"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rax"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 11
 #                            }
@@ -1694,10 +1658,6 @@ test2:
 #                            "allocation": {
 #                                "type": "register",
 #                                "register": "rax"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 12
@@ -1765,10 +1725,6 @@ test2:
 #                            "allocation": {
 #                                "type": "register",
 #                                "register": "r8"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 13
@@ -2207,10 +2163,6 @@ test2:
 #                            "allocation": {
 #                                "type": "register",
 #                                "register": "rax"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 18
@@ -2805,10 +2757,6 @@ test3:
 #                                "type": "register",
 #                                "register": "rdx"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 0
 #                            }
@@ -2845,10 +2793,6 @@ test3:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
 #                                "register": "rcx"
 #                            },
 #                            "metadata": {
@@ -2889,10 +2833,6 @@ test3:
 #                                "type": "register",
 #                                "register": "rdi"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdi"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 6
 #                            }
@@ -2929,10 +2869,6 @@ test3:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rsi"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
 #                                "register": "rsi"
 #                            },
 #                            "metadata": {
@@ -3209,10 +3145,6 @@ test3:
 #                                "type": "register",
 #                                "register": "rax"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rax"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 14
 #                            }
@@ -3252,10 +3184,6 @@ test3:
 #                            "allocation": {
 #                                "type": "register",
 #                                "register": "rcx"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 15
@@ -3404,10 +3332,6 @@ test3:
 #                                "type": "register",
 #                                "register": "rax"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rax"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 20
 #                            }
@@ -3474,10 +3398,6 @@ test3:
 #                            "allocation": {
 #                                "type": "register",
 #                                "register": "rcx"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 21
@@ -3838,10 +3758,6 @@ test4:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rdi"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
 #                                "register": "rdi"
 #                            },
 #                            "metadata": {

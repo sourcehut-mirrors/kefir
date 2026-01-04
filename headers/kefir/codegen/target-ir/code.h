@@ -129,9 +129,7 @@ typedef struct kefir_codegen_target_ir_value_ref {
 } kefir_codegen_target_ir_value_ref_t;
 typedef enum kefir_codegen_target_ir_allocation_constraint_type {
     KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT,
-    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT,
-    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT,
-    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_SAME_AS
+    KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT
 } kefir_codegen_target_ir_allocation_constraint_type_t;
 
 typedef struct kefir_codegen_target_ir_allocation_constraint {

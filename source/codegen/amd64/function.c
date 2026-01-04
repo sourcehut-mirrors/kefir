@@ -1109,13 +1109,9 @@ static kefir_result_t construct_target_ir_get_allocation_constraint(kefir_asmcmp
             break;
 
         case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT:
-            constraint->type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_HINT;
-            constraint->physical_register = preallocation->reg;
-            break;
-
         case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS:
-            // TODO KEFIR_NOT_IMPLEMENTED
-            return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find preallocation constraint for the virtual register");
+            constraint->type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT;
+            break;
     }
     return KEFIR_OK;
 }

@@ -126,10 +126,6 @@ factorial:
 #                                "type": "register",
 #                                "register": "rdi"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rdi"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 1
 #                            }
@@ -1815,10 +1811,6 @@ factorial:
 #                                "type": "register",
 #                                "register": "rax"
 #                            },
-#                            "constraint": {
-#                                "type": "hint",
-#                                "register": "rax"
-#                            },
 #                            "metadata": {
 #                                "value_ref": 19
 #                            }
@@ -2340,10 +2332,6 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "constraint": {
-#                                "type": "hint",
 #                                "register": "rax"
 #                            },
 #                            "metadata": {
