@@ -131,9 +131,9 @@
                         {
                             "allocation_ref": 31,
                             "placement": [
-                                38,
                                 37,
-                                36
+                                36,
+                                38
                             ]
                         },
                         {

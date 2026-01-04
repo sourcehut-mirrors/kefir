@@ -129,8 +129,13 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
             kefir_size_t current_index = KEFIR_HASHTABLE_WRAPAROUND(index + i * lower_part, (_capacity)); \
             (*(_collisions_ptr))++;                                                                               \
             if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                          \
-                *(_position_ptr) = current_index;                                                                             \
-                return KEFIR_OK;                                                                                  \
+                if (deleted_index == ~0ull) { \
+                    *(_position_ptr) = current_index;                                                                             \
+                    return KEFIR_OK;                                                                                  \
+                } else { \
+                    *(_position_ptr) = deleted_index;                                                                             \
+                    return KEFIR_OK; \
+                } \
             } else if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_DELETED) {                                          \
                 if (deleted_index == ~0ull) { \
                     deleted_index = current_index; \
