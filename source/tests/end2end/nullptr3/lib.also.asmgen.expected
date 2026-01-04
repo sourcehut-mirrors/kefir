@@ -81,10 +81,11 @@ sum:
 .L__kefir_func_sum_label12:
     mov -24(%rbp), %rcx
 .L__kefir_func_sum_label245:
-    lea 8(%rcx), %rcx
+    lea 8(%rcx), %rdx
 .L__kefir_func_sum_label247:
-    mov %rcx, -24(%rbp)
-    mov -8(%rcx), %rcx
+    mov %rdx, -24(%rbp)
+.L__kefir_func_sum_label249:
+    mov (%rcx), %rcx
 .loc 0 28 21
 .L__kefir_func_sum_label253:
     jmp .L__kefir_func_sum_label14
@@ -534,6 +535,12 @@ __kefir_debug_loclist_section_entry_5:
     .byte 2
     .byte 144
     .byte 2
+    .byte 4
+    .uleb128 .L__kefir_func_sum_label247 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label249 - .L__kefir_text_section_begin
+    .byte 2
+    .byte 144
+    .byte 1
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 4

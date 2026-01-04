@@ -22,22 +22,20 @@ init_s:
     add $8, %rsp
     movq $0, 8(%rdi)
     fstpt (%rdi)
-    lea 16(%rdi), %rax
-    mov %edx, %ecx
-    push %rcx
+    mov %edx, %eax
+    push %rax
     fildq (%rsp)
     add $8, %rsp
-    test %rcx, %rcx
+    test %rax, %rax
     jns .L__kefir_func_init_s_label3
     fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_init_s_label3:
-    movq $0, 8(%rax)
-    fstpt (%rax)
-    lea 32(%rdi), %rax
+    movq $0, 24(%rdi)
+    fstpt 16(%rdi)
     movq %xmm0, -48(%rbp)
     fldl -48(%rbp)
-    movq $0, 8(%rax)
-    fstpt (%rax)
+    movq $0, 40(%rdi)
+    fstpt 32(%rdi)
     mov %rdi, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp

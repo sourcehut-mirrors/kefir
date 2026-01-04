@@ -20,6 +20,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/codegen/target-ir/*.c \
 	$(SOURCE_DIR)/codegen/target-ir/amd64/*.c \
 	$(SOURCE_DIR)/codegen/target-ir/transform/*.c \
+	$(SOURCE_DIR)/codegen/target-ir/amd64/transform/*.c \
 	$(SOURCE_DIR)/compiler/*.c \
 	$(SOURCE_DIR)/ir/*.c \
 	$(SOURCE_DIR)/lexer/*.c \

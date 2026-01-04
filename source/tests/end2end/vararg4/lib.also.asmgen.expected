@@ -50,9 +50,9 @@ get:
     lea -240(%rbp), %rcx
     movq %rcx, -32(%rbp)
     mov -40(%rbp), %rcx
-    lea 16(%rcx), %rcx
-    mov %rcx, -40(%rbp)
-    fldt -16(%rcx)
+    lea 16(%rcx), %rdx
+    mov %rdx, -40(%rbp)
+    fldt (%rcx)
     movq %rax, -240(%rbp)
     cdq
     movq -240(%rbp), %rax
@@ -63,9 +63,9 @@ get:
     jne .L__kefir_func_get_label5
 .L__kefir_func_get_label14:
     mov -40(%rbp), %rax
-    lea 16(%rax), %rax
-    mov %rax, -40(%rbp)
-    fldt -16(%rax)
+    lea 16(%rax), %rcx
+    mov %rcx, -40(%rbp)
+    fldt (%rax)
     fstpt -64(%rbp)
     jmp .L__kefir_func_get_label5
 .L__kefir_text_func_get_end:

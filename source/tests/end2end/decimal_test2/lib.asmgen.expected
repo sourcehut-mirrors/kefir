@@ -3158,8 +3158,7 @@ test_dec128_addv:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
-    sub $64, %rsp
+    sub $72, %rsp
     mov %rdi, %rbx
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
@@ -3180,12 +3179,10 @@ test_dec128_addv:
     movdqu %xmm0, (%rbx)
     movdqu -64(%rbp), %xmm0
     movdqu -32(%rbp), %xmm1
-    lea 16(%rbx), %r12
     call __bid_addtd3@PLT
-    movdqu %xmm0, (%r12)
+    movdqu %xmm0, 16(%rbx)
     mov %rbx, %rax
-    lea -16(%rbp), %rsp
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
@@ -3196,8 +3193,7 @@ test_dec128_mulv:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
-    sub $48, %rsp
+    sub $56, %rsp
     mov %rdi, %rbx
     movaps %xmm0, -64(%rbp)
     lea 16(%rbp), %rax
@@ -3213,13 +3209,11 @@ test_dec128_mulv:
     call __bid_multd3@PLT
     movdqu %xmm0, (%rbx)
     movdqu -32(%rbp), %xmm0
-    lea 16(%rbx), %r12
     movaps -64(%rbp), %xmm1
     call __bid_multd3@PLT
-    movdqu %xmm0, (%r12)
+    movdqu %xmm0, 16(%rbx)
     mov %rbx, %rax
-    lea -16(%rbp), %rsp
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret

@@ -132,9 +132,9 @@ testx:
     jmp .L__kefir_func_testx_label4
 .L__kefir_func_testx_label13:
     mov -24(%rbp), %rcx
-    lea 8(%rcx), %rcx
-    mov %rcx, -24(%rbp)
-    mov -8(%rcx), %rcx
+    lea 8(%rcx), %rdx
+    mov %rdx, -24(%rbp)
+    mov (%rcx), %rcx
     mov %eax, %edi
     jmp .L__kefir_func_testx_label4
 .L__kefir_text_func_testx_end:

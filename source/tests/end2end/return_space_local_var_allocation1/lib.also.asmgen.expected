@@ -24,69 +24,49 @@ get1:
     movq $0, (%rdi)
 .loc 0 25 5
 .L__kefir_func_get1_label46:
-    lea 8(%rdi), %rax
-.L__kefir_func_get1_label47:
-    movq %rsi, (%rax)
-.loc 0 26 5
-.L__kefir_func_get1_label54:
-    lea 16(%rdi), %rax
+    movq %rsi, 8(%rdi)
 .loc 0 26 16
-.L__kefir_func_get1_label55:
-    lea 1(%rsi), %rcx
+.L__kefir_func_get1_label52:
+    lea 1(%rsi), %rax
 .loc 0 26 5
-.L__kefir_func_get1_label64:
-    movq %rcx, (%rax)
-.loc 0 27 5
-.L__kefir_func_get1_label65:
-    lea 24(%rdi), %rax
+.L__kefir_func_get1_label56:
+    movq %rax, 16(%rdi)
 .loc 0 27 16
-.L__kefir_func_get1_label69:
-    lea 2(%rsi), %rcx
+.L__kefir_func_get1_label57:
+    lea 2(%rsi), %rax
 .loc 0 27 5
-.L__kefir_func_get1_label78:
-    movq %rcx, (%rax)
-.loc 0 28 5
-.L__kefir_func_get1_label82:
-    lea 32(%rdi), %rax
+.L__kefir_func_get1_label66:
+    movq %rax, 24(%rdi)
 .loc 0 28 16
-.L__kefir_func_get1_label83:
-    lea 3(%rsi), %rcx
+.L__kefir_func_get1_label67:
+    lea 3(%rsi), %rax
 .loc 0 28 5
-.L__kefir_func_get1_label89:
-    movq %rcx, (%rax)
-.loc 0 29 5
-.L__kefir_func_get1_label96:
-    lea 40(%rdi), %rax
+.L__kefir_func_get1_label73:
+    movq %rax, 32(%rdi)
 .loc 0 29 16
-.L__kefir_func_get1_label102:
-    lea 4(%rsi), %rcx
+.L__kefir_func_get1_label82:
+    lea 4(%rsi), %rax
 .loc 0 29 5
-.L__kefir_func_get1_label103:
-    movq %rcx, (%rax)
-.loc 0 30 5
-.L__kefir_func_get1_label107:
-    lea 48(%rdi), %rax
+.L__kefir_func_get1_label83:
+    movq %rax, 40(%rdi)
 .loc 0 30 16
-.L__kefir_func_get1_label116:
-    lea 5(%rsi), %rcx
+.L__kefir_func_get1_label87:
+    lea 5(%rsi), %rax
 .loc 0 30 5
-.L__kefir_func_get1_label117:
-    movq %rcx, (%rax)
-.loc 0 31 5
-.L__kefir_func_get1_label124:
-    lea 56(%rdi), %rax
+.L__kefir_func_get1_label93:
+    movq %rax, 48(%rdi)
 .loc 0 31 16
-.L__kefir_func_get1_label125:
+.L__kefir_func_get1_label102:
     add $6, %rsi
 .loc 0 31 5
-.L__kefir_func_get1_label134:
-    movq %rsi, (%rax)
+.L__kefir_func_get1_label103:
+    movq %rsi, 56(%rdi)
 .loc 0 32 5
-.L__kefir_func_get1_label148:
+.L__kefir_func_get1_label120:
     mov %rdi, %rax
-.L__kefir_func_get1_label145:
+.L__kefir_func_get1_label117:
     ret
-.L__kefir_func_get1_label149:
+.L__kefir_func_get1_label121:
 .L__kefir_text_func_get1_end:
 
 get2:
@@ -696,7 +676,7 @@ __kefir_debug_loclists_section_begin:
 __kefir_debug_loclist_section_entry_1:
     .byte 4
     .uleb128 .L__kefir_func_get1_label15 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_get1_label134 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get1_label103 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 4
@@ -704,7 +684,7 @@ __kefir_debug_loclist_section_entry_1:
 __kefir_debug_loclist_section_entry_2:
     .byte 4
     .uleb128 .L__kefir_func_get1_label36 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_get1_label145 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get1_label117 - .L__kefir_text_section_begin
     .byte 3
     .byte 146
     .byte 5
@@ -713,7 +693,7 @@ __kefir_debug_loclist_section_entry_2:
 __kefir_debug_loclist_section_entry_3:
     .byte 4
     .uleb128 .L__kefir_func_get1_label15 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_get1_label134 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_get1_label103 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 4

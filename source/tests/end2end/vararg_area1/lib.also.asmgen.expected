@@ -122,9 +122,9 @@ process:
     jmp .L__kefir_func_process_label8
 .L__kefir_func_process_label14:
     mov -56(%rbp), %rax
-    lea 8(%rax), %rax
-    mov %rax, -56(%rbp)
-    mov -8(%rax), %rax
+    lea 8(%rax), %rcx
+    mov %rcx, -56(%rbp)
+    mov (%rax), %rax
     mov %rax, %rcx
     jmp .L__kefir_func_process_label15
 .L__kefir_func_process_label21:

@@ -61,9 +61,9 @@ test1:
     ret
 .L__kefir_func_test1_label6:
     mov -24(%rbp), %rax
-    lea 8(%rax), %rax
-    mov %rax, -24(%rbp)
-    mov -8(%rax), %rax
+    lea 8(%rax), %rcx
+    mov %rcx, -24(%rbp)
+    mov (%rax), %rax
     jmp .L__kefir_func_test1_label7
 .L__kefir_func_test1_label15:
     jmp .L__kefir_func_test1_label2
