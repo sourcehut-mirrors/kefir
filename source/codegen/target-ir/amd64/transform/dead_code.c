@@ -87,7 +87,10 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_dead_code_elimination(str
         [KEFIR_TARGET_IR_AMD64_OPCODE(xor)] = true,
         [KEFIR_TARGET_IR_AMD64_OPCODE(not)] = true,
         [KEFIR_TARGET_IR_AMD64_OPCODE(neg)] = true,
-        [KEFIR_TARGET_IR_AMD64_OPCODE(dec)] = true
+        [KEFIR_TARGET_IR_AMD64_OPCODE(dec)] = true,
+        [KEFIR_TARGET_IR_AMD64_OPCODE(cmp)] = true,
+        [KEFIR_TARGET_IR_AMD64_OPCODE(test)] = true,
+        [KEFIR_TARGET_IR_AMD64_OPCODE(cld)] = true
     };
 
     kefir_bool_t reached_fixpoint = false;
