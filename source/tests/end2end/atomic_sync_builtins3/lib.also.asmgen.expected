@@ -113,7 +113,6 @@ test_sync_val_compare_and_swap8:
     je .L__kefir_func_test_sync_val_compare_and_swap8_label3
     movb %al, -1(%rbp)
 .L__kefir_func_test_sync_val_compare_and_swap8_label3:
-    sete %al
     movb -1(%rbp), %al
     lea (%rbp), %rsp
     pop %rbp
@@ -134,7 +133,6 @@ test_sync_val_compare_and_swap16:
     je .L__kefir_func_test_sync_val_compare_and_swap16_label3
     movw %ax, -2(%rbp)
 .L__kefir_func_test_sync_val_compare_and_swap16_label3:
-    sete %al
     movw -2(%rbp), %ax
     lea (%rbp), %rsp
     pop %rbp
@@ -155,7 +153,6 @@ test_sync_val_compare_and_swap32:
     je .L__kefir_func_test_sync_val_compare_and_swap32_label3
     movl %eax, -4(%rbp)
 .L__kefir_func_test_sync_val_compare_and_swap32_label3:
-    sete %al
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -176,7 +173,6 @@ test_sync_val_compare_and_swap64:
     je .L__kefir_func_test_sync_val_compare_and_swap64_label3
     movq %rax, -8(%rbp)
 .L__kefir_func_test_sync_val_compare_and_swap64_label3:
-    sete %al
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp

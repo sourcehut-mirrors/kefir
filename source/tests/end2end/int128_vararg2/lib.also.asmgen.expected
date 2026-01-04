@@ -127,14 +127,12 @@ testx:
     lea 8(%rcx), %rcx
     movl %ecx, -32(%rbp)
     add -16(%rbp), %rcx
-    mov -8(%rcx), %rcx
     mov %eax, %edi
     jmp .L__kefir_func_testx_label4
 .L__kefir_func_testx_label13:
     mov -24(%rbp), %rcx
-    lea 8(%rcx), %rdx
-    mov %rdx, -24(%rbp)
-    mov (%rcx), %rcx
+    lea 8(%rcx), %rcx
+    mov %rcx, -24(%rbp)
     mov %eax, %edi
     jmp .L__kefir_func_testx_label4
 .L__kefir_text_func_testx_end:

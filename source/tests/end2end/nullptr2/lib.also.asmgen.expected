@@ -33,7 +33,6 @@
 get1:
 .L__kefir_text_func_get1_begin:
     movq a@GOTPCREL(%rip), %rax
-    movq (%rax), %rax
     xor %eax, %eax
     ret
 .L__kefir_text_func_get1_end:

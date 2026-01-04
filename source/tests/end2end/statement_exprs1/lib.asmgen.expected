@@ -40,7 +40,6 @@ eval2:
     mov %rsp, %rcx
     movq %rcx, -16(%rbp)
     movq -8(%rbp), %rsi
-    movq -24(%rbp), %rcx
     cmp $0, %rax
     jz .L__kefir_func_eval2_label6
     mov %rax, %rsp

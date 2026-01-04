@@ -225,21 +225,20 @@ set_b:
     test $64, %cl
     cmovne %rdi, %rsi
     cmove %rdi, %r8
-    mov %rcx, %rdi
-    xor %ecx, %edi
+    mov %rcx, %rsi
+    xor %ecx, %esi
     xor %ecx, %ecx
     shld %cl, %r10, %r9
     shl %cl, %r10
-    xor %r11d, %r11d
+    xor %edi, %edi
     test $64, %cl
     cmovne %r10, %r9
-    cmove %r10, %r11
-    not %r11
+    cmove %r10, %rdi
+    not %rdi
     not %r9
-    and %r11, %rax
-    and %r9, %rdi
+    and %rdi, %rax
+    and %r9, %rsi
     or %rax, %r8
-    or %rdi, %rsi
     movq %r8, (%rdx)
     lea (%rbp), %rsp
     pop %rbp

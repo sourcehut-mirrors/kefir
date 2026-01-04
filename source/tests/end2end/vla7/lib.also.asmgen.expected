@@ -141,7 +141,6 @@ test2:
     imul $8, %rcx, %rdx
     lea -64(%rbp), %rcx
     add %rdx, %rcx
-    movq (%rcx), %rcx
     cmp $0, %rax
     jz .L__kefir_func_test2_label7
     mov %rax, %rsp

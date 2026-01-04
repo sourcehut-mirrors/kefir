@@ -631,7 +631,6 @@ __kefir_softfloat_ilogbf:
     divsd %xmm1, %xmm0
     cvtsd2ss %xmm0, %xmm0
     movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
     mov $-2147483648, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label18:
@@ -640,7 +639,6 @@ __kefir_softfloat_ilogbf:
     divsd %xmm1, %xmm0
     cvtsd2ss %xmm0, %xmm0
     movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
     mov $-2147483648, %rax
     mov $2147483647, %rdx
     test %rcx, %rcx
