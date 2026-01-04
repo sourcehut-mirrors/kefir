@@ -58,40 +58,35 @@ get_i8:
 
 get_f32:
 .L__kefir_text_func_get_f32_begin:
-    add $16, %rdi
-    movl (%rdi), %eax
+    movl 16(%rdi), %eax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_get_f32_end:
 
 get_f64:
 .L__kefir_text_func_get_f64_begin:
-    add $24, %rdi
-    movq (%rdi), %rax
+    movq 24(%rdi), %rax
     movq %rax, %xmm0
     ret
 .L__kefir_text_func_get_f64_end:
 
 get_i16:
 .L__kefir_text_func_get_i16_begin:
-    add $2, %rdi
-    movw (%rdi), %ax
+    movw 2(%rdi), %ax
     movsx %ax, %rax
     ret
 .L__kefir_text_func_get_i16_end:
 
 get_i32:
 .L__kefir_text_func_get_i32_begin:
-    add $4, %rdi
-    movl (%rdi), %eax
+    movl 4(%rdi), %eax
     movsx %eax, %rax
     ret
 .L__kefir_text_func_get_i32_end:
 
 get_i64:
 .L__kefir_text_func_get_i64_begin:
-    add $8, %rdi
-    movq (%rdi), %rax
+    movq 8(%rdi), %rax
     ret
 .L__kefir_text_func_get_i64_end:
 

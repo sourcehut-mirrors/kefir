@@ -90,7 +90,6 @@ process:
     jz .L__kefir_func_process_label19
     movq -40(%rbp), %r12
     lea -32(%rbp), %rax
-    add $0, %rax
     movq (%rax), %rdi
     movl -72(%rbp), %esi
     call *%r12
@@ -109,7 +108,8 @@ process:
     mov -8(%rax), %rcx
 .L__kefir_func_process_label15:
     lea -32(%rbp), %rax
-    add $0, %rax
+    mov %rax, %rdx
+    add $0, %rdx
     movq (%rax), %rax
     movl -68(%rbp), %edx
     movsx %edx, %rdx

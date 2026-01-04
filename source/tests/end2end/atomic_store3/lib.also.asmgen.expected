@@ -55,41 +55,36 @@ set_i8:
 
 set_f32:
 .L__kefir_text_func_set_f32_begin:
-    add $16, %rdi
     movq %xmm0, %rax
-    xchgl (%rdi), %eax
+    xchgl 16(%rdi), %eax
     ret
 .L__kefir_text_func_set_f32_end:
 
 set_f64:
 .L__kefir_text_func_set_f64_begin:
-    add $24, %rdi
     movq %xmm0, %rax
-    xchgq (%rdi), %rax
+    xchgq 24(%rdi), %rax
     ret
 .L__kefir_text_func_set_f64_end:
 
 set_i16:
 .L__kefir_text_func_set_i16_begin:
     mov %rsi, %rax
-    add $2, %rdi
-    xchgw (%rdi), %ax
+    xchgw 2(%rdi), %ax
     ret
 .L__kefir_text_func_set_i16_end:
 
 set_i32:
 .L__kefir_text_func_set_i32_begin:
     mov %rsi, %rax
-    add $4, %rdi
-    xchgl (%rdi), %eax
+    xchgl 4(%rdi), %eax
     ret
 .L__kefir_text_func_set_i32_end:
 
 set_i64:
 .L__kefir_text_func_set_i64_begin:
     mov %rsi, %rax
-    add $8, %rdi
-    xchgq (%rdi), %rax
+    xchgq 8(%rdi), %rax
     ret
 .L__kefir_text_func_set_i64_end:
 

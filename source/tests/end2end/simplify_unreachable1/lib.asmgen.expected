@@ -196,10 +196,9 @@ test16:
     mov %rsp, %rbp
     sub $32, %rsp
     movq c80@GOTPCREL(%rip), %rax
-    add $16, %rax
     fldt .L__kefir_func_test16_label4(%rip)
-    movq $0, 8(%rax)
-    fstpt (%rax)
+    movq $0, 24(%rax)
+    fstpt 16(%rax)
     movq c80@GOTPCREL(%rip), %rax
     fldt .L__kefir_func_test16_label5(%rip)
     movq $0, 8(%rax)

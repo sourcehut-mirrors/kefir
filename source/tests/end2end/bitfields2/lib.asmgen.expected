@@ -49,8 +49,8 @@ get_a:
 get_b:
 .L__kefir_text_func_get_b_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $1, %rax
-    movzxw (%rax), %rax
+    lea 1(%rax), %rcx
+    movzxw 1(%rax), %rax
     shl $49, %rax
     sar $49, %rax
     ret
@@ -59,11 +59,11 @@ get_b:
 get_c:
 .L__kefir_text_func_get_c_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $5, %rax
-    movzxb (%rax), %rax
+    lea 5(%rax), %rcx
+    movzxb 5(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $3, %rcx
-    movzxw (%rcx), %rcx
+    lea 3(%rcx), %rdx
+    movzxw 3(%rcx), %rcx
     shl $16, %rax
     or %rcx, %rax
     shl $41, %rax
@@ -74,8 +74,8 @@ get_c:
 get_d:
 .L__kefir_text_func_get_d_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $8, %rax
-    movl (%rax), %eax
+    lea 8(%rax), %rcx
+    movl 8(%rax), %eax
     shl $33, %rax
     sar $33, %rax
     ret
@@ -84,11 +84,11 @@ get_d:
 get_e:
 .L__kefir_text_func_get_e_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $20, %rax
-    movzxb (%rax), %rax
+    lea 20(%rax), %rcx
+    movzxb 20(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $16, %rcx
-    movl (%rcx), %ecx
+    lea 16(%rcx), %rdx
+    movl 16(%rcx), %ecx
     shl $32, %rax
     or %rcx, %rax
     shl $25, %rax
@@ -99,11 +99,11 @@ get_e:
 get_f:
 .L__kefir_text_func_get_f_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $28, %rax
-    movzxw (%rax), %rax
+    lea 28(%rax), %rcx
+    movzxw 28(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $24, %rcx
-    movl (%rcx), %ecx
+    lea 24(%rcx), %rdx
+    movl 24(%rcx), %ecx
     shl $32, %rax
     or %rcx, %rax
     shl $17, %rax
@@ -114,14 +114,14 @@ get_f:
 get_g:
 .L__kefir_text_func_get_g_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $38, %rax
-    movzxb (%rax), %rax
+    lea 38(%rax), %rcx
+    movzxb 38(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $36, %rcx
-    movzxw (%rcx), %rcx
+    lea 36(%rcx), %rdx
+    movzxw 36(%rcx), %rcx
     movq s@GOTPCREL(%rip), %rdx
-    add $32, %rdx
-    movl (%rdx), %edx
+    lea 32(%rdx), %rsi
+    movl 32(%rdx), %edx
     shl $48, %rax
     shl $32, %rcx
     or %rdx, %rcx
@@ -134,8 +134,8 @@ get_g:
 get_h:
 .L__kefir_text_func_get_h_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $40, %rax
-    movq (%rax), %rax
+    lea 40(%rax), %rcx
+    movq 40(%rax), %rax
     shl $1, %rax
     sar $1, %rax
     ret
@@ -158,29 +158,29 @@ set_a:
 set_b:
 .L__kefir_text_func_set_b_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $1, %rax
-    movzxw (%rax), %rax
+    lea 1(%rax), %rcx
+    movzxw 1(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $1, %rcx
+    lea 1(%rcx), %rdx
     movabs $-32768, %rdx
     and %rax, %rdx
     shl $49, %rdi
     shr $49, %rdi
     or %rdx, %rdi
-    movw %di, (%rcx)
+    movw %di, 1(%rcx)
     ret
 .L__kefir_text_func_set_b_end:
 
 set_c:
 .L__kefir_text_func_set_c_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $5, %rax
-    movzxb (%rax), %rax
+    lea 5(%rax), %rcx
+    movzxb 5(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $3, %rcx
-    movzxw (%rcx), %rcx
+    lea 3(%rcx), %rdx
+    movzxw 3(%rcx), %rcx
     movq s@GOTPCREL(%rip), %rdx
-    add $5, %rdx
+    lea 5(%rdx), %rsi
     shl $16, %rax
     or %rcx, %rax
     movabs $-8388608, %rcx
@@ -190,39 +190,38 @@ set_c:
     or %rcx, %rdi
     mov %rdi, %rax
     shr $16, %rax
-    movb %al, (%rdx)
+    movb %al, 5(%rdx)
     movq s@GOTPCREL(%rip), %rax
-    add $3, %rax
-    movw %di, (%rax)
+    movw %di, 3(%rax)
     ret
 .L__kefir_text_func_set_c_end:
 
 set_d:
 .L__kefir_text_func_set_d_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $8, %rax
-    movl (%rax), %eax
+    lea 8(%rax), %rcx
+    movl 8(%rax), %eax
     movq s@GOTPCREL(%rip), %rcx
-    add $8, %rcx
+    lea 8(%rcx), %rdx
     movabs $-2147483648, %rdx
     and %rax, %rdx
     shl $33, %rdi
     shr $33, %rdi
     or %rdx, %rdi
-    movl %edi, (%rcx)
+    movl %edi, 8(%rcx)
     ret
 .L__kefir_text_func_set_d_end:
 
 set_e:
 .L__kefir_text_func_set_e_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $20, %rax
-    movzxb (%rax), %rax
+    lea 20(%rax), %rcx
+    movzxb 20(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $16, %rcx
-    movl (%rcx), %ecx
+    lea 16(%rcx), %rdx
+    movl 16(%rcx), %ecx
     movq s@GOTPCREL(%rip), %rdx
-    add $20, %rdx
+    lea 20(%rdx), %rsi
     shl $32, %rax
     or %rcx, %rax
     movabs $-549755813888, %rcx
@@ -232,23 +231,22 @@ set_e:
     or %rcx, %rdi
     mov %rdi, %rax
     shr $32, %rax
-    movb %al, (%rdx)
+    movb %al, 20(%rdx)
     movq s@GOTPCREL(%rip), %rax
-    add $16, %rax
-    movl %edi, (%rax)
+    movl %edi, 16(%rax)
     ret
 .L__kefir_text_func_set_e_end:
 
 set_f:
 .L__kefir_text_func_set_f_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $28, %rax
-    movzxw (%rax), %rax
+    lea 28(%rax), %rcx
+    movzxw 28(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $24, %rcx
-    movl (%rcx), %ecx
+    lea 24(%rcx), %rdx
+    movl 24(%rcx), %ecx
     movq s@GOTPCREL(%rip), %rdx
-    add $28, %rdx
+    lea 28(%rdx), %rsi
     shl $32, %rax
     or %rcx, %rax
     movabs $-140737488355328, %rcx
@@ -258,26 +256,25 @@ set_f:
     or %rcx, %rdi
     mov %rdi, %rax
     shr $32, %rax
-    movw %ax, (%rdx)
+    movw %ax, 28(%rdx)
     movq s@GOTPCREL(%rip), %rax
-    add $24, %rax
-    movl %edi, (%rax)
+    movl %edi, 24(%rax)
     ret
 .L__kefir_text_func_set_f_end:
 
 set_g:
 .L__kefir_text_func_set_g_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $38, %rax
-    movzxb (%rax), %rax
+    lea 38(%rax), %rcx
+    movzxb 38(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $36, %rcx
-    movzxw (%rcx), %rcx
+    lea 36(%rcx), %rdx
+    movzxw 36(%rcx), %rcx
     movq s@GOTPCREL(%rip), %rdx
-    add $32, %rdx
-    movl (%rdx), %edx
+    lea 32(%rdx), %rsi
+    movl 32(%rdx), %edx
     movq s@GOTPCREL(%rip), %rsi
-    add $38, %rsi
+    lea 38(%rsi), %r8
     shl $48, %rax
     shl $32, %rcx
     or %rdx, %rcx
@@ -289,31 +286,30 @@ set_g:
     or %rcx, %rdi
     mov %rdi, %rax
     shr $48, %rax
-    movb %al, (%rsi)
+    movb %al, 38(%rsi)
     movq s@GOTPCREL(%rip), %rax
-    add $36, %rax
+    lea 36(%rax), %rcx
     mov %rdi, %rcx
     shr $32, %rcx
-    movw %cx, (%rax)
+    movw %cx, 36(%rax)
     movq s@GOTPCREL(%rip), %rax
-    add $32, %rax
-    movl %edi, (%rax)
+    movl %edi, 32(%rax)
     ret
 .L__kefir_text_func_set_g_end:
 
 set_h:
 .L__kefir_text_func_set_h_begin:
     movq s@GOTPCREL(%rip), %rax
-    add $40, %rax
-    movq (%rax), %rax
+    lea 40(%rax), %rcx
+    movq 40(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    add $40, %rcx
+    lea 40(%rcx), %rdx
     movabs $-9223372036854775808, %rdx
     and %rax, %rdx
     shl $1, %rdi
     shr $1, %rdi
     or %rdx, %rdi
-    movq %rdi, (%rcx)
+    movq %rdi, 40(%rcx)
     ret
 .L__kefir_text_func_set_h_end:
 

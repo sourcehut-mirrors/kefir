@@ -45,7 +45,8 @@ test:
     add $-1, %eax
     movl %eax, -32(%rbp)
     lea -24(%rbp), %rax
-    add $0, %rax
+    mov %rax, %rcx
+    add $0, %rcx
     movq (%rax), %rax
     movq -8(%rbp), %rcx
     mov $0, %rsi
@@ -121,13 +122,15 @@ test2:
     movq %rdx, (%rcx)
     movl -48(%rbp), %edx
     lea -24(%rbp), %rcx
-    add $8, %rcx
+    mov %rcx, %rsi
+    add $8, %rsi
     movsx %edx, %rdx
     mov $4, %rsi
     imul %rdx, %rsi
-    movq %rsi, (%rcx)
+    movq %rsi, 8(%rcx)
     lea -24(%rbp), %rcx
-    add $0, %rcx
+    mov %rcx, %rdx
+    add $0, %rdx
     sub %rsi, %rsp
     mov $16, %rdx
     cmp $4, %rdx

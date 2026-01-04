@@ -23,65 +23,63 @@ get1:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
-    sub $32, %rsp
+    sub $40, %rsp
     mov %rdi, %rbx
-    movl %esi, -20(%rbp)
+    movl %esi, -12(%rbp)
     mov %rbx, %rdi
     mov $0, %rax
     mov $9, %rcx
     mov %rax, %rsi
     rep stosq
-    movl -20(%rbp), %eax
+    movl -12(%rbp), %eax
     movsx %eax, %rax
     shl $58, %rax
     sar $58, %rax
     movb %al, (%rbx)
-    movl -20(%rbp), %eax
+    movl -12(%rbp), %eax
     add $1, %eax
     movsx %eax, %rax
     shl $14, %rax
     sar $14, %rax
     movq %rax, 8(%rbx)
-    movl -20(%rbp), %eax
+    movl -12(%rbp), %eax
     add $2, %eax
     movsx %eax, %rax
     shl $50, %rax
     sar $50, %rax
     movw %ax, 16(%rbx)
-    movl -20(%rbp), %eax
-    mov %rbx, %r12
-    add $24, %r12
+    movl -12(%rbp), %eax
+    mov %rbx, %rcx
+    add $24, %rcx
     add $3, %eax
     movsx %eax, %rdx
     lea -48(%rbp), %rdi
     mov $150, %rsi
     call __kefir_bigint_set_signed_integer
     movq -48(%rbp), %rax
-    movq %rax, (%r12)
+    movq %rax, 24(%rbx)
     movq -40(%rbp), %rax
-    movq %rax, 8(%r12)
+    movq %rax, 32(%rbx)
     movq -32(%rbp), %rax
-    movq %rax, 16(%r12)
-    movl -20(%rbp), %eax
+    movq %rax, 40(%rbx)
+    movl -12(%rbp), %eax
     add $4, %eax
     movsx %eax, %rax
     shl $35, %rax
     sar $35, %rax
     movl %eax, 48(%rbx)
-    movl -20(%rbp), %eax
-    mov %rbx, %r12
-    add $56, %r12
+    movl -12(%rbp), %eax
+    mov %rbx, %rcx
+    add $56, %rcx
     add $5, %eax
     movsx %eax, %rdx
     lea -48(%rbp), %rdi
     mov $120, %rsi
     call __kefir_bigint_set_signed_integer
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, (%r12)
+    movdqu %xmm0, 56(%rbx)
     mov %rbx, %rax
-    lea -16(%rbp), %rsp
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
@@ -158,12 +156,11 @@ get5:
     mov $9, %rcx
     rep movsq
     lea -72(%rbp), %rax
-    add $24, %rax
-    movq (%rax), %rcx
+    movq 24(%rax), %rcx
     movq %rcx, -96(%rbp)
-    movq 8(%rax), %rcx
+    movq 32(%rax), %rcx
     movq %rcx, -88(%rbp)
-    movq 16(%rax), %rax
+    movq 40(%rax), %rax
     movq %rax, -80(%rbp)
     movq -96(%rbp), %rax
     lea (%rbp), %rsp
@@ -202,8 +199,7 @@ get7:
     mov $9, %rcx
     rep movsq
     lea -72(%rbp), %rax
-    add $56, %rax
-    movdqu (%rax), %xmm0
+    movdqu 56(%rax), %xmm0
     movdqu %xmm0, -96(%rbp)
     movq -96(%rbp), %rax
     lea (%rbp), %rsp

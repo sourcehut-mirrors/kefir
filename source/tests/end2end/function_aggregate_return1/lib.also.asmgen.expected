@@ -39,55 +39,60 @@ get1:
     movq %rax, -144(%rbp)
     movq -152(%rbp), %rcx
     lea -144(%rbp), %rax
-    add $8, %rax
+    mov %rax, %rdx
+    add $8, %rdx
     not %rcx
-    movq %rcx, (%rax)
+    movq %rcx, 8(%rax)
     movq -152(%rbp), %rcx
     lea -144(%rbp), %rax
-    add $16, %rax
+    mov %rax, %rdx
+    add $16, %rdx
     mov $1, %esi
     movsx %esi, %rdx
     add %rdx, %rcx
-    movq %rcx, (%rax)
+    movq %rcx, 16(%rax)
     movq -152(%rbp), %rcx
     lea -144(%rbp), %rax
-    add $24, %rax
+    mov %rax, %rdx
+    add $24, %rdx
     neg %rcx
-    movq %rcx, (%rax)
+    movq %rcx, 24(%rax)
     movq -152(%rbp), %rcx
     lea -144(%rbp), %rax
-    add $32, %rax
+    mov %rax, %rdx
+    add $32, %rdx
     mov $1, %esi
     movsx %esi, %rdx
     sub %rdx, %rcx
-    movq %rcx, (%rax)
+    movq %rcx, 32(%rax)
     movq -152(%rbp), %rcx
     lea -144(%rbp), %rax
-    add $40, %rax
+    mov %rax, %rdx
+    add $40, %rdx
     mov $2, %esi
     movsx %esi, %rdx
     imul %rdx, %rcx
-    movq %rcx, (%rax)
-    movq -152(%rbp), %rdx
-    lea -144(%rbp), %rax
-    mov %rax, %rcx
-    add $48, %rcx
-    mov $2, %eax
-    movsx %eax, %rsi
-    mov %rdx, %rax
+    movq %rcx, 40(%rax)
+    movq -152(%rbp), %rax
+    lea -144(%rbp), %rcx
+    mov %rcx, %rdx
+    add $48, %rdx
+    mov $2, %edx
+    movsx %edx, %rsi
     movq %rax, -160(%rbp)
     cqo
     movq -160(%rbp), %rax
     idiv %rsi
-    movq %rax, (%rcx)
+    movq %rax, 48(%rcx)
     movq -152(%rbp), %rcx
     lea -144(%rbp), %rax
-    add $56, %rax
+    mov %rax, %rdx
+    add $56, %rdx
     movabs $3405691582, %rdx
     movabs $4294967295, %rsi
     and %rsi, %rdx
     xor %rdx, %rcx
-    movq %rcx, (%rax)
+    movq %rcx, 56(%rax)
     lea -144(%rbp), %rax
     mov %rax, %rcx
 .L__kefir_func_get1_label4:

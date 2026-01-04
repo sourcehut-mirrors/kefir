@@ -16,22 +16,18 @@ test1:
     sub $48, %rsp
     fstcw -8(%rbp)
     movq b@GOTPCREL(%rip), %rax
-    add $16, %rax
-    fldt (%rax)
+    fldt 16(%rax)
     movq b@GOTPCREL(%rip), %rax
     fldt (%rax)
     movq c@GOTPCREL(%rip), %rax
-    add $16, %rax
-    fldt (%rax)
+    fldt 16(%rax)
     movq c@GOTPCREL(%rip), %rax
     fldt (%rax)
     movq a@GOTPCREL(%rip), %rax
-    add $16, %rax
-    fldt (%rax)
+    fldt 16(%rax)
     movq a@GOTPCREL(%rip), %rax
     fldt (%rax)
     movq a@GOTPCREL(%rip), %rcx
-    add $16, %rcx
     fxch %st(1)
     fxch %st(2)
     fxch %st(3)
@@ -44,8 +40,8 @@ test1:
     fxch %st(1)
     fxch %st(2)
     faddp
-    movq $0, 8(%rcx)
-    fstpt (%rcx)
+    movq $0, 24(%rcx)
+    fstpt 16(%rcx)
     fxch %st(2)
     faddp
     fxch %st(1)

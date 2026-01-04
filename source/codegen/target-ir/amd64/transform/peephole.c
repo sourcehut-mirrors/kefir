@@ -23,7 +23,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr) {
+static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     REQUIRE(instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT, KEFIR_OK);
     struct kefir_codegen_target_ir_operation base_oper = instr->operation;
     kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
@@ -42,7 +42,8 @@ static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_t
         const struct kefir_codegen_target_ir_instruction *user_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
         if (user_instr->operation.opcode == code->klass->phi_opcode ||
-            user_instr->operation.opcode == code->klass->inline_asm_opcode) {
+            user_instr->operation.opcode == code->klass->inline_asm_opcode ||
+            user_instr->block_ref == KEFIR_ID_NONE) {
             continue;
         }
 
@@ -58,8 +59,8 @@ static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_t
                 kefir_int64_t offset = oper.parameters[i].indirect.offset;
                 kefir_codegen_target_ir_operand_variant_t variant = oper.parameters[i].indirect.variant;
                 oper.parameters[i] = base_oper.parameters[0];
-                oper.parameters->indirect.offset += offset;
-                oper.parameters->indirect.variant = variant;
+                oper.parameters[i].indirect.offset += offset;
+                oper.parameters[i].indirect.variant = variant;
             }
         }
 
@@ -87,6 +88,7 @@ static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_t
 
             REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, inserted_ref, use_instr_ref));
             REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, use_instr_ref));
+            *replaced = true;
         }
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -95,29 +97,155 @@ static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_t
     return KEFIR_OK;
 }
 
+static kefir_result_t peephole_add(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    REQUIRE(instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+        instr->operation.parameters[0].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0) &&
+        (instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+            instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT), KEFIR_OK);
+    REQUIRE(instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER &&
+        (instr->operation.parameters[1].immediate.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+        instr->operation.parameters[1].immediate.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT), KEFIR_OK);
+
+    kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
+    struct kefir_codegen_target_ir_operation base_oper = instr->operation;
+
+    const struct kefir_codegen_target_ir_value_type *output_type;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr->instr_ref, 0, NULL, &output_type));
+    REQUIRE(output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+            output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT, KEFIR_OK);
+
+    const struct kefir_codegen_target_ir_instruction *base_instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr->operation.parameters[0].direct.value_ref.instr_ref, &base_instr));
+    if (base_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(lea) &&
+        base_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT) {
+        struct kefir_codegen_target_ir_operation replacement_oper = {
+            .opcode = KEFIR_TARGET_IR_AMD64_OPCODE(lea),
+            .parameters[0] = base_instr->operation.parameters[0]
+        };
+        if (base_oper.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add)) {
+            replacement_oper.parameters[0].indirect.offset += instr->operation.parameters[1].immediate.int_immediate;
+        } else {
+            replacement_oper.parameters[0].indirect.offset -= instr->operation.parameters[1].immediate.int_immediate;
+        }
+
+        struct kefir_codegen_target_ir_instruction_metadata replacement_metadata = instr->metadata;
+        struct kefir_codegen_target_ir_value_type replacement_type = *output_type;
+
+        kefir_codegen_target_ir_instruction_ref_t replacement_ref;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, instr->block_ref, instr->instr_ref, &replacement_oper, &replacement_metadata, &replacement_ref));
+        REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, (kefir_codegen_target_ir_value_ref_t) {
+            .instr_ref = replacement_ref,
+            .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
+        }, &replacement_type));
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, replacement_ref, instr_ref));
+        REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
+
+        *replaced = true;
+    } else {
+        kefir_result_t res;
+        struct kefir_codegen_target_ir_use_iterator use_iter;
+        kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+        kefir_codegen_target_ir_value_ref_t used_value_ref;
+        for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, &use_instr_ref, &used_value_ref);
+            res == KEFIR_OK;
+            res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
+            if (used_value_ref.aspect != KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
+                continue;
+            }
+
+            const struct kefir_codegen_target_ir_instruction *user_instr;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
+            if (user_instr->operation.opcode == code->klass->phi_opcode ||
+                user_instr->operation.opcode == code->klass->inline_asm_opcode ||
+                user_instr->block_ref == KEFIR_ID_NONE) {
+                continue;
+            }
+
+            kefir_bool_t replace = false;
+            struct kefir_codegen_target_ir_operation oper = user_instr->operation;
+            for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+                if (oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
+                    oper.parameters[i].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
+                    oper.parameters[i].indirect.base.value_ref.instr_ref == instr_ref &&
+                    oper.parameters[i].indirect.base.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
+                    replace = true;
+
+                    oper.parameters[i].indirect.base.value_ref = base_oper.parameters[0].direct.value_ref;
+                    if (base_oper.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add)) {
+                        oper.parameters[i].indirect.offset += base_oper.parameters[1].immediate.int_immediate;
+                    } else {
+                        oper.parameters[i].indirect.offset -= base_oper.parameters[1].immediate.int_immediate;
+                    }
+                }
+            }
+
+
+            if (replace) {
+                kefir_codegen_target_ir_instruction_ref_t inserted_ref;
+                struct kefir_codegen_target_ir_instruction_metadata metadata = user_instr->metadata;
+                REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, user_instr->block_ref,
+                    use_instr_ref, &oper, &metadata, &inserted_ref));
+
+                struct kefir_codegen_target_ir_value_iterator value_iter;
+                struct kefir_codegen_target_ir_value_ref value_ref;
+                const struct kefir_codegen_target_ir_value_type *value_type;
+                kefir_result_t res;
+                for (res = kefir_codegen_target_ir_code_value_iter(code, &value_iter, use_instr_ref, &value_ref, &value_type);
+                    res == KEFIR_OK;
+                    res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, &value_type)) {
+                    REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, (kefir_codegen_target_ir_value_ref_t) {
+                        .instr_ref = inserted_ref,
+                        .aspect = value_ref.aspect
+                    }, value_type));
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_OK(res);
+                }
+
+                REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, inserted_ref, use_instr_ref));
+                REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, use_instr_ref));
+                *replaced = true;
+            }
+        }
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_amd64_transform_peephole(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
 
-    for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {
-        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
+    kefir_bool_t reached_fixpoint = false;
 
-        for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
-            instr_ref != KEFIR_ID_NONE;
-            instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref)) {
-            const struct kefir_codegen_target_ir_instruction *instr;
-            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
+    for (; !reached_fixpoint;) {
+        kefir_bool_t replaced = false;
+        for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {
+            kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
 
-            switch (instr->operation.opcode) {
-                case KEFIR_TARGET_IR_AMD64_OPCODE(lea):
-                    REQUIRE_OK(peephole_lea(mem, code, instr));
-                    break;
+            for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
+                instr_ref != KEFIR_ID_NONE;
+                instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref)) {
+                const struct kefir_codegen_target_ir_instruction *instr;
+                REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
 
-                default:
-                    // Intentionally left blank
-                    break;
+                switch (instr->operation.opcode) {
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(lea):
+                        REQUIRE_OK(peephole_lea(mem, code, instr, &replaced));
+                        break;
+
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(add):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(sub):
+                        REQUIRE_OK(peephole_add(mem, code, instr, &replaced));
+                        break;
+
+                    default:
+                        // Intentionally left blank
+                        break;
+                }
             }
         }
+
+        reached_fixpoint = !replaced;
     }
     return KEFIR_OK;
 }

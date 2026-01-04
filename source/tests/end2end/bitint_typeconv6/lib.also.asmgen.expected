@@ -1891,7 +1891,8 @@ __kefir_bigint_unsigned_to_long_double:
     movq -88(%rbp), %rcx
     movq -56(%rbp), %rdx
     lea -80(%rbp), %rax
-    add $8, %rax
+    mov %rax, %rsi
+    add $8, %rsi
     mov $32768, %edi
     movsx %edi, %rsi
     and %rsi, %rcx
@@ -1902,7 +1903,7 @@ __kefir_bigint_unsigned_to_long_double:
     movsx %edi, %rsi
     and %rsi, %rdx
     or %rdx, %rcx
-    movq %rcx, (%rax)
+    movq %rcx, 8(%rax)
     fldt -80(%rbp)
     lea -16(%rbp), %rsp
     pop %r12
@@ -3412,7 +3413,8 @@ __kefir_bigint_signed_to_long_double:
     movq -88(%rbp), %rcx
     movq -56(%rbp), %rdx
     lea -80(%rbp), %rax
-    add $8, %rax
+    mov %rax, %rsi
+    add $8, %rsi
     mov $32768, %edi
     movsx %edi, %rsi
     and %rsi, %rcx
@@ -3423,7 +3425,7 @@ __kefir_bigint_signed_to_long_double:
     movsx %edi, %rsi
     and %rsi, %rdx
     or %rdx, %rcx
-    movq %rcx, (%rax)
+    movq %rcx, 8(%rax)
     fldt -80(%rbp)
     lea -16(%rbp), %rsp
     pop %r12

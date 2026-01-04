@@ -42,11 +42,11 @@ get_a:
 get_b:
 .L__kefir_text_func_get_b_begin:
     lea value(%rip), %rax
-    add $4, %rax
-    movq (%rax), %rax
+    lea 4(%rax), %rcx
+    movq 4(%rax), %rax
     lea value(%rip), %rcx
-    add $12, %rcx
-    movzxw (%rcx), %rdx
+    lea 12(%rcx), %rdx
+    movzxw 12(%rcx), %rdx
     mov $55, %rcx
     shld %cl, %rax, %rdx
     shl %cl, %rax
@@ -123,13 +123,13 @@ set_b:
     mov %rsp, %rbp
     sub $16, %rsp
     lea value(%rip), %rax
-    add $4, %rax
-    movq (%rax), %rax
+    lea 4(%rax), %rcx
+    movq 4(%rax), %rax
     lea value(%rip), %rcx
-    add $12, %rcx
-    movzxw (%rcx), %rdx
-    lea value(%rip), %rcx
-    lea 4(%rcx), %r8
+    lea 12(%rcx), %rdx
+    movzxw 12(%rcx), %rdx
+    lea value(%rip), %r8
+    lea 4(%r8), %rcx
     mov $1, %r9
     xor %r10d, %r10d
     mov $70, %rcx
@@ -165,10 +165,9 @@ set_b:
     and %r10, %rdx
     or %rax, %r9
     or %rdx, %rsi
-    movq %r9, (%r8)
+    movq %r9, 4(%r8)
     lea value(%rip), %rax
-    add $12, %rax
-    movw %si, (%rax)
+    movw %si, 12(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret
