@@ -578,19 +578,11 @@ kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_me
     };
     klass->klass.transforms = &TRANSFORMS;
 
-    klass->split_profile.general_purpose_interference_threshold = klass->num_of_gp_registers + 6;
-    klass->split_profile.floating_point_interference_threshold = klass->num_of_sse_registers + 8;
-    klass->split_profile.max_splits_per_use_pct = 15;
-    klass->split_profile.max_splits_baseline = 1;
-    klass->split_profile.max_blocks = 8192;
-    klass->split_profile.max_branching = 32;
-
     klass->klass.do_allocate = do_allocate;
     klass->klass.new_state = new_state;
     klass->klass.is_evictable = amd64_regalloc_is_evictable;
     klass->klass.register_allocation = amd64_regalloc_register_allocation;
     klass->klass.format_allocation = format_allocation;
-    klass->klass.split_profile = &klass->split_profile;
     klass->klass.payload = klass;
     return KEFIR_OK;
 }

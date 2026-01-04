@@ -39,7 +39,6 @@
 #include "kefir/codegen/target-ir/format.h"
 #include "kefir/codegen/target-ir/amd64/destructor.h"
 #include "kefir/codegen/target-ir/amd64/coalesce.h"
-#include "kefir/codegen/target-ir/split.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -1178,7 +1177,6 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_transform_jump_propagate(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_block_merge(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_placeholder_sink(mem, code));
-    // REQUIRE_OK(kefir_codegen_target_ir_transform_split_live_ranges(mem, code, func->target_ir.regalloc_class.klass.split_profile));
     REQUIRE_OK(kefir_codegen_target_ir_transform_split_critical_edges(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_preserve_virtual_regs(mem, code, KEFIR_TARGET_IR_AMD64_OPCODE(preserve_active_virtual_registers)));
     REQUIRE_OK(kefir_codegen_target_ir_transform_insert_upsilons(mem, code));
