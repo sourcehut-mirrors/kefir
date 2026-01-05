@@ -42,10 +42,8 @@ get_a:
 get_b:
 .L__kefir_text_func_get_b_begin:
     lea value(%rip), %rax
-    lea 4(%rax), %rcx
     movq 4(%rax), %rax
     lea value(%rip), %rcx
-    lea 12(%rcx), %rdx
     movzxw 12(%rcx), %rdx
     mov $55, %rcx
     shld %cl, %rax, %rdx
@@ -76,40 +74,29 @@ set_a:
     lea value(%rip), %rax
     movl (%rax), %eax
     lea value(%rip), %rdx
-    mov $1, %r8
-    xor %r9d, %r9d
-    mov $32, %rcx
-    shld %cl, %r8, %r9
-    shl %cl, %r8
-    xor %r10d, %r10d
-    test $64, %cl
-    cmovne %r8, %r9
-    cmove %r8, %r10
-    mov $1, %rcx
-    xor %r8d, %r8d
-    sub %rcx, %r10
-    sbb %r8, %r9
-    and %r10, %rdi
-    and %r9, %rsi
+    mov $1, %rsi
     xor %ecx, %ecx
-    shld %cl, %rdi, %rsi
+    mov $32, %rcx
+    shl %cl, %rsi
+    xor %r8d, %r8d
+    test $64, %cl
+    cmove %rsi, %r8
+    mov $1, %rcx
+    xor %esi, %esi
+    sub %rcx, %r8
+    and %r8, %rdi
+    xor %ecx, %ecx
     shl %cl, %rdi
     xor %esi, %esi
     test $64, %cl
     cmove %rdi, %rsi
-    mov %rcx, %rdi
-    xor %ecx, %edi
     xor %ecx, %ecx
-    shld %cl, %r10, %r9
-    shl %cl, %r10
-    xor %r8d, %r8d
+    shl %cl, %r8
+    xor %edi, %edi
     test $64, %cl
-    cmovne %r10, %r9
-    cmove %r10, %r8
-    not %r8
-    not %r9
-    and %r8, %rax
-    and %r9, %rdi
+    cmove %r8, %rdi
+    not %rdi
+    and %rdi, %rax
     or %rax, %rsi
     movl %esi, (%rdx)
     lea (%rbp), %rsp
@@ -123,13 +110,10 @@ set_b:
     mov %rsp, %rbp
     sub $16, %rsp
     lea value(%rip), %rax
-    lea 4(%rax), %rcx
     movq 4(%rax), %rax
     lea value(%rip), %rcx
-    lea 12(%rcx), %rdx
     movzxw 12(%rcx), %rdx
     lea value(%rip), %r8
-    lea 4(%r8), %rcx
     mov $1, %r9
     xor %r10d, %r10d
     mov $70, %rcx

@@ -143,9 +143,9 @@ somefn:
     push %r15
     sub $136, %rsp
     mov 144(%rbp), %rax
-    mov %rax, -120(%rbp)
-    mov 152(%rbp), %rax
     mov %rax, -128(%rbp)
+    mov 152(%rbp), %rax
+    mov %rax, -120(%rbp)
     mov 128(%rbp), %rax
     mov %rax, -104(%rbp)
     mov 136(%rbp), %rax
@@ -168,14 +168,14 @@ somefn:
     mov 56(%rbp), %r13
     mov 32(%rbp), %r15
     mov 40(%rbp), %r14
-    mov 16(%rbp), %r10
-    mov 24(%rbp), %rax
+    mov 16(%rbp), %rax
+    mov 24(%rbp), %r10
     xor %rdx, %rdi
     xor %rcx, %rsi
     xor %r8, %rdi
     xor %r9, %rsi
-    xor %r10, %rdi
-    xor %rax, %rsi
+    xor %rax, %rdi
+    xor %r10, %rsi
     xor %r15, %rdi
     xor %r14, %rsi
     xor %r12, %rdi
@@ -191,9 +191,9 @@ somefn:
     xor -104(%rbp), %rdi
     xor -112(%rbp), %rsi
     mov %rdi, %rax
-    xor -120(%rbp), %rax
+    xor -128(%rbp), %rax
     mov %rsi, %rdx
-    xor -128(%rbp), %rdx
+    xor -120(%rbp), %rdx
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

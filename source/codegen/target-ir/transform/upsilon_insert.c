@@ -24,22 +24,21 @@
 #include "kefir/core/util.h"
 
 static kefir_result_t get_phi_output(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_value_ref_t *value_ref_ptr, const struct kefir_codegen_target_ir_value_type **value_type_ptr) {
-    kefir_codegen_target_ir_value_ref_t value_ref = {
-        .instr_ref = instr_ref,
-        .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
-    };
-    kefir_result_t res = kefir_codegen_target_ir_code_value_props(code, value_ref, value_type_ptr);
-    if (res == KEFIR_NOT_FOUND) {
-        value_ref.aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(0);
-        res = kefir_codegen_target_ir_code_value_props(code, value_ref, value_type_ptr);
+    kefir_result_t res;
+    struct kefir_codegen_target_ir_value_iterator value_iter;
+    struct kefir_codegen_target_ir_value_ref user_value_ref;
+    const struct kefir_codegen_target_ir_value_type *value_type;
+    for (res = kefir_codegen_target_ir_code_value_iter(code, &value_iter, instr_ref, &user_value_ref, &value_type);
+        res == KEFIR_OK;) {
+        ASSIGN_PTR(value_ref_ptr, user_value_ref);
+        ASSIGN_PTR(value_type_ptr, value_type);
+        return KEFIR_OK;
     }
-    if (res == KEFIR_NOT_FOUND) {
-        res = KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find target IR phi node output");
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
-    REQUIRE_OK(res);
 
-    ASSIGN_PTR(value_ref_ptr, value_ref);
-    return KEFIR_OK;
+    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find target IR phi node output");;
 }
 
 
@@ -299,7 +298,7 @@ static kefir_result_t insert_upsilons(struct kefir_mem *mem, struct kefir_codege
         for (res = kefir_codegen_target_ir_code_phi_node_iter(code, &phi_iter, successor_block_ref, &phi_ref);
             res == KEFIR_OK;
             res = kefir_codegen_target_ir_code_phi_node_next(&phi_iter, &phi_ref)) {
-            kefir_codegen_target_ir_value_ref_t value_ref, link_value_ref;
+            kefir_codegen_target_ir_value_ref_t value_ref = {0}, link_value_ref = {0};
             REQUIRE_OK(get_phi_output(code, phi_ref, &value_ref, NULL));
             REQUIRE_OK(kefir_codegen_target_ir_code_phi_link_for(code, value_ref.instr_ref, block_ref, &link_value_ref));
 

@@ -233,10 +233,9 @@ overflow_mul_ulong_ulong_long:
     test %rax, %rax
     sets %dl
     or %sil, %dl
-    mov %rax, %rsi
-    mov %rdx, %rax
-    and $1, %eax
-    movq %rsi, (%rcx)
+    and $1, %edx
+    movq %rax, (%rcx)
+    mov %edx, %eax
     ret
 .L__kefir_text_func_overflow_mul_ulong_ulong_long_end:
 
@@ -309,14 +308,15 @@ overflow_mul_ulong_ulong_short:
     test %rax, %rax
     sets %dl
     or %sil, %dl
-    mov %rax, %rsi
-    movsx %si, %rax
-    cmp %rax, %rsi
+    mov %rdx, %rsi
+    mov %rax, %rdx
+    movsx %dx, %rax
+    cmp %rax, %rdx
     setne %al
-    or %al, %dl
-    mov %rdx, %rax
+    or %al, %sil
+    mov %rsi, %rax
     and $1, %eax
-    movw %si, (%rcx)
+    movw %dx, (%rcx)
     ret
 .L__kefir_text_func_overflow_mul_ulong_ulong_short_end:
 

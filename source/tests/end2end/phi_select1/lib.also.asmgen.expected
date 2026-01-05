@@ -110,8 +110,8 @@ select7:
     sub $32, %rsp
     test %edi, %edi
     jnz .L__kefir_func_select7_label3
-    movaps %xmm3, %xmm1
     movaps %xmm2, %xmm0
+    movaps %xmm3, %xmm1
 .L__kefir_func_select7_label3:
     lea (%rbp), %rsp
     pop %rbp

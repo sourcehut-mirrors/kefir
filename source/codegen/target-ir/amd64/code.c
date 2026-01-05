@@ -80,8 +80,28 @@ static kefir_result_t resource_mnemonic(kefir_codegen_target_ir_resource_id_t re
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to resource mnemonic"));
 
     switch (resource) {
-        case KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAGS:
-            *mnemonic_ptr = "flags";
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF:
+            *mnemonic_ptr = "flag_cf";
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF:
+            *mnemonic_ptr = "flag_pf";
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF:
+            *mnemonic_ptr = "flag_zf";
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF:
+            *mnemonic_ptr = "flag_sf";
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_DF:
+            *mnemonic_ptr = "flag_df";
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF:
+            *mnemonic_ptr = "flag_of";
             break;
 
         default:

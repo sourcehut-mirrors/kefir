@@ -95,23 +95,23 @@ conv1:
 conv2:
 .loc 0 86 1
 .L__kefir_text_func_conv2_begin:
-.L__kefir_func_conv2_label21:
+.L__kefir_func_conv2_label19:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
 .loc 0 87 5
-.L__kefir_func_conv2_label36:
+.L__kefir_func_conv2_label34:
     pxor %xmm0, %xmm0
     test %rdi, %rdi
     js .L__kefir_func_conv2_label14
 .loc 0 87 5
-.L__kefir_func_conv2_label37:
+.L__kefir_func_conv2_label35:
     cvtsi2sd %rdi, %xmm0
 .loc 0 87 5
 .L__kefir_func_conv2_label8:
-    movq .L__kefir_func_conv2_label52(%rip), %xmm1
-.L__kefir_func_conv2_label54:
+    movq .L__kefir_func_conv2_label54(%rip), %xmm1
+.L__kefir_func_conv2_label56:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -121,18 +121,18 @@ conv2:
     mov %rdi, %rax
     and $1, %rax
     shr $1, %rdi
-.L__kefir_func_conv2_label76:
+.L__kefir_func_conv2_label78:
     or %rdi, %rax
     cvtsi2sd %rax, %xmm0
     addsd %xmm0, %xmm0
 .loc 0 87 5
-.L__kefir_func_conv2_label84:
+.L__kefir_func_conv2_label86:
     jmp .L__kefir_func_conv2_label8
-.L__kefir_func_conv2_label90:
+.L__kefir_func_conv2_label92:
 .L__kefir_text_func_conv2_end:
 .section .rodata
     .align 8
-.L__kefir_func_conv2_label52:
+.L__kefir_func_conv2_label54:
     .quad 0
 .section .text
 
@@ -1632,12 +1632,12 @@ __kefir_debug_loclist_section_entry_8:
 __kefir_debug_loclist_section_entry_9:
     .byte 4
     .uleb128 .L__kefir_func_conv2_label14 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv2_label76 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label78 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 5
     .byte 4
-    .uleb128 .L__kefir_func_conv2_label21 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label19 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_conv2_label8 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
@@ -1646,12 +1646,12 @@ __kefir_debug_loclist_section_entry_9:
 __kefir_debug_loclist_section_entry_10:
     .byte 4
     .uleb128 .L__kefir_func_conv2_label14 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv2_label76 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label78 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 5
     .byte 4
-    .uleb128 .L__kefir_func_conv2_label21 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv2_label19 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_conv2_label8 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
@@ -2283,8 +2283,8 @@ __kefir_softfloat_complex_double_div:
     movaps -160(%rbp), %xmm0
     mov %r12d, %edi
     call __kefir_softfloat_scalbn
-    movaps %xmm0, -160(%rbp)
     mov %rbx, %rax
+    movaps %xmm0, -160(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label3
 .L__kefir_runtime_text_func___kefir_softfloat_complex_double_div_end:
 .section .rodata
@@ -3061,8 +3061,8 @@ __kefir_softfloat_ilogb:
     cmp $0, %rcx
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label20:
-    mov %esi, %eax
     mov %rdx, %rcx
+    mov %esi, %eax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label19:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label24(%rip), %xmm0

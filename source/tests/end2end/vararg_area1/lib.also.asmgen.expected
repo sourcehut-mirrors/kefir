@@ -108,8 +108,6 @@ process:
     mov -8(%rax), %rcx
 .L__kefir_func_process_label15:
     lea -32(%rbp), %rax
-    mov %rax, %rdx
-    add $0, %rdx
     movq (%rax), %rax
     movl -68(%rbp), %edx
     movsx %edx, %rdx

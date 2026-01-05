@@ -22,11 +22,9 @@ test1:
     fldt .L__kefir_func_test1_label6(%rip)
     movq $0, 40(%rdx)
     fstpt 32(%rdx)
-    lea 48(%rdx), %rax
     movd .L__kefir_func_test1_label7(%rip), %xmm0
     movd %xmm0, 48(%rdx)
     movd %xmm0, 52(%rdx)
-    lea 56(%rdx), %rax
     movq .L__kefir_func_test1_label8(%rip), %xmm0
     movq %xmm0, 56(%rdx)
     movq %xmm0, 64(%rdx)

@@ -69,8 +69,6 @@ get2:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    mov %rax, %rcx
-    add $1, %rcx
     movw 2(%rax), %cx
     shl $52, %rcx
     shr $52, %rcx
@@ -93,9 +91,6 @@ get3:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    mov %rax, %rcx
-    add $4, %rcx
-    add $0, %rcx
     movb 6(%rax), %cl
     movw 4(%rax), %dx
     and $65535, %rdx
@@ -122,8 +117,6 @@ get4:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    mov %rax, %rcx
-    add $7, %rcx
     movl 8(%rax), %eax
     shl $37, %rax
     shr $37, %rax
@@ -145,9 +138,6 @@ get5:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    mov %rax, %rcx
-    add $7, %rcx
-    add $4, %rcx
     movb 15(%rax), %cl
     movl 11(%rax), %eax
     movabs $4294967295, %rdx
@@ -174,9 +164,6 @@ get6:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    mov %rax, %rcx
-    add $16, %rcx
-    add $0, %rcx
     movw 20(%rax), %cx
     movl 16(%rax), %eax
     movabs $4294967295, %rdx
@@ -203,9 +190,6 @@ get7:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    mov %rax, %rcx
-    add $22, %rcx
-    add $2, %rcx
     movb 30(%rax), %cl
     movw 28(%rax), %dx
     movl 24(%rax), %eax
@@ -236,8 +220,6 @@ get8:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    mov %rax, %rcx
-    add $31, %rcx
     movq 32(%rax), %rax
     shl $5, %rax
     shr $5, %rax
@@ -315,8 +297,6 @@ set2:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov %rcx, %rdx
-    add $1, %rdx
     movw 2(%rcx), %dx
     shl $48, %rdx
     shr $48, %rdx
@@ -344,27 +324,22 @@ set3:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov %rcx, %rdx
-    add $4, %rdx
-    mov %rdx, %rsi
-    add $0, %rsi
-    movb 6(%rcx), %sil
-    movw 4(%rcx), %di
-    and $65535, %rdi
-    shl $16, %rsi
-    or %rsi, %rdi
-    shl $40, %rdi
-    shr $40, %rdi
+    movb 6(%rcx), %dl
+    movw 4(%rcx), %si
+    and $65535, %rsi
+    shl $16, %rdx
+    or %rdx, %rsi
+    shl $40, %rsi
+    shr $40, %rsi
     shl $41, %rax
     sar $41, %rax
     shl $41, %rax
     shr $41, %rax
-    movabs $-1048576, %rsi
-    and %rdi, %rsi
+    movabs $-1048576, %rdx
+    and %rsi, %rdx
     shl $44, %rax
     shr $44, %rax
-    or %rsi, %rax
-    add $0, %rdx
+    or %rdx, %rax
     mov %rax, %rdx
     shr $16, %rdx
     movb %dl, 6(%rcx)
@@ -383,8 +358,6 @@ set4:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov %rcx, %rdx
-    add $7, %rdx
     movl 8(%rcx), %edx
     shl $32, %rdx
     shr $32, %rdx
@@ -412,28 +385,23 @@ set5:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov %rcx, %rdx
-    add $7, %rdx
-    mov %rdx, %rsi
-    add $4, %rsi
-    movb 15(%rcx), %sil
-    movl 11(%rcx), %edi
-    movabs $4294967295, %r8
-    and %r8, %rdi
-    shl $32, %rsi
-    or %rsi, %rdi
-    shl $24, %rdi
-    shr $24, %rdi
+    movb 15(%rcx), %dl
+    movl 11(%rcx), %esi
+    movabs $4294967295, %rdi
+    and %rdi, %rsi
+    shl $32, %rdx
+    or %rdx, %rsi
+    shl $24, %rsi
+    shr $24, %rsi
     shl $25, %rax
     sar $25, %rax
     shl $25, %rax
     shr $25, %rax
-    movabs $-274877906937, %rsi
-    and %rdi, %rsi
+    movabs $-274877906937, %rdx
+    and %rsi, %rdx
     shl $29, %rax
     shr $26, %rax
-    or %rsi, %rax
-    add $4, %rdx
+    or %rdx, %rax
     mov %rax, %rdx
     shr $32, %rdx
     movb %dl, 15(%rcx)
@@ -452,28 +420,23 @@ set6:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov %rcx, %rdx
-    add $16, %rdx
-    mov %rdx, %rsi
-    add $0, %rsi
-    movw 20(%rcx), %si
-    movl 16(%rcx), %edi
-    movabs $4294967295, %r8
-    and %r8, %rdi
-    shl $32, %rsi
-    or %rsi, %rdi
-    shl $16, %rdi
-    shr $16, %rdi
+    movw 20(%rcx), %dx
+    movl 16(%rcx), %esi
+    movabs $4294967295, %rdi
+    and %rdi, %rsi
+    shl $32, %rdx
+    or %rdx, %rsi
+    shl $16, %rsi
+    shr $16, %rsi
     shl $17, %rax
     sar $17, %rax
     shl $17, %rax
     shr $17, %rax
-    movabs $-70368744177664, %rsi
-    and %rdi, %rsi
+    movabs $-70368744177664, %rdx
+    and %rsi, %rdx
     shl $18, %rax
     shr $18, %rax
-    or %rsi, %rax
-    add $0, %rdx
+    or %rdx, %rax
     mov %rax, %rdx
     shr $32, %rdx
     movw %dx, 20(%rcx)
@@ -492,33 +455,27 @@ set7:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov %rcx, %rdx
-    add $22, %rdx
-    mov %rdx, %rsi
-    add $2, %rsi
-    movb 30(%rcx), %sil
-    movw 28(%rcx), %di
-    movl 24(%rcx), %r8d
-    movabs $4294967295, %r9
-    and %r9, %r8
-    and $65535, %rdi
-    shl $32, %rdi
-    or %rdi, %r8
-    shl $48, %rsi
-    or %rsi, %r8
-    shl $8, %r8
-    shr $8, %r8
+    movb 30(%rcx), %dl
+    movw 28(%rcx), %si
+    movl 24(%rcx), %edi
+    movabs $4294967295, %r8
+    and %r8, %rdi
+    and $65535, %rsi
+    shl $32, %rsi
+    or %rsi, %rdi
+    shl $48, %rdx
+    or %rdx, %rdi
+    shl $8, %rdi
+    shr $8, %rdi
     shl $9, %rax
     sar $9, %rax
     shl $9, %rax
     shr $9, %rax
-    movabs $-9007199254740992, %rsi
-    and %r8, %rsi
+    movabs $-9007199254740992, %rdx
+    and %rdi, %rdx
     shl $11, %rax
     shr $11, %rax
-    or %rsi, %rax
-    add $2, %rdx
-    add $4, %rdx
+    or %rdx, %rax
     mov %rax, %rdx
     shr $32, %rdx
     mov %rdx, %rsi
@@ -540,8 +497,6 @@ set8:
     movq %rdi, -16(%rbp)
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov %rcx, %rdx
-    add $31, %rdx
     movq 32(%rcx), %rdx
     shl $0, %rdx
     shr $0, %rdx

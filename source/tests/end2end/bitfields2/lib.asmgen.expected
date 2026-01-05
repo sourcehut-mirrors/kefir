@@ -49,7 +49,6 @@ get_a:
 get_b:
 .L__kefir_text_func_get_b_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 1(%rax), %rcx
     movzxw 1(%rax), %rax
     shl $49, %rax
     sar $49, %rax
@@ -59,10 +58,8 @@ get_b:
 get_c:
 .L__kefir_text_func_get_c_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 5(%rax), %rcx
     movzxb 5(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 3(%rcx), %rdx
     movzxw 3(%rcx), %rcx
     shl $16, %rax
     or %rcx, %rax
@@ -74,7 +71,6 @@ get_c:
 get_d:
 .L__kefir_text_func_get_d_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 8(%rax), %rcx
     movl 8(%rax), %eax
     shl $33, %rax
     sar $33, %rax
@@ -84,10 +80,8 @@ get_d:
 get_e:
 .L__kefir_text_func_get_e_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 20(%rax), %rcx
     movzxb 20(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 16(%rcx), %rdx
     movl 16(%rcx), %ecx
     shl $32, %rax
     or %rcx, %rax
@@ -99,10 +93,8 @@ get_e:
 get_f:
 .L__kefir_text_func_get_f_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 28(%rax), %rcx
     movzxw 28(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 24(%rcx), %rdx
     movl 24(%rcx), %ecx
     shl $32, %rax
     or %rcx, %rax
@@ -114,13 +106,10 @@ get_f:
 get_g:
 .L__kefir_text_func_get_g_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 38(%rax), %rcx
     movzxb 38(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 36(%rcx), %rdx
     movzxw 36(%rcx), %rcx
     movq s@GOTPCREL(%rip), %rdx
-    lea 32(%rdx), %rsi
     movl 32(%rdx), %edx
     shl $48, %rax
     shl $32, %rcx
@@ -134,7 +123,6 @@ get_g:
 get_h:
 .L__kefir_text_func_get_h_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 40(%rax), %rcx
     movq 40(%rax), %rax
     shl $1, %rax
     sar $1, %rax
@@ -158,10 +146,8 @@ set_a:
 set_b:
 .L__kefir_text_func_set_b_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 1(%rax), %rcx
     movzxw 1(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 1(%rcx), %rdx
     movabs $-32768, %rdx
     and %rax, %rdx
     shl $49, %rdi
@@ -174,13 +160,10 @@ set_b:
 set_c:
 .L__kefir_text_func_set_c_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 5(%rax), %rcx
     movzxb 5(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 3(%rcx), %rdx
     movzxw 3(%rcx), %rcx
     movq s@GOTPCREL(%rip), %rdx
-    lea 5(%rdx), %rsi
     shl $16, %rax
     or %rcx, %rax
     movabs $-8388608, %rcx
@@ -199,10 +182,8 @@ set_c:
 set_d:
 .L__kefir_text_func_set_d_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 8(%rax), %rcx
     movl 8(%rax), %eax
     movq s@GOTPCREL(%rip), %rcx
-    lea 8(%rcx), %rdx
     movabs $-2147483648, %rdx
     and %rax, %rdx
     shl $33, %rdi
@@ -215,13 +196,10 @@ set_d:
 set_e:
 .L__kefir_text_func_set_e_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 20(%rax), %rcx
     movzxb 20(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 16(%rcx), %rdx
     movl 16(%rcx), %ecx
     movq s@GOTPCREL(%rip), %rdx
-    lea 20(%rdx), %rsi
     shl $32, %rax
     or %rcx, %rax
     movabs $-549755813888, %rcx
@@ -240,13 +218,10 @@ set_e:
 set_f:
 .L__kefir_text_func_set_f_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 28(%rax), %rcx
     movzxw 28(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 24(%rcx), %rdx
     movl 24(%rcx), %ecx
     movq s@GOTPCREL(%rip), %rdx
-    lea 28(%rdx), %rsi
     shl $32, %rax
     or %rcx, %rax
     movabs $-140737488355328, %rcx
@@ -265,16 +240,12 @@ set_f:
 set_g:
 .L__kefir_text_func_set_g_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 38(%rax), %rcx
     movzxb 38(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 36(%rcx), %rdx
     movzxw 36(%rcx), %rcx
     movq s@GOTPCREL(%rip), %rdx
-    lea 32(%rdx), %rsi
     movl 32(%rdx), %edx
     movq s@GOTPCREL(%rip), %rsi
-    lea 38(%rsi), %r8
     shl $48, %rax
     shl $32, %rcx
     or %rdx, %rcx
@@ -288,7 +259,6 @@ set_g:
     shr $48, %rax
     movb %al, 38(%rsi)
     movq s@GOTPCREL(%rip), %rax
-    lea 36(%rax), %rcx
     mov %rdi, %rcx
     shr $32, %rcx
     movw %cx, 36(%rax)
@@ -300,10 +270,8 @@ set_g:
 set_h:
 .L__kefir_text_func_set_h_begin:
     movq s@GOTPCREL(%rip), %rax
-    lea 40(%rax), %rcx
     movq 40(%rax), %rax
     movq s@GOTPCREL(%rip), %rcx
-    lea 40(%rcx), %rdx
     movabs $-9223372036854775808, %rdx
     and %rax, %rdx
     shl $1, %rdi

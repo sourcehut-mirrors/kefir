@@ -1891,8 +1891,6 @@ __kefir_bigint_unsigned_to_long_double:
     movq -88(%rbp), %rcx
     movq -56(%rbp), %rdx
     lea -80(%rbp), %rax
-    mov %rax, %rsi
-    add $8, %rsi
     mov $32768, %edi
     movsx %edi, %rsi
     and %rsi, %rcx
@@ -3413,8 +3411,6 @@ __kefir_bigint_signed_to_long_double:
     movq -88(%rbp), %rcx
     movq -56(%rbp), %rdx
     lea -80(%rbp), %rax
-    mov %rax, %rsi
-    add $8, %rsi
     mov $32768, %edi
     movsx %edi, %rsi
     and %rsi, %rcx

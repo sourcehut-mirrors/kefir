@@ -1802,8 +1802,8 @@ __kefir_bigint_get_bits:
     mov %rax, %r8
     cmova %rcx, %r8
     xor %eax, %eax
-    mov %rax, %r9
     mov %rsi, %r10
+    mov %rax, %r9
 .L__kefir_runtime_func___kefir_bigint_get_bits_label2:
     cmp %r8, %r10
     jb .L__kefir_runtime_func___kefir_bigint_get_bits_label16

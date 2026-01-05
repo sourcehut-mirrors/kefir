@@ -49,8 +49,6 @@ get1:
     sar $50, %rax
     movw %ax, 16(%rbx)
     movl -12(%rbp), %eax
-    mov %rbx, %rcx
-    add $24, %rcx
     add $3, %eax
     movsx %eax, %rdx
     lea -48(%rbp), %rdi
@@ -69,8 +67,6 @@ get1:
     sar $35, %rax
     movl %eax, 48(%rbx)
     movl -12(%rbp), %eax
-    mov %rbx, %rcx
-    add $56, %rcx
     add $5, %eax
     movsx %eax, %rdx
     lea -48(%rbp), %rdi

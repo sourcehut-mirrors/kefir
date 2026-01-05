@@ -42,7 +42,12 @@ typedef enum kefir_target_ir_amd64_opcode {
 } kefir_target_ir_amd64_opcode_t;
 
 typedef enum kefir_target_ir_amd64_resource_id {
-    KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAGS = 0
+    KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF,
+    KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF,
+    KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF,
+    KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF,
+    KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_DF,
+    KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF
 } kefir_target_ir_amd64_resource_id_t;
 
 extern const struct kefir_codegen_target_ir_code_class KEFIR_TARGET_AMD64_CODE_CLASS;

@@ -49,8 +49,6 @@ get3:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     lea -16(%rbp), %rax
-    mov %rax, %rcx
-    add $0, %rcx
     movb 6(%rax), %cl
     movw 4(%rax), %dx
     movl -16(%rbp), %eax
@@ -142,8 +140,6 @@ get6:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     lea -16(%rbp), %rax
-    mov %rax, %rcx
-    add $8, %rcx
     movl 8(%rax), %eax
     shl $39, %rax
     shr $39, %rax

@@ -25,7 +25,6 @@ get_a:
     lea value(%rip), %rax
     movq (%rax), %rax
     lea value(%rip), %rcx
-    lea 8(%rcx), %rdx
     movzxw 8(%rcx), %rdx
     mov $48, %rcx
     shld %cl, %rax, %rdx
@@ -51,7 +50,6 @@ get_a:
 get_b:
 .L__kefir_text_func_get_b_begin:
     lea value(%rip), %rax
-    lea 16(%rax), %rcx
     movq 16(%rax), %rax
     mov %rcx, %rdx
     xor %ecx, %edx
@@ -79,10 +77,8 @@ get_b:
 get_c:
 .L__kefir_text_func_get_c_begin:
     lea value(%rip), %rax
-    lea 32(%rax), %rcx
     movq 32(%rax), %rax
     lea value(%rip), %rcx
-    lea 40(%rcx), %rdx
     movzxw 40(%rcx), %rdx
     mov $52, %rcx
     shld %cl, %rax, %rdx
@@ -108,10 +104,8 @@ get_c:
 get_d:
 .L__kefir_text_func_get_d_begin:
     lea value(%rip), %rax
-    lea 45(%rax), %rcx
     movzxb 45(%rax), %rax
     lea value(%rip), %rcx
-    lea 41(%rcx), %rdx
     movl 41(%rcx), %ecx
     shl $32, %rax
     or %rcx, %rax
@@ -146,7 +140,6 @@ set_a:
     lea value(%rip), %rax
     movq (%rax), %rax
     lea value(%rip), %rcx
-    lea 8(%rcx), %rdx
     movzxw 8(%rcx), %rdx
     lea value(%rip), %r8
     mov $1, %r9
@@ -198,44 +191,31 @@ set_b:
     mov %rsp, %rbp
     sub $16, %rsp
     lea value(%rip), %rax
-    lea 16(%rax), %rcx
     movq 16(%rax), %rax
     lea value(%rip), %rdx
-    lea 16(%rdx), %rcx
-    mov $1, %r8
-    xor %r9d, %r9d
-    mov $60, %rcx
-    shld %cl, %r8, %r9
-    shl %cl, %r8
-    xor %r10d, %r10d
-    test $64, %cl
-    cmovne %r8, %r9
-    cmove %r8, %r10
-    mov $1, %rcx
-    xor %r8d, %r8d
-    sub %rcx, %r10
-    sbb %r8, %r9
-    and %r10, %rdi
-    and %r9, %rsi
+    mov $1, %rsi
     xor %ecx, %ecx
-    shld %cl, %rdi, %rsi
+    mov $60, %rcx
+    shl %cl, %rsi
+    xor %r8d, %r8d
+    test $64, %cl
+    cmove %rsi, %r8
+    mov $1, %rcx
+    xor %esi, %esi
+    sub %rcx, %r8
+    and %r8, %rdi
+    xor %ecx, %ecx
     shl %cl, %rdi
     xor %esi, %esi
     test $64, %cl
     cmove %rdi, %rsi
-    mov %rcx, %rdi
-    xor %ecx, %edi
     xor %ecx, %ecx
-    shld %cl, %r10, %r9
-    shl %cl, %r10
-    xor %r8d, %r8d
+    shl %cl, %r8
+    xor %edi, %edi
     test $64, %cl
-    cmovne %r10, %r9
-    cmove %r10, %r8
-    not %r8
-    not %r9
-    and %r8, %rax
-    and %r9, %rdi
+    cmove %r8, %rdi
+    not %rdi
+    and %rdi, %rax
     or %rax, %rsi
     movq %rsi, 16(%rdx)
     lea (%rbp), %rsp
@@ -249,13 +229,10 @@ set_c:
     mov %rsp, %rbp
     sub $16, %rsp
     lea value(%rip), %rax
-    lea 32(%rax), %rcx
     movq 32(%rax), %rax
     lea value(%rip), %rcx
-    lea 40(%rcx), %rdx
     movzxw 40(%rcx), %rdx
     lea value(%rip), %r8
-    lea 32(%r8), %rcx
     mov $1, %r9
     xor %r10d, %r10d
     mov $76, %rcx
@@ -305,57 +282,41 @@ set_d:
     mov %rsp, %rbp
     sub $16, %rsp
     lea value(%rip), %rax
-    lea 45(%rax), %rcx
     movzxb 45(%rax), %rax
     lea value(%rip), %rcx
-    lea 41(%rcx), %rdx
     movl 41(%rcx), %edx
-    lea value(%rip), %r8
-    lea 45(%r8), %rcx
-    mov $1, %r9
-    xor %r10d, %r10d
+    lea value(%rip), %rsi
+    mov $1, %r8
+    xor %ecx, %ecx
     mov $35, %rcx
-    shld %cl, %r9, %r10
-    shl %cl, %r9
-    xor %r11d, %r11d
+    shl %cl, %r8
+    xor %r9d, %r9d
     test $64, %cl
-    cmovne %r9, %r10
-    cmove %r9, %r11
+    cmove %r8, %r9
     mov $1, %rcx
-    xor %r9d, %r9d
-    sub %rcx, %r11
-    sbb %r9, %r10
-    and %r11, %rdi
-    and %r10, %rsi
+    xor %r8d, %r8d
+    sub %rcx, %r9
+    and %r9, %rdi
     mov $4, %rcx
-    shld %cl, %rdi, %rsi
     shl %cl, %rdi
-    xor %r9d, %r9d
+    xor %r8d, %r8d
     test $64, %cl
-    cmovne %rdi, %rsi
-    cmove %rdi, %r9
+    cmove %rdi, %r8
     shl $32, %rax
     or %rdx, %rax
-    mov %rcx, %rdx
-    xor %ecx, %edx
     mov $4, %rcx
-    shld %cl, %r11, %r10
-    shl %cl, %r11
-    xor %edi, %edi
+    shl %cl, %r9
+    xor %edx, %edx
     test $64, %cl
-    cmovne %r11, %r10
-    cmove %r11, %rdi
-    not %rdi
-    not %r10
-    and %rdi, %rax
-    and %r10, %rdx
-    or %rax, %r9
-    or %rdx, %rsi
-    mov %r9, %rax
+    cmove %r9, %rdx
+    not %rdx
+    and %rdx, %rax
+    or %rax, %r8
+    mov %r8, %rax
     shr $32, %rax
-    movb %al, 45(%r8)
+    movb %al, 45(%rsi)
     lea value(%rip), %rax
-    movl %r9d, 41(%rax)
+    movl %r8d, 41(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret

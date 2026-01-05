@@ -59,7 +59,6 @@ test_dec128_mean_squared_error:
     mov %r12, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
-    lea 16(%rcx), %rdx
     movdqu 16(%rcx), %xmm0
     movdqu %xmm0, -48(%rbp)
     imul $32, %rax, %rcx
@@ -81,8 +80,8 @@ test_dec128_mean_squared_error:
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
     call __bid_addtd3@PLT
-    movaps %xmm0, -64(%rbp)
     mov %r13, %rax
+    movaps %xmm0, -64(%rbp)
     jmp .L__kefir_func_test_dec128_mean_squared_error_label2
 .L__kefir_text_func_test_dec128_mean_squared_error_end:
 .section .rodata
@@ -176,7 +175,6 @@ test_dec64_gradient_descent:
     mov %r15, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
-    lea 8(%rcx), %rdx
     movq 8(%rcx), %xmm2
     movq %xmm2, -112(%rbp)
     imul $16, %rax, %rcx
@@ -262,7 +260,6 @@ test_dec64_mean_squared_error:
     mov %r12, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
-    lea 8(%rcx), %rdx
     movq 8(%rcx), %xmm0
     movq %xmm0, -48(%rbp)
     imul $16, %rax, %rcx
@@ -284,8 +281,8 @@ test_dec64_mean_squared_error:
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
     call __bid_adddd3@PLT
-    movaps %xmm0, -64(%rbp)
     mov %r13, %rax
+    movaps %xmm0, -64(%rbp)
     jmp .L__kefir_func_test_dec64_mean_squared_error_label2
 .L__kefir_text_func_test_dec64_mean_squared_error_end:
 .section .rodata
@@ -434,7 +431,6 @@ test_dec32_mean_squared_error:
     mov %r12, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
-    lea 4(%rcx), %rdx
     movd 4(%rcx), %xmm0
     movd %xmm0, -48(%rbp)
     imul $8, %rax, %rcx
@@ -456,8 +452,8 @@ test_dec32_mean_squared_error:
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
     call __bid_addsd3@PLT
-    movaps %xmm0, -64(%rbp)
     mov %r13, %rax
+    movaps %xmm0, -64(%rbp)
     jmp .L__kefir_func_test_dec32_mean_squared_error_label2
 .L__kefir_text_func_test_dec32_mean_squared_error_end:
 .section .rodata
@@ -604,7 +600,6 @@ test_dec128_gradient_descent:
     mov %r15, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
-    lea 16(%rcx), %rdx
     movdqu 16(%rcx), %xmm2
     movdqu %xmm2, -112(%rbp)
     imul $32, %rax, %rcx
@@ -741,7 +736,6 @@ test_dec32_gradient_descent:
     mov %r15, %rdx
     add %rcx, %rdx
     mov %rdx, %rcx
-    lea 4(%rcx), %rdx
     movd 4(%rcx), %xmm2
     movd %xmm2, -112(%rbp)
     imul $8, %rax, %rcx
