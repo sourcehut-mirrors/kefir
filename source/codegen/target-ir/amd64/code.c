@@ -58,7 +58,7 @@ static kefir_result_t attribute_mnemonic(kefir_codegen_target_ir_native_id_t att
                                         void *payload) {
     UNUSED(payload);
     REQUIRE(mnemonic_ptr != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to opcode mnemonic"));
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to attribute mnemonic"));
 
     switch (attr) {
         case KEFIR_TARGET_IR_AMD64_OPCODE(rexW):
@@ -69,6 +69,23 @@ static kefir_result_t attribute_mnemonic(kefir_codegen_target_ir_native_id_t att
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Invalid amd64 target IR attribute");
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t resource_mnemonic(kefir_codegen_target_ir_resource_id_t resource, const char **mnemonic_ptr,
+                                        void *payload) {
+    UNUSED(payload);
+    REQUIRE(mnemonic_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to resource mnemonic"));
+
+    switch (resource) {
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAGS:
+            *mnemonic_ptr = "flags";
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Invalid amd64 target IR resource");
     }
     return KEFIR_OK;
 }
@@ -197,6 +214,7 @@ const struct kefir_codegen_target_ir_code_class KEFIR_TARGET_AMD64_CODE_CLASS = 
     .opcode_mnemonic = amd64_opcode_mnemonic,
     .register_mnemonic = register_mnemonic,
     .attribute_mnemonic = attribute_mnemonic,
+    .resource_mnemonic = resource_mnemonic,
     .is_block_terminator = is_block_terminator,
     .make_unconditional_jump = make_unconditional_jump,
     .finalize_conditional_jump = finalize_conditional_jump,

@@ -497,7 +497,6 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *me
     for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE; i++) {
         instr->aspects.indirect_output[i] = ~0ull;
     }
-    instr->aspects.flags = ~0ull;
     instr->use_entry_top = (kefir_size_t) ~0ull;
 
     if (after_instr == NULL) {
@@ -916,9 +915,6 @@ kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *mem, st
         kefir_size_t index = KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(value_ref.aspect);
         REQUIRE(code->code[value_ref.instr_ref].aspects.indirect_output[index] == ~0ull, KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Target IR value aspect already exists"));
         code->code[value_ref.instr_ref].aspects.indirect_output[index] = code->value_types_length;
-    } else if (value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
-        REQUIRE(code->code[value_ref.instr_ref].aspects.flags == ~0ull, KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Target IR value aspect already exists"));
-        code->code[value_ref.instr_ref].aspects.flags = code->value_types_length;
     }
 
     kefir_result_t res = kefir_hashtable_insert(mem, &code->code[value_ref.instr_ref].aspects.all, (kefir_hashtable_key_t) value_ref.aspect, (kefir_hashtable_value_t) code->value_types_length);
@@ -994,9 +990,6 @@ kefir_result_t kefir_codegen_target_ir_code_value_props(const struct kefir_codeg
         kefir_size_t index = code->code[value_ref.instr_ref].aspects.indirect_output[KEFIR_CODEGEN_TARGET_IR_VALUE_INDIRECT_OUTPUT(value_ref.aspect)];
         REQUIRE(index != ~0ull, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find target IR value reference"));
         ASSIGN_PTR(value_type_ptr, &code->value_types[index]);
-    } else if (value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
-        REQUIRE(code->code[value_ref.instr_ref].aspects.flags != ~0ull, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find target IR value reference"));
-        ASSIGN_PTR(value_type_ptr, &code->value_types[code->code[value_ref.instr_ref].aspects.flags]);
     } else {
         kefir_hashtable_value_t table_value;
         kefir_result_t res = kefir_hashtable_at(&code->code[value_ref.instr_ref].aspects.all, (kefir_hashtable_key_t) value_ref.aspect, &table_value);

@@ -93,7 +93,7 @@ d64_to_ubitint24:
 .L__kefir_text_func_d64_to_ubitint24_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     call __bid_extendddxf@PLT
     flds .L__kefir_constant_long_double_to_uint(%rip)
@@ -104,10 +104,10 @@ d64_to_ubitint24:
     fnstcww -48(%rbp)
     movzxw -48(%rbp), %eax
     or $3072, %ax
-    movw %ax, -64(%rbp)
-    fldcww -64(%rbp)
-    fistpq -56(%rbp)
-    mov -56(%rbp), %rax
+    movw %ax, -32(%rbp)
+    fldcww -32(%rbp)
+    fistpq -40(%rbp)
+    mov -40(%rbp), %rax
     fldcww -48(%rbp)
 .L__kefir_func_d64_to_ubitint24_label4:
     fldcw -8(%rbp)
@@ -119,10 +119,10 @@ d64_to_ubitint24:
     fsubp
     movzxw -48(%rbp), %eax
     or $3072, %ax
-    movw %ax, -64(%rbp)
-    fldcww -64(%rbp)
-    fistpq -56(%rbp)
-    mov -56(%rbp), %rax
+    movw %ax, -32(%rbp)
+    fldcww -32(%rbp)
+    fistpq -40(%rbp)
+    mov -40(%rbp), %rax
     fldcww -48(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_d64_to_ubitint24_label4
@@ -223,7 +223,7 @@ d128_to_ubitint24:
 .L__kefir_text_func_d128_to_ubitint24_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     call __bid_trunctdxf@PLT
     flds .L__kefir_constant_long_double_to_uint(%rip)
@@ -234,10 +234,10 @@ d128_to_ubitint24:
     fnstcww -48(%rbp)
     movzxw -48(%rbp), %eax
     or $3072, %ax
-    movw %ax, -64(%rbp)
-    fldcww -64(%rbp)
-    fistpq -56(%rbp)
-    mov -56(%rbp), %rax
+    movw %ax, -32(%rbp)
+    fldcww -32(%rbp)
+    fistpq -40(%rbp)
+    mov -40(%rbp), %rax
     fldcww -48(%rbp)
 .L__kefir_func_d128_to_ubitint24_label4:
     fldcw -8(%rbp)
@@ -249,10 +249,10 @@ d128_to_ubitint24:
     fsubp
     movzxw -48(%rbp), %eax
     or $3072, %ax
-    movw %ax, -64(%rbp)
-    fldcww -64(%rbp)
-    fistpq -56(%rbp)
-    mov -56(%rbp), %rax
+    movw %ax, -32(%rbp)
+    fldcww -32(%rbp)
+    fistpq -40(%rbp)
+    mov -40(%rbp), %rax
     fldcww -48(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_d128_to_ubitint24_label4
@@ -379,7 +379,7 @@ d32_to_ubitint24:
 .L__kefir_text_func_d32_to_ubitint24_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     call __bid_extendsdxf@PLT
     flds .L__kefir_constant_long_double_to_uint(%rip)
@@ -390,10 +390,10 @@ d32_to_ubitint24:
     fnstcww -48(%rbp)
     movzxw -48(%rbp), %eax
     or $3072, %ax
-    movw %ax, -64(%rbp)
-    fldcww -64(%rbp)
-    fistpq -56(%rbp)
-    mov -56(%rbp), %rax
+    movw %ax, -32(%rbp)
+    fldcww -32(%rbp)
+    fistpq -40(%rbp)
+    mov -40(%rbp), %rax
     fldcww -48(%rbp)
 .L__kefir_func_d32_to_ubitint24_label4:
     fldcw -8(%rbp)
@@ -405,10 +405,10 @@ d32_to_ubitint24:
     fsubp
     movzxw -48(%rbp), %eax
     or $3072, %ax
-    movw %ax, -64(%rbp)
-    fldcww -64(%rbp)
-    fistpq -56(%rbp)
-    mov -56(%rbp), %rax
+    movw %ax, -32(%rbp)
+    fldcww -32(%rbp)
+    fistpq -40(%rbp)
+    mov -40(%rbp), %rax
     fldcww -48(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_d32_to_ubitint24_label4

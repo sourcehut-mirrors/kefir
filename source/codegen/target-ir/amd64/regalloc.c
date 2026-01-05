@@ -97,7 +97,7 @@ static kefir_result_t do_allocate(struct kefir_mem *mem,
     switch (value_type->kind) {
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY:
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE:
             *allocation_ptr = regalloc_entry.allocation;

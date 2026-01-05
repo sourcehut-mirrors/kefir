@@ -57,7 +57,7 @@ static kefir_result_t do_copy_elision(struct kefir_mem *mem, struct kefir_codege
             case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
             case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE:
             case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT:
-            case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+            case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
                 elide_copy = true;
                 break;
 

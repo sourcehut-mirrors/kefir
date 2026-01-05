@@ -562,7 +562,7 @@ static kefir_result_t resolve_value_ref(struct destructor_state *state, kefir_co
             *value = KEFIR_ASMCMP_MAKE_PHREG(phreg);
         } break;
 
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
             // Intentionally left blank
             break;
@@ -604,7 +604,7 @@ static kefir_result_t resolve_operand(struct destructor_state *state, const stru
                     switch (value_type->kind) {
                         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
                         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE:
-                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
                         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
                         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT: {
                             kefir_codegen_target_ir_regalloc_allocation_t allocation;
@@ -1366,7 +1366,7 @@ static kefir_result_t load_into_allocation(struct destructor_state *state, const
 
     switch (value_type->kind) {
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE:
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY:
@@ -1531,7 +1531,7 @@ static kefir_result_t load_into_allocation(struct destructor_state *state, const
                     REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, operand->direct.value_ref, &src_value_type));
                     switch (src_value_type->kind) {
                         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
-                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
                         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
                             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR value type");
 
@@ -1833,7 +1833,7 @@ static kefir_result_t load_into_allocation(struct destructor_state *state, const
                 case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
                 case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE:
                 case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT:
-                case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+                case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
                 case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
                 case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE:
                 case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY:
@@ -1968,7 +1968,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
         return KEFIR_OK;
     } else if (instr->operation.opcode == state->code->klass->assign_opcode) {
         if (instr->operation.parameters[0].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF ||
-            instr->operation.parameters[0].direct.value_ref.aspect != KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
+            !KEFIR_CODEGEN_TARGET_IR_VALUE_IS_RESOURCE(instr->operation.parameters[0].direct.value_ref.aspect)) {
             kefir_codegen_target_ir_value_ref_t dst_ref;
             const struct kefir_codegen_target_ir_value_type *dst_type;
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(state->code, instr_ref, 0, &dst_ref, &dst_type));
@@ -2187,7 +2187,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                                                 break;
 
                                             case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
-                                            case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+                                            case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
                                             case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
                                             case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE:
                                             case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY:
@@ -2560,7 +2560,7 @@ static kefir_result_t generate_liveness_fragment(struct destructor_state *state,
         kefir_codegen_target_ir_code_is_gate_block(state->code, block_ref) ||
         value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED ||
         value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT ||
-        value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS) {
+        value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE) {
         return KEFIR_OK;
     }
 

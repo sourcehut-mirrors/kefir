@@ -234,10 +234,12 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
     }
 
     if (consumes_flags) {
-        classification->extra_flags = classification->extra_flags | KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_CONSUMES_FLAGS;
+        classification->extra_flags = classification->extra_flags | KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_CONSUMES_RESOURCES;
+        classification->consumed_resources = 1;
     }
     if (produces_flags) {
-        classification->extra_flags = classification->extra_flags | KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_PRODUCES_FLAGS;
+        classification->extra_flags = classification->extra_flags | KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_PRODUCES_RESOURCES;
+        classification->produced_resources = 1;
     }
 
     switch (instruction->opcode) {

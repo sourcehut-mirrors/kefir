@@ -77,11 +77,16 @@ static kefir_result_t variant_format(struct kefir_json_output *json, kefir_codeg
     return KEFIR_OK;
 }
 
-static kefir_result_t aspect_format(struct kefir_json_output *json, kefir_uint32_t aspect) {
-    if (aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS) {
+static kefir_result_t aspect_format(struct kefir_json_output *json, const struct kefir_codegen_target_ir_code_class *klass, kefir_uint32_t aspect) {
+    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_RESOURCE(aspect)) {
+        const char *resource;
+        REQUIRE_OK(klass->resource_mnemonic(KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_INDEX(aspect), &resource, klass->payload));
+
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-        REQUIRE_OK(kefir_json_output_string(json, "flags"));
+        REQUIRE_OK(kefir_json_output_string(json, "resource"));
+        REQUIRE_OK(kefir_json_output_object_key(json, "resource"));
+        REQUIRE_OK(kefir_json_output_string(json, resource));
         REQUIRE_OK(kefir_json_output_object_end(json));
     } else if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(aspect)) {
         REQUIRE_OK(kefir_json_output_object_begin(json));
@@ -178,7 +183,7 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_object_key(json, "instr_ref"));
             REQUIRE_OK(id_format(json, operand->direct.value_ref.instr_ref));
             REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
-            REQUIRE_OK(aspect_format(json, operand->direct.value_ref.aspect));
+            REQUIRE_OK(aspect_format(json, code->klass, operand->direct.value_ref.aspect));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
             REQUIRE_OK(variant_format(json, operand->direct.variant));
             REQUIRE_OK(kefir_json_output_object_end(json));
@@ -205,7 +210,7 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
                     REQUIRE_OK(kefir_json_output_object_key(json, "instr_ref"));
                     REQUIRE_OK(kefir_json_output_uinteger(json, operand->indirect.base.value_ref.instr_ref));
                     REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
-                    REQUIRE_OK(aspect_format(json, operand->indirect.base.value_ref.aspect));
+                    REQUIRE_OK(aspect_format(json, code->klass, operand->indirect.base.value_ref.aspect));
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_IMMEDIATE_BASIS:
@@ -345,7 +350,7 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_object_key(json, "instr_ref"));
             REQUIRE_OK(id_format(json, operand->upsilon_ref.instr_ref));
             REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
-            REQUIRE_OK(aspect_format(json, operand->upsilon_ref.aspect));
+            REQUIRE_OK(aspect_format(json, code->klass, operand->upsilon_ref.aspect));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
     }
@@ -406,7 +411,7 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
                     REQUIRE_OK(kefir_json_output_object_key(json, "instr_ref"));
                     REQUIRE_OK(id_format(json, link_value_ref.instr_ref));
                     REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
-                    REQUIRE_OK(aspect_format(json, link_value_ref.aspect));
+                    REQUIRE_OK(aspect_format(json, code->klass, link_value_ref.aspect));
                     REQUIRE_OK(kefir_json_output_object_end(json));
                     REQUIRE_OK(kefir_json_output_object_end(json));
                 }
@@ -466,7 +471,7 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
                 res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, &value_type)) {
                 REQUIRE_OK(kefir_json_output_object_begin(json));
                 REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
-                REQUIRE_OK(aspect_format(json, value_ref.aspect));
+                REQUIRE_OK(aspect_format(json, code->klass, value_ref.aspect));
                 REQUIRE_OK(kefir_json_output_object_key(json, "type"));
                 REQUIRE_OK(kefir_json_output_object_begin(json));
                 REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
@@ -481,9 +486,13 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
                         REQUIRE_OK(kefir_json_output_string(json, "general_purpose"));
                         break;
 
-                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
-                        REQUIRE_OK(kefir_json_output_string(json, "flags"));
-                        break;
+                    case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE: {
+                        const char *resource;
+                        REQUIRE_OK(code->klass->resource_mnemonic(value_type->parameters.resource_id, &resource, code->klass->payload));
+                        REQUIRE_OK(kefir_json_output_string(json, "resource"));
+                        REQUIRE_OK(kefir_json_output_object_key(json, "resource"));
+                        REQUIRE_OK(kefir_json_output_string(json, resource));
+                    } break;
 
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
                         REQUIRE_OK(kefir_json_output_string(json, "indirect"));

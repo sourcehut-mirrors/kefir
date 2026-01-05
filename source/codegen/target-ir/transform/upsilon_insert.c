@@ -30,7 +30,7 @@ static kefir_result_t get_phi_output(const struct kefir_codegen_target_ir_code *
     };
     kefir_result_t res = kefir_codegen_target_ir_code_value_props(code, value_ref, value_type_ptr);
     if (res == KEFIR_NOT_FOUND) {
-        value_ref.aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS;
+        value_ref.aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(0);
         res = kefir_codegen_target_ir_code_value_props(code, value_ref, value_type_ptr);
     }
     if (res == KEFIR_NOT_FOUND) {
@@ -137,30 +137,23 @@ static kefir_result_t insert_upsilons_step(struct kefir_mem *mem, struct kefir_c
         for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, phi_value_ref.instr_ref, &use_instr_ref, NULL);
             res == KEFIR_OK && !used_elsewhere;
             res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
-            kefir_codegen_target_ir_value_ref_t user_direct_value_ref = {
-                .instr_ref = use_instr_ref,
-                .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
-            }, user_flag_value_ref = {
-                .instr_ref = use_instr_ref,
-                .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_FLAGS
-            };
-
-            kefir_hashtable_value_t table_value;
-            res = kefir_hashtable_at(phis, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&user_direct_value_ref), &table_value);
-            if (res != KEFIR_NOT_FOUND) {
-                REQUIRE_OK(res);
-                if (table_value == phis_key) {
-                    used_elsewhere = true;
-                    continue;
+            
+            struct kefir_codegen_target_ir_value_iterator user_value_iter;
+            struct kefir_codegen_target_ir_value_ref user_value_ref;
+            for (res = kefir_codegen_target_ir_code_value_iter(code, &user_value_iter, use_instr_ref, &user_value_ref, NULL);
+                res == KEFIR_OK && !used_elsewhere;
+                res = kefir_codegen_target_ir_code_value_next(&user_value_iter, &user_value_ref, NULL)) {
+                kefir_hashtable_value_t table_value;
+                res = kefir_hashtable_at(phis, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&user_value_ref), &table_value);
+                if (res != KEFIR_NOT_FOUND) {
+                    REQUIRE_OK(res);
+                    if (table_value == phis_key) {
+                        used_elsewhere = true;
+                    }
                 }
             }
-            res = kefir_hashtable_at(phis, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&user_flag_value_ref), &table_value);
-            if (res != KEFIR_NOT_FOUND) {
+            if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
-                if (table_value == phis_key) {
-                    used_elsewhere = true;
-                    continue;
-                }
             }
         }
         if (res != KEFIR_ITERATOR_END) {

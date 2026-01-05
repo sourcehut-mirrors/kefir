@@ -545,7 +545,7 @@ kefir_result_t kefir_codegen_amd64_function_location_map_get(const struct kefir_
 
     switch (value_type->kind) {
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
-        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLAGS:
+        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
             location->type = KEFIR_ASMCMP_DEBUG_INFO_VALUE_LOCATION_NONE;
             break;
