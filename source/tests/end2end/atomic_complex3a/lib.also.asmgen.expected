@@ -4314,7 +4314,7 @@ __kefir_softfloat_ilogbl:
 .L__kefir_runtime_text_func___kefir_softfloat_ilogbl_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     xorps %xmm0, %xmm0
@@ -4359,7 +4359,7 @@ __kefir_softfloat_ilogbl:
     test %rax, %rax
     mov %rcx, %rax
     cmovz %rdx, %rax
-    fstpt -96(%rbp)
+    fstpt -64(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label5:
     xor %ecx, %ecx
