@@ -93,7 +93,7 @@ d64_to_ubitint24:
 .L__kefir_text_func_d64_to_ubitint24_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     call __bid_extendddxf@PLT
     flds .L__kefir_constant_long_double_to_uint(%rip)
@@ -101,29 +101,29 @@ d64_to_ubitint24:
     fcomi %st(1)
     jnb .L__kefir_func_d64_to_ubitint24_label7
     fstp %st(1)
-    fnstcww -32(%rbp)
-    movzxw -32(%rbp), %eax
+    fnstcww -56(%rbp)
+    movzxw -56(%rbp), %eax
     or $3072, %ax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
-    fldcww -32(%rbp)
+    movw %ax, -48(%rbp)
+    fldcww -48(%rbp)
+    fistpq -64(%rbp)
+    mov -64(%rbp), %rax
+    fldcww -56(%rbp)
 .L__kefir_func_d64_to_ubitint24_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_d64_to_ubitint24_label7:
-    fnstcww -32(%rbp)
+    fnstcww -56(%rbp)
     fsubp
-    movzxw -32(%rbp), %eax
+    movzxw -56(%rbp), %eax
     or $3072, %ax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
-    fldcww -32(%rbp)
+    movw %ax, -48(%rbp)
+    fldcww -48(%rbp)
+    fistpq -64(%rbp)
+    mov -64(%rbp), %rax
+    fldcww -56(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_d64_to_ubitint24_label4
 .L__kefir_text_func_d64_to_ubitint24_end:
@@ -223,7 +223,7 @@ d128_to_ubitint24:
 .L__kefir_text_func_d128_to_ubitint24_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     call __bid_trunctdxf@PLT
     flds .L__kefir_constant_long_double_to_uint(%rip)
@@ -231,29 +231,29 @@ d128_to_ubitint24:
     fcomi %st(1)
     jnb .L__kefir_func_d128_to_ubitint24_label7
     fstp %st(1)
-    fnstcww -32(%rbp)
-    movzxw -32(%rbp), %eax
+    fnstcww -56(%rbp)
+    movzxw -56(%rbp), %eax
     or $3072, %ax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
-    fldcww -32(%rbp)
+    movw %ax, -48(%rbp)
+    fldcww -48(%rbp)
+    fistpq -64(%rbp)
+    mov -64(%rbp), %rax
+    fldcww -56(%rbp)
 .L__kefir_func_d128_to_ubitint24_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_d128_to_ubitint24_label7:
-    fnstcww -32(%rbp)
+    fnstcww -56(%rbp)
     fsubp
-    movzxw -32(%rbp), %eax
+    movzxw -56(%rbp), %eax
     or $3072, %ax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
-    fldcww -32(%rbp)
+    movw %ax, -48(%rbp)
+    fldcww -48(%rbp)
+    fistpq -64(%rbp)
+    mov -64(%rbp), %rax
+    fldcww -56(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_d128_to_ubitint24_label4
 .L__kefir_text_func_d128_to_ubitint24_end:
@@ -379,7 +379,7 @@ d32_to_ubitint24:
 .L__kefir_text_func_d32_to_ubitint24_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     call __bid_extendsdxf@PLT
     flds .L__kefir_constant_long_double_to_uint(%rip)
@@ -387,29 +387,29 @@ d32_to_ubitint24:
     fcomi %st(1)
     jnb .L__kefir_func_d32_to_ubitint24_label7
     fstp %st(1)
-    fnstcww -32(%rbp)
-    movzxw -32(%rbp), %eax
+    fnstcww -56(%rbp)
+    movzxw -56(%rbp), %eax
     or $3072, %ax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
-    fldcww -32(%rbp)
+    movw %ax, -48(%rbp)
+    fldcww -48(%rbp)
+    fistpq -64(%rbp)
+    mov -64(%rbp), %rax
+    fldcww -56(%rbp)
 .L__kefir_func_d32_to_ubitint24_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_d32_to_ubitint24_label7:
-    fnstcww -32(%rbp)
+    fnstcww -56(%rbp)
     fsubp
-    movzxw -32(%rbp), %eax
+    movzxw -56(%rbp), %eax
     or $3072, %ax
-    movw %ax, -24(%rbp)
-    fldcww -24(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
-    fldcww -32(%rbp)
+    movw %ax, -48(%rbp)
+    fldcww -48(%rbp)
+    fistpq -64(%rbp)
+    mov -64(%rbp), %rax
+    fldcww -56(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_d32_to_ubitint24_label4
 .L__kefir_text_func_d32_to_ubitint24_end:
