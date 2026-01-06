@@ -112,6 +112,10 @@ static kefir_result_t resource_mnemonic(kefir_codegen_target_ir_resource_id_t re
             *mnemonic_ptr = "x87_fpu_environment";
             break;
 
+        case KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_MXCSR:
+            *mnemonic_ptr = "mxcsr";
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Invalid amd64 target IR resource");
     }
