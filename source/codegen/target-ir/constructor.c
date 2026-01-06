@@ -973,7 +973,7 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                 output_vregs[output_index++] = output_vreg;
             }
         }
-        if (classification.extra_flags & KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_CONSUMES_RESOURCES) {
+        if (classification.consumed_resources) {
             for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
                 if ((classification.consumed_resources >> i) & 1) {
                     REQUIRE(input_index < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Input parameter index is out of target IR instruction bounds"));;
@@ -1009,7 +1009,7 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                 }));
             }
         }
-        if (classification.extra_flags & KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_PRODUCES_RESOURCES) {
+        if (classification.produced_resources) {
             for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
                 if ((classification.produced_resources >> i) & 1) {
                     struct kefir_codegen_target_ir_value_ref value_ref = {

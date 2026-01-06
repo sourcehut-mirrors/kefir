@@ -83,7 +83,6 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
         classification->operands[i].implicit = false;
         classification->operands[i].index = 0;
     }
-    classification->extra_flags = KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_NONE;
 
     switch (instruction->opcode) {
         case KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link):
@@ -164,15 +163,11 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
 
     kefir_bool_t implicit_params = false;
     kefir_size_t num_of_params = 0;
-    kefir_bool_t consumes_flags = false;
-    kefir_bool_t produces_flags = false;
     switch (instruction->opcode) {
 #define INSTR0(_opcode, _mnemonic, _variant, _flags)        \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
         classification->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode);            \
         implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
-        consumes_flags = ((_flags) & KEFIR_AMD64_INSTRDB_CONSUME_FLAGS) != 0; \
-        produces_flags = ((_flags) & KEFIR_AMD64_INSTRDB_PRODUCE_FLAGS) != 0; \
         break;
 
 #define INSTR1(_opcode, _mnemonic, _variant, _flags, _op1)        \
@@ -180,8 +175,6 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
         classification->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode);            \
         CLASSIFY_OP(_op1, 0); \
         implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
-        consumes_flags = ((_flags) & KEFIR_AMD64_INSTRDB_CONSUME_FLAGS) != 0; \
-        produces_flags = ((_flags) & KEFIR_AMD64_INSTRDB_PRODUCE_FLAGS) != 0; \
         num_of_params = 1; \
         break;
 
@@ -191,8 +184,6 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
         CLASSIFY_OP(_op1, 0); \
         CLASSIFY_OP(_op2, 1); \
         implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
-        consumes_flags = ((_flags) & KEFIR_AMD64_INSTRDB_CONSUME_FLAGS) != 0; \
-        produces_flags = ((_flags) & KEFIR_AMD64_INSTRDB_PRODUCE_FLAGS) != 0; \
         num_of_params = 2; \
         break;
 
@@ -203,8 +194,6 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
         CLASSIFY_OP(_op2, 1); \
         CLASSIFY_OP(_op2, 2); \
         implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
-        consumes_flags = ((_flags) & KEFIR_AMD64_INSTRDB_CONSUME_FLAGS) != 0; \
-        produces_flags = ((_flags) & KEFIR_AMD64_INSTRDB_PRODUCE_FLAGS) != 0; \
         num_of_params = 3; \
         break;
 
@@ -369,14 +358,8 @@ static kefir_result_t classify_instruction(const struct kefir_asmcmp_instruction
     };
 #undef ARITH_FLAGS
 
-    if (consumes_flags) {
-        classification->extra_flags = classification->extra_flags | KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_CONSUMES_RESOURCES;
-        classification->consumed_resources = CONSUMED_FLAGS[classification->opcode];
-    }
-    if (produces_flags) {
-        classification->extra_flags = classification->extra_flags | KEFIR_CODEGEN_TARGET_IR_ASMCMP_INSTRUCTION_EXTRA_PRODUCES_RESOURCES;
-        classification->produced_resources = PRODUCED_FLAGS[classification->opcode];
-    }
+    classification->consumed_resources = CONSUMED_FLAGS[classification->opcode];
+    classification->produced_resources = PRODUCED_FLAGS[classification->opcode];
 
     switch (instruction->opcode) {
         case KEFIR_ASMCMP_AMD64_OPCODE(movsb):
