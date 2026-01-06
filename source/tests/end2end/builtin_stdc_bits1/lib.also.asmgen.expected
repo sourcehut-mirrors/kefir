@@ -51,14 +51,9 @@ bit_floor:
 
 rotate_left:
 .L__kefir_text_func_rotate_left_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     movzx %sil, %rsi
     mov %rsi, %rax
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     mov $64, %ecx
     idiv %ecx
     movsx %edx, %rcx
@@ -66,30 +61,21 @@ rotate_left:
     shl %cl, %r8
     mov %rsi, %rax
     neg %eax
-    movq %rax, -8(%rbp)
     cdq
-    movq -8(%rbp), %rax
     mov $64, %ecx
     idiv %ecx
     movsx %edx, %rcx
     shr %cl, %rdi
     mov %r8, %rax
     or %rdi, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_rotate_left_end:
 
 rotate_right:
 .L__kefir_text_func_rotate_right_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     movzx %sil, %rsi
     mov %rsi, %rax
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     mov $64, %ecx
     idiv %ecx
     movsx %edx, %rcx
@@ -97,17 +83,13 @@ rotate_right:
     shr %cl, %r8
     mov %rsi, %rax
     neg %eax
-    movq %rax, -8(%rbp)
     cdq
-    movq -8(%rbp), %rax
     mov $64, %ecx
     idiv %ecx
     movsx %edx, %rcx
     shl %cl, %rdi
     mov %r8, %rax
     or %rdi, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_rotate_right_end:
 

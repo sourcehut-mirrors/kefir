@@ -62,9 +62,7 @@ div2:
     sar $50, %rcx
     shl $50, %rcx
     sar $50, %rcx
-    movq %rax, -16(%rbp)
     cwd
-    movq -16(%rbp), %rax
     idiv %cx
     lea (%rbp), %rsp
     pop %rbp
@@ -88,9 +86,7 @@ div3:
     sar $35, %rcx
     shl $35, %rcx
     sar $35, %rcx
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     idiv %ecx
     lea (%rbp), %rsp
     pop %rbp
@@ -101,7 +97,7 @@ div4:
 .L__kefir_text_func_div4_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
@@ -114,9 +110,7 @@ div4:
     sar $6, %rcx
     shl $6, %rcx
     sar $6, %rcx
-    movq %rax, -32(%rbp)
     cqo
-    movq -32(%rbp), %rax
     idiv %rcx
     lea (%rbp), %rsp
     pop %rbp

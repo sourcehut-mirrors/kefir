@@ -53,9 +53,7 @@ get:
     lea 16(%rcx), %rdx
     mov %rdx, -40(%rbp)
     fldt (%rcx)
-    movq %rax, -240(%rbp)
     cdq
-    movq -240(%rbp), %rax
     mov $2, %ecx
     idiv %ecx
     fstpt -64(%rbp)

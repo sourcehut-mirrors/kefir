@@ -67,9 +67,7 @@ get1:
     lea -144(%rbp), %rcx
     mov $2, %edx
     movsx %edx, %rsi
-    movq %rax, -160(%rbp)
     cqo
-    movq -160(%rbp), %rax
     idiv %rsi
     movq %rax, 48(%rcx)
     movq -152(%rbp), %rcx

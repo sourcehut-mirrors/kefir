@@ -906,9 +906,7 @@ test1:
     movb -1(%rbp), %cl
     movsx %al, %rax
     movsx %cl, %rcx
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     idiv %ecx
     lea (%rbp), %rsp
     pop %rbp

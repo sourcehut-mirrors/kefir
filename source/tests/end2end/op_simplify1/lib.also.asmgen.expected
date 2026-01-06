@@ -65,25 +65,16 @@ test5:
 
 test6:
 .L__kefir_text_func_test6_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     mov %rdx, %rcx
     mov %rsi, %rax
     test %edi, %edi
     jnz .L__kefir_func_test6_label10
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     idiv %ecx
 .L__kefir_func_test6_label4:
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_func_test6_label10:
-    movq %rax, -8(%rbp)
     cdq
-    movq -8(%rbp), %rax
     idiv %ecx
     jmp .L__kefir_func_test6_label4
 .L__kefir_text_func_test6_end:

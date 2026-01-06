@@ -90,9 +90,7 @@ test4:
     mov %rcx, %rdx
     sub %rax, %rdx
     mov %rdx, %rax
-    movq %rax, -16(%rbp)
     cqo
-    movq -16(%rbp), %rax
     mov $4, %rcx
     idiv %rcx
     mov %rax, %rdi

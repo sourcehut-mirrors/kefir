@@ -2221,20 +2221,28 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                 if (classification.operands[i].implicit) {
                     struct kefir_asmcmp_value operand_value;
                     REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx], &operand_value));
-                    REQUIRE_OK(acquire_scratch_register(state, classification.operands[i].implicit_params.phreg));
-                    REQUIRE_OK(load_into_allocation(state, &(struct kefir_codegen_target_ir_value_type) {
-                        .kind = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_params.phreg)
-                                ? KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE
-                                : KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT,
-                        .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
-                    }, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
-                        .reg = {
-                            .type = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_params.phreg)
-                                ? KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE
-                                : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP,
-                            .value = classification.operands[i].implicit_params.phreg
-                        }
-                    }, &instr->operation.parameters[parameter_idx++]));
+                    kefir_bool_t already_present = false;
+                    if (operand_value.type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER) {
+                        kefir_asm_amd64_xasmgen_register_t widest;
+                        REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(operand_value.phreg, &widest));
+                        already_present = widest == classification.operands[i].implicit_params.phreg;
+                    }
+                    if (!already_present) {
+                        REQUIRE_OK(acquire_scratch_register(state, classification.operands[i].implicit_params.phreg));
+                        REQUIRE_OK(load_into_allocation(state, &(struct kefir_codegen_target_ir_value_type) {
+                            .kind = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_params.phreg)
+                                    ? KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE
+                                    : KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT,
+                            .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+                        }, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
+                            .reg = {
+                                .type = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_params.phreg)
+                                    ? KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE
+                                    : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP,
+                                .value = classification.operands[i].implicit_params.phreg
+                            }
+                        }, &instr->operation.parameters[parameter_idx++]));
+                    }
                 } else {
                     parameter_idx++;
                 }

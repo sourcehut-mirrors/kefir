@@ -10,7 +10,7 @@ run_op:
 .L__kefir_text_func_run_op_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
     mov %rdx, %r8
     mov %rdi, %rax
     lea __kefir_function_run_op_static_branches_6(%rip), %rdi
@@ -69,9 +69,7 @@ _kefir_local_public_label_run_op_div:
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
     movq -32(%rbp), %rsi
-    movq %rax, -48(%rbp)
     cqo
-    movq -48(%rbp), %rax
     idiv %rcx
     add %rax, %rsi
     movq %rsi, -32(%rbp)

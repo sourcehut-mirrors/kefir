@@ -13,9 +13,7 @@ test1:
     sub $48, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
-    movq %rax, -48(%rbp)
     cdq
-    movq -48(%rbp), %rax
     mov $2, %ecx
     idiv %ecx
     fldt .L__kefir_func_test1_label8(%rip)

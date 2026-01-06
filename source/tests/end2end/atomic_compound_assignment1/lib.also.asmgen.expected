@@ -701,17 +701,12 @@ ixor_i64:
 
 divide_i8:
 .L__kefir_text_func_divide_i8_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     movsx %sil, %rsi
 .L__kefir_func_divide_i8_label2:
     movb (%rdi), %al
     mov %rax, %r8
     movsx %r8b, %rax
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     idiv %esi
     mov %rax, %r9
     mov %rdi, %rdx
@@ -722,8 +717,6 @@ divide_i8:
     test %al, %al
     jz .L__kefir_func_divide_i8_label2
     mov %r9, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
     jmp .L__kefir_func_divide_i8_label2
 .L__kefir_text_func_divide_i8_end:
@@ -789,17 +782,12 @@ divide_ld:
 
 modulo_i8:
 .L__kefir_text_func_modulo_i8_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     movsx %sil, %rsi
 .L__kefir_func_modulo_i8_label2:
     movb (%rdi), %al
     mov %rax, %r8
     movsx %r8b, %rax
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     idiv %esi
     mov %rdx, %r9
     mov %rdi, %rdx
@@ -810,8 +798,6 @@ modulo_i8:
     test %al, %al
     jz .L__kefir_func_modulo_i8_label2
     mov %r9, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
     jmp .L__kefir_func_modulo_i8_label2
 .L__kefir_text_func_modulo_i8_end:
@@ -896,17 +882,12 @@ divide_f64:
 
 divide_i16:
 .L__kefir_text_func_divide_i16_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     movsx %si, %rsi
 .L__kefir_func_divide_i16_label2:
     movw (%rdi), %ax
     mov %rax, %r8
     movsx %r8w, %rax
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     idiv %esi
     mov %rax, %r9
     mov %rdi, %rdx
@@ -917,24 +898,17 @@ divide_i16:
     test %al, %al
     jz .L__kefir_func_divide_i16_label2
     mov %r9, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
     jmp .L__kefir_func_divide_i16_label2
 .L__kefir_text_func_divide_i16_end:
 
 divide_i32:
 .L__kefir_text_func_divide_i32_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
 .L__kefir_func_divide_i32_label2:
     movl (%rdi), %eax
     mov %eax, %r8d
     movsx %r8d, %rax
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     idiv %esi
     mov %rax, %r9
     mov %rdi, %rdx
@@ -945,24 +919,17 @@ divide_i32:
     test %al, %al
     jz .L__kefir_func_divide_i32_label2
     mov %r9, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
     jmp .L__kefir_func_divide_i32_label2
 .L__kefir_text_func_divide_i32_end:
 
 divide_i64:
 .L__kefir_text_func_divide_i64_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
 .L__kefir_func_divide_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     mov %r8, %rax
-    movq %rax, -16(%rbp)
     cqo
-    movq -16(%rbp), %rax
     idiv %rsi
     mov %rax, %r9
     mov %rdi, %rdx
@@ -973,25 +940,18 @@ divide_i64:
     test %al, %al
     jz .L__kefir_func_divide_i64_label2
     mov %r9, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
     jmp .L__kefir_func_divide_i64_label2
 .L__kefir_text_func_divide_i64_end:
 
 modulo_i16:
 .L__kefir_text_func_modulo_i16_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     movsx %si, %rsi
 .L__kefir_func_modulo_i16_label2:
     movw (%rdi), %ax
     mov %rax, %r8
     movsx %r8w, %rax
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     idiv %esi
     mov %rdx, %r9
     mov %rdi, %rdx
@@ -1002,24 +962,17 @@ modulo_i16:
     test %al, %al
     jz .L__kefir_func_modulo_i16_label2
     mov %r9, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
     jmp .L__kefir_func_modulo_i16_label2
 .L__kefir_text_func_modulo_i16_end:
 
 modulo_i32:
 .L__kefir_text_func_modulo_i32_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
 .L__kefir_func_modulo_i32_label2:
     movl (%rdi), %eax
     mov %eax, %r8d
     movsx %r8d, %rax
-    movq %rax, -16(%rbp)
     cdq
-    movq -16(%rbp), %rax
     idiv %esi
     mov %rdx, %r9
     mov %rdi, %rdx
@@ -1030,24 +983,17 @@ modulo_i32:
     test %al, %al
     jz .L__kefir_func_modulo_i32_label2
     mov %r9, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
     jmp .L__kefir_func_modulo_i32_label2
 .L__kefir_text_func_modulo_i32_end:
 
 modulo_i64:
 .L__kefir_text_func_modulo_i64_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
 .L__kefir_func_modulo_i64_label2:
     movq (%rdi), %rax
     mov %rax, %r8
     mov %r8, %rax
-    movq %rax, -16(%rbp)
     cqo
-    movq -16(%rbp), %rax
     idiv %rsi
     mov %rdx, %r9
     mov %rdi, %rdx
@@ -1058,8 +1004,6 @@ modulo_i64:
     test %al, %al
     jz .L__kefir_func_modulo_i64_label2
     mov %r9, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
     jmp .L__kefir_func_modulo_i64_label2
 .L__kefir_text_func_modulo_i64_end:

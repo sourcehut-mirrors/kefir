@@ -206,19 +206,15 @@ divint:
 .L__kefir_text_func_divint_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     mov %rdi, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movl %eax, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %edi
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
@@ -232,19 +228,15 @@ modint:
 .L__kefir_text_func_modint_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     mov %rdi, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movl %edx, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %edi
     movl %edx, -12(%rbp)
     movq -16(%rbp), %rax
@@ -523,21 +515,17 @@ divchar:
 .L__kefir_text_func_divchar_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movsx %dil, %rcx
     movsx %sil, %rsi
     mov %rcx, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movb %al, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %ecx
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
@@ -551,19 +539,15 @@ divlong:
 .L__kefir_text_func_divlong_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     mov %rdi, %rax
-    movq %rax, -32(%rbp)
     cqo
-    movq -32(%rbp), %rax
     idiv %rsi
     movq %rax, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cqo
-    movq -24(%rbp), %rax
     idiv %rdi
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
@@ -577,21 +561,17 @@ modchar:
 .L__kefir_text_func_modchar_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movsx %dil, %rcx
     movsx %sil, %rsi
     mov %rcx, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movb %dl, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %ecx
     movb %dl, -15(%rbp)
     movq -16(%rbp), %rax
@@ -605,19 +585,15 @@ modlong:
 .L__kefir_text_func_modlong_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     mov %rdi, %rax
-    movq %rax, -32(%rbp)
     cqo
-    movq -32(%rbp), %rax
     idiv %rsi
     movq %rdx, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cqo
-    movq -24(%rbp), %rax
     idiv %rdi
     movq %rdx, -8(%rbp)
     movq -16(%rbp), %rax
@@ -976,21 +952,17 @@ divshort:
 .L__kefir_text_func_divshort_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movsx %di, %rcx
     movsx %si, %rsi
     mov %rcx, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movw %ax, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %ecx
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
@@ -1004,21 +976,17 @@ modshort:
 .L__kefir_text_func_modshort_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movsx %di, %rcx
     movsx %si, %rsi
     mov %rcx, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movw %dx, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %ecx
     movw %dx, -14(%rbp)
     movq -16(%rbp), %rax
@@ -1291,21 +1259,17 @@ udivuchar:
 .L__kefir_text_func_udivuchar_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movzx %dil, %rcx
     movzx %sil, %rsi
     mov %rcx, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movb %al, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %ecx
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
@@ -1341,21 +1305,17 @@ umoduchar:
 .L__kefir_text_func_umoduchar_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movzx %dil, %rcx
     movzx %sil, %rsi
     mov %rcx, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movb %dl, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %ecx
     movb %dl, -15(%rbp)
     movq -16(%rbp), %rax
@@ -1427,21 +1387,17 @@ udivushort:
 .L__kefir_text_func_udivushort_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movzx %di, %rcx
     movzx %si, %rsi
     mov %rcx, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movw %ax, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %ecx
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
@@ -1455,21 +1411,17 @@ umodushort:
 .L__kefir_text_func_umodushort_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     movzx %di, %rcx
     movzx %si, %rsi
     mov %rcx, %rax
-    movq %rax, -32(%rbp)
     cdq
-    movq -32(%rbp), %rax
     idiv %esi
     movw %dx, -16(%rbp)
     mov %rsi, %rax
-    movq %rax, -24(%rbp)
     cdq
-    movq -24(%rbp), %rax
     idiv %ecx
     movw %dx, -14(%rbp)
     movq -16(%rbp), %rax
