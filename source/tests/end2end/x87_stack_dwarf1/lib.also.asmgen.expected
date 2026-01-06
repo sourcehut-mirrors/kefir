@@ -12,7 +12,7 @@ compute:
 .L__kefir_text_func_compute_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
 .L__kefir_func_compute_label16:
     fldt 48(%rbp)
@@ -43,14 +43,12 @@ compute:
     fxch %st(1)
     fsubp
 .loc 0 27 5
-.L__kefir_func_compute_label71:
+.L__kefir_func_compute_label73:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
-.loc 0 27 5
-.L__kefir_func_compute_label72:
     ret
-.L__kefir_func_compute_label92:
+.L__kefir_func_compute_label74:
 .L__kefir_text_func_compute_end:
 .section .rodata
     .align 8

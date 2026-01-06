@@ -108,7 +108,7 @@ get4:
 .L__kefir_text_func_get4_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     movabs $1152902735017034547, %rax
     shl $3, %rax
@@ -126,7 +126,7 @@ get5:
 .L__kefir_text_func_get5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     movabs $1152902735017034547, %rax
     shl $4, %rax

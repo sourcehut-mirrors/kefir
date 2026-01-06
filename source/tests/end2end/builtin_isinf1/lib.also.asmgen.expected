@@ -77,18 +77,18 @@ is_inf_f80:
 .L__kefir_text_func_is_inf_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fstpt -64(%rbp)
-    movsxw -56(%rbp), %rax
+    fstpt -48(%rbp)
+    movsxw -40(%rbp), %rax
     mov %rax, %rcx
     not %ecx
     movabs $-9223372036854775808, %rdx
-    xorq -64(%rbp), %rdx
+    xorq -48(%rbp), %rdx
     and $32767, %ecx
     shr $15, %rax
     or $1, %eax

@@ -10,7 +10,7 @@ test1:
 .L__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $176, %rsp
+    sub $160, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
     mov %rdi, %rdx
@@ -31,12 +31,12 @@ test1:
     fldt .L__kefir_func_test1_label9(%rip)
     movq $0, 104(%rdx)
     fld %st(0)
-    fstpt -176(%rbp)
+    fstpt -160(%rbp)
     fstpt 96(%rdx)
     movq $0, 88(%rdx)
-    fldt -176(%rbp)
+    fldt -160(%rbp)
     fld %st(0)
-    fstpt -176(%rbp)
+    fstpt -160(%rbp)
     fstpt 80(%rdx)
     lea -144(%rbp), %rdi
     xor %eax, %eax

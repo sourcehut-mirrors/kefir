@@ -66,7 +66,7 @@ is_lessequal_f80:
 .L__kefir_text_func_is_lessequal_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)

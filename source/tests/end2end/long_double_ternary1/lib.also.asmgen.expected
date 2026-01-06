@@ -10,29 +10,29 @@ test1:
 .L__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
-    movq %rax, -80(%rbp)
+    movq %rax, -48(%rbp)
     cdq
-    movq -80(%rbp), %rax
+    movq -48(%rbp), %rax
     mov $2, %ecx
     idiv %ecx
     fldt .L__kefir_func_test1_label8(%rip)
     fldt .L__kefir_func_test1_label9(%rip)
-    fstpt -80(%rbp)
-    fstpt -64(%rbp)
+    fstpt -48(%rbp)
+    fstpt -32(%rbp)
     cmp $0, %edx
     je .L__kefir_func_test1_label6
 .L__kefir_func_test1_label3:
-    fldt -80(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_test1_label6:
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
     jmp .L__kefir_func_test1_label3
 .L__kefir_text_func_test1_end:
 .section .rodata

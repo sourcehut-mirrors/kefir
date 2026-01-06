@@ -103,7 +103,7 @@ dnotld:
 .L__kefir_text_func_dnotld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     movq $0, -24(%rbp)

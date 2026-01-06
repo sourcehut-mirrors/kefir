@@ -54,12 +54,7 @@ get_c:
 
 get_d:
 .L__kefir_text_func_get_d_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_get_d_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_get_d_end:
 .section .rodata

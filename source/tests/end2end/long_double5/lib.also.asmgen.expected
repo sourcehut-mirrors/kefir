@@ -20,7 +20,7 @@ eq:
 .L__kefir_text_func_eq_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -77,7 +77,7 @@ gr:
 .L__kefir_text_func_gr_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -133,7 +133,7 @@ lt:
 .L__kefir_text_func_lt_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -152,7 +152,7 @@ neq:
 .L__kefir_text_func_neq_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)

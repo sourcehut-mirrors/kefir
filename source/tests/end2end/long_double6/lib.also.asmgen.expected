@@ -10,7 +10,7 @@ init_s:
 .L__kefir_text_func_init_s_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     xorps %xmm1, %xmm1
     movdqu %xmm1, (%rdi)
@@ -32,8 +32,8 @@ init_s:
 .L__kefir_func_init_s_label3:
     movq $0, 24(%rdi)
     fstpt 16(%rdi)
-    movq %xmm0, -48(%rbp)
-    fldl -48(%rbp)
+    movq %xmm0, -16(%rbp)
+    fldl -16(%rbp)
     movq $0, 40(%rdi)
     fstpt 32(%rdi)
     mov %rdi, %rax

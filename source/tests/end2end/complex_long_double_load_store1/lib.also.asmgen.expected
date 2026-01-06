@@ -13,7 +13,7 @@ test1:
 .L__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     movq b@GOTPCREL(%rip), %rax
     fldt 16(%rax)

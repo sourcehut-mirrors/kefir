@@ -130,12 +130,7 @@ add64:
 
 add80:
 .L__kefir_text_func_add80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_add80_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_add80_end:
 .section .rodata
@@ -169,12 +164,7 @@ div64:
 
 div80:
 .L__kefir_text_func_div80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_div80_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_div80_end:
 .section .rodata
@@ -208,12 +198,7 @@ mul64:
 
 mul80:
 .L__kefir_text_func_mul80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_mul80_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_mul80_end:
 .section .rodata
@@ -247,12 +232,7 @@ neg64:
 
 neg80:
 .L__kefir_text_func_neg80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_neg80_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_neg80_end:
 .section .rodata
@@ -286,12 +266,7 @@ sub64:
 
 sub80:
 .L__kefir_text_func_sub80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_sub80_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_sub80_end:
 .section .rodata
@@ -379,12 +354,7 @@ int_to_float64:
 
 int_to_float80:
 .L__kefir_text_func_int_to_float80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_int_to_float80_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_int_to_float80_end:
 .section .rodata
@@ -418,12 +388,7 @@ uint_to_float64:
 
 uint_to_float80:
 .L__kefir_text_func_uint_to_float80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_uint_to_float80_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_uint_to_float80_end:
 .section .rodata
@@ -482,12 +447,7 @@ float32_to_float64:
 
 float32_to_float80:
 .L__kefir_text_func_float32_to_float80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_float32_to_float80_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_float32_to_float80_end:
 .section .rodata
@@ -546,12 +506,7 @@ float64_to_float32:
 
 float64_to_float80:
 .L__kefir_text_func_float64_to_float80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_float64_to_float80_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_float64_to_float80_end:
 .section .rodata

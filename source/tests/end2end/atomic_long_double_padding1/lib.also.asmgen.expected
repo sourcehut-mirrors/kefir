@@ -18,11 +18,11 @@ add_ld1:
 .L__kefir_text_func_add_ld1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     movq ld1@GOTPCREL(%rip), %rsi
-    fstpt -96(%rbp)
+    fstpt -64(%rbp)
     mov $16, %rdi
     lea -32(%rbp), %rdx
     mov $2, %rcx
@@ -32,7 +32,7 @@ add_ld1:
     fstpt -48(%rbp)
 .L__kefir_func_add_ld1_label2:
     fldt -48(%rbp)
-    fldt -96(%rbp)
+    fldt -64(%rbp)
     fxch %st(1)
     faddp
     movq $0, -24(%rbp)
@@ -58,7 +58,7 @@ add_cld1:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $104, %rsp
+    sub $72, %rsp
     fstcw -16(%rbp)
     lea 16(%rbp), %rbx
     movq cld1@GOTPCREL(%rip), %rsi

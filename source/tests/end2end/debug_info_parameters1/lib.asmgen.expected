@@ -15,10 +15,10 @@ test:
 .loc 0 21 1
 .L__kefir_text_func_test_begin:
 .loc 0 22 5
-.L__kefir_func_test_label22:
+.L__kefir_func_test_label20:
     xor %eax, %eax
     ret
-.L__kefir_func_test_label23:
+.L__kefir_func_test_label21:
 .L__kefir_text_func_test_end:
 
 test2:

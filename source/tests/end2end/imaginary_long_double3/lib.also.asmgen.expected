@@ -10,39 +10,39 @@ test:
 .L__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $336, %rsp
+    sub $304, %rsp
     fstcw -8(%rbp)
     test %al, %al
     je .L__kefir_func_test_label2
-    movdqu %xmm0, -288(%rbp)
-    movdqu %xmm1, -272(%rbp)
-    movdqu %xmm2, -256(%rbp)
-    movdqu %xmm3, -240(%rbp)
-    movdqu %xmm4, -224(%rbp)
-    movdqu %xmm5, -208(%rbp)
-    movdqu %xmm6, -192(%rbp)
-    movdqu %xmm7, -176(%rbp)
+    movdqu %xmm0, -256(%rbp)
+    movdqu %xmm1, -240(%rbp)
+    movdqu %xmm2, -224(%rbp)
+    movdqu %xmm3, -208(%rbp)
+    movdqu %xmm4, -192(%rbp)
+    movdqu %xmm5, -176(%rbp)
+    movdqu %xmm6, -160(%rbp)
+    movdqu %xmm7, -144(%rbp)
 .L__kefir_func_test_label2:
-    mov %rdi, -336(%rbp)
-    mov %rsi, -328(%rbp)
-    mov %rdx, -320(%rbp)
-    mov %rcx, -312(%rbp)
-    mov %r8, -304(%rbp)
-    mov %r9, -296(%rbp)
+    mov %rdi, -304(%rbp)
+    mov %rsi, -296(%rbp)
+    mov %rdx, -288(%rbp)
+    mov %rcx, -280(%rbp)
+    mov %r8, -272(%rbp)
+    mov %r9, -264(%rbp)
     movl $8, -112(%rbp)
     movl $48, -108(%rbp)
     lea 16(%rbp), %rax
     movq %rax, -104(%rbp)
-    lea -336(%rbp), %rax
+    lea -304(%rbp), %rax
     movq %rax, -96(%rbp)
     fldt .L__kefir_func_test_label14(%rip)
-    fstpt -160(%rbp)
+    fstpt -128(%rbp)
 .L__kefir_func_test_label4:
     mov %rdi, %rax
     add $-1, %eax
     test %edi, %edi
     jnz .L__kefir_func_test_label13
-    fldt -160(%rbp)
+    fldt -128(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -61,9 +61,9 @@ test:
     fldt -32(%rbp)
     fxch %st(1)
     fsubp
-    fldt -160(%rbp)
+    fldt -128(%rbp)
     faddp
-    fstpt -160(%rbp)
+    fstpt -128(%rbp)
     mov %eax, %edi
     jmp .L__kefir_func_test_label4
 .L__kefir_text_func_test_end:

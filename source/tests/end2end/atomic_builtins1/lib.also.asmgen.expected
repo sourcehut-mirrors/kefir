@@ -33,7 +33,7 @@ test_atomic_store128:
 .L__kefir_text_func_test_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     fldt 16(%rbp)
     mov %rdi, %rsi
     movq $0, -8(%rbp)
@@ -51,7 +51,7 @@ test_atomic_store256:
 .L__kefir_text_func_test_atomic_store256_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     mov %rdi, %rsi
@@ -75,7 +75,7 @@ test2_atomic_store128:
 .L__kefir_text_func_test2_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     fldt 16(%rbp)
     mov %rdi, %rsi
     movq $0, -8(%rbp)
@@ -93,7 +93,7 @@ test2_atomic_store256:
 .L__kefir_text_func_test2_atomic_store256_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     mov %rdi, %rsi

@@ -59,12 +59,7 @@ mygetc:
 
 mygetd:
 .L__kefir_text_func_mygetd_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_mygetd_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_mygetd_end:
 .section .rodata
@@ -76,12 +71,7 @@ mygetd:
 
 mygete:
 .L__kefir_text_func_mygete_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_mygete_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_mygete_end:
 .section .rodata

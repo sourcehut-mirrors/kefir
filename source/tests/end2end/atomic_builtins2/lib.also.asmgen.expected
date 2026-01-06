@@ -39,7 +39,7 @@ test2_atomic_load128:
 .L__kefir_text_func_test2_atomic_load128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     mov %rdi, %rsi
     mov $16, %rdi
     lea -16(%rbp), %rdx
@@ -103,7 +103,7 @@ test_atomic_load128:
 .L__kefir_text_func_test_atomic_load128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     mov %rdi, %rsi
     mov $16, %rdi
     lea -16(%rbp), %rdx

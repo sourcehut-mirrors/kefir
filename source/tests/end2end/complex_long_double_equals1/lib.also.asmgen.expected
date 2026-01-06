@@ -12,7 +12,7 @@ cld_eq:
 .L__kefir_text_func_cld_eq_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
@@ -48,7 +48,7 @@ cld_trunc:
 .L__kefir_text_func_cld_trunc_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     fldt (%rax)

@@ -28,6 +28,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_dead_code_elimination(str
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
 
     static kefir_bool_t DEAD_CODE_CANDIDATE_OPCODES[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes) + 1] = {
+        [KEFIR_TARGET_IR_AMD64_OPCODE(placeholder)] = true,
+        
         [KEFIR_TARGET_IR_AMD64_OPCODE(xchg)] = true,
         [KEFIR_TARGET_IR_AMD64_OPCODE(mov)] = true,
         [KEFIR_TARGET_IR_AMD64_OPCODE(movabs)] = true,

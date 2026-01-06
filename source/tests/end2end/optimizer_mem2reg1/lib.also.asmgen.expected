@@ -85,14 +85,15 @@ quad_equation:
     stmxcsr -24(%rbp)
     mov %rdi, %rbx
     movaps %xmm0, -48(%rbp)
-    movaps %xmm1, %xmm0
-    mulsd %xmm1, %xmm0
+    movaps %xmm1, %xmm3
+    mulsd %xmm1, %xmm3
     mov $4, %ecx
     movsx %ecx, %rax
-    cvtsi2sd %rax, %xmm3
-    mulsd -48(%rbp), %xmm3
-    mulsd %xmm2, %xmm3
-    subsd %xmm3, %xmm0
+    cvtsi2sd %rax, %xmm4
+    mulsd %xmm0, %xmm4
+    mulsd %xmm2, %xmm4
+    movaps %xmm3, %xmm0
+    subsd %xmm4, %xmm0
     mov $1, %rax
     mov %rax, %r12
     neg %r12d

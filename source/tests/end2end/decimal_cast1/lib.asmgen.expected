@@ -107,9 +107,7 @@ d32_to_f80:
 .L__kefir_text_func_d32_to_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
     call __bid_extendsdxf@PLT
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_d32_to_f80_end:
@@ -145,9 +143,7 @@ d64_to_f80:
 .L__kefir_text_func_d64_to_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
     call __bid_extendddxf@PLT
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_d64_to_f80_end:
@@ -266,9 +262,7 @@ d128_to_f80:
 .L__kefir_text_func_d128_to_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
     call __bid_trunctdxf@PLT
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_d128_to_f80_end:

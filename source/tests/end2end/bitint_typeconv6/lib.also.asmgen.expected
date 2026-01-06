@@ -1801,7 +1801,7 @@ __kefir_bigint_unsigned_to_long_double:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $112, %rsp
+    sub $80, %rsp
     movq %rdx, -64(%rbp)
     movq %rsi, -96(%rbp)
     movq %rdi, -40(%rbp)
@@ -3321,7 +3321,7 @@ __kefir_bigint_signed_to_long_double:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $112, %rsp
+    sub $80, %rsp
     movq %rdx, -64(%rbp)
     movq %rsi, -96(%rbp)
     movq %rdi, -40(%rbp)

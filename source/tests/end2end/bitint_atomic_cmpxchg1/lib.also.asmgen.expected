@@ -151,13 +151,13 @@ add5:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $104, %rsp
-    movq %rdi, -112(%rbp)
-    movq %rsi, -104(%rbp)
-    movdqu -112(%rbp), %xmm0
+    sub $88, %rsp
+    movq %rdi, -96(%rbp)
+    movq %rsi, -88(%rbp)
+    movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -24(%rbp)
     movdqu -24(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm0, -80(%rbp)
     movq e@GOTPCREL(%rip), %rbx
 .L__kefir_func_add5_label2:
     lea -64(%rbp), %rdx
@@ -166,24 +166,24 @@ add5:
     mov $5, %rcx
     call __atomic_load@PLT
     movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
-    lea -80(%rbp), %rdi
-    lea -96(%rbp), %rsi
+    movdqu %xmm0, -48(%rbp)
+    lea -48(%rbp), %rdi
+    lea -80(%rbp), %rsi
     mov $111, %rdx
     call __kefir_bigint_add
     movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -48(%rbp)
+    movdqu %xmm0, -64(%rbp)
     mov %rbx, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
-    lea -48(%rbp), %rdx
-    lea -80(%rbp), %rcx
+    lea -64(%rbp), %rdx
+    lea -48(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add5_label4
-    movq -80(%rbp), %rax
-    movq -72(%rbp), %rdx
+    movq -48(%rbp), %rax
+    movq -40(%rbp), %rdx
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -215,42 +215,42 @@ add6:
     movdqu %xmm0, -224(%rbp)
     movq f@GOTPCREL(%rip), %r12
 .L__kefir_func_add6_label2:
-    lea -160(%rbp), %rdx
+    lea -208(%rbp), %rdx
     mov %r12, %rsi
     mov $48, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -160(%rbp), %xmm0
-    movdqu %xmm0, -208(%rbp)
-    movdqu -144(%rbp), %xmm0
-    movdqu %xmm0, -192(%rbp)
-    movdqu -128(%rbp), %xmm0
-    movdqu %xmm0, -176(%rbp)
-    lea -208(%rbp), %rdi
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -160(%rbp)
+    movdqu -192(%rbp), %xmm0
+    movdqu %xmm0, -144(%rbp)
+    movdqu -176(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    lea -160(%rbp), %rdi
     lea -256(%rbp), %rsi
     mov $366, %rdx
     call __kefir_bigint_add
-    movdqu -160(%rbp), %xmm0
+    movdqu -208(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
-    movdqu -144(%rbp), %xmm0
+    movdqu -192(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
-    movdqu -128(%rbp), %xmm0
+    movdqu -176(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
     mov %r12, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $48, %rdi
     lea -112(%rbp), %rdx
-    lea -208(%rbp), %rcx
+    lea -160(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add6_label4
     mov %rbx, %rax
-    movdqu -208(%rbp), %xmm0
+    movdqu -160(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu -192(%rbp), %xmm0
+    movdqu -144(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
-    movdqu -176(%rbp), %xmm0
+    movdqu -128(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
     lea -16(%rbp), %rsp
     pop %r12

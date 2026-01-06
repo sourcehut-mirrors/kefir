@@ -151,12 +151,7 @@ int128_unsigned_to_double:
 
 int128_signed_to_long_double:
 .L__kefir_text_func_int128_signed_to_long_double_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_int128_signed_to_long_double_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_int128_signed_to_long_double_end:
 .section .rodata
@@ -208,12 +203,7 @@ int128_bool_not:
 
 int128_unsigned_to_long_double:
 .L__kefir_text_func_int128_unsigned_to_long_double_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_int128_unsigned_to_long_double_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_int128_unsigned_to_long_double_end:
 .section .rodata

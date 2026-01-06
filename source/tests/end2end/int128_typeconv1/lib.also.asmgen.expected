@@ -108,7 +108,7 @@ i128_to_f80:
 .L__kefir_text_func_i128_to_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     call __floattixf@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -141,7 +141,7 @@ u128_to_f80:
 .L__kefir_text_func_u128_to_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     call __floatuntixf@PLT
     lea (%rbp), %rsp
     pop %rbp

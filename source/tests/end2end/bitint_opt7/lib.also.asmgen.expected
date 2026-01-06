@@ -62,12 +62,7 @@ get4:
 
 get5:
 .L__kefir_text_func_get5_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_get5_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_get5_end:
 .section .rodata
@@ -79,12 +74,7 @@ get5:
 
 get6:
 .L__kefir_text_func_get6_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     fldt .L__kefir_func_get6_label4(%rip)
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_text_func_get6_end:
 .section .rodata

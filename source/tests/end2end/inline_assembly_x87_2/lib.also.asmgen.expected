@@ -72,7 +72,7 @@ subl:
 .L__kefir_text_func_subl_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -82,8 +82,8 @@ subl:
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     fldt -32(%rbp)
-    fstpt -80(%rbp)
-    fldt -80(%rbp)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
     fldt -48(%rbp)
 fsubp
     fstpt -48(%rbp)
@@ -144,7 +144,7 @@ mydivl:
 .L__kefir_text_func_mydivl_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -154,8 +154,8 @@ mydivl:
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     fldt -32(%rbp)
-    fstpt -80(%rbp)
-    fldt -80(%rbp)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
     fldt -48(%rbp)
 fdivp
     fstpt -48(%rbp)
@@ -216,7 +216,7 @@ mydivrl:
 .L__kefir_text_func_mydivrl_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
@@ -226,8 +226,8 @@ mydivrl:
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     fldt -32(%rbp)
-    fstpt -80(%rbp)
-    fldt -80(%rbp)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
     fldt -48(%rbp)
 fdivrp
     fstpt -48(%rbp)

@@ -11,7 +11,7 @@ minus:
 .L__kefir_text_func_minus_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     fchs
@@ -25,25 +25,25 @@ pnanl:
 .L__kefir_text_func_pnanl_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_pnanl_label11(%rip)
-    fstpt -48(%rbp)
+    fstpt -32(%rbp)
     sub $16, %rsp
-    fldt -48(%rbp)
+    fldt -32(%rbp)
     fstpt (%rsp)
     call mysignbit@PLT
     add $16, %rsp
     test %eax, %eax
     jz .L__kefir_func_pnanl_label6
     sub $16, %rsp
-    fldt -48(%rbp)
+    fldt -32(%rbp)
     fstpt (%rsp)
     call minus
     add $16, %rsp
-    fstpt -48(%rbp)
+    fstpt -32(%rbp)
 .L__kefir_func_pnanl_label6:
-    fldt -48(%rbp)
+    fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

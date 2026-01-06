@@ -80,7 +80,7 @@ c80_to_bool:
 .L__kefir_text_func_c80_to_bool_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     fldt (%rax)
@@ -168,7 +168,7 @@ c80_to_bool2:
 .L__kefir_text_func_c80_to_bool2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     fldt (%rax)
@@ -200,7 +200,7 @@ c80_to_bool3:
 .L__kefir_text_func_c80_to_bool3_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     lea 16(%rbp), %rax
     fldt (%rax)
