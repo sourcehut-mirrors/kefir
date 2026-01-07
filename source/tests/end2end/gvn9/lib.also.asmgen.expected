@@ -154,8 +154,8 @@ __kefir_bigint_signed_compare:
     mov %rax, %rcx
     sar %cl, %edx
     and $1, %edx
-    setne %cl
-    movzx %cl, %r10
+    mov %rcx, %r10
+    setne %r10b
     mov %rax, %rcx
     sar %cl, %r9d
     and $1, %r9d

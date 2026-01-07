@@ -487,9 +487,8 @@ borchar:
     movdqu %xmm0, -16(%rbp)
     or %sil, %dil
     setne %dil
-    movzx %dil, %rax
-    movb %al, -16(%rbp)
-    movsx %al, %rax
+    movb %dil, -16(%rbp)
+    movsx %dil, %rax
     neg %eax
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
@@ -896,9 +895,8 @@ bandchar:
     test %sil, %sil
     setne %cl
     and %al, %cl
-    movzx %cl, %rax
-    movb %al, -16(%rbp)
-    movsx %al, %rax
+    movb %cl, -16(%rbp)
+    movsx %cl, %rax
     neg %eax
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax

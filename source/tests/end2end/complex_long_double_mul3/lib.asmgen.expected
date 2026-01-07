@@ -167,17 +167,16 @@ __kefir_softfloat_complex_long_double_mul:
     or %rdx, %rcx
     cmove %eax, %r9d
     test %r8d, %r8d
-    setne %al
-    movzx %al, %rcx
+    mov %rax, %rcx
+    setne %cl
     test %r9d, %r9d
-    setne %al
-    movzx %al, %rdx
+    mov %rax, %rdx
+    setne %dl
     test %edi, %edi
-    setne %al
-    movzx %al, %r10
+    mov %rax, %r10
+    setne %r10b
     test %esi, %esi
     setne %al
-    movzx %al, %rax
     or %edi, %esi
     setne %sil
     test %sil, %sil
@@ -196,7 +195,6 @@ __kefir_softfloat_complex_long_double_mul:
     sete %cl
     test %al, %al
     setne %dl
-    movzx %dl, %rdx
     test %dl, %dl
     jz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label79
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label13:

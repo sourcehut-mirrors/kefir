@@ -37,7 +37,6 @@ test1:
     shr $58, %rax
     test %al, %al
     setne %al
-    movzx %al, %rax
     test %al, %al
     jz .L__kefir_func_test1_label14
     jmp .L__kefir_func_test1_label2
@@ -75,7 +74,6 @@ test2:
     shr $50, %rax
     test %ax, %ax
     setne %al
-    movzx %al, %rax
     test %al, %al
     jz .L__kefir_func_test2_label14
     jmp .L__kefir_func_test2_label2
@@ -113,7 +111,6 @@ test3:
     shr $35, %rax
     test %eax, %eax
     setne %al
-    movzx %al, %rax
     test %al, %al
     jz .L__kefir_func_test3_label14
     jmp .L__kefir_func_test3_label2
@@ -151,7 +148,6 @@ test4:
     shr $4, %rax
     test %rax, %rax
     setne %al
-    movzx %al, %rax
     test %al, %al
     jz .L__kefir_func_test4_label14
     jmp .L__kefir_func_test4_label2

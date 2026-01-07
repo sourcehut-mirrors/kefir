@@ -1227,7 +1227,6 @@ __kefir_bigint_signed_multiply:
     mov %rax, %r14
     and $1, %r14d
     setne %al
-    movzx %al, %rax
     xor %edx, %edx
     test %ecx, %ecx
     sete %dl

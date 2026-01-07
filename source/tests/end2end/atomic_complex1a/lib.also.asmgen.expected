@@ -1131,16 +1131,12 @@ __kefir_softfloat_complex_float_mul:
     cmove %eax, %r8d
     test %edi, %edi
     setne %al
-    movzx %al, %rax
     test %r8d, %r8d
     setne %cl
-    movzx %cl, %rcx
     test %edx, %edx
     setne %r9b
-    movzx %r9b, %r9
     test %esi, %esi
     setne %r10b
-    movzx %r10b, %r10
     or %esi, %edx
     setne %dl
     test %dl, %dl
@@ -1158,7 +1154,6 @@ __kefir_softfloat_complex_float_mul:
     sete %al
     test %dl, %dl
     setne %cl
-    movzx %cl, %rcx
     test %cl, %cl
     jz .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label79
 .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label13:
@@ -2048,16 +2043,12 @@ __kefir_softfloat_complex_double_mul:
     cmove %eax, %r8d
     test %edi, %edi
     setne %al
-    movzx %al, %rax
     test %r8d, %r8d
     setne %cl
-    movzx %cl, %rcx
     test %esi, %esi
     setne %r9b
-    movzx %r9b, %r9
     test %edx, %edx
     setne %r10b
-    movzx %r10b, %r10
     or %esi, %edx
     setne %dl
     test %dl, %dl
@@ -2075,7 +2066,6 @@ __kefir_softfloat_complex_double_mul:
     sete %al
     test %dl, %dl
     setne %cl
-    movzx %cl, %rcx
     test %cl, %cl
     jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label79
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label13:
@@ -3262,17 +3252,16 @@ __kefir_softfloat_complex_long_double_mul:
     or %rdx, %rcx
     cmove %eax, %r9d
     test %r8d, %r8d
-    setne %al
-    movzx %al, %rcx
+    mov %rax, %rcx
+    setne %cl
     test %r9d, %r9d
-    setne %al
-    movzx %al, %rdx
+    mov %rax, %rdx
+    setne %dl
     test %edi, %edi
-    setne %al
-    movzx %al, %r10
+    mov %rax, %r10
+    setne %r10b
     test %esi, %esi
     setne %al
-    movzx %al, %rax
     or %edi, %esi
     setne %sil
     test %sil, %sil
@@ -3291,7 +3280,6 @@ __kefir_softfloat_complex_long_double_mul:
     sete %cl
     test %al, %al
     setne %dl
-    movzx %dl, %rdx
     test %dl, %dl
     jz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label79
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label13:

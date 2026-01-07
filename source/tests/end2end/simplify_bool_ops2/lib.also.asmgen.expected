@@ -56,7 +56,6 @@ char_int_or:
 .L__kefir_text_func_char_int_or_begin:
     test %esi, %esi
     setne %al
-    movzx %al, %rax
     or %al, %dil
     setne %dil
     movzx %dil, %rax
@@ -100,7 +99,6 @@ long_char_and:
 .L__kefir_text_func_long_char_and_begin:
     test %sil, %sil
     setne %al
-    movzx %al, %rax
     test %rdi, %rdi
     setne %cl
     and %cl, %al
@@ -123,7 +121,6 @@ short_char_and:
 .L__kefir_text_func_short_char_and_begin:
     test %sil, %sil
     setne %al
-    movzx %al, %rax
     test %di, %di
     setne %cl
     and %cl, %al
@@ -135,7 +132,6 @@ short_long_and:
 .L__kefir_text_func_short_long_and_begin:
     test %rsi, %rsi
     setne %al
-    movzx %al, %rax
     test %di, %di
     setne %cl
     and %cl, %al
@@ -147,7 +143,6 @@ long_short_and:
 .L__kefir_text_func_long_short_and_begin:
     test %si, %si
     setne %al
-    movzx %al, %rax
     test %rdi, %rdi
     setne %cl
     and %cl, %al
@@ -170,7 +165,6 @@ short_int_and:
 .L__kefir_text_func_short_int_and_begin:
     test %esi, %esi
     setne %al
-    movzx %al, %rax
     test %di, %di
     setne %cl
     and %cl, %al
@@ -193,7 +187,6 @@ char_int_and:
 .L__kefir_text_func_char_int_and_begin:
     test %esi, %esi
     setne %al
-    movzx %al, %rax
     test %dil, %dil
     setne %cl
     and %cl, %al
@@ -205,7 +198,6 @@ char_long_or:
 .L__kefir_text_func_char_long_or_begin:
     test %rsi, %rsi
     setne %al
-    movzx %al, %rax
     or %al, %dil
     setne %dil
     movzx %dil, %rax
@@ -216,7 +208,6 @@ int_char_and:
 .L__kefir_text_func_int_char_and_begin:
     test %sil, %sil
     setne %al
-    movzx %al, %rax
     test %edi, %edi
     setne %cl
     and %cl, %al
@@ -228,7 +219,6 @@ int_long_and:
 .L__kefir_text_func_int_long_and_begin:
     test %rsi, %rsi
     setne %al
-    movzx %al, %rax
     test %edi, %edi
     setne %cl
     and %cl, %al
@@ -262,7 +252,6 @@ long_int_and:
 .L__kefir_text_func_long_int_and_begin:
     test %esi, %esi
     setne %al
-    movzx %al, %rax
     test %rdi, %rdi
     setne %cl
     and %cl, %al
@@ -285,7 +274,6 @@ char_long_and:
 .L__kefir_text_func_char_long_and_begin:
     test %rsi, %rsi
     setne %al
-    movzx %al, %rax
     test %dil, %dil
     setne %cl
     and %cl, %al
@@ -297,7 +285,6 @@ char_short_or:
 .L__kefir_text_func_char_short_or_begin:
     test %si, %si
     setne %al
-    movzx %al, %rax
     or %al, %dil
     setne %dil
     movzx %dil, %rax
@@ -308,7 +295,6 @@ char_short_and:
 .L__kefir_text_func_char_short_and_begin:
     test %si, %si
     setne %al
-    movzx %al, %rax
     test %dil, %dil
     setne %cl
     and %cl, %al
@@ -320,7 +306,6 @@ int_short_and:
 .L__kefir_text_func_int_short_and_begin:
     test %si, %si
     setne %al
-    movzx %al, %rax
     test %edi, %edi
     setne %cl
     and %cl, %al

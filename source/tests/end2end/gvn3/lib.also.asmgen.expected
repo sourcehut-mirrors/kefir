@@ -147,7 +147,6 @@ boolint:
     test %edi, %edi
     setne %al
     movzx %al, %rax
-    movzx %al, %rax
     movl %eax, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
@@ -275,7 +274,6 @@ boolchar:
     movdqu %xmm0, -16(%rbp)
     test %dil, %dil
     setne %al
-    movzx %al, %rax
     movb %al, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
@@ -294,7 +292,6 @@ boollong:
     movdqu %xmm0, -16(%rbp)
     test %rdi, %rdi
     setne %al
-    movzx %al, %rax
     movzx %al, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
@@ -386,7 +383,6 @@ boolshort:
     movdqu %xmm0, -16(%rbp)
     test %di, %di
     setne %al
-    movzx %al, %rax
     movzx %al, %rax
     movw %ax, -16(%rbp)
     movw %ax, -14(%rbp)
