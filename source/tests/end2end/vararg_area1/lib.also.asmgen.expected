@@ -54,15 +54,14 @@ process:
     pop %rbp
     ret
 .L__kefir_func_process_label20:
-    mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rbx
     mov $0, %rdx
-    imul $8, %rdx, %rax
+    imul $8, %rdx, %rcx
     lea -80(%rbp), %rdx
-    add %rax, %rdx
-    movq %rcx, (%rdx)
+    add %rcx, %rdx
+    movq %rax, (%rdx)
     movl -72(%rbp), %eax
     movsx %eax, %rax
     mov $4, %rcx

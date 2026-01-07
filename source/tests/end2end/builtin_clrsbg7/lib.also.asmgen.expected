@@ -48,7 +48,7 @@ test3:
     shl $5, %rdi
     sar $5, %rdi
     mov %rdi, %rax
-    add %rax, %rax
+    add %rdi, %rax
     sar $63, %rdi
     xor %rdi, %rax
     or $1, %rax
@@ -61,7 +61,7 @@ test3:
 test4:
 .L__kefir_text_func_test4_begin:
     mov %rdi, %rax
-    add %rax, %rax
+    add %rdi, %rax
     sar $63, %rdi
     xor %rdi, %rax
     or $1, %rax

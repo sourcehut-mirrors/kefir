@@ -15,25 +15,24 @@ test:
     sub $48, %rsp
     mov $0, %rax
     movl %edi, -32(%rbp)
-    mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
-    mov %rsp, %rdx
+    mov %rsp, %rcx
     mov $0, %rsi
-    imul $8, %rsi, %rax
+    imul $8, %rsi, %rdx
     lea -48(%rbp), %rsi
-    add %rax, %rsi
-    movq %rcx, (%rsi)
+    add %rdx, %rsi
+    movq %rax, (%rsi)
     movl -32(%rbp), %eax
     movsx %eax, %rax
-    mov $4, %rcx
-    imul %rax, %rcx
-    movq %rcx, -16(%rbp)
-    sub %rcx, %rsp
+    mov $4, %rdx
+    imul %rax, %rdx
+    movq %rdx, -16(%rbp)
+    sub %rdx, %rsp
     mov $16, %rax
     cmp $4, %rax
-    mov $4, %rcx
-    cmovl %rcx, %rax
+    mov $4, %rdx
+    cmovl %rdx, %rax
     neg %rax
     and %rax, %rsp
     mov %rsp, %rax
@@ -46,9 +45,9 @@ test:
     movl %eax, -32(%rbp)
     lea -24(%rbp), %rax
     movq (%rax), %rax
-    movq -8(%rbp), %rcx
+    movq -8(%rbp), %rdx
     mov $0, %rsi
-    cmp %rcx, %rax
+    cmp %rdx, %rax
     sete %sil
     mov $0, %rax
     test %sil, %sil
@@ -58,10 +57,10 @@ test:
     test %al, %al
     jz .L__kefir_func_test_label16
     movl -32(%rbp), %eax
-    mov $0, %rcx
+    mov $0, %rdx
     cmp $1, %eax
-    setg %cl
-    test %ecx, %ecx
+    setg %dl
+    test %edx, %edx
     sete %al
     test %al, %al
     jz .L__kefir_func_test_label13
@@ -85,39 +84,37 @@ test2:
     sub $64, %rsp
     mov $0, %rax
     movl %edi, -48(%rbp)
-    mov %rax, %rcx
     sub $16, %rsp
     movq %rax, (%rsp)
-    mov %rsp, %rax
+    mov %rsp, %rcx
     mov $0, %rsi
     imul $8, %rsi, %rdx
     lea -64(%rbp), %rsi
     add %rdx, %rsi
-    movq %rcx, (%rsi)
-    movl -48(%rbp), %ecx
-    movsx %ecx, %rcx
+    movq %rax, (%rsi)
+    movl -48(%rbp), %eax
+    movsx %eax, %rax
     mov $4, %rdx
-    imul %rcx, %rdx
+    imul %rax, %rdx
     movq %rdx, -32(%rbp)
     sub %rdx, %rsp
-    mov $16, %rcx
-    cmp $4, %rcx
+    mov $16, %rax
+    cmp $4, %rax
     mov $4, %rdx
-    cmovl %rdx, %rcx
-    neg %rcx
-    and %rcx, %rsp
-    mov %rsp, %rcx
-    movq %rcx, -40(%rbp)
-.L__kefir_func_test2_label2:
-    mov %rax, %rdx
-    sub $16, %rsp
-    movq %rax, (%rsp)
+    cmovl %rdx, %rax
+    neg %rax
+    and %rax, %rsp
     mov %rsp, %rax
-    mov $1, %rcx
-    imul $8, %rcx, %rsi
-    lea -64(%rbp), %rcx
-    add %rsi, %rcx
-    movq %rdx, (%rcx)
+    movq %rax, -40(%rbp)
+.L__kefir_func_test2_label2:
+    sub $16, %rsp
+    movq %rcx, (%rsp)
+    mov %rsp, %rax
+    mov $1, %rdx
+    imul $8, %rdx, %rsi
+    lea -64(%rbp), %rdx
+    add %rsi, %rdx
+    movq %rcx, (%rdx)
     movl -48(%rbp), %edx
     lea -24(%rbp), %rcx
     movsx %edx, %rdx
@@ -138,11 +135,12 @@ test2:
     cmp $0, %rax
     jz .L__kefir_func_test2_label7
     mov %rax, %rsp
-    movq (%rsp), %rax
+    movq (%rsp), %rcx
     add $16, %rsp
 .L__kefir_func_test2_label4:
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label7:
+    mov %rax, %rcx
     jmp .L__kefir_func_test2_label4
 .L__kefir_text_func_test2_end:
 
