@@ -29,10 +29,8 @@ test1:
 test2:
 .L__kefir_text_func_test2_begin:
     mov %rdi, %rax
-    xor %ecx, %ecx
     cmp $1, %eax
     setge %cl
-    xor %edx, %edx
     cmp $9, %eax
     setle %dl
     and %dl, %cl
@@ -51,10 +49,8 @@ test3:
     mov %rdi, %rax
     cmp $10, %eax
     je .L__kefir_func_test3_label5
-    xor %ecx, %ecx
     cmp $0, %eax
     setge %cl
-    xor %edx, %edx
     cmp $9, %eax
     setle %dl
     and %dl, %cl

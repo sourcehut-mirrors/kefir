@@ -596,7 +596,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 111,
+#                    "instr_ref": 115,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -1147,12 +1147,40 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 31,
+#                    "instr_ref": 107,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "64bit",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 108,
 #                    "opcode": "setne",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 30,
+#                            "instr_ref": 107,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1181,7 +1209,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rax"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 12
@@ -1199,7 +1227,7 @@ factorial:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 31,
+#                            "instr_ref": 108,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1451,7 +1479,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 115,
+#                    "instr_ref": 119,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -1995,7 +2023,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 109,
+#                    "instr_ref": 113,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -2867,7 +2895,7 @@ factorial:
 #            "block_ref": 17,
 #            "code": [
 #                {
-#                    "instr_ref": 106,
+#                    "instr_ref": 110,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2889,7 +2917,7 @@ factorial:
 #            "block_ref": 18,
 #            "code": [
 #                {
-#                    "instr_ref": 108,
+#                    "instr_ref": 112,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2911,7 +2939,7 @@ factorial:
 #            "block_ref": 19,
 #            "code": [
 #                {
-#                    "instr_ref": 110,
+#                    "instr_ref": 114,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2933,7 +2961,7 @@ factorial:
 #            "block_ref": 20,
 #            "code": [
 #                {
-#                    "instr_ref": 112,
+#                    "instr_ref": 116,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2955,7 +2983,7 @@ factorial:
 #            "block_ref": 21,
 #            "code": [
 #                {
-#                    "instr_ref": 114,
+#                    "instr_ref": 118,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2977,7 +3005,7 @@ factorial:
 #            "block_ref": 22,
 #            "code": [
 #                {
-#                    "instr_ref": 116,
+#                    "instr_ref": 120,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3019,8 +3047,8 @@ factorial:
     cmp %eax, %esi
     sete %dl
     or %rdx, %rcx
-    setne %cl
-    movzx %cl, %rax
+    setne %al
+    movzx %al, %rax
     test %eax, %eax
     sete %al
     test %al, %al

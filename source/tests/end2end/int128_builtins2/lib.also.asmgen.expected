@@ -40,9 +40,8 @@ int128_clz:
     lea -48(%rbp), %rsi
     mov $128, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %ecx, %ecx
     cmp $0, %al
-    mov %rcx, %r12
+    mov %rax, %r12
     sete %r12b
     lea -32(%rbp), %rdi
     mov $128, %rsi
@@ -81,9 +80,8 @@ int128_ctz:
     lea -48(%rbp), %rsi
     mov $128, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %ecx, %ecx
     cmp $0, %al
-    mov %rcx, %r12
+    mov %rax, %r12
     sete %r12b
     lea -32(%rbp), %rdi
     mov $128, %rsi

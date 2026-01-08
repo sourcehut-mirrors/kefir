@@ -137,8 +137,8 @@ overflow_add_ulong_ulong_short:
     cmp %rsi, %rdi
     setb %cl
     or %cl, %al
-    movsx %di, %rsi
-    cmp %rsi, %rdi
+    movsx %di, %rcx
+    cmp %rcx, %rdi
     setne %cl
     or %cl, %al
     and $1, %eax

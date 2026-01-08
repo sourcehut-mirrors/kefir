@@ -262,8 +262,8 @@ __kefir_bigint_right_shift_whole_digits:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %dl
-    movzx %dl, %rax
+    setne %al
+    movzx %al, %rax
     test %eax, %eax
     sete %al
     test %al, %al

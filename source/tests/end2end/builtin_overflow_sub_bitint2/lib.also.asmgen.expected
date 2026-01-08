@@ -47,9 +47,8 @@ sub1:
     lea -48(%rbp), %rsi
     mov $66, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %ecx, %ecx
     cmp $0, %al
-    mov %rcx, %rbx
+    mov %rax, %rbx
     sete %bl
     lea -32(%rbp), %rdi
     mov $66, %rsi
@@ -108,9 +107,8 @@ sub2:
     lea -48(%rbp), %rsi
     mov $66, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %ecx, %ecx
     cmp $0, %al
-    mov %rcx, %rbx
+    mov %rax, %rbx
     sete %bl
     lea -32(%rbp), %rdi
     mov $66, %rsi
@@ -171,9 +169,8 @@ sub3:
     lea -48(%rbp), %rsi
     mov $82, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %ecx, %ecx
     cmp $0, %al
-    mov %rcx, %rbx
+    mov %rax, %rbx
     sete %bl
     lea -32(%rbp), %rdi
     mov $82, %rsi

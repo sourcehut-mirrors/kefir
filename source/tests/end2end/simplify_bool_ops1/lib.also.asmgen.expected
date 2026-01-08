@@ -39,16 +39,16 @@
 int_or:
 .L__kefir_text_func_int_or_begin:
     or %esi, %edi
-    setne %dil
-    movzx %dil, %rax
+    setne %al
+    movzx %al, %rax
     ret
 .L__kefir_text_func_int_or_end:
 
 char_or:
 .L__kefir_text_func_char_or_begin:
     or %sil, %dil
-    setne %dil
-    movzx %dil, %rax
+    setne %al
+    movzx %al, %rax
     ret
 .L__kefir_text_func_char_or_end:
 
@@ -66,8 +66,8 @@ int_and:
 int_or3:
 .L__kefir_text_func_int_or3_begin:
     or %esi, %edi
-    setne %dil
-    movzx %dil, %rax
+    setne %al
+    movzx %al, %rax
     or %edx, %eax
     setne %al
     movzx %al, %rax
@@ -77,8 +77,8 @@ int_or3:
 long_or:
 .L__kefir_text_func_long_or_begin:
     or %rsi, %rdi
-    setne %dil
-    movzx %dil, %rax
+    setne %al
+    movzx %al, %rax
     movsx %eax, %rax
     ret
 .L__kefir_text_func_long_or_end:
@@ -97,10 +97,10 @@ char_and:
 char_or3:
 .L__kefir_text_func_char_or3_begin:
     or %sil, %dil
-    setne %dil
-    or %dl, %dil
-    setne %dil
-    movzx %dil, %rax
+    setne %al
+    or %dl, %al
+    setne %al
+    movzx %al, %rax
     ret
 .L__kefir_text_func_char_or3_end:
 
@@ -133,8 +133,8 @@ long_and:
 long_or3:
 .L__kefir_text_func_long_or3_begin:
     or %rsi, %rdi
-    setne %dil
-    movzx %dil, %rax
+    setne %al
+    movzx %al, %rax
     or %rdx, %rax
     setne %al
     movzx %al, %rax
@@ -145,8 +145,8 @@ long_or3:
 short_or:
 .L__kefir_text_func_short_or_begin:
     or %si, %di
-    setne %dil
-    movzx %dil, %rax
+    setne %al
+    movzx %al, %rax
     ret
 .L__kefir_text_func_short_or_end:
 
@@ -193,8 +193,8 @@ short_and:
 short_or3:
 .L__kefir_text_func_short_or3_begin:
     or %si, %di
-    setne %dil
-    movzx %dil, %rax
+    setne %al
+    movzx %al, %rax
     or %dx, %ax
     setne %al
     movzx %al, %rax

@@ -348,6 +348,7 @@ typedef enum kefir_codegen_target_ir_asmcmp_operand_class {
 
 typedef struct kefir_codegen_target_ir_operand_destruction_classification {
     kefir_codegen_target_ir_asmcmp_operand_class_t class;
+    kefir_bool_t tied_rw;
     kefir_bool_t implicit;
     kefir_codegen_target_ir_physical_register_t implicit_phreg;
 } kefir_codegen_target_ir_operand_destruction_classification_t;
