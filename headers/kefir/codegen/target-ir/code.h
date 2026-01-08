@@ -29,6 +29,7 @@
 #include "kefir/core/list.h"
 #include "kefir/core/string_pool.h"
 #include "kefir/core/source_location.h"
+#include "kefir/codegen/asmcmp/context.h"
 
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 7
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE 4
@@ -338,6 +339,24 @@ typedef struct kefir_codegen_target_ir_block_terminator_props {
     kefir_codegen_target_ir_block_ref_t target_block_refs[2];
 } kefir_codegen_target_ir_block_terminator_props_t;
 
+typedef enum kefir_codegen_target_ir_asmcmp_operand_class {
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE,
+    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE
+} kefir_codegen_target_ir_asmcmp_operand_class_t;
+
+typedef struct kefir_codegen_target_ir_operand_destruction_classification {
+    kefir_codegen_target_ir_asmcmp_operand_class_t class;
+    kefir_bool_t implicit;
+    kefir_codegen_target_ir_physical_register_t implicit_phreg;
+} kefir_codegen_target_ir_operand_destruction_classification_t;
+
+typedef struct kefir_codegen_target_ir_instruction_destruction_classification {
+    kefir_asmcmp_instruction_opcode_t opcode;
+    struct kefir_codegen_target_ir_operand_destruction_classification operands[KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS];
+} kefir_codegen_target_ir_instruction_destruction_classification_t;
+
 typedef struct kefir_codegen_target_ir_code_class {
     kefir_result_t (*opcode_mnemonic)(kefir_codegen_target_ir_opcode_t, const char **, void *);
     kefir_result_t (*register_mnemonic)(kefir_codegen_target_ir_physical_register_t, const char **, void *);
@@ -346,6 +365,7 @@ typedef struct kefir_codegen_target_ir_code_class {
     kefir_result_t (*is_block_terminator)(const struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, struct kefir_codegen_target_ir_block_terminator_props *, void *);
     kefir_result_t (*make_unconditional_jump)(kefir_codegen_target_ir_block_ref_t, struct kefir_codegen_target_ir_operation *, void *);
     kefir_result_t (*finalize_conditional_jump)(const struct kefir_codegen_target_ir_operation *, kefir_codegen_target_ir_block_ref_t, struct kefir_codegen_target_ir_operation *, void *);
+    kefir_result_t (*classify_instruction)(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, struct kefir_codegen_target_ir_instruction_destruction_classification *, void *);
 
     kefir_codegen_target_ir_opcode_t assign_opcode;
     kefir_codegen_target_ir_opcode_t touch_opcode;

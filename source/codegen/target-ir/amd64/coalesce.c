@@ -19,8 +19,8 @@ static kefir_result_t extract_coalesce(struct kefir_mem *mem,
         instruction->operation.opcode != code->klass->inline_asm_opcode &&
         instruction->operation.opcode != code->klass->placeholder_opcode, KEFIR_OK);
     
-    struct kefir_codegen_target_ir_instruction_destructor_classification classification;
-    REQUIRE_OK(klass->destructor_ops->classify_instruction(code, instruction->instr_ref, &classification, klass->destructor_ops->payload));
+    struct kefir_codegen_target_ir_instruction_destruction_classification classification;
+    REQUIRE_OK(code->klass->classify_instruction(code, instruction->instr_ref, &classification, code->klass->payload));
 
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         kefir_size_t output_index = 0, parameter_idx = 0;

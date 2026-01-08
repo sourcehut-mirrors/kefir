@@ -21,6 +21,7 @@
 #include "kefir/codegen/target-ir/amd64/code.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <string.h>
 
 static kefir_result_t amd64_opcode_mnemonic(kefir_codegen_target_ir_opcode_t opcode, const char **mnemonic_ptr, void *payload) {
     UNUSED(payload);
@@ -242,6 +243,239 @@ static kefir_result_t finalize_conditional_jump(const struct kefir_codegen_targe
     return KEFIR_OK;
 }
 
+static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref,
+    struct kefir_codegen_target_ir_instruction_destruction_classification *classification, void *payload) {
+    UNUSED(payload);
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(classification != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction classification"));
+
+    const struct kefir_codegen_target_ir_instruction *instruction;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instruction));
+
+    memset(classification, 0, sizeof(struct kefir_codegen_target_ir_instruction_destruction_classification));
+    for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
+        classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE;
+        classification->operands[i].implicit = false;
+    }
+
+    switch (instruction->operation.opcode) {
+        case KEFIR_TARGET_IR_AMD64_OPCODE(assign):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(upsilon):
+            classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+            classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            return KEFIR_OK;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(placeholder):
+            classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register);
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+            return KEFIR_OK;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(touch):
+            classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register);
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            return KEFIR_OK;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(tail_call):
+            classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(tail_call);
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            return KEFIR_OK;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(data_word):
+            classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(data_word);
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            return KEFIR_OK;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(phi):
+            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to classify target IR phi node");
+
+        default:
+            // Intentionally left blank
+            break;
+    }
+
+    kefir_bool_t implicit_params = false;
+    kefir_size_t num_of_params = 0;
+
+#define CLASSIFY_OP(_op, _index) \
+    do { \
+        if (((_op) & KEFIR_AMD64_INSTRDB_READ) && ((_op) & KEFIR_AMD64_INSTRDB_WRITE)) { \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE; \
+        } else if ((_op) & KEFIR_AMD64_INSTRDB_READ) { \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ; \
+        } else if ((_op) & KEFIR_AMD64_INSTRDB_WRITE) { \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE; \
+        } else if ((_op) & KEFIR_AMD64_INSTRDB_FPU_STACK) { \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ; \
+        } \
+    } while (0)
+
+    switch (instruction->operation.opcode) {
+#define INSTR0(_opcode, _mnemonic, _variant, _flags)        \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode); \
+        implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
+        break;
+
+#define INSTR1(_opcode, _mnemonic, _variant, _flags, _op1)        \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);            \
+        CLASSIFY_OP(_op1, 0); \
+        implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
+        num_of_params = 1; \
+        break;
+
+#define INSTR2(_opcode, _mnemonic, _variant, _flags, _op1, _op2)        \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);            \
+        CLASSIFY_OP(_op1, 0); \
+        CLASSIFY_OP(_op2, 1); \
+        implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
+        num_of_params = 2; \
+        break;
+
+#define INSTR3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)        \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);            \
+        CLASSIFY_OP(_op1, 0); \
+        CLASSIFY_OP(_op2, 1); \
+        CLASSIFY_OP(_op2, 2); \
+        implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
+        num_of_params = 3; \
+        break;
+
+#define INSTR0_VIRT(_opcode, _mnemonic)        \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode); \
+        break;
+
+        KEFIR_CODEGEN_TARGET_IR_AMD64_VIRTUAL_OPCODES(INSTR0_VIRT, )
+        KEFIR_AMD64_INSTRUCTION_DATABASE(INSTR0, INSTR1, INSTR2, INSTR3, )
+#undef INSTR0
+#undef INSTR1
+#undef INSTR2
+#undef INSTR3
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown amd64 opcode");
+    }
+
+    kefir_size_t output_index = 0;
+    for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
+        if (classification->operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE) {
+            const struct kefir_codegen_target_ir_value_type *value_type;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr_ref, output_index++, NULL, &value_type));
+            if (value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT || value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) {
+                classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
+            }
+        }
+    }
+
+    switch (instruction->operation.opcode) {
+        case KEFIR_TARGET_IR_AMD64_OPCODE(movsb):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(movsw):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(movsl):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(movsq):
+            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
+            classification->operands[0].implicit = true;
+            classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDI;
+            classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
+            classification->operands[1].implicit = true;
+            classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RSI;
+            break;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(stosb):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(stosw):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(stosl):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(stosq):
+            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
+            classification->operands[0].implicit = true;
+            classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDI;
+            classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[1].implicit = true;
+            classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RSI;
+            break;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(cmpxchg): {
+            REQUIRE(num_of_params == 2 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            classification->operands[2].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
+            classification->operands[2].implicit = true;
+            classification->operands[2].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+        } break;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(mul):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(imul):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(imul1):
+            if (implicit_params) {
+                REQUIRE(num_of_params == 1, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+                classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
+                classification->operands[1].implicit = true;
+                classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+                kefir_codegen_target_ir_value_ref_t value_ref;
+                kefir_result_t res = kefir_codegen_target_ir_code_instruction_output(code, instr_ref, 1, &value_ref, NULL);
+                if (res != KEFIR_NOT_FOUND) {
+                    REQUIRE_OK(res);
+                    classification->operands[2].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+                    classification->operands[2].implicit = true;
+                    classification->operands[2].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDX;
+                }
+            }
+            break;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(div):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(idiv):
+            if (implicit_params) {
+                REQUIRE(num_of_params == 1, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+                classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
+                classification->operands[1].implicit = true;
+                classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+                kefir_codegen_target_ir_value_ref_t value_ref;
+                kefir_result_t res = kefir_codegen_target_ir_code_instruction_output(code, instr_ref, 1, &value_ref, NULL);
+                if (res != KEFIR_NOT_FOUND) {
+                    REQUIRE_OK(res);
+                    classification->operands[2].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
+                    classification->operands[2].implicit = true;
+                    classification->operands[2].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDX;
+                }
+            }
+            break;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(cwd):
+            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[0].implicit = true;
+            classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+            classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+            classification->operands[1].implicit = true;
+            classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDX;
+            break;
+            
+        case KEFIR_TARGET_IR_AMD64_OPCODE(cdq):
+            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[0].implicit = true;
+            classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+            classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+            classification->operands[1].implicit = true;
+            classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDX;
+            break;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(cqo):
+            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
+            classification->operands[0].implicit = true;
+            classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+            classification->operands[1].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
+            classification->operands[1].implicit = true;
+            classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDX;
+            break;
+    }
+
+    return KEFIR_OK;
+}
+
 const struct kefir_codegen_target_ir_code_class KEFIR_TARGET_AMD64_CODE_CLASS = {
     .opcode_mnemonic = amd64_opcode_mnemonic,
     .register_mnemonic = register_mnemonic,
@@ -250,6 +484,7 @@ const struct kefir_codegen_target_ir_code_class KEFIR_TARGET_AMD64_CODE_CLASS = 
     .is_block_terminator = is_block_terminator,
     .make_unconditional_jump = make_unconditional_jump,
     .finalize_conditional_jump = finalize_conditional_jump,
+    .classify_instruction = classify_instruction,
     .assign_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(assign),
     .touch_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(touch),
     .phi_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(phi),

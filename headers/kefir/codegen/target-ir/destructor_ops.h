@@ -24,29 +24,10 @@
 #include "kefir/codegen/target-ir/constructor.h"
 #include "kefir/codegen/target-ir/control_flow.h"
 #include "kefir/codegen/target-ir/schedule.h"
-#include "kefir/codegen/asmcmp/context.h"
-
-typedef struct kefir_codegen_target_ir_operand_classification {
-    kefir_codegen_target_ir_asmcmp_operand_class_t class;
-    kefir_size_t index;
-    kefir_bool_t implicit;
-    kefir_bool_t immediate;
-
-    struct {
-        kefir_asmcmp_virtual_register_type_t vreg_type;
-        kefir_codegen_target_ir_physical_register_t phreg;
-    } implicit_params;
-} kefir_codegen_target_ir_operand_classification_t;
-
-typedef struct kefir_codegen_target_ir_instruction_destructor_classification {
-    kefir_asmcmp_instruction_opcode_t opcode;
-    struct kefir_codegen_target_ir_operand_classification operands[KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS];
-} kefir_codegen_target_ir_instruction_destructor_classification_t;
 
 typedef struct kefir_codegen_target_ir_destructor_ops {
     kefir_asmcmp_instruction_opcode_t unreachable_opcode;
     kefir_asmcmp_instruction_opcode_t noop_opcode;
-    kefir_result_t (*classify_instruction)(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, struct kefir_codegen_target_ir_instruction_destructor_classification *, void *);
     kefir_result_t (*bind_native_id)(struct kefir_mem *, kefir_asmcmp_label_index_t, kefir_codegen_target_ir_native_id_t, void *);
     kefir_result_t (*new_inline_asm)(struct kefir_mem *, kefir_asmcmp_instruction_index_t, kefir_asmcmp_inline_assembly_index_t, kefir_asmcmp_instruction_index_t *, void *);
     kefir_result_t (*materialize_attribute)(struct kefir_mem *, kefir_asmcmp_instruction_index_t, kefir_codegen_target_ir_native_id_t, kefir_asmcmp_instruction_index_t *, void *);

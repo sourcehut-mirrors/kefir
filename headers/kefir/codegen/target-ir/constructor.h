@@ -24,13 +24,6 @@
 #include "kefir/codegen/target-ir/code.h"
 #include "kefir/codegen/asmcmp/context.h"
 
-typedef enum kefir_codegen_target_ir_asmcmp_operand_class {
-    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE,
-    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ,
-    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE,
-    KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE
-} kefir_codegen_target_ir_asmcmp_operand_class_t;
-
 typedef struct kefir_codegen_target_ir_asmcmp_operand_classification {
     kefir_codegen_target_ir_asmcmp_operand_class_t class;
     kefir_size_t index;
