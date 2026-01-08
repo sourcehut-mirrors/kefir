@@ -182,11 +182,13 @@ static kefir_result_t peephole_add(struct kefir_mem *mem, struct kefir_codegen_t
 }
 
 static kefir_result_t peephole_movx(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
-    REQUIRE(instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-        instr->operation.parameters[0].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0), KEFIR_OK);
+    REQUIRE((instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+        instr->operation.parameters[0].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0) &&
+        instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE) ||
+        (instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+        instr->operation.parameters[1].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)), KEFIR_OK);
 
     kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
-    struct kefir_codegen_target_ir_operation base_oper = instr->operation;
 
     const struct kefir_codegen_target_ir_value_type *output_value_type;
     kefir_codegen_target_ir_value_ref_t output_value_ref = {
@@ -197,6 +199,10 @@ static kefir_result_t peephole_movx(struct kefir_mem *mem, struct kefir_codegen_
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
     REQUIRE(output_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_OK);
+
+    const struct kefir_codegen_target_ir_operand input_param = instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE
+        ? instr->operation.parameters[0]
+        : instr->operation.parameters[1];
 
     kefir_bool_t ext_uses = false;
     struct kefir_codegen_target_ir_use_iterator use_iter;
@@ -225,11 +231,11 @@ static kefir_result_t peephole_movx(struct kefir_mem *mem, struct kefir_codegen_
                 oper.parameters[i].direct.value_ref.aspect == output_value_ref.aspect &&
                 !(oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
                 (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                base_oper.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
+                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
                 (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                base_oper.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
+                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
                 (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
-                base_oper.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT)))) {
+                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT)))) {
                 ext_uses = true;
             }
         }
@@ -262,12 +268,12 @@ static kefir_result_t peephole_movx(struct kefir_mem *mem, struct kefir_codegen_
                 oper.parameters[i].direct.value_ref.aspect == output_value_ref.aspect &&
                 (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
                 (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                base_oper.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
+                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
                 (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                base_oper.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
+                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
                 (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
-                base_oper.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT))) {
-                oper.parameters[i].direct.value_ref = base_oper.parameters[0].direct.value_ref;
+                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT))) {
+                oper.parameters[i].direct.value_ref = input_param.direct.value_ref;
                 replace = true;
             }
         }
@@ -285,10 +291,11 @@ static kefir_result_t peephole_movx(struct kefir_mem *mem, struct kefir_codegen_
 }
 
 static kefir_result_t peephole_mov(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
-    REQUIRE(instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+    REQUIRE((instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
         instr->operation.parameters[0].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0) &&
-        (instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
-            instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT), KEFIR_OK);
+        instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE) ||
+        (instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+        instr->operation.parameters[1].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)), KEFIR_OK);
 
     const struct kefir_codegen_target_ir_value_type *output_value_type;
     kefir_codegen_target_ir_value_ref_t output_value_ref = {
@@ -298,13 +305,22 @@ static kefir_result_t peephole_mov(struct kefir_mem *mem, struct kefir_codegen_t
     kefir_result_t res = kefir_codegen_target_ir_code_value_props(code, output_value_ref, &output_value_type);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
-    REQUIRE(output_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT &&
-            (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT), KEFIR_OK);
 
-    REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, instr->operation.parameters[0].direct.value_ref, output_value_ref));
-    REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, output_value_ref.instr_ref));
-    *replaced = true;
+    const struct kefir_codegen_target_ir_operand *input_param = instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE
+        ? &instr->operation.parameters[0]
+        : &instr->operation.parameters[1];
+
+    if ((input_param->direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+            input_param->direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT) &&
+            output_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT &&
+            (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+            output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT)) {
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, input_param->direct.value_ref, output_value_ref));
+        REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, output_value_ref.instr_ref));
+        *replaced = true;
+    } else {
+        REQUIRE_OK(peephole_movx(mem, code, instr, replaced));
+    }
     return KEFIR_OK;
 }
 
