@@ -22,6 +22,7 @@
 #include "kefir/codegen/target-ir/control_flow.h"
 #include "kefir/codegen/target-ir/liveness.h"
 #include "kefir/codegen/target-ir/schedule.h"
+#include "kefir/codegen/target-ir/tie.h"
 #include "kefir/codegen/target-ir/amd64/regalloc.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -1867,11 +1868,11 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
     }
 
     kefir_result_t res;
-    struct kefir_codegen_target_ir_instruction_destruction_classification classification;
-    REQUIRE_OK(state->code->klass->classify_instruction(state->code, instr_ref, &classification, state->code->klass->payload));
+    struct kefir_codegen_target_ir_tie_classification classification;
+    REQUIRE_OK(kefir_codegen_target_ir_tie_operands(state->code, instr_ref, &classification));
 
 
-    REQUIRE_OK(build_current_instr_state(state, instr_ref, &classification));
+    REQUIRE_OK(build_current_instr_state(state, instr_ref, &classification.classification));
 
     struct kefir_codegen_target_ir_block_terminator_props terminator_props;
     REQUIRE_OK(state->code->klass->is_block_terminator(state->code, instr, &terminator_props, state->code->klass->payload));
@@ -1892,7 +1893,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
             REQUIRE(!kefir_codegen_target_ir_control_flow_is_critical_edge(state->control_flow, instr->block_ref, terminator_props.target_block_refs[1]),
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected critical edges to be split before target IR destruction"));
 
-            asmcmp_instrs[0].opcode = classification.opcode;
+            asmcmp_instrs[0].opcode = classification.classification.opcode;
             asmcmp_instrs[0].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL;
             asmcmp_instrs[0].args[0].internal_label = target_block_state->asmcmp_label;
             asmcmp_instrs[0].args[0].segment.present = false;
@@ -1996,64 +1997,63 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
     }
 
     struct kefir_asmcmp_instruction asmcmp_instruction = {
-        .opcode = classification.opcode,
+        .opcode = classification.classification.opcode,
         .args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
         .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
         .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE
     };
-    kefir_size_t output_index = 0, parameter_idx = 0;
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
-        switch (classification.operands[i].class) {
+        switch (classification.classification.operands[i].class) {
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE:
                 // Intentionally left blank
                 break;
 
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ:
-                if (!classification.operands[i].implicit) {
+                if (!classification.classification.operands[i].implicit) {
+                    REQUIRE(classification.operands[i].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected empty tied operand index"));
                     struct kefir_asmcmp_value value;
-                    REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx++], &value));
+                    REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[classification.operands[i].read_index], &value));
                     REQUIRE_OK(resolve_implicit_conflict(state, &value));
                     asmcmp_instruction.args[i] = value;
-                } else {
-                    parameter_idx++;
                 }
                 break;
 
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE:
-                if (!classification.operands[i].implicit) {
-                    kefir_codegen_target_ir_value_ref_t output_value_ref;
+                if (!classification.classification.operands[i].implicit) {
                     const struct kefir_codegen_target_ir_value_type *output_value_type;
-                    REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(state->code, instr_ref, output_index++, &output_value_ref, &output_value_type));
-                    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(output_value_ref.aspect)) {
+                    REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, classification.operands[i].output, &output_value_type));
+                    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(classification.operands[i].output.aspect)) {
+                        REQUIRE(classification.operands[i].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected empty tied operand index"));
+
                         struct kefir_asmcmp_value value;
-                        REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx++], &value));
+                        REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[classification.operands[i].read_index], &value));
                         REQUIRE_OK(resolve_implicit_conflict(state, &value));
                         asmcmp_instruction.args[i] = value;
                     } else {
-                        REQUIRE_OK(resolve_value_ref(state, output_value_ref, output_value_type->variant, &asmcmp_instruction.args[i]));
+                        REQUIRE_OK(resolve_value_ref(state, classification.operands[i].output, output_value_type->variant, &asmcmp_instruction.args[i]));
                     }
-                } else {
-                    output_index++;
                 }
                 break;
 
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE:
-                if (!classification.operands[i].implicit) {
-                    kefir_codegen_target_ir_value_ref_t output_value_ref;
+                if (!classification.classification.operands[i].implicit) {
                     const struct kefir_codegen_target_ir_value_type *output_value_type;
-                    REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(state->code, instr_ref, output_index++, &output_value_ref, &output_value_type));
-                    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(output_value_ref.aspect)) {
+                    REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, classification.operands[i].output, &output_value_type));
+                    if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(classification.operands[i].output.aspect)) {
+                        REQUIRE(classification.operands[i].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected empty tied operand index"));
+
                         struct kefir_asmcmp_value value;
-                        REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx++], &value));
+                        REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[classification.operands[i].read_index], &value));
                         REQUIRE_OK(resolve_implicit_conflict(state, &value));
                         asmcmp_instruction.args[i] = value;
                     } else {
-                        REQUIRE(KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(output_value_ref.aspect), KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected either output register or indirect output value"));
+                        REQUIRE(classification.operands[i].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected empty tied operand index"));
+                        REQUIRE(KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(classification.operands[i].output.aspect), KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected either output register or indirect output value"));
                         struct kefir_asmcmp_value output_value, input_value;
-                        REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx++], &input_value));
-                        REQUIRE_OK(resolve_value_ref(state, output_value_ref, output_value_type->variant, &output_value));
+                        REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[classification.operands[i].read_index], &input_value));
+                        REQUIRE_OK(resolve_value_ref(state, classification.operands[i].output, output_value_type->variant, &output_value));
                         kefir_codegen_target_ir_regalloc_allocation_t allocation;
-                        res = kefir_codegen_target_ir_regalloc_get(state->regalloc, output_value_ref, &allocation);
+                        res = kefir_codegen_target_ir_regalloc_get(state->regalloc, classification.operands[i].output, &allocation);
                         if (res == KEFIR_NOT_FOUND) {
                             continue;
                         }
@@ -2094,7 +2094,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                                     kefir_bool_t output_variant_high_half = false;
                                     REQUIRE_OK(resolve_variant(output_value_type->variant, &output_variant, &output_variant_high_half));
                                     REQUIRE_OK(match_physical_reg_variant(&phreg, output_variant, output_variant_high_half));
-                                    REQUIRE_OK(load_into_allocation(state, output_value_type, &regalloc_entry, &instr->operation.parameters[parameter_idx - 1]));
+                                    REQUIRE_OK(load_into_allocation(state, output_value_type, &regalloc_entry, &instr->operation.parameters[classification.operands[i].read_index]));
                                     REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->current_instr.tmp_output_registers, (kefir_hashtable_key_t) widest, (kefir_hashtable_value_t) phreg));
                                     output_value = KEFIR_ASMCMP_MAKE_PHREG(phreg);
                                 } else {
@@ -2107,7 +2107,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                                                 : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP,
                                             .value = phreg
                                         }
-                                    }, &instr->operation.parameters[parameter_idx - 1]));
+                                    }, &instr->operation.parameters[classification.operands[i].read_index]));
                                 }
                             } break;
 
@@ -2142,7 +2142,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                                                                 .index = index,
                                                                 .length = 1
                                                             }
-                                                        }, &instr->operation.parameters[parameter_idx - 1]));
+                                                        }, &instr->operation.parameters[classification.operands[i].read_index]));
                                                     } else {
                                                         REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
                                                             .spill_area = {
@@ -2150,7 +2150,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                                                                 .index = output_value.indirect.base.spill_index,
                                                                 .length = 1
                                                             }
-                                                        }, &instr->operation.parameters[parameter_idx - 1]));
+                                                        }, &instr->operation.parameters[classification.operands[i].read_index]));
                                                     }
                                                 }
                                                 break;
@@ -2173,7 +2173,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                                                                 .index = index,
                                                                 .length = 2
                                                             }
-                                                        }, &instr->operation.parameters[parameter_idx - 1]));
+                                                        }, &instr->operation.parameters[classification.operands[i].read_index]));
                                                     } else {
                                                         REQUIRE_OK(load_into_allocation(state, output_value_type, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
                                                             .spill_area = {
@@ -2181,7 +2181,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                                                                 .index = output_value.indirect.base.spill_index,
                                                                 .length = 2
                                                             }
-                                                        }, &instr->operation.parameters[parameter_idx - 1]));
+                                                        }, &instr->operation.parameters[classification.operands[i].read_index]));
                                                     }
                                                 }
                                                 break;
@@ -2201,91 +2201,80 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
 
                         asmcmp_instruction.args[i] = output_value;
                     }
-                } else {
-                    parameter_idx++;
-                    output_index++;
                 }
                 break;
         }
     }
 
-    parameter_idx = 0;
-    output_index = 0;
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
-        switch (classification.operands[i].class) {
+        switch (classification.classification.operands[i].class) {
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE:
                 // Intentionally left blank
                 break;
 
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ:
-                if (classification.operands[i].implicit) {
+                if (classification.classification.operands[i].implicit) {
+                    REQUIRE(classification.operands[i].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected empty tied operand index"));
+
                     struct kefir_asmcmp_value operand_value;
-                    REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx], &operand_value));
+                    REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[classification.operands[i].read_index], &operand_value));
                     kefir_bool_t already_present = false;
                     if (operand_value.type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER) {
                         kefir_asm_amd64_xasmgen_register_t widest;
                         REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(operand_value.phreg, &widest));
-                        already_present = widest == classification.operands[i].implicit_phreg;
+                        already_present = widest == classification.classification.operands[i].implicit_phreg;
                     }
                     if (!already_present) {
-                        REQUIRE_OK(acquire_scratch_register(state, classification.operands[i].implicit_phreg));
+                        REQUIRE_OK(acquire_scratch_register(state, classification.classification.operands[i].implicit_phreg));
                         REQUIRE_OK(load_into_allocation(state, &(struct kefir_codegen_target_ir_value_type) {
-                            .kind = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_phreg)
+                            .kind = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.classification.operands[i].implicit_phreg)
                                     ? KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE
                                     : KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT,
                             .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
                         }, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
                             .reg = {
-                                .type = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_phreg)
+                                .type = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.classification.operands[i].implicit_phreg)
                                     ? KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE
                                     : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP,
-                                .value = classification.operands[i].implicit_phreg
+                                .value = classification.classification.operands[i].implicit_phreg
                             }
-                        }, &instr->operation.parameters[parameter_idx++]));
+                        }, &instr->operation.parameters[classification.operands[i].read_index]));
                     }
-                } else {
-                    parameter_idx++;
                 }
                 break;
 
-            case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE: {
-                kefir_codegen_target_ir_value_ref_t output_value_ref;
-                const struct kefir_codegen_target_ir_value_type *output_value_type;
-                REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(state->code, instr_ref, output_index++, &output_value_ref, &output_value_type));
-                if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(output_value_ref.aspect)) {
-                    parameter_idx++;
-                }
-            } break;
+            case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE:
+                // Intentionally left blank
+                break;
 
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE:
-                if (classification.operands[i].implicit) {
-                    kefir_codegen_target_ir_value_ref_t output_value_ref;
-                    REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(state->code, instr_ref, output_index++, &output_value_ref, NULL));
-                    REQUIRE(KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(output_value_ref.aspect), KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected either output register or indirect output value"));
+                if (classification.classification.operands[i].implicit) {
+                    REQUIRE(classification.operands[i].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected empty tied operand index"));
+                    REQUIRE(KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(classification.operands[i].output.aspect), KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected either output register or indirect output value"));
 
                     kefir_codegen_target_ir_regalloc_allocation_t allocation;
-                    res = kefir_codegen_target_ir_regalloc_get(state->regalloc, output_value_ref, &allocation);
+                    res = kefir_codegen_target_ir_regalloc_get(state->regalloc, classification.operands[i].output, &allocation);
                     if (res == KEFIR_NOT_FOUND) {
                         continue;
                     }
                     REQUIRE_OK(res);
 
                     struct kefir_asmcmp_value operand_value;
-                    REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[parameter_idx], &operand_value));
-                    REQUIRE_OK(acquire_scratch_register(state, classification.operands[i].implicit_phreg));
+                    REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[classification.operands[i].read_index], &operand_value));
+                    REQUIRE_OK(acquire_scratch_register(state, classification.classification.operands[i].implicit_phreg));
                     REQUIRE_OK(load_into_allocation(state, &(struct kefir_codegen_target_ir_value_type) {
-                        .kind = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_phreg)
+                        .kind = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.classification.operands[i].implicit_phreg)
                                 ? KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE
                                 : KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT,
                         .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
                     }, &(union kefir_codegen_target_ir_amd64_regalloc_entry) {
                         .reg = {
-                            .type = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.operands[i].implicit_phreg)
+                            .type = kefir_asm_amd64_xasmgen_register_is_floating_point(classification.classification.operands[i].implicit_phreg)
                                 ? KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE
                                 : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP,
-                            .value = classification.operands[i].implicit_phreg
+                            .value = classification.classification.operands[i].implicit_phreg
                         }
-                    }, &instr->operation.parameters[parameter_idx++]));
+                    }, &instr->operation.parameters[classification.operands[i].read_index]));
 
                     union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
                         .allocation = allocation
@@ -2297,15 +2286,12 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
 
                         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
                         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
-                            if (classification.operands[i].implicit_phreg != entry.reg.value) {
-                                REQUIRE_OK(acquire_scratch_register(state, classification.operands[i].implicit_phreg));
-                                REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->current_instr.tmp_output_registers, (kefir_hashtable_key_t) entry.reg.value, (kefir_hashtable_value_t) classification.operands[i].implicit_phreg));
+                            if (classification.classification.operands[i].implicit_phreg != entry.reg.value) {
+                                REQUIRE_OK(acquire_scratch_register(state, classification.classification.operands[i].implicit_phreg));
+                                REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->current_instr.tmp_output_registers, (kefir_hashtable_key_t) entry.reg.value, (kefir_hashtable_value_t) classification.classification.operands[i].implicit_phreg));
                             }
                             break;
                     }
-                } else {
-                    parameter_idx++;
-                    output_index++;
                 }
                 break;
         }
