@@ -1136,6 +1136,17 @@ kefir_result_t kefir_codegen_target_ir_code_replace_operation(struct kefir_mem *
         REQUIRE_OK(res);
     }
 
+    kefir_codegen_target_ir_native_id_t attribute;
+    struct kefir_codegen_target_ir_code_attribute_iterator attr_iter;
+    for (res = kefir_codegen_target_ir_code_instruction_attribute_iter(code, &attr_iter, instr_ref, &attribute);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_instruction_attribute_next(&attr_iter, &attribute)) {
+        REQUIRE_OK(kefir_codegen_target_ir_code_add_instruction_attribute(mem, code, inserted_ref, attribute));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
     REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, inserted_ref, instr_ref));
     REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
     return KEFIR_OK;
