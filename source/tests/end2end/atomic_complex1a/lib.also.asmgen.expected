@@ -1145,8 +1145,8 @@ __kefir_softfloat_complex_float_mul:
     movaps %xmm0, %xmm4
 .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label9:
     or %r8d, %edi
-    setne %dil
-    test %dil, %dil
+    setne %sil
+    test %sil, %sil
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label78
 .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label11:
     xor %eax, %eax
@@ -2057,8 +2057,8 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm4
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label9:
     or %r8d, %edi
-    setne %dil
-    test %dil, %dil
+    setne %sil
+    test %sil, %sil
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label78
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label11:
     xor %eax, %eax
@@ -2419,12 +2419,10 @@ __kefir_softfloat_fmaximum_num:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    xor %eax, %eax
     ucomisd %xmm0, %xmm1
     seta %al
     test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_num_label41
-    xor %eax, %eax
     ucomisd %xmm1, %xmm0
     seta %al
     test %al, %al
@@ -3271,8 +3269,8 @@ __kefir_softfloat_complex_long_double_mul:
     movdqu %xmm0, -176(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label9:
     or %r9d, %r8d
-    setne %r8b
-    test %r8b, %r8b
+    setne %sil
+    test %sil, %sil
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label78
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label11:
     xor %ecx, %ecx
@@ -3782,7 +3780,6 @@ __kefir_softfloat_scalbnf:
     mov %rdi, %rdx
     cmovg %rcx, %rdx
     mov %rdx, %rcx
-    xor %edx, %edx
     cmp $2, %eax
     setge %dl
     xor %esi, %esi
@@ -3797,7 +3794,6 @@ __kefir_softfloat_scalbnf:
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbnf_label15
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label4:
-    xor %edx, %edx
     cmp $2, %eax
     setge %dl
     xor %esi, %esi
@@ -3864,7 +3860,6 @@ __kefir_softfloat_scalbnl:
     mov %rdi, %rdx
     cmovg %rcx, %rdx
     mov %rdx, %rcx
-    xor %edx, %edx
     cmp $2, %eax
     setge %dl
     xor %esi, %esi
@@ -3879,7 +3874,6 @@ __kefir_softfloat_scalbnl:
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbnl_label15
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbnl_label4:
-    xor %edx, %edx
     cmp $2, %eax
     setge %dl
     xor %esi, %esi
@@ -4028,10 +4022,8 @@ __kefir_softfloat_ilogbl:
     movq -48(%rbp), %rax
     movq -40(%rbp), %rcx
     and $32767, %rcx
-    xor %edx, %edx
     cmp $0, %rcx
     sete %dl
-    xor %esi, %esi
     cmp $0, %rax
     sete %sil
     and %sil, %dl
@@ -4126,7 +4118,6 @@ __kefir_softfloat_scalbn:
     mov %rdi, %rdx
     cmovg %rcx, %rdx
     mov %rdx, %rcx
-    xor %edx, %edx
     cmp $2, %eax
     setge %dl
     xor %esi, %esi
@@ -4141,7 +4132,6 @@ __kefir_softfloat_scalbn:
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbn_label15
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label4:
-    xor %edx, %edx
     cmp $2, %eax
     setge %dl
     xor %esi, %esi
@@ -4196,12 +4186,10 @@ __kefir_softfloat_fmaximum_numf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    xor %eax, %eax
     ucomiss %xmm0, %xmm1
     seta %al
     test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label41
-    xor %eax, %eax
     ucomiss %xmm1, %xmm0
     seta %al
     test %al, %al
@@ -4287,7 +4275,6 @@ __kefir_softfloat_fmaximum_numl:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fxch %st(1)
-    xor %eax, %eax
     fucomi %st(1)
     seta %al
     fstpt -80(%rbp)
@@ -4296,7 +4283,6 @@ __kefir_softfloat_fmaximum_numl:
     jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label27
     fldt -80(%rbp)
     fldt -64(%rbp)
-    xor %eax, %eax
     fucomi %st(1)
     seta %al
     fstpt -64(%rbp)

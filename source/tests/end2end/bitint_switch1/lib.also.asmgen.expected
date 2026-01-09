@@ -31,10 +31,9 @@ test1:
     sar $62, %rdx
     shl $58, %rdx
     shr $58, %rdx
-    mov $0, %rsi
     cmp %dl, %cl
-    sete %sil
-    test %sil, %sil
+    sete %cl
+    test %cl, %cl
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test1_label20
@@ -46,10 +45,9 @@ test1:
     sar $59, %rdx
     shl $58, %rdx
     shr $58, %rdx
-    mov $0, %rsi
     cmp %dl, %cl
-    sete %sil
-    test %sil, %sil
+    sete %cl
+    test %cl, %cl
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test1_label23
@@ -58,10 +56,9 @@ test1:
     mov $20, %rcx
     shl $58, %rcx
     shr $58, %rcx
-    mov $0, %rdx
     cmp %cl, %al
-    sete %dl
-    test %dl, %dl
+    sete %al
+    test %al, %al
     sete %al
     test %al, %al
     jz .L__kefir_func_test1_label21
@@ -103,10 +100,9 @@ test2:
     sar $62, %rdx
     shl $50, %rdx
     shr $50, %rdx
-    mov $0, %rsi
     cmp %dx, %cx
-    sete %sil
-    test %sil, %sil
+    sete %cl
+    test %cl, %cl
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test2_label20
@@ -118,10 +114,9 @@ test2:
     sar $56, %rdx
     shl $50, %rdx
     shr $50, %rdx
-    mov $0, %rsi
     cmp %dx, %cx
-    sete %sil
-    test %sil, %sil
+    sete %cl
+    test %cl, %cl
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test2_label23
@@ -132,10 +127,9 @@ test2:
     sar $52, %rcx
     shl $50, %rcx
     shr $50, %rcx
-    mov $0, %rdx
     cmp %cx, %ax
-    sete %dl
-    test %dl, %dl
+    sete %al
+    test %al, %al
     sete %al
     test %al, %al
     jz .L__kefir_func_test2_label21
@@ -177,10 +171,9 @@ test3:
     sar $62, %rdx
     shl $35, %rdx
     shr $35, %rdx
-    mov $0, %rsi
     cmp %edx, %ecx
-    sete %sil
-    test %sil, %sil
+    sete %cl
+    test %cl, %cl
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test3_label20
@@ -192,10 +185,9 @@ test3:
     sar $53, %rdx
     shl $35, %rdx
     shr $35, %rdx
-    mov $0, %rsi
     cmp %edx, %ecx
-    sete %sil
-    test %sil, %sil
+    sete %cl
+    test %cl, %cl
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test3_label23
@@ -206,10 +198,9 @@ test3:
     sar $51, %rcx
     shl $35, %rcx
     shr $35, %rcx
-    mov $0, %rdx
     cmp %ecx, %eax
-    sete %dl
-    test %dl, %dl
+    sete %al
+    test %al, %al
     sete %al
     test %al, %al
     jz .L__kefir_func_test3_label21
@@ -251,10 +242,9 @@ test4:
     sar $62, %rdx
     shl $4, %rdx
     shr $4, %rdx
-    mov $0, %rsi
     cmp %rdx, %rcx
-    sete %sil
-    test %sil, %sil
+    sete %cl
+    test %cl, %cl
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test4_label20
@@ -266,10 +256,9 @@ test4:
     sar $53, %rdx
     shl $4, %rdx
     shr $4, %rdx
-    mov $0, %rsi
     cmp %rdx, %rcx
-    sete %sil
-    test %sil, %sil
+    sete %cl
+    test %cl, %cl
     sete %cl
     test %cl, %cl
     jz .L__kefir_func_test4_label23
@@ -280,10 +269,9 @@ test4:
     sar $51, %rcx
     shl $4, %rcx
     shr $4, %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    sete %dl
-    test %dl, %dl
+    sete %al
+    test %al, %al
     sete %al
     test %al, %al
     jz .L__kefir_func_test4_label21
@@ -330,10 +318,9 @@ test5:
     lea -48(%rbp), %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    mov $0, %rcx
     cmp $0, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     sete %al
     test %al, %al
     jz .L__kefir_func_test5_label20
@@ -348,10 +335,9 @@ test5:
     lea -32(%rbp), %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    mov $0, %rcx
     cmp $0, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     sete %al
     test %al, %al
     jz .L__kefir_func_test5_label23
@@ -369,10 +355,9 @@ test5:
     lea -48(%rbp), %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    mov $0, %rcx
     cmp $0, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     sete %al
     test %al, %al
     jz .L__kefir_func_test5_label21
@@ -602,8 +587,8 @@ __kefir_bigint_cast_signed:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %dl
-    movzx %dl, %rax
+    setne %al
+    movzx %al, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -685,8 +670,8 @@ __kefir_bigint_cast_signed:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %dl
-    movzx %dl, %rax
+    setne %al
+    movzx %al, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -777,8 +762,8 @@ __kefir_bigint_cast_signed:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %dl
-    movzx %dl, %rax
+    setne %al
+    movzx %al, %rax
     test %eax, %eax
     sete %al
     test %al, %al

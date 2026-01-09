@@ -328,7 +328,7 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 37,
+#                    "instr_ref": 51,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -339,7 +339,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "variant": "8bit",
-#                            "tied": true
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "indirect",
@@ -402,7 +402,7 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 39,
+#                    "instr_ref": 53,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -413,7 +413,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "variant": "8bit",
-#                            "tied": true
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "indirect",
@@ -453,7 +453,7 @@ test1:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 37,
+#                            "instr_ref": 51,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -492,7 +492,7 @@ test1:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 39,
+#                            "instr_ref": 53,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1836,7 +1836,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 34,
+#                    "instr_ref": 74,
 #                    "opcode": "sete",
 #                    "parameters": [
 #                        {
@@ -1847,7 +1847,7 @@ test2:
 #                                "index": 0
 #                            },
 #                            "variant": "8bit",
-#                            "tied": true
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1890,7 +1890,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 34,
+#                            "instr_ref": 74,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1900,7 +1900,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 34,
+#                            "instr_ref": 74,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1959,7 +1959,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 74,
+#                    "instr_ref": 75,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -2129,7 +2129,7 @@ test2:
 #            "block_ref": 11,
 #            "code": [
 #                {
-#                    "instr_ref": 75,
+#                    "instr_ref": 76,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3947,7 +3947,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 15,
+#                    "instr_ref": 30,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
@@ -3958,7 +3958,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "variant": "64bit",
-#                            "tied": true
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -4020,12 +4020,12 @@ test4:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
-#                                "resource": "flag_cf"
+#                                "resource": "flag_sf"
 #                            },
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "resource",
-#                                "resource": "flag_cf"
+#                                "resource": "flag_sf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
@@ -4048,12 +4048,12 @@ test4:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
-#                                "resource": "flag_sf"
+#                                "resource": "flag_cf"
 #                            },
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "resource",
-#                                "resource": "flag_sf"
+#                                "resource": "flag_cf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
@@ -4072,7 +4072,7 @@ test4:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 15,
+#                            "instr_ref": 30,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0

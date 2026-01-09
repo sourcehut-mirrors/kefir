@@ -98,8 +98,8 @@ i128_bnot:
     mov %rsp, %rbp
     sub $16, %rsp
     or %rsi, %rdi
-    sete %dil
-    movzx %dil, %rax
+    sete %al
+    movzx %al, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -111,8 +111,8 @@ u128_bnot:
     mov %rsp, %rbp
     sub $16, %rsp
     or %rsi, %rdi
-    sete %dil
-    movzx %dil, %rax
+    sete %al
+    movzx %al, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

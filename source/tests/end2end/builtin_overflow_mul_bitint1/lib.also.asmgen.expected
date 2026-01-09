@@ -1028,10 +1028,8 @@ __kefir_bigint_signed_multiply:
     mov %r13, %rdi
     mov %r12, %rsi
     call __kefir_bigint_zero
-    xor %eax, %eax
     cmp $0, %r12
     sete %al
-    xor %ecx, %ecx
     cmp $0, %rbx
     sete %cl
     or %cl, %al
@@ -1089,7 +1087,6 @@ __kefir_bigint_signed_multiply:
     mov %rax, %r14
     and $1, %r14d
     setne %al
-    xor %edx, %edx
     test %ecx, %ecx
     sete %dl
     test %r14d, %r14d

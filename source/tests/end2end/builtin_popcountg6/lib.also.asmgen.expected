@@ -20,7 +20,7 @@ test1:
 .L__kefir_text_func_test1_begin:
     shl $47, %rdi
     shr $47, %rdi
-    mov %edi, %eax
+    mov %rdi, %rax
     shr $1, %eax
     and $1431655765, %eax
     sub %eax, %edi
@@ -40,7 +40,7 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %edi, %eax
+    mov %rdi, %rax
     shr $1, %eax
     and $1431655765, %eax
     sub %eax, %edi

@@ -73,9 +73,8 @@ uint128_add_overflow:
     lea -96(%rbp), %rsi
     mov $130, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %ecx, %ecx
     cmp $0, %al
-    mov %rcx, %rbx
+    mov %rax, %rbx
     sete %bl
     lea -56(%rbp), %rdi
     mov $130, %rsi
@@ -166,9 +165,8 @@ uint128_mul_overflow:
     lea -208(%rbp), %rsi
     mov $257, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %ecx, %ecx
     cmp $0, %al
-    mov %rcx, %rbx
+    mov %rax, %rbx
     sete %bl
     lea -112(%rbp), %rdi
     mov $257, %rsi
@@ -248,9 +246,8 @@ uint128_sub_overflow:
     lea -96(%rbp), %rsi
     mov $130, %rdx
     call __kefir_bigint_unsigned_compare
-    xor %ecx, %ecx
     cmp $0, %al
-    mov %rcx, %rbx
+    mov %rax, %rbx
     sete %bl
     lea -56(%rbp), %rdi
     mov $130, %rsi
@@ -1523,10 +1520,8 @@ __kefir_bigint_signed_multiply:
     mov %r13, %rdi
     mov %r12, %rsi
     call __kefir_bigint_zero
-    xor %eax, %eax
     cmp $0, %r12
     sete %al
-    xor %ecx, %ecx
     cmp $0, %rbx
     sete %cl
     or %cl, %al
@@ -1584,7 +1579,6 @@ __kefir_bigint_signed_multiply:
     mov %rax, %r14
     and $1, %r14d
     setne %al
-    xor %edx, %edx
     test %ecx, %ecx
     sete %dl
     test %r14d, %r14d

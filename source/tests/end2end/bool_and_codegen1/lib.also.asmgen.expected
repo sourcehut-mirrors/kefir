@@ -8,17 +8,14 @@
 .L__kefir_text_section_begin:
 test:
 .L__kefir_text_func_test_begin:
-    xor %eax, %eax
     cmp $0, %edi
     setg %al
-    xor %edi, %edi
     cmp $1, %esi
-    setge %dil
-    and %dil, %al
-    xor %esi, %esi
-    cmp $0, %edx
-    setne %sil
+    setge %sil
     and %sil, %al
+    cmp $0, %edx
+    setne %dl
+    and %dl, %al
     test %ecx, %ecx
     sete %cl
     and %al, %cl
