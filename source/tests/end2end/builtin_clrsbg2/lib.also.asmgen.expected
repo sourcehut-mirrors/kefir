@@ -15,8 +15,8 @@
 test1:
 .L__kefir_text_func_test1_begin:
     movsx %dil, %rax
-    mov %rax, %rcx
-    add %eax, %ecx
+    mov %eax, %ecx
+    add %ecx, %ecx
     sar $31, %eax
     xor %eax, %ecx
     or $1, %ecx
@@ -30,8 +30,8 @@ test1:
 test2:
 .L__kefir_text_func_test2_begin:
     movsx %di, %rax
-    mov %rax, %rcx
-    add %eax, %ecx
+    mov %eax, %ecx
+    add %ecx, %ecx
     sar $31, %eax
     xor %eax, %ecx
     or $1, %ecx
@@ -44,8 +44,8 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rdi, %rax
-    add %edi, %eax
+    mov %edi, %eax
+    add %eax, %eax
     sar $31, %edi
     xor %edi, %eax
     or $1, %eax

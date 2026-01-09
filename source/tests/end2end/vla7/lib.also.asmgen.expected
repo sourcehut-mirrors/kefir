@@ -46,12 +46,13 @@ test:
     lea -24(%rbp), %rax
     movq (%rax), %rax
     movq -8(%rbp), %rdx
+    mov $0, %rsi
     cmp %rdx, %rax
+    sete %sil
+    mov $0, %rax
+    test %sil, %sil
     sete %al
-    mov $0, %rdx
-    test %al, %al
-    sete %dl
-    test %edx, %edx
+    test %eax, %eax
     sete %al
     test %al, %al
     jz .L__kefir_func_test_label16

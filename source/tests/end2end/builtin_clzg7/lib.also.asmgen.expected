@@ -21,15 +21,15 @@ test1:
     mov %rdi, %rax
     shl $47, %rax
     shr $47, %rax
+    xor %ecx, %ecx
     cmp $0, %eax
-    sete %al
+    sete %cl
     shl $47, %rdi
     shr $47, %rdi
-    bsr %edi, %ecx
-    xor $31, %ecx
-    sub $15, %ecx
-    test %al, %al
-    mov %ecx, %eax
+    bsr %edi, %eax
+    xor $31, %eax
+    sub $15, %eax
+    test %cl, %cl
     cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test1_end:
@@ -39,12 +39,12 @@ test2:
     mov %rdi, %rax
     shl $32, %rax
     shr $32, %rax
+    xor %ecx, %ecx
     cmp $0, %eax
-    sete %al
-    bsr %edi, %ecx
-    xor $31, %ecx
-    test %al, %al
-    mov %ecx, %eax
+    sete %cl
+    bsr %edi, %eax
+    xor $31, %eax
+    test %cl, %cl
     cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test2_end:
@@ -54,15 +54,15 @@ test3:
     mov %rdi, %rax
     shl $5, %rax
     shr $5, %rax
+    xor %ecx, %ecx
     cmp $0, %rax
-    sete %al
+    sete %cl
     shl $5, %rdi
     shr $5, %rdi
-    bsr %rdi, %rcx
-    xor $63, %ecx
-    sub $5, %ecx
-    test %al, %al
-    mov %ecx, %eax
+    bsr %rdi, %rax
+    xor $63, %eax
+    sub $5, %eax
+    test %cl, %cl
     cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test3_end:
@@ -72,12 +72,12 @@ test4:
     mov %rdi, %rax
     shl $0, %rax
     shr $0, %rax
+    xor %ecx, %ecx
     cmp $0, %rax
-    sete %al
-    bsr %rdi, %rcx
-    xor $63, %ecx
-    test %al, %al
-    mov %ecx, %eax
+    sete %cl
+    bsr %rdi, %rax
+    xor $63, %eax
+    test %cl, %cl
     cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test4_end:
@@ -100,8 +100,9 @@ test5:
     lea -32(%rbp), %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
+    xor %ecx, %ecx
     cmp $0, %al
-    mov %rax, %r12
+    mov %rcx, %r12
     sete %r12b
     lea -48(%rbp), %rdi
     mov $120, %rsi
@@ -140,8 +141,9 @@ test6:
     lea -64(%rbp), %rsi
     mov $315, %rdx
     call __kefir_bigint_unsigned_compare
+    xor %ecx, %ecx
     cmp $0, %al
-    mov %rax, %r13
+    mov %rcx, %r13
     sete %r13b
     mov %r12, %rdi
     mov $315, %rsi

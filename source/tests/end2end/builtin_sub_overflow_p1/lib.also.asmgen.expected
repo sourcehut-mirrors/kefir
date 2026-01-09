@@ -106,8 +106,9 @@ test4:
     lea -48(%rbp), %rsi
     mov $66, %rdx
     call __kefir_bigint_unsigned_compare
+    xor %ecx, %ecx
     cmp $0, %al
-    mov %rax, %rbx
+    mov %rcx, %rbx
     sete %bl
     lea -32(%rbp), %rdi
     mov $66, %rsi

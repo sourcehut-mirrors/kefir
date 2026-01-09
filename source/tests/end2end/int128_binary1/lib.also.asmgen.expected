@@ -205,6 +205,7 @@ i128_neq:
     sub $32, %rsp
     xor %rdx, %rdi
     xor %rcx, %rsi
+    xor %eax, %eax
     or %rsi, %rdi
     sete %al
     xor %ecx, %ecx
@@ -356,6 +357,7 @@ u128_neq:
     sub $32, %rsp
     xor %rdx, %rdi
     xor %rcx, %rsi
+    xor %eax, %eax
     or %rsi, %rdi
     sete %al
     xor %ecx, %ecx

@@ -15,7 +15,7 @@
 test1:
 .L__kefir_text_func_test1_begin:
     movzx %dil, %rax
-    mov %rax, %rcx
+    mov %eax, %ecx
     shr $1, %ecx
     and $1431655765, %ecx
     sub %ecx, %eax
@@ -36,7 +36,7 @@ test1:
 test2:
 .L__kefir_text_func_test2_begin:
     movzx %di, %rax
-    mov %rax, %rcx
+    mov %eax, %ecx
     shr $1, %ecx
     and $1431655765, %ecx
     sub %ecx, %eax
@@ -56,7 +56,7 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rdi, %rax
+    mov %edi, %eax
     shr $1, %eax
     and $1431655765, %eax
     sub %eax, %edi

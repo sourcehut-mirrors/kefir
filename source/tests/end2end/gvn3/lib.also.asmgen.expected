@@ -233,6 +233,7 @@ bnotchar:
     sub $16, %rsp
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
+    xor %eax, %eax
     test %dil, %dil
     sete %al
     movb %al, -16(%rbp)

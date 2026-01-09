@@ -91,7 +91,6 @@ overflow_mul_ulong_long_long:
     neg %rax
     cmovs %rsi, %rax
     mul %rdi
-    mov %rdx, %rdi
     seto %dil
     mov %rsi, %rdx
     shr $63, %rdx
@@ -282,7 +281,6 @@ overflow_mul_long_ulong_long:
     neg %rax
     cmovs %rdi, %rax
     mul %rsi
-    mov %rdx, %rsi
     seto %sil
     mov %rdi, %rdx
     shr $63, %rdx

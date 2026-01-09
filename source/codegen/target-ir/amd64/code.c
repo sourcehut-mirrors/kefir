@@ -367,7 +367,6 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr_ref, output_index++, NULL, &value_type));
             if (value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT || value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) {
                 classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
-                classification->operands[i].tied_rw = true;
             }
         }
     }

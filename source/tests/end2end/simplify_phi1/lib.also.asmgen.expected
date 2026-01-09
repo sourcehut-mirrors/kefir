@@ -38,8 +38,10 @@ test1:
     sub %rsi, %r13
     add %rax, %r12
     add %rdx, %r14
+    xor %eax, %eax
     cmp $0, %r13
     seta %al
+    xor %ecx, %ecx
     cmp $0, %rbx
     seta %cl
     and %cl, %al

@@ -186,6 +186,8 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(aspect_format(json, code->klass, operand->direct.value_ref.aspect));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
             REQUIRE_OK(variant_format(json, operand->direct.variant));
+            REQUIRE_OK(kefir_json_output_object_key(json, "tied"));
+            REQUIRE_OK(kefir_json_output_boolean(json, operand->direct.tied));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 

@@ -31,6 +31,7 @@ is_inf_f32:
     xor %edx, %edx
     cmp $2139095040, %ecx
     cmove %eax, %edx
+    mov $0, %rax
     cmp $0, %edx
     sete %al
     mov $0, %rcx
@@ -59,6 +60,7 @@ is_inf_f64:
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
     cmove %eax, %edx
+    mov $0, %rax
     cmp $0, %edx
     sete %al
     mov $0, %rcx
@@ -93,6 +95,7 @@ is_inf_f80:
     xor %esi, %esi
     or %rdx, %rcx
     cmove %eax, %esi
+    mov $0, %rax
     cmp $0, %esi
     sete %al
     mov $0, %rcx

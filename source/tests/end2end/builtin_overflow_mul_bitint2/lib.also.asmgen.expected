@@ -56,8 +56,9 @@ mul1:
     lea -112(%rbp), %rsi
     mov $129, %rdx
     call __kefir_bigint_unsigned_compare
+    xor %ecx, %ecx
     cmp $0, %al
-    mov %rax, %rbx
+    mov %rcx, %rbx
     sete %bl
     lea -64(%rbp), %rdi
     mov $129, %rsi
@@ -125,8 +126,9 @@ mul2:
     lea -112(%rbp), %rsi
     mov $129, %rdx
     call __kefir_bigint_unsigned_compare
+    xor %ecx, %ecx
     cmp $0, %al
-    mov %rax, %rbx
+    mov %rcx, %rbx
     sete %bl
     lea -64(%rbp), %rdi
     mov $129, %rsi
@@ -196,8 +198,9 @@ mul3:
     lea -112(%rbp), %rsi
     mov $161, %rdx
     call __kefir_bigint_unsigned_compare
+    xor %ecx, %ecx
     cmp $0, %al
-    mov %rax, %rbx
+    mov %rcx, %rbx
     sete %bl
     lea -64(%rbp), %rdi
     mov $161, %rsi
@@ -1138,8 +1141,10 @@ __kefir_bigint_signed_multiply:
     mov %r13, %rdi
     mov %r12, %rsi
     call __kefir_bigint_zero
+    xor %eax, %eax
     cmp $0, %r12
     sete %al
+    xor %ecx, %ecx
     cmp $0, %rbx
     sete %cl
     or %cl, %al
@@ -1197,6 +1202,7 @@ __kefir_bigint_signed_multiply:
     mov %rax, %r14
     and $1, %r14d
     setne %al
+    xor %edx, %edx
     test %ecx, %ecx
     sete %dl
     test %r14d, %r14d

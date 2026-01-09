@@ -11,8 +11,8 @@
 or:
 .L__kefir_text_func_or_begin:
     or %esi, %edi
-    setne %al
-    movzx %al, %rax
+    setne %dil
+    movzx %dil, %rax
     or %esi, %eax
     setne %al
     movzx %al, %rax

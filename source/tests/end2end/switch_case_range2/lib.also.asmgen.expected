@@ -15,11 +15,13 @@
 test1:
 .L__kefir_text_func_test1_begin:
     movzx %dil, %rax
+    xor %ecx, %ecx
     cmp $240, %eax
     setge %cl
+    xor %edx, %edx
     cmp $255, %eax
-    setle %al
-    and %al, %cl
+    setle %dl
+    and %dl, %cl
     jnz .L__kefir_func_test1_label8
     mov $2, %rax
     ret
@@ -31,11 +33,13 @@ test1:
 test2:
 .L__kefir_text_func_test2_begin:
     movzx %di, %rax
+    xor %ecx, %ecx
     cmp $65280, %eax
     setge %cl
+    xor %edx, %edx
     cmp $65535, %eax
-    setle %al
-    and %al, %cl
+    setle %dl
+    and %dl, %cl
     jnz .L__kefir_func_test2_label8
     mov $2, %rax
     ret
@@ -47,12 +51,14 @@ test2:
 test3:
 .L__kefir_text_func_test3_begin:
     movabs $4294967040, %rax
+    xor %ecx, %ecx
     cmp %eax, %edi
-    setae %al
-    movabs $4294967295, %rcx
-    cmp %ecx, %edi
-    setbe %cl
-    and %cl, %al
+    setae %cl
+    movabs $4294967295, %rax
+    xor %edx, %edx
+    cmp %eax, %edi
+    setbe %dl
+    and %dl, %cl
     jnz .L__kefir_func_test3_label8
     mov $2, %rax
     ret
@@ -63,8 +69,10 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
+    xor %eax, %eax
     cmp $-256, %rdi
     setae %al
+    xor %ecx, %ecx
     cmp $-1, %rdi
     setbe %cl
     and %cl, %al

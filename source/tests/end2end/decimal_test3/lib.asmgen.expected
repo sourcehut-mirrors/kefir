@@ -354,8 +354,9 @@ test_dec32_cg_solve:
     movaps %xmm0, -80(%rbp)
     movaps -208(%rbp), %xmm1
     call __bid_ltsd2@PLT
+    xor %ecx, %ecx
     cmp $0, %eax
-    mov %rax, %r12
+    mov %rcx, %r12
     setl %r12b
     movaps -208(%rbp), %xmm0
     movaps -80(%rbp), %xmm1
@@ -363,8 +364,8 @@ test_dec32_cg_solve:
     test %eax, %eax
     sete %al
     or %al, %r12b
-    setne %al
-    test %al, %al
+    setne %r12b
+    test %r12b, %r12b
     jnz .L__kefir_func_test_dec32_cg_solve_label12
     movaps -112(%rbp), %xmm0
     movaps -144(%rbp), %xmm1
@@ -640,8 +641,9 @@ test_dec64_cg_solve:
     movaps %xmm0, -80(%rbp)
     movaps -208(%rbp), %xmm1
     call __bid_ltdd2@PLT
+    xor %ecx, %ecx
     cmp $0, %eax
-    mov %rax, %r12
+    mov %rcx, %r12
     setl %r12b
     movaps -208(%rbp), %xmm0
     movaps -80(%rbp), %xmm1
@@ -649,8 +651,8 @@ test_dec64_cg_solve:
     test %eax, %eax
     sete %al
     or %al, %r12b
-    setne %al
-    test %al, %al
+    setne %r12b
+    test %r12b, %r12b
     jnz .L__kefir_func_test_dec64_cg_solve_label12
     movaps -112(%rbp), %xmm0
     movaps -144(%rbp), %xmm1
@@ -807,8 +809,9 @@ test_dec32_sqrt_approx:
     movd .L__kefir_func_test_dec32_sqrt_approx_label17(%rip), %xmm1
     movaps %xmm1, -48(%rbp)
     call __bid_ltsd2@PLT
+    xor %ecx, %ecx
     cmp $0, %eax
-    mov %rax, %rbx
+    mov %rcx, %rbx
     setl %bl
     movaps -48(%rbp), %xmm0
     movaps -64(%rbp), %xmm1
@@ -816,8 +819,8 @@ test_dec32_sqrt_approx:
     test %eax, %eax
     sete %al
     or %al, %bl
-    setne %al
-    test %al, %al
+    setne %bl
+    test %bl, %bl
     jnz .L__kefir_func_test_dec32_sqrt_approx_label15
     movd .L__kefir_func_test_dec32_sqrt_approx_label18(%rip), %xmm1
     movaps -64(%rbp), %xmm0
@@ -1231,8 +1234,9 @@ test_dec128_sqrt_approx:
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label17(%rip), %xmm1
     movaps %xmm1, -48(%rbp)
     call __bid_lttd2@PLT
+    xor %ecx, %ecx
     cmp $0, %eax
-    mov %rax, %rbx
+    mov %rcx, %rbx
     setl %bl
     movaps -48(%rbp), %xmm0
     movaps -64(%rbp), %xmm1
@@ -1240,8 +1244,8 @@ test_dec128_sqrt_approx:
     test %eax, %eax
     sete %al
     or %al, %bl
-    setne %al
-    test %al, %al
+    setne %bl
+    test %bl, %bl
     jnz .L__kefir_func_test_dec128_sqrt_approx_label15
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label18(%rip), %xmm1
     movaps -64(%rbp), %xmm0
@@ -1307,8 +1311,9 @@ test_dec64_sqrt_approx:
     movq .L__kefir_func_test_dec64_sqrt_approx_label17(%rip), %xmm1
     movaps %xmm1, -48(%rbp)
     call __bid_ltdd2@PLT
+    xor %ecx, %ecx
     cmp $0, %eax
-    mov %rax, %rbx
+    mov %rcx, %rbx
     setl %bl
     movaps -48(%rbp), %xmm0
     movaps -64(%rbp), %xmm1
@@ -1316,8 +1321,8 @@ test_dec64_sqrt_approx:
     test %eax, %eax
     sete %al
     or %al, %bl
-    setne %al
-    test %al, %al
+    setne %bl
+    test %bl, %bl
     jnz .L__kefir_func_test_dec64_sqrt_approx_label15
     movq .L__kefir_func_test_dec64_sqrt_approx_label18(%rip), %xmm1
     movaps -64(%rbp), %xmm0
@@ -2081,8 +2086,9 @@ test_dec128_cg_solve:
     movaps %xmm0, -80(%rbp)
     movaps -208(%rbp), %xmm1
     call __bid_lttd2@PLT
+    xor %ecx, %ecx
     cmp $0, %eax
-    mov %rax, %r12
+    mov %rcx, %r12
     setl %r12b
     movaps -208(%rbp), %xmm0
     movaps -80(%rbp), %xmm1
@@ -2090,8 +2096,8 @@ test_dec128_cg_solve:
     test %eax, %eax
     sete %al
     or %al, %r12b
-    setne %al
-    test %al, %al
+    setne %r12b
+    test %r12b, %r12b
     jnz .L__kefir_func_test_dec128_cg_solve_label12
     movaps -112(%rbp), %xmm0
     movaps -144(%rbp), %xmm1

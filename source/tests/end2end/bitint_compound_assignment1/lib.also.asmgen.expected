@@ -1144,8 +1144,8 @@ __kefir_bigint_right_shift_whole_digits:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -1536,8 +1536,8 @@ __kefir_bigint_cast_signed:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -1619,8 +1619,8 @@ __kefir_bigint_cast_signed:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -1711,8 +1711,8 @@ __kefir_bigint_cast_signed:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -2440,8 +2440,8 @@ __kefir_bigint_arithmetic_right_shift:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label46
     movq -32(%rbp), %rcx
@@ -3368,8 +3368,8 @@ __kefir_bigint_unsigned_multiply:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -3502,8 +3502,8 @@ __kefir_bigint_cast_unsigned:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -3570,8 +3570,8 @@ __kefir_bigint_cast_unsigned:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -3622,8 +3622,8 @@ __kefir_bigint_cast_unsigned:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -3975,8 +3975,8 @@ __kefir_bigint_left_shift_whole_digits:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al

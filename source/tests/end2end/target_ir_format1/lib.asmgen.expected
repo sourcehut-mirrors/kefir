@@ -56,7 +56,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -86,7 +87,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -131,7 +133,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -235,7 +238,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "integer",
@@ -331,7 +335,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -340,7 +345,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_sf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -349,7 +355,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_of"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -387,7 +394,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -396,7 +404,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -487,7 +496,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -496,7 +506,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -534,7 +545,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -543,7 +555,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -596,7 +609,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 115,
+#                    "instr_ref": 111,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -614,7 +627,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -711,7 +725,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "integer",
@@ -807,7 +822,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -816,7 +832,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_sf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -825,7 +842,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_of"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -902,7 +920,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -993,7 +1012,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1002,7 +1022,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -1040,7 +1061,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "64bit"
+#                            "variant": "64bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1049,7 +1071,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "64bit"
+#                            "variant": "64bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -1147,45 +1170,18 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 107,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 0
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 108,
+#                    "instr_ref": 31,
 #                    "opcode": "setne",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 107,
+#                            "instr_ref": 30,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1194,7 +1190,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -1209,7 +1206,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rax"
+#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 12
@@ -1227,12 +1224,13 @@ factorial:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 108,
+#                            "instr_ref": 31,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -1270,7 +1268,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1279,7 +1278,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -1370,7 +1370,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1379,7 +1380,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -1417,7 +1419,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1426,7 +1429,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -1479,7 +1483,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 119,
+#                    "instr_ref": 115,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -1497,7 +1501,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -1653,7 +1658,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "integer",
@@ -1749,7 +1755,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1758,7 +1765,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1767,7 +1775,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_sf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1776,7 +1785,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_of"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -1814,7 +1824,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1823,7 +1834,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -1914,7 +1926,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1923,7 +1936,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -1961,7 +1975,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1970,7 +1985,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "8bit"
+#                            "variant": "8bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -2023,7 +2039,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 113,
+#                    "instr_ref": 109,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -2041,7 +2057,8 @@ factorial:
 #                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -2104,7 +2121,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -2156,7 +2174,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -2176,7 +2195,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -2285,7 +2305,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -2294,7 +2315,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -2409,7 +2431,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -2479,7 +2502,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "integer",
@@ -2599,7 +2623,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit"
+#                            "variant": "32bit",
+#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [
@@ -2691,7 +2716,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [
@@ -2743,7 +2769,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -2763,7 +2790,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -2848,7 +2876,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -2868,7 +2897,8 @@ factorial:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default"
+#                            "variant": "default",
+#                            "tied": true
 #                        }
 #                    ],
 #                    "values": [],
@@ -2895,7 +2925,7 @@ factorial:
 #            "block_ref": 17,
 #            "code": [
 #                {
-#                    "instr_ref": 110,
+#                    "instr_ref": 106,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2917,7 +2947,7 @@ factorial:
 #            "block_ref": 18,
 #            "code": [
 #                {
-#                    "instr_ref": 112,
+#                    "instr_ref": 108,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2939,7 +2969,7 @@ factorial:
 #            "block_ref": 19,
 #            "code": [
 #                {
-#                    "instr_ref": 114,
+#                    "instr_ref": 110,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2961,7 +2991,7 @@ factorial:
 #            "block_ref": 20,
 #            "code": [
 #                {
-#                    "instr_ref": 116,
+#                    "instr_ref": 112,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2983,7 +3013,7 @@ factorial:
 #            "block_ref": 21,
 #            "code": [
 #                {
-#                    "instr_ref": 118,
+#                    "instr_ref": 114,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3005,7 +3035,7 @@ factorial:
 #            "block_ref": 22,
 #            "code": [
 #                {
-#                    "instr_ref": 120,
+#                    "instr_ref": 116,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3047,8 +3077,8 @@ factorial:
     cmp %eax, %esi
     sete %dl
     or %rdx, %rcx
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %eax, %eax
     sete %al
     test %al, %al

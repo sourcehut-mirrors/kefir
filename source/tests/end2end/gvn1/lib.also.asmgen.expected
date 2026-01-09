@@ -194,8 +194,8 @@ borint:
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     or %esi, %edi
-    setne %al
-    movzx %al, %rax
+    setne %dil
+    movzx %dil, %rax
     movl %eax, -16(%rbp)
     neg %eax
     movl %eax, -12(%rbp)
@@ -486,9 +486,9 @@ borchar:
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     or %sil, %dil
-    setne %al
-    movb %al, -16(%rbp)
-    movsx %al, %rax
+    setne %dil
+    movb %dil, -16(%rbp)
+    movsx %dil, %rax
     neg %eax
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
@@ -506,8 +506,8 @@ borlong:
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     or %rsi, %rdi
-    setne %al
-    movzx %al, %rax
+    setne %dil
+    movzx %dil, %rax
     movsx %eax, %rcx
     movq %rcx, -16(%rbp)
     movsx %eax, %rax
@@ -939,8 +939,8 @@ borshort:
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)
     or %si, %di
-    setne %al
-    movzx %al, %rax
+    setne %dil
+    movzx %dil, %rax
     movw %ax, -16(%rbp)
     movsx %ax, %rax
     neg %eax

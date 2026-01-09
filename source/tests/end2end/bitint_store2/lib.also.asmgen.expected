@@ -182,8 +182,8 @@ __kefir_bigint_cast_unsigned:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -250,8 +250,8 @@ __kefir_bigint_cast_unsigned:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
@@ -302,8 +302,8 @@ __kefir_bigint_cast_unsigned:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    movzx %al, %rax
+    setne %dl
+    movzx %dl, %rax
     test %eax, %eax
     sete %al
     test %al, %al

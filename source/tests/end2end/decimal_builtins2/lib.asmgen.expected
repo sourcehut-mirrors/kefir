@@ -127,12 +127,11 @@ dec32_isfinite:
     test %eax, %eax
     sete %al
     or %al, %r12b
-    setne %al
-    or %al, %bl
-    setne %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    setne %r12b
+    or %r12b, %bl
+    setne %bl
+    xor %eax, %eax
+    test %bl, %bl
     sete %al
     lea -16(%rbp), %rsp
     pop %r12
@@ -172,12 +171,11 @@ dec64_isfinite:
     test %eax, %eax
     sete %al
     or %al, %r12b
-    setne %al
-    or %al, %bl
-    setne %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    setne %r12b
+    or %r12b, %bl
+    setne %bl
+    xor %eax, %eax
+    test %bl, %bl
     sete %al
     lea -16(%rbp), %rsp
     pop %r12
@@ -329,12 +327,11 @@ dec128_isfinite:
     test %eax, %eax
     sete %al
     or %al, %r12b
-    setne %al
-    or %al, %bl
-    setne %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    setne %r12b
+    or %r12b, %bl
+    setne %bl
+    xor %eax, %eax
+    test %bl, %bl
     sete %al
     lea -16(%rbp), %rsp
     pop %r12

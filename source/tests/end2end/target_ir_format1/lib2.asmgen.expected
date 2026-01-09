@@ -267,7 +267,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": []
@@ -281,7 +281,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "al"
+#                        "reg": "cl"
 #                    }
 #                ],
 #                "labels": []
@@ -698,8 +698,8 @@ factorial:
     cmp %eax, %esi
     sete %dl
     or %rdx, %rcx
-    setne %al
-    movzx %al, %rax
+    setne %cl
+    movzx %cl, %rax
     test %eax, %eax
     sete %al
     test %al, %al
