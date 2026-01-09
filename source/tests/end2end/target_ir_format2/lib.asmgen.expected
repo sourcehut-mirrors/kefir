@@ -3947,7 +3947,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 30,
+#                    "instr_ref": 15,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
@@ -3958,7 +3958,7 @@ test4:
 #                                "index": 0
 #                            },
 #                            "variant": "64bit",
-#                            "tied": false
+#                            "tied": true
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -4020,12 +4020,12 @@ test4:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
-#                                "resource": "flag_sf"
+#                                "resource": "flag_cf"
 #                            },
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "resource",
-#                                "resource": "flag_sf"
+#                                "resource": "flag_cf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
@@ -4048,12 +4048,12 @@ test4:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
-#                                "resource": "flag_cf"
+#                                "resource": "flag_sf"
 #                            },
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "resource",
-#                                "resource": "flag_cf"
+#                                "resource": "flag_sf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
@@ -4072,7 +4072,7 @@ test4:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 30,
+#                            "instr_ref": 15,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0

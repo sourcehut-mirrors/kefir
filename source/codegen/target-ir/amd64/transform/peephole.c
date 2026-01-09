@@ -331,11 +331,8 @@ static kefir_result_t peephole_setcc(struct kefir_mem *mem, struct kefir_codegen
     struct kefir_codegen_target_ir_operation oper = instr->operation;
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         if (classification.classification.operands[i].class != KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE ||
-            classification.operands[i].read_index == KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE) {
-            continue;
-        }
-
-        if (oper.parameters[classification.operands[i].read_index].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF ||
+            classification.operands[i].read_index == KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE ||
+            oper.parameters[classification.operands[i].read_index].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF ||
             oper.parameters[classification.operands[i].read_index].direct.tied) {
             continue;
         }
@@ -380,16 +377,16 @@ static kefir_result_t peephole_setcc(struct kefir_mem *mem, struct kefir_codegen
             }
             
             for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS && !ext_uses; i++) {
-                if ((user_instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                if (user_instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
                     user_instr->operation.parameters[i].direct.value_ref.instr_ref == output_value_ref.instr_ref &&
                     user_instr->operation.parameters[i].direct.value_ref.aspect == output_value_ref.aspect &&
-                    !(user_instr->operation.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
-                    (user_instr->operation.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                    output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
-                    (user_instr->operation.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                    output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
-                    (user_instr->operation.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
-                    output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT)))) {
+                    (user_instr->operation.parameters[i].direct.variant != KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
+                    user_instr->operation.parameters[i].direct.tied)) {
+                    ext_uses = true;
+                } else if (user_instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
+                    user_instr->operation.parameters[i].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
+                    user_instr->operation.parameters[i].indirect.base.value_ref.instr_ref == output_value_ref.instr_ref &&
+                    user_instr->operation.parameters[i].indirect.base.value_ref.aspect == output_value_ref.aspect) {
                     ext_uses = true;
                 }
             }
@@ -478,12 +475,18 @@ static kefir_result_t peephole_untie(struct kefir_mem *mem, struct kefir_codegen
                     user_instr->operation.parameters[i].direct.value_ref.aspect == output_value_ref.aspect &&
                     (user_instr->operation.parameters[i].direct.tied ||
                     !(user_instr->operation.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
-                    (user_instr->operation.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                    output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
+                     user_instr->operation.parameters[i].direct.variant == output_value_type->variant ||
                     (user_instr->operation.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
                     output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
+                    (user_instr->operation.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
+                    output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT) ||
                     (user_instr->operation.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
-                    output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT)))) {
+                    output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT)))) {
+                    ext_uses = true;
+                } else if (user_instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
+                    user_instr->operation.parameters[i].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
+                    user_instr->operation.parameters[i].indirect.base.value_ref.instr_ref == output_value_ref.instr_ref &&
+                    user_instr->operation.parameters[i].indirect.base.value_ref.aspect == output_value_ref.aspect) {
                     ext_uses = true;
                 }
             }
