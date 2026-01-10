@@ -87,6 +87,24 @@ static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_t
 }
 
 static kefir_result_t peephole_add(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    struct kefir_codegen_target_ir_tie_classification classification;
+    REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instr->instr_ref, &classification));
+    
+    kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
+    if (classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
+            classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+            classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+            instr->operation.parameters[classification.operands[0].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+            !instr->operation.parameters[classification.operands[0].read_index].direct.tied &&
+            instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER &&
+            instr->operation.parameters[classification.operands[1].read_index].immediate.int_immediate == 0) {
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref,
+            classification.operands[0].output));
+        REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
+        *replaced = true;
+        return KEFIR_OK;
+    }
+
     REQUIRE(instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
         instr->operation.parameters[0].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0) &&
         (instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
@@ -95,7 +113,6 @@ static kefir_result_t peephole_add(struct kefir_mem *mem, struct kefir_codegen_t
         (instr->operation.parameters[1].immediate.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
         instr->operation.parameters[1].immediate.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT), KEFIR_OK);
 
-    kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
     struct kefir_codegen_target_ir_operation base_oper = instr->operation;
 
     const struct kefir_codegen_target_ir_value_type *value_type = NULL;

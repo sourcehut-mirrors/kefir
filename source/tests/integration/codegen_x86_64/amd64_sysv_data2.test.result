@@ -18,7 +18,6 @@ func1:
     mov %rdx, 5
     imul %rcx, %rdx, 8
     add %rax, %rcx
-    add %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     lea %rsp, [%rbp]
