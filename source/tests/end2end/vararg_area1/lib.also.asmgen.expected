@@ -84,9 +84,7 @@ process:
     cmp %ecx, %eax
     setl %dl
     test %edx, %edx
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_process_label19
+    jnz .L__kefir_func_process_label19
     movq -40(%rbp), %r12
     lea -32(%rbp), %rax
     movq (%rax), %rdi

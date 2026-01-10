@@ -70,9 +70,7 @@ test_fetch_and_short:
     je .L__kefir_func_test_fetch_and_short_label4
     movw %ax, -2(%rbp)
 .L__kefir_func_test_fetch_and_short_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_and_short_label2
+    jnz .L__kefir_func_test_fetch_and_short_label2
 .L__kefir_func_test_fetch_and_short_label12:
     movw -2(%rbp), %ax
     lea (%rbp), %rsp
@@ -108,9 +106,7 @@ test_fetch_xor_short:
     je .L__kefir_func_test_fetch_xor_short_label4
     movw %ax, -2(%rbp)
 .L__kefir_func_test_fetch_xor_short_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_xor_short_label2
+    jnz .L__kefir_func_test_fetch_xor_short_label2
 .L__kefir_func_test_fetch_xor_short_label12:
     movw -2(%rbp), %ax
     lea (%rbp), %rsp
@@ -136,9 +132,7 @@ test_fetch_or_int:
     je .L__kefir_func_test_fetch_or_int_label4
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_or_int_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_or_int_label2
+    jnz .L__kefir_func_test_fetch_or_int_label2
 .L__kefir_func_test_fetch_or_int_label12:
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
@@ -181,9 +175,7 @@ test_fetch_and_char:
     je .L__kefir_func_test_fetch_and_char_label4
     movb %al, -1(%rbp)
 .L__kefir_func_test_fetch_and_char_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_and_char_label2
+    jnz .L__kefir_func_test_fetch_and_char_label2
 .L__kefir_func_test_fetch_and_char_label12:
     movb -1(%rbp), %al
     lea (%rbp), %rsp
@@ -209,9 +201,7 @@ test_fetch_and_long:
     je .L__kefir_func_test_fetch_and_long_label4
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_and_long_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_and_long_label2
+    jnz .L__kefir_func_test_fetch_and_long_label2
 .L__kefir_func_test_fetch_and_long_label12:
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
@@ -238,9 +228,7 @@ test_fetch_or_short:
     je .L__kefir_func_test_fetch_or_short_label4
     movw %ax, -2(%rbp)
 .L__kefir_func_test_fetch_or_short_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_or_short_label2
+    jnz .L__kefir_func_test_fetch_or_short_label2
 .L__kefir_func_test_fetch_or_short_label12:
     movw -2(%rbp), %ax
     lea (%rbp), %rsp
@@ -285,9 +273,7 @@ test_fetch_xor_char:
     je .L__kefir_func_test_fetch_xor_char_label4
     movb %al, -1(%rbp)
 .L__kefir_func_test_fetch_xor_char_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_xor_char_label2
+    jnz .L__kefir_func_test_fetch_xor_char_label2
 .L__kefir_func_test_fetch_xor_char_label12:
     movb -1(%rbp), %al
     lea (%rbp), %rsp
@@ -313,9 +299,7 @@ test_fetch_xor_long:
     je .L__kefir_func_test_fetch_xor_long_label4
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_xor_long_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_xor_long_label2
+    jnz .L__kefir_func_test_fetch_xor_long_label2
 .L__kefir_func_test_fetch_xor_long_label12:
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
@@ -349,9 +333,7 @@ test_fetch_and_int:
     je .L__kefir_func_test_fetch_and_int_label4
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_and_int_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_and_int_label2
+    jnz .L__kefir_func_test_fetch_and_int_label2
 .L__kefir_func_test_fetch_and_int_label12:
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
@@ -378,9 +360,7 @@ test_fetch_or_char:
     je .L__kefir_func_test_fetch_or_char_label4
     movb %al, -1(%rbp)
 .L__kefir_func_test_fetch_or_char_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_or_char_label2
+    jnz .L__kefir_func_test_fetch_or_char_label2
 .L__kefir_func_test_fetch_or_char_label12:
     movb -1(%rbp), %al
     lea (%rbp), %rsp
@@ -406,9 +386,7 @@ test_fetch_or_long:
     je .L__kefir_func_test_fetch_or_long_label4
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_or_long_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_or_long_label2
+    jnz .L__kefir_func_test_fetch_or_long_label2
 .L__kefir_func_test_fetch_or_long_label12:
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
@@ -443,9 +421,7 @@ test_fetch_xor_int:
     je .L__kefir_func_test_fetch_xor_int_label4
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_xor_int_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_fetch_xor_int_label2
+    jnz .L__kefir_func_test_fetch_xor_int_label2
 .L__kefir_func_test_fetch_xor_int_label12:
     movl -4(%rbp), %eax
     lea (%rbp), %rsp

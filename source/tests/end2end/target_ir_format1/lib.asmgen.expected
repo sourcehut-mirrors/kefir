@@ -609,7 +609,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 124,
+#                    "instr_ref": 126,
 #                    "opcode": "jz",
 #                    "parameters": [
 #                        {
@@ -1170,7 +1170,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 115,
+#                    "instr_ref": 116,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -1198,12 +1198,12 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 116,
+#                    "instr_ref": 117,
 #                    "opcode": "setne",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 115,
+#                            "instr_ref": 116,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1252,7 +1252,7 @@ factorial:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 116,
+#                            "instr_ref": 117,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1360,159 +1360,8 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 33,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 13
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 117,
-#                    "opcode": "sete",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 33,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 34,
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "8bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 13
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 36,
-#                    "opcode": "test",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 117,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 117,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 128,
-#                    "opcode": "jz",
+#                    "instr_ref": 130,
+#                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
@@ -1524,7 +1373,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 36,
+#                            "instr_ref": 34,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -1916,159 +1765,8 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 48,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 18
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 108,
-#                    "opcode": "sete",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 48,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 49,
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "8bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 18
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 51,
-#                    "opcode": "test",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 108,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 108,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 122,
-#                    "opcode": "jz",
+#                    "instr_ref": 124,
+#                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
@@ -2080,7 +1778,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 51,
+#                            "instr_ref": 49,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -2520,7 +2218,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 113,
+#                    "instr_ref": 114,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
@@ -2646,7 +2344,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 113,
+#                            "instr_ref": 114,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2953,7 +2651,7 @@ factorial:
 #            "block_ref": 17,
 #            "code": [
 #                {
-#                    "instr_ref": 119,
+#                    "instr_ref": 121,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2975,7 +2673,7 @@ factorial:
 #            "block_ref": 18,
 #            "code": [
 #                {
-#                    "instr_ref": 121,
+#                    "instr_ref": 123,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -2997,7 +2695,7 @@ factorial:
 #            "block_ref": 19,
 #            "code": [
 #                {
-#                    "instr_ref": 123,
+#                    "instr_ref": 125,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3019,7 +2717,7 @@ factorial:
 #            "block_ref": 20,
 #            "code": [
 #                {
-#                    "instr_ref": 125,
+#                    "instr_ref": 127,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3041,7 +2739,7 @@ factorial:
 #            "block_ref": 21,
 #            "code": [
 #                {
-#                    "instr_ref": 127,
+#                    "instr_ref": 129,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3063,7 +2761,7 @@ factorial:
 #            "block_ref": 22,
 #            "code": [
 #                {
-#                    "instr_ref": 129,
+#                    "instr_ref": 131,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3108,9 +2806,7 @@ factorial:
     setne %al
     movzx %al, %rax
     test %eax, %eax
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_factorial_label22
+    jnz .L__kefir_func_factorial_label22
     movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
@@ -3118,9 +2814,7 @@ factorial:
     cmp $1, %eax
     setg %cl
     test %ecx, %ecx
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_factorial_label17
+    jnz .L__kefir_func_factorial_label17
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp

@@ -100,9 +100,7 @@ test4:
     add %rdi, %rcx
     mov %rsi, %rdx
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test4_label2
+    jnz .L__kefir_func_test4_label2
     movl -4(%rbp), %eax
     add $1, %eax
     mov %eax, %edi

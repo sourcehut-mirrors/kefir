@@ -42,9 +42,7 @@ add1:
     mov %rdi, %rdx
     mov %r8, %rcx
     lock     cmpxchgb %cl, (%rdx)
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_add1_label4
+    jnz .L__kefir_func_add1_label4
     mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -73,9 +71,7 @@ add2:
     mov %rdi, %rdx
     mov %r8, %rcx
     lock     cmpxchgw %cx, (%rdx)
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_add2_label4
+    jnz .L__kefir_func_add2_label4
     mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -104,9 +100,7 @@ add3:
     mov %rdi, %rdx
     mov %r8d, %ecx
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_add3_label4
+    jnz .L__kefir_func_add3_label4
     mov %r8d, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -135,9 +129,7 @@ add4:
     mov %rdi, %rdx
     mov %r8, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_add4_label4
+    jnz .L__kefir_func_add4_label4
     mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -305,9 +297,7 @@ __kefir_bigint_add:
     cmp %rcx, %rax
     setb %dl
     test %edx, %edx
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_add_label10
+    jnz .L__kefir_runtime_func___kefir_bigint_add_label10
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp

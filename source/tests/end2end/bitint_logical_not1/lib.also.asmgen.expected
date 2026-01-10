@@ -207,9 +207,7 @@ __kefir_bigint_is_zero:
     cmp %rcx, %rax
     setb %dl
     test %edx, %edx
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label25
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label25
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -235,9 +233,7 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     movb -24(%rbp), %al
     test %al, %al
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
     movq -32(%rbp), %rax
     add $1, %rax
     movq %rax, -32(%rbp)

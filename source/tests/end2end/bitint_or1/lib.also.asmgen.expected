@@ -245,9 +245,7 @@ __kefir_bigint_or:
     cmp %rcx, %rax
     setb %dl
     test %edx, %edx
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_or_label10
+    jnz .L__kefir_runtime_func___kefir_bigint_or_label10
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp

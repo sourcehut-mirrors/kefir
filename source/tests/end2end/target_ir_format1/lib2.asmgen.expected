@@ -301,31 +301,7 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "sete",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "test",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "jz",
+#                "opcode": "jnz",
 #                "args": [
 #                    {
 #                        "type": "internal_label",
@@ -426,31 +402,7 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "sete",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "test",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "jz",
+#                "opcode": "jnz",
 #                "args": [
 #                    {
 #                        "type": "internal_label",
@@ -701,9 +653,7 @@ factorial:
     setne %al
     movzx %al, %rax
     test %eax, %eax
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_factorial_label22
+    jnz .L__kefir_func_factorial_label22
     movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
@@ -711,9 +661,7 @@ factorial:
     cmp $1, %eax
     setg %cl
     test %ecx, %ecx
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_factorial_label17
+    jnz .L__kefir_func_factorial_label17
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp

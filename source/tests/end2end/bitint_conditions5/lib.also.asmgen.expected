@@ -26,9 +26,7 @@ test1:
 .L__kefir_func_test1_label2:
     movl -4(%rbp), %eax
     test %eax, %eax
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test1_label12
+    jnz .L__kefir_func_test1_label12
     movl $1, -4(%rbp)
     movb -8(%rbp), %al
     shl $58, %rax
@@ -63,9 +61,7 @@ test2:
 .L__kefir_func_test2_label2:
     movl -4(%rbp), %eax
     test %eax, %eax
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test2_label12
+    jnz .L__kefir_func_test2_label12
     movl $1, -4(%rbp)
     movw -8(%rbp), %ax
     shl $50, %rax
@@ -100,9 +96,7 @@ test3:
 .L__kefir_func_test3_label2:
     movl -4(%rbp), %eax
     test %eax, %eax
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test3_label12
+    jnz .L__kefir_func_test3_label12
     movl $1, -4(%rbp)
     movl -8(%rbp), %eax
     shl $35, %rax
@@ -137,9 +131,7 @@ test4:
 .L__kefir_func_test4_label2:
     movl -8(%rbp), %eax
     test %eax, %eax
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test4_label12
+    jnz .L__kefir_func_test4_label12
     movl $1, -8(%rbp)
     movq -16(%rbp), %rax
     shl $4, %rax
@@ -177,9 +169,7 @@ test5:
 .L__kefir_func_test5_label2:
     movl -8(%rbp), %eax
     test %eax, %eax
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test5_label12
+    jnz .L__kefir_func_test5_label12
     movl $1, -8(%rbp)
     movdqu -24(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
@@ -187,9 +177,7 @@ test5:
     mov $120, %rsi
     call __kefir_bigint_is_zero
     test %al, %al
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test5_label14
+    jnz .L__kefir_func_test5_label14
     jmp .L__kefir_func_test5_label2
 .L__kefir_func_test5_label14:
     mov $1, %rax
@@ -220,9 +208,7 @@ test6:
 .L__kefir_func_test6_label2:
     movl -8(%rbp), %eax
     test %eax, %eax
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test6_label12
+    jnz .L__kefir_func_test6_label12
     movl $1, -8(%rbp)
     movdqu -56(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
@@ -234,9 +220,7 @@ test6:
     mov $360, %rsi
     call __kefir_bigint_is_zero
     test %al, %al
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test6_label14
+    jnz .L__kefir_func_test6_label14
     jmp .L__kefir_func_test6_label2
 .L__kefir_func_test6_label14:
     mov $1, %rax
@@ -303,9 +287,7 @@ __kefir_bigint_is_zero:
     cmp %rcx, %rax
     setb %dl
     test %edx, %edx
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label25
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label25
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -331,9 +313,7 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     movb -24(%rbp), %al
     test %al, %al
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
     movq -32(%rbp), %rax
     add $1, %rax
     movq %rax, -32(%rbp)

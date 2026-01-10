@@ -47,9 +47,7 @@ add32:
     movq %xmm0, %rcx
     mov %r12, %rax
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_add32_label10
+    jnz .L__kefir_func_add32_label10
     stmxcsr -64(%rbp)
     mov -64(%rbp), %rcx
     fnstsw %ax
@@ -92,9 +90,7 @@ add64:
     movq %xmm0, %rcx
     mov %r12, %rax
     lock     cmpxchgq %rcx, (%rdx)
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_add64_label10
+    jnz .L__kefir_func_add64_label10
     stmxcsr -64(%rbp)
     mov -64(%rbp), %rcx
     fnstsw %ax

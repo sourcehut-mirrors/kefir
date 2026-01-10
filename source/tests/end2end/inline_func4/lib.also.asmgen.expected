@@ -27,9 +27,7 @@ addx:
     je .L__kefir_func_addx_label4
     movq %rax, -16(%rbp)
 .L__kefir_func_addx_label4:
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_addx_label2
+    jnz .L__kefir_func_addx_label2
 .L__kefir_func_addx_label12:
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
