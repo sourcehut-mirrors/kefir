@@ -369,11 +369,8 @@ __kefir_bigint_arithmetic_right_shift:
     movq -64(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    sete %dl
-    test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label39
+    jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label39
     movq -72(%rbp), %rax
     movq -64(%rbp), %rcx
     mov $0, %rdx

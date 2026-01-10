@@ -294,11 +294,8 @@ __kefir_bigint_util_add_digit_zero_extended:
     movq -16(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    sete %dl
-    test %edx, %edx
-    jz .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label13
+    jnz .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label13
     movb -52(%rbp), %cl
     and $255, %rcx
     lea -28(%rbp), %rax

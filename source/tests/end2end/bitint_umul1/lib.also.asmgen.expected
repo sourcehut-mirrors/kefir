@@ -381,11 +381,8 @@ __kefir_bigint_unsigned_multiply:
     mov $1, %esi
     movsx %esi, %rdx
     add %rdx, %rax
-    mov $0, %rdx
     cmp %rcx, %rax
-    sete %dl
-    test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label31
+    jz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label31
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label12:
     mov $0, %ecx
     movsx %ecx, %rax
@@ -450,11 +447,8 @@ __kefir_bigint_unsigned_multiply:
     mov $1, %esi
     movsx %esi, %rdx
     add %rdx, %rax
-    mov $0, %rdx
     cmp %rcx, %rax
-    sete %dl
-    test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label27
+    jz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label27
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label25:
     movq -72(%rbp), %rax
     movq -8(%rbp), %rcx
