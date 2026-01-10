@@ -26,7 +26,7 @@ is_greater_f32:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    xor %edx, %edx
+    mov $0, %edx
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
@@ -49,7 +49,7 @@ is_greater_f64:
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
-    xor %edx, %edx
+    mov $0, %edx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -78,7 +78,7 @@ is_greater_f80:
     fldt -48(%rbp)
     fldt -32(%rbp)
     fxch %st(1)
-    xor %eax, %eax
+    mov $0, %eax
     fucomi %st(1)
     seta %al
     and $255, %rax

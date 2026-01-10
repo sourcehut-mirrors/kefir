@@ -689,7 +689,7 @@ __kefir_bigint_signed_to_double:
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_double_label65
 .L__kefir_runtime_func___kefir_bigint_signed_to_double_label16:
-    xor %eax, %eax
+    mov $0, %eax
     movq %rax, -80(%rbp)
     movq -72(%rbp), %rax
     movq -56(%rbp), %rdx
@@ -1547,7 +1547,7 @@ __kefir_bigint_unsigned_to_double:
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label65
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label16:
-    xor %eax, %eax
+    mov $0, %eax
     movq %rax, -80(%rbp)
     movq -72(%rbp), %rax
     movq -56(%rbp), %rdx
@@ -2843,7 +2843,7 @@ __kefir_bigint_unsigned_to_float:
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label65
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label16:
-    xor %eax, %eax
+    mov $0, %eax
     movq %rax, -80(%rbp)
     movq -72(%rbp), %rax
     movq -56(%rbp), %rcx
@@ -3946,7 +3946,7 @@ __kefir_bigint_signed_to_float:
     test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_float_label65
 .L__kefir_runtime_func___kefir_bigint_signed_to_float_label16:
-    xor %eax, %eax
+    mov $0, %eax
     movq %rax, -80(%rbp)
     movq -72(%rbp), %rax
     movq -56(%rbp), %rcx

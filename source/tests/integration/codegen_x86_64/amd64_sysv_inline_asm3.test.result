@@ -26,7 +26,7 @@ addsd %xmm0, %xmm1
 movd %rax, %xmm0
     mov %rcx, 0
     mov [%rcx], %rax
-    xor %rax, %rax
+    mov %rax, 0
     pop %rbp
     ret
 .L__kefir_text_func_func1_end:

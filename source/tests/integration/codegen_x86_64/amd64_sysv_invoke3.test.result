@@ -24,7 +24,7 @@ proxyadd:
     call %r12
     mov QWORD PTR [%rbx], %rax
     movq [%rbx + 8], %xmm0
-    xor %rax, %rax
+    mov %rax, 0
     pxor %xmm0, %xmm0
     lea %rsp, [%rbp - 16]
     pop %r12

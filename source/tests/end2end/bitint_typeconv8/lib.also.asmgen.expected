@@ -303,7 +303,7 @@ __kefir_bigint_unsigned_from_float:
     movq %rsi, -32(%rbp)
     movd %xmm0, -40(%rbp)
     movq %rdi, -24(%rbp)
-    xor %eax, %eax
+    mov $0, %eax
     movq %rax, -56(%rbp)
     movl -40(%rbp), %eax
     movl %eax, -56(%rbp)
@@ -476,7 +476,7 @@ __kefir_bigint_unsigned_from_double:
     movq %rsi, -32(%rbp)
     movq %xmm0, -40(%rbp)
     movq %rdi, -24(%rbp)
-    xor %eax, %eax
+    mov $0, %eax
     movq %rax, -56(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -56(%rbp)
@@ -1175,7 +1175,7 @@ __kefir_bigint_signed_from_double:
     movq %rsi, -32(%rbp)
     movq %xmm0, -40(%rbp)
     movq %rdi, -24(%rbp)
-    xor %eax, %eax
+    mov $0, %eax
     movq %rax, -56(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -56(%rbp)
@@ -1522,7 +1522,7 @@ __kefir_bigint_signed_from_float:
     movq %rsi, -32(%rbp)
     movd %xmm0, -40(%rbp)
     movq %rdi, -24(%rbp)
-    xor %eax, %eax
+    mov $0, %eax
     movq %rax, -56(%rbp)
     movl -40(%rbp), %eax
     movl %eax, -56(%rbp)

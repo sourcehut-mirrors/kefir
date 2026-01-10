@@ -27,7 +27,7 @@ is_finite_f32:
     movq %rax, %xmm0
     andps .L__kefir_constant_isfinitef32_mask(%rip), %xmm0
     movdqu .L__kefir_constant_isfinitef32_cmp(%rip), %xmm1
-    xor %eax, %eax
+    mov $0, %eax
     ucomiss %xmm0, %xmm1
     setnb %al
     test %eax, %eax
@@ -50,7 +50,7 @@ is_finite_f64:
     movq %rax, %xmm0
     andpd .L__kefir_constant_isfinitef64_mask(%rip), %xmm0
     movdqu .L__kefir_constant_isfinitef64_cmp(%rip), %xmm1
-    xor %eax, %eax
+    mov $0, %eax
     ucomisd %xmm0, %xmm1
     setnb %al
     test %eax, %eax
@@ -73,7 +73,7 @@ is_finite_f80:
     fstpt -32(%rbp)
     fldt -32(%rbp)
     fabs
-    xor %eax, %eax
+    mov $0, %eax
     fldt .L__kefir_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al

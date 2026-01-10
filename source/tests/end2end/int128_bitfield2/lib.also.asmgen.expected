@@ -16,8 +16,7 @@ get_a:
 .L__kefir_text_func_get_a_begin:
     lea value(%rip), %rax
     movl (%rax), %eax
-    mov %rcx, %rdx
-    xor %ecx, %edx
+    xor %edx, %edx
     mov $96, %rcx
     shld %cl, %rax, %rdx
     shl %cl, %rax
@@ -28,8 +27,7 @@ get_a:
     mov $96, %rcx
     shrd %cl, %rdx, %rsi
     shr %cl, %rdx
-    mov %rax, %rdi
-    xor %eax, %edi
+    xor %edi, %edi
     test $64, %cl
     mov %rsi, %rax
     cmovne %rdx, %rax
@@ -55,8 +53,7 @@ get_b:
     mov $58, %rcx
     shrd %cl, %rdx, %rsi
     shr %cl, %rdx
-    mov %rax, %rdi
-    xor %eax, %edi
+    xor %edi, %edi
     test $64, %cl
     mov %rsi, %rax
     cmovne %rdx, %rax

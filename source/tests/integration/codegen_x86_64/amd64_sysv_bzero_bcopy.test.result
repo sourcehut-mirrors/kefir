@@ -11,28 +11,28 @@ func1:
 .L__kefir_func_func1_label0:
     push %rbp
     mov %rbp, %rsp
-    xor %eax, %eax
+    mov %eax, 0
     mov %rcx, 0
     mov BYTE PTR [%rcx], %al
     mov %rcx, 0
     mov %al, BYTE PTR [%rcx]
     mov %rcx, 0
     mov BYTE PTR [%rcx], %al
-    xor %eax, %eax
+    mov %eax, 0
     mov %rcx, 0
     mov DWORD PTR [%rcx], %eax
     mov %rcx, 0
     mov %eax, DWORD PTR [%rcx]
     mov %rcx, 0
     mov DWORD PTR [%rcx], %eax
-    xor %eax, %eax
+    mov %eax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rcx, 0
     mov %rax, QWORD PTR [%rcx]
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    xor %eax, %eax
+    mov %eax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rcx, 0
@@ -63,7 +63,7 @@ func1:
     mov %rax, QWORD PTR [%rcx + 32]
     mov %rcx, 0
     mov QWORD PTR [%rcx + 32], %rax
-    xor %eax, %eax
+    mov %eax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rcx, 0

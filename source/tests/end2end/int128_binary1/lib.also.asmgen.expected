@@ -393,8 +393,7 @@ u128_shr:
     mov %rdx, %rcx
     shrd %cl, %rsi, %rdi
     shr %cl, %rsi
-    mov %rax, %rdx
-    xor %eax, %edx
+    xor %edx, %edx
     test $64, %cl
     mov %rdi, %rax
     cmovne %rsi, %rax

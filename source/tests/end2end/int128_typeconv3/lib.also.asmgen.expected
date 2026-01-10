@@ -166,8 +166,7 @@ i128_from_u9:
     shl $55, %rdi
     mov %rdi, %rax
     shr $55, %rax
-    xor %ecx, %ecx
-    mov %ecx, %edx
+    xor %edx, %edx
     ret
 .L__kefir_text_func_i128_from_u9_end:
 
@@ -186,8 +185,7 @@ u128_from_u9:
     shl $55, %rdi
     mov %rdi, %rax
     shr $55, %rax
-    xor %ecx, %ecx
-    mov %ecx, %edx
+    xor %edx, %edx
     ret
 .L__kefir_text_func_u128_from_u9_end:
 

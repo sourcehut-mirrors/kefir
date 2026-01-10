@@ -16,7 +16,7 @@ mov %rcx, QWORD PTR [%rax]
 add %rcx, 1
     mov %rax, 0
     mov [%rax], %rcx
-    xor %rax, %rax
+    mov %rax, 0
     pop %rbp
     ret
 .L__kefir_text_func_func1_end:

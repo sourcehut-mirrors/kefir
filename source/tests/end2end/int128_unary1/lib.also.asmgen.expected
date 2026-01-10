@@ -37,8 +37,7 @@ i128_neg:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rax, %rcx
-    xor %eax, %ecx
+    xor %ecx, %ecx
     mov %rdi, %rax
     neg %rax
     sbb %rsi, %rcx
@@ -67,8 +66,7 @@ u128_neg:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rax, %rcx
-    xor %eax, %ecx
+    xor %ecx, %ecx
     mov %rdi, %rax
     neg %rax
     sbb %rsi, %rcx

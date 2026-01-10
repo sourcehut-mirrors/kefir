@@ -22,7 +22,7 @@ mov %dl, %ah
     mov [%rax], %dl
     mov %rax, 0
     mov [%rax], %cx
-    xor %rax, %rax
+    mov %rax, 0
     pop %rbp
     ret
 .L__kefir_text_func_func1_end:

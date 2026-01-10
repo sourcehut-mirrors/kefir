@@ -11,7 +11,7 @@ func1:
 .L__kefir_func_func1_label0:
     push %rbp
     mov %rbp, %rsp
-    xor %rax, %rax
+    mov %rax, 0
     pop %rbp
     ret
 .L__kefir_text_func_func1_end:
