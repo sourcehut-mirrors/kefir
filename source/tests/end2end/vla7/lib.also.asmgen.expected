@@ -52,9 +52,7 @@ test:
     test %al, %al
     sete %dl
     test %edx, %edx
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_label16
+    jnz .L__kefir_func_test_label10
     movl -32(%rbp), %eax
     mov $0, %rdx
     cmp $1, %eax
@@ -67,7 +65,7 @@ test:
     ret
 .L__kefir_func_test_label13:
     jmp .L__kefir_func_test_label2
-.L__kefir_func_test_label16:
+.L__kefir_func_test_label10:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp

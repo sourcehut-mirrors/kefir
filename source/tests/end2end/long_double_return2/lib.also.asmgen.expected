@@ -27,7 +27,7 @@ pnanl:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    fldt .L__kefir_func_pnanl_label11(%rip)
+    fldt .L__kefir_func_pnanl_label9(%rip)
     fstpt -32(%rbp)
     sub $16, %rsp
     fldt -32(%rbp)
@@ -52,7 +52,7 @@ pnanl:
 .L__kefir_text_func_pnanl_end:
 .section .rodata
     .align 8
-.L__kefir_func_pnanl_label11:
+.L__kefir_func_pnanl_label9:
     .quad 13835058055282163712
     .quad 65535
 .section .text

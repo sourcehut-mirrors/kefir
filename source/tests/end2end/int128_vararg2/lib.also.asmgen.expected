@@ -90,7 +90,7 @@ testx:
     mov %rdi, %rax
     add $-1, %eax
     test %edi, %edi
-    jnz .L__kefir_func_testx_label19
+    jnz .L__kefir_func_testx_label11
     movl -32(%rbp), %eax
     add $16, %rax
     cmp $48, %rax
@@ -116,7 +116,7 @@ testx:
     movq (%rcx), %rax
     movq 8(%rcx), %rdx
     jmp .L__kefir_func_testx_label9
-.L__kefir_func_testx_label19:
+.L__kefir_func_testx_label11:
     movl -32(%rbp), %ecx
     cmp $48, %ecx
     jae .L__kefir_func_testx_label13

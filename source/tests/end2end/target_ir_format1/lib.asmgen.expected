@@ -458,171 +458,20 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 100,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 7
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 105,
-#                    "opcode": "sete",
+#                    "instr_ref": 109,
+#                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 100,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
+#                            "type": "block_ref",
+#                            "block_ref": 14
+#                        },
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 3
 #                        },
 #                        {
 #                            "type": "value_ref",
 #                            "instr_ref": 101,
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "8bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 7
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 103,
-#                    "opcode": "test",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 105,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 105,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 126,
-#                    "opcode": "jz",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 20
-#                        },
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 18
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 103,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -1051,7 +900,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 112,
+#                    "instr_ref": 110,
 #                    "opcode": "or",
 #                    "parameters": [
 #                        {
@@ -1170,7 +1019,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 116,
+#                    "instr_ref": 113,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -1198,12 +1047,12 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 117,
+#                    "instr_ref": 114,
 #                    "opcode": "setne",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 116,
+#                            "instr_ref": 113,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1213,7 +1062,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 112,
+#                            "instr_ref": 110,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -1252,7 +1101,7 @@ factorial:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 117,
+#                            "instr_ref": 114,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1360,16 +1209,16 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 130,
+#                    "instr_ref": 116,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 22
+#                            "block_ref": 12
 #                        },
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 21
+#                            "block_ref": 5
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1765,16 +1614,16 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 124,
+#                    "instr_ref": 111,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 17
+#                            "block_ref": 10
 #                        },
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 19
+#                            "block_ref": 8
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -2021,7 +1870,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 109,
+#                    "instr_ref": 108,
 #                    "opcode": "imul",
 #                    "parameters": [
 #                        {
@@ -2152,7 +2001,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 109,
+#                            "instr_ref": 108,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2218,7 +2067,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 114,
+#                    "instr_ref": 112,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
@@ -2344,7 +2193,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 114,
+#                            "instr_ref": 112,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2646,138 +2495,6 @@ factorial:
 #            ],
 #            "externally_visible": false,
 #            "public_labels": []
-#        },
-#        {
-#            "block_ref": 17,
-#            "code": [
-#                {
-#                    "instr_ref": 121,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 10
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 18,
-#            "code": [
-#                {
-#                    "instr_ref": 123,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 3
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 19,
-#            "code": [
-#                {
-#                    "instr_ref": 125,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 8
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 20,
-#            "code": [
-#                {
-#                    "instr_ref": 127,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 14
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 21,
-#            "code": [
-#                {
-#                    "instr_ref": 129,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 5
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 22,
-#            "code": [
-#                {
-#                    "instr_ref": 131,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 12
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
 #        }
 #    ]
 #}
@@ -2791,9 +2508,7 @@ factorial:
     cmp $0, %eax
     setl %cl
     test %ecx, %ecx
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_factorial_label20
+    jnz .L__kefir_func_factorial_label14
     movl -8(%rbp), %eax
     mov $0, %rcx
     cmp $2, %eax
@@ -2806,7 +2521,7 @@ factorial:
     setne %al
     movzx %al, %rax
     test %eax, %eax
-    jnz .L__kefir_func_factorial_label22
+    jnz .L__kefir_func_factorial_label12
     movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
@@ -2814,12 +2529,12 @@ factorial:
     cmp $1, %eax
     setg %cl
     test %ecx, %ecx
-    jnz .L__kefir_func_factorial_label17
+    jnz .L__kefir_func_factorial_label10
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label17:
+.L__kefir_func_factorial_label10:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     imul %eax, %ecx
@@ -2828,12 +2543,12 @@ factorial:
     add $-1, %eax
     movl %eax, -8(%rbp)
     jmp .L__kefir_func_factorial_label6
-.L__kefir_func_factorial_label22:
+.L__kefir_func_factorial_label12:
     movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label20:
+.L__kefir_func_factorial_label14:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp

@@ -171,7 +171,7 @@ ldcuint:
     flds .L__kefir_constant_long_double_to_uint(%rip)
     fxch %st(1)
     fcomi %st(1)
-    jnb .L__kefir_func_ldcuint_label7
+    jnb .L__kefir_func_ldcuint_label3
     fstp %st(1)
     fnstcww -24(%rbp)
     movzxw -24(%rbp), %eax
@@ -186,7 +186,7 @@ ldcuint:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_ldcuint_label7:
+.L__kefir_func_ldcuint_label3:
     fnstcww -24(%rbp)
     fsubp
     movzxw -24(%rbp), %eax

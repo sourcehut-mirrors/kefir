@@ -545,16 +545,13 @@ kefir_codegen_target_ir_instruction_ref_t kefir_codegen_target_ir_code_control_p
     return code->code[instr_ref].control_flow.prev;
 }
 
-kefir_result_t kefir_codegen_target_ir_code_drop_instruction(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
-                               kefir_codegen_target_ir_instruction_ref_t instr_ref) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
-    REQUIRE(instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
+static kefir_result_t drop_instruction(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                               kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_bool_t ignore_uses) {
 
     struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
     REQUIRE(instr->block_ref != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested target IR instruction was previously dropped"));
-    REQUIRE(instr->use_entry_top == (kefir_size_t) ~0ull, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to drop target IR instruction with active uses"));
+    REQUIRE(ignore_uses || instr->use_entry_top == (kefir_size_t) ~0ull, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to drop target IR instruction with active uses"));
 
     REQUIRE_OK(record_uses(mem, code, instr->instr_ref, false));
 
@@ -584,6 +581,30 @@ kefir_result_t kefir_codegen_target_ir_code_drop_instruction(struct kefir_mem *m
     if (instr->operation.opcode == code->klass->phi_opcode) {
         REQUIRE_OK(kefir_hashset_delete(&block->phi_refs, (kefir_hashset_key_t) instr_ref));
     }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_drop_block(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(block_ref < code->blocks_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
+
+    struct kefir_codegen_target_ir_block *block = &code->blocks[block_ref];
+    for (; block->control_flow.tail != KEFIR_ID_NONE;) {
+        REQUIRE_OK(drop_instruction(mem, code, block->control_flow.tail, true));
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_drop_instruction(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                               kefir_codegen_target_ir_instruction_ref_t instr_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR instruction reference"));
+
+    REQUIRE_OK(drop_instruction(mem, code, instr_ref, false));
     return KEFIR_OK;
 }
 

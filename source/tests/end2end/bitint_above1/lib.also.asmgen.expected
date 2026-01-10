@@ -253,12 +253,12 @@ __kefir_bigint_unsigned_compare:
     cmp %rcx, %rax
     seta %dl
     test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label28
+    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label28:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
     movq -48(%rbp), %rax
     movq -24(%rbp), %rcx
     mov $1, %esi
@@ -283,9 +283,7 @@ __kefir_bigint_unsigned_compare:
     cmp %rcx, %rax
     sete %dl
     test %edx, %edx
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label26
+    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label18
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
@@ -293,30 +291,30 @@ __kefir_bigint_unsigned_compare:
     cmp %ecx, %eax
     seta %dl
     test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22
+    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
     mov $0, %rdx
     cmp %ecx, %eax
     setb %dl
     test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label21
+    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label14
     movq -24(%rbp), %rax
     add $-1, %rax
     movq %rax, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label21:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label14:
     mov $1, %rax
     neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label26:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label18:
     movq -56(%rbp), %rax
     movq -56(%rbp), %rdx
     mov $1, %esi

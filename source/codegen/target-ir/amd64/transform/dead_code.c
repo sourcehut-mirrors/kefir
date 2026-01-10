@@ -20,12 +20,34 @@
 
 #include "kefir/codegen/target-ir/amd64/transform.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
+#include "kefir/codegen/target-ir/control_flow.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+
+static kefir_result_t drop_dead_blocks(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+    struct kefir_codegen_target_ir_control_flow *control_flow) {
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, control_flow));
+    for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {
+        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
+        if (!kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref)) {
+            REQUIRE_OK(kefir_codegen_target_ir_code_drop_block(mem, code, block_ref));
+        }
+    }
+    return KEFIR_OK;
+}
 
 kefir_result_t kefir_codegen_target_ir_amd64_transform_dead_code_elimination(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+
+    struct kefir_codegen_target_ir_control_flow control_flow;
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&control_flow, code));
+    kefir_result_t res = drop_dead_blocks(mem, code, &control_flow);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_codegen_target_ir_control_flow_free(mem, &control_flow);
+        return res;
+    });
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_free(mem, &control_flow));
 
     static kefir_bool_t DEAD_CODE_CANDIDATE_OPCODES[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes) + 1] = {
         [KEFIR_TARGET_IR_AMD64_OPCODE(placeholder)] = true,

@@ -402,7 +402,7 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 53,
+#                    "instr_ref": 52,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -492,7 +492,7 @@ test1:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 53,
+#                            "instr_ref": 52,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1808,7 +1808,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 76,
+#                    "instr_ref": 75,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
@@ -1817,7 +1817,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 11
+#                            "block_ref": 6
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1964,28 +1964,6 @@ test2:
 #                    "instr_ref": 52,
 #                    "opcode": "ret",
 #                    "parameters": [],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 11,
-#            "code": [
-#                {
-#                    "instr_ref": 77,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 6
-#                        }
-#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,

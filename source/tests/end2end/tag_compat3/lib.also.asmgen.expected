@@ -9,25 +9,25 @@
 get:
 .L__kefir_text_func_get_begin:
     cmp $0, %edi
-    je .L__kefir_func_get_label20
+    je .L__kefir_func_get_label17
     cmp $1, %edi
-    je .L__kefir_func_get_label25
+    je .L__kefir_func_get_label15
     cmp $2, %edi
-    je .L__kefir_func_get_label26
+    je .L__kefir_func_get_label13
     cmp $3, %edi
-    je .L__kefir_func_get_label23
+    je .L__kefir_func_get_label11
     mov $-101, %rax
     ret
-.L__kefir_func_get_label23:
+.L__kefir_func_get_label11:
     mov $101, %rax
     ret
-.L__kefir_func_get_label26:
+.L__kefir_func_get_label13:
     mov $1, %rax
     ret
-.L__kefir_func_get_label25:
+.L__kefir_func_get_label15:
     xor %eax, %eax
     ret
-.L__kefir_func_get_label20:
+.L__kefir_func_get_label17:
     mov $-1, %rax
     ret
 .L__kefir_text_func_get_end:

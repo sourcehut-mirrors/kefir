@@ -43,14 +43,14 @@ get1:
     shr $32, %rax
     pxor %xmm0, %xmm0
     test %rax, %rax
-    js .L__kefir_func_get1_label7
+    js .L__kefir_func_get1_label3
     cvtsi2ss %rax, %xmm0
 .L__kefir_func_get1_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get1_label7:
+.L__kefir_func_get1_label3:
     mov %rax, %rcx
     and $1, %rcx
     shr $1, %rax
@@ -87,14 +87,14 @@ get3:
     shr $24, %rax
     pxor %xmm0, %xmm0
     test %rax, %rax
-    js .L__kefir_func_get3_label7
+    js .L__kefir_func_get3_label3
     cvtsi2sd %rax, %xmm0
 .L__kefir_func_get3_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get3_label7:
+.L__kefir_func_get3_label3:
     mov %rax, %rcx
     and $1, %rcx
     shr $1, %rax

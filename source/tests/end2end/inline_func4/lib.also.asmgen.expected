@@ -28,7 +28,7 @@ addx:
     movq %rax, -16(%rbp)
 .L__kefir_func_addx_label4:
     jnz .L__kefir_func_addx_label2
-.L__kefir_func_addx_label12:
+.L__kefir_func_addx_label7:
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp

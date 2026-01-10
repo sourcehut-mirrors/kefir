@@ -54,11 +54,11 @@ test3:
     cmp $9, %eax
     setle %dl
     and %dl, %cl
-    jnz .L__kefir_func_test3_label13
+    jnz .L__kefir_func_test3_label7
 .L__kefir_func_test3_label5:
     neg %eax
     ret
-.L__kefir_func_test3_label13:
+.L__kefir_func_test3_label7:
     ret
     jmp .L__kefir_func_test3_label5
 .L__kefir_text_func_test3_end:

@@ -176,12 +176,12 @@ __kefir_bigint_unsigned_compare:
     mov %r9, %r10
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2:
     cmp $0, %r10
-    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label25
+    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
     xor %eax, %eax
     pop %r12
     pop %rbx
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label25:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
     mov %r10, %rax
     sub $1, %rax
     mov %rdi, %rcx
@@ -195,24 +195,24 @@ __kefir_bigint_unsigned_compare:
     mov %rcx, %rax
     movzxb (%rax), %rbx
     cmp %r9, %r10
-    je .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label20
+    je .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     cmp %ebx, %r11d
-    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23
+    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label15
     add $-1, %r10
     cmp %ebx, %r11d
     jae .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label13:
     mov $-1, %rax
     pop %r12
     pop %rbx
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label15:
     mov $1, %rax
     pop %r12
     pop %rbx
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label20:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17:
     mov %r8, %rcx
     sub $1, %rcx
     mov %r8, %rax
@@ -242,7 +242,7 @@ __kefir_bigint_trailing_zeros:
     sub $8, %rsp
     mov %rdx, %r8
     cmp $0, %rsi
-    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label26
+    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label21
     mov %rsi, %rax
     sub $-7, %rax
     xor %edx, %edx
@@ -254,7 +254,7 @@ __kefir_bigint_trailing_zeros:
     mov %rcx, %rdx
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label4:
     cmp %rax, %rdx
-    jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label27
+    jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label8
     mov %r8, %rax
     lea -24(%rbp), %rsp
     pop %r13
@@ -262,7 +262,7 @@ __kefir_bigint_trailing_zeros:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label27:
+.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label8:
     mov %rdi, %rcx
     add %rdx, %rcx
     movb (%rcx), %r10b
@@ -283,22 +283,22 @@ __kefir_bigint_trailing_zeros:
     xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label12:
     cmp %rbx, %rcx
-    jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label28
+    jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label16
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label14:
     add $1, %rdx
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label4
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label28:
+.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label16:
     lea 1(%rcx), %r11
     lea 1(%r9), %r12
     movzx %r10b, %r13
     sar %cl, %r13d
     and $1, %r13d
     cmp $1, %r13d
-    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label29
+    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label19
     mov %r12, %r9
     mov %r11, %rcx
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label12
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label29:
+.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label19:
     mov %r9, %rax
     lea -24(%rbp), %rsp
     pop %r13
@@ -309,7 +309,7 @@ __kefir_bigint_trailing_zeros:
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label10:
     mov %rcx, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label14
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label26:
+.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label21:
     mov %r8, %rax
     lea -24(%rbp), %rsp
     pop %r13

@@ -29,7 +29,7 @@ get1:
     setne %al
     movzx %al, %rax
     test %eax, %eax
-    jz .L__kefir_func_get1_label10
+    jz .L__kefir_func_get1_label6
     xorps %xmm0, %xmm0
     movdqu %xmm0, -144(%rbp)
     movdqu %xmm0, -128(%rbp)
@@ -94,7 +94,7 @@ get1:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_get1_label10:
+.L__kefir_func_get1_label6:
     lea -80(%rbp), %rbx
     mov %rbx, %rdi
     call empty1@PLT

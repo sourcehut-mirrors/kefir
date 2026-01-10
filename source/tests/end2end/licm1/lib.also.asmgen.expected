@@ -13,9 +13,9 @@ test1:
     xor %eax, %eax
 .L__kefir_func_test1_label2:
     cmp %esi, %eax
-    jl .L__kefir_func_test1_label10
+    jl .L__kefir_func_test1_label6
     ret
-.L__kefir_func_test1_label10:
+.L__kefir_func_test1_label6:
     movsx %eax, %rcx
     shl $2, %rcx
     mov %rdi, %r8

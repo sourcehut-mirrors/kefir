@@ -32,9 +32,9 @@ test2:
     cmovle %rdx, %rsi
     mov %rsi, %rdx
     cmp $-1, %rdx
-    jne .L__kefir_func_test2_label8
+    jne .L__kefir_func_test2_label5
     ret
-.L__kefir_func_test2_label8:
+.L__kefir_func_test2_label5:
     mov %rcx, %rax
     ret
 .L__kefir_text_func_test2_end:
@@ -45,7 +45,7 @@ test3:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    ucomiss .L__kefir_func_test3_label13(%rip), %xmm0
+    ucomiss .L__kefir_func_test3_label12(%rip), %xmm0
     jp .L__kefir_func_test3_label3
     ja .L__kefir_func_test3_label3
 .L__kefir_func_test3_label3:
@@ -57,7 +57,7 @@ test3:
 .L__kefir_text_func_test3_end:
 .section .rodata
     .align 4
-.L__kefir_func_test3_label13:
+.L__kefir_func_test3_label12:
     .long 0
 .section .text
 
@@ -67,7 +67,7 @@ test4:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    ucomisd .L__kefir_func_test4_label13(%rip), %xmm0
+    ucomisd .L__kefir_func_test4_label12(%rip), %xmm0
     jp .L__kefir_func_test4_label3
     ja .L__kefir_func_test4_label3
 .L__kefir_func_test4_label3:
@@ -79,7 +79,7 @@ test4:
 .L__kefir_text_func_test4_end:
 .section .rodata
     .align 8
-.L__kefir_func_test4_label13:
+.L__kefir_func_test4_label12:
     .quad 0
 .section .text
 

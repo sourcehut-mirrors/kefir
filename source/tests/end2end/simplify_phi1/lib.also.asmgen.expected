@@ -29,7 +29,7 @@ test1:
     lea -40(%rbp), %rcx
     call somefn@PLT
     cmp $0, %eax
-    jne .L__kefir_func_test1_label12
+    jne .L__kefir_func_test1_label9
     movq -48(%rbp), %rax
     movq -48(%rbp), %rcx
     movq -40(%rbp), %rdx
@@ -44,7 +44,7 @@ test1:
     seta %cl
     and %cl, %al
     jnz .L__kefir_func_test1_label2
-.L__kefir_func_test1_label14:
+.L__kefir_func_test1_label7:
     xor %eax, %eax
     lea -32(%rbp), %rsp
     pop %r14
@@ -53,7 +53,7 @@ test1:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test1_label12:
+.L__kefir_func_test1_label9:
     xor %eax, %eax
     lea -32(%rbp), %rsp
     pop %r14

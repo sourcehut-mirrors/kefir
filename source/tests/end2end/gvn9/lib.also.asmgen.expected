@@ -163,7 +163,7 @@ __kefir_bigint_signed_compare:
     test %edx, %edx
     setne %cl
     and %al, %cl
-    jnz .L__kefir_runtime_func___kefir_bigint_signed_compare_label11
+    jnz .L__kefir_runtime_func___kefir_bigint_signed_compare_label8
     xor %eax, %eax
     test %edx, %edx
     sete %al
@@ -179,7 +179,7 @@ __kefir_bigint_signed_compare:
 .L__kefir_runtime_func___kefir_bigint_signed_compare_label6:
     mov $1, %rax
     ret
-.L__kefir_runtime_func___kefir_bigint_signed_compare_label11:
+.L__kefir_runtime_func___kefir_bigint_signed_compare_label8:
     mov $-1, %rax
     ret
 .L__kefir_runtime_text_func___kefir_bigint_signed_compare_end:
@@ -198,12 +198,12 @@ __kefir_bigint_unsigned_compare:
     mov %r9, %r10
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2:
     cmp $0, %r10
-    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label25
+    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
     xor %eax, %eax
     pop %r12
     pop %rbx
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label25:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
     mov %r10, %rax
     sub $1, %rax
     mov %rdi, %rcx
@@ -217,24 +217,24 @@ __kefir_bigint_unsigned_compare:
     mov %rcx, %rax
     movzxb (%rax), %rbx
     cmp %r9, %r10
-    je .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label20
+    je .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     cmp %ebx, %r11d
-    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23
+    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label15
     add $-1, %r10
     cmp %ebx, %r11d
     jae .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label22:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label13:
     mov $-1, %rax
     pop %r12
     pop %rbx
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label23:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label15:
     mov $1, %rax
     pop %r12
     pop %rbx
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label20:
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17:
     mov %r8, %rcx
     sub $1, %rcx
     mov %r8, %rax

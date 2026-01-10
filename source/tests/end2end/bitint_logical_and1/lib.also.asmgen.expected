@@ -32,14 +32,12 @@ and1:
     setne %al
     movzx %al, %rax
     test %al, %al
-    sete %cl
-    test %cl, %cl
-    jz .L__kefir_func_and1_label8
+    jnz .L__kefir_func_and1_label5
 .L__kefir_func_and1_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_and1_label8:
+.L__kefir_func_and1_label5:
     movb -1(%rbp), %al
     shl $58, %rax
     sar $58, %rax
@@ -67,14 +65,12 @@ and2:
     setne %al
     movzx %al, %rax
     test %al, %al
-    sete %cl
-    test %cl, %cl
-    jz .L__kefir_func_and2_label8
+    jnz .L__kefir_func_and2_label5
 .L__kefir_func_and2_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_and2_label8:
+.L__kefir_func_and2_label5:
     movw -2(%rbp), %ax
     shl $50, %rax
     sar $50, %rax
@@ -102,14 +98,12 @@ and3:
     setne %al
     movzx %al, %rax
     test %al, %al
-    sete %cl
-    test %cl, %cl
-    jz .L__kefir_func_and3_label8
+    jnz .L__kefir_func_and3_label5
 .L__kefir_func_and3_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_and3_label8:
+.L__kefir_func_and3_label5:
     movl -4(%rbp), %eax
     shl $35, %rax
     sar $35, %rax
@@ -137,14 +131,12 @@ and4:
     setne %al
     movzx %al, %rax
     test %al, %al
-    sete %cl
-    test %cl, %cl
-    jz .L__kefir_func_and4_label8
+    jnz .L__kefir_func_and4_label5
 .L__kefir_func_and4_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_and4_label8:
+.L__kefir_func_and4_label5:
     movq -8(%rbp), %rax
     shl $6, %rax
     sar $6, %rax
@@ -178,15 +170,13 @@ and5:
     test %al, %al
     sete %cl
     test %cl, %cl
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_and5_label8
+    jnz .L__kefir_func_and5_label5
     mov %rcx, %rax
 .L__kefir_func_and5_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_and5_label8:
+.L__kefir_func_and5_label5:
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea -48(%rbp), %rdi
@@ -243,15 +233,13 @@ and6:
     test %al, %al
     sete %cl
     test %cl, %cl
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_and6_label8
+    jnz .L__kefir_func_and6_label5
     mov %rcx, %rax
 .L__kefir_func_and6_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_and6_label8:
+.L__kefir_func_and6_label5:
     movq -40(%rbp), %rax
     movq %rax, -120(%rbp)
     movq -32(%rbp), %rax
@@ -293,9 +281,7 @@ __kefir_bigint_is_zero:
     cmp %rcx, %rax
     sete %dl
     test %edx, %edx
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label21
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label18
     movq -56(%rbp), %rax
     mov $8, %edx
     movsx %edx, %rcx
@@ -324,12 +310,12 @@ __kefir_bigint_is_zero:
     cmp %rcx, %rax
     setb %dl
     test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label25
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label8
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_is_zero_label25:
+.L__kefir_runtime_func___kefir_bigint_is_zero_label8:
     movq -48(%rbp), %rax
     movq -32(%rbp), %rcx
     add %rcx, %rax
@@ -344,23 +330,21 @@ __kefir_bigint_is_zero:
     cmp %rcx, %rax
     sete %dl
     test %edx, %edx
-    sete %al
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label24
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label16
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     movb -24(%rbp), %al
     test %al, %al
-    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label23
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label14
     movq -32(%rbp), %rax
     add $1, %rax
     movq %rax, -32(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label4
-.L__kefir_runtime_func___kefir_bigint_is_zero_label23:
+.L__kefir_runtime_func___kefir_bigint_is_zero_label14:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_is_zero_label24:
+.L__kefir_runtime_func___kefir_bigint_is_zero_label16:
     movq -56(%rbp), %rax
     mov $1, %edx
     movsx %edx, %rcx
@@ -403,7 +387,7 @@ __kefir_bigint_is_zero:
     and %eax, %ecx
     movb %cl, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label10
-.L__kefir_runtime_func___kefir_bigint_is_zero_label21:
+.L__kefir_runtime_func___kefir_bigint_is_zero_label18:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp

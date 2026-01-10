@@ -42,12 +42,12 @@ sum:
     mov %rdi, %rdx
     add $-1, %edx
     test %edi, %edi
-    jnz .L__kefir_func_sum_label16
+    jnz .L__kefir_func_sum_label8
     mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_sum_label16:
+.L__kefir_func_sum_label8:
     movl -32(%rbp), %esi
     add $16, %rsi
     cmp $48, %rsi
@@ -108,12 +108,12 @@ sum2:
     mov %rdi, %rdx
     add $-1, %edx
     test %edi, %edi
-    jnz .L__kefir_func_sum2_label16
+    jnz .L__kefir_func_sum2_label8
     mov %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_sum2_label16:
+.L__kefir_func_sum2_label8:
     movl -32(%rbp), %esi
     add $16, %rsi
     cmp $48, %rsi

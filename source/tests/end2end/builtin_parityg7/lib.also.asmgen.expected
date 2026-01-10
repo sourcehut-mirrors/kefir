@@ -112,7 +112,7 @@ __kefir_bigint_nonzero_count:
     push %r13
     sub $8, %rsp
     cmp $0, %rsi
-    je .L__kefir_runtime_func___kefir_bigint_nonzero_count_label21
+    je .L__kefir_runtime_func___kefir_bigint_nonzero_count_label13
     mov %rsi, %rax
     sub $-7, %rax
     xor %edx, %edx
@@ -124,7 +124,7 @@ __kefir_bigint_nonzero_count:
     mov %rcx, %rdx
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label4:
     cmp %rax, %rdx
-    jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label20
+    jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label8
     mov %r8, %rax
     lea -24(%rbp), %rsp
     pop %r13
@@ -132,7 +132,7 @@ __kefir_bigint_nonzero_count:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label20:
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label8:
     mov %rdi, %rcx
     add %rdx, %rcx
     movzxb (%rcx), %r9
@@ -161,14 +161,14 @@ __kefir_bigint_nonzero_count:
     mov %r8, %rcx
     cmove %r13, %rcx
     cmp %r11, %r10
-    jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label16
+    jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label17
     mov %rbx, %rdx
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label4
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label16:
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label17:
     mov %r12, %r10
     mov %rcx, %r8
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label9
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label21:
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label13:
     xor %eax, %eax
     lea -24(%rbp), %rsp
     pop %r13

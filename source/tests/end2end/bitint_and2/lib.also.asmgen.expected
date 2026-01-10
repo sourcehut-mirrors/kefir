@@ -245,12 +245,12 @@ __kefir_bigint_and:
     cmp %rcx, %rax
     setb %dl
     test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_and_label10
+    jnz .L__kefir_runtime_func___kefir_bigint_and_label6
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_and_label10:
+.L__kefir_runtime_func___kefir_bigint_and_label6:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     add %rcx, %rax

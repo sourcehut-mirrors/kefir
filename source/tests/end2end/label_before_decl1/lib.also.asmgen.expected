@@ -14,11 +14,11 @@ factorial:
     mov %rax, %rdx
     imul %rdi, %rdx
     cmp $1, %rdi
-    jle .L__kefir_func_factorial_label9
+    jle .L__kefir_func_factorial_label5
     mov %rdx, %rax
     mov %rcx, %rdi
     jmp .L__kefir_func_factorial_label2
-.L__kefir_func_factorial_label9:
+.L__kefir_func_factorial_label5:
     ret
 .L__kefir_text_func_factorial_end:
 

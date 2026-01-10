@@ -14,7 +14,7 @@ test:
     sub $64, %rsp
     mov %rdi, %rcx
     test %rsi, %rsi
-    jnz .L__kefir_func_test_label7
+    jnz .L__kefir_func_test_label5
     xorps %xmm0, %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu %xmm0, -48(%rbp)
@@ -32,7 +32,7 @@ test:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test_label7:
+.L__kefir_func_test_label5:
     not %rsi
     mov %rcx, %rdi
     lea (%rbp), %rsp

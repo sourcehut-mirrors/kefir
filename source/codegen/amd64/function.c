@@ -1175,6 +1175,7 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_codegen_target_ir_transform_block_merge(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_transform_placeholder_sink(mem, code));
 
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_transform_dead_code_elimination(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_amd64_transform_peephole(mem, code));
     REQUIRE_OK(kefir_codegen_target_ir_amd64_transform_dead_code_elimination(mem, code));
 

@@ -3020,10 +3020,10 @@ __kefir_bigint_invert:
     xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_invert_label2:
     cmp %rax, %rcx
-    jb .L__kefir_runtime_func___kefir_bigint_invert_label10
+    jb .L__kefir_runtime_func___kefir_bigint_invert_label6
     xor %eax, %eax
     ret
-.L__kefir_runtime_func___kefir_bigint_invert_label10:
+.L__kefir_runtime_func___kefir_bigint_invert_label6:
     mov %rdi, %rdx
     add %rcx, %rdx
     movzxb (%rdx), %rsi

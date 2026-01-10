@@ -39,11 +39,11 @@ sum:
     mov %rdi, %rcx
     add $-1, %ecx
     test %edi, %edi
-    jnz .L__kefir_func_sum_label15
+    jnz .L__kefir_func_sum_label8
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_sum_label15:
+.L__kefir_func_sum_label8:
     movl -32(%rbp), %edx
     add $8, %rdx
     cmp $48, %rdx

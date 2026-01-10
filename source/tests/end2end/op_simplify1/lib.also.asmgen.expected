@@ -68,12 +68,12 @@ test6:
     mov %rdx, %rcx
     mov %rsi, %rax
     test %edi, %edi
-    jnz .L__kefir_func_test6_label10
+    jnz .L__kefir_func_test6_label6
     cdq
     idiv %ecx
 .L__kefir_func_test6_label4:
     ret
-.L__kefir_func_test6_label10:
+.L__kefir_func_test6_label6:
     cdq
     idiv %ecx
     jmp .L__kefir_func_test6_label4

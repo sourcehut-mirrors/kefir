@@ -17,14 +17,14 @@ get:
     fstpt -48(%rbp)
     fstpt -32(%rbp)
     test %edi, %edi
-    jnz .L__kefir_func_get_label10
+    jnz .L__kefir_func_get_label5
 .L__kefir_func_get_label3:
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get_label10:
+.L__kefir_func_get_label5:
     test %esi, %esi
     jnz .L__kefir_func_get_label3
     movdqu -32(%rbp), %xmm0

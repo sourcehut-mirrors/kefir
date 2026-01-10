@@ -14,7 +14,7 @@ process:
     push %r12
     sub $240, %rsp
     test %al, %al
-    je .L__kefir_func_process_label21
+    je .L__kefir_func_process_label18
     movdqu %xmm0, -208(%rbp)
     movdqu %xmm1, -192(%rbp)
     movdqu %xmm2, -176(%rbp)
@@ -44,16 +44,14 @@ process:
     cmp $0, %ecx
     setg %dl
     test %edx, %edx
-    sete %cl
-    test %cl, %cl
-    jz .L__kefir_func_process_label20
+    jnz .L__kefir_func_process_label7
     mov $0, %rax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_process_label20:
+.L__kefir_func_process_label7:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rbx
@@ -84,7 +82,7 @@ process:
     cmp %ecx, %eax
     setl %dl
     test %edx, %edx
-    jnz .L__kefir_func_process_label19
+    jnz .L__kefir_func_process_label12
     movq -40(%rbp), %r12
     lea -32(%rbp), %rax
     movq (%rax), %rdi
@@ -95,7 +93,7 @@ process:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_process_label19:
+.L__kefir_func_process_label12:
     movl -64(%rbp), %eax
     cmp $48, %eax
     jae .L__kefir_func_process_label14
@@ -122,7 +120,7 @@ process:
     mov (%rax), %rax
     mov %rax, %rcx
     jmp .L__kefir_func_process_label15
-.L__kefir_func_process_label21:
+.L__kefir_func_process_label18:
     jmp .L__kefir_func_process_label2
 .L__kefir_text_func_process_end:
 
