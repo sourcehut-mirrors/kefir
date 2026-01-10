@@ -40,7 +40,6 @@ test1:
     movq a@GOTPCREL(%rip), %rcx
     mov $0, %esi
     movsx %esi, %rdx
-    imul $1, %rdx, %rdx
     add %rdx, %rcx
     shl $59, %rax
     sar $59, %rax
@@ -49,7 +48,6 @@ test1:
     movq a@GOTPCREL(%rip), %rcx
     mov $1, %esi
     movsx %esi, %rdx
-    imul $1, %rdx, %rdx
     add %rdx, %rcx
     shl $59, %rax
     sar $59, %rax
@@ -58,7 +56,6 @@ test1:
     movq a@GOTPCREL(%rip), %rcx
     mov $2, %esi
     movsx %esi, %rdx
-    imul $1, %rdx, %rdx
     add %rdx, %rcx
     shl $59, %rax
     sar $59, %rax
@@ -67,7 +64,7 @@ test1:
     movq b@GOTPCREL(%rip), %rcx
     mov $0, %esi
     movsx %esi, %rdx
-    imul $2, %rdx, %rdx
+    shl $1, %rdx
     add %rdx, %rcx
     shl $52, %rax
     sar $52, %rax
@@ -76,7 +73,7 @@ test1:
     movq b@GOTPCREL(%rip), %rcx
     mov $1, %esi
     movsx %esi, %rdx
-    imul $2, %rdx, %rdx
+    shl $1, %rdx
     add %rdx, %rcx
     shl $52, %rax
     sar $52, %rax
@@ -85,7 +82,7 @@ test1:
     movq b@GOTPCREL(%rip), %rcx
     mov $2, %esi
     movsx %esi, %rdx
-    imul $2, %rdx, %rdx
+    shl $1, %rdx
     add %rdx, %rcx
     shl $52, %rax
     sar $52, %rax
@@ -94,7 +91,7 @@ test1:
     movq c@GOTPCREL(%rip), %rcx
     mov $0, %esi
     movsx %esi, %rdx
-    imul $4, %rdx, %rdx
+    shl $2, %rdx
     add %rdx, %rcx
     shl $37, %rax
     sar $37, %rax
@@ -103,7 +100,7 @@ test1:
     movq c@GOTPCREL(%rip), %rcx
     mov $1, %esi
     movsx %esi, %rdx
-    imul $4, %rdx, %rdx
+    shl $2, %rdx
     add %rdx, %rcx
     shl $37, %rax
     sar $37, %rax
@@ -112,7 +109,7 @@ test1:
     movq c@GOTPCREL(%rip), %rcx
     mov $2, %esi
     movsx %esi, %rdx
-    imul $4, %rdx, %rdx
+    shl $2, %rdx
     add %rdx, %rcx
     shl $37, %rax
     sar $37, %rax
@@ -121,7 +118,7 @@ test1:
     movq d@GOTPCREL(%rip), %rcx
     mov $0, %esi
     movsx %esi, %rdx
-    imul $8, %rdx, %rdx
+    shl $3, %rdx
     add %rdx, %rcx
     shl $3, %rax
     sar $3, %rax
@@ -130,7 +127,7 @@ test1:
     movq d@GOTPCREL(%rip), %rcx
     mov $1, %esi
     movsx %esi, %rdx
-    imul $8, %rdx, %rdx
+    shl $3, %rdx
     add %rdx, %rcx
     shl $3, %rax
     sar $3, %rax
@@ -139,7 +136,7 @@ test1:
     movq d@GOTPCREL(%rip), %rcx
     mov $2, %esi
     movsx %esi, %rdx
-    imul $8, %rdx, %rdx
+    shl $3, %rdx
     add %rdx, %rcx
     shl $3, %rax
     sar $3, %rax

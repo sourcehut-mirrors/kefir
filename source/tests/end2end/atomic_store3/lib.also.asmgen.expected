@@ -93,7 +93,7 @@ set_arr1_el:
     mov %rdx, %rax
     add $96, %rdi
     movsx %esi, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     add %rcx, %rdi
     xchgq (%rdi), %rax
     ret
@@ -115,7 +115,7 @@ set_arr2_el:
     movdqu %xmm0, -16(%rbp)
     add $160, %rdi
     movsx %esi, %rax
-    imul $64, %rax, %rax
+    shl $6, %rax
     mov %rdi, %rsi
     add %rax, %rsi
     lea -64(%rbp), %rdx

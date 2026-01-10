@@ -157,7 +157,8 @@ __kefir_bigint_cast_signed:
     mov $8, %r9
     div %r9
     mov %rax, %r9
-    imul $8, %r9, %rax
+    mov %r9, %rax
+    shl $3, %rax
     sub %rax, %r8
     cmp %rsi, %rcx
     jbe .L__kefir_runtime_func___kefir_bigint_cast_signed_label46
@@ -171,7 +172,8 @@ __kefir_bigint_cast_signed:
     mov %rdi, %rdx
     add %rax, %rdx
     movzxb (%rdx), %r8
-    imul $8, %rax, %rcx
+    mov %rax, %rcx
+    shl $3, %rcx
     sub %rcx, %rsi
     mov %rsi, %rcx
     sar %cl, %r8d
@@ -287,7 +289,7 @@ __kefir_bigint_right_shift:
     movzxb (%rax), %rdx
     mov %r13, %rcx
     sub $1, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     mov %r8, %rdi
     sub %rcx, %rdi
     mov %rdi, %rcx
@@ -368,8 +370,8 @@ __kefir_bigint_right_shift:
     xor %edx, %edx
     mov %r8, %rcx
     call __kefir_bigint_right_shift_whole_digits
-    imul $8, %r15, %rax
-    sub %rax, %rbx
+    shl $3, %r15
+    sub %r15, %rbx
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label3
 .L__kefir_runtime_text_func___kefir_bigint_right_shift_end:
 
@@ -407,7 +409,7 @@ __kefir_bigint_arithmetic_right_shift:
     cmova %r8, %rbx
     mov %r8, %rax
     sub $1, %rax
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     sub %rcx, %rax
     mov %rax, -48(%rbp)
     mov %rax, %rcx
@@ -523,8 +525,8 @@ __kefir_bigint_arithmetic_right_shift:
     mov %r15, %rdx
     mov %r8, %rcx
     call __kefir_bigint_right_shift_whole_digits
-    imul $8, %r14, %rax
-    sub %rax, %rbx
+    shl $3, %r14
+    sub %r14, %rbx
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label8
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label38:
     mov %r13, %rax
@@ -624,8 +626,8 @@ __kefir_bigint_left_shift:
     mov %r14, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_left_shift_whole_digits
-    imul $8, %r14, %rax
-    sub %rax, %rbx
+    shl $3, %r14
+    sub %r14, %rbx
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label3
 .L__kefir_runtime_text_func___kefir_bigint_left_shift_end:
 
@@ -812,7 +814,7 @@ __kefir_bigint_signed_multiply:
     mov %rax, -88(%rbp)
     mov %rbx, %rcx
     sub $1, %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     mov %rcx, -80(%rbp)
     subq %rax, -80(%rbp)
     xor %eax, %eax
@@ -833,8 +835,9 @@ __kefir_bigint_signed_multiply:
     mov -64(%rbp), %rsi
     mov %rbx, %rdx
     call __kefir_bigint_or
-    imul $2, %rbx, %rsi
+    shl $1, %rbx
     mov %r13, %rdi
+    mov %rbx, %rsi
     mov %r12, %rdx
     call __kefir_bigint_cast_signed
     xor %eax, %eax

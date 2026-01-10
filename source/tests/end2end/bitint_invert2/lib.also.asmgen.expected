@@ -209,12 +209,10 @@ __kefir_bigint_invert:
 .L__kefir_runtime_func___kefir_bigint_invert_label10:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
-    imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
     movq -24(%rbp), %rax
     movq -8(%rbp), %rdx
-    imul $1, %rdx, %rdx
     add %rdx, %rax
     and $255, %rcx
     not %ecx

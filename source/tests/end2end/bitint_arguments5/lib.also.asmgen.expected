@@ -57,7 +57,7 @@ test1:
     movq a@GOTPCREL(%rip), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    imul $16, %rcx, %rcx
+    shl $4, %rcx
     add %rcx, %rax
     movdqu -336(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -66,7 +66,7 @@ test1:
     movq a@GOTPCREL(%rip), %rax
     mov $1, %edx
     movsx %edx, %rcx
-    imul $16, %rcx, %rcx
+    shl $4, %rcx
     add %rcx, %rax
     movdqu -320(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -75,7 +75,7 @@ test1:
     movq a@GOTPCREL(%rip), %rax
     mov $2, %edx
     movsx %edx, %rcx
-    imul $16, %rcx, %rcx
+    shl $4, %rcx
     add %rcx, %rax
     movdqu -336(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -90,7 +90,7 @@ test1:
     movq b@GOTPCREL(%rip), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    imul $64, %rcx, %rcx
+    shl $6, %rcx
     add %rcx, %rax
     movdqu -304(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -111,7 +111,7 @@ test1:
     movq b@GOTPCREL(%rip), %rax
     mov $1, %edx
     movsx %edx, %rcx
-    imul $64, %rcx, %rcx
+    shl $6, %rcx
     add %rcx, %rax
     movdqu -336(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -132,7 +132,7 @@ test1:
     movq b@GOTPCREL(%rip), %rax
     mov $2, %edx
     movsx %edx, %rcx
-    imul $64, %rcx, %rcx
+    shl $6, %rcx
     add %rcx, %rax
     movdqu -336(%rbp), %xmm0
     movdqu %xmm0, (%rax)

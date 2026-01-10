@@ -33,7 +33,7 @@ test1:
     add %rcx, %r10
     mov %r10, %rcx
     movsx %r9d, %r10
-    imul $4, %r10, %r10
+    shl $2, %r10
     mov %rcx, %r11
     add %r10, %r11
     mov %r11, %r10
@@ -85,7 +85,7 @@ _kefir_local_public_label_test2_outer:
     add %rcx, %r10
     mov %r10, %rcx
     movsx %r9d, %r10
-    imul $4, %r10, %r10
+    shl $2, %r10
     mov %rcx, %r11
     add %r10, %r11
     mov %r11, %r10

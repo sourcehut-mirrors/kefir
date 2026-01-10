@@ -123,7 +123,8 @@ getb:
     movl -16(%rbp), %eax
     movl %eax, 196(%rbx)
     movl -20(%rbp), %eax
-    imul $2, %eax, %edi
+    shl $1, %eax
+    mov %eax, %edi
     call getinteger@PLT
     movl %eax, -12(%rbp)
     movl %eax, 200(%rbx)

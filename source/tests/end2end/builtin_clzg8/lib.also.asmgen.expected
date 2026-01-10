@@ -124,7 +124,7 @@ __kefir_bigint_leading_zeros:
     movzxb (%rcx), %r10
     mov %rax, %rcx
     sub $1, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     mov %rsi, %r11
     sub %rcx, %r11
     mov %r11, %rcx

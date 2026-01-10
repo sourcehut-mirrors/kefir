@@ -217,7 +217,6 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label25:
     movq -48(%rbp), %rax
     movq -32(%rbp), %rcx
-    imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
     movb %cl, -24(%rbp)

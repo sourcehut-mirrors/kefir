@@ -35,7 +35,7 @@ get_T2:
     lea T1(%rip), %rax
     add $8, %rax
     movsx %edi, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     add %rcx, %rax
     ret
 .L__kefir_func_get_T2_label15:

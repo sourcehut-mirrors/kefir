@@ -220,7 +220,7 @@ __kefir_bigint_unsigned_compare:
     xor %edx, %edx
     mov $8, %r12
     div %r12
-    imul $8, %rax, %rax
+    shl $3, %rax
     sub %rax, %rcx
     add $1, %rcx
     mov %ecx, %ecx
@@ -269,7 +269,7 @@ __kefir_bigint_trailing_zeros:
     lea 1(%rdx), %rcx
     mov %rax, %r11
     sub $1, %r11
-    imul $8, %r11, %r11
+    shl $3, %r11
     mov %rsi, %rbx
     sub %r11, %rbx
     mov %rbx, %r11

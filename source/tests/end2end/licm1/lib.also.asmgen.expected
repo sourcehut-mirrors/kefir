@@ -17,11 +17,12 @@ test1:
     ret
 .L__kefir_func_test1_label10:
     movsx %eax, %rcx
-    imul $4, %rcx, %rcx
+    shl $2, %rcx
     mov %rdi, %r8
     add %rcx, %r8
     mov %r8, %rcx
-    imul $2, %eax, %r8d
+    mov %rax, %r8
+    shl $1, %r8d
     mov %edx, %r9d
     add %r8d, %r9d
     mov %r9, %r8

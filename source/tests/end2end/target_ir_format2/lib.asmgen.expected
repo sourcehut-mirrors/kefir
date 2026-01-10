@@ -3833,8 +3833,8 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 13,
-#                    "opcode": "imul3",
+#                    "instr_ref": 30,
+#                    "opcode": "shl",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
@@ -3848,8 +3848,8 @@ test4:
 #                        },
 #                        {
 #                            "type": "integer",
-#                            "value": 8,
-#                            "variant": "32bit"
+#                            "value": 3,
+#                            "variant": "default"
 #                        }
 #                    ],
 #                    "values": [
@@ -3868,76 +3868,6 @@ test4:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 7
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_of"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_of"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_cf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_cf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
 #                            }
 #                        }
 #                    ],
@@ -3962,7 +3892,7 @@ test4:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 13,
+#                            "instr_ref": 30,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4259,7 +4189,7 @@ _kefir_local_public_label_test4_label1:
     movl -4(%rbp), %eax
     lea __kefir_function_test4_static_arr_10(%rip), %rcx
     movsx %eax, %rax
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     jmp *%rax

@@ -263,7 +263,6 @@ __kefir_bigint_cast_unsigned:
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label29:
     movq -80(%rbp), %rax
     movq -8(%rbp), %rcx
-    imul $1, %rcx, %rcx
     add %rcx, %rax
     movb $0, (%rax)
     movq -8(%rbp), %rax
@@ -281,7 +280,6 @@ __kefir_bigint_cast_unsigned:
     movl -8(%rbp), %eax
     movq -80(%rbp), %rcx
     movq -16(%rbp), %rdx
-    imul $1, %rdx, %rdx
     add %rdx, %rcx
     movb (%rcx), %dl
     and $255, %rdx
@@ -315,7 +313,6 @@ __kefir_bigint_cast_unsigned:
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label32:
     movq -80(%rbp), %rax
     movq -8(%rbp), %rcx
-    imul $1, %rcx, %rcx
     add %rcx, %rax
     movb $0, (%rax)
     movq -8(%rbp), %rax
@@ -333,7 +330,6 @@ __kefir_bigint_cast_unsigned:
     movl -8(%rbp), %eax
     movq -80(%rbp), %rcx
     movq -48(%rbp), %rdx
-    imul $1, %rdx, %rdx
     add %rdx, %rcx
     movb (%rcx), %dl
     and $255, %rdx

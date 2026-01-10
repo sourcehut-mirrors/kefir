@@ -139,7 +139,7 @@ __kefir_bigint_nonzero_count:
     lea 1(%rdx), %rcx
     mov %rax, %r10
     sub $1, %r10
-    imul $8, %r10, %r10
+    shl $3, %r10
     mov %rsi, %r11
     sub %r10, %r11
     mov %r11, %r10

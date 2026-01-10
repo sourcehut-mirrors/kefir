@@ -110,7 +110,7 @@ process:
     movq (%rax), %rax
     movl -68(%rbp), %edx
     movsx %edx, %rdx
-    imul $4, %rdx, %rdx
+    shl $2, %rdx
     add %rdx, %rax
     movl %ecx, (%rax)
     movl -68(%rbp), %eax

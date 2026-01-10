@@ -27,7 +27,8 @@ eval2:
     mov %rsp, %rcx
     movq %rax, -24(%rbp)
     movsx %edi, %rax
-    imul $8, %rax, %rdx
+    mov %rax, %rdx
+    shl $3, %rdx
     movq %rdx, -8(%rbp)
     sub %rdx, %rsp
     mov $16, %rdx

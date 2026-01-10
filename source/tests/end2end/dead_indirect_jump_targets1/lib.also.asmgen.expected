@@ -51,7 +51,7 @@ test3:
     lea __kefir_function_test3_static_x_4(%rip), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     add %rcx, %rax
     movq (%rax), %rax
     jmp *%rax

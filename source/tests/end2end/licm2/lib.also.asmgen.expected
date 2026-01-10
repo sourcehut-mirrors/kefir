@@ -43,7 +43,7 @@ test1:
     jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label16:
     movsx %r11d, %rbx
-    imul $4, %rbx, %rbx
+    shl $2, %rbx
     mov %r10, %r12
     add %rbx, %r12
     mov %r12, %rbx
@@ -109,7 +109,7 @@ test2:
     jmp .L__kefir_func_test2_label6
 .L__kefir_func_test2_label27:
     movsx %r11d, %rcx
-    imul $4, %rcx, %rcx
+    shl $2, %rcx
     mov %r9, %rbx
     add %rcx, %rbx
     movl (%rbx), %r12d
@@ -132,7 +132,7 @@ test2:
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label26:
     movsx %r11d, %rbx
-    imul $4, %rbx, %rbx
+    shl $2, %rbx
     mov %r9, %r12
     add %rbx, %r12
     mov %r12, %rbx

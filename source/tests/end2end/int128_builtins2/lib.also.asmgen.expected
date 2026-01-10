@@ -223,7 +223,7 @@ __kefir_bigint_nonzero_count:
     lea 1(%rdx), %rcx
     mov %rax, %r10
     sub $1, %r10
-    imul $8, %r10, %r10
+    shl $3, %r10
     mov %rsi, %r11
     sub %r10, %r11
     mov %r11, %r10
@@ -333,7 +333,7 @@ __kefir_bigint_unsigned_compare:
     xor %edx, %edx
     mov $8, %r12
     div %r12
-    imul $8, %rax, %rax
+    shl $3, %rax
     sub %rax, %rcx
     add $1, %rcx
     mov %ecx, %ecx
@@ -355,7 +355,8 @@ __kefir_bigint_cast_signed:
     mov $8, %r9
     div %r9
     mov %rax, %r9
-    imul $8, %r9, %rax
+    mov %r9, %rax
+    shl $3, %rax
     sub %rax, %r8
     cmp %rsi, %rcx
     jbe .L__kefir_runtime_func___kefir_bigint_cast_signed_label46
@@ -369,7 +370,8 @@ __kefir_bigint_cast_signed:
     mov %rdi, %rdx
     add %rax, %rdx
     movzxb (%rdx), %r8
-    imul $8, %rax, %rcx
+    mov %rax, %rcx
+    shl $3, %rcx
     sub %rcx, %rsi
     mov %rsi, %rcx
     sar %cl, %r8d
@@ -489,7 +491,7 @@ __kefir_bigint_least_significant_nonzero:
     lea 1(%rdx), %rcx
     mov %rax, %r9
     sub $1, %r9
-    imul $8, %r9, %r9
+    shl $3, %r9
     mov %rsi, %r10
     sub %r9, %r10
     mov %r10, %r9
@@ -518,9 +520,9 @@ __kefir_bigint_least_significant_nonzero:
     mov %r11, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label10
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label29:
-    imul $8, %rdx, %rax
-    add %r9, %rax
-    add $1, %rax
+    shl $3, %rdx
+    add %r9, %rdx
+    lea 1(%rdx), %rax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -571,7 +573,7 @@ __kefir_bigint_trailing_zeros:
     lea 1(%rdx), %rcx
     mov %rax, %r11
     sub $1, %r11
-    imul $8, %r11, %r11
+    shl $3, %r11
     mov %rsi, %rbx
     sub %r11, %rbx
     mov %rbx, %r11
@@ -660,7 +662,7 @@ __kefir_bigint_leading_zeros:
     movzxb (%rcx), %r10
     mov %rax, %rcx
     sub $1, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     mov %rsi, %r11
     sub %rcx, %r11
     mov %r11, %rcx
@@ -730,7 +732,7 @@ __kefir_bigint_redundant_sign_bits:
     movzxb (%rdx), %rdx
     mov %rsi, %r8
     sub $1, %r8
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     mov %r8, %r9
     sub %rcx, %r9
     mov %r9, %rcx
@@ -760,7 +762,7 @@ __kefir_bigint_redundant_sign_bits:
     movzxb (%rcx), %r10
     mov %rax, %rcx
     sub $1, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     mov %rsi, %r11
     sub %rcx, %r11
     mov %r11, %rcx

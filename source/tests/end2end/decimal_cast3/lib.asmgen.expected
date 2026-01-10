@@ -805,7 +805,7 @@ __kefir_bigint_is_zero:
     xor %edx, %edx
     mov $8, %r11
     div %r11
-    imul $8, %rax, %rax
+    shl $3, %rax
     sub %rax, %rcx
     add $1, %rcx
     mov $1, %rax
@@ -1057,7 +1057,7 @@ __kefir_bigint_get_min_unsigned_width:
     lea -1(%rsi), %r8
     mov %rsi, %rcx
     sub $1, %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     sub %rax, %rcx
     sar %cl, %edx
     and $1, %edx
@@ -1102,7 +1102,8 @@ __kefir_bigint_cast_signed:
     mov $8, %r9
     div %r9
     mov %rax, %r9
-    imul $8, %r9, %rax
+    mov %r9, %rax
+    shl $3, %rax
     sub %rax, %r8
     cmp %rsi, %rcx
     jbe .L__kefir_runtime_func___kefir_bigint_cast_signed_label46
@@ -1116,7 +1117,8 @@ __kefir_bigint_cast_signed:
     mov %rdi, %rdx
     add %rax, %rdx
     movzxb (%rdx), %r8
-    imul $8, %rax, %rcx
+    mov %rax, %rcx
+    shl $3, %rcx
     sub %rcx, %rsi
     mov %rsi, %rcx
     sar %cl, %r8d
@@ -1232,7 +1234,7 @@ __kefir_bigint_right_shift:
     movzxb (%rax), %rdx
     mov %r13, %rcx
     sub $1, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     mov %r8, %rdi
     sub %rcx, %rdi
     mov %rdi, %rcx
@@ -1313,8 +1315,8 @@ __kefir_bigint_right_shift:
     xor %edx, %edx
     mov %r8, %rcx
     call __kefir_bigint_right_shift_whole_digits
-    imul $8, %r15, %rax
-    sub %rax, %rbx
+    shl $3, %r15
+    sub %r15, %rbx
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_label3
 .L__kefir_runtime_text_func___kefir_bigint_right_shift_end:
 
@@ -1561,8 +1563,8 @@ __kefir_bigint_left_shift:
     mov %r14, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_left_shift_whole_digits
-    imul $8, %r14, %rax
-    sub %rax, %rbx
+    shl $3, %r14
+    sub %r14, %rbx
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label3
 .L__kefir_runtime_text_func___kefir_bigint_left_shift_end:
 
@@ -1822,7 +1824,8 @@ __kefir_bigint_get_bits:
     xor %edx, %edx
     mov $8, %r11
     div %r11
-    imul $8, %rax, %rcx
+    mov %rax, %rcx
+    shl $3, %rcx
 .L__kefir_runtime_func___kefir_bigint_get_bits_label11:
     mov %r10, %rax
     xor %edx, %edx
@@ -1835,10 +1838,9 @@ __kefir_bigint_get_bits:
     cmp %r8, %rcx
     mov %rcx, %rax
     cmova %r8, %rax
-    imul $8, %rdx, %rcx
-    mov %r10, %rdx
-    sub %rcx, %rdx
-    mov %rdx, %rcx
+    shl $3, %rdx
+    mov %r10, %rcx
+    sub %rdx, %rcx
     sar %cl, %r11d
     mov %rax, %rcx
     sub %r10, %rcx
@@ -1867,7 +1869,7 @@ __kefir_bigint_get_sign:
     add %rax, %rdi
     movzxb (%rdi), %rdx
     sub $1, %rsi
-    imul $8, %rax, %rax
+    shl $3, %rax
     mov %rsi, %rcx
     sub %rax, %rcx
     sar %cl, %edx
@@ -1888,7 +1890,8 @@ __kefir_bigint_cast_unsigned:
     mov $8, %r8
     div %r8
     mov %rax, %r8
-    imul $8, %r8, %rax
+    mov %r8, %rax
+    shl $3, %rax
     mov %rcx, %rdx
     sub %rax, %rdx
     mov %rdx, %rax
@@ -1901,7 +1904,8 @@ __kefir_bigint_cast_unsigned:
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    imul $8, %rax, %rcx
+    mov %rax, %rcx
+    shl $3, %rcx
     mov %rsi, %rdx
     sub %rcx, %rdx
     mov %rdx, %rcx

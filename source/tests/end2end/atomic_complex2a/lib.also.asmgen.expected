@@ -248,7 +248,7 @@ ld_load_index:
     mov %rsp, %rbp
     sub $32, %rsp
     mov %esi, %eax
-    imul $32, %rax, %rax
+    shl $5, %rax
     mov %rdi, %rsi
     add %rax, %rsi
     lea -32(%rbp), %rdx
@@ -268,7 +268,7 @@ f32_load_index:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %esi, %eax
-    imul $8, %rax, %rax
+    shl $3, %rax
     mov %rdi, %rsi
     add %rax, %rsi
     lea -16(%rbp), %rdx
@@ -289,7 +289,7 @@ ld_store_index:
     mov %rsp, %rbp
     lea 16(%rbp), %rdx
     mov %esi, %eax
-    imul $32, %rax, %rax
+    shl $5, %rax
     mov %rdi, %rsi
     add %rax, %rsi
     mov $32, %rdi
@@ -307,7 +307,7 @@ f32_store_index:
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     mov %esi, %eax
-    imul $8, %rax, %rax
+    shl $3, %rax
     mov %rdi, %rsi
     add %rax, %rsi
     movd %xmm0, -8(%rbp)
@@ -327,7 +327,7 @@ f64_load_index:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %esi, %eax
-    imul $16, %rax, %rax
+    shl $4, %rax
     mov %rdi, %rsi
     add %rax, %rsi
     lea -16(%rbp), %rdx
@@ -347,7 +347,7 @@ f64_store_index:
     mov %rsp, %rbp
     sub $32, %rsp
     mov %esi, %eax
-    imul $16, %rax, %rax
+    shl $4, %rax
     mov %rdi, %rsi
     add %rax, %rsi
     movq %xmm0, -16(%rbp)

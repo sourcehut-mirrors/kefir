@@ -269,7 +269,8 @@ __kefir_bigint_cast_signed:
     mov $8, %r9
     div %r9
     mov %rax, %r9
-    imul $8, %r9, %rax
+    mov %r9, %rax
+    shl $3, %rax
     sub %rax, %r8
     cmp %rsi, %rcx
     jbe .L__kefir_runtime_func___kefir_bigint_cast_signed_label46
@@ -283,7 +284,8 @@ __kefir_bigint_cast_signed:
     mov %rdi, %rdx
     add %rax, %rdx
     movzxb (%rdx), %r8
-    imul $8, %rax, %rcx
+    mov %rax, %rcx
+    shl $3, %rcx
     sub %rcx, %rsi
     mov %rsi, %rcx
     sar %cl, %r8d
@@ -382,7 +384,8 @@ __kefir_bigint_cast_unsigned:
     mov $8, %r8
     div %r8
     mov %rax, %r8
-    imul $8, %r8, %rax
+    mov %r8, %rax
+    shl $3, %rax
     mov %rcx, %rdx
     sub %rax, %rdx
     mov %rdx, %rax
@@ -395,7 +398,8 @@ __kefir_bigint_cast_unsigned:
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    imul $8, %rax, %rcx
+    mov %rax, %rcx
+    shl $3, %rcx
     mov %rsi, %rdx
     sub %rcx, %rdx
     mov %rdx, %rcx

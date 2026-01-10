@@ -209,12 +209,10 @@ __kefir_bigint_invert:
 .L__kefir_runtime_func___kefir_bigint_invert_label10:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
-    imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
     movq -24(%rbp), %rax
     movq -8(%rbp), %rdx
-    imul $1, %rdx, %rdx
     add %rdx, %rax
     and $255, %rcx
     not %ecx
@@ -293,7 +291,6 @@ __kefir_bigint_util_add_digit_zero_extended:
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label18:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
-    imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %cl
     and $255, %rcx
@@ -320,7 +317,6 @@ __kefir_bigint_util_add_digit_zero_extended:
     movl -8(%rbp), %eax
     movq -40(%rbp), %rcx
     movq -16(%rbp), %rdx
-    imul $1, %rdx, %rdx
     add %rdx, %rcx
     movb %al, (%rcx)
     movl -8(%rbp), %eax

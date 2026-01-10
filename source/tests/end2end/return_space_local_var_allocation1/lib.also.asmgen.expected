@@ -192,7 +192,7 @@ get2:
 .L__kefir_func_get2_label308:
     movsx %eax, %rax
 .L__kefir_func_get2_label309:
-    imul $8, %rax, %rax
+    shl $3, %rax
 .L__kefir_func_get2_label316:
     mov %rdi, %r8
     add %rax, %r8
@@ -215,7 +215,8 @@ get2:
 .L__kefir_func_get2_label336:
     movsx %eax, %rax
 .L__kefir_func_get2_label337:
-    imul $8, %rax, %r9
+    mov %rax, %r9
+    shl $3, %r9
 .L__kefir_func_get2_label346:
     lea -128(%rbp), %rax
     add %r9, %rax
@@ -234,7 +235,8 @@ get2:
 .L__kefir_func_get2_label359:
     movsx %eax, %rax
 .L__kefir_func_get2_label366:
-    imul $8, %rax, %r9
+    mov %rax, %r9
+    shl $3, %r9
 .L__kefir_func_get2_label372:
     lea -64(%rbp), %rax
     add %r9, %rax

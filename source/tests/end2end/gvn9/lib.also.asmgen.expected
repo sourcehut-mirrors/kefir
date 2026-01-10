@@ -147,7 +147,7 @@ __kefir_bigint_signed_compare:
     movzxb (%rcx), %r9
     mov %r8, %rcx
     sub $1, %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     mov %rcx, %r10
     sub %rax, %r10
     mov %r10, %rax
@@ -242,7 +242,7 @@ __kefir_bigint_unsigned_compare:
     xor %edx, %edx
     mov $8, %r12
     div %r12
-    imul $8, %rax, %rax
+    shl $3, %rax
     sub %rax, %rcx
     add $1, %rcx
     mov %ecx, %ecx

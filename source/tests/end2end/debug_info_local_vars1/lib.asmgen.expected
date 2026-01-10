@@ -58,7 +58,7 @@ fn1:
 .L__kefir_func_fn1_label130:
     movsx %r8d, %rsi
 .L__kefir_func_fn1_label131:
-    imul $8, %rsi, %rsi
+    shl $3, %rsi
 .loc 0 32 24
 .L__kefir_func_fn1_label142:
     lea -816(%rbp), %rdi
@@ -100,12 +100,12 @@ fn1:
     je .L__kefir_func_fn1_label30
 .loc 0 32 44
 .L__kefir_func_fn1_label197:
-    imul $8, %rax, %rcx
+    shl $3, %rax
 .L__kefir_func_fn1_label203:
-    lea -1616(%rbp), %rax
-    add %rcx, %rax
+    lea -1616(%rbp), %rcx
+    add %rax, %rcx
 .L__kefir_func_fn1_label212:
-    movq (%rax), %rax
+    movq (%rcx), %rax
 .loc 0 32 20
 .L__kefir_func_fn1_label16:
     cvtsi2sd %rax, %xmm1

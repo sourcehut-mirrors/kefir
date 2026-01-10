@@ -18,7 +18,7 @@ test:
 _kefir_local_public_label_test_label3:
     movsxl -8(%rbp), %rax
     lea __kefir_function_test_static_arr_4(%rip), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     movl $0, -8(%rbp)

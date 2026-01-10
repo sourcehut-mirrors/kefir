@@ -21,7 +21,7 @@ factorial2:
     cmp $1, %rdi
     setg %cl
     movsx %ecx, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     add %rcx, %rax
     movq (%rax), %rax
     movq %rdi, -16(%rbp)
@@ -52,7 +52,7 @@ run_factorial:
     cmp $1, %rax
     setg %dl
     movsx %edx, %rax
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     jmp *%rax

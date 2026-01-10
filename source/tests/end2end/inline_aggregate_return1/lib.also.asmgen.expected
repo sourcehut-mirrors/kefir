@@ -34,7 +34,8 @@ gets1:
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
     movsx %esi, %rax
-    imul $4, %rax, %rcx
+    mov %rax, %rcx
+    shl $2, %rcx
     lea -128(%rbp), %rax
     add %rcx, %rax
     mov %rsi, %rcx
@@ -57,7 +58,7 @@ gets1:
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, 48(%rdi)
     movsx %esi, %rax
-    imul $4, %rax, %rax
+    shl $2, %rax
     mov %rdi, %rcx
     add %rax, %rcx
     mov %rcx, %rax

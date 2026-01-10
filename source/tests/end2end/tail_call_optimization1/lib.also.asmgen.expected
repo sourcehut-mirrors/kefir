@@ -35,7 +35,7 @@ run_bf:
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rbx
     lea -5152(%rbp), %rdi
@@ -59,7 +59,7 @@ op_next:
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     jmp *%rax
@@ -81,7 +81,7 @@ op_plus:
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     jmp *%rax
@@ -100,7 +100,7 @@ op_prev:
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     jmp *%rax
@@ -122,7 +122,7 @@ op_minus:
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     jmp *%rax
@@ -150,7 +150,7 @@ op_print:
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     mov %rbx, %rdi
@@ -180,14 +180,14 @@ op_loop_end:
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     jmp *%rax
 .L__kefir_func_op_loop_end_label8:
     movzxb 5134(%rdi), %rax
     lea 4104(%rdi), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     sub $1, %rax
@@ -232,7 +232,7 @@ op_loop_begin:
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
-    imul $8, %rax, %rax
+    shl $3, %rax
     add %rax, %rcx
     movq (%rcx), %rax
     jmp *%rax
@@ -250,7 +250,7 @@ op_loop_begin:
     movb %dl, 5134(%rdi)
     lea 4104(%rdi), %rdx
     movzx %cl, %rcx
-    imul $8, %rcx, %rcx
+    shl $3, %rcx
     add %rcx, %rdx
     movq %rax, (%rdx)
     jmp .L__kefir_func_op_loop_begin_label19

@@ -378,7 +378,7 @@ add_i64:
 
 add_ptr:
 .L__kefir_text_func_add_ptr_begin:
-    imul $4, %rsi, %rsi
+    shl $2, %rsi
 .L__kefir_func_add_ptr_label2:
     movq (%rdi), %rax
     mov %rax, %r8
@@ -1428,7 +1428,7 @@ subtract_i64:
 
 subtract_ptr:
 .L__kefir_text_func_subtract_ptr_begin:
-    imul $4, %rsi, %rsi
+    shl $2, %rsi
 .L__kefir_func_subtract_ptr_label2:
     movq (%rdi), %rax
     mov %rax, %r8

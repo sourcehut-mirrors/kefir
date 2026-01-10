@@ -290,7 +290,7 @@ __kefir_bigint_unsigned_compare:
     xor %edx, %edx
     mov $8, %r12
     div %r12
-    imul $8, %rax, %rax
+    shl $3, %rax
     sub %rax, %rcx
     add $1, %rcx
     mov %ecx, %ecx
