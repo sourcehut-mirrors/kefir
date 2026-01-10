@@ -2426,8 +2426,6 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm4
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label9:
     or %r8d, %edi
-    setne %sil
-    test %sil, %sil
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label78
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label11:
     xor %eax, %eax

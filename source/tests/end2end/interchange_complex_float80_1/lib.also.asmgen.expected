@@ -2930,16 +2930,12 @@ __kefir_softfloat_complex_long_double_mul:
     test %esi, %esi
     setne %al
     or %edi, %esi
-    setne %sil
-    test %sil, %sil
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label76
     xor %eax, %eax
     movdqu -208(%rbp), %xmm0
     movdqu %xmm0, -176(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label9:
     or %r9d, %r8d
-    setne %sil
-    test %sil, %sil
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label78
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label11:
     xor %ecx, %ecx

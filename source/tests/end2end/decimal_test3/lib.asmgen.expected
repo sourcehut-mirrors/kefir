@@ -376,8 +376,6 @@ test_dec32_cg_solve:
     test %eax, %eax
     sete %al
     or %al, %r12b
-    setne %al
-    test %al, %al
     jnz .L__kefir_func_test_dec32_cg_solve_label12
     movaps -112(%rbp), %xmm0
     movaps -144(%rbp), %xmm1
@@ -677,8 +675,6 @@ test_dec64_cg_solve:
     test %eax, %eax
     sete %al
     or %al, %r12b
-    setne %al
-    test %al, %al
     jnz .L__kefir_func_test_dec64_cg_solve_label12
     movaps -112(%rbp), %xmm0
     movaps -144(%rbp), %xmm1
@@ -2140,8 +2136,6 @@ test_dec128_cg_solve:
     test %eax, %eax
     sete %al
     or %al, %r12b
-    setne %al
-    test %al, %al
     jnz .L__kefir_func_test_dec128_cg_solve_label12
     movaps -112(%rbp), %xmm0
     movaps -144(%rbp), %xmm1
