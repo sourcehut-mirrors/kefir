@@ -153,11 +153,8 @@ __kefir_softfloat_complex_long_double_div:
     call __kefir_softfloat_scalbnl
     add $16, %rsp
     fldt -80(%rbp)
-    xor %eax, %eax
     fucomi %st(0)
     setp %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     fstpt -80(%rbp)
     fstpt -48(%rbp)
@@ -586,11 +583,8 @@ __kefir_softfloat_complex_long_double_div:
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label50
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label54:
     fldt -48(%rbp)
-    xor %eax, %eax
     fucomi %st(0)
     setp %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     fstpt -48(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label5

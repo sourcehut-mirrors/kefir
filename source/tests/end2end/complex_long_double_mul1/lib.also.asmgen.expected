@@ -69,11 +69,8 @@ __kefir_softfloat_complex_long_double_mul:
     fld %st(0)
     fld %st(2)
     fsubp
-    xor %eax, %eax
     fucomi %st(0)
     setp %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     fld %st(6)
     fxch %st(1)
@@ -604,11 +601,8 @@ __kefir_softfloat_complex_long_double_mul:
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label65
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label73:
     fldt -160(%rbp)
-    xor %eax, %eax
     fucomi %st(0)
     setp %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     fstpt -160(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label3
