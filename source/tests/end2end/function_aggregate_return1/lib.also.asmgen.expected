@@ -27,8 +27,7 @@ get1:
     sete %sil
     or %rsi, %rdx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jz .L__kefir_func_get1_label6
     xorps %xmm0, %xmm0
     movdqu %xmm0, -144(%rbp)

@@ -183,8 +183,7 @@ __kefir_bigint_cast_unsigned:
     sete %sil
     or %rsi, %rdx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label23
     movq -40(%rbp), %rax
     mov $0, %edx
@@ -239,8 +238,7 @@ __kefir_bigint_cast_unsigned:
     sete %sil
     or %rsi, %rdx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label12
     mov $0, %rax
     lea (%rbp), %rsp
@@ -287,8 +285,7 @@ __kefir_bigint_cast_unsigned:
     sete %sil
     or %rsi, %rdx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label21
     mov $0, %rax
     lea (%rbp), %rsp

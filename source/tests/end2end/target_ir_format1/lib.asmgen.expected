@@ -194,40 +194,6 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 97,
-#                    "opcode": "mov",
-#                    "parameters": [
-#                        {
-#                            "type": "integer",
-#                            "value": 0,
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rcx"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 6
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
 #                    "instr_ref": 98,
 #                    "opcode": "cmp",
 #                    "parameters": [
@@ -325,18 +291,46 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 99,
+#                    "instr_ref": 113,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "64bit",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 114,
 #                    "opcode": "setl",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 97,
+#                            "instr_ref": 113,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit",
-#                            "tied": true
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -371,7 +365,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rax"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 6
@@ -384,27 +378,27 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 101,
+#                    "instr_ref": 105,
 #                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 99,
+#                            "instr_ref": 114,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit",
+#                            "variant": "8bit",
 #                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 99,
+#                            "instr_ref": 114,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit",
+#                            "variant": "8bit",
 #                            "tied": false
 #                        }
 #                    ],
@@ -458,7 +452,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 109,
+#                    "instr_ref": 122,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
@@ -471,7 +465,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 101,
+#                            "instr_ref": 105,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -1019,7 +1013,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 113,
+#                    "instr_ref": 115,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -1047,12 +1041,12 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 114,
+#                    "instr_ref": 116,
 #                    "opcode": "setne",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 113,
+#                            "instr_ref": 115,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1096,12 +1090,22 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 32,
-#                    "opcode": "movzx",
+#                    "instr_ref": 123,
+#                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 114,
+#                            "instr_ref": 116,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "8bit",
+#                            "tied": false
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 116,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1113,55 +1117,6 @@ factorial:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 12
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 34,
-#                    "opcode": "test",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 32,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "32bit",
-#                            "tied": false
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 32,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "32bit",
-#                            "tied": false
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_pf"
 #                            },
@@ -1209,7 +1164,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 116,
+#                    "instr_ref": 126,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
@@ -1222,7 +1177,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 34,
+#                            "instr_ref": 123,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -1340,40 +1295,6 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 45,
-#                    "opcode": "mov",
-#                    "parameters": [
-#                        {
-#                            "type": "integer",
-#                            "value": 0,
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rcx"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 17
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
 #                    "instr_ref": 46,
 #                    "opcode": "cmp",
 #                    "parameters": [
@@ -1471,18 +1392,46 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 47,
+#                    "instr_ref": 117,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "64bit",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 118,
 #                    "opcode": "setg",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 45,
+#                            "instr_ref": 117,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
 #                            "variant": "8bit",
-#                            "tied": true
+#                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1527,7 +1476,7 @@ factorial:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rax"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 17
@@ -1540,27 +1489,27 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 49,
+#                    "instr_ref": 107,
 #                    "opcode": "test",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 47,
+#                            "instr_ref": 118,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit",
+#                            "variant": "8bit",
 #                            "tied": false
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 47,
+#                            "instr_ref": 118,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "32bit",
+#                            "variant": "8bit",
 #                            "tied": false
 #                        }
 #                    ],
@@ -1614,7 +1563,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 111,
+#                    "instr_ref": 125,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
@@ -1627,7 +1576,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 49,
+#                            "instr_ref": 107,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -2504,10 +2453,9 @@ factorial:
     sub $16, %rsp
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
-    mov $0, %rcx
     cmp $0, %eax
-    setl %cl
-    test %ecx, %ecx
+    setl %al
+    test %al, %al
     jnz .L__kefir_func_factorial_label14
     movl -8(%rbp), %eax
     mov $0, %rcx
@@ -2519,16 +2467,14 @@ factorial:
     sete %dl
     or %rdx, %rcx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_func_factorial_label12
     movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
-    mov $0, %rcx
     cmp $1, %eax
-    setg %cl
-    test %ecx, %ecx
+    setg %al
+    test %al, %al
     jnz .L__kefir_func_factorial_label10
     movl -4(%rbp), %eax
     lea (%rbp), %rsp

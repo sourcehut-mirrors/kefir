@@ -40,10 +40,9 @@ process:
     lea -256(%rbp), %rcx
     movq %rcx, -48(%rbp)
     movl -72(%rbp), %ecx
-    mov $0, %rdx
     cmp $0, %ecx
-    setg %dl
-    test %edx, %edx
+    setg %cl
+    test %cl, %cl
     jnz .L__kefir_func_process_label7
     mov $0, %rax
     lea -16(%rbp), %rsp
@@ -78,10 +77,9 @@ process:
 .L__kefir_func_process_label8:
     movl -68(%rbp), %eax
     movl -72(%rbp), %ecx
-    mov $0, %rdx
     cmp %ecx, %eax
-    setl %dl
-    test %edx, %edx
+    setl %al
+    test %al, %al
     jnz .L__kefir_func_process_label12
     movq -40(%rbp), %r12
     lea -32(%rbp), %rax

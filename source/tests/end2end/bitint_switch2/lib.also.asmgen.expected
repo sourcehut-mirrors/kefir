@@ -979,10 +979,9 @@ __kefir_bigint_unsigned_compare:
     movq -24(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    seta %dl
-    test %edx, %edx
+    seta %al
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
     mov $0, %rax
     lea (%rbp), %rsp
@@ -1014,10 +1013,9 @@ __kefir_bigint_unsigned_compare:
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    mov $0, %rdx
     cmp %ecx, %eax
-    seta %dl
-    test %edx, %edx
+    seta %al
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
@@ -1130,8 +1128,7 @@ __kefir_bigint_cast_signed:
     sete %sil
     or %rsi, %rdx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label32
     movq -40(%rbp), %rax
     mov $0, %edx
@@ -1200,8 +1197,7 @@ __kefir_bigint_cast_signed:
     sete %sil
     or %rsi, %rdx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label12
     mov $0, %rax
     lea (%rbp), %rsp
@@ -1282,8 +1278,7 @@ __kefir_bigint_cast_signed:
     sete %sil
     or %rsi, %rdx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label30
     mov $0, %rax
     lea (%rbp), %rsp
@@ -1373,10 +1368,9 @@ __kefir_bigint_set_signed_integer:
     movsx %edx, %rcx
     mov $8, %rdx
     imul %rcx, %rdx
-    mov $0, %rcx
     cmp %rdx, %rax
-    seta %cl
-    test %ecx, %ecx
+    seta %al
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label5:
     movq -24(%rbp), %rax

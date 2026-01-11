@@ -314,7 +314,6 @@ static kefir_result_t peephole_imul(struct kefir_mem *mem, struct kefir_codegen_
     return KEFIR_OK;
 }
 
-
 static kefir_result_t peephole_xor(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     struct kefir_codegen_target_ir_tie_classification classification;
     REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instr->instr_ref, &classification));
@@ -374,6 +373,102 @@ static kefir_result_t peephole_xor(struct kefir_mem *mem, struct kefir_codegen_t
         classification.operands[0].output));
     REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
     *replaced = true;
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_test(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    struct kefir_codegen_target_ir_tie_classification classification;
+    REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instr->instr_ref, &classification));
+
+    kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
+    REQUIRE(classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ &&
+            classification.classification.operands[1].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ &&
+            classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+            classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+            instr->operation.parameters[classification.operands[0].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+            instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+            instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
+                instr->operation.parameters[classification.operands[1].read_index].direct.variant &&
+            instr->operation.parameters[classification.operands[0].read_index].direct.variant !=
+                KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT &&
+            instr->operation.parameters[classification.operands[0].read_index].direct.value_ref.instr_ref ==
+                instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.instr_ref &&
+            instr->operation.parameters[classification.operands[0].read_index].direct.value_ref.aspect ==
+                instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.aspect, KEFIR_OK);
+
+    const struct kefir_codegen_target_ir_instruction *producer_instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref.instr_ref, &producer_instr));
+
+    switch (producer_instr->operation.opcode) {
+        case KEFIR_TARGET_IR_AMD64_OPCODE(movsx):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(movzx): {
+            struct kefir_codegen_target_ir_tie_classification producer_classification;
+            REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, producer_instr->instr_ref, &producer_classification));
+            REQUIRE(producer_classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+                producer_instr->operation.parameters[producer_classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                producer_instr->operation.parameters[producer_classification.operands[1].read_index].direct.variant !=
+                    instr->operation.parameters[classification.operands[0].read_index].direct.variant, KEFIR_OK);
+
+            struct kefir_codegen_target_ir_operation oper = instr->operation;
+            oper.parameters[classification.operands[0].read_index].direct.variant = producer_instr->operation.parameters[producer_classification.operands[1].read_index].direct.variant;
+            oper.parameters[classification.operands[1].read_index].direct.variant = producer_instr->operation.parameters[producer_classification.operands[1].read_index].direct.variant;
+
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref,
+                &oper));
+            *replaced = true;
+        } break;
+
+        case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setnp):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setp):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setns):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(sets):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setb):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setnb):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setae):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setg):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setge):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setl):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setle):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(seta):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setbe):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(seto):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setc): {
+            struct kefir_codegen_target_ir_tie_classification producer_classification;
+            REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, producer_instr->instr_ref, &producer_classification));
+            REQUIRE(producer_classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
+                producer_classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+                producer_instr->operation.parameters[producer_classification.operands[0].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF, KEFIR_OK);
+
+            const struct kefir_codegen_target_ir_instruction *base_producer_instr;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, producer_instr->operation.parameters[producer_classification.operands[0].read_index].direct.value_ref.instr_ref, &base_producer_instr));
+
+            REQUIRE(base_producer_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov), KEFIR_OK);
+            const struct kefir_codegen_target_ir_value_type *base_producer_value_type;
+            kefir_result_t res = kefir_codegen_target_ir_code_instruction_output(code, base_producer_instr->instr_ref, 0, NULL, &base_producer_value_type);
+            REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
+            REQUIRE_OK(res);
+            REQUIRE(base_producer_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT ||
+                base_producer_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||
+                base_producer_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT, KEFIR_OK);
+            REQUIRE(base_producer_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, KEFIR_OK);
+            REQUIRE(base_producer_instr->operation.parameters[0].immediate.int_immediate == 0, KEFIR_OK);
+
+            struct kefir_codegen_target_ir_operation oper = instr->operation;
+            oper.parameters[classification.operands[0].read_index].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT;
+            oper.parameters[classification.operands[1].read_index].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT;
+
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref,
+                &oper));
+            *replaced = true;
+        } break;
+
+        default:
+            // Intentionally left blank
+            break;
+    }
 
     return KEFIR_OK;
 }
@@ -725,7 +820,7 @@ static kefir_result_t peephole_setnp(struct kefir_mem *mem, struct kefir_codegen
                 oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jp);
                 break;
 
-            case KEFIR_TARGET_IR_AMD64_OPCODE(jnp):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
             case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
                 oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jnp);
                 break;
@@ -793,7 +888,7 @@ static kefir_result_t peephole_setns(struct kefir_mem *mem, struct kefir_codegen
                 oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(js);
                 break;
 
-            case KEFIR_TARGET_IR_AMD64_OPCODE(jnp):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
             case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
                 oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jns);
                 break;
@@ -861,7 +956,7 @@ static kefir_result_t peephole_setnb(struct kefir_mem *mem, struct kefir_codegen
                 oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jb);
                 break;
 
-            case KEFIR_TARGET_IR_AMD64_OPCODE(jnp):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
             case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
                 oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jnb);
                 break;
@@ -1123,6 +1218,10 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                     case KEFIR_TARGET_IR_AMD64_OPCODE(seto):
                     case KEFIR_TARGET_IR_AMD64_OPCODE(setc):
                         REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        break;
+
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(test):
+                        REQUIRE_OK(peephole_test(mem, code, instr, &instr_replaced));
                         break;
 
                     default:

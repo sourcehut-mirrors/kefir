@@ -264,8 +264,7 @@ __kefir_bigint_right_shift_whole_digits:
     sete %sil
     or %rsi, %rdx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label20
     movl $0, -8(%rbp)
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label9:
@@ -364,10 +363,9 @@ __kefir_bigint_arithmetic_right_shift:
     jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label39
     movq -72(%rbp), %rax
     movq -64(%rbp), %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    seta %dl
-    test %edx, %edx
+    seta %al
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label37
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label5:
     movq -64(%rbp), %rax
@@ -460,19 +458,17 @@ __kefir_bigint_arithmetic_right_shift:
     movq -48(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    seta %dl
-    test %edx, %edx
+    seta %al
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label33
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label10:
     movq -72(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    seta %dl
-    test %edx, %edx
+    seta %al
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label14
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label12:
     mov $0, %rax
@@ -511,8 +507,7 @@ __kefir_bigint_arithmetic_right_shift:
     sete %sil
     or %rsi, %rdx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label29
     movq -32(%rbp), %rcx
     movq -72(%rbp), %rax

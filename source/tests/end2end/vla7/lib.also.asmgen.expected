@@ -51,10 +51,9 @@ test:
     test %al, %al
     jz .L__kefir_func_test_label10
     movl -32(%rbp), %eax
-    mov $0, %rdx
     cmp $1, %eax
-    setg %dl
-    test %edx, %edx
+    setg %al
+    test %al, %al
     jnz .L__kefir_func_test_label13
     mov $1, %rax
     lea (%rbp), %rsp

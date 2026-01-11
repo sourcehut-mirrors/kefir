@@ -50,21 +50,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    },
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "cmp",
 #                "args": [
 #                    {
@@ -84,7 +69,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "cl"
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -94,11 +79,11 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "ecx"
+#                        "reg": "al"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "ecx"
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -249,29 +234,15 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "movzx",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rax"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "test",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "al"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "eax"
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -324,21 +295,6 @@ factorial:
 #                ]
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "rcx"
-#                    },
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "cmp",
 #                "args": [
 #                    {
@@ -358,7 +314,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "cl"
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -368,11 +324,11 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "ecx"
+#                        "reg": "al"
 #                    },
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "ecx"
+#                        "reg": "al"
 #                    }
 #                ],
 #                "labels": []
@@ -610,10 +566,9 @@ factorial:
     sub $16, %rsp
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
-    mov $0, %rcx
     cmp $0, %eax
-    setl %cl
-    test %ecx, %ecx
+    setl %al
+    test %al, %al
     jnz .L__kefir_func_factorial_label14
     movl -8(%rbp), %eax
     mov $0, %rcx
@@ -625,16 +580,14 @@ factorial:
     sete %dl
     or %rdx, %rcx
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_func_factorial_label12
     movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:
     movl -8(%rbp), %eax
-    mov $0, %rcx
     cmp $1, %eax
-    setg %cl
-    test %ecx, %ecx
+    setg %al
+    test %al, %al
     jnz .L__kefir_func_factorial_label10
     movl -4(%rbp), %eax
     lea (%rbp), %rsp

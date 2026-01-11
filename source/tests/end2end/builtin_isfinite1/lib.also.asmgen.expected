@@ -67,12 +67,11 @@ is_finite_f80:
     fstpt -32(%rbp)
     fldt -32(%rbp)
     fabs
-    mov $0, %eax
     fldt .L__kefir_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al
     fstp %st(0)
-    test %eax, %eax
+    test %al, %al
     setne %al
     movzx %al, %rax
     fldcw -8(%rbp)

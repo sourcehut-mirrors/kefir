@@ -94,12 +94,11 @@ __kefir_softfloat_complex_long_double_div:
     fld %st(0)
     fstpt -112(%rbp)
     fabs
-    xor %eax, %eax
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al
     fstp %st(0)
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label56
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label3:
@@ -350,12 +349,11 @@ __kefir_softfloat_complex_long_double_div:
     fld %st(0)
     fstpt -160(%rbp)
     fabs
-    xor %eax, %eax
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al
     fstp %st(0)
-    test %eax, %eax
+    test %al, %al
     setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label27
@@ -364,12 +362,11 @@ __kefir_softfloat_complex_long_double_div:
     fld %st(0)
     fstpt -176(%rbp)
     fabs
-    xor %eax, %eax
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al
     fstp %st(0)
-    test %eax, %eax
+    test %al, %al
     setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label25
@@ -479,12 +476,11 @@ __kefir_softfloat_complex_long_double_div:
     fld %st(0)
     fstpt -128(%rbp)
     fabs
-    xor %eax, %eax
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al
     fstp %st(0)
-    test %eax, %eax
+    test %al, %al
     setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label19
@@ -493,12 +489,11 @@ __kefir_softfloat_complex_long_double_div:
     fld %st(0)
     fstpt -144(%rbp)
     fabs
-    xor %eax, %eax
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al
     fstp %st(0)
-    test %eax, %eax
+    test %al, %al
     setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label17
@@ -557,14 +552,13 @@ __kefir_softfloat_complex_long_double_div:
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label7
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label48:
     fldt -176(%rbp)
-    xor %eax, %eax
     fucomi %st(0)
     setp %al
     xor %ecx, %ecx
-    test %eax, %eax
+    test %al, %al
     sete %cl
     fstpt -176(%rbp)
-    test %eax, %eax
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label52
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label50:
     test %ecx, %ecx
@@ -573,11 +567,10 @@ __kefir_softfloat_complex_long_double_div:
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label11
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label52:
     fldt -160(%rbp)
-    xor %eax, %eax
     fucomi %st(0)
     setp %al
     xor %ecx, %ecx
-    test %eax, %eax
+    test %al, %al
     sete %cl
     fstpt -160(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label50
@@ -902,18 +895,16 @@ __kefir_softfloat_fmaximum_numl:
     test %eax, %eax
     jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label18
     fldt -80(%rbp)
-    xor %eax, %eax
     fucomi %st(0)
     setp %al
     fstpt -80(%rbp)
-    test %eax, %eax
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
     fldt -64(%rbp)
-    xor %eax, %eax
     fucomi %st(0)
     setp %al
     fstpt -64(%rbp)
-    test %eax, %eax
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label13
     fldt -80(%rbp)
     fldt -64(%rbp)
@@ -1042,12 +1033,11 @@ __kefir_softfloat_logbl:
     fld %st(0)
     fstpt -32(%rbp)
     fabs
-    xor %eax, %eax
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
     setnb %al
     fstp %st(0)
-    test %eax, %eax
+    test %al, %al
     jz .L__kefir_runtime_func___kefir_softfloat_logbl_label9
     fldt .L__kefir_runtime_func___kefir_softfloat_logbl_label12(%rip)
     fldt -32(%rbp)

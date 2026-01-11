@@ -249,10 +249,9 @@ __kefir_bigint_unsigned_compare:
     movq -24(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    seta %dl
-    test %edx, %edx
+    seta %al
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
     mov $0, %rax
     lea (%rbp), %rsp
@@ -284,10 +283,9 @@ __kefir_bigint_unsigned_compare:
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    mov $0, %rdx
     cmp %ecx, %eax
-    seta %dl
-    test %edx, %edx
+    seta %al
+    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
