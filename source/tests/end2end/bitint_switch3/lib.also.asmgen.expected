@@ -980,9 +980,7 @@ __kefir_bigint_unsigned_compare:
     mov $0, %edx
     movsx %edx, %rcx
     cmp %rcx, %rax
-    seta %al
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
+    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -1014,9 +1012,7 @@ __kefir_bigint_unsigned_compare:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
     cmp %ecx, %eax
-    seta %al
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16
+    ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
     cmp %ecx, %eax
@@ -1369,9 +1365,7 @@ __kefir_bigint_set_signed_integer:
     mov $8, %rdx
     imul %rcx, %rdx
     cmp %rdx, %rax
-    seta %al
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16
+    ja .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label5:
     movq -24(%rbp), %rax
     mov $8, %edx

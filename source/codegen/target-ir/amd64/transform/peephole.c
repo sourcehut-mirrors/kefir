@@ -435,7 +435,9 @@ static kefir_result_t peephole_test(struct kefir_mem *mem, struct kefir_codegen_
         case KEFIR_TARGET_IR_AMD64_OPCODE(seta):
         case KEFIR_TARGET_IR_AMD64_OPCODE(setbe):
         case KEFIR_TARGET_IR_AMD64_OPCODE(seto):
-        case KEFIR_TARGET_IR_AMD64_OPCODE(setc): {
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setno):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setc):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(setnc): {
             struct kefir_codegen_target_ir_tie_classification producer_classification;
             REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, producer_instr->instr_ref, &producer_classification));
             REQUIRE(producer_classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
@@ -687,14 +689,21 @@ static kefir_result_t get_single_user(const struct kefir_codegen_target_ir_code 
     return KEFIR_OK;
 }
 
-static kefir_result_t peephole_setcc_preamble(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_codegen_target_ir_resource_id_t resource_id, struct kefir_codegen_target_ir_operation *oper, kefir_codegen_target_ir_instruction_ref_t *replace_instr_ref) {
+static kefir_result_t peephole_setcc_preamble(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, const kefir_codegen_target_ir_resource_id_t *resources, kefir_size_t resources_len, struct kefir_codegen_target_ir_operation *oper, kefir_codegen_target_ir_instruction_ref_t *replace_instr_ref) {
     UNUSED(mem);
     *replace_instr_ref = KEFIR_ID_NONE;
     struct kefir_codegen_target_ir_tie_classification classification;
     REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instr->instr_ref, &classification));
 
-    REQUIRE(instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF, KEFIR_OK);
-    REQUIRE(instr->operation.parameters[1].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(resource_id), KEFIR_OK);
+    for (kefir_size_t i = 0; i < resources_len; i++) {
+        kefir_bool_t found_operand = false;
+        for (kefir_size_t j = 0; !found_operand && j < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; j++) {
+            if (instr->operation.parameters[j].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
+                found_operand = instr->operation.parameters[j].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(resources[i]);
+            }
+        }
+        REQUIRE(found_operand, KEFIR_OK);
+    }
 
     const struct kefir_codegen_target_ir_value_type *output_type;
     REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, classification.operands[0].output, &output_type));
@@ -749,9 +758,27 @@ static kefir_result_t peephole_setcc_preamble(struct kefir_mem *mem, struct kefi
         if (oper->parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
             oper->parameters[i].direct.value_ref.instr_ref == user_instr_ref &&
             oper->parameters[i].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF)) {
-            oper->parameters[i].direct.value_ref = instr->operation.parameters[1].direct.value_ref;
+            oper->parameters[i].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
         }
     }
+
+    kefir_size_t resource_idx = 0;
+    for (kefir_size_t i = 0; resource_idx < resources_len && i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+        if (oper->parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE) {
+            continue;
+        }
+
+        for (kefir_size_t j = 0; j < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; j++) {
+            if (instr->operation.parameters[j].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                instr->operation.parameters[j].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(resources[resource_idx])) {
+                oper->parameters[i] = instr->operation.parameters[j];
+                resource_idx++;
+                break;
+            }
+        }
+        REQUIRE(oper->parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE, KEFIR_OK);
+    }
+    REQUIRE(resource_idx == resources_len, KEFIR_OK);
 
     *replace_instr_ref = test_user_instr_ref;
     return KEFIR_OK;
@@ -760,7 +787,7 @@ static kefir_result_t peephole_setcc_preamble(struct kefir_mem *mem, struct kefi
 static kefir_result_t peephole_sete(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
     struct kefir_codegen_target_ir_operation oper;
-    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF, &oper, &replace_instr_ref));
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF}, 1, &oper, &replace_instr_ref));
     if (replace_instr_ref != KEFIR_ID_NONE) {
         switch (oper.opcode) {
             case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
@@ -800,7 +827,7 @@ static kefir_result_t peephole_sete(struct kefir_mem *mem, struct kefir_codegen_
 static kefir_result_t peephole_setne(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
     struct kefir_codegen_target_ir_operation oper;
-    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF, &oper, &replace_instr_ref));
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF}, 1, &oper, &replace_instr_ref));
     if (replace_instr_ref != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
 
@@ -812,7 +839,7 @@ static kefir_result_t peephole_setne(struct kefir_mem *mem, struct kefir_codegen
 static kefir_result_t peephole_setnp(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
     struct kefir_codegen_target_ir_operation oper;
-    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF, &oper, &replace_instr_ref));
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF}, 1, &oper, &replace_instr_ref));
     if (replace_instr_ref != KEFIR_ID_NONE) {
         switch (oper.opcode) {
             case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
@@ -846,7 +873,7 @@ static kefir_result_t peephole_setnp(struct kefir_mem *mem, struct kefir_codegen
 static kefir_result_t peephole_setp(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
     struct kefir_codegen_target_ir_operation oper;
-    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF, &oper, &replace_instr_ref));
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF}, 1, &oper, &replace_instr_ref));
     if (replace_instr_ref != KEFIR_ID_NONE) {
         switch (oper.opcode) {
             case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
@@ -877,10 +904,146 @@ static kefir_result_t peephole_setp(struct kefir_mem *mem, struct kefir_codegen_
     return KEFIR_OK;
 }
 
+static kefir_result_t peephole_setnc(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF}, 1, &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jc);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jnc);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setc);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setnc);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_setc(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF}, 1, &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jnc);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jc);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setnc);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setc);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_setno(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF}, 1, &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jo);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jno);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(seto);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setno);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_seto(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF}, 1, &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jno);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jo);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setno);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(seto);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t peephole_setns(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
     struct kefir_codegen_target_ir_operation oper;
-    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF, &oper, &replace_instr_ref));
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF}, 1, &oper, &replace_instr_ref));
     if (replace_instr_ref != KEFIR_ID_NONE) {
         switch (oper.opcode) {
             case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
@@ -914,7 +1077,7 @@ static kefir_result_t peephole_setns(struct kefir_mem *mem, struct kefir_codegen
 static kefir_result_t peephole_sets(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
     struct kefir_codegen_target_ir_operation oper;
-    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF, &oper, &replace_instr_ref));
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF}, 1, &oper, &replace_instr_ref));
     if (replace_instr_ref != KEFIR_ID_NONE) {
         switch (oper.opcode) {
             case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
@@ -948,7 +1111,7 @@ static kefir_result_t peephole_sets(struct kefir_mem *mem, struct kefir_codegen_
 static kefir_result_t peephole_setnb(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
     struct kefir_codegen_target_ir_operation oper;
-    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF, &oper, &replace_instr_ref));
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF}, 1, &oper, &replace_instr_ref));
     if (replace_instr_ref != KEFIR_ID_NONE) {
         switch (oper.opcode) {
             case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
@@ -982,7 +1145,7 @@ static kefir_result_t peephole_setnb(struct kefir_mem *mem, struct kefir_codegen
 static kefir_result_t peephole_setb(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
     struct kefir_codegen_target_ir_operation oper;
-    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF, &oper, &replace_instr_ref));
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr, (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF}, 1, &oper, &replace_instr_ref));
     if (replace_instr_ref != KEFIR_ID_NONE) {
         switch (oper.opcode) {
             case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
@@ -1001,6 +1164,222 @@ static kefir_result_t peephole_setb(struct kefir_mem *mem, struct kefir_codegen_
 
             case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
                 oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setb);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_setge(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr,
+        (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF}, 2,
+        &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jl);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jge);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setl);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setge);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_setl(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr,
+        (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF}, 2,
+        &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jge);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jl);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setge);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setl);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_setle(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr,
+        (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF}, 3,
+        &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jg);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jle);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setg);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setle);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_setg(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr,
+        (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF}, 3,
+        &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jle);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jg);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setle);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setg);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_setbe(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr,
+        (kefir_codegen_target_ir_resource_id_t[]){KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF}, 2,
+        &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(ja);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jbe);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(seta);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setbe);
+                break;
+
+            default:
+                return KEFIR_OK;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper));
+
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_seta(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_codegen_target_ir_instruction_ref_t replace_instr_ref = KEFIR_ID_NONE;
+    struct kefir_codegen_target_ir_operation oper;
+    REQUIRE_OK(peephole_setcc_preamble(mem, code, control_flow, instr,
+        (kefir_codegen_target_ir_resource_id_t[]){ KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF, KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF}, 2,
+        &oper, &replace_instr_ref));
+    if (replace_instr_ref != KEFIR_ID_NONE) {
+        switch (oper.opcode) {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jbe);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(ja);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(setbe);
+                break;
+
+            case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                oper.opcode = KEFIR_TARGET_IR_AMD64_OPCODE(seta);
                 break;
 
             default:
@@ -1173,6 +1552,34 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                         }
                         break;
 
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setnc):
+                        REQUIRE_OK(peephole_setnc(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
+                        break;
+
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setc):
+                        REQUIRE_OK(peephole_setc(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
+                        break;
+
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setno):
+                        REQUIRE_OK(peephole_setno(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
+                        break;
+
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(seto):
+                        REQUIRE_OK(peephole_seto(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
+                        break;
+
                     case KEFIR_TARGET_IR_AMD64_OPCODE(setp):
                         REQUIRE_OK(peephole_setp(mem, code, control_flow, instr, &instr_replaced));
                         if (!instr_replaced) {
@@ -1209,15 +1616,46 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                         }
                         break;
 
-                    case KEFIR_TARGET_IR_AMD64_OPCODE(setg):
-                    case KEFIR_TARGET_IR_AMD64_OPCODE(setge):
                     case KEFIR_TARGET_IR_AMD64_OPCODE(setl):
+                        REQUIRE_OK(peephole_setl(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
+                        break;
+
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setge):
+                        REQUIRE_OK(peephole_setge(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
+                        break;
+
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setg):
+                        REQUIRE_OK(peephole_setg(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
+                        break;
+
                     case KEFIR_TARGET_IR_AMD64_OPCODE(setle):
+                        REQUIRE_OK(peephole_setle(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
+                        break;
+
                     case KEFIR_TARGET_IR_AMD64_OPCODE(seta):
+                        REQUIRE_OK(peephole_seta(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
+                        break;
+
                     case KEFIR_TARGET_IR_AMD64_OPCODE(setbe):
-                    case KEFIR_TARGET_IR_AMD64_OPCODE(seto):
-                    case KEFIR_TARGET_IR_AMD64_OPCODE(setc):
-                        REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        REQUIRE_OK(peephole_setbe(mem, code, control_flow, instr, &instr_replaced));
+                        if (!instr_replaced) {
+                            REQUIRE_OK(peephole_setcc(mem, code, instr, &instr_replaced));
+                        }
                         break;
 
                     case KEFIR_TARGET_IR_AMD64_OPCODE(test):

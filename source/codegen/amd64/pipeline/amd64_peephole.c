@@ -254,6 +254,22 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                                 instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(js);
                                 break;
 
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jc):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jnc);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jnc):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jc);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jo):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jno);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jno):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jo);
+                                break;
+
                             default:
                                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected instruction opcode");
                         }

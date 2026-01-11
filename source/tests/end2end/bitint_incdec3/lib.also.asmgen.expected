@@ -564,9 +564,7 @@ __kefir_bigint_set_signed_integer:
     mov $8, %rdx
     imul %rcx, %rdx
     cmp %rdx, %rax
-    seta %al
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16
+    ja .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label5:
     movq -24(%rbp), %rax
     mov $8, %edx

@@ -53,6 +53,10 @@ static kefir_result_t propagate_jump_impl(struct kefir_mem *mem, struct kefir_as
             case KEFIR_ASMCMP_AMD64_OPCODE(jge):
             case KEFIR_ASMCMP_AMD64_OPCODE(jl):
             case KEFIR_ASMCMP_AMD64_OPCODE(jle):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jc):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jnc):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jo):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jno):
                 if (instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL) {
                     REQUIRE_OK(kefir_asmcmp_context_label_at(context, instr->args[0].internal_label, &jump_target_instr_idx));
                     REQUIRE_OK(kefir_asmcmp_context_instr_at(context, jump_target_instr_idx, &jump_target_instr));

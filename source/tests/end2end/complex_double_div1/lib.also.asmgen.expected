@@ -264,12 +264,9 @@ __kefir_softfloat_complex_double_div:
     fldl -96(%rbp)
     fldt .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label67(%rip)
     fxch %st(1)
-    xor %eax, %eax
     fcomip %st(1)
     fstp %st(0)
     seta %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label23
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label38:
@@ -478,13 +475,9 @@ __kefir_softfloat_fmaximum_num:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     ucomisd %xmm0, %xmm1
-    seta %al
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_num_label29
+    ja .L__kefir_runtime_func___kefir_softfloat_fmaximum_num_label29
     ucomisd %xmm1, %xmm0
-    seta %al
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_num_label27
+    ja .L__kefir_runtime_func___kefir_softfloat_fmaximum_num_label27
     ucomisd %xmm1, %xmm0
     jp .L__kefir_runtime_func___kefir_softfloat_fmaximum_num_label8
     je .L__kefir_runtime_func___kefir_softfloat_fmaximum_num_label19

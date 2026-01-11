@@ -41,9 +41,7 @@ process:
     movq %rcx, -48(%rbp)
     movl -72(%rbp), %ecx
     cmp $0, %ecx
-    setg %cl
-    test %cl, %cl
-    jnz .L__kefir_func_process_label7
+    jg .L__kefir_func_process_label7
     mov $0, %rax
     lea -16(%rbp), %rsp
     pop %r12
@@ -78,9 +76,7 @@ process:
     movl -68(%rbp), %eax
     movl -72(%rbp), %ecx
     cmp %ecx, %eax
-    setl %al
-    test %al, %al
-    jnz .L__kefir_func_process_label12
+    jl .L__kefir_func_process_label12
     movq -40(%rbp), %r12
     lea -32(%rbp), %rax
     movq (%rax), %rdi

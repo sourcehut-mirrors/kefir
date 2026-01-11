@@ -1506,12 +1506,9 @@ __kefir_softfloat_complex_long_double_div:
     fldt -112(%rbp)
     fld %st(0)
     fstpt -112(%rbp)
-    xor %eax, %eax
     fcomip %st(1)
     fstp %st(0)
     seta %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label23
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label38:

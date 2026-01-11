@@ -109,6 +109,12 @@
         KEFIR_AMD64_INSTRDB_BRANCH_TARGET) _separator \
     _instr1(jne, "jne", BRANCH, KEFIR_AMD64_INSTRDB_JCC_INSTRUCTION, \
         KEFIR_AMD64_INSTRDB_BRANCH_TARGET) _separator \
+    _instr1(jc, "jc", BRANCH, KEFIR_AMD64_INSTRDB_JCC_INSTRUCTION, \
+        KEFIR_AMD64_INSTRDB_BRANCH_TARGET) _separator \
+    _instr1(jnc, "jnc", BRANCH, KEFIR_AMD64_INSTRDB_JCC_INSTRUCTION, \
+        KEFIR_AMD64_INSTRDB_BRANCH_TARGET) _separator \
+    _instr1(jno, "jno", BRANCH, KEFIR_AMD64_INSTRDB_JCC_INSTRUCTION, \
+        KEFIR_AMD64_INSTRDB_BRANCH_TARGET) _separator \
     _instr1(js, "js", BRANCH, KEFIR_AMD64_INSTRDB_JCC_INSTRUCTION, \
         KEFIR_AMD64_INSTRDB_BRANCH_TARGET) _separator \
     _instr1(jns, "jns", BRANCH, KEFIR_AMD64_INSTRDB_JCC_INSTRUCTION, \
@@ -255,11 +261,15 @@
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     _instr1(seto, "seto", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
+    _instr1(setno, "setno", , KEFIR_AMD64_INSTRDB_NONE, \
+        KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     _instr1(sets, "sets", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     _instr1(setns, "setns", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     _instr1(setc, "setc", , KEFIR_AMD64_INSTRDB_NONE, \
+        KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
+    _instr1(setnc, "setnc", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     /* Integer arithmetics */ \
     _instr2(add, "add", , KEFIR_AMD64_INSTRDB_NONE, \
