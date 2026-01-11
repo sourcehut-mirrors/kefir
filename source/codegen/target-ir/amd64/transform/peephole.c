@@ -325,6 +325,7 @@ static kefir_result_t peephole_xor(struct kefir_mem *mem, struct kefir_codegen_t
             classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
             classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
             instr->operation.parameters[classification.operands[0].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+            instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
             instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
                 instr->operation.parameters[classification.operands[1].read_index].direct.variant &&
             (instr->operation.parameters[classification.operands[0].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT ||
@@ -923,10 +924,6 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                         break;
 
                     case KEFIR_TARGET_IR_AMD64_OPCODE(mov):
-                        REQUIRE_OK(peephole_mov(mem, code, instr, &instr_replaced));
-                        break;
-
-                    case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
                         REQUIRE_OK(peephole_mov(mem, code, instr, &instr_replaced));
                         break;
 
