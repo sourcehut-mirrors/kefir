@@ -242,11 +242,8 @@ __kefir_bigint_add:
 .L__kefir_runtime_func___kefir_bigint_add_label2:
     movq -16(%rbp), %rax
     movq -24(%rbp), %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    setb %dl
-    test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_add_label6
+    jb .L__kefir_runtime_func___kefir_bigint_add_label6
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp

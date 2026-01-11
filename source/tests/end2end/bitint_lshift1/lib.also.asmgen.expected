@@ -416,11 +416,8 @@ __kefir_bigint_left_shift_whole_digits:
 .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label5:
     movq -8(%rbp), %rax
     movq -48(%rbp), %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    setb %dl
-    test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label9
+    jb .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label9
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp

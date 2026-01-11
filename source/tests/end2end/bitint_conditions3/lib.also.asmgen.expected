@@ -230,11 +230,8 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label4:
     movq -32(%rbp), %rax
     movq -40(%rbp), %rcx
-    mov $0, %rdx
     cmp %rcx, %rax
-    setb %dl
-    test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label8
+    jb .L__kefir_runtime_func___kefir_bigint_is_zero_label8
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp

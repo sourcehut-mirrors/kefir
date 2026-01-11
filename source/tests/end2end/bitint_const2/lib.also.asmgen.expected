@@ -259,11 +259,8 @@ __kefir_bigint_cast_signed:
     movsx %edx, %rcx
     mov $1, %rdx
     imul %rcx, %rdx
-    mov $0, %rcx
     cmp %rdx, %rax
-    setb %cl
-    test %ecx, %ecx
-    jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label19
+    jb .L__kefir_runtime_func___kefir_bigint_cast_signed_label19
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label7:
     movq -16(%rbp), %rax
     mov $1, %edx

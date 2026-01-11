@@ -396,11 +396,8 @@ __kefir_bigint_unsigned_compare:
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label16
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    mov $0, %rdx
     cmp %ecx, %eax
-    setb %dl
-    test %edx, %edx
-    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label14
+    jb .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label14
     movq -24(%rbp), %rax
     add $-1, %rax
     movq %rax, -24(%rbp)

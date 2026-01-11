@@ -260,22 +260,16 @@ __kefir_softfloat_complex_float_div:
     movaps -144(%rbp), %xmm1
     andps .L__kefir_runtime_constant_isfinitef32_mask(%rip), %xmm1
     movdqu .L__kefir_runtime_constant_isfinitef32_cmp(%rip), %xmm2
-    xor %eax, %eax
     ucomiss %xmm1, %xmm2
     setnb %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label27
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label34:
     movaps -128(%rbp), %xmm1
     andps .L__kefir_runtime_constant_isfinitef32_mask(%rip), %xmm1
     movdqu .L__kefir_runtime_constant_isfinitef32_cmp(%rip), %xmm2
-    xor %eax, %eax
     ucomiss %xmm1, %xmm2
     setnb %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label25
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label36:
@@ -356,22 +350,16 @@ __kefir_softfloat_complex_float_div:
     movaps -160(%rbp), %xmm1
     andps .L__kefir_runtime_constant_isfinitef32_mask(%rip), %xmm1
     movdqu .L__kefir_runtime_constant_isfinitef32_cmp(%rip), %xmm2
-    xor %eax, %eax
     ucomiss %xmm1, %xmm2
     setnb %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label19
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label42:
     movaps -112(%rbp), %xmm1
     andps .L__kefir_runtime_constant_isfinitef32_mask(%rip), %xmm1
     movdqu .L__kefir_runtime_constant_isfinitef32_cmp(%rip), %xmm2
-    xor %eax, %eax
     ucomiss %xmm1, %xmm2
     setnb %al
-    test %eax, %eax
-    setne %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label17
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label44:
@@ -759,11 +747,8 @@ __kefir_softfloat_logbf:
     movaps %xmm0, %xmm1
     andps .L__kefir_runtime_constant_isfinitef32_mask(%rip), %xmm1
     movdqu .L__kefir_runtime_constant_isfinitef32_cmp(%rip), %xmm2
-    xor %eax, %eax
     ucomiss %xmm1, %xmm2
-    setnb %al
-    test %eax, %eax
-    jz .L__kefir_runtime_func___kefir_softfloat_logbf_label10
+    jb .L__kefir_runtime_func___kefir_softfloat_logbf_label10
     cvtss2sd %xmm0, %xmm1
     ucomisd .L__kefir_runtime_func___kefir_softfloat_logbf_label15(%rip), %xmm1
     jp .L__kefir_runtime_func___kefir_softfloat_logbf_label6

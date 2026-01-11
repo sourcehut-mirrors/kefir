@@ -257,6 +257,8 @@
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     _instr1(sets, "sets", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
+    _instr1(setns, "setns", , KEFIR_AMD64_INSTRDB_NONE, \
+        KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     _instr1(setc, "setc", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     /* Integer arithmetics */ \
