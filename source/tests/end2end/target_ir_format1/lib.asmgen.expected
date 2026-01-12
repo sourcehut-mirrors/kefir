@@ -939,7 +939,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 125,
+#                    "instr_ref": 122,
 #                    "opcode": "test",
 #                    "parameters": [
 #                        {
@@ -1013,7 +1013,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 128,
+#                    "instr_ref": 127,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
@@ -1026,7 +1026,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 125,
+#                            "instr_ref": 122,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -1241,7 +1241,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 127,
+#                    "instr_ref": 126,
 #                    "opcode": "jg",
 #                    "parameters": [
 #                        {

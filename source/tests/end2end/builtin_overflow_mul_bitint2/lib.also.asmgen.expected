@@ -656,7 +656,7 @@ __kefir_bigint_arithmetic_right_shift:
     sar %cl, %edi
     and $1, %edi
     movsx %edi, %r15
-    test %r15d, %r15d
+    test %r15, %r15
     jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label27
     mov %r13, %rax
     sub $1, %rax
@@ -718,7 +718,7 @@ __kefir_bigint_arithmetic_right_shift:
     xor %ecx, %ecx
     cmpq %rbx, -48(%rbp)
     cmovb %rcx, %rax
-    test %r15d, %r15d
+    test %r15, %r15
     jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label21
     sub $1, %r13
     add %r13, %r12
