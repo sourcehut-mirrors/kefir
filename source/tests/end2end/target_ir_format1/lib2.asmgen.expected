@@ -200,30 +200,6 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "setne",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "test",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "al"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "jnz",
 #                "args": [
 #                    {
@@ -529,8 +505,6 @@ factorial:
     cmp %eax, %esi
     sete %dl
     or %rdx, %rcx
-    setne %al
-    test %al, %al
     jnz .L__kefir_func_factorial_label12
     movl $1, -4(%rbp)
 .L__kefir_func_factorial_label6:

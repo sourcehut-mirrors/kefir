@@ -1120,8 +1120,6 @@ __kefir_softfloat_complex_float_mul:
     test %dl, %dl
     sete %al
     test %dl, %dl
-    setne %cl
-    test %cl, %cl
     jz .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label39
 .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label13:
     test %eax, %eax
@@ -1972,8 +1970,6 @@ __kefir_softfloat_complex_double_mul:
     test %dl, %dl
     sete %al
     test %dl, %dl
-    setne %cl
-    test %cl, %cl
     jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label39
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label13:
     test %eax, %eax
@@ -3124,8 +3120,6 @@ __kefir_softfloat_complex_long_double_mul:
     test %al, %al
     sete %cl
     test %al, %al
-    setne %dl
-    test %dl, %dl
     jz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label39
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label13:
     test %ecx, %ecx

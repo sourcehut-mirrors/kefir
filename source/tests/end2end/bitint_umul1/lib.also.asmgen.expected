@@ -421,8 +421,6 @@ __kefir_bigint_unsigned_multiply:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label42
     movq -104(%rbp), %rax
     movq -16(%rbp), %rcx

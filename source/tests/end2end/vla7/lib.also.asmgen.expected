@@ -47,9 +47,7 @@ test:
     movq (%rax), %rax
     movq -8(%rbp), %rdx
     cmp %rdx, %rax
-    sete %al
-    test %al, %al
-    jz .L__kefir_func_test_label10
+    jnz .L__kefir_func_test_label10
     movl -32(%rbp), %eax
     cmp $1, %eax
     jg .L__kefir_func_test_label13

@@ -356,8 +356,6 @@ __kefir_bigint_unsigned_from_float:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_from_float_label20
     movq -16(%rbp), %rax
     mov $23, %edx
@@ -512,8 +510,6 @@ __kefir_bigint_unsigned_from_double:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_from_double_label20
     movq -16(%rbp), %rax
     mov $52, %edx
@@ -924,8 +920,6 @@ __kefir_bigint_cast_unsigned:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label23
     movq -40(%rbp), %rax
     mov $0, %edx
@@ -979,8 +973,6 @@ __kefir_bigint_cast_unsigned:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label12
     mov $0, %rax
     lea (%rbp), %rsp
@@ -1026,8 +1018,6 @@ __kefir_bigint_cast_unsigned:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label21
     mov $0, %rax
     lea (%rbp), %rsp
@@ -1130,8 +1120,6 @@ __kefir_bigint_signed_from_double:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_signed_from_double_label20
     movq -16(%rbp), %rax
     mov $52, %edx
@@ -1339,8 +1327,6 @@ __kefir_bigint_left_shift_whole_digits:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label11
     mov $0, %ecx
     movsx %ecx, %rax
@@ -1446,8 +1432,6 @@ __kefir_bigint_signed_from_float:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_signed_from_float_label20
     movq -16(%rbp), %rax
     mov $23, %edx

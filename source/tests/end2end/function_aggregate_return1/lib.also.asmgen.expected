@@ -26,8 +26,6 @@ get1:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    setne %al
-    test %al, %al
     jz .L__kefir_func_get1_label6
     xorps %xmm0, %xmm0
     movdqu %xmm0, -144(%rbp)

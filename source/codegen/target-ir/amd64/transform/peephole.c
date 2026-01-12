@@ -20,6 +20,7 @@
 
 #include "kefir/codegen/target-ir/amd64/transform.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
+#include "kefir/codegen/target-ir/transform.h"
 #include "kefir/codegen/target-ir/tie.h"
 #include "kefir/codegen/target-ir/control_flow.h"
 #include "kefir/core/error.h"
@@ -582,7 +583,7 @@ static kefir_result_t peephole_movx(struct kefir_mem *mem, struct kefir_codegen_
         
         kefir_bool_t replace = false;
         struct kefir_codegen_target_ir_operation oper = user_instr->operation;
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS && !ext_uses; i++) {
+        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
             if (oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
                 oper.parameters[i].direct.value_ref.instr_ref == output_value_ref.instr_ref &&
                 oper.parameters[i].direct.value_ref.aspect == output_value_ref.aspect &&
@@ -1560,7 +1561,7 @@ static kefir_result_t peephole_untie(struct kefir_mem *mem, struct kefir_codegen
 
 static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_codegen_target_ir_control_flow *control_flow) {
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, control_flow));
-    kefir_bool_t reached_fixpoint = false;
+    kefir_bool_t reached_fixpoint = false, post_cleanup = false;
 
     for (; !reached_fixpoint;) {
         kefir_bool_t replaced = false;
@@ -1757,6 +1758,15 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                     replaced = true;
                 }
             }
+        }
+
+        if (!replaced && !post_cleanup) {
+            REQUIRE_OK(kefir_codegen_target_ir_amd64_transform_dead_code_elimination(mem, code));
+            REQUIRE_OK(kefir_codegen_target_ir_transform_phi_removal(mem, code, true));
+            post_cleanup = true;
+            replaced = true;
+        } else {
+            post_cleanup = false;
         }
 
         reached_fixpoint = !replaced;
