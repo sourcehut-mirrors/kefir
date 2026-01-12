@@ -115,9 +115,7 @@ __kefir_bigint_nonzero_count:
     je .L__kefir_runtime_func___kefir_bigint_nonzero_count_label13
     mov %rsi, %rax
     sub $-7, %rax
-    xor %edx, %edx
-    mov $8, %rcx
-    div %rcx
+    shr $3, %rax
     xor %ecx, %ecx
     xor %edx, %edx
     mov %rdx, %r8

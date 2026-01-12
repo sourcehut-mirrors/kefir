@@ -3012,24 +3012,21 @@ __kefir_bigint_invert:
 #    }
 #}
 .L__kefir_runtime_text_func___kefir_bigint_invert_begin:
-    mov %rsi, %rax
-    sub $-7, %rax
-    xor %edx, %edx
-    mov $8, %rcx
-    div %rcx
-    xor %ecx, %ecx
+    sub $-7, %rsi
+    shr $3, %rsi
+    xor %eax, %eax
 .L__kefir_runtime_func___kefir_bigint_invert_label2:
-    cmp %rax, %rcx
+    cmp %rsi, %rax
     jb .L__kefir_runtime_func___kefir_bigint_invert_label6
     xor %eax, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_invert_label6:
-    mov %rdi, %rdx
-    add %rcx, %rdx
-    movzxb (%rdx), %rsi
-    not %esi
-    movb %sil, (%rdx)
-    add $1, %rcx
+    mov %rdi, %rcx
+    add %rax, %rcx
+    movzxb (%rcx), %rdx
+    not %edx
+    movb %dl, (%rcx)
+    add $1, %rax
     jmp .L__kefir_runtime_func___kefir_bigint_invert_label2
 .L__kefir_runtime_text_func___kefir_bigint_invert_end:
 

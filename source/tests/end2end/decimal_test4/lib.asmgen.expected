@@ -142,9 +142,7 @@ test_dec32_init:
     cmp %rbx, %rax
     jb .L__kefir_func_test_dec32_init_label7
     mov %rbx, %rax
-    xor %edx, %edx
-    mov $2, %rsi
-    div %rsi
+    shr $1, %rax
     mov %rax, %rcx
     sub $1, %rcx
     lea 1(%rax), %rdx
@@ -569,9 +567,7 @@ test_dec64_init:
     cmp %rbx, %rax
     jb .L__kefir_func_test_dec64_init_label7
     mov %rbx, %rax
-    xor %edx, %edx
-    mov $2, %rsi
-    div %rsi
+    shr $1, %rax
     mov %rax, %rcx
     sub $1, %rcx
     lea 1(%rax), %rdx
@@ -1632,9 +1628,7 @@ test_dec128_init:
     cmp %rbx, %rax
     jb .L__kefir_func_test_dec128_init_label7
     mov %rbx, %rax
-    xor %edx, %edx
-    mov $2, %rsi
-    div %rsi
+    shr $1, %rax
     mov %rax, %rcx
     sub $1, %rcx
     lea 1(%rax), %rdx

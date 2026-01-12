@@ -948,6 +948,22 @@ kefir_result_t kefir_codegen_target_ir_code_add_aspect(struct kefir_mem *mem, st
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_code_replace_aspect(struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, const struct kefir_codegen_target_ir_value_type *value_type) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE && value_ref.instr_ref < code->code_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid target IR code value reference"));
+    REQUIRE(value_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR value type"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&code->code[value_ref.instr_ref].aspects.all, (kefir_hashtable_key_t) value_ref.aspect, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested target IR instruction aspect");
+    }
+    REQUIRE_OK(res);
+
+    code->value_types[table_value] = *value_type;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_add_instruction_attribute(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_native_id_t attribute) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
