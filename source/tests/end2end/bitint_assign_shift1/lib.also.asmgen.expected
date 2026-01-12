@@ -760,7 +760,6 @@ __kefir_bigint_arithmetic_right_shift:
     mov %rdx, %rcx
     sar %cl, %eax
     and $1, %eax
-    movsx %eax, %rax
     movq %rax, -80(%rbp)
     movq -80(%rbp), %rax
     test %rax, %rax

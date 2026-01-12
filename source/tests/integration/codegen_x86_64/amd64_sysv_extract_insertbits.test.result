@@ -16,176 +16,154 @@ insert:
     push %rbp
     mov %rbp, %rsp
     mov %rax, 0
-    movabs %rcx, -1
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 64
     shr %rax, 64
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -2
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 63
     shr %rax, 63
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -4
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 62
     shr %rax, 62
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -8
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 61
     shr %rax, 61
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -16
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 60
     shr %rax, 60
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -32
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 59
     shr %rax, 59
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -64
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 58
     shr %rax, 58
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -128
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 57
     shr %rax, 57
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -256
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 56
     shr %rax, 56
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -512
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 55
     shr %rax, 55
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -1024
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 54
     shr %rax, 54
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -1
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 64
     shr %rax, 63
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -5
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 63
     shr %rax, 61
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -49
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 62
     shr %rax, 58
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -1793
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 61
     shr %rax, 53
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -983041
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 60
     shr %rax, 44
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -133143986177
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 59
     shr %rax, 27
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -127
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 58
     shr %rax, 57
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -509
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 57
     shr %rax, 55
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -4081
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 56
     shr %rax, 52
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -130817
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 55
     shr %rax, 47
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    movabs %rcx, -67043329
-    and %rcx, 0
+    mov %rcx, 0
     shl %rax, 54
     shr %rax, 38
     or %rax, %rcx
