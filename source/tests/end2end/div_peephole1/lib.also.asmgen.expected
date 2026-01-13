@@ -334,9 +334,12 @@ idiv_char5:
 idiv_char7:
 .L__kefir_text_func_idiv_char7_begin:
     movsx %dil, %rax
-    cdq
-    mov $-128, %ecx
-    idiv %ecx
+    test %eax, %eax
+    lea 127(%rax), %rcx
+    cmovns %rax, %rcx
+    sar $7, %ecx
+    mov %ecx, %eax
+    neg %eax
     ret
 .L__kefir_text_func_idiv_char7_end:
 
@@ -512,9 +515,12 @@ idiv_short13:
 idiv_short15:
 .L__kefir_text_func_idiv_short15_begin:
     movsx %di, %rax
-    cdq
-    mov $-32768, %ecx
-    idiv %ecx
+    test %eax, %eax
+    lea 32767(%rax), %rcx
+    cmovns %rax, %rcx
+    sar $15, %ecx
+    mov %ecx, %eax
+    neg %eax
     ret
 .L__kefir_text_func_idiv_short15_end:
 

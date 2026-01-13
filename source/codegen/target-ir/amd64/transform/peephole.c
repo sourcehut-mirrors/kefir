@@ -1590,7 +1590,13 @@ static kefir_result_t peephole_idiv(struct kefir_mem *mem, struct kefir_codegen_
 
     struct kefir_codegen_target_ir_operation oper = instr->operation;
     for (kefir_uint32_t i = 0; i < sizeof(kefir_uint32_t) * CHAR_BIT - 1; i++) {
-        if (oper.parameters[classification.operands[0].read_index].immediate.int_immediate == (1ll << i)) {
+        kefir_int64_t imm = oper.parameters[classification.operands[0].read_index].immediate.int_immediate;
+        kefir_bool_t neg = false;
+        if (imm < 0) {
+            imm *= -1;
+            neg = true;
+        }
+        if (imm == (1ll << i)) {
             const struct kefir_codegen_target_ir_value_type *output_value_type, *arg1_value_type, *arg2_value_type;
             kefir_codegen_target_ir_value_ref_t output_value_ref = {
                 .instr_ref = instr_ref,
@@ -1738,13 +1744,39 @@ static kefir_result_t peephole_idiv(struct kefir_mem *mem, struct kefir_codegen_
                     }
                 }
             }, &metadata, &sar_value_ref.instr_ref));
-
             REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, sar_value_ref, &(struct kefir_codegen_target_ir_value_type) {
                 .kind = output_value_type_copy.kind,
-                .metadata = output_value_type_copy.metadata,
+                .metadata.value_ref = neg
+                    ? KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE
+                    : output_value_type_copy.metadata.value_ref,
                 .variant = variant
             }));
-            REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, sar_value_ref, output_value_ref));
+
+            kefir_codegen_target_ir_value_ref_t result_ref = sar_value_ref;
+            if (neg) {
+                kefir_codegen_target_ir_value_ref_t neg_value_ref = {
+                    .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
+                };
+                REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref, sar_value_ref.instr_ref,
+                    &(struct kefir_codegen_target_ir_operation) {
+                    .opcode = KEFIR_TARGET_IR_AMD64_OPCODE(neg),
+                    .parameters[0] = {
+                        .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                        .direct = {
+                            .value_ref = sar_value_ref,
+                            .variant = variant
+                        }
+                    }
+                }, &metadata, &neg_value_ref.instr_ref));
+                REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, neg_value_ref, &(struct kefir_codegen_target_ir_value_type) {
+                    .kind = output_value_type_copy.kind,
+                    .metadata.value_ref = output_value_type_copy.metadata.value_ref,
+                    .variant = variant
+                }));
+                result_ref = neg_value_ref;
+            }
+
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, result_ref, output_value_ref));
             REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
             *replaced = true;
 
