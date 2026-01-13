@@ -87,13 +87,11 @@ test4:
     movq someothervar@GOTPCREL(%rip), %rsi
     movq someothervar@GOTPCREL(%rip), %rax
     lea -4(%rbp), %rcx
-    mov %rcx, %rdx
-    sub %rax, %rdx
-    mov %rdx, %rax
-    test %rax, %rax
-    lea 3(%rax), %rcx
-    cmovns %rax, %rcx
-    mov %rcx, %rdi
+    sub %rax, %rcx
+    test %rcx, %rcx
+    lea 3(%rcx), %rax
+    cmovns %rcx, %rax
+    mov %rax, %rdi
     sar $2, %rdi
 .L__kefir_func_test4_label2:
     movl (%rsi), %eax

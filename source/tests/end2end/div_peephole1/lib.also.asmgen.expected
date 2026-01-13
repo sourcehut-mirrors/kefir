@@ -210,11 +210,9 @@ idiv_int0:
 
 idiv_int1:
 .L__kefir_text_func_idiv_int1_begin:
-    mov %rdi, %rax
-    test %eax, %eax
-    lea 1(%rax), %rcx
-    cmovns %rax, %rcx
-    mov %rcx, %rax
+    test %edi, %edi
+    lea 1(%rdi), %rax
+    cmovns %rdi, %rax
     sar $1, %eax
     ret
 .L__kefir_text_func_idiv_int1_end:
@@ -345,33 +343,27 @@ idiv_char7:
 
 idiv_int10:
 .L__kefir_text_func_idiv_int10_begin:
-    mov %rdi, %rax
-    test %eax, %eax
-    lea 1023(%rax), %rcx
-    cmovns %rax, %rcx
-    mov %rcx, %rax
+    test %edi, %edi
+    lea 1023(%rdi), %rax
+    cmovns %rdi, %rax
     sar $10, %eax
     ret
 .L__kefir_text_func_idiv_int10_end:
 
 idiv_int16:
 .L__kefir_text_func_idiv_int16_begin:
-    mov %rdi, %rax
-    test %eax, %eax
-    lea 65535(%rax), %rcx
-    cmovns %rax, %rcx
-    mov %rcx, %rax
+    test %edi, %edi
+    lea 65535(%rdi), %rax
+    cmovns %rdi, %rax
     sar $16, %eax
     ret
 .L__kefir_text_func_idiv_int16_end:
 
 idiv_int23:
 .L__kefir_text_func_idiv_int23_begin:
-    mov %rdi, %rax
-    test %eax, %eax
-    lea 8388607(%rax), %rcx
-    cmovns %rax, %rcx
-    mov %rcx, %rax
+    test %edi, %edi
+    lea 8388607(%rdi), %rax
+    cmovns %rdi, %rax
     sar $23, %eax
     ret
 .L__kefir_text_func_idiv_int23_end:
@@ -393,11 +385,9 @@ idiv_long0:
 
 idiv_long1:
 .L__kefir_text_func_idiv_long1_begin:
-    mov %rdi, %rax
-    test %rax, %rax
-    lea 1(%rax), %rcx
-    cmovns %rax, %rcx
-    mov %rcx, %rax
+    test %rdi, %rdi
+    lea 1(%rdi), %rax
+    cmovns %rdi, %rax
     sar $1, %rax
     ret
 .L__kefir_text_func_idiv_long1_end:
@@ -426,11 +416,9 @@ div_short15:
 
 idiv_long26:
 .L__kefir_text_func_idiv_long26_begin:
-    mov %rdi, %rax
-    test %rax, %rax
-    lea 67108863(%rax), %rcx
-    cmovns %rax, %rcx
-    mov %rcx, %rax
+    test %rdi, %rdi
+    lea 67108863(%rdi), %rax
+    cmovns %rdi, %rax
     sar $26, %rax
     ret
 .L__kefir_text_func_idiv_long26_end:

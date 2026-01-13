@@ -1613,11 +1613,28 @@ static kefir_result_t peephole_idiv(struct kefir_mem *mem, struct kefir_codegen_
                 ? oper.parameters[classification.operands[1].read_index].direct.variant
                 : KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT;
 
-            kefir_codegen_target_ir_instruction_ref_t single_user_ref;
-            REQUIRE_OK(get_single_user(code, NULL, oper.parameters[classification.operands[1].read_index].direct.value_ref, &single_user_ref));
-            if (single_user_ref == instr_ref) {
-                arg1_value_type_copy.constraint.type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT;
+
+            struct kefir_codegen_target_ir_use_iterator use_iter;
+            kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+            kefir_codegen_target_ir_value_ref_t used_value_ref;
+            for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, oper.parameters[classification.operands[1].read_index].direct.value_ref.instr_ref, &use_instr_ref, &used_value_ref);
+                res == KEFIR_OK;
+                res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
+                const struct kefir_codegen_target_ir_instruction *user_instr;
+                REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
+                if (user_instr->block_ref == KEFIR_ID_NONE) {
+                    continue;
+                }
+
+                REQUIRE(use_instr_ref == instr_ref ||
+                    use_instr_ref == oper.parameters[classification.operands[2].read_index].direct.value_ref.instr_ref, KEFIR_OK);
             }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+            arg1_value_type_copy.constraint.type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT;
+
+            kefir_codegen_target_ir_instruction_ref_t single_user_ref;
             REQUIRE_OK(get_single_user(code, NULL, oper.parameters[classification.operands[2].read_index].direct.value_ref, &single_user_ref));
             if (single_user_ref == instr_ref) {
                 arg2_value_type_copy.constraint.type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT;
