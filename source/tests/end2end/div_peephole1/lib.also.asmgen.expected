@@ -1,0 +1,522 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global div_int0
+.type div_int0, @function
+.global div_int1
+.type div_int1, @function
+.global div_char0
+.type div_char0, @function
+.global div_char1
+.type div_char1, @function
+.global div_char2
+.type div_char2, @function
+.global div_char5
+.type div_char5, @function
+.global div_char7
+.type div_char7, @function
+.global div_int10
+.type div_int10, @function
+.global div_int16
+.type div_int16, @function
+.global div_int23
+.type div_int23, @function
+.global div_int31
+.type div_int31, @function
+.global div_long0
+.type div_long0, @function
+.global div_long1
+.type div_long1, @function
+.global idiv_int0
+.type idiv_int0, @function
+.global idiv_int1
+.type idiv_int1, @function
+.global div_long26
+.type div_long26, @function
+.global div_long32
+.type div_long32, @function
+.global div_long48
+.type div_long48, @function
+.global div_long63
+.type div_long63, @function
+.global div_short0
+.type div_short0, @function
+.global div_short1
+.type div_short1, @function
+.global div_short5
+.type div_short5, @function
+.global div_short8
+.type div_short8, @function
+.global idiv_char0
+.type idiv_char0, @function
+.global idiv_char1
+.type idiv_char1, @function
+.global idiv_char2
+.type idiv_char2, @function
+.global idiv_char5
+.type idiv_char5, @function
+.global idiv_char7
+.type idiv_char7, @function
+.global idiv_int10
+.type idiv_int10, @function
+.global idiv_int16
+.type idiv_int16, @function
+.global idiv_int23
+.type idiv_int23, @function
+.global idiv_int31
+.type idiv_int31, @function
+.global idiv_long0
+.type idiv_long0, @function
+.global idiv_long1
+.type idiv_long1, @function
+.global div_short13
+.type div_short13, @function
+.global div_short15
+.type div_short15, @function
+.global idiv_long26
+.type idiv_long26, @function
+.global idiv_long32
+.type idiv_long32, @function
+.global idiv_long48
+.type idiv_long48, @function
+.global idiv_long63
+.type idiv_long63, @function
+.global idiv_short0
+.type idiv_short0, @function
+.global idiv_short1
+.type idiv_short1, @function
+.global idiv_short5
+.type idiv_short5, @function
+.global idiv_short8
+.type idiv_short8, @function
+.global idiv_short13
+.type idiv_short13, @function
+.global idiv_short15
+.type idiv_short15, @function
+
+.section .text
+.L__kefir_text_section_begin:
+div_int0:
+.L__kefir_text_func_div_int0_begin:
+    mov %rdi, %rax
+    ret
+.L__kefir_text_func_div_int0_end:
+
+div_int1:
+.L__kefir_text_func_div_int1_begin:
+    mov %rdi, %rax
+    shr $1, %rax
+    ret
+.L__kefir_text_func_div_int1_end:
+
+div_char0:
+.L__kefir_text_func_div_char0_begin:
+    movzx %dil, %rax
+    ret
+.L__kefir_text_func_div_char0_end:
+
+div_char1:
+.L__kefir_text_func_div_char1_begin:
+    movzx %dil, %rax
+    test %eax, %eax
+    lea 1(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $1, %eax
+    ret
+.L__kefir_text_func_div_char1_end:
+
+div_char2:
+.L__kefir_text_func_div_char2_begin:
+    movzx %dil, %rax
+    test %eax, %eax
+    lea 3(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $2, %eax
+    ret
+.L__kefir_text_func_div_char2_end:
+
+div_char5:
+.L__kefir_text_func_div_char5_begin:
+    movzx %dil, %rax
+    test %eax, %eax
+    lea 31(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $5, %eax
+    ret
+.L__kefir_text_func_div_char5_end:
+
+div_char7:
+.L__kefir_text_func_div_char7_begin:
+    movzx %dil, %rax
+    test %eax, %eax
+    lea 127(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $7, %eax
+    ret
+.L__kefir_text_func_div_char7_end:
+
+div_int10:
+.L__kefir_text_func_div_int10_begin:
+    mov %rdi, %rax
+    shr $10, %rax
+    ret
+.L__kefir_text_func_div_int10_end:
+
+div_int16:
+.L__kefir_text_func_div_int16_begin:
+    mov %rdi, %rax
+    shr $16, %rax
+    ret
+.L__kefir_text_func_div_int16_end:
+
+div_int23:
+.L__kefir_text_func_div_int23_begin:
+    mov %rdi, %rax
+    shr $23, %rax
+    ret
+.L__kefir_text_func_div_int23_end:
+
+div_int31:
+.L__kefir_text_func_div_int31_begin:
+    mov %rdi, %rax
+    movabs $2147483648, %rcx
+    xor %edx, %edx
+    div %ecx
+    ret
+.L__kefir_text_func_div_int31_end:
+
+div_long0:
+.L__kefir_text_func_div_long0_begin:
+    mov %rdi, %rax
+    ret
+.L__kefir_text_func_div_long0_end:
+
+div_long1:
+.L__kefir_text_func_div_long1_begin:
+    mov %rdi, %rax
+    shr $1, %rax
+    ret
+.L__kefir_text_func_div_long1_end:
+
+idiv_int0:
+.L__kefir_text_func_idiv_int0_begin:
+    mov %rdi, %rax
+    ret
+.L__kefir_text_func_idiv_int0_end:
+
+idiv_int1:
+.L__kefir_text_func_idiv_int1_begin:
+    mov %rdi, %rax
+    test %eax, %eax
+    lea 1(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $1, %eax
+    ret
+.L__kefir_text_func_idiv_int1_end:
+
+div_long26:
+.L__kefir_text_func_div_long26_begin:
+    mov %rdi, %rax
+    shr $26, %rax
+    ret
+.L__kefir_text_func_div_long26_end:
+
+div_long32:
+.L__kefir_text_func_div_long32_begin:
+    mov %rdi, %rax
+    movabs $4294967296, %rcx
+    xor %edx, %edx
+    div %rcx
+    ret
+.L__kefir_text_func_div_long32_end:
+
+div_long48:
+.L__kefir_text_func_div_long48_begin:
+    mov %rdi, %rax
+    movabs $281474976710656, %rcx
+    xor %edx, %edx
+    div %rcx
+    ret
+.L__kefir_text_func_div_long48_end:
+
+div_long63:
+.L__kefir_text_func_div_long63_begin:
+    mov %rdi, %rax
+    movabs $-9223372036854775808, %rcx
+    xor %edx, %edx
+    div %rcx
+    ret
+.L__kefir_text_func_div_long63_end:
+
+div_short0:
+.L__kefir_text_func_div_short0_begin:
+    movzx %di, %rax
+    ret
+.L__kefir_text_func_div_short0_end:
+
+div_short1:
+.L__kefir_text_func_div_short1_begin:
+    movzx %di, %rax
+    test %eax, %eax
+    lea 1(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $1, %eax
+    ret
+.L__kefir_text_func_div_short1_end:
+
+div_short5:
+.L__kefir_text_func_div_short5_begin:
+    movzx %di, %rax
+    test %eax, %eax
+    lea 31(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $5, %eax
+    ret
+.L__kefir_text_func_div_short5_end:
+
+div_short8:
+.L__kefir_text_func_div_short8_begin:
+    movzx %di, %rax
+    test %eax, %eax
+    lea 255(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $8, %eax
+    ret
+.L__kefir_text_func_div_short8_end:
+
+idiv_char0:
+.L__kefir_text_func_idiv_char0_begin:
+    movsx %dil, %rax
+    ret
+.L__kefir_text_func_idiv_char0_end:
+
+idiv_char1:
+.L__kefir_text_func_idiv_char1_begin:
+    movsx %dil, %rax
+    test %eax, %eax
+    lea 1(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $1, %eax
+    ret
+.L__kefir_text_func_idiv_char1_end:
+
+idiv_char2:
+.L__kefir_text_func_idiv_char2_begin:
+    movsx %dil, %rax
+    test %eax, %eax
+    lea 3(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $2, %eax
+    ret
+.L__kefir_text_func_idiv_char2_end:
+
+idiv_char5:
+.L__kefir_text_func_idiv_char5_begin:
+    movsx %dil, %rax
+    test %eax, %eax
+    lea 31(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $5, %eax
+    ret
+.L__kefir_text_func_idiv_char5_end:
+
+idiv_char7:
+.L__kefir_text_func_idiv_char7_begin:
+    movsx %dil, %rax
+    cdq
+    mov $-128, %ecx
+    idiv %ecx
+    ret
+.L__kefir_text_func_idiv_char7_end:
+
+idiv_int10:
+.L__kefir_text_func_idiv_int10_begin:
+    mov %rdi, %rax
+    test %eax, %eax
+    lea 1023(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $10, %eax
+    ret
+.L__kefir_text_func_idiv_int10_end:
+
+idiv_int16:
+.L__kefir_text_func_idiv_int16_begin:
+    mov %rdi, %rax
+    test %eax, %eax
+    lea 65535(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $16, %eax
+    ret
+.L__kefir_text_func_idiv_int16_end:
+
+idiv_int23:
+.L__kefir_text_func_idiv_int23_begin:
+    mov %rdi, %rax
+    test %eax, %eax
+    lea 8388607(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $23, %eax
+    ret
+.L__kefir_text_func_idiv_int23_end:
+
+idiv_int31:
+.L__kefir_text_func_idiv_int31_begin:
+    mov %rdi, %rax
+    movabs $2147483648, %rcx
+    cdq
+    idiv %ecx
+    ret
+.L__kefir_text_func_idiv_int31_end:
+
+idiv_long0:
+.L__kefir_text_func_idiv_long0_begin:
+    mov %rdi, %rax
+    ret
+.L__kefir_text_func_idiv_long0_end:
+
+idiv_long1:
+.L__kefir_text_func_idiv_long1_begin:
+    mov %rdi, %rax
+    test %rax, %rax
+    lea 1(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $1, %rax
+    ret
+.L__kefir_text_func_idiv_long1_end:
+
+div_short13:
+.L__kefir_text_func_div_short13_begin:
+    movzx %di, %rax
+    test %eax, %eax
+    lea 8191(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $13, %eax
+    ret
+.L__kefir_text_func_div_short13_end:
+
+div_short15:
+.L__kefir_text_func_div_short15_begin:
+    movzx %di, %rax
+    test %eax, %eax
+    lea 32767(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $15, %eax
+    ret
+.L__kefir_text_func_div_short15_end:
+
+idiv_long26:
+.L__kefir_text_func_idiv_long26_begin:
+    mov %rdi, %rax
+    test %rax, %rax
+    lea 67108863(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $26, %rax
+    ret
+.L__kefir_text_func_idiv_long26_end:
+
+idiv_long32:
+.L__kefir_text_func_idiv_long32_begin:
+    mov %rdi, %rax
+    movabs $4294967296, %rcx
+    cqo
+    idiv %rcx
+    ret
+.L__kefir_text_func_idiv_long32_end:
+
+idiv_long48:
+.L__kefir_text_func_idiv_long48_begin:
+    mov %rdi, %rax
+    movabs $281474976710656, %rcx
+    cqo
+    idiv %rcx
+    ret
+.L__kefir_text_func_idiv_long48_end:
+
+idiv_long63:
+.L__kefir_text_func_idiv_long63_begin:
+    mov %rdi, %rax
+    movabs $-9223372036854775808, %rcx
+    cqo
+    idiv %rcx
+    ret
+.L__kefir_text_func_idiv_long63_end:
+
+idiv_short0:
+.L__kefir_text_func_idiv_short0_begin:
+    movsx %di, %rax
+    ret
+.L__kefir_text_func_idiv_short0_end:
+
+idiv_short1:
+.L__kefir_text_func_idiv_short1_begin:
+    movsx %di, %rax
+    test %eax, %eax
+    lea 1(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $1, %eax
+    ret
+.L__kefir_text_func_idiv_short1_end:
+
+idiv_short5:
+.L__kefir_text_func_idiv_short5_begin:
+    movsx %di, %rax
+    test %eax, %eax
+    lea 31(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $5, %eax
+    ret
+.L__kefir_text_func_idiv_short5_end:
+
+idiv_short8:
+.L__kefir_text_func_idiv_short8_begin:
+    movsx %di, %rax
+    test %eax, %eax
+    lea 255(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $8, %eax
+    ret
+.L__kefir_text_func_idiv_short8_end:
+
+idiv_short13:
+.L__kefir_text_func_idiv_short13_begin:
+    movsx %di, %rax
+    test %eax, %eax
+    lea 8191(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rax
+    sar $13, %eax
+    ret
+.L__kefir_text_func_idiv_short13_end:
+
+idiv_short15:
+.L__kefir_text_func_idiv_short15_begin:
+    movsx %di, %rax
+    cdq
+    mov $-32768, %ecx
+    idiv %ecx
+    ret
+.L__kefir_text_func_idiv_short15_end:
+
+.L__kefir_text_section_end:
+

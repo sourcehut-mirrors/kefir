@@ -90,10 +90,11 @@ test4:
     mov %rcx, %rdx
     sub %rax, %rdx
     mov %rdx, %rax
-    cqo
-    mov $4, %rcx
-    idiv %rcx
-    mov %rax, %rdi
+    test %rax, %rax
+    lea 3(%rax), %rcx
+    cmovns %rax, %rcx
+    mov %rcx, %rdi
+    sar $2, %rdi
 .L__kefir_func_test4_label2:
     movl (%rsi), %eax
     movsx %eax, %rcx
