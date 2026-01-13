@@ -1786,7 +1786,6 @@ test_dec128_grid_init:
     xor %ecx, %ecx
     test %rax, %rax
     sete %cl
-    test %rax, %rax
     jnz .L__kefir_func_test_dec128_grid_init_label8
 .L__kefir_func_test_dec128_grid_init_label3:
     test %ecx, %ecx
@@ -2341,7 +2340,6 @@ test_dec32_grid_init:
     xor %ecx, %ecx
     test %rax, %rax
     sete %cl
-    test %rax, %rax
     jnz .L__kefir_func_test_dec32_grid_init_label8
 .L__kefir_func_test_dec32_grid_init_label3:
     test %ecx, %ecx
@@ -2432,7 +2430,6 @@ test_dec64_grid_init:
     xor %ecx, %ecx
     test %rax, %rax
     sete %cl
-    test %rax, %rax
     jnz .L__kefir_func_test_dec64_grid_init_label8
 .L__kefir_func_test_dec64_grid_init_label3:
     test %ecx, %ecx

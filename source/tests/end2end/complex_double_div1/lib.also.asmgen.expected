@@ -380,7 +380,6 @@ __kefir_softfloat_complex_double_div:
     xor %ecx, %ecx
     test %al, %al
     sete %cl
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label52
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label50:
     test %ecx, %ecx

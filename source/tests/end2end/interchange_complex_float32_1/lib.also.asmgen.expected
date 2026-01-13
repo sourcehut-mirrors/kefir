@@ -2279,7 +2279,6 @@ __kefir_softfloat_complex_float_div:
     xor %ecx, %ecx
     test %al, %al
     sete %cl
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label52
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label50:
     test %ecx, %ecx
@@ -2452,7 +2451,6 @@ __kefir_softfloat_complex_float_mul:
     xor %eax, %eax
     test %dl, %dl
     sete %al
-    test %dl, %dl
     jz .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label39
 .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label13:
     test %eax, %eax

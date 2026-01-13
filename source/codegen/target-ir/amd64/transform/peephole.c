@@ -388,8 +388,65 @@ static kefir_result_t peephole_test(struct kefir_mem *mem, struct kefir_codegen_
             classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
             classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
             instr->operation.parameters[classification.operands[0].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-            instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-            instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
+            instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF, KEFIR_OK);
+
+    if (kefir_codegen_target_ir_code_control_prev(code, instr_ref) != KEFIR_ID_NONE &&
+        kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_control_prev(code, instr_ref)) != KEFIR_ID_NONE) {
+        const struct kefir_codegen_target_ir_instruction *prev_instr, *prev2_instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, kefir_codegen_target_ir_code_control_prev(code, instr_ref), &prev_instr));
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_control_prev(code, instr_ref)), &prev2_instr));
+
+        if (prev2_instr->operation.opcode == instr->operation.opcode) {
+            struct kefir_codegen_target_ir_tie_classification prev2_classification;
+            REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, prev2_instr->instr_ref, &prev2_classification));
+            if (prev2_classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ &&
+                prev2_classification.classification.operands[1].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ &&
+                prev2_classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+                prev2_classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+                prev2_instr->operation.parameters[prev2_classification.operands[0].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                prev2_instr->operation.parameters[prev2_classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[classification.operands[0].read_index].direct.value_ref) ==
+                    KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&prev2_instr->operation.parameters[prev2_classification.operands[0].read_index].direct.value_ref) &&
+                KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[classification.operands[1].read_index].direct.value_ref) ==
+                    KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&prev2_instr->operation.parameters[prev2_classification.operands[1].read_index].direct.value_ref) &&
+                instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
+                    prev2_instr->operation.parameters[prev2_classification.operands[0].read_index].direct.variant &&
+                instr->operation.parameters[classification.operands[1].read_index].direct.variant ==
+                    prev2_instr->operation.parameters[prev2_classification.operands[1].read_index].direct.variant) {
+                switch (prev_instr->operation.opcode) {
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(sete):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setne):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setnp):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setp):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setns):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(sets):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setb):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setnb):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setae):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setg):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setge):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setl):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setle):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(seta):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setbe):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(seto):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setno):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setc):
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(setnc):
+                        REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, prev2_instr->instr_ref, instr_ref));
+                        REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
+                        *replaced = true;
+                        return KEFIR_OK;
+
+                    default:
+                        // Intentionally left blank
+                        break;
+                }
+            }
+        }
+    }
+
+    REQUIRE(instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
                 instr->operation.parameters[classification.operands[1].read_index].direct.variant &&
             instr->operation.parameters[classification.operands[0].read_index].direct.variant !=
                 KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT &&

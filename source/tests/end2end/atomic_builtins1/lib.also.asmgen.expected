@@ -115,57 +115,49 @@ test2_atomic_store256:
 
 test2_atomic_store16:
 .L__kefir_text_func_test2_atomic_store16_begin:
-    mov %rsi, %rax
-    xchgw %ax, (%rdi)
+    xchgw %si, (%rdi)
     ret
 .L__kefir_text_func_test2_atomic_store16_end:
 
 test2_atomic_store32:
 .L__kefir_text_func_test2_atomic_store32_begin:
-    mov %rsi, %rax
-    xchgl %eax, (%rdi)
+    xchgl %esi, (%rdi)
     ret
 .L__kefir_text_func_test2_atomic_store32_end:
 
 test2_atomic_store64:
 .L__kefir_text_func_test2_atomic_store64_begin:
-    mov %rsi, %rax
-    xchgq %rax, (%rdi)
+    xchgq %rsi, (%rdi)
     ret
 .L__kefir_text_func_test2_atomic_store64_end:
 
 test_atomic_store8:
 .L__kefir_text_func_test_atomic_store8_begin:
-    mov %rsi, %rax
-    xchgb %al, (%rdi)
+    xchgb %sil, (%rdi)
     ret
 .L__kefir_text_func_test_atomic_store8_end:
 
 test_atomic_store16:
 .L__kefir_text_func_test_atomic_store16_begin:
-    mov %rsi, %rax
-    xchgw %ax, (%rdi)
+    xchgw %si, (%rdi)
     ret
 .L__kefir_text_func_test_atomic_store16_end:
 
 test_atomic_store32:
 .L__kefir_text_func_test_atomic_store32_begin:
-    mov %rsi, %rax
-    xchgl %eax, (%rdi)
+    xchgl %esi, (%rdi)
     ret
 .L__kefir_text_func_test_atomic_store32_end:
 
 test_atomic_store64:
 .L__kefir_text_func_test_atomic_store64_begin:
-    mov %rsi, %rax
-    xchgq %rax, (%rdi)
+    xchgq %rsi, (%rdi)
     ret
 .L__kefir_text_func_test_atomic_store64_end:
 
 test2_atomic_store8:
 .L__kefir_text_func_test2_atomic_store8_begin:
-    mov %rsi, %rax
-    xchgb %al, (%rdi)
+    xchgb %sil, (%rdi)
     ret
 .L__kefir_text_func_test2_atomic_store8_end:
 
