@@ -819,24 +819,40 @@ static kefir_result_t peephole_setcc_preamble(struct kefir_mem *mem, struct kefi
     REQUIRE(test_user_instr->operation.opcode != code->klass->phi_opcode, KEFIR_OK);
     REQUIRE(test_user_instr->operation.opcode != code->klass->inline_asm_opcode, KEFIR_OK);
 
-    kefir_bool_t found_consumer = false;
+    REQUIRE(instr->block_ref == user_instr->block_ref, KEFIR_OK);
+    REQUIRE(instr->block_ref == test_user_instr->block_ref, KEFIR_OK);
+
+    kefir_bool_t found_user = false;
     for (kefir_codegen_target_ir_instruction_ref_t iter_ref = instr->instr_ref; iter_ref != KEFIR_ID_NONE;
         iter_ref = kefir_codegen_target_ir_code_control_next(code, iter_ref)) {
         if (iter_ref == test_user_instr_ref) {
-            found_consumer = true;
+            found_user = true;
             break;
         } else if (iter_ref == user_instr_ref ||
             iter_ref == instr->instr_ref) {
             continue;
         }
-
+        
         const struct kefir_codegen_target_ir_instruction *iter_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, iter_ref, &iter_instr));
-        if (iter_instr->operation.opcode != code->klass->placeholder_opcode) {
-            break;
+        if (iter_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) ||
+            iter_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(assign)) {
+            return KEFIR_OK;
+        }
+
+        for (kefir_size_t i = 0; i < resources_len; i++) {
+            const struct kefir_codegen_target_ir_value_type *output_type;
+            kefir_result_t res = kefir_codegen_target_ir_code_value_props(code, (kefir_codegen_target_ir_value_ref_t) {
+                .instr_ref = iter_ref,
+                .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(resources[i])
+            }, &output_type);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                return KEFIR_OK;
+            }
         }
     }
-    REQUIRE(found_consumer, KEFIR_OK);
+    REQUIRE(found_user, KEFIR_OK);
 
     *oper = test_user_instr->operation;
     for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {

@@ -96,10 +96,8 @@ __kefir_softfloat_complex_long_double_div:
     fabs
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
-    setnb %al
     fstp %st(0)
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label56
+    jnb .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label56
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label3:
     fldt -144(%rbp)
@@ -351,10 +349,8 @@ __kefir_softfloat_complex_long_double_div:
     fabs
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
-    setnb %al
     fstp %st(0)
-    test %al, %al
-    setne %al
+    setnb %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label27
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label34:
@@ -364,10 +360,8 @@ __kefir_softfloat_complex_long_double_div:
     fabs
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
-    setnb %al
     fstp %st(0)
-    test %al, %al
-    setne %al
+    setnb %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label25
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label36:
@@ -475,10 +469,8 @@ __kefir_softfloat_complex_long_double_div:
     fabs
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
-    setnb %al
     fstp %st(0)
-    test %al, %al
-    setne %al
+    setnb %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label19
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label42:
@@ -488,10 +480,8 @@ __kefir_softfloat_complex_long_double_div:
     fabs
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
-    setnb %al
     fstp %st(0)
-    test %al, %al
-    setne %al
+    setnb %al
     movzx %al, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label17
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label44:
@@ -864,19 +854,15 @@ __kefir_softfloat_fmaximum_numl:
     fldt 16(%rbp)
     fxch %st(1)
     fucomi %st(1)
-    seta %al
     fstpt -80(%rbp)
     fstpt -64(%rbp)
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label24
+    ja .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label24
     fldt -80(%rbp)
     fldt -64(%rbp)
     fucomi %st(1)
-    seta %al
     fstpt -64(%rbp)
     fstpt -80(%rbp)
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label22
+    ja .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label22
     fldt -80(%rbp)
     fldt -64(%rbp)
     fld %st(0)
@@ -893,16 +879,12 @@ __kefir_softfloat_fmaximum_numl:
     jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label18
     fldt -80(%rbp)
     fucomi %st(0)
-    setp %al
     fstpt -80(%rbp)
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
+    jnp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
     fldt -64(%rbp)
     fucomi %st(0)
-    setp %al
     fstpt -64(%rbp)
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label13
+    jnp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label13
     fldt -80(%rbp)
     fldt -64(%rbp)
     faddp
@@ -1032,10 +1014,8 @@ __kefir_softfloat_logbl:
     fabs
     fldt .L__kefir_runtime_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
-    setnb %al
     fstp %st(0)
-    test %al, %al
-    jz .L__kefir_runtime_func___kefir_softfloat_logbl_label9
+    jb .L__kefir_runtime_func___kefir_softfloat_logbl_label9
     fldt .L__kefir_runtime_func___kefir_softfloat_logbl_label12(%rip)
     fldt -32(%rbp)
     fld %st(0)

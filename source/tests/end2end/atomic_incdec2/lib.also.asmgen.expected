@@ -55,11 +55,8 @@ postdec_i8:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgb %cl, (%rdx)
-    sete %al
-    movsx %dil, %rcx
-    test %al, %al
-    jz .L__kefir_func_postdec_i8_label2
-    mov %rcx, %rax
+    movsx %dil, %rax
+    jnz .L__kefir_func_postdec_i8_label2
     ret
     jmp .L__kefir_func_postdec_i8_label2
 .L__kefir_text_func_postdec_i8_end:
@@ -138,11 +135,8 @@ postinc_i8:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgb %cl, (%rdx)
-    sete %al
-    movsx %dil, %rcx
-    test %al, %al
-    jz .L__kefir_func_postinc_i8_label2
-    mov %rcx, %rax
+    movsx %dil, %rax
+    jnz .L__kefir_func_postinc_i8_label2
     ret
     jmp .L__kefir_func_postinc_i8_label2
 .L__kefir_text_func_postinc_i8_end:
@@ -313,11 +307,8 @@ postdec_i16:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgw %cx, (%rdx)
-    sete %al
-    movsx %di, %rcx
-    test %al, %al
-    jz .L__kefir_func_postdec_i16_label2
-    mov %rcx, %rax
+    movsx %di, %rax
+    jnz .L__kefir_func_postdec_i16_label2
     ret
     jmp .L__kefir_func_postdec_i16_label2
 .L__kefir_text_func_postdec_i16_end:
@@ -333,11 +324,8 @@ postdec_i32:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    movsx %edi, %rcx
-    test %al, %al
-    jz .L__kefir_func_postdec_i32_label2
-    mov %rcx, %rax
+    movsx %edi, %rax
+    jnz .L__kefir_func_postdec_i32_label2
     ret
     jmp .L__kefir_func_postdec_i32_label2
 .L__kefir_text_func_postdec_i32_end:
@@ -477,11 +465,8 @@ postinc_i16:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgw %cx, (%rdx)
-    sete %al
-    movsx %di, %rcx
-    test %al, %al
-    jz .L__kefir_func_postinc_i16_label2
-    mov %rcx, %rax
+    movsx %di, %rax
+    jnz .L__kefir_func_postinc_i16_label2
     ret
     jmp .L__kefir_func_postinc_i16_label2
 .L__kefir_text_func_postinc_i16_end:
@@ -497,11 +482,8 @@ postinc_i32:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    movsx %edi, %rcx
-    test %al, %al
-    jz .L__kefir_func_postinc_i32_label2
-    mov %rcx, %rax
+    movsx %edi, %rax
+    jnz .L__kefir_func_postinc_i32_label2
     ret
     jmp .L__kefir_func_postinc_i32_label2
 .L__kefir_text_func_postinc_i32_end:

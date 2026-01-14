@@ -69,10 +69,8 @@ is_finite_f80:
     fabs
     fldt .L__kefir_constant_isfinitel_cmp(%rip)
     fucomip %st(1)
-    setnb %al
     fstp %st(0)
-    test %al, %al
-    setne %al
+    setnb %al
     movzx %al, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
