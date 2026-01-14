@@ -1239,10 +1239,8 @@ __kefir_softfloat_complex_float_div:
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label52:
     movd -144(%rbp), %xmm2
     ucomiss -144(%rbp), %xmm2
-    setp %al
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
+    mov $0, %rcx
+    setnp %cl
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label50
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label54:
     ucomiss %xmm0, %xmm0
@@ -2083,10 +2081,8 @@ __kefir_softfloat_complex_double_div:
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label52:
     movq -144(%rbp), %xmm2
     ucomisd -144(%rbp), %xmm2
-    setp %al
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
+    mov $0, %rcx
+    setnp %cl
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label50
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label54:
     ucomisd %xmm0, %xmm0
@@ -3150,10 +3146,8 @@ __kefir_softfloat_complex_long_double_div:
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label52:
     fldt -160(%rbp)
     fucomi %st(0)
-    setp %al
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
+    mov $0, %rcx
+    setnp %cl
     fstpt -160(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label50
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_div_label54:
@@ -4440,10 +4434,8 @@ __kefir_softfloat_fmaximum_numl:
     setnp %cl
     cmovne %rdx, %rcx
     or %rcx, %rax
-    setne %al
     fstpt -80(%rbp)
     fstpt -64(%rbp)
-    test %al, %al
     jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)

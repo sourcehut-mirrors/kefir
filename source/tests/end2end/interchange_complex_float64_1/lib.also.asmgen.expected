@@ -2232,10 +2232,8 @@ __kefir_softfloat_complex_double_div:
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label52:
     movq -144(%rbp), %xmm2
     ucomisd -144(%rbp), %xmm2
-    setp %al
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
+    mov $0, %rcx
+    setnp %cl
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label50
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label54:
     ucomisd %xmm0, %xmm0

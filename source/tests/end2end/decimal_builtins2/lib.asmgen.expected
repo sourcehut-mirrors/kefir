@@ -129,10 +129,7 @@ dec32_isfinite:
     or %al, %r12b
     setne %al
     or %al, %bl
-    setne %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    mov $0, %rax
     sete %al
     lea -16(%rbp), %rsp
     pop %r12
@@ -174,10 +171,7 @@ dec64_isfinite:
     or %al, %r12b
     setne %al
     or %al, %bl
-    setne %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    mov $0, %rax
     sete %al
     lea -16(%rbp), %rsp
     pop %r12
@@ -331,10 +325,7 @@ dec128_isfinite:
     or %al, %r12b
     setne %al
     or %al, %bl
-    setne %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    mov $0, %rax
     sete %al
     lea -16(%rbp), %rsp
     pop %r12

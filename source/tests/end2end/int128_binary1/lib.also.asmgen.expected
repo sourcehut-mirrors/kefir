@@ -206,11 +206,8 @@ i128_neq:
     xor %rdx, %rdi
     xor %rcx, %rsi
     or %rsi, %rdi
-    sete %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
-    sete %al
+    mov $0, %rax
+    setne %al
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -357,11 +354,8 @@ u128_neq:
     xor %rdx, %rdi
     xor %rcx, %rsi
     or %rsi, %rdi
-    sete %al
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
-    sete %al
+    mov $0, %rax
+    setne %al
     lea (%rbp), %rsp
     pop %rbp
     ret

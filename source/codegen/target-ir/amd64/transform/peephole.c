@@ -835,11 +835,6 @@ static kefir_result_t peephole_setcc_preamble(struct kefir_mem *mem, struct kefi
         
         const struct kefir_codegen_target_ir_instruction *iter_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, iter_ref, &iter_instr));
-        if (iter_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) ||
-            iter_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(assign)) {
-            return KEFIR_OK;
-        }
-
         for (kefir_size_t i = 0; i < resources_len; i++) {
             const struct kefir_codegen_target_ir_value_type *output_type;
             kefir_result_t res = kefir_codegen_target_ir_code_value_props(code, (kefir_codegen_target_ir_value_ref_t) {

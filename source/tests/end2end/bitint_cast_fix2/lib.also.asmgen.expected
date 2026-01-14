@@ -1820,11 +1820,9 @@ __kefir_bigint_unsigned_to_float:
     mov $0, %edx
     movsx %edx, %rcx
     cmp %rcx, %rax
-    sete %al
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
-    movsx %ecx, %rdx
+    mov $0, %rax
+    setne %al
+    movsx %eax, %rdx
     call __kefir_bigint_set_unsigned_integer
     movq -40(%rbp), %rdi
     movq -88(%rbp), %rsi
@@ -2528,11 +2526,9 @@ __kefir_bigint_signed_to_float:
     mov $0, %edx
     movsx %edx, %rcx
     cmp %rcx, %rax
-    sete %al
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
-    movsx %ecx, %rdx
+    mov $0, %rax
+    setne %al
+    movsx %eax, %rdx
     call __kefir_bigint_set_unsigned_integer
     movq -40(%rbp), %rdi
     movq -88(%rbp), %rsi
