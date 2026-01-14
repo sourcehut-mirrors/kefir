@@ -77,7 +77,7 @@ test7:
 .L__kefir_text_func_test7_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     test %eax, %eax
     setne %al
     movzx %al, %rax

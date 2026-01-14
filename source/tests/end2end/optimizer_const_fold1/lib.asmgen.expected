@@ -212,7 +212,7 @@ bool_not:
 .L__kefir_text_func_bool_not_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_bool_not_end:
@@ -230,7 +230,7 @@ int_div2:
 .L__kefir_text_func_int_div2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_div2_end:
@@ -311,7 +311,7 @@ int_below:
 .L__kefir_text_func_int_below_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_below_end:
@@ -320,7 +320,7 @@ int_less2:
 .L__kefir_text_func_int_less2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_less2_end:
@@ -338,7 +338,7 @@ int_above2:
 .L__kefir_text_func_int_above2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_above2_end:
@@ -365,7 +365,7 @@ truct1bit2:
 .L__kefir_text_func_truct1bit2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_truct1bit2_end:
@@ -374,7 +374,7 @@ int_equals2:
 .L__kefir_text_func_int_equals2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_equals2_end:
@@ -392,7 +392,7 @@ int_greater:
 .L__kefir_text_func_int_greater_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_greater_end:
@@ -401,7 +401,7 @@ int_less_or_equals2:
 .L__kefir_text_func_int_less_or_equals2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_less_or_equals2_end:
@@ -410,7 +410,7 @@ int_greater_or_equals2:
 .L__kefir_text_func_int_greater_or_equals2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_greater_or_equals2_end:
@@ -518,7 +518,7 @@ int_below_or_equals2:
 .L__kefir_text_func_int_below_or_equals2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_below_or_equals2_end:
@@ -527,7 +527,7 @@ int_above_or_equals2:
 .L__kefir_text_func_int_above_or_equals2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_above_or_equals2_end:

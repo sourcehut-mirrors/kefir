@@ -13,15 +13,15 @@ fn1:
     mov %rbp, %rsp
     mov %rcx, 0
     mov %rax, [%rcx]
-    mov %rcx, 0
-    mov %rdx, 0
+    xor %ecx, %ecx
+    xor %edx, %edx
 xor %rax, %rax
 mov %rax, %rcx
 add %rcx, 1
 mov QWORD PTR [%rdx], %rcx
     mov %rcx, 0
     mov [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_fn1_end:

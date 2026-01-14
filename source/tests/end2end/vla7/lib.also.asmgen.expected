@@ -13,7 +13,7 @@ test:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov $0, %rax
+    xor %eax, %eax
     movl %edi, -32(%rbp)
     sub $16, %rsp
     movq %rax, (%rsp)
@@ -58,7 +58,7 @@ test:
 .L__kefir_func_test_label13:
     jmp .L__kefir_func_test_label2
 .L__kefir_func_test_label10:
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -69,7 +69,7 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov $0, %rax
+    xor %eax, %eax
     movl %edi, -48(%rbp)
     sub $16, %rsp
     movq %rax, (%rsp)

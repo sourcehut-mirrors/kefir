@@ -28,7 +28,7 @@ is_inf_f32:
     and $2147483647, %ecx
     sar $31, %eax
     or $1, %eax
-    mov $0, %edx
+    xor %edx, %edx
     cmp $2139095040, %ecx
     mov %edx, %ecx
     cmove %eax, %ecx
@@ -51,7 +51,7 @@ is_inf_f64:
     and %rax, %rcx
     sar $63, %rax
     or $1, %rax
-    mov $0, %edx
+    xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
     mov %edx, %ecx
@@ -82,7 +82,7 @@ is_inf_f80:
     and $32767, %ecx
     shr $15, %rax
     or $1, %eax
-    mov $0, %esi
+    xor %esi, %esi
     or %rdx, %rcx
     mov %esi, %ecx
     cmove %eax, %ecx

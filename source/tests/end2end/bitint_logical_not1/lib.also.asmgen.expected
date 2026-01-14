@@ -27,7 +27,7 @@ bnot1:
     sar $58, %rax
     shl $58, %rax
     shr $58, %rax
-    mov $0, %rcx
+    xor %ecx, %ecx
     test %al, %al
     mov %rcx, %rax
     sete %al
@@ -47,7 +47,7 @@ bnot2:
     sar $50, %rax
     shl $50, %rax
     shr $50, %rax
-    mov $0, %rcx
+    xor %ecx, %ecx
     test %ax, %ax
     mov %rcx, %rax
     sete %al
@@ -67,7 +67,7 @@ bnot3:
     sar $35, %rax
     shl $35, %rax
     shr $35, %rax
-    mov $0, %rcx
+    xor %ecx, %ecx
     test %eax, %eax
     mov %rcx, %rax
     sete %al
@@ -87,7 +87,7 @@ bnot4:
     sar $6, %rax
     shl $6, %rax
     shr $6, %rax
-    mov $0, %rcx
+    xor %ecx, %ecx
     test %rax, %rax
     mov %rcx, %rax
     sete %al
@@ -189,7 +189,7 @@ __kefir_bigint_is_zero:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -40(%rbp)
     mov $0, %ecx
@@ -226,7 +226,7 @@ __kefir_bigint_is_zero:
     movq %rax, -32(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label4
 .L__kefir_runtime_func___kefir_bigint_is_zero_label14:
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -241,7 +241,7 @@ __kefir_bigint_is_zero:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
     movq -56(%rbp), %rax

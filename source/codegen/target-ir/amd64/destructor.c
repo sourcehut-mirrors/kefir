@@ -24,6 +24,7 @@
 #include "kefir/codegen/target-ir/schedule.h"
 #include "kefir/codegen/target-ir/tie.h"
 #include "kefir/codegen/target-ir/amd64/regalloc.h"
+#include "kefir/codegen/target-ir/amd64/late_transform.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -1871,8 +1872,19 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
     struct kefir_codegen_target_ir_tie_classification classification;
     REQUIRE_OK(kefir_codegen_target_ir_tie_operands(state->code, instr_ref, &classification));
 
-
     REQUIRE_OK(build_current_instr_state(state, instr_ref, &classification.classification));
+
+    struct kefir_asmcmp_instruction asmcmp_instruction = {
+        .opcode = classification.classification.opcode,
+        .args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+        .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+        .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE
+    };
+    res = kefir_codegen_target_ir_amd64_transform_late_peephole(state->mem, state->code, instr_ref, state->regalloc, &state->alive_values, &asmcmp_instruction);
+    if (res != KEFIR_NO_MATCH) {
+        REQUIRE_OK(res);
+        goto devirtualize_label;
+    }
 
     struct kefir_codegen_target_ir_block_terminator_props terminator_props;
     REQUIRE_OK(state->code->klass->is_block_terminator(state->code, instr, &terminator_props, state->code->klass->payload));
@@ -1996,12 +2008,6 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
         return KEFIR_OK;
     }
 
-    struct kefir_asmcmp_instruction asmcmp_instruction = {
-        .opcode = classification.classification.opcode,
-        .args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
-        .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
-        .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE
-    };
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         switch (classification.classification.operands[i].class) {
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_NONE:
@@ -2297,6 +2303,8 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
         }
     }
 
+devirtualize_label:
+    (void) asmcmp_instruction;
     kefir_asmcmp_instruction_index_t insert_idx = kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context);
     switch (asmcmp_instruction.opcode) {
 #define DEF_OPCODE0(_opcode, _mnemonic, _variant, _flags)

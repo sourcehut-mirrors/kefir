@@ -245,7 +245,7 @@ __kefir_bigint_left_shift:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
     movq -48(%rbp), %rax
@@ -255,7 +255,7 @@ __kefir_bigint_left_shift:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -24(%rbp)
     movq -24(%rbp), %rax
@@ -270,7 +270,7 @@ __kefir_bigint_left_shift:
     cmp %rcx, %rax
     ja .L__kefir_runtime_func___kefir_bigint_left_shift_label9
 .L__kefir_runtime_func___kefir_bigint_left_shift_label7:
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -376,7 +376,7 @@ __kefir_bigint_left_shift_whole_digits:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -24(%rbp)
     movq -24(%rbp), %rax
@@ -387,10 +387,10 @@ __kefir_bigint_left_shift_whole_digits:
 .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label2:
     movq -16(%rbp), %rax
     movq -48(%rbp), %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %rcx, %rax
     seta %dl
-    mov $0, %rsi
+    xor %esi, %esi
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
@@ -403,7 +403,7 @@ __kefir_bigint_left_shift_whole_digits:
     movq -48(%rbp), %rcx
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label9
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

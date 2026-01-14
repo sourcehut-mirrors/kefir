@@ -26,7 +26,7 @@ int_equals_const:
 .L__kefir_text_func_int_equals_const_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     cmp $123, %rdi
     sete %al
     movsx %eax, %rax
@@ -38,7 +38,7 @@ int_less_or_equal_const:
 .L__kefir_text_func_int_less_or_equal_const_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     cmp $543, %rdi
     setle %al
     movsx %eax, %rax
@@ -50,7 +50,7 @@ int_less_const:
 .L__kefir_text_func_int_less_const_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     cmp $90, %rdi
     setl %al
     movsx %eax, %rax
@@ -62,7 +62,7 @@ int_below_or_equal_const:
 .L__kefir_text_func_int_below_or_equal_const_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     cmp $1, %rdi
     setbe %al
     movsx %eax, %rax
@@ -74,7 +74,7 @@ int_greater_or_equal_const:
 .L__kefir_text_func_int_greater_or_equal_const_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     cmp $-50, %rdi
     setge %al
     movsx %eax, %rax
@@ -86,7 +86,7 @@ int_greater_const:
 .L__kefir_text_func_int_greater_const_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     cmp $150, %rdi
     setg %al
     movsx %eax, %rax
@@ -98,7 +98,7 @@ int_above_const:
 .L__kefir_text_func_int_above_const_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     cmp $100, %rdi
     seta %al
     movsx %eax, %rax
@@ -110,7 +110,7 @@ int_below_const:
 .L__kefir_text_func_int_below_const_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     cmp $90, %rdi
     setb %al
     movsx %eax, %rax
@@ -122,7 +122,7 @@ int_above_or_equal_const:
 .L__kefir_text_func_int_above_or_equal_const_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $0, %rax
+    xor %eax, %eax
     cmp $190, %rdi
     setae %al
     movsx %eax, %rax

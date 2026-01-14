@@ -13,20 +13,20 @@ func1:
     mov %rbp, %rsp
     mov %rcx, 0
     mov %rax, [%rcx]
-    mov %rcx, 0
+    xor %ecx, %ecx
 add %rax, %rcx
     mov %rcx, 0
     mov [%rcx], %rax
     mov %rcx, 0
     mov %rax, [%rcx]
-    mov %rcx, 0
+    xor %ecx, %ecx
 movd %xmm0, %rax
 movd %xmm1, %rcx
 addsd %xmm0, %xmm1
 movd %rax, %xmm0
     mov %rcx, 0
     mov [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_func1_end:

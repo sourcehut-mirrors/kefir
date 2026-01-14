@@ -37,7 +37,7 @@ factorial:
 .L__kefir_func_factorial_label12:
     ret
 .L__kefir_func_factorial_label14:
-    mov $0, %rax
+    xor %eax, %eax
     ret
 .L__kefir_text_func_factorial_end:
 

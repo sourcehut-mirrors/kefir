@@ -30,7 +30,7 @@ process:
     mov %rcx, -232(%rbp)
     mov %r8, -224(%rbp)
     mov %r9, -216(%rbp)
-    mov $0, %rax
+    xor %eax, %eax
     movl %esi, -72(%rbp)
     movq %rdi, -40(%rbp)
     movl $16, -64(%rbp)
@@ -42,7 +42,7 @@ process:
     movl -72(%rbp), %ecx
     cmp $0, %ecx
     jg .L__kefir_func_process_label7
-    mov $0, %rax
+    xor %eax, %eax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

@@ -28,12 +28,12 @@ is_inf_f32:
     and $2147483647, %ecx
     sar $31, %eax
     or $1, %eax
-    mov $0, %edx
+    xor %edx, %edx
     cmp $2139095040, %ecx
     cmove %eax, %edx
     cmp $0, %edx
     sete %al
-    mov $0, %rcx
+    xor %ecx, %ecx
     test %al, %al
     mov %rcx, %rax
     sete %al
@@ -55,13 +55,13 @@ is_inf_f64:
     and %rax, %rcx
     sar $63, %rax
     or $1, %rax
-    mov $0, %edx
+    xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
     cmove %eax, %edx
     cmp $0, %edx
     sete %al
-    mov $0, %rcx
+    xor %ecx, %ecx
     test %al, %al
     mov %rcx, %rax
     sete %al
@@ -90,12 +90,12 @@ is_inf_f80:
     and $32767, %ecx
     shr $15, %rax
     or $1, %eax
-    mov $0, %esi
+    xor %esi, %esi
     or %rdx, %rcx
     cmove %eax, %esi
     cmp $0, %esi
     sete %al
-    mov $0, %rcx
+    xor %ecx, %ecx
     test %al, %al
     mov %rcx, %rax
     sete %al

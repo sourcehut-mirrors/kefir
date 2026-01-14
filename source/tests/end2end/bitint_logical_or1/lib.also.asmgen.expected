@@ -166,7 +166,7 @@ or5:
     lea -64(%rbp), %rdi
     mov $120, %rsi
     call __kefir_bigint_is_zero
-    mov $0, %rcx
+    xor %ecx, %ecx
     test %al, %al
     sete %cl
     test %cl, %cl
@@ -183,7 +183,7 @@ or5:
     mov $120, %rsi
     call __kefir_bigint_is_zero
     mov %rax, %rcx
-    mov $0, %rax
+    xor %eax, %eax
     test %cl, %cl
     sete %al
     jmp .L__kefir_func_or5_label3
@@ -229,7 +229,7 @@ or6:
     lea -160(%rbp), %rdi
     mov $310, %rsi
     call __kefir_bigint_is_zero
-    mov $0, %rcx
+    xor %ecx, %ecx
     test %al, %al
     sete %cl
     test %cl, %cl
@@ -254,7 +254,7 @@ or6:
     mov $310, %rsi
     call __kefir_bigint_is_zero
     mov %rax, %rcx
-    mov $0, %rax
+    xor %eax, %eax
     test %cl, %cl
     sete %al
     jmp .L__kefir_func_or6_label3
@@ -294,7 +294,7 @@ __kefir_bigint_is_zero:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -40(%rbp)
     mov $0, %ecx
@@ -331,7 +331,7 @@ __kefir_bigint_is_zero:
     movq %rax, -32(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label4
 .L__kefir_runtime_func___kefir_bigint_is_zero_label14:
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -346,7 +346,7 @@ __kefir_bigint_is_zero:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
     movq -56(%rbp), %rax

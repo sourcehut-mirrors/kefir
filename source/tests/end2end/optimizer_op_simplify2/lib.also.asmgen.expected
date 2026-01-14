@@ -31,7 +31,7 @@ below_or_equals:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jbe .L__kefir_func_below_or_equals_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -53,7 +53,7 @@ above_or_equals:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jae .L__kefir_func_above_or_equals_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -73,7 +73,7 @@ below_or_equals2:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
     setbe %al
@@ -91,7 +91,7 @@ above_or_equals2:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
     setae %al
@@ -109,7 +109,7 @@ greater_or_equals2:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
     setge %al
@@ -129,7 +129,7 @@ less_or_equals:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jle .L__kefir_func_less_or_equals_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -151,7 +151,7 @@ greater_or_equals:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jge .L__kefir_func_greater_or_equals_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -171,7 +171,7 @@ less_or_equals2:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
     setle %al

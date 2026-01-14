@@ -12,9 +12,9 @@ fn1:
     push %rbp
     mov %rbp, %rsp
     mov %r8, %rdi
-    mov %rdx, 0
-    mov %rsi, 0
-    mov %rdi, 0
+    xor %edx, %edx
+    xor %esi, %esi
+    xor %edi, %edi
 jmp .L__kefir_func_fn1_label3
 jmp .L__kefir_func_fn1_label4
 jmp .L__kefir_func_fn1_label5

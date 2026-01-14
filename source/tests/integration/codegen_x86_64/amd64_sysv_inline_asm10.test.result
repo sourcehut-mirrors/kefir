@@ -15,7 +15,7 @@ fn1:
     mov %rax, [%rdx]
     mov %rsi, 0
     mov %rdx, [%rsi]
-    mov %rsi, 0
+    xor %esi, %esi
 add %rax, 1
 mov %rcx, 2
 lea %rcx, %rdx
@@ -24,7 +24,7 @@ mov QWORD PTR [%rsi], %rax
     mov [%rdx], %rax
     mov %rax, 0
     mov [%rax], %rcx
-    mov %rax, 0
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_fn1_end:

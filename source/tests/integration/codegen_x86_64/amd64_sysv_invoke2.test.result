@@ -14,7 +14,7 @@ func1:
     push %rbp
     mov %rbp, %rsp
     movd %xmm0, [.L__kefir_func_func1_label4]
-    mov %rdi, 0
+    xor %edi, %edi
     mov %rsi, 2
     call func2
     movd %xmm0, [.L__kefir_func_func1_label5]

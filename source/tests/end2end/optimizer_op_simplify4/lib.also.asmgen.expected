@@ -18,7 +18,7 @@ greater_or_equalsf:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    mov $0, %rdx
+    xor %edx, %edx
     movd %eax, %xmm0
     movd %ecx, %xmm1
     comiss %xmm1, %xmm0
@@ -40,7 +40,7 @@ less_or_equalsf:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    mov $0, %rdx
+    xor %edx, %edx
     movd %ecx, %xmm0
     movd %eax, %xmm1
     comiss %xmm1, %xmm0

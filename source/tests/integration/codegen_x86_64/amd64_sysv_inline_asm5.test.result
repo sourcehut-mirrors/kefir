@@ -13,8 +13,8 @@ func1:
     mov %rbp, %rsp
     pushfq
     sub %rsp, 8
-    mov %rcx, 0
-    mov %rdx, 0
+    xor %ecx, %ecx
+    xor %edx, %edx
 lea %rax, [%rcx]
 mov [%rax], %rdx
 add %rdx, 1

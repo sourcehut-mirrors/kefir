@@ -2003,10 +2003,10 @@ factorial:
     cmp $0, %eax
     jl .L__kefir_func_factorial_label14
     movl -8(%rbp), %eax
-    mov $0, %rcx
+    xor %ecx, %ecx
     cmp $2, %eax
     setl %cl
-    mov $0, %rdx
+    xor %edx, %edx
     mov $2, %esi
     cmp %eax, %esi
     sete %dl
@@ -2036,7 +2036,7 @@ factorial:
     pop %rbp
     ret
 .L__kefir_func_factorial_label14:
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

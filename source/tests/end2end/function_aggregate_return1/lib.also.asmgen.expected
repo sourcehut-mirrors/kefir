@@ -19,10 +19,10 @@ get1:
     movq -152(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %rcx, %rax
     setg %dl
-    mov $0, %rsi
+    xor %esi, %esi
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx

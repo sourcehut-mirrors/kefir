@@ -33,7 +33,7 @@ below1:
     shr $58, %rcx
     shl $58, %rcx
     shr $58, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %cl, %al
     mov %rdx, %rax
     setb %al
@@ -59,7 +59,7 @@ below2:
     shr $50, %rcx
     shl $50, %rcx
     shr $50, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %cx, %ax
     mov %rdx, %rax
     setb %al
@@ -85,7 +85,7 @@ below3:
     shr $35, %rcx
     shl $35, %rcx
     shr $35, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
     setb %al
@@ -111,7 +111,7 @@ below4:
     shr $6, %rcx
     shl $6, %rcx
     shr $6, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %rcx, %rax
     mov %rdx, %rax
     setb %al
@@ -141,7 +141,7 @@ below5:
     lea -48(%rbp), %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    mov $0, %rcx
+    xor %ecx, %ecx
     cmp $-1, %al
     mov %rcx, %rax
     sete %al
@@ -201,7 +201,7 @@ below6:
     lea -120(%rbp), %rsi
     mov $310, %rdx
     call __kefir_bigint_unsigned_compare
-    mov $0, %rcx
+    xor %ecx, %ecx
     cmp $-1, %al
     mov %rcx, %rax
     sete %al
@@ -240,7 +240,7 @@ __kefir_bigint_unsigned_compare:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -32(%rbp)
     movq -32(%rbp), %rax
@@ -251,7 +251,7 @@ __kefir_bigint_unsigned_compare:
     movsx %edx, %rcx
     cmp %rcx, %rax
     ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -319,7 +319,7 @@ __kefir_bigint_unsigned_compare:
     movsx %esi, %rdx
     mov $1, %rsi
     imul %rdx, %rsi
-    mov $0, %rdx
+    xor %edx, %edx
     div %rsi
     mov $8, %esi
     movsx %esi, %rdx

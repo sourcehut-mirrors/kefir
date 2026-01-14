@@ -239,7 +239,7 @@ __kefir_bigint_zero:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
     mov $0, %ecx
@@ -250,7 +250,7 @@ __kefir_bigint_zero:
     movq -16(%rbp), %rcx
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_zero_label6
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -281,7 +281,7 @@ __kefir_bigint_unsigned_multiply:
     movq -56(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %rcx, %rax
     sete %dl
     test %dl, %dl
@@ -304,7 +304,7 @@ __kefir_bigint_unsigned_multiply:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -48(%rbp)
     movq -56(%rbp), %rax
@@ -322,7 +322,7 @@ __kefir_bigint_unsigned_multiply:
     mov %rdx, %rsi
     imul %rcx, %rsi
     mov %rsi, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     div %rcx
     movq %rax, -80(%rbp)
     movq -88(%rbp), %rax
@@ -359,7 +359,7 @@ __kefir_bigint_unsigned_multiply:
     movq -48(%rbp), %rcx
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label10
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -414,10 +414,10 @@ __kefir_bigint_unsigned_multiply:
     movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
     movq -80(%rbp), %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %rcx, %rax
     seta %dl
-    mov $0, %rsi
+    xor %esi, %esi
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
@@ -456,12 +456,12 @@ __kefir_bigint_unsigned_multiply:
     mov %rdx, %rdi
     add %rsi, %rdi
     mov %rdi, %rsi
-    mov $0, %edx
+    xor %edx, %edx
     div %ecx
     movb %dl, (%rsi)
     movl -28(%rbp), %eax
     movl -112(%rbp), %ecx
-    mov $0, %edx
+    xor %edx, %edx
     div %ecx
     movl %eax, -32(%rbp)
     movq -16(%rbp), %rax
@@ -487,7 +487,7 @@ __kefir_bigint_unsigned_multiply:
     movb %cl, -107(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label12
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label33:
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -495,7 +495,7 @@ __kefir_bigint_unsigned_multiply:
     movq -88(%rbp), %rax
     mov $0, %edx
     movsx %edx, %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     cmp %rcx, %rax
     sete %dl
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label3

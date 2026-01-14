@@ -37,7 +37,7 @@ less:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jl .L__kefir_func_less_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -59,7 +59,7 @@ above:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     ja .L__kefir_func_above_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -81,7 +81,7 @@ below:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jb .L__kefir_func_below_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -103,7 +103,7 @@ equals:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     je .L__kefir_func_equals_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -125,7 +125,7 @@ greater:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jg .L__kefir_func_greater_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -147,7 +147,7 @@ not_less:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jge .L__kefir_func_not_less_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -169,7 +169,7 @@ not_above:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jbe .L__kefir_func_not_above_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -191,7 +191,7 @@ not_below:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jae .L__kefir_func_not_below_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -213,7 +213,7 @@ not_equals:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jne .L__kefir_func_not_equals_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -235,7 +235,7 @@ not_equals2:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jne .L__kefir_func_not_equals2_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -257,7 +257,7 @@ not_greater:
     movl -4(%rbp), %ecx
     cmp %ecx, %eax
     jle .L__kefir_func_not_greater_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -19,7 +19,7 @@ add %rcx, -39219
     mov [%rdx], %rax
     mov %rax, 0
     mov [%rax], %rcx
-    mov %rax, 0
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_fn1_end:

@@ -12,7 +12,7 @@ func1:
     push %rbp
     mov %rbp, %rsp
     pxor %xmm0, %xmm0
-    mov %rax, 0
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_func1_end:

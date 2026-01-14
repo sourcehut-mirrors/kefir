@@ -126,16 +126,15 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
+#                "opcode": "xor",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "rcx"
+#                        "reg": "ecx"
 #                    },
 #                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "ecx"
 #                    }
 #                ],
 #                "labels": [
@@ -183,16 +182,15 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
+#                "opcode": "xor",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "rdx"
+#                        "reg": "edx"
 #                    },
 #                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "edx"
 #                    }
 #                ],
 #                "labels": [
@@ -657,16 +655,15 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
+#                "opcode": "xor",
 #                "args": [
 #                    {
 #                        "type": "physical_register",
-#                        "reg": "rax"
+#                        "reg": "eax"
 #                    },
 #                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
+#                        "type": "physical_register",
+#                        "reg": "eax"
 #                    }
 #                ],
 #                "labels": [
@@ -727,11 +724,11 @@ factorial:
 .L__kefir_func_factorial_label60:
     movl -8(%rbp), %eax
 .L__kefir_func_factorial_label61:
-    mov $0, %rcx
+    xor %ecx, %ecx
     cmp $2, %eax
     setl %cl
 .L__kefir_func_factorial_label76:
-    mov $0, %rdx
+    xor %edx, %edx
     mov $2, %esi
     cmp %eax, %esi
     sete %dl
@@ -789,7 +786,7 @@ factorial:
     ret
 .loc 0 23 9
 .L__kefir_func_factorial_label28:
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

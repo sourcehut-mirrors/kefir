@@ -16,7 +16,7 @@ getb:
     mov %rdi, %rbx
     movl %esi, -20(%rbp)
     mov %rbx, %rdi
-    mov $0, %rax
+    xor %eax, %eax
     mov $30, %rcx
     mov %rax, %rsi
     rep stosq

@@ -33,7 +33,7 @@ less_or_equalsld:
     fstpt -80(%rbp)
     fld %st(1)
     fstpt -64(%rbp)
-    mov $0, %rax
+    xor %eax, %eax
     fcomip %st(1)
     fstp %st(0)
     seta %al
@@ -43,8 +43,8 @@ less_or_equalsld:
     fstpt -80(%rbp)
     fld %st(1)
     fstpt -64(%rbp)
-    mov $0, %rcx
-    mov $0, %rdx
+    xor %ecx, %ecx
+    xor %edx, %edx
     fucomip %st(1)
     fstp %st(0)
     setnp %cl
@@ -68,7 +68,7 @@ greater_or_equalsd:
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     comisd %xmm1, %xmm0
@@ -90,7 +90,7 @@ less_or_equalsd:
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov $0, %rdx
+    xor %edx, %edx
     movq %rcx, %xmm0
     movq %rax, %xmm1
     comisd %xmm1, %xmm0
@@ -122,7 +122,7 @@ greater_or_equalsld:
     fstpt -80(%rbp)
     fld %st(1)
     fstpt -64(%rbp)
-    mov $0, %rax
+    xor %eax, %eax
     fcomip %st(1)
     fstp %st(0)
     seta %al
@@ -132,8 +132,8 @@ greater_or_equalsld:
     fstpt -64(%rbp)
     fld %st(1)
     fstpt -80(%rbp)
-    mov $0, %rcx
-    mov $0, %rdx
+    xor %ecx, %ecx
+    xor %edx, %edx
     fucomip %st(1)
     fstp %st(0)
     setnp %cl

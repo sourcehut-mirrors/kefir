@@ -11,9 +11,9 @@ func1:
 .L__kefir_func_func1_label0:
     push %rbp
     mov %rbp, %rsp
-    mov %rax, 0
-    mov %rcx, 0
-    mov %rdx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
+    xor %edx, %edx
 fld TBYTE PTR [%rax]
 fld TBYTE PTR [%rcx]
 fadd

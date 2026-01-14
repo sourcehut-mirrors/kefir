@@ -15,7 +15,7 @@ getb:
     sub $16, %rsp
     mov %rdi, %rdx
     mov %rdx, %rdi
-    mov $0, %rax
+    xor %eax, %eax
     mov $25, %rcx
     mov %rax, %rsi
     rep stosq

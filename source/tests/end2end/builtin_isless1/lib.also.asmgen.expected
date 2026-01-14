@@ -26,7 +26,7 @@ is_less_f32:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    mov $0, %edx
+    xor %edx, %edx
     movd %ecx, %xmm0
     movd %eax, %xmm1
     ucomiss %xmm1, %xmm0
@@ -49,7 +49,7 @@ is_less_f64:
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov $0, %edx
+    xor %edx, %edx
     movq %rcx, %xmm0
     movq %rax, %xmm1
     ucomisd %xmm1, %xmm0
@@ -79,7 +79,7 @@ is_less_f80:
     fldt -32(%rbp)
     fxch %st(1)
     fxch %st(1)
-    mov $0, %eax
+    xor %eax, %eax
     fucomi %st(1)
     seta %al
     and $255, %rax

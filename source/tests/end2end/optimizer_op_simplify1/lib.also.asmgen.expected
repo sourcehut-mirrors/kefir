@@ -21,7 +21,7 @@ dnot:
     movl -4(%rbp), %eax
     test %eax, %eax
     jnz .L__kefir_func_dnot_label5
-    mov $0, %rax
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -44,7 +44,7 @@ dnotd:
     ucomisd .L__kefir_func_dnotd_label11(%rip), %xmm0
     jp .L__kefir_func_dnotd_label9
     jne .L__kefir_func_dnotd_label10
-    mov $0, %rax
+    xor %eax, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -76,7 +76,7 @@ dnotf:
     ucomiss .L__kefir_func_dnotf_label11(%rip), %xmm0
     jp .L__kefir_func_dnotf_label9
     jne .L__kefir_func_dnotf_label10
-    mov $0, %rax
+    xor %eax, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -108,15 +108,15 @@ dnotld:
     fldt -32(%rbp)
     fldt .L__kefir_func_dnotld_label8(%rip)
     fxch %st(1)
-    mov $0, %rax
-    mov $0, %rcx
+    xor %eax, %eax
+    xor %ecx, %ecx
     fucomip %st(1)
     fstp %st(0)
     setnp %al
     cmovne %rcx, %rax
     test %al, %al
     jz .L__kefir_func_dnotld_label5
-    mov $0, %rax
+    xor %eax, %eax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -15,155 +15,155 @@ insert:
 .L__kefir_func_insert_label0:
     push %rbp
     mov %rbp, %rsp
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 64
     shr %rax, 64
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 63
     shr %rax, 63
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 62
     shr %rax, 62
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 61
     shr %rax, 61
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 60
     shr %rax, 60
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 59
     shr %rax, 59
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 58
     shr %rax, 58
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 57
     shr %rax, 57
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 56
     shr %rax, 56
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 55
     shr %rax, 55
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 54
     shr %rax, 54
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 64
     shr %rax, 63
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 63
     shr %rax, 61
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 62
     shr %rax, 58
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 61
     shr %rax, 53
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 60
     shr %rax, 44
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 59
     shr %rax, 27
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 58
     shr %rax, 57
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 57
     shr %rax, 55
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 56
     shr %rax, 52
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 55
     shr %rax, 47
     or %rax, %rcx
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
-    mov %rcx, 0
+    xor %eax, %eax
+    xor %ecx, %ecx
     shl %rax, 54
     shr %rax, 38
     or %rax, %rcx
@@ -178,112 +178,112 @@ extracts:
 .L__kefir_func_extracts_label0:
     push %rbp
     mov %rbp, %rsp
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 64
     sar %rax, 64
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 63
     sar %rax, 63
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 62
     sar %rax, 62
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 61
     sar %rax, 61
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 60
     sar %rax, 60
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 59
     sar %rax, 59
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 58
     sar %rax, 58
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 57
     sar %rax, 57
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 56
     sar %rax, 56
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 55
     sar %rax, 55
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 54
     sar %rax, 54
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 63
     sar %rax, 64
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 61
     sar %rax, 63
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 58
     sar %rax, 62
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 53
     sar %rax, 61
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 44
     sar %rax, 60
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 27
     sar %rax, 59
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 57
     sar %rax, 58
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 55
     sar %rax, 57
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 52
     sar %rax, 56
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 47
     sar %rax, 55
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 38
     sar %rax, 54
     mov %rcx, 0
@@ -297,112 +297,112 @@ extractu:
 .L__kefir_func_extractu_label0:
     push %rbp
     mov %rbp, %rsp
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 64
     shr %rax, 64
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 63
     shr %rax, 63
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 62
     shr %rax, 62
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 61
     shr %rax, 61
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 60
     shr %rax, 60
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 59
     shr %rax, 59
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 58
     shr %rax, 58
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 57
     shr %rax, 57
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 56
     shr %rax, 56
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 55
     shr %rax, 55
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 54
     shr %rax, 54
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 63
     shr %rax, 64
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 61
     shr %rax, 63
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 58
     shr %rax, 62
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 53
     shr %rax, 61
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 44
     shr %rax, 60
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 27
     shr %rax, 59
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 57
     shr %rax, 58
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 55
     shr %rax, 57
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 52
     shr %rax, 56
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 47
     shr %rax, 55
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
-    mov %rax, 0
+    xor %eax, %eax
     shl %rax, 38
     shr %rax, 54
     mov %rcx, 0
