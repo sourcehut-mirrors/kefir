@@ -1752,6 +1752,61 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
+#                                "type": "indirect_ouput",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_of"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_of"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_pf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_pf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 1
 #                            },
@@ -1787,12 +1842,13 @@ test2:
 #                        },
 #                        {
 #                            "aspect": {
-#                                "type": "indirect_ouput",
-#                                "index": 0
+#                                "type": "resource",
+#                                "resource": "flag_cf"
 #                            },
 #                            "type": {
 #                                "variant": "default",
-#                                "kind": "indirect"
+#                                "kind": "resource",
+#                                "resource": "flag_cf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
