@@ -35,8 +35,7 @@ test1:
 .L__kefir_func_test1_label4:
     xor %r11d, %r11d
 .L__kefir_func_test1_label8:
-    mov %r8, %rbx
-    add $1, %ebx
+    lea 1(%r8d), %ebx
     cmp %edx, %r11d
     jl .L__kefir_func_test1_label11
     mov %ebx, %r8d
@@ -101,8 +100,7 @@ test2:
     xor %ecx, %ecx
     mov %rcx, %r11
 .L__kefir_func_test2_label12:
-    mov %r8, %rcx
-    add $1, %ecx
+    lea 1(%r8d), %ecx
     cmp %edx, %r11d
     jl .L__kefir_func_test2_label15
     mov %ecx, %r8d
@@ -124,8 +122,7 @@ test2:
 .L__kefir_func_test2_label4:
     xor %r11d, %r11d
 .L__kefir_func_test2_label17:
-    mov %r8, %rbx
-    add $1, %ebx
+    lea 1(%r8d), %ebx
     cmp %edx, %r11d
     jl .L__kefir_func_test2_label20
     mov %ebx, %r8d

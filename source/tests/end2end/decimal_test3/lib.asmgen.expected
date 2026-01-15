@@ -865,8 +865,7 @@ test_dec32_sqrt_approx:
     pop %rbp
     ret
 .L__kefir_func_test_dec32_sqrt_approx_label8:
-    mov %rax, %rbx
-    add $1, %ebx
+    lea 1(%eax), %ebx
     movaps -64(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
     call __bid_divsd3@PLT
@@ -1142,8 +1141,7 @@ test_dec32_laplacian_apply:
     cmp $0, %r15
     jbe .L__kefir_func_test_dec32_laplacian_apply_label31
     movq (%r13), %rax
-    mov %r15, %rcx
-    sub $1, %rcx
+    lea -1(%r15), %rcx
     imul %rax, %rcx
     addq -112(%rbp), %rcx
     shl $2, %rcx
@@ -1292,8 +1290,7 @@ test_dec128_sqrt_approx:
     pop %rbp
     ret
 .L__kefir_func_test_dec128_sqrt_approx_label8:
-    mov %rax, %rbx
-    add $1, %ebx
+    lea 1(%eax), %ebx
     movaps -64(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
     call __bid_divtd3@PLT
@@ -1366,8 +1363,7 @@ test_dec64_sqrt_approx:
     pop %rbp
     ret
 .L__kefir_func_test_dec64_sqrt_approx_label8:
-    mov %rax, %rbx
-    add $1, %ebx
+    lea 1(%eax), %ebx
     movaps -64(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
     call __bid_divdd3@PLT
@@ -1613,8 +1609,7 @@ test_dec64_laplacian_apply:
     cmp $0, %r15
     jbe .L__kefir_func_test_dec64_laplacian_apply_label31
     movq (%r13), %rax
-    mov %r15, %rcx
-    sub $1, %rcx
+    lea -1(%r15), %rcx
     imul %rax, %rcx
     addq -112(%rbp), %rcx
     shl $3, %rcx
@@ -1870,8 +1865,7 @@ test_dec128_laplacian_apply:
     cmp $0, %r15
     jbe .L__kefir_func_test_dec128_laplacian_apply_label31
     movq (%r13), %rax
-    mov %r15, %rcx
-    sub $1, %rcx
+    lea -1(%r15), %rcx
     imul %rax, %rcx
     addq -112(%rbp), %rcx
     shl $4, %rcx

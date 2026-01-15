@@ -37,8 +37,7 @@ test:
     movq %rax, -48(%rbp)
     movq .L__kefir_func_test_label18(%rip), %xmm0
 .L__kefir_func_test_label4:
-    mov %rdi, %rax
-    add $-1, %eax
+    lea -1(%edi), %eax
     test %edi, %edi
     jnz .L__kefir_func_test_label8
     ldmxcsr -8(%rbp)

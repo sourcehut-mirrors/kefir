@@ -96,8 +96,7 @@ __kefir_bigint_leading_zeros:
     mov %rdx, %rax
     cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_leading_zeros_label17
-    mov %rsi, %rcx
-    sub $-7, %rcx
+    lea 7(%rsi), %rcx
     mov %rcx, %rdx
     shr $3, %rdx
     xor %ecx, %ecx
@@ -120,8 +119,7 @@ __kefir_bigint_leading_zeros:
     add %rcx, %r10
     mov %r10, %rcx
     movzxb (%rcx), %r10
-    mov %rdx, %rcx
-    sub $1, %rcx
+    lea -1(%rdx), %rcx
     shl $3, %rcx
     mov %rsi, %r11
     sub %rcx, %r11

@@ -97,8 +97,7 @@ __kefir_bigint_least_significant_nonzero:
     sub $8, %rsp
     cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label19
-    mov %rsi, %rax
-    sub $-7, %rax
+    lea 7(%rsi), %rax
     shr $3, %rax
     xor %ecx, %ecx
     mov %rcx, %rdx
@@ -115,8 +114,7 @@ __kefir_bigint_least_significant_nonzero:
     add %rdx, %rcx
     movb (%rcx), %r8b
     lea 1(%rdx), %rcx
-    mov %rax, %r9
-    sub $1, %r9
+    lea -1(%rax), %r9
     shl $3, %r9
     mov %rsi, %r10
     sub %r9, %r10

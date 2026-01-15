@@ -32,8 +32,7 @@ test1:
     movq -56(%rbp), %r12
     movq -64(%rbp), %r13
     movq -56(%rbp), %r15
-    mov %r15, %r14
-    add $1, %r14
+    lea 1(%r15), %r14
     movq %r14, -56(%rbp)
     movq -64(%rbp), %r14
     mov %r14, -96(%rbp)

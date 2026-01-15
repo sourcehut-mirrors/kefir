@@ -186,8 +186,7 @@ get2:
     ret
 .loc 0 38 16
 .L__kefir_func_get2_label36:
-    mov %rcx, %rax
-    add $1, %eax
+    lea 1(%ecx), %eax
 .loc 0 38 9
 .L__kefir_func_get2_label276:
     movsx %eax, %rax
@@ -209,8 +208,7 @@ get2:
     movq %r8, (%rax)
 .loc 0 39 16
 .L__kefir_func_get2_label297:
-    mov %rcx, %rax
-    add $1, %eax
+    lea 1(%ecx), %eax
 .loc 0 39 9
 .L__kefir_func_get2_label304:
     movsx %eax, %rax
@@ -229,8 +227,7 @@ get2:
     movq %r9, (%rax)
 .loc 0 40 16
 .L__kefir_func_get2_label323:
-    mov %rcx, %rax
-    add $1, %eax
+    lea 1(%ecx), %eax
 .loc 0 40 9
 .L__kefir_func_get2_label327:
     movsx %eax, %rax

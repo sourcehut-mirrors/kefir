@@ -767,8 +767,7 @@ __kefir_softfloat_ilogbl:
     jnz .L__kefir_runtime_func___kefir_softfloat_ilogbl_label17
     cmp $0, %rcx
     je .L__kefir_runtime_func___kefir_softfloat_ilogbl_label5
-    mov %rcx, %rdx
-    sub $16383, %edx
+    lea -16383(%ecx), %edx
     cmp $32767, %rcx
     je .L__kefir_runtime_func___kefir_softfloat_ilogbl_label11
     mov %edx, %eax

@@ -47,8 +47,7 @@ sum32:
     movq %rax, -32(%rbp)
     movd .L__kefir_func_sum32_label15(%rip), %xmm0
 .L__kefir_func_sum32_label4:
-    mov %rdi, %rbx
-    add $-1, %ebx
+    lea -1(%edi), %ebx
     test %edi, %edi
     jnz .L__kefir_func_sum32_label8
     ldmxcsr -16(%rbp)
@@ -113,8 +112,7 @@ sum64:
     movq %rax, -32(%rbp)
     movq .L__kefir_func_sum64_label15(%rip), %xmm0
 .L__kefir_func_sum64_label4:
-    mov %rdi, %rbx
-    add $-1, %ebx
+    lea -1(%edi), %ebx
     test %edi, %edi
     jnz .L__kefir_func_sum64_label8
     ldmxcsr -16(%rbp)
@@ -179,8 +177,7 @@ sum128:
     movq %rax, -32(%rbp)
     movdqu .L__kefir_func_sum128_label15(%rip), %xmm0
 .L__kefir_func_sum128_label4:
-    mov %rdi, %rbx
-    add $-1, %ebx
+    lea -1(%edi), %ebx
     test %edi, %edi
     jnz .L__kefir_func_sum128_label8
     ldmxcsr -16(%rbp)
@@ -247,8 +244,7 @@ sum128_2:
     movq %rax, -32(%rbp)
     movdqu .L__kefir_func_sum128_2_label18(%rip), %xmm0
 .L__kefir_func_sum128_2_label4:
-    mov %rdi, %rbx
-    add $-1, %ebx
+    lea -1(%edi), %ebx
     test %edi, %edi
     jnz .L__kefir_func_sum128_2_label8
     ldmxcsr -16(%rbp)

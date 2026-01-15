@@ -20,8 +20,7 @@ somefn:
     movq .L__kefir_func_somefn_label9(%rip), %xmm0
     movq .L__kefir_func_somefn_label10(%rip), %xmm1
 .L__kefir_func_somefn_label2:
-    mov %rdi, %rax
-    add $-1, %eax
+    lea -1(%edi), %eax
     test %edi, %edi
     jnz .L__kefir_func_somefn_label6
     ldmxcsr -8(%rbp)
@@ -60,8 +59,7 @@ condition1:
     mov $10, %rax
     ret
 .L__kefir_func_condition1_label5:
-    mov %rdi, %rax
-    add $10, %eax
+    lea 10(%edi), %eax
     ret
 .L__kefir_text_func_condition1_end:
 

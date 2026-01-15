@@ -20,56 +20,43 @@ get:
     mov %rax, %rsi
     rep stosq
     movw %r8w, (%rdx)
-    mov %r8, %rax
-    add $1, %eax
+    lea 1(%r8d), %eax
     movl %eax, 8(%rdx)
-    mov %r8, %rax
-    add $2, %eax
+    lea 2(%r8d), %eax
     movsx %eax, %rax
     movq %rax, 16(%rdx)
-    mov %r8, %rax
-    add $3, %eax
+    lea 3(%r8d), %eax
     movsx %eax, %rax
     cvtsi2ss %rax, %xmm0
     movd %xmm0, 24(%rdx)
-    mov %r8, %rax
-    add $4, %eax
+    lea 4(%r8d), %eax
     movsx %eax, %rax
     cvtsi2sd %rax, %xmm0
     movq %xmm0, 32(%rdx)
-    mov %r8, %rax
-    add $5, %eax
+    lea 5(%r8d), %eax
     movl %eax, 40(%rdx)
-    mov %r8, %rax
-    add $6, %eax
+    lea 6(%r8d), %eax
     movsx %eax, %rax
     movq %rax, 48(%rdx)
-    mov %r8, %rax
-    add $7, %eax
+    lea 7(%r8d), %eax
     movsx %eax, %rax
     cvtsi2ss %rax, %xmm0
     movd %xmm0, 56(%rdx)
-    mov %r8, %rax
-    add $8, %eax
+    lea 8(%r8d), %eax
     movl %eax, 112(%rdx)
-    mov %r8, %rax
-    add $9, %eax
+    lea 9(%r8d), %eax
     movsx %eax, %rax
     movq %rax, 120(%rdx)
-    mov %r8, %rax
-    add $10, %eax
+    lea 10(%r8d), %eax
     movsx %eax, %rax
     cvtsi2ss %rax, %xmm0
     movd %xmm0, 128(%rdx)
-    mov %r8, %rax
-    add $11, %eax
+    lea 11(%r8d), %eax
     movl %eax, 136(%rdx)
-    mov %r8, %rax
-    add $12, %eax
+    lea 12(%r8d), %eax
     movsx %eax, %rax
     movq %rax, 144(%rdx)
-    mov %r8, %rax
-    add $13, %eax
+    lea 13(%r8d), %eax
     movsx %eax, %rax
     cvtsi2ss %rax, %xmm0
     movd %xmm0, 152(%rdx)
@@ -94,31 +81,24 @@ get:
     cld
     mov $17, %rcx
     rep movsq
-    mov %r8, %rax
-    add $14, %eax
+    lea 14(%r8d), %eax
     movw %ax, 432(%rdx)
-    mov %r8, %rax
-    add $15, %eax
+    lea 15(%r8d), %eax
     movl %eax, 440(%rdx)
-    mov %r8, %rax
-    add $16, %eax
+    lea 16(%r8d), %eax
     movsx %eax, %rax
     movq %rax, 448(%rdx)
-    mov %r8, %rax
-    add $17, %eax
+    lea 17(%r8d), %eax
     movsx %eax, %rax
     cvtsi2ss %rax, %xmm0
     movd %xmm0, 456(%rdx)
-    mov %r8, %rax
-    add $18, %eax
+    lea 18(%r8d), %eax
     movsx %eax, %rax
     cvtsi2sd %rax, %xmm0
     movq %xmm0, 464(%rdx)
-    mov %r8, %rax
-    add $19, %eax
+    lea 19(%r8d), %eax
     movl %eax, 544(%rdx)
-    mov %r8, %rax
-    add $20, %eax
+    lea 20(%r8d), %eax
     movsx %eax, %rax
     movq %rax, 552(%rdx)
     add $21, %r8d

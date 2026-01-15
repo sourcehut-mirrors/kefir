@@ -36,8 +36,7 @@ sum:
     movq %rax, -16(%rbp)
     xor %eax, %eax
 .L__kefir_func_sum_label4:
-    mov %rdi, %rcx
-    add $-1, %ecx
+    lea -1(%edi), %ecx
     test %edi, %edi
     jnz .L__kefir_func_sum_label8
     lea (%rbp), %rsp

@@ -23,8 +23,7 @@ test1:
     xor %ecx, %ecx
     mov %rcx, %r9
 .L__kefir_func_test1_label4:
-    mov %r8, %rcx
-    add $1, %ecx
+    lea 1(%r8d), %ecx
     cmp %edx, %r9d
     je .L__kefir_func_test1_label13
     movsx %r8d, %rcx
@@ -75,8 +74,7 @@ _kefir_local_public_label_test2_outer:
     xor %ecx, %ecx
     mov %rcx, %r9
 .L__kefir_func_test2_label4:
-    mov %r8, %rcx
-    add $1, %ecx
+    lea 1(%r8d), %ecx
     cmp %edx, %r9d
     je .L__kefir_func_test2_label13
     movsx %r8d, %rcx

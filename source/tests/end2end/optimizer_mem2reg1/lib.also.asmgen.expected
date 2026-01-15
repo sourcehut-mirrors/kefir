@@ -29,8 +29,7 @@ factorial:
     mov %rcx, %rax
     ret
 .L__kefir_func_factorial_label10:
-    mov %rax, %rdx
-    add $-1, %edx
+    lea -1(%eax), %edx
     imul %eax, %ecx
     mov %edx, %eax
     jmp .L__kefir_func_factorial_label6
@@ -62,8 +61,7 @@ factorial64:
     mov %rcx, %rax
     ret
 .L__kefir_func_factorial64_label10:
-    mov %rax, %rdx
-    add $-1, %rdx
+    lea -1(%rax), %rdx
     imul %rax, %rcx
     mov %rdx, %rax
     jmp .L__kefir_func_factorial64_label6

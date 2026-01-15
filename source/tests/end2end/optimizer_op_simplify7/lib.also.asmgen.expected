@@ -46,8 +46,7 @@ int_add:
 .L__kefir_text_func_int_add_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    sub $345, %rax
+    lea -345(%rdi), %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_add_end:
@@ -75,8 +74,7 @@ int_sub:
 .L__kefir_text_func_int_sub_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    sub $11, %rax
+    lea -11(%rdi), %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_sub_end:
@@ -105,8 +103,7 @@ int_sub2:
 .L__kefir_text_func_int_sub2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    sub $51, %rax
+    lea -51(%rdi), %rax
     pop %rbp
     ret
 .L__kefir_text_func_int_sub2_end:
@@ -115,8 +112,7 @@ uint_add:
 .L__kefir_text_func_uint_add_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    sub $345, %rax
+    lea -345(%rdi), %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_add_end:
@@ -144,8 +140,7 @@ uint_sub:
 .L__kefir_text_func_uint_sub_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    sub $11, %rax
+    lea -11(%rdi), %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_sub_end:
@@ -164,8 +159,7 @@ uint_sub2:
 .L__kefir_text_func_uint_sub2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %rax
-    sub $51, %rax
+    lea -51(%rdi), %rax
     pop %rbp
     ret
 .L__kefir_text_func_uint_sub2_end:

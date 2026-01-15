@@ -313,8 +313,7 @@ predec_i32:
     movq i32@GOTPCREL(%rip), %rsi
 .L__kefir_func_predec_i32_label2:
     movl (%rsi), %eax
-    mov %rax, %rdi
-    add $-1, %edi
+    lea -1(%eax), %edi
     mov %rsi, %rdx
     mov %edi, %ecx
     lock     cmpxchgl %ecx, (%rdx)
@@ -465,8 +464,7 @@ preinc_i32:
     movq i32@GOTPCREL(%rip), %rsi
 .L__kefir_func_preinc_i32_label2:
     movl (%rsi), %eax
-    mov %rax, %rdi
-    add $1, %edi
+    lea 1(%eax), %edi
     mov %rsi, %rdx
     mov %edi, %ecx
     lock     cmpxchgl %ecx, (%rdx)

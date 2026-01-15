@@ -261,8 +261,7 @@ u128_to_u256:
 .section .text
 __kefir_bigint_cast_signed:
 .L__kefir_runtime_text_func___kefir_bigint_cast_signed_begin:
-    mov %rdx, %rax
-    sub $1, %rax
+    lea -1(%rdx), %rax
     mov %rax, %r8
     shr $3, %r8
     mov %r8, %rcx
@@ -371,8 +370,7 @@ __kefir_bigint_cast_signed:
 
 __kefir_bigint_cast_unsigned:
 .L__kefir_runtime_text_func___kefir_bigint_cast_unsigned_begin:
-    mov %rdx, %rax
-    sub $1, %rax
+    lea -1(%rdx), %rax
     shr $3, %rax
     mov %rax, %rcx
     shl $3, %rcx
@@ -383,8 +381,7 @@ __kefir_bigint_cast_unsigned:
     jbe .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label24
     cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label5
-    mov %rsi, %rcx
-    sub $1, %rcx
+    lea -1(%rsi), %rcx
     mov %rcx, %rdx
     shr $3, %rdx
     mov %rdx, %rcx

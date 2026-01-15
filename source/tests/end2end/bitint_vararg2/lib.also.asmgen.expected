@@ -52,8 +52,7 @@ test1:
     movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -56(%rbp)
     movl -64(%rbp), %eax
-    mov %eax, %ecx
-    add $-1, %ecx
+    lea -1(%eax), %ecx
     movl %ecx, -64(%rbp)
     test %eax, %eax
     jz .L__kefir_func_test1_label10

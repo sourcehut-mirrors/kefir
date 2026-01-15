@@ -42,8 +42,7 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rdi, %rax
-    sub $-5, %rax
+    lea 5(%rdi), %rax
     ret
 .L__kefir_text_func_test3_end:
 
@@ -56,8 +55,7 @@ test4:
 
 test5:
 .L__kefir_text_func_test5_begin:
-    mov %rdi, %rax
-    sub $-7, %rax
+    lea 7(%rdi), %rax
     ret
 .L__kefir_text_func_test5_end:
 
@@ -70,8 +68,7 @@ test6:
 
 test7:
 .L__kefir_text_func_test7_begin:
-    mov %rdi, %rax
-    sub $101, %rax
+    lea -101(%rdi), %rax
     ret
 .L__kefir_text_func_test7_end:
 
@@ -84,8 +81,7 @@ test8:
 
 test9:
 .L__kefir_text_func_test9_begin:
-    mov %rdi, %rax
-    sub $55, %rax
+    lea -55(%rdi), %rax
     ret
 .L__kefir_text_func_test9_end:
 

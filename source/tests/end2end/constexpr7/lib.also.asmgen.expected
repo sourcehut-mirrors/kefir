@@ -44,8 +44,7 @@ test3:
 .L__kefir_text_func_test3_begin:
     mov $1, %rax
 .L__kefir_func_test3_label2:
-    mov %rdi, %rcx
-    add $-1, %ecx
+    lea -1(%edi), %ecx
     mov %rax, %rdx
     imul %edi, %edx
     cmp $0, %edi

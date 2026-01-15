@@ -319,8 +319,7 @@ postdec_i32:
 .L__kefir_func_postdec_i32_label2:
     movl (%rsi), %eax
     mov %eax, %edi
-    mov %rdi, %rcx
-    add $-1, %ecx
+    lea -1(%edi), %ecx
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
@@ -477,8 +476,7 @@ postinc_i32:
 .L__kefir_func_postinc_i32_label2:
     movl (%rsi), %eax
     mov %eax, %edi
-    mov %rdi, %rcx
-    add $1, %ecx
+    lea 1(%edi), %ecx
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)

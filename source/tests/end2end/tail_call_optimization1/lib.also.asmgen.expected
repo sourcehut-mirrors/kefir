@@ -212,8 +212,7 @@ op_loop_begin:
     mov %edx, %edx
     add %rdx, %rcx
     movb (%rcx), %dl
-    mov %rax, %rcx
-    add $1, %ecx
+    lea 1(%eax), %ecx
     movsx %dl, %rsi
     cmp $91, %esi
     je .L__kefir_func_op_loop_begin_label5

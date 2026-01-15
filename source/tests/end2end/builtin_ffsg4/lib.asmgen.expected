@@ -18,8 +18,7 @@ get:
     bsf %eax, %ecx
     mov $-1, %eax
     cmove %eax, %ecx
-    mov %ecx, %eax
-    add $1, %eax
+    lea 1(%ecx), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

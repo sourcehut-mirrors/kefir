@@ -1674,8 +1674,7 @@ test_dec32_sqrt_approx:
     pop %rbp
     ret
 .L__kefir_func_test_dec32_sqrt_approx_label6:
-    mov %rax, %rbx
-    add $1, %ebx
+    lea 1(%eax), %ebx
     movd .L__kefir_func_test_dec32_sqrt_approx_label11(%rip), %xmm0
     movd %xmm0, -32(%rbp)
     movaps -64(%rbp), %xmm0
@@ -1725,8 +1724,7 @@ test_dec128_sqrt_approx:
     pop %rbp
     ret
 .L__kefir_func_test_dec128_sqrt_approx_label6:
-    mov %rax, %rbx
-    add $1, %ebx
+    lea 1(%eax), %ebx
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label11(%rip), %xmm0
     movdqu %xmm0, -32(%rbp)
     movaps -64(%rbp), %xmm0
@@ -1776,8 +1774,7 @@ test_dec64_sqrt_approx:
     pop %rbp
     ret
 .L__kefir_func_test_dec64_sqrt_approx_label6:
-    mov %rax, %rbx
-    add $1, %ebx
+    lea 1(%eax), %ebx
     movq .L__kefir_func_test_dec64_sqrt_approx_label11(%rip), %xmm0
     movq %xmm0, -32(%rbp)
     movaps -64(%rbp), %xmm0

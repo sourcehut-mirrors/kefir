@@ -2017,8 +2017,7 @@ __kefir_softfloat_ilogb:
     movq -24(%rbp), %rcx
     shr $52, %rax
     and $2047, %rax
-    mov %rax, %rdx
-    sub $1023, %edx
+    lea -1023(%eax), %edx
     shl $12, %rcx
     cmp $2047, %eax
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label15
@@ -2037,8 +2036,7 @@ __kefir_softfloat_ilogb:
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label9:
     mov %rcx, %rdx
     shl $1, %rdx
-    mov %rax, %rsi
-    add $-1, %esi
+    lea -1(%eax), %esi
     shr $63, %rcx
     cmp $0, %rcx
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label5

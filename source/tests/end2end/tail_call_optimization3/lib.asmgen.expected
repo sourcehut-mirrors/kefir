@@ -190,8 +190,7 @@ test9:
     sub $8, %rsp
     mov %rdi, %rbx
     call somejmp@PLT
-    mov %rbx, %rdi
-    add $1, %edi
+    lea 1(%ebx), %edi
     call test9
     lea -8(%rbp), %rsp
     pop %rbx

@@ -11,117 +11,98 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov $1, %rax
-    xor %ecx, %ecx
-    mov %rdi, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
+    xor %eax, %eax
+    mov %rdi, %rcx
+    add $1, %rcx
     mov %rsi, %rdx
-    adc %rcx, %rdx
-    mov %rdx, %rcx
-    mov %rdi, %rdx
-    xor %rax, %rdx
+    adc %rax, %rdx
     mov %rdx, %rax
-    mov %rsi, %rdx
+    mov %rdi, %rdx
     xor %rcx, %rdx
     mov %rdx, %rcx
-    mov $2, %rdx
-    xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
-    mov %r9, %rdx
+    mov %rsi, %rdx
+    xor %rax, %rdx
+    mov %rdx, %rax
+    xor %edx, %edx
+    mov %rdi, %r8
+    add $2, %r8
     mov %rsi, %r9
-    adc %r8, %r9
-    mov %r9, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
-    mov $3, %rdx
-    xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
+    adc %rdx, %r9
     mov %r9, %rdx
-    mov %rsi, %r9
-    adc %r8, %r9
-    mov %r9, %r8
-    xor %rdx, %rax
     xor %r8, %rcx
-    mov $4, %rdx
-    xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
+    xor %rdx, %rax
+    xor %edx, %edx
+    mov %rdi, %r8
+    add $3, %r8
+    mov %rsi, %r9
+    adc %rdx, %r9
     mov %r9, %rdx
-    mov %rsi, %r9
-    adc %r8, %r9
-    mov %r9, %r8
-    xor %rdx, %rax
     xor %r8, %rcx
-    mov $5, %rdx
-    xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
+    xor %rdx, %rax
+    xor %edx, %edx
+    mov %rdi, %r8
+    add $4, %r8
+    mov %rsi, %r9
+    adc %rdx, %r9
     mov %r9, %rdx
-    mov %rsi, %r9
-    adc %r8, %r9
-    mov %r9, %r8
-    xor %rdx, %rax
     xor %r8, %rcx
-    mov $6, %rdx
-    xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
+    xor %rdx, %rax
+    xor %edx, %edx
+    mov %rdi, %r8
+    add $5, %r8
+    mov %rsi, %r9
+    adc %rdx, %r9
     mov %r9, %rdx
-    mov %rsi, %r9
-    adc %r8, %r9
-    mov %r9, %r8
-    xor %rdx, %rax
     xor %r8, %rcx
-    mov $7, %rdx
-    xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
+    xor %rdx, %rax
+    xor %edx, %edx
+    mov %rdi, %r8
+    add $6, %r8
+    mov %rsi, %r9
+    adc %rdx, %r9
     mov %r9, %rdx
-    mov %rsi, %r9
-    adc %r8, %r9
-    mov %r9, %r8
-    xor %rdx, %rax
     xor %r8, %rcx
-    mov $8, %rdx
-    xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
+    xor %rdx, %rax
+    xor %edx, %edx
+    mov %rdi, %r8
+    add $7, %r8
+    mov %rsi, %r9
+    adc %rdx, %r9
     mov %r9, %rdx
-    mov %rsi, %r9
-    adc %r8, %r9
-    mov %r9, %r8
-    xor %rdx, %rax
     xor %r8, %rcx
-    mov $9, %rdx
-    xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
+    xor %rdx, %rax
+    xor %edx, %edx
+    mov %rdi, %r8
+    add $8, %r8
+    mov %rsi, %r9
+    adc %rdx, %r9
     mov %r9, %rdx
-    mov %rsi, %r9
-    adc %r8, %r9
-    mov %r9, %r8
-    xor %rdx, %rax
     xor %r8, %rcx
-    mov $10, %rdx
-    xor %r8d, %r8d
-    mov %rdi, %r9
-    add %rdx, %r9
+    xor %rdx, %rax
+    xor %edx, %edx
+    mov %rdi, %r8
+    add $9, %r8
+    mov %rsi, %r9
+    adc %rdx, %r9
     mov %r9, %rdx
-    mov %rsi, %r9
-    adc %r8, %r9
-    mov %r9, %r8
-    xor %rdx, %rax
     xor %r8, %rcx
-    mov $11, %rdx
-    xor %r8d, %r8d
-    add %rdx, %rdi
-    adc %r8, %rsi
+    xor %rdx, %rax
+    xor %edx, %edx
+    mov %rdi, %r8
+    add $10, %r8
+    mov %rsi, %r9
+    adc %rdx, %r9
+    mov %r9, %rdx
+    xor %r8, %rcx
+    mov %rax, %r8
+    xor %rdx, %r8
+    mov %r8, %rdx
+    xor %eax, %eax
+    add $11, %rdi
+    adc %rax, %rsi
+    mov %rcx, %rax
     xor %rdi, %rax
-    xor %rsi, %rcx
-    mov %rcx, %rdx
+    xor %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

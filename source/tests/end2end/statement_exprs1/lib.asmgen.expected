@@ -10,8 +10,7 @@
 .L__kefir_text_section_begin:
 eval1:
 .L__kefir_text_func_eval1_begin:
-    mov %rdi, %rax
-    add $1, %eax
+    lea 1(%edi), %eax
     add %edi, %eax
     ret
 .L__kefir_text_func_eval1_end:

@@ -87,8 +87,7 @@ testx:
     lea -208(%rbp), %rax
     movq %rax, -16(%rbp)
 .L__kefir_func_testx_label4:
-    mov %rdi, %rax
-    add $-1, %eax
+    lea -1(%edi), %eax
     test %edi, %edi
     jnz .L__kefir_func_testx_label11
     movl -32(%rbp), %eax
