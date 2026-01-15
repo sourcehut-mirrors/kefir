@@ -74,14 +74,12 @@ set_a:
     movl (%rax), %eax
     lea value(%rip), %rdx
     mov $1, %rsi
-    xor %ecx, %ecx
     mov $32, %rcx
     shl %cl, %rsi
     xor %r8d, %r8d
     test $64, %cl
     cmove %rsi, %r8
     mov $1, %rcx
-    xor %esi, %esi
     sub %rcx, %r8
     and %r8, %rdi
     xor %ecx, %ecx

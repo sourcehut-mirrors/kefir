@@ -192,14 +192,12 @@ set_b:
     movq 16(%rax), %rax
     lea value(%rip), %rdx
     mov $1, %rsi
-    xor %ecx, %ecx
     mov $60, %rcx
     shl %cl, %rsi
     xor %r8d, %r8d
     test $64, %cl
     cmove %rsi, %r8
     mov $1, %rcx
-    xor %esi, %esi
     sub %rcx, %r8
     and %r8, %rdi
     xor %ecx, %ecx
@@ -285,14 +283,12 @@ set_d:
     movl 41(%rcx), %edx
     lea value(%rip), %rsi
     mov $1, %r8
-    xor %ecx, %ecx
     mov $35, %rcx
     shl %cl, %r8
     xor %r9d, %r9d
     test $64, %cl
     cmove %r8, %r9
     mov $1, %rcx
-    xor %r8d, %r8d
     sub %rcx, %r9
     and %r9, %rdi
     mov $4, %rcx

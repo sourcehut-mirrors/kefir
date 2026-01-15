@@ -276,9 +276,9 @@ cf32_to_fi64:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movaps %xmm0, %xmm1
-    shufps $1, %xmm1, %xmm1
-    cvtss2sd %xmm1, %xmm0
+    movaps %xmm0, %xmm0
+    shufps $1, %xmm0, %xmm0
+    cvtss2sd %xmm0, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

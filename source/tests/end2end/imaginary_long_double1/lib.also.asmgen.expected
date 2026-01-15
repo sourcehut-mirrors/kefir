@@ -296,9 +296,9 @@ cf32_to_fi80:
     sub $32, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    movaps %xmm0, %xmm1
-    shufps $1, %xmm1, %xmm1
-    movq %xmm1, -24(%rbp)
+    movaps %xmm0, %xmm0
+    shufps $1, %xmm0, %xmm0
+    movq %xmm0, -24(%rbp)
     flds -24(%rbp)
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)

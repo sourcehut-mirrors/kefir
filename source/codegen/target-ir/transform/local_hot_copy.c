@@ -125,6 +125,9 @@ static kefir_result_t insert_copy(struct kefir_mem *mem, struct kefir_codegen_ta
 
         REQUIRE_OK(kefir_codegen_target_ir_code_replace_value_in(mem, code, use_instr_ref, copy_value_ref, value_ref));
     }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     return KEFIR_OK;
 }
 

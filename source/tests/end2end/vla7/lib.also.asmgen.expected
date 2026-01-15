@@ -118,7 +118,6 @@ test2:
     and %rdx, %rsp
     mov %rsp, %rdx
     movq %rdx, (%rcx)
-    lea -64(%rbp), %rcx
     cmp $0, %rax
     jz .L__kefir_func_test2_label7
     mov %rax, %rsp
