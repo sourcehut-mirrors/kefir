@@ -3750,6 +3750,76 @@ test4:
 #                            "metadata": {
 #                                "value_ref": 7
 #                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_of"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_of"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_pf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_pf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_cf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_cf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_zf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_zf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 0
+#                            }
 #                        }
 #                    ],
 #                    "metadata": {

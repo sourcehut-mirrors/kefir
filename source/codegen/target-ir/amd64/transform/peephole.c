@@ -88,6 +88,27 @@ static kefir_result_t peephole_lea(struct kefir_mem *mem, struct kefir_codegen_t
     return KEFIR_OK;
 }
 
+static kefir_result_t add_produced_resource_outputs(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
+    const struct kefir_codegen_target_ir_instruction *instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
+
+    kefir_uint64_t produced_resources;
+    REQUIRE_OK(code->klass->instruction_resources(instr->operation.opcode, &produced_resources, NULL, code->klass->payload));
+    for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
+        if ((produced_resources >> i) & 1) {
+            REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, (kefir_codegen_target_ir_value_ref_t) {
+                .instr_ref = instr_ref,
+                .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(i)
+            }, &(struct kefir_codegen_target_ir_value_type) {
+                .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE,
+                .parameters.resource_id = i,
+                .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+            }));
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t peephole_add(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     struct kefir_codegen_target_ir_tie_classification classification;
     REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instr->instr_ref, &classification));
@@ -163,6 +184,7 @@ static kefir_result_t peephole_add(struct kefir_mem *mem, struct kefir_codegen_t
             .instr_ref = replacement_ref,
             .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
         }, &replacement_type));
+        REQUIRE_OK(add_produced_resource_outputs(mem, code, replacement_ref));
         REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, replacement_ref, instr_ref));
         REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
 
@@ -263,6 +285,7 @@ static kefir_result_t peephole_imul(struct kefir_mem *mem, struct kefir_codegen_
                 &output_value_type));
             struct kefir_codegen_target_ir_value_type zero_value_type = *output_value_type;
             REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, zero_ref, &zero_value_type));
+            REQUIRE_OK(add_produced_resource_outputs(mem, code, zero_ref.instr_ref));
 
             REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, zero_ref,
                 classification.operands[0].output));
@@ -301,6 +324,8 @@ static kefir_result_t peephole_imul(struct kefir_mem *mem, struct kefir_codegen_
                         &output_value_type));
                     struct kefir_codegen_target_ir_value_type shift_value_type = *output_value_type;
                     REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, shift_ref, &shift_value_type));
+
+                    REQUIRE_OK(add_produced_resource_outputs(mem, code, shift_ref.instr_ref));
 
                     REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, shift_ref,
                         classification.operands[0].output));
@@ -731,6 +756,7 @@ static kefir_result_t peephole_setcc(struct kefir_mem *mem, struct kefir_codegen
         &(struct kefir_codegen_target_ir_operation) {
             .opcode = code->klass->placeholder_opcode
         }, NULL, &placeholder_value_ref.instr_ref));
+    REQUIRE_OK(add_produced_resource_outputs(mem, code, placeholder_value_ref.instr_ref));
     REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, placeholder_value_ref, &placeholder_input_value_type));
 
     oper.parameters[classification.operands[0].read_index].direct.value_ref = placeholder_value_ref;
@@ -1616,6 +1642,7 @@ static kefir_result_t peephole_div(struct kefir_mem *mem, struct kefir_codegen_t
                     ? output_value_type->variant
                     : KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT
             }));
+            REQUIRE_OK(add_produced_resource_outputs(mem, code, shr_value_ref.instr_ref));
             REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, shr_value_ref, output_value_ref));
             REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
             *replaced = true;
@@ -1719,36 +1746,7 @@ static kefir_result_t peephole_idiv(struct kefir_mem *mem, struct kefir_codegen_
                 .parameters[1] = oper.parameters[classification.operands[1].read_index]
             }, &metadata, &test_instr_ref));
 
-            kefir_codegen_target_ir_value_ref_t test_flag_refs[] = {
-                {
-                    .instr_ref = test_instr_ref,
-                    .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF)
-                },
-                {
-                    .instr_ref = test_instr_ref,
-                    .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF)
-                },
-                {
-                    .instr_ref = test_instr_ref,
-                    .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF)
-                },
-                {
-                    .instr_ref = test_instr_ref,
-                    .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF)
-                },
-                {
-                    .instr_ref = test_instr_ref,
-                    .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF)
-                }
-            };
-            for (kefir_size_t i = 0; i < sizeof(test_flag_refs) / sizeof(test_flag_refs[0]); i++) {
-                REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, test_flag_refs[i], &(struct kefir_codegen_target_ir_value_type) {
-                    .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE,
-                    .metadata.value_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE,
-                    .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT,
-                    .parameters.resource_id = KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_INDEX(test_flag_refs[i].aspect)
-                }));
-            }
+            REQUIRE_OK(add_produced_resource_outputs(mem, code, test_instr_ref));
 
             kefir_codegen_target_ir_value_ref_t lea_value_ref = {
                 .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
@@ -1773,6 +1771,7 @@ static kefir_result_t peephole_idiv(struct kefir_mem *mem, struct kefir_codegen_
                 .metadata.value_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE,
                 .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
             }));
+            REQUIRE_OK(add_produced_resource_outputs(mem, code, lea_value_ref.instr_ref));
 
             kefir_codegen_target_ir_value_ref_t cmovns_value_ref = {
                 .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
@@ -1797,7 +1796,10 @@ static kefir_result_t peephole_idiv(struct kefir_mem *mem, struct kefir_codegen_
                 .parameters[2] = {
                     .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
                     .direct = {
-                        .value_ref = test_flag_refs[0],
+                        .value_ref = {
+                            .instr_ref = test_instr_ref,
+                            .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF)
+                        },
                         .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
                     }
                 }
@@ -1807,6 +1809,7 @@ static kefir_result_t peephole_idiv(struct kefir_mem *mem, struct kefir_codegen_
                 .metadata.value_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_VALUE_REF_NONE,
                 .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
             }));
+            REQUIRE_OK(add_produced_resource_outputs(mem, code, cmovns_value_ref.instr_ref));
 
             kefir_codegen_target_ir_value_ref_t sar_value_ref = {
                 .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
@@ -1836,6 +1839,7 @@ static kefir_result_t peephole_idiv(struct kefir_mem *mem, struct kefir_codegen_
                     : output_value_type_copy.metadata.value_ref,
                 .variant = variant
             }));
+            REQUIRE_OK(add_produced_resource_outputs(mem, code, sar_value_ref.instr_ref));
 
             kefir_codegen_target_ir_value_ref_t result_ref = sar_value_ref;
             if (neg) {
@@ -1858,6 +1862,7 @@ static kefir_result_t peephole_idiv(struct kefir_mem *mem, struct kefir_codegen_
                     .metadata.value_ref = output_value_type_copy.metadata.value_ref,
                     .variant = variant
                 }));
+                REQUIRE_OK(add_produced_resource_outputs(mem, code, neg_value_ref.instr_ref));
                 result_ref = neg_value_ref;
             }
 

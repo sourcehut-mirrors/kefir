@@ -977,9 +977,13 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                 output_vregs[output_index++] = output_vreg;
             }
         }
-        if (classification.consumed_resources) {
+
+        kefir_uint64_t produced_resources = 0, consumed_resources = 0;
+        REQUIRE_OK(state->code->klass->instruction_resources(operation.opcode, &produced_resources, &consumed_resources, state->code->klass->payload));
+
+        if (consumed_resources) {
             for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
-                if ((classification.consumed_resources >> i) & 1) {
+                if ((consumed_resources >> i) & 1) {
                     REQUIRE(input_index < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Input parameter index is out of target IR instruction bounds"));;
                     REQUIRE_OK(resolve_resource(state, current_block_state, i, &operation.parameters[input_index].direct.value_ref));
                     operation.parameters[input_index].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
@@ -1014,9 +1018,9 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                 }));
             }
         }
-        if (classification.produced_resources) {
+        if (produced_resources) {
             for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
-                if ((classification.produced_resources >> i) & 1) {
+                if ((produced_resources >> i) & 1) {
                     struct kefir_codegen_target_ir_value_ref value_ref = {
                         .instr_ref = instr_ref,
                         .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(i)

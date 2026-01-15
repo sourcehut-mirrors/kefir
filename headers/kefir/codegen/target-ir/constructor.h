@@ -55,8 +55,6 @@ typedef struct kefir_codegen_target_ir_asmcmp_instruction_classification {
         };
         kefir_codegen_target_ir_native_id_t attribute;
     };
-    kefir_uint64_t consumed_resources;
-    kefir_uint64_t produced_resources;
 } kefir_codegen_target_ir_asmcmp_instruction_classification_t;
 
 typedef struct kefir_codegen_target_ir_code_constructor_class {
