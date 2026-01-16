@@ -12,59 +12,48 @@ sumall:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    push %r13
-    sub $24, %rsp
-    movq %rdi, -40(%rbp)
-    movq %xmm0, -32(%rbp)
-    movq -40(%rbp), %rax
-    movq -40(%rbp), %rcx
-    movq -40(%rbp), %rdx
-    movq -40(%rbp), %rsi
-    movq -40(%rbp), %rdi
-    movq -40(%rbp), %r8
-    movq -40(%rbp), %r9
-    movq -40(%rbp), %r10
-    movq -40(%rbp), %r11
-    movq -40(%rbp), %rbx
+    sub $16, %rsp
+    movq %rdi, -32(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -32(%rbp), %rax
+    movq -32(%rbp), %rcx
+    movq -32(%rbp), %rdx
+    movq -32(%rbp), %rsi
+    movq -32(%rbp), %rdi
+    movq -32(%rbp), %r8
+    movq -32(%rbp), %r9
+    movq -32(%rbp), %r10
+    movq -32(%rbp), %r11
+    movq -32(%rbp), %rbx
     movq .L__kefir_func_sumall_label4(%rip), %xmm3
-    mov $0, %r13d
-    movsx %r13d, %r12
+    xor %r12d, %r12d
     shl $3, %r12
     add %r12, %rax
-    mov $1, %r13d
-    movsx %r13d, %r12
+    mov $1, %r12
     shl $3, %r12
     add %r12, %rcx
-    mov $2, %r13d
-    movsx %r13d, %r12
+    mov $2, %r12
     shl $3, %r12
     add %r12, %rdx
-    mov $3, %r13d
-    movsx %r13d, %r12
+    mov $3, %r12
     shl $3, %r12
     add %r12, %rsi
-    mov $4, %r13d
-    movsx %r13d, %r12
+    mov $4, %r12
     shl $3, %r12
     add %r12, %rdi
-    mov $5, %r13d
-    movsx %r13d, %r12
+    mov $5, %r12
     shl $3, %r12
     add %r12, %r8
-    mov $6, %r13d
-    movsx %r13d, %r12
+    mov $6, %r12
     shl $3, %r12
     add %r12, %r9
-    mov $7, %r13d
-    movsx %r13d, %r12
+    mov $7, %r12
     shl $3, %r12
     add %r12, %r10
-    mov $8, %r13d
-    movsx %r13d, %r12
+    mov $8, %r12
     shl $3, %r12
     add %r12, %r11
-    mov $9, %r13d
-    movsx %r13d, %r12
+    mov $9, %r12
     shl $3, %r12
     add %r12, %rbx
     movaps %xmm3, %xmm0
@@ -89,11 +78,10 @@ addsd %xmm13, %xmm0
 addsd (%rax), %xmm0
 addsd (%rcx), %xmm0
 
-    movq %xmm0, -32(%rbp)
-    movq -32(%rbp), %rax
+    movq %xmm0, -24(%rbp)
+    movq -24(%rbp), %rax
     movq %rax, %xmm0
-    lea -24(%rbp), %rsp
-    pop %r13
+    lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
     pop %rbp

@@ -133,30 +133,20 @@ __kefir_bigint_is_zero:
     movq %rsi, -56(%rbp)
     movq %rdi, -48(%rbp)
     movq -56(%rbp), %rax
-    mov $0, %edx
-    movsx %edx, %rcx
+    xor %ecx, %ecx
     cmp %rcx, %rax
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label18
     movq -56(%rbp), %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    imul %rcx, %rdx
-    add %rdx, %rax
-    mov $1, %edx
-    movsx %edx, %rcx
-    sub %rcx, %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    mov %rdx, %rsi
-    imul %rcx, %rsi
-    mov %rsi, %rcx
+    mov $1, %rcx
+    shl $3, %rcx
+    add %rcx, %rax
+    sub $1, %rax
+    mov $1, %rcx
+    shl $3, %rcx
     xor %edx, %edx
     div %rcx
     movq %rax, -40(%rbp)
-    mov $0, %ecx
-    movsx %ecx, %rax
+    xor %eax, %eax
     movq %rax, -32(%rbp)
 .L__kefir_runtime_func___kefir_bigint_is_zero_label4:
     movq -32(%rbp), %rax
@@ -175,9 +165,7 @@ __kefir_bigint_is_zero:
     movb %cl, -24(%rbp)
     movq -32(%rbp), %rax
     movq -40(%rbp), %rcx
-    mov $1, %esi
-    movsx %esi, %rdx
-    add %rdx, %rax
+    add $1, %rax
     cmp %rcx, %rax
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label16
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
@@ -195,40 +183,26 @@ __kefir_bigint_is_zero:
     ret
 .L__kefir_runtime_func___kefir_bigint_is_zero_label16:
     movq -56(%rbp), %rax
-    mov $1, %edx
-    movsx %edx, %rcx
-    sub %rcx, %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    mov %rdx, %rsi
-    imul %rcx, %rsi
-    mov %rsi, %rcx
+    sub $1, %rax
+    mov $1, %rcx
+    shl $3, %rcx
     xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
     movq -56(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov $1, %esi
-    movsx %esi, %rdx
-    sub %rdx, %rax
-    mov $8, %esi
-    movsx %esi, %rdx
-    mov $1, %rsi
-    imul %rdx, %rsi
-    imul %rsi, %rcx
+    sub $1, %rax
+    mov $1, %rdx
+    shl $3, %rdx
+    imul %rdx, %rcx
     sub %rcx, %rax
     movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
-    mov $1, %edx
-    movsx %edx, %rcx
-    add %rcx, %rax
+    add $1, %rax
     mov $1, %rdx
     mov %rax, %rcx
     shl %cl, %rdx
-    mov $1, %ecx
-    movsx %ecx, %rax
-    sub %rax, %rdx
+    sub $1, %rdx
     movl %edx, -20(%rbp)
     movl -20(%rbp), %eax
     movb -24(%rbp), %cl

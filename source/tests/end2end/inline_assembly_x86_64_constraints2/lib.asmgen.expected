@@ -15,7 +15,7 @@ test1:
     push %r13
     push %r14
     push %r15
-    sub $56, %rsp
+    sub $40, %rsp
     stmxcsr -48(%rbp)
     movq %xmm0, -64(%rbp)
     movq %rdi, -56(%rbp)
@@ -35,20 +35,13 @@ test1:
     lea 1(%r15), %r14
     movq %r14, -56(%rbp)
     movq -64(%rbp), %r14
-    mov %r14, -96(%rbp)
+    mov %r14, -80(%rbp)
     movq .L__kefir_func_test1_label4(%rip), %xmm1
     movq %r14, %xmm0
     addsd %xmm1, %xmm0
     movq %xmm0, -64(%rbp)
-    movq %rax, -88(%rbp)
-    mov $1, %eax
-    movsx %eax, %r14
-    movq -88(%rbp), %rax
-    add %r14, %rax
-    movq %rax, -80(%rbp)
-    mov $1, %eax
-    movsx %eax, %r14
-    movq -80(%rbp), %rax
+    add $1, %rax
+    mov $1, %r14
     cvtsi2sd %r14, %xmm1
     movq %rcx, %xmm0
     addsd %xmm1, %xmm0
@@ -84,7 +77,7 @@ test1:
     movaps %xmm8, %xmm1
     movaps %xmm9, %xmm2
     movq %r15, %xmm4
-    movq -96(%rbp), %xmm5
+    movq -80(%rbp), %xmm5
 # %rsi, %rdi, %r8, %r9, %r10, %r12, %r14, %xmm1, %xmm2, %xmm4, %xmm5
     ldmxcsr -48(%rbp)
     lea -40(%rbp), %rsp

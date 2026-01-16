@@ -225,25 +225,16 @@ __kefir_bigint_zero:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    imul %rcx, %rdx
-    add %rdx, %rax
-    mov $1, %edx
-    movsx %edx, %rcx
-    sub %rcx, %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    mov %rdx, %rsi
-    imul %rcx, %rsi
-    mov %rsi, %rcx
+    mov $1, %rcx
+    shl $3, %rcx
+    add %rcx, %rax
+    sub $1, %rax
+    mov $1, %rcx
+    shl $3, %rcx
     xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
-    mov $0, %ecx
-    movsx %ecx, %rax
+    xor %eax, %eax
     movq %rax, -8(%rbp)
 .L__kefir_runtime_func___kefir_bigint_zero_label2:
     movq -8(%rbp), %rax
@@ -279,8 +270,7 @@ __kefir_bigint_unsigned_multiply:
     movq -56(%rbp), %rsi
     call __kefir_bigint_zero
     movq -56(%rbp), %rax
-    mov $0, %edx
-    movsx %edx, %rcx
+    xor %ecx, %ecx
     xor %edx, %edx
     cmp %rcx, %rax
     sete %dl
@@ -290,69 +280,45 @@ __kefir_bigint_unsigned_multiply:
     test %edx, %edx
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label33
     movq -88(%rbp), %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    imul %rcx, %rdx
-    add %rdx, %rax
-    mov $1, %edx
-    movsx %edx, %rcx
-    sub %rcx, %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    mov %rdx, %rsi
-    imul %rcx, %rsi
-    mov %rsi, %rcx
+    mov $1, %rcx
+    shl $3, %rcx
+    add %rcx, %rax
+    sub $1, %rax
+    mov $1, %rcx
+    shl $3, %rcx
     xor %edx, %edx
     div %rcx
     movq %rax, -48(%rbp)
     movq -56(%rbp), %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    imul %rcx, %rdx
-    add %rdx, %rax
-    mov $1, %edx
-    movsx %edx, %rcx
-    sub %rcx, %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    mov %rdx, %rsi
-    imul %rcx, %rsi
-    mov %rsi, %rcx
+    mov $1, %rcx
+    shl $3, %rcx
+    add %rcx, %rax
+    sub $1, %rax
+    mov $1, %rcx
+    shl $3, %rcx
     xor %edx, %edx
     div %rcx
     movq %rax, -80(%rbp)
     movq -88(%rbp), %rax
     movq -48(%rbp), %rcx
-    mov $1, %esi
-    movsx %esi, %rdx
-    sub %rdx, %rcx
-    mov $8, %esi
-    movsx %esi, %rdx
-    mov $1, %rsi
-    imul %rdx, %rsi
-    imul %rsi, %rcx
+    sub $1, %rcx
+    mov $1, %rdx
+    shl $3, %rdx
+    imul %rdx, %rcx
     sub %rcx, %rax
     movq %rax, -64(%rbp)
     movq -64(%rbp), %rcx
     mov $1, %rax
     shl %cl, %rax
-    mov $1, %edx
-    movsx %edx, %rcx
-    sub %rcx, %rax
+    sub $1, %rax
     movb %al, -108(%rbp)
-    mov $8, %ecx
-    movsx %ecx, %rax
-    mov $1, %rcx
-    imul %rax, %rcx
     mov $1, %rax
-    shl %cl, %rax
-    movl %eax, -112(%rbp)
-    mov $0, %ecx
-    movsx %ecx, %rax
+    shl $3, %rax
+    mov $1, %rdx
+    mov %rax, %rcx
+    shl %cl, %rdx
+    movl %edx, -112(%rbp)
+    xor %eax, %eax
     movq %rax, -40(%rbp)
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label6:
     movq -40(%rbp), %rax
@@ -372,14 +338,11 @@ __kefir_bigint_unsigned_multiply:
     movb %cl, -107(%rbp)
     movq -40(%rbp), %rax
     movq -48(%rbp), %rcx
-    mov $1, %esi
-    movsx %esi, %rdx
-    add %rdx, %rax
+    add $1, %rax
     cmp %rcx, %rax
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label31
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label12:
-    mov $0, %ecx
-    movsx %ecx, %rax
+    xor %eax, %eax
     movq %rax, -16(%rbp)
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label13:
     movq -16(%rbp), %rax
@@ -429,9 +392,7 @@ __kefir_bigint_unsigned_multiply:
     movb %cl, -106(%rbp)
     movq -16(%rbp), %rax
     movq -48(%rbp), %rcx
-    mov $1, %esi
-    movsx %esi, %rdx
-    add %rdx, %rax
+    add $1, %rax
     cmp %rcx, %rax
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label27
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label25:
@@ -493,8 +454,7 @@ __kefir_bigint_unsigned_multiply:
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label35:
     movq -88(%rbp), %rax
-    mov $0, %edx
-    movsx %edx, %rcx
+    xor %ecx, %ecx
     xor %edx, %edx
     cmp %rcx, %rax
     sete %dl

@@ -149,10 +149,9 @@ set_a:
     test $64, %cl
     cmovne %r9, %r10
     cmove %r9, %r11
-    mov $1, %rcx
-    xor %r9d, %r9d
-    sub %rcx, %r11
-    sbb %r9, %r10
+    xor %ecx, %ecx
+    sub $1, %r11
+    sbb %rcx, %r10
     and %r11, %rdi
     and %r10, %rsi
     xor %ecx, %ecx
@@ -197,8 +196,7 @@ set_b:
     xor %r8d, %r8d
     test $64, %cl
     cmove %rsi, %r8
-    mov $1, %rcx
-    sub %rcx, %r8
+    sub $1, %r8
     and %r8, %rdi
     xor %ecx, %ecx
     shl %cl, %rdi
@@ -238,10 +236,9 @@ set_c:
     test $64, %cl
     cmovne %r9, %r10
     cmove %r9, %r11
-    mov $1, %rcx
-    xor %r9d, %r9d
-    sub %rcx, %r11
-    sbb %r9, %r10
+    xor %ecx, %ecx
+    sub $1, %r11
+    sbb %rcx, %r10
     and %r11, %rdi
     and %r10, %rsi
     xor %ecx, %ecx
@@ -288,8 +285,7 @@ set_d:
     xor %r9d, %r9d
     test $64, %cl
     cmove %r8, %r9
-    mov $1, %rcx
-    sub %rcx, %r9
+    sub $1, %r9
     and %r9, %rdi
     mov $4, %rcx
     shl %cl, %rdi

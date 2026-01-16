@@ -743,7 +743,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 112,
+#                    "instr_ref": 107,
 #                    "opcode": "or",
 #                    "parameters": [
 #                        {
@@ -875,7 +875,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 112,
+#                            "instr_ref": 107,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"

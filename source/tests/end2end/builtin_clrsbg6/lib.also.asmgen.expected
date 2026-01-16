@@ -20,8 +20,8 @@ test1:
 .L__kefir_text_func_test1_begin:
     shl $47, %rdi
     sar $47, %rdi
-    mov %edi, %eax
-    add %eax, %eax
+    mov %rdi, %rax
+    add %edi, %eax
     sar $31, %edi
     xor %edi, %eax
     or $1, %eax
@@ -33,8 +33,8 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %edi, %eax
-    add %eax, %eax
+    mov %rdi, %rax
+    add %edi, %eax
     sar $31, %edi
     xor %edi, %eax
     or $1, %eax

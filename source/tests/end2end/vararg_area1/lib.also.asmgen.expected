@@ -59,10 +59,9 @@ process:
     movq %rax, (%rdx)
     movl -72(%rbp), %eax
     movsx %eax, %rax
-    mov $4, %rcx
-    imul %rax, %rcx
-    movq %rcx, -24(%rbp)
-    sub %rcx, %rsp
+    shl $2, %rax
+    movq %rax, -24(%rbp)
+    sub %rax, %rsp
     mov $16, %rax
     cmp $4, %rax
     mov $4, %rcx

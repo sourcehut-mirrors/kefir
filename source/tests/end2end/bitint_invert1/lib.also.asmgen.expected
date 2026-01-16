@@ -172,25 +172,16 @@ __kefir_bigint_invert:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    imul %rcx, %rdx
-    add %rdx, %rax
-    mov $1, %edx
-    movsx %edx, %rcx
-    sub %rcx, %rax
-    mov $8, %edx
-    movsx %edx, %rcx
-    mov $1, %rdx
-    mov %rdx, %rsi
-    imul %rcx, %rsi
-    mov %rsi, %rcx
+    mov $1, %rcx
+    shl $3, %rcx
+    add %rcx, %rax
+    sub $1, %rax
+    mov $1, %rcx
+    shl $3, %rcx
     xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
-    mov $0, %ecx
-    movsx %ecx, %rax
+    xor %eax, %eax
     movq %rax, -8(%rbp)
 .L__kefir_runtime_func___kefir_bigint_invert_label2:
     movq -8(%rbp), %rax

@@ -25,10 +25,9 @@ test:
     movq %rax, (%rsi)
     movl -32(%rbp), %eax
     movsx %eax, %rax
-    mov $4, %rdx
-    imul %rax, %rdx
-    movq %rdx, -16(%rbp)
-    sub %rdx, %rsp
+    shl $2, %rax
+    movq %rax, -16(%rbp)
+    sub %rax, %rsp
     mov $16, %rax
     cmp $4, %rax
     mov $4, %rdx
@@ -81,10 +80,9 @@ test2:
     movq %rax, (%rsi)
     movl -48(%rbp), %eax
     movsx %eax, %rax
-    mov $4, %rdx
-    imul %rax, %rdx
-    movq %rdx, -32(%rbp)
-    sub %rdx, %rsp
+    shl $2, %rax
+    movq %rax, -32(%rbp)
+    sub %rax, %rsp
     mov $16, %rax
     cmp $4, %rax
     mov $4, %rdx
@@ -105,11 +103,10 @@ test2:
     movl -48(%rbp), %edx
     lea -24(%rbp), %rcx
     movsx %edx, %rdx
-    mov $4, %rsi
-    imul %rdx, %rsi
-    movq %rsi, 8(%rcx)
+    shl $2, %rdx
+    movq %rdx, 8(%rcx)
     lea -24(%rbp), %rcx
-    sub %rsi, %rsp
+    sub %rdx, %rsp
     mov $16, %rdx
     cmp $4, %rdx
     mov $4, %rsi

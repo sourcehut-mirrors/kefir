@@ -79,8 +79,7 @@ set_a:
     xor %r8d, %r8d
     test $64, %cl
     cmove %rsi, %r8
-    mov $1, %rcx
-    sub %rcx, %r8
+    sub $1, %r8
     and %r8, %rdi
     xor %ecx, %ecx
     shl %cl, %rdi
@@ -120,10 +119,9 @@ set_b:
     test $64, %cl
     cmovne %r9, %r10
     cmove %r9, %r11
-    mov $1, %rcx
-    xor %r9d, %r9d
-    sub %rcx, %r11
-    sbb %r9, %r10
+    xor %ecx, %ecx
+    sub $1, %r11
+    sbb %rcx, %r10
     and %r11, %rdi
     and %r10, %rsi
     mov $3, %rcx
