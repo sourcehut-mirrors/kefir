@@ -64,6 +64,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE)/codegen/target-ir/amd64/*.c \
 	$(SOURCE)/codegen/target-ir/transform/*.c \
 	$(SOURCE)/codegen/target-ir/amd64/transform/*.c \
+	$(SOURCE)/codegen/target-ir/amd64/transform/peephole/*.c \
 	$(SOURCE)/compiler/*.c \
 	$(SOURCE)/ir/*.c \
 	$(SOURCE)/lexer/*.c \

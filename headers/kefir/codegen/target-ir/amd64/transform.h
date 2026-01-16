@@ -26,4 +26,38 @@
 kefir_result_t kefir_codegen_target_ir_amd64_transform_peephole(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 kefir_result_t kefir_codegen_target_ir_amd64_transform_dead_code_elimination(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 
+#ifdef KEFIR_CODEGEN_TARGET_IR_AMD64_PEEPHOLE_INTERNAL
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_lea(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_add(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_imul(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_imul3(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_div(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_idiv(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_xor(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_and(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_mov(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setcc(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_sete(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setne(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setnp(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setp(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setnc(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setc(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setno(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_seto(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setns(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_sets(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setnb(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setb(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setge(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setl(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setg(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setle(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_setbe(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_seta(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
+
+#endif
+
 #endif
