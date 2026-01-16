@@ -18,16 +18,16 @@ get_a:
     movl (%rax), %eax
     xor %edx, %edx
     mov $96, %rcx
-    shld %cl, %rax, %rdx
-    shl %cl, %rax
+    shld $96, %rax, %rdx
+    shl $96, %rax
     xor %esi, %esi
     test $64, %cl
     cmovne %rax, %rdx
     cmove %rax, %rsi
     mov $96, %rcx
-    shrd %cl, %rdx, %rsi
+    shrd $96, %rdx, %rsi
     mov %rdx, %rdi
-    sar %cl, %rdi
+    sar $96, %rdi
     sar $63, %rdx
     test $64, %cl
     mov %rsi, %rax
@@ -45,16 +45,16 @@ get_b:
     lea value(%rip), %rcx
     movzxw 12(%rcx), %rdx
     mov $55, %rcx
-    shld %cl, %rax, %rdx
-    shl %cl, %rax
+    shld $55, %rax, %rdx
+    shl $55, %rax
     xor %esi, %esi
     test $64, %cl
     cmovne %rax, %rdx
     cmove %rax, %rsi
     mov $58, %rcx
-    shrd %cl, %rdx, %rsi
+    shrd $58, %rdx, %rsi
     mov %rdx, %rdi
-    sar %cl, %rdi
+    sar $58, %rdi
     sar $63, %rdx
     test $64, %cl
     mov %rsi, %rax
@@ -75,19 +75,19 @@ set_a:
     lea value(%rip), %rdx
     mov $1, %rsi
     mov $32, %rcx
-    shl %cl, %rsi
+    shl $32, %rsi
     xor %r8d, %r8d
     test $64, %cl
     cmove %rsi, %r8
     sub $1, %r8
     and %r8, %rdi
     xor %ecx, %ecx
-    shl %cl, %rdi
+    shl $0, %rdi
     xor %esi, %esi
     test $64, %cl
     cmove %rdi, %rsi
     xor %ecx, %ecx
-    shl %cl, %r8
+    shl $0, %r8
     xor %edi, %edi
     test $64, %cl
     cmove %r8, %rdi
@@ -113,27 +113,26 @@ set_b:
     mov $1, %r9
     xor %r10d, %r10d
     mov $70, %rcx
-    shld %cl, %r9, %r10
-    shl %cl, %r9
+    shld $70, %r9, %r10
+    shl $70, %r9
     xor %r11d, %r11d
     test $64, %cl
     cmovne %r9, %r10
     cmove %r9, %r11
-    xor %ecx, %ecx
     sub $1, %r11
-    sbb %rcx, %r10
+    sbb $0, %r10
     and %r11, %rdi
     and %r10, %rsi
     mov $3, %rcx
-    shld %cl, %rdi, %rsi
-    shl %cl, %rdi
+    shld $3, %rdi, %rsi
+    shl $3, %rdi
     xor %r9d, %r9d
     test $64, %cl
     cmovne %rdi, %rsi
     cmove %rdi, %r9
     mov $3, %rcx
-    shld %cl, %r11, %r10
-    shl %cl, %r11
+    shld $3, %r11, %r10
+    shl $3, %r11
     xor %edi, %edi
     test $64, %cl
     cmovne %r11, %r10

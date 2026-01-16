@@ -17,94 +17,78 @@ test1:
     push %r14
     push %r15
     sub $104, %rsp
-    xor %eax, %eax
-    mov %rdi, -128(%rbp)
-    add $1, -128(%rbp)
+    mov %rdi, %rdx
+    add $1, %rdx
     mov %rsi, %rcx
-    adc %rax, %rcx
-    xor %eax, %eax
+    adc $0, %rcx
     mov %rdi, %r8
     add $2, %r8
     mov %rsi, %r9
-    adc %rax, %r9
-    xor %eax, %eax
-    mov %rdi, %r10
-    add $3, %r10
-    mov %rsi, %rdx
-    adc %rax, %rdx
-    mov %rdx, %rax
-    xor %r11d, %r11d
-    mov %rdi, %rbx
-    add $4, %rbx
-    mov %rsi, %rdx
-    adc %r11, %rdx
-    mov %rdx, %r11
-    xor %r12d, %r12d
-    mov %rdi, %r13
-    add $5, %r13
-    mov %rsi, %rdx
-    adc %r12, %rdx
-    mov %rdx, %r12
-    xor %r14d, %r14d
-    mov %rdi, %r15
-    add $6, %r15
-    mov %rsi, %rdx
-    adc %r14, %rdx
-    mov %rdx, %r14
-    xor %edx, %edx
-    mov %rdi, -120(%rbp)
-    add $7, -120(%rbp)
-    mov %rsi, -112(%rbp)
-    adc %rdx, -112(%rbp)
-    xor %edx, %edx
-    mov %rdi, -104(%rbp)
-    add $8, -104(%rbp)
-    mov %rsi, -96(%rbp)
-    adc %rdx, -96(%rbp)
-    xor %edx, %edx
-    mov %rdi, -88(%rbp)
-    add $9, -88(%rbp)
-    mov %rsi, -80(%rbp)
-    adc %rdx, -80(%rbp)
-    xor %edx, %edx
-    mov %rdi, -72(%rbp)
-    add $10, -72(%rbp)
-    mov %rsi, -64(%rbp)
-    adc %rdx, -64(%rbp)
-    xor %edx, %edx
-    mov %rdi, -56(%rbp)
-    add $11, -56(%rbp)
-    mov %rsi, -48(%rbp)
-    adc %rdx, -48(%rbp)
+    adc $0, %r9
+    mov %rdi, %rax
+    add $3, %rax
+    mov %rsi, %r10
+    adc $0, %r10
+    mov %rdi, %r11
+    add $4, %r11
+    mov %rsi, %rbx
+    adc $0, %rbx
+    mov %rdi, %r12
+    add $5, %r12
+    mov %rsi, %r13
+    adc $0, %r13
+    mov %rdi, %r14
+    add $6, %r14
+    mov %rsi, %r15
+    adc $0, %r15
+    mov %rdi, -128(%rbp)
+    add $7, -128(%rbp)
+    mov %rsi, -120(%rbp)
+    adc $0, -120(%rbp)
+    mov %rdi, -112(%rbp)
+    add $8, -112(%rbp)
+    mov %rsi, -104(%rbp)
+    adc $0, -104(%rbp)
+    mov %rdi, -96(%rbp)
+    add $9, -96(%rbp)
+    mov %rsi, -88(%rbp)
+    adc $0, -88(%rbp)
+    mov %rdi, -80(%rbp)
+    add $10, -80(%rbp)
+    mov %rsi, -72(%rbp)
+    adc $0, -72(%rbp)
+    mov %rdi, -64(%rbp)
+    add $11, -64(%rbp)
+    mov %rsi, -56(%rbp)
+    adc $0, -56(%rbp)
     sub $144, %rsp
-    mov -128(%rbp), %rdx
-    movq %r10, (%rsp)
-    movq %rax, 8(%rsp)
-    movq %rbx, 16(%rsp)
-    movq %r11, 24(%rsp)
-    movq %r13, 32(%rsp)
-    movq %r12, 40(%rsp)
-    movq %r15, 48(%rsp)
-    movq %r14, 56(%rsp)
-    movq -120(%rbp), %rax
+    movq %rax, (%rsp)
+    movq %r10, 8(%rsp)
+    movq %r11, 16(%rsp)
+    movq %rbx, 24(%rsp)
+    movq %r12, 32(%rsp)
+    movq %r13, 40(%rsp)
+    movq %r14, 48(%rsp)
+    movq %r15, 56(%rsp)
+    movq -128(%rbp), %rax
     movq %rax, 64(%rsp)
-    movq -112(%rbp), %rax
+    movq -120(%rbp), %rax
     movq %rax, 72(%rsp)
-    movq -104(%rbp), %rax
+    movq -112(%rbp), %rax
     movq %rax, 80(%rsp)
-    movq -96(%rbp), %rax
+    movq -104(%rbp), %rax
     movq %rax, 88(%rsp)
-    movq -88(%rbp), %rax
+    movq -96(%rbp), %rax
     movq %rax, 96(%rsp)
-    movq -80(%rbp), %rax
+    movq -88(%rbp), %rax
     movq %rax, 104(%rsp)
-    movq -72(%rbp), %rax
+    movq -80(%rbp), %rax
     movq %rax, 112(%rsp)
-    movq -64(%rbp), %rax
+    movq -72(%rbp), %rax
     movq %rax, 120(%rsp)
-    movq -56(%rbp), %rax
+    movq -64(%rbp), %rax
     movq %rax, 128(%rsp)
-    movq -48(%rbp), %rax
+    movq -56(%rbp), %rax
     movq %rax, 136(%rsp)
     call somefn@PLT
     add $144, %rsp

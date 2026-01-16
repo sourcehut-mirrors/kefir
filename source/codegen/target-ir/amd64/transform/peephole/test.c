@@ -211,3 +211,13 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
 
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_cmp(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
+    REQUIRE(replaced != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_const_operand(mem, code, instr, true, replaced));
+    return KEFIR_OK;
+}

@@ -106,10 +106,8 @@ get6:
     push %rbp
     mov %rsp, %rbp
     movabs $4294967295, %rax
-    mov $1044991, %rcx
-    and %rax, %rcx
-    shl $40, %rcx
-    mov %rcx, %rax
+    and $1044991, %rax
+    shl $40, %rax
     shr $40, %rax
     pop %rbp
     ret

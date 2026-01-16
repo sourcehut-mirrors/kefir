@@ -664,8 +664,7 @@ __kefir_bigint_signed_to_double:
     movq -88(%rbp), %rdi
     movq -64(%rbp), %rsi
     movq -24(%rbp), %rax
-    mov $4, %rcx
-    and %rcx, %rax
+    and $4, %rax
     xor %ecx, %ecx
     cmp %rcx, %rax
     mov $0, %rax
@@ -1330,8 +1329,7 @@ __kefir_bigint_unsigned_to_double:
     movq -88(%rbp), %rdi
     movq -64(%rbp), %rsi
     movq -24(%rbp), %rax
-    mov $4, %rcx
-    and %rcx, %rax
+    and $4, %rax
     xor %ecx, %ecx
     cmp %rcx, %rax
     mov $0, %rax
@@ -1474,11 +1472,9 @@ __kefir_bigint_unsigned_to_long_double:
     movq -88(%rbp), %rcx
     movq -56(%rbp), %rdx
     lea -80(%rbp), %rax
-    mov $32768, %rsi
-    and %rsi, %rcx
+    and $32768, %rcx
     add $16383, %rdx
-    mov $32767, %rsi
-    and %rsi, %rdx
+    and $32767, %rdx
     or %rdx, %rcx
     movq %rcx, 8(%rax)
     fldt -80(%rbp)
@@ -1569,8 +1565,7 @@ __kefir_bigint_unsigned_to_long_double:
     movq -96(%rbp), %rdi
     movq -64(%rbp), %rsi
     movq -24(%rbp), %rax
-    mov $4, %rcx
-    and %rcx, %rax
+    and $4, %rax
     xor %ecx, %ecx
     cmp %rcx, %rax
     mov $0, %rax
@@ -2218,8 +2213,7 @@ __kefir_bigint_unsigned_to_float:
     mov $23, %rcx
     shl %cl, %rdx
     or %rdx, %rax
-    mov $8388607, %rcx
-    and %rcx, %rsi
+    and $8388607, %rsi
     or %rsi, %rax
     movq %rax, -80(%rbp)
     movl -80(%rbp), %eax
@@ -2309,8 +2303,7 @@ __kefir_bigint_unsigned_to_float:
     movq -88(%rbp), %rdi
     movq -64(%rbp), %rsi
     movq -24(%rbp), %rax
-    mov $4, %rcx
-    and %rcx, %rax
+    and $4, %rax
     xor %ecx, %ecx
     cmp %rcx, %rax
     mov $0, %rax
@@ -2602,11 +2595,9 @@ __kefir_bigint_signed_to_long_double:
     movq -88(%rbp), %rcx
     movq -56(%rbp), %rdx
     lea -80(%rbp), %rax
-    mov $32768, %rsi
-    and %rsi, %rcx
+    and $32768, %rcx
     add $16383, %rdx
-    mov $32767, %rsi
-    and %rsi, %rdx
+    and $32767, %rdx
     or %rdx, %rcx
     movq %rcx, 8(%rax)
     fldt -80(%rbp)
@@ -2697,8 +2688,7 @@ __kefir_bigint_signed_to_long_double:
     movq -96(%rbp), %rdi
     movq -64(%rbp), %rsi
     movq -24(%rbp), %rax
-    mov $4, %rcx
-    and %rcx, %rax
+    and $4, %rax
     xor %ecx, %ecx
     cmp %rcx, %rax
     mov $0, %rax
@@ -3069,8 +3059,7 @@ __kefir_bigint_signed_to_float:
     mov $23, %rcx
     shl %cl, %rdx
     or %rdx, %rax
-    mov $8388607, %rcx
-    and %rcx, %rsi
+    and $8388607, %rsi
     or %rsi, %rax
     movq %rax, -80(%rbp)
     movl -80(%rbp), %eax
@@ -3160,8 +3149,7 @@ __kefir_bigint_signed_to_float:
     movq -88(%rbp), %rdi
     movq -64(%rbp), %rsi
     movq -24(%rbp), %rax
-    mov $4, %rcx
-    and %rcx, %rax
+    and $4, %rax
     xor %ecx, %ecx
     cmp %rcx, %rax
     mov $0, %rax
