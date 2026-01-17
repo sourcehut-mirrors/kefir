@@ -43,22 +43,21 @@ test1:
     ja .L__kefir_func_test1_label6
     movq -16(%rbp), %rax
     movl -32(%rbp), %ecx
-    add %rcx, %rax
-    movq (%rax), %rcx
-    movq %rcx, -240(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -232(%rbp)
-    movq 16(%rax), %rcx
-    movq %rcx, -224(%rbp)
-    movq 24(%rax), %rcx
-    movq %rcx, -216(%rbp)
-    movq 32(%rax), %rcx
-    movq %rcx, -208(%rbp)
-    movq 40(%rax), %rcx
-    movq %rcx, -200(%rbp)
-    movq 48(%rax), %rcx
-    movq %rcx, -192(%rbp)
-    movq 56(%rax), %rax
+    movq (%rax, %rcx, 1), %rdx
+    movq %rdx, -240(%rbp)
+    movq 8(%rax, %rcx, 1), %rdx
+    movq %rdx, -232(%rbp)
+    movq 16(%rax, %rcx, 1), %rdx
+    movq %rdx, -224(%rbp)
+    movq 24(%rax, %rcx, 1), %rdx
+    movq %rdx, -216(%rbp)
+    movq 32(%rax, %rcx, 1), %rdx
+    movq %rdx, -208(%rbp)
+    movq 40(%rax, %rcx, 1), %rdx
+    movq %rdx, -200(%rbp)
+    movq 48(%rax, %rcx, 1), %rdx
+    movq %rdx, -192(%rbp)
+    movq 56(%rax, %rcx, 1), %rax
     movq %rax, -184(%rbp)
     addl $64, -32(%rbp)
 .L__kefir_func_test1_label7:

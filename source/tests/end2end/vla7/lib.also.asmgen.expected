@@ -21,8 +21,7 @@ test:
     mov $0, %rsi
     imul $8, %rsi, %rdx
     lea -48(%rbp), %rsi
-    add %rdx, %rsi
-    movq %rax, (%rsi)
+    movq %rax, (%rsi, %rdx, 1)
     movl -32(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
@@ -76,8 +75,7 @@ test2:
     mov $0, %rsi
     imul $8, %rsi, %rdx
     lea -64(%rbp), %rsi
-    add %rdx, %rsi
-    movq %rax, (%rsi)
+    movq %rax, (%rsi, %rdx, 1)
     movl -48(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
@@ -98,8 +96,7 @@ test2:
     mov $1, %rdx
     imul $8, %rdx, %rsi
     lea -64(%rbp), %rdx
-    add %rsi, %rdx
-    movq %rcx, (%rdx)
+    movq %rcx, (%rdx, %rsi, 1)
     movl -48(%rbp), %edx
     lea -24(%rbp), %rcx
     movsx %edx, %rdx

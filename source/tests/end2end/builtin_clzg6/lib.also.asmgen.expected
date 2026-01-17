@@ -115,10 +115,7 @@ __kefir_bigint_leading_zeros:
     mov %rdx, %rcx
     sub %r8, %rcx
     sub $1, %rcx
-    mov %rdi, %r10
-    add %rcx, %r10
-    mov %r10, %rcx
-    movzxb (%rcx), %r10
+    movzxb (%rdi, %rcx, 1), %r10
     lea -1(%rdx), %rcx
     shl $3, %rcx
     mov %rsi, %r11

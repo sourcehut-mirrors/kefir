@@ -94,9 +94,9 @@ get_arr1_el:
 .L__kefir_text_func_get_arr1_el_begin:
     add $96, %rdi
     movsx %esi, %rax
-    shl $3, %rax
-    add %rax, %rdi
-    movq (%rdi), %rax
+    mov %rax, %rcx
+    shl $3, %rcx
+    movq (%rdi, %rcx, 1), %rax
     ret
 .L__kefir_text_func_get_arr1_el_end:
 

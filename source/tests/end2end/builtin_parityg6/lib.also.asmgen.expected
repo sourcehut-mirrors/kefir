@@ -130,9 +130,7 @@ __kefir_bigint_nonzero_count:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label8:
-    mov %rdi, %rcx
-    add %rdx, %rcx
-    movzxb (%rcx), %r9
+    movzxb (%rdi, %rdx, 1), %r9
     lea 1(%rdx), %rcx
     lea -1(%rax), %r10
     shl $3, %r10

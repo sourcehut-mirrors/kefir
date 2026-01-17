@@ -57,25 +57,22 @@ test1:
     movq a@GOTPCREL(%rip), %rax
     xor %ecx, %ecx
     shl $4, %rcx
-    add %rcx, %rax
     movdqu -336(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
+    movdqu %xmm0, (%rax, %rcx, 1)
     movdqu -160(%rbp), %xmm0
     movdqu %xmm0, -320(%rbp)
     movq a@GOTPCREL(%rip), %rax
     mov $1, %ecx
     shl $4, %rcx
-    add %rcx, %rax
     movdqu -320(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
+    movdqu %xmm0, (%rax, %rcx, 1)
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -336(%rbp)
     movq a@GOTPCREL(%rip), %rax
     mov $2, %ecx
     shl $4, %rcx
-    add %rcx, %rax
     movdqu -336(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
+    movdqu %xmm0, (%rax, %rcx, 1)
     movdqu -224(%rbp), %xmm0
     movdqu %xmm0, -304(%rbp)
     movdqu -208(%rbp), %xmm0
@@ -87,15 +84,14 @@ test1:
     movq b@GOTPCREL(%rip), %rax
     xor %ecx, %ecx
     shl $6, %rcx
-    add %rcx, %rax
     movdqu -304(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
+    movdqu %xmm0, (%rax, %rcx, 1)
     movdqu -288(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
+    movdqu %xmm0, 16(%rax, %rcx, 1)
     movdqu -272(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax)
+    movdqu %xmm0, 32(%rax, %rcx, 1)
     movdqu -256(%rbp), %xmm0
-    movdqu %xmm0, 48(%rax)
+    movdqu %xmm0, 48(%rax, %rcx, 1)
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -336(%rbp)
     movdqu -128(%rbp), %xmm0
@@ -107,15 +103,14 @@ test1:
     movq b@GOTPCREL(%rip), %rax
     mov $1, %ecx
     shl $6, %rcx
-    add %rcx, %rax
     movdqu -336(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
+    movdqu %xmm0, (%rax, %rcx, 1)
     movdqu -320(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
+    movdqu %xmm0, 16(%rax, %rcx, 1)
     movdqu -304(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax)
+    movdqu %xmm0, 32(%rax, %rcx, 1)
     movdqu -288(%rbp), %xmm0
-    movdqu %xmm0, 48(%rax)
+    movdqu %xmm0, 48(%rax, %rcx, 1)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -336(%rbp)
     movdqu -48(%rbp), %xmm0
@@ -127,15 +122,14 @@ test1:
     movq b@GOTPCREL(%rip), %rax
     mov $2, %ecx
     shl $6, %rcx
-    add %rcx, %rax
     movdqu -336(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
+    movdqu %xmm0, (%rax, %rcx, 1)
     movdqu -320(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
+    movdqu %xmm0, 16(%rax, %rcx, 1)
     movdqu -304(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax)
+    movdqu %xmm0, 32(%rax, %rcx, 1)
     movdqu -288(%rbp), %xmm0
-    movdqu %xmm0, 48(%rax)
+    movdqu %xmm0, 48(%rax, %rcx, 1)
     lea (%rbp), %rsp
     pop %rbp
     ret

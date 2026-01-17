@@ -293,16 +293,14 @@ __kefir_bigint_add:
 .L__kefir_runtime_func___kefir_bigint_add_label6:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
-    add %rcx, %rax
-    movb (%rax), %cl
-    and $255, %rcx
-    movl %ecx, -52(%rbp)
+    movb (%rax, %rcx, 1), %dl
+    and $255, %rdx
+    movl %edx, -52(%rbp)
     movq -32(%rbp), %rax
     movq -16(%rbp), %rcx
-    add %rcx, %rax
-    movb (%rax), %cl
-    and $255, %rcx
-    movl %ecx, -8(%rbp)
+    movb (%rax, %rcx, 1), %dl
+    and $255, %rdx
+    movl %edx, -8(%rbp)
     movl -56(%rbp), %eax
     movl -52(%rbp), %ecx
     movl -8(%rbp), %edx
@@ -312,8 +310,7 @@ __kefir_bigint_add:
     movl -4(%rbp), %eax
     movq -40(%rbp), %rcx
     movq -16(%rbp), %rdx
-    add %rdx, %rcx
-    movb %al, (%rcx)
+    movb %al, (%rcx, %rdx, 1)
     movl -4(%rbp), %eax
     mov $1, %ecx
     shl $3, %rcx

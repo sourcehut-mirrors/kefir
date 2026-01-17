@@ -52,10 +52,9 @@ sum:
     cmp $48, %rsi
     ja .L__kefir_func_sum_label10
     movq -16(%rbp), %rsi
-    movl -32(%rbp), %edi
-    add %rdi, %rsi
-    movq (%rsi), %rdi
-    movq 8(%rsi), %rsi
+    movl -32(%rbp), %r8d
+    movq (%rsi, %r8, 1), %rdi
+    movq 8(%rsi, %r8, 1), %rsi
     addl $16, -32(%rbp)
 .L__kefir_func_sum_label11:
     add %rdi, %rax
@@ -117,10 +116,9 @@ sum2:
     cmp $48, %rsi
     ja .L__kefir_func_sum2_label10
     movq -16(%rbp), %rsi
-    movl -32(%rbp), %edi
-    add %rdi, %rsi
-    movq (%rsi), %rdi
-    movq 8(%rsi), %rsi
+    movl -32(%rbp), %r8d
+    movq (%rsi, %r8, 1), %rdi
+    movq 8(%rsi, %r8, 1), %rsi
     addl $16, -32(%rbp)
 .L__kefir_func_sum2_label11:
     add %rdi, %rax

@@ -241,23 +241,20 @@ __kefir_bigint_xor:
 .L__kefir_runtime_func___kefir_bigint_xor_label6:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
-    add %rcx, %rax
-    movb (%rax), %cl
-    and $255, %rcx
-    movl %ecx, -8(%rbp)
+    movb (%rax, %rcx, 1), %dl
+    and $255, %rdx
+    movl %edx, -8(%rbp)
     movq -32(%rbp), %rax
     movq -16(%rbp), %rcx
-    add %rcx, %rax
-    movb (%rax), %cl
-    and $255, %rcx
-    movl %ecx, -4(%rbp)
+    movb (%rax, %rcx, 1), %dl
+    and $255, %rdx
+    movl %edx, -4(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     movq -40(%rbp), %rdx
     movq -16(%rbp), %rsi
-    add %rsi, %rdx
     xor %ecx, %eax
-    movb %al, (%rdx)
+    movb %al, (%rdx, %rsi, 1)
     movq -16(%rbp), %rax
     add $1, %rax
     movq %rax, -16(%rbp)

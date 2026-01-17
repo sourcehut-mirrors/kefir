@@ -12,59 +12,64 @@ sumall:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $16, %rsp
-    movq %rdi, -32(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -32(%rbp), %rax
-    movq -32(%rbp), %rcx
-    movq -32(%rbp), %rdx
-    movq -32(%rbp), %rsi
-    movq -32(%rbp), %rdi
-    movq -32(%rbp), %r8
-    movq -32(%rbp), %r9
-    movq -32(%rbp), %r10
-    movq -32(%rbp), %r11
-    movq -32(%rbp), %rbx
+    push %r13
+    push %r14
+    push %r15
+    sub $56, %rsp
+    movq %rdi, -56(%rbp)
+    movq %xmm0, -48(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -72(%rbp)
+    movq -56(%rbp), %rcx
+    movq -56(%rbp), %rdx
+    movq -56(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -96(%rbp)
+    movq -56(%rbp), %r9
+    movq -56(%rbp), %rax
+    movq %rax, -88(%rbp)
+    movq -56(%rbp), %r11
+    movq -56(%rbp), %rbx
     movq .L__kefir_func_sumall_label4(%rip), %xmm3
     xor %r12d, %r12d
     shl $3, %r12
-    add %r12, %rax
-    mov $1, %r12d
-    shl $3, %r12
-    add %r12, %rcx
-    mov $2, %r12d
-    shl $3, %r12
-    add %r12, %rdx
-    mov $3, %r12d
-    shl $3, %r12
-    add %r12, %rsi
-    mov $4, %r12d
-    shl $3, %r12
-    add %r12, %rdi
-    mov $5, %r12d
-    shl $3, %r12
-    add %r12, %r8
-    mov $6, %r12d
-    shl $3, %r12
-    add %r12, %r9
-    mov $7, %r12d
-    shl $3, %r12
-    add %r12, %r10
-    mov $8, %r12d
-    shl $3, %r12
-    add %r12, %r11
-    mov $9, %r12d
-    shl $3, %r12
-    add %r12, %rbx
+    mov $1, %r13d
+    shl $3, %r13
+    mov $2, %r14d
+    shl $3, %r14
+    mov $3, %r15d
+    shl $3, %r15
+    mov $4, %r8d
+    shl $3, %r8
+    mov $5, %r10d
+    shl $3, %r10
+    mov $6, %esi
+    shl $3, %rsi
+    mov $7, %eax
+    shl $3, %rax
+    mov $8, %edi
+    shl $3, %rdi
+    add %rdi, %r11
+    mov $9, %edi
+    shl $3, %rdi
+    add %rdi, %rbx
     movaps %xmm3, %xmm0
-    movq (%rax), %xmm1
-    movq (%rcx), %xmm2
-    movq (%rdx), %xmm6
-    movq (%rsi), %xmm7
-    movq (%rdi), %xmm8
-    movq (%r8), %xmm10
-    movq (%r9), %xmm12
-    movq (%r10), %xmm13
+    movq -72(%rbp), %rdi
+    movq (%rdi, %r12, 1), %xmm1
+    movq (%rcx, %r13, 1), %xmm2
+    movq (%rdx, %r14, 1), %xmm6
+    movq -80(%rbp), %rcx
+    movq (%rcx, %r15, 1), %xmm7
+    movq -64(%rbp), %rcx
+    movq (%rcx, %r8, 1), %xmm8
+    movq -96(%rbp), %rcx
+    movq (%rcx, %r10, 1), %xmm10
+    movq (%r9, %rsi, 1), %xmm12
+    movq -88(%rbp), %rcx
+    movq (%rcx, %rax, 1), %xmm13
     mov %r11, %rax
     mov %rbx, %rcx
 addsd %xmm1, %xmm0
@@ -78,10 +83,13 @@ addsd %xmm13, %xmm0
 addsd (%rax), %xmm0
 addsd (%rcx), %xmm0
 
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
+    movq %xmm0, -48(%rbp)
+    movq -48(%rbp), %rax
     movq %rax, %xmm0
-    lea -16(%rbp), %rsp
+    lea -40(%rbp), %rsp
+    pop %r15
+    pop %r14
+    pop %r13
     pop %r12
     pop %rbx
     pop %rbp

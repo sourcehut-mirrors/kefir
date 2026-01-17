@@ -55,8 +55,7 @@ test:
     lea -24(%rbp), %rcx
     movq -32(%rbp), %rdx
     movl -44(%rbp), %esi
-    add %rsi, %rdx
-    movq (%rdx), %rdx
+    movq (%rdx, %rsi, 1), %rdx
     movq %rdx, (%rcx)
     addl $16, -44(%rbp)
 .L__kefir_func_test_label12:

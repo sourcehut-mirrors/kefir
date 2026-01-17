@@ -195,14 +195,12 @@ __kefir_bigint_invert:
 .L__kefir_runtime_func___kefir_bigint_invert_label6:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
-    add %rcx, %rax
-    movb (%rax), %cl
+    movb (%rax, %rcx, 1), %dl
     movq -24(%rbp), %rax
-    movq -8(%rbp), %rdx
-    add %rdx, %rax
-    and $255, %rcx
-    not %ecx
-    movb %cl, (%rax)
+    movq -8(%rbp), %rcx
+    and $255, %rdx
+    not %edx
+    movb %dl, (%rax, %rcx, 1)
     movq -8(%rbp), %rax
     add $1, %rax
     movq %rax, -8(%rbp)

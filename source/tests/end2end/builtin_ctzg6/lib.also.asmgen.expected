@@ -111,9 +111,8 @@ __kefir_bigint_trailing_zeros:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label8:
-    mov %rdi, %rcx
-    add %r8, %rcx
-    movb (%rcx), %r10b
+    mov %rcx, %r10
+    movb (%rdi, %r8, 1), %r10b
     lea 1(%r8), %rcx
     lea -1(%rdx), %r11
     shl $3, %r11

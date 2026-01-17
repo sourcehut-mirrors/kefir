@@ -18,8 +18,7 @@ run_op:
     mov $5, %r9
     div %r9
     shl $3, %rdx
-    add %rdx, %rdi
-    movq (%rdi), %rax
+    movq (%rdi, %rdx, 1), %rax
     movq %r8, -24(%rbp)
     movq %rcx, -16(%rbp)
     movq %rsi, -8(%rbp)

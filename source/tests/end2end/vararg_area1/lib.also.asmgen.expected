@@ -55,8 +55,7 @@ process:
     mov $0, %rdx
     imul $8, %rdx, %rcx
     lea -80(%rbp), %rdx
-    add %rcx, %rdx
-    movq %rax, (%rdx)
+    movq %rax, (%rdx, %rcx, 1)
     movl -72(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
@@ -100,8 +99,7 @@ process:
     movl -68(%rbp), %edx
     movsx %edx, %rdx
     shl $2, %rdx
-    add %rdx, %rax
-    movl %ecx, (%rax)
+    movl %ecx, (%rax, %rdx, 1)
     movl -68(%rbp), %eax
     add $1, %eax
     movl %eax, -68(%rbp)

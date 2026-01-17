@@ -176,15 +176,9 @@ __kefir_bigint_unsigned_compare:
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
     lea -1(%r8), %rcx
-    mov %rdi, %r9
-    add %rcx, %r9
-    mov %r9, %rcx
-    movzxb (%rcx), %r9
+    movzxb (%rdi, %rcx, 1), %r9
     lea -1(%r8), %rcx
-    mov %rsi, %r10
-    add %rcx, %r10
-    mov %r10, %rcx
-    movzxb (%rcx), %r10
+    movzxb (%rsi, %rcx, 1), %r10
     cmp %rax, %r8
     je .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
@@ -245,10 +239,7 @@ __kefir_bigint_leading_zeros:
     mov %rdx, %rcx
     sub %r8, %rcx
     sub $1, %rcx
-    mov %rdi, %r10
-    add %rcx, %r10
-    mov %r10, %rcx
-    movzxb (%rcx), %r10
+    movzxb (%rdi, %rcx, 1), %r10
     lea -1(%rdx), %rcx
     shl $3, %rcx
     mov %rsi, %r11

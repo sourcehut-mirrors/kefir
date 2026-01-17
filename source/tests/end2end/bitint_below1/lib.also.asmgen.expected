@@ -250,17 +250,15 @@ __kefir_bigint_unsigned_compare:
     movq -48(%rbp), %rax
     movq -24(%rbp), %rcx
     sub $1, %rcx
-    add %rcx, %rax
-    movb (%rax), %cl
-    and $255, %rcx
-    movl %ecx, -16(%rbp)
+    movb (%rax, %rcx, 1), %dl
+    and $255, %rdx
+    movl %edx, -16(%rbp)
     movq -40(%rbp), %rax
     movq -24(%rbp), %rcx
     sub $1, %rcx
-    add %rcx, %rax
-    movb (%rax), %cl
-    and $255, %rcx
-    movl %ecx, -12(%rbp)
+    movb (%rax, %rcx, 1), %dl
+    and $255, %rdx
+    movl %edx, -12(%rbp)
     movq -24(%rbp), %rax
     movq -32(%rbp), %rcx
     cmp %rcx, %rax

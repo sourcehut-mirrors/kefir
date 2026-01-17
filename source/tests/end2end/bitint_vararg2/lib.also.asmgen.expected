@@ -42,10 +42,9 @@ test1:
     ja .L__kefir_func_test1_label6
     movq -16(%rbp), %rax
     movl -32(%rbp), %ecx
-    add %rcx, %rax
-    movq (%rax), %rcx
-    movq %rcx, -96(%rbp)
-    movq 8(%rax), %rax
+    movq (%rax, %rcx, 1), %rdx
+    movq %rdx, -96(%rbp)
+    movq 8(%rax, %rcx, 1), %rax
     movq %rax, -88(%rbp)
     addl $16, -32(%rbp)
 .L__kefir_func_test1_label7:

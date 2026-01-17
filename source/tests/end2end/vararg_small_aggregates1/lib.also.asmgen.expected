@@ -53,8 +53,7 @@ sum:
     lea -8(%rbp), %rdx
     movq -16(%rbp), %rsi
     movl -32(%rbp), %edi
-    add %rdi, %rsi
-    movw (%rsi), %di
+    movw (%rsi, %rdi, 1), %di
     movw %di, (%rdx)
     addl $8, -32(%rbp)
 .L__kefir_func_sum_label12:

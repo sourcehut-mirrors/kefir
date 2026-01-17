@@ -29,8 +29,7 @@ get2:
     mov %rax, %rcx
     shl $2, %rcx
     lea -528(%rbp), %rax
-    add %rcx, %rax
-    movl (%rax), %eax
+    movl (%rax, %rcx, 1), %eax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

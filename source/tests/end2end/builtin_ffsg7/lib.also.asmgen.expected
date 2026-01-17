@@ -110,9 +110,8 @@ __kefir_bigint_least_significant_nonzero:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8:
-    mov %rdi, %rcx
-    add %rdx, %rcx
-    movb (%rcx), %r8b
+    mov %rcx, %r8
+    movb (%rdi, %rdx, 1), %r8b
     lea 1(%rdx), %rcx
     lea -1(%rax), %r9
     shl $3, %r9
