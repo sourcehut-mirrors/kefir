@@ -762,16 +762,20 @@ static kefir_result_t resolve_operand(struct destructor_state *state, const stru
                         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
                         case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT: {
                             kefir_codegen_target_ir_regalloc_allocation_t allocation;
-                            REQUIRE_OK(kefir_codegen_target_ir_regalloc_get(state->regalloc, operand->indirect.base.value_ref, &allocation));
+                            REQUIRE_OK(kefir_codegen_target_ir_regalloc_get(state->regalloc, operand->indirect.index.value_ref, &allocation));
                             union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
                                 .allocation = allocation
                             };
+
+                            const struct kefir_codegen_target_ir_value_type *src_value_type;
+                            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, operand->indirect.index.value_ref, &src_value_type));
                             switch (entry.type) {
                                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
                                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 target IR register allocation");
                                     
                                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
                                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
+                                    value->indirect.index_type = KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL;
                                     value->indirect.index.phreg = entry.reg.value;
                                     value->indirect.index.scale = operand->indirect.index.scale;
                                     break;
@@ -779,12 +783,24 @@ static kefir_result_t resolve_operand(struct destructor_state *state, const stru
                                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL: {
                                     kefir_asm_amd64_xasmgen_register_t phreg;
                                     REQUIRE_OK(allocate_scratch_register(state, &phreg, TEMPORARY_REGISTER_GP, NULL));
-                                    REQUIRE_OK(kefir_asmcmp_amd64_mov(
-                                        state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-                                        &KEFIR_ASMCMP_MAKE_PHREG(phreg),
-                                        &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(entry.spill_area.index, 0,
-                                                                        KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                                        NULL));
+                                    if (src_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) {
+                                        kefir_asm_amd64_xasmgen_register_t reg32;
+                                        REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(phreg, &reg32));
+                                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                                            state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                                            &KEFIR_ASMCMP_MAKE_PHREG(reg32),
+                                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(entry.spill_area.index, 0,
+                                                                            KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
+                                            NULL));
+                                    } else {
+                                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                                            state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                                            &KEFIR_ASMCMP_MAKE_PHREG(phreg),
+                                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(entry.spill_area.index, 0,
+                                                                            KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                                            NULL));
+                                    }
+                                    value->indirect.index_type = KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL;
                                     value->indirect.index.phreg = phreg;
                                     value->indirect.index.scale = operand->indirect.index.scale;
                                 } break;

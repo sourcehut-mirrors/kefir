@@ -1638,7 +1638,7 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
             if (op->indirection.index.index != NULL) {
                 print(printarg, " + ");
                 REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->indirection.index.index));
-                print(printarg, "*" KEFIR_UINT8_FMT, op->indirection.index.scale);
+                print(printarg, "*%" KEFIR_UINT8_FMT, op->indirection.index.scale);
             }
             if (op->indirection.displacement > 0) {
                 print(printarg, " + %" KEFIR_INT64_FMT, op->indirection.displacement);
@@ -1730,7 +1730,7 @@ static kefir_result_t amd64_format_operand_yasm(void (*print)(void *, const char
             if (op->indirection.index.index != NULL) {
                 print(printarg, " + ");
                 REQUIRE_OK(amd64_format_operand_yasm(print, printarg, op->indirection.index.index));
-                print(printarg, "*" KEFIR_UINT8_FMT, op->indirection.index.scale);
+                print(printarg, "*%" KEFIR_UINT8_FMT, op->indirection.index.scale);
             }
             if (op->indirection.displacement > 0) {
                 print(printarg, " + %" KEFIR_INT64_FMT, op->indirection.displacement);
@@ -1819,7 +1819,7 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
             if (op->indirection.index.index != NULL) {
                 print(printarg, ", ");
                 REQUIRE_OK(amd64_format_operand_att(print, printarg, op->indirection.index.index));
-                print(printarg, ", " KEFIR_UINT8_FMT, op->indirection.index.scale);
+                print(printarg, ", %" KEFIR_UINT8_FMT, op->indirection.index.scale);
             }
             print(printarg, ")");
             break;

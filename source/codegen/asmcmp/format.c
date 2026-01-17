@@ -205,7 +205,7 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
                     REQUIRE_OK(
                         context->klass->register_mnemonic(value->indirect.index.phreg, &mnemonic, context->payload));
                     REQUIRE_OK(kefir_json_output_string(json, mnemonic));
-                    REQUIRE_OK(kefir_json_output_string(json, "scale"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "scale"));
                     REQUIRE_OK(kefir_json_output_uinteger(json, value->indirect.index.scale));
                 } break;
             }
