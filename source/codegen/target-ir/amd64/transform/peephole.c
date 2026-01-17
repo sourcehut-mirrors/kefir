@@ -86,7 +86,41 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_const_operand(struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_amd64_peephole_untie(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+static kefir_result_t peephole_indirect(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    kefir_bool_t replace = false;
+    struct kefir_codegen_target_ir_operation oper = instr->operation;
+    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+        if (oper.parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT ||
+            oper.parameters[i].indirect.type != KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS ||
+            oper.parameters[i].indirect.index_type != KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE ||
+            oper.parameters[i].indirect.base.value_ref.aspect != KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
+            continue;
+        }
+
+        const struct kefir_codegen_target_ir_instruction *base_instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, oper.parameters[i].indirect.base.value_ref.instr_ref, &base_instr));
+        if (base_instr->operation.opcode != KEFIR_TARGET_IR_AMD64_OPCODE(lea) ||
+            base_instr->operation.parameters[0].indirect.type != KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS) {
+            continue;
+        }
+
+        kefir_int64_t offset = oper.parameters[i].indirect.offset;
+        kefir_codegen_target_ir_operand_variant_t variant = oper.parameters[i].indirect.variant;
+
+        oper.parameters[i] = base_instr->operation.parameters[0];
+        oper.parameters[i].indirect.offset += offset;
+        oper.parameters[i].indirect.variant = variant;
+        replace = true;
+    }
+
+    if (replace) {
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr->instr_ref, &oper));
+        *replaced = true;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t peephole_untie(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
@@ -198,24 +232,25 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                 const struct kefir_codegen_target_ir_instruction *instr;
                 REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
 
+                kefir_bool_t instr_replaced = false;
                 if (instr->operation.opcode != code->klass->upsilon_opcode &&
                     instr->operation.opcode != code->klass->phi_opcode &&
                     instr->operation.opcode != code->klass->inline_asm_opcode &&
                     instr->operation.opcode != code->klass->placeholder_opcode) {
-                    kefir_bool_t untied = false;
-                    REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_untie(mem, code, instr, &untied));
-                    if (untied) {
+                    REQUIRE_OK(peephole_untie(mem, code, instr, &instr_replaced));
+                    if (instr_replaced) {
+                        replaced = true;
+                        continue;
+                    }
+
+                    REQUIRE_OK(peephole_indirect(mem, code, instr, &instr_replaced));
+                    if (instr_replaced) {
                         replaced = true;
                         continue;
                     }
                 }
 
-                kefir_bool_t instr_replaced = false;
                 switch (instr->operation.opcode) {
-                    case KEFIR_TARGET_IR_AMD64_OPCODE(lea):
-                        REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_lea(mem, code, instr, &instr_replaced));
-                        break;
-
                     case KEFIR_TARGET_IR_AMD64_OPCODE(add):
                     case KEFIR_TARGET_IR_AMD64_OPCODE(sub):
                         REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_add(mem, code, instr, &instr_replaced));

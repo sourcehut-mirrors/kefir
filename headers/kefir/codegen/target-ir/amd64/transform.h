@@ -29,7 +29,6 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_dead_code_elimination(str
 #ifdef KEFIR_CODEGEN_TARGET_IR_AMD64_PEEPHOLE_INTERNAL
 kefir_result_t kefir_codegen_target_ir_amd64_peephole_const_operand(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t, kefir_bool_t *);
 
-kefir_result_t kefir_codegen_target_ir_amd64_peephole_lea(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
 kefir_result_t kefir_codegen_target_ir_amd64_peephole_add(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
 kefir_result_t kefir_codegen_target_ir_amd64_peephole_adc(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
 kefir_result_t kefir_codegen_target_ir_amd64_peephole_sbb(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t *);
