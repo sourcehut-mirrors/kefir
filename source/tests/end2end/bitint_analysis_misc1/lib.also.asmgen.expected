@@ -14,7 +14,7 @@ get1:
 .L__kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $1, %rax
+    mov $1, %eax
     pop %rbp
     ret
 .L__kefir_text_func_get1_end:
@@ -23,7 +23,7 @@ get2:
 .L__kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $1, %rax
+    mov $1, %eax
     pop %rbp
     ret
 .L__kefir_text_func_get2_end:

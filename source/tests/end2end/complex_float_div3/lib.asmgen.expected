@@ -485,7 +485,7 @@ __kefir_softfloat_scalbnf:
     stmxcsr -8(%rbp)
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label2:
-    mov $127, %rcx
+    mov $127, %ecx
     cmp $127, %edi
     mov %rdi, %rdx
     cmovg %rcx, %rdx
@@ -607,7 +607,7 @@ __kefir_softfloat_ilogbf:
     cvtsd2ss %xmm0, %xmm0
     movd %xmm0, -16(%rbp)
     mov $-2147483648, %rax
-    mov $2147483647, %rdx
+    mov $2147483647, %edx
     test %rcx, %rcx
     cmovz %rdx, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5

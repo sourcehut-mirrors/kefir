@@ -25,7 +25,7 @@ test1:
     movq %rdx, -8(%rbp)
     lea -32(%rbp), %rdi
     lea -16(%rbp), %rsi
-    mov $120, %rdx
+    mov $120, %edx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $0, %al
@@ -47,7 +47,7 @@ test2:
     movq %rdx, -8(%rbp)
     lea -32(%rbp), %rdi
     lea -16(%rbp), %rsi
-    mov $120, %rdx
+    mov $120, %edx
     call __kefir_bigint_signed_compare
     xor %ecx, %ecx
     cmp $-1, %al
@@ -69,7 +69,7 @@ test3:
     movq %rdx, -8(%rbp)
     lea -32(%rbp), %rdi
     lea -16(%rbp), %rsi
-    mov $120, %rdx
+    mov $120, %edx
     call __kefir_bigint_signed_compare
     xor %ecx, %ecx
     cmp $1, %al
@@ -91,7 +91,7 @@ test4:
     movq %rdx, -8(%rbp)
     lea -32(%rbp), %rdi
     lea -16(%rbp), %rsi
-    mov $120, %rdx
+    mov $120, %edx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $-1, %al
@@ -113,7 +113,7 @@ test5:
     movq %rdx, -8(%rbp)
     lea -32(%rbp), %rdi
     lea -16(%rbp), %rsi
-    mov $120, %rdx
+    mov $120, %edx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $1, %al
@@ -171,7 +171,7 @@ __kefir_bigint_signed_compare:
     jnz .L__kefir_runtime_func___kefir_bigint_signed_compare_label6
     jmp __kefir_bigint_unsigned_compare
 .L__kefir_runtime_func___kefir_bigint_signed_compare_label6:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_signed_compare_label8:
     mov $-1, %rax
@@ -211,7 +211,7 @@ __kefir_bigint_unsigned_compare:
     mov $-1, %rax
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label15:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17:
     lea -1(%rdx), %rcx
@@ -221,7 +221,7 @@ __kefir_bigint_unsigned_compare:
     sub %r11, %rcx
     add $1, %rcx
     mov %ecx, %ecx
-    mov $1, %r11
+    mov $1, %r11d
     shl %cl, %r11
     sub $1, %r11
     and %r11d, %r9d

@@ -30,37 +30,37 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    mov $314, %rax
+    mov $314, %eax
     ret
 .L__kefir_text_func_get1_end:
 
 get2:
 .L__kefir_text_func_get2_begin:
-    mov $314, %rax
+    mov $314, %eax
     ret
 .L__kefir_text_func_get2_end:
 
 get3:
 .L__kefir_text_func_get3_begin:
-    mov $2718, %rax
+    mov $2718, %eax
     ret
 .L__kefir_text_func_get3_end:
 
 get4:
 .L__kefir_text_func_get4_begin:
-    mov $2718, %rax
+    mov $2718, %eax
     ret
 .L__kefir_text_func_get4_end:
 
 get5:
 .L__kefir_text_func_get5_begin:
-    mov $271828, %rax
+    mov $271828, %eax
     ret
 .L__kefir_text_func_get5_end:
 
 get6:
 .L__kefir_text_func_get6_begin:
-    mov $271828, %rax
+    mov $271828, %eax
     ret
 .L__kefir_text_func_get6_end:
 

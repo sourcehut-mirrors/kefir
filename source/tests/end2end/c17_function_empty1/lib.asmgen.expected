@@ -22,7 +22,7 @@ test3:
 .L__kefir_text_func_test3_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $1, %rdi
+    mov $1, %edi
     xor %eax, %eax
     call test@PLT
     pop %rbp
@@ -33,8 +33,8 @@ test4:
 .L__kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $1, %rdi
-    mov $2, %rsi
+    mov $1, %edi
+    mov $2, %esi
     xor %eax, %eax
     call test@PLT
     pop %rbp
@@ -45,9 +45,9 @@ test5:
 .L__kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $1, %rdi
-    mov $2, %rsi
-    mov $3, %rdx
+    mov $1, %edi
+    mov $2, %esi
+    mov $3, %edx
     xor %eax, %eax
     call test@PLT
     pop %rbp

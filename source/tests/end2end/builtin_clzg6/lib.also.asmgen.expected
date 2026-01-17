@@ -58,7 +58,7 @@ test5:
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
     lea -16(%rbp), %rdi
-    mov $120, %rsi
+    mov $120, %esi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
     lea (%rbp), %rsp
@@ -71,7 +71,7 @@ test6:
     push %rbp
     mov %rsp, %rbp
     lea 16(%rbp), %rdi
-    mov $315, %rsi
+    mov $315, %esi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
     pop %rbp
@@ -124,7 +124,7 @@ __kefir_bigint_leading_zeros:
     mov %rsi, %r11
     sub %rcx, %r11
     mov %r11, %rcx
-    mov $8, %r11
+    mov $8, %r11d
     cmp $0, %r8
     cmovbe %rcx, %r11
     xor %ecx, %ecx

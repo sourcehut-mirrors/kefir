@@ -19,7 +19,7 @@ getb:
     mov $25, %rcx
     mov %rax, %rsi
     rep stosq
-    mov $1243, %rax
+    mov $1243, %eax
     neg %eax
     movl %eax, -4(%rbp)
     movl %eax, (%rdx)

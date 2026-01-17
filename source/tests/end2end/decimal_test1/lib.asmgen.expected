@@ -320,7 +320,7 @@ test_dec32_linear_regression:
     mov %r13, %rsi
     lea -36(%rbp), %rdx
     lea -40(%rbp), %rcx
-    mov $100, %r8
+    mov $100, %r8d
     call test_dec32_gradient_descent
     movd -36(%rbp), %xmm0
     movd %xmm0, (%r12)
@@ -373,7 +373,7 @@ test_dec64_linear_regression:
     mov %r13, %rsi
     lea -40(%rbp), %rdx
     lea -48(%rbp), %rcx
-    mov $100, %r8
+    mov $100, %r8d
     call test_dec64_gradient_descent
     movq -40(%rbp), %xmm0
     movq %xmm0, (%r12)
@@ -493,7 +493,7 @@ test_dec128_linear_regression:
     mov %r13, %rsi
     lea -48(%rbp), %rdx
     lea -64(%rbp), %rcx
-    mov $100, %r8
+    mov $100, %r8d
     call test_dec128_gradient_descent
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, (%r12)

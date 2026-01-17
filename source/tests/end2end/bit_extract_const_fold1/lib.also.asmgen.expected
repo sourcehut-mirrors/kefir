@@ -17,7 +17,7 @@ test1:
     shr $50, %rdi
     shl $50, %rsi
     shr $50, %rsi
-    mov $16382, %rax
+    mov $16382, %eax
     imul %si, %ax
     sub $2, %ax
     shl $50, %rax

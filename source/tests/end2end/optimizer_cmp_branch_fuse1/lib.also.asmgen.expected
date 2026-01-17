@@ -42,7 +42,7 @@ less:
     pop %rbp
     ret
 .L__kefir_func_less_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -64,7 +64,7 @@ above:
     pop %rbp
     ret
 .L__kefir_func_above_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -86,7 +86,7 @@ below:
     pop %rbp
     ret
 .L__kefir_func_below_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -108,7 +108,7 @@ equals:
     pop %rbp
     ret
 .L__kefir_func_equals_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -130,7 +130,7 @@ greater:
     pop %rbp
     ret
 .L__kefir_func_greater_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -152,7 +152,7 @@ not_less:
     pop %rbp
     ret
 .L__kefir_func_not_less_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -174,7 +174,7 @@ not_above:
     pop %rbp
     ret
 .L__kefir_func_not_above_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -196,7 +196,7 @@ not_below:
     pop %rbp
     ret
 .L__kefir_func_not_below_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -218,7 +218,7 @@ not_equals:
     pop %rbp
     ret
 .L__kefir_func_not_equals_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -240,7 +240,7 @@ not_equals2:
     pop %rbp
     ret
 .L__kefir_func_not_equals2_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -262,7 +262,7 @@ not_greater:
     pop %rbp
     ret
 .L__kefir_func_not_greater_label5:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

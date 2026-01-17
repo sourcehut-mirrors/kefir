@@ -23,9 +23,9 @@ main:
 .L__kefir_text_func_main_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $100, %rdi
+    mov $100, %edi
     call test@PLT
-    mov $101, %rdi
+    mov $101, %edi
     call test@PLT
     call test3
     call test4
@@ -36,37 +36,37 @@ main:
 
 test1:
 .L__kefir_text_func_test1_begin:
-    mov $100, %rdi
+    mov $100, %edi
     jmp test@PLT
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov $101, %rdi
+    mov $101, %edi
     jmp test@PLT
 .L__kefir_text_func_test2_end:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov $200, %rdi
+    mov $200, %edi
     jmp test@PLT
 .L__kefir_text_func_test3_end:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov $201, %rdi
+    mov $201, %edi
     jmp test@PLT
 .L__kefir_text_func_test4_end:
 
 test5:
 .L__kefir_text_func_test5_begin:
-    mov $300, %rdi
+    mov $300, %edi
     jmp test@PLT
 .L__kefir_text_func_test5_end:
 
 test6:
 .L__kefir_text_func_test6_begin:
-    mov $301, %rdi
+    mov $301, %edi
     jmp test@PLT
 .L__kefir_text_func_test6_end:
 

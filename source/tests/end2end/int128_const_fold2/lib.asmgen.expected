@@ -74,14 +74,14 @@ u128_to_d64:
 
 uint128_from_d32:
 .L__kefir_text_func_uint128_from_d32_begin:
-    mov $317131, %rax
+    mov $317131, %eax
     xor %edx, %edx
     ret
 .L__kefir_text_func_uint128_from_d32_end:
 
 uint128_from_d64:
 .L__kefir_text_func_uint128_from_d64_begin:
-    mov $31783131, %rax
+    mov $31783131, %eax
     xor %edx, %edx
     ret
 .L__kefir_text_func_uint128_from_d64_end:
@@ -117,7 +117,7 @@ u128_to_d128:
 
 int128_from_d32:
 .L__kefir_text_func_int128_from_d32_begin:
-    mov $317131, %rax
+    mov $317131, %eax
     xor %edx, %edx
     ret
 .L__kefir_text_func_int128_from_d32_end:

@@ -22,7 +22,7 @@ factorial:
     jl .L__kefir_func_factorial_label14
     cmp $2, %eax
     jle .L__kefir_func_factorial_label12
-    mov $1, %rcx
+    mov $1, %ecx
 .L__kefir_func_factorial_label6:
     cmp $1, %eax
     jg .L__kefir_func_factorial_label10
@@ -46,12 +46,12 @@ factorial64:
     xor %ecx, %ecx
     cmp %rcx, %rax
     jl .L__kefir_func_factorial64_label14
-    mov $2, %rcx
+    mov $2, %ecx
     cmp %rcx, %rax
     jle .L__kefir_func_factorial64_label12
-    mov $1, %rcx
+    mov $1, %ecx
 .L__kefir_func_factorial64_label6:
-    mov $1, %rdx
+    mov $1, %edx
     cmp %rdx, %rax
     jg .L__kefir_func_factorial64_label10
     mov %rcx, %rax
@@ -80,13 +80,13 @@ quad_equation:
     movaps %xmm0, -48(%rbp)
     movaps %xmm1, %xmm3
     mulsd %xmm1, %xmm3
-    mov $4, %rax
+    mov $4, %eax
     cvtsi2sd %rax, %xmm4
     mulsd %xmm0, %xmm4
     mulsd %xmm2, %xmm4
     movaps %xmm3, %xmm0
     subsd %xmm4, %xmm0
-    mov $1, %rax
+    mov $1, %eax
     mov %rax, %r12
     neg %r12d
     movaps %xmm1, -64(%rbp)
@@ -97,7 +97,7 @@ quad_equation:
     jz .L__kefir_func_quad_equation_label9
 .L__kefir_func_quad_equation_label4:
     call sqrt@PLT
-    mov $1, %rax
+    mov $1, %eax
     test %ebx, %ebx
     cmovz %r12, %rax
     movsx %eax, %rax
@@ -105,7 +105,7 @@ quad_equation:
     mulsd %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
     addsd %xmm1, %xmm0
-    mov $2, %rax
+    mov $2, %eax
     cvtsi2sd %rax, %xmm1
     mulsd -48(%rbp), %xmm1
     divsd %xmm1, %xmm0
@@ -131,7 +131,7 @@ factorialf32:
     jp .L__kefir_func_factorialf32_label21
     jb .L__kefir_func_factorialf32_label17
 .L__kefir_func_factorialf32_label4:
-    mov $2, %rax
+    mov $2, %eax
     cvtsi2ss %rax, %xmm1
     ucomiss %xmm1, %xmm0
     jp .L__kefir_func_factorialf32_label25
@@ -201,7 +201,7 @@ factorialf64:
     jp .L__kefir_func_factorialf64_label21
     jb .L__kefir_func_factorialf64_label17
 .L__kefir_func_factorialf64_label4:
-    mov $2, %rax
+    mov $2, %eax
     cvtsi2sd %rax, %xmm1
     ucomisd %xmm1, %xmm0
     jp .L__kefir_func_factorialf64_label25

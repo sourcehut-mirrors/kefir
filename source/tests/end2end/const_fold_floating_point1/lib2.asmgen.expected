@@ -739,8 +739,8 @@ uint_to_float32:
     pop %rbp
     ret
 .L__kefir_func_uint_to_float32_label3:
-    mov $314159, %rax
-    mov $314159, %rcx
+    mov $314159, %eax
+    mov $314159, %ecx
     and $1, %rax
     shr $1, %rcx
     or %rcx, %rax
@@ -767,8 +767,8 @@ uint_to_float64:
     pop %rbp
     ret
 .L__kefir_func_uint_to_float64_label3:
-    mov $31415926, %rax
-    mov $31415926, %rcx
+    mov $31415926, %eax
+    mov $31415926, %ecx
     and $1, %rax
     shr $1, %rcx
     or %rcx, %rax

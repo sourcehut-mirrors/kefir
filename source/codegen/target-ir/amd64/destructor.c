@@ -1391,9 +1391,13 @@ static kefir_result_t load_into_allocation(struct destructor_state *state, const
 
                         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
                             if (operand->immediate.int_immediate >= KEFIR_INT32_MIN && operand->immediate.int_immediate <= KEFIR_INT32_MAX) {
+                                kefir_asm_amd64_xasmgen_register_t reg = alloc->reg.value;
+                                if (kefir_asm_amd64_xasmgen_register_is_wide(reg, 64) && operand->immediate.int_immediate >= 0) {
+                                    REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(reg, &reg));
+                                }
                                 REQUIRE_OK(kefir_asmcmp_amd64_mov(
                                     state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-                                    &KEFIR_ASMCMP_MAKE_PHREG(alloc->reg.value),
+                                    &KEFIR_ASMCMP_MAKE_PHREG(reg),
                                     &KEFIR_ASMCMP_MAKE_INT(operand->immediate.int_immediate), NULL));
                             } else {
                                 REQUIRE_OK(kefir_asmcmp_amd64_movabs(

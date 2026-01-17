@@ -64,7 +64,7 @@ get:
 
 is2:
 .L__kefir_text_func_is2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_is2_end:
 

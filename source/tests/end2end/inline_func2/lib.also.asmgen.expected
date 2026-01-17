@@ -15,7 +15,7 @@ factorial:
     mov %rdi, %rbx
     cmp $1, %rbx
     jg .L__kefir_func_factorial_label5
-    mov $1, %rax
+    mov $1, %eax
 .L__kefir_func_factorial_label3:
     lea -8(%rbp), %rsp
     pop %rbx
@@ -39,7 +39,7 @@ factorial_helper2:
     lea -1(%rbx), %rdi
     cmp $1, %rbx
     jg .L__kefir_func_factorial_helper2_label5
-    mov $1, %rax
+    mov $1, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -65,7 +65,7 @@ factorial_helper:
     lea -1(%rbx), %rdi
     cmp $1, %rbx
     jg .L__kefir_func_factorial_helper_label5
-    mov $1, %rax
+    mov $1, %eax
 .L__kefir_func_factorial_helper_label3:
     lea -8(%rbp), %rsp
     pop %rbx

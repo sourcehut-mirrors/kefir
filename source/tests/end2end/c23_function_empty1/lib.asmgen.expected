@@ -19,10 +19,10 @@ test4:
 .L__kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $1, %rdi
-    mov $2, %rsi
-    mov $3, %rdx
-    mov $4, %rcx
+    mov $1, %edi
+    mov $2, %esi
+    mov $3, %edx
+    mov $4, %ecx
     xor %eax, %eax
     call test2@PLT
     pop %rbp

@@ -21,10 +21,10 @@ test1:
     setle %al
     and %al, %cl
     jnz .L__kefir_func_test1_label5
-    mov $2, %rax
+    mov $2, %eax
     ret
 .L__kefir_func_test1_label5:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_test1_end:
 
@@ -37,10 +37,10 @@ test2:
     setle %al
     and %al, %cl
     jnz .L__kefir_func_test2_label5
-    mov $2, %rax
+    mov $2, %eax
     ret
 .L__kefir_func_test2_label5:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_test2_end:
 
@@ -54,10 +54,10 @@ test3:
     setbe %cl
     and %cl, %al
     jnz .L__kefir_func_test3_label5
-    mov $2, %rax
+    mov $2, %eax
     ret
 .L__kefir_func_test3_label5:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_test3_end:
 
@@ -69,10 +69,10 @@ test4:
     setbe %cl
     and %cl, %al
     jnz .L__kefir_func_test4_label5
-    mov $2, %rax
+    mov $2, %eax
     ret
 .L__kefir_func_test4_label5:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_test4_end:
 

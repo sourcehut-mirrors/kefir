@@ -10,7 +10,7 @@
 .L__kefir_text_section_begin:
 getlen:
 .L__kefir_text_func_getlen_begin:
-    mov $100, %rax
+    mov $100, %eax
     ret
 .L__kefir_text_func_getlen_end:
 

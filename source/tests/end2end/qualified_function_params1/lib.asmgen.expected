@@ -57,7 +57,7 @@ test4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov $1, %rax
+    mov $1, %eax
     movq %rax, -16(%rbp)
     xor %eax, %eax
     movq %rax, -8(%rbp)

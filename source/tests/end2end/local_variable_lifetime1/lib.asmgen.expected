@@ -17,7 +17,7 @@ test2:
     movl $1, -28(%rbp)
     movl $2, -24(%rbp)
     movl %ebx, -20(%rbp)
-    mov $2, %rdi
+    mov $2, %edi
     lea -28(%rbp), %rsi
     lea -24(%rbp), %rdx
     xor %eax, %eax
@@ -27,7 +27,7 @@ test2:
     movl $10, -20(%rbp)
     movl $11, -16(%rbp)
     movl $12, -12(%rbp)
-    mov $5, %rdi
+    mov $5, %edi
     lea -28(%rbp), %rsi
     lea -24(%rbp), %rdx
     lea -20(%rbp), %rcx
@@ -37,7 +37,7 @@ test2:
     call test@PLT
 .L__kefir_func_test2_label4:
     movl $100, -32(%rbp)
-    mov $3, %rdi
+    mov $3, %edi
     lea -28(%rbp), %rsi
     lea -24(%rbp), %rdx
     lea -32(%rbp), %rcx
@@ -50,7 +50,7 @@ test2:
 .L__kefir_func_test2_label6:
     movl $3, -16(%rbp)
     movl $4, -20(%rbp)
-    mov $4, %rdi
+    mov $4, %edi
     lea -28(%rbp), %rsi
     lea -24(%rbp), %rdx
     lea -16(%rbp), %rcx
@@ -63,7 +63,7 @@ test2:
     cmp $10, %eax
     jge .L__kefir_func_test2_label4
 .L__kefir_func_test2_label11:
-    mov $5, %rdi
+    mov $5, %edi
     lea -28(%rbp), %rsi
     lea -24(%rbp), %rdx
     lea -16(%rbp), %rcx

@@ -1770,11 +1770,11 @@ test_dec128_grid_init:
     movdqu %xmm0, 32(%r12)
     imul %rbx, %rbx
     mov %rbx, %rdi
-    mov $16, %rsi
+    mov $16, %esi
     call calloc@PLT
     movq %rax, 48(%r12)
     mov %rbx, %rdi
-    mov $16, %rsi
+    mov $16, %esi
     call calloc@PLT
     movq %rax, 56(%r12)
     movq 48(%r12), %rax
@@ -2323,11 +2323,11 @@ test_dec32_grid_init:
     movd %xmm0, 12(%r12)
     imul %rbx, %rbx
     mov %rbx, %rdi
-    mov $4, %rsi
+    mov $4, %esi
     call calloc@PLT
     movq %rax, 16(%r12)
     mov %rbx, %rdi
-    mov $4, %rsi
+    mov $4, %esi
     call calloc@PLT
     movq %rax, 24(%r12)
     movq 16(%r12), %rax
@@ -2413,11 +2413,11 @@ test_dec64_grid_init:
     movq %xmm0, 16(%r12)
     imul %rbx, %rbx
     mov %rbx, %rdi
-    mov $8, %rsi
+    mov $8, %esi
     call calloc@PLT
     movq %rax, 24(%r12)
     mov %rbx, %rdi
-    mov $8, %rsi
+    mov $8, %esi
     call calloc@PLT
     movq %rax, 32(%r12)
     movq 24(%r12), %rax

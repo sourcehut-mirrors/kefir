@@ -22,7 +22,7 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    mov $9, %rax
+    mov $9, %eax
     ret
 .L__kefir_text_func_get1_end:
 
@@ -44,7 +44,7 @@ get2:
 
 get3:
 .L__kefir_text_func_get3_begin:
-    mov $57, %rax
+    mov $57, %eax
     ret
 .L__kefir_text_func_get3_end:
 
@@ -66,7 +66,7 @@ get4:
 
 get5:
 .L__kefir_text_func_get5_begin:
-    mov $22, %rax
+    mov $22, %eax
     ret
 .L__kefir_text_func_get5_end:
 
@@ -88,7 +88,7 @@ get6:
 
 get7:
 .L__kefir_text_func_get7_begin:
-    mov $52, %rax
+    mov $52, %eax
     ret
 .L__kefir_text_func_get7_end:
 

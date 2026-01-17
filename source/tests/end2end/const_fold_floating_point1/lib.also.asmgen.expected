@@ -296,25 +296,25 @@ to_int_80:
 
 to_uint_32:
 .L__kefir_text_func_to_uint_32_begin:
-    mov $3, %rax
+    mov $3, %eax
     ret
 .L__kefir_text_func_to_uint_32_end:
 
 to_uint_64:
 .L__kefir_text_func_to_uint_64_begin:
-    mov $31, %rax
+    mov $31, %eax
     ret
 .L__kefir_text_func_to_uint_64_end:
 
 to_uint_80:
 .L__kefir_text_func_to_uint_80_begin:
-    mov $314, %rax
+    mov $314, %eax
     ret
 .L__kefir_text_func_to_uint_80_end:
 
 float80_eq2_float80:
 .L__kefir_text_func_float80_eq2_float80_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_float80_eq2_float80_end:
 
@@ -400,7 +400,7 @@ uint_to_float80:
 
 float32_eq2_float32:
 .L__kefir_text_func_float32_eq2_float32_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_float32_eq2_float32_end:
 
@@ -424,13 +424,13 @@ float32_eq_float32:
 
 float32_gt_float32:
 .L__kefir_text_func_float32_gt_float32_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_float32_gt_float32_end:
 
 float32_lt_float32:
 .L__kefir_text_func_float32_lt_float32_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_float32_lt_float32_end:
 
@@ -459,7 +459,7 @@ float32_to_float80:
 
 float64_eq2_float64:
 .L__kefir_text_func_float64_eq2_float64_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_float64_eq2_float64_end:
 
@@ -483,13 +483,13 @@ float64_eq_float64:
 
 float64_gt_float64:
 .L__kefir_text_func_float64_gt_float64_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_float64_gt_float64_end:
 
 float64_lt_float64:
 .L__kefir_text_func_float64_lt_float64_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_float64_lt_float64_end:
 
@@ -524,13 +524,13 @@ float80_eq_float80:
 
 float80_gt_float80:
 .L__kefir_text_func_float80_gt_float80_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_float80_gt_float80_end:
 
 float80_lt_float80:
 .L__kefir_text_func_float80_lt_float80_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_float80_lt_float80_end:
 

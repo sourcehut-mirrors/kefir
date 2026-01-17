@@ -23,7 +23,7 @@ factorial64:
     jle .L__kefir_func_factorial64_label22
 .loc 0 29 9
 .L__kefir_func_factorial64_label55:
-    mov $1, %rcx
+    mov $1, %ecx
 .loc 0 30 23
 .L__kefir_func_factorial64_label10:
     lea -1(%rax), %rdx

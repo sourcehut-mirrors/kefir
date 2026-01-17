@@ -10,7 +10,7 @@ getarr:
 .L__kefir_text_func_getarr_begin:
     lea __kefir_function_getarr_static_arr_0(%rip), %rax
     movq %rax, (%rdi)
-    mov $1000, %rax
+    mov $1000, %eax
     ret
 .L__kefir_text_func_getarr_end:
 

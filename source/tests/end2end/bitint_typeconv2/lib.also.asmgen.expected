@@ -24,7 +24,7 @@ get1:
 .L__kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $7, %rax
+    mov $7, %eax
     shl $61, %rax
     shr $61, %rax
     pop %rbp
@@ -35,7 +35,7 @@ get2:
 .L__kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $7, %rax
+    mov $7, %eax
     shl $60, %rax
     sar $60, %rax
     pop %rbp
@@ -46,7 +46,7 @@ get3:
 .L__kefir_text_func_get3_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $633, %rax
+    mov $633, %eax
     shl $54, %rax
     shr $54, %rax
     pop %rbp
@@ -57,7 +57,7 @@ get4:
 .L__kefir_text_func_get4_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $633, %rax
+    mov $633, %eax
     shl $53, %rax
     sar $53, %rax
     pop %rbp
@@ -68,7 +68,7 @@ get5:
 .L__kefir_text_func_get5_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $16710822, %rax
+    mov $16710822, %eax
     shl $40, %rax
     shr $40, %rax
     pop %rbp
@@ -79,7 +79,7 @@ get6:
 .L__kefir_text_func_get6_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $16710822, %rax
+    mov $16710822, %eax
     shl $39, %rax
     sar $39, %rax
     pop %rbp

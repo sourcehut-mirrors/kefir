@@ -2216,7 +2216,7 @@ test1:
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -48(%rbp), %rdi
-    mov $250, %rsi
+    mov $250, %esi
     call __kefir_bigint_invert
     mov %rbx, %rax
     movdqu -48(%rbp), %xmm0

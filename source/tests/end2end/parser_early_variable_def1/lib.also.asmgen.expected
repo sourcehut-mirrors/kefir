@@ -9,7 +9,7 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov $32, %rdi
+    mov $32, %edi
     jmp callback@PLT
 .L__kefir_text_func_test1_end:
 

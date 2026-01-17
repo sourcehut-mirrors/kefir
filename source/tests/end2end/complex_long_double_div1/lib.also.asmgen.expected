@@ -669,7 +669,7 @@ __kefir_softfloat_scalbnl:
     fstpt -48(%rbp)
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbnl_label2:
-    mov $16383, %rcx
+    mov $16383, %ecx
     cmp $16383, %edi
     mov %rdi, %rdx
     cmovg %rcx, %rdx
@@ -787,7 +787,7 @@ __kefir_softfloat_ilogbl:
     movabs $-9223372036854775808, %rcx
     and %rcx, %rax
     mov $-2147483648, %rcx
-    mov $2147483647, %rdx
+    mov $2147483647, %edx
     test %rax, %rax
     mov %rcx, %rax
     cmovz %rdx, %rax

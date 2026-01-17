@@ -64,7 +64,7 @@ test5:
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
     lea -16(%rbp), %rdi
-    mov $120, %rsi
+    mov $120, %esi
     call __kefir_bigint_least_significant_nonzero
     lea (%rbp), %rsp
     pop %rbp
@@ -76,7 +76,7 @@ test6:
     push %rbp
     mov %rsp, %rbp
     lea 16(%rbp), %rdi
-    mov $315, %rsi
+    mov $315, %esi
     call __kefir_bigint_least_significant_nonzero
     pop %rbp
     ret
@@ -119,7 +119,7 @@ __kefir_bigint_least_significant_nonzero:
     mov %rsi, %r10
     sub %r9, %r10
     mov %r10, %r9
-    mov $8, %r10
+    mov $8, %r10d
     cmp %rax, %rcx
     cmovae %r9, %r10
     movzx %r8b, %rcx

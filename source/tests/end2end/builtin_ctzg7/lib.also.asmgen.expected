@@ -96,13 +96,13 @@ test5:
     movl $0, -20(%rbp)
     lea -48(%rbp), %rdi
     lea -32(%rbp), %rsi
-    mov $120, %rdx
+    mov $120, %edx
     call __kefir_bigint_unsigned_compare
     cmp $0, %al
     mov %rax, %r12
     sete %r12b
     lea -48(%rbp), %rdi
-    mov $120, %rsi
+    mov $120, %esi
     xor %edx, %edx
     call __kefir_bigint_trailing_zeros
     test %r12b, %r12b
@@ -136,13 +136,13 @@ test6:
     movl $0, -28(%rbp)
     mov %r12, %rdi
     lea -64(%rbp), %rsi
-    mov $315, %rdx
+    mov $315, %edx
     call __kefir_bigint_unsigned_compare
     cmp $0, %al
     mov %rax, %r13
     sete %r13b
     mov %r12, %rdi
-    mov $315, %rsi
+    mov $315, %esi
     xor %edx, %edx
     call __kefir_bigint_trailing_zeros
     test %r13b, %r13b
@@ -195,7 +195,7 @@ __kefir_bigint_unsigned_compare:
     mov $-1, %rax
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label15:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17:
     lea -1(%rdx), %rcx
@@ -205,7 +205,7 @@ __kefir_bigint_unsigned_compare:
     sub %r11, %rcx
     add $1, %rcx
     mov %ecx, %ecx
-    mov $1, %r11
+    mov $1, %r11d
     shl %cl, %r11
     sub $1, %r11
     and %r11d, %r9d
@@ -250,7 +250,7 @@ __kefir_bigint_trailing_zeros:
     mov %rsi, %rbx
     sub %r11, %rbx
     mov %rbx, %r11
-    mov $8, %rbx
+    mov $8, %ebx
     cmp %rdx, %rcx
     cmovae %r11, %rbx
     lea 8(%r9), %rcx

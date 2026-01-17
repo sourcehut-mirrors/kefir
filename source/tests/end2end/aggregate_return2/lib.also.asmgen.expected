@@ -88,7 +88,7 @@ testlarge2:
     call getlarge@PLT
     lea -1040(%rbp), %rdi
     lea -528(%rbp), %rsi
-    mov $512, %rdx
+    mov $512, %edx
     call my_memcmp@PLT
     lea -16(%rbp), %rsp
     pop %r12

@@ -20,7 +20,7 @@
 .L__kefir_text_section_begin:
 get0:
 .L__kefir_text_func_get0_begin:
-    mov $12345, %rax
+    mov $12345, %eax
     ret
 .L__kefir_text_func_get0_end:
 

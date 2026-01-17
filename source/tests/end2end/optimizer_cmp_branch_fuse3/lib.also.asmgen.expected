@@ -38,7 +38,7 @@ lessd:
     pop %rbp
     ret
 .L__kefir_func_lessd_label6:
-    mov $1, %rax
+    mov $1, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -69,7 +69,7 @@ equalsd:
     pop %rbp
     ret
 .L__kefir_func_equalsd_label6:
-    mov $1, %rax
+    mov $1, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -100,7 +100,7 @@ greaterd:
     pop %rbp
     ret
 .L__kefir_func_greaterd_label6:
-    mov $1, %rax
+    mov $1, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -130,7 +130,7 @@ not_equalsd:
     pop %rbp
     ret
 .L__kefir_func_not_equalsd_label10:
-    mov $1, %rax
+    mov $1, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -161,7 +161,7 @@ greater_or_equalsd:
     pop %rbp
     ret
 .L__kefir_func_greater_or_equalsd_label6:
-    mov $1, %rax
+    mov $1, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -192,7 +192,7 @@ less_or_equalsd:
     pop %rbp
     ret
 .L__kefir_func_less_or_equalsd_label6:
-    mov $1, %rax
+    mov $1, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

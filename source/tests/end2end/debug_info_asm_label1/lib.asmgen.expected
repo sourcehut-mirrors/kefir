@@ -21,7 +21,7 @@ SOMEFN1:
     stmxcsr -8(%rbp)
 .loc 0 27 20
 .L__kefir_func_SOMEFN1_label172:
-    mov $1, %rdi
+    mov $1, %edi
     call SOMEFN0@PLT
 .loc 0 27 12
 .L__kefir_func_SOMEFN1_label177:

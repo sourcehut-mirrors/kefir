@@ -19,10 +19,10 @@ get:
     mov $-101, %rax
     ret
 .L__kefir_func_get_label11:
-    mov $101, %rax
+    mov $101, %eax
     ret
 .L__kefir_func_get_label13:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_func_get_label15:
     xor %eax, %eax

@@ -42,7 +42,7 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov $1, %rax
+    mov $1, %eax
 .L__kefir_func_test3_label2:
     lea -1(%edi), %ecx
     mov %rax, %rdx

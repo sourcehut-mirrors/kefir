@@ -26,7 +26,7 @@
 .L__kefir_text_section_begin:
 get_a:
 .L__kefir_text_func_get_a_begin:
-    mov $123456789, %rax
+    mov $123456789, %eax
     ret
 .L__kefir_text_func_get_a_end:
 

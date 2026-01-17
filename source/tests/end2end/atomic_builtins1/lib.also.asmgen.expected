@@ -38,9 +38,9 @@ test_atomic_store128:
     mov %rdi, %rsi
     movq $0, -8(%rbp)
     fstpt -16(%rbp)
-    mov $16, %rdi
+    mov $16, %edi
     lea -16(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_store@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -61,9 +61,9 @@ test_atomic_store256:
     fldt (%rax)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
-    mov $32, %rdi
+    mov $32, %edi
     lea -48(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_store@PLT
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -80,9 +80,9 @@ test2_atomic_store128:
     mov %rdi, %rsi
     movq $0, -8(%rbp)
     fstpt -16(%rbp)
-    mov $16, %rdi
+    mov $16, %edi
     lea -16(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_store@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -103,9 +103,9 @@ test2_atomic_store256:
     fldt (%rax)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
-    mov $32, %rdi
+    mov $32, %edi
     lea -48(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_store@PLT
     fldcw -8(%rbp)
     lea (%rbp), %rsp

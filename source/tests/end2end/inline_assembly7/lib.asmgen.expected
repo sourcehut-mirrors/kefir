@@ -57,7 +57,7 @@ sum3_one:
     movq -32(%rbp), %rax
     movq -24(%rbp), %r8
     movq -16(%rbp), %r9
-    mov $1, %rcx
+    mov $1, %ecx
     mov %r9, %rdx
     mov %rax, %rsi
     mov %r8, %rdi

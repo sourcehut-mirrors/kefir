@@ -26,13 +26,13 @@ get2:
 
 get3:
 .L__kefir_text_func_get3_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_get3_end:
 
 get4:
 .L__kefir_text_func_get4_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_get4_end:
 

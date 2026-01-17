@@ -16,25 +16,25 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    mov $26, %rax
+    mov $26, %eax
     ret
 .L__kefir_text_func_get1_end:
 
 get2:
 .L__kefir_text_func_get2_begin:
-    mov $1024, %rax
+    mov $1024, %eax
     ret
 .L__kefir_text_func_get2_end:
 
 get3:
 .L__kefir_text_func_get3_begin:
-    mov $16777192, %rax
+    mov $16777192, %eax
     ret
 .L__kefir_text_func_get3_end:
 
 get4:
 .L__kefir_text_func_get4_begin:
-    mov $1447260770, %rax
+    mov $1447260770, %eax
     ret
 .L__kefir_text_func_get4_end:
 

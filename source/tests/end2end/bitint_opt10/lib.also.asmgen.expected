@@ -14,13 +14,13 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_get1_end:
 
 get2:
 .L__kefir_text_func_get2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_get2_end:
 

@@ -17,14 +17,14 @@ get_a:
     lea value(%rip), %rax
     movl (%rax), %eax
     xor %edx, %edx
-    mov $96, %rcx
+    mov $96, %ecx
     shld $96, %rax, %rdx
     shl $96, %rax
     xor %esi, %esi
     test $64, %cl
     cmovne %rax, %rdx
     cmove %rax, %rsi
-    mov $96, %rcx
+    mov $96, %ecx
     shrd $96, %rdx, %rsi
     shr $96, %rdx
     xor %edi, %edi
@@ -43,14 +43,14 @@ get_b:
     movq 4(%rax), %rax
     lea value(%rip), %rcx
     movzxw 12(%rcx), %rdx
-    mov $55, %rcx
+    mov $55, %ecx
     shld $55, %rax, %rdx
     shl $55, %rax
     xor %esi, %esi
     test $64, %cl
     cmovne %rax, %rdx
     cmove %rax, %rsi
-    mov $58, %rcx
+    mov $58, %ecx
     shrd $58, %rdx, %rsi
     shr $58, %rdx
     xor %edi, %edi
@@ -71,8 +71,8 @@ set_a:
     lea value(%rip), %rax
     movl (%rax), %eax
     lea value(%rip), %rdx
-    mov $1, %rsi
-    mov $32, %rcx
+    mov $1, %esi
+    mov $32, %ecx
     shl $32, %rsi
     xor %r8d, %r8d
     test $64, %cl
@@ -108,9 +108,9 @@ set_b:
     lea value(%rip), %rcx
     movzxw 12(%rcx), %rdx
     lea value(%rip), %r8
-    mov $1, %r9
+    mov $1, %r9d
     xor %r10d, %r10d
-    mov $70, %rcx
+    mov $70, %ecx
     shld $70, %r9, %r10
     shl $70, %r9
     xor %r11d, %r11d
@@ -121,14 +121,14 @@ set_b:
     sbb $0, %r10
     and %r11, %rdi
     and %r10, %rsi
-    mov $3, %rcx
+    mov $3, %ecx
     shld $3, %rdi, %rsi
     shl $3, %rdi
     xor %r9d, %r9d
     test $64, %cl
     cmovne %rdi, %rsi
     cmove %rdi, %r9
-    mov $3, %rcx
+    mov $3, %ecx
     shld $3, %r11, %r10
     shl $3, %r11
     xor %edi, %edi

@@ -68,7 +68,7 @@ test6:
 .L__kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $1, %rax
+    mov $1, %eax
     pop %rbp
     ret
 .L__kefir_text_func_test6_end:

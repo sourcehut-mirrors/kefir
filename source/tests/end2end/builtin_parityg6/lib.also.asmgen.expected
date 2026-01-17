@@ -78,7 +78,7 @@ test5:
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
     lea -16(%rbp), %rdi
-    mov $120, %rsi
+    mov $120, %esi
     call __kefir_bigint_parity
     lea (%rbp), %rsp
     pop %rbp
@@ -90,7 +90,7 @@ test6:
     push %rbp
     mov %rsp, %rbp
     lea 16(%rbp), %rdi
-    mov $315, %rsi
+    mov $315, %esi
     call __kefir_bigint_parity
     pop %rbp
     ret
@@ -139,7 +139,7 @@ __kefir_bigint_nonzero_count:
     mov %rsi, %r11
     sub %r10, %r11
     mov %r11, %r10
-    mov $8, %r11
+    mov $8, %r11d
     cmp %rax, %rcx
     cmovae %r10, %r11
     xor %ecx, %ecx

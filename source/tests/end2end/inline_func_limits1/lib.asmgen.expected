@@ -50,9 +50,9 @@ main:
     movl (%rax), %ecx
     sub $-56, %ecx
     movl %ecx, (%rax)
-    mov $1000, %rdi
+    mov $1000, %edi
     call test1
-    mov $2000, %rdi
+    mov $2000, %edi
     pop %rbp
     jmp test2
 .L__kefir_text_func_main_end:

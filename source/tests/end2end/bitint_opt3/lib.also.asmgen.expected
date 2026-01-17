@@ -14,19 +14,19 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    mov $34, %rax
+    mov $34, %eax
     ret
 .L__kefir_text_func_get1_end:
 
 get2:
 .L__kefir_text_func_get2_begin:
-    mov $1024, %rax
+    mov $1024, %eax
     ret
 .L__kefir_text_func_get2_end:
 
 get3:
 .L__kefir_text_func_get3_begin:
-    mov $1048574, %rax
+    mov $1048574, %eax
     ret
 .L__kefir_text_func_get3_end:
 

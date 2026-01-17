@@ -20,7 +20,7 @@ getF:
 
 getT:
 .L__kefir_text_func_getT_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_getT_end:
 

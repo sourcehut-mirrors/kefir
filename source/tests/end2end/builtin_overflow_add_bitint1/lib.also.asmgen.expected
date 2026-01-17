@@ -23,7 +23,7 @@ add1:
     mov %rdi, %rdx
     sar $46, %rdx
     lea -48(%rbp), %rdi
-    mov $66, %rsi
+    mov $66, %esi
     call __kefir_bigint_set_signed_integer
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
@@ -31,18 +31,18 @@ add1:
     mov %r12, %rdx
     sar $33, %rdx
     lea -48(%rbp), %rdi
-    mov $66, %rsi
+    mov $66, %esi
     call __kefir_bigint_set_signed_integer
     lea -32(%rbp), %rdi
     lea -48(%rbp), %rsi
-    mov $66, %rdx
+    mov $66, %edx
     call __kefir_bigint_add
     movq -32(%rbp), %rax
     movq %rax, (%rbx)
     lea -32(%rbp), %rdi
-    mov $66, %rsi
+    mov $66, %esi
     call __kefir_bigint_redundant_sign_bits
-    mov $66, %rcx
+    mov $66, %ecx
     sub %rax, %rcx
     xor %eax, %eax
     cmp $64, %rcx
@@ -67,7 +67,7 @@ add2:
     mov %rdi, %rdx
     sar $14, %rdx
     lea -48(%rbp), %rdi
-    mov $66, %rsi
+    mov $66, %esi
     call __kefir_bigint_set_signed_integer
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
@@ -75,18 +75,18 @@ add2:
     mov %r12, %rdx
     sar $3, %rdx
     lea -48(%rbp), %rdi
-    mov $66, %rsi
+    mov $66, %esi
     call __kefir_bigint_set_signed_integer
     lea -32(%rbp), %rdi
     lea -48(%rbp), %rsi
-    mov $66, %rdx
+    mov $66, %edx
     call __kefir_bigint_add
     movq -32(%rbp), %rax
     movq %rax, (%rbx)
     lea -32(%rbp), %rdi
-    mov $66, %rsi
+    mov $66, %esi
     call __kefir_bigint_redundant_sign_bits
-    mov $66, %rcx
+    mov $66, %ecx
     sub %rax, %rcx
     xor %eax, %eax
     cmp $64, %rcx
@@ -112,27 +112,27 @@ add3:
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea -48(%rbp), %rdi
-    mov $70, %rsi
-    mov $82, %rdx
+    mov $70, %esi
+    mov $82, %edx
     call __kefir_bigint_cast_signed
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea -48(%rbp), %rdi
-    mov $80, %rsi
-    mov $82, %rdx
+    mov $80, %esi
+    mov $82, %edx
     call __kefir_bigint_cast_signed
     lea -32(%rbp), %rdi
     lea -48(%rbp), %rsi
-    mov $82, %rdx
+    mov $82, %edx
     call __kefir_bigint_add
     movq -32(%rbp), %rax
     movq %rax, (%rbx)
     lea -32(%rbp), %rdi
-    mov $82, %rsi
+    mov $82, %esi
     call __kefir_bigint_redundant_sign_bits
-    mov $82, %rcx
+    mov $82, %ecx
     sub %rax, %rcx
     xor %eax, %eax
     cmp $64, %rcx
@@ -200,7 +200,7 @@ __kefir_bigint_cast_signed:
     test %r9d, %r9d
     jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label25
     movzxb (%rdx), %r10
-    mov $1, %r11
+    mov $1, %r11d
     mov %rsi, %rcx
     shl %cl, %r11
     sub $1, %r11
@@ -209,7 +209,7 @@ __kefir_bigint_cast_signed:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label9
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label25:
     movzxb (%rdx), %r10
-    mov $1, %r11
+    mov $1, %r11d
     mov %rsi, %rcx
     shl %cl, %r11
     sub $1, %r11
@@ -238,7 +238,7 @@ __kefir_bigint_cast_signed:
     and $1, %edx
     jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label38
     movzxb (%rdi), %rdx
-    mov $1, %rsi
+    mov $1, %esi
     mov %rax, %rcx
     shl %cl, %rsi
     sub $1, %rsi
@@ -249,7 +249,7 @@ __kefir_bigint_cast_signed:
     ret
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label38:
     movzxb (%rdi), %rdx
-    mov $1, %rsi
+    mov $1, %esi
     mov %rax, %rcx
     shl %cl, %rsi
     sub $1, %rsi
@@ -292,7 +292,7 @@ __kefir_bigint_set_signed_integer:
     mov %rsi, %rax
     cmp $0, %rax
     je .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label14
-    mov $64, %rcx
+    mov $64, %ecx
     cmp $64, %rax
     mov %rax, %rsi
     cmova %rcx, %rsi
@@ -374,7 +374,7 @@ __kefir_bigint_redundant_sign_bits:
     mov %rsi, %r11
     sub %rcx, %r11
     mov %r11, %rcx
-    mov $8, %r11
+    mov $8, %r11d
     cmp $0, %r8
     cmovbe %rcx, %r11
     xor %ecx, %ecx

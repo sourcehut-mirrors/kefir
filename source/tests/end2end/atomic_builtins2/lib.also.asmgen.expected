@@ -41,9 +41,9 @@ test2_atomic_load128:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rsi
-    mov $16, %rdi
+    mov $16, %edi
     lea -16(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_load@PLT
     fldt -16(%rbp)
     lea (%rbp), %rsp
@@ -58,9 +58,9 @@ test2_atomic_load256:
     sub $80, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rsi
-    mov $32, %rdi
+    mov $32, %edi
     lea -48(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_load@PLT
     fldt -32(%rbp)
     fldt -48(%rbp)
@@ -105,9 +105,9 @@ test_atomic_load128:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rsi
-    mov $16, %rdi
+    mov $16, %edi
     lea -16(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_load@PLT
     fldt -16(%rbp)
     lea (%rbp), %rsp
@@ -122,9 +122,9 @@ test_atomic_load256:
     sub $80, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rsi
-    mov $32, %rdi
+    mov $32, %edi
     lea -48(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_load@PLT
     fldt -32(%rbp)
     fldt -48(%rbp)

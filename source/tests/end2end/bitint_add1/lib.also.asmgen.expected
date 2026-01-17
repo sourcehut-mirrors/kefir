@@ -113,7 +113,7 @@ add5:
     movdqu %xmm0, -64(%rbp)
     lea -64(%rbp), %rdi
     lea -48(%rbp), %rsi
-    mov $120, %rdx
+    mov $120, %edx
     call __kefir_bigint_add
     movq -64(%rbp), %rax
     movq -56(%rbp), %rdx
@@ -183,7 +183,7 @@ add6:
     movq %rax, -96(%rbp)
     lea -128(%rbp), %rdi
     lea -168(%rbp), %rsi
-    mov $310, %rdx
+    mov $310, %edx
     call __kefir_bigint_add
     mov %rbx, %rax
     movq -128(%rbp), %rcx
@@ -218,11 +218,11 @@ __kefir_bigint_add:
     movq %rsi, -32(%rbp)
     movq %rdi, -40(%rbp)
     movq -48(%rbp), %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     add %rcx, %rax
     sub $1, %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     xor %edx, %edx
     div %rcx
@@ -264,7 +264,7 @@ __kefir_bigint_add:
     add %rdx, %rcx
     movb %al, (%rcx)
     movl -4(%rbp), %eax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     shr %cl, %eax
     movl %eax, -56(%rbp)

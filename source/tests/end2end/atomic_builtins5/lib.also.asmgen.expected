@@ -138,10 +138,10 @@ test_fetch_add128:
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -48(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_load@PLT
     mov -48(%rbp), %rax
     mov -40(%rbp), %rcx
@@ -154,12 +154,12 @@ test_fetch_add128:
     adc %r12, %rcx
     mov %rax, -48(%rbp)
     mov %rcx, -40(%rbp)
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -64(%rbp), %rdx
     lea -48(%rbp), %rcx
-    mov $5, %r8
-    mov $5, %r9
+    mov $5, %r8d
+    mov $5, %r9d
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_test_fetch_add128_label2
@@ -185,10 +185,10 @@ test_fetch_and128:
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -48(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_load@PLT
     mov -48(%rbp), %rax
     mov -40(%rbp), %rcx
@@ -201,12 +201,12 @@ test_fetch_and128:
     and %r12, %rcx
     mov %rax, -48(%rbp)
     mov %rcx, -40(%rbp)
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -64(%rbp), %rdx
     lea -48(%rbp), %rcx
-    mov $5, %r8
-    mov $5, %r9
+    mov $5, %r8d
+    mov $5, %r9d
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_test_fetch_and128_label2
@@ -258,10 +258,10 @@ test_fetch_sub128:
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -48(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_load@PLT
     mov -48(%rbp), %rax
     mov -40(%rbp), %rcx
@@ -279,12 +279,12 @@ test_fetch_sub128:
     adc %r12, %rcx
     mov %rax, -48(%rbp)
     mov %rcx, -40(%rbp)
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -64(%rbp), %rdx
     lea -48(%rbp), %rcx
-    mov $5, %r8
-    mov $5, %r9
+    mov $5, %r8d
+    mov $5, %r9d
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_test_fetch_sub128_label2
@@ -310,10 +310,10 @@ test_fetch_xor128:
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -48(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_load@PLT
     mov -48(%rbp), %rax
     mov -40(%rbp), %rcx
@@ -326,12 +326,12 @@ test_fetch_xor128:
     xor %r12, %rcx
     mov %rax, -48(%rbp)
     mov %rcx, -40(%rbp)
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -64(%rbp), %rdx
     lea -48(%rbp), %rcx
-    mov $5, %r8
-    mov $5, %r9
+    mov $5, %r8d
+    mov $5, %r9d
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_test_fetch_xor128_label2
@@ -524,10 +524,10 @@ test_fetch_or128:
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -48(%rbp), %rdx
-    mov $5, %rcx
+    mov $5, %ecx
     call __atomic_load@PLT
     mov -48(%rbp), %rax
     mov -40(%rbp), %rcx
@@ -540,12 +540,12 @@ test_fetch_or128:
     or %r12, %rcx
     mov %rax, -48(%rbp)
     mov %rcx, -40(%rbp)
-    mov $16, %rdi
+    mov $16, %edi
     mov %r13, %rsi
     lea -64(%rbp), %rdx
     lea -48(%rbp), %rcx
-    mov $5, %r8
-    mov $5, %r9
+    mov $5, %r8d
+    mov $5, %r9d
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_test_fetch_or128_label2

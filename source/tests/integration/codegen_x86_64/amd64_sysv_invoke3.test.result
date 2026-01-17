@@ -18,7 +18,7 @@ proxyadd:
     mov QWORD PTR [%rbp - 48], %rsi
     movq [%rbp - 40], %xmm0
     lea %rbx, [%rbp - 32]
-    mov %rdi, 7
+    mov %edi, 7
     mov %rsi, QWORD PTR [%rbp - 48]
     movq %xmm0, [%rbp - 40]
     call %r12

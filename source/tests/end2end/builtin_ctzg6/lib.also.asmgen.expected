@@ -56,7 +56,7 @@ test5:
     movq %rdi, -16(%rbp)
     movq %rsi, -8(%rbp)
     lea -16(%rbp), %rdi
-    mov $120, %rsi
+    mov $120, %esi
     xor %edx, %edx
     call __kefir_bigint_trailing_zeros
     lea (%rbp), %rsp
@@ -69,7 +69,7 @@ test6:
     push %rbp
     mov %rsp, %rbp
     lea 16(%rbp), %rdi
-    mov $315, %rsi
+    mov $315, %esi
     xor %edx, %edx
     call __kefir_bigint_trailing_zeros
     pop %rbp
@@ -120,7 +120,7 @@ __kefir_bigint_trailing_zeros:
     mov %rsi, %rbx
     sub %r11, %rbx
     mov %rbx, %r11
-    mov $8, %rbx
+    mov $8, %ebx
     cmp %rdx, %rcx
     cmovae %r11, %rbx
     lea 8(%r9), %rcx

@@ -16,7 +16,7 @@ test:
     mov %rax, %r10
     sar $63, %r10
     sub $32, %rsp
-    mov $7, %rdi
+    mov $7, %edi
     xor %esi, %esi
     xor %edx, %edx
     xor %ecx, %ecx
@@ -41,7 +41,7 @@ test2:
     mov %rax, %r10
     sar $63, %r10
     sub $32, %rsp
-    mov $6, %rdi
+    mov $6, %edi
     xor %esi, %esi
     xor %edx, %edx
     xor %ecx, %ecx

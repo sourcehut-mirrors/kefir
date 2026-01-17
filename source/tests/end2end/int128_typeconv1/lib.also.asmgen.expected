@@ -160,8 +160,8 @@ i128_to_i256:
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea -48(%rbp), %rdi
-    mov $128, %rsi
-    mov $256, %rdx
+    mov $128, %esi
+    mov $256, %edx
     call __kefir_bigint_cast_signed
     mov %rbx, %rax
     movdqu -48(%rbp), %xmm0
@@ -186,8 +186,8 @@ i128_to_u256:
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea -48(%rbp), %rdi
-    mov $128, %rsi
-    mov $256, %rdx
+    mov $128, %esi
+    mov $256, %edx
     call __kefir_bigint_cast_signed
     mov %rbx, %rax
     movdqu -48(%rbp), %xmm0
@@ -212,8 +212,8 @@ u128_to_i256:
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea -48(%rbp), %rdi
-    mov $128, %rsi
-    mov $256, %rdx
+    mov $128, %esi
+    mov $256, %edx
     call __kefir_bigint_cast_unsigned
     mov %rbx, %rax
     movdqu -48(%rbp), %xmm0
@@ -238,8 +238,8 @@ u128_to_u256:
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea -48(%rbp), %rdi
-    mov $128, %rsi
-    mov $256, %rdx
+    mov $128, %esi
+    mov $256, %edx
     call __kefir_bigint_cast_unsigned
     mov %rbx, %rax
     movdqu -48(%rbp), %xmm0
@@ -309,7 +309,7 @@ __kefir_bigint_cast_signed:
     test %r9d, %r9d
     jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label25
     movzxb (%rdx), %r10
-    mov $1, %r11
+    mov $1, %r11d
     mov %rsi, %rcx
     shl %cl, %r11
     sub $1, %r11
@@ -318,7 +318,7 @@ __kefir_bigint_cast_signed:
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label9
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label25:
     movzxb (%rdx), %r10
-    mov $1, %r11
+    mov $1, %r11d
     mov %rsi, %rcx
     shl %cl, %r11
     sub $1, %r11
@@ -347,7 +347,7 @@ __kefir_bigint_cast_signed:
     and $1, %edx
     jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label38
     movzxb (%rdi), %rdx
-    mov $1, %rsi
+    mov $1, %esi
     mov %rax, %rcx
     shl %cl, %rsi
     sub $1, %rsi
@@ -358,7 +358,7 @@ __kefir_bigint_cast_signed:
     ret
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label38:
     movzxb (%rdi), %rdx
-    mov $1, %rsi
+    mov $1, %esi
     mov %rax, %rcx
     shl %cl, %rsi
     sub $1, %rsi
@@ -408,7 +408,7 @@ __kefir_bigint_cast_unsigned:
     mov %rdi, %rsi
     add %rdx, %rsi
     movzxb (%rsi), %r8
-    mov $1, %r9
+    mov $1, %r9d
     shl %cl, %r9
     sub $1, %r9
     and %r9d, %r8d
@@ -430,7 +430,7 @@ __kefir_bigint_cast_unsigned:
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label24:
     add %rax, %rdi
     movzxb (%rdi), %rax
-    mov $1, %rdx
+    mov $1, %edx
     shl %cl, %rdx
     sub $1, %rdx
     and %edx, %eax

@@ -146,7 +146,7 @@ sum_progression:
     fstpt -208(%rbp)
     fldt -224(%rbp)
     faddp
-    mov $2, %rax
+    mov $2, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -163,7 +163,7 @@ sum_progression:
     fmulp
     fldt -192(%rbp)
     faddp
-    mov $3, %rax
+    mov $3, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -180,7 +180,7 @@ sum_progression:
     fmulp
     fldt -160(%rbp)
     faddp
-    mov $4, %rax
+    mov $4, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -197,7 +197,7 @@ sum_progression:
     fmulp
     fldt -128(%rbp)
     faddp
-    mov $5, %rax
+    mov $5, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -214,7 +214,7 @@ sum_progression:
     fmulp
     fldt -96(%rbp)
     faddp
-    mov $6, %rax
+    mov $6, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -231,7 +231,7 @@ sum_progression:
     fmulp
     fldt -64(%rbp)
     faddp
-    mov $7, %rax
+    mov $7, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -248,7 +248,7 @@ sum_progression:
     fmulp
     fldt -224(%rbp)
     faddp
-    mov $8, %rax
+    mov $8, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -265,7 +265,7 @@ sum_progression:
     fmulp
     fldt -176(%rbp)
     faddp
-    mov $9, %rax
+    mov $9, %eax
     push %rax
     fildq (%rsp)
     add $8, %rsp

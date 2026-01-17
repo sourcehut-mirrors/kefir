@@ -222,7 +222,7 @@ eq32_1:
 
 eq32_2:
 .L__kefir_text_func_eq32_2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_eq32_2_end:
 
@@ -234,7 +234,7 @@ eq64_1:
 
 eq64_2:
 .L__kefir_text_func_eq64_2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_eq64_2_end:
 
@@ -246,13 +246,13 @@ gt32_1:
 
 gt32_2:
 .L__kefir_text_func_gt32_2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_gt32_2_end:
 
 gt64_1:
 .L__kefir_text_func_gt64_1_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_gt64_1_end:
 
@@ -264,7 +264,7 @@ gt64_2:
 
 lt32_1:
 .L__kefir_text_func_lt32_1_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_lt32_1_end:
 
@@ -282,7 +282,7 @@ lt64_1:
 
 lt64_2:
 .L__kefir_text_func_lt64_2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_lt64_2_end:
 
@@ -327,13 +327,13 @@ eq128_1:
 
 eq128_2:
 .L__kefir_text_func_eq128_2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_eq128_2_end:
 
 gt128_1:
 .L__kefir_text_func_gt128_1_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_gt128_1_end:
 
@@ -351,7 +351,7 @@ lt128_1:
 
 lt128_2:
 .L__kefir_text_func_lt128_2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_lt128_2_end:
 
@@ -363,7 +363,7 @@ isnan32_1:
 
 isnan32_2:
 .L__kefir_text_func_isnan32_2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_isnan32_2_end:
 
@@ -375,7 +375,7 @@ isnan64_1:
 
 isnan64_2:
 .L__kefir_text_func_isnan64_2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_isnan64_2_end:
 
@@ -387,7 +387,7 @@ isnan128_1:
 
 isnan128_2:
 .L__kefir_text_func_isnan128_2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_isnan128_2_end:
 

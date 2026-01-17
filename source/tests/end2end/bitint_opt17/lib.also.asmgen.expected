@@ -34,7 +34,7 @@
 .L__kefir_text_section_begin:
 eq1:
 .L__kefir_text_func_eq1_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_eq1_end:
 
@@ -58,7 +58,7 @@ less2:
 
 less3:
 .L__kefir_text_func_less3_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_less3_end:
 
@@ -70,7 +70,7 @@ above1:
 
 above2:
 .L__kefir_text_func_above2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_above2_end:
 
@@ -94,7 +94,7 @@ below2:
 
 below3:
 .L__kefir_text_func_below3_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_below3_end:
 
@@ -106,7 +106,7 @@ greater1:
 
 greater2:
 .L__kefir_text_func_greater2_begin:
-    mov $1, %rax
+    mov $1, %eax
     ret
 .L__kefir_text_func_greater2_end:
 

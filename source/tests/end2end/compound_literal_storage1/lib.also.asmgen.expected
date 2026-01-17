@@ -46,28 +46,28 @@ get3:
     xorps %xmm0, %xmm0
     movdqu %xmm0, (%rdi)
     movdqu %xmm0, 16(%rdi)
-    mov $1, %rax
+    mov $1, %eax
     neg %eax
     movl %eax, (%rdi)
-    mov $2, %rax
+    mov $2, %eax
     neg %eax
     movl %eax, 4(%rdi)
-    mov $3, %rax
+    mov $3, %eax
     neg %eax
     movl %eax, 8(%rdi)
-    mov $4, %rax
+    mov $4, %eax
     neg %eax
     movl %eax, 12(%rdi)
-    mov $5, %rax
+    mov $5, %eax
     neg %eax
     movl %eax, 16(%rdi)
-    mov $6, %rax
+    mov $6, %eax
     neg %eax
     movl %eax, 20(%rdi)
-    mov $7, %rax
+    mov $7, %eax
     neg %eax
     movl %eax, 24(%rdi)
-    mov $8, %rax
+    mov $8, %eax
     neg %eax
     movl %eax, 28(%rdi)
     mov %rdi, %rax
@@ -82,28 +82,28 @@ get4:
     xorps %xmm0, %xmm0
     movdqu %xmm0, (%rdi)
     movdqu %xmm0, 16(%rdi)
-    mov $8, %rax
+    mov $8, %eax
     neg %eax
     movl %eax, (%rdi)
-    mov $7, %rax
+    mov $7, %eax
     neg %eax
     movl %eax, 4(%rdi)
-    mov $6, %rax
+    mov $6, %eax
     neg %eax
     movl %eax, 8(%rdi)
-    mov $5, %rax
+    mov $5, %eax
     neg %eax
     movl %eax, 12(%rdi)
-    mov $4, %rax
+    mov $4, %eax
     neg %eax
     movl %eax, 16(%rdi)
-    mov $3, %rax
+    mov $3, %eax
     neg %eax
     movl %eax, 20(%rdi)
-    mov $2, %rax
+    mov $2, %eax
     neg %eax
     movl %eax, 24(%rdi)
-    mov $1, %rax
+    mov $1, %eax
     neg %eax
     movl %eax, 28(%rdi)
     mov %rdi, %rax
@@ -136,7 +136,7 @@ test1:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    mov $8, %rax
+    mov $8, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

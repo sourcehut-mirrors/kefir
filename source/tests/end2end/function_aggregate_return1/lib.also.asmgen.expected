@@ -55,7 +55,7 @@ get1:
     movq %rcx, 40(%rax)
     movq -152(%rbp), %rax
     lea -144(%rbp), %rcx
-    mov $2, %rsi
+    mov $2, %esi
     cqo
     idiv %rsi
     movq %rax, 48(%rcx)

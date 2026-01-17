@@ -41,7 +41,7 @@ test1:
     addsd %xmm1, %xmm0
     movq %xmm0, -64(%rbp)
     add $1, %rax
-    mov $1, %r14
+    mov $1, %r14d
     cvtsi2sd %r14, %xmm1
     movq %rcx, %xmm0
     addsd %xmm1, %xmm0

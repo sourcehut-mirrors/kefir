@@ -108,7 +108,7 @@ bnot5:
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -32(%rbp), %rdi
-    mov $119, %rsi
+    mov $119, %esi
     call __kefir_bigint_is_zero
     test %eax, %eax
     setne %al
@@ -145,7 +145,7 @@ bnot6:
     movq -8(%rbp), %rax
     movq %rax, -48(%rbp)
     lea -80(%rbp), %rdi
-    mov $310, %rsi
+    mov $310, %esi
     call __kefir_bigint_is_zero
     test %eax, %eax
     setne %al
@@ -174,11 +174,11 @@ __kefir_bigint_is_zero:
     cmp %rcx, %rax
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label18
     movq -56(%rbp), %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     add %rcx, %rax
     sub $1, %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     xor %edx, %edx
     div %rcx
@@ -190,7 +190,7 @@ __kefir_bigint_is_zero:
     movq -40(%rbp), %rcx
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_is_zero_label8
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -221,7 +221,7 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_func___kefir_bigint_is_zero_label16:
     movq -56(%rbp), %rax
     sub $1, %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     xor %edx, %edx
     div %rcx
@@ -229,14 +229,14 @@ __kefir_bigint_is_zero:
     movq -56(%rbp), %rax
     movq -16(%rbp), %rcx
     sub $1, %rax
-    mov $1, %rdx
+    mov $1, %edx
     shl $3, %rdx
     imul %rdx, %rcx
     sub %rcx, %rax
     movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
     add $1, %rax
-    mov $1, %rdx
+    mov $1, %edx
     mov %rax, %rcx
     shl %cl, %rdx
     sub $1, %rdx
@@ -248,7 +248,7 @@ __kefir_bigint_is_zero:
     movb %cl, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label10
 .L__kefir_runtime_func___kefir_bigint_is_zero_label18:
-    mov $1, %rax
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

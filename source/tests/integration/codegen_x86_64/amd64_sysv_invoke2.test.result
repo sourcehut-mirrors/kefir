@@ -15,11 +15,11 @@ func1:
     mov %rbp, %rsp
     movd %xmm0, [.L__kefir_func_func1_label4]
     xor %edi, %edi
-    mov %rsi, 2
+    mov %esi, 2
     call func2
     movd %xmm0, [.L__kefir_func_func1_label5]
     movd %xmm1, [.L__kefir_func_func1_label6]
-    mov %rdi, 2
+    mov %edi, 2
     call func3
     pop %rbp
     ret

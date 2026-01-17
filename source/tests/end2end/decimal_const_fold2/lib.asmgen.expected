@@ -70,7 +70,7 @@ dec32_to_float:
 
 dec32_to_ulong:
 .L__kefir_text_func_dec32_to_ulong_begin:
-    mov $1234, %rax
+    mov $1234, %eax
     ret
 .L__kefir_text_func_dec32_to_ulong_end:
 
@@ -98,7 +98,7 @@ dec64_to_float:
 
 dec64_to_ulong:
 .L__kefir_text_func_dec64_to_ulong_begin:
-    mov $1234, %rax
+    mov $1234, %eax
     ret
 .L__kefir_text_func_dec64_to_ulong_end:
 
@@ -149,7 +149,7 @@ dec128_to_float:
 
 dec128_to_ulong:
 .L__kefir_text_func_dec128_to_ulong_begin:
-    mov $1234, %rax
+    mov $1234, %eax
     ret
 .L__kefir_text_func_dec128_to_ulong_end:
 

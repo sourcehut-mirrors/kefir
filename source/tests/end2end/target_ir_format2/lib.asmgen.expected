@@ -4146,7 +4146,7 @@ _kefir_local_public_label_test4_label1:
     jmp *%rax
 .L__kefir_func_test4_label4:
 _kefir_local_public_label_test4_label2:
-    mov $10, %rax
+    mov $10, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

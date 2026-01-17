@@ -128,8 +128,8 @@ mul5:
     lea -48(%rbp), %rdi
     lea -80(%rbp), %rsi
     lea -64(%rbp), %rdx
-    mov $120, %rcx
-    mov $120, %r8
+    mov $120, %ecx
+    mov $120, %r8d
     call __kefir_bigint_unsigned_multiply
     movq -48(%rbp), %rax
     movq -40(%rbp), %rdx
@@ -190,8 +190,8 @@ mul6:
     lea -128(%rbp), %rdi
     lea -208(%rbp), %rsi
     lea -168(%rbp), %rdx
-    mov $310, %rcx
-    mov $310, %r8
+    mov $310, %ecx
+    mov $310, %r8d
     call __kefir_bigint_unsigned_multiply
     mov %rbx, %rax
     movq -128(%rbp), %rcx
@@ -225,11 +225,11 @@ __kefir_bigint_zero:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     add %rcx, %rax
     sub $1, %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     xor %edx, %edx
     div %rcx
@@ -280,21 +280,21 @@ __kefir_bigint_unsigned_multiply:
     test %edx, %edx
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label33
     movq -88(%rbp), %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     add %rcx, %rax
     sub $1, %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     xor %edx, %edx
     div %rcx
     movq %rax, -48(%rbp)
     movq -56(%rbp), %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     add %rcx, %rax
     sub $1, %rax
-    mov $1, %rcx
+    mov $1, %ecx
     shl $3, %rcx
     xor %edx, %edx
     div %rcx
@@ -302,19 +302,19 @@ __kefir_bigint_unsigned_multiply:
     movq -88(%rbp), %rax
     movq -48(%rbp), %rcx
     sub $1, %rcx
-    mov $1, %rdx
+    mov $1, %edx
     shl $3, %rdx
     imul %rdx, %rcx
     sub %rcx, %rax
     movq %rax, -64(%rbp)
     movq -64(%rbp), %rcx
-    mov $1, %rax
+    mov $1, %eax
     shl %cl, %rax
     sub $1, %rax
     movb %al, -108(%rbp)
-    mov $1, %rax
+    mov $1, %eax
     shl $3, %rax
-    mov $1, %rdx
+    mov $1, %edx
     mov %rax, %rcx
     shl %cl, %rdx
     movl %edx, -112(%rbp)
