@@ -142,7 +142,6 @@ typedef struct kefir_asmcmp_value {
             struct {
                 union {
                     kefir_asmcmp_physical_register_index_t phreg;
-                    kefir_asmcmp_virtual_register_index_t vreg;
                 };
                 kefir_uint8_t scale;
             } index;

@@ -1635,6 +1635,11 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
             print(printarg, "[");
             REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->indirection.base));
+            if (op->indirection.index.index != NULL) {
+                print(printarg, " + ");
+                REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->indirection.index.index));
+                print(printarg, "*" KEFIR_UINT8_FMT, op->indirection.index.scale);
+            }
             if (op->indirection.displacement > 0) {
                 print(printarg, " + %" KEFIR_INT64_FMT, op->indirection.displacement);
             } else if (op->indirection.displacement < 0) {
@@ -1722,6 +1727,11 @@ static kefir_result_t amd64_format_operand_yasm(void (*print)(void *, const char
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
             print(printarg, "[");
             REQUIRE_OK(amd64_format_operand_yasm(print, printarg, op->indirection.base));
+            if (op->indirection.index.index != NULL) {
+                print(printarg, " + ");
+                REQUIRE_OK(amd64_format_operand_yasm(print, printarg, op->indirection.index.index));
+                print(printarg, "*" KEFIR_UINT8_FMT, op->indirection.index.scale);
+            }
             if (op->indirection.displacement > 0) {
                 print(printarg, " + %" KEFIR_INT64_FMT, op->indirection.displacement);
             } else if (op->indirection.displacement < 0) {
@@ -1806,6 +1816,11 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
             }
             print(printarg, "(");
             REQUIRE_OK(amd64_format_operand_att(print, printarg, op->indirection.base));
+            if (op->indirection.index.index != NULL) {
+                print(printarg, ", ");
+                REQUIRE_OK(amd64_format_operand_att(print, printarg, op->indirection.index.index));
+                print(printarg, ", " KEFIR_UINT8_FMT, op->indirection.index.scale);
+            }
             print(printarg, ")");
             break;
 
@@ -2940,11 +2955,13 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_la
 
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_indirect(
     struct kefir_asm_amd64_xasmgen_operand *op, const struct kefir_asm_amd64_xasmgen_operand *base,
+    struct kefir_asm_amd64_xasmgen_indirection_index index,
     kefir_int64_t disp) {
     REQUIRE(op != NULL, NULL);
     REQUIRE(base != NULL, NULL);
     op->klass = KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION;
     op->indirection.base = base;
+    op->indirection.index = index;
     op->indirection.displacement = disp;
     return op;
 }

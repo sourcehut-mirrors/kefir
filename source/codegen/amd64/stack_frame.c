@@ -200,6 +200,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmg
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FSTCW(
             xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                          &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        (struct kefir_asm_amd64_xasmgen_indirection_index){0},
                          frame->offsets.x87_control_word)));
     }
 
@@ -207,6 +208,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmg
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_STMXCSR(
             xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                          &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        (struct kefir_asm_amd64_xasmgen_indirection_index){0},
                          frame->offsets.mxcsr)));
     }
     return KEFIR_OK;
@@ -224,6 +226,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmg
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LDMXCSR(
             xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                          &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        (struct kefir_asm_amd64_xasmgen_indirection_index){0},
                          frame->offsets.mxcsr)));
     }
 
@@ -231,6 +234,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmg
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLDCW(
             xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                          &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        (struct kefir_asm_amd64_xasmgen_indirection_index){0},
                          frame->offsets.x87_control_word)));
     }
 
@@ -239,6 +243,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmg
             xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
             kefir_asm_amd64_xasmgen_operand_indirect(
                 &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                (struct kefir_asm_amd64_xasmgen_indirection_index){0},
                 frame->offsets.preserved_regs)));
     }
 

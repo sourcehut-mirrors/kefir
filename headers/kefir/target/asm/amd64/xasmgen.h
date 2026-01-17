@@ -179,6 +179,11 @@ typedef enum kefir_asm_amd64_xasmgen_symbol_relocation {
     KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_TLSGD
 } kefir_asm_amd64_xasmgen_symbol_relocation_t;
 
+typedef struct kefir_asm_amd64_xasmgen_indirection_index {
+    const struct kefir_asm_amd64_xasmgen_operand *index;
+    kefir_uint8_t scale;
+} kefir_asm_amd64_xasmgen_indirection_index_t;
+
 typedef struct kefir_asm_amd64_xasmgen_operand {
     kefir_asm_amd64_xasmgen_operand_class_t klass;
 
@@ -192,6 +197,7 @@ typedef struct kefir_asm_amd64_xasmgen_operand {
         } label;
         struct {
             const struct kefir_asm_amd64_xasmgen_operand *base;
+            struct kefir_asm_amd64_xasmgen_indirection_index index;
             kefir_int64_t displacement;
         } indirection;
         struct {
@@ -340,7 +346,7 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_im
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_label(
     struct kefir_asm_amd64_xasmgen_operand *, kefir_asm_amd64_xasmgen_symbol_relocation_t, const char *);
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_indirect(
-    struct kefir_asm_amd64_xasmgen_operand *, const struct kefir_asm_amd64_xasmgen_operand *, kefir_int64_t);
+    struct kefir_asm_amd64_xasmgen_operand *, const struct kefir_asm_amd64_xasmgen_operand *, struct kefir_asm_amd64_xasmgen_indirection_index, kefir_int64_t);
 
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_offset(
     struct kefir_asm_amd64_xasmgen_operand *, const struct kefir_asm_amd64_xasmgen_operand *, kefir_int64_t);

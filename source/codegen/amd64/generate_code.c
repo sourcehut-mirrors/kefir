@@ -104,6 +104,17 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT: {
             const struct kefir_asm_amd64_xasmgen_operand *base_ptr = NULL;
 
+            struct kefir_asm_amd64_xasmgen_indirection_index index = {0};
+            switch (value->indirect.index_type) {
+                case KEFIR_ASMCMP_INDIRECT_INDEX_NONE:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL:
+                    index.index = kefir_asm_amd64_xasmgen_operand_reg(value->indirect.index.phreg);
+                    index.scale = value->indirect.index.scale;
+                    break;
+            }
             switch (value->indirect.type) {
                 case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 virtual register");
@@ -111,6 +122,7 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
                         &arg_state->base_operands[0], kefir_asm_amd64_xasmgen_operand_reg(value->indirect.base.phreg),
+                        index,
                         value->indirect.offset);
                     break;
 
@@ -121,6 +133,7 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                         &arg_state->base_operands[0],
                         kefir_asm_amd64_xasmgen_operand_label(&arg_state->base_operands[1],
                                                               KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, arg_state->buf),
+                        index,
                         value->indirect.offset);
                     break;
 
@@ -130,6 +143,7 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                         kefir_asm_amd64_xasmgen_operand_label(&arg_state->base_operands[1],
                                                               symbol_type_for_label(value->indirect.base.external_type),
                                                               value->indirect.base.external_label),
+                        index,
                         value->indirect.offset);
                     break;
 
@@ -140,6 +154,7 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                     base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
                         &arg_state->base_operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        index,
                         stack_frame->offsets.local_area + offset + value->indirect.offset);
                 } break;
 
@@ -147,6 +162,7 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                     base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
                         &arg_state->base_operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        index,
                         stack_frame->offsets.spill_area + value->indirect.base.spill_index * KEFIR_AMD64_ABI_QWORD +
                             value->indirect.offset);
                     break;
