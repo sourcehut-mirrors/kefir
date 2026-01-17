@@ -184,7 +184,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
             const struct kefir_codegen_target_ir_instruction *base_producer_instr;
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, producer_instr->operation.parameters[producer_classification.operands[0].read_index].direct.value_ref.instr_ref, &base_producer_instr));
 
-            REQUIRE(base_producer_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov), KEFIR_OK);
+            REQUIRE(base_producer_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) ||
+                base_producer_instr->operation.opcode == code->klass->assign_opcode, KEFIR_OK);
             const struct kefir_codegen_target_ir_value_type *base_producer_value_type;
             kefir_result_t res = kefir_codegen_target_ir_code_instruction_output(code, base_producer_instr->instr_ref, 0, NULL, &base_producer_value_type);
             REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
@@ -192,7 +193,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
             REQUIRE(base_producer_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT ||
                 base_producer_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||
                 base_producer_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT, KEFIR_OK);
-            REQUIRE(base_producer_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, KEFIR_OK);
+            REQUIRE((base_producer_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER ||
+                base_producer_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER), KEFIR_OK);
             REQUIRE(base_producer_instr->operation.parameters[0].immediate.int_immediate == 0, KEFIR_OK);
 
             struct kefir_codegen_target_ir_operation oper = instr->operation;
