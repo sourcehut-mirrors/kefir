@@ -245,7 +245,7 @@ static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir
                                     REQUIRE_OK(kefir_asmcmp_amd64_insertps(
                                         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                         &KEFIR_ASMCMP_MAKE_VREG(vreg), &KEFIR_ASMCMP_MAKE_VREG(imag_vreg),
-                                        &KEFIR_ASMCMP_MAKE_UINT(0x10), NULL));
+                                        &KEFIR_ASMCMP_MAKE_INT(0x10), NULL));
                                 } else if (complex_float64_return) {
                                     REQUIRE(i < 2, KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                                                    "Unexpected length of multiple-register complex "

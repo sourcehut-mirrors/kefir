@@ -476,7 +476,7 @@ kefir_result_t kefir_asmcmp_amd64_virtual_block_begin(struct kefir_mem *mem, str
         mem, &target->context, after_index,
         &(const struct kefir_asmcmp_instruction) {
             .opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin),
-            .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_UINTEGER, .uint_immediate = block_id},
+            .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_INTEGER, .uint_immediate = block_id},
             .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
             .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
         idx_ptr));
@@ -570,7 +570,7 @@ kefir_result_t kefir_asmcmp_amd64_data_word(struct kefir_mem *mem, struct kefir_
         mem, &target->context, after_index,
         &(const struct kefir_asmcmp_instruction) {
             .opcode = KEFIR_ASMCMP_AMD64_OPCODE(data_word),
-            .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_UINTEGER, .uint_immediate = value},
+            .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_INTEGER, .uint_immediate = value},
             .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
             .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
         idx_ptr));

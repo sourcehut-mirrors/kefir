@@ -212,7 +212,7 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
                                        &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
         }
 
-        struct kefir_asmcmp_value segment_base = KEFIR_ASMCMP_MAKE_UINT(0);
+        struct kefir_asmcmp_value segment_base = KEFIR_ASMCMP_MAKE_INT(0);
         KEFIR_ASMCMP_SET_SEGMENT(&segment_base, KEFIR_AMD64_XASMGEN_SEGMENT_FS);
         REQUIRE_OK(kefir_asmcmp_amd64_add(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),

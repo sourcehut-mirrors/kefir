@@ -40,7 +40,7 @@ static kefir_result_t prepare_stack(struct kefir_mem *mem, struct kefir_codegen_
         REQUIRE_OK(kefir_asmcmp_amd64_sub(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
                                           &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                          &KEFIR_ASMCMP_MAKE_UINT(*stack_increment), NULL));
+                                          &KEFIR_ASMCMP_MAKE_INT(*stack_increment), NULL));
     }
     return KEFIR_OK;
 }
@@ -353,7 +353,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                 REQUIRE_OK(kefir_asmcmp_amd64_insertps(
                                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                     &KEFIR_ASMCMP_MAKE_VREG(argument_placement_vreg),
-                                    &KEFIR_ASMCMP_MAKE_VREG(imag_vreg), &KEFIR_ASMCMP_MAKE_UINT(0x10), NULL));
+                                    &KEFIR_ASMCMP_MAKE_VREG(imag_vreg), &KEFIR_ASMCMP_MAKE_INT(0x10), NULL));
                             } else if (complex_float64_multireg) {
                                 REQUIRE(
                                     i < 2,
@@ -663,7 +663,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                                                       sse_reqs_parameter_reg));
         REQUIRE_OK(kefir_asmcmp_amd64_mov(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            &KEFIR_ASMCMP_MAKE_VREG64(sse_reqs_vreg), &KEFIR_ASMCMP_MAKE_UINT(reqs.sse_regs), NULL));
+            &KEFIR_ASMCMP_MAKE_VREG64(sse_reqs_vreg), &KEFIR_ASMCMP_MAKE_INT(reqs.sse_regs), NULL));
         REQUIRE_OK(kefir_hashtree_insert(mem, argument_placement, (kefir_hashtree_key_t) subarg_count++,
                                          (kefir_hashtree_value_t) sse_reqs_vreg));
     }
@@ -951,7 +951,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                             REQUIRE_OK(kefir_asmcmp_amd64_shufps(
                                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                 &KEFIR_ASMCMP_MAKE_VREG(imag_vreg), &KEFIR_ASMCMP_MAKE_VREG(imag_vreg),
-                                &KEFIR_ASMCMP_MAKE_UINT(1), NULL));
+                                &KEFIR_ASMCMP_MAKE_INT(1), NULL));
                             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                 real_vreg, return_placement_vreg, NULL));
@@ -1362,7 +1362,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
             REQUIRE_OK(kefir_asmcmp_amd64_add(mem, &function->code,
                                             kefir_asmcmp_context_instr_tail(&function->code.context),
                                             &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                            &KEFIR_ASMCMP_MAKE_UINT(stack_increment), NULL));
+                                            &KEFIR_ASMCMP_MAKE_INT(stack_increment), NULL));
         }
     }
     return KEFIR_OK;

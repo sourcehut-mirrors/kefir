@@ -46,8 +46,9 @@ factorial:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 0
+#                        "type": "integer",
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -335,8 +336,9 @@ factorial:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 1
+#                        "type": "integer",
+#                        "value": 1,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -726,8 +728,9 @@ factorial:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 3
+#                        "type": "integer",
+#                        "value": 3,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -833,8 +836,9 @@ factorial:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 7
+#                        "type": "integer",
+#                        "value": 7,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -1087,8 +1091,9 @@ factorial:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 5
+#                        "type": "integer",
+#                        "value": 5,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -1227,8 +1232,9 @@ factorial:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 6
+#                        "type": "integer",
+#                        "value": 6,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -1525,8 +1531,9 @@ factorial:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 4
+#                        "type": "integer",
+#                        "value": 4,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],
@@ -1665,8 +1672,9 @@ factorial:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 2
+#                        "type": "integer",
+#                        "value": 2,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [],

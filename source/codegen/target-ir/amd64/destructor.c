@@ -1062,7 +1062,6 @@ static kefir_result_t resolve_implicit_conflict(struct destructor_state *state, 
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
@@ -1157,7 +1156,6 @@ static kefir_result_t devirtualize_instr_arg(struct destructor_state *state,
     kefir_asm_amd64_xasmgen_register_t tmp_reg;
     switch (instr->args[arg_idx].type) {
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
             if (instr->args[arg_idx].immediate_variant == KEFIR_ASMCMP_OPERAND_VARIANT_64BIT) {
                 // Intentionally left blank
             } else if (instr->args[arg_idx].immediate_variant == KEFIR_ASMCMP_OPERAND_VARIANT_32BIT) {
@@ -2069,7 +2067,6 @@ static kefir_result_t translate_instruction(struct destructor_state *state, kefi
                         switch (output_value.type) {
                             case KEFIR_ASMCMP_VALUE_TYPE_NONE:
                             case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-                            case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
                             case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
                             case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
                             case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:

@@ -74,7 +74,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(uint_const)(struct kefir_mem
         REQUIRE_OK(
             kefir_asmcmp_amd64_movabs(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                      &KEFIR_ASMCMP_MAKE_UINT(instruction->operation.parameters.imm.uinteger), NULL));
+                                      &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.imm.uinteger), NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));

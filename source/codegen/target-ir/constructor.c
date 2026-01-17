@@ -99,7 +99,6 @@ static kefir_result_t mark_value_liveness(struct constructor_state *state, struc
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
         case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
@@ -475,7 +474,6 @@ static kefir_result_t init_operand(struct constructor_state *state, struct code_
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected asmcmp value of none type");
 
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
             REQUIRE(classification->class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected integral constant to have read operand class"));
             operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
             operand->immediate.int_immediate = value->int_immediate;

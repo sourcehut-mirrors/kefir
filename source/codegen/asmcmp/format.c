@@ -118,15 +118,6 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-            REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            REQUIRE_OK(kefir_json_output_string(json, "uinteger"));
-            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, value->uint_immediate));
-            REQUIRE_OK(kefir_json_output_object_end(json));
-            break;
-
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER: {
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));

@@ -700,7 +700,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     &KEFIR_ASMCMP_MAKE_VREG32(packed_vreg), &KEFIR_ASMCMP_MAKE_VREG(imaginary_vreg), NULL));
                 REQUIRE_OK(kefir_asmcmp_amd64_shl(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                    &KEFIR_ASMCMP_MAKE_VREG64(packed_vreg), &KEFIR_ASMCMP_MAKE_UINT(32), NULL));
+                    &KEFIR_ASMCMP_MAKE_VREG64(packed_vreg), &KEFIR_ASMCMP_MAKE_INT(32), NULL));
                 REQUIRE_OK(kefir_asmcmp_amd64_or(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                     &KEFIR_ASMCMP_MAKE_VREG(packed_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
@@ -819,7 +819,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                         REQUIRE_OK(kefir_asmcmp_amd64_shufpd(
                             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                             &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg), &KEFIR_ASMCMP_MAKE_VREG(imag_vreg),
-                            &KEFIR_ASMCMP_MAKE_UINT(0), NULL));
+                            &KEFIR_ASMCMP_MAKE_INT(0), NULL));
                     } else if (!kefir_hashtreeset_has(&context->directly_read_vregs,
                                                       (kefir_hashtreeset_entry_t) entry->allocation_vreg)) {
                         if (entry->parameter_props.size <= KEFIR_AMD64_ABI_QWORD / 2) {
@@ -1122,7 +1122,7 @@ static kefir_result_t prepare_state(struct kefir_mem *mem, struct kefir_codegen_
         REQUIRE_OK(kefir_asmcmp_amd64_sub(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
                                           &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                          &KEFIR_ASMCMP_MAKE_UINT(KEFIR_AMD64_ABI_QWORD), NULL));
+                                          &KEFIR_ASMCMP_MAKE_INT(KEFIR_AMD64_ABI_QWORD), NULL));
     }
 
     REQUIRE_OK(load_inputs(mem, function, context));
@@ -1840,7 +1840,7 @@ static kefir_result_t restore_state(struct kefir_mem *mem, struct kefir_codegen_
         REQUIRE_OK(kefir_asmcmp_amd64_add(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
                                           &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                          &KEFIR_ASMCMP_MAKE_UINT(KEFIR_AMD64_ABI_QWORD), NULL));
+                                          &KEFIR_ASMCMP_MAKE_INT(KEFIR_AMD64_ABI_QWORD), NULL));
         REQUIRE_OK(kefir_asmcmp_amd64_popfq(mem, &function->code,
                                             kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
     }

@@ -43,13 +43,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_signed)(
 
     REQUIRE_OK(kefir_asmcmp_amd64_shl(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                      &KEFIR_ASMCMP_MAKE_UINT(64 - (instruction->operation.parameters.bitfield.length +
+                                      &KEFIR_ASMCMP_MAKE_INT(64 - (instruction->operation.parameters.bitfield.length +
                                                                     instruction->operation.parameters.bitfield.offset)),
                                       NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_sar(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                      &KEFIR_ASMCMP_MAKE_UINT(64 - (instruction->operation.parameters.bitfield.length)),
+                                      &KEFIR_ASMCMP_MAKE_INT(64 - (instruction->operation.parameters.bitfield.length)),
                                       NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
@@ -75,13 +75,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_unsigned)(
 
     REQUIRE_OK(kefir_asmcmp_amd64_shl(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                      &KEFIR_ASMCMP_MAKE_UINT(64 - (instruction->operation.parameters.bitfield.length +
+                                      &KEFIR_ASMCMP_MAKE_INT(64 - (instruction->operation.parameters.bitfield.length +
                                                                     instruction->operation.parameters.bitfield.offset)),
                                       NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_shr(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                      &KEFIR_ASMCMP_MAKE_UINT(64 - (instruction->operation.parameters.bitfield.length)),
+                                      &KEFIR_ASMCMP_MAKE_INT(64 - (instruction->operation.parameters.bitfield.length)),
                                       NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
@@ -114,18 +114,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_insert)(struct kefir_me
 
     REQUIRE_OK(kefir_asmcmp_amd64_movabs(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                          &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
-                                         &KEFIR_ASMCMP_MAKE_UINT(~(((1ull << length) - 1) << offset)), NULL));
+                                         &KEFIR_ASMCMP_MAKE_INT(~(((1ull << length) - 1) << offset)), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_and(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), &KEFIR_ASMCMP_MAKE_VREG64(base_vreg), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_shl(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_UINT(64 - length),
+                                      &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(64 - length),
                                       NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_shr(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                      &KEFIR_ASMCMP_MAKE_UINT(64 - (length + offset)), NULL));
+                                      &KEFIR_ASMCMP_MAKE_INT(64 - (length + offset)), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_or(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                      &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),

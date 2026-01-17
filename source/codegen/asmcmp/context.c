@@ -220,7 +220,6 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
             // Intentionally left blank
@@ -293,7 +292,6 @@ static kefir_result_t allocate_value_symbols(struct kefir_mem *mem, struct kefir
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:

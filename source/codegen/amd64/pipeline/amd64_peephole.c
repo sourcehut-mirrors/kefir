@@ -25,7 +25,6 @@
 #include "kefir/core/util.h"
 
 #define IS_INT(_op, _value) ((_op)->type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER && (_op)->int_immediate == (_value))
-#define IS_UINT(_op, _value) ((_op)->type == KEFIR_ASMCMP_VALUE_TYPE_UINTEGER && (_op)->uint_immediate == (_value))
 
 static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
                                            const struct kefir_asmcmp_pipeline_pass *pass) {

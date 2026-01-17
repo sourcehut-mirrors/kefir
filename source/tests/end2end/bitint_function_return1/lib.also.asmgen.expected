@@ -80,8 +80,9 @@ test1:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 0
+#                        "type": "integer",
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -2293,8 +2294,9 @@ __kefir_bigint_invert:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 0
+#                        "type": "integer",
+#                        "value": 0,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -2559,8 +2561,9 @@ __kefir_bigint_invert:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 3
+#                        "type": "integer",
+#                        "value": 3,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -2680,8 +2683,9 @@ __kefir_bigint_invert:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 1
+#                        "type": "integer",
+#                        "value": 1,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -2757,8 +2761,9 @@ __kefir_bigint_invert:
 #                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "uinteger",
-#                        "value": 2
+#                        "type": "integer",
+#                        "value": 2,
+#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []

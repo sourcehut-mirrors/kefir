@@ -74,11 +74,6 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                 kefir_asm_amd64_xasmgen_operand_imm(&arg_state->base_operands[0], value->int_immediate);
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-            arg_state->operand =
-                kefir_asm_amd64_xasmgen_operand_immu(&arg_state->base_operands[1], value->uint_immediate);
-            break;
-
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             arg_state->operand = kefir_asm_amd64_xasmgen_operand_reg((kefir_asm_amd64_xasmgen_register_t) value->phreg);
             break;
@@ -355,9 +350,6 @@ static kefir_bool_t same_operands(const struct kefir_asmcmp_value *arg1, const s
 
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
             return arg1->int_immediate == arg2->int_immediate && arg1->immediate_variant == arg2->immediate_variant;
-
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-            return arg1->uint_immediate == arg2->uint_immediate && arg1->immediate_variant == arg2->immediate_variant;
 
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             return arg1->phreg == arg2->phreg;

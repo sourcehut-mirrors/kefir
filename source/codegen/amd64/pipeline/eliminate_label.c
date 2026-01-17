@@ -110,7 +110,6 @@ static kefir_result_t collect_labels(struct kefir_mem *mem, struct kefir_asmcmp_
 
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:

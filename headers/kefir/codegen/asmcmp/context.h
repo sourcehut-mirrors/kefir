@@ -32,7 +32,6 @@
 typedef enum kefir_asmcmp_value_type {
     KEFIR_ASMCMP_VALUE_TYPE_NONE = 0,
     KEFIR_ASMCMP_VALUE_TYPE_INTEGER,
-    KEFIR_ASMCMP_VALUE_TYPE_UINTEGER,
     KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER,
     KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
     KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,
@@ -177,8 +176,6 @@ typedef struct kefir_asmcmp_inline_assembly_fragment {
 #define KEFIR_ASMCMP_MAKE_NONE ((struct kefir_asmcmp_value) {.type = KEFI_ASMCMP_VALUE_NONE})
 #define KEFIR_ASMCMP_MAKE_INT(_value) \
     ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INTEGER, .int_immediate = (_value), .immediate_variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT})
-#define KEFIR_ASMCMP_MAKE_UINT(_value) \
-    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_UINTEGER, .uint_immediate = (_value), .immediate_variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT})
 #define KEFIR_ASMCMP_MAKE_VREG8(_vreg)                                              \
     ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                   .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_8BIT}})
