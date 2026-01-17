@@ -23,6 +23,6 @@
 
 #include "kefir/codegen/target-ir/code.h"
 
-kefir_result_t kefir_codegen_target_ir_amd64_match_immediate(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, kefir_uint64_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_match_immediate(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, kefir_int64_t *);
 
 #endif

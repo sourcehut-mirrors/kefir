@@ -44,7 +44,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_const_operand(struct kefir
         instr->operation.parameters[classification.operands[0].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
         !instr->operation.parameters[classification.operands[0].read_index].direct.tied &&
         instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
-        kefir_uint64_t rhs_value = 0, lhs_value = 0;
+        kefir_int64_t rhs_value = 0, lhs_value = 0;
         kefir_bool_t has_rhs_value = false, has_lhs_value = false;
         kefir_result_t res = kefir_codegen_target_ir_amd64_match_immediate(code, instr->operation.parameters[classification.operands[1].read_index].direct.value_ref, &rhs_value);
         if (res != KEFIR_NO_MATCH) {
