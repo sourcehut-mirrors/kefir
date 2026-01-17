@@ -127,6 +127,12 @@ static kefir_result_t mark_value_liveness(struct constructor_state *state, struc
                     // Intentionally left blank
                     break;
             }
+            switch (value->indirect.index_type) {
+                case KEFIR_ASMCMP_INDIRECT_INDEX_NONE:
+                case KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL:
+                    // Intentionally left blank
+                    break;
+            }
             break;
     }
 
@@ -512,6 +518,17 @@ static kefir_result_t init_operand(struct constructor_state *state, struct code_
             operand->type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT;
             operand->indirect.offset = value->indirect.offset;
             REQUIRE_OK(init_variant(value->indirect.variant, false, &operand->indirect.variant));
+            switch (value->indirect.index_type) {
+                case KEFIR_ASMCMP_INDIRECT_INDEX_NONE:
+                    operand->indirect.index_type = KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE;
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL:
+                    operand->indirect.index_type = KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_PHYSICAL;
+                    operand->indirect.index.phreg = value->indirect.index.phreg;
+                    operand->indirect.index.scale = value->indirect.index.scale;
+                    break;
+            }
             switch (value->indirect.type) {
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     operand->indirect.type = KEFIR_CODEGEN_TARGET_IR_INDIRECT_PHYSICAL_BASIS;

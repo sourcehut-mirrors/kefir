@@ -319,6 +319,16 @@ static kefir_result_t operand_record_uses(struct kefir_mem *mem, struct kefir_co
                     // Intentionally left blank
                     break;
             }
+            switch (operand->indirect.index_type) {
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF:
+                    REQUIRE_OK(track_use_instr(mem, code, user_instr_ref, operand->indirect.index.value_ref.instr_ref, operand->indirect.index.value_ref.aspect, add_use));
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_PHYSICAL:
+                    // Intentionally left blank
+                    break;
+            }
             break;
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON: {
@@ -1092,6 +1102,17 @@ static kefir_result_t operand_replace_uses(struct kefir_mem *mem, struct kefir_c
                     // Intentionally left blank
                     break;
             }
+            switch (operand->indirect.index_type) {
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF:
+                    REQUIRE_OK(value_ref_repace_use(mem, code, user_instr_ref, &operand->indirect.index.value_ref, to_instr_ref, from_instr_ref));
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_PHYSICAL:
+                    // Intentionally left blank
+                    break;
+            }
+            break;
     }
     return KEFIR_OK;
 }
@@ -1283,6 +1304,17 @@ static kefir_result_t operand_replace_value_uses(struct kefir_mem *mem, struct k
                     // Intentionally left blank
                     break;
             }
+            switch (operand->indirect.index_type) {
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF:
+                    REQUIRE_OK(value_ref_replace(mem, code, user_instr_ref, &operand->indirect.index.value_ref, to_value_ref, from_value_ref));
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_PHYSICAL:
+                    // Intentionally left blank
+                    break;
+            }
+            break;
     }
     return KEFIR_OK;
 }

@@ -192,6 +192,23 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
                     REQUIRE_OK(kefir_json_output_uinteger(json, value->indirect.base.spill_index));
                     break;
             }
+            switch (value->indirect.index_type) {
+                case KEFIR_ASMCMP_INDIRECT_INDEX_NONE:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL: {
+                    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+                    REQUIRE_OK(kefir_json_output_string(json, "physical"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "index_reg"));
+                    const char *mnemonic;
+                    REQUIRE_OK(
+                        context->klass->register_mnemonic(value->indirect.index.phreg, &mnemonic, context->payload));
+                    REQUIRE_OK(kefir_json_output_string(json, mnemonic));
+                    REQUIRE_OK(kefir_json_output_string(json, "scale"));
+                    REQUIRE_OK(kefir_json_output_uinteger(json, value->indirect.index.scale));
+                } break;
+            }
             REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
             REQUIRE_OK(kefir_json_output_integer(json, value->indirect.offset));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));

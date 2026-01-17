@@ -359,8 +359,19 @@ static kefir_bool_t same_operands(const struct kefir_asmcmp_value *arg1, const s
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
             REQUIRE(arg1->indirect.type == arg2->indirect.type, false);
+            REQUIRE(arg1->indirect.index_type == arg2->indirect.index_type, false);
             REQUIRE(arg1->indirect.offset == arg2->indirect.offset, false);
             REQUIRE(arg1->indirect.variant == arg2->indirect.variant, false);
+            switch (arg1->indirect.index_type) {
+                case KEFIR_ASMCMP_INDIRECT_INDEX_NONE:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL:
+                    REQUIRE(arg1->indirect.index.phreg == arg2->indirect.index.phreg &&
+                        arg1->indirect.index.scale == arg2->indirect.index.scale, false);
+                    break;
+            }
             switch (arg1->indirect.type) {
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     return arg1->indirect.base.phreg == arg2->indirect.base.phreg;

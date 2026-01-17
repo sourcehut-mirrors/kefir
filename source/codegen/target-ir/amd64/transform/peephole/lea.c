@@ -29,7 +29,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_lea(struct kefir_mem *mem,
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
     REQUIRE(replaced != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
-    REQUIRE(instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT, KEFIR_OK);
+    REQUIRE(instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
+        instr->operation.parameters[0].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE, KEFIR_OK);
     struct kefir_codegen_target_ir_operation base_oper = instr->operation;
     kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
 
@@ -67,6 +68,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_lea(struct kefir_mem *mem,
         for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
             if (oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
                 oper.parameters[i].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
+                oper.parameters[i].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE &&
                 oper.parameters[i].indirect.base.value_ref.instr_ref == instr_ref &&
                 oper.parameters[i].indirect.base.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
                 replace = true;

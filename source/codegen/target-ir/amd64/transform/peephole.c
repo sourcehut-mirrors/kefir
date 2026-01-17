@@ -157,6 +157,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_untie(struct kefir_mem *me
                         ext_uses = true;
                     } else if (user_instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
                         user_instr->operation.parameters[i].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
+                        user_instr->operation.parameters[i].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE &&
                         user_instr->operation.parameters[i].indirect.base.value_ref.instr_ref == output_value_ref.instr_ref &&
                         user_instr->operation.parameters[i].indirect.base.value_ref.aspect == output_value_ref.aspect) {
                         ext_uses = true;

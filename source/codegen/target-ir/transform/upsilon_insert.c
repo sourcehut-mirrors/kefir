@@ -41,44 +41,43 @@ static kefir_result_t get_phi_output(const struct kefir_codegen_target_ir_code *
     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find target IR phi node output");;
 }
 
+static kefir_result_t do_patch_value(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t *copy_value_ref, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_value_ref_t patch_value_ref) {
+    if (copy_value_ref->instr_ref == KEFIR_ID_NONE) {
+        kefir_codegen_target_ir_instruction_ref_t copy_instr_ref;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref,
+            kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
+            &(struct kefir_codegen_target_ir_operation) {
+                .opcode = code->klass->assign_opcode,
+                .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                .parameters[0].direct.value_ref = patch_value_ref,
+                .parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
+            }, NULL, &copy_instr_ref));
+        copy_value_ref->instr_ref = copy_instr_ref;
+        copy_value_ref->aspect = patch_value_ref.aspect;
+
+        const struct kefir_codegen_target_ir_value_type *phi_value_type;
+        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, patch_value_ref, &phi_value_type));
+        REQUIRE(phi_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd constrained phi value reference"));
+        REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, *copy_value_ref, phi_value_type));
+    }
+    REQUIRE_OK(kefir_codegen_target_ir_code_replace_value_in(mem, code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref),
+        *copy_value_ref, patch_value_ref));
+    return KEFIR_OK;
+}
 
 static kefir_result_t patch_operand_value(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t phi_value_ref, kefir_codegen_target_ir_value_ref_t *copy_value_ref, kefir_codegen_target_ir_block_ref_t block_ref, const struct kefir_codegen_target_ir_operand *operand) {
-    kefir_bool_t patch_value = false;
-    kefir_codegen_target_ir_value_ref_t patch_value_ref = {
-        .instr_ref = KEFIR_ID_NONE
-    };
     if (operand->type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
             KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&phi_value_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&operand->direct.value_ref)) {
-        patch_value = true;
-        patch_value_ref = operand->direct.value_ref;
-    } else if (operand->type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
-            operand->indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
+        REQUIRE_OK(do_patch_value(mem, code, copy_value_ref, block_ref, operand->direct.value_ref));
+    } else if (operand->type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT) {
+        if (operand->indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
             KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&phi_value_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&operand->indirect.base.value_ref)) {
-        patch_value = true;
-        patch_value_ref = operand->indirect.base.value_ref;
-    }
-
-    if (patch_value) {
-        if (copy_value_ref->instr_ref == KEFIR_ID_NONE) {
-            kefir_codegen_target_ir_instruction_ref_t copy_instr_ref;
-            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref,
-                kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
-                &(struct kefir_codegen_target_ir_operation) {
-                    .opcode = code->klass->assign_opcode,
-                    .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                    .parameters[0].direct.value_ref = patch_value_ref,
-                    .parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
-                }, NULL, &copy_instr_ref));
-            copy_value_ref->instr_ref = copy_instr_ref;
-            copy_value_ref->aspect = patch_value_ref.aspect;
-
-            const struct kefir_codegen_target_ir_value_type *phi_value_type;
-            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, patch_value_ref, &phi_value_type));
-            REQUIRE(phi_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd constrained phi value reference"));
-            REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, *copy_value_ref, phi_value_type));
+            REQUIRE_OK(do_patch_value(mem, code, copy_value_ref, block_ref, operand->indirect.base.value_ref));
         }
-        REQUIRE_OK(kefir_codegen_target_ir_code_replace_value_in(mem, code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref),
-            *copy_value_ref, patch_value_ref));
+        if (operand->indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF &&
+            KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&phi_value_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&operand->indirect.index.value_ref)) {
+            REQUIRE_OK(do_patch_value(mem, code, copy_value_ref, block_ref, operand->indirect.index.value_ref));
+        }
     }
 
     return KEFIR_OK;

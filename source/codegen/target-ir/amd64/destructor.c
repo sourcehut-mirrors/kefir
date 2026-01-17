@@ -741,6 +741,63 @@ static kefir_result_t resolve_operand(struct destructor_state *state, const stru
                     *value = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(operand->indirect.base.spill_index, operand->indirect.offset, variant);
                     break;
             }
+            switch (operand->indirect.index_type) {
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE:
+                    value->indirect.index_type = KEFIR_ASMCMP_INDIRECT_INDEX_NONE;
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_PHYSICAL:
+                    value->indirect.index_type = KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL;
+                    value->indirect.index.phreg = operand->indirect.index.phreg;
+                    value->indirect.index.scale = operand->indirect.index.scale;
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF: {
+                    const struct kefir_codegen_target_ir_value_type *value_type;
+                    REQUIRE_OK(kefir_codegen_target_ir_code_value_props(state->code, operand->indirect.index.value_ref, &value_type));
+                    switch (value_type->kind) {
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_UNSPECIFIED:
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE:
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE:
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT:
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT: {
+                            kefir_codegen_target_ir_regalloc_allocation_t allocation;
+                            REQUIRE_OK(kefir_codegen_target_ir_regalloc_get(state->regalloc, operand->indirect.base.value_ref, &allocation));
+                            union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+                                .allocation = allocation
+                            };
+                            switch (entry.type) {
+                                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
+                                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 target IR register allocation");
+                                    
+                                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
+                                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
+                                    value->indirect.index.phreg = entry.reg.value;
+                                    value->indirect.index.scale = operand->indirect.index.scale;
+                                    break;
+
+                                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL: {
+                                    kefir_asm_amd64_xasmgen_register_t phreg;
+                                    REQUIRE_OK(allocate_scratch_register(state, &phreg, TEMPORARY_REGISTER_GP, NULL));
+                                    REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                                        state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                                        &KEFIR_ASMCMP_MAKE_PHREG(phreg),
+                                        &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(entry.spill_area.index, 0,
+                                                                        KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                                        NULL));
+                                    value->indirect.index.phreg = phreg;
+                                    value->indirect.index.scale = operand->indirect.index.scale;
+                                } break;
+                            }
+                        } break;
+
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_SPILL_SPACE:
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE:
+                        case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY:
+                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected indirect operand index value reference type");
+                    }
+                } break;
+            }
         } break;
 
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF: {
@@ -974,19 +1031,25 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
         // Intentionally left blank
     } else {
         for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
-            kefir_codegen_target_ir_value_ref_t value_ref = {
-                .instr_ref = KEFIR_ID_NONE,
-                .aspect = 0
+            kefir_codegen_target_ir_value_ref_t value_ref[2] = {
+                {
+                    .instr_ref = KEFIR_ID_NONE,
+                    .aspect = 0
+                },
+                {
+                    .instr_ref = KEFIR_ID_NONE,
+                    .aspect = 0
+                }
             };
             switch (instr->operation.parameters[i].type) {
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
-                    value_ref = instr->operation.parameters[i].direct.value_ref;
+                    value_ref[0] = instr->operation.parameters[i].direct.value_ref;
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
                     switch (instr->operation.parameters[i].indirect.type) {
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS:
-                            value_ref = instr->operation.parameters[i].indirect.base.value_ref;
+                            value_ref[0] = instr->operation.parameters[i].indirect.base.value_ref;
                             break;
 
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_PHYSICAL_BASIS:
@@ -996,6 +1059,16 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS:
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_LOCAL_AREA_BASIS:
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
+                            // Intentionally left blank
+                            break;
+                    }
+                    switch (instr->operation.parameters[i].indirect.index_type) {
+                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF:
+                            value_ref[1] = instr->operation.parameters[i].indirect.index.value_ref;
+                            break;
+
+                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE:
+                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_PHYSICAL:
                             // Intentionally left blank
                             break;
                     }
@@ -1016,33 +1089,35 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
                     break;
             }
 
-            if (value_ref.instr_ref == KEFIR_ID_NONE) {
-                continue;
-            }
+            for (kefir_size_t i = 0; i < sizeof(value_ref) / sizeof(value_ref[0]); i++) {
+                if (value_ref[i].instr_ref == KEFIR_ID_NONE) {
+                    continue;
+                }
 
-            kefir_codegen_target_ir_regalloc_allocation_t allocation;
-            res = kefir_codegen_target_ir_regalloc_get(state->regalloc, value_ref, &allocation);
-            if (res == KEFIR_NOT_FOUND) {
-                continue;
-            }
-            REQUIRE_OK(res);
+                kefir_codegen_target_ir_regalloc_allocation_t allocation;
+                res = kefir_codegen_target_ir_regalloc_get(state->regalloc, value_ref[i], &allocation);
+                if (res == KEFIR_NOT_FOUND) {
+                    continue;
+                }
+                REQUIRE_OK(res);
 
-            union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
-                .allocation = allocation
-            };
-            switch (entry.type) {
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
-                    // Intentionally left blank
-                    break;
+                union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
+                    .allocation = allocation
+                };
+                switch (entry.type) {
+                    case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
+                        // Intentionally left blank
+                        break;
 
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
-                    REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length, SPILL_SPACE_OTHER));
-                    break;
+                    case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
+                        REQUIRE_OK(mark_spill_space_occupied(state, entry.spill_area.index, entry.spill_area.length, SPILL_SPACE_OTHER));
+                        break;
 
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
-                    REQUIRE_OK(kefir_hashset_add(state->mem, &state->current_instr.input_registers, (kefir_hashset_key_t) entry.reg.value));
-                    break;
+                    case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
+                    case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE:
+                        REQUIRE_OK(kefir_hashset_add(state->mem, &state->current_instr.input_registers, (kefir_hashset_key_t) entry.reg.value));
+                        break;
+                }
             }
         }
     }
@@ -1112,6 +1187,24 @@ static kefir_result_t resolve_implicit_conflict(struct destructor_state *state, 
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                     // Intentionally left blank
                     break;
+            }
+
+            switch (value->indirect.index_type) {
+                case KEFIR_ASMCMP_INDIRECT_INDEX_NONE:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL: {
+                    kefir_asm_amd64_xasmgen_register_t widest;
+                    REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(value->indirect.index.phreg, &widest));
+                    if (kefir_hashset_has(&state->current_instr.implicit_input_registers, (kefir_hashset_key_t) widest)) {
+                        kefir_asm_amd64_xasmgen_register_t phreg;
+                        REQUIRE_OK(allocate_scratch_register(state, &phreg, TEMPORARY_REGISTER_GP, NULL));   
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                            &KEFIR_ASMCMP_MAKE_PHREG(phreg), &KEFIR_ASMCMP_MAKE_PHREG(widest), NULL));
+                        value->indirect.index.phreg = phreg;
+                    }
+                } break;
             }
             break;
     }

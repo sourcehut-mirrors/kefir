@@ -185,7 +185,7 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
             REQUIRE_OK(kefir_json_output_string(json, "indirect"));
             switch (operand->indirect.type) {
-                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_PHYSICAL_BASIS:
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_PHYSICAL_BASIS: {
                     REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
                     REQUIRE_OK(kefir_json_output_string(json, "physical_register"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "reg"));
@@ -193,7 +193,7 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
                     REQUIRE_OK(
                         code->klass->register_mnemonic(operand->indirect.base.phreg, &mnemonic, code->klass->payload));
                     REQUIRE_OK(kefir_json_output_string(json, mnemonic));
-                    break;
+                } break;
 
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS:
                     REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
@@ -246,6 +246,34 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
                     REQUIRE_OK(kefir_json_output_string(json, "spill_area"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "index"));
                     REQUIRE_OK(kefir_json_output_uinteger(json, operand->indirect.base.spill_index));
+                    break;
+            }
+            switch (operand->indirect.index_type) {
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_PHYSICAL: {
+                    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+                    REQUIRE_OK(kefir_json_output_string(json, "physical_register"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "index_reg"));
+                    const char *mnemonic;
+                    REQUIRE_OK(
+                        code->klass->register_mnemonic(operand->indirect.index.phreg, &mnemonic, code->klass->payload));
+                    REQUIRE_OK(kefir_json_output_string(json, mnemonic));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "index_scale"));
+                    REQUIRE_OK(kefir_json_output_uinteger(json, operand->indirect.index.scale));
+                } break;
+
+                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF:
+                    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+                    REQUIRE_OK(kefir_json_output_string(json, "value_ref"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "index_instr_ref"));
+                    REQUIRE_OK(kefir_json_output_uinteger(json, operand->indirect.index.value_ref.instr_ref));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "index_aspect"));
+                    REQUIRE_OK(aspect_format(json, code->klass, operand->indirect.index.value_ref.aspect));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "index_scale"));
+                    REQUIRE_OK(kefir_json_output_uinteger(json, operand->indirect.index.scale));
                     break;
             }
             REQUIRE_OK(kefir_json_output_object_key(json, "offset"));

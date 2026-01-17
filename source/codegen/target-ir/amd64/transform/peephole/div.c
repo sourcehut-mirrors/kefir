@@ -230,6 +230,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_idiv(struct kefir_mem *mem
                     .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT,
                     .indirect = {
                         .type = KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS,
+                        .index_type = KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE,
                         .base = {
                             .value_ref = oper.parameters[classification.operands[1].read_index].direct.value_ref,
                         },

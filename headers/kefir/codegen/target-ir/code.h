@@ -98,6 +98,12 @@ typedef enum kefir_codegen_target_ir_indirect_basis_type {
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS
 } kefir_codegen_target_ir_indirect_basis_type_t;
 
+typedef enum kefir_codegen_target_ir_indirect_index_type {
+    KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE,
+    KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_PHYSICAL,
+    KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF
+} kefir_codegen_target_ir_indirect_index_type_t;
+
 typedef enum kefir_codegen_target_ir_external_label_relocation {
     KEFIR_CODEGEN_TARGET_IR_EXTERNAL_LABEL_ABSOLUTE,
     KEFIR_CODEGEN_TARGET_IR_EXTERNAL_LABEL_PLT,
@@ -212,6 +218,7 @@ typedef struct kefir_codegen_target_ir_operand {
         kefir_codegen_target_ir_physical_register_t phreg;
         struct {
             kefir_codegen_target_ir_indirect_basis_type_t type;
+            kefir_codegen_target_ir_indirect_index_type_t index_type;
             union {
                 kefir_codegen_target_ir_physical_register_t phreg;
                 struct kefir_codegen_target_ir_value_ref value_ref;
@@ -225,6 +232,13 @@ typedef struct kefir_codegen_target_ir_operand {
                 kefir_size_t spill_index;
                 kefir_id_t local_variable_id;
             } base;
+            struct {
+                union {
+                    kefir_codegen_target_ir_physical_register_t phreg;
+                    kefir_codegen_target_ir_value_ref_t value_ref;
+                };
+                kefir_uint8_t scale;
+            } index;
             kefir_int64_t offset;
             kefir_codegen_target_ir_operand_variant_t variant;
         } indirect;

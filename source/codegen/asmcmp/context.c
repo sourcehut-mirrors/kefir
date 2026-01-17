@@ -231,6 +231,12 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
         } break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
+            switch (value->indirect.index_type) {
+                case KEFIR_ASMCMP_INDIRECT_INDEX_NONE:
+                case KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL:
+                    // Intentionally left blank
+                    break;
+            }
             switch (value->indirect.type) {
                 case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS: {
                     const struct kefir_asmcmp_virtual_register *vreg;

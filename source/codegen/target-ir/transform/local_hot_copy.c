@@ -72,6 +72,11 @@ static kefir_result_t collect_local_hot_uses(struct kefir_mem *mem, struct kefir
                             REQUIRE_OK(kefir_hashset_add(mem, local_hot_uses, (kefir_hashset_key_t) instr_ref));
                             lookahead = regalloc_klass->transforms->hot_copy_locality;
                         }
+                        if (instr->operation.parameters->indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF &&
+                            KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[i].indirect.index.value_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
+                            REQUIRE_OK(kefir_hashset_add(mem, local_hot_uses, (kefir_hashset_key_t) instr_ref));
+                            lookahead = regalloc_klass->transforms->hot_copy_locality;
+                        }
                         break;
                 }
             }

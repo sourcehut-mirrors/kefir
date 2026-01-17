@@ -82,6 +82,11 @@ typedef enum kefir_asmcmp_indirect_basis_type {
     KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS
 } kefir_asmcmp_indirect_basis_type_t;
 
+typedef enum kefir_asmcmp_indirect_index_type {
+    KEFIR_ASMCMP_INDIRECT_INDEX_NONE,
+    KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL
+} kefir_asmcmp_indirect_index_type_t;
+
 typedef enum kefir_asmcmp_inline_assembly_fragment_type {
     KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_TEXT,
     KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_VALUE
@@ -122,6 +127,7 @@ typedef struct kefir_asmcmp_value {
         kefir_asmcmp_physical_register_index_t phreg;
         struct {
             kefir_asmcmp_indirect_basis_type_t type;
+            kefir_asmcmp_indirect_index_type_t index_type;
             union {
                 kefir_asmcmp_physical_register_index_t phreg;
                 kefir_asmcmp_virtual_register_index_t vreg;
@@ -133,6 +139,13 @@ typedef struct kefir_asmcmp_value {
                 kefir_size_t spill_index;
                 kefir_id_t local_variable_id;
             } base;
+            struct {
+                union {
+                    kefir_asmcmp_physical_register_index_t phreg;
+                    kefir_asmcmp_virtual_register_index_t vreg;
+                };
+                kefir_uint8_t scale;
+            } index;
             kefir_int64_t offset;
             kefir_asmcmp_operand_variant_t variant;
         } indirect;
@@ -208,6 +221,7 @@ typedef struct kefir_asmcmp_inline_assembly_fragment {
 #define KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(_vreg, _offset, _variant)                        \
     ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                 \
                                   .indirect = {.type = KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS, \
+                                                .index_type = KEFIR_ASMCMP_INDIRECT_INDEX_NONE, \
                                                .base.vreg = (_vreg),                        \
                                                .offset = (_offset),                         \
                                                .variant = (_variant)}})
