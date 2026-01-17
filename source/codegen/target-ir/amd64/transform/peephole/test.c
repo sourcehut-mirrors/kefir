@@ -193,8 +193,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
             REQUIRE(base_producer_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT ||
                 base_producer_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||
                 base_producer_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT, KEFIR_OK);
-            REQUIRE((base_producer_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER ||
-                base_producer_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER), KEFIR_OK);
+            REQUIRE(base_producer_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, KEFIR_OK);
             REQUIRE(base_producer_instr->operation.parameters[0].immediate.int_immediate == 0, KEFIR_OK);
 
             struct kefir_codegen_target_ir_operation oper = instr->operation;

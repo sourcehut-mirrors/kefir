@@ -578,7 +578,6 @@ static kefir_result_t resolve_operand(struct destructor_state *state, const stru
             value->type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
             break;
 
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
             *value = KEFIR_ASMCMP_MAKE_INT(operand->immediate.int_immediate);
             REQUIRE_OK(resolve_variant(operand->immediate.variant, &value->immediate_variant, NULL));
@@ -1004,7 +1003,6 @@ static kefir_result_t build_current_instr_state(struct destructor_state *state, 
 
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER:
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_PHYSICAL_REGISTER:
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF:
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE:
@@ -1383,7 +1381,6 @@ static kefir_result_t load_into_allocation(struct destructor_state *state, const
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR operand type");
 
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER:
                     REQUIRE_OK(resolve_operand(state, operand, &operand_value));
                     switch (alloc->type) {
                         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:

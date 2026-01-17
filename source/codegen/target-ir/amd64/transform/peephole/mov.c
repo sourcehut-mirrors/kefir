@@ -182,8 +182,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
                 return KEFIR_OK; \
             }
         }
-    } else if (instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER ||
-        instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER) {
+    } else if (instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
         kefir_uint64_t value = instr->operation.parameters[classification.operands[1].read_index].immediate.uint_immediate;
         switch (instr->operation.parameters[classification.operands[1].read_index].immediate.variant) {
             case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT:

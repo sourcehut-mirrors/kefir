@@ -47,7 +47,6 @@ static kefir_result_t collect_local_hot_uses(struct kefir_mem *mem, struct kefir
                 switch (instr->operation.parameters[i].type) {
                     case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
                     case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
-                    case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER:
                     case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_PHYSICAL_REGISTER:
                     case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF:
                     case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE:

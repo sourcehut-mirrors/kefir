@@ -27,7 +27,6 @@ static kefir_result_t update_operand(struct kefir_codegen_target_ir_operand *ope
     switch (operand->type) {
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_PHYSICAL_REGISTER:
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE:

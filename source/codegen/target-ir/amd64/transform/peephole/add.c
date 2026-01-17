@@ -56,8 +56,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_add(struct kefir_mem *mem,
             classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
             classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
             instr->operation.parameters[classification.operands[0].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-            (instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER ||
-            instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER) &&
+            instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER &&
             instr->operation.parameters[classification.operands[1].read_index].immediate.int_immediate == 0) {
         REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref,
             classification.operands[0].output));

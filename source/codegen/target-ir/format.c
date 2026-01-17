@@ -154,17 +154,6 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER:
-            REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            REQUIRE_OK(kefir_json_output_string(json, "uinteger"));
-            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, operand->immediate.uint_immediate));
-            REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
-            REQUIRE_OK(variant_format(json, operand->immediate.variant));
-            REQUIRE_OK(kefir_json_output_object_end(json));
-            break;
-
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_PHYSICAL_REGISTER: {
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
