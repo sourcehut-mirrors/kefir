@@ -148,9 +148,16 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_and(struct kefir_mem *mem,
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
             if (user_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movsx) ||
                 user_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movzx)) {
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, instr_ref, use_instr_ref));
-                REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, use_instr_ref));
-                *replaced = true;
+                struct kefir_codegen_target_ir_tie_classification user_classification;
+                REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, use_instr_ref, &user_classification));
+                if (user_classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+                    user_instr->operation.parameters[user_classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                    user_instr->operation.parameters[user_classification.operands[1].read_index].direct.value_ref.instr_ref == instr_ref &&
+                    user_instr->operation.parameters[user_classification.operands[1].read_index].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
+                    REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, instr_ref, use_instr_ref));
+                    REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, use_instr_ref));
+                    *replaced = true;
+                }
             }
         }
         if (res != KEFIR_ITERATOR_END) {
