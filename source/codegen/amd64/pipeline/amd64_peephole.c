@@ -60,6 +60,7 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                         next_instr->args[0].phreg == reg &&
                         next_instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT &&
                         next_instr->args[1].indirect.type == KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS &&
+                        next_instr->args[1].indirect.index_type == KEFIR_ASMCMP_INDIRECT_INDEX_NONE &&
                         next_instr->args[1].indirect.base.phreg == reg &&
                         kefir_asmcmp_context_instr_label_head(context, next_instr_index) == KEFIR_ASMCMP_INDEX_NONE) {
 
