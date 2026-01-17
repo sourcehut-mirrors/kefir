@@ -18,12 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_TARGET_IR_UTIL_H_
-#define KEFIR_CODEGEN_TARGET_IR_UTIL_H_
+#ifndef KEFIR_CODEGEN_TARGET_IR_AMD64_UTIL_H_
+#define KEFIR_CODEGEN_TARGET_IR_AMD64_UTIL_H_
 
 #include "kefir/codegen/target-ir/code.h"
 
-kefir_result_t kefir_codegen_target_ir_add_produced_resource_aspects(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t);
-kefir_result_t kefir_codegen_target_ir_code_get_single_user(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_match_immediate(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, kefir_uint64_t *);
 
 #endif

@@ -16,157 +16,135 @@ insert:
     push %rbp
     mov %rbp, %rsp
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 64
     shr %rax, 64
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 63
     shr %rax, 63
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 62
     shr %rax, 62
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 61
     shr %rax, 61
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 60
     shr %rax, 60
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 59
     shr %rax, 59
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 58
     shr %rax, 58
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 57
     shr %rax, 57
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 56
     shr %rax, 56
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 55
     shr %rax, 55
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 54
     shr %rax, 54
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 64
     shr %rax, 63
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 63
     shr %rax, 61
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 62
     shr %rax, 58
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 61
     shr %rax, 53
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 60
     shr %rax, 44
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 59
     shr %rax, 27
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 58
     shr %rax, 57
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 57
     shr %rax, 55
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 56
     shr %rax, 52
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 55
     shr %rax, 47
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     xor %eax, %eax
-    xor %ecx, %ecx
     shl %rax, 54
     shr %rax, 38
-    or %rax, %rcx
+    or %rax, 0
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     pop %rbp

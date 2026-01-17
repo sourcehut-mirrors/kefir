@@ -46,37 +46,6 @@ kefir_result_t kefir_codegen_target_ir_add_produced_resource_aspects(struct kefi
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_match_immediate_assignment(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, kefir_uint64_t *int_value_ptr) {
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
-    REQUIRE(value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR integral assign instruction"));
-
-    const struct kefir_codegen_target_ir_instruction *instr;
-    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, value_ref.instr_ref, &instr));
-    REQUIRE(instr->operation.opcode == code->klass->assign_opcode &&
-        (instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER ||
-            instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UINTEGER), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR integral assign instruction"));
-    
-    ASSIGN_PTR(int_value_ptr, instr->operation.parameters[0].immediate.uint_immediate);
-    switch (instr->operation.parameters[0].immediate.variant) {
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT:
-            ASSIGN_PTR(int_value_ptr, (kefir_uint8_t) *int_value_ptr);
-            break;
-
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT:
-            ASSIGN_PTR(int_value_ptr, (kefir_uint16_t) *int_value_ptr);
-            break;
-
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT:
-            ASSIGN_PTR(int_value_ptr, (kefir_uint32_t) *int_value_ptr);
-            break;
-
-        default:
-            // Intentionally left blank
-            break;
-    }
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_codegen_target_ir_code_get_single_user(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_instruction_ref_t *user_instr_ref) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     ASSIGN_PTR(user_instr_ref, KEFIR_ID_NONE);

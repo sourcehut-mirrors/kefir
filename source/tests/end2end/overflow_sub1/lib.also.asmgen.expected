@@ -68,7 +68,7 @@ overflow_sub_ulong_ulong_long:
 .L__kefir_text_func_overflow_sub_ulong_ulong_long_begin:
     xor %eax, %eax
     sub %rsi, %rdi
-    sbb %rax, %rax
+    sbb $0, %rax
     mov %rdi, %rcx
     shr $63, %rcx
     xor %ecx, %eax
@@ -81,7 +81,7 @@ overflow_sub_ulong_ulong_short:
 .L__kefir_text_func_overflow_sub_ulong_ulong_short_begin:
     xor %eax, %eax
     sub %rsi, %rdi
-    sbb %rax, %rax
+    sbb $0, %rax
     mov %rdi, %rcx
     shr $63, %rcx
     xor %ecx, %eax
