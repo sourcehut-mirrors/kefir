@@ -52,24 +52,21 @@ test1:
     movq -56(%rbp), %rax
     movq b@GOTPCREL(%rip), %rcx
     xor %edx, %edx
-    shl $3, %rdx
     shl $8, %rax
     sar $8, %rax
-    movq %rax, (%rcx, %rdx, 1)
+    movq %rax, (%rcx, %rdx, 8)
     movq -32(%rbp), %rax
     movq b@GOTPCREL(%rip), %rcx
     mov $1, %edx
-    shl $3, %rdx
     shl $8, %rax
     sar $8, %rax
-    movq %rax, (%rcx, %rdx, 1)
+    movq %rax, (%rcx, %rdx, 8)
     movq -8(%rbp), %rax
     movq b@GOTPCREL(%rip), %rcx
     mov $2, %edx
-    shl $3, %rdx
     shl $8, %rax
     sar $8, %rax
-    movq %rax, (%rcx, %rdx, 1)
+    movq %rax, (%rcx, %rdx, 8)
     lea (%rbp), %rsp
     pop %rbp
     ret

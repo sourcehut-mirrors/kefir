@@ -17,13 +17,12 @@ test1:
     ret
 .L__kefir_func_test1_label6:
     movsx %eax, %rcx
-    shl $2, %rcx
     mov %rax, %r8
     shl $1, %r8d
     mov %edx, %r9d
     add %r8d, %r9d
     mov %r9, %r8
-    movl %r8d, (%rdi, %rcx, 1)
+    movl %r8d, (%rdi, %rcx, 4)
     add $1, %eax
     jmp .L__kefir_func_test1_label2
 .L__kefir_text_func_test1_end:

@@ -93,8 +93,7 @@ set_arr1_el:
     mov %rdx, %rax
     add $96, %rdi
     movsx %esi, %rcx
-    shl $3, %rcx
-    xchgq (%rdi, %rcx, 1), %rax
+    xchgq (%rdi, %rcx, 8), %rax
     ret
 .L__kefir_text_func_set_arr1_el_end:
 

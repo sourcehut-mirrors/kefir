@@ -49,8 +49,7 @@ test3:
     mov %rsp, %rbp
     lea __kefir_function_test3_static_x_4(%rip), %rax
     xor %ecx, %ecx
-    shl $3, %rcx
-    movq (%rax, %rcx, 1), %rax
+    movq (%rax, %rcx, 8), %rax
     jmp *%rax
 .L__kefir_func_test3_label3:
 _kefir_local_public_label_test3_L1:

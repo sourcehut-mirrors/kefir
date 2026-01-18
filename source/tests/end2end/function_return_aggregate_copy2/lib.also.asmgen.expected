@@ -25,11 +25,9 @@ get2:
     cld
     mov $32, %rcx
     rep movsq
-    movsx %r12d, %rax
-    mov %rax, %rcx
-    shl $2, %rcx
+    movsx %r12d, %rcx
     lea -528(%rbp), %rax
-    movl (%rax, %rcx, 1), %eax
+    movl (%rax, %rcx, 4), %eax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

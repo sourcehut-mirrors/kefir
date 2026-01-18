@@ -413,13 +413,9 @@ test_dec32_mean_squared_error:
     pop %rbp
     ret
 .L__kefir_func_test_dec32_mean_squared_error_label6:
-    mov %rax, %rcx
-    shl $3, %rcx
-    movd 4(%r12, %rcx, 1), %xmm0
+    movd 4(%r12, %rax, 8), %xmm0
     movd %xmm0, -48(%rbp)
-    mov %rax, %rcx
-    shl $3, %rcx
-    movd (%r12, %rcx, 1), %xmm1
+    movd (%r12, %rax, 8), %xmm1
     lea 1(%rax), %r13
     movaps -80(%rbp), %xmm0
     call __bid_mulsd3@PLT
@@ -701,18 +697,12 @@ test_dec32_gradient_descent:
     jmp .L__kefir_func_test_dec32_gradient_descent_label2
 .L__kefir_func_test_dec32_gradient_descent_label11:
     movd (%r13), %xmm0
-    mov %rax, %rcx
-    shl $3, %rcx
-    movd (%r15, %rcx, 1), %xmm1
+    movd (%r15, %rax, 8), %xmm1
     movd (%r12), %xmm2
     movd %xmm2, -112(%rbp)
-    mov %rax, %rcx
-    shl $3, %rcx
-    movd 4(%r15, %rcx, 1), %xmm2
+    movd 4(%r15, %rax, 8), %xmm2
     movd %xmm2, -96(%rbp)
-    mov %rax, %rcx
-    shl $3, %rcx
-    movd (%r15, %rcx, 1), %xmm2
+    movd (%r15, %rax, 8), %xmm2
     movd %xmm2, -80(%rbp)
     lea 1(%rax), %rbx
     movd .L__kefir_func_test_dec32_gradient_descent_label16(%rip), %xmm2

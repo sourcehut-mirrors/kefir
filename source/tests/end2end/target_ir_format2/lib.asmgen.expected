@@ -3714,121 +3714,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 30,
-#                    "opcode": "shl",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 11,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "64bit",
-#                            "tied": false
-#                        },
-#                        {
-#                            "type": "integer",
-#                            "value": 3,
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 7
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_of"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_of"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 0
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 0
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_cf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_cf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 0
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 0
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 0
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 32,
+#                    "instr_ref": 33,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -3840,12 +3726,12 @@ test4:
 #                                "index": 0
 #                            },
 #                            "index": "value_ref",
-#                            "index_instr_ref": 30,
+#                            "index_instr_ref": 11,
 #                            "index_aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "index_scale": 1,
+#                            "index_scale": 8,
 #                            "offset": 0,
 #                            "variant": "64bit"
 #                        }
@@ -3880,7 +3766,7 @@ test4:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 32,
+#                            "instr_ref": 33,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4028,8 +3914,7 @@ _kefir_local_public_label_test4_label1:
     movl -4(%rbp), %eax
     lea __kefir_function_test4_static_arr_10(%rip), %rcx
     movsx %eax, %rax
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rax
+    movq (%rcx, %rax, 8), %rax
     jmp *%rax
 .L__kefir_func_test4_label4:
 _kefir_local_public_label_test4_label2:

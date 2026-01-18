@@ -33,13 +33,11 @@ gets1:
     movdqu %xmm0, -96(%rbp)
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
-    movsx %esi, %rax
-    mov %rax, %rcx
-    shl $2, %rcx
+    movsx %esi, %rcx
     lea -128(%rbp), %rax
     mov %rsi, %rdx
     not %edx
-    movl %edx, (%rax, %rcx, 1)
+    movl %edx, (%rax, %rcx, 4)
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu -112(%rbp), %xmm0
@@ -57,8 +55,7 @@ gets1:
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, 48(%rdi)
     movsx %esi, %rax
-    shl $2, %rax
-    movl %esi, (%rdi, %rax, 1)
+    movl %esi, (%rdi, %rax, 4)
     mov %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp

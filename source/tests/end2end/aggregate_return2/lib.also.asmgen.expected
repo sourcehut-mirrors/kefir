@@ -26,8 +26,7 @@ testlarge:
     mov %rbx, %rdi
     call getlarge@PLT
     movsx %r12d, %rcx
-    shl $2, %rcx
-    movl (%rax, %rcx, 1), %eax
+    movl (%rax, %rcx, 4), %eax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

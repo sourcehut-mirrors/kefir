@@ -17,8 +17,7 @@ run_op:
     xor %edx, %edx
     mov $5, %r9
     div %r9
-    shl $3, %rdx
-    movq (%rdi, %rdx, 1), %rax
+    movq (%rdi, %rdx, 8), %rax
     movq %r8, -24(%rbp)
     movq %rcx, -16(%rbp)
     movq %rsi, -8(%rbp)

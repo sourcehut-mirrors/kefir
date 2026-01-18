@@ -28,9 +28,7 @@ test1:
     imul $40, %rcx, %rcx
     mov %rdi, %r10
     add %rcx, %r10
-    movsx %r9d, %rcx
-    mov %rcx, %r11
-    shl $2, %r11
+    movsx %r9d, %r11
     mov %rax, %rcx
     or %esi, %ecx
     mov %ecx, %ebx
@@ -40,7 +38,7 @@ test1:
     shl %cl, %r12d
     mov %r12, %rcx
     add %ecx, %ebx
-    movl %ebx, (%r10, %r11, 1)
+    movl %ebx, (%r10, %r11, 4)
     add $1, %r9d
     jmp .L__kefir_func_test1_label4
 .L__kefir_func_test1_label13:
@@ -73,9 +71,7 @@ _kefir_local_public_label_test2_outer:
     imul $40, %rcx, %rcx
     mov %rdi, %r10
     add %rcx, %r10
-    movsx %r9d, %rcx
-    mov %rcx, %r11
-    shl $2, %r11
+    movsx %r9d, %r11
     mov %rax, %rcx
     or %esi, %ecx
     mov %ecx, %ebx
@@ -85,7 +81,7 @@ _kefir_local_public_label_test2_outer:
     shl %cl, %r12d
     mov %r12, %rcx
     add %ecx, %ebx
-    movl %ebx, (%r10, %r11, 1)
+    movl %ebx, (%r10, %r11, 4)
     add $1, %r9d
     jmp .L__kefir_func_test2_label4
 .L__kefir_func_test2_label13:

@@ -35,21 +35,13 @@ sumall:
     movq -56(%rbp), %rbx
     movq .L__kefir_func_sumall_label4(%rip), %xmm3
     xor %r12d, %r12d
-    shl $3, %r12
     mov $1, %r13d
-    shl $3, %r13
     mov $2, %r14d
-    shl $3, %r14
     mov $3, %r15d
-    shl $3, %r15
     mov $4, %r8d
-    shl $3, %r8
     mov $5, %r10d
-    shl $3, %r10
     mov $6, %esi
-    shl $3, %rsi
     mov $7, %eax
-    shl $3, %rax
     mov $8, %edi
     shl $3, %rdi
     add %rdi, %r11
@@ -58,18 +50,18 @@ sumall:
     add %rdi, %rbx
     movaps %xmm3, %xmm0
     movq -72(%rbp), %rdi
-    movq (%rdi, %r12, 1), %xmm1
-    movq (%rcx, %r13, 1), %xmm2
-    movq (%rdx, %r14, 1), %xmm6
+    movq (%rdi, %r12, 8), %xmm1
+    movq (%rcx, %r13, 8), %xmm2
+    movq (%rdx, %r14, 8), %xmm6
     movq -80(%rbp), %rcx
-    movq (%rcx, %r15, 1), %xmm7
+    movq (%rcx, %r15, 8), %xmm7
     movq -64(%rbp), %rcx
-    movq (%rcx, %r8, 1), %xmm8
+    movq (%rcx, %r8, 8), %xmm8
     movq -96(%rbp), %rcx
-    movq (%rcx, %r10, 1), %xmm10
-    movq (%r9, %rsi, 1), %xmm12
+    movq (%rcx, %r10, 8), %xmm10
+    movq (%r9, %rsi, 8), %xmm12
     movq -88(%rbp), %rcx
-    movq (%rcx, %rax, 1), %xmm13
+    movq (%rcx, %rax, 8), %xmm13
     mov %r11, %rax
     mov %rbx, %rcx
 addsd %xmm1, %xmm0

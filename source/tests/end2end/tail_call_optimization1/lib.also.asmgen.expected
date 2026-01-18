@@ -34,8 +34,7 @@ run_bf:
     mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rbx
+    movq (%rcx, %rax, 8), %rbx
     lea -5152(%rbp), %rdi
     call *%rbx
     lea -8(%rbp), %rsp
@@ -56,8 +55,7 @@ op_next:
     mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rax
+    movq (%rcx, %rax, 8), %rax
     jmp *%rax
 .L__kefir_text_func_op_next_end:
 
@@ -75,8 +73,7 @@ op_plus:
     mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rax
+    movq (%rcx, %rax, 8), %rax
     jmp *%rax
 .L__kefir_text_func_op_plus_end:
 
@@ -92,8 +89,7 @@ op_prev:
     mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rax
+    movq (%rcx, %rax, 8), %rax
     jmp *%rax
 .L__kefir_text_func_op_prev_end:
 
@@ -111,8 +107,7 @@ op_minus:
     mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rax
+    movq (%rcx, %rax, 8), %rax
     jmp *%rax
 .L__kefir_text_func_op_minus_end:
 
@@ -136,8 +131,7 @@ op_print:
     mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rax
+    movq (%rcx, %rax, 8), %rax
     mov %rbx, %rdi
     pop %r12
     pop %rbx
@@ -163,14 +157,12 @@ op_loop_end:
     mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rax
+    movq (%rcx, %rax, 8), %rax
     jmp *%rax
 .L__kefir_func_op_loop_end_label4:
     movzxb 5134(%rdi), %rax
     lea 4104(%rdi), %rcx
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rax
+    movq (%rcx, %rax, 8), %rax
     sub $1, %rax
     movl %eax, 5128(%rdi)
     jmp .L__kefir_func_op_loop_end_label3
@@ -209,8 +201,7 @@ op_loop_begin:
     mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
-    shl $3, %rax
-    movq (%rcx, %rax, 1), %rax
+    movq (%rcx, %rax, 8), %rax
     jmp *%rax
 .L__kefir_func_op_loop_begin_label13:
     add $-1, %eax
@@ -226,8 +217,7 @@ op_loop_begin:
     movb %dl, 5134(%rdi)
     lea 4104(%rdi), %rdx
     movzx %cl, %rcx
-    shl $3, %rcx
-    movq %rax, (%rdx, %rcx, 1)
+    movq %rax, (%rdx, %rcx, 8)
     jmp .L__kefir_func_op_loop_begin_label20
 .L__kefir_text_func_op_loop_begin_end:
 

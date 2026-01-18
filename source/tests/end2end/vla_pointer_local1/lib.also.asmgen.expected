@@ -8,8 +8,7 @@
 .L__kefir_text_section_begin:
 get_element:
 .L__kefir_text_func_get_element_begin:
-    shl $3, %rdx
-    movq (%rdi, %rdx, 1), %rax
+    movq (%rdi, %rdx, 8), %rax
     ret
 .L__kefir_text_func_get_element_end:
 

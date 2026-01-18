@@ -219,7 +219,7 @@ typedef struct kefir_codegen_target_ir_operand {
         struct {
             kefir_codegen_target_ir_indirect_basis_type_t type;
             kefir_codegen_target_ir_indirect_index_type_t index_type;
-            union {
+            union kefir_codegen_target_ir_operand_indirect_base {
                 kefir_codegen_target_ir_physical_register_t phreg;
                 struct kefir_codegen_target_ir_value_ref value_ref;
                 kefir_uint64_t immediate;
@@ -232,7 +232,7 @@ typedef struct kefir_codegen_target_ir_operand {
                 kefir_size_t spill_index;
                 kefir_id_t local_variable_id;
             } base;
-            struct {
+            struct kefir_codegen_target_ir_operand_indirect_index {
                 union {
                     kefir_codegen_target_ir_physical_register_t phreg;
                     kefir_codegen_target_ir_value_ref_t value_ref;

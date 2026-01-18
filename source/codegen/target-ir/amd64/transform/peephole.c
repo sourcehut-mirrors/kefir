@@ -92,16 +92,21 @@ static kefir_result_t peephole_indirect(struct kefir_mem *mem, struct kefir_code
     for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
         if (oper.parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT ||
             oper.parameters[i].indirect.type != KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS ||
-            oper.parameters[i].indirect.index_type != KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE ||
             oper.parameters[i].indirect.base.value_ref.aspect != KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
             continue;
         }
 
-        const struct kefir_codegen_target_ir_instruction *base_instr;
+        const struct kefir_codegen_target_ir_instruction *base_instr, *index_instr = NULL;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, oper.parameters[i].indirect.base.value_ref.instr_ref, &base_instr));
+        if (oper.parameters[i].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF) {
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, oper.parameters[i].indirect.index.value_ref.instr_ref, &index_instr));
+        }
+
         if (base_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(lea) &&
             base_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
-            base_instr->operation.parameters[0].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS) {
+            base_instr->operation.parameters[0].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
+            (base_instr->operation.parameters[0].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE ||
+            oper.parameters[i].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE)) {
             const struct kefir_codegen_target_ir_value_type *value_type;
             REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, base_instr->operation.parameters[0].indirect.base.value_ref, &value_type));
             if (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
@@ -115,14 +120,21 @@ static kefir_result_t peephole_indirect(struct kefir_mem *mem, struct kefir_code
                 }
             }
 
+            kefir_codegen_target_ir_indirect_index_type_t index_type = oper.parameters[i].indirect.index_type;
+            struct kefir_codegen_target_ir_operand_indirect_index index = oper.parameters[i].indirect.index;
             kefir_int64_t offset = oper.parameters[i].indirect.offset;
             kefir_codegen_target_ir_operand_variant_t variant = oper.parameters[i].indirect.variant;
 
             oper.parameters[i] = base_instr->operation.parameters[0];
+            if (index_type != KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE) {
+                oper.parameters[i].indirect.index_type = index_type;
+                oper.parameters[i].indirect.index = index;
+            }
             oper.parameters[i].indirect.offset += offset;
             oper.parameters[i].indirect.variant = variant;
             replace = true;
-        } else if (base_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add) &&
+        } else if (oper.parameters[i].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE &&
+            base_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add) &&
             base_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
             !base_instr->operation.parameters[0].segment.present &&
             (base_instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
@@ -153,6 +165,16 @@ static kefir_result_t peephole_indirect(struct kefir_mem *mem, struct kefir_code
                     .variant = oper.parameters[i].indirect.variant
                 }
             };
+            replace = true;
+        } else if (index_instr != NULL && index_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(shl) &&
+            index_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+            (index_instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+            index_instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||
+            index_instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&
+            index_instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER &&
+            (1 << index_instr->operation.parameters[1].immediate.int_immediate) * oper.parameters[i].indirect.index.scale <= 8) {
+            oper.parameters[i].indirect.index.value_ref = index_instr->operation.parameters[0].direct.value_ref;
+            oper.parameters[i].indirect.index.scale = (1 << index_instr->operation.parameters[1].immediate.int_immediate) * oper.parameters[i].indirect.index.scale;
             replace = true;
         }
     }

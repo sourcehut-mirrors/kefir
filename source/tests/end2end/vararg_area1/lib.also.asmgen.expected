@@ -98,8 +98,7 @@ process:
     movq (%rax), %rax
     movl -68(%rbp), %edx
     movsx %edx, %rdx
-    shl $2, %rdx
-    movl %ecx, (%rax, %rdx, 1)
+    movl %ecx, (%rax, %rdx, 4)
     movl -68(%rbp), %eax
     add $1, %eax
     movl %eax, -68(%rbp)
