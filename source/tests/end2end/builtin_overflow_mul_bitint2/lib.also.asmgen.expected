@@ -1038,10 +1038,8 @@ __kefir_bigint_signed_multiply:
     shl %cl, %eax
     or %eax, %edx
     movb %dl, (%r14, %r12, 1)
-    mov -72(%rbp), %rax
-    add $1, %rax
+    addq $1, -72(%rbp)
     mov %r13d, %ecx
-    mov %rax, -72(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label4
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label14:
     mov %r15, %rdi

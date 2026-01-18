@@ -235,11 +235,34 @@ static kefir_result_t do_regalloc(struct kefir_mem *mem, struct regalloc_state *
 
         REQUIRE_OK(build_constraints_and_hints(mem, state, value_ref));
 
+        kefir_bool_t coalesce_spill = true;
+        struct kefir_codegen_target_ir_use_iterator use_iter;
+        kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+        kefir_codegen_target_ir_value_ref_t use_value_ref;
+        for (res = kefir_codegen_target_ir_code_use_iter(state->control_flow->code, &use_iter, value_ref.instr_ref, &use_instr_ref, &use_value_ref);
+            res == KEFIR_OK && coalesce_spill;
+            res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &use_value_ref)) {
+            if (use_value_ref.aspect != value_ref.aspect) {
+                continue;
+            }
+
+            const struct kefir_codegen_target_ir_instruction *user_instr;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->control_flow->code, use_instr_ref, &user_instr));
+            if (user_instr->operation.opcode != state->control_flow->code->klass->upsilon_opcode &&
+                user_instr->operation.opcode != state->control_flow->code->klass->assign_opcode &&
+                user_instr->operation.opcode != state->control_flow->code->klass->phi_opcode) {
+                coalesce_spill = false;
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+
         kefir_codegen_target_ir_regalloc_allocation_t allocation;
-        res = state->regalloc->klass->do_allocate(mem, value_type, state->stack_frame, state->regalloc_state.payload, true, &allocation, state->regalloc->klass->payload);
+        res = state->regalloc->klass->do_allocate(mem, value_type, state->stack_frame, state->regalloc_state.payload, true, coalesce_spill, &allocation, state->regalloc->klass->payload);
         if (res == KEFIR_OUT_OF_SPACE) {
             REQUIRE_OK(try_evict_neighbor(mem, state, value_ref));
-            REQUIRE_OK(state->regalloc->klass->do_allocate(mem, value_type, state->stack_frame, state->regalloc_state.payload, false, &allocation, state->regalloc->klass->payload));
+            REQUIRE_OK(state->regalloc->klass->do_allocate(mem, value_type, state->stack_frame, state->regalloc_state.payload, false, coalesce_spill, &allocation, state->regalloc->klass->payload));
         } else {
             REQUIRE_OK(res);
         }
