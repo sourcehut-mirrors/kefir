@@ -176,6 +176,49 @@ static kefir_result_t peephole_indirect(struct kefir_mem *mem, struct kefir_code
             oper.parameters[i].indirect.index.value_ref = index_instr->operation.parameters[0].direct.value_ref;
             oper.parameters[i].indirect.index.scale = (1 << index_instr->operation.parameters[1].immediate.int_immediate) * oper.parameters[i].indirect.index.scale;
             replace = true;
+        } else if ((base_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add) || base_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(sub)) &&
+            base_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+            !base_instr->operation.parameters[0].segment.present &&
+            (base_instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+            base_instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT) &&
+            base_instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER &&
+            !base_instr->operation.parameters[1].segment.present) {
+            const struct kefir_codegen_target_ir_value_type *value_type;
+            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, base_instr->operation.parameters[0].direct.value_ref, &value_type));
+            if (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+                continue;
+            }
+
+            kefir_int64_t value = kefir_codegen_target_ir_sign_extend(base_instr->operation.parameters[1].immediate.int_immediate, base_instr->operation.parameters[1].immediate.variant);
+            if (base_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(sub)) {
+                value *= -1;
+            }
+
+            oper.parameters[i].indirect.base.value_ref = base_instr->operation.parameters[0].direct.value_ref;
+            oper.parameters[i].indirect.offset += value;
+            replace = true;
+        } else if (index_instr != NULL &&
+            (index_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add) || index_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(sub)) &&
+            index_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+            !index_instr->operation.parameters[0].segment.present &&
+            (index_instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+            index_instr->operation.parameters[0].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT) &&
+            index_instr->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER &&
+            !index_instr->operation.parameters[1].segment.present) {
+            const struct kefir_codegen_target_ir_value_type *value_type;
+            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, index_instr->operation.parameters[0].direct.value_ref, &value_type));
+            if (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+                continue;
+            }
+
+            kefir_int64_t value = kefir_codegen_target_ir_sign_extend(index_instr->operation.parameters[1].immediate.int_immediate, index_instr->operation.parameters[1].immediate.variant);
+            if (index_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(sub)) {
+                value *= -1;
+            }
+
+            oper.parameters[i].indirect.index.value_ref = index_instr->operation.parameters[0].direct.value_ref;
+            oper.parameters[i].indirect.offset += value * oper.parameters[i].indirect.index.scale;
+            replace = true;
         }
     }
 

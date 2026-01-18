@@ -18,6 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/codegen/target-ir/util.h"
 #include "kefir/codegen/target-ir/amd64/util.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
 #include "kefir/core/error.h"
@@ -41,24 +42,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_match_immediate(const struct kefir_
             output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&
         instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR integral assign instruction"));
     
-    kefir_int64_t value = instr->operation.parameters[0].immediate.int_immediate;
-    switch (instr->operation.parameters[0].immediate.variant) {
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT:
-            value = (kefir_int8_t) value;
-            break;
-
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT:
-            value = (kefir_int16_t) value;
-            break;
-
-        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT:
-            value = (kefir_int32_t) value;
-            break;
-
-        default:
-            // Intentionally left blank
-            break;
-    }
+    kefir_int64_t value = kefir_codegen_target_ir_sign_extend(instr->operation.parameters[0].immediate.int_immediate, instr->operation.parameters[0].immediate.variant);
 
     ASSIGN_PTR(int_value_ptr, value);
     return KEFIR_OK;

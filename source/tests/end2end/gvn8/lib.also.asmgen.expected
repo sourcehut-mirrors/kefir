@@ -847,8 +847,7 @@ __kefir_bigint_leading_zeros:
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label8:
     mov %rdx, %rcx
     sub %r8, %rcx
-    sub $1, %rcx
-    movzxb (%rdi, %rcx, 1), %r10
+    movzxb -1(%rdi, %rcx, 1), %r10
     lea -1(%rdx), %rcx
     shl $3, %rcx
     mov %rsi, %r11
@@ -910,7 +909,7 @@ __kefir_bigint_redundant_sign_bits:
     lea 7(%rsi), %rax
     shr $3, %rax
     lea -1(%rax), %rcx
-    movzxb (%rdi, %rcx, 1), %rdx
+    movzxb -1(%rdi, %rax, 1), %rdx
     lea -1(%rsi), %r8
     shl $3, %rcx
     mov %r8, %r9
@@ -934,8 +933,7 @@ __kefir_bigint_redundant_sign_bits:
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label8:
     mov %rax, %rcx
     sub %r8, %rcx
-    sub $1, %rcx
-    movzxb (%rdi, %rcx, 1), %r10
+    movzxb -1(%rdi, %rcx, 1), %r10
     lea -1(%rax), %rcx
     shl $3, %rcx
     mov %rsi, %r11

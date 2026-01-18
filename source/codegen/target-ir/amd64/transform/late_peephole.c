@@ -1,6 +1,27 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2025  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "kefir/codegen/target-ir/amd64/late_transform.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
 #include "kefir/codegen/target-ir/amd64/regalloc.h"
+#include "kefir/codegen/target-ir/util.h"
 #include "kefir/codegen/target-ir/tie.h"
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/core/error.h"
@@ -121,24 +142,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(struct kefi
             REQUIRE_OK(res);
         }
 
-        kefir_int64_t value = instr->operation.parameters[classification.operands[1].read_index].immediate.int_immediate;
-        switch (instr->operation.parameters[classification.operands[1].read_index].immediate.variant) {
-            case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT:
-                value = (kefir_int8_t) value;
-                break;
-
-            case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT:
-                value = (kefir_int16_t) value;
-                break;
-
-            case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT:
-                value = (kefir_int32_t) value;
-                break;
-
-            default:
-                // Intentionally left blank
-                break;
-        }
+        kefir_int64_t value = kefir_codegen_target_ir_sign_extend(instr->operation.parameters[classification.operands[1].read_index].immediate.int_immediate, instr->operation.parameters[classification.operands[1].read_index].immediate.variant);
         if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(sub)) {
             value *= -1;
         }

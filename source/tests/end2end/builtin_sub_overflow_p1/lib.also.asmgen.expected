@@ -146,10 +146,8 @@ __kefir_bigint_unsigned_compare:
     xor %eax, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
-    lea -1(%r8), %rcx
-    movzxb (%rdi, %rcx, 1), %r9
-    lea -1(%r8), %rcx
-    movzxb (%rsi, %rcx, 1), %r10
+    movzxb -1(%rdi, %r8, 1), %r9
+    movzxb -1(%rsi, %r8, 1), %r10
     cmp %rax, %r8
     je .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
@@ -374,8 +372,7 @@ __kefir_bigint_leading_zeros:
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label8:
     mov %rdx, %rcx
     sub %r8, %rcx
-    sub $1, %rcx
-    movzxb (%rdi, %rcx, 1), %r10
+    movzxb -1(%rdi, %rcx, 1), %r10
     lea -1(%rdx), %rcx
     shl $3, %rcx
     mov %rsi, %r11
@@ -437,7 +434,7 @@ __kefir_bigint_redundant_sign_bits:
     lea 7(%rsi), %rax
     shr $3, %rax
     lea -1(%rax), %rcx
-    movzxb (%rdi, %rcx, 1), %rdx
+    movzxb -1(%rdi, %rax, 1), %rdx
     lea -1(%rsi), %r8
     shl $3, %rcx
     mov %r8, %r9
@@ -461,8 +458,7 @@ __kefir_bigint_redundant_sign_bits:
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label8:
     mov %rax, %rcx
     sub %r8, %rcx
-    sub $1, %rcx
-    movzxb (%rdi, %rcx, 1), %r10
+    movzxb -1(%rdi, %rcx, 1), %r10
     lea -1(%rax), %rcx
     shl $3, %rcx
     mov %rsi, %r11

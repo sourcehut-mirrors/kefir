@@ -544,8 +544,7 @@ __kefir_bigint_left_shift:
     movq -48(%rbp), %rcx
     movq -32(%rbp), %rax
     movq -8(%rbp), %rsi
-    sub $1, %rsi
-    movb (%rax, %rsi, 1), %dil
+    movb -1(%rax, %rsi, 1), %dil
     movq -48(%rbp), %rax
     movq -32(%rbp), %rsi
     movq -8(%rbp), %r8

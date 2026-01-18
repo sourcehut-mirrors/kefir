@@ -185,10 +185,8 @@ __kefir_bigint_unsigned_compare:
     xor %eax, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6:
-    lea -1(%r8), %rcx
-    movzxb (%rdi, %rcx, 1), %r9
-    lea -1(%r8), %rcx
-    movzxb (%rsi, %rcx, 1), %r10
+    movzxb -1(%rdi, %r8, 1), %r9
+    movzxb -1(%rsi, %r8, 1), %r10
     cmp %rax, %r8
     je .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:

@@ -91,9 +91,8 @@ set_i64:
 set_arr1_el:
 .L__kefir_text_func_set_arr1_el_begin:
     mov %rdx, %rax
-    add $96, %rdi
     movsx %esi, %rcx
-    xchgq (%rdi, %rcx, 8), %rax
+    xchgq 96(%rdi, %rcx, 8), %rax
     ret
 .L__kefir_text_func_set_arr1_el_end:
 
