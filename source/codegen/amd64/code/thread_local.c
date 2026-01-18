@@ -93,11 +93,11 @@ static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_a
                                              &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
         REQUIRE_OK(
             kefir_asmcmp_amd64_add(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                   &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
+                                   &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));
     } else if (offset != 0) {
         REQUIRE_OK(kefir_asmcmp_amd64_add(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
-                                          &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
+                                          &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
@@ -164,11 +164,11 @@ static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_co
                                              &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
         REQUIRE_OK(
             kefir_asmcmp_amd64_add(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                   &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
+                                   &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));
     } else if (offset != 0) {
         REQUIRE_OK(kefir_asmcmp_amd64_add(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
-                                          &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
+                                          &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
@@ -200,7 +200,7 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
         if (offset >= KEFIR_INT32_MIN && offset <= KEFIR_INT32_MAX) {
             REQUIRE_OK(
                 kefir_asmcmp_amd64_add(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
+                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
         } else {
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
@@ -209,14 +209,14 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
                 &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
             REQUIRE_OK(
                 kefir_asmcmp_amd64_add(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
+                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));
         }
 
         struct kefir_asmcmp_value segment_base = KEFIR_ASMCMP_MAKE_INT(0);
         KEFIR_ASMCMP_SET_SEGMENT(&segment_base, KEFIR_AMD64_XASMGEN_SEGMENT_FS);
         REQUIRE_OK(kefir_asmcmp_amd64_add(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
-                                          &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &segment_base, NULL));
+                                          &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &segment_base, NULL));
     } else {
         if (offset >= KEFIR_INT32_MIN && offset <= KEFIR_INT32_MAX) {
             struct kefir_asmcmp_value segment_base = KEFIR_ASMCMP_MAKE_INT(offset);
@@ -224,7 +224,7 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
 
             REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &segment_base, NULL));
+                                              &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &segment_base, NULL));
         } else {
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
@@ -240,7 +240,7 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
                                               &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), &segment_base, NULL));
             REQUIRE_OK(
                 kefir_asmcmp_amd64_add(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
+                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));
         }
 
         REQUIRE_OK(kefir_asmcmp_amd64_add(

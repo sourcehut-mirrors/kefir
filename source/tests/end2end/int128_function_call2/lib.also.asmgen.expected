@@ -41,25 +41,25 @@ test1:
     mov %rsi, %r15
     adc $0, %r15
     mov %rdi, -128(%rbp)
-    add $7, -128(%rbp)
+    addq $7, -128(%rbp)
     mov %rsi, -120(%rbp)
-    adc $0, -120(%rbp)
+    adcq $0, -120(%rbp)
     mov %rdi, -112(%rbp)
-    add $8, -112(%rbp)
+    addq $8, -112(%rbp)
     mov %rsi, -104(%rbp)
-    adc $0, -104(%rbp)
+    adcq $0, -104(%rbp)
     mov %rdi, -96(%rbp)
-    add $9, -96(%rbp)
+    addq $9, -96(%rbp)
     mov %rsi, -88(%rbp)
-    adc $0, -88(%rbp)
+    adcq $0, -88(%rbp)
     mov %rdi, -80(%rbp)
-    add $10, -80(%rbp)
+    addq $10, -80(%rbp)
     mov %rsi, -72(%rbp)
-    adc $0, -72(%rbp)
+    adcq $0, -72(%rbp)
     mov %rdi, -64(%rbp)
-    add $11, -64(%rbp)
+    addq $11, -64(%rbp)
     mov %rsi, -56(%rbp)
-    adc $0, -56(%rbp)
+    adcq $0, -56(%rbp)
     sub $144, %rsp
     movq %rax, (%rsp)
     movq %r10, 8(%rsp)
@@ -151,18 +151,18 @@ somefn:
     xor %r13, %rsi
     xor %rbx, %rdi
     xor %r11, %rsi
-    xor -64(%rbp), %rdi
-    xor -56(%rbp), %rsi
-    xor -72(%rbp), %rdi
-    xor -80(%rbp), %rsi
-    xor -96(%rbp), %rdi
-    xor -88(%rbp), %rsi
-    xor -104(%rbp), %rdi
-    xor -112(%rbp), %rsi
+    xorq -64(%rbp), %rdi
+    xorq -56(%rbp), %rsi
+    xorq -72(%rbp), %rdi
+    xorq -80(%rbp), %rsi
+    xorq -96(%rbp), %rdi
+    xorq -88(%rbp), %rsi
+    xorq -104(%rbp), %rdi
+    xorq -112(%rbp), %rsi
     mov %rdi, %rax
-    xor -128(%rbp), %rax
+    xorq -128(%rbp), %rax
     mov %rsi, %rdx
-    xor -120(%rbp), %rdx
+    xorq -120(%rbp), %rdx
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

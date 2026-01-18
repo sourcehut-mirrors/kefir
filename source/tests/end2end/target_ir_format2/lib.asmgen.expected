@@ -2955,7 +2955,7 @@ test3:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default",
+#                            "variant": "64bit",
 #                            "tied": false
 #                        },
 #                        {
@@ -2965,7 +2965,7 @@ test3:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default",
+#                            "variant": "64bit",
 #                            "tied": false
 #                        }
 #                    ],
@@ -2976,7 +2976,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "64bit",
 #                                "kind": "general_purpose"
 #                            },
 #                            "allocation": {
@@ -3074,7 +3074,7 @@ test3:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default",
+#                            "variant": "64bit",
 #                            "tied": false
 #                        },
 #                        {
@@ -3084,7 +3084,7 @@ test3:
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "variant": "default",
+#                            "variant": "64bit",
 #                            "tied": false
 #                        },
 #                        {
@@ -3105,7 +3105,7 @@ test3:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "64bit",
 #                                "kind": "general_purpose"
 #                            },
 #                            "allocation": {
