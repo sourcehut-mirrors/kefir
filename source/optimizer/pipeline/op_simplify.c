@@ -639,6 +639,8 @@ static kefir_result_t simplify_bool_and(struct kefir_mem *mem, struct kefir_opt_
                 &func->code, arg1_block_tail->operation.parameters.branch.condition_ref, &condition_instr));
             REQUIRE(condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT, KEFIR_OK);
             REQUIRE(condition_instr->operation.parameters.refs[0] == arg1->id, KEFIR_OK);
+        } else {
+            REQUIRE(arg1_block_tail->operation.parameters.branch.condition_ref == arg1->id, KEFIR_OK);
         }
     } else {
         kefir_opt_instruction_ref_t sole_use_ref;
@@ -3388,7 +3390,7 @@ static kefir_result_t simplify_select_compare(struct kefir_mem *mem, struct kefi
 
         if (inverse_arg1_comparison == instr->operation.parameters.comparison) {
             REQUIRE_OK(kefir_opt_code_builder_int8_bool_and(mem, &func->code, instr->block_id, arg1->id, arg2->id,
-                                                            replacement_ref));
+                                                                replacement_ref));
         } else if (arg1->operation.parameters.comparison == instr->operation.parameters.comparison) {
             REQUIRE_OK(kefir_opt_code_builder_int8_bool_or(mem, &func->code, instr->block_id, arg1->id, arg2->id,
                                                            replacement_ref));
