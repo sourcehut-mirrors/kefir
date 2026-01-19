@@ -143,8 +143,8 @@ __kefir_bigint_leading_zeros:
     and $1, %ecx
     cmp $1, %ecx
     je .L__kefir_runtime_func___kefir_bigint_leading_zeros_label15
-    mov %rbx, %rcx
     mov %r12, %r9
+    mov %rbx, %rcx
     jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label9
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label15:
     mov %r9, %rax

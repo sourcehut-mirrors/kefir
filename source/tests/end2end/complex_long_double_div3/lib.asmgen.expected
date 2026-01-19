@@ -765,12 +765,13 @@ __kefir_softfloat_ilogbl:
     sete %sil
     and %sil, %dl
     jnz .L__kefir_runtime_func___kefir_softfloat_ilogbl_label17
+    movabs $-9223372036854775808, %rdx
     cmp $0, %rcx
     je .L__kefir_runtime_func___kefir_softfloat_ilogbl_label5
-    lea -16383(%ecx), %edx
+    lea -16383(%ecx), %esi
     cmp $32767, %rcx
     je .L__kefir_runtime_func___kefir_softfloat_ilogbl_label11
-    mov %edx, %eax
+    mov %esi, %eax
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -784,8 +785,7 @@ __kefir_softfloat_ilogbl:
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    movabs $-9223372036854775808, %rcx
-    and %rcx, %rax
+    and %rdx, %rax
     mov $-2147483648, %rcx
     mov $2147483647, %edx
     test %rax, %rax
@@ -795,20 +795,19 @@ __kefir_softfloat_ilogbl:
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label5:
     xor %ecx, %ecx
-    mov %rcx, %rdx
+    mov %rcx, %rsi
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label13:
     movabs $4294950914, %rcx
-    sub %edx, %ecx
-    mov %rax, %rsi
-    shl $1, %rsi
-    add $1, %edx
-    movabs $-9223372036854775808, %rdi
-    and %rdi, %rax
+    sub %esi, %ecx
+    mov %rax, %rdi
+    shl $1, %rdi
+    add $1, %esi
+    and %rdx, %rax
     jz .L__kefir_runtime_func___kefir_softfloat_ilogbl_label21
     mov %ecx, %eax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label21:
-    mov %rsi, %rax
+    mov %rdi, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbl_label13
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label17:
     fldt .L__kefir_runtime_func___kefir_softfloat_ilogbl_label24(%rip)

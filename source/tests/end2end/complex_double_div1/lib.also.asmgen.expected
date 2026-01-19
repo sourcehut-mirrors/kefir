@@ -717,8 +717,8 @@ __kefir_softfloat_ilogb:
     cmp $0, %rcx
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label19:
-    mov %rdx, %rcx
     mov %esi, %eax
+    mov %rdx, %rcx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label13:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label20(%rip), %xmm0

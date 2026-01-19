@@ -346,16 +346,10 @@
                                 "control_next": null
                             },
                             {
-                                "id": 41,
-                                "opcode": "uint_const",
-                                "value": 2,
-                                "control_next": null
-                            },
-                            {
                                 "id": 42,
                                 "opcode": "stack_alloc",
                                 "size_ref": 293,
-                                "alignment_ref": 41,
+                                "alignment_ref": 34,
                                 "within_scope": true,
                                 "control_next": null
                             },
@@ -453,7 +447,6 @@
                                 36,
                                 1,
                                 34,
-                                41,
                                 17,
                                 19,
                                 46,

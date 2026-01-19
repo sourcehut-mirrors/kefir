@@ -261,7 +261,7 @@ __kefir_bigint_unsigned_compare:
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17:
     lea -1(%rdx), %rcx
-    lea -1(%rdx), %r11
+    mov %rcx, %r11
     shr $3, %r11
     shl $3, %r11
     sub %r11, %rcx

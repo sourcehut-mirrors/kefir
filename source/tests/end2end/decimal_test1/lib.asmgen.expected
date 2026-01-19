@@ -59,8 +59,6 @@ test_dec128_mean_squared_error:
     shl $5, %rcx
     movdqu 16(%r12, %rcx, 1), %xmm0
     movdqu %xmm0, -48(%rbp)
-    mov %rax, %rcx
-    shl $5, %rcx
     movdqu (%r12, %rcx, 1), %xmm1
     lea 1(%rax), %r13
     movaps -80(%rbp), %xmm0
@@ -76,8 +74,8 @@ test_dec128_mean_squared_error:
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
     call __bid_addtd3@PLT
-    mov %r13, %rax
     movaps %xmm0, -64(%rbp)
+    mov %r13, %rax
     jmp .L__kefir_func_test_dec128_mean_squared_error_label2
 .L__kefir_text_func_test_dec128_mean_squared_error_end:
 .section .rodata
@@ -165,12 +163,8 @@ test_dec64_gradient_descent:
     movq (%r15, %rcx, 1), %xmm1
     movq (%r12), %xmm2
     movq %xmm2, -112(%rbp)
-    mov %rax, %rcx
-    shl $4, %rcx
     movq 8(%r15, %rcx, 1), %xmm2
     movq %xmm2, -96(%rbp)
-    mov %rax, %rcx
-    shl $4, %rcx
     movq (%r15, %rcx, 1), %xmm2
     movq %xmm2, -80(%rbp)
     lea 1(%rax), %rbx
@@ -250,8 +244,6 @@ test_dec64_mean_squared_error:
     shl $4, %rcx
     movq 8(%r12, %rcx, 1), %xmm0
     movq %xmm0, -48(%rbp)
-    mov %rax, %rcx
-    shl $4, %rcx
     movq (%r12, %rcx, 1), %xmm1
     lea 1(%rax), %r13
     movaps -80(%rbp), %xmm0
@@ -267,8 +259,8 @@ test_dec64_mean_squared_error:
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
     call __bid_adddd3@PLT
-    mov %r13, %rax
     movaps %xmm0, -64(%rbp)
+    mov %r13, %rax
     jmp .L__kefir_func_test_dec64_mean_squared_error_label2
 .L__kefir_text_func_test_dec64_mean_squared_error_end:
 .section .rodata
@@ -430,8 +422,8 @@ test_dec32_mean_squared_error:
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
     call __bid_addsd3@PLT
-    mov %r13, %rax
     movaps %xmm0, -64(%rbp)
+    mov %r13, %rax
     jmp .L__kefir_func_test_dec32_mean_squared_error_label2
 .L__kefir_text_func_test_dec32_mean_squared_error_end:
 .section .rodata
@@ -572,12 +564,8 @@ test_dec128_gradient_descent:
     movdqu (%r15, %rcx, 1), %xmm1
     movdqu (%r12), %xmm2
     movdqu %xmm2, -112(%rbp)
-    mov %rax, %rcx
-    shl $5, %rcx
     movdqu 16(%r15, %rcx, 1), %xmm2
     movdqu %xmm2, -96(%rbp)
-    mov %rax, %rcx
-    shl $5, %rcx
     movdqu (%r15, %rcx, 1), %xmm2
     movdqu %xmm2, -80(%rbp)
     lea 1(%rax), %rbx

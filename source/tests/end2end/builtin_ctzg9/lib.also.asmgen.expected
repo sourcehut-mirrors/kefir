@@ -191,7 +191,7 @@ __kefir_bigint_unsigned_compare:
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label17:
     lea -1(%rdx), %rcx
-    lea -1(%rdx), %r11
+    mov %rcx, %r11
     shr $3, %r11
     shl $3, %r11
     sub %r11, %rcx
@@ -220,8 +220,7 @@ __kefir_bigint_trailing_zeros:
     mov %rcx, %rdx
     shr $3, %rdx
     xor %ecx, %ecx
-    xor %r8d, %r8d
-    mov %r8, %r9
+    xor %r9d, %r9d
     mov %rcx, %r8
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label4:
     cmp %rdx, %r8
@@ -263,8 +262,8 @@ __kefir_bigint_trailing_zeros:
     and $1, %r13d
     cmp $1, %r13d
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label19
-    mov %r12, %r9
     mov %r11, %rcx
+    mov %r12, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label12
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label19:
     mov %r9, %rax

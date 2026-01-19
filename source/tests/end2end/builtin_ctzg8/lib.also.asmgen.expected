@@ -98,8 +98,7 @@ __kefir_bigint_trailing_zeros:
     mov %rcx, %rdx
     shr $3, %rdx
     xor %ecx, %ecx
-    xor %r8d, %r8d
-    mov %r8, %r9
+    xor %r9d, %r9d
     mov %rcx, %r8
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label4:
     cmp %rdx, %r8
@@ -141,8 +140,8 @@ __kefir_bigint_trailing_zeros:
     and $1, %r13d
     cmp $1, %r13d
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label19
-    mov %r12, %r9
     mov %r11, %rcx
+    mov %r12, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label12
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label19:
     mov %r9, %rax

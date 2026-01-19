@@ -46,6 +46,12 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
     kefir_uint64_t hash = 0;
 
     switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT_CONST:
+        case KEFIR_OPT_OPCODE_UINT_CONST:
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(instr->operation.parameters.imm.uinteger + KEFIR_SPLITMIX64_MAGIC1);
+            break;
+
         case KEFIR_OPT_OPCODE_INT8_ADD:
         case KEFIR_OPT_OPCODE_INT16_ADD:
         case KEFIR_OPT_OPCODE_INT32_ADD:
@@ -296,6 +302,10 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
     }
 
     switch (instr1->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT_CONST:
+        case KEFIR_OPT_OPCODE_UINT_CONST:
+            return instr1->operation.parameters.imm.uinteger == instr2->operation.parameters.imm.uinteger;
+
         case KEFIR_OPT_OPCODE_INT8_ADD:
         case KEFIR_OPT_OPCODE_INT16_ADD:
         case KEFIR_OPT_OPCODE_INT32_ADD:
@@ -562,6 +572,8 @@ static kefir_result_t instr_replacement_policy(struct gvn_state *state, const st
     }
 
     switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT_CONST:
+        case KEFIR_OPT_OPCODE_UINT_CONST:
         case KEFIR_OPT_OPCODE_INT8_ADD:
         case KEFIR_OPT_OPCODE_INT16_ADD:
         case KEFIR_OPT_OPCODE_INT32_ADD:

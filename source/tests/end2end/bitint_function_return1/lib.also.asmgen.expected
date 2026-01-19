@@ -2546,6 +2546,17 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "weak_touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
 #                        "index": 3,
 #                        "variant": "default"
 #                    }
@@ -2573,7 +2584,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 3,
+#                        "index": 11,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2587,7 +2598,18 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 11,
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "weak_touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2646,7 +2668,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 3,
+#                        "index": 11,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2657,7 +2679,18 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 11,
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "weak_touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2691,11 +2724,11 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "produce_virtual_register",
+#                "opcode": "weak_touch_virtual_register",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2709,12 +2742,12 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 12,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2730,7 +2763,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 12,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2741,7 +2774,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 12,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2787,6 +2820,17 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "weak_touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
 #                        "index": 10,
 #                        "variant": "default"
 #                    }
@@ -2809,7 +2853,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 14,
+#                        "index": 13,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -2825,7 +2869,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 14,
+#                        "index": 13,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -2841,13 +2885,13 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 14,
 #                        "variant": "64bit"
 #                    },
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 14,
+#                        "index": 13,
 #                        "offset": 0,
 #                        "variant": "8bit"
 #                    }
@@ -2859,12 +2903,12 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 16,
+#                        "index": 15,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 14,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2875,7 +2919,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 16,
+#                        "index": 15,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -2887,13 +2931,13 @@ __kefir_bigint_invert:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 14,
+#                        "index": 13,
 #                        "offset": 0,
 #                        "variant": "8bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 16,
+#                        "index": 15,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -2904,7 +2948,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 17,
+#                        "index": 16,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2915,7 +2959,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 18,
+#                        "index": 17,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -2931,12 +2975,12 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 18,
+#                        "index": 17,
 #                        "variant": "64bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 17,
+#                        "index": 16,
 #                        "variant": "64bit"
 #                    }
 #                ],
@@ -2952,7 +2996,7 @@ __kefir_bigint_invert:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 18,
+#                        "index": 17,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2985,6 +3029,17 @@ __kefir_bigint_invert:
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "weak_touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],
