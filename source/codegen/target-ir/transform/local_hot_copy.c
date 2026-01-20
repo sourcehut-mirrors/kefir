@@ -216,7 +216,10 @@ static kefir_result_t collect_hot_use_regions_impl(struct kefir_mem *mem, struct
         }
 
         kefir_codegen_target_ir_regalloc_allocation_t allocation;
-        REQUIRE_OK(kefir_codegen_target_ir_regalloc_get(regalloc, value_ref, &allocation));
+        res = kefir_codegen_target_ir_regalloc_get(regalloc, value_ref, &allocation);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
 
         struct kefir_codegen_target_ir_tie_classification tie_classification;
         REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, use_instr_ref, &tie_classification));
@@ -301,9 +304,9 @@ static kefir_result_t collect_hot_use_regions(struct kefir_mem *mem, struct kefi
     kefir_result_t res = collect_hot_use_regions_impl(mem, code, liveness, regalloc, value_ref, &uses, local_hot_uses, inserted);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &uses);
-        return KEFIR_OK;
+        return res;
     });
-    REQUIRE_OK(res);
+    REQUIRE_OK(kefir_hashtree_free(mem, &uses));
     return KEFIR_OK;
 }
 
