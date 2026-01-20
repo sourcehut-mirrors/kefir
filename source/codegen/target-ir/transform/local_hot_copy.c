@@ -273,7 +273,7 @@ static kefir_result_t collect_hot_use_regions_impl(struct kefir_mem *mem, struct
 
         if (current_block_ref == KEFIR_ID_NONE ||
             current_block_ref != use_block_ref ||
-            use_seq_idx - current_seq_tail_position > 4) {
+            use_seq_idx - current_seq_tail_position > regalloc->klass->transforms->hot_copy_locality) {
             if (current_seq_head_instr_ref != KEFIR_ID_NONE &&
                 current_seq_head_position != current_seq_tail_position) {
                 REQUIRE_OK(insert_local_hot_copy(mem, code, value_ref, current_block_ref, current_seq_head_instr_ref, local_hot_uses));
