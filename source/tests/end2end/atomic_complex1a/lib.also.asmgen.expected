@@ -618,18 +618,20 @@ __kefir_softfloat_complex_float_div:
     jnb .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label56
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label3:
-    movaps -128(%rbp), %xmm0
-    mulss -112(%rbp), %xmm0
-    movaps -144(%rbp), %xmm1
-    mulss -160(%rbp), %xmm1
-    addss %xmm1, %xmm0
-    movaps -112(%rbp), %xmm1
-    mulss -112(%rbp), %xmm1
+    movaps -112(%rbp), %xmm0
+    movaps -128(%rbp), %xmm1
+    mulss %xmm0, %xmm1
     movaps -160(%rbp), %xmm2
-    mulss -160(%rbp), %xmm2
-    addss %xmm2, %xmm1
-    movaps %xmm1, -96(%rbp)
-    divss %xmm1, %xmm0
+    movaps -144(%rbp), %xmm3
+    mulss %xmm2, %xmm3
+    addss %xmm3, %xmm1
+    mulss %xmm0, %xmm0
+    mulss %xmm2, %xmm2
+    addss %xmm2, %xmm0
+    movaps %xmm0, -96(%rbp)
+    movaps %xmm1, %xmm2
+    divss %xmm0, %xmm2
+    movaps %xmm2, %xmm0
     mov %rax, %rbx
     neg %ebx
     mov %ebx, %edi
@@ -1463,18 +1465,20 @@ __kefir_softfloat_complex_double_div:
     jnb .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label56
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label3:
-    movaps -128(%rbp), %xmm0
-    mulsd -112(%rbp), %xmm0
-    movaps -144(%rbp), %xmm1
-    mulsd -160(%rbp), %xmm1
-    addsd %xmm1, %xmm0
-    movaps -112(%rbp), %xmm1
-    mulsd -112(%rbp), %xmm1
+    movaps -112(%rbp), %xmm0
+    movaps -128(%rbp), %xmm1
+    mulsd %xmm0, %xmm1
     movaps -160(%rbp), %xmm2
-    mulsd -160(%rbp), %xmm2
-    addsd %xmm2, %xmm1
-    movaps %xmm1, -96(%rbp)
-    divsd %xmm1, %xmm0
+    movaps -144(%rbp), %xmm3
+    mulsd %xmm2, %xmm3
+    addsd %xmm3, %xmm1
+    mulsd %xmm0, %xmm0
+    mulsd %xmm2, %xmm2
+    addsd %xmm2, %xmm0
+    movaps %xmm0, -96(%rbp)
+    movaps %xmm1, %xmm2
+    divsd %xmm0, %xmm2
+    movaps %xmm2, %xmm0
     mov %rax, %rbx
     neg %ebx
     mov %ebx, %edi
@@ -1634,12 +1638,13 @@ __kefir_softfloat_complex_double_div:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label65(%rip), %xmm2
     movaps -128(%rbp), %xmm3
     mulsd %xmm0, %xmm3
-    movaps -144(%rbp), %xmm4
+    movaps -144(%rbp), %xmm5
+    movaps %xmm5, %xmm4
     mulsd %xmm1, %xmm4
     addsd %xmm4, %xmm3
     mulsd %xmm3, %xmm2
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label66(%rip), %xmm3
-    movaps -144(%rbp), %xmm4
+    movaps %xmm5, %xmm4
     mulsd %xmm0, %xmm4
     movaps %xmm4, %xmm0
     movaps -128(%rbp), %xmm4
