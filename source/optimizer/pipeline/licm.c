@@ -286,20 +286,6 @@ static kefir_result_t process_loop(struct licm_state *state) {
         }
         REQUIRE_OK(res);
 
-        kefir_bool_t hoist_instruction = true;
-        REQUIRE_OK(kefir_opt_code_structure_is_dominator(&state->structure, state->loop->loop_exit_block_id, instr->block_id, &hoist_instruction));
-        for (kefir_opt_block_id_t block_id = instr->block_id; hoist_instruction && block_id != state->loop->loop_entry_block_id;) {
-            const struct kefir_list_entry *iter = kefir_list_head(&state->structure.blocks[block_id].predecessors);
-            if (iter == NULL || iter->next != NULL) {
-                hoist_instruction = false;
-            } else {
-                block_id = (kefir_uptr_t) iter->value;
-            }
-        }
-        if (!hoist_instruction) {
-            continue;
-        }
-
         state->all_inputs_processed = true;
         state->all_inputs_nonlocal = true;
         REQUIRE_OK(kefir_opt_instruction_extract_inputs(&state->func->code, instr, false, all_inputs_processed, state));
