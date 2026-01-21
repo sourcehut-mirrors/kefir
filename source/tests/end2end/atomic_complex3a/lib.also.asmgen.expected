@@ -329,9 +329,9 @@ divide_f32:
     mov $5, %rcx
     call __atomic_load@PLT
     movd -152(%rbp), %xmm0
-    movaps %xmm0, -64(%rbp)
+    movaps %xmm0, -80(%rbp)
     movd -148(%rbp), %xmm1
-    movaps %xmm1, -80(%rbp)
+    movaps %xmm1, -64(%rbp)
     movaps -144(%rbp), %xmm2
     movaps -128(%rbp), %xmm3
     call __kefir_softfloat_complex_float_div
@@ -341,9 +341,9 @@ divide_f32:
     shufps $1, %xmm1, %xmm2
     movdqu %xmm2, -32(%rbp)
     movaps %xmm0, -48(%rbp)
-    movd -64(%rbp), %xmm0
-    movd %xmm0, -152(%rbp)
     movd -80(%rbp), %xmm0
+    movd %xmm0, -152(%rbp)
+    movd -64(%rbp), %xmm0
     movd %xmm0, -148(%rbp)
     movd -48(%rbp), %xmm0
     movd %xmm0, -80(%rbp)
@@ -395,24 +395,24 @@ divide_f64:
     fnclex
 .L__kefir_func_divide_f64_label2:
     mov %rbx, %rsi
-    lea -80(%rbp), %rdx
+    lea -96(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %xmm0
-    movaps %xmm0, -96(%rbp)
-    movq -72(%rbp), %xmm1
-    movaps %xmm1, -64(%rbp)
+    movq -96(%rbp), %xmm0
+    movaps %xmm0, -80(%rbp)
+    movq -88(%rbp), %xmm1
+    movaps %xmm1, -96(%rbp)
     movaps -160(%rbp), %xmm2
     movaps -144(%rbp), %xmm3
     call __kefir_softfloat_complex_double_div
-    movaps %xmm0, -80(%rbp)
+    movaps %xmm0, -64(%rbp)
     movaps %xmm1, -48(%rbp)
-    movq -96(%rbp), %xmm0
-    movq %xmm0, -32(%rbp)
-    movq -64(%rbp), %xmm0
-    movq %xmm0, -24(%rbp)
     movq -80(%rbp), %xmm0
+    movq %xmm0, -32(%rbp)
+    movq -96(%rbp), %xmm0
+    movq %xmm0, -24(%rbp)
+    movq -64(%rbp), %xmm0
     movq %xmm0, -96(%rbp)
     movq -48(%rbp), %xmm0
     movq %xmm0, -88(%rbp)
@@ -435,7 +435,7 @@ divide_f64:
     stmxcsr -160(%rbp)
     orl %eax, -160(%rbp)
     ldmxcsr -160(%rbp)
-    movaps -80(%rbp), %xmm0
+    movaps -64(%rbp), %xmm0
     movaps -48(%rbp), %xmm1
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
@@ -612,9 +612,9 @@ multiply_f32:
     mov $5, %rcx
     call __atomic_load@PLT
     movd -152(%rbp), %xmm0
-    movaps %xmm0, -64(%rbp)
+    movaps %xmm0, -80(%rbp)
     movd -148(%rbp), %xmm1
-    movaps %xmm1, -80(%rbp)
+    movaps %xmm1, -64(%rbp)
     movaps -144(%rbp), %xmm2
     movaps -128(%rbp), %xmm3
     call __kefir_softfloat_complex_float_mul
@@ -624,9 +624,9 @@ multiply_f32:
     shufps $1, %xmm1, %xmm2
     movdqu %xmm2, -32(%rbp)
     movaps %xmm0, -48(%rbp)
-    movd -64(%rbp), %xmm0
-    movd %xmm0, -152(%rbp)
     movd -80(%rbp), %xmm0
+    movd %xmm0, -152(%rbp)
+    movd -64(%rbp), %xmm0
     movd %xmm0, -148(%rbp)
     movd -48(%rbp), %xmm0
     movd %xmm0, -80(%rbp)
@@ -678,24 +678,24 @@ multiply_f64:
     fnclex
 .L__kefir_func_multiply_f64_label2:
     mov %rbx, %rsi
-    lea -80(%rbp), %rdx
+    lea -96(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %xmm0
-    movaps %xmm0, -96(%rbp)
-    movq -72(%rbp), %xmm1
-    movaps %xmm1, -64(%rbp)
+    movq -96(%rbp), %xmm0
+    movaps %xmm0, -80(%rbp)
+    movq -88(%rbp), %xmm1
+    movaps %xmm1, -96(%rbp)
     movaps -160(%rbp), %xmm2
     movaps -144(%rbp), %xmm3
     call __kefir_softfloat_complex_double_mul
-    movaps %xmm0, -80(%rbp)
+    movaps %xmm0, -64(%rbp)
     movaps %xmm1, -48(%rbp)
-    movq -96(%rbp), %xmm0
-    movq %xmm0, -32(%rbp)
-    movq -64(%rbp), %xmm0
-    movq %xmm0, -24(%rbp)
     movq -80(%rbp), %xmm0
+    movq %xmm0, -32(%rbp)
+    movq -96(%rbp), %xmm0
+    movq %xmm0, -24(%rbp)
+    movq -64(%rbp), %xmm0
     movq %xmm0, -96(%rbp)
     movq -48(%rbp), %xmm0
     movq %xmm0, -88(%rbp)
@@ -718,7 +718,7 @@ multiply_f64:
     stmxcsr -160(%rbp)
     orl %eax, -160(%rbp)
     ldmxcsr -160(%rbp)
-    movaps -80(%rbp), %xmm0
+    movaps -64(%rbp), %xmm0
     movaps -48(%rbp), %xmm1
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
@@ -1897,7 +1897,9 @@ __kefir_softfloat_complex_double_div:
     andpd -112(%rbp), %xmm1
     movq %rax, %xmm2
     andnpd %xmm2, %xmm0
-    orpd %xmm1, %xmm0
+    movaps %xmm0, %xmm2
+    orpd %xmm1, %xmm2
+    movaps %xmm2, %xmm1
     mov -160(%rbp), %rax
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
@@ -1907,33 +1909,31 @@ __kefir_softfloat_complex_double_div:
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
     cmove %eax, %edx
-    movq .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label63(%rip), %xmm1
+    movq .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label63(%rip), %xmm0
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label64(%rip), %xmm2
-    movq %xmm1, %rax
+    movq %xmm0, %rax
     movq %xmm2, %rcx
     test %edx, %edx
     cmovz %rcx, %rax
-    movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm1
-    movaps %xmm1, %xmm2
+    movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
+    movaps %xmm0, %xmm2
     andpd -160(%rbp), %xmm2
     movq %rax, %xmm3
-    andnpd %xmm3, %xmm1
-    orpd %xmm2, %xmm1
+    andnpd %xmm3, %xmm0
+    movaps %xmm0, %xmm4
+    orpd %xmm2, %xmm4
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label65(%rip), %xmm2
     movaps -128(%rbp), %xmm3
-    mulsd %xmm0, %xmm3
-    movaps -144(%rbp), %xmm5
-    movaps %xmm5, %xmm4
-    mulsd %xmm1, %xmm4
-    addsd %xmm4, %xmm3
+    mulsd %xmm1, %xmm3
+    movaps -144(%rbp), %xmm0
+    movaps %xmm0, %xmm5
+    mulsd %xmm4, %xmm5
+    addsd %xmm5, %xmm3
     mulsd %xmm3, %xmm2
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label66(%rip), %xmm3
-    movaps %xmm5, %xmm4
-    mulsd %xmm0, %xmm4
-    movaps %xmm4, %xmm0
-    movaps -128(%rbp), %xmm4
-    mulsd %xmm1, %xmm4
-    movaps %xmm4, %xmm1
+    mulsd %xmm1, %xmm0
+    movaps -128(%rbp), %xmm1
+    mulsd %xmm4, %xmm1
     subsd %xmm1, %xmm0
     movaps %xmm3, %xmm1
     mulsd %xmm0, %xmm1

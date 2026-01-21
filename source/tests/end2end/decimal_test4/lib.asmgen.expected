@@ -356,11 +356,11 @@ test_dec32_step:
     movd (%rax, %r15, 4), %xmm0
     movd %xmm0, -112(%rbp)
     movd (%r14, %r15, 4), %xmm0
-    movd %xmm0, -80(%rbp)
+    movd %xmm0, -96(%rbp)
     movq 16(%rbx), %rax
     mov %rax, -136(%rbp)
     movd (%rax, %r15, 4), %xmm0
-    movd %xmm0, -96(%rbp)
+    movd %xmm0, -80(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
     call __bid_mulsd3@PLT
@@ -368,9 +368,9 @@ test_dec32_step:
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, -64(%rbp)
-    movaps -80(%rbp), %xmm0
+    movaps -96(%rbp), %xmm0
     call __bid_subsd3@PLT
-    movaps %xmm0, -80(%rbp)
+    movaps %xmm0, -96(%rbp)
     movd .L__kefir_func_test_dec32_step_label27(%rip), %xmm0
     movaps -128(%rbp), %xmm1
     call __bid_subsd3@PLT
@@ -378,13 +378,13 @@ test_dec32_step:
     movaps -176(%rbp), %xmm0
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -80(%rbp), %xmm0
+    movaps -96(%rbp), %xmm0
     call __bid_addsd3@PLT
     movaps %xmm0, %xmm1
     movaps -208(%rbp), %xmm0
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -96(%rbp), %xmm0
+    movaps -80(%rbp), %xmm0
     call __bid_addsd3@PLT
     movq -136(%rbp), %rax
     movd %xmm0, (%rax, %r15, 4)
@@ -724,11 +724,11 @@ test_dec64_step:
     movq (%rax, %r15, 8), %xmm0
     movq %xmm0, -112(%rbp)
     movq (%r14, %r15, 8), %xmm0
-    movq %xmm0, -80(%rbp)
+    movq %xmm0, -96(%rbp)
     movq 16(%rbx), %rax
     mov %rax, -136(%rbp)
     movq (%rax, %r15, 8), %xmm0
-    movq %xmm0, -96(%rbp)
+    movq %xmm0, -80(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
     call __bid_muldd3@PLT
@@ -736,9 +736,9 @@ test_dec64_step:
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, -64(%rbp)
-    movaps -80(%rbp), %xmm0
+    movaps -96(%rbp), %xmm0
     call __bid_subdd3@PLT
-    movaps %xmm0, -80(%rbp)
+    movaps %xmm0, -96(%rbp)
     movq .L__kefir_func_test_dec64_step_label27(%rip), %xmm0
     movaps -128(%rbp), %xmm1
     call __bid_subdd3@PLT
@@ -746,13 +746,13 @@ test_dec64_step:
     movaps -176(%rbp), %xmm0
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movaps -80(%rbp), %xmm0
+    movaps -96(%rbp), %xmm0
     call __bid_adddd3@PLT
     movaps %xmm0, %xmm1
     movaps -208(%rbp), %xmm0
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movaps -96(%rbp), %xmm0
+    movaps -80(%rbp), %xmm0
     call __bid_adddd3@PLT
     movq -136(%rbp), %rax
     movq %xmm0, (%rax, %r15, 8)
@@ -1664,11 +1664,11 @@ test_dec128_step:
     movdqu (%rax, %r15, 1), %xmm0
     movdqu %xmm0, -112(%rbp)
     movdqu (%r14, %r15, 1), %xmm0
-    movdqu %xmm0, -80(%rbp)
+    movdqu %xmm0, -96(%rbp)
     movq 32(%rbx), %rax
     mov %rax, -136(%rbp)
     movdqu (%rax, %r15, 1), %xmm0
-    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm0, -80(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
     call __bid_multd3@PLT
@@ -1676,9 +1676,9 @@ test_dec128_step:
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, -64(%rbp)
-    movaps -80(%rbp), %xmm0
+    movaps -96(%rbp), %xmm0
     call __bid_subtd3@PLT
-    movaps %xmm0, -80(%rbp)
+    movaps %xmm0, -96(%rbp)
     movdqu .L__kefir_func_test_dec128_step_label27(%rip), %xmm0
     movaps -128(%rbp), %xmm1
     call __bid_subtd3@PLT
@@ -1686,13 +1686,13 @@ test_dec128_step:
     movaps -176(%rbp), %xmm0
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
-    movaps -80(%rbp), %xmm0
+    movaps -96(%rbp), %xmm0
     call __bid_addtd3@PLT
     movaps %xmm0, %xmm1
     movaps -208(%rbp), %xmm0
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
-    movaps -96(%rbp), %xmm0
+    movaps -80(%rbp), %xmm0
     call __bid_addtd3@PLT
     movq -136(%rbp), %rax
     movdqu %xmm0, (%rax, %r15, 1)
