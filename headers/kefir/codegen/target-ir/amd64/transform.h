@@ -22,9 +22,13 @@
 #define KEFIR_CODEGEN_TARGET_IR_AMD64_TRANSFORM_H_
 
 #include "kefir/codegen/target-ir/code.h"
+#include "kefir/codegen/target-ir/regalloc.h"
+#include "kefir/codegen/target-ir/liveness.h"
+#include "kefir/codegen/target-ir/control_flow.h"
 
 kefir_result_t kefir_codegen_target_ir_amd64_transform_peephole(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 kefir_result_t kefir_codegen_target_ir_amd64_transform_dead_code_elimination(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_amd64_transform_rematerialize(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_liveness *, const struct kefir_codegen_target_ir_regalloc *);
 
 #ifdef KEFIR_CODEGEN_TARGET_IR_AMD64_PEEPHOLE_INTERNAL
 kefir_result_t kefir_codegen_target_ir_amd64_peephole_const_operand(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t, kefir_bool_t *);
