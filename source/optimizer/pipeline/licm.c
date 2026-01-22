@@ -243,6 +243,7 @@ static kefir_result_t process_loop(struct licm_state *state) {
         !kefir_hashtreeset_has(&state->structure.indirect_jump_target_blocks, (kefir_hashtreeset_entry_t) state->loop->loop_entry_block_id), KEFIR_OK);
 
     REQUIRE_OK(kefir_hashtreeset_clean(state->mem, &state->processed_instr));
+    REQUIRE_OK(kefir_hashtreeset_clean(state->mem, &state->hoist_candidates));
 
     kefir_result_t res;
     struct kefir_hashtreeset_iterator iter;
