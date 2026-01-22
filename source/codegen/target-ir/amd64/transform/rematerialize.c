@@ -24,6 +24,73 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
+static kefir_result_t do_rematerialize(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+    kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t insert_before_ref) {
+    const struct kefir_codegen_target_ir_instruction *instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, value_ref.instr_ref, &instr));
+    struct kefir_codegen_target_ir_instruction_metadata metadata = instr->metadata;
+    struct kefir_codegen_target_ir_operation operation = instr->operation;
+
+    kefir_codegen_target_ir_instruction_ref_t rematerialized_instr_ref;
+    REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref,
+        kefir_codegen_target_ir_code_control_prev(code, insert_before_ref),
+        &operation,  &metadata, &rematerialized_instr_ref));
+
+    const struct kefir_codegen_target_ir_value_type *value_type;
+    REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, &value_type));
+
+    kefir_result_t res;
+    struct kefir_codegen_target_ir_value_iterator instr_value_iter;
+    kefir_codegen_target_ir_value_ref_t instr_value_ref;
+    for (res = kefir_codegen_target_ir_code_value_iter(code, &instr_value_iter, value_ref.instr_ref, &instr_value_ref, &value_type);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_value_next(&instr_value_iter, &instr_value_ref, &value_type)) {
+        struct kefir_codegen_target_ir_value_type value_type_copy = *value_type;
+        REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, (kefir_codegen_target_ir_value_ref_t) {
+            .instr_ref = rematerialized_instr_ref,
+            .aspect = instr_value_ref.aspect
+        }, &value_type_copy));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    kefir_codegen_target_ir_native_id_t attribute;
+    struct kefir_codegen_target_ir_code_attribute_iterator attr_iter;
+    for (res = kefir_codegen_target_ir_code_instruction_attribute_iter(code, &attr_iter, value_ref.instr_ref, &attribute);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_instruction_attribute_next(&attr_iter, &attribute)) {
+        REQUIRE_OK(kefir_codegen_target_ir_code_add_instruction_attribute(mem, code, rematerialized_instr_ref, attribute));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    struct kefir_codegen_target_ir_use_iterator use_iter;
+    kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+    kefir_codegen_target_ir_value_ref_t used_value_ref;
+    for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, value_ref.instr_ref, &use_instr_ref, &used_value_ref);
+        res == KEFIR_OK;
+        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
+        const struct kefir_codegen_target_ir_instruction *user_instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
+        if (user_instr->block_ref != block_ref ||
+            used_value_ref.aspect != value_ref.aspect) {
+            continue;
+        }
+
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_value_in(mem, code, use_instr_ref,
+            (kefir_codegen_target_ir_value_ref_t) {
+                .instr_ref = rematerialized_instr_ref,
+                .aspect = value_ref.aspect
+            }, value_ref));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t rematerialize_block(struct kefir_mem *mem,
     struct kefir_codegen_target_ir_code *code,
     const struct kefir_codegen_target_ir_control_flow *control_flow,
@@ -237,59 +304,7 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
             continue;
         }
 
-        struct kefir_codegen_target_ir_instruction_metadata metadata = instr->metadata;
-        struct kefir_codegen_target_ir_operation operation = instr->operation;
-
-        kefir_codegen_target_ir_instruction_ref_t rematerialized_instr_ref;
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref,
-            kefir_codegen_target_ir_code_control_prev(code, first_use_ref),
-            &operation,  &metadata, &rematerialized_instr_ref));
-
-        struct kefir_codegen_target_ir_value_iterator instr_value_iter;
-        kefir_codegen_target_ir_value_ref_t instr_value_ref;
-        for (res = kefir_codegen_target_ir_code_value_iter(code, &instr_value_iter, value_ref.instr_ref, &instr_value_ref, &value_type);
-            res == KEFIR_OK;
-            res = kefir_codegen_target_ir_code_value_next(&instr_value_iter, &instr_value_ref, &value_type)) {
-            struct kefir_codegen_target_ir_value_type value_type_copy = *value_type;
-            REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, (kefir_codegen_target_ir_value_ref_t) {
-                .instr_ref = rematerialized_instr_ref,
-                .aspect = instr_value_ref.aspect
-            }, &value_type_copy));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-
-        kefir_codegen_target_ir_native_id_t attribute;
-        struct kefir_codegen_target_ir_code_attribute_iterator attr_iter;
-        for (res = kefir_codegen_target_ir_code_instruction_attribute_iter(code, &attr_iter, value_ref.instr_ref, &attribute);
-            res == KEFIR_OK;
-            res = kefir_codegen_target_ir_code_instruction_attribute_next(&attr_iter, &attribute)) {
-            REQUIRE_OK(kefir_codegen_target_ir_code_add_instruction_attribute(mem, code, rematerialized_instr_ref, attribute));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-
-        for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, value_ref.instr_ref, &use_instr_ref, &used_value_ref);
-            res == KEFIR_OK;
-            res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
-            const struct kefir_codegen_target_ir_instruction *user_instr;
-            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
-            if (user_instr->block_ref != block_ref ||
-                used_value_ref.aspect != value_ref.aspect) {
-                continue;
-            }
-
-            REQUIRE_OK(kefir_codegen_target_ir_code_replace_value_in(mem, code, use_instr_ref,
-                (kefir_codegen_target_ir_value_ref_t) {
-                    .instr_ref = rematerialized_instr_ref,
-                    .aspect = value_ref.aspect
-                }, value_ref));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
+        REQUIRE_OK(do_rematerialize(mem, code, value_ref, block_ref, first_use_ref));
     }
     return KEFIR_OK;
 }
