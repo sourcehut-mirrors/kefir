@@ -68,9 +68,7 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
         switch (instr->operation.opcode) {
             case KEFIR_TARGET_IR_AMD64_OPCODE(add):
             case KEFIR_TARGET_IR_AMD64_OPCODE(xadd):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(adc):
             case KEFIR_TARGET_IR_AMD64_OPCODE(sub):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(sbb):
             case KEFIR_TARGET_IR_AMD64_OPCODE(shl):
             case KEFIR_TARGET_IR_AMD64_OPCODE(shr):
             case KEFIR_TARGET_IR_AMD64_OPCODE(sar):
@@ -105,16 +103,22 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
                     break;
 
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
-                    if (instr->operation.parameters[j].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS) {
-                        value_refs[0] = instr->operation.parameters[j].indirect.base.value_ref;
-                    }
-                    if (instr->operation.parameters[j].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF) {
-                        value_refs[1] = instr->operation.parameters[j].indirect.index.value_ref;
+                    if (instr->operation.opcode != KEFIR_TARGET_IR_AMD64_OPCODE(lea)) {
+                        all_live_in = false;
                     }
                     break;
 
-                default:
+                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
+                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
+                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF:
+                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL:
+                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF:
+                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE:
                     // Intentionally left blank
+                    break;
+
+                default:
+                    all_live_in = false;
                     break;
             }
 
@@ -149,7 +153,11 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
             const struct kefir_codegen_target_ir_instruction *user_instr;
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
             if (user_instr->block_ref != block_ref ||
-                used_value_ref.aspect != value_ref.aspect) {
+                used_value_ref.aspect != value_ref.aspect ||
+                user_instr->operation.opcode == code->klass->phi_opcode ||
+                user_instr->operation.opcode == code->klass->upsilon_opcode ||
+                user_instr->operation.opcode == code->klass->touch_opcode ||
+                user_instr->operation.opcode == code->klass->inline_asm_opcode) {
                 continue;
             }
 
