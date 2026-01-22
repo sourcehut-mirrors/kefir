@@ -81,6 +81,22 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
             case KEFIR_TARGET_IR_AMD64_OPCODE(movzx):
             case KEFIR_TARGET_IR_AMD64_OPCODE(movsx):
             case KEFIR_TARGET_IR_AMD64_OPCODE(lea):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(imul):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(imul3):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(bsf):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(bsr):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(rol):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(bswap):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(xorps):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(xorpd):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(andps):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(andnps):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(andpd):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(andnpd):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(orps):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(orpd):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(shufps):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(shufpd):
                 break;
 
             default:
