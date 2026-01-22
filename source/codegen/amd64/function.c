@@ -676,30 +676,6 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, &func->code.context, asmlabel));
         }
 
-        struct kefir_hashset_iterator alive_instr_iter;
-        kefir_hashset_key_t alive_instr_entry;
-        for (res = kefir_hashset_iter(&func->function_analysis.liveness.blocks[block_id].alive_instr, &alive_instr_iter,
-                                      &alive_instr_entry);
-             res == KEFIR_OK; res = kefir_hashset_next(&alive_instr_iter, &alive_instr_entry)) {
-            kefir_asmcmp_virtual_register_index_t vreg = 0;
-            res = kefir_codegen_amd64_function_vreg_of(func, (kefir_opt_instruction_ref_t) alive_instr_entry, &vreg);
-            if (res == KEFIR_NOT_FOUND) {
-                res = KEFIR_OK;
-                continue;
-            }
-            REQUIRE_OK(res);
-
-            const struct kefir_opt_instruction *instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code,
-                                                      (kefir_opt_instruction_ref_t) alive_instr_entry, &instr));
-            if (instr->block_id == block_id && instr->operation.opcode != KEFIR_OPT_OPCODE_PHI) {
-                continue;
-            }
-
-            REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(
-                mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
-        }
-
         struct kefir_opt_code_block_schedule_iterator iter;
         kefir_result_t res;
         for (res = kefir_opt_code_block_schedule_iter(&func->schedule, block_id, &iter); res == KEFIR_OK;
@@ -718,38 +694,6 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             block_begin_idx = kefir_asmcmp_context_instr_prev(&func->code.context, block_begin_idx);
         } else {
             block_begin_idx = kefir_asmcmp_context_instr_tail(&func->code.context);
-        }
-
-        for (res = kefir_hashset_iter(&func->function_analysis.liveness.blocks[block_id].alive_instr, &alive_instr_iter,
-                                      &alive_instr_entry);
-             res == KEFIR_OK; res = kefir_hashset_next(&alive_instr_iter, &alive_instr_entry)) {
-            kefir_asmcmp_virtual_register_index_t vreg = 0;
-            res = kefir_codegen_amd64_function_vreg_of(func, (kefir_opt_instruction_ref_t) alive_instr_entry, &vreg);
-            if (res == KEFIR_NOT_FOUND) {
-                res = KEFIR_OK;
-                continue;
-            }
-            REQUIRE_OK(res);
-
-            const struct kefir_opt_instruction *instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code,
-                                                      (kefir_opt_instruction_ref_t) alive_instr_entry, &instr));
-
-            kefir_bool_t preserve_vreg = false;
-            for (const struct kefir_list_entry *iter =
-                     kefir_list_head(&func->function_analysis.structure.blocks[block_id].successors);
-                 !preserve_vreg && iter != NULL; kefir_list_next(&iter)) {
-                ASSIGN_DECL_CAST(kefir_opt_block_id_t, succ_block_id, (kefir_uptr_t) iter->value);
-                if (instr->block_id != succ_block_id &&
-                    kefir_hashset_has(&func->function_analysis.liveness.blocks[succ_block_id].alive_instr,
-                                      alive_instr_entry)) {
-                    preserve_vreg = true;
-                }
-            }
-            if (preserve_vreg) {
-                REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(
-                    mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
-            }
         }
 
         REQUIRE_OK(

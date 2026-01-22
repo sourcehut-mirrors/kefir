@@ -2531,39 +2531,6 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "virtual_block_end",
 #                "args": [],
 #                "labels": []
@@ -2594,50 +2561,6 @@ __kefir_bigint_invert:
 #                ]
 #            },
 #            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 11,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "cmp",
 #                "args": [
 #                    {
@@ -2664,50 +2587,6 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 11,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "virtual_block_end",
 #                "args": [],
 #                "labels": []
@@ -2724,20 +2603,6 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [
-#                    3,
-#                    4
-#                ]
-#            },
-#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -2751,7 +2616,10 @@ __kefir_bigint_invert:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    3,
+#                    4
+#                ]
 #            },
 #            {
 #                "opcode": "function_epilogue",
@@ -2802,53 +2670,6 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [
-#                    5,
-#                    6
-#                ]
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 11,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -2862,7 +2683,10 @@ __kefir_bigint_invert:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    5,
+#                    6
+#                ]
 #            },
 #            {
 #                "opcode": "add",
@@ -3019,39 +2843,6 @@ __kefir_bigint_invert:
 #                    {
 #                        "type": "internal_label",
 #                        "label": 2
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []

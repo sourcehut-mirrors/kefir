@@ -275,9 +275,9 @@ test_dec32_cg_solve:
     test %eax, %eax
     jz .L__kefir_func_test_dec32_cg_solve_label31
     xor %eax, %eax
+    mov %rax, -48(%rbp)
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
-    mov %rax, -48(%rbp)
 .L__kefir_func_test_dec32_cg_solve_label10:
     movl -48(%rbp), %ecx
     movl -160(%rbp), %edx
@@ -355,9 +355,9 @@ test_dec32_cg_solve:
     add $1, %eax
     cmp %r15, %r12
     jb .L__kefir_func_test_dec32_cg_solve_label25
+    mov %rax, -48(%rbp)
     movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
-    mov %rax, -48(%rbp)
     jmp .L__kefir_func_test_dec32_cg_solve_label10
 .L__kefir_func_test_dec32_cg_solve_label25:
     movd (%r14, %r12, 4), %xmm0
@@ -515,9 +515,9 @@ test_dec64_cg_solve:
     test %eax, %eax
     jz .L__kefir_func_test_dec64_cg_solve_label31
     xor %eax, %eax
+    mov %rax, -48(%rbp)
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
-    mov %rax, -48(%rbp)
 .L__kefir_func_test_dec64_cg_solve_label10:
     movl -48(%rbp), %ecx
     movl -160(%rbp), %edx
@@ -595,9 +595,9 @@ test_dec64_cg_solve:
     add $1, %eax
     cmp %r15, %r12
     jb .L__kefir_func_test_dec64_cg_solve_label25
+    mov %rax, -48(%rbp)
     movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
-    mov %rax, -48(%rbp)
     jmp .L__kefir_func_test_dec64_cg_solve_label10
 .L__kefir_func_test_dec64_cg_solve_label25:
     movq (%r14, %r12, 8), %xmm0
@@ -1781,9 +1781,9 @@ test_dec128_cg_solve:
     test %eax, %eax
     jz .L__kefir_func_test_dec128_cg_solve_label31
     xor %eax, %eax
+    mov %rax, -96(%rbp)
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
-    mov %rax, -96(%rbp)
 .L__kefir_func_test_dec128_cg_solve_label10:
     movl -96(%rbp), %ecx
     movl -176(%rbp), %edx
@@ -1861,9 +1861,9 @@ test_dec128_cg_solve:
     add $1, %eax
     cmp %r15, %r12
     jb .L__kefir_func_test_dec128_cg_solve_label25
+    mov %rax, -96(%rbp)
     movdqu -112(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
-    mov %rax, -96(%rbp)
     jmp .L__kefir_func_test_dec128_cg_solve_label10
 .L__kefir_func_test_dec128_cg_solve_label25:
     mov %r12, %rbx
