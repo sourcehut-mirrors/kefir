@@ -74,16 +74,35 @@ static kefir_result_t do_rematerialize(struct kefir_mem *mem, struct kefir_codeg
         res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
         const struct kefir_codegen_target_ir_instruction *user_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
-        if (user_instr->block_ref != block_ref ||
-            used_value_ref.aspect != value_ref.aspect) {
-            continue;
-        }
 
-        REQUIRE_OK(kefir_codegen_target_ir_code_replace_value_in(mem, code, use_instr_ref,
-            (kefir_codegen_target_ir_value_ref_t) {
-                .instr_ref = rematerialized_instr_ref,
-                .aspect = value_ref.aspect
-            }, value_ref));
+        if (user_instr->operation.opcode == code->klass->phi_opcode) {
+            kefir_codegen_target_ir_value_ref_t linked_value_ref;
+            res = kefir_codegen_target_ir_code_phi_link_for(code, use_instr_ref, block_ref, &linked_value_ref);
+            if (res == KEFIR_NOT_FOUND) {
+                continue;
+            }
+            REQUIRE_OK(res);
+
+            if (linked_value_ref.instr_ref == value_ref.instr_ref &&
+                linked_value_ref.aspect == value_ref.aspect) {
+                REQUIRE_OK(kefir_codegen_target_ir_code_phi_drop(mem, code, use_instr_ref, block_ref));
+                REQUIRE_OK(kefir_codegen_target_ir_code_phi_attach(mem, code, use_instr_ref, block_ref, (kefir_codegen_target_ir_value_ref_t) {
+                    .instr_ref = rematerialized_instr_ref,
+                    .aspect = value_ref.aspect
+                }));
+            }
+        } else {
+            if (user_instr->block_ref != block_ref ||
+                used_value_ref.aspect != value_ref.aspect) {
+                continue;
+            }
+
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_value_in(mem, code, use_instr_ref,
+                (kefir_codegen_target_ir_value_ref_t) {
+                    .instr_ref = rematerialized_instr_ref,
+                    .aspect = value_ref.aspect
+                }, value_ref));
+        }
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
