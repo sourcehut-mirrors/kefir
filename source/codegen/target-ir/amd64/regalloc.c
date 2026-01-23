@@ -19,6 +19,7 @@
 */
 
 #include "kefir/codegen/target-ir/amd64/regalloc.h"
+#include "kefir/codegen/target-ir/amd64/transform.h"
 #include "kefir/target/abi/amd64/function.h"
 #include "kefir/core/sort.h"
 #include "kefir/core/error.h"
@@ -576,11 +577,39 @@ static kefir_result_t amd64_regalloc_register_allocation(kefir_codegen_target_ir
 
 static kefir_result_t amd64_regalloc_format_allocation(struct kefir_json_output *, kefir_codegen_target_ir_regalloc_allocation_t);
 
-kefir_result_t format_allocation(struct kefir_json_output *json, kefir_codegen_target_ir_regalloc_allocation_t allocation, void *payload) {
+static kefir_result_t format_allocation(struct kefir_json_output *json, kefir_codegen_target_ir_regalloc_allocation_t allocation, void *payload) {
     UNUSED(payload);
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
 
     REQUIRE_OK(amd64_regalloc_format_allocation(json, allocation));
+    return KEFIR_OK;
+}
+
+static kefir_result_t amd64_is_rematerializable(const struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_value_ref_t value_ref, kefir_bool_t *is_rematerializable, void *payload) {
+    UNUSED(payload);
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
+    REQUIRE(is_rematerializable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean"));
+
+    *is_rematerializable = true;
+
+    kefir_result_t res;
+    struct kefir_codegen_target_ir_use_iterator use_iter;
+    kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+    kefir_codegen_target_ir_value_ref_t used_value_ref;
+    for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, value_ref.instr_ref, &use_instr_ref, &used_value_ref);
+        res == KEFIR_OK && *is_rematerializable;
+        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
+        const struct kefir_codegen_target_ir_instruction *user_instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
+
+        if (user_instr->operation.opcode != code->klass->phi_opcode) { // Phi's shall be covered by respective upsilons
+            REQUIRE_OK(kefir_codegen_target_ir_amd64_is_rematerializable(code, liveness, value_ref, user_instr->block_ref, is_rematerializable));
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     return KEFIR_OK;
 }
 
@@ -635,6 +664,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_me
     klass->klass.is_evictable = amd64_regalloc_is_evictable;
     klass->klass.register_allocation = amd64_regalloc_register_allocation;
     klass->klass.format_allocation = format_allocation;
+    klass->klass.is_rematerializable = amd64_is_rematerializable;
     klass->klass.payload = klass;
     return KEFIR_OK;
 }

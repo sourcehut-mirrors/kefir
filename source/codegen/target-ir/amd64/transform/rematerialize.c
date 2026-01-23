@@ -110,6 +110,110 @@ static kefir_result_t do_rematerialize(struct kefir_mem *mem, struct kefir_codeg
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_amd64_is_rematerializable(const struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_liveness *liveness, kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_block_ref_t block_ref, kefir_bool_t *is_rematerializable) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
+    REQUIRE(is_rematerializable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean"));
+
+    *is_rematerializable = false;
+
+    const struct kefir_codegen_target_ir_value_type *value_type;
+    REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, &value_type));
+    REQUIRE(value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_OK);
+
+    const struct kefir_codegen_target_ir_instruction *instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, value_ref.instr_ref, &instr));
+
+    switch (instr->operation.opcode) {
+        case KEFIR_TARGET_IR_AMD64_OPCODE(add):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(xadd):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(sub):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(shl):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(shr):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(sar):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(and):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(or):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(xor):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(not):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(neg):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(dec):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(movzx):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(movsx):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(lea):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(imul):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(imul3):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(bsf):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(bsr):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(rol):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(bswap):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(xorps):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(xorpd):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(andps):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(andnps):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(andpd):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(andnpd):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(orps):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(orpd):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(shufps):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(shufpd):
+            // Intentionally left blank
+            break;
+
+        default:
+            *is_rematerializable = false;
+            return KEFIR_OK;
+    }
+
+    kefir_bool_t all_live_in = true;
+    for (kefir_size_t j = 0; all_live_in && j < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; j++) {
+        kefir_codegen_target_ir_value_ref_t value_refs[2] = {
+            [0].instr_ref = KEFIR_ID_NONE,
+            [1].instr_ref = KEFIR_ID_NONE
+        };
+        switch (instr->operation.parameters[j].type) {
+            case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
+                value_refs[0] = instr->operation.parameters[j].direct.value_ref;
+                break;
+
+            case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
+                if (instr->operation.opcode != KEFIR_TARGET_IR_AMD64_OPCODE(lea)) {
+                    all_live_in = false;
+                }
+                break;
+
+            case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
+            case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
+            case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF:
+            case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL:
+            case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF:
+            case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE:
+                // Intentionally left blank
+                break;
+
+            default:
+                all_live_in = false;
+                break;
+        }
+
+        for (kefir_size_t k = 0; all_live_in && k < sizeof(value_refs) / sizeof(value_refs[0]); k++) {
+            if (value_refs[k].instr_ref == KEFIR_ID_NONE) {
+                continue;
+            }
+
+            kefir_bool_t live_in = false;
+            for (kefir_size_t l = 0; !live_in && l < liveness->blocks[block_ref].live_in.length; l++) {
+                if (liveness->blocks[block_ref].live_in.content[l].instr_ref == value_refs[k].instr_ref &&
+                    liveness->blocks[block_ref].live_in.content[l].aspect == value_refs[k].aspect) {
+                    live_in = true;
+                }
+            }
+            all_live_in = all_live_in && live_in;
+        }
+    }
+    *is_rematerializable = all_live_in;
+    return KEFIR_OK;
+}
+
 static kefir_result_t rematerialize_block(struct kefir_mem *mem,
     struct kefir_codegen_target_ir_code *code,
     const struct kefir_codegen_target_ir_control_flow *control_flow,
@@ -141,107 +245,14 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
             continue;
         }
 
-        const struct kefir_codegen_target_ir_value_type *value_type;
-        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, &value_type));
-        if (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+        kefir_bool_t is_rematerializable = false;
+        REQUIRE_OK(kefir_codegen_target_ir_amd64_is_rematerializable(code, liveness, value_ref, block_ref, &is_rematerializable));
+        if (!is_rematerializable) {
             continue;
         }
 
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, value_ref.instr_ref, &instr));
-
-        kefir_bool_t skip = false;
-        switch (instr->operation.opcode) {
-            case KEFIR_TARGET_IR_AMD64_OPCODE(add):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(xadd):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(sub):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(shl):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(shr):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(sar):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(and):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(or):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(xor):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(not):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(neg):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(dec):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(movzx):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(movsx):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(lea):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(imul):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(imul3):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(bsf):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(bsr):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(rol):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(bswap):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(xorps):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(xorpd):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(andps):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(andnps):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(andpd):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(andnpd):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(orps):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(orpd):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(shufps):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(shufpd):
-                break;
-
-            default:
-                skip = true;
-                break;
-        }
-        if (skip) {
-            continue;
-        }
-
-        kefir_bool_t all_live_in = true;
-        for (kefir_size_t j = 0; all_live_in && j < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; j++) {
-            kefir_codegen_target_ir_value_ref_t value_refs[2] = {
-                [0].instr_ref = KEFIR_ID_NONE,
-                [1].instr_ref = KEFIR_ID_NONE
-            };
-            switch (instr->operation.parameters[j].type) {
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
-                    value_refs[0] = instr->operation.parameters[j].direct.value_ref;
-                    break;
-
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
-                    if (instr->operation.opcode != KEFIR_TARGET_IR_AMD64_OPCODE(lea)) {
-                        all_live_in = false;
-                    }
-                    break;
-
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NATIVE_LABEL:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF:
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE:
-                    // Intentionally left blank
-                    break;
-
-                default:
-                    all_live_in = false;
-                    break;
-            }
-
-            for (kefir_size_t k = 0; all_live_in && k < sizeof(value_refs) / sizeof(value_refs[0]); k++) {
-                if (value_refs[k].instr_ref == KEFIR_ID_NONE) {
-                    continue;
-                }
-
-                kefir_bool_t live_in = false;
-                for (kefir_size_t l = 0; !live_in && l < liveness->blocks[block_ref].live_in.length; l++) {
-                    if (liveness->blocks[block_ref].live_in.content[l].instr_ref == value_refs[k].instr_ref &&
-                        liveness->blocks[block_ref].live_in.content[l].aspect == value_refs[k].aspect) {
-                        live_in = true;
-                    }
-                }
-                all_live_in = all_live_in && live_in;
-            }
-        }
-        if (!all_live_in) {
-            continue;
-        }
 
         kefir_codegen_target_ir_instruction_ref_t first_use_ref = KEFIR_ID_NONE;
         kefir_size_t first_use_seq_idx = 0;

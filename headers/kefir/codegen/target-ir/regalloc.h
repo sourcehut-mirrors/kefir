@@ -54,6 +54,7 @@ typedef struct kefir_codegen_target_ir_regalloc_class {
     kefir_result_t (*do_allocate)(struct kefir_mem *, const struct kefir_codegen_target_ir_value_type *, const struct kefir_codegen_target_ir_stack_frame *, void *, kefir_bool_t, kefir_bool_t, kefir_codegen_target_ir_regalloc_allocation_t *, void *);
     kefir_result_t (*register_allocation)(kefir_codegen_target_ir_physical_register_t, kefir_codegen_target_ir_regalloc_allocation_t *, void *);
     kefir_result_t (*is_evictable)(kefir_codegen_target_ir_regalloc_allocation_t, kefir_bool_t *, void *);
+    kefir_result_t (*is_rematerializable)(const struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_liveness *, kefir_codegen_target_ir_value_ref_t, kefir_bool_t *, void *);
     kefir_result_t (*format_allocation)(struct kefir_json_output *, kefir_codegen_target_ir_regalloc_allocation_t, void *);
     const struct kefir_codegen_target_ir_regalloc_transforms *transforms;
     void *payload;

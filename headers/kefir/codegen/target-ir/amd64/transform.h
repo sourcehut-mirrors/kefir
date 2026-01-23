@@ -30,6 +30,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_peephole(struct kefir_mem
 kefir_result_t kefir_codegen_target_ir_amd64_transform_dead_code_elimination(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
 kefir_result_t kefir_codegen_target_ir_amd64_transform_rematerialize(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_liveness *, const struct kefir_codegen_target_ir_regalloc *);
 
+kefir_result_t kefir_codegen_target_ir_amd64_is_rematerializable(const struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_liveness *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);
+
 #ifdef KEFIR_CODEGEN_TARGET_IR_AMD64_PEEPHOLE_INTERNAL
 kefir_result_t kefir_codegen_target_ir_amd64_peephole_const_operand(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, kefir_bool_t, kefir_bool_t *);
 

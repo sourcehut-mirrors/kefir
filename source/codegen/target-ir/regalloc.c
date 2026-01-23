@@ -130,6 +130,12 @@ static kefir_result_t get_value_hotness(struct regalloc_state *state, kefir_code
     kefir_result_t res = kefir_codegen_target_ir_hotness_get_global(&state->hotness, value_ref, hotness_fragment);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
+        
+        kefir_bool_t is_rematerializable;
+        REQUIRE_OK(state->regalloc->klass->is_rematerializable(state->control_flow->code, state->liveness, value_ref, &is_rematerializable, state->regalloc->klass->payload));
+        if (is_rematerializable) {
+            hotness_fragment->fragment_length <<= 1;
+        }
     } else {
         *hotness_fragment = KEFIR_CODEGEN_TARGET_IR_HOTNESS_MAX;
     }
