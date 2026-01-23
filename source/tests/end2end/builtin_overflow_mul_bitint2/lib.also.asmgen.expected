@@ -383,16 +383,15 @@ __kefir_bigint_cast_signed:
     mov $1, %r9d
     mov %rsi, %rcx
     shl %cl, %r9
+    sub $1, %r9
     test %edx, %edx
     jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label25
     movzxb (%rdi, %rax, 1), %rcx
-    sub $1, %r9
     and %r9d, %ecx
     movb %cl, (%rdi, %rax, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label9
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label25:
     movzxb (%rdi, %rax, 1), %rcx
-    sub $1, %r9
     not %r9
     or %r9d, %ecx
     movb %cl, (%rdi, %rax, 1)
@@ -413,12 +412,12 @@ __kefir_bigint_cast_signed:
     mov $1, %esi
     mov %rax, %rcx
     shl %cl, %rsi
+    sub $1, %rsi
     mov %rax, %rcx
     sar %cl, %edx
     and $1, %edx
     jnz .L__kefir_runtime_func___kefir_bigint_cast_signed_label38
     movzxb (%rdi, %r8, 1), %rax
-    sub $1, %rsi
     and %esi, %eax
     movb %al, (%rdi, %r8, 1)
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label36:
@@ -426,7 +425,6 @@ __kefir_bigint_cast_signed:
     ret
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label38:
     movzxb (%rdi, %r8, 1), %rax
-    sub $1, %rsi
     not %rsi
     or %esi, %eax
     movb %al, (%rdi, %r8, 1)
@@ -544,20 +542,20 @@ __kefir_bigint_arithmetic_right_shift:
     shl $3, %rdx
     mov %rcx, %r13
     sub %rdx, %r13
+    mov $1, %edx
+    mov %r13, %rcx
+    shl %cl, %rdx
+    sub $1, %rdx
+    cmp %rax, %rsi
+    mov %rsi, %rbx
+    cmova %rax, %rbx
     mov %r13, %rcx
     sar %cl, %edi
     mov %edi, %r14d
     and $1, %r14d
-    mov $1, %edx
-    mov %r13, %rcx
-    shl %cl, %rdx
-    cmp %rax, %rsi
-    mov %rsi, %rbx
-    cmova %rax, %rbx
     test %r14, %r14
     jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label27
     movzxb -1(%r12, %r15, 1), %rcx
-    sub $1, %rdx
     and %edx, %ecx
     movb %cl, -1(%r12, %r15, 1)
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label6:
@@ -601,16 +599,15 @@ __kefir_bigint_arithmetic_right_shift:
     mov $1, %edx
     mov %rax, %rcx
     shl %cl, %rdx
+    sub $1, %rdx
     test %r14, %r14
     jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label21
     movzxb -1(%r12, %r15, 1), %rax
-    sub $1, %rdx
     and %edx, %eax
     movb %al, -1(%r12, %r15, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label12
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label21:
     movzxb -1(%r12, %r15, 1), %rax
-    sub $1, %rdx
     not %rdx
     or %edx, %eax
     movb %al, -1(%r12, %r15, 1)
@@ -639,7 +636,6 @@ __kefir_bigint_arithmetic_right_shift:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label8
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label27:
     movzxb -1(%r12, %r15, 1), %rcx
-    sub $1, %rdx
     not %rdx
     or %edx, %ecx
     movb %cl, -1(%r12, %r15, 1)

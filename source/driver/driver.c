@@ -46,6 +46,7 @@
     "op-simplify," \
     "gvn," \
     "licm," \
+    "gvn," \
     "lowering," \
     "dead-code-elimination," \
     "dead-alloc," \
