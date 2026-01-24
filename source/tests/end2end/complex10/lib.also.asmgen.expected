@@ -18,9 +18,7 @@ test32:
     movd %xmm0, %ecx
     movd %xmm1, %edx
     shl $32, %rdx
-    mov %rdx, %rsi
-    or %rcx, %rsi
-    mov %rsi, %rcx
+    or %rdx, %rcx
 mov %rcx, %rbx
 mov %rcx, %rax
 shr $32, %rax

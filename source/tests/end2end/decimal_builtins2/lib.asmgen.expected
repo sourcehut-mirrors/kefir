@@ -208,9 +208,7 @@ dec64_isinf_sign:
     test %eax, %eax
     sete %cl
     imul $-1, %ecx, %eax
-    mov %rbx, %rcx
-    or %eax, %ecx
-    mov %rcx, %rax
+    or %ebx, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -283,9 +281,7 @@ dec128_isinf_sign:
     test %eax, %eax
     sete %cl
     imul $-1, %ecx, %eax
-    mov %rbx, %rcx
-    or %eax, %ecx
-    mov %rcx, %rax
+    or %ebx, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -362,9 +358,7 @@ dec32_isinf_sign:
     test %eax, %eax
     sete %cl
     imul $-1, %ecx, %eax
-    mov %rbx, %rcx
-    or %eax, %ecx
-    mov %rcx, %rax
+    or %ebx, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

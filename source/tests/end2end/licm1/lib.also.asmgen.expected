@@ -19,9 +19,7 @@ test1:
     movsx %eax, %rcx
     mov %rax, %r8
     shl $1, %r8d
-    mov %edx, %r9d
-    add %r8d, %r9d
-    mov %r9, %r8
+    add %edx, %r8d
     movl %r8d, (%rdi, %rcx, 4)
     add $1, %eax
     jmp .L__kefir_func_test1_label2

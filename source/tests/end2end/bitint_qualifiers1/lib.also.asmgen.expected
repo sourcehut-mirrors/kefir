@@ -24,9 +24,7 @@ add:
     sar $21, %rdx
     shl $21, %rax
     sar $21, %rax
-    mov %rdx, %rsi
-    add %rax, %rsi
-    mov %rsi, %rax
+    add %rdx, %rax
     movq %rax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp

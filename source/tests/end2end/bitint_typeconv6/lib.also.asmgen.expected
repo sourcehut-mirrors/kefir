@@ -1964,9 +1964,7 @@ __kefir_bigint_get_bits:
     div %rcx
     mov $1, %ecx
     shl $3, %rcx
-    mov %rax, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %rax, %rcx
     lea -40(%rbp), %rax
 .L__kefir_runtime_func___kefir_bigint_get_bits_label13:
     movq %rcx, (%rax)

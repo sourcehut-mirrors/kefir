@@ -954,9 +954,7 @@ test_dec32_laplacian_apply:
     jmp .L__kefir_func_test_dec32_laplacian_apply_label2
 .L__kefir_func_test_dec32_laplacian_apply_label11:
     movq (%r13), %rcx
-    mov %r15, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r15, %rcx
     add %rax, %rcx
     movd (%r12, %rcx, 4), %xmm0
     movd %xmm0, -112(%rbp)
@@ -971,9 +969,7 @@ test_dec32_laplacian_apply:
     cmp %r14, %rbx
     jae .L__kefir_func_test_dec32_laplacian_apply_label29
     movq (%r13), %rcx
-    mov %rbx, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %rbx, %rcx
     add %rax, %rcx
     movd (%r12, %rcx, 4), %xmm1
 .L__kefir_func_test_dec32_laplacian_apply_label17:
@@ -981,9 +977,7 @@ test_dec32_laplacian_apply:
     cmp $0, %rax
     jbe .L__kefir_func_test_dec32_laplacian_apply_label27
     movq (%r13), %rdx
-    mov %r15, %rsi
-    imul %rdx, %rsi
-    mov %rsi, %rdx
+    imul %r15, %rdx
     add %rcx, %rdx
     movd (%r12, %rdx, 4), %xmm2
     movd %xmm2, -96(%rbp)
@@ -993,17 +987,13 @@ test_dec32_laplacian_apply:
     cmp %r14, %rcx
     jae .L__kefir_func_test_dec32_laplacian_apply_label25
     movq (%r13), %rcx
-    mov %r15, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r15, %rcx
     addq -120(%rbp), %rcx
     movd (%r12, %rcx, 4), %xmm2
     movd %xmm2, -80(%rbp)
 .L__kefir_func_test_dec32_laplacian_apply_label23:
     movq (%r13), %rcx
-    mov %r15, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r15, %rcx
     mov %rcx, -64(%rbp)
     addq %rax, -64(%rbp)
     call __bid_addsd3@PLT
@@ -1371,9 +1361,7 @@ test_dec64_laplacian_apply:
     jmp .L__kefir_func_test_dec64_laplacian_apply_label2
 .L__kefir_func_test_dec64_laplacian_apply_label11:
     movq (%r13), %rcx
-    mov %r15, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r15, %rcx
     add %rax, %rcx
     movq (%r12, %rcx, 8), %xmm0
     movq %xmm0, -112(%rbp)
@@ -1388,9 +1376,7 @@ test_dec64_laplacian_apply:
     cmp %r14, %rbx
     jae .L__kefir_func_test_dec64_laplacian_apply_label29
     movq (%r13), %rcx
-    mov %rbx, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %rbx, %rcx
     add %rax, %rcx
     movq (%r12, %rcx, 8), %xmm1
 .L__kefir_func_test_dec64_laplacian_apply_label17:
@@ -1398,9 +1384,7 @@ test_dec64_laplacian_apply:
     cmp $0, %rax
     jbe .L__kefir_func_test_dec64_laplacian_apply_label27
     movq (%r13), %rdx
-    mov %r15, %rsi
-    imul %rdx, %rsi
-    mov %rsi, %rdx
+    imul %r15, %rdx
     add %rcx, %rdx
     movq (%r12, %rdx, 8), %xmm2
     movq %xmm2, -96(%rbp)
@@ -1410,17 +1394,13 @@ test_dec64_laplacian_apply:
     cmp %r14, %rcx
     jae .L__kefir_func_test_dec64_laplacian_apply_label25
     movq (%r13), %rcx
-    mov %r15, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r15, %rcx
     addq -120(%rbp), %rcx
     movq (%r12, %rcx, 8), %xmm2
     movq %xmm2, -80(%rbp)
 .L__kefir_func_test_dec64_laplacian_apply_label23:
     movq (%r13), %rcx
-    mov %r15, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r15, %rcx
     mov %rcx, -64(%rbp)
     addq %rax, -64(%rbp)
     call __bid_adddd3@PLT
@@ -1604,9 +1584,7 @@ test_dec128_laplacian_apply:
     jmp .L__kefir_func_test_dec128_laplacian_apply_label2
 .L__kefir_func_test_dec128_laplacian_apply_label11:
     movq (%r13), %rcx
-    mov %r15, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r15, %rcx
     add %rax, %rcx
     shl $4, %rcx
     movdqu (%r12, %rcx, 1), %xmm0
@@ -1623,9 +1601,7 @@ test_dec128_laplacian_apply:
     cmp %r14, %rbx
     jae .L__kefir_func_test_dec128_laplacian_apply_label29
     movq (%r13), %rcx
-    mov %rbx, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %rbx, %rcx
     add %rax, %rcx
     shl $4, %rcx
     movdqu (%r12, %rcx, 1), %xmm1
@@ -1634,9 +1610,7 @@ test_dec128_laplacian_apply:
     cmp $0, %rax
     jbe .L__kefir_func_test_dec128_laplacian_apply_label27
     movq (%r13), %rdx
-    mov %r15, %rsi
-    imul %rdx, %rsi
-    mov %rsi, %rdx
+    imul %r15, %rdx
     add %rcx, %rdx
     shl $4, %rdx
     movdqu (%r12, %rdx, 1), %xmm2
@@ -1647,18 +1621,14 @@ test_dec128_laplacian_apply:
     cmp %r14, %rcx
     jae .L__kefir_func_test_dec128_laplacian_apply_label25
     movq (%r13), %rcx
-    mov %r15, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r15, %rcx
     addq -120(%rbp), %rcx
     shl $4, %rcx
     movdqu (%r12, %rcx, 1), %xmm2
     movdqu %xmm2, -80(%rbp)
 .L__kefir_func_test_dec128_laplacian_apply_label23:
     movq (%r13), %rcx
-    mov %r15, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r15, %rcx
     add %rax, %rcx
     mov %rcx, -64(%rbp)
     shlq $4, -64(%rbp)
@@ -2283,9 +2253,7 @@ test_dec128_initialize_gaussian:
     movq 48(%rbx), %rax
     movq %rax, -96(%rbp)
     movq (%rbx), %rax
-    mov %r13, %rcx
-    imul %rax, %rcx
-    mov %rcx, %rax
+    imul %r13, %rax
     add %r14, %rax
     mov %rax, -88(%rbp)
     shlq $4, -88(%rbp)
@@ -2326,9 +2294,7 @@ test_dec128_initialize_gaussian:
     movdqu %xmm0, (%rax, %rcx, 1)
     movq 56(%rbx), %rax
     movq (%rbx), %rcx
-    mov %r13, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r13, %rcx
     add %r14, %rcx
     shl $4, %rcx
     movdqu .L__kefir_func_test_dec128_initialize_gaussian_label19(%rip), %xmm0
@@ -2767,9 +2733,7 @@ test_dec64_initialize_gaussian:
     movq 24(%rbx), %rax
     movq %rax, -96(%rbp)
     movq (%rbx), %rax
-    mov %r13, %rcx
-    imul %rax, %rcx
-    mov %rcx, %rax
+    imul %r13, %rax
     mov %rax, -88(%rbp)
     addq %r14, -88(%rbp)
     movq .L__kefir_func_test_dec64_initialize_gaussian_label17(%rip), %xmm0
@@ -2809,9 +2773,7 @@ test_dec64_initialize_gaussian:
     movq %xmm0, (%rax, %rcx, 8)
     movq 32(%rbx), %rax
     movq (%rbx), %rcx
-    mov %r13, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r13, %rcx
     add %r14, %rcx
     movq .L__kefir_func_test_dec64_initialize_gaussian_label19(%rip), %xmm0
     movq %xmm0, (%rax, %rcx, 8)
@@ -2881,9 +2843,7 @@ test_dec32_initialize_gaussian:
     movq 16(%rbx), %rax
     movq %rax, -96(%rbp)
     movq (%rbx), %rax
-    mov %r13, %rcx
-    imul %rax, %rcx
-    mov %rcx, %rax
+    imul %r13, %rax
     mov %rax, -88(%rbp)
     addq %r14, -88(%rbp)
     movd .L__kefir_func_test_dec32_initialize_gaussian_label17(%rip), %xmm0
@@ -2923,9 +2883,7 @@ test_dec32_initialize_gaussian:
     movd %xmm0, (%rax, %rcx, 4)
     movq 24(%rbx), %rax
     movq (%rbx), %rcx
-    mov %r13, %rdx
-    imul %rcx, %rdx
-    mov %rdx, %rcx
+    imul %r13, %rcx
     add %r14, %rcx
     movd .L__kefir_func_test_dec32_initialize_gaussian_label19(%rip), %xmm0
     movd %xmm0, (%rax, %rcx, 4)

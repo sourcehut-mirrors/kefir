@@ -42,9 +42,7 @@ test8:
     add %r8, %rcx
     add %r9, %rcx
     add %r10, %rcx
-    mov %rcx, %rdx
-    add %rax, %rdx
-    mov %rdx, %rax
+    add %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_test8_end:

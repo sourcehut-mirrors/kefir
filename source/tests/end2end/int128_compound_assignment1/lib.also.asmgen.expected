@@ -172,9 +172,7 @@ i128_mul:
     mov %rsi, %rdx
     mul %rdx
     add %rcx, %r8
-    mov %r8, %rcx
-    add %rdx, %rcx
-    mov %rcx, %rdx
+    add %r8, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
@@ -353,9 +351,7 @@ u128_mul:
     mov %rsi, %rdx
     mul %rdx
     add %rcx, %r8
-    mov %r8, %rcx
-    add %rdx, %rcx
-    mov %rcx, %rdx
+    add %r8, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp

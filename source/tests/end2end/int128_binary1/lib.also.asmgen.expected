@@ -190,9 +190,7 @@ i128_mul:
     imul %rax, %rcx
     mul %rdx
     add %rcx, %rsi
-    mov %rsi, %rcx
-    add %rdx, %rcx
-    mov %rcx, %rdx
+    add %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -338,9 +336,7 @@ u128_mul:
     imul %rax, %rcx
     mul %rdx
     add %rcx, %rsi
-    mov %rsi, %rcx
-    add %rdx, %rcx
-    mov %rcx, %rdx
+    add %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

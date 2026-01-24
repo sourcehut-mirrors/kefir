@@ -15,12 +15,8 @@ test1:
     add $1, %rax
     mov %rsi, %rcx
     adc $0, %rcx
-    mov %rdi, %rdx
-    xor %rax, %rdx
-    mov %rdx, %rax
-    mov %rsi, %rdx
-    xor %rcx, %rdx
-    mov %rdx, %rcx
+    xor %rdi, %rax
+    xor %rsi, %rcx
     mov %rdi, %rdx
     add $2, %rdx
     mov %rsi, %r8

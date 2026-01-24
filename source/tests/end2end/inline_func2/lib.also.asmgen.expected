@@ -46,9 +46,7 @@ factorial_helper2:
     ret
 .L__kefir_func_factorial_helper2_label5:
     call factorial_helper2
-    mov %rbx, %rcx
-    imul %rax, %rcx
-    mov %rcx, %rax
+    imul %rbx, %rax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
