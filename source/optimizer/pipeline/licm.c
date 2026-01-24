@@ -327,22 +327,13 @@ static kefir_result_t process_loop(struct licm_state *state) {
         REQUIRE_OK(res);
 
         switch (candidate_instr->operation.opcode) {
-            case KEFIR_OPT_OPCODE_INT_CONST:
-            case KEFIR_OPT_OPCODE_UINT_CONST:
             case KEFIR_OPT_OPCODE_FLOAT32_CONST:
             case KEFIR_OPT_OPCODE_FLOAT64_CONST:
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
             case KEFIR_OPT_OPCODE_STRING_REF:
             case KEFIR_OPT_OPCODE_BLOCK_LABEL:
-            case KEFIR_OPT_OPCODE_INT_PLACEHOLDER:
             case KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER:
             case KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER:
-            case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS:
-            case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
-            case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
-            case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS:
-            case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS:
-            case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS:
                 // Intentionally left blank
                 break;
 

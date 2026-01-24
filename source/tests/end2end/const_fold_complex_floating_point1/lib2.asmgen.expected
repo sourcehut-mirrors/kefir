@@ -4084,8 +4084,8 @@ __kefir_softfloat_ilogbf:
     cmp $0, %rcx
     jne .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label19:
-    mov %esi, %eax
     mov %rdx, %rcx
+    mov %esi, %eax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label13:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label20(%rip), %xmm0
@@ -4643,8 +4643,8 @@ __kefir_softfloat_ilogb:
     cmp $0, %rcx
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label19:
-    mov %esi, %eax
     mov %rdx, %rcx
+    mov %esi, %eax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label9
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label13:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label20(%rip), %xmm0

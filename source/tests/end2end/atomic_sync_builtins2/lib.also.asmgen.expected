@@ -51,11 +51,11 @@ test_fetch_add_short:
     sub $16, %rsp
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
+    movsx %si, %rsi
 .L__kefir_func_test_fetch_add_short_label2:
     movsxw -2(%rbp), %rax
-    movsx %si, %rcx
     mov %rax, %r8
-    add %ecx, %r8d
+    add %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movw -2(%rbp), %ax
@@ -79,11 +79,11 @@ test_fetch_and_short:
     sub $16, %rsp
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
+    movsx %si, %rsi
 .L__kefir_func_test_fetch_and_short_label2:
     movsxw -2(%rbp), %rax
-    movsx %si, %rcx
     mov %rax, %r8
-    and %ecx, %r8d
+    and %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movw -2(%rbp), %ax
@@ -107,11 +107,11 @@ test_fetch_sub_short:
     sub $16, %rsp
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
+    movsx %si, %rsi
 .L__kefir_func_test_fetch_sub_short_label2:
     movsxw -2(%rbp), %rax
-    movsx %si, %rcx
     mov %rax, %r8
-    sub %ecx, %r8d
+    sub %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movw -2(%rbp), %ax
@@ -135,11 +135,11 @@ test_fetch_xor_short:
     sub $16, %rsp
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
+    movsx %si, %rsi
 .L__kefir_func_test_fetch_xor_short_label2:
     movsxw -2(%rbp), %rax
-    movsx %si, %rcx
     mov %rax, %r8
-    xor %ecx, %r8d
+    xor %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movw -2(%rbp), %ax
@@ -190,11 +190,11 @@ test_fetch_add_char:
     sub $16, %rsp
     movb (%rdi), %al
     movb %al, -1(%rbp)
+    movsx %sil, %rsi
 .L__kefir_func_test_fetch_add_char_label2:
     movsxb -1(%rbp), %rax
-    movsx %sil, %rcx
     mov %rax, %r8
-    add %ecx, %r8d
+    add %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movb -1(%rbp), %al
@@ -245,11 +245,11 @@ test_fetch_and_char:
     sub $16, %rsp
     movb (%rdi), %al
     movb %al, -1(%rbp)
+    movsx %sil, %rsi
 .L__kefir_func_test_fetch_and_char_label2:
     movsxb -1(%rbp), %rax
-    movsx %sil, %rcx
     mov %rax, %r8
-    and %ecx, %r8d
+    and %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movb -1(%rbp), %al
@@ -300,11 +300,11 @@ test_fetch_or_short:
     sub $16, %rsp
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
+    movsx %si, %rsi
 .L__kefir_func_test_fetch_or_short_label2:
     movsxw -2(%rbp), %rax
-    movsx %si, %rcx
     mov %rax, %r8
-    or %ecx, %r8d
+    or %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movw -2(%rbp), %ax
@@ -328,11 +328,11 @@ test_fetch_sub_char:
     sub $16, %rsp
     movb (%rdi), %al
     movb %al, -1(%rbp)
+    movsx %sil, %rsi
 .L__kefir_func_test_fetch_sub_char_label2:
     movsxb -1(%rbp), %rax
-    movsx %sil, %rcx
     mov %rax, %r8
-    sub %ecx, %r8d
+    sub %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movb -1(%rbp), %al
@@ -383,11 +383,11 @@ test_fetch_xor_char:
     sub $16, %rsp
     movb (%rdi), %al
     movb %al, -1(%rbp)
+    movsx %sil, %rsi
 .L__kefir_func_test_fetch_xor_char_label2:
     movsxb -1(%rbp), %rax
-    movsx %sil, %rcx
     mov %rax, %r8
-    xor %ecx, %r8d
+    xor %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movb -1(%rbp), %al
@@ -492,11 +492,11 @@ test_fetch_or_char:
     sub $16, %rsp
     movb (%rdi), %al
     movb %al, -1(%rbp)
+    movsx %sil, %rsi
 .L__kefir_func_test_fetch_or_char_label2:
     movsxb -1(%rbp), %rax
-    movsx %sil, %rcx
     mov %rax, %r8
-    or %ecx, %r8d
+    or %esi, %r8d
     mov %rdi, %rdx
     mov %r8d, %ecx
     movb -1(%rbp), %al

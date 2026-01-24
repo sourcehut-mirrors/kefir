@@ -285,10 +285,10 @@ nand_fetch8:
     sub $16, %rsp
     movb (%rdi), %al
     movb %al, -1(%rbp)
+    movsx %sil, %rsi
 .L__kefir_func_nand_fetch8_label2:
     movsxb -1(%rbp), %rax
-    movsx %sil, %rcx
-    and %ecx, %eax
+    and %esi, %eax
     mov %eax, %r8d
     not %r8d
     mov %rdi, %rdx
@@ -408,10 +408,10 @@ nand_fetch16:
     sub $16, %rsp
     movw (%rdi), %ax
     movw %ax, -2(%rbp)
+    movsx %si, %rsi
 .L__kefir_func_nand_fetch16_label2:
     movsxw -2(%rbp), %rax
-    movsx %si, %rcx
-    and %ecx, %eax
+    and %esi, %eax
     mov %eax, %r8d
     not %r8d
     mov %rdi, %rdx

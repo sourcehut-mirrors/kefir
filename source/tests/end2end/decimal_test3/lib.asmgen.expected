@@ -173,8 +173,8 @@ test_dec128_dot:
     movaps %xmm0, %xmm1
     movaps -48(%rbp), %xmm0
     call __bid_addtd3@PLT
-    mov %r14, %rax
     movaps %xmm0, -48(%rbp)
+    mov %r14, %rax
     jmp .L__kefir_func_test_dec128_dot_label2
 .L__kefir_text_func_test_dec128_dot_end:
 .section .rodata
@@ -732,8 +732,8 @@ test_dec32_sqrt_approx:
     call __bid_addsd3@PLT
     movd .L__kefir_func_test_dec32_sqrt_approx_label16(%rip), %xmm1
     call __bid_mulsd3@PLT
-    mov %ebx, %eax
     movaps %xmm0, -32(%rbp)
+    mov %ebx, %eax
     jmp .L__kefir_func_test_dec32_sqrt_approx_label4
 .L__kefir_func_test_dec32_sqrt_approx_label10:
     movd .L__kefir_func_test_dec32_sqrt_approx_label17(%rip), %xmm0
@@ -861,8 +861,8 @@ test_dec32_dot:
     movaps %xmm0, %xmm1
     movaps -48(%rbp), %xmm0
     call __bid_addsd3@PLT
-    mov %r14, %rax
     movaps %xmm0, -48(%rbp)
+    mov %r14, %rax
     jmp .L__kefir_func_test_dec32_dot_label2
 .L__kefir_text_func_test_dec32_dot_end:
 .section .rodata
@@ -905,8 +905,8 @@ test_dec64_dot:
     movaps %xmm0, %xmm1
     movaps -48(%rbp), %xmm0
     call __bid_adddd3@PLT
-    mov %r14, %rax
     movaps %xmm0, -48(%rbp)
+    mov %r14, %rax
     jmp .L__kefir_func_test_dec64_dot_label2
 .L__kefir_text_func_test_dec64_dot_end:
 .section .rodata
@@ -1093,8 +1093,8 @@ test_dec128_sqrt_approx:
     call __bid_addtd3@PLT
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label16(%rip), %xmm1
     call __bid_multd3@PLT
-    mov %ebx, %eax
     movaps %xmm0, -32(%rbp)
+    mov %ebx, %eax
     jmp .L__kefir_func_test_dec128_sqrt_approx_label4
 .L__kefir_func_test_dec128_sqrt_approx_label10:
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label17(%rip), %xmm0
@@ -1166,8 +1166,8 @@ test_dec64_sqrt_approx:
     call __bid_adddd3@PLT
     movq .L__kefir_func_test_dec64_sqrt_approx_label16(%rip), %xmm1
     call __bid_muldd3@PLT
-    mov %ebx, %eax
     movaps %xmm0, -32(%rbp)
+    mov %ebx, %eax
     jmp .L__kefir_func_test_dec64_sqrt_approx_label4
 .L__kefir_func_test_dec64_sqrt_approx_label10:
     movq .L__kefir_func_test_dec64_sqrt_approx_label17(%rip), %xmm0
