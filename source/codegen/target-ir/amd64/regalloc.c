@@ -656,6 +656,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_me
 
     static const struct kefir_codegen_target_ir_regalloc_transforms TRANSFORMS = {
         .hot_copy_locality = 4,
+        .rematerialization_locality = 32
     };
     klass->klass.transforms = &TRANSFORMS;
 

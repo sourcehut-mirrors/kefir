@@ -47,6 +47,7 @@ typedef struct kefir_codegen_target_ir_stack_frame {
 
 typedef struct kefir_codegen_target_ir_regalloc_transforms {
     kefir_uint32_t hot_copy_locality;
+    kefir_uint32_t rematerialization_locality;
 } kefir_codegen_target_ir_regalloc_transforms_t;
 
 typedef struct kefir_codegen_target_ir_regalloc_class {

@@ -25,66 +25,68 @@ test1:
     add $2, %r8
     mov %rsi, %r9
     adc $0, %r9
-    mov %rdi, %rax
-    add $3, %rax
+    mov %rdi, -72(%rbp)
+    addq $3, -72(%rbp)
     mov %rsi, %r10
     adc $0, %r10
-    mov %rdi, %r11
-    add $4, %r11
+    mov %rdi, -88(%rbp)
+    addq $4, -88(%rbp)
     mov %rsi, %rbx
     adc $0, %rbx
-    mov %rdi, %r12
-    add $5, %r12
+    mov %rdi, -104(%rbp)
+    addq $5, -104(%rbp)
     mov %rsi, %r13
     adc $0, %r13
-    mov %rdi, %r14
-    add $6, %r14
+    mov %rdi, -120(%rbp)
+    addq $6, -120(%rbp)
     mov %rsi, %r15
     adc $0, %r15
     mov %rdi, -128(%rbp)
     addq $7, -128(%rbp)
-    mov %rsi, -120(%rbp)
-    adcq $0, -120(%rbp)
+    mov %rsi, %r14
+    adc $0, %r14
     mov %rdi, -112(%rbp)
     addq $8, -112(%rbp)
-    mov %rsi, -104(%rbp)
-    adcq $0, -104(%rbp)
+    mov %rsi, %r12
+    adc $0, %r12
     mov %rdi, -96(%rbp)
     addq $9, -96(%rbp)
-    mov %rsi, -88(%rbp)
-    adcq $0, -88(%rbp)
+    mov %rsi, %r11
+    adc $0, %r11
     mov %rdi, -80(%rbp)
     addq $10, -80(%rbp)
-    mov %rsi, -72(%rbp)
-    adcq $0, -72(%rbp)
+    mov %rsi, %rax
+    adc $0, %rax
     mov %rdi, -64(%rbp)
     addq $11, -64(%rbp)
     mov %rsi, -56(%rbp)
     adcq $0, -56(%rbp)
     sub $144, %rsp
-    movq %rax, (%rsp)
-    movq %r10, 8(%rsp)
-    movq %r11, 16(%rsp)
-    movq %rbx, 24(%rsp)
-    movq %r12, 32(%rsp)
-    movq %r13, 40(%rsp)
-    movq %r14, 48(%rsp)
-    movq %r15, 56(%rsp)
-    movq -128(%rbp), %rax
-    movq %rax, 64(%rsp)
-    movq -120(%rbp), %rax
-    movq %rax, 72(%rsp)
-    movq -112(%rbp), %rax
-    movq %rax, 80(%rsp)
-    movq -104(%rbp), %rax
-    movq %rax, 88(%rsp)
-    movq -96(%rbp), %rax
-    movq %rax, 96(%rsp)
-    movq -88(%rbp), %rax
-    movq %rax, 104(%rsp)
-    movq -80(%rbp), %rax
-    movq %rax, 112(%rsp)
+    movq %rax, -48(%rbp)
     movq -72(%rbp), %rax
+    movq %rax, (%rsp)
+    movq -48(%rbp), %rax
+    movq %r10, 8(%rsp)
+    movq -88(%rbp), %r10
+    movq %r10, 16(%rsp)
+    movq %rbx, 24(%rsp)
+    movq -104(%rbp), %r10
+    movq %r10, 32(%rsp)
+    movq %r13, 40(%rsp)
+    movq -120(%rbp), %r10
+    movq %r10, 48(%rsp)
+    movq %r15, 56(%rsp)
+    movq -128(%rbp), %r10
+    movq %r10, 64(%rsp)
+    movq %r14, 72(%rsp)
+    movq -112(%rbp), %r10
+    movq %r10, 80(%rsp)
+    movq %r12, 88(%rsp)
+    movq -96(%rbp), %r10
+    movq %r10, 96(%rsp)
+    movq %r11, 104(%rsp)
+    movq -80(%rbp), %r10
+    movq %r10, 112(%rsp)
     movq %rax, 120(%rsp)
     movq -64(%rbp), %rax
     movq %rax, 128(%rsp)
