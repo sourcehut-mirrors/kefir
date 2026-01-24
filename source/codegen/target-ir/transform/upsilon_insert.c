@@ -378,3 +378,26 @@ kefir_result_t kefir_codegen_target_ir_transform_insert_upsilons(struct kefir_me
     REQUIRE_OK(kefir_hashtable_free(mem, &phis));
     return KEFIR_OK;
 }
+
+
+kefir_result_t kefir_codegen_target_ir_transform_remove_upsilons(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+
+    for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {
+        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
+        for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
+            instr_ref != KEFIR_ID_NONE;) {
+            kefir_codegen_target_ir_instruction_ref_t next_instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref);
+
+            const struct kefir_codegen_target_ir_instruction *instr;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
+            if (instr->operation.opcode == code->klass->upsilon_opcode) {
+                REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
+            }
+
+            instr_ref = next_instr_ref;
+        }
+    }
+    return KEFIR_OK;
+}

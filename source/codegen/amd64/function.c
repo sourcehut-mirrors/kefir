@@ -1146,9 +1146,11 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     };
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_regalloc_run(mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.liveness, &func->target_ir.interference, &func->target_ir.coalesce, &stack_frame));
 
+    REQUIRE_CHAIN(&res, kefir_codegen_target_ir_transform_remove_upsilons(mem, code));
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_transform_insert_local_hot_copy(mem, &func->target_ir.code, &func->target_ir.liveness, &func->target_ir.interference, &func->target_ir.regalloc));
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_amd64_transform_rematerialize(mem, &func->target_ir.code, &func->target_ir.control_flow, &func->target_ir.liveness, &func->target_ir.regalloc));
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_amd64_transform_dead_code_elimination(mem, code));
+    REQUIRE_CHAIN(&res, kefir_codegen_target_ir_transform_insert_upsilons(mem, code));
 
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_liveness_build(mem, &func->target_ir.control_flow, &func->target_ir.liveness));
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_interference_build(mem, &func->target_ir.interference, &func->target_ir.control_flow, &func->target_ir.liveness));
