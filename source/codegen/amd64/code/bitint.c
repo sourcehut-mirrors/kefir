@@ -58,14 +58,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_const)(struct kefir_m
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
                                           &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, i * KEFIR_AMD64_ABI_QWORD,
                                                                               KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
-                                          &KEFIR_ASMCMP_MAKE_INT(part), NULL));
+                                          &KEFIR_ASMCMP_MAKE_INT((kefir_int32_t) part), NULL));
 
         REQUIRE_OK(kefir_bigint_get_bits(bigint, i * QWORD_BITS + QWORD_BITS / 2, QWORD_BITS / 2, &part));
         REQUIRE_OK(kefir_asmcmp_amd64_mov(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, i * KEFIR_AMD64_ABI_QWORD + KEFIR_AMD64_ABI_QWORD / 2,
                                                 KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
-            &KEFIR_ASMCMP_MAKE_INT(part), NULL));
+            &KEFIR_ASMCMP_MAKE_INT((kefir_int32_t) part), NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));

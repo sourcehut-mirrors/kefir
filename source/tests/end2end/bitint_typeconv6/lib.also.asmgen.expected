@@ -24,7 +24,7 @@ get0:
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
-    movl $4294967040, -36(%rbp)
+    movl $-256, -36(%rbp)
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
     movq -48(%rbp), %rax
@@ -50,7 +50,7 @@ get1:
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
     movl $0, -24(%rbp)
-    movl $4294967040, -20(%rbp)
+    movl $-256, -20(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     lea -16(%rbp), %rdi
@@ -70,7 +70,7 @@ get2:
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
-    movl $4294967040, -36(%rbp)
+    movl $-256, -36(%rbp)
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
     movq -48(%rbp), %rax
@@ -96,7 +96,7 @@ get3:
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
     movl $0, -24(%rbp)
-    movl $4294967040, -20(%rbp)
+    movl $-256, -20(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     lea -16(%rbp), %rdi
@@ -116,7 +116,7 @@ get4:
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
-    movl $4294967040, -36(%rbp)
+    movl $-256, -36(%rbp)
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
     movq -48(%rbp), %rax
@@ -142,7 +142,7 @@ get5:
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
     movl $0, -24(%rbp)
-    movl $4294967040, -20(%rbp)
+    movl $-256, -20(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     lea -16(%rbp), %rdi

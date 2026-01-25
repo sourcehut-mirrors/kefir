@@ -46,15 +46,15 @@ test1:
     lea -192(%rbp), %rsi
     mov $304, %edx
     call __kefir_bigint_and
-    movl $2448469251, -192(%rbp)
-    movl $3596698029, -188(%rbp)
-    movl $2527601718, -184(%rbp)
-    movl $2755654956, -180(%rbp)
-    movl $2884130202, -176(%rbp)
+    movl $-1846498045, -192(%rbp)
+    movl $-698269267, -188(%rbp)
+    movl $-1767365578, -184(%rbp)
+    movl $-1539312340, -180(%rbp)
+    movl $-1410837094, -176(%rbp)
     movl $1442305892, -172(%rbp)
     movl $832336646, -168(%rbp)
     movl $1915847865, -164(%rbp)
-    movl $3593514752, -160(%rbp)
+    movl $-701452544, -160(%rbp)
     movl $1291, -156(%rbp)
     movq -192(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -126,15 +126,15 @@ test1:
     mov $300, %esi
     mov $511, %edx
     call __kefir_bigint_cast_signed
-    movl $2448469251, -192(%rbp)
-    movl $3596698029, -188(%rbp)
-    movl $2527601718, -184(%rbp)
-    movl $2755654956, -180(%rbp)
-    movl $2884130202, -176(%rbp)
+    movl $-1846498045, -192(%rbp)
+    movl $-698269267, -188(%rbp)
+    movl $-1767365578, -184(%rbp)
+    movl $-1539312340, -180(%rbp)
+    movl $-1410837094, -176(%rbp)
     movl $1442305892, -172(%rbp)
     movl $832336646, -168(%rbp)
     movl $1915847865, -164(%rbp)
-    movl $3593514752, -160(%rbp)
+    movl $-701452544, -160(%rbp)
     movl $1291, -156(%rbp)
     movl $0, -152(%rbp)
     movl $0, -148(%rbp)

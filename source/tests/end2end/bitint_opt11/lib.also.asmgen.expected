@@ -33,9 +33,9 @@ add2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4293791744, -16(%rbp)
-    movl $4294967295, -12(%rbp)
-    movl $4294967295, -8(%rbp)
+    movl $-1175552, -16(%rbp)
+    movl $-1, -12(%rbp)
+    movl $-1, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -65,9 +65,9 @@ sub2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4293783552, -16(%rbp)
-    movl $4294967295, -12(%rbp)
-    movl $4294967295, -8(%rbp)
+    movl $-1183744, -16(%rbp)
+    movl $-1, -12(%rbp)
+    movl $-1, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx

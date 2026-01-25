@@ -47,7 +47,7 @@ get5:
     sub $16, %rsp
     movl $572657938, -16(%rbp)
     movl $1431651396, -12(%rbp)
-    movl $4135098794, -8(%rbp)
+    movl $-159868502, -8(%rbp)
     movl $33549771, -4(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -63,11 +63,11 @@ get6:
     sub $32, %rsp
     movl $572657938, -32(%rbp)
     movl $1431651396, -28(%rbp)
-    movl $4135098794, -24(%rbp)
-    movl $4294962635, -20(%rbp)
-    movl $4294967295, -16(%rbp)
-    movl $4294967295, -12(%rbp)
-    movl $4294967295, -8(%rbp)
+    movl $-159868502, -24(%rbp)
+    movl $-4661, -20(%rbp)
+    movl $-1, -16(%rbp)
+    movl $-1, -12(%rbp)
+    movl $-1, -8(%rbp)
     movl $67108863, -4(%rbp)
     mov %rdi, %rax
     movdqu -32(%rbp), %xmm0

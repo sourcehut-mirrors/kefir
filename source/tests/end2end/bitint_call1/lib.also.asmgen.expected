@@ -76,7 +76,7 @@ test5:
     mov %rsp, %rbp
     sub $32, %rsp
     movl $572705996, -32(%rbp)
-    movl $2863267840, -28(%rbp)
+    movl $-1431699456, -28(%rbp)
     movl $61166, -24(%rbp)
     movl $0, -20(%rbp)
     movdqu -32(%rbp), %xmm0
@@ -98,13 +98,13 @@ test6:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-    movl $4008623035, -80(%rbp)
-    movl $3722291882, -76(%rbp)
+    movl $-286344261, -80(%rbp)
+    movl $-572675414, -76(%rbp)
     movl $52428, -72(%rbp)
     movl $572666675, -68(%rbp)
-    movl $3435938884, -64(%rbp)
+    movl $-859028412, -64(%rbp)
     movl $8738, -60(%rbp)
-    movl $4008618666, -56(%rbp)
+    movl $-286348630, -56(%rbp)
     movl $0, -52(%rbp)
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)

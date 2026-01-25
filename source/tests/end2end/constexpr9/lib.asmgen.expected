@@ -24,9 +24,9 @@ get_b:
     mov %rsp, %rbp
     sub $32, %rsp
     movl $4369, -32(%rbp)
-    movl $4008640511, -28(%rbp)
-    movl $3435978205, -24(%rbp)
-    movl $2863315899, -20(%rbp)
+    movl $-286326785, -28(%rbp)
+    movl $-858989091, -24(%rbp)
+    movl $-1431651397, -20(%rbp)
     movl $5, -16(%rbp)
     movl $0, -12(%rbp)
     mov %rdi, %rax

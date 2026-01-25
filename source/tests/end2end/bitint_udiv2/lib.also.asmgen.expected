@@ -28,11 +28,11 @@ test:
     movl $0, -160(%rbp)
     movl $0, -156(%rbp)
     movl $0, -152(%rbp)
-    movl $2147483648, -148(%rbp)
+    movl $-2147483648, -148(%rbp)
     movl $7, -144(%rbp)
     movl $0, -140(%rbp)
     movl $0, -136(%rbp)
-    movl $2147483648, -132(%rbp)
+    movl $-2147483648, -132(%rbp)
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -128(%rbp)
     lea -128(%rbp), %rdi

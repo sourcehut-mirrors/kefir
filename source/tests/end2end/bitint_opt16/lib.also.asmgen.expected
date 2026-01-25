@@ -85,9 +85,9 @@ rshift3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $3684127502, -16(%rbp)
-    movl $4294967295, -12(%rbp)
-    movl $4294967295, -8(%rbp)
+    movl $-610839794, -16(%rbp)
+    movl $-1, -12(%rbp)
+    movl $-1, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -101,9 +101,9 @@ rshift4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $3989547399, -16(%rbp)
-    movl $4294967295, -12(%rbp)
-    movl $4294967295, -8(%rbp)
+    movl $-305419897, -16(%rbp)
+    movl $-1, -12(%rbp)
+    movl $-1, -8(%rbp)
     movl $1048575, -4(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx

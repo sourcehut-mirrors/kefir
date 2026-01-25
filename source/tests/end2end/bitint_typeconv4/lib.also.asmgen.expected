@@ -79,9 +79,9 @@ get4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $2182589677, -16(%rbp)
+    movl $-2112377619, -16(%rbp)
     movl $2146094641, -12(%rbp)
-    movl $2900818638, -8(%rbp)
+    movl $-1394148658, -8(%rbp)
     movl $16436815, -4(%rbp)
     movq -16(%rbp), %rax
     shl $3, %rax
@@ -96,7 +96,7 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movl $2882400237, -32(%rbp)
+    movl $-1412567059, -32(%rbp)
     movl $0, -28(%rbp)
     movl $0, -24(%rbp)
     movl $0, -20(%rbp)
@@ -115,9 +115,9 @@ get6:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movl $2290666700, -32(%rbp)
-    movl $4294932343, -28(%rbp)
-    movl $3579141870, -24(%rbp)
+    movl $-2004300596, -32(%rbp)
+    movl $-34953, -28(%rbp)
+    movl $-715825426, -24(%rbp)
     movl $876891613, -20(%rbp)
     movl $304227123, -16(%rbp)
     movl $178954513, -12(%rbp)
@@ -298,12 +298,12 @@ get12:
     push %rbx
     sub $88, %rsp
     mov %rdi, %rbx
-    movl $3687759335, -96(%rbp)
+    movl $-607207961, -96(%rbp)
     movl $1668440555, -92(%rbp)
-    movl $3326486388, -88(%rbp)
-    movl $3418209466, -84(%rbp)
-    movl $3688614891, -80(%rbp)
-    movl $3183262699, -76(%rbp)
+    movl $-968480908, -88(%rbp)
+    movl $-876757830, -84(%rbp)
+    movl $-606352405, -80(%rbp)
+    movl $-1111704597, -76(%rbp)
     movl $12238014, -72(%rbp)
     movl $0, -68(%rbp)
     movdqu -96(%rbp), %xmm0

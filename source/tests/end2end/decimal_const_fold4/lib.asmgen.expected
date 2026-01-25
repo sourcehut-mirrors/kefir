@@ -53,9 +53,9 @@ dec32_to_signed:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4294960591, -16(%rbp)
-    movl $4294967295, -12(%rbp)
-    movl $4294967295, -8(%rbp)
+    movl $-6705, -16(%rbp)
+    movl $-1, -12(%rbp)
+    movl $-1, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -101,9 +101,9 @@ dec128_to_signed:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $3301248477, -16(%rbp)
-    movl $4294967295, -12(%rbp)
-    movl $4294967295, -8(%rbp)
+    movl $-993718819, -16(%rbp)
+    movl $-1, -12(%rbp)
+    movl $-1, -8(%rbp)
     movl $16777215, -4(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx

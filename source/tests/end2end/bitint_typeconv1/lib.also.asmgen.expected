@@ -25,9 +25,9 @@ get1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4025334944, -16(%rbp)
+    movl $-269632352, -16(%rbp)
     movl $1126280141, -12(%rbp)
-    movl $2299103077, -8(%rbp)
+    movl $-1995864219, -8(%rbp)
     movl $19088743, -4(%rbp)
     movq -16(%rbp), %rax
     lea (%rbp), %rsp
@@ -40,9 +40,9 @@ get2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4025334944, -16(%rbp)
+    movl $-269632352, -16(%rbp)
     movl $1126280141, -12(%rbp)
-    movl $2299103077, -8(%rbp)
+    movl $-1995864219, -8(%rbp)
     movl $19088743, -4(%rbp)
     movq -16(%rbp), %rax
     lea (%rbp), %rsp
@@ -55,9 +55,9 @@ get3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4025334944, -16(%rbp)
+    movl $-269632352, -16(%rbp)
     movl $1126280141, -12(%rbp)
-    movl $2299103077, -8(%rbp)
+    movl $-1995864219, -8(%rbp)
     movl $19088743, -4(%rbp)
     movq -16(%rbp), %rax
     lea (%rbp), %rsp
@@ -70,9 +70,9 @@ get4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4025334944, -16(%rbp)
+    movl $-269632352, -16(%rbp)
     movl $1126280141, -12(%rbp)
-    movl $2299103077, -8(%rbp)
+    movl $-1995864219, -8(%rbp)
     movl $19088743, -4(%rbp)
     movq -16(%rbp), %rax
     lea (%rbp), %rsp
@@ -85,9 +85,9 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4025334944, -16(%rbp)
+    movl $-269632352, -16(%rbp)
     movl $1126280141, -12(%rbp)
-    movl $2299103077, -8(%rbp)
+    movl $-1995864219, -8(%rbp)
     movl $19088743, -4(%rbp)
     movq -16(%rbp), %rax
     lea (%rbp), %rsp
@@ -100,9 +100,9 @@ get6:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4025334944, -16(%rbp)
+    movl $-269632352, -16(%rbp)
     movl $1126280141, -12(%rbp)
-    movl $2299103077, -8(%rbp)
+    movl $-1995864219, -8(%rbp)
     movl $19088743, -4(%rbp)
     movq -16(%rbp), %rax
     lea (%rbp), %rsp
@@ -115,9 +115,9 @@ get7:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4025334944, -16(%rbp)
+    movl $-269632352, -16(%rbp)
     movl $1126280141, -12(%rbp)
-    movl $2299103077, -8(%rbp)
+    movl $-1995864219, -8(%rbp)
     movl $19088743, -4(%rbp)
     movq -16(%rbp), %rax
     lea (%rbp), %rsp
@@ -130,9 +130,9 @@ get8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4025334944, -16(%rbp)
+    movl $-269632352, -16(%rbp)
     movl $1126280141, -12(%rbp)
-    movl $2299103077, -8(%rbp)
+    movl $-1995864219, -8(%rbp)
     movl $19088743, -4(%rbp)
     movq -16(%rbp), %rax
     lea (%rbp), %rsp

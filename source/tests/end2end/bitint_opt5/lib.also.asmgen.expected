@@ -53,7 +53,7 @@ get4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $3040223825, -16(%rbp)
+    movl $-1254743471, -16(%rbp)
     movl $180141502, -12(%rbp)
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)
@@ -75,7 +75,7 @@ get6:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $4281545250, -16(%rbp)
+    movl $-13422046, -16(%rbp)
     movl $178974447, -12(%rbp)
     movl $0, -8(%rbp)
     movl $0, -4(%rbp)

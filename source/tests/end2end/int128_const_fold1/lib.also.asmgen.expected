@@ -121,11 +121,11 @@ int128_sign_to_bitint:
     mov %rsp, %rbp
     sub $32, %rsp
     movl $792657938, -32(%rbp)
-    movl $4294967109, -28(%rbp)
-    movl $4294967295, -24(%rbp)
-    movl $4294967295, -20(%rbp)
-    movl $4294967295, -16(%rbp)
-    movl $4294967295, -12(%rbp)
+    movl $-187, -28(%rbp)
+    movl $-1, -24(%rbp)
+    movl $-1, -20(%rbp)
+    movl $-1, -16(%rbp)
+    movl $-1, -12(%rbp)
     mov %rdi, %rax
     movq -32(%rbp), %rcx
     movq %rcx, (%rax)
@@ -167,9 +167,9 @@ int128_unsign_to_bitint:
     mov %rsp, %rbp
     sub $32, %rsp
     movl $792657938, -32(%rbp)
-    movl $4294967109, -28(%rbp)
-    movl $4294967295, -24(%rbp)
-    movl $4294967295, -20(%rbp)
+    movl $-187, -28(%rbp)
+    movl $-1, -24(%rbp)
+    movl $-1, -20(%rbp)
     movl $0, -16(%rbp)
     movl $0, -12(%rbp)
     mov %rdi, %rax
