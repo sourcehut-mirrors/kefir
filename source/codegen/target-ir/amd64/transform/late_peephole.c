@@ -266,8 +266,10 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(struct kefi
                 return KEFIR_OK;
             } else if (rhs_regalloc_entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL) {
                 kefir_asm_amd64_xasmgen_register_t lhs_reg = lhs_regalloc_entry.reg.value;
+                kefir_asmcmp_operand_variant_t variant = KEFIR_ASMCMP_OPERAND_VARIANT_64BIT;
                 if (instr->operation.parameters[classification.operands[0].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) {
                     REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(lhs_reg, &lhs_reg));
+                    variant = KEFIR_ASMCMP_OPERAND_VARIANT_32BIT;
                 }
 
                 *asmcmp_instr = (struct kefir_asmcmp_instruction) {
@@ -278,7 +280,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(struct kefi
                             .type = KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS,
                             .base.spill_index = rhs_regalloc_entry.spill_area.index,
                             .offset = 0,
-                            .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT
+                            .variant = variant
                         }
                     },
                     .args[1] = {
