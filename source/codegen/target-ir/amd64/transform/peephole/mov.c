@@ -71,7 +71,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
                                 .variant = output_value_type->variant \
                             } \
                         } \
-                    })); \
+                    }, NULL)); \
                 *replaced = true; \
                 return KEFIR_OK; \
             } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movsx) && \
@@ -89,7 +89,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
                                 .variant = output_value_type->variant \
                             } \
                         } \
-                    })); \
+                    }, NULL)); \
                 *replaced = true; \
                 return KEFIR_OK; \
             } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movsx) && \
@@ -107,7 +107,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
                                 .variant = output_value_type->variant \
                             } \
                         } \
-                    })); \
+                    }, NULL)); \
                 *replaced = true; \
                 return KEFIR_OK; \
             } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movzx) && \
@@ -125,7 +125,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
                                 .variant = output_value_type->variant \
                             } \
                         } \
-                    })); \
+                    }, NULL)); \
                 *replaced = true; \
                 return KEFIR_OK; \
             } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movzx) && \
@@ -143,7 +143,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
                                 .variant = output_value_type->variant \
                             } \
                         } \
-                    })); \
+                    }, NULL)); \
                 *replaced = true; \
                 return KEFIR_OK; \
             } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) && \
@@ -159,7 +159,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
                                 .variant = output_value_type->variant \
                             } \
                         } \
-                    })); \
+                    }, NULL)); \
                 *replaced = true; \
                 return KEFIR_OK; \
             } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) && \
@@ -177,7 +177,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
                                 .variant = output_value_type->variant \
                             } \
                         } \
-                    })); \
+                    }, NULL)); \
                 *replaced = true; \
                 return KEFIR_OK; \
             }
@@ -289,7 +289,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
         }
 
         if (replace) {
-            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, use_instr_ref, &oper));
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, use_instr_ref, &oper, NULL));
             *replaced = true;
         }
     }

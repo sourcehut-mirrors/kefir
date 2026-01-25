@@ -71,7 +71,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_imul(struct kefir_mem *mem
                         .variant = instr->operation.parameters[classification.operands[1].read_index].direct.variant
                     }
                 }
-            }));
+            }, NULL));
             *replaced = true;
             return KEFIR_OK;
         } else if (has_lhs_value && instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(imul)) {
@@ -85,7 +85,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_imul(struct kefir_mem *mem
                         .variant = instr->operation.parameters[classification.operands[0].read_index].direct.variant
                     }
                 }
-            }));
+            }, NULL));
             *replaced = true;
             return KEFIR_OK;
         }

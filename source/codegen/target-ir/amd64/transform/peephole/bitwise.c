@@ -130,7 +130,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_and(struct kefir_mem *mem,
                 .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
                 .immediate.int_immediate = 0
             }
-        }));
+        }, NULL));
         *replaced = true;
     } else if (instr->operation.parameters[classification.operands[1].read_index].immediate.uint_immediate < (1 << 7)) {
         kefir_result_t res;
@@ -205,7 +205,7 @@ kefir_result_t peephole_const_operand_nonneg(struct kefir_mem *mem, struct kefir
                         .variant = oper.parameters[classification.operands[1].read_index].direct.variant
                     }
                 };
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper));
+                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));
                 *replaced = true;
                 return KEFIR_OK;
             }
@@ -288,7 +288,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_shxd(struct kefir_mem *mem
                         .variant = oper.parameters[classification.operands[2].read_index].direct.variant
                     }
                 };
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper));
+                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));
                 *replaced = true;
                 return KEFIR_OK;
             }

@@ -65,7 +65,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_const_operand(struct kefir
                     .variant = oper.parameters[classification.operands[1].read_index].direct.variant
                 }
             };
-            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper));
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));
             *replaced = true;
             return KEFIR_OK;
         } else if (enable_lhs && has_lhs_value) {
@@ -78,7 +78,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_const_operand(struct kefir
                     .variant = instr->operation.parameters[classification.operands[0].read_index].direct.variant
                 }
             };
-            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper));
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));
             *replaced = true;
             return KEFIR_OK;
         }
@@ -223,7 +223,7 @@ static kefir_result_t peephole_indirect(struct kefir_mem *mem, struct kefir_code
     }
 
     if (replace) {
-        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr->instr_ref, &oper));
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr->instr_ref, &oper, NULL));
         *replaced = true;
     }
     return KEFIR_OK;
@@ -319,7 +319,7 @@ static kefir_result_t peephole_untie(struct kefir_mem *mem, struct kefir_codegen
     }
 
     if (replace) {
-        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper));
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));
         *replaced = true;
     }
 

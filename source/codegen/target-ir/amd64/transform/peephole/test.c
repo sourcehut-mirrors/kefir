@@ -146,7 +146,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
                     oper.parameters[classification.operands[1].read_index].direct = producer_instr->operation.parameters[producer_classification.operands[1].read_index].direct;
 
                     REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref,
-                        &oper));
+                        &oper, NULL));
                     *replaced = true;
                 } break;
 
@@ -201,7 +201,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
             oper.parameters[classification.operands[1].read_index].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT;
 
             REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref,
-                &oper));
+                &oper, NULL));
             *replaced = true;
         } break;
 

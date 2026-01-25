@@ -67,7 +67,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_setcc(struct kefir_mem *me
 
     oper.parameters[classification.operands[0].read_index].direct.value_ref = placeholder_value_ref;
 
-    REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper));
+    REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));
     *replaced = true;
 
     return KEFIR_OK;
@@ -213,7 +213,7 @@ static kefir_result_t peephole_setcc_preamble(struct kefir_mem *mem, struct kefi
                 default: \
                     return KEFIR_OK; \
             } \
-            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper)); \
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, replace_instr_ref, &oper, NULL)); \
  \
             *replaced = true; \
         } \

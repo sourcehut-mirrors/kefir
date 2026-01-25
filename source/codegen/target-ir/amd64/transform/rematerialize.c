@@ -229,8 +229,8 @@ static kefir_result_t try_rematerialize(struct kefir_mem *mem,
     const struct kefir_codegen_target_ir_regalloc *regalloc,
     kefir_codegen_target_ir_block_ref_t block_ref,
     kefir_codegen_target_ir_instruction_ref_t insert_before_ref,
+    kefir_codegen_target_ir_instruction_ref_t use_ref,
     kefir_codegen_target_ir_value_ref_t value_ref,
-    kefir_bool_t only_reuse,
     kefir_codegen_target_ir_value_ref_t *rematerialized_value_ref,
     const struct kefir_hashset *alive_values,
     struct kefir_hashtable *local_rematerializations,
@@ -249,9 +249,8 @@ static kefir_result_t try_rematerialize(struct kefir_mem *mem,
     REQUIRE_OK(regalloc->klass->is_evictable(allocation, &is_evictable, regalloc->klass->payload));
     REQUIRE(!is_evictable, KEFIR_OK);
 
-    const struct kefir_codegen_target_ir_instruction *original_instr, *insert_before_instr;
+    const struct kefir_codegen_target_ir_instruction *original_instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, value_ref.instr_ref, &original_instr));
-    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, insert_before_ref, &insert_before_instr));
 
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         switch (original_instr->operation.parameters[i].type) {
@@ -290,19 +289,22 @@ static kefir_result_t try_rematerialize(struct kefir_mem *mem,
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_instruction_ref_t, rematerialized_instr_ref,
             (*table_value));
         kefir_size_t distance = 0;
-        REQUIRE_OK(distance_between(code, rematerialized_instr_ref, insert_before_ref, regalloc->klass->transforms->rematerialization_locality, &distance));
-        if (only_reuse || distance < regalloc->klass->transforms->rematerialization_locality) {
+        REQUIRE_OK(distance_between(code, rematerialized_instr_ref, use_ref, regalloc->klass->transforms->rematerialization_locality, &distance));
+        if (insert_before_ref == KEFIR_ID_NONE || distance < regalloc->klass->transforms->rematerialization_locality) {
             rematerialized_value_ref->instr_ref = rematerialized_instr_ref;
             rematerialized_value_ref->aspect = value_ref.aspect;
             *did_rematerialize = true;
             return KEFIR_OK;
         }
     }
-    REQUIRE(!only_reuse, KEFIR_OK);
+    REQUIRE(insert_before_ref != KEFIR_ID_NONE, KEFIR_OK);
+
+    const struct kefir_codegen_target_ir_instruction *insert_before_instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, insert_before_ref, &insert_before_instr));
 
     if (original_instr->block_ref == insert_before_instr->block_ref) {
         kefir_size_t distance = 0;
-        REQUIRE_OK(distance_between(code, value_ref.instr_ref, insert_before_ref, regalloc->klass->transforms->rematerialization_locality, &distance));
+        REQUIRE_OK(distance_between(code, value_ref.instr_ref, use_ref, regalloc->klass->transforms->rematerialization_locality, &distance));
         REQUIRE(distance >= regalloc->klass->transforms->rematerialization_locality, KEFIR_OK);
     }
 
@@ -329,6 +331,7 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
     const struct kefir_codegen_target_ir_liveness_value_block_ranges *liveness_ranges;
     REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(mem, control_flow, liveness, block_ref, &liveness_ranges));
 
+    kefir_codegen_target_ir_instruction_ref_t no_alive_flags_ref = KEFIR_ID_NONE;
     REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, liveness, KEFIR_ID_NONE, liveness_ranges, alive_values));
     for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
         instr_ref != KEFIR_ID_NONE;
@@ -356,6 +359,9 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
             REQUIRE_OK(res);
         }
         REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(mem, liveness, instr_ref, liveness_ranges, alive_values));
+        if (!has_alive_flags) {
+            no_alive_flags_ref = instr_ref;
+        }
 
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
@@ -367,21 +373,21 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
             struct kefir_codegen_target_ir_operation oper = instr->operation;
             for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
                 if (instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
-                    REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, instr_ref,
-                        instr->operation.parameters[i].direct.value_ref, has_alive_flags,
+                    REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, no_alive_flags_ref, instr_ref,
+                        instr->operation.parameters[i].direct.value_ref,
                         &oper.parameters[i].direct.value_ref, alive_values, local_rematerializations,
                         &do_replace));
                     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
                 } else if (instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT) {
                     if (instr->operation.parameters[i].indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS) {
-                        REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, instr_ref,
-                            instr->operation.parameters[i].indirect.base.value_ref, has_alive_flags,
+                        REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, no_alive_flags_ref, instr_ref,
+                            instr->operation.parameters[i].indirect.base.value_ref,
                             &oper.parameters[i].indirect.base.value_ref, alive_values, local_rematerializations,
                             &do_replace));
                         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
                     } else if (instr->operation.parameters[i].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF) {
-                        REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, instr_ref,
-                            instr->operation.parameters[i].indirect.index.value_ref, has_alive_flags,
+                        REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, no_alive_flags_ref, instr_ref,
+                            instr->operation.parameters[i].indirect.index.value_ref,
                             &oper.parameters[i].indirect.index.value_ref, alive_values, local_rematerializations,
                             &do_replace));
                         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
@@ -390,7 +396,11 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
             }
 
             if (do_replace) {
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper));
+                kefir_codegen_target_ir_instruction_ref_t replaced_instr_ref;
+                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, &replaced_instr_ref));
+                if (no_alive_flags_ref == instr_ref) {
+                    no_alive_flags_ref = replaced_instr_ref;
+                }
             }
         }
     }
@@ -413,7 +423,7 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem,
             
             kefir_codegen_target_ir_value_ref_t rematerialized_value_ref;
             kefir_bool_t did_rematerialize = false;
-            REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, kefir_codegen_target_ir_code_block_control_tail(code, block_ref), link_value_ref, false, &rematerialized_value_ref, alive_values, local_rematerializations, &did_rematerialize));
+            REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, no_alive_flags_ref, kefir_codegen_target_ir_code_block_control_tail(code, block_ref), link_value_ref, &rematerialized_value_ref, alive_values, local_rematerializations, &did_rematerialize));
             if (did_rematerialize) {
                 REQUIRE_OK(kefir_codegen_target_ir_code_phi_drop(mem, code, phi_ref, block_ref));
                 REQUIRE_OK(kefir_codegen_target_ir_code_phi_attach(mem, code, phi_ref, block_ref, rematerialized_value_ref));

@@ -157,7 +157,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_add(struct kefir_mem *mem,
             }
 
             if (replace) {
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, use_instr_ref, &oper));
+                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, use_instr_ref, &oper, NULL));
                 *replaced = true;
             }
         }
