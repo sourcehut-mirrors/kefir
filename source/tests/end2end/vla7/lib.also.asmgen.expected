@@ -18,10 +18,8 @@ test:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rcx
-    mov $0, %rsi
-    imul $8, %rsi, %rdx
-    lea -48(%rbp), %rsi
-    movq %rax, (%rsi, %rdx, 1)
+    lea -48(%rbp), %rdx
+    movq %rax, (%rdx)
     movl -32(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
@@ -72,10 +70,8 @@ test2:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rcx
-    mov $0, %rsi
-    imul $8, %rsi, %rdx
-    lea -64(%rbp), %rsi
-    movq %rax, (%rsi, %rdx, 1)
+    lea -64(%rbp), %rdx
+    movq %rax, (%rdx)
     movl -48(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
@@ -93,10 +89,8 @@ test2:
     sub $16, %rsp
     movq %rcx, (%rsp)
     mov %rsp, %rax
-    mov $1, %rdx
-    imul $8, %rdx, %rsi
     lea -64(%rbp), %rdx
-    movq %rcx, (%rdx, %rsi, 1)
+    movq %rcx, 8(%rdx)
     movl -48(%rbp), %edx
     lea -24(%rbp), %rcx
     movsx %edx, %rdx

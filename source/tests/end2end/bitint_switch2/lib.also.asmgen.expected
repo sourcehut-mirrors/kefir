@@ -27,15 +27,9 @@ test1:
     shl $58, %rcx
     sar $58, %rcx
     xor %edx, %edx
-    shl $62, %rdx
-    sar $62, %rdx
-    mov %rdx, %rsi
-    shl $58, %rsi
-    sar $58, %rsi
-    cmp %sil, %cl
+    cmp %dl, %cl
     setg %cl
-    shl $58, %rdx
-    shr $58, %rdx
+    xor %edx, %edx
     mov %rax, %rsi
     shl $58, %rsi
     shr $58, %rsi
@@ -47,15 +41,9 @@ test1:
     shl $58, %rdx
     sar $58, %rdx
     mov $9, %esi
-    shl $59, %rsi
-    sar $59, %rsi
-    mov %rsi, %rdi
-    shl $58, %rdi
-    sar $58, %rdi
-    cmp %dil, %dl
+    cmp %sil, %dl
     setl %dl
-    shl $58, %rsi
-    shr $58, %rsi
+    mov $9, %esi
     mov %rax, %rdi
     shl $58, %rdi
     shr $58, %rdi
@@ -70,15 +58,9 @@ test1:
     shl $58, %rcx
     sar $58, %rcx
     mov $10, %edx
-    shl $59, %rdx
-    sar $59, %rdx
-    mov %rdx, %rsi
-    shl $58, %rsi
-    sar $58, %rsi
-    cmp %sil, %cl
+    cmp %dl, %cl
     setg %cl
-    shl $58, %rdx
-    shr $58, %rdx
+    mov $10, %edx
     mov %rax, %rsi
     shl $58, %rsi
     shr $58, %rsi
@@ -90,13 +72,9 @@ test1:
     shl $58, %rdx
     sar $58, %rdx
     mov $19, %esi
-    shl $58, %rsi
-    sar $58, %rsi
     cmp %sil, %dl
     setl %dl
     mov $19, %esi
-    shl $58, %rsi
-    shr $58, %rsi
     mov %rax, %rdi
     shl $58, %rdi
     shr $58, %rdi
@@ -111,13 +89,9 @@ test1:
     shl $58, %rcx
     sar $58, %rcx
     mov $20, %edx
-    shl $58, %rdx
-    sar $58, %rdx
     cmp %dl, %cl
     setg %cl
     mov $20, %edx
-    shl $58, %rdx
-    shr $58, %rdx
     mov %rax, %rsi
     shl $58, %rsi
     shr $58, %rsi
@@ -129,13 +103,9 @@ test1:
     shl $58, %rdx
     sar $58, %rdx
     mov $29, %esi
-    shl $58, %rsi
-    sar $58, %rsi
     cmp %sil, %dl
     setl %dl
     mov $29, %esi
-    shl $58, %rsi
-    shr $58, %rsi
     shl $58, %rax
     shr $58, %rax
     cmp %al, %sil
@@ -179,15 +149,9 @@ test2:
     shl $50, %rcx
     sar $50, %rcx
     xor %edx, %edx
-    shl $62, %rdx
-    sar $62, %rdx
-    mov %rdx, %rsi
-    shl $50, %rsi
-    sar $50, %rsi
-    cmp %si, %cx
+    cmp %dx, %cx
     setg %cl
-    shl $50, %rdx
-    shr $50, %rdx
+    xor %edx, %edx
     mov %rax, %rsi
     shl $50, %rsi
     shr $50, %rsi
@@ -199,15 +163,9 @@ test2:
     shl $50, %rdx
     sar $50, %rdx
     mov $99, %esi
-    shl $56, %rsi
-    sar $56, %rsi
-    mov %rsi, %rdi
-    shl $50, %rdi
-    sar $50, %rdi
-    cmp %di, %dx
+    cmp %si, %dx
     setl %dl
-    shl $50, %rsi
-    shr $50, %rsi
+    mov $99, %esi
     mov %rax, %rdi
     shl $50, %rdi
     shr $50, %rdi
@@ -222,15 +180,9 @@ test2:
     shl $50, %rcx
     sar $50, %rcx
     mov $100, %edx
-    shl $56, %rdx
-    sar $56, %rdx
-    mov %rdx, %rsi
-    shl $50, %rsi
-    sar $50, %rsi
-    cmp %si, %cx
+    cmp %dx, %cx
     setg %cl
-    shl $50, %rdx
-    shr $50, %rdx
+    mov $100, %edx
     mov %rax, %rsi
     shl $50, %rsi
     shr $50, %rsi
@@ -242,15 +194,9 @@ test2:
     shl $50, %rdx
     sar $50, %rdx
     mov $1999, %esi
-    shl $52, %rsi
-    sar $52, %rsi
-    mov %rsi, %rdi
-    shl $50, %rdi
-    sar $50, %rdi
-    cmp %di, %dx
+    cmp %si, %dx
     setl %dl
-    shl $50, %rsi
-    shr $50, %rsi
+    mov $1999, %esi
     mov %rax, %rdi
     shl $50, %rdi
     shr $50, %rdi
@@ -265,15 +211,9 @@ test2:
     shl $50, %rcx
     sar $50, %rcx
     mov $2000, %edx
-    shl $52, %rdx
-    sar $52, %rdx
-    mov %rdx, %rsi
-    shl $50, %rsi
-    sar $50, %rsi
-    cmp %si, %cx
+    cmp %dx, %cx
     setg %cl
-    shl $50, %rdx
-    shr $50, %rdx
+    mov $2000, %edx
     mov %rax, %rsi
     shl $50, %rsi
     shr $50, %rsi
@@ -285,15 +225,9 @@ test2:
     shl $50, %rdx
     sar $50, %rdx
     mov $2999, %esi
-    shl $51, %rsi
-    sar $51, %rsi
-    mov %rsi, %rdi
-    shl $50, %rdi
-    sar $50, %rdi
-    cmp %di, %dx
+    cmp %si, %dx
     setl %dl
-    shl $50, %rsi
-    shr $50, %rsi
+    mov $2999, %esi
     shl $50, %rax
     shr $50, %rax
     cmp %ax, %si
@@ -337,15 +271,9 @@ test3:
     shl $35, %rcx
     sar $35, %rcx
     xor %edx, %edx
-    shl $62, %rdx
-    sar $62, %rdx
-    mov %rdx, %rsi
-    shl $35, %rsi
-    sar $35, %rsi
-    cmp %esi, %ecx
+    cmp %edx, %ecx
     setg %cl
-    shl $35, %rdx
-    shr $35, %rdx
+    xor %edx, %edx
     mov %rax, %rsi
     shl $35, %rsi
     shr $35, %rsi
@@ -357,15 +285,9 @@ test3:
     shl $35, %rdx
     sar $35, %rdx
     mov $999, %esi
-    shl $53, %rsi
-    sar $53, %rsi
-    mov %rsi, %rdi
-    shl $35, %rdi
-    sar $35, %rdi
-    cmp %edi, %edx
+    cmp %esi, %edx
     setl %dl
-    shl $35, %rsi
-    shr $35, %rsi
+    mov $999, %esi
     mov %rax, %rdi
     shl $35, %rdi
     shr $35, %rdi
@@ -380,15 +302,9 @@ test3:
     shl $35, %rcx
     sar $35, %rcx
     mov $1000, %edx
-    shl $53, %rdx
-    sar $53, %rdx
-    mov %rdx, %rsi
-    shl $35, %rsi
-    sar $35, %rsi
-    cmp %esi, %ecx
+    cmp %edx, %ecx
     setg %cl
-    shl $35, %rdx
-    shr $35, %rdx
+    mov $1000, %edx
     mov %rax, %rsi
     shl $35, %rsi
     shr $35, %rsi
@@ -400,15 +316,9 @@ test3:
     shl $35, %rdx
     sar $35, %rdx
     mov $3999, %esi
-    shl $51, %rsi
-    sar $51, %rsi
-    mov %rsi, %rdi
-    shl $35, %rdi
-    sar $35, %rdi
-    cmp %edi, %edx
+    cmp %esi, %edx
     setl %dl
-    shl $35, %rsi
-    shr $35, %rsi
+    mov $3999, %esi
     mov %rax, %rdi
     shl $35, %rdi
     shr $35, %rdi
@@ -423,15 +333,9 @@ test3:
     shl $35, %rcx
     sar $35, %rcx
     mov $4000, %edx
-    shl $51, %rdx
-    sar $51, %rdx
-    mov %rdx, %rsi
-    shl $35, %rsi
-    sar $35, %rsi
-    cmp %esi, %ecx
+    cmp %edx, %ecx
     setg %cl
-    shl $35, %rdx
-    shr $35, %rdx
+    mov $4000, %edx
     mov %rax, %rsi
     shl $35, %rsi
     shr $35, %rsi
@@ -443,15 +347,9 @@ test3:
     shl $35, %rdx
     sar $35, %rdx
     mov $10000, %esi
-    shl $49, %rsi
-    sar $49, %rsi
-    mov %rsi, %rdi
-    shl $35, %rdi
-    sar $35, %rdi
-    cmp %edi, %edx
+    cmp %esi, %edx
     setl %dl
-    shl $35, %rsi
-    shr $35, %rsi
+    mov $10000, %esi
     shl $35, %rax
     shr $35, %rax
     cmp %eax, %esi
@@ -495,15 +393,9 @@ test4:
     shl $4, %rcx
     sar $4, %rcx
     xor %edx, %edx
-    shl $62, %rdx
-    sar $62, %rdx
-    mov %rdx, %rsi
-    shl $4, %rsi
-    sar $4, %rsi
-    cmp %rsi, %rcx
+    cmp %rdx, %rcx
     setg %cl
-    shl $4, %rdx
-    shr $4, %rdx
+    xor %edx, %edx
     mov %rax, %rsi
     shl $4, %rsi
     shr $4, %rsi
@@ -515,15 +407,9 @@ test4:
     shl $4, %rdx
     sar $4, %rdx
     mov $999, %esi
-    shl $53, %rsi
-    sar $53, %rsi
-    mov %rsi, %rdi
-    shl $4, %rdi
-    sar $4, %rdi
-    cmp %rdi, %rdx
+    cmp %rsi, %rdx
     setl %dl
-    shl $4, %rsi
-    shr $4, %rsi
+    mov $999, %esi
     mov %rax, %rdi
     shl $4, %rdi
     shr $4, %rdi
@@ -538,15 +424,9 @@ test4:
     shl $4, %rcx
     sar $4, %rcx
     mov $1000, %edx
-    shl $53, %rdx
-    sar $53, %rdx
-    mov %rdx, %rsi
-    shl $4, %rsi
-    sar $4, %rsi
-    cmp %rsi, %rcx
+    cmp %rdx, %rcx
     setg %cl
-    shl $4, %rdx
-    shr $4, %rdx
+    mov $1000, %edx
     mov %rax, %rsi
     shl $4, %rsi
     shr $4, %rsi
@@ -558,15 +438,9 @@ test4:
     shl $4, %rdx
     sar $4, %rdx
     mov $3999, %esi
-    shl $51, %rsi
-    sar $51, %rsi
-    mov %rsi, %rdi
-    shl $4, %rdi
-    sar $4, %rdi
-    cmp %rdi, %rdx
+    cmp %rsi, %rdx
     setl %dl
-    shl $4, %rsi
-    shr $4, %rsi
+    mov $3999, %esi
     mov %rax, %rdi
     shl $4, %rdi
     shr $4, %rdi
@@ -581,15 +455,9 @@ test4:
     shl $4, %rcx
     sar $4, %rcx
     mov $4000, %edx
-    shl $51, %rdx
-    sar $51, %rdx
-    mov %rdx, %rsi
-    shl $4, %rsi
-    sar $4, %rsi
-    cmp %rsi, %rcx
+    cmp %rdx, %rcx
     setg %cl
-    shl $4, %rdx
-    shr $4, %rdx
+    mov $4000, %edx
     mov %rax, %rsi
     shl $4, %rsi
     shr $4, %rsi
@@ -601,15 +469,9 @@ test4:
     shl $4, %rdx
     sar $4, %rdx
     mov $10000, %esi
-    shl $49, %rsi
-    sar $49, %rsi
-    mov %rsi, %rdi
-    shl $4, %rdi
-    sar $4, %rdi
-    cmp %rdi, %rdx
+    cmp %rsi, %rdx
     setl %dl
-    shl $4, %rsi
-    shr $4, %rsi
+    mov $10000, %esi
     shl $4, %rax
     shr $4, %rax
     cmp %rax, %rsi
@@ -653,12 +515,9 @@ test5:
     movdqu %xmm0, -32(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
-    xor %eax, %eax
-    shl $62, %rax
-    sar $62, %rax
+    xor %edx, %edx
     lea -64(%rbp), %rdi
     mov $120, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     lea -80(%rbp), %rdi
     lea -64(%rbp), %rsi
@@ -852,17 +711,14 @@ __kefir_bigint_signed_compare:
     movq %rdi, -24(%rbp)
     movq -48(%rbp), %rax
     sub $1, %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -32(%rbp)
     movq -48(%rbp), %rax
     movq -32(%rbp), %rcx
     sub $1, %rax
-    mov $1, %edx
-    shl $3, %rdx
-    imul %rdx, %rcx
+    shl $3, %rcx
     sub %rcx, %rax
     movq %rax, -16(%rbp)
     movq -24(%rbp), %rax
@@ -940,12 +796,9 @@ __kefir_bigint_unsigned_compare:
     movq %rsi, -40(%rbp)
     movq %rdi, -48(%rbp)
     movq -56(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
-    add %rcx, %rax
+    add $8, %rax
     sub $1, %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -32(%rbp)
@@ -1004,14 +857,10 @@ __kefir_bigint_unsigned_compare:
     movq -56(%rbp), %rdx
     lea -1(%rax), %rcx
     lea -1(%rdx), %rax
-    mov $1, %edx
-    mov %rdx, %rsi
-    shl $3, %rsi
+    mov $8, %esi
     xor %edx, %edx
     div %rsi
-    mov $1, %edx
-    shl $3, %rdx
-    imul %rdx, %rax
+    shl $3, %rax
     sub %rax, %rcx
     add $1, %rcx
     movl %ecx, -8(%rbp)
@@ -1046,16 +895,13 @@ __kefir_bigint_cast_signed:
     sub $1, %rax
     movq %rax, -72(%rbp)
     movq -72(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -48(%rbp)
     movq -72(%rbp), %rax
     movq -48(%rbp), %rcx
-    mov $1, %edx
-    shl $3, %rdx
-    imul %rdx, %rcx
+    shl $3, %rcx
     sub %rcx, %rax
     movq %rax, -56(%rbp)
     movq -32(%rbp), %rax
@@ -1076,16 +922,13 @@ __kefir_bigint_cast_signed:
     sub $1, %rax
     movq %rax, -24(%rbp)
     movq -24(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov $1, %edx
-    shl $3, %rdx
-    imul %rdx, %rcx
+    shl $3, %rcx
     sub %rcx, %rax
     movq %rax, -64(%rbp)
     movq -88(%rbp), %rax
@@ -1098,8 +941,7 @@ __kefir_bigint_cast_signed:
     movl %edx, -80(%rbp)
     movq -64(%rbp), %rax
     add $1, %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_cast_signed_label19
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label7:
@@ -1137,7 +979,6 @@ __kefir_bigint_cast_signed:
     movq -88(%rbp), %rax
     movq -8(%rbp), %rcx
     xor %edx, %edx
-    and $255, %rdx
     not %edx
     movb %dl, (%rax, %rcx, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label15
@@ -1260,18 +1101,14 @@ __kefir_bigint_set_signed_integer:
     movq -40(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -24(%rbp), %rax
-    mov $8, %ecx
-    shl $3, %rcx
+    mov $64, %ecx
     cmp %rcx, %rax
     ja .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label5:
     movq -24(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
-    add %rcx, %rax
+    add $8, %rax
     sub $1, %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
@@ -1306,14 +1143,12 @@ __kefir_bigint_set_signed_integer:
     add $1, %rax
     movq %rax, -8(%rbp)
     movq -48(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     shr %cl, %rax
     movq %rax, -48(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label6
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16:
-    mov $8, %eax
-    shl $3, %rax
+    mov $64, %eax
     movq %rax, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label5
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label18:

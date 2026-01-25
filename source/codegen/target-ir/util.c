@@ -39,6 +39,23 @@ kefir_int64_t kefir_codegen_target_ir_sign_extend(kefir_int64_t value, kefir_cod
     }
 }
 
+kefir_int64_t kefir_codegen_target_ir_zero_extend(kefir_int64_t value, kefir_codegen_target_ir_operand_variant_t variant) {
+    switch (variant) {
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT:
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT_HIGHER:
+            return (kefir_uint8_t) value;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT:
+            return (kefir_uint16_t) value;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT:
+            return (kefir_uint32_t) value;
+
+        default:
+            return value;
+    }
+}
+
 kefir_result_t kefir_codegen_target_ir_add_produced_resource_aspects(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));

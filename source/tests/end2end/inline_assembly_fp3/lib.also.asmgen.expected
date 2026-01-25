@@ -11,57 +11,31 @@ sumall:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
-    push %r13
-    push %r14
-    push %r15
-    sub $56, %rsp
-    movq %rdi, -56(%rbp)
-    movq %xmm0, -48(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movq -56(%rbp), %rcx
-    movq -56(%rbp), %rdx
-    movq -56(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -56(%rbp), %r9
-    movq -56(%rbp), %rax
-    movq %rax, -88(%rbp)
-    movq -56(%rbp), %r11
-    movq -56(%rbp), %rbx
+    sub $24, %rsp
+    movq %rdi, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -24(%rbp), %rax
+    movq -24(%rbp), %rcx
+    movq -24(%rbp), %rdx
+    movq -24(%rbp), %rsi
+    movq -24(%rbp), %rdi
+    movq -24(%rbp), %r8
+    movq -24(%rbp), %r9
+    movq -24(%rbp), %r10
+    movq -24(%rbp), %r11
+    movq -24(%rbp), %rbx
     movq .L__kefir_func_sumall_label4(%rip), %xmm3
-    xor %r12d, %r12d
-    mov $1, %r13d
-    mov $2, %r14d
-    mov $3, %r15d
-    mov $4, %r8d
-    mov $5, %r10d
-    mov $6, %esi
-    mov $7, %eax
-    mov $8, %edi
-    shl $3, %rdi
-    add %rdi, %r11
-    mov $9, %edi
-    shl $3, %rdi
-    add %rdi, %rbx
+    add $64, %r11
+    add $72, %rbx
     movaps %xmm3, %xmm0
-    movq -72(%rbp), %rdi
-    movq (%rdi, %r12, 8), %xmm1
-    movq (%rcx, %r13, 8), %xmm2
-    movq (%rdx, %r14, 8), %xmm6
-    movq -80(%rbp), %rcx
-    movq (%rcx, %r15, 8), %xmm7
-    movq -64(%rbp), %rcx
-    movq (%rcx, %r8, 8), %xmm8
-    movq -96(%rbp), %rcx
-    movq (%rcx, %r10, 8), %xmm10
-    movq (%r9, %rsi, 8), %xmm12
-    movq -88(%rbp), %rcx
-    movq (%rcx, %rax, 8), %xmm13
+    movq (%rax), %xmm1
+    movq 8(%rcx), %xmm2
+    movq 16(%rdx), %xmm6
+    movq 24(%rsi), %xmm7
+    movq 32(%rdi), %xmm8
+    movq 40(%r8), %xmm10
+    movq 48(%r9), %xmm12
+    movq 56(%r10), %xmm13
     mov %r11, %rax
     mov %rbx, %rcx
 addsd %xmm1, %xmm0
@@ -75,14 +49,10 @@ addsd %xmm13, %xmm0
 addsd (%rax), %xmm0
 addsd (%rcx), %xmm0
 
-    movq %xmm0, -48(%rbp)
-    movq -48(%rbp), %rax
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
     movq %rax, %xmm0
-    lea -40(%rbp), %rsp
-    pop %r15
-    pop %r14
-    pop %r13
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret

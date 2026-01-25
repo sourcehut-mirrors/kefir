@@ -739,11 +739,7 @@ uint_to_float32:
     pop %rbp
     ret
 .L__kefir_func_uint_to_float32_label3:
-    mov $314159, %eax
-    mov $314159, %ecx
-    and $1, %rax
-    shr $1, %rcx
-    or %rcx, %rax
+    mov $157079, %eax
     cvtsi2ss %rax, %xmm0
     addss %xmm0, %xmm0
     jmp .L__kefir_func_uint_to_float32_label4
@@ -767,11 +763,7 @@ uint_to_float64:
     pop %rbp
     ret
 .L__kefir_func_uint_to_float64_label3:
-    mov $31415926, %eax
-    mov $31415926, %ecx
-    and $1, %rax
-    shr $1, %rcx
-    or %rcx, %rax
+    mov $15707963, %eax
     cvtsi2sd %rax, %xmm0
     addsd %xmm0, %xmm0
     jmp .L__kefir_func_uint_to_float64_label4

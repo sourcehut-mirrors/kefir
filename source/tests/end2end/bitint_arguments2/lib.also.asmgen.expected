@@ -53,58 +53,49 @@ test1:
     movb %al, 2(%rcx)
     movw -70(%rbp), %ax
     movq b@GOTPCREL(%rip), %rcx
-    xor %edx, %edx
     shl $52, %rax
     shr $52, %rax
-    movw %ax, (%rcx, %rdx, 2)
+    movw %ax, (%rcx)
     movw -56(%rbp), %ax
     movq b@GOTPCREL(%rip), %rcx
-    mov $1, %edx
     shl $52, %rax
     shr $52, %rax
-    movw %ax, (%rcx, %rdx, 2)
+    movw %ax, 2(%rcx)
     movw -40(%rbp), %ax
     movq b@GOTPCREL(%rip), %rcx
-    mov $2, %edx
     shl $52, %rax
     shr $52, %rax
-    movw %ax, (%rcx, %rdx, 2)
+    movw %ax, 4(%rcx)
     movl -68(%rbp), %eax
     movq c@GOTPCREL(%rip), %rcx
-    xor %edx, %edx
     shl $37, %rax
     shr $37, %rax
-    movl %eax, (%rcx, %rdx, 4)
+    movl %eax, (%rcx)
     movl -52(%rbp), %eax
     movq c@GOTPCREL(%rip), %rcx
-    mov $1, %edx
     shl $37, %rax
     shr $37, %rax
-    movl %eax, (%rcx, %rdx, 4)
+    movl %eax, 4(%rcx)
     movl -36(%rbp), %eax
     movq c@GOTPCREL(%rip), %rcx
-    mov $2, %edx
     shl $37, %rax
     shr $37, %rax
-    movl %eax, (%rcx, %rdx, 4)
+    movl %eax, 8(%rcx)
     movq -64(%rbp), %rax
     movq d@GOTPCREL(%rip), %rcx
-    xor %edx, %edx
     shl $3, %rax
     shr $3, %rax
-    movq %rax, (%rcx, %rdx, 8)
+    movq %rax, (%rcx)
     movq -48(%rbp), %rax
     movq d@GOTPCREL(%rip), %rcx
-    mov $1, %edx
     shl $3, %rax
     shr $3, %rax
-    movq %rax, (%rcx, %rdx, 8)
+    movq %rax, 8(%rcx)
     movq -32(%rbp), %rax
     movq d@GOTPCREL(%rip), %rcx
-    mov $2, %edx
     shl $3, %rax
     shr $3, %rax
-    movq %rax, (%rcx, %rdx, 8)
+    movq %rax, 16(%rcx)
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12

@@ -24,7 +24,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t kefir_codegen_target_ir_amd64_match_immediate(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, kefir_int64_t *int_value_ptr) {
+kefir_result_t kefir_codegen_target_ir_amd64_match_immediate(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, kefir_bool_t sign_extend, kefir_int64_t *int_value_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR integral assign instruction"));
 
@@ -42,8 +42,34 @@ kefir_result_t kefir_codegen_target_ir_amd64_match_immediate(const struct kefir_
             output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&
         instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR integral assign instruction"));
     
-    kefir_int64_t value = kefir_codegen_target_ir_sign_extend(instr->operation.parameters[0].immediate.int_immediate, instr->operation.parameters[0].immediate.variant);
+    kefir_int64_t value = sign_extend
+        ? kefir_codegen_target_ir_sign_extend(instr->operation.parameters[0].immediate.int_immediate, instr->operation.parameters[0].immediate.variant)
+        : kefir_codegen_target_ir_zero_extend(instr->operation.parameters[0].immediate.int_immediate, instr->operation.parameters[0].immediate.variant);
 
     ASSIGN_PTR(int_value_ptr, value);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_amd64_match_immediate_operand(const struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_operand *operand, kefir_bool_t sign_extend, kefir_int64_t *value_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR cod"));
+    REQUIRE(operand != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR operand"));
+
+    switch (operand->type) {
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
+            REQUIRE_OK(kefir_codegen_target_ir_amd64_match_immediate(code, operand->direct.value_ref, sign_extend, value_ptr));
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
+            if (sign_extend) {
+                ASSIGN_PTR(value_ptr, kefir_codegen_target_ir_sign_extend(operand->immediate.int_immediate, operand->immediate.variant));
+            } else {
+                ASSIGN_PTR(value_ptr, kefir_codegen_target_ir_zero_extend(operand->immediate.int_immediate, operand->immediate.variant));
+            }
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR integral operand");
+    }
+
     return KEFIR_OK;
 }

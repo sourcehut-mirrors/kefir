@@ -172,12 +172,9 @@ __kefir_bigint_invert:
     movq %rsi, -32(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
-    add %rcx, %rax
+    add $8, %rax
     sub $1, %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
@@ -236,12 +233,9 @@ __kefir_bigint_util_add_digit_zero_extended:
     movb %sil, -52(%rbp)
     movq %rdi, -40(%rbp)
     movq -48(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
-    add %rcx, %rax
+    add $8, %rax
     sub $1, %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -24(%rbp)
@@ -284,8 +278,7 @@ __kefir_bigint_util_add_digit_zero_extended:
     movq -16(%rbp), %rdx
     movb %al, (%rcx, %rdx, 1)
     movl -8(%rbp), %eax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     shr %cl, %eax
     movl %eax, -56(%rbp)
     movq -16(%rbp), %rax

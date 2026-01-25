@@ -55,24 +55,18 @@ test1:
     movdqu -240(%rbp), %xmm0
     movdqu %xmm0, -336(%rbp)
     movq a@GOTPCREL(%rip), %rax
-    xor %ecx, %ecx
-    shl $4, %rcx
     movdqu -336(%rbp), %xmm0
-    movdqu %xmm0, (%rax, %rcx, 1)
+    movdqu %xmm0, (%rax)
     movdqu -160(%rbp), %xmm0
     movdqu %xmm0, -320(%rbp)
     movq a@GOTPCREL(%rip), %rax
-    mov $1, %ecx
-    shl $4, %rcx
     movdqu -320(%rbp), %xmm0
-    movdqu %xmm0, (%rax, %rcx, 1)
+    movdqu %xmm0, 16(%rax)
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -336(%rbp)
     movq a@GOTPCREL(%rip), %rax
-    mov $2, %ecx
-    shl $4, %rcx
     movdqu -336(%rbp), %xmm0
-    movdqu %xmm0, (%rax, %rcx, 1)
+    movdqu %xmm0, 32(%rax)
     movdqu -224(%rbp), %xmm0
     movdqu %xmm0, -304(%rbp)
     movdqu -208(%rbp), %xmm0
@@ -82,16 +76,14 @@ test1:
     movdqu -176(%rbp), %xmm0
     movdqu %xmm0, -256(%rbp)
     movq b@GOTPCREL(%rip), %rax
-    xor %ecx, %ecx
-    shl $6, %rcx
     movdqu -304(%rbp), %xmm0
-    movdqu %xmm0, (%rax, %rcx, 1)
+    movdqu %xmm0, (%rax)
     movdqu -288(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax, %rcx, 1)
+    movdqu %xmm0, 16(%rax)
     movdqu -272(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax, %rcx, 1)
+    movdqu %xmm0, 32(%rax)
     movdqu -256(%rbp), %xmm0
-    movdqu %xmm0, 48(%rax, %rcx, 1)
+    movdqu %xmm0, 48(%rax)
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -336(%rbp)
     movdqu -128(%rbp), %xmm0
@@ -101,16 +93,14 @@ test1:
     movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -288(%rbp)
     movq b@GOTPCREL(%rip), %rax
-    mov $1, %ecx
-    shl $6, %rcx
     movdqu -336(%rbp), %xmm0
-    movdqu %xmm0, (%rax, %rcx, 1)
+    movdqu %xmm0, 64(%rax)
     movdqu -320(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax, %rcx, 1)
+    movdqu %xmm0, 80(%rax)
     movdqu -304(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax, %rcx, 1)
+    movdqu %xmm0, 96(%rax)
     movdqu -288(%rbp), %xmm0
-    movdqu %xmm0, 48(%rax, %rcx, 1)
+    movdqu %xmm0, 112(%rax)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -336(%rbp)
     movdqu -48(%rbp), %xmm0
@@ -120,16 +110,14 @@ test1:
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -288(%rbp)
     movq b@GOTPCREL(%rip), %rax
-    mov $2, %ecx
-    shl $6, %rcx
     movdqu -336(%rbp), %xmm0
-    movdqu %xmm0, (%rax, %rcx, 1)
+    movdqu %xmm0, 128(%rax)
     movdqu -320(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax, %rcx, 1)
+    movdqu %xmm0, 144(%rax)
     movdqu -304(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax, %rcx, 1)
+    movdqu %xmm0, 160(%rax)
     movdqu -288(%rbp), %xmm0
-    movdqu %xmm0, 48(%rax, %rcx, 1)
+    movdqu %xmm0, 176(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret

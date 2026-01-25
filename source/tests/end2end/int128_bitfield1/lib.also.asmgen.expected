@@ -73,9 +73,8 @@ set_a:
     lea value(%rip), %rax
     movl (%rax), %eax
     lea value(%rip), %rdx
-    mov $1, %esi
     mov $32, %ecx
-    shl $32, %rsi
+    movabs $4294967296, %rsi
     xor %r8d, %r8d
     test $64, %cl
     cmove %rsi, %r8

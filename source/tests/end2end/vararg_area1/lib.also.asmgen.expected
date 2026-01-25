@@ -52,10 +52,8 @@ process:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rbx
-    mov $0, %rdx
-    imul $8, %rdx, %rcx
-    lea -80(%rbp), %rdx
-    movq %rax, (%rdx, %rcx, 1)
+    lea -80(%rbp), %rcx
+    movq %rax, (%rcx)
     movl -72(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax

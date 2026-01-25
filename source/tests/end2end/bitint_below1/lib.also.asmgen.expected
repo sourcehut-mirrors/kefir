@@ -226,12 +226,9 @@ __kefir_bigint_unsigned_compare:
     movq %rsi, -40(%rbp)
     movq %rdi, -48(%rbp)
     movq -56(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
-    add %rcx, %rax
+    add $8, %rax
     sub $1, %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -32(%rbp)
@@ -290,14 +287,10 @@ __kefir_bigint_unsigned_compare:
     movq -56(%rbp), %rdx
     lea -1(%rax), %rcx
     lea -1(%rdx), %rax
-    mov $1, %edx
-    mov %rdx, %rsi
-    shl $3, %rsi
+    mov $8, %esi
     xor %edx, %edx
     div %rsi
-    mov $1, %edx
-    shl $3, %rdx
-    imul %rdx, %rax
+    shl $3, %rax
     sub %rax, %rcx
     add $1, %rcx
     movl %ecx, -8(%rbp)

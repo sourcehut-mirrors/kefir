@@ -21,6 +21,7 @@
 #define KEFIR_CODEGEN_TARGET_IR_AMD64_PEEPHOLE_INTERNAL
 #include "kefir/codegen/target-ir/amd64/transform.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
+#include "kefir/codegen/target-ir/amd64/util.h"
 #include "kefir/codegen/target-ir/tie.h"
 #include "kefir/codegen/target-ir/util.h"
 #include "kefir/core/error.h"
@@ -50,6 +51,42 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_add(struct kefir_mem *mem,
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
+    }
+    
+    if (classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
+        classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+        classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE) {
+        kefir_int64_t lhs, rhs, result;
+        res = kefir_codegen_target_ir_amd64_match_immediate_operand(code, &instr->operation.parameters[classification.operands[0].read_index], true, &lhs);
+
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+            const struct kefir_codegen_target_ir_value_type *value_type;
+            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref, &value_type));
+            if (value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+                res = kefir_codegen_target_ir_amd64_match_immediate_operand(code, &instr->operation.parameters[classification.operands[1].read_index], true, &rhs);
+
+                if (res != KEFIR_NO_MATCH) {
+                    REQUIRE_OK(res);
+                    result = instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add)
+                        ? lhs + rhs
+                        : lhs - rhs;
+                    result = kefir_codegen_target_ir_sign_extend(result, value_type->variant);
+
+                    REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref,
+                        &(struct kefir_codegen_target_ir_operation) {
+                            .opcode = code->klass->assign_opcode,
+                            .parameters[0] = {
+                                .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
+                                .immediate.int_immediate = result,
+                                .immediate.variant = value_type->variant
+                            }
+                        }, NULL));
+                    *replaced = true;
+                    return KEFIR_OK;
+                }
+            }
+        }
     }
     
     if (classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&

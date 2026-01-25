@@ -28,8 +28,6 @@ set1:
     mov %rsp, %rbp
     movq a@GOTPCREL(%rip), %rax
     mov $14, %ecx
-    shl $60, %rcx
-    shr $60, %rcx
     movb %cl, (%rax)
     pop %rbp
     ret
@@ -41,8 +39,6 @@ set2:
     mov %rsp, %rbp
     movq b@GOTPCREL(%rip), %rax
     mov $1024, %ecx
-    shl $53, %rcx
-    shr $53, %rcx
     movw %cx, (%rax)
     pop %rbp
     ret
@@ -54,8 +50,6 @@ set3:
     mov %rsp, %rbp
     movq c@GOTPCREL(%rip), %rax
     mov $2047468, %ecx
-    shl $43, %rcx
-    shr $43, %rcx
     movl %ecx, (%rax)
     pop %rbp
     ret
@@ -153,16 +147,13 @@ __kefir_bigint_cast_unsigned:
     sub $1, %rax
     movq %rax, -72(%rbp)
     movq -72(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -48(%rbp)
     movq -32(%rbp), %rax
     movq -48(%rbp), %rcx
-    mov $1, %edx
-    shl $3, %rdx
-    imul %rdx, %rcx
+    shl $3, %rcx
     sub %rcx, %rax
     movq %rax, -56(%rbp)
     movq -32(%rbp), %rax
@@ -183,21 +174,17 @@ __kefir_bigint_cast_unsigned:
     sub $1, %rax
     movq %rax, -24(%rbp)
     movq -24(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -16(%rbp)
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
-    mov $1, %edx
-    shl $3, %rdx
-    imul %rdx, %rcx
+    shl $3, %rcx
     sub %rcx, %rax
     movq %rax, -64(%rbp)
     movq -64(%rbp), %rax
-    mov $1, %ecx
-    shl $3, %rcx
+    mov $8, %ecx
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label14
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label7:

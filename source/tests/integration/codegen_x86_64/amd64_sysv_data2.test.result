@@ -15,9 +15,7 @@ func1:
     mov QWORD PTR [%rbp - 16], %rsi
     lea %rax, [%rbp - 16]
     add %rax, 8
-    mov %rdx, 5
-    imul %rcx, %rdx, 8
-    add %rax, %rcx
+    add %rax, 40
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     lea %rsp, [%rbp]

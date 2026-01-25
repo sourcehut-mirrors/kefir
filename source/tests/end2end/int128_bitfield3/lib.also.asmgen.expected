@@ -189,9 +189,8 @@ set_b:
     lea value(%rip), %rax
     movq 16(%rax), %rax
     lea value(%rip), %rdx
-    mov $1, %esi
     mov $60, %ecx
-    shl $60, %rsi
+    movabs $1152921504606846976, %rsi
     xor %r8d, %r8d
     test $64, %cl
     cmove %rsi, %r8
@@ -277,9 +276,8 @@ set_d:
     lea value(%rip), %rcx
     movl 41(%rcx), %edx
     lea value(%rip), %rsi
-    mov $1, %r8d
     mov $35, %ecx
-    shl $35, %r8
+    movabs $34359738368, %r8
     xor %r9d, %r9d
     test $64, %cl
     cmove %r8, %r9

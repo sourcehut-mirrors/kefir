@@ -52,7 +52,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
     if (instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
         instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
         kefir_int64_t value = 0;
-        res = kefir_codegen_target_ir_amd64_match_immediate(code, instr->operation.parameters[classification.operands[1].read_index].direct.value_ref, &value);
+        res = kefir_codegen_target_ir_amd64_match_immediate(code, instr->operation.parameters[classification.operands[1].read_index].direct.value_ref, true, &value);
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
 #define CONST_FOLD \
