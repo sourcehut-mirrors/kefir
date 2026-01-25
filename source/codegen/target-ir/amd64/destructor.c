@@ -1274,7 +1274,17 @@ static kefir_result_t devirtualize_instr_arg(struct destructor_state *state,
             } else if (instr->args[arg_idx].immediate_variant == KEFIR_ASMCMP_OPERAND_VARIANT_8BIT) {
                 instr->args[arg_idx].int_immediate = (kefir_int8_t) instr->args[arg_idx].int_immediate;
             }
-            if (!DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_IMMEDIATE)) {
+
+            if ((instr->args[arg_idx].int_immediate > KEFIR_INT32_MAX || instr->args[arg_idx].int_immediate < KEFIR_INT32_MIN) &&
+                instr->opcode != KEFIR_ASMCMP_AMD64_OPCODE(movabs)) {
+                REQUIRE_OK(allocate_scratch_register(state, &tmp_reg, TEMPORARY_REGISTER_GP, insert_idx));
+                REQUIRE_OK(match_physical_reg_variant(&tmp_reg, instr->args[arg_idx].immediate_variant, false));
+                struct kefir_asmcmp_value original = instr->args[arg_idx];
+                instr->args[arg_idx] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
+                REQUIRE_OK(kefir_asmcmp_amd64_movabs(state->mem, state->asmcmp_ctx,
+                                                  *insert_idx,
+                                                  &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), &original, insert_idx));
+            } else if (!DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_IMMEDIATE)) {
                 REQUIRE_OK(allocate_scratch_register(state, &tmp_reg, TEMPORARY_REGISTER_GP, insert_idx));
                 REQUIRE_OK(match_physical_reg_variant(&tmp_reg, instr->args[arg_idx].immediate_variant, false));
                 struct kefir_asmcmp_value original = instr->args[arg_idx];
