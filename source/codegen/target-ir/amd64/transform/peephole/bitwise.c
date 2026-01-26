@@ -30,7 +30,7 @@
 #define OP_AND(_lhs, _rhs) ((_lhs) & (_rhs))
 #define OP_OR(_lhs, _rhs) ((_lhs) | (_rhs))
 #define OP_XOR(_lhs, _rhs) ((_lhs) ^ (_rhs))
-#define OP_SHL(_lhs, _rhs) ((_lhs) << (_rhs))
+#define OP_SHL(_lhs, _rhs) (((kefir_uint64_t) (_lhs)) << (_rhs))
 #define OP_SHR(_lhs, _rhs) (((kefir_uint64_t) (_lhs)) >> (_rhs))
 #define OP_SAR(_lhs, _rhs) (((kefir_int64_t) (_lhs)) >> (_rhs))
 #define COND_TRUE(_lhs, _rhs) true
