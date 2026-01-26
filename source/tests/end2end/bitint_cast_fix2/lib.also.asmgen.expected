@@ -1338,8 +1338,7 @@ __kefir_bigint_unsigned_to_float:
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label35
     movq -88(%rbp), %rdi
     movq -64(%rbp), %rsi
-    mov $1, %eax
-    neg %eax
+    mov $-1, %rax
     movsx %eax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -88(%rbp), %rdi
@@ -1910,8 +1909,7 @@ __kefir_bigint_signed_to_float:
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_float_label35
     movq -88(%rbp), %rdi
     movq -64(%rbp), %rsi
-    mov $1, %eax
-    neg %eax
+    mov $-1, %rax
     movsx %eax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -88(%rbp), %rdi

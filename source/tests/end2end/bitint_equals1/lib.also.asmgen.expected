@@ -271,8 +271,7 @@ __kefir_bigint_unsigned_compare:
     movq %rax, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label14:
-    mov $1, %eax
-    neg %eax
+    mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

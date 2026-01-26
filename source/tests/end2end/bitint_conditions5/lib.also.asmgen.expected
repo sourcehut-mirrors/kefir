@@ -37,8 +37,7 @@ test1:
     jz .L__kefir_func_test1_label7
     jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label7:
-    mov $1, %eax
-    neg %eax
+    mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -70,8 +69,7 @@ test2:
     jz .L__kefir_func_test2_label7
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label7:
-    mov $1, %eax
-    neg %eax
+    mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -103,8 +101,7 @@ test3:
     jz .L__kefir_func_test3_label7
     jmp .L__kefir_func_test3_label2
 .L__kefir_func_test3_label7:
-    mov $1, %eax
-    neg %eax
+    mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -136,8 +133,7 @@ test4:
     jz .L__kefir_func_test4_label7
     jmp .L__kefir_func_test4_label2
 .L__kefir_func_test4_label7:
-    mov $1, %eax
-    neg %eax
+    mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -172,8 +168,7 @@ test5:
     jnz .L__kefir_func_test5_label7
     jmp .L__kefir_func_test5_label2
 .L__kefir_func_test5_label7:
-    mov $1, %eax
-    neg %eax
+    mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -215,8 +210,7 @@ test6:
     jnz .L__kefir_func_test6_label7
     jmp .L__kefir_func_test6_label2
 .L__kefir_func_test6_label7:
-    mov $1, %eax
-    neg %eax
+    mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
