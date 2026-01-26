@@ -338,3 +338,38 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_mov(struct kefir_mem *mem,
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_movabs(struct kefir_mem *mem,
+                                                          struct kefir_codegen_target_ir_code *code,
+                                                          const struct kefir_codegen_target_ir_instruction *instr,
+                                                          kefir_bool_t *replaced) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
+    REQUIRE(replaced != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    struct kefir_codegen_target_ir_tie_classification classification;
+    REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instr->instr_ref, &classification));
+
+    if (classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE &&
+        classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+        instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
+        const struct kefir_codegen_target_ir_operand *operand = &instr->operation.parameters[classification.operands[1].read_index];
+        kefir_int64_t value = kefir_codegen_target_ir_sign_extend(operand->immediate.int_immediate, operand->immediate.variant);
+        if (value >= KEFIR_INT32_MIN && value <= KEFIR_INT32_MAX) {
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr->instr_ref, 
+                &(struct kefir_codegen_target_ir_operation) {
+                    .opcode = code->klass->assign_opcode,
+                    .parameters[0] = {
+                        .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
+                        .immediate = {
+                            .int_immediate = value,
+                            .variant = operand->immediate.variant
+                        }
+                    }
+                }, NULL));
+            *replaced = true;
+        }
+    }
+    return KEFIR_OK;
+}

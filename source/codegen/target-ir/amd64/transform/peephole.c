@@ -445,6 +445,10 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                         REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_mov(mem, code, instr, &instr_replaced));
                         break;
 
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(movabs):
+                        REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_movabs(mem, code, instr, &instr_replaced));
+                        break;
+
 #define SETCC_CASE(_setcc)                                                                               \
     case KEFIR_TARGET_IR_AMD64_OPCODE(_setcc):                                                           \
         REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_##_setcc(mem, code, instr, &instr_replaced));  \

@@ -283,11 +283,10 @@ set1:
     sar $58, %rax
     shl $58, %rax
     shr $58, %rax
-    movabs $-32, %rsi
-    and %rdx, %rsi
+    and $-32, %rdx
     shl $59, %rax
     shr $59, %rax
-    or %rsi, %rax
+    or %rdx, %rax
     movb %al, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
@@ -352,11 +351,10 @@ set3:
     sar $50, %rax
     shl $50, %rax
     shr $50, %rax
-    movabs $-4093, %rsi
-    and %rdx, %rsi
+    and $-4093, %rdx
     shl $54, %rax
     shr $52, %rax
-    or %rsi, %rax
+    or %rdx, %rax
     movw %ax, 6(%rcx)
     lea (%rbp), %rsp
     pop %rbp
@@ -379,11 +377,10 @@ set4:
     sar $24, %rax
     shl $32, %rax
     shr $32, %rax
-    movabs $-1073741824, %rsi
-    and %rdx, %rsi
+    and $-1073741824, %rdx
     shl $34, %rax
     shr $34, %rax
-    or %rsi, %rax
+    or %rdx, %rax
     movl %eax, 8(%rcx)
     lea (%rbp), %rsp
     pop %rbp
@@ -406,11 +403,10 @@ set5:
     sar $35, %rax
     shl $35, %rax
     shr $35, %rax
-    movabs $-33554432, %rsi
-    and %rdx, %rsi
+    and $-33554432, %rdx
     shl $39, %rax
     shr $39, %rax
-    or %rsi, %rax
+    or %rdx, %rax
     movl %eax, 12(%rcx)
     lea (%rbp), %rsp
     pop %rbp
@@ -433,11 +429,10 @@ set6:
     sar $49, %rax
     shl $56, %rax
     shr $56, %rax
-    movabs $-256, %rsi
-    and %rdx, %rsi
+    and $-256, %rdx
     shl $56, %rax
     shr $56, %rax
-    or %rsi, %rax
+    or %rdx, %rax
     movb %al, 16(%rcx)
     lea (%rbp), %rsp
     pop %rbp
@@ -469,11 +464,10 @@ set7:
     movq -48(%rbp), %rax
     shl $40, %rax
     shr $40, %rax
-    movabs $-8388608, %rcx
-    and %r12, %rcx
+    and $-8388608, %r12
     shl $41, %rax
     shr $41, %rax
-    or %rcx, %rax
+    or %r12, %rax
     mov %rax, %rcx
     shr $16, %rcx
     movb %cl, 19(%rbx)
@@ -505,11 +499,10 @@ set8:
     sar $31, %rax
     shl $40, %rax
     shr $40, %rax
-    movabs $-4194177, %rdx
-    and %rsi, %rdx
+    and $-4194177, %rsi
     shl $49, %rax
     shr $42, %rax
-    or %rdx, %rax
+    or %rsi, %rax
     mov %rax, %rdx
     shr $16, %rdx
     movb %dl, 21(%rcx)
@@ -535,11 +528,10 @@ set9:
     sar $58, %rax
     shl $58, %rax
     shr $58, %rax
-    movabs $-16, %rsi
-    and %rdx, %rsi
+    and $-16, %rdx
     shl $60, %rax
     shr $60, %rax
-    or %rsi, %rax
+    or %rdx, %rax
     movb %al, 22(%rcx)
     lea (%rbp), %rsp
     pop %rbp

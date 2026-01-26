@@ -28,11 +28,10 @@ get:
     or %rcx, %rax
     lea 1(%esi), %ecx
     movsx %ecx, %rcx
-    movabs $-8388608, %rdi
-    and %rax, %rdi
+    and $-8388608, %rax
     shl $41, %rcx
     shr $41, %rcx
-    or %rdi, %rcx
+    or %rax, %rcx
     mov %rcx, %rax
     shr $16, %rax
     movb %al, 6(%rdx)
