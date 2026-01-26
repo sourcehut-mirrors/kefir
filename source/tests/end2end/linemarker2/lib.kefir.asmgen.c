@@ -2,7 +2,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2025  Jevgenijs Protopopovs
+    Copyright (C) 2020-2026  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
