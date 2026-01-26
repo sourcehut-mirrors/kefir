@@ -55,16 +55,16 @@ kefir_result_t kefir_driver_apply_target_profile_configuration(
         }
 
         compiler_config->codegen.tls_common = target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX ||
-            target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD ||
-            target->platform == KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD;
+                                              target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD ||
+                                              target->platform == KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD;
     }
 
     return KEFIR_OK;
 }
 
 static kefir_result_t add_include_paths(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                        struct kefir_compiler_runner_configuration *compiler_config,
-                                        const char *paths, kefir_bool_t at_begin) {
+                                        struct kefir_compiler_runner_configuration *compiler_config, const char *paths,
+                                        kefir_bool_t at_begin) {
     struct kefir_filesystem_path_list_iter iter;
     kefir_size_t length;
     char buffer[PATH_MAX + 1];
@@ -81,7 +81,8 @@ static kefir_result_t add_include_paths(struct kefir_mem *mem, struct kefir_stri
         const char *path_copy = kefir_string_pool_insert(mem, symbols, buffer, NULL);
         REQUIRE(path_copy != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert path into symbol table"));
         REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,
-                                           at_begin ? NULL : kefir_list_tail(&compiler_config->include_path), (void *) path_copy));
+                                           at_begin ? NULL : kefir_list_tail(&compiler_config->include_path),
+                                           (void *) path_copy));
         REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler_config->system_include_directories,
                                          (kefir_hashtreeset_entry_t) path_copy));
     }
@@ -167,8 +168,8 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
     }
 
     struct kefir_compiler_profile profile = {0};
-    REQUIRE_OK(
-        kefir_compiler_profile(mem, &profile, compiler_config->target_profile, &compiler_config->target_profile_config));
+    REQUIRE_OK(kefir_compiler_profile(mem, &profile, compiler_config->target_profile,
+                                      &compiler_config->target_profile_config));
     if (!profile.type_traits.character_type_signedness) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__CHAR_UNSIGNED__", "1"));
     }
@@ -491,15 +492,16 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
 
         if (externals->dragonflybsd.dynamic_linker != NULL) {
             REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--dynamic-linker"));
-            REQUIRE_OK(
-                kefir_driver_linker_configuration_add_argument(mem, linker_config, externals->dragonflybsd.dynamic_linker));
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config,
+                                                                      externals->dragonflybsd.dynamic_linker));
         }
     }
 
     return KEFIR_OK;
 }
 
-static kefir_result_t link_libgcc(struct kefir_mem *mem, struct kefir_driver_linker_configuration *linker_config, const char *library_path) {
+static kefir_result_t link_libgcc(struct kefir_mem *mem, struct kefir_driver_linker_configuration *linker_config,
+                                  const char *library_path) {
     if (is_file_readable(library_path, "libgcc.a")) {
         REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc"));
     }

@@ -23,8 +23,11 @@
 
 #include "kefir/optimizer/schedule.h"
 
-typedef kefir_result_t (*kefir_opt_code_topological_scheduler_instruction_dependency_callback_t)(kefir_opt_instruction_ref_t, void *);
-typedef kefir_result_t (*kefir_opt_code_topological_scheduler_instruction_callback_t)(kefir_opt_instruction_ref_t, kefir_opt_code_topological_scheduler_instruction_dependency_callback_t, void *, kefir_bool_t *, void *);
+typedef kefir_result_t (*kefir_opt_code_topological_scheduler_instruction_dependency_callback_t)(
+    kefir_opt_instruction_ref_t, void *);
+typedef kefir_result_t (*kefir_opt_code_topological_scheduler_instruction_callback_t)(
+    kefir_opt_instruction_ref_t, kefir_opt_code_topological_scheduler_instruction_dependency_callback_t, void *,
+    kefir_bool_t *, void *);
 
 typedef struct kefir_opt_code_topological_scheduler {
     struct kefir_opt_code_scheduler scheduler;
@@ -32,11 +35,12 @@ typedef struct kefir_opt_code_topological_scheduler {
     void *instr_callback_payload;
 } kefir_opt_code_topological_scheduler_t;
 
-kefir_result_t kefir_opt_code_topological_scheduler_init(struct kefir_opt_code_topological_scheduler *, kefir_opt_code_topological_scheduler_instruction_callback_t, void *);
+kefir_result_t kefir_opt_code_topological_scheduler_init(struct kefir_opt_code_topological_scheduler *,
+                                                         kefir_opt_code_topological_scheduler_instruction_callback_t,
+                                                         void *);
 
 kefir_result_t kefir_opt_code_topological_scheduler_default_schedule(
-    kefir_opt_instruction_ref_t,
-    kefir_opt_code_topological_scheduler_instruction_dependency_callback_t, void *,
+    kefir_opt_instruction_ref_t, kefir_opt_code_topological_scheduler_instruction_dependency_callback_t, void *,
     kefir_bool_t *, void *);
 
 #endif

@@ -26,9 +26,10 @@
 
 int main(void) {
     for (unsigned long x = 0; x < 1000; x++) {
-        struct i128 res = test1((struct i128){{x, 0}});
+        struct i128 res = test1((struct i128) {{x, 0}});
 
-        assert(res.arr[0] == (x ^ (x + 1) ^ (x + 2) ^ (x + 3) ^ (x + 4) ^ (x + 5) ^ (x + 6) ^ (x + 7) ^ (x + 8) ^ (x + 9) ^ (x + 10) ^ (x + 11)));
+        assert(res.arr[0] == (x ^ (x + 1) ^ (x + 2) ^ (x + 3) ^ (x + 4) ^ (x + 5) ^ (x + 6) ^ (x + 7) ^ (x + 8) ^
+                              (x + 9) ^ (x + 10) ^ (x + 11)));
         assert(res.arr[1] == 0);
     }
     return EXIT_SUCCESS;

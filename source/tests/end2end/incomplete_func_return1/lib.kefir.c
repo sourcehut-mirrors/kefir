@@ -21,5 +21,5 @@
 #include "./definitions.h"
 
 struct S1 gets1(int i) {
-    return (struct S1){~i};
+    return (struct S1) {~i};
 }

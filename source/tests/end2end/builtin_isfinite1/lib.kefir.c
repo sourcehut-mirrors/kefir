@@ -20,32 +20,26 @@
 
 #include "./definitions.h"
 
-int f32[6] = {
-    __builtin_isfinite((float) 0.0f),
-    __builtin_isfinite((float) 1.0f),
-    __builtin_isfinite((float) -3.14f),
-    __builtin_isfinite((float) __builtin_inff()),
-    __builtin_isfinite((float) -__builtin_inff()),
-    __builtin_isfinite((float) __builtin_nanf(""))
-};
+int f32[6] = {__builtin_isfinite((float) 0.0f),
+              __builtin_isfinite((float) 1.0f),
+              __builtin_isfinite((float) -3.14f),
+              __builtin_isfinite((float) __builtin_inff()),
+              __builtin_isfinite((float) -__builtin_inff()),
+              __builtin_isfinite((float) __builtin_nanf(""))};
 
-int f64[6] = {
-    __builtin_isfinite((double) 0.0),
-    __builtin_isfinite((double) 1.0),
-    __builtin_isfinite((double) -3.14),
-    __builtin_isfinite((double) __builtin_inf()),
-    __builtin_isfinite((double) -__builtin_inf()),
-    __builtin_isfinite((double) __builtin_nan(""))
-};
+int f64[6] = {__builtin_isfinite((double) 0.0),
+              __builtin_isfinite((double) 1.0),
+              __builtin_isfinite((double) -3.14),
+              __builtin_isfinite((double) __builtin_inf()),
+              __builtin_isfinite((double) -__builtin_inf()),
+              __builtin_isfinite((double) __builtin_nan(""))};
 
-int f80[6] = {
-    __builtin_isfinite((long double) 0.0L),
-    __builtin_isfinite((long double) 1.0L),
-    __builtin_isfinite((long double) -3.14L),
-    __builtin_isfinite((long double) __builtin_infl()),
-    __builtin_isfinite((long double) -__builtin_infl()),
-    __builtin_isfinite((long double) __builtin_nanl(""))
-};
+int f80[6] = {__builtin_isfinite((long double) 0.0L),
+              __builtin_isfinite((long double) 1.0L),
+              __builtin_isfinite((long double) -3.14L),
+              __builtin_isfinite((long double) __builtin_infl()),
+              __builtin_isfinite((long double) -__builtin_infl()),
+              __builtin_isfinite((long double) __builtin_nanl(""))};
 
 _Bool is_finite_f32(float x) {
     return __builtin_isfinite(x);

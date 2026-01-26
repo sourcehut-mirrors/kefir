@@ -29,14 +29,14 @@
 
 static struct kefir_ast_translator_configuration DefaultConfiguration = {.empty_structs = false,
                                                                          .precise_bitfield_load_store = true,
-                                                                        .optimize_stack_frame = true,
-                                                                    .cx_limited_range = false};
+                                                                         .optimize_stack_frame = true,
+                                                                         .cx_limited_range = false};
 
 kefir_result_t kefir_ast_translator_environment_new_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                          const struct kefir_ast_translator_environment *env,
-                                          const struct kefir_ast_type *type,
-                                          struct kefir_ast_translator_environment_type *env_type,
-                                          const struct kefir_source_location *source_location) {
+                                                         const struct kefir_ast_translator_environment *env,
+                                                         const struct kefir_ast_type *type,
+                                                         struct kefir_ast_translator_environment_type *env_type,
+                                                         const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid AST context"));
     REQUIRE(env != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid AST translator environment"));
@@ -100,7 +100,8 @@ static kefir_result_t target_env_get_type(struct kefir_mem *mem, const struct ke
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST target environment type pointer"));
     ASSIGN_DECL_CAST(const struct kefir_ast_translator_environment *, env, target_env->payload);
 
-    struct kefir_ast_translator_environment_type *env_type = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_translator_environment_type));
+    struct kefir_ast_translator_environment_type *env_type =
+        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_translator_environment_type));
     kefir_result_t res = kefir_ast_translator_environment_new_type(mem, context, env, type, env_type, source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, env_type);
@@ -110,8 +111,9 @@ static kefir_result_t target_env_get_type(struct kefir_mem *mem, const struct ke
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_translator_environment_free_type(struct kefir_mem *mem, const struct kefir_ast_translator_environment *env,
-                                           struct kefir_ast_translator_environment_type *env_type) {
+kefir_result_t kefir_ast_translator_environment_free_type(struct kefir_mem *mem,
+                                                          const struct kefir_ast_translator_environment *env,
+                                                          struct kefir_ast_translator_environment_type *env_type) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(env != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid AST translator environment"));
     REQUIRE(env_type != NULL,
@@ -121,7 +123,7 @@ kefir_result_t kefir_ast_translator_environment_free_type(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_type_layout_free(mem, env_type->layout));
     env_type->layout = NULL;
     REQUIRE_OK(kefir_ir_type_free(mem, &env_type->type));
-    *env_type = (struct kefir_ast_translator_environment_type){0};
+    *env_type = (struct kefir_ast_translator_environment_type) {0};
     return KEFIR_OK;
 }
 

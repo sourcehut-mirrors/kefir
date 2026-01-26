@@ -60,7 +60,9 @@ int main(void) {
     assert(ivalue[i++].arr[1] == (unsigned long) -1);
     assert(ivalue[i].arr[0] == 0xcedf8edefac3ull);
     assert(ivalue[i++].arr[1] == 0);
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__) && !defined(__DragonFly__) && (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
+#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && \
+    !defined(__NetBSD__) && !defined(__DragonFly__) &&                                                               \
+    (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
     assert(ivalue[i].arr[0] == 4);
     assert(ivalue[i++].arr[1] == 0);
     assert(ivalue[i].arr[0] == (unsigned long) -19318);
@@ -104,7 +106,9 @@ int main(void) {
     assert(uvalue[i++].arr[1] == (unsigned long) -1);
     assert(uvalue[i].arr[0] == 0xcedf8edefac3ull);
     assert(uvalue[i++].arr[1] == 0);
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__) && !defined(__DragonFly__) && (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
+#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && \
+    !defined(__NetBSD__) && !defined(__DragonFly__) &&                                                               \
+    (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
     assert(uvalue[i].arr[0] == 4);
     assert(uvalue[i++].arr[1] == 0);
     assert(uvalue[i].arr[0] == (unsigned long) 19318);

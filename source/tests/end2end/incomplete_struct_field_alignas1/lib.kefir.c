@@ -21,7 +21,7 @@
 #include "./definitions.h"
 
 struct S1 {
-        _Alignas(16) struct S2 *s2;
+    _Alignas(16) struct S2 *s2;
 };
 
 int s1size = sizeof(struct S1);

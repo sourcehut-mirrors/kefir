@@ -23,5 +23,5 @@ double test1(void) {
     extern _Thread_local long y;
     static float z;
     static _Thread_local double w;
-    return x + y + z  + w;
+    return x + y + z + w;
 }

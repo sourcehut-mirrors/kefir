@@ -27,7 +27,7 @@ int test(void) {
     if (!(x))     \
         return -1;
     void *ptr1, *ptr2, *ptr3;
-    ptr1 = &(int){0};
+    ptr1 = &(int) {0};
     long x = 10;
     int y = 1000;
     short z = 50;
@@ -37,18 +37,18 @@ int test(void) {
     {
         int z = 80;
         result = x + y - z;
-        ptr2 = &(long){1};
+        ptr2 = &(long) {1};
     }
     {
         int result = 0;
         {
-            ptr3 = &(short){2};
+            ptr3 = &(short) {2};
             result++;
         }
     }
     {
-        result += (int){800};
-        { result -= (long){5} + (short){100}; }
+        result += (int) {800};
+        { result -= (long) {5} + (short) {100}; }
     }
     ASSERT(ptr1 != ptr2 && ptr1 != ptr3 && ptr2 != ptr3);
 

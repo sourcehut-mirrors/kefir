@@ -26,8 +26,8 @@
         return (*a) _oper## = b;                   \
     }
 
-#define DEF_ALL(_op, _oper)              \
-    DEF(_op, f32, _Complex float, _oper) \
+#define DEF_ALL(_op, _oper)               \
+    DEF(_op, f32, _Complex float, _oper)  \
     DEF(_op, f64, _Complex double, _oper) \
     DEF(_op, ld, _Complex long double, _oper)
 

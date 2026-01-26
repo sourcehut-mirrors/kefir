@@ -1,9 +1,9 @@
-source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@27:9 warning: the identifier has been deprecated
-source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@29:9 warning: DEPRECATED
-source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@38:13 warning: the identifier has been deprecated
-source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@40:13 warning: DEPRECATED
-source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@45:13 warning: the identifier has been deprecated
-source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@47:13 warning: DEPRECATED
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@23:9 warning: the identifier has been deprecated
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@25:9 warning: DEPRECATED
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@30:13 warning: the identifier has been deprecated
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@32:13 warning: DEPRECATED
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@37:13 warning: the identifier has been deprecated
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@39:13 warning: DEPRECATED
 {
     "class": "translation_unit",
     "external_declarations": [

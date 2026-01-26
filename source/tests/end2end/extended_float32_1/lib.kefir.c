@@ -22,34 +22,35 @@ int f32x_size = sizeof(_Float32x);
 int f32x_alignment = _Alignof(_Float32x);
 __constexpr _Float32x f32x_const = 2.71828;
 const _Float32x *f32x_const_ptr = &f32x_const;
-#define CLASSIFY(_x) _Generic((_x), float : 1, double : 2, long double : 3, _Decimal32 : 4, _Decimal64 : 5, _Decimal128 : 6, _Float32x : -1, default : 0)
-int f32x_compat[] = {
-    CLASSIFY((_Float32x) 0.0f),
-    CLASSIFY(1 + (_Float32x) 0.0f),
-    CLASSIFY(3.14f + (_Float32x) 0.0f),
-    CLASSIFY(3.14 + (_Float32x) 0.0f),
-    CLASSIFY(3.14l + (_Float32x) 0.0f),
-    CLASSIFY(((_Float32x) 3.14f) + (_Float32x) 0.0f),
-    CLASSIFY(3.14 + (_Float32x) 0.0f),
-    CLASSIFY(3.14l + (_Float32x) 0.0f)
-};
+#define CLASSIFY(_x)    \
+    _Generic((_x),      \
+        float: 1,       \
+        double: 2,      \
+        long double: 3, \
+        _Decimal32: 4,  \
+        _Decimal64: 5,  \
+        _Decimal128: 6, \
+        _Float32x: -1,  \
+        default: 0)
+int f32x_compat[] = {CLASSIFY((_Float32x) 0.0f),         CLASSIFY(1 + (_Float32x) 0.0f),
+                     CLASSIFY(3.14f + (_Float32x) 0.0f), CLASSIFY(3.14 + (_Float32x) 0.0f),
+                     CLASSIFY(3.14l + (_Float32x) 0.0f), CLASSIFY(((_Float32x) 3.14f) + (_Float32x) 0.0f),
+                     CLASSIFY(3.14 + (_Float32x) 0.0f),  CLASSIFY(3.14l + (_Float32x) 0.0f)};
 
-_Float32x f32x[] = {
-    (_Float32x) 3.14159f,
-    -((_Float32x) 1902.318f),
-    ((_Float32x) 273.3f) + ((_Float32x) 1902.318f),
-    ((_Float32x) 273.3f) - ((_Float32x) 1902.318f),
-    ((_Float32x) 273.3f) * ((_Float32x) 1902.318f),
-    ((_Float32x) 273.3f) / ((_Float32x) 1902.318f),
-    (273.3f) + ((_Float32x) 1902.318f),
-    (273.3f) - ((_Float32x) 1902.318f),
-    (273.3f) * ((_Float32x) 1902.318f),
-    (273.3f) / ((_Float32x) 1902.318f),
-    ((double) 273.3f) + ((_Float32x) 1902.318f),
-    ((double) 273.3f) - ((_Float32x) 1902.318f),
-    ((double) 273.3f) * ((_Float32x) 1902.318f),
-    ((double) 273.3f) / ((_Float32x) 1902.318f)
-};
+_Float32x f32x[] = {(_Float32x) 3.14159f,
+                    -((_Float32x) 1902.318f),
+                    ((_Float32x) 273.3f) + ((_Float32x) 1902.318f),
+                    ((_Float32x) 273.3f) - ((_Float32x) 1902.318f),
+                    ((_Float32x) 273.3f) * ((_Float32x) 1902.318f),
+                    ((_Float32x) 273.3f) / ((_Float32x) 1902.318f),
+                    (273.3f) + ((_Float32x) 1902.318f),
+                    (273.3f) - ((_Float32x) 1902.318f),
+                    (273.3f) * ((_Float32x) 1902.318f),
+                    (273.3f) / ((_Float32x) 1902.318f),
+                    ((double) 273.3f) + ((_Float32x) 1902.318f),
+                    ((double) 273.3f) - ((_Float32x) 1902.318f),
+                    ((double) 273.3f) * ((_Float32x) 1902.318f),
+                    ((double) 273.3f) / ((_Float32x) 1902.318f)};
 
 _Float32x get32x_1(void) {
     return 5.428f;

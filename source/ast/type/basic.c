@@ -145,9 +145,9 @@ SCALAR_TYPE(nullptr, KEFIR_AST_TYPE_SCALAR_NULL_POINTER)
 
 #undef SCALAR_TYPE
 
-#define COMPLEX_TYPE(id, _real_type)                                                                               \
-    static const struct kefir_ast_type DEFAULT_COMPLEX_##id = {.tag = KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT,                                \
-                                                                .complex.real_type = (_real_type), \
+#define COMPLEX_TYPE(id, _real_type)                                                                         \
+    static const struct kefir_ast_type DEFAULT_COMPLEX_##id = {.tag = KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT, \
+                                                               .complex.real_type = (_real_type),            \
                                                                .ops = {.same = same_basic_type,              \
                                                                        .compatible = compatible_basic_types, \
                                                                        .composite = composite_basic_types,   \
@@ -168,16 +168,16 @@ COMPLEX_TYPE(extended_float64, &DEFAULT_SCALAR_extended_float64)
 
 #undef COMPLEX_TYPE
 
-#define IMAGINARY_TYPE(id, _real_type)                                                                               \
-    static const struct kefir_ast_type DEFAULT_IMAGINARY_##id = {.tag = KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT,                                \
-                                                                .imaginary.real_type = (_real_type), \
-                                                               .ops = {.same = same_basic_type,              \
-                                                                       .compatible = compatible_basic_types, \
-                                                                       .composite = composite_basic_types,   \
-                                                                       .free = free_nothing}};               \
-                                                                                                             \
-    const struct kefir_ast_type *kefir_ast_type_imaginary_##id(void) {                                         \
-        return &DEFAULT_IMAGINARY_##id;                                                                        \
+#define IMAGINARY_TYPE(id, _real_type)                                                                           \
+    static const struct kefir_ast_type DEFAULT_IMAGINARY_##id = {.tag = KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT, \
+                                                                 .imaginary.real_type = (_real_type),            \
+                                                                 .ops = {.same = same_basic_type,                \
+                                                                         .compatible = compatible_basic_types,   \
+                                                                         .composite = composite_basic_types,     \
+                                                                         .free = free_nothing}};                 \
+                                                                                                                 \
+    const struct kefir_ast_type *kefir_ast_type_imaginary_##id(void) {                                           \
+        return &DEFAULT_IMAGINARY_##id;                                                                          \
     }
 
 IMAGINARY_TYPE(float, &DEFAULT_SCALAR_float)

@@ -25,13 +25,11 @@
 #include "kefir/codegen/amd64/asmcmp.h"
 
 #define KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) KEFIR_TARGET_IR_AMD64_##_opcode
-#define KEFIR_CODEGEN_TARGET_IR_AMD64_VIRTUAL_OPCODES(_instr0, _separator) \
-    _instr0(preserve_active_virtual_registers, "preserve_active_virtual_registers") _separator \
-    _instr0(function_prologue, "function_prologue") _separator \
-    _instr0(function_epilogue, "function_epilogue") _separator \
-    _instr0(tail_call, "tail_call") _separator \
-    _instr0(inline_assembly, "inline_assembly") _separator \
-    _instr0(data_word, "data_word")
+#define KEFIR_CODEGEN_TARGET_IR_AMD64_VIRTUAL_OPCODES(_instr0, _separator)                                 \
+    _instr0(preserve_active_virtual_registers, "preserve_active_virtual_registers") _separator _instr0(    \
+        function_prologue, "function_prologue") _separator _instr0(function_epilogue, "function_epilogue") \
+        _separator _instr0(tail_call, "tail_call") _separator _instr0(inline_assembly, "inline_assembly")  \
+            _separator _instr0(data_word, "data_word")
 typedef enum kefir_target_ir_amd64_opcode {
 #define DEF_OPCODE(_opcode, ...) KEFIR_TARGET_IR_AMD64_OPCODE(_opcode)
     KEFIR_CODEGEN_TARGET_IR_AMD64_VIRTUAL_OPCODES(DEF_OPCODE, COMMA),

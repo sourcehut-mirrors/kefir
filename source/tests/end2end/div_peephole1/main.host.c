@@ -25,11 +25,12 @@
 
 int main(void) {
     for (int i = -100; i < 100; i++) {
-#define TEST_OP(_type, _offset) \
-        do { \
-            assert(idiv_##_type##_offset((_type) i) == (_type) (((_type) i ) / (_type) (1ull << (_offset)))); \
-            assert(div_##_type##_offset((unsigned _type) i) == (unsigned _type) (((unsigned _type) i ) / (unsigned _type) (1ull << (_offset)))); \
-        } while (0);
+#define TEST_OP(_type, _offset)                                                                          \
+    do {                                                                                                 \
+        assert(idiv_##_type##_offset((_type) i) == (_type) (((_type) i) / (_type) (1ull << (_offset)))); \
+        assert(div_##_type##_offset((unsigned _type) i) ==                                               \
+               (unsigned _type)(((unsigned _type) i) / (unsigned _type)(1ull << (_offset))));            \
+    } while (0);
 
         TEST_OP(char, 0)
         TEST_OP(char, 1)

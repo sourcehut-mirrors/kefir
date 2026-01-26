@@ -247,7 +247,9 @@ kefir_result_t kefir_ast_translator_scope_layout_complete_object_type(
         object_type = context->type_traits->incomplete_type_substitute;
     } else if (unqualified_object_type->tag == KEFIR_AST_TYPE_ARRAY &&
                (unqualified_object_type->array_type.boundary == KEFIR_AST_ARRAY_UNBOUNDED ||
-                ((unqualified_object_type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED || unqualified_object_type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC) && unqualified_object_type->array_type.const_length == 0))) {
+                ((unqualified_object_type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED ||
+                  unqualified_object_type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC) &&
+                 unqualified_object_type->array_type.const_length == 0))) {
         object_type = kefir_ast_type_array(mem, context->type_bundle, unqualified_object_type->array_type.element_type,
                                            1, &unqualified_object_type->array_type.qualifications);
         REQUIRE(object_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate bounded array type"));

@@ -25,7 +25,8 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t propagate_jump_impl(struct kefir_mem *mem, struct kefir_asmcmp_context *context, struct kefir_hashtreeset *jump_chain) {
+static kefir_result_t propagate_jump_impl(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                          struct kefir_hashtreeset *jump_chain) {
     for (kefir_asmcmp_instruction_index_t instr_index = kefir_asmcmp_context_instr_head(context), next_instr_index;
          instr_index != KEFIR_ASMCMP_INDEX_NONE; instr_index = next_instr_index) {
 
@@ -58,13 +59,16 @@ static kefir_result_t propagate_jump_impl(struct kefir_mem *mem, struct kefir_as
             case KEFIR_ASMCMP_AMD64_OPCODE(jo):
             case KEFIR_ASMCMP_AMD64_OPCODE(jno):
                 if (instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL) {
-                    REQUIRE_OK(kefir_asmcmp_context_label_at(context, instr->args[0].internal_label, &jump_target_instr_idx));
+                    REQUIRE_OK(
+                        kefir_asmcmp_context_label_at(context, instr->args[0].internal_label, &jump_target_instr_idx));
                     REQUIRE_OK(kefir_asmcmp_context_instr_at(context, jump_target_instr_idx, &jump_target_instr));
 
-                    if (jump_target_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(jmp) && !kefir_hashtreeset_has(jump_chain, jump_target_instr_idx)) {
+                    if (jump_target_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(jmp) &&
+                        !kefir_hashtreeset_has(jump_chain, jump_target_instr_idx)) {
                         instr->args[0] = jump_target_instr->args[0];
                         next_instr_index = instr_index;
-                        REQUIRE_OK(kefir_hashtreeset_add(mem, jump_chain, (kefir_hashtreeset_entry_t) jump_target_instr_idx));
+                        REQUIRE_OK(
+                            kefir_hashtreeset_add(mem, jump_chain, (kefir_hashtreeset_entry_t) jump_target_instr_idx));
                     } else {
                         REQUIRE_OK(kefir_hashtreeset_clean(mem, jump_chain));
                     }
@@ -82,7 +86,7 @@ static kefir_result_t propagate_jump_impl(struct kefir_mem *mem, struct kefir_as
 }
 
 static kefir_result_t propagate_jump_apply(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                 const struct kefir_asmcmp_pipeline_pass *pass) {
+                                           const struct kefir_asmcmp_pipeline_pass *pass) {
     UNUSED(mem);
     UNUSED(context);
     UNUSED(pass);
@@ -99,4 +103,7 @@ static kefir_result_t propagate_jump_apply(struct kefir_mem *mem, struct kefir_a
 }
 
 const struct kefir_asmcmp_pipeline_pass KefirAsmcmpAmd64PropagateJumpPass = {
-    .name = "amd64-propagate-jump", .type = KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL, .apply = propagate_jump_apply, .payload = NULL};
+    .name = "amd64-propagate-jump",
+    .type = KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
+    .apply = propagate_jump_apply,
+    .payload = NULL};

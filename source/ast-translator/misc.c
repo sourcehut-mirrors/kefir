@@ -204,19 +204,19 @@ kefir_result_t kefir_ast_translator_mark_flat_scope_objects_lifetime(
         struct kefir_ast_identifier_flat_scope_iterator scope_iter;
         kefir_result_t res;
         for (res = kefir_ast_identifier_flat_scope_iter(scope, &scope_iter); res == KEFIR_OK;
-            res = kefir_ast_identifier_flat_scope_next(scope, &scope_iter)) {
+             res = kefir_ast_identifier_flat_scope_next(scope, &scope_iter)) {
             if (scope_iter.value->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
                 (scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
-                scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
-                scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR)) {
+                 scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
+                 scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR)) {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                scope_iter.value->payload.ptr);
+                                 scope_iter.value->payload.ptr);
                 if (KEFIR_AST_TYPE_IS_VL_ARRAY(scope_iter.value->object.type)) {
-                    REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout_no_offset(builder, identifier_data->type_id,
-                                                                                        identifier_data->layout));
+                    REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout_no_offset(
+                        builder, identifier_data->type_id, identifier_data->layout));
                 } else {
-                    REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout_no_offset(builder, identifier_data->type_id,
-                                                                                        identifier_data->layout));
+                    REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout_no_offset(
+                        builder, identifier_data->type_id, identifier_data->layout));
                 }
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LOCAL_LIFETIME_MARK, 0));
             }

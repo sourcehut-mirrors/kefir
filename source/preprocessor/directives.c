@@ -75,7 +75,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_skip_line(
     kefir_result_t scan_tokens = true;
     while (scan_tokens) {
         kefir_result_t res = kefir_preprocessor_tokenize_next(mem, directive_scanner->lexer,
-                                                    &directive_scanner->tokenizer_context, &next_token);
+                                                              &directive_scanner->tokenizer_context, &next_token);
         if (res == KEFIR_LEXER_ERROR) {
             const kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
             if (chr == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
@@ -175,7 +175,8 @@ kefir_result_t kefir_preprocessor_directive_scanner_match(
     }
     REQUIRE_OK(kefir_lexer_source_cursor_save(directive_scanner->lexer->cursor, &hash_state));
     REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
-    const kefir_bool_t potential_linemarker = kefir_isspace32(kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0));
+    const kefir_bool_t potential_linemarker =
+        kefir_isspace32(kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0));
     REQUIRE_OK(skip_whitespaces_until(directive_scanner->lexer->cursor, directive_scanner->lexer->context->newline));
     chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
     if (chr == directive_scanner->lexer->context->newline) {
@@ -572,8 +573,9 @@ static kefir_result_t next_error(struct kefir_mem *mem, struct kefir_preprocesso
         if (comment) {
             continue;
         }
-        
-        REQUIRE_OK(kefir_lexer_skip_oneline_comment(directive_scanner->lexer->context, directive_scanner->lexer->cursor, &comment));
+
+        REQUIRE_OK(kefir_lexer_skip_oneline_comment(directive_scanner->lexer->context, directive_scanner->lexer->cursor,
+                                                    &comment));
         if (comment) {
             break;
         }
@@ -582,7 +584,7 @@ static kefir_result_t next_error(struct kefir_mem *mem, struct kefir_preprocesso
         if (chr == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
             break;
         }
-        
+
         kefir_result_t res = kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1);
         if (chr != directive_scanner->lexer->context->newline) {
             REQUIRE_CHAIN(&res, kefir_string_buffer_append(mem, &str, chr));
@@ -665,8 +667,9 @@ static kefir_result_t next_non_directive(struct kefir_preprocessor_directive_sca
     return KEFIR_OK;
 }
 
-static kefir_result_t next_linemarker(struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner,
-                                struct kefir_preprocessor_directive *directive, kefir_size_t linenum) {
+static kefir_result_t next_linemarker(struct kefir_mem *mem,
+                                      struct kefir_preprocessor_directive_scanner *directive_scanner,
+                                      struct kefir_preprocessor_directive *directive, kefir_size_t linenum) {
     directive->type = KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER;
     directive->linemarker.line_number = linenum;
 
@@ -690,8 +693,9 @@ static kefir_result_t next_linemarker(struct kefir_mem *mem, struct kefir_prepro
         kefir_string_buffer_free(mem, &strbuf);
         return res;
     });
-    
-    const char *filename = kefir_string_pool_insert(mem, directive_scanner->lexer->symbols, kefir_string_buffer_value(&strbuf, NULL), NULL);
+
+    const char *filename = kefir_string_pool_insert(mem, directive_scanner->lexer->symbols,
+                                                    kefir_string_buffer_value(&strbuf, NULL), NULL);
     REQUIRE_ELSE(filename != NULL, {
         kefir_string_buffer_free(mem, &strbuf);
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert filename into string pool");
@@ -701,8 +705,7 @@ static kefir_result_t next_linemarker(struct kefir_mem *mem, struct kefir_prepro
 
     // Skip the rest
     kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
-    for (;
-         chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != directive_scanner->lexer->context->newline;) {
+    for (; chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != directive_scanner->lexer->context->newline;) {
         REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
         chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
     }
@@ -809,13 +812,11 @@ kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *mem,
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
-            REQUIRE_OK(
-                next_error(mem, directive_scanner, directive, KEFIR_PREPROCESSOR_DIRECTIVE_ERROR));
+            REQUIRE_OK(next_error(mem, directive_scanner, directive, KEFIR_PREPROCESSOR_DIRECTIVE_ERROR));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:
-            REQUIRE_OK(
-                next_error(mem, directive_scanner, directive, KEFIR_PREPROCESSOR_DIRECTIVE_WARNING));
+            REQUIRE_OK(next_error(mem, directive_scanner, directive, KEFIR_PREPROCESSOR_DIRECTIVE_WARNING));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:

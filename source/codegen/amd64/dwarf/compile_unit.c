@@ -57,21 +57,27 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_generate_compile_unit(
         REQUIRE_OK(KEFIR_AMD64_DWARF_WORD(&codegen_module->codegen->xasmgen, KEFIR_DWARF(DW_LANG_C11)));
         REQUIRE_OK(
             KEFIR_AMD64_DWARF_STRING(&codegen_module->codegen->xasmgen, "Kefir C compiler " KEFIR_VERSION_SHORT));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(&codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                                            kefir_asm_amd64_xasmgen_operand_label(
-                                                &codegen_module->codegen->xasmgen_helpers.operands[0],
-                                                KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, kefir_asm_amd64_xasmgen_helpers_format(&codegen_module->codegen->xasmgen_helpers, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_module->codegen->symbol_prefix))));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+            kefir_asm_amd64_xasmgen_operand_label(
+                &codegen_module->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                kefir_asm_amd64_xasmgen_helpers_format(&codegen_module->codegen->xasmgen_helpers,
+                                                       KEFIR_AMD64_TEXT_SECTION_BEGIN,
+                                                       codegen_module->codegen->symbol_prefix))));
         kefir_asm_amd64_xasmgen_helpers_t helpers2;
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
             kefir_asm_amd64_xasmgen_operand_subtract(
                 &codegen_module->codegen->xasmgen_helpers.operands[0],
-                kefir_asm_amd64_xasmgen_operand_label(&codegen_module->codegen->xasmgen_helpers.operands[1],
-                                                      KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                      kefir_asm_amd64_xasmgen_helpers_format(&codegen_module->codegen->xasmgen_helpers, KEFIR_AMD64_TEXT_SECTION_END, codegen_module->codegen->symbol_prefix)),
-                kefir_asm_amd64_xasmgen_operand_label(&codegen_module->codegen->xasmgen_helpers.operands[2],
-                                                      KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                      kefir_asm_amd64_xasmgen_helpers_format(&helpers2, KEFIR_AMD64_TEXT_SECTION_BEGIN, codegen_module->codegen->symbol_prefix)))));
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen_module->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                    kefir_asm_amd64_xasmgen_helpers_format(&codegen_module->codegen->xasmgen_helpers,
+                                                           KEFIR_AMD64_TEXT_SECTION_END,
+                                                           codegen_module->codegen->symbol_prefix)),
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen_module->codegen->xasmgen_helpers.operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                    kefir_asm_amd64_xasmgen_helpers_format(&helpers2, KEFIR_AMD64_TEXT_SECTION_BEGIN,
+                                                           codegen_module->codegen->symbol_prefix)))));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
             kefir_asm_amd64_xasmgen_operand_label(&codegen_module->codegen->xasmgen_helpers.operands[0],
@@ -91,12 +97,11 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_generate_compile_unit(
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_STR) {
         struct kefir_hashtree_node_iterator iter;
         for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&context->strings.entries.strings, &iter);
-            node != NULL;
-            node = kefir_hashtree_next(&iter)) {
+             node != NULL; node = kefir_hashtree_next(&iter)) {
             ASSIGN_DECL_CAST(const char *, string, node->key);
             ASSIGN_DECL_CAST(kefir_codegen_amd64_dwarf_entry_id_t, entry_id, node->value);
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(
-                &codegen_module->codegen->xasmgen, KEFIR_AMD64_DWARF_DEBUG_STR_ENTRY, entry_id));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, KEFIR_AMD64_DWARF_DEBUG_STR_ENTRY,
+                                                 entry_id));
             REQUIRE_OK(KEFIR_AMD64_DWARF_STRING(&codegen_module->codegen->xasmgen, string));
         }
     }

@@ -432,8 +432,7 @@ kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *type, kefir_
                type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG || type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG ||
                type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG ||
                type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG ||
-               type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT128 ||
-               type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128 ||
+               type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT128 || type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128 ||
                type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE ||
                type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_INTEGER_TYPE_CLASS;
@@ -483,8 +482,8 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
             case 64:                                                                              \
                 *(_classification) = KEFIR_AST_TYPE_DATA_MODEL_INT64;                             \
                 break;                                                                            \
-            case 128:                                                                              \
-                *(_classification) = KEFIR_AST_TYPE_DATA_MODEL_INT128;                             \
+            case 128:                                                                             \
+                *(_classification) = KEFIR_AST_TYPE_DATA_MODEL_INT128;                            \
                 break;                                                                            \
             default:                                                                              \
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected integer type bit width"); \
@@ -578,7 +577,8 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
                     break;
 
                 default:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected data model for complex floating-point real type");
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                           "Unexpected data model for complex floating-point real type");
             }
         } break;
 

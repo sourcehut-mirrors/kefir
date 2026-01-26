@@ -67,7 +67,7 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     typeentry->typecode = KEFIR_IR_TYPE_INT64;
                     break;
-                
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                     typeentry->typecode = KEFIR_IR_TYPE_INT128;
                     break;
@@ -146,8 +146,9 @@ static kefir_result_t translate_scalar_type(struct kefir_mem *mem, const struct 
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_complex_type(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type,
-                                             kefir_size_t alignment, struct kefir_irbuilder_type *builder,
+static kefir_result_t translate_complex_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                             const struct kefir_ast_type *type, kefir_size_t alignment,
+                                             struct kefir_irbuilder_type *builder,
                                              struct kefir_ast_type_layout **layout_ptr) {
     kefir_size_t type_index = kefir_ir_type_length(builder->type);
 

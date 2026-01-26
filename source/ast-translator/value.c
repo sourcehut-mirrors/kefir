@@ -37,7 +37,9 @@ static kefir_uint64_t retrieve_memflags(const struct kefir_ast_type *type) {
     return mem_flags;
 }
 
-static kefir_result_t load_native_bitfield(struct kefir_irbuilder_block *builder, const struct kefir_ast_translator_configuration *config, kefir_size_t bits, kefir_uint64_t mem_flags) {
+static kefir_result_t load_native_bitfield(struct kefir_irbuilder_block *builder,
+                                           const struct kefir_ast_translator_configuration *config, kefir_size_t bits,
+                                           kefir_uint64_t mem_flags) {
     if (bits <= 8) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_LOAD, mem_flags));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xff));
@@ -230,11 +232,15 @@ static kefir_result_t resolve_bitfield(struct kefir_mem *mem, struct kefir_ast_t
         switch (member_layout->type->tag) {
             case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, 
-                    context->ast_context->type_traits->data_model->scalar_width.int128_bits - (bit_offset + member_layout->bitfield_props.width)));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
+                    builder, KEFIR_IR_OPCODE_INT_CONST,
+                    context->ast_context->type_traits->data_model->scalar_width.int128_bits -
+                        (bit_offset + member_layout->bitfield_props.width)));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_LSHIFT, 0));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, 
-                    context->ast_context->type_traits->data_model->scalar_width.int128_bits - member_layout->bitfield_props.width));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
+                    builder, KEFIR_IR_OPCODE_INT_CONST,
+                    context->ast_context->type_traits->data_model->scalar_width.int128_bits -
+                        member_layout->bitfield_props.width));
                 if (signedness) {
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ARSHIFT, 0));
                 } else {
@@ -255,7 +261,8 @@ static kefir_result_t resolve_bitfield(struct kefir_mem *mem, struct kefir_ast_t
     return KEFIR_OK;
 }
 
-static kefir_result_t store_native_bitfield(struct kefir_irbuilder_block *builder, kefir_size_t bits, kefir_size_t mem_flags) {
+static kefir_result_t store_native_bitfield(struct kefir_irbuilder_block *builder, kefir_size_t bits,
+                                            kefir_size_t mem_flags) {
     if (bits <= 8) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_STORE, mem_flags));
     } else if (bits <= 16) {
@@ -354,7 +361,8 @@ static kefir_result_t store_bitfield(struct kefir_irbuilder_block *builder, cons
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, 1));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ZERO_EXTEND_64BITS, 0));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, member_layout->bitfield_props.width));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST,
+                                                           member_layout->bitfield_props.width));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_LSHIFT, 0));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, 1));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ZERO_EXTEND_64BITS, 0));
@@ -637,7 +645,8 @@ kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_typ
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ATOMIC_LOAD, atomic_memory_order));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ATOMIC_LOAD, atomic_memory_order));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
@@ -670,18 +679,18 @@ kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_typ
         } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_LOAD,
-                                                       atomic_memory_order));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_LOAD, atomic_memory_order));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_LOAD,
-                                                       atomic_memory_order));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_LOAD, atomic_memory_order));
             break;
-            
+
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_LOAD,
-                                                       atomic_memory_order));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_LOAD, atomic_memory_order));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE:
@@ -755,7 +764,8 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ATOMIC_STORE, atomic_memory_order));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ATOMIC_STORE, atomic_memory_order));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
@@ -796,18 +806,18 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
         } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL32:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_STORE,
-                                                       atomic_memory_order));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL32_ATOMIC_STORE, atomic_memory_order));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL64:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_STORE,
-                                                       atomic_memory_order));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_ATOMIC_STORE, atomic_memory_order));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DECIMAL128:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_STORE,
-                                                       atomic_memory_order));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL128_ATOMIC_STORE, atomic_memory_order));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
@@ -957,7 +967,8 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ATOMIC_CMPXCHG, atomic_memory_order));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT128_ATOMIC_CMPXCHG, atomic_memory_order));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:

@@ -182,7 +182,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register8(kefir_asm_amd64_xasmgen_registe
     return KEFIR_OK;
 }
 kefir_result_t kefir_asm_amd64_xasmgen_register8_high(kefir_asm_amd64_xasmgen_register_t src,
-                                                 kefir_asm_amd64_xasmgen_register_t *dst) {
+                                                      kefir_asm_amd64_xasmgen_register_t *dst) {
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AMD64 xasmgen register"));
 
     switch (src) {
@@ -850,7 +850,7 @@ kefir_bool_t kefir_asm_amd64_xasmgen_register_is_high(kefir_asm_amd64_xasmgen_re
         case KEFIR_AMD64_XASMGEN_REGISTER_CH:
         case KEFIR_AMD64_XASMGEN_REGISTER_DH:
             return true;
-            
+
         default:
             return false;
     }
@@ -2091,7 +2091,6 @@ static kefir_result_t amd64_bindata(struct kefir_amd64_xasmgen *xasmgen, kefir_a
             fprintf(payload->output, "\n");
             break;
 
-
         case KEFIR_AMD64_XASMGEN_DATA_ULEB128:
             fprintf(payload->output, ".uleb128 ");
             for (kefir_size_t i = 0; i < length; i++) {
@@ -2161,7 +2160,6 @@ static kefir_result_t amd64_yasm_bindata(struct kefir_amd64_xasmgen *xasmgen, ke
             }
             fprintf(payload->output, "\n");
             break;
-
 
         case KEFIR_AMD64_XASMGEN_DATA_ULEB128:
             return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Yasm does not support uleb128 data");
@@ -2955,8 +2953,7 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_la
 
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_indirect(
     struct kefir_asm_amd64_xasmgen_operand *op, const struct kefir_asm_amd64_xasmgen_operand *base,
-    struct kefir_asm_amd64_xasmgen_indirection_index index,
-    kefir_int64_t disp) {
+    struct kefir_asm_amd64_xasmgen_indirection_index index, kefir_int64_t disp) {
     REQUIRE(op != NULL, NULL);
     REQUIRE(base != NULL, NULL);
     op->klass = KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION;

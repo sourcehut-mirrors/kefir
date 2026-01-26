@@ -26,15 +26,20 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 
-static kefir_result_t ensure_decimal_floating_point_types(const struct kefir_ast_type *type1, const struct kefir_source_location *location1, const struct kefir_ast_type *type2, const struct kefir_source_location *location2) {
+static kefir_result_t ensure_decimal_floating_point_types(const struct kefir_ast_type *type1,
+                                                          const struct kefir_source_location *location1,
+                                                          const struct kefir_ast_type *type2,
+                                                          const struct kefir_source_location *location2) {
     if (KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(type1)) {
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2),
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location2,
-                                   "Expected the operand to have decimal floating-point or integral type"));
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location2,
+                                       "Expected the operand to have decimal floating-point or integral type"));
     } else if (KEFIR_AST_TYPE_IS_DECIMAL_FLOATING_POINT(type2)) {
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1),
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location1,
-                                   "Expected the operand to have decimal floating-point or integral type"));
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location1,
+                                       "Expected the operand to have decimal floating-point or integral type"));
     }
     return KEFIR_OK;
 }
@@ -84,7 +89,8 @@ kefir_result_t kefir_ast_analyze_conditional_operator_node(struct kefir_mem *mem
                                    "First conditional operator operand shall have scalar type"));
 
     if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(type1) && KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(type2)) {
-        REQUIRE_OK(ensure_decimal_floating_point_types(left_expr->properties.type, &left_expr->source_location, node->expr2->properties.type, &node->expr2->source_location));
+        REQUIRE_OK(ensure_decimal_floating_point_types(left_expr->properties.type, &left_expr->source_location,
+                                                       node->expr2->properties.type, &node->expr2->source_location));
         base->properties.type = kefir_ast_type_common_arithmetic(
             context->type_traits, type1, left_expr->properties.expression_props.bitfield_props, type2,
             node->expr2->properties.expression_props.bitfield_props);

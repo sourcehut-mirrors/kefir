@@ -21,6 +21,6 @@
 #include "./definitions.h"
 
 struct S init_s(long double d) {
-    return (struct S){
+    return (struct S) {
         .x = d, .y.a = d + 1.0l, .y.b = d - 1.0l, .arr = {[1] = d / 2.0l, [2] = d * 2.0l}, .arr[0] = -d, .z = d * d};
 }

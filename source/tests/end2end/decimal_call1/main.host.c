@@ -23,7 +23,8 @@
 #include <assert.h>
 #include "./definitions.h"
 
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__) && !defined(__DragonFly__)
+#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && \
+    !defined(__NetBSD__) && !defined(__DragonFly__)
 #pragma GCC diagnostic ignored "-Wpedantic"
 #define ENABLE_DECIMAL_TEST
 _Bool decimal32_eq(_Decimal32 a, _Decimal32 b) {
@@ -75,12 +76,12 @@ _Decimal128 test6(_Decimal128 (*)(_Decimal128, _Decimal128), _Decimal128 *);
 
 int main(void) {
 #ifdef ENABLE_DECIMAL_TEST
-    assert(decimal32_eq(test1((_Decimal32[]){3.14159, 2.71828}), 3.14159 + 2.71828));
-    assert(decimal32_eq(test2(fn2, (_Decimal32[]){3.14159, 2.71828}), 3.14159 - 2.71828));
-    assert(decimal64_eq(test3((_Decimal64[]){3.14159, 2.71828}), 3.14159 + 2.71828));
-    assert(decimal64_eq(test4(fn4, (_Decimal64[]){3.14159, 2.71828}), 3.14159 - 2.71828));
-    assert(decimal128_eq(test5((_Decimal128[]){3.14159, 2.71828}), 3.14159 + 2.71828));
-    assert(decimal128_eq(test6(fn6, (_Decimal128[]){3.14159, 2.71828}), 3.14159 - 2.71828));
+    assert(decimal32_eq(test1((_Decimal32[]) {3.14159, 2.71828}), 3.14159 + 2.71828));
+    assert(decimal32_eq(test2(fn2, (_Decimal32[]) {3.14159, 2.71828}), 3.14159 - 2.71828));
+    assert(decimal64_eq(test3((_Decimal64[]) {3.14159, 2.71828}), 3.14159 + 2.71828));
+    assert(decimal64_eq(test4(fn4, (_Decimal64[]) {3.14159, 2.71828}), 3.14159 - 2.71828));
+    assert(decimal128_eq(test5((_Decimal128[]) {3.14159, 2.71828}), 3.14159 + 2.71828));
+    assert(decimal128_eq(test6(fn6, (_Decimal128[]) {3.14159, 2.71828}), 3.14159 - 2.71828));
 #endif
     return EXIT_SUCCESS;
 }

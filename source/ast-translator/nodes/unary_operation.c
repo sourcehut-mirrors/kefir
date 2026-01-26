@@ -43,7 +43,8 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
     switch (normalized_type->tag) {
         case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT: {
             kefir_ast_type_data_model_classification_t classification;
-            REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalized_type, &classification));
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalized_type,
+                                                          &classification));
             switch (node->type) {
                 case KEFIR_AST_OPERATION_PLUS:
                     break;
@@ -51,15 +52,18 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
                 case KEFIR_AST_OPERATION_NEGATE:
                     switch (classification) {
                         case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
-                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_NEG, 0));
+                            REQUIRE_OK(
+                                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_NEG, 0));
                             break;
 
                         case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
-                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_NEG, 0));
+                            REQUIRE_OK(
+                                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_NEG, 0));
                             break;
 
                         case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
-                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_NEG, 0));
+                            REQUIRE_OK(
+                                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_NEG, 0));
                             break;
 
                         default:
@@ -74,7 +78,8 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
 
         case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT: {
             kefir_ast_type_data_model_classification_t classification;
-            REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalized_type, &classification));
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalized_type,
+                                                          &classification));
             switch (node->type) {
                 case KEFIR_AST_OPERATION_PLUS:
                     break;
@@ -221,7 +226,7 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
                         case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_NEG, 0));
                             break;
-            
+
                         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_NEG, 0));
                             break;
@@ -271,7 +276,7 @@ static kefir_result_t translate_unary_inversion(struct kefir_mem *mem, struct ke
         case KEFIR_AST_TYPE_DATA_MODEL_INT64:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_NOT, 0));
             break;
-            
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_NOT, 0));
             break;
@@ -317,7 +322,7 @@ static kefir_result_t translate_logical_not_inversion(struct kefir_mem *mem,
             case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_NOT, 0));
                 break;
-            
+
             case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_BOOL_NOT, 0));
                 break;
@@ -478,7 +483,7 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, diff));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
                 break;
-            
+
             case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_type),
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type"));

@@ -26,14 +26,14 @@
 
 static long double LD;
 static struct Param1 getLD(void) {
-    return (struct Param1){LD};
+    return (struct Param1) {LD};
 }
 
 int main(void) {
     for (long double x = -100.0; x < 100.0; x += 0.01) {
-        struct Param1 p = ldneg((struct Param1){x});
+        struct Param1 p = ldneg((struct Param1) {x});
         assert(fabsl(x + p.value) < 1e-5);
-        p = ldsum((struct Param2){x, 1.0});
+        p = ldsum((struct Param2) {x, 1.0});
         assert(fabsl(x + 1 - p.value) < 1e-5);
 
         assert(fabsl(ldvsum(0, x).value) < 1e-5);
@@ -41,10 +41,10 @@ int main(void) {
         assert(fabsl(ldvsum(2, x, x).value - 2 * x) < 1e-5);
         assert(fabsl(ldvsum(3, x, x, 1.0l).value - (2 * x + 1.0)) < 1e-5);
 
-        assert(fabsl(ldvsum2(0, (struct Param1){x}).value) < 1e-5);
-        assert(fabsl(ldvsum2(1, (struct Param1){x}).value - x) < 1e-5);
-        assert(fabsl(ldvsum2(2, (struct Param1){x}, (struct Param1){x}).value - 2 * x) < 1e-5);
-        assert(fabsl(ldvsum2(3, (struct Param1){x}, (struct Param1){x}, (struct Param1){1}).value - (2 * x + 1.0)) <
+        assert(fabsl(ldvsum2(0, (struct Param1) {x}).value) < 1e-5);
+        assert(fabsl(ldvsum2(1, (struct Param1) {x}).value - x) < 1e-5);
+        assert(fabsl(ldvsum2(2, (struct Param1) {x}, (struct Param1) {x}).value - 2 * x) < 1e-5);
+        assert(fabsl(ldvsum2(3, (struct Param1) {x}, (struct Param1) {x}, (struct Param1) {1}).value - (2 * x + 1.0)) <
                1e-5);
 
         LD = x;

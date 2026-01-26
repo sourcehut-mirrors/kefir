@@ -268,7 +268,7 @@ static kefir_result_t calculate_array_layout(const struct kefir_ir_type *type, k
 }
 
 static kefir_result_t calculate_decimal_layout(const struct kefir_ir_type *type, kefir_size_t index,
-                                          const struct kefir_ir_typeentry *typeentry, void *payload) {
+                                               const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
     struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
     ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, data,

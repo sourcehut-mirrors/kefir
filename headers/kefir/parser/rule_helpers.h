@@ -121,6 +121,7 @@ typedef struct kefir_parser_error_recovery_context {
         kefir_bool_t comma;
     } sync_points;
 } kefir_parser_error_recovery_context_t;
-kefir_result_t kefir_parser_error_recovery_skip_garbage(struct kefir_parser *, const struct kefir_parser_error_recovery_context *);
+kefir_result_t kefir_parser_error_recovery_skip_garbage(struct kefir_parser *,
+                                                        const struct kefir_parser_error_recovery_context *);
 
 #endif

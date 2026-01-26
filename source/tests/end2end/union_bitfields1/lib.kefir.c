@@ -24,5 +24,5 @@ unsigned int Uniont1Size = sizeof(union Union1);
 unsigned int Uniont1Alignment = _Alignof(union Union1);
 
 union Union1 fillu(int x) {
-    return (union Union1){.f1 = x};
+    return (union Union1) {.f1 = x};
 }

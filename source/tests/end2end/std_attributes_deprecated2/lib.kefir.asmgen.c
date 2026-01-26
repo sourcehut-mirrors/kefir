@@ -26,9 +26,7 @@ union [[deprecated("DEPRECATED")]] U1 {
     int a;
 };
 
-enum [[deprecated("DEPRECATED")]] E1 {
-    E1C
-};
+enum [[deprecated("DEPRECATED")]] E1 { E1C };
 
 struct S1 get();
 union U1 get2();

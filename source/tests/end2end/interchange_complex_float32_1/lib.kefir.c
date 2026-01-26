@@ -18,38 +18,43 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-int f32_size = sizeof( _Complex _Float32);
+int f32_size = sizeof(_Complex _Float32);
 int f32_alignment = _Alignof(_Complex _Float32);
 __constexpr _Complex _Float32 f32_const = 2.71828 + 9.831i;
 const _Complex _Float32 *f32_const_ptr = &f32_const;
-#define CLASSIFY(_x) _Generic((_x), _Complex float : 1, _Complex double : 2, _Complex long double : 3, _Decimal32 : 4, _Decimal64 : 5, _Decimal128 : 6, _Complex _Float32 : -1, default : 0)
-int f32_compat[] = {
-    CLASSIFY((_Complex _Float32) 0.0f - 1.0if),
-    CLASSIFY(1 + (_Complex _Float32) 0.0f + 1.0if),
-    CLASSIFY(3.14f + (_Complex _Float32) 0.0f + 2.2if),
-    CLASSIFY(3.14 + (_Complex _Float32) 0.0f - 10.1if),
-    CLASSIFY(3.14l + (_Complex _Float32) 0.0f - 9.0e5if),
-    CLASSIFY(1.123if + ((_Complex _Float32) 3.14f) + (_Complex _Float32) 0.0f),
-    CLASSIFY(3.14 + (_Complex _Float32) 0.0f - 0.0if),
-    CLASSIFY(3.14l + (_Complex _Float32) 0.0f + 9.0if)
-};
+#define CLASSIFY(_x)             \
+    _Generic((_x),               \
+        _Complex float: 1,       \
+        _Complex double: 2,      \
+        _Complex long double: 3, \
+        _Decimal32: 4,           \
+        _Decimal64: 5,           \
+        _Decimal128: 6,          \
+        _Complex _Float32: -1,   \
+        default: 0)
+int f32_compat[] = {CLASSIFY((_Complex _Float32) 0.0f - 1.0if),
+                    CLASSIFY(1 + (_Complex _Float32) 0.0f + 1.0if),
+                    CLASSIFY(3.14f + (_Complex _Float32) 0.0f + 2.2if),
+                    CLASSIFY(3.14 + (_Complex _Float32) 0.0f - 10.1if),
+                    CLASSIFY(3.14l + (_Complex _Float32) 0.0f - 9.0e5if),
+                    CLASSIFY(1.123if + ((_Complex _Float32) 3.14f) + (_Complex _Float32) 0.0f),
+                    CLASSIFY(3.14 + (_Complex _Float32) 0.0f - 0.0if),
+                    CLASSIFY(3.14l + (_Complex _Float32) 0.0f + 9.0if)};
 
-_Complex _Float32 f32[] = {
-    (_Complex _Float32) 3.14159f - 123.1if,
-    -((_Complex _Float32) 1902.318f) + 90.4if,
-    ((_Complex _Float32) 273.3f - 638.1if) + ((_Complex _Float32) 1902.318f + 90.31if),
-    ((_Complex _Float32) 273.3f - 638.1if) - ((_Complex _Float32) 1902.318f + 90.31if),
-    ((_Complex _Float32) 273.3f - 638.1if) * ((_Complex _Float32) 1902.318f + 90.31if),
-    ((_Complex _Float32) 273.3f - 638.1if) / ((_Complex _Float32) 1902.318f + 90.31if),
-    (273.3f + 1.21if) + ((_Complex _Float32) 1902.318f - 99.131if),
-    (273.3f + 1.21if) - ((_Complex _Float32) 1902.318f - 99.131if),
-    (273.3f + 1.21if) * ((_Complex _Float32) 1902.318f - 99.131if),
-    (273.3f + 1.21if) / ((_Complex _Float32) 1902.318f - 99.131if),
-    ((double) 273.3f - 99.3145if) + ((_Complex _Float32) 1902.318f + 1.0004e6if),
-    ((double) 273.3f - 99.3145if) - ((_Complex _Float32) 1902.318f + 1.0004e6if),
-    ((double) 273.3f - 99.3145if) * ((_Complex _Float32) 1902.318f + 1.0004e6if),
-    ((double) 273.3f - 99.3145if) / ((_Complex _Float32) 1902.318f + 1.0004e6if)
-};
+_Complex _Float32 f32[] = {(_Complex _Float32) 3.14159f - 123.1if,
+                           -((_Complex _Float32) 1902.318f) + 90.4if,
+                           ((_Complex _Float32) 273.3f - 638.1if) + ((_Complex _Float32) 1902.318f + 90.31if),
+                           ((_Complex _Float32) 273.3f - 638.1if) - ((_Complex _Float32) 1902.318f + 90.31if),
+                           ((_Complex _Float32) 273.3f - 638.1if) * ((_Complex _Float32) 1902.318f + 90.31if),
+                           ((_Complex _Float32) 273.3f - 638.1if) / ((_Complex _Float32) 1902.318f + 90.31if),
+                           (273.3f + 1.21if) + ((_Complex _Float32) 1902.318f - 99.131if),
+                           (273.3f + 1.21if) - ((_Complex _Float32) 1902.318f - 99.131if),
+                           (273.3f + 1.21if) * ((_Complex _Float32) 1902.318f - 99.131if),
+                           (273.3f + 1.21if) / ((_Complex _Float32) 1902.318f - 99.131if),
+                           ((double) 273.3f - 99.3145if) + ((_Complex _Float32) 1902.318f + 1.0004e6if),
+                           ((double) 273.3f - 99.3145if) - ((_Complex _Float32) 1902.318f + 1.0004e6if),
+                           ((double) 273.3f - 99.3145if) * ((_Complex _Float32) 1902.318f + 1.0004e6if),
+                           ((double) 273.3f - 99.3145if) / ((_Complex _Float32) 1902.318f + 1.0004e6if)};
 
 _Complex _Float32 get32_1(void) {
     return 5.428f - 8842.3if;

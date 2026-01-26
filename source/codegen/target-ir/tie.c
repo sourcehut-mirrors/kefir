@@ -23,11 +23,14 @@
 #include "kefir/core/util.h"
 
 kefir_result_t kefir_codegen_target_ir_tie_operands(const struct kefir_codegen_target_ir_code *code,
-    kefir_codegen_target_ir_instruction_ref_t instr_ref, struct kefir_codegen_target_ir_tie_classification *classification) {
+                                                    kefir_codegen_target_ir_instruction_ref_t instr_ref,
+                                                    struct kefir_codegen_target_ir_tie_classification *classification) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
-    REQUIRE(classification != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR tie classification"));
+    REQUIRE(classification != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR tie classification"));
 
-    REQUIRE_OK(code->klass->classify_instruction(code, instr_ref, &classification->classification, code->klass->payload));
+    REQUIRE_OK(
+        code->klass->classify_instruction(code, instr_ref, &classification->classification, code->klass->payload));
 
     const struct kefir_codegen_target_ir_instruction *instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
@@ -51,7 +54,8 @@ kefir_result_t kefir_codegen_target_ir_tie_operands(const struct kefir_codegen_t
                 if (instr->operation.opcode == code->klass->upsilon_opcode && i == 0) {
                     classification->operands[i].output = instr->operation.parameters[0].upsilon_ref;
                 } else {
-                    REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr_ref, output_index++, &classification->operands[i].output, NULL));
+                    REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(
+                        code, instr_ref, output_index++, &classification->operands[i].output, NULL));
                     if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(classification->operands[i].output.aspect)) {
                         classification->operands[i].read_index = parameter_idx++;
                     }
@@ -59,7 +63,8 @@ kefir_result_t kefir_codegen_target_ir_tie_operands(const struct kefir_codegen_t
                 break;
 
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE:
-                REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr_ref, output_index++, &classification->operands[i].output, NULL));
+                REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr_ref, output_index++,
+                                                                           &classification->operands[i].output, NULL));
                 classification->operands[i].read_index = parameter_idx++;
                 break;
         }

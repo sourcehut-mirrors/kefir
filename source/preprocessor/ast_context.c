@@ -178,13 +178,10 @@ static kefir_result_t context_current_flow_control_point(struct kefir_mem *mem, 
 static kefir_result_t context_update_pragma_state(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                   const struct kefir_ast_pragma_state *pragmas) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(context != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor AST context"));
-    REQUIRE(pragmas != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST pragma state"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor AST context"));
+    REQUIRE(pragmas != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST pragma state"));
 
-    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context,
-        context->payload);
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context, context->payload);
 
     REQUIRE_OK(kefir_ast_pragma_state_merge(&ast_context->pragma_state, pragmas));
     return KEFIR_OK;
@@ -193,13 +190,10 @@ static kefir_result_t context_update_pragma_state(struct kefir_mem *mem, const s
 static kefir_result_t context_collect_pragma_state(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                    struct kefir_ast_pragma_state *pragmas) {
     UNUSED(mem);
-    REQUIRE(context != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor AST context"));
-    REQUIRE(pragmas != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST pragma state"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor AST context"));
+    REQUIRE(pragmas != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST pragma state"));
 
-    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context,
-        context->payload);
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context, context->payload);
     *pragmas = ast_context->pragma_state;
     return KEFIR_OK;
 }
@@ -208,19 +202,21 @@ static kefir_result_t context_reset_pragma_state(struct kefir_mem *mem, const st
     UNUSED(mem);
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
 
-    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context,
-        context->payload);
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context, context->payload);
     REQUIRE_OK(kefir_ast_pragma_state_init(&ast_context->pragma_state));
     return KEFIR_OK;
 }
 
-static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type, kefir_bool_t *analyze_ptr) {
+static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                          const struct kefir_ast_type *type, kefir_bool_t *analyze_ptr) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
-    REQUIRE_OK(context->global_context->context.before_type_analyze(mem, &context->global_context->context, type, analyze_ptr));
+    REQUIRE_OK(context->global_context->context.before_type_analyze(mem, &context->global_context->context, type,
+                                                                    analyze_ptr));
     return KEFIR_OK;
 }
 
-static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type) {
+static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                           const struct kefir_ast_type *type) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE_OK(context->global_context->context.type_analyze_success(mem, &context->global_context->context, type));
     return KEFIR_OK;

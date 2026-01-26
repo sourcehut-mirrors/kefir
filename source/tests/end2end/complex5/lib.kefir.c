@@ -33,7 +33,7 @@ _Complex long double testld(_Complex long double x) {
 }
 
 union Union1 test_struct(struct Struct1 s) {
-    return (union Union1){.c = s.a + s.b + s.c + s.x + s.y + s.z};
+    return (union Union1) {.c = s.a + s.b + s.c + s.x + s.y + s.z};
 }
 
 _Complex float vsum32(int n, ...) {

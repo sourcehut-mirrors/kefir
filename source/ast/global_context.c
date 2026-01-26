@@ -503,7 +503,8 @@ static kefir_result_t free_owned_object(struct kefir_mem *mem, struct kefir_hash
     return KEFIR_OK;
 }
 
-static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type, kefir_bool_t *analyze_ptr) {
+static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                          const struct kefir_ast_type *type, kefir_bool_t *analyze_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
@@ -513,7 +514,8 @@ static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct ke
     return KEFIR_OK;
 }
 
-static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type) {
+static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                           const struct kefir_ast_type *type) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));

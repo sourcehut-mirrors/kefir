@@ -380,7 +380,8 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
         case KEFIR_IR_TYPE_INT128:
             REQUIRE_OK(
                 kefir_opt_code_builder_int_constant(state->mem, &state->func->code, source_block_ref, 0, instr_ref));
-            REQUIRE_OK(kefir_opt_code_builder_int128_zero_extend_64bits(state->mem, &state->func->code, source_block_ref, *instr_ref, instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_int128_zero_extend_64bits(state->mem, &state->func->code,
+                                                                        source_block_ref, *instr_ref, instr_ref));
             break;
 
         case KEFIR_IR_TYPE_FLOAT32:
@@ -790,9 +791,9 @@ static kefir_result_t mem2reg_load_local_variable(struct mem2reg_state *state,
             break;
 
         case KEFIR_IR_TYPE_INT128:
-            REQUIRE_OK(
-                kefir_opt_code_builder_int128_load(state->mem, &state->func->code, source_block_ref, addr_instr_ref,
-                                                  &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_int128_load(
+                state->mem, &state->func->code, source_block_ref, addr_instr_ref,
+                &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
             break;
 
         case KEFIR_IR_TYPE_BITINT:
@@ -937,9 +938,9 @@ static kefir_result_t mem2reg_generate_store(struct mem2reg_state *state, kefir_
             break;
 
         case KEFIR_IR_TYPE_INT128:
-            REQUIRE_OK(kefir_opt_code_builder_int128_store(state->mem, &state->func->code, block_id, instr_ref,
-                                                          output_ref, &(const struct kefir_opt_memory_access_flags) {0},
-                                                          &store_instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_int128_store(
+                state->mem, &state->func->code, block_id, instr_ref, output_ref,
+                &(const struct kefir_opt_memory_access_flags) {0}, &store_instr_ref));
             break;
 
         case KEFIR_IR_TYPE_BITINT:

@@ -30,7 +30,7 @@ void get_vals(struct Struct1, enum Enum1, int *, int *, int *);
 
 int main(void) {
     int sz, algn, b_val;
-    get_vals((struct Struct1){0}, A, &sz, &algn, &b_val);
+    get_vals((struct Struct1) {0}, A, &sz, &algn, &b_val);
     assert(sz == sizeof(struct Struct1));
     assert(algn == _Alignof(struct Struct1));
     assert(b_val == B);

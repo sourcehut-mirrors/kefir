@@ -23,7 +23,8 @@
 #define BOTH(x, ...) __VA_OPT__(prefix)##__VA_OPT__(_postfix)(__VA_ARGS__)
 #define TRIPLET(x, ...) __VA_OPT__(prefix)##__VA_OPT__(_middle)##__VA_OPT__(_postfix)(__VA_ARGS__)
 #define CHAIN(x, ...) __VA_OPT__(prefix)##__VA_OPT__(_middle)##__VA_OPT__(_another)##__VA_OPT__(_postfix)(__VA_ARGS__)
-#define CHAIN2(x, ...) __VA_OPT__(prefix)##__VA_OPT__(_middle_)##x##__VA_OPT__(_another)##__VA_OPT__(_postfix)(__VA_ARGS__)
+#define CHAIN2(x, ...) \
+    __VA_OPT__(prefix)##__VA_OPT__(_middle_)##x##__VA_OPT__(_another)##__VA_OPT__(_postfix)(__VA_ARGS__)
 
 PRE(a)
 PRE(a, y)

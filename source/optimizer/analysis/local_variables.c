@@ -23,13 +23,16 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t free_local_variable_occurences(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+static kefir_result_t free_local_variable_occurences(struct kefir_mem *mem, struct kefir_hashtree *tree,
+                                                     kefir_hashtree_key_t key, kefir_hashtree_value_t value,
+                                                     void *payload) {
     UNUSED(tree);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     ASSIGN_DECL_CAST(struct kefir_opt_code_local_variable_occurences *, occurences, value);
-    REQUIRE(occurences != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code local variable occurences"));
+    REQUIRE(occurences != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code local variable occurences"));
 
     REQUIRE_OK(kefir_hashset_free(mem, &occurences->occurences));
     memset(occurences, 0, sizeof(struct kefir_opt_code_local_variable_occurences));
@@ -37,13 +40,16 @@ static kefir_result_t free_local_variable_occurences(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
-static kefir_result_t free_block_local_variables(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+static kefir_result_t free_block_local_variables(struct kefir_mem *mem, struct kefir_hashtree *tree,
+                                                 kefir_hashtree_key_t key, kefir_hashtree_value_t value,
+                                                 void *payload) {
     UNUSED(tree);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     ASSIGN_DECL_CAST(struct kefir_opt_code_block_local_variables *, variables, value);
-    REQUIRE(variables != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code block local variables"));
+    REQUIRE(variables != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code block local variables"));
 
     REQUIRE_OK(kefir_hashset_free(mem, &variables->variables));
     memset(variables, 0, sizeof(struct kefir_opt_code_block_local_variables));
@@ -52,7 +58,8 @@ static kefir_result_t free_block_local_variables(struct kefir_mem *mem, struct k
 }
 
 kefir_result_t kefir_opt_code_variable_conflicts_init(struct kefir_opt_code_variable_conflicts *vars) {
-    REQUIRE(vars != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code local variables analysis"));
+    REQUIRE(vars != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                          "Expected valid pointer to optimizer code local variables analysis"));
 
     REQUIRE_OK(kefir_hashtree_init(&vars->block_alive_vars, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&vars->block_alive_vars, free_block_local_variables, NULL));
@@ -62,9 +69,11 @@ kefir_result_t kefir_opt_code_variable_conflicts_init(struct kefir_opt_code_vari
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_variable_conflicts_free(struct kefir_mem *mem, struct kefir_opt_code_variable_conflicts *vars) {
+kefir_result_t kefir_opt_code_variable_conflicts_free(struct kefir_mem *mem,
+                                                      struct kefir_opt_code_variable_conflicts *vars) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(vars != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code local variables analysis"));
+    REQUIRE(vars != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code local variables analysis"));
 
     REQUIRE_OK(kefir_hashtree_free(mem, &vars->locally_alive));
     REQUIRE_OK(kefir_hashtree_free(mem, &vars->block_alive_vars));
@@ -72,14 +81,15 @@ kefir_result_t kefir_opt_code_variable_conflicts_free(struct kefir_mem *mem, str
     return KEFIR_OK;
 }
 
-static kefir_result_t has_local_lifetime_marks(const struct kefir_opt_code_liveness *liveness, kefir_opt_instruction_ref_t instr_ref, kefir_bool_t *has_local_markings) {
+static kefir_result_t has_local_lifetime_marks(const struct kefir_opt_code_liveness *liveness,
+                                               kefir_opt_instruction_ref_t instr_ref,
+                                               kefir_bool_t *has_local_markings) {
     *has_local_markings = false;
-    
+
     kefir_result_t res;
     struct kefir_opt_instruction_use_iterator use_iter;
     for (res = kefir_opt_code_container_instruction_use_instr_iter(liveness->code, instr_ref, &use_iter);
-        res == KEFIR_OK && !*has_local_markings;
-        res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+         res == KEFIR_OK && !*has_local_markings; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_instruction *use_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(liveness->code, use_iter.use_instr_ref, &use_instr));
         if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
@@ -93,9 +103,11 @@ static kefir_result_t has_local_lifetime_marks(const struct kefir_opt_code_liven
     return KEFIR_OK;
 }
 
-static kefir_result_t update_locally_alive(struct kefir_mem *mem, struct kefir_opt_code_variable_conflicts *vars, const struct kefir_opt_code_liveness *liveness, kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t instr_ref) {
+static kefir_result_t update_locally_alive(struct kefir_mem *mem, struct kefir_opt_code_variable_conflicts *vars,
+                                           const struct kefir_opt_code_liveness *liveness,
+                                           kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t instr_ref) {
     REQUIRE(!kefir_hashset_has(&vars->globally_alive, (kefir_hashset_key_t) instr_ref), KEFIR_OK);
-    
+
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(liveness->code, instr_ref, &instr));
     REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL, KEFIR_OK);
@@ -112,11 +124,13 @@ static kefir_result_t update_locally_alive(struct kefir_mem *mem, struct kefir_o
 
         if (has_local_markings) {
             local_occurences = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_local_variable_occurences));
-            REQUIRE(local_occurences != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate variable local conflicts"));
+            REQUIRE(local_occurences != NULL,
+                    KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate variable local conflicts"));
 
             res = kefir_hashset_init(&local_occurences->occurences, &kefir_hashtable_uint_ops);
             REQUIRE_CHAIN(&res, kefir_hashset_init(&local_occurences->occurences, &kefir_hashtable_uint_ops));
-            REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &vars->locally_alive, (kefir_hashtree_key_t) instr_ref, (kefir_hashtree_value_t) local_occurences));
+            REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &vars->locally_alive, (kefir_hashtree_key_t) instr_ref,
+                                                      (kefir_hashtree_value_t) local_occurences));
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_FREE(mem, local_occurences);
                 return res;
@@ -135,11 +149,13 @@ static kefir_result_t update_locally_alive(struct kefir_mem *mem, struct kefir_o
             block_alive_vars = (struct kefir_opt_code_block_local_variables *) node->value;
         } else {
             block_alive_vars = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_block_local_variables));
-            REQUIRE(block_alive_vars != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate variables alive in block"));
+            REQUIRE(block_alive_vars != NULL,
+                    KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate variables alive in block"));
 
             res = kefir_hashset_init(&block_alive_vars->variables, &kefir_hashtable_uint_ops);
             REQUIRE_CHAIN(&res, kefir_hashset_init(&block_alive_vars->variables, &kefir_hashtable_uint_ops));
-            REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &vars->block_alive_vars, (kefir_hashtree_key_t) block_id, (kefir_hashtree_value_t) block_alive_vars));
+            REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &vars->block_alive_vars, (kefir_hashtree_key_t) block_id,
+                                                      (kefir_hashtree_value_t) block_alive_vars));
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_FREE(mem, block_alive_vars);
                 return res;
@@ -150,9 +166,12 @@ static kefir_result_t update_locally_alive(struct kefir_mem *mem, struct kefir_o
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_variable_conflicts_build(struct kefir_mem *mem, struct kefir_opt_code_variable_conflicts *vars, const struct kefir_opt_code_liveness *liveness) {
+kefir_result_t kefir_opt_code_variable_conflicts_build(struct kefir_mem *mem,
+                                                       struct kefir_opt_code_variable_conflicts *vars,
+                                                       const struct kefir_opt_code_liveness *liveness) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(vars != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code local variables analysis"));
+    REQUIRE(vars != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code local variables analysis"));
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code liveness"));
 
     kefir_result_t res;
@@ -161,9 +180,8 @@ kefir_result_t kefir_opt_code_variable_conflicts_build(struct kefir_mem *mem, st
     for (kefir_opt_block_id_t block_id = 0; block_id < num_of_blocks; block_id++) {
         struct kefir_hashset_iterator iter;
         kefir_hashset_key_t entry;
-        for (res = kefir_hashset_iter(&liveness->blocks[block_id].alive_instr,  &iter, &entry);
-            res == KEFIR_OK;
-            res = kefir_hashset_next(&iter, &entry)) {
+        for (res = kefir_hashset_iter(&liveness->blocks[block_id].alive_instr, &iter, &entry); res == KEFIR_OK;
+             res = kefir_hashset_next(&iter, &entry)) {
             ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
             REQUIRE_OK(update_locally_alive(mem, vars, liveness, block_id, instr_ref));
         }

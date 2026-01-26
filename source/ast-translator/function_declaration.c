@@ -30,24 +30,22 @@
 #include "kefir/core/source_error.h"
 
 static kefir_result_t translate_object_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                               const struct kefir_ast_type *type, kefir_size_t alignment,
-                                               const struct kefir_ast_translator_environment *env,
-                                               struct kefir_irbuilder_type *builder,
-                                               kefir_bool_t permit_incomplete,
-                                               struct kefir_ast_type_layout **layout_ptr,
-                                               const struct kefir_source_location *source_location) {
+                                            const struct kefir_ast_type *type, kefir_size_t alignment,
+                                            const struct kefir_ast_translator_environment *env,
+                                            struct kefir_irbuilder_type *builder, kefir_bool_t permit_incomplete,
+                                            struct kefir_ast_type_layout **layout_ptr,
+                                            const struct kefir_source_location *source_location) {
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
     if ((unqualified_type->tag == KEFIR_AST_TYPE_STRUCTURE || unqualified_type->tag == KEFIR_AST_TYPE_UNION) &&
-        !unqualified_type->structure_type.complete &&
-        permit_incomplete) {
+        !unqualified_type->structure_type.complete && permit_incomplete) {
         REQUIRE_OK(kefir_ast_type_completion(mem, context, &unqualified_type, unqualified_type));
 
         if (!unqualified_type->structure_type.complete) {
             const kefir_size_t type_index = kefir_ir_type_length(builder->type);
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(
-                builder, unqualified_type->tag == KEFIR_AST_TYPE_STRUCTURE ? KEFIR_IR_TYPE_STRUCT : KEFIR_IR_TYPE_UNION, alignment, 1));
-            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(
-                builder, KEFIR_IR_TYPE_INT8, 0, 0));
+                builder, unqualified_type->tag == KEFIR_AST_TYPE_STRUCTURE ? KEFIR_IR_TYPE_STRUCT : KEFIR_IR_TYPE_UNION,
+                alignment, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_INT8, 0, 0));
 
             struct kefir_ast_type_layout *layout = NULL;
             if (layout_ptr != NULL) {
@@ -59,15 +57,14 @@ static kefir_result_t translate_object_type(struct kefir_mem *mem, const struct 
         }
     }
 
-    REQUIRE_OK(kefir_ast_translate_object_type(mem, context, type, 0, env, builder,
-                                                                 layout_ptr, source_location));
+    REQUIRE_OK(kefir_ast_translate_object_type(mem, context, type, 0, env, builder, layout_ptr, source_location));
     return KEFIR_OK;
 }
 
 static kefir_result_t kefir_ast_translator_function_declaration_alloc_args(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_translator_environment *env,
-    struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits, kefir_bool_t complete_function,
-    const struct kefir_ast_type *func_type, const struct kefir_list *parameters,
+    struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits,
+    kefir_bool_t complete_function, const struct kefir_ast_type *func_type, const struct kefir_list *parameters,
     struct kefir_ast_translator_function_declaration *func_decl, kefir_bool_t *actual_parameters_exceed_declared) {
     struct kefir_irbuilder_type builder;
     REQUIRE_OK(kefir_irbuilder_type_init(mem, &builder, func_decl->ir_argument_type));
@@ -98,7 +95,7 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc_args(
 
         if (param_type != NULL) {
             kefir_result_t res = translate_object_type(mem, context, param_type, 0, env, &builder, !complete_function,
-                                                                 &parameter_layout, source_location);
+                                                       &parameter_layout, source_location);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_IRBUILDER_TYPE_FREE(&builder);
                 return res;
@@ -133,7 +130,7 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc_args(
 
         struct kefir_ast_type_layout *parameter_layout = NULL;
         kefir_result_t res = translate_object_type(mem, context, param_type, 0, env, &builder, !complete_function,
-                                                             &parameter_layout, &param->source_location);
+                                                   &parameter_layout, &param->source_location);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_IRBUILDER_TYPE_FREE(&builder);
             return res;
@@ -159,14 +156,14 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc_args(
 }
 
 static kefir_result_t kefir_ast_translator_function_declaration_alloc_return(
-    struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_translator_environment *env, kefir_bool_t complete_function,
-    const struct kefir_ast_type *func_type, struct kefir_ast_translator_function_declaration *func_decl,
-    const struct kefir_source_location *source_location) {
+    struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_translator_environment *env,
+    kefir_bool_t complete_function, const struct kefir_ast_type *func_type,
+    struct kefir_ast_translator_function_declaration *func_decl, const struct kefir_source_location *source_location) {
 
     struct kefir_irbuilder_type builder;
     REQUIRE_OK(kefir_irbuilder_type_init(mem, &builder, func_decl->ir_return_type));
-    kefir_result_t res = translate_object_type(mem, context, func_type->function_type.return_type, 0, env,
-                                                         &builder, !complete_function, &func_decl->return_layout, source_location);
+    kefir_result_t res = translate_object_type(mem, context, func_type->function_type.return_type, 0, env, &builder,
+                                               !complete_function, &func_decl->return_layout, source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_IRBUILDER_TYPE_FREE(&builder);
         return res;
@@ -196,9 +193,9 @@ static kefir_result_t free_argument_layout(struct kefir_mem *mem, struct kefir_l
 static kefir_result_t kefir_ast_translator_function_declaration_alloc(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_translator_environment *env,
     struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits,
-    struct kefir_ir_module *module, const char *identifier, kefir_bool_t complete_function, const struct kefir_ast_type *func_type,
-    const struct kefir_list *parameters, struct kefir_ast_translator_function_declaration *func_decl,
-    const struct kefir_source_location *source_location) {
+    struct kefir_ir_module *module, const char *identifier, kefir_bool_t complete_function,
+    const struct kefir_ast_type *func_type, const struct kefir_list *parameters,
+    struct kefir_ast_translator_function_declaration *func_decl, const struct kefir_source_location *source_location) {
     func_decl->function_type = func_type;
     REQUIRE_OK(kefir_list_init(&func_decl->argument_layouts));
     REQUIRE_OK(kefir_list_on_remove(&func_decl->argument_layouts, free_argument_layout, NULL));
@@ -208,16 +205,16 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc(
     REQUIRE(func_decl->ir_return_type != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR type"));
 
     kefir_bool_t actual_parameters_exceed_declared = false;
-    kefir_result_t res =
-        kefir_ast_translator_function_declaration_alloc_args(mem, context, env, type_bundle, type_traits, complete_function, func_type,
-                                                             parameters, func_decl, &actual_parameters_exceed_declared);
+    kefir_result_t res = kefir_ast_translator_function_declaration_alloc_args(
+        mem, context, env, type_bundle, type_traits, complete_function, func_type, parameters, func_decl,
+        &actual_parameters_exceed_declared);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &func_decl->argument_layouts);
         return res;
     });
 
-    res = kefir_ast_translator_function_declaration_alloc_return(mem, context, env, complete_function, func_type, func_decl,
-                                                                 source_location);
+    res = kefir_ast_translator_function_declaration_alloc_return(mem, context, env, complete_function, func_type,
+                                                                 func_decl, source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &func_decl->argument_layouts);
         return res;
@@ -242,9 +239,9 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc(
 kefir_result_t kefir_ast_translator_function_declaration_init(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_translator_environment *env,
     struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits,
-    struct kefir_ir_module *module, const char *identifier, kefir_bool_t complete_function, const struct kefir_ast_type *func_type,
-    const struct kefir_list *parameters, struct kefir_ast_translator_function_declaration **func_decl,
-    const struct kefir_source_location *source_location) {
+    struct kefir_ir_module *module, const char *identifier, kefir_bool_t complete_function,
+    const struct kefir_ast_type *func_type, const struct kefir_list *parameters,
+    struct kefir_ast_translator_function_declaration **func_decl, const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator environment"));
@@ -260,9 +257,9 @@ kefir_result_t kefir_ast_translator_function_declaration_init(
     REQUIRE(function_declaration != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST translator function declaration"));
 
-    kefir_result_t res =
-        kefir_ast_translator_function_declaration_alloc(mem, context, env, type_bundle, type_traits, module, identifier, complete_function,
-                                                        func_type, parameters, function_declaration, source_location);
+    kefir_result_t res = kefir_ast_translator_function_declaration_alloc(
+        mem, context, env, type_bundle, type_traits, module, identifier, complete_function, func_type, parameters,
+        function_declaration, source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, function_declaration);
         return res;

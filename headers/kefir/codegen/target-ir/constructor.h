@@ -28,7 +28,7 @@ typedef struct kefir_codegen_target_ir_asmcmp_operand_classification {
     kefir_codegen_target_ir_asmcmp_operand_class_t class;
     kefir_size_t index;
     kefir_bool_t implicit;
-    
+
     union {
         struct {
             kefir_codegen_target_ir_physical_register_t phreg;
@@ -51,23 +51,29 @@ typedef struct kefir_codegen_target_ir_asmcmp_instruction_classification {
     kefir_codegen_target_ir_asmcmp_special_instruction_t special;
     union {
         struct {
-            struct kefir_codegen_target_ir_asmcmp_operand_classification operands[KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS];
+            struct kefir_codegen_target_ir_asmcmp_operand_classification
+                operands[KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS];
         };
         kefir_codegen_target_ir_native_id_t attribute;
     };
 } kefir_codegen_target_ir_asmcmp_instruction_classification_t;
 
 typedef struct kefir_codegen_target_ir_code_constructor_class {
-    kefir_result_t (*is_jump)(const struct kefir_asmcmp_context *, kefir_asmcmp_instruction_opcode_t, kefir_bool_t *, void *);
-    kefir_result_t (*classify_instruction)(const struct kefir_asmcmp_instruction *, struct kefir_codegen_target_ir_asmcmp_instruction_classification *, void *);
-    kefir_result_t (*compute_vreg_pair_part_spill_offset)(kefir_asmcmp_virtual_register_pair_type_t, kefir_size_t, kefir_size_t *, void *);
+    kefir_result_t (*is_jump)(const struct kefir_asmcmp_context *, kefir_asmcmp_instruction_opcode_t, kefir_bool_t *,
+                              void *);
+    kefir_result_t (*classify_instruction)(const struct kefir_asmcmp_instruction *,
+                                           struct kefir_codegen_target_ir_asmcmp_instruction_classification *, void *);
+    kefir_result_t (*compute_vreg_pair_part_spill_offset)(kefir_asmcmp_virtual_register_pair_type_t, kefir_size_t,
+                                                          kefir_size_t *, void *);
     void *payload;
 } kefir_codegen_target_ir_code_constructor_class_t;
 
 typedef struct kefir_codegen_target_ir_code_constructor_ops {
     const struct kefir_codegen_target_ir_code_constructor_class *klass;
-    kefir_result_t (*get_allocation_constraint)(kefir_asmcmp_virtual_register_index_t, struct kefir_codegen_target_ir_allocation_constraint *, void *);
-    kefir_result_t (*preallocation_match)(kefir_asmcmp_virtual_register_index_t, kefir_codegen_target_ir_physical_register_t, void *);
+    kefir_result_t (*get_allocation_constraint)(kefir_asmcmp_virtual_register_index_t,
+                                                struct kefir_codegen_target_ir_allocation_constraint *, void *);
+    kefir_result_t (*preallocation_match)(kefir_asmcmp_virtual_register_index_t,
+                                          kefir_codegen_target_ir_physical_register_t, void *);
     kefir_result_t (*get_native_id_by_label)(kefir_asmcmp_label_index_t, kefir_codegen_target_ir_native_id_t *, void *);
     void *payload;
 } kefir_codegen_target_ir_code_constructor_parameters_t;
@@ -77,19 +83,35 @@ typedef struct kefir_codegen_target_ir_code_constructor_metadata {
     struct kefir_hashtable value_refs;
 } kefir_codegen_target_ir_code_constructor_metadata_t;
 
-kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_init(struct kefir_codegen_target_ir_code_constructor_metadata *);
-kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_free(struct kefir_mem *, struct kefir_codegen_target_ir_code_constructor_metadata *);
-kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_add_code_ref(struct kefir_mem *, struct kefir_codegen_target_ir_code_constructor_metadata *, kefir_asmcmp_instruction_index_t, kefir_codegen_target_ir_metadata_code_ref_t);
-kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_add_value_ref(struct kefir_mem *, struct kefir_codegen_target_ir_code_constructor_metadata *, kefir_asmcmp_virtual_register_index_t, kefir_codegen_target_ir_metadata_value_ref_t);
-kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_get_code_ref(const struct kefir_codegen_target_ir_code_constructor_metadata *, kefir_asmcmp_instruction_index_t, kefir_codegen_target_ir_metadata_code_ref_t *);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_init(
+    struct kefir_codegen_target_ir_code_constructor_metadata *);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_free(
+    struct kefir_mem *, struct kefir_codegen_target_ir_code_constructor_metadata *);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_add_code_ref(
+    struct kefir_mem *, struct kefir_codegen_target_ir_code_constructor_metadata *, kefir_asmcmp_instruction_index_t,
+    kefir_codegen_target_ir_metadata_code_ref_t);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_add_value_ref(
+    struct kefir_mem *, struct kefir_codegen_target_ir_code_constructor_metadata *,
+    kefir_asmcmp_virtual_register_index_t, kefir_codegen_target_ir_metadata_value_ref_t);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_get_code_ref(
+    const struct kefir_codegen_target_ir_code_constructor_metadata *, kefir_asmcmp_instruction_index_t,
+    kefir_codegen_target_ir_metadata_code_ref_t *);
 
 typedef struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator {
     struct kefir_hashset_iterator iter;
 } kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator_t;
 
-kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_value_ref_iter(const struct kefir_codegen_target_ir_code_constructor_metadata *, struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator *, kefir_asmcmp_instruction_index_t, kefir_codegen_target_ir_metadata_value_ref_t *);
-kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_value_ref_next(struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator *, kefir_codegen_target_ir_metadata_value_ref_t *);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_value_ref_iter(
+    const struct kefir_codegen_target_ir_code_constructor_metadata *,
+    struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator *, kefir_asmcmp_instruction_index_t,
+    kefir_codegen_target_ir_metadata_value_ref_t *);
+kefir_result_t kefir_codegen_target_ir_code_constructor_metadata_value_ref_next(
+    struct kefir_codegen_target_ir_code_constructor_metadata_value_ref_iterator *,
+    kefir_codegen_target_ir_metadata_value_ref_t *);
 
-kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_asmcmp_context *, const struct kefir_codegen_target_ir_code_constructor_metadata *, const struct kefir_codegen_target_ir_code_constructor_ops *);
+kefir_result_t kefir_codegen_target_ir_code_construct(struct kefir_mem *, struct kefir_codegen_target_ir_code *,
+                                                      const struct kefir_asmcmp_context *,
+                                                      const struct kefir_codegen_target_ir_code_constructor_metadata *,
+                                                      const struct kefir_codegen_target_ir_code_constructor_ops *);
 
 #endif

@@ -24,7 +24,8 @@
 #include <math.h>
 #include "./definitions.h"
 
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__) && !defined(__DragonFly__)
+#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && \
+    !defined(__NetBSD__) && !defined(__DragonFly__)
 #pragma GCC diagnostic ignored "-Wpedantic"
 _Bool decimal32_eq(_Decimal32 a, _Decimal32 b) {
     _Decimal32 diff = (a - b) * 10000;

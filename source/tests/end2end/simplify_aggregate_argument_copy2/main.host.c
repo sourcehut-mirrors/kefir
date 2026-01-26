@@ -27,8 +27,9 @@
 int main(void) {
     for (unsigned long i = 0; i < 1024; i++) {
         for (unsigned long j = 0; j < 1024; j++) {
-            assert(test2((struct S2){{i, j}}) == i + j);
-            assert(test8((struct S8){{i, 0, j, 1, ~j, i | j, 100, i ^ j}}) == i + j + 1 + ~j + (i | j) + 100 + (i ^ j));
+            assert(test2((struct S2) {{i, j}}) == i + j);
+            assert(test8((struct S8) {{i, 0, j, 1, ~j, i | j, 100, i ^ j}}) ==
+                   i + j + 1 + ~j + (i | j) + 100 + (i ^ j));
         }
     }
     return EXIT_SUCCESS;

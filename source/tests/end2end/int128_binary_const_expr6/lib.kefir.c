@@ -23,7 +23,7 @@ unsigned __int128 b = (~(unsigned __int128) 0u) >> 127;
 unsigned __int128 c = (~(unsigned __int128) 0u) >> 128;
 unsigned __int128 d = ((unsigned __int128) 0x1245352452353535253457uwb) >> 45uwb;
 
-signed __int128 e = ((signed __int128) - 13132435928) >> 12;
-signed __int128 f = ((signed __int128) - 1) >> 127;
+signed __int128 e = ((signed __int128) -13132435928) >> 12;
+signed __int128 f = ((signed __int128) -1) >> 127;
 signed __int128 g = ((signed __int128) 077654646653553) >> 34;
-signed __int128 h = ((signed __int128) - 77654646653553) >> 36;
+signed __int128 h = ((signed __int128) -77654646653553) >> 36;

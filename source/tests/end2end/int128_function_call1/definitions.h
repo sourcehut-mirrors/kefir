@@ -25,9 +25,8 @@ struct i128 {
     unsigned long arr[2];
 };
 
-extern struct i128 somefn(struct i128, struct i128, struct i128, struct i128,
-        struct i128, struct i128, struct i128, struct i128,
-        struct i128, struct i128, struct i128, struct i128);
+extern struct i128 somefn(struct i128, struct i128, struct i128, struct i128, struct i128, struct i128, struct i128,
+                          struct i128, struct i128, struct i128, struct i128, struct i128);
 
 struct i128 test1(struct i128);
 

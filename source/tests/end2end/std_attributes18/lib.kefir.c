@@ -34,11 +34,12 @@ begin:
         [[ggg]] [[hhh, iii]] goto exit_label;
     }
     for (int i = 0;; i++) {
-        if (!(i < a)) [[ddd, eee]] break;
+        if (!(i < a)) [[ddd, eee]]
+            break;
         prod += b;
         [[fff]] continue;
     }
 
-    exit_label:
-    [[aaa, bbbb]] [[ccc()]] return prod *sign;
+exit_label:
+    [[aaa, bbbb]] [[ccc()]] return prod * sign;
 }

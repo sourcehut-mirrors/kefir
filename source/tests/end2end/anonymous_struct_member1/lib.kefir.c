@@ -21,5 +21,5 @@
 #include "./definitions.h"
 
 struct Struct1 get_struct1(long x) {
-    return (struct Struct1){.a = ~x, .b = -x, .d = x * 1e-1};
+    return (struct Struct1) {.a = ~x, .b = -x, .d = x * 1e-1};
 }

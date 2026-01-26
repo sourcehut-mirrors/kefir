@@ -85,8 +85,10 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_INT32_BOOL_AND:
         case KEFIR_OPT_OPCODE_INT64_BOOL_AND:
             hash += kefir_splitmix64(instr->operation.opcode);
-            hash ^= kefir_splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + KEFIR_SPLITMIX64_MAGIC1);
-            hash ^= kefir_splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + KEFIR_SPLITMIX64_MAGIC2);
+            hash ^= kefir_splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                     KEFIR_SPLITMIX64_MAGIC1);
+            hash ^= kefir_splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                     KEFIR_SPLITMIX64_MAGIC2);
             break;
 
         case KEFIR_OPT_OPCODE_BITINT_ADD:
@@ -98,8 +100,10 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_BITINT_EQUAL:
             hash += kefir_splitmix64(instr->operation.opcode);
             hash ^= kefir_splitmix64(instr->operation.parameters.bitwidth + KEFIR_SPLITMIX64_MAGIC1);
-            hash ^= kefir_splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + KEFIR_SPLITMIX64_MAGIC2);
-            hash ^= kefir_splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + KEFIR_SPLITMIX64_MAGIC3);
+            hash ^= kefir_splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                     KEFIR_SPLITMIX64_MAGIC2);
+            hash ^= kefir_splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                     KEFIR_SPLITMIX64_MAGIC3);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_SUB:
@@ -223,10 +227,12 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
                 case KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS:
                     hash += kefir_splitmix64(instr->operation.opcode);
                     hash ^= kefir_splitmix64(instr->operation.parameters.comparison + KEFIR_SPLITMIX64_MAGIC1);
-                    hash ^= kefir_splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
-                                       KEFIR_SPLITMIX64_MAGIC2);
-                    hash ^= kefir_splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
-                                       KEFIR_SPLITMIX64_MAGIC3);
+                    hash ^=
+                        kefir_splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                         KEFIR_SPLITMIX64_MAGIC2);
+                    hash ^=
+                        kefir_splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                         KEFIR_SPLITMIX64_MAGIC3);
                     break;
 
                 case KEFIR_OPT_COMPARISON_INT8_GREATER:
@@ -294,10 +300,14 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
     }
 
     if (instr1->operation.opcode != instr2->operation.opcode &&
-        !(instr1->operation.opcode == KEFIR_OPT_OPCODE_BITINT_LESS && instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_GREATER) &&
-        !(instr1->operation.opcode == KEFIR_OPT_OPCODE_BITINT_GREATER && instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_LESS) &&
-        !(instr1->operation.opcode == KEFIR_OPT_OPCODE_BITINT_BELOW && instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_ABOVE) &&
-        !(instr1->operation.opcode == KEFIR_OPT_OPCODE_BITINT_ABOVE && instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_BELOW)) {
+        !(instr1->operation.opcode == KEFIR_OPT_OPCODE_BITINT_LESS &&
+          instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_GREATER) &&
+        !(instr1->operation.opcode == KEFIR_OPT_OPCODE_BITINT_GREATER &&
+          instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_LESS) &&
+        !(instr1->operation.opcode == KEFIR_OPT_OPCODE_BITINT_BELOW &&
+          instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_ABOVE) &&
+        !(instr1->operation.opcode == KEFIR_OPT_OPCODE_BITINT_ABOVE &&
+          instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_BELOW)) {
         return false;
     }
 
@@ -401,43 +411,43 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
 
         case KEFIR_OPT_OPCODE_BITINT_LESS:
             return (instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_LESS &&
-                   instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
-                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
-                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1]) ||
+                    instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                    instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
+                    instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1]) ||
                    (instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_GREATER &&
-                   instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
-                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[0] &&
-                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[1]);
+                    instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                    instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[0] &&
+                    instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[1]);
 
         case KEFIR_OPT_OPCODE_BITINT_GREATER:
             return (instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_GREATER &&
-                   instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
-                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
-                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1]) ||
+                    instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                    instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
+                    instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1]) ||
                    (instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_LESS &&
-                   instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
-                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[0] &&
-                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[1]);
+                    instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                    instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[0] &&
+                    instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[1]);
 
         case KEFIR_OPT_OPCODE_BITINT_BELOW:
             return (instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_BELOW &&
-                   instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
-                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
-                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1]) ||
+                    instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                    instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
+                    instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1]) ||
                    (instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_ABOVE &&
-                   instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
-                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[0] &&
-                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[1]);
+                    instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                    instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[0] &&
+                    instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[1]);
 
         case KEFIR_OPT_OPCODE_BITINT_ABOVE:
             return (instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_ABOVE &&
-                   instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
-                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
-                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1]) ||
+                    instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                    instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
+                    instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1]) ||
                    (instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_BELOW &&
-                   instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
-                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[0] &&
-                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[1]);
+                    instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                    instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[0] &&
+                    instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[1]);
 
         case KEFIR_OPT_OPCODE_INT8_NOT:
         case KEFIR_OPT_OPCODE_INT16_NOT:

@@ -188,7 +188,7 @@ __kefir_debug_info_section_entry_2:
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_0
     .long __kefir_debug_str_section_entry_1
-    .quad 31
+    .quad 24
     .quad 6
 __kefir_debug_info_section_entry_4:
     .byte 5
@@ -201,7 +201,7 @@ __kefir_debug_info_section_entry_4:
     .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_2
     .long __kefir_debug_str_section_entry_1
-    .quad 36
+    .quad 25
     .quad 15
 __kefir_debug_info_section_entry_6:
     .byte 5
@@ -214,7 +214,7 @@ __kefir_debug_info_section_entry_6:
     .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_3
     .long __kefir_debug_str_section_entry_1
-    .quad 41
+    .quad 26
     .quad 7
 __kefir_debug_info_section_entry_8:
     .byte 5
@@ -227,7 +227,7 @@ __kefir_debug_info_section_entry_8:
     .long __kefir_debug_info_section_entry_9 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_4
     .long __kefir_debug_str_section_entry_1
-    .quad 46
+    .quad 27
     .quad 8
 __kefir_debug_info_section_entry_10:
     .byte 5
@@ -240,7 +240,7 @@ __kefir_debug_info_section_entry_10:
     .long __kefir_debug_info_section_entry_11 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_5
     .long __kefir_debug_str_section_entry_1
-    .quad 51
+    .quad 28
     .quad 13
 __kefir_debug_info_section_entry_12:
     .byte 5
@@ -253,7 +253,7 @@ __kefir_debug_info_section_entry_12:
     .long __kefir_debug_info_section_entry_13 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_6
     .long __kefir_debug_str_section_entry_1
-    .quad 56
+    .quad 29
     .quad 16
 __kefir_debug_info_section_entry_14:
     .byte 5
@@ -266,7 +266,7 @@ __kefir_debug_info_section_entry_14:
     .long __kefir_debug_info_section_entry_15 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_7
     .long __kefir_debug_str_section_entry_1
-    .quad 61
+    .quad 30
     .quad 17
 __kefir_debug_info_section_entry_16:
     .byte 5
@@ -279,7 +279,7 @@ __kefir_debug_info_section_entry_16:
     .long __kefir_debug_info_section_entry_17 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_8
     .long __kefir_debug_str_section_entry_1
-    .quad 66
+    .quad 31
     .quad 22
 __kefir_debug_info_section_entry_18:
     .byte 5

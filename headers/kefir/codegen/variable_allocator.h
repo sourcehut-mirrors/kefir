@@ -54,7 +54,6 @@ kefir_result_t kefir_codegen_local_variable_allocator_run(struct kefir_mem *,
                                                           const struct kefir_codegen_local_variable_allocator_hooks *,
                                                           const struct kefir_opt_code_variable_conflicts *);
 kefir_result_t kefir_codegen_local_variable_allocation_of(const struct kefir_codegen_local_variable_allocator *,
-                                                          kefir_opt_instruction_ref_t,
-                                                          kefir_int64_t *);
+                                                          kefir_opt_instruction_ref_t, kefir_int64_t *);
 
 #endif

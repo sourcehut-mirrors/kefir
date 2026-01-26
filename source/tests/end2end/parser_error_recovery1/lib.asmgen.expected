@@ -1,12 +1,12 @@
 Failed to compile! Error stack:
 No.  Message                                                                                   Class          Subclass
-  0| lib.kefir.asmgen.c@24:7 Expected cast expression                                    |     Error|           Parser
-  1| lib.kefir.asmgen.c@23:18 Expected cast expression                                   |     Error|           Parser
-  2| lib.kefir.asmgen.c@23:12 Expected cast expression                                   |     Error|           Parser
-  3| lib.kefir.asmgen.c@22:6 Expected either declaration or statement                    |     Error|           Parser
-  4| lib.kefir.asmgen.c@21:10 Expected cast expression                                   |     Error|           Parser
-  5| lib.kefir.asmgen.c@19:10 Expected cast expression                                   |     Error|           Parser
-  6| lib.kefir.asmgen.c@16:13 Expected either initializer list, or assignment expression |     Error|           Parser
-  7| lib.kefir.asmgen.c@7:9 Expected cast expression                                     |     Error|           Parser
-  8| lib.kefir.asmgen.c@5:6 Expected cast expression                                     |     Error|           Parser
+  0| lib.kefir.asmgen.c@18:7 Expected cast expression                                    |     Error|           Parser
+  1| lib.kefir.asmgen.c@17:18 Expected cast expression                                   |     Error|           Parser
+  2| lib.kefir.asmgen.c@17:12 Expected cast expression                                   |     Error|           Parser
+  3| lib.kefir.asmgen.c@16:6 Expected either declaration or statement                    |     Error|           Parser
+  4| lib.kefir.asmgen.c@15:10 Expected cast expression                                   |     Error|           Parser
+  5| lib.kefir.asmgen.c@13:10 Expected cast expression                                   |     Error|           Parser
+  6| lib.kefir.asmgen.c@10:13 Expected either initializer list, or assignment expression |     Error|           Parser
+  7| lib.kefir.asmgen.c@3:25 Expected cast expression                                    |     Error|           Parser
+  8| lib.kefir.asmgen.c@3:16 Expected cast expression                                    |     Error|           Parser
   9| lib.kefir.asmgen.c@1:9 Expected either initializer list, or assignment expression   |     Error|           Parser

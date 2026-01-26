@@ -44,7 +44,8 @@ int main(void) {
     assert(fabsl(cimagl(f80[i++]) - ((long double) -123.1f)) < 1e-6);
     assert(fabsl(creall(f80[i]) - (-((long double) 1902.318f))) < 1e-6);
     assert(fabsl(cimagl(f80[i++]) - ((long double) 90.4)) < 1e-5);
-    _Complex long double exp = ((_Complex long double) 273.3f - 638.1 * I) + ((_Complex long double) 1902.318f + 90.31 * I);
+    _Complex long double exp =
+        ((_Complex long double) 273.3f - 638.1 * I) + ((_Complex long double) 1902.318f + 90.31 * I);
     assert(fabsl(creall(f80[i]) - creall(exp)) < 1e-6);
     assert(fabsl(cimagl(f80[i++]) - cimagl(exp)) < 1e-4);
     exp = ((_Complex long double) 273.3f - 638.1 * I) - ((_Complex long double) 1902.318f + 90.31 * I);

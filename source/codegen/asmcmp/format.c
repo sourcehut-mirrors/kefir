@@ -22,7 +22,8 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t variant_format(struct kefir_json_output *json, kefir_asmcmp_operand_variant_t variant, kefir_bool_t high_half) {
+static kefir_result_t variant_format(struct kefir_json_output *json, kefir_asmcmp_operand_variant_t variant,
+                                     kefir_bool_t high_half) {
     switch (variant) {
         case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
             REQUIRE_OK(kefir_json_output_string(json, "default"));

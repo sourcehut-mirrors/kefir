@@ -23,7 +23,8 @@
 void factorial(long x) {
     long fact = 1;
     do {
-        if (x <= 1) return set_value(fact);
+        if (x <= 1)
+            return set_value(fact);
         fact *= x--;
     } while (1);
 }

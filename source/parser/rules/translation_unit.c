@@ -165,8 +165,8 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         }
         if (PARSER_TOKEN_IS_PRAGMA(builder->parser, 0)) {
             const struct kefir_token *token = PARSER_CURSOR_EXT(builder->parser, 0, false);
-            res = kefir_parser_scan_pragma(&builder->parser->pragmas.file_scope, token->pragma,
-                                                token->pragma_param, &token->source_location);
+            res = kefir_parser_scan_pragma(&builder->parser->pragmas.file_scope, token->pragma, token->pragma_param,
+                                           &token->source_location);
             if (res != KEFIR_NO_MATCH) {
                 REQUIRE_OK(res);
             }
@@ -174,23 +174,20 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
             continue;
         }
         if (!PARSER_TOKEN_IS_SENTINEL(builder->parser, 0)) {
-            res = kefir_parser_ast_builder_scan(
-                                 mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, external_declaration), NULL);
+            res = kefir_parser_ast_builder_scan(mem, builder,
+                                                KEFIR_PARSER_RULE_FN(builder->parser, external_declaration), NULL);
             if (res == KEFIR_NO_MATCH) {
                 REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
                 res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
-                                                    "Expected declaration or function definition");
+                                             "Expected declaration or function definition");
             }
             if (res == KEFIR_SYNTAX_ERROR && KEFIR_PARSER_DO_ERROR_RECOVERY(builder->parser)) {
                 has_syntax_errors = true;
                 builder->parser->encountered_errors++;
                 REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
-                REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(builder->parser, &(struct kefir_parser_error_recovery_context) {
-                    .sync_points = {
-                        .semicolon = true,
-                        .pragmas = true
-                    }
-                }));
+                REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(
+                    builder->parser, &(struct kefir_parser_error_recovery_context) {
+                                         .sync_points = {.semicolon = true, .pragmas = true}}));
             } else {
                 REQUIRE_OK(res);
                 REQUIRE_OK(kefir_parser_ast_builder_translation_unit_append(mem, builder));

@@ -20,20 +20,11 @@
 
 #include "./definitions.h"
 
-int f32[2] = {
-    __builtin_isnan((float) __builtin_nanf("")),
-    __builtin_isnan((float) 3.14f)
-};
+int f32[2] = {__builtin_isnan((float) __builtin_nanf("")), __builtin_isnan((float) 3.14f)};
 
-int f64[2] = {
-    __builtin_isnan((double) __builtin_nan("")),
-    __builtin_isnan((double) 3.14)
-};
+int f64[2] = {__builtin_isnan((double) __builtin_nan("")), __builtin_isnan((double) 3.14)};
 
-int f80[2] = {
-    __builtin_isnan((long double) __builtin_nanl("")),
-    __builtin_isnan((long double) 3.14l)
-};
+int f80[2] = {__builtin_isnan((long double) __builtin_nanl("")), __builtin_isnan((long double) 3.14l)};
 
 _Bool is_nan_f32(float x) {
     return __builtin_isnan(x);

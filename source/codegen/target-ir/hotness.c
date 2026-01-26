@@ -36,8 +36,8 @@ struct hotness_payload {
 };
 
 kefir_int_t kefir_codegen_target_ir_value_hotness_compare(struct kefir_codegen_target_ir_value_hotness_fragment left,
-    struct kefir_codegen_target_ir_value_hotness_fragment right) {
-    
+                                                          struct kefir_codegen_target_ir_value_hotness_fragment right) {
+
     kefir_uint64_t left_num = ((kefir_uint64_t) left.uses) * right.fragment_length;
     kefir_uint64_t right_num = ((kefir_uint64_t) right.uses) * left.fragment_length;
 
@@ -57,7 +57,8 @@ kefir_result_t kefir_codegen_target_ir_hotness_init(struct kefir_codegen_target_
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_hotness_free(struct kefir_mem *mem, struct kefir_codegen_target_ir_hotness *hotness) {
+kefir_result_t kefir_codegen_target_ir_hotness_free(struct kefir_mem *mem,
+                                                    struct kefir_codegen_target_ir_hotness *hotness) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(hotness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR hotness"));
 
@@ -65,33 +66,37 @@ kefir_result_t kefir_codegen_target_ir_hotness_free(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-static kefir_result_t update_value_score(struct hotness_payload *payload, kefir_codegen_target_ir_value_ref_t value_ref, kefir_size_t lifetime_fragment) {
+static kefir_result_t update_value_score(struct hotness_payload *payload, kefir_codegen_target_ir_value_ref_t value_ref,
+                                         kefir_size_t lifetime_fragment) {
     kefir_hashtable_value_t *table_value_ptr;
-    kefir_result_t res = kefir_hashtable_at_mut(&payload->hotness->global_hotness, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &table_value_ptr);
+    kefir_result_t res = kefir_hashtable_at_mut(
+        &payload->hotness->global_hotness, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref),
+        &table_value_ptr);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
-        struct kefir_codegen_target_ir_value_hotness_fragment fragment = {
-            .hotness = *table_value_ptr
-        };
+        struct kefir_codegen_target_ir_value_hotness_fragment fragment = {.hotness = *table_value_ptr};
         fragment.fragment_length += lifetime_fragment;
         *table_value_ptr = fragment.hotness;
     } else {
         kefir_uint32_t uses = kefir_codegen_target_ir_code_num_of_uses(payload->control_flow->code, value_ref);
-        struct kefir_codegen_target_ir_value_hotness_fragment fragment = {
-            .uses = uses,
-            .fragment_length = lifetime_fragment
-        };
-        REQUIRE_OK(kefir_hashtable_insert(payload->mem, &payload->hotness->global_hotness, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), (kefir_hashtable_value_t) fragment.hotness));
+        struct kefir_codegen_target_ir_value_hotness_fragment fragment = {.uses = uses,
+                                                                          .fragment_length = lifetime_fragment};
+        REQUIRE_OK(kefir_hashtable_insert(payload->mem, &payload->hotness->global_hotness,
+                                          (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref),
+                                          (kefir_hashtable_value_t) fragment.hotness));
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
+static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_codegen_target_ir_block_ref_t block_ref,
+                                       kefir_codegen_target_ir_instruction_ref_t instr_ref) {
     const struct kefir_codegen_target_ir_liveness_value_block_ranges *liveness_ranges;
-    REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(payload->mem, payload->control_flow, payload->liveness, block_ref, &liveness_ranges));
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_value_ranges(payload->mem, payload->control_flow, payload->liveness,
+                                                             block_ref, &liveness_ranges));
 
     const struct kefir_codegen_target_ir_liveness_index *liveness_index;
-    kefir_result_t res = kefir_codegen_target_ir_liveness_range_get(payload->liveness, liveness_ranges, instr_ref, &liveness_index);
+    kefir_result_t res =
+        kefir_codegen_target_ir_liveness_range_get(payload->liveness, liveness_ranges, instr_ref, &liveness_index);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
     struct kefir_hashset_iterator iter;
@@ -100,19 +105,21 @@ static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_co
     if (instr_ref != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_codegen_target_ir_numbering_instruction_seq_index(&payload->numbering, instr_ref, &seq_index));
         for (res = kefir_hashset_iter(&liveness_index->end_liveness, &iter, &iter_key); res == KEFIR_OK;
-            res = kefir_hashset_next(&iter, &iter_key)) {
+             res = kefir_hashset_next(&iter, &iter_key)) {
             kefir_hashtable_value_t table_value;
             REQUIRE_OK(kefir_hashtable_at(&payload->alive_values, (kefir_hashtable_key_t) iter_key, &table_value));
             REQUIRE_OK(kefir_hashtable_delete(payload->mem, &payload->alive_values, (kefir_hashtable_key_t) iter_key));
-            REQUIRE_OK(update_value_score(payload, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(iter_key), seq_index - table_value));
+            REQUIRE_OK(
+                update_value_score(payload, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(iter_key), seq_index - table_value));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
         }
     }
     for (res = kefir_hashset_iter(&liveness_index->begin_liveness, &iter, &iter_key); res == KEFIR_OK;
-        res = kefir_hashset_next(&iter, &iter_key)) {
-        REQUIRE_OK(kefir_hashtable_insert(payload->mem, &payload->alive_values, (kefir_hashtable_key_t) iter_key, (kefir_hashtable_value_t) seq_index));
+         res = kefir_hashset_next(&iter, &iter_key)) {
+        REQUIRE_OK(kefir_hashtable_insert(payload->mem, &payload->alive_values, (kefir_hashtable_key_t) iter_key,
+                                          (kefir_hashtable_value_t) seq_index));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -122,10 +129,10 @@ static kefir_result_t update_lifetimes(struct hotness_payload *payload, kefir_co
 
 static kefir_result_t build_hotness(struct hotness_payload *payload) {
     REQUIRE_OK(kefir_codegen_target_ir_numbering_build(payload->mem, &payload->numbering, payload->control_flow->code));
-    REQUIRE_OK(kefir_list_insert_after(payload->mem, &payload->queue, kefir_list_tail(&payload->queue), (void *) (kefir_uptr_t) payload->control_flow->code->entry_block));
-    for (struct kefir_list_entry *head = kefir_list_head(&payload->queue);
-        head != NULL;
-        head = kefir_list_head(&payload->queue)) {
+    REQUIRE_OK(kefir_list_insert_after(payload->mem, &payload->queue, kefir_list_tail(&payload->queue),
+                                       (void *) (kefir_uptr_t) payload->control_flow->code->entry_block));
+    for (struct kefir_list_entry *head = kefir_list_head(&payload->queue); head != NULL;
+         head = kefir_list_head(&payload->queue)) {
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref, (kefir_uptr_t) head->value);
         REQUIRE_OK(kefir_list_pop(payload->mem, &payload->queue, head));
 
@@ -133,9 +140,10 @@ static kefir_result_t build_hotness(struct hotness_payload *payload) {
 
         REQUIRE_OK(update_lifetimes(payload, block_ref, KEFIR_ID_NONE));
 
-        for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(payload->control_flow->code, block_ref);
-            instr_ref != KEFIR_ID_NONE;
-            instr_ref = kefir_codegen_target_ir_code_control_next(payload->control_flow->code, instr_ref)) {
+        for (kefir_codegen_target_ir_instruction_ref_t instr_ref =
+                 kefir_codegen_target_ir_code_block_control_head(payload->control_flow->code, block_ref);
+             instr_ref != KEFIR_ID_NONE;
+             instr_ref = kefir_codegen_target_ir_code_control_next(payload->control_flow->code, instr_ref)) {
             REQUIRE_OK(update_lifetimes(payload, block_ref, instr_ref));
         }
 
@@ -146,9 +154,10 @@ static kefir_result_t build_hotness(struct hotness_payload *payload) {
         struct kefir_hashtable_iterator alive_iter;
         kefir_hashtable_key_t alive_iter_key;
         kefir_hashtable_value_t alive_iter_value;
-        for (res = kefir_hashtable_iter(&payload->alive_values, &alive_iter, &alive_iter_key, &alive_iter_value); res == KEFIR_OK;
-            res = kefir_hashtable_next(&alive_iter, &alive_iter_key, &alive_iter_value)) {
-            REQUIRE_OK(update_value_score(payload, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(alive_iter_key), block_length - alive_iter_value));
+        for (res = kefir_hashtable_iter(&payload->alive_values, &alive_iter, &alive_iter_key, &alive_iter_value);
+             res == KEFIR_OK; res = kefir_hashtable_next(&alive_iter, &alive_iter_key, &alive_iter_value)) {
+            REQUIRE_OK(update_value_score(payload, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(alive_iter_key),
+                                          block_length - alive_iter_value));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -156,10 +165,12 @@ static kefir_result_t build_hotness(struct hotness_payload *payload) {
 
         struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator iter;
         kefir_codegen_target_ir_block_ref_t dominated_block_ref;
-        for (res = kefir_codegen_target_ir_control_flow_dominator_tree_iter(payload->control_flow, &iter, block_ref, &dominated_block_ref);
-            res == KEFIR_OK;
-            res = kefir_codegen_target_ir_control_flow_dominator_tree_next(&iter, &dominated_block_ref)) {
-            REQUIRE_OK(kefir_list_insert_after(payload->mem, &payload->queue, kefir_list_tail(&payload->queue), (void *) (kefir_uptr_t) dominated_block_ref));
+        for (res = kefir_codegen_target_ir_control_flow_dominator_tree_iter(payload->control_flow, &iter, block_ref,
+                                                                            &dominated_block_ref);
+             res == KEFIR_OK;
+             res = kefir_codegen_target_ir_control_flow_dominator_tree_next(&iter, &dominated_block_ref)) {
+            REQUIRE_OK(kefir_list_insert_after(payload->mem, &payload->queue, kefir_list_tail(&payload->queue),
+                                               (void *) (kefir_uptr_t) dominated_block_ref));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -168,19 +179,17 @@ static kefir_result_t build_hotness(struct hotness_payload *payload) {
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_hotness_build(struct kefir_mem *mem, struct kefir_codegen_target_ir_hotness *hotness,
-    const struct kefir_codegen_target_ir_control_flow *control_flow, const struct kefir_codegen_target_ir_liveness *liveness) {
+kefir_result_t kefir_codegen_target_ir_hotness_build(struct kefir_mem *mem,
+                                                     struct kefir_codegen_target_ir_hotness *hotness,
+                                                     const struct kefir_codegen_target_ir_control_flow *control_flow,
+                                                     const struct kefir_codegen_target_ir_liveness *liveness) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(hotness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR hotness"));
     REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
-    
+
     struct hotness_payload payload = {
-        .mem = mem,
-        .hotness = hotness,
-        .control_flow = control_flow,
-        .liveness = liveness
-    };
+        .mem = mem, .hotness = hotness, .control_flow = control_flow, .liveness = liveness};
     REQUIRE_OK(kefir_hashtable_init(&payload.alive_values, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&payload.queue));
     REQUIRE_OK(kefir_codegen_target_ir_numbering_init(&payload.numbering));
@@ -208,18 +217,22 @@ kefir_result_t kefir_codegen_target_ir_hotness_build(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_hotness_get_global(const struct kefir_codegen_target_ir_hotness *hotness,
-    kefir_codegen_target_ir_value_ref_t value_ref, struct kefir_codegen_target_ir_value_hotness_fragment *hotness_fragment) {
+kefir_result_t kefir_codegen_target_ir_hotness_get_global(
+    const struct kefir_codegen_target_ir_hotness *hotness, kefir_codegen_target_ir_value_ref_t value_ref,
+    struct kefir_codegen_target_ir_value_hotness_fragment *hotness_fragment) {
     REQUIRE(hotness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR hotness"));
-    REQUIRE(hotness_fragment != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR hotness fragment"));
+    REQUIRE(hotness_fragment != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR hotness fragment"));
 
     kefir_hashtable_value_t table_value;
-    kefir_result_t res = kefir_hashtable_at(&hotness->global_hotness, (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &table_value);
+    kefir_result_t res =
+        kefir_hashtable_at(&hotness->global_hotness,
+                           (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref), &table_value);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find target IR global hotness fragment");
     }
     REQUIRE_OK(res);
-    
+
     hotness_fragment->hotness = (kefir_uint64_t) table_value;
     return KEFIR_OK;
 }

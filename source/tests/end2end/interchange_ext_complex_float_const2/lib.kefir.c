@@ -20,23 +20,23 @@
 
 _Complex _Float32 a = 3.14159if32;
 _Complex _Float32x b = 2.71828if32x;
-_Static_assert(_Generic(3.14159if32, _Complex _Float32 : 1, default : 0));
+_Static_assert(_Generic(3.14159if32, _Complex _Float32: 1, default: 0));
 #ifndef NO_LONG_DOUBLE
-_Static_assert(_Generic(2.71828if32x, _Complex _Float32x : 1, default : 0));
+_Static_assert(_Generic(2.71828if32x, _Complex _Float32x: 1, default: 0));
 #endif
 
 _Complex _Float64 c = 3.14159if64;
 #ifndef NO_LONG_DOUBLE
 _Complex _Float64x d = 2.71828if64x;
 #endif
-_Static_assert(_Generic(3.14159if64, _Complex _Float64 : 1, default : 0));
+_Static_assert(_Generic(3.14159if64, _Complex _Float64: 1, default: 0));
 #ifndef NO_LONG_DOUBLE
-_Static_assert(_Generic(2.71828if64x, _Complex _Float64x : 1, default : 0));
+_Static_assert(_Generic(2.71828if64x, _Complex _Float64x: 1, default: 0));
 #endif
 
 #ifndef NO_LONG_DOUBLE
 _Complex _Float80 e = 3.14159if80;
-_Static_assert(_Generic(3.14159if80, _Complex _Float80 : 1, default : 0));
+_Static_assert(_Generic(3.14159if80, _Complex _Float80: 1, default: 0));
 #endif
 
 _Complex _Float32 mygeta(void) {

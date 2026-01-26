@@ -25,6 +25,8 @@
 #include "kefir/codegen/target-ir/control_flow.h"
 
 kefir_result_t kefir_codegen_target_ir_partial_replace_value(struct kefir_mem *, struct kefir_codegen_target_ir_code *,
-    const struct kefir_codegen_target_ir_control_flow *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_value_ref_t);
+                                                             const struct kefir_codegen_target_ir_control_flow *,
+                                                             kefir_codegen_target_ir_value_ref_t,
+                                                             kefir_codegen_target_ir_value_ref_t);
 
 #endif

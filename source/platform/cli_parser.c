@@ -63,10 +63,10 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_st
 
     for (kefir_size_t i = 0; res == KEFIR_OK && i < option_count; i++) {
         long_options[i] =
-            (struct option){options[i].long_option, options[i].has_argument ? required_argument : no_argument, NULL,
-                            options[i].short_option};
+            (struct option) {options[i].long_option, options[i].has_argument ? required_argument : no_argument, NULL,
+                             options[i].short_option};
     }
-    long_options[option_count] = (struct option){0};
+    long_options[option_count] = (struct option) {0};
 
     int long_option_index = 0;
     for (int c = getopt_long(argc, argv, short_options, long_options, &long_option_index); res == KEFIR_OK && c != -1;

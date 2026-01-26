@@ -20,5 +20,5 @@
 
 #include "header.h"
 = {
-    #embed "data.txt"
+#embed "data.txt"
 };

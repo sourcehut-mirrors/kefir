@@ -246,7 +246,9 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
         function->base.properties.function_definition.pragma_stats.disallow_fp_contract;
     ctx->ir_func->flags.cx_limited_range =
         (function->base.properties.function_definition.pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_ON) ||
-        (function->base.properties.function_definition.pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_DEFAULT && context->environment->configuration->cx_limited_range);
+        (function->base.properties.function_definition.pragma_stats.cx_limited_range ==
+             KEFIR_AST_PRAGMA_VALUE_DEFAULT &&
+         context->environment->configuration->cx_limited_range);
 
     ctx->local_translator_context.function_debug_info = &ctx->ir_func->debug_info;
 

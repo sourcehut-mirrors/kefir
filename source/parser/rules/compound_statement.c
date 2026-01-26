@@ -35,7 +35,8 @@ static kefir_result_t parse_compound_statement(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_ast_pragma_state_init(&pragmas));
     while (PARSER_TOKEN_IS_PRAGMA(builder->parser, 0)) {
         const struct kefir_token *token = PARSER_CURSOR_EXT(builder->parser, 0, false);
-        kefir_result_t res = kefir_parser_scan_pragma(&pragmas, token->pragma, token->pragma_param, &token->source_location);
+        kefir_result_t res =
+            kefir_parser_scan_pragma(&pragmas, token->pragma, token->pragma_param, &token->source_location);
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
         }
@@ -58,19 +59,16 @@ static kefir_result_t parse_compound_statement(struct kefir_mem *mem, struct kef
         if (res == KEFIR_NO_MATCH) {
             REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                          "Expected either declaration or statement");
+                                         "Expected either declaration or statement");
         }
 
         if (res == KEFIR_SYNTAX_ERROR && KEFIR_PARSER_DO_ERROR_RECOVERY(parser)) {
             has_syntax_errors = true;
             parser->encountered_errors++;
             REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
-            REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(builder->parser, &(struct kefir_parser_error_recovery_context) {
-                .sync_points = {
-                    .semicolon = true,
-                    .pragmas = true
-                }
-            }));
+            REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(
+                builder->parser,
+                &(struct kefir_parser_error_recovery_context) {.sync_points = {.semicolon = true, .pragmas = true}}));
         } else {
             REQUIRE_OK(res);
             REQUIRE_OK(kefir_parser_ast_builder_compound_statement_append(mem, builder));

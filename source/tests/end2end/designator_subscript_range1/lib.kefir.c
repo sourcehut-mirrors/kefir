@@ -20,12 +20,8 @@
 
 #include "./definitions.h"
 
-extern struct B b = {
-    .b[0 ... 4].a[0 ... 9] = 0x0bad
-};
+extern struct B b = {.b[0 ... 4].a[0 ... 9] = 0x0bad};
 
 struct B getb(void) {
-    return (struct B) {
-        .b[0 ... 4].a[0 ... 9] = -1243
-    };
+    return (struct B) {.b[0 ... 4].a[0 ... 9] = -1243};
 }

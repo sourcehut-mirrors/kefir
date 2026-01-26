@@ -22,38 +22,32 @@ int f80_size = sizeof(_Imaginary long double);
 int f80_alignment = _Alignof(_Imaginary long double);
 __constexpr _Imaginary long double f80_const = 9.831if;
 const _Imaginary long double *f80_const_ptr = &f80_const;
-#define CLASSIFY(_x) _Generic((_x), _Imaginary long double : 1, long double : 2, _Complex long double : 3, default : 0)
-int f80_compat[] = {
-    CLASSIFY((_Imaginary long double) 1.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) + (_Imaginary long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) - (_Imaginary long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) * (_Imaginary long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) / (_Imaginary long double) 2.0if),
-    CLASSIFY(((long double) 1.0if) + (_Imaginary long double) 2.0if),
-    CLASSIFY(((long double) 1.0if) - (_Imaginary long double) 2.0if),
-    CLASSIFY(((long double) 1.0if) * (_Imaginary long double) 2.0if),
-    CLASSIFY(((long double) 1.0if) / (_Imaginary long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) + (long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) - (long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) * (long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) / (long double) 2.0if),
-    CLASSIFY(((_Complex long double) 1.0if) + (_Imaginary long double) 2.0if),
-    CLASSIFY(((_Complex long double) 1.0if) - (_Imaginary long double) 2.0if),
-    CLASSIFY(((_Complex long double) 1.0if) * (_Imaginary long double) 2.0if),
-    CLASSIFY(((_Complex long double) 1.0if) / (_Imaginary long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) + (_Complex long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) - (_Complex long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) * (_Complex long double) 2.0if),
-    CLASSIFY(((_Imaginary long double) 1.0if) / (_Complex long double) 2.0if)
-};
+#define CLASSIFY(_x) _Generic((_x), _Imaginary long double: 1, long double: 2, _Complex long double: 3, default: 0)
+int f80_compat[] = {CLASSIFY((_Imaginary long double) 1.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) + (_Imaginary long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) - (_Imaginary long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) * (_Imaginary long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) / (_Imaginary long double) 2.0if),
+                    CLASSIFY(((long double) 1.0if) + (_Imaginary long double) 2.0if),
+                    CLASSIFY(((long double) 1.0if) - (_Imaginary long double) 2.0if),
+                    CLASSIFY(((long double) 1.0if) * (_Imaginary long double) 2.0if),
+                    CLASSIFY(((long double) 1.0if) / (_Imaginary long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) + (long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) - (long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) * (long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) / (long double) 2.0if),
+                    CLASSIFY(((_Complex long double) 1.0if) + (_Imaginary long double) 2.0if),
+                    CLASSIFY(((_Complex long double) 1.0if) - (_Imaginary long double) 2.0if),
+                    CLASSIFY(((_Complex long double) 1.0if) * (_Imaginary long double) 2.0if),
+                    CLASSIFY(((_Complex long double) 1.0if) / (_Imaginary long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) + (_Complex long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) - (_Complex long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) * (_Complex long double) 2.0if),
+                    CLASSIFY(((_Imaginary long double) 1.0if) / (_Complex long double) 2.0if)};
 
-extern long f80_iarr[] = {
-    (_Imaginary long double) 54.241if,
-    (_Bool) (_Imaginary long double) 0.0if,
-    (_Bool) (_Imaginary long double) 9.4929if,
-    (long) (_Imaginary long double) -9.4929if,
-    (unsigned long) (_Imaginary long double) 109.49if
-};
+extern long f80_iarr[] = {(_Imaginary long double) 54.241if, (_Bool) (_Imaginary long double) 0.0if,
+                          (_Bool) (_Imaginary long double) 9.4929if, (long) (_Imaginary long double) -9.4929if,
+                          (unsigned long) (_Imaginary long double) 109.49if};
 
 _Imaginary long double f80_arr[] = {
     (_Imaginary long double) 3.14159if,
@@ -66,15 +60,15 @@ _Imaginary long double f80_arr[] = {
     (long double) 3.24159L,
     (_Complex long double) (3.14659L + 2.71823iL),
     (_Float32) 0.5318f32,
-    (_Complex _Float32) (0.5318f32 + 9420.0f32i),
+    (_Complex _Float32)(0.5318f32 + 9420.0f32i),
     (_Float32x) 0.5318f32,
-    (_Complex _Float32x) (0.5318f32 + 9420.0f32i),
+    (_Complex _Float32x)(0.5318f32 + 9420.0f32i),
     (_Float64) 0.5318f32,
-    (_Complex _Float64) (0.5318f32 + 9420.0f32i),
+    (_Complex _Float64)(0.5318f32 + 9420.0f32i),
     (_Float64x) 0.5318f32,
-    (_Complex _Float64x) (0.5318f32 + 9420.0f32i),
+    (_Complex _Float64x)(0.5318f32 + 9420.0f32i),
     (_Float80) 0.5318f32,
-    (_Complex _Float80) (0.5318f32 + 9420.0f32i),
+    (_Complex _Float80)(0.5318f32 + 9420.0f32i),
     (long) -381931ll,
     (unsigned long) 982494ull
 #ifdef __KEFIRCC_DECIMAL_SUPPORT__
@@ -82,7 +76,7 @@ _Imaginary long double f80_arr[] = {
     (_Decimal32) 8.4428df,
     (_Decimal64) 18813.42dd,
     (_Decimal64x) -18813.42d64x,
-    (_Decimal128) -4829.41dl,
+    (_Decimal128) - 4829.41dl,
 #else
     ,
     0.0if,
@@ -92,95 +86,91 @@ _Imaginary long double f80_arr[] = {
 #endif
 };
 
-_Imaginary long double f80_ops[] = {
-    ((_Imaginary long double) 3.0if) + ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) + ((long double) 9.0f),
-    ((long double) 3.0f) + ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) + ((_Complex long double) 6.0f + 9.0if),
-    ((_Complex long double) 6.0f + 9.0if) + ((_Imaginary long double) -3.0if),
-    ((_Imaginary long double) 3.1if) + (long) -5000,
-    ((_Imaginary long double) 3.2if) + (unsigned long) 5000,
-    ((long) -5000) + ((_Imaginary long double) 3.4if),
-    ((unsigned long) 5000) + ((_Imaginary long double) 3.5if),
+_Imaginary long double f80_ops[] = {((_Imaginary long double) 3.0if) + ((_Imaginary long double) 9.0if),
+                                    ((_Imaginary long double) 3.0if) + ((long double) 9.0f),
+                                    ((long double) 3.0f) + ((_Imaginary long double) 9.0if),
+                                    ((_Imaginary long double) 3.0if) + ((_Complex long double) 6.0f + 9.0if),
+                                    ((_Complex long double) 6.0f + 9.0if) + ((_Imaginary long double) -3.0if),
+                                    ((_Imaginary long double) 3.1if) + (long) -5000,
+                                    ((_Imaginary long double) 3.2if) + (unsigned long) 5000,
+                                    ((long) -5000) + ((_Imaginary long double) 3.4if),
+                                    ((unsigned long) 5000) + ((_Imaginary long double) 3.5if),
 
-    ((_Imaginary long double) 3.0if) - ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) - ((long double) 9.0f),
-    ((long double) 3.0f) - ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) - ((_Complex long double) 6.0f + 9.0if),
-    ((_Complex long double) 6.0f + 9.0if) - ((_Imaginary long double) -3.0if),
-    ((_Imaginary long double) 3.1if) - (long) -5000,
-    ((_Imaginary long double) 3.2if) - (unsigned long) 5000,
-    ((long) -5000) - ((_Imaginary long double) 3.4if),
-    ((unsigned long) 5000) - ((_Imaginary long double) 3.5if),
+                                    ((_Imaginary long double) 3.0if) - ((_Imaginary long double) 9.0if),
+                                    ((_Imaginary long double) 3.0if) - ((long double) 9.0f),
+                                    ((long double) 3.0f) - ((_Imaginary long double) 9.0if),
+                                    ((_Imaginary long double) 3.0if) - ((_Complex long double) 6.0f + 9.0if),
+                                    ((_Complex long double) 6.0f + 9.0if) - ((_Imaginary long double) -3.0if),
+                                    ((_Imaginary long double) 3.1if) - (long) -5000,
+                                    ((_Imaginary long double) 3.2if) - (unsigned long) 5000,
+                                    ((long) -5000) - ((_Imaginary long double) 3.4if),
+                                    ((unsigned long) 5000) - ((_Imaginary long double) 3.5if),
 
-    ((_Imaginary long double) 3.0if) * ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) * ((long double) 9.0f),
-    ((long double) 3.0f) * ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) * ((_Complex long double) 6.0f + 9.0if),
-    ((_Complex long double) 6.0f + 9.0if) * ((_Imaginary long double) -3.0if),
-    ((_Imaginary long double) 3.1if) * (long) -5000,
-    ((_Imaginary long double) 3.2if) * (unsigned long) 5000,
-    ((long) -5000) * ((_Imaginary long double) 3.4if),
-    ((unsigned long) 5000) * ((_Imaginary long double) 3.5if),
+                                    ((_Imaginary long double) 3.0if) * ((_Imaginary long double) 9.0if),
+                                    ((_Imaginary long double) 3.0if) * ((long double) 9.0f),
+                                    ((long double) 3.0f) * ((_Imaginary long double) 9.0if),
+                                    ((_Imaginary long double) 3.0if) * ((_Complex long double) 6.0f + 9.0if),
+                                    ((_Complex long double) 6.0f + 9.0if) * ((_Imaginary long double) -3.0if),
+                                    ((_Imaginary long double) 3.1if) * (long) -5000,
+                                    ((_Imaginary long double) 3.2if) * (unsigned long) 5000,
+                                    ((long) -5000) * ((_Imaginary long double) 3.4if),
+                                    ((unsigned long) 5000) * ((_Imaginary long double) 3.5if),
 
-    ((_Imaginary long double) 3.0if) / ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) / ((long double) 9.0f),
-    ((long double) 3.0f) / ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) / ((_Complex long double) 6.0f + 9.0if),
-    ((_Complex long double) 6.0f + 9.0if) / ((_Imaginary long double) -3.0if),
-    ((_Imaginary long double) 3.1if) / (long) -5000,
-    ((_Imaginary long double) 3.2if) / (unsigned long) 5000,
-    ((long) -5000) / ((_Imaginary long double) 3.4if),
-    ((unsigned long) 5000) / ((_Imaginary long double) 3.5if),
+                                    ((_Imaginary long double) 3.0if) / ((_Imaginary long double) 9.0if),
+                                    ((_Imaginary long double) 3.0if) / ((long double) 9.0f),
+                                    ((long double) 3.0f) / ((_Imaginary long double) 9.0if),
+                                    ((_Imaginary long double) 3.0if) / ((_Complex long double) 6.0f + 9.0if),
+                                    ((_Complex long double) 6.0f + 9.0if) / ((_Imaginary long double) -3.0if),
+                                    ((_Imaginary long double) 3.1if) / (long) -5000,
+                                    ((_Imaginary long double) 3.2if) / (unsigned long) 5000,
+                                    ((long) -5000) / ((_Imaginary long double) 3.4if),
+                                    ((unsigned long) 5000) / ((_Imaginary long double) 3.5if),
 
-    -((_Imaginary long double) 3.0if),
-+((_Imaginary long double) -9.0if)
-};
+                                    -((_Imaginary long double) 3.0if),
+                                    +((_Imaginary long double) -9.0if)};
 
-double f80_ops2[] = {
-    ((_Imaginary long double) 3.0if) + ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) + ((long double) 9.0f),
-    ((long double) 3.0f) + ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) + ((_Complex long double) 6.0f + 9.0if),
-    ((_Complex long double) 6.0f + 9.0if) + ((_Imaginary long double) -3.0if),
-    ((_Imaginary long double) 3.1if) + (long) -5000,
-    ((_Imaginary long double) 3.2if) + (unsigned long) 5000,
-    ((long) -5000) + ((_Imaginary long double) 3.4if),
-    ((unsigned long) 5000) + ((_Imaginary long double) 3.5if),
+double f80_ops2[] = {((_Imaginary long double) 3.0if) + ((_Imaginary long double) 9.0if),
+                     ((_Imaginary long double) 3.0if) + ((long double) 9.0f),
+                     ((long double) 3.0f) + ((_Imaginary long double) 9.0if),
+                     ((_Imaginary long double) 3.0if) + ((_Complex long double) 6.0f + 9.0if),
+                     ((_Complex long double) 6.0f + 9.0if) + ((_Imaginary long double) -3.0if),
+                     ((_Imaginary long double) 3.1if) + (long) -5000,
+                     ((_Imaginary long double) 3.2if) + (unsigned long) 5000,
+                     ((long) -5000) + ((_Imaginary long double) 3.4if),
+                     ((unsigned long) 5000) + ((_Imaginary long double) 3.5if),
 
-    ((_Imaginary long double) 3.0if) - ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) - ((long double) 9.0f),
-    ((long double) 3.0f) - ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) - ((_Complex long double) 6.0f + 9.0if),
-    ((_Complex long double) 6.0f + 9.0if) - ((_Imaginary long double) -3.0if),
-    ((_Imaginary long double) 3.1if) - (long) -5000,
-    ((_Imaginary long double) 3.2if) - (unsigned long) 5000,
-    ((long) -5000) - ((_Imaginary long double) 3.4if),
-    ((unsigned long) 5000) - ((_Imaginary long double) 3.5if),
+                     ((_Imaginary long double) 3.0if) - ((_Imaginary long double) 9.0if),
+                     ((_Imaginary long double) 3.0if) - ((long double) 9.0f),
+                     ((long double) 3.0f) - ((_Imaginary long double) 9.0if),
+                     ((_Imaginary long double) 3.0if) - ((_Complex long double) 6.0f + 9.0if),
+                     ((_Complex long double) 6.0f + 9.0if) - ((_Imaginary long double) -3.0if),
+                     ((_Imaginary long double) 3.1if) - (long) -5000,
+                     ((_Imaginary long double) 3.2if) - (unsigned long) 5000,
+                     ((long) -5000) - ((_Imaginary long double) 3.4if),
+                     ((unsigned long) 5000) - ((_Imaginary long double) 3.5if),
 
-    ((_Imaginary long double) 3.0if) * ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) * ((long double) 9.0f),
-    ((long double) 3.0f) * ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) * ((_Complex long double) 6.0f + 9.0if),
-    ((_Complex long double) 6.0f + 9.0if) * ((_Imaginary long double) -3.0if),
-    ((_Imaginary long double) 3.1if) * (long) -5000,
-    ((_Imaginary long double) 3.2if) * (unsigned long) 5000,
-    ((long) -5000) * ((_Imaginary long double) 3.4if),
-    ((unsigned long) 5000) * ((_Imaginary long double) 3.5if),
+                     ((_Imaginary long double) 3.0if) * ((_Imaginary long double) 9.0if),
+                     ((_Imaginary long double) 3.0if) * ((long double) 9.0f),
+                     ((long double) 3.0f) * ((_Imaginary long double) 9.0if),
+                     ((_Imaginary long double) 3.0if) * ((_Complex long double) 6.0f + 9.0if),
+                     ((_Complex long double) 6.0f + 9.0if) * ((_Imaginary long double) -3.0if),
+                     ((_Imaginary long double) 3.1if) * (long) -5000,
+                     ((_Imaginary long double) 3.2if) * (unsigned long) 5000,
+                     ((long) -5000) * ((_Imaginary long double) 3.4if),
+                     ((unsigned long) 5000) * ((_Imaginary long double) 3.5if),
 
-    ((_Imaginary long double) 3.0if) / ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) / ((long double) 9.0f),
-    ((long double) 3.0f) / ((_Imaginary long double) 9.0if),
-    ((_Imaginary long double) 3.0if) / ((_Complex long double) 6.0f + 9.0if),
-    ((_Complex long double) 6.0f + 9.0if) / ((_Imaginary long double) -3.0if),
-    ((_Imaginary long double) 3.1if) / (long) -5000,
-    ((_Imaginary long double) 3.2if) / (unsigned long) 5000,
-    ((long) -5000) / ((_Imaginary long double) 3.4if),
-    ((unsigned long) 5000) / ((_Imaginary long double) 3.5if),
+                     ((_Imaginary long double) 3.0if) / ((_Imaginary long double) 9.0if),
+                     ((_Imaginary long double) 3.0if) / ((long double) 9.0f),
+                     ((long double) 3.0f) / ((_Imaginary long double) 9.0if),
+                     ((_Imaginary long double) 3.0if) / ((_Complex long double) 6.0f + 9.0if),
+                     ((_Complex long double) 6.0f + 9.0if) / ((_Imaginary long double) -3.0if),
+                     ((_Imaginary long double) 3.1if) / (long) -5000,
+                     ((_Imaginary long double) 3.2if) / (unsigned long) 5000,
+                     ((long) -5000) / ((_Imaginary long double) 3.4if),
+                     ((unsigned long) 5000) / ((_Imaginary long double) 3.5if),
 
-    -((_Imaginary long double) 3.0if),
-    +((_Imaginary long double) -9.0if)
-};
+                     -((_Imaginary long double) 3.0if),
+                     +((_Imaginary long double) -9.0if)};
 
 float fi80_to_f32(_Imaginary long double x) {
     return x;
@@ -214,7 +204,7 @@ _Imaginary double f80_to_fi64(long double x) {
     return x;
 }
 
-_Imaginary long double f80_to_fi80(long double  x) {
+_Imaginary long double f80_to_fi80(long double x) {
     return x;
 }
 

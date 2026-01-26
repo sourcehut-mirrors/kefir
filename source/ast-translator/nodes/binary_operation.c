@@ -46,15 +46,20 @@ static kefir_result_t binary_prologue(struct kefir_mem *mem, struct kefir_ast_tr
     const struct kefir_ast_type *result_normalized_type =
         kefir_ast_translator_normalize_type(node->base.properties.type);
 
-    const kefir_bool_t multiplicative_op = node->type == KEFIR_AST_OPERATION_MULTIPLY || node->type == KEFIR_AST_OPERATION_DIVIDE;
+    const kefir_bool_t multiplicative_op =
+        node->type == KEFIR_AST_OPERATION_MULTIPLY || node->type == KEFIR_AST_OPERATION_DIVIDE;
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
-    if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
+    if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+        KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                 arg1_normalized_type->imaginary.real_type, result_normalized_type));
-    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(result_normalized_type)) {
+    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+               KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(result_normalized_type)) {
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                arg1_normalized_type->imaginary.real_type, result_normalized_type->imaginary.real_type));
-    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(result_normalized_type)) {
+                                                arg1_normalized_type->imaginary.real_type,
+                                                result_normalized_type->imaginary.real_type));
+    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type) &&
+               KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(result_normalized_type)) {
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                 arg1_normalized_type, result_normalized_type->imaginary.real_type));
     } else {
@@ -63,16 +68,21 @@ static kefir_result_t binary_prologue(struct kefir_mem *mem, struct kefir_ast_tr
     }
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
     if ((node->type == KEFIR_AST_OPERATION_SHIFT_LEFT || node->type == KEFIR_AST_OPERATION_SHIFT_RIGHT) &&
-        (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(result_normalized_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(result_normalized_type))) {
+        (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(result_normalized_type) ||
+         KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(result_normalized_type))) {
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                 arg2_normalized_type, context->ast_context->type_traits->size_type));
-    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
+    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+               KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                 arg2_normalized_type->imaginary.real_type, result_normalized_type));
-    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(result_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
+    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(result_normalized_type) &&
+               KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                arg2_normalized_type->imaginary.real_type, result_normalized_type->imaginary.real_type));
-    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(result_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type)) {
+                                                arg2_normalized_type->imaginary.real_type,
+                                                result_normalized_type->imaginary.real_type));
+    } else if (multiplicative_op && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(result_normalized_type) &&
+               KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type)) {
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                 arg2_normalized_type, result_normalized_type->imaginary.real_type));
     } else {
@@ -138,7 +148,7 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
             case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
                 break;
-    
+
             case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_ADD, 0));
                 break;
@@ -252,7 +262,7 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
             case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SUB, 0));
                 break;
-    
+
             case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_SUB, 0));
                 break;
@@ -356,21 +366,24 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
 
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_MUL, 0));
-            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+                KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_NEG, 0));
             }
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_MUL, 0));
-            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+                KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_NEG, 0));
             }
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_MUL, 0));
-            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
+            if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+                KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_NEG, 0));
             }
             break;
@@ -414,8 +427,8 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT64_MUL, 0));
             }
             break;
-    
-            case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+
+        case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, result_normalized_type,
                                                 &result_type_signedness));
             if (result_type_signedness) {
@@ -494,21 +507,24 @@ static kefir_result_t translate_division(struct kefir_mem *mem, struct kefir_ast
 
         case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_DIV, 0));
-            if (!KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
+            if (!KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+                KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_NEG, 0));
             }
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_DIV, 0));
-            if (!KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
+            if (!KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+                KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_NEG, 0));
             }
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_DIV, 0));
-            if (!KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
+            if (!KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+                KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type)) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_NEG, 0));
             }
             break;
@@ -552,8 +568,8 @@ static kefir_result_t translate_division(struct kefir_mem *mem, struct kefir_ast
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT64_DIV, 0));
             }
             break;
-    
-            case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+
+        case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, result_normalized_type,
                                                 &result_type_signedness));
             if (result_type_signedness) {
@@ -644,8 +660,8 @@ static kefir_result_t translate_modulo(struct kefir_mem *mem, struct kefir_ast_t
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT64_MOD, 0));
             }
             break;
-    
-            case KEFIR_AST_TYPE_DATA_MODEL_INT128:
+
+        case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, result_normalized_type,
                                                 &result_type_signedness));
             if (result_type_signedness) {
@@ -702,7 +718,7 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_LSHIFT, 0));
                     break;
-    
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_LSHIFT, 0));
                     break;
@@ -758,7 +774,7 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_RSHIFT, 0));
                     }
                     break;
-    
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                     REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, result_normalized_type,
                                                         &result_type_signedness));
@@ -940,10 +956,9 @@ static kefir_result_t translate_relational_equals(const struct kefir_ast_type_tr
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_INT64_EQUALS));
             break;
-    
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-            REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_EQUAL, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_EQUAL, 0));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:

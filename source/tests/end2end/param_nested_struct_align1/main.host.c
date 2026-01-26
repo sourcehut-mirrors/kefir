@@ -25,9 +25,7 @@
 #include <complex.h>
 #include "./definitions.h"
 
-struct S1 s1 = {
-    {-1, 2, 3, 4}, 5
-};
+struct S1 s1 = {{-1, 2, 3, 4}, 5};
 
 int main(void) {
     struct S1 r1 = get();

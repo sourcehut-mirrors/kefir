@@ -21,5 +21,5 @@
 #include "./definitions.h"
 
 struct S get_empty_s() {
-    return (struct S){};
+    return (struct S) {};
 }

@@ -27,28 +27,18 @@ VAL(__STDC_EMBED_NOT_FOUND__)
 #define SOMEDIR somedir
 #define SOMEFILE(N) <dir2/file##N.txt>
 
-__has_embed("file1.txt")
-__has_embed("filex.txt")
-__has_embed(<file2.txt>)
-__has_embed(<somedir/file2.txt>)
-__has_embed(SOMEFILE(2))
-__has_embed(SOMEFILE(3))
-__has_embed(__FILE__)
-__has_embed(__DATE__)
+__has_embed("file1.txt") __has_embed("filex.txt") __has_embed(<file2.txt>) __has_embed(<somedir / file2.txt>)
+    __has_embed(SOMEFILE(2)) __has_embed(SOMEFILE(3)) __has_embed(__FILE__) __has_embed(__DATE__)
 
-XXX
+        XXX
 
-__has_embed("file1.txt" limit(0))
-__has_embed("file1.txt" limit(1))
-__has_embed("file1.txt" limit(~0ull))
+    __has_embed("file1.txt" limit(0)) __has_embed("file1.txt" limit(1)) __has_embed("file1.txt" limit(~0ull))
 
-XXX
+        XXX
 
-__has_embed("empty.txt")
-__has_embed("empty.txt" limit(100))
-__has_embed("empty.txt" limit(100) prefix(1))
+    __has_embed("empty.txt") __has_embed("empty.txt" limit(100)) __has_embed("empty.txt" limit(100) prefix(1))
 
-XXX
+        XXX
 
-__has_embed(__FILE__ limit(10) prefix(X) suffix(Y) if_empty(Z))
-__has_embed(__FILE__ limit(10) prefix(X) suffix(Y) if_empty(Z) something_else)
+    __has_embed(__FILE__ limit(10) prefix(X) suffix(Y) if_empty(Z))
+        __has_embed(__FILE__ limit(10) prefix(X) suffix(Y) if_empty(Z) something_else)

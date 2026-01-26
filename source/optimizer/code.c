@@ -2893,7 +2893,8 @@ kefir_result_t kefir_opt_code_container_replace_references(struct kefir_mem *mem
     }
 
     if (code->event_listener != NULL && code->event_listener->on_new_instruction != NULL) {
-        REQUIRE_OK(code->event_listener->on_replace_instruction(mem, code, to_ref, from_ref, code->event_listener->payload));
+        REQUIRE_OK(
+            code->event_listener->on_replace_instruction(mem, code, to_ref, from_ref, code->event_listener->payload));
     }
     return KEFIR_OK;
 }

@@ -23,5 +23,5 @@
 struct Structure1 S1 = {40, 30, 20, 10};
 
 struct Structure1 fills(int x) {
-    return (struct Structure1){x + 3, x + 2, x + 1, x};
+    return (struct Structure1) {x + 3, x + 2, x + 1, x};
 }

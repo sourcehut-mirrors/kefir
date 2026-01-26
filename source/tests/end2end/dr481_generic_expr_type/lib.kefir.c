@@ -20,14 +20,14 @@
 
 #include "./definitions.h"
 
-extern const int Values[] = {_Generic((const int){0}, int: 1, const int: 2, const volatile int: 3, default: 4),
-                             _Generic((const volatile int){10}, int: 1, const int: 2, default: 3),
-                             _Generic((const volatile double){1000}, int: 1, const int: 2, default: 3),
-                             _Generic((const volatile double){10000}, int: 1, const int: 2, double: 101, default: 3),
-                             _Generic((const long *volatile){0},
-                             long: 1,
-                             const long: 2,
-                             long *: 3,
-                             const long *: 4,
-                             const long *volatile: 5,
-                             default: 6)};
+extern const int Values[] = {_Generic((const int) {0}, int: 1, const int: 2, const volatile int: 3, default: 4),
+                             _Generic((const volatile int) {10}, int: 1, const int: 2, default: 3),
+                             _Generic((const volatile double) {1000}, int: 1, const int: 2, default: 3),
+                             _Generic((const volatile double) {10000}, int: 1, const int: 2, double: 101, default: 3),
+                             _Generic((const long *volatile) {0},
+                                 long: 1,
+                                 const long: 2,
+                                 long *: 3,
+                                 const long *: 4,
+                                 const long *volatile: 5,
+                                 default: 6)};

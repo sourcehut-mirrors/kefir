@@ -19,10 +19,9 @@
 */
 
 void test(int _v, int _low) {
-  __typeof__(({
+    __typeof__(({
         __typeof__(_v) _max_a = (_v);
-	__typeof__(_low) _max_b = (_low);
-	(_max_a >= _max_b) ? _max_a : _max_b;
-  })) a;
+        __typeof__(_low) _max_b = (_low);
+        (_max_a >= _max_b) ? _max_a : _max_b;
+    })) a;
 }
-

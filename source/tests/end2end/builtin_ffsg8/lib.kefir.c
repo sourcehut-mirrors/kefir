@@ -18,8 +18,5 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-int arr[] = {__builtin_ffsg((__int128) 0),
-    __builtin_ffsg((__int128) 1),
-    __builtin_ffsg(((__int128) 1) << 31),
-    __builtin_ffsg(((__int128) 1) << 70),
-    __builtin_ffsg(((__int128) 1) << 127)};
+int arr[] = {__builtin_ffsg((__int128) 0), __builtin_ffsg((__int128) 1), __builtin_ffsg(((__int128) 1) << 31),
+             __builtin_ffsg(((__int128) 1) << 70), __builtin_ffsg(((__int128) 1) << 127)};

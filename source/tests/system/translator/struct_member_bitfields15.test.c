@@ -43,7 +43,7 @@ int main(int argc, const char **argv) {
 
     for (int i = -2000; i < 2000; i++) {
         for (int j = -1000; j < 1000; j += 250) {
-            ASSERT(sum(&(struct param){.a = 2 * -i, .b = 2, .c = 10, .d = -60, .e = i, .f = j}) ==
+            ASSERT(sum(&(struct param) {.a = 2 * -i, .b = 2, .c = 10, .d = -60, .e = i, .f = j}) ==
                    (int) (2 * -i + 2 + 10 - 60 + i + j + sizeof(struct param) + _Alignof(struct param)));
         }
     }

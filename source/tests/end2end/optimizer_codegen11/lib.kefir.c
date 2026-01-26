@@ -21,11 +21,11 @@
 #include "./definitions.h"
 
 struct Struct1 get_struct1(void) {
-    return (struct Struct1){0};
+    return (struct Struct1) {0};
 }
 
 void zero_struct1(struct Struct1 *x) {
-    *x = (struct Struct1){0};
+    *x = (struct Struct1) {0};
 }
 
 struct Struct2 get_struct2(long a) {
@@ -36,5 +36,5 @@ struct Struct2 get_struct2(long a) {
 }
 
 void zero_struct2(struct Struct2 *x) {
-    *x = (struct Struct2){0};
+    *x = (struct Struct2) {0};
 }

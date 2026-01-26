@@ -46,19 +46,19 @@ extern double sum10d(double a, double b, double c, double d, double e, double f,
 }
 
 union Sumf sumf(union Sumf s) {
-    return (union Sumf){.result = s.x + s.y};
+    return (union Sumf) {.result = s.x + s.y};
 }
 
 union Sumd sumd(union Sumd s) {
-    return (union Sumd){.result = s.x + s.y};
+    return (union Sumd) {.result = s.x + s.y};
 }
 
 union Sumf my_hypotf2(union Sumf s) {
-    return sumf((union Sumf){.x = mulf(s.x, s.x), .y = mulf(s.y, s.y)});
+    return sumf((union Sumf) {.x = mulf(s.x, s.x), .y = mulf(s.y, s.y)});
 }
 
 union Sumd my_hypotd2(union Sumd s) {
-    return sumd((union Sumd){.x = muld(s.x, s.x), .y = muld(s.y, s.y)});
+    return sumd((union Sumd) {.x = muld(s.x, s.x), .y = muld(s.y, s.y)});
 }
 
 void farr_map(float *arr, int length, float (*map_fn)(float)) {

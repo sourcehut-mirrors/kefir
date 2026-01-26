@@ -71,13 +71,16 @@ kefir_result_t kefir_codegen_amd64_generate_dwarf_debug_info(struct kefir_mem *m
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_dwarf_insert_string(
-    struct kefir_mem *mem, struct kefir_codegen_amd64_dwarf_context *context, const char *string, kefir_codegen_amd64_dwarf_entry_id_t *entry_id_ptr) {
+kefir_result_t kefir_codegen_amd64_dwarf_insert_string(struct kefir_mem *mem,
+                                                       struct kefir_codegen_amd64_dwarf_context *context,
+                                                       const char *string,
+                                                       kefir_codegen_amd64_dwarf_entry_id_t *entry_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 dwarf context"));
     REQUIRE(string != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string"));
-    REQUIRE(entry_id_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to DWARF entry identifier"));
-    
+    REQUIRE(entry_id_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to DWARF entry identifier"));
+
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&context->strings.entries.strings, (kefir_hashtree_key_t) string, &node);
     if (res != KEFIR_NOT_FOUND) {
@@ -87,13 +90,15 @@ kefir_result_t kefir_codegen_amd64_dwarf_insert_string(
     }
 
     kefir_codegen_amd64_dwarf_entry_id_t entry_id = context->strings.entries.next_string_id++;
-    REQUIRE_OK(kefir_hashtree_insert(mem, &context->strings.entries.strings, (kefir_hashtree_key_t) string, (kefir_hashtree_value_t) entry_id));
+    REQUIRE_OK(kefir_hashtree_insert(mem, &context->strings.entries.strings, (kefir_hashtree_key_t) string,
+                                     (kefir_hashtree_value_t) entry_id));
     *entry_id_ptr = entry_id;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_dwarf_generate_strp(
-    struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen, struct kefir_codegen_amd64_dwarf_context *context, const char *string) {
+kefir_result_t kefir_codegen_amd64_dwarf_generate_strp(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen,
+                                                       struct kefir_codegen_amd64_dwarf_context *context,
+                                                       const char *string) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 xasmgen"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 dwarf context"));

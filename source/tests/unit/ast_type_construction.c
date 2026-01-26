@@ -395,7 +395,7 @@ END_CASE
         kefir_bool_t _has_value;                                                   \
         kefir_ast_constant_expression_int_t _cnst;                                 \
         ASSERT_OK(kefir_ast_enumeration_get((_enum), (_id), &_has_value, &_cnst)); \
-        ASSERT(_has_value &&_cnst == (_value));                                    \
+        ASSERT(_has_value && _cnst == (_value));                                   \
     } while (0)
 
 #define ASSERT_NO_ENUM_CONSTANT(_enum, _id)                                                        \

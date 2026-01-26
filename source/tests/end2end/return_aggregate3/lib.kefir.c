@@ -24,6 +24,6 @@ struct S1 test(unsigned long x) {
     if (x) {
         return get(~x);
     } else {
-        return (struct S1){};
+        return (struct S1) {};
     }
 }

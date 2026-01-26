@@ -18,17 +18,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define TEST(hi) { .h##i = (hi) }
-#define TEST2(a, b, c, abc) { .a##b##c = abc }
-#define TEST3(a, b, c, d, e, f, abcdef) { .a##b##c##d##e##f = abcdef }
+#define TEST(hi) {.h##i = (hi)}
+#define TEST2(a, b, c, abc) {.a##b##c = abc}
+#define TEST3(a, b, c, d, e, f, abcdef) {.a##b##c##d##e##f = abcdef}
 
 TEST(1)
 TEST(A)
 TEST(hi)
 TEST2(x, y, z, 1000)
 TEST2(a, b, c, 1001)
-TEST2(X,, Y, abc)
+TEST2(X, , Y, abc)
 TEST3(x, y, z, g, h, i, 6)
 TEST3(x, y, z, g, h, i, xyzghi)
 TEST3(x, y, z, g, h, i, abcdef)
-TEST3(x, ,, a,, d, 5)
+TEST3(x, , , a, , d, 5)

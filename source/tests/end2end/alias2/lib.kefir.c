@@ -23,9 +23,4 @@
 extern long some_value[4] __attribute__((alias("other_value")));
 extern long other_value[4] __attribute__((alias("another_value")));
 
-long another_value[4] = {
-    1234,
-    0xcafe,
-    -1,
-    0xfefe
-};
+long another_value[4] = {1234, 0xcafe, -1, 0xfefe};

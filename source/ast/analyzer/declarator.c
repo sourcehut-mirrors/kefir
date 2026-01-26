@@ -337,7 +337,8 @@ static kefir_result_t enum_constant_compare(const struct kefir_ast_type_traits *
     const struct kefir_ast_type *common_arith_type =
         kefir_ast_type_common_arithmetic(type_traits, lhs_type, (struct kefir_ast_bitfield_properties) {0}, rhs_type,
                                          (struct kefir_ast_bitfield_properties) {0});
-    REQUIRE(common_arith_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to determina common arithmetic type"));
+    REQUIRE(common_arith_type != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to determina common arithmetic type"));
     kefir_bool_t is_signed;
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, common_arith_type, &is_signed));
 
@@ -786,9 +787,11 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                 *base_type = kefir_ast_type_signed_long_long();
             } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
                 *base_type = kefir_ast_type_long_double();
-            } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT && (*base_type)->complex.real_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+            } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT &&
+                       (*base_type)->complex.real_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
                 *base_type = kefir_ast_type_complex_long_double();
-            } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT && (*base_type)->complex.real_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+            } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT &&
+                       (*base_type)->complex.real_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
                 *base_type = kefir_ast_type_imaginary_long_double();
             } else if (*base_type == NULL && *real_class == REAL_COMPLEX) {
                 *real_class = REAL_COMPLEX_LONG;
@@ -890,8 +893,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_DECIMAL32:
-            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Decimal32 type specifier cannot be combined with others"));
+            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Decimal32 type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
@@ -900,8 +904,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_DECIMAL64:
-            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Decimal64 type specifier cannot be combined with others"));
+            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Decimal64 type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
@@ -910,8 +915,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_DECIMAL128:
-            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Decimal128 type specifier cannot be combined with others"));
+            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Decimal128 type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
@@ -920,8 +926,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT32:
-            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float32 type specifier cannot be combined with others"));
+            REQUIRE(*base_type == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Float32 type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
@@ -940,8 +947,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT64:
-            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float64 type specifier cannot be combined with others"));
+            REQUIRE(*base_type == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Float64 type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
@@ -960,8 +968,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT80:
-            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float80 type specifier cannot be combined with others"));
+            REQUIRE(*base_type == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Float80 type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
@@ -980,8 +989,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT32X:
-            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float32x type specifier cannot be combined with others"));
+            REQUIRE(*base_type == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Float32x type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
@@ -1000,8 +1010,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT64X:
-            REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Float64x type specifier cannot be combined with others"));
+            REQUIRE(*base_type == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Float64x type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
@@ -1020,8 +1031,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_DECIMAL64X:
-            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                                               "Decimal64x type specifier cannot be combined with others"));
+            REQUIRE(*base_type == NULL && *real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Decimal64x type specifier cannot be combined with others"));
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
@@ -1804,9 +1816,11 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
 
     if (res == KEFIR_OK) {
         struct kefir_ast_declarator_specifier *declatator_specifier;
-        for (struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(specifiers, &declatator_specifier);
-            iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
-            if (declatator_specifier->klass == KEFIR_AST_FUNCTION_SPECIFIER && declatator_specifier->function_specifier == KEFIR_AST_FUNCTION_SPECIFIER_TYPE_NORETURN) {
+        for (struct kefir_list_entry *iter =
+                 kefir_ast_declarator_specifier_list_iter(specifiers, &declatator_specifier);
+             iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
+            if (declatator_specifier->klass == KEFIR_AST_FUNCTION_SPECIFIER &&
+                declatator_specifier->function_specifier == KEFIR_AST_FUNCTION_SPECIFIER_TYPE_NORETURN) {
                 func_type->attributes.no_return = true;
                 break;
             }

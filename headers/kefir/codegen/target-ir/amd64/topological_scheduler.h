@@ -24,6 +24,7 @@
 #include "kefir/codegen/target-ir/schedule.h"
 #include "kefir/codegen/target-ir/control_flow.h"
 
-kefir_result_t kefir_codegen_target_ir_amd64_topological_scheduler_init(const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_code_scheduler *);
+kefir_result_t kefir_codegen_target_ir_amd64_topological_scheduler_init(
+    const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_code_scheduler *);
 
 #endif

@@ -332,13 +332,16 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
         res = kefir_ast_analyze_node(mem, &local_context->context, item);
-        REQUIRE_CHAIN_SET(&res, item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
-                    item->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
-                    item->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR ||
-                    item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &item->source_location,
-                                       "Compound statement items shall be either statements or declarations"));
-        if (res == KEFIR_ANALYSIS_ERROR && KEFIR_AST_CONTEXT_DO_ERROR_RECOVERY(context, context->global_context->encountered_errors)) {
+        REQUIRE_CHAIN_SET(
+            &res,
+            item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+                item->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
+                item->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR ||
+                item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &item->source_location,
+                                   "Compound statement items shall be either statements or declarations"));
+        if (res == KEFIR_ANALYSIS_ERROR &&
+            KEFIR_AST_CONTEXT_DO_ERROR_RECOVERY(context, context->global_context->encountered_errors)) {
             has_analysis_errors = true;
             context->global_context->encountered_errors++;
         } else {
@@ -373,9 +376,10 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
         base->properties.function_definition.pragma_stats.cx_limited_range = KEFIR_AST_PRAGMA_VALUE_DEFAULT;
     }
     if ((local_context->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_ON &&
-        base->properties.function_definition.pragma_stats.cx_limited_range != KEFIR_AST_PRAGMA_VALUE_OFF) ||
+         base->properties.function_definition.pragma_stats.cx_limited_range != KEFIR_AST_PRAGMA_VALUE_OFF) ||
         local_context->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_OFF) {
-        base->properties.function_definition.pragma_stats.cx_limited_range = local_context->pragma_stats.cx_limited_range;
+        base->properties.function_definition.pragma_stats.cx_limited_range =
+            local_context->pragma_stats.cx_limited_range;
     }
     return KEFIR_OK;
 }

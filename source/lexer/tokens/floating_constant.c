@@ -142,7 +142,8 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
                     *constant_type = FLOAT32_CONSTANT;
                     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
                 }
-            } else if (kefir_lexer_source_cursor_at(cursor, 1) == U'6' && kefir_lexer_source_cursor_at(cursor, 2) == U'4') {
+            } else if (kefir_lexer_source_cursor_at(cursor, 1) == U'6' &&
+                       kefir_lexer_source_cursor_at(cursor, 2) == U'4') {
                 if (kefir_lexer_source_cursor_at(cursor, 3) == U'x') {
                     *constant_type = FLOAT64X_CONSTANT;
                     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 4));
@@ -150,7 +151,8 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
                     *constant_type = FLOAT64_CONSTANT;
                     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
                 }
-            } else if (kefir_lexer_source_cursor_at(cursor, 1) == U'8' && kefir_lexer_source_cursor_at(cursor, 2) == U'0') {
+            } else if (kefir_lexer_source_cursor_at(cursor, 1) == U'8' &&
+                       kefir_lexer_source_cursor_at(cursor, 2) == U'0') {
                 *constant_type = FLOAT80_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
             } else {

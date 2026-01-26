@@ -21,51 +21,61 @@
 #include "./definitions.h"
 
 _Complex float get(int x, int a, _Complex float b, _Complex float c) {
-        if (x)  b = a == 1 ? b : c;
-        return b;
+    if (x)
+        b = a == 1 ? b : c;
+    return b;
 }
 
 _Complex float get2(int x, int a, _Complex float b, _Complex float c) {
-        if (x)  b = a != 2 ? b : c;
-        return b;
+    if (x)
+        b = a != 2 ? b : c;
+    return b;
 }
 
 _Complex float get3(int x, int a, _Complex float b, _Complex float c) {
-        if (x)  b = a > 3 ? b : c;
-        return b;
+    if (x)
+        b = a > 3 ? b : c;
+    return b;
 }
 
 _Complex float get4(int x, int a, _Complex float b, _Complex float c) {
-        if (x)  b = a >= 4 ? b : c;
-        return b;
+    if (x)
+        b = a >= 4 ? b : c;
+    return b;
 }
 
 _Complex float get5(int x, int a, _Complex float b, _Complex float c) {
-        if (x)  b = a < -3 ? b : c;
-        return b;
+    if (x)
+        b = a < -3 ? b : c;
+    return b;
 }
 
 _Complex float get6(int x, int a, _Complex float b, _Complex float c) {
-        if (x)  b = a <= -4 ? b : c;
-        return b;
+    if (x)
+        b = a <= -4 ? b : c;
+    return b;
 }
 
 _Complex float get7(int x, unsigned int a, _Complex float b, _Complex float c) {
-        if (x)  b = a > 30 ? b : c;
-        return b;
+    if (x)
+        b = a > 30 ? b : c;
+    return b;
 }
 
 _Complex float get8(int x, unsigned int a, _Complex float b, _Complex float c) {
-        if (x)  b = a >= 40 ? b : c;
-        return b;
+    if (x)
+        b = a >= 40 ? b : c;
+    return b;
 }
 
 _Complex float get9(int x, unsigned int a, _Complex float b, _Complex float c) {
-        if (x)  b = a < 100 ? b : c;
-        return b;
+    if (x)
+        b = a < 100 ? b : c;
+    return b;
 }
 
 _Complex float get10(int x, unsigned int a, _Complex float b, _Complex float c) {
-        if (x)  b = a <= 200 ? b : c;
-        return b;
+    if (x)
+        b = a <= 200 ? b : c;
+    return b;
 }

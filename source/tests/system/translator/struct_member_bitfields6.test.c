@@ -39,7 +39,7 @@ int main(int argc, const char **argv) {
     UNUSED(argv);
 
     for (int i = 0; i < 100; i++) {
-        ASSERT(sum(&(struct param){.a = -3, .b = i, .c = i * 8, .d = 15}) ==
+        ASSERT(sum(&(struct param) {.a = -3, .b = i, .c = i * 8, .d = 15}) ==
                (int) (-3 + i * 9 + 15 + sizeof(struct param) + _Alignof(struct param)));
     }
     return EXIT_SUCCESS;

@@ -206,9 +206,13 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.preprocessor_configuration.standard_version = options->standard_version;
     compiler.preprocessor_context.environment.stdc_no_atomics = !options->features.declare_atomic_support;
     if (options->features.declare_decimal_support) {
-        compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support = options->features.declare_decimal_bitint_conv_support && (compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support || options->features.imprecise_decimal_bitint_conv);
+        compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support =
+            options->features.declare_decimal_bitint_conv_support &&
+            (compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support ||
+             options->features.imprecise_decimal_bitint_conv);
     } else {
-        compiler.preprocessor_context.environment.kefir_decimal_support = KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_NO_SUPPORT;
+        compiler.preprocessor_context.environment.kefir_decimal_support =
+            KEFIR_PREPROCESSOR_ENVIRONMENT_DECIMAL_NO_SUPPORT;
         compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support = false;
     }
     for (const char **attribute = KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES; *attribute != NULL; ++attribute) {
@@ -254,7 +258,8 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.ast_global_context.configuration.analysis.tentative_definition_placement =
         options->codegen.tentative_definition_placement;
     compiler.ast_global_context.configuration.analysis.symbol_visibility = options->codegen.symbol_visibility;
-    compiler.ast_global_context.configuration.analysis.imprecise_decimal_bitint_conv = options->features.imprecise_decimal_bitint_conv;
+    compiler.ast_global_context.configuration.analysis.imprecise_decimal_bitint_conv =
+        options->features.imprecise_decimal_bitint_conv;
     compiler.ast_global_context.configuration.analysis.max_errors = options->features.max_analyzer_errors;
 
     compiler.translator_configuration.empty_structs = options->features.empty_structs;
@@ -745,7 +750,8 @@ kefir_result_t kefir_run_compiler(struct kefir_mem *mem, const struct kefir_comp
     return KEFIR_OK;
 }
 
-kefir_bool_t kefir_report_error(FILE *output, kefir_result_t res, kefir_bool_t print_json, kefir_bool_t print_compiler_ref) {
+kefir_bool_t kefir_report_error(FILE *output, kefir_result_t res, kefir_bool_t print_json,
+                                kefir_bool_t print_compiler_ref) {
     if (res == KEFIR_OK) {
         return true;
     } else {

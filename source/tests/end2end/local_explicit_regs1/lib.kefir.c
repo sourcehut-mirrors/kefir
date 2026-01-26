@@ -26,9 +26,7 @@ long testfn(long a, long b, long c) {
     register long p2 asm("rsi") = a;
     register long p3 asm("rdx") = b;
     register long r1 asm("rax");
-    asm("call somefn"
-        : "=r"(r1)
-        : "r"(p1), "r"(p2), "r"(p3));
+    asm("call somefn" : "=r"(r1) : "r"(p1), "r"(p2), "r"(p3));
     return r1;
 }
 #endif

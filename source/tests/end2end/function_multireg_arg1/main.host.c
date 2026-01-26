@@ -58,17 +58,17 @@ long call8(struct X8 x) {
 
 int main(void) {
     for (char i = -100; i < 100; i++) {
-        assert(call1_proxy(&(struct X1){{i}}) == i);
-        assert(call2_proxy(&(struct X2){{i, i * 2}}) == i + (char) (i * 2));
-        assert(call3_proxy(&(struct X3){{i, i * 2, i / 2}}) == i + (char) (i * 2) + (char) (i / 2));
-        assert(call4_proxy(&(struct X4){{i, i * 2, i / 2, ~i}}) == i + (char) (i * 2) + (char) (i / 2) + (char) ~i);
-        assert(call5_proxy(&(struct X5){{i, i * 2, i / 2, ~i, i ^ 0xca}}) ==
+        assert(call1_proxy(&(struct X1) {{i}}) == i);
+        assert(call2_proxy(&(struct X2) {{i, i * 2}}) == i + (char) (i * 2));
+        assert(call3_proxy(&(struct X3) {{i, i * 2, i / 2}}) == i + (char) (i * 2) + (char) (i / 2));
+        assert(call4_proxy(&(struct X4) {{i, i * 2, i / 2, ~i}}) == i + (char) (i * 2) + (char) (i / 2) + (char) ~i);
+        assert(call5_proxy(&(struct X5) {{i, i * 2, i / 2, ~i, i ^ 0xca}}) ==
                i + (char) (i * 2) + (char) (i / 2) + (char) ~i + (char) (i ^ 0xca));
-        assert(call6_proxy(&(struct X6){{i, i * 2, i / 2, ~i, i ^ 0xca, i - 1}}) ==
+        assert(call6_proxy(&(struct X6) {{i, i * 2, i / 2, ~i, i ^ 0xca, i - 1}}) ==
                i + (char) (i * 2) + (char) (i / 2) + (char) ~i + (char) (i ^ 0xca) + (char) (i - 1));
-        assert(call7_proxy(&(struct X7){{i, i * 2, i / 2, ~i, i ^ 0xca, i - 1, 123}}) ==
+        assert(call7_proxy(&(struct X7) {{i, i * 2, i / 2, ~i, i ^ 0xca, i - 1, 123}}) ==
                (i + (char) (i * 2) + (char) (i / 2) + (char) ~i + (char) (i ^ 0xca) + (char) (i - 1) + (char) 123));
-        assert(call8_proxy(&(struct X8){{i, i * 2, i / 2, ~i, i ^ 0xca, i - 1, 123, i >> 1}}) ==
+        assert(call8_proxy(&(struct X8) {{i, i * 2, i / 2, ~i, i ^ 0xca, i - 1, 123, i >> 1}}) ==
                (i + (char) (i * 2) + (char) (i / 2) + (char) ~i + (char) (i ^ 0xca) + (char) (i - 1) + (char) 123 +
                 (char) (i >> 1)));
     }

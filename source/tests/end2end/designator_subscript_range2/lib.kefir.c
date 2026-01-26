@@ -21,5 +21,5 @@
 #include "./definitions.h"
 
 struct B getb(int x) {
-    return (struct B){.b[0 ... 4].a[0 ... 9] = getinteger(x), .c[0 ... 9] = getinteger(x * 2)};
+    return (struct B) {.b[0 ... 4].a[0 ... 9] = getinteger(x), .c[0 ... 9] = getinteger(x * 2)};
 }

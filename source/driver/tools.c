@@ -248,19 +248,19 @@ static kefir_result_t output_compiler_config(FILE *output,
             // Intentionally left blank
             break;
 
-    case KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT:
+        case KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT:
             fprintf(output, " --codegen-visibility-default");
             break;
 
-    case KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN:
+        case KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN:
             fprintf(output, " --codegen-visibility-hidden");
             break;
 
-    case KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED:
+        case KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED:
             fprintf(output, " --codegen-visibility-protected");
             break;
 
-    case KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL:
+        case KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL:
             fprintf(output, " --codegen-visibility-internal");
             break;
     }
@@ -295,7 +295,8 @@ static int run_compiler(void *payload) {
     configure_compiler_signals();
     ASSIGN_DECL_CAST(const struct kefir_compiler_runner_configuration *, configuration, payload);
     kefir_result_t res = kefir_run_compiler(kefir_system_memalloc(), configuration);
-    return kefir_report_error(stderr, res, configuration->error_report_type == KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON, configuration->features.error_compiler_ref)
+    return kefir_report_error(stderr, res, configuration->error_report_type == KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON,
+                              configuration->features.error_compiler_ref)
                ? EXIT_SUCCESS
                : EXIT_FAILURE;
 }

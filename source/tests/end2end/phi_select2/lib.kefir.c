@@ -20,9 +20,9 @@
 
 #include "./definitions.h"
 
-#define DEF(_op, _oper) \
+#define DEF(_op, _oper)                                 \
     long select_##_op(long a, long b, long x, long y) { \
-        return a _oper b ? x : y; \
+        return a _oper b ? x : y;                       \
     }
 
 DEF(equals, ==)
@@ -34,9 +34,9 @@ DEF(lesser_or_equals, <=)
 
 #undef DEF
 
-#define DEF(_op, _oper) \
+#define DEF(_op, _oper)                                                   \
     long select_##_op(unsigned long a, unsigned long b, long x, long y) { \
-        return a _oper b ? x : y; \
+        return a _oper b ? x : y;                                         \
     }
 
 DEF(above, >)

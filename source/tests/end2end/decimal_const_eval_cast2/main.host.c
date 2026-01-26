@@ -28,7 +28,7 @@ int main(void) {
 #ifndef KEFIR_PLATFORM_DECIMAL_DPD
     assert(a[i++] == 847249408);
     assert(a[i++] == 800066001);
-    assert(a[i++] == 847249408 );
+    assert(a[i++] == 847249408);
     assert(a[i++] == 837230439);
     assert(a[i++] == 847249408);
     assert(a[i++] == 1830907570);
@@ -193,7 +193,7 @@ int main(void) {
     assert(b[i++] == 1781443759ll);
     assert(b[i++] == -878100968ll);
     assert(b[i++] == 1847474839ll);
-    
+
     i = 0;
     assert(c[i++] == 0ll);
     assert(c[i++] == 0ll);

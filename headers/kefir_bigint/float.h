@@ -272,9 +272,9 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEF
             (void) __kefir_bigint_set_unsigned_integer((_digits), (_width), (_mantissa));                        \
             (void) __kefir_bigint_left_shift((_digits), (_exponent) - (_mantissa_width), (_width));              \
         }                                                                                                        \
-        if (sign) {                                                                                            \
-            (void) __kefir_bigint_negate((_digits), (_width));                                                 \
-        }                                                                                                      \
+        if (sign) {                                                                                              \
+            (void) __kefir_bigint_negate((_digits), (_width));                                                   \
+        }                                                                                                        \
     } while (0)
 
 #define __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_OFFSET 127

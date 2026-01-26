@@ -25,56 +25,55 @@
 #include "./definitions.h"
 
 int main(void) {
-    assert(!i128_to_bool((struct i128){{0, 0}}));
-    assert(i128_to_bool((struct i128){{0, 1}}));
-    assert(i128_to_bool((struct i128){{1, 0}}));
-    assert(i128_to_bool((struct i128){{-1, -1}}));
-    assert(!u128_to_bool((struct i128){{0, 0}}));
-    assert(u128_to_bool((struct i128){{0, 1}}));
-    assert(u128_to_bool((struct i128){{1, 0}}));
-    assert(u128_to_bool((struct i128){{-1, -1}}));
+    assert(!i128_to_bool((struct i128) {{0, 0}}));
+    assert(i128_to_bool((struct i128) {{0, 1}}));
+    assert(i128_to_bool((struct i128) {{1, 0}}));
+    assert(i128_to_bool((struct i128) {{-1, -1}}));
+    assert(!u128_to_bool((struct i128) {{0, 0}}));
+    assert(u128_to_bool((struct i128) {{0, 1}}));
+    assert(u128_to_bool((struct i128) {{1, 0}}));
+    assert(u128_to_bool((struct i128) {{-1, -1}}));
 
-    assert(i128_to_i64((struct i128){{0, 0}}) == 0);
-    assert(i128_to_i64((struct i128){{1, 0}}) == 1);
-    assert(i128_to_i64((struct i128){{-1, 0}}) == -1);
-    assert(i128_to_i64((struct i128){{0, 0}}) == 0);
-    assert(i128_to_i64((struct i128){{0, 1}}) == 0);
-    assert(i128_to_i64((struct i128){{0, -1}}) == 0);
-    assert(i128_to_i64((struct i128){{-1, -1}}) == -1);
-    assert(i128_to_i64((struct i128){{1, -1}}) == 1);
+    assert(i128_to_i64((struct i128) {{0, 0}}) == 0);
+    assert(i128_to_i64((struct i128) {{1, 0}}) == 1);
+    assert(i128_to_i64((struct i128) {{-1, 0}}) == -1);
+    assert(i128_to_i64((struct i128) {{0, 0}}) == 0);
+    assert(i128_to_i64((struct i128) {{0, 1}}) == 0);
+    assert(i128_to_i64((struct i128) {{0, -1}}) == 0);
+    assert(i128_to_i64((struct i128) {{-1, -1}}) == -1);
+    assert(i128_to_i64((struct i128) {{1, -1}}) == 1);
 
-    assert(i128_to_u64((struct i128){{0, 0}}) == 0);
-    assert(i128_to_u64((struct i128){{1, 0}}) == 1);
-    assert(i128_to_u64((struct i128){{-1, 0}}) == (unsigned long) -1);
-    assert(i128_to_u64((struct i128){{0, 0}}) == 0);
-    assert(i128_to_u64((struct i128){{0, 1}}) == 0);
-    assert(i128_to_u64((struct i128){{0, -1}}) == 0);
-    assert(i128_to_u64((struct i128){{-1, -1}}) == (unsigned long) -1);
-    assert(i128_to_u64((struct i128){{1, -1}}) == 1);
+    assert(i128_to_u64((struct i128) {{0, 0}}) == 0);
+    assert(i128_to_u64((struct i128) {{1, 0}}) == 1);
+    assert(i128_to_u64((struct i128) {{-1, 0}}) == (unsigned long) -1);
+    assert(i128_to_u64((struct i128) {{0, 0}}) == 0);
+    assert(i128_to_u64((struct i128) {{0, 1}}) == 0);
+    assert(i128_to_u64((struct i128) {{0, -1}}) == 0);
+    assert(i128_to_u64((struct i128) {{-1, -1}}) == (unsigned long) -1);
+    assert(i128_to_u64((struct i128) {{1, -1}}) == 1);
 
-    assert(u128_to_i64((struct i128){{0, 0}}) == 0);
-    assert(u128_to_i64((struct i128){{1, 0}}) == 1);
-    assert(u128_to_i64((struct i128){{-1, 0}}) == -1);
-    assert(u128_to_i64((struct i128){{0, 0}}) == 0);
-    assert(u128_to_i64((struct i128){{0, 1}}) == 0);
-    assert(u128_to_i64((struct i128){{0, -1}}) == 0);
-    assert(u128_to_i64((struct i128){{-1, -1}}) == -1);
-    assert(u128_to_i64((struct i128){{1, -1}}) == 1);
+    assert(u128_to_i64((struct i128) {{0, 0}}) == 0);
+    assert(u128_to_i64((struct i128) {{1, 0}}) == 1);
+    assert(u128_to_i64((struct i128) {{-1, 0}}) == -1);
+    assert(u128_to_i64((struct i128) {{0, 0}}) == 0);
+    assert(u128_to_i64((struct i128) {{0, 1}}) == 0);
+    assert(u128_to_i64((struct i128) {{0, -1}}) == 0);
+    assert(u128_to_i64((struct i128) {{-1, -1}}) == -1);
+    assert(u128_to_i64((struct i128) {{1, -1}}) == 1);
 
-    assert(u128_to_u64((struct i128){{0, 0}}) == 0);
-    assert(u128_to_u64((struct i128){{1, 0}}) == 1);
-    assert(u128_to_u64((struct i128){{-1, 0}}) == (unsigned long) -1);
-    assert(u128_to_u64((struct i128){{0, 0}}) == 0);
-    assert(u128_to_u64((struct i128){{0, 1}}) == 0);
-    assert(u128_to_u64((struct i128){{0, -1}}) == 0);
-    assert(u128_to_u64((struct i128){{-1, -1}}) == (unsigned long) -1);
-    assert(u128_to_u64((struct i128){{1, -1}}) == 1);
+    assert(u128_to_u64((struct i128) {{0, 0}}) == 0);
+    assert(u128_to_u64((struct i128) {{1, 0}}) == 1);
+    assert(u128_to_u64((struct i128) {{-1, 0}}) == (unsigned long) -1);
+    assert(u128_to_u64((struct i128) {{0, 0}}) == 0);
+    assert(u128_to_u64((struct i128) {{0, 1}}) == 0);
+    assert(u128_to_u64((struct i128) {{0, -1}}) == 0);
+    assert(u128_to_u64((struct i128) {{-1, -1}}) == (unsigned long) -1);
+    assert(u128_to_u64((struct i128) {{1, -1}}) == 1);
 
-
-// struct i128 i64_to_int128(long);
-// struct i128 u64_to_int128(unsigned long);
-// struct i128 i64_to_unt128(long);
-// struct i128 u64_to_unt128(unsigned long);
+    // struct i128 i64_to_int128(long);
+    // struct i128 u64_to_int128(unsigned long);
+    // struct i128 i64_to_unt128(long);
+    // struct i128 u64_to_unt128(unsigned long);
     struct i128 res = i64_to_int128(0);
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);

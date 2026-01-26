@@ -387,9 +387,8 @@ kefir_result_t kefir_token_new_constant_complex_float64(kefir_float64_t, kefir_f
 kefir_result_t kefir_token_new_constant_complex_long_double(kefir_long_double_t, kefir_long_double_t,
                                                             struct kefir_token *);
 kefir_result_t kefir_token_new_constant_complex_float64x(kefir_long_double_t, kefir_long_double_t,
-                                                            struct kefir_token *);
-kefir_result_t kefir_token_new_constant_complex_float80(kefir_long_double_t, kefir_long_double_t,
-                                                            struct kefir_token *);
+                                                         struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float80(kefir_long_double_t, kefir_long_double_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_decimal32(kefir_dfp_decimal32_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_decimal64(kefir_dfp_decimal64_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_decimal128(kefir_dfp_decimal128_t, struct kefir_token *);

@@ -73,8 +73,7 @@ static kefir_result_t preprocessor_next_impl(struct kefir_mem *mem, struct kefir
     if (res == KEFIR_NO_MATCH) {
         res = kefir_lexer_match_identifier(mem, lexer, token);
         if (res == KEFIR_OK &&
-            (strcmp(token->identifier, "__has_include") == 0 ||
-             strcmp(token->identifier, "__has_include_next") == 0 ||
+            (strcmp(token->identifier, "__has_include") == 0 || strcmp(token->identifier, "__has_include_next") == 0 ||
              strcmp(token->identifier, "__has_embed") == 0)) {
             next_tokenizer_state = KEFIR_PREPROCESSOR_TOKENIZER_HAS_INCLUDE1;
         }
@@ -109,23 +108,25 @@ static kefir_result_t preprocessor_next_impl(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_preprocessor_tokenizer_context_init(struct kefir_preprocessor_tokenizer_context *tokenizer_context) {
-    REQUIRE(tokenizer_context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to preprocessor tokenizer context"));
+kefir_result_t kefir_preprocessor_tokenizer_context_init(
+    struct kefir_preprocessor_tokenizer_context *tokenizer_context) {
+    REQUIRE(tokenizer_context != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to preprocessor tokenizer context"));
 
     tokenizer_context->state = KEFIR_PREPROCESSOR_TOKENIZER_NORMAL;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_preprocessor_tokenize_next(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_preprocessor_tokenizer_context *tokenizer_context,
+kefir_result_t kefir_preprocessor_tokenize_next(struct kefir_mem *mem, struct kefir_lexer *lexer,
+                                                struct kefir_preprocessor_tokenizer_context *tokenizer_context,
                                                 struct kefir_token *token) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(lexer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer"));
-    REQUIRE(tokenizer_context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor tokenizer context"));
+    REQUIRE(tokenizer_context != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor tokenizer context"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
 
-    REQUIRE_OK(kefir_lexer_apply(mem, lexer, preprocessor_next_impl, &(struct next_payload) {
-        .tokenizer_context = tokenizer_context,
-        .token = token
-    }));
+    REQUIRE_OK(kefir_lexer_apply(mem, lexer, preprocessor_next_impl,
+                                 &(struct next_payload) {.tokenizer_context = tokenizer_context, .token = token}));
     return KEFIR_OK;
 }

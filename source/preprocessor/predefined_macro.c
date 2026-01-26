@@ -892,8 +892,9 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
             break;
     }
     if (preprocessor->context->environment.kefir_decimal_bitint_conv_support) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefir_decimal_bitint_conv_support,
-                                                    "__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__", macro_produce_one_apply));
+        REQUIRE_CHAIN(
+            &res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefir_decimal_bitint_conv_support,
+                                          "__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__", macro_produce_one_apply));
     }
     REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc, "__KEFIRCC__",
                                                 macro_produce_one_apply));

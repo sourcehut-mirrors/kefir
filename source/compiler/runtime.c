@@ -25,10 +25,9 @@
 
 static const char KeifrCodegenInlineRuntime[] = {
 #include STRINGIFY(KEFIR_COMPILER_RUNTIME_KEFIR_BIGINT_INCLUDE)
-, '\n',
+    , '\n',
 #include STRINGIFY(KEFIR_COMPILER_RUNTIME_KEFIR_SOFTFLOAT_INCLUDE)
-, 0
-};
+    , 0};
 static kefir_uint64_t KeifrCodegenInlineRuntimeLength = sizeof(KeifrCodegenInlineRuntime);
 
 static kefir_result_t source_locator_open(struct kefir_mem *mem,
@@ -75,9 +74,9 @@ static kefir_result_t generate_runtime_functions_impl(struct kefir_mem *mem, FIL
     struct kefir_opt_module opt_module;
     REQUIRE_OK(kefir_token_buffer_init(&buffer));
 
-    kefir_result_t res =
-        kefir_compiler_preprocess_lex(mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, &context->builtin_token_allocator, &buffer,
-                                      KeifrCodegenInlineRuntime, KeifrCodegenInlineRuntimeLength, filename, filename);
+    kefir_result_t res = kefir_compiler_preprocess_lex(
+        mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, &context->builtin_token_allocator, &buffer,
+        KeifrCodegenInlineRuntime, KeifrCodegenInlineRuntimeLength, filename, filename);
     REQUIRE_CHAIN(&res, kefir_compiler_parse(mem, context, &buffer, &defs_unit));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &buffer);

@@ -172,7 +172,7 @@ static kefir_result_t function_alloc_params(struct kefir_mem *mem, struct abi_am
     if (payload->returns.implicit_parameter) {
         REQUIRE_OK(kefir_abi_amd64_function_parameters_reserve(
             &payload->parameters.parameters,
-            &(struct kefir_abi_amd64_function_parameter_requirements){.general_purpose_regs = 1}));
+            &(struct kefir_abi_amd64_function_parameter_requirements) {.general_purpose_regs = 1}));
     }
     res = kefir_abi_amd64_function_parameters_allocate(mem, &payload->parameters.parameters);
     REQUIRE_ELSE(res == KEFIR_OK, {

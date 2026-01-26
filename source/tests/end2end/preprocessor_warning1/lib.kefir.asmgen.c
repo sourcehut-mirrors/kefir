@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#warning HELLO ``38u84n  o329wo owlrld 0``1891i3 mn2 \
+#warning HELLO ``38u84n  o329wo owlrld 0``1891i3 mn2
 
 #ifdef X
 #warning TEST3412  1```` /*

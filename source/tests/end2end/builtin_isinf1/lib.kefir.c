@@ -20,23 +20,14 @@
 
 #include "./definitions.h"
 
-int f32[3] = {
-    __builtin_isinf((float) __builtin_inff()),
-    __builtin_isinf(-(float) __builtin_inff()),
-    __builtin_isinf((float) 3.14f)
-};
+int f32[3] = {__builtin_isinf((float) __builtin_inff()), __builtin_isinf(-(float) __builtin_inff()),
+              __builtin_isinf((float) 3.14f)};
 
-int f64[3] = {
-    __builtin_isinf((double) __builtin_inf()),
-    __builtin_isinf(-(double) __builtin_inf()),
-    __builtin_isinf((double) 3.14)
-};
+int f64[3] = {__builtin_isinf((double) __builtin_inf()), __builtin_isinf(-(double) __builtin_inf()),
+              __builtin_isinf((double) 3.14)};
 
-int f80[3] = {
-    __builtin_isinf((long double) __builtin_infl()),
-    __builtin_isinf(-(long double) __builtin_infl()),
-    __builtin_isinf((long double) 3.14L)
-};
+int f80[3] = {__builtin_isinf((long double) __builtin_infl()), __builtin_isinf(-(long double) __builtin_infl()),
+              __builtin_isinf((long double) 3.14L)};
 
 int is_inf_f32(float x) {
     return __builtin_isinf(x);

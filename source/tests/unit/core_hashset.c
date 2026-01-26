@@ -45,9 +45,7 @@ DEFINE_CASE(core_hashset1, "Core - Hashset #1") {
     kefir_result_t res;
     kefir_hashtable_key_t key;
     kefir_size_t total = 0;
-    for (res = kefir_hashset_iter(&set, &iter, &key);
-        res == KEFIR_OK;
-        res = kefir_hashset_next(&iter, &key)) {
+    for (res = kefir_hashset_iter(&set, &iter, &key); res == KEFIR_OK; res = kefir_hashset_next(&iter, &key)) {
         total++;
         ASSERT((key ^ Mask) / 31 < Count);
     }

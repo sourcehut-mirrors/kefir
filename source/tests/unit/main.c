@@ -26,8 +26,8 @@
 #define TEST_CASES(_case, _separator)                                                        \
     _case(core_hashtree1) _separator _case(core_hashtree2)                                   \
     _separator _case(core_hashtree3)                                                         \
-    _separator _case(core_hashtable1) \
-    _separator _case(core_hashset1) \
+    _separator _case(core_hashtable1)                                                        \
+    _separator _case(core_hashset1)                                                          \
     _separator _case(amd64_sysv_abi_data_test1)                                              \
     _separator _case(amd64_sysv_abi_data_test2)                                              \
     _separator _case(amd64_sysv_abi_data_test3)                                              \
@@ -526,11 +526,11 @@
     _separator _case(bigint_trailing_zeros1)                                                 \
     _separator _case(bigint_redundant_sign_bits1)                                            \
     _separator _case(bigint_nonzero_count1)                                                  \
-    _separator _case(bigint_parity1) \
-    _separator _case(ast_decimal_types1)\
-    _separator _case(ast_decimal_types2) \
-    _separator _case(ast_interchange_float_types1) \
-    _separator _case(ast_interchange_float_types2) \
+    _separator _case(bigint_parity1)                                                         \
+    _separator _case(ast_decimal_types1)                                                     \
+    _separator _case(ast_decimal_types2)                                                     \
+    _separator _case(ast_interchange_float_types1)                                           \
+    _separator _case(ast_interchange_float_types2)                                           \
     _separator _case(ast_int128_type1)
 TEST_CASES(DECLARE_CASE, ;);
 

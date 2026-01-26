@@ -22,34 +22,35 @@ int f64x_size = sizeof(_Float64x);
 int f64x_alignment = _Alignof(_Float64x);
 __constexpr _Float64x f64x_const = 2.71828;
 const _Float64x *f64x_const_ptr = &f64x_const;
-#define CLASSIFY(_x) _Generic((_x), float : 1, double : 2, long double : 3, _Decimal32 : 4, _Decimal64 : 5, _Decimal128 : 6, _Float64x : -1, default : 0)
-int f64x_compat[] = {
-    CLASSIFY((_Float64x) 0.0f),
-    CLASSIFY(1 + (_Float64x) 0.0f),
-    CLASSIFY(3.14f + (_Float64x) 0.0f),
-    CLASSIFY(3.14 + (_Float64x) 0.0f),
-    CLASSIFY(3.14l + (_Float64x) 0.0f),
-    CLASSIFY(((_Float64x) 3.14f) + (_Float64x) 0.0f),
-    CLASSIFY(3.14 + (_Float64x) 0.0f),
-    CLASSIFY(3.14l + (_Float64x) 0.0f)
-};
+#define CLASSIFY(_x)    \
+    _Generic((_x),      \
+        float: 1,       \
+        double: 2,      \
+        long double: 3, \
+        _Decimal32: 4,  \
+        _Decimal64: 5,  \
+        _Decimal128: 6, \
+        _Float64x: -1,  \
+        default: 0)
+int f64x_compat[] = {CLASSIFY((_Float64x) 0.0f),         CLASSIFY(1 + (_Float64x) 0.0f),
+                     CLASSIFY(3.14f + (_Float64x) 0.0f), CLASSIFY(3.14 + (_Float64x) 0.0f),
+                     CLASSIFY(3.14l + (_Float64x) 0.0f), CLASSIFY(((_Float64x) 3.14f) + (_Float64x) 0.0f),
+                     CLASSIFY(3.14 + (_Float64x) 0.0f),  CLASSIFY(3.14l + (_Float64x) 0.0f)};
 
-_Float64x f64x[] = {
-    (_Float64x) 3.14159f,
-    -((_Float64x) 1902.318f),
-    ((_Float64x) 273.3f) + ((_Float64x) 1902.318f),
-    ((_Float64x) 273.3f) - ((_Float64x) 1902.318f),
-    ((_Float64x) 273.3f) * ((_Float64x) 1902.318f),
-    ((_Float64x) 273.3f) / ((_Float64x) 1902.318f),
-    (273.3f) + ((_Float64x) 1902.318f),
-    (273.3f) - ((_Float64x) 1902.318f),
-    (273.3f) * ((_Float64x) 1902.318f),
-    (273.3f) / ((_Float64x) 1902.318f),
-    ((double) 273.3f) + ((_Float64x) 1902.318f),
-    ((double) 273.3f) - ((_Float64x) 1902.318f),
-    ((double) 273.3f) * ((_Float64x) 1902.318f),
-    ((double) 273.3f) / ((_Float64x) 1902.318f)
-};
+_Float64x f64x[] = {(_Float64x) 3.14159f,
+                    -((_Float64x) 1902.318f),
+                    ((_Float64x) 273.3f) + ((_Float64x) 1902.318f),
+                    ((_Float64x) 273.3f) - ((_Float64x) 1902.318f),
+                    ((_Float64x) 273.3f) * ((_Float64x) 1902.318f),
+                    ((_Float64x) 273.3f) / ((_Float64x) 1902.318f),
+                    (273.3f) + ((_Float64x) 1902.318f),
+                    (273.3f) - ((_Float64x) 1902.318f),
+                    (273.3f) * ((_Float64x) 1902.318f),
+                    (273.3f) / ((_Float64x) 1902.318f),
+                    ((double) 273.3f) + ((_Float64x) 1902.318f),
+                    ((double) 273.3f) - ((_Float64x) 1902.318f),
+                    ((double) 273.3f) * ((_Float64x) 1902.318f),
+                    ((double) 273.3f) / ((_Float64x) 1902.318f)};
 
 _Float64x get64x_1(void) {
     return 5.428f;

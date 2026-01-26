@@ -68,31 +68,23 @@ const struct kefir_ast_type *kefir_ast_type_int_promotion(const struct kefir_ast
 
 #define ANY_OF(x, y, z) (KEFIR_AST_TYPE_SAME((x), (z)) || KEFIR_AST_TYPE_SAME((y), (z)))
 
-const struct kefir_ast_type *kefir_ast_type_multiplicative_common_arithmetic(const struct kefir_ast_type_traits *type_traits,
-                                                              const struct kefir_ast_type *type1,
-                                                              struct kefir_ast_bitfield_properties bitfield1,
-                                                              const struct kefir_ast_type *type2,
-                                                              struct kefir_ast_bitfield_properties bitfield2) {
+const struct kefir_ast_type *kefir_ast_type_multiplicative_common_arithmetic(
+    const struct kefir_ast_type_traits *type_traits, const struct kefir_ast_type *type1,
+    struct kefir_ast_bitfield_properties bitfield1, const struct kefir_ast_type *type2,
+    struct kefir_ast_bitfield_properties bitfield2) {
     if (KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2)) {
-        return kefir_ast_type_common_arithmetic(
-            type_traits, type1, bitfield1,
-            type2, bitfield2);
+        return kefir_ast_type_common_arithmetic(type_traits, type1, bitfield1, type2, bitfield2);
     } else if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type1) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type2)) {
-        return kefir_ast_type_common_arithmetic(
-            type_traits, type1->imaginary.real_type, bitfield1,
-            type2->imaginary.real_type, bitfield2);
+        return kefir_ast_type_common_arithmetic(type_traits, type1->imaginary.real_type, bitfield1,
+                                                type2->imaginary.real_type, bitfield2);
     } else if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type1)) {
-        return kefir_ast_type_corresponding_imaginary_type(kefir_ast_type_common_arithmetic(
-            type_traits, type1->imaginary.real_type, bitfield1,
-            type2, bitfield2));
+        return kefir_ast_type_corresponding_imaginary_type(
+            kefir_ast_type_common_arithmetic(type_traits, type1->imaginary.real_type, bitfield1, type2, bitfield2));
     } else if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(type2)) {
-        return kefir_ast_type_corresponding_imaginary_type(kefir_ast_type_common_arithmetic(
-            type_traits, type1, bitfield1,
-            type2->imaginary.real_type, bitfield2));
+        return kefir_ast_type_corresponding_imaginary_type(
+            kefir_ast_type_common_arithmetic(type_traits, type1, bitfield1, type2->imaginary.real_type, bitfield2));
     } else {
-        return kefir_ast_type_common_arithmetic(
-            type_traits, type1, bitfield1,
-            type2, bitfield2);
+        return kefir_ast_type_common_arithmetic(type_traits, type1, bitfield1, type2, bitfield2);
     }
 }
 
@@ -111,22 +103,38 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     if (type2->tag == KEFIR_AST_TYPE_ENUMERATION) {
         type2 = kefir_ast_enumeration_underlying_type(&type2->enumeration_type);
     }
-    
+
     if (ANY_OF(type1, type2, kefir_ast_type_decimal128())) {
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1), NULL);
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2), NULL);
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1),
+                NULL);
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2),
+                NULL);
         return kefir_ast_type_decimal128();
     } else if (ANY_OF(type1, type2, kefir_ast_type_extended_decimal64())) {
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1), NULL);
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2), NULL);
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1),
+                NULL);
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2),
+                NULL);
         return kefir_ast_type_extended_decimal64();
     } else if (ANY_OF(type1, type2, kefir_ast_type_decimal64())) {
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1), NULL);
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2), NULL);
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1),
+                NULL);
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2),
+                NULL);
         return kefir_ast_type_decimal64();
     } else if (ANY_OF(type1, type2, kefir_ast_type_decimal32())) {
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1), NULL);
-        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2), NULL);
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type1) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type1) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1),
+                NULL);
+        REQUIRE(!KEFIR_AST_TYPE_IS_STANDARD_FLOATING_POINT(type2) && !KEFIR_AST_TYPE_IS_BINARY_FLOATING_POINT(type2) &&
+                    !KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2),
+                NULL);
         return kefir_ast_type_decimal32();
     }
 

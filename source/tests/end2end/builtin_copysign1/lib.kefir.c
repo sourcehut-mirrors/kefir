@@ -20,32 +20,16 @@
 
 #include "./definitions.h"
 
-float f32[6] = {
-    __builtin_copysignf(3.14f, 1.0f),
-    __builtin_copysignf(3.14f, -1.0f),
-    __builtin_copysignf(-3.14f, 1.0f),
-    __builtin_copysignf(-3.14f, -1.0f),
-    __builtin_copysignf(0.0f, 0.0f),
-    __builtin_copysignf(0.0f, -0.0f)
-};
+float f32[6] = {__builtin_copysignf(3.14f, 1.0f),  __builtin_copysignf(3.14f, -1.0f),
+                __builtin_copysignf(-3.14f, 1.0f), __builtin_copysignf(-3.14f, -1.0f),
+                __builtin_copysignf(0.0f, 0.0f),   __builtin_copysignf(0.0f, -0.0f)};
 
-double f64[6] = {
-    __builtin_copysign(3.14, 1.0),
-    __builtin_copysign(3.14, -1.0),
-    __builtin_copysign(-3.14, 1.0),
-    __builtin_copysign(-3.14, -1.0),
-    __builtin_copysign(0.0, 0.0),
-    __builtin_copysign(0.0, -0.0)
-};
+double f64[6] = {__builtin_copysign(3.14, 1.0),   __builtin_copysign(3.14, -1.0), __builtin_copysign(-3.14, 1.0),
+                 __builtin_copysign(-3.14, -1.0), __builtin_copysign(0.0, 0.0),   __builtin_copysign(0.0, -0.0)};
 
-long double f80[6] = {
-    __builtin_copysignl(3.14l, 1.0l),
-    __builtin_copysignl(3.14l, -1.0l),
-    __builtin_copysignl(-3.14l, 1.0l),
-    __builtin_copysignl(-3.14l, -1.0l),
-    __builtin_copysignl(0.0l, 0.0l),
-    __builtin_copysignl(0.0l, -0.0l)
-};
+long double f80[6] = {__builtin_copysignl(3.14l, 1.0l),  __builtin_copysignl(3.14l, -1.0l),
+                      __builtin_copysignl(-3.14l, 1.0l), __builtin_copysignl(-3.14l, -1.0l),
+                      __builtin_copysignl(0.0l, 0.0l),   __builtin_copysignl(0.0l, -0.0l)};
 
 float my_copysignf(float x, float y) {
     return __builtin_copysignf(x, y);

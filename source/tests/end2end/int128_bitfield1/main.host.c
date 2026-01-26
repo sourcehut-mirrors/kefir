@@ -35,7 +35,7 @@ int main(void) {
     assert(res.arr[0] == -0x81831bcde83131ull);
     assert(res.arr[1] == ~0ull);
 
-    set_a((struct i128){{~1ull, ~0ull}});
+    set_a((struct i128) {{~1ull, ~0ull}});
 
     res = get_a();
     assert(res.arr[0] == ~1ull);
@@ -45,7 +45,7 @@ int main(void) {
     assert(res.arr[0] == -0x81831bcde83131ull);
     assert(res.arr[1] == ~0ull);
 
-    set_b((struct i128){{0x12345, 0xa}});
+    set_b((struct i128) {{0x12345, 0xa}});
 
     res = get_a();
     assert(res.arr[0] == ~1ull);

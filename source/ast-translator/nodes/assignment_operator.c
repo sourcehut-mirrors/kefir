@@ -167,7 +167,7 @@ static kefir_result_t generate_multiplication_op(const struct generate_op_parame
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IR_OPCODE_UINT64_MUL, 0));
             }
             break;
-                
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(kefir_ast_type_is_signed(parameters->context->ast_context->type_traits, parameters->common_type,
                                                 &common_type_signed));
@@ -225,15 +225,15 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
     if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(target_normalized_type) &&
         KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(value_normalized_type)) {
         if (node->operation == KEFIR_AST_ASSIGNMENT_MULTIPLY || node->operation == KEFIR_AST_ASSIGNMENT_DIVIDE) {
-            common_type = kefir_ast_type_multiplicative_common_arithmetic(context->ast_context->type_traits, target_normalized_type,
-                                                        node->target->properties.expression_props.bitfield_props,
-                                                        value_normalized_type,
-                                                        node->value->properties.expression_props.bitfield_props);
+            common_type = kefir_ast_type_multiplicative_common_arithmetic(
+                context->ast_context->type_traits, target_normalized_type,
+                node->target->properties.expression_props.bitfield_props, value_normalized_type,
+                node->value->properties.expression_props.bitfield_props);
         } else {
             common_type = kefir_ast_type_common_arithmetic(context->ast_context->type_traits, target_normalized_type,
-                                                        node->target->properties.expression_props.bitfield_props,
-                                                        value_normalized_type,
-                                                        node->value->properties.expression_props.bitfield_props);
+                                                           node->target->properties.expression_props.bitfield_props,
+                                                           value_normalized_type,
+                                                           node->value->properties.expression_props.bitfield_props);
         }
         REQUIRE(common_type != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to determine common arithmetic type"));
@@ -417,7 +417,7 @@ static kefir_result_t generate_division_op(const struct generate_op_parameters *
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_UINT64_DIV, 0));
             }
             break;
-    
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits, params->common_type,
                                                 &common_type_signed));
@@ -515,7 +515,7 @@ static kefir_result_t generate_modulo(const struct generate_op_parameters *param
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_UINT64_MOD, 0));
             }
             break;
-    
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits, params->common_type,
                                                 &common_type_signed));
@@ -576,7 +576,7 @@ static kefir_result_t generate_lshift(const struct generate_op_parameters *param
         case KEFIR_AST_TYPE_DATA_MODEL_INT64:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT64_LSHIFT, 0));
             break;
-    
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(kefir_ast_translate_typeconv(
                 params->mem, params->context->module, params->builder, params->context->ast_context->type_traits,
@@ -655,7 +655,7 @@ static kefir_result_t generate_rshift(const struct generate_op_parameters *param
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT64_RSHIFT, 0));
             }
             break;
-    
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits,
                                                 params->result_normalized_type, &result_type_signed));
@@ -722,7 +722,7 @@ static kefir_result_t generate_iand(const struct generate_op_parameters *params)
         case KEFIR_AST_TYPE_DATA_MODEL_INT64:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT64_AND, 0));
             break;
-    
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT128_AND, 0));
             break;
@@ -770,7 +770,7 @@ static kefir_result_t generate_ior(const struct generate_op_parameters *params) 
         case KEFIR_AST_TYPE_DATA_MODEL_INT64:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT64_OR, 0));
             break;
-    
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT128_OR, 0));
             break;
@@ -818,7 +818,7 @@ static kefir_result_t generate_ixor(const struct generate_op_parameters *params)
         case KEFIR_AST_TYPE_DATA_MODEL_INT64:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT64_XOR, 0));
             break;
-    
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT128_XOR, 0));
             break;
@@ -888,7 +888,7 @@ static kefir_result_t generate_add(const struct generate_op_parameters *params) 
             case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
                 break;
-    
+
             case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT128_ADD, 0));
                 break;
@@ -997,7 +997,7 @@ static kefir_result_t generate_sub(const struct generate_op_parameters *params) 
             case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT64_SUB, 0));
                 break;
-    
+
             case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT128_SUB, 0));
                 break;

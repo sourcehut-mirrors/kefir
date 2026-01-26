@@ -477,7 +477,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     REQUIRE_OK(kefir_ast_evaluate_builtin_ffs_constant_expression_value(
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
                     break;
-                
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
@@ -549,7 +549,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, default_value, value,
                         &node->source_location));
                     break;
-                
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
@@ -627,7 +627,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, default_value, value,
                         &node->source_location));
                     break;
-                
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
@@ -687,7 +687,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     REQUIRE_OK(kefir_ast_evaluate_builtin_clrsb_constant_expression_value(
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
                     break;
-                
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
@@ -741,7 +741,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
                     break;
-                
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
@@ -795,7 +795,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     REQUIRE_OK(kefir_ast_evaluate_builtin_parity_constant_expression_value(
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
                     break;
-                
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
@@ -839,7 +839,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     value->integer = 64;
                     break;
-                
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                     value->integer = 128;
                     break;
@@ -911,14 +911,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             static const union {
                 kefir_long_double_t value;
                 kefir_uint32_t parts[4];
-            } val = {
-                .parts = {
-                    0,
-                    -1610612736,
-                    32767,
-                    0
-                }
-            };
+            } val = {.parts = {0, -1610612736, 32767, 0}};
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
             value->floating_point = val.value;
         } break;

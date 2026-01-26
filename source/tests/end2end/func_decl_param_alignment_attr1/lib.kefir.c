@@ -20,6 +20,6 @@
 
 #include "./definitions.h"
 
-int sum(int a __attribute__((aligned)), int  __attribute__((aligned(16))) b) {
+int sum(int a __attribute__((aligned)), int __attribute__((aligned(16))) b) {
     return a + b;
 }

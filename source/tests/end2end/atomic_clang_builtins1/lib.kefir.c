@@ -20,9 +20,9 @@
 
 #include "./definitions.h"
 
-#define DEFINE_LOAD(_type)                               \
+#define DEFINE_LOAD(_type)                              \
     _type test_load_##_type(const _Atomic _type *ptr) { \
-        return __c11_atomic_load(ptr);                         \
+        return __c11_atomic_load(ptr);                  \
     }
 
 DEFINE_LOAD(char)
@@ -30,9 +30,9 @@ DEFINE_LOAD(short)
 DEFINE_LOAD(int)
 DEFINE_LOAD(long)
 
-#define DEFINE_STORE(_type)                                           \
+#define DEFINE_STORE(_type)                                          \
     void test_store_##_type(const _Atomic _type *ptr, _type value) { \
-        __c11_atomic_store(ptr, value);                                     \
+        __c11_atomic_store(ptr, value);                              \
     }
 
 DEFINE_STORE(char)
@@ -40,9 +40,9 @@ DEFINE_STORE(short)
 DEFINE_STORE(int)
 DEFINE_STORE(long)
 
-#define DEFINE_EXCHANGE(_type)                                            \
+#define DEFINE_EXCHANGE(_type)                                           \
     _type test_exchange_##_type(const _Atomic _type *ptr, _type value) { \
-        return __c11_atomic_exchange(ptr, value);                               \
+        return __c11_atomic_exchange(ptr, value);                        \
     }
 
 DEFINE_EXCHANGE(char)
@@ -50,9 +50,9 @@ DEFINE_EXCHANGE(short)
 DEFINE_EXCHANGE(int)
 DEFINE_EXCHANGE(long)
 
-#define DEFINE_COMPARE_EXCHANGE(_type)                                                             \
+#define DEFINE_COMPARE_EXCHANGE(_type)                                                            \
     _Bool test_compare_exchange_##_type(const _Atomic _type *ptr, _type *expected, _type value) { \
-        return __c11_atomic_compare_exchange_strong(ptr, expected, value);                               \
+        return __c11_atomic_compare_exchange_strong(ptr, expected, value);                        \
     }
 
 DEFINE_COMPARE_EXCHANGE(char)
@@ -60,9 +60,9 @@ DEFINE_COMPARE_EXCHANGE(short)
 DEFINE_COMPARE_EXCHANGE(int)
 DEFINE_COMPARE_EXCHANGE(long)
 
-#define DEFINE_FETCH_OP(_type, _op)                                            \
+#define DEFINE_FETCH_OP(_type, _op)                                           \
     _type test_fetch_##_op##_##_type(const _Atomic _type *ptr, _type value) { \
-        return __c11_atomic_fetch_##_op(ptr, value);                                 \
+        return __c11_atomic_fetch_##_op(ptr, value);                          \
     }
 
 DEFINE_FETCH_OP(char, add)

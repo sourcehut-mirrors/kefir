@@ -23,17 +23,17 @@ _Decimal64 b = 0;
 _Decimal128 c = 0;
 
 const _Decimal32 volatile *d;
-volatile _Decimal64 * e;
-const _Decimal128 * const * const *f;
+volatile _Decimal64 *e;
+const _Decimal128 *const *const *f;
 
 _Decimal32 add(_Decimal32 x, const _Decimal32 y) {
     return x + y;
 }
 
-const _Decimal64 add2(const _Decimal64 x, volatile _Decimal64 * y) {
+const _Decimal64 add2(const _Decimal64 x, volatile _Decimal64 *y) {
     return x + *y;
 }
 
-const _Decimal128 *add3(const _Decimal128 x, volatile _Decimal128 * y) {
-    return &(_Decimal128){x + *y};
+const _Decimal128 *add3(const _Decimal128 x, volatile _Decimal128 *y) {
+    return &(_Decimal128) {x + *y};
 }

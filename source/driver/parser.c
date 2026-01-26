@@ -766,8 +766,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         // Ignored unsupported flags
         else if (strcmp("-", arg) == 0) {
             // Positional argument
-            REQUIRE_OK(
-                kefir_driver_configuration_add_argument(mem, symbols, config, arg, !override_file_type ? detect_file_type(externals, arg) : overriden_arg_type));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(
+                mem, symbols, config, arg,
+                !override_file_type ? detect_file_type(externals, arg) : overriden_arg_type));
         } else if (STRNCMP("-", arg) == 0 || STRNCMP("--", arg) == 0) {
             // All other non-positional arguments: ignored
             if (warning_output != NULL) {
@@ -777,8 +778,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
 
         // Positional argument
         else {
-            REQUIRE_OK(
-                kefir_driver_configuration_add_argument(mem, symbols, config, arg, !override_file_type ? detect_file_type(externals, arg) : overriden_arg_type));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(
+                mem, symbols, config, arg,
+                !override_file_type ? detect_file_type(externals, arg) : overriden_arg_type));
         }
 
 #undef EXPECT_ARG

@@ -22,15 +22,15 @@
 #define DEFINITIONS_H_
 
 struct S0 {
-   int f0 : 1;
-   unsigned int f1 : 18;
-   int f2 : 12;
-   unsigned int f3 : 8;
+    int f0 : 1;
+    unsigned int f1 : 18;
+    int f2 : 12;
+    unsigned int f3 : 8;
 };
 
 struct S1 {
-   struct S0 f0;
-   unsigned short f1;
+    struct S0 f0;
+    unsigned short f1;
 };
 
 extern struct S1 s1;

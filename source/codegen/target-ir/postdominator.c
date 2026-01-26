@@ -33,8 +33,8 @@ struct semi_nca_data {
     kefir_codegen_target_ir_block_ref_t *immediate_dominators;
 };
 
-static kefir_result_t semi_nca_dfs(struct kefir_codegen_target_ir_control_flow *control_flow, struct semi_nca_data *data,
-                                   kefir_codegen_target_ir_block_ref_t block_ref) {
+static kefir_result_t semi_nca_dfs(struct kefir_codegen_target_ir_control_flow *control_flow,
+                                   struct semi_nca_data *data, kefir_codegen_target_ir_block_ref_t block_ref) {
     REQUIRE(data->dfs_trace[block_ref] == -1, KEFIR_OK);
     data->dfs_trace[block_ref] = data->counter;
     data->reverse_dfs_trace[data->counter] = block_ref;
@@ -45,7 +45,7 @@ static kefir_result_t semi_nca_dfs(struct kefir_codegen_target_ir_control_flow *
         struct kefir_hashset_iterator iter;
         kefir_hashset_key_t key;
         for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].predecessors, &iter, &key); res == KEFIR_OK;
-            res = kefir_hashset_next(&iter, &key)) {
+             res = kefir_hashset_next(&iter, &key)) {
             ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, predecessor_block_ref, (kefir_uptr_t) key);
             if (data->dfs_trace[predecessor_block_ref] == -1) {
                 data->dfs_parents[predecessor_block_ref] = block_ref;
@@ -57,7 +57,8 @@ static kefir_result_t semi_nca_dfs(struct kefir_codegen_target_ir_control_flow *
         }
     } else {
         for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(control_flow->code); i++) {
-            kefir_codegen_target_ir_block_ref_t predecessor_block_ref = kefir_codegen_target_ir_code_block_by_index(control_flow->code, i);
+            kefir_codegen_target_ir_block_ref_t predecessor_block_ref =
+                kefir_codegen_target_ir_code_block_by_index(control_flow->code, i);
             if (kefir_hashset_size(&control_flow->blocks[predecessor_block_ref].successors) == 0) {
                 if (data->dfs_trace[predecessor_block_ref] == -1) {
                     data->dfs_parents[predecessor_block_ref] = block_ref;
@@ -69,8 +70,9 @@ static kefir_result_t semi_nca_dfs(struct kefir_codegen_target_ir_control_flow *
     return KEFIR_OK;
 }
 
-static kefir_codegen_target_ir_block_ref_t semi_nca_evaluate(struct semi_nca_data *data, kefir_codegen_target_ir_block_ref_t block_ref,
-                                              kefir_int64_t current) {
+static kefir_codegen_target_ir_block_ref_t semi_nca_evaluate(struct semi_nca_data *data,
+                                                             kefir_codegen_target_ir_block_ref_t block_ref,
+                                                             kefir_int64_t current) {
     if (data->dfs_trace[block_ref] <= current) {
         return block_ref;
     }
@@ -84,7 +86,8 @@ static kefir_codegen_target_ir_block_ref_t semi_nca_evaluate(struct semi_nca_dat
     return result;
 }
 
-static kefir_result_t semi_nca_impl(struct kefir_codegen_target_ir_control_flow *control_flow, struct semi_nca_data *data) {
+static kefir_result_t semi_nca_impl(struct kefir_codegen_target_ir_control_flow *control_flow,
+                                    struct semi_nca_data *data) {
     for (kefir_size_t i = 0; i < data->num_of_blocks; i++) {
         data->dfs_trace[i] = -1;
         data->reverse_dfs_trace[i] = KEFIR_ID_NONE;
@@ -101,23 +104,22 @@ static kefir_result_t semi_nca_impl(struct kefir_codegen_target_ir_control_flow 
         kefir_codegen_target_ir_block_ref_t block_ref = data->reverse_dfs_trace[i];
         data->semi_dominators[block_ref] = block_ref;
 
-#define EVAL(_succ) \
-            do { \
-                if (data->dfs_trace[(_succ)] != -1) { \
-                    semi_nca_evaluate(data, (_succ), i); \
-                    if (data->dfs_trace[data->best_candidates[(_succ)]] < \
-                        data->dfs_trace[data->semi_dominators[block_ref]]) { \
-                        data->semi_dominators[block_ref] = data->best_candidates[(_succ)]; \
-                    } \
-                } \
-            } while (0)
+#define EVAL(_succ)                                                                                                    \
+    do {                                                                                                               \
+        if (data->dfs_trace[(_succ)] != -1) {                                                                          \
+            semi_nca_evaluate(data, (_succ), i);                                                                       \
+            if (data->dfs_trace[data->best_candidates[(_succ)]] < data->dfs_trace[data->semi_dominators[block_ref]]) { \
+                data->semi_dominators[block_ref] = data->best_candidates[(_succ)];                                     \
+            }                                                                                                          \
+        }                                                                                                              \
+    } while (0)
         if (block_ref != data->num_of_blocks - 1) {
             if (kefir_hashset_size(&control_flow->blocks[block_ref].successors) > 0) {
                 kefir_result_t res;
                 struct kefir_hashset_iterator iter;
                 kefir_hashset_key_t key;
-                for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].successors, &iter, &key); res == KEFIR_OK;
-                    res = kefir_hashset_next(&iter, &key)) {
+                for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].successors, &iter, &key);
+                     res == KEFIR_OK; res = kefir_hashset_next(&iter, &key)) {
                     ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, (kefir_uptr_t) key);
                     EVAL(successor_block_ref);
                 }
@@ -144,9 +146,9 @@ static kefir_result_t semi_nca_impl(struct kefir_codegen_target_ir_control_flow 
 
     for (kefir_codegen_target_ir_block_ref_t block_ref = 0; block_ref < data->num_of_blocks; block_ref++) {
         if (block_ref != data->num_of_blocks - 1) {
-            control_flow->blocks[block_ref].immediate_postdominator = data->immediate_dominators[block_ref] != data->num_of_blocks - 1
-                ?  data->immediate_dominators[block_ref]
-                : KEFIR_ID_NONE;
+            control_flow->blocks[block_ref].immediate_postdominator =
+                data->immediate_dominators[block_ref] != data->num_of_blocks - 1 ? data->immediate_dominators[block_ref]
+                                                                                 : KEFIR_ID_NONE;
         }
     }
 
@@ -154,9 +156,7 @@ static kefir_result_t semi_nca_impl(struct kefir_codegen_target_ir_control_flow 
 }
 
 static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow) {
-    struct semi_nca_data data = {
-        .num_of_blocks = kefir_codegen_target_ir_code_block_count(control_flow->code) + 1
-    };
+    struct semi_nca_data data = {.num_of_blocks = kefir_codegen_target_ir_code_block_count(control_flow->code) + 1};
     data.dfs_trace = KEFIR_MALLOC(mem, sizeof(kefir_int64_t) * data.num_of_blocks);
     data.reverse_dfs_trace = KEFIR_MALLOC(mem, sizeof(kefir_codegen_target_ir_block_ref_t) * data.num_of_blocks);
     data.dfs_parents = KEFIR_MALLOC(mem, sizeof(kefir_codegen_target_ir_block_ref_t) * data.num_of_blocks);
@@ -181,8 +181,8 @@ static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_codegen_targe
     return res;
 }
 
-kefir_result_t kefir_codegen_target_ir_control_flow_find_postdominators(struct kefir_mem *mem,
-                                                        struct kefir_codegen_target_ir_control_flow *control_flow) {
+kefir_result_t kefir_codegen_target_ir_control_flow_find_postdominators(
+    struct kefir_mem *mem, struct kefir_codegen_target_ir_control_flow *control_flow) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
 

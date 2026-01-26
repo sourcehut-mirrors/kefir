@@ -58,8 +58,8 @@ static kefir_result_t translate_function(struct kefir_mem *mem, struct function 
     struct kefir_ast_translator_function_declaration *func_declaration = NULL;
     REQUIRE_OK(kefir_ast_translator_function_declaration_init(
         mem, context_manager->current, translator_context->environment, translator_context->ast_context->type_bundle,
-        translator_context->ast_context->type_traits, translator_context->module, func->identifier, true, func->type, NULL,
-        &func_declaration, NULL));
+        translator_context->ast_context->type_traits, translator_context->module, func->identifier, true, func->type,
+        NULL, &func_declaration, NULL));
 
     struct kefir_ast_translator_context local_translator_context;
     REQUIRE_OK(kefir_ast_translator_context_init_local(mem, &local_translator_context, &func->local_context.context,

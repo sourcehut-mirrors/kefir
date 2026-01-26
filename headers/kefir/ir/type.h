@@ -109,7 +109,7 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *, co
         (visitor)->visit[KEFIR_IR_TYPE_INT16] = (callback);    \
         (visitor)->visit[KEFIR_IR_TYPE_INT32] = (callback);    \
         (visitor)->visit[KEFIR_IR_TYPE_INT64] = (callback);    \
-        (visitor)->visit[KEFIR_IR_TYPE_INT128] = (callback);    \
+        (visitor)->visit[KEFIR_IR_TYPE_INT128] = (callback);   \
         (visitor)->visit[KEFIR_IR_TYPE_BITINT] = (callback);   \
         (visitor)->visit[KEFIR_IR_TYPE_BITFIELD] = (callback); \
     } while (0)
@@ -123,9 +123,9 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *, co
         KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS((visitor), (callback)); \
         KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP((visitor), (callback)); \
         (visitor)->visit[KEFIR_IR_TYPE_LONG_DOUBLE] = (callback);   \
-        (visitor)->visit[KEFIR_IR_TYPE_DECIMAL32] = (callback);   \
-        (visitor)->visit[KEFIR_IR_TYPE_DECIMAL64] = (callback);   \
-        (visitor)->visit[KEFIR_IR_TYPE_DECIMAL128] = (callback);   \
+        (visitor)->visit[KEFIR_IR_TYPE_DECIMAL32] = (callback);     \
+        (visitor)->visit[KEFIR_IR_TYPE_DECIMAL64] = (callback);     \
+        (visitor)->visit[KEFIR_IR_TYPE_DECIMAL128] = (callback);    \
     } while (0)
 #define KEFIR_IR_TYPE_VISITOR_INIT_FIXED_COMPLEX(visitor, callback)   \
     do {                                                              \

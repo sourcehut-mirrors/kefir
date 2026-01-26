@@ -9,7 +9,7 @@ struct params {
 };
 
 kefir_result_t kefir_lexer_scan_string(struct kefir_mem *mem, struct kefir_lexer *lexer,
-                                  struct kefir_string_buffer *strbuf) {
+                                       struct kefir_string_buffer *strbuf) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(lexer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer"));
     REQUIRE(strbuf != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string buffer"));

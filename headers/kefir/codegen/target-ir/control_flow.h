@@ -48,38 +48,50 @@ typedef struct kefir_codegen_target_ir_control_flow {
     struct kefir_hashtable dominator_cache;
 } kefir_codegen_target_ir_control_flow_t;
 
-kefir_result_t kefir_codegen_target_ir_control_flow_init(struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_code *);
-kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *, struct kefir_codegen_target_ir_control_flow *);
-kefir_result_t kefir_codegen_target_ir_control_flow_free(struct kefir_mem *, struct kefir_codegen_target_ir_control_flow *);
-kefir_result_t kefir_codegen_target_ir_control_flow_reset(struct kefir_mem *, struct kefir_codegen_target_ir_control_flow *);
+kefir_result_t kefir_codegen_target_ir_control_flow_init(struct kefir_codegen_target_ir_control_flow *,
+                                                         const struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *,
+                                                          struct kefir_codegen_target_ir_control_flow *);
+kefir_result_t kefir_codegen_target_ir_control_flow_free(struct kefir_mem *,
+                                                         struct kefir_codegen_target_ir_control_flow *);
+kefir_result_t kefir_codegen_target_ir_control_flow_reset(struct kefir_mem *,
+                                                          struct kefir_codegen_target_ir_control_flow *);
 kefir_result_t kefir_codegen_target_ir_control_flow_find_dominators(struct kefir_mem *mem,
-                                                        struct kefir_codegen_target_ir_control_flow *);
+                                                                    struct kefir_codegen_target_ir_control_flow *);
 kefir_result_t kefir_codegen_target_ir_control_flow_find_postdominators(struct kefir_mem *mem,
-                                                        struct kefir_codegen_target_ir_control_flow *);
+                                                                        struct kefir_codegen_target_ir_control_flow *);
 
 kefir_bool_t kefir_codegen_target_ir_control_flow_is_reachable(const struct kefir_codegen_target_ir_control_flow *,
-                                                     kefir_codegen_target_ir_block_ref_t);
+                                                               kefir_codegen_target_ir_block_ref_t);
 kefir_bool_t kefir_codegen_target_ir_control_flow_is_critical_edge(const struct kefir_codegen_target_ir_control_flow *,
-                                                     kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_block_ref_t);
+                                                                   kefir_codegen_target_ir_block_ref_t,
+                                                                   kefir_codegen_target_ir_block_ref_t);
 kefir_result_t kefir_codegen_target_ir_control_flow_is_dominator(const struct kefir_codegen_target_ir_control_flow *,
-                                                     kefir_codegen_target_ir_block_ref_t,
-                                                     kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);
-kefir_result_t kefir_codegen_target_ir_control_flow_is_postdominator(const struct kefir_codegen_target_ir_control_flow *,
-                                                     kefir_codegen_target_ir_block_ref_t,
-                                                     kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);
-kefir_result_t kefir_codegen_target_ir_control_flow_find_closest_common_dominator(struct kefir_codegen_target_ir_control_flow *,
-                                                       kefir_codegen_target_ir_block_ref_t,
-                                                       kefir_codegen_target_ir_block_ref_t,
-                                                       kefir_codegen_target_ir_block_ref_t *);
+                                                                 kefir_codegen_target_ir_block_ref_t,
+                                                                 kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_control_flow_is_postdominator(
+    const struct kefir_codegen_target_ir_control_flow *, kefir_codegen_target_ir_block_ref_t,
+    kefir_codegen_target_ir_block_ref_t, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_control_flow_find_closest_common_dominator(
+    struct kefir_codegen_target_ir_control_flow *, kefir_codegen_target_ir_block_ref_t,
+    kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_block_ref_t *);
 
 typedef struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator {
     struct kefir_hashset_iterator iter;
 } kefir_codegen_target_ir_control_flow_dominator_tree_iterator_t;
 
-kefir_result_t kefir_codegen_target_ir_control_flow_dominator_tree_iter(const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_block_ref_t *);
-kefir_result_t kefir_codegen_target_ir_control_flow_dominator_tree_next(struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t *);
+kefir_result_t kefir_codegen_target_ir_control_flow_dominator_tree_iter(
+    const struct kefir_codegen_target_ir_control_flow *,
+    struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t,
+    kefir_codegen_target_ir_block_ref_t *);
+kefir_result_t kefir_codegen_target_ir_control_flow_dominator_tree_next(
+    struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t *);
 
-kefir_result_t kefir_codegen_target_ir_control_flow_postdominator_tree_iter(const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_block_ref_t *);
-kefir_result_t kefir_codegen_target_ir_control_flow_postdominator_tree_next(struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t *);
+kefir_result_t kefir_codegen_target_ir_control_flow_postdominator_tree_iter(
+    const struct kefir_codegen_target_ir_control_flow *,
+    struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t,
+    kefir_codegen_target_ir_block_ref_t *);
+kefir_result_t kefir_codegen_target_ir_control_flow_postdominator_tree_next(
+    struct kefir_codegen_target_ir_control_flow_dominator_tree_iterator *, kefir_codegen_target_ir_block_ref_t *);
 
 #endif

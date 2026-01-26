@@ -49,9 +49,9 @@ int main(int argc, const char **argv) {
         ASSERT(FLOAT_EQUALS(doubleToFloat((double) i), i, FLOAT_EPSILON));
     }
     ASSERT(floatToULong((float) (ULONG_MAX - 1000000000000)) ==
-           (unsigned long) (volatile float){(float) (ULONG_MAX - 1000000000000)});
+           (unsigned long) (volatile float) {(float) (ULONG_MAX - 1000000000000)});
     ASSERT(doubleToULong((double) (ULONG_MAX - 10000000000)) ==
-           (unsigned long) (volatile double){(double) (ULONG_MAX - 10000000000)});
+           (unsigned long) (volatile double) {(double) (ULONG_MAX - 10000000000)});
     for (long i = -1000; i < 1000; i++) {
         ASSERT(FLOAT_EQUALS(longToFloat((long) i), (float) i, FLOAT_EPSILON));
         ASSERT(DOUBLE_EQUALS(longToDouble((long) i), (double) i, DOUBLE_EPSILON));

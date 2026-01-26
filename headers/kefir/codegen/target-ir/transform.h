@@ -24,15 +24,26 @@
 #include "kefir/codegen/target-ir/code.h"
 #include "kefir/codegen/target-ir/regalloc.h"
 
-kefir_result_t kefir_codegen_target_ir_transform_phi_removal(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_bool_t);
-kefir_result_t kefir_codegen_target_ir_transform_copy_elision(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
-kefir_result_t kefir_codegen_target_ir_transform_jump_propagate(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
-kefir_result_t kefir_codegen_target_ir_transform_split_critical_edges(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
-kefir_result_t kefir_codegen_target_ir_transform_placeholder_sink(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_transform_phi_removal(struct kefir_mem *, struct kefir_codegen_target_ir_code *,
+                                                             kefir_bool_t);
+kefir_result_t kefir_codegen_target_ir_transform_copy_elision(struct kefir_mem *,
+                                                              struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_transform_jump_propagate(struct kefir_mem *,
+                                                                struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_transform_split_critical_edges(struct kefir_mem *,
+                                                                      struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_transform_placeholder_sink(struct kefir_mem *,
+                                                                  struct kefir_codegen_target_ir_code *);
 kefir_result_t kefir_codegen_target_ir_transform_block_merge(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
-kefir_result_t kefir_codegen_target_ir_transform_insert_upsilons(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
-kefir_result_t kefir_codegen_target_ir_transform_remove_upsilons(struct kefir_mem *, struct kefir_codegen_target_ir_code *);
-kefir_result_t kefir_codegen_target_ir_transform_preserve_virtual_regs(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_opcode_t);
-kefir_result_t kefir_codegen_target_ir_transform_insert_local_hot_copy(struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_liveness *, const struct kefir_codegen_target_ir_interference *, struct kefir_codegen_target_ir_regalloc *);
+kefir_result_t kefir_codegen_target_ir_transform_insert_upsilons(struct kefir_mem *,
+                                                                 struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_transform_remove_upsilons(struct kefir_mem *,
+                                                                 struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_transform_preserve_virtual_regs(struct kefir_mem *,
+                                                                       struct kefir_codegen_target_ir_code *,
+                                                                       kefir_codegen_target_ir_opcode_t);
+kefir_result_t kefir_codegen_target_ir_transform_insert_local_hot_copy(
+    struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_liveness *,
+    const struct kefir_codegen_target_ir_interference *, struct kefir_codegen_target_ir_regalloc *);
 
 #endif

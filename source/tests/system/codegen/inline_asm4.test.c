@@ -39,7 +39,7 @@ int main(int argc, const char **argv) {
 #ifdef __x86_64__
     for (char x = 0; x < 50; x++) {
         for (char y = 0; y < 50; y++) {
-            struct val r = process((struct val){x, y, 0});
+            struct val r = process((struct val) {x, y, 0});
             ASSERT(r.x == y);
             ASSERT(r.y == x);
             ASSERT(r.res == x + y);

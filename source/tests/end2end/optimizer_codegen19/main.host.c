@@ -78,7 +78,7 @@ int main(void) {
     }
 
     assert(long_double_to_ulong((long double) (ULONG_MAX - 1000000)) ==
-           (unsigned long) (volatile long double){(long double) (ULONG_MAX - 1000000)});
+           (unsigned long) (volatile long double) {(long double) (ULONG_MAX - 1000000)});
 
     for (long i = -1000; i < 1000; i++) {
         assert(fabsl(long_to_long_double(i) - (long double) i) < EPSILON_LD);

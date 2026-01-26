@@ -23,14 +23,15 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t amd64_opcode_mnemonic(kefir_codegen_target_ir_opcode_t opcode, const char **mnemonic_ptr, void *payload) {
+static kefir_result_t amd64_opcode_mnemonic(kefir_codegen_target_ir_opcode_t opcode, const char **mnemonic_ptr,
+                                            void *payload) {
     UNUSED(payload);
     REQUIRE(mnemonic_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to mnemonic"));
 
     switch (opcode) {
-#define CASE(_opcode, ...)        \
+#define CASE(_opcode, ...)                      \
     case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
-        *mnemonic_ptr = #_opcode;            \
+        *mnemonic_ptr = #_opcode;               \
         break;
 
         KEFIR_AMD64_INSTRUCTION_DATABASE(CASE, CASE, CASE, CASE, )
@@ -56,7 +57,7 @@ static kefir_result_t register_mnemonic(kefir_codegen_target_ir_physical_registe
 }
 
 static kefir_result_t attribute_mnemonic(kefir_codegen_target_ir_native_id_t attr, const char **mnemonic_ptr,
-                                        void *payload) {
+                                         void *payload) {
     UNUSED(payload);
     REQUIRE(mnemonic_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to attribute mnemonic"));
@@ -123,12 +124,12 @@ static kefir_result_t resource_mnemonic(kefir_codegen_target_ir_resource_id_t re
     return KEFIR_OK;
 }
 
-static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instruction, struct kefir_codegen_target_ir_block_terminator_props *props, void *payload) {
+static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_code *code,
+                                          const struct kefir_codegen_target_ir_instruction *instruction,
+                                          struct kefir_codegen_target_ir_block_terminator_props *props, void *payload) {
     UNUSED(payload);
-    REQUIRE(code != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
-    REQUIRE(instruction != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
     REQUIRE(props != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR block terminator props"));
 
@@ -146,9 +147,9 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_c
         struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
         const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
         kefir_result_t res;
-        for (res = kefir_codegen_target_ir_code_inline_assembly_fragment_iter(code, &iter, instruction->instr_ref, &fragment);
-            res == KEFIR_OK;
-            res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
+        for (res = kefir_codegen_target_ir_code_inline_assembly_fragment_iter(code, &iter, instruction->instr_ref,
+                                                                              &fragment);
+             res == KEFIR_OK; res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
             switch (fragment->type) {
                 case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_TEXT:
                     // Intentionally left blank
@@ -157,11 +158,12 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_c
                 case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND:
                     if (fragment->operand.type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF ||
                         fragment->operand.type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF ||
-                        (fragment->operand.type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT && fragment->operand.indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS)) {
+                        (fragment->operand.type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
+                         fragment->operand.indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS)) {
                         props->block_terminator = true;
                         props->undefined_target = true;
                         props->fallthrough = instruction->operation.inline_asm_node.target_block_ref == KEFIR_ID_NONE;
-                        return KEFIR_OK;    
+                        return KEFIR_OK;
                     }
                     break;
             }
@@ -173,35 +175,36 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_c
 
     switch (instruction->operation.opcode) {
 #define DEF_OPCODE_NOOP(...)
-#define DEF_OPCODE0(_opcode, _mnemonic, _branch, _flags) \
-        case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
-            if ((_flags) & KEFIR_AMD64_INSTRDB_CONTROL_FLOW_TERMINATE_CONTROL_FLOW) { \
-                props->block_terminator = true; \
-                props->function_terminator = true; \
-            } \
-            break;
+#define DEF_OPCODE0(_opcode, _mnemonic, _branch, _flags)                          \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode):                                   \
+        if ((_flags) & KEFIR_AMD64_INSTRDB_CONTROL_FLOW_TERMINATE_CONTROL_FLOW) { \
+            props->block_terminator = true;                                       \
+            props->function_terminator = true;                                    \
+        }                                                                         \
+        break;
 #define DEF_OPCODE1(_opcode, _mnemonic, _branch, _flags, ...) CASE_IS_##_branch(_opcode, _flags)
-#define CASE_IS_BRANCH(_opcode, _flags) \
-        case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
-            if (KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(call)) { \
-                props->block_terminator = true; \
-                props->branch = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(jmp); \
-                props->fallthrough = true; \
-                props->fallthrough = ((_flags) & KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP_FALLTHROUGH) != 0 && \
-                    instruction->operation.parameters[1].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF; \
-                if (instruction->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) { \
-                    props->target_block_refs[0] = instruction->operation.parameters[0].block_ref; \
-                    if (instruction->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) { \
-                        props->target_block_refs[1] = instruction->operation.parameters[1].block_ref; \
-                    } \
-                } else { \
-                    props->undefined_target = true; \
-                } \
-            } \
-            break;
+#define CASE_IS_BRANCH(_opcode, _flags)                                                                            \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode):                                                                    \
+        if (KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(call)) {                         \
+            props->block_terminator = true;                                                                        \
+            props->branch = KEFIR_TARGET_IR_AMD64_OPCODE(_opcode) != KEFIR_TARGET_IR_AMD64_OPCODE(jmp);            \
+            props->fallthrough = true;                                                                             \
+            props->fallthrough =                                                                                   \
+                ((_flags) & KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP_FALLTHROUGH) != 0 &&                             \
+                instruction->operation.parameters[1].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF;       \
+            if (instruction->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) {     \
+                props->target_block_refs[0] = instruction->operation.parameters[0].block_ref;                      \
+                if (instruction->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) { \
+                    props->target_block_refs[1] = instruction->operation.parameters[1].block_ref;                  \
+                }                                                                                                  \
+            } else {                                                                                               \
+                props->undefined_target = true;                                                                    \
+            }                                                                                                      \
+        }                                                                                                          \
+        break;
 #define CASE_IS_(...)
 
-        KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE0, DEF_OPCODE1, DEF_OPCODE_NOOP, DEF_OPCODE_NOOP,)
+        KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE0, DEF_OPCODE1, DEF_OPCODE_NOOP, DEF_OPCODE_NOOP, )
 #undef DEF_OPCODE_NOOP
 #undef DEF_OPCODE1
 #undef DEF_OPCODE0
@@ -215,7 +218,8 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_c
     return KEFIR_OK;
 }
 
-static kefir_result_t make_unconditional_jump(kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_codegen_target_ir_operation *operation_ptr, void *payload) {
+static kefir_result_t make_unconditional_jump(kefir_codegen_target_ir_block_ref_t block_ref,
+                                              struct kefir_codegen_target_ir_operation *operation_ptr, void *payload) {
     UNUSED(payload);
     REQUIRE(operation_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR operation"));
@@ -229,10 +233,12 @@ static kefir_result_t make_unconditional_jump(kefir_codegen_target_ir_block_ref_
     return KEFIR_OK;
 }
 
-static kefir_result_t finalize_conditional_jump(const struct kefir_codegen_target_ir_operation *operation, kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_codegen_target_ir_operation *operation_ptr, void *payload) {
+static kefir_result_t finalize_conditional_jump(const struct kefir_codegen_target_ir_operation *operation,
+                                                kefir_codegen_target_ir_block_ref_t block_ref,
+                                                struct kefir_codegen_target_ir_operation *operation_ptr,
+                                                void *payload) {
     UNUSED(payload);
-    REQUIRE(operation != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR operation"));
+    REQUIRE(operation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR operation"));
     REQUIRE(operation_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR operation"));
 
@@ -243,17 +249,24 @@ static kefir_result_t finalize_conditional_jump(const struct kefir_codegen_targe
     return KEFIR_OK;
 }
 
-
 static kefir_uint64_t CONSUMED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes) + 1] = {
-    [KEFIR_TARGET_IR_AMD64_OPCODE(cmova)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(cmova)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
+                                            (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(cmovae)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(cmovb)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovbe)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovbe)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(cmove)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovg)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovge)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovl)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovle)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovg)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                            (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) |
+                                            (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovge)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovl)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                            (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(cmovle)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(cmovne)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(cmovs)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(cmovns)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF),
@@ -264,14 +277,22 @@ static kefir_uint64_t CONSUMED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes
     [KEFIR_TARGET_IR_AMD64_OPCODE(setne)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(setp)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(setnp)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(setg)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(setge)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(setl)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(setle)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(seta)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(setg)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
+                                           (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                           (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(setge)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                            (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(setl)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                           (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(setle)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
+                                            (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                            (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(seta)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
+                                           (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(setae)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(setb)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(setbe)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(setbe)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
+                                            (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(setnb)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(seto)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(setno)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
@@ -283,13 +304,12 @@ static kefir_uint64_t CONSUMED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes
     [KEFIR_TARGET_IR_AMD64_OPCODE(adc)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(sbb)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
 
-    [KEFIR_TARGET_IR_AMD64_OPCODE(pushfq)] = 
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_DF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(pushfq)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_DF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
 
     [KEFIR_TARGET_IR_AMD64_OPCODE(movsb)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_DF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(movsw)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_DF),
@@ -312,15 +332,23 @@ static kefir_uint64_t CONSUMED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes
     [KEFIR_TARGET_IR_AMD64_OPCODE(jno)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(jp)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(jnp)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(ja)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(ja)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
+                                         (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(jae)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(jb)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(jnb)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(jbe)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(jg)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(jge)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(jl)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(jle)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(jbe)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(jg)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
+                                         (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                         (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(jge)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(jl)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                         (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(jle)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
 
     [KEFIR_TARGET_IR_AMD64_OPCODE(fld)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fild)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
@@ -359,29 +387,30 @@ static kefir_uint64_t CONSUMED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes
     [KEFIR_TARGET_IR_AMD64_OPCODE(fcomi)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fcomip)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fcomip2)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(fcmove)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(fcmove)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
+                                             (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
 
     [KEFIR_TARGET_IR_AMD64_OPCODE(fnstenv)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_FPU_ENVIRONMENT),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fstcw)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_FPU_ENVIRONMENT),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fnstcw)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_FPU_ENVIRONMENT),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fnstsw)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_FPU_ENVIRONMENT),
 
-    [KEFIR_TARGET_IR_AMD64_OPCODE(stmxcsr)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_MXCSR)
-};
+    [KEFIR_TARGET_IR_AMD64_OPCODE(stmxcsr)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_MXCSR)};
 
-#define ARITH_FLAGS ((1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) | \
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | \
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) | \
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF) | \
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF))
+#define ARITH_FLAGS                                             \
+    ((1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) | \
+     (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | \
+     (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) | \
+     (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF) | \
+     (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF))
 static kefir_uint64_t PRODUCED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes) + 1] = {
-#define ALL_FLAGS \
+#define ALL_FLAGS                                               \
     ((1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) | \
-    (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF) | \
-    (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) | \
-    (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | \
-    (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_DF) | \
-    (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF))
+     (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF) | \
+     (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) | \
+     (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) | \
+     (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_DF) | \
+     (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF))
     [KEFIR_TARGET_IR_AMD64_OPCODE(popfq)] = ALL_FLAGS,
     [KEFIR_TARGET_IR_AMD64_OPCODE(tail_call)] = ALL_FLAGS,
     [KEFIR_TARGET_IR_AMD64_OPCODE(call)] = ALL_FLAGS,
@@ -389,21 +418,21 @@ static kefir_uint64_t PRODUCED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes
 #undef ALL_FLAGS
 
     [KEFIR_TARGET_IR_AMD64_OPCODE(cld)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_DF),
-    [KEFIR_TARGET_IR_AMD64_OPCODE(test)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF)
-        | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF)
-        | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF)
-        | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF)
-        | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(test)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                           (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
+                                           (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF) |
+                                           (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) |
+                                           (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(btc)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF),
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) |
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(cmp)] = ARITH_FLAGS,
     [KEFIR_TARGET_IR_AMD64_OPCODE(cmpxchg)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
+                                              (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF) |
+                                              (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF) |
+                                              (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                              (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF),
 
     [KEFIR_TARGET_IR_AMD64_OPCODE(add)] = ARITH_FLAGS,
     [KEFIR_TARGET_IR_AMD64_OPCODE(xadd)] = ARITH_FLAGS,
@@ -426,12 +455,13 @@ static kefir_uint64_t PRODUCED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes
     [KEFIR_TARGET_IR_AMD64_OPCODE(xor)] = ARITH_FLAGS,
     [KEFIR_TARGET_IR_AMD64_OPCODE(neg)] = ARITH_FLAGS,
     [KEFIR_TARGET_IR_AMD64_OPCODE(dec)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
-        (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF),
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_SF) |
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_ZF) |
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_PF),
     [KEFIR_TARGET_IR_AMD64_OPCODE(bsf)] = ARITH_FLAGS,
     [KEFIR_TARGET_IR_AMD64_OPCODE(bsr)] = ARITH_FLAGS,
-    [KEFIR_TARGET_IR_AMD64_OPCODE(rol)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
+    [KEFIR_TARGET_IR_AMD64_OPCODE(rol)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_OF) |
+                                          (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_FLAG_CF),
 
     [KEFIR_TARGET_IR_AMD64_OPCODE(ucomiss)] = ARITH_FLAGS,
     [KEFIR_TARGET_IR_AMD64_OPCODE(ucomisd)] = ARITH_FLAGS,
@@ -442,7 +472,7 @@ static kefir_uint64_t PRODUCED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes
     [KEFIR_TARGET_IR_AMD64_OPCODE(fcomi)] = ARITH_FLAGS,
     [KEFIR_TARGET_IR_AMD64_OPCODE(fcomip)] = ARITH_FLAGS | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fcomip2)] = ARITH_FLAGS | (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
-    
+
     [KEFIR_TARGET_IR_AMD64_OPCODE(fld)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fild)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fdecstp)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_STACK),
@@ -479,24 +509,27 @@ static kefir_uint64_t PRODUCED_FLAGS[KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes
     [KEFIR_TARGET_IR_AMD64_OPCODE(fldcw)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_FPU_ENVIRONMENT),
     [KEFIR_TARGET_IR_AMD64_OPCODE(fnclex)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_X87_FPU_ENVIRONMENT),
 
-    [KEFIR_TARGET_IR_AMD64_OPCODE(ldmxcsr)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_MXCSR)
-};
+    [KEFIR_TARGET_IR_AMD64_OPCODE(ldmxcsr)] = (1ull << KEFIR_CODEGEN_TARGET_IR_AMD64_RESOURCE_MXCSR)};
 #undef ARITH_FLAGS
 
-kefir_result_t instruction_resources(kefir_codegen_target_ir_opcode_t opcode, kefir_uint64_t *produced_resources, kefir_uint64_t *consumed_resources, void *payload) {
+kefir_result_t instruction_resources(kefir_codegen_target_ir_opcode_t opcode, kefir_uint64_t *produced_resources,
+                                     kefir_uint64_t *consumed_resources, void *payload) {
     UNUSED(payload);
-    REQUIRE(opcode < KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes), KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR opcode"));
+    REQUIRE(opcode < KEFIR_TARGET_IR_AMD64_OPCODE(num_of_opcodes),
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR opcode"));
 
     ASSIGN_PTR(produced_resources, PRODUCED_FLAGS[opcode]);
     ASSIGN_PTR(consumed_resources, CONSUMED_FLAGS[opcode]);
     return KEFIR_OK;
 }
 
-static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref,
+static kefir_result_t classify_instruction(
+    const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref,
     struct kefir_codegen_target_ir_instruction_destruction_classification *classification, void *payload) {
     UNUSED(payload);
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
-    REQUIRE(classification != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction classification"));
+    REQUIRE(classification != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction classification"));
 
     const struct kefir_codegen_target_ir_instruction *instruction;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instruction));
@@ -546,55 +579,55 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
     kefir_bool_t implicit_params = false;
     kefir_size_t num_of_params = 0;
 
-#define CLASSIFY_OP(_op, _index) \
-    do { \
-        if (((_op) & KEFIR_AMD64_INSTRDB_READ) && ((_op) & KEFIR_AMD64_INSTRDB_WRITE)) { \
+#define CLASSIFY_OP(_op, _index)                                                                          \
+    do {                                                                                                  \
+        if (((_op) & KEFIR_AMD64_INSTRDB_READ) && ((_op) & KEFIR_AMD64_INSTRDB_WRITE)) {                  \
             classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE; \
-        } else if ((_op) & KEFIR_AMD64_INSTRDB_READ) { \
-            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ; \
-        } else if ((_op) & KEFIR_AMD64_INSTRDB_WRITE) { \
-            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE; \
-        } else if ((_op) & KEFIR_AMD64_INSTRDB_FPU_STACK) { \
-            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ; \
-        } \
+        } else if ((_op) & KEFIR_AMD64_INSTRDB_READ) {                                                    \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;       \
+        } else if ((_op) & KEFIR_AMD64_INSTRDB_WRITE) {                                                   \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;      \
+        } else if ((_op) & KEFIR_AMD64_INSTRDB_FPU_STACK) {                                               \
+            classification->operands[(_index)].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;       \
+        }                                                                                                 \
     } while (0)
 
     switch (instruction->operation.opcode) {
-#define INSTR0(_opcode, _mnemonic, _variant, _flags)        \
-    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
-        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode); \
+#define INSTR0(_opcode, _mnemonic, _variant, _flags)                             \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode):                                  \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);             \
         implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
         break;
 
-#define INSTR1(_opcode, _mnemonic, _variant, _flags, _op1)        \
-    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
-        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);            \
-        CLASSIFY_OP(_op1, 0); \
+#define INSTR1(_opcode, _mnemonic, _variant, _flags, _op1)                       \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode):                                  \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);             \
+        CLASSIFY_OP(_op1, 0);                                                    \
         implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
-        num_of_params = 1; \
+        num_of_params = 1;                                                       \
         break;
 
-#define INSTR2(_opcode, _mnemonic, _variant, _flags, _op1, _op2)        \
-    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
-        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);            \
-        CLASSIFY_OP(_op1, 0); \
-        CLASSIFY_OP(_op2, 1); \
+#define INSTR2(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                 \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode):                                  \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);             \
+        CLASSIFY_OP(_op1, 0);                                                    \
+        CLASSIFY_OP(_op2, 1);                                                    \
         implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
-        num_of_params = 2; \
+        num_of_params = 2;                                                       \
         break;
 
-#define INSTR3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)        \
-    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
-        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);            \
-        CLASSIFY_OP(_op1, 0); \
-        CLASSIFY_OP(_op2, 1); \
-        CLASSIFY_OP(_op2, 2); \
+#define INSTR3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)           \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode):                                  \
+        classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);             \
+        CLASSIFY_OP(_op1, 0);                                                    \
+        CLASSIFY_OP(_op2, 1);                                                    \
+        CLASSIFY_OP(_op2, 2);                                                    \
         implicit_params = ((_flags) & KEFIR_AMD64_INSTRDB_IMPLICIT_PARAMS) != 0; \
-        num_of_params = 3; \
+        num_of_params = 3;                                                       \
         break;
 
-#define INSTR0_VIRT(_opcode, _mnemonic)        \
-    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode): \
+#define INSTR0_VIRT(_opcode, _mnemonic)                              \
+    case KEFIR_TARGET_IR_AMD64_OPCODE(_opcode):                      \
         classification->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode); \
         break;
 
@@ -613,8 +646,10 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         if (classification->operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE) {
             const struct kefir_codegen_target_ir_value_type *value_type;
-            REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr_ref, output_index++, NULL, &value_type));
-            if (value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT || value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) {
+            REQUIRE_OK(
+                kefir_codegen_target_ir_code_instruction_output(code, instr_ref, output_index++, NULL, &value_type));
+            if (value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
+                value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) {
                 classification->operands[i].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
             }
         }
@@ -625,7 +660,8 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
         case KEFIR_TARGET_IR_AMD64_OPCODE(movsw):
         case KEFIR_TARGET_IR_AMD64_OPCODE(movsl):
         case KEFIR_TARGET_IR_AMD64_OPCODE(movsq):
-            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            REQUIRE(num_of_params == 0 && implicit_params,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
             classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
             classification->operands[0].implicit = true;
             classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDI;
@@ -638,7 +674,8 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
         case KEFIR_TARGET_IR_AMD64_OPCODE(stosw):
         case KEFIR_TARGET_IR_AMD64_OPCODE(stosl):
         case KEFIR_TARGET_IR_AMD64_OPCODE(stosq):
-            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            REQUIRE(num_of_params == 0 && implicit_params,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
             classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
             classification->operands[0].implicit = true;
             classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDI;
@@ -648,7 +685,8 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
             break;
 
         case KEFIR_TARGET_IR_AMD64_OPCODE(cmpxchg): {
-            REQUIRE(num_of_params == 2 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            REQUIRE(num_of_params == 2 && implicit_params,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
             classification->operands[2].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
             classification->operands[2].implicit = true;
             classification->operands[2].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
@@ -663,7 +701,8 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
                 classification->operands[1].implicit = true;
                 classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
                 kefir_codegen_target_ir_value_ref_t value_ref;
-                kefir_result_t res = kefir_codegen_target_ir_code_instruction_output(code, instr_ref, 1, &value_ref, NULL);
+                kefir_result_t res =
+                    kefir_codegen_target_ir_code_instruction_output(code, instr_ref, 1, &value_ref, NULL);
                 if (res != KEFIR_NOT_FOUND) {
                     REQUIRE_OK(res);
                     classification->operands[2].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE;
@@ -681,7 +720,8 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
                 classification->operands[1].implicit = true;
                 classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
                 kefir_codegen_target_ir_value_ref_t value_ref;
-                kefir_result_t res = kefir_codegen_target_ir_code_instruction_output(code, instr_ref, 1, &value_ref, NULL);
+                kefir_result_t res =
+                    kefir_codegen_target_ir_code_instruction_output(code, instr_ref, 1, &value_ref, NULL);
                 if (res != KEFIR_NOT_FOUND) {
                     REQUIRE_OK(res);
                     classification->operands[2].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE;
@@ -692,7 +732,8 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
             break;
 
         case KEFIR_TARGET_IR_AMD64_OPCODE(cwd):
-            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            REQUIRE(num_of_params == 0 && implicit_params,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
             classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
             classification->operands[0].implicit = true;
             classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
@@ -700,9 +741,10 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
             classification->operands[1].implicit = true;
             classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDX;
             break;
-            
+
         case KEFIR_TARGET_IR_AMD64_OPCODE(cdq):
-            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            REQUIRE(num_of_params == 0 && implicit_params,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
             classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
             classification->operands[0].implicit = true;
             classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
@@ -712,7 +754,8 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
             break;
 
         case KEFIR_TARGET_IR_AMD64_OPCODE(cqo):
-            REQUIRE(num_of_params == 0 && implicit_params, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
+            REQUIRE(num_of_params == 0 && implicit_params,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 instruction shape"));
             classification->operands[0].class = KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ;
             classification->operands[0].implicit = true;
             classification->operands[0].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
@@ -721,7 +764,6 @@ static kefir_result_t classify_instruction(const struct kefir_codegen_target_ir_
             classification->operands[1].implicit_phreg = KEFIR_AMD64_XASMGEN_REGISTER_RDX;
             break;
     }
-
 
     classification->produced_resources = PRODUCED_FLAGS[classification->opcode];
     classification->consumed_resources = CONSUMED_FLAGS[classification->opcode];
@@ -745,5 +787,4 @@ const struct kefir_codegen_target_ir_code_class KEFIR_TARGET_AMD64_CODE_CLASS = 
     .upsilon_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(upsilon),
     .placeholder_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(placeholder),
     .inline_asm_opcode = KEFIR_TARGET_IR_AMD64_OPCODE(inline_assembly),
-    .payload = NULL
-};
+    .payload = NULL};

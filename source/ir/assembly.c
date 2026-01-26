@@ -241,7 +241,7 @@ kefir_result_t kefir_ir_inline_assembly_add_immediate_parameter(
 
     param->parameter_id = kefir_list_length(&inline_asm->parameter_list);
     param->klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE;
-    param->constraints = (struct kefir_ir_inline_assembly_parameter_constraints){0};
+    param->constraints = (struct kefir_ir_inline_assembly_parameter_constraints) {0};
     param->type.type = param_type;
     param->type.type_id = param_type_id;
     param->type.index = param_type_idx;

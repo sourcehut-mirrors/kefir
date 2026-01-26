@@ -20,18 +20,10 @@
 
 #include "./definitions.h"
 
-#define SUM(a, b, c) (\
-        a + \
-        b + \
-        c \
-    )
+#define SUM(a, b, c) (a + b + c)
 
-int sum1 = SUM(1, 2 \
-    , 3) \
-    ;
+int sum1 = SUM(1, 2, 3);
 
 int sum2(int a, int b, int c) {
-    return SUM(a, \
-        b, \
-        c);
+    return SUM(a, b, c);
 }

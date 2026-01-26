@@ -44,36 +44,36 @@ unsigned __int128 u128_from_f80(long double x) {
     return x;
 }
 
-__int128  i128_from_i9(_BitInt(9) x) {
-    return x;   
+__int128 i128_from_i9(_BitInt(9) x) {
+    return x;
 }
 
-__int128  i128_from_u9(unsigned _BitInt(9) x) {
-    return x;   
+__int128 i128_from_u9(unsigned _BitInt(9) x) {
+    return x;
 }
 
 unsigned __int128 u128_from_i9(_BitInt(9) x) {
-    return x;   
+    return x;
 }
 
 unsigned __int128 u128_from_u9(unsigned _BitInt(9) x) {
-    return x;   
+    return x;
 }
 
-__int128  i128_from_i256(_BitInt(256) x) {
-    return x;   
+__int128 i128_from_i256(_BitInt(256) x) {
+    return x;
 }
 
-__int128  i128_from_u256(unsigned _BitInt(256) x) {
-    return x;   
+__int128 i128_from_u256(unsigned _BitInt(256) x) {
+    return x;
 }
 
 unsigned __int128 u128_from_i256(_BitInt(256) x) {
-    return x;   
+    return x;
 }
 
 unsigned __int128 u128_from_u256(unsigned _BitInt(256) x) {
-    return x;   
+    return x;
 }
 
 #endif

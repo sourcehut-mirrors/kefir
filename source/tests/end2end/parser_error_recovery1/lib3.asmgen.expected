@@ -1,5 +1,5 @@
 Failed to compile! Error stack:
 No.  Message                                                                                 Class          Subclass
-  0| lib.kefir.asmgen.c@7:9 Expected cast expression                                   |     Error|           Parser
-  1| lib.kefir.asmgen.c@5:6 Expected cast expression                                   |     Error|           Parser
+  0| lib.kefir.asmgen.c@3:25 Expected cast expression                                  |     Error|           Parser
+  1| lib.kefir.asmgen.c@3:16 Expected cast expression                                  |     Error|           Parser
   2| lib.kefir.asmgen.c@1:9 Expected either initializer list, or assignment expression |     Error|           Parser

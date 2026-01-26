@@ -25,9 +25,7 @@
 #include "./definitions.h"
 
 struct S1 get(unsigned long x) {
-    return (struct S1) {
-        {x, x + 1, x + 2, x + 3, -x, -x - 1, -x - 2, -x - 3}
-    };
+    return (struct S1) {{x, x + 1, x + 2, x + 3, -x, -x - 1, -x - 2, -x - 3}};
 }
 
 int main(void) {

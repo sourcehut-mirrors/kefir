@@ -23,74 +23,55 @@
 #if defined(__KEFIRCC_DECIMAL_SUPPORT__) && defined(__x86_64__)
 int test() {
     int res;
-    asm("mov %1, %0\n"
-        : "=r"(res)
-        : "i"(4.21df)
-        :);
+    asm("mov %1, %0\n" : "=r"(res) : "i"(4.21df) :);
     return res;
 }
 
 _Decimal32 test2(_Decimal32 x) {
     _Decimal32 res;
-    asm("mov %1, %0"
-            : "=r"(res)
-            : "r"(x));
+    asm("mov %1, %0" : "=r"(res) : "r"(x));
     return res;
 }
 
 _Decimal32 test3(_Decimal32 x) {
     _Decimal32 res;
-    asm("movdqu %1, %0"
-            : "=x"(res)
-            : "x"(x));
+    asm("movdqu %1, %0" : "=x"(res) : "x"(x));
     return res;
 }
 
 _Decimal32 test4(_Decimal32 x) {
     _Decimal32 res;
-    asm("movd %1, %0"
-            : "=m"(res)
-            : "x"(x));
+    asm("movd %1, %0" : "=m"(res) : "x"(x));
     return res;
 }
 
 _Decimal64 test5(_Decimal64 x) {
     _Decimal64 res;
-    asm("mov %1, %0"
-            : "=r"(res)
-            : "r"(x));
+    asm("mov %1, %0" : "=r"(res) : "r"(x));
     return res;
 }
 
 _Decimal64 test6(_Decimal64 x) {
     _Decimal64 res;
-    asm("movdqu %1, %0"
-            : "=x"(res)
-            : "x"(x));
+    asm("movdqu %1, %0" : "=x"(res) : "x"(x));
     return res;
 }
 
 _Decimal64 test7(_Decimal64 x) {
     _Decimal64 res;
-    asm("movq %1, %0"
-            : "=m"(res)
-            : "x"(x));
+    asm("movq %1, %0" : "=m"(res) : "x"(x));
     return res;
 }
 
 _Decimal128 test8(_Decimal128 x) {
     _Decimal128 res;
-    asm("movdqu %1, %0"
-            : "=x"(res)
-            : "x"(x));
+    asm("movdqu %1, %0" : "=x"(res) : "x"(x));
     return res;
 }
 
 _Decimal128 test9(_Decimal128 x) {
     _Decimal128 res;
-    asm("movdqu %1, %0"
-            : "=m"(res)
-            : "x"(x));
+    asm("movdqu %1, %0" : "=m"(res) : "x"(x));
     return res;
 }
 #endif

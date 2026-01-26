@@ -275,7 +275,8 @@ static kefir_result_t generate_anonymous_parameter_info(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_function_parameter_loclists(struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
+static kefir_result_t generate_function_parameter_loclists(struct kefir_mem *mem,
+                                                           struct kefir_codegen_amd64_function *codegen_function,
                                                            struct kefir_codegen_amd64_dwarf_context *context,
                                                            kefir_ir_debug_entry_id_t entry_id) {
     struct kefir_hashtree_node *node;

@@ -63,9 +63,10 @@ struct S1 {
 
 extern double d1(int, short, long double);
 float d2(a, b, c)
-    long a;
-    struct S1 b;
-    void **c; {
+long a;
+struct S1 b;
+void **c;
+{
     int vla[a];
     return 0.0f;
 }

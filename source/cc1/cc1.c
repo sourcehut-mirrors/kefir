@@ -57,7 +57,8 @@ int kefir_cc1_main(int argc, char *const *argv) {
                 break;
         }
     }
-    return kefir_report_error(stderr, res, options.error_report_type == KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON, options.features.error_compiler_ref)
+    return kefir_report_error(stderr, res, options.error_report_type == KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON,
+                              options.features.error_compiler_ref)
                ? EXIT_SUCCESS
                : EXIT_FAILURE;
 }

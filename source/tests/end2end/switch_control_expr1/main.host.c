@@ -25,7 +25,7 @@
 
 int main(void) {
     for (int i = 0; i < 0xff; i++) {
-        assert(test1(&(signed char){i}) == (i == 0xe2));
+        assert(test1(&(signed char) {i}) == (i == 0xe2));
     }
     return EXIT_SUCCESS;
 }

@@ -493,8 +493,8 @@ static kefir_result_t run_substitutions_impl(struct kefir_mem *mem, struct kefir
         kefir_preprocessor_token_sequence_push_front(mem, seq, buffer, KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL));
     if (preprocessor->mode != KEFIR_PREPROCESSOR_MODE_MINIMAL) {
         REQUIRE_OK(run_substitutions(mem, preprocessor, token_allocator, seq, buffer, subst_context));
-        REQUIRE_OK(
-            kefir_preprocessor_token_sequence_push_front(mem, seq, buffer, KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL));
+        REQUIRE_OK(kefir_preprocessor_token_sequence_push_front(mem, seq, buffer,
+                                                                KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL));
     }
     kefir_bool_t scan_tokens = true;
     while (scan_tokens) {

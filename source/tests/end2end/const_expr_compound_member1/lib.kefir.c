@@ -42,18 +42,14 @@ long **e = ((struct {
 void *f = ((struct { void *x; }) {}).x;
 long g = ((struct S1) {}).f;
 double h = ((struct {
-                    struct {
-                        double x;
-                    };
-                }) {})
-                    .x;
+               struct {
+                   double x;
+               };
+           }) {})
+               .x;
 _Complex double i = ((struct {
                         int x;
                         _Complex double a;
                     }) {1})
                         .a;
-const char *j = ((struct {
-    char buf[5];
-}){
-    "Hello, world!"
-}).buf;
+const char *j = ((struct { char buf[5]; }) {"Hello, world!"}).buf;

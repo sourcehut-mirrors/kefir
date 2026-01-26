@@ -27,11 +27,11 @@ int x = 1000;
 int y = 1;
 
 # 1342 "Hey/\\/ho" 1 2 3 4 5 4 a sfn
-"Let's go" // 1
+"Let's go"  // 1
 
 #include "./inc1.h"
 
-int z = 1000
+    int z = 1000
 
 # 4 "Hello" 3
-void fn();
+    void fn();

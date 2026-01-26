@@ -28,12 +28,8 @@ int fn() {
     int d = 3->a;
     int e = 4;
     int f = 5->b;
-    {
-        int g = 6->b;
-    }
-    ({
-        int h = 7->b;
-    });
+    { int g = 6->b; }
+    ({ int h = 7->b; });
 }
 
 int fn2() {

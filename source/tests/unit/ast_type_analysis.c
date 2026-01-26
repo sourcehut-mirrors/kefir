@@ -79,33 +79,42 @@ END_CASE
 
 DEFINE_CASE(ast_type_analysis_bitfield_promotion1, "AST Type analysis - bit-field promotion") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    ASSERT_TYPE_TAG(kefir_ast_type_int_promotion(type_traits, kefir_ast_type_signed_int(),
-                                                 (struct kefir_ast_bitfield_properties){.bitfield = true, .width = 17}),
-                    KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
-    ASSERT_TYPE_TAG(kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_short(),
-                                                 (struct kefir_ast_bitfield_properties){.bitfield = true, .width = 10}),
-                    KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
-    ASSERT_TYPE_TAG(kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_int(),
-                                                 (struct kefir_ast_bitfield_properties){.bitfield = true, .width = 22}),
-                    KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
-    ASSERT_TYPE_TAG(kefir_ast_type_int_promotion(type_traits, kefir_ast_type_signed_long_long(),
-                                                 (struct kefir_ast_bitfield_properties){.bitfield = true, .width = 31}),
-                    KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
-    ASSERT_TYPE_TAG(kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_int(),
-                                                 (struct kefir_ast_bitfield_properties){.bitfield = true, .width = 31}),
-                    KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
-    ASSERT_TYPE_TAG(kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_int(),
-                                                 (struct kefir_ast_bitfield_properties){.bitfield = true, .width = 32}),
-                    KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT);
-    ASSERT_TYPE_TAG(kefir_ast_type_int_promotion(type_traits, kefir_ast_type_signed_long(),
-                                                 (struct kefir_ast_bitfield_properties){.bitfield = true, .width = 32}),
-                    KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
-    ASSERT_TYPE_TAG(kefir_ast_type_int_promotion(type_traits, kefir_ast_type_signed_long(),
-                                                 (struct kefir_ast_bitfield_properties){.bitfield = true, .width = 33}),
-                    KEFIR_AST_TYPE_SCALAR_SIGNED_LONG);
-    ASSERT_TYPE_TAG(kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_long(),
-                                                 (struct kefir_ast_bitfield_properties){.bitfield = true, .width = 40}),
-                    KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG);
+    ASSERT_TYPE_TAG(
+        kefir_ast_type_int_promotion(type_traits, kefir_ast_type_signed_int(),
+                                     (struct kefir_ast_bitfield_properties) {.bitfield = true, .width = 17}),
+        KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
+    ASSERT_TYPE_TAG(
+        kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_short(),
+                                     (struct kefir_ast_bitfield_properties) {.bitfield = true, .width = 10}),
+        KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
+    ASSERT_TYPE_TAG(
+        kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_int(),
+                                     (struct kefir_ast_bitfield_properties) {.bitfield = true, .width = 22}),
+        KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
+    ASSERT_TYPE_TAG(
+        kefir_ast_type_int_promotion(type_traits, kefir_ast_type_signed_long_long(),
+                                     (struct kefir_ast_bitfield_properties) {.bitfield = true, .width = 31}),
+        KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
+    ASSERT_TYPE_TAG(
+        kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_int(),
+                                     (struct kefir_ast_bitfield_properties) {.bitfield = true, .width = 31}),
+        KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
+    ASSERT_TYPE_TAG(
+        kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_int(),
+                                     (struct kefir_ast_bitfield_properties) {.bitfield = true, .width = 32}),
+        KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT);
+    ASSERT_TYPE_TAG(
+        kefir_ast_type_int_promotion(type_traits, kefir_ast_type_signed_long(),
+                                     (struct kefir_ast_bitfield_properties) {.bitfield = true, .width = 32}),
+        KEFIR_AST_TYPE_SCALAR_SIGNED_INT);
+    ASSERT_TYPE_TAG(
+        kefir_ast_type_int_promotion(type_traits, kefir_ast_type_signed_long(),
+                                     (struct kefir_ast_bitfield_properties) {.bitfield = true, .width = 33}),
+        KEFIR_AST_TYPE_SCALAR_SIGNED_LONG);
+    ASSERT_TYPE_TAG(
+        kefir_ast_type_int_promotion(type_traits, kefir_ast_type_unsigned_long(),
+                                     (struct kefir_ast_bitfield_properties) {.bitfield = true, .width = 40}),
+        KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG);
 }
 END_CASE
 

@@ -125,8 +125,7 @@ const struct kefir_ast_type *composite_struct_types(struct kefir_mem *mem, struc
 
             struct kefir_ast_struct_field *composite_field = kefir_ast_struct_type_last_field(composite_struct);
             if (composite_field != NULL) {
-                composite_field->flags.deprecated =
-                    field1->flags.deprecated || field2->flags.deprecated;
+                composite_field->flags.deprecated = field1->flags.deprecated || field2->flags.deprecated;
                 composite_field->flags.deprecated_message = field1->flags.deprecated_message != NULL
                                                                 ? field1->flags.deprecated_message
                                                                 : field2->flags.deprecated_message;
@@ -289,8 +288,7 @@ const struct kefir_ast_type *composite_union_types(struct kefir_mem *mem, struct
 
             struct kefir_ast_struct_field *composite_field = kefir_ast_struct_type_last_field(composite_union);
             if (composite_field != NULL) {
-                composite_field->flags.deprecated =
-                    field1->flags.deprecated || field2->flags.deprecated;
+                composite_field->flags.deprecated = field1->flags.deprecated || field2->flags.deprecated;
                 composite_field->flags.deprecated_message = field1->flags.deprecated_message != NULL
                                                                 ? field1->flags.deprecated_message
                                                                 : field2->flags.deprecated_message;
@@ -525,8 +523,7 @@ struct kefir_ast_struct_field *kefir_ast_struct_type_last_field(struct kefir_ast
     const struct kefir_list_entry *tail = kefir_list_tail(&type->fields);
     REQUIRE(tail != NULL, NULL);
 
-    ASSIGN_DECL_CAST(struct kefir_ast_struct_field *, field,
-        tail->value);
+    ASSIGN_DECL_CAST(struct kefir_ast_struct_field *, field, tail->value);
     return field;
 }
 

@@ -67,25 +67,27 @@ kefir_result_t kefir_hashtable_on_removal(struct kefir_hashtable *hashtable, kef
 }
 
 static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops *ops,
-                                               struct kefir_hashtable_entry *entries, kefir_uint8_t *entry_states, kefir_size_t capacity,
-                                               kefir_hashtable_key_t key, kefir_size_t *position_ptr,
-                                               kefir_size_t *collisions_ptr) {
+                                               struct kefir_hashtable_entry *entries, kefir_uint8_t *entry_states,
+                                               kefir_size_t capacity, kefir_hashtable_key_t key,
+                                               kefir_size_t *position_ptr, kefir_size_t *collisions_ptr) {
     KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops, entries, entry_states, capacity, key, position_ptr, collisions_ptr);
 }
 
 static kefir_result_t rehash(struct kefir_mem *, struct kefir_hashtable *, kefir_size_t);
 
 static kefir_result_t insert_entry(struct kefir_mem *mem, struct kefir_hashtable *hashtable,
-                                   struct kefir_hashtable_entry *entries, kefir_uint8_t *entry_states, kefir_size_t capacity, kefir_size_t *occupied,
-                                   kefir_hashtable_key_t key, kefir_hashtable_value_t value, kefir_bool_t do_rehash) {
+                                   struct kefir_hashtable_entry *entries, kefir_uint8_t *entry_states,
+                                   kefir_size_t capacity, kefir_size_t *occupied, kefir_hashtable_key_t key,
+                                   kefir_hashtable_value_t value, kefir_bool_t do_rehash) {
     kefir_size_t index = 0;
     kefir_size_t found_collisions = 0;
-    REQUIRE_OK(find_position_for_insert(hashtable->ops, entries, entry_states, capacity, key, &index, &found_collisions));
+    REQUIRE_OK(
+        find_position_for_insert(hashtable->ops, entries, entry_states, capacity, key, &index, &found_collisions));
     if (do_rehash && entry_states[index] != KEFIR_HASHTABLE_ENTRY_OCCUPIED &&
         found_collisions >= KEFIR_REHASH_COLLISION_THRESHOLD) {
         REQUIRE_OK(rehash(mem, hashtable, KEFIR_HASHTABLE_CAPACITY_GROW(hashtable->capacity)));
-        return insert_entry(mem, hashtable, hashtable->entries, hashtable->entry_states, hashtable->capacity, &hashtable->occupied, key, value,
-                            false);
+        return insert_entry(mem, hashtable, hashtable->entries, hashtable->entry_states, hashtable->capacity,
+                            &hashtable->occupied, key, value, false);
     }
     REQUIRE(entry_states[index] != KEFIR_HASHTABLE_ENTRY_OCCUPIED,
             KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Entry with identical key already exists in the hashtable"));
@@ -101,7 +103,8 @@ static kefir_result_t insert_entry(struct kefir_mem *mem, struct kefir_hashtable
 static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashtable *hashtable, kefir_size_t new_capacity) {
     kefir_size_t new_occupied = 0;
     kefir_uint8_t *new_entry_states = KEFIR_MALLOC(mem, sizeof(kefir_uint8_t) * new_capacity);
-    REQUIRE(new_entry_states != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate hashtable entry states"));
+    REQUIRE(new_entry_states != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate hashtable entry states"));
     struct kefir_hashtable_entry *new_entries = KEFIR_MALLOC(mem, sizeof(struct kefir_hashtable_entry) * new_capacity);
     REQUIRE_ELSE(new_entries != NULL, {
         KEFIR_FREE(mem, new_entry_states);
@@ -112,8 +115,8 @@ static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashtable *hash
     kefir_result_t res = KEFIR_OK;
     for (kefir_size_t i = 0; res == KEFIR_OK && i < hashtable->capacity; i++) {
         if (hashtable->entry_states[i] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {
-            res = insert_entry(mem, hashtable, new_entries, new_entry_states, new_capacity, &new_occupied, hashtable->entries[i].key,
-                               hashtable->entries[i].value, false);
+            res = insert_entry(mem, hashtable, new_entries, new_entry_states, new_capacity, &new_occupied,
+                               hashtable->entries[i].key, hashtable->entries[i].value, false);
         }
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -142,8 +145,8 @@ kefir_result_t kefir_hashtable_insert(struct kefir_mem *mem, struct kefir_hashta
         did_rehash = true;
     }
 
-    REQUIRE_OK(insert_entry(mem, hashtable, hashtable->entries, hashtable->entry_states, hashtable->capacity, &hashtable->occupied, key, value,
-                            !did_rehash));
+    REQUIRE_OK(insert_entry(mem, hashtable, hashtable->entries, hashtable->entry_states, hashtable->capacity,
+                            &hashtable->occupied, key, value, !did_rehash));
     return KEFIR_OK;
 }
 

@@ -1285,7 +1285,8 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
     REQUIRE_OK(id_format(json, code->entry_point));
 
     struct kefir_opt_code_topological_scheduler topological_scheduler;
-    REQUIRE_OK(kefir_opt_code_topological_scheduler_init(&topological_scheduler, kefir_opt_code_topological_scheduler_default_schedule, (void *) code));
+    REQUIRE_OK(kefir_opt_code_topological_scheduler_init(
+        &topological_scheduler, kefir_opt_code_topological_scheduler_default_schedule, (void *) code));
     struct kefir_opt_code_schedule schedule;
     kefir_result_t res = KEFIR_OK;
     if (mem != NULL && code_analysis != NULL) {
@@ -1313,7 +1314,8 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
         struct kefir_opt_code_debug_info_local_variable_iterator local_variable_iter;
         const struct kefir_opt_code_debug_info_local_variable *local_variable;
         kefir_result_t res;
-        for (res = kefir_opt_code_debug_info_local_variable_iter(debug_info, &local_variable_iter, &local_variable); res == KEFIR_OK;
+        for (res = kefir_opt_code_debug_info_local_variable_iter(debug_info, &local_variable_iter, &local_variable);
+             res == KEFIR_OK;
              res = kefir_opt_code_debug_info_local_variable_next(&local_variable_iter, &local_variable)) {
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "variable_id"));
@@ -1322,9 +1324,8 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
             REQUIRE_OK(kefir_json_output_array_begin(json));
             struct kefir_hashset_iterator ref_iter;
             kefir_hashset_key_t ref_key;
-            for (res = kefir_hashset_iter(&local_variable->allocations, &ref_iter, &ref_key);
-                res == KEFIR_OK;
-                res = kefir_hashset_next(&ref_iter, &ref_key)) {
+            for (res = kefir_hashset_iter(&local_variable->allocations, &ref_iter, &ref_key); res == KEFIR_OK;
+                 res = kefir_hashset_next(&ref_iter, &ref_key)) {
                 ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, ref_key);
                 REQUIRE_OK(id_format(json, instr_ref));
             }
@@ -1343,8 +1344,8 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
         REQUIRE_OK(kefir_json_output_array_begin(json));
         struct kefir_opt_code_debug_info_allocation_placement_iterator placement_iter;
         const struct kefir_opt_code_debug_info_allocation_placement *placement;
-        for (res = kefir_opt_code_debug_info_allocation_placement_iter(debug_info, &placement_iter, &placement); res == KEFIR_OK;
-             res = kefir_opt_code_debug_info_allocation_placement_next(&placement_iter, &placement)) {
+        for (res = kefir_opt_code_debug_info_allocation_placement_iter(debug_info, &placement_iter, &placement);
+             res == KEFIR_OK; res = kefir_opt_code_debug_info_allocation_placement_next(&placement_iter, &placement)) {
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "allocation_ref"));
             REQUIRE_OK(kefir_json_output_uinteger(json, placement->allocation_ref));
@@ -1352,9 +1353,8 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
             REQUIRE_OK(kefir_json_output_array_begin(json));
             struct kefir_hashset_iterator ref_iter;
             kefir_hashset_key_t ref_key;
-            for (res = kefir_hashset_iter(&placement->placement, &ref_iter, &ref_key);
-                res == KEFIR_OK;
-                res = kefir_hashset_next(&ref_iter, &ref_key)) {
+            for (res = kefir_hashset_iter(&placement->placement, &ref_iter, &ref_key); res == KEFIR_OK;
+                 res = kefir_hashset_next(&ref_iter, &ref_key)) {
                 ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, ref_key);
                 REQUIRE_OK(id_format(json, instr_ref));
             }

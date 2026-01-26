@@ -47,10 +47,10 @@ int arr[] = {__builtin_classify_type((void) 0),
              __builtin_classify_type((unsigned long long) 0),
              __builtin_classify_type((long *) 0),
              __builtin_classify_type((enum Enum1) 0),
-             __builtin_classify_type((long[]){0}),
+             __builtin_classify_type((long[]) {0}),
              __builtin_classify_type(abort),
-             __builtin_classify_type((struct Struct1){0}),
-             __builtin_classify_type((union Union1){0})};
+             __builtin_classify_type((struct Struct1) {0}),
+             __builtin_classify_type((union Union1) {0})};
 
 int arr2[] = {void_type_class,     char_type_class,    char_type_class,    char_type_class,     integer_type_class,
               integer_type_class,  integer_type_class, integer_type_class, integer_type_class,  integer_type_class,
@@ -91,13 +91,13 @@ int test(int x) {
         case 13:
             return __builtin_classify_type((enum Enum1) 0);
         case 14:
-            return __builtin_classify_type((long[]){0});
+            return __builtin_classify_type((long[]) {0});
         case 15:
             return __builtin_classify_type(abort);
         case 16:
-            return __builtin_classify_type((struct Struct1){0});
+            return __builtin_classify_type((struct Struct1) {0});
         case 17:
-            return __builtin_classify_type((union Union1){0});
+            return __builtin_classify_type((union Union1) {0});
         default:
             return -1;
     }

@@ -20,9 +20,10 @@
 
 #include "./definitions.h"
 
-__attribute__((test1)) int __attribute__((test2("string", 2))) long __attribute__((test3(100, "string", 3.12 + 1)))
-INTEGER __attribute__((attr)) = 192739,
-        __attribute__((test100)) INTEGER2 __attribute__((test2000)) = -282761;
+__attribute__((test1)) int __attribute__((test2("string", 2))) long
+    __attribute__((test3(100, "string", 3.12 + 1))) INTEGER
+    __attribute__((attr)) = 192739,
+    __attribute__((test100)) INTEGER2 __attribute__((test2000)) = -282761;
 
 struct __attribute__((STRUCTURE)) __attribute__((STRUCT("X", x))) Test {
     long x;

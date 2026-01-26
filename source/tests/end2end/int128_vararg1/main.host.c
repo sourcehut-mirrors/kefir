@@ -31,63 +31,53 @@ int main(void) {
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = sum(0, (struct i128){{1, 2}});
+    res = sum(0, (struct i128) {{1, 2}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = sum(1, (struct i128){{1, 2}});
+    res = sum(1, (struct i128) {{1, 2}});
     assert(res.arr[0] == 1);
     assert(res.arr[1] == 2);
 
-    res = sum(1, (struct i128){{1, 2}}, (struct i128){{3, 4}});
+    res = sum(1, (struct i128) {{1, 2}}, (struct i128) {{3, 4}});
     assert(res.arr[0] == 1);
     assert(res.arr[1] == 2);
 
-    res = sum(2, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}});
+    res = sum(2, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}});
     assert(res.arr[0] == 4);
     assert(res.arr[1] == 6);
 
-    res = sum(3, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}});
+    res = sum(3, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}});
     assert(res.arr[0] == 3);
     assert(res.arr[1] == 6);
 
-    res = sum(4, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}});
+    res = sum(4, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}});
     assert(res.arr[0] == 2);
     assert(res.arr[1] == 7);
 
-    res = sum(5, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}});
+    res = sum(5, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+              (struct i128) {{1000, 2000}});
     assert(res.arr[0] == 1002);
     assert(res.arr[1] == 2007);
 
-    res = sum(6, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}}, (struct i128){{0, -1}});
+    res = sum(6, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+              (struct i128) {{1000, 2000}}, (struct i128) {{0, -1}});
     assert(res.arr[0] == 1002);
     assert(res.arr[1] == 2006);
 
-    res = sum(7, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}}, (struct i128){{0, -1}},
-        (struct i128){{-1002, -1}});
+    res = sum(7, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+              (struct i128) {{1000, 2000}}, (struct i128) {{0, -1}}, (struct i128) {{-1002, -1}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 2006);
 
-    res = sum(7, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}}, (struct i128){{0, -1}},
-        (struct i128){{-1003, -1}});
+    res = sum(7, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+              (struct i128) {{1000, 2000}}, (struct i128) {{0, -1}}, (struct i128) {{-1003, -1}});
     assert(res.arr[0] == ~0ull);
     assert(res.arr[1] == 2005);
 
-    res = sum(8, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}}, (struct i128){{0, -1}},
-        (struct i128){{-1003, -1}}, (struct i128){{~0ull, 0}});
+    res = sum(8, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+              (struct i128) {{1000, 2000}}, (struct i128) {{0, -1}}, (struct i128) {{-1003, -1}},
+              (struct i128) {{~0ull, 0}});
     assert(res.arr[0] == ~0ull - 1);
     assert(res.arr[1] == 2006);
 
@@ -95,63 +85,53 @@ int main(void) {
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = sum2(0, (struct i128){{1, 2}});
+    res = sum2(0, (struct i128) {{1, 2}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = sum2(1, (struct i128){{1, 2}});
+    res = sum2(1, (struct i128) {{1, 2}});
     assert(res.arr[0] == 1);
     assert(res.arr[1] == 2);
 
-    res = sum2(1, (struct i128){{1, 2}}, (struct i128){{3, 4}});
+    res = sum2(1, (struct i128) {{1, 2}}, (struct i128) {{3, 4}});
     assert(res.arr[0] == 1);
     assert(res.arr[1] == 2);
 
-    res = sum2(2, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}});
+    res = sum2(2, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}});
     assert(res.arr[0] == 4);
     assert(res.arr[1] == 6);
 
-    res = sum2(3, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}});
+    res = sum2(3, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}});
     assert(res.arr[0] == 3);
     assert(res.arr[1] == 6);
 
-    res = sum2(4, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}});
+    res = sum2(4, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}});
     assert(res.arr[0] == 2);
     assert(res.arr[1] == 7);
 
-    res = sum2(5, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}});
+    res = sum2(5, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+               (struct i128) {{1000, 2000}});
     assert(res.arr[0] == 1002);
     assert(res.arr[1] == 2007);
 
-    res = sum2(6, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}}, (struct i128){{0, -1}});
+    res = sum2(6, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+               (struct i128) {{1000, 2000}}, (struct i128) {{0, -1}});
     assert(res.arr[0] == 1002);
     assert(res.arr[1] == 2006);
 
-    res = sum2(7, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}}, (struct i128){{0, -1}},
-        (struct i128){{-1002, -1}});
+    res = sum2(7, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+               (struct i128) {{1000, 2000}}, (struct i128) {{0, -1}}, (struct i128) {{-1002, -1}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 2006);
 
-    res = sum2(7, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}}, (struct i128){{0, -1}},
-        (struct i128){{-1003, -1}});
+    res = sum2(7, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+               (struct i128) {{1000, 2000}}, (struct i128) {{0, -1}}, (struct i128) {{-1003, -1}});
     assert(res.arr[0] == ~0ull);
     assert(res.arr[1] == 2005);
 
-    res = sum2(8, (struct i128){{1, 2}}, (struct i128){{3, 4}},
-        (struct i128){{-1, -1}}, (struct i128){{~0ull, 0}},
-        (struct i128){{1000, 2000}}, (struct i128){{0, -1}},
-        (struct i128){{-1003, -1}}, (struct i128){{~0ull, 0}});
+    res = sum2(8, (struct i128) {{1, 2}}, (struct i128) {{3, 4}}, (struct i128) {{-1, -1}}, (struct i128) {{~0ull, 0}},
+               (struct i128) {{1000, 2000}}, (struct i128) {{0, -1}}, (struct i128) {{-1003, -1}},
+               (struct i128) {{~0ull, 0}});
     assert(res.arr[0] == ~0ull - 1);
     assert(res.arr[1] == 2006);
     return EXIT_SUCCESS;

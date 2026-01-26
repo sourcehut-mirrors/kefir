@@ -24,6 +24,6 @@ int and(int x, int y) {
     return x && x && y && y && y;
 }
 
-int or(int x, int y) {
+int or (int x, int y) {
     return x || x || y || y || y;
 }

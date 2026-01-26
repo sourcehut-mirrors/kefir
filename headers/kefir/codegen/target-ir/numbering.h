@@ -34,9 +34,13 @@ kefir_result_t kefir_codegen_target_ir_numbering_init(struct kefir_codegen_targe
 kefir_result_t kefir_codegen_target_ir_numbering_free(struct kefir_mem *, struct kefir_codegen_target_ir_numbering *);
 kefir_result_t kefir_codegen_target_ir_numbering_reset(struct kefir_mem *, struct kefir_codegen_target_ir_numbering *);
 
-kefir_result_t kefir_codegen_target_ir_numbering_build(struct kefir_mem *, struct kefir_codegen_target_ir_numbering *, const struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_numbering_build(struct kefir_mem *, struct kefir_codegen_target_ir_numbering *,
+                                                       const struct kefir_codegen_target_ir_code *);
 
-kefir_result_t kefir_codegen_target_ir_numbering_block_length(const struct kefir_codegen_target_ir_numbering *, kefir_codegen_target_ir_block_ref_t, kefir_size_t *);
-kefir_result_t kefir_codegen_target_ir_numbering_instruction_seq_index(const struct kefir_codegen_target_ir_numbering *, kefir_codegen_target_ir_instruction_ref_t, kefir_size_t *);
+kefir_result_t kefir_codegen_target_ir_numbering_block_length(const struct kefir_codegen_target_ir_numbering *,
+                                                              kefir_codegen_target_ir_block_ref_t, kefir_size_t *);
+kefir_result_t kefir_codegen_target_ir_numbering_instruction_seq_index(const struct kefir_codegen_target_ir_numbering *,
+                                                                       kefir_codegen_target_ir_instruction_ref_t,
+                                                                       kefir_size_t *);
 
 #endif

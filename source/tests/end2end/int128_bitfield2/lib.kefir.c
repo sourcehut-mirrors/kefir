@@ -19,16 +19,11 @@
 */
 
 static struct S {
-        unsigned __int128 a : 32,
-                   : 3,
-                 b : 70;
-} value = {
-    0xbad0c0full,
-    -0x81831bcde83131ll
-};
+    unsigned __int128 a : 32, : 3, b : 70;
+} value = {0xbad0c0full, -0x81831bcde83131ll};
 
 unsigned __int128 get_a() {
-        return value.a;
+    return value.a;
 }
 
 unsigned __int128 get_b() {

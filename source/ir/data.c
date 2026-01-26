@@ -233,7 +233,7 @@ kefir_result_t kefir_ir_data_set_long_double(struct kefir_mem *mem, struct kefir
 }
 
 kefir_result_t kefir_ir_data_set_decimal32(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
-                                             kefir_dfp_decimal32_t value) {
+                                           kefir_dfp_decimal32_t value) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(index < data->total_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested index exceeds IR data length"));
@@ -248,7 +248,7 @@ kefir_result_t kefir_ir_data_set_decimal32(struct kefir_mem *mem, struct kefir_i
 }
 
 kefir_result_t kefir_ir_data_set_decimal64(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
-                                             kefir_dfp_decimal64_t value) {
+                                           kefir_dfp_decimal64_t value) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(index < data->total_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested index exceeds IR data length"));
@@ -263,7 +263,7 @@ kefir_result_t kefir_ir_data_set_decimal64(struct kefir_mem *mem, struct kefir_i
 }
 
 kefir_result_t kefir_ir_data_set_decimal128(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
-                                             kefir_dfp_decimal128_t value) {
+                                            kefir_dfp_decimal128_t value) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(index < data->total_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested index exceeds IR data length"));

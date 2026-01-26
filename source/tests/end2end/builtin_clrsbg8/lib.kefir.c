@@ -18,11 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-int arr[] = {__builtin_clrsbg((__int128) 0),
-    __builtin_clrsbg((__int128) 1),
-    __builtin_clrsbg(((__int128) 1) << 30),
-    __builtin_clrsbg(((__int128) 1) << 70),
-    __builtin_clrsbg(((__int128) 1) << 125),
-    __builtin_clrsbg(((__int128) 1) << 126),
-    __builtin_clrsbg(((__int128) 1) << 127),
-    __builtin_clrsbg(((__int128) 1) << 128)};
+int arr[] = {__builtin_clrsbg((__int128) 0),          __builtin_clrsbg((__int128) 1),
+             __builtin_clrsbg(((__int128) 1) << 30),  __builtin_clrsbg(((__int128) 1) << 70),
+             __builtin_clrsbg(((__int128) 1) << 125), __builtin_clrsbg(((__int128) 1) << 126),
+             __builtin_clrsbg(((__int128) 1) << 127), __builtin_clrsbg(((__int128) 1) << 128)};

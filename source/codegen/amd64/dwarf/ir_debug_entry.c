@@ -789,7 +789,7 @@ static kefir_result_t generate_type_immediate_info(struct kefir_mem *mem, struct
             KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, dwarf_entry_id, context->abbrev.entries.scalar_type)); \
         REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,  \
                                                       KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, &ir_attr));             \
-        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen->xasmgen, context, ir_attr->name));                                    \
+        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen->xasmgen, context, ir_attr->name));       \
         REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,  \
                                                       KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE, &ir_attr));             \
         REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, ir_attr->size));                                      \
@@ -805,7 +805,7 @@ static kefir_result_t generate_type_immediate_info(struct kefir_mem *mem, struct
                                                 context->abbrev.entries.scalar_bitprecise_type));                 \
         REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier, \
                                                       KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, &ir_attr));            \
-        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen->xasmgen, context, ir_attr->name));                                    \
+        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen->xasmgen, context, ir_attr->name));      \
         REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier, \
                                                       KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE, &ir_attr));            \
         REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen->xasmgen, ir_attr->size));                                  \

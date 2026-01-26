@@ -275,8 +275,7 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
 
             case KEFIR_ASMCMP_AMD64_OPCODE(cmp):
                 if (instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
-                    next_instr_index != KEFIR_ASMCMP_INDEX_NONE &&
-                    next2_instr_index != KEFIR_ASMCMP_INDEX_NONE &&
+                    next_instr_index != KEFIR_ASMCMP_INDEX_NONE && next2_instr_index != KEFIR_ASMCMP_INDEX_NONE &&
                     kefir_asmcmp_context_instr_label_head(context, instr_index) == KEFIR_ASMCMP_INDEX_NONE &&
                     kefir_asmcmp_context_instr_label_head(context, next_instr_index) == KEFIR_ASMCMP_INDEX_NONE &&
                     kefir_asmcmp_context_instr_label_head(context, next2_instr_index) == KEFIR_ASMCMP_INDEX_NONE) {
@@ -302,11 +301,11 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                         next2_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
                         instr->args[0].phreg == next2_instr->args[0].phreg &&
                         ((instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
-                        next2_instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
-                        instr->args[1].phreg == next2_instr->args[1].phreg) ||
-                        (instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER &&
-                        next2_instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER &&
-                        instr->args[1].int_immediate == next2_instr->args[1].int_immediate))) {
+                          next2_instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
+                          instr->args[1].phreg == next2_instr->args[1].phreg) ||
+                         (instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER &&
+                          next2_instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER &&
+                          instr->args[1].int_immediate == next2_instr->args[1].int_immediate))) {
                         REQUIRE_OK(kefir_asmcmp_context_instr_drop(context, next2_instr_index));
                     }
                 }

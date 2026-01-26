@@ -22,27 +22,45 @@
 
 int get(int x) {
     switch (x) {
-        case 0: return __kefir_builtin_int_precision(signed char);
-        case 1: return __kefir_builtin_int_precision(signed short);
-        case 2: return __kefir_builtin_int_precision(signed int);
-        case 3: return __kefir_builtin_int_precision(signed long);
-        case 4: return __kefir_builtin_int_precision(signed long long);
+        case 0:
+            return __kefir_builtin_int_precision(signed char);
+        case 1:
+            return __kefir_builtin_int_precision(signed short);
+        case 2:
+            return __kefir_builtin_int_precision(signed int);
+        case 3:
+            return __kefir_builtin_int_precision(signed long);
+        case 4:
+            return __kefir_builtin_int_precision(signed long long);
 
-        case 5: return __kefir_builtin_int_precision(unsigned char);
-        case 6: return __kefir_builtin_int_precision(unsigned short);
-        case 7: return __kefir_builtin_int_precision(unsigned int);
-        case 8: return __kefir_builtin_int_precision(unsigned long);
-        case 9: return __kefir_builtin_int_precision(unsigned long long);
+        case 5:
+            return __kefir_builtin_int_precision(unsigned char);
+        case 6:
+            return __kefir_builtin_int_precision(unsigned short);
+        case 7:
+            return __kefir_builtin_int_precision(unsigned int);
+        case 8:
+            return __kefir_builtin_int_precision(unsigned long);
+        case 9:
+            return __kefir_builtin_int_precision(unsigned long long);
 
-        case 10: return __kefir_builtin_int_precision(_BitInt(2));
-        case 11: return __kefir_builtin_int_precision(_BitInt(20));
-        case 12: return __kefir_builtin_int_precision(_BitInt(60));
-        case 13: return __kefir_builtin_int_precision(_BitInt(7000));
+        case 10:
+            return __kefir_builtin_int_precision(_BitInt(2));
+        case 11:
+            return __kefir_builtin_int_precision(_BitInt(20));
+        case 12:
+            return __kefir_builtin_int_precision(_BitInt(60));
+        case 13:
+            return __kefir_builtin_int_precision(_BitInt(7000));
 
-        case 14: return __kefir_builtin_int_precision(unsigned _BitInt(1));
-        case 15: return __kefir_builtin_int_precision(unsigned _BitInt(21));
-        case 16: return __kefir_builtin_int_precision(unsigned _BitInt(61));
-        case 17: return __kefir_builtin_int_precision(unsigned _BitInt(7001));
+        case 14:
+            return __kefir_builtin_int_precision(unsigned _BitInt(1));
+        case 15:
+            return __kefir_builtin_int_precision(unsigned _BitInt(21));
+        case 16:
+            return __kefir_builtin_int_precision(unsigned _BitInt(61));
+        case 17:
+            return __kefir_builtin_int_precision(unsigned _BitInt(7001));
     }
     return 0;
 }

@@ -32,9 +32,9 @@ int main(void) {
         for (long d = -100; d < 100; d++) {
             assert(test1(a, 1343, -281, d) == ((a + 1343 - 281) ^ d));
 
-            assert(sum1((struct S1){.a = (int) a, .b = (int) d}) == (int) a + (int) d);
+            assert(sum1((struct S1) {.a = (int) a, .b = (int) d}) == (int) a + (int) d);
 
-            assert(sum2((struct S2){.arr = {a, 2 * a, a ^ d, d, 2 * d, d * a}}) ==
+            assert(sum2((struct S2) {.arr = {a, 2 * a, a ^ d, d, 2 * d, d * a}}) ==
                    (a + 2 * a + (a ^ d) + d + 2 * d + d * a));
         }
     }

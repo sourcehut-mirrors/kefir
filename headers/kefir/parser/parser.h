@@ -91,6 +91,8 @@ kefir_result_t kefir_parser_set_scope(struct kefir_parser *, struct kefir_parser
 #define KEFIR_PARSER_NEXT_TRANSLATION_UNIT(_mem, _parser, _result) \
     KEFIR_PARSER_RULE_APPLY((_mem), (_parser), translation_unit, (_result))
 
-#define KEFIR_PARSER_DO_ERROR_RECOVERY(_parser) ((_parser)->configuration->max_errors == ((kefir_uint32_t) -1) || (_parser)->encountered_errors + 1 < (_parser)->configuration->max_errors)
+#define KEFIR_PARSER_DO_ERROR_RECOVERY(_parser)                        \
+    ((_parser)->configuration->max_errors == ((kefir_uint32_t) - 1) || \
+     (_parser)->encountered_errors + 1 < (_parser)->configuration->max_errors)
 
 #endif

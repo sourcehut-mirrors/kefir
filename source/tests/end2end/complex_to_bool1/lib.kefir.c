@@ -18,90 +18,40 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-_Bool b0[] = {
-    3.14129f,
-    0.0f
-};
+_Bool b0[] = {3.14129f, 0.0f};
 
-_Bool b32[] = {
-    (_Complex float) (0.0f),
-    (_Complex float) (0.0f + 0.0if),
-    (_Complex float) (0.0if),
-    (_Complex float) (1.0f),
-    (_Complex float) (1.0f + 0.0if),
-    (_Complex float) (1.0if),
-    (_Complex float) (1.0f + 1.0if)
-};
+_Bool b32[] = {(_Complex float) (0.0f),        (_Complex float) (0.0f + 0.0if), (_Complex float) (0.0if),
+               (_Complex float) (1.0f),        (_Complex float) (1.0f + 0.0if), (_Complex float) (1.0if),
+               (_Complex float) (1.0f + 1.0if)};
 
-_Bool b32_2[] = {
-    (_Complex _Float32) (0.0f),
-    (_Complex _Float32) (0.0f + 0.0if),
-    (_Complex _Float32) (0.0if),
-    (_Complex _Float32) (1.0f),
-    (_Complex _Float32) (1.0f + 0.0if),
-    (_Complex _Float32) (1.0if),
-    (_Complex _Float32) (1.0f + 1.0if)
-};
+_Bool b32_2[] = {(_Complex _Float32)(0.0f),        (_Complex _Float32)(0.0f + 0.0if), (_Complex _Float32)(0.0if),
+                 (_Complex _Float32)(1.0f),        (_Complex _Float32)(1.0f + 0.0if), (_Complex _Float32)(1.0if),
+                 (_Complex _Float32)(1.0f + 1.0if)};
 
-_Bool b64[] = {
-    (_Complex double) (0.0f),
-    (_Complex double) (0.0f + 0.0if),
-    (_Complex double) (0.0if),
-    (_Complex double) (1.0f),
-    (_Complex double) (1.0f + 0.0if),
-    (_Complex double) (1.0if),
-    (_Complex double) (1.0f + 1.0if)
-};
+_Bool b64[] = {(_Complex double) (0.0f),        (_Complex double) (0.0f + 0.0if), (_Complex double) (0.0if),
+               (_Complex double) (1.0f),        (_Complex double) (1.0f + 0.0if), (_Complex double) (1.0if),
+               (_Complex double) (1.0f + 1.0if)};
 
-_Bool b64_2[] = {
-    (_Complex _Float64) (0.0f),
-    (_Complex _Float64) (0.0f + 0.0if),
-    (_Complex _Float64) (0.0if),
-    (_Complex _Float64) (1.0f),
-    (_Complex _Float64) (1.0f + 0.0if),
-    (_Complex _Float64) (1.0if),
-    (_Complex _Float64) (1.0f + 1.0if)
-};
+_Bool b64_2[] = {(_Complex _Float64)(0.0f),        (_Complex _Float64)(0.0f + 0.0if), (_Complex _Float64)(0.0if),
+                 (_Complex _Float64)(1.0f),        (_Complex _Float64)(1.0f + 0.0if), (_Complex _Float64)(1.0if),
+                 (_Complex _Float64)(1.0f + 1.0if)};
 
-_Bool b64_3[] = {
-    (_Complex _Float32x) (0.0f),
-    (_Complex _Float32x) (0.0f + 0.0if),
-    (_Complex _Float32x) (0.0if),
-    (_Complex _Float32x) (1.0f),
-    (_Complex _Float32x) (1.0f + 0.0if),
-    (_Complex _Float32x) (1.0if),
-    (_Complex _Float32x) (1.0f + 1.0if)
-};
+_Bool b64_3[] = {(_Complex _Float32x)(0.0f),        (_Complex _Float32x)(0.0f + 0.0if), (_Complex _Float32x)(0.0if),
+                 (_Complex _Float32x)(1.0f),        (_Complex _Float32x)(1.0f + 0.0if), (_Complex _Float32x)(1.0if),
+                 (_Complex _Float32x)(1.0f + 1.0if)};
 
-_Bool b80[] = {
-    (_Complex long double) (0.0f),
-    (_Complex long double) (0.0f + 0.0if),
-    (_Complex long double) (0.0if),
-    (_Complex long double) (1.0f),
-    (_Complex long double) (1.0f + 0.0if),
-    (_Complex long double) (1.0if),
-    (_Complex long double) (1.0f + 1.0if)
-};
+_Bool b80[] = {(_Complex long double) (0.0f),         (_Complex long double) (0.0f + 0.0if),
+               (_Complex long double) (0.0if),        (_Complex long double) (1.0f),
+               (_Complex long double) (1.0f + 0.0if), (_Complex long double) (1.0if),
+               (_Complex long double) (1.0f + 1.0if)};
 
-_Bool b80_2[] = {
-    (_Complex _Float80) (0.0f),
-    (_Complex _Float80) (0.0f + 0.0if),
-    (_Complex _Float80) (0.0if),
-    (_Complex _Float80) (1.0f),
-    (_Complex _Float80) (1.0f + 0.0if),
-    (_Complex _Float80) (1.0if),
-    (_Complex _Float80) (1.0f + 1.0if)
-};
+_Bool b80_2[] = {(_Complex _Float80)(0.0f),        (_Complex _Float80)(0.0f + 0.0if), (_Complex _Float80)(0.0if),
+                 (_Complex _Float80)(1.0f),        (_Complex _Float80)(1.0f + 0.0if), (_Complex _Float80)(1.0if),
+                 (_Complex _Float80)(1.0f + 1.0if)};
 
-_Bool b80_3[] = {
-    (_Complex _Float64x) (0.0f),
-    (_Complex _Float64x) (0.0f + 0.0if),
-    (_Complex _Float64x) (0.0if),
-    (_Complex _Float64x) (1.0f),
-    (_Complex _Float64x) (1.0f + 0.0if),
-    (_Complex _Float64x) (1.0if),
-    (_Complex _Float64x) (1.0f + 1.0if)
-};
+_Bool b80_3[] = {(_Complex _Float64x)(0.0f),        (_Complex _Float64x)(0.0f + 0.0if), (_Complex _Float64x)(0.0if),
+                 (_Complex _Float64x)(1.0f),        (_Complex _Float64x)(1.0f + 0.0if), (_Complex _Float64x)(1.0if),
+                 (_Complex _Float64x)(1.0f + 1.0if)};
 
 _Bool c32_to_bool(_Complex float x) {
     return x;

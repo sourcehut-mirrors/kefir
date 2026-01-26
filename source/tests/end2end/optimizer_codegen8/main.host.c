@@ -26,11 +26,11 @@
 #include "./definitions.h"
 
 struct Struct1 getstruct1(long seed) {
-    return (struct Struct1){.a = seed, .b = seed / 2, .c = ~seed, .d = seed | 17251};
+    return (struct Struct1) {.a = seed, .b = seed / 2, .c = ~seed, .d = seed | 17251};
 }
 
 struct Struct2 getstruct2(int seed) {
-    return (struct Struct2){.arr = {seed, seed / 2, ~seed}};
+    return (struct Struct2) {.arr = {seed, seed / 2, ~seed}};
 }
 
 int main(void) {

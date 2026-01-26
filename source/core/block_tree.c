@@ -46,8 +46,8 @@ kefir_result_t kefir_block_tree_init(struct kefir_block_tree *tree, kefir_size_t
     REQUIRE_OK(kefir_hashtree_init(&tree->tree, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&tree->tree, block_removal, tree));
     tree->block_size = block_size;
-    tree->on_block_init = (struct kefir_block_tree_event){0};
-    tree->on_block_removal = (struct kefir_block_tree_event){0};
+    tree->on_block_init = (struct kefir_block_tree_event) {0};
+    tree->on_block_removal = (struct kefir_block_tree_event) {0};
     return KEFIR_OK;
 }
 
@@ -56,7 +56,7 @@ kefir_result_t kefir_block_tree_free(struct kefir_mem *mem, struct kefir_block_t
     REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid block tree"));
 
     REQUIRE_OK(kefir_hashtree_free(mem, &tree->tree));
-    *tree = (struct kefir_block_tree){0};
+    *tree = (struct kefir_block_tree) {0};
     return KEFIR_OK;
 }
 

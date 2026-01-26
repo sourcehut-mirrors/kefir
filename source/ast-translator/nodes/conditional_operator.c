@@ -57,7 +57,7 @@ static kefir_result_t generate_branch(struct kefir_mem *mem, struct kefir_ast_tr
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_64BIT));
             break;
-            
+
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
         default:

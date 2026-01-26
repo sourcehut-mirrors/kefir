@@ -25,7 +25,9 @@
 #include <complex.h>
 #include "./definitions.h"
 
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__) && !defined(__DragonFly__) && (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
+#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && \
+    !defined(__NetBSD__) && !defined(__DragonFly__) &&                                                               \
+    (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
 #pragma GCC diagnostic ignored "-Wpedantic"
 #define ENABLE_DECIMAL_TEST
 _Bool decimal32_eq(_Decimal32 a, _Decimal32 b) {

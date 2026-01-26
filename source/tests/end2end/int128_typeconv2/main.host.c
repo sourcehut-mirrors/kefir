@@ -24,7 +24,9 @@
 #include <math.h>
 #include "./definitions.h"
 
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__) && !defined(__DragonFly__) && (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
+#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && \
+    !defined(__NetBSD__) && !defined(__DragonFly__) &&                                                               \
+    (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
 #pragma GCC diagnostic ignored "-Wpedantic"
 #define ENABLE_DECIMAL_TEST
 _Bool decimal32_eq(_Decimal32 a, _Decimal32 b) {
@@ -57,47 +59,47 @@ _Decimal128 u128_to_d128(struct i128);
 
 int main(void) {
 #ifdef ENABLE_DECIMAL_TEST
-    assert(decimal32_eq(i128_to_d32((struct i128){{0, 0}}), 0.0));
-    assert(decimal32_eq(i128_to_d32((struct i128){{1, 0}}), 1.0));
-    assert(decimal32_eq(i128_to_d32((struct i128){{1024, 0}}), 1024.0));
-    assert(decimal32_eq(i128_to_d32((struct i128){{~0ull, 0}}), (_Decimal32) ~0ull));
-    assert(decimal32_eq(i128_to_d32((struct i128){{0, 1}}), 1 + (_Decimal32) ~0ull));
-    assert(decimal32_eq(i128_to_d32((struct i128){{-1, -1}}), -1));
+    assert(decimal32_eq(i128_to_d32((struct i128) {{0, 0}}), 0.0));
+    assert(decimal32_eq(i128_to_d32((struct i128) {{1, 0}}), 1.0));
+    assert(decimal32_eq(i128_to_d32((struct i128) {{1024, 0}}), 1024.0));
+    assert(decimal32_eq(i128_to_d32((struct i128) {{~0ull, 0}}), (_Decimal32) ~0ull));
+    assert(decimal32_eq(i128_to_d32((struct i128) {{0, 1}}), 1 + (_Decimal32) ~0ull));
+    assert(decimal32_eq(i128_to_d32((struct i128) {{-1, -1}}), -1));
 
-    assert(decimal32_eq(u128_to_d32((struct i128){{0, 0}}), 0.0));
-    assert(decimal32_eq(u128_to_d32((struct i128){{1, 0}}), 1.0));
-    assert(decimal32_eq(u128_to_d32((struct i128){{1024, 0}}), 1024.0));
-    assert(decimal32_eq(u128_to_d32((struct i128){{~0ull, 0}}), (_Decimal32) ~0ull));
-    assert(decimal32_eq(u128_to_d32((struct i128){{0, 1}}), 1 + (_Decimal32) ~0ull));
-    assert(decimal32_eq(u128_to_d32((struct i128){{-1, -1}}), 3.402824E+38df));
+    assert(decimal32_eq(u128_to_d32((struct i128) {{0, 0}}), 0.0));
+    assert(decimal32_eq(u128_to_d32((struct i128) {{1, 0}}), 1.0));
+    assert(decimal32_eq(u128_to_d32((struct i128) {{1024, 0}}), 1024.0));
+    assert(decimal32_eq(u128_to_d32((struct i128) {{~0ull, 0}}), (_Decimal32) ~0ull));
+    assert(decimal32_eq(u128_to_d32((struct i128) {{0, 1}}), 1 + (_Decimal32) ~0ull));
+    assert(decimal32_eq(u128_to_d32((struct i128) {{-1, -1}}), 3.402824E+38df));
 
-    assert(decimal64_eq(i128_to_d64((struct i128){{0, 0}}), 0.0));
-    assert(decimal64_eq(i128_to_d64((struct i128){{1, 0}}), 1.0));
-    assert(decimal64_eq(i128_to_d64((struct i128){{1024, 0}}), 1024.0));
-    assert(decimal64_eq(i128_to_d64((struct i128){{~0ull, 0}}), (_Decimal64) ~0ull));
-    assert(decimal64_eq(i128_to_d64((struct i128){{0, 1}}), 1 + (_Decimal64) ~0ull));
-    assert(decimal64_eq(i128_to_d64((struct i128){{-1, -1}}), -1));
+    assert(decimal64_eq(i128_to_d64((struct i128) {{0, 0}}), 0.0));
+    assert(decimal64_eq(i128_to_d64((struct i128) {{1, 0}}), 1.0));
+    assert(decimal64_eq(i128_to_d64((struct i128) {{1024, 0}}), 1024.0));
+    assert(decimal64_eq(i128_to_d64((struct i128) {{~0ull, 0}}), (_Decimal64) ~0ull));
+    assert(decimal64_eq(i128_to_d64((struct i128) {{0, 1}}), 1 + (_Decimal64) ~0ull));
+    assert(decimal64_eq(i128_to_d64((struct i128) {{-1, -1}}), -1));
 
-    assert(decimal64_eq(u128_to_d64((struct i128){{0, 0}}), 0.0));
-    assert(decimal64_eq(u128_to_d64((struct i128){{1, 0}}), 1.0));
-    assert(decimal64_eq(u128_to_d64((struct i128){{1024, 0}}), 1024.0));
-    assert(decimal64_eq(u128_to_d64((struct i128){{~0ull, 0}}), (_Decimal64) ~0ull));
-    assert(decimal64_eq(u128_to_d64((struct i128){{0, 1}}), 1 + (_Decimal64) ~0ull));
-    assert(decimal64_eq(u128_to_d64((struct i128){{-1, -1}}), 3.402823669209385E+38dd));
+    assert(decimal64_eq(u128_to_d64((struct i128) {{0, 0}}), 0.0));
+    assert(decimal64_eq(u128_to_d64((struct i128) {{1, 0}}), 1.0));
+    assert(decimal64_eq(u128_to_d64((struct i128) {{1024, 0}}), 1024.0));
+    assert(decimal64_eq(u128_to_d64((struct i128) {{~0ull, 0}}), (_Decimal64) ~0ull));
+    assert(decimal64_eq(u128_to_d64((struct i128) {{0, 1}}), 1 + (_Decimal64) ~0ull));
+    assert(decimal64_eq(u128_to_d64((struct i128) {{-1, -1}}), 3.402823669209385E+38dd));
 
-    assert(decimal128_eq(i128_to_d128((struct i128){{0, 0}}), 0.0));
-    assert(decimal128_eq(i128_to_d128((struct i128){{1, 0}}), 1.0));
-    assert(decimal128_eq(i128_to_d128((struct i128){{1024, 0}}), 1024.0));
-    assert(decimal128_eq(i128_to_d128((struct i128){{~0ull, 0}}), (_Decimal128) ~0ull));
-    assert(decimal128_eq(i128_to_d128((struct i128){{0, 1}}), 1 + (_Decimal128) ~0ull));
-    assert(decimal128_eq(i128_to_d128((struct i128){{-1, -1}}), -1));
+    assert(decimal128_eq(i128_to_d128((struct i128) {{0, 0}}), 0.0));
+    assert(decimal128_eq(i128_to_d128((struct i128) {{1, 0}}), 1.0));
+    assert(decimal128_eq(i128_to_d128((struct i128) {{1024, 0}}), 1024.0));
+    assert(decimal128_eq(i128_to_d128((struct i128) {{~0ull, 0}}), (_Decimal128) ~0ull));
+    assert(decimal128_eq(i128_to_d128((struct i128) {{0, 1}}), 1 + (_Decimal128) ~0ull));
+    assert(decimal128_eq(i128_to_d128((struct i128) {{-1, -1}}), -1));
 
-    assert(decimal128_eq(u128_to_d128((struct i128){{0, 0}}), 0.0));
-    assert(decimal128_eq(u128_to_d128((struct i128){{1, 0}}), 1.0));
-    assert(decimal128_eq(u128_to_d128((struct i128){{1024, 0}}), 1024.0));
-    assert(decimal128_eq(u128_to_d128((struct i128){{~0ull, 0}}), (_Decimal128) ~0ull));
-    assert(decimal128_eq(u128_to_d128((struct i128){{0, 1}}), 1 + (_Decimal128) ~0ull));
-    assert(decimal128_eq(u128_to_d128((struct i128){{-1, -1}}), 3.402823669209384634633746074317682E+38dl));
+    assert(decimal128_eq(u128_to_d128((struct i128) {{0, 0}}), 0.0));
+    assert(decimal128_eq(u128_to_d128((struct i128) {{1, 0}}), 1.0));
+    assert(decimal128_eq(u128_to_d128((struct i128) {{1024, 0}}), 1024.0));
+    assert(decimal128_eq(u128_to_d128((struct i128) {{~0ull, 0}}), (_Decimal128) ~0ull));
+    assert(decimal128_eq(u128_to_d128((struct i128) {{0, 1}}), 1 + (_Decimal128) ~0ull));
+    assert(decimal128_eq(u128_to_d128((struct i128) {{-1, -1}}), 3.402823669209384634633746074317682E+38dl));
 #endif
     return EXIT_SUCCESS;
 }

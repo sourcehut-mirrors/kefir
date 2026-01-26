@@ -171,17 +171,17 @@ kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *, str
                                                          kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_produce_virtual_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
-                                                         kefir_asmcmp_instruction_index_t,
-                                                         kefir_asmcmp_virtual_register_index_t,
-                                                         kefir_asmcmp_instruction_index_t *);
+                                                           kefir_asmcmp_instruction_index_t,
+                                                           kefir_asmcmp_virtual_register_index_t,
+                                                           kefir_asmcmp_instruction_index_t *);
 kefir_result_t kefir_asmcmp_amd64_touch_virtual_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                          kefir_asmcmp_instruction_index_t,
                                                          kefir_asmcmp_virtual_register_index_t,
                                                          kefir_asmcmp_instruction_index_t *);
 kefir_result_t kefir_asmcmp_amd64_weak_touch_virtual_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
-                                                         kefir_asmcmp_instruction_index_t,
-                                                         kefir_asmcmp_virtual_register_index_t,
-                                                         kefir_asmcmp_instruction_index_t *);
+                                                              kefir_asmcmp_instruction_index_t,
+                                                              kefir_asmcmp_virtual_register_index_t,
+                                                              kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_preserve_active_virtual_registers(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                                     kefir_asmcmp_instruction_index_t,

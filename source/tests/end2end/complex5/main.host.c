@@ -78,7 +78,7 @@ int main(void) {
             assert(fabsl(cimagl(resld) - cimagl(expected_resld)) < EPSILON_LD);
 
             union Union1 union1 =
-                test_struct((struct Struct1){.a = f32x, .b = ldx, .c = f64x, .x = ldy, .y = f32y, .z = f64y});
+                test_struct((struct Struct1) {.a = f32x, .b = ldx, .c = f64x, .x = ldy, .y = f32y, .z = f64y});
             _Complex long double expected1 = f32x + ldx + f64x + ldy + f32y + f64y;
             assert(fabsl(creall(union1.c) - creall(expected1)) < EPSILON_LD);
             assert(fabsl(cimagl(union1.c) - cimagl(expected1)) < EPSILON_LD);

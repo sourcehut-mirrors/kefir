@@ -19,14 +19,11 @@
 */
 
 static struct S {
-    __int128 a : 80,
-             b : 60,
-             c : 76,
-             d : 35;
+    __int128 a : 80, b : 60, c : 76, d : 35;
 } value = {0};
 
 __int128 get_a() {
-        return value.a;
+    return value.a;
 }
 
 __int128 get_b() {

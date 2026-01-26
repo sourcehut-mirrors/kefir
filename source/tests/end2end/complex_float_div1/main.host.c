@@ -33,8 +33,10 @@ static void test(_Complex float x, _Complex float y) {
     float exp_imag = cimag(expected);
     float res_real = creal(res);
     float res_imag = cimag(res);
-    assert(fabs(exp_real - res_real) < 1e-6f || (isnan(exp_real) && isnan(res_real)) || (isinf(exp_real) && isinf(res_real) && signbit(exp_real) == signbit(res_real)));
-    assert(fabs(exp_imag - res_imag) < 1e-6f || (isnan(exp_imag) && isnan(res_imag)) || (isinf(exp_imag) && isinf(res_imag) && signbit(exp_imag) == signbit(res_imag)));
+    assert(fabs(exp_real - res_real) < 1e-6f || (isnan(exp_real) && isnan(res_real)) ||
+           (isinf(exp_real) && isinf(res_real) && signbit(exp_real) == signbit(res_real)));
+    assert(fabs(exp_imag - res_imag) < 1e-6f || (isnan(exp_imag) && isnan(res_imag)) ||
+           (isinf(exp_imag) && isinf(res_imag) && signbit(exp_imag) == signbit(res_imag)));
 }
 
 int main(void) {

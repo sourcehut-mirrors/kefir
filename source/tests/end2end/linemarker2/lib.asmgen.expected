@@ -20,7 +20,7 @@ int y = 1;
     3000
 # 1345 "Hey/\\/ho"
 
-int z = 1000
+    int z = 1000
 
 # 4 "Hello"
-void fn();
+    void fn();

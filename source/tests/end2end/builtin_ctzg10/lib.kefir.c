@@ -18,9 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-int arr[] = {__builtin_ctzg((__int128) 0, -1000),
-             __builtin_ctzg((__int128) 1),
-             __builtin_ctzg(((__int128) 1) << 50),
-             __builtin_ctzg(((__int128) 1) << 100, -3000),
-             __builtin_ctzg(((__int128) 1) << 127),
-             __builtin_ctzg(((__int128) 1) << 128, -5000)};
+int arr[] = {__builtin_ctzg((__int128) 0, -1000),   __builtin_ctzg((__int128) 1),
+             __builtin_ctzg(((__int128) 1) << 50),  __builtin_ctzg(((__int128) 1) << 100, -3000),
+             __builtin_ctzg(((__int128) 1) << 127), __builtin_ctzg(((__int128) 1) << 128, -5000)};

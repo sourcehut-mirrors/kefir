@@ -24,7 +24,9 @@
 #include <math.h>
 #include "./definitions.h"
 
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__) && !defined(__DragonFly__) && (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
+#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && \
+    !defined(__NetBSD__) && !defined(__DragonFly__) &&                                                               \
+    (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
 #pragma GCC diagnostic ignored "-Wpedantic"
 #define ENABLE_DECIMAL_TEST
 _Bool decimal32_eq(_Decimal32 a, _Decimal32 b) {
@@ -83,49 +85,49 @@ int main(void) {
     assert(decimal32_eq(bitint24_to_d32(-3942), -3942));
     assert(decimal32_eq(bitint24_to_d32((1 << 23) - 1), (1 << 23) - 1));
     assert(decimal32_eq(bitint24_to_d32((1 << 23)), -(1 << 23)));
-    assert(decimal32_eq(bitint180_to_d32((struct S3){{-1, -1, -1}}), -1));
-    assert(decimal32_eq(bitint180_to_d32((struct S3){{0, -1, -1}}), -1 - (double) ~0ull));
+    assert(decimal32_eq(bitint180_to_d32((struct S3) {{-1, -1, -1}}), -1));
+    assert(decimal32_eq(bitint180_to_d32((struct S3) {{0, -1, -1}}), -1 - (double) ~0ull));
 
     assert(decimal64_eq(bitint24_to_d64(10240), 10240));
     assert(decimal64_eq(bitint24_to_d64(-1), -1));
     assert(decimal64_eq(bitint24_to_d64(-3942), -3942));
     assert(decimal64_eq(bitint24_to_d64((1 << 23) - 1), (1 << 23) - 1));
     assert(decimal64_eq(bitint24_to_d64((1 << 23)), -(1 << 23)));
-    assert(decimal64_eq(bitint180_to_d64((struct S3){{-1, -1, -1}}), -1));
-    assert(decimal64_eq(bitint180_to_d64((struct S3){{0, -1, -1}}), -1 - (double) ~0ull));
+    assert(decimal64_eq(bitint180_to_d64((struct S3) {{-1, -1, -1}}), -1));
+    assert(decimal64_eq(bitint180_to_d64((struct S3) {{0, -1, -1}}), -1 - (double) ~0ull));
 
     assert(decimal128_eq(bitint24_to_d128(10240), 10240));
     assert(decimal128_eq(bitint24_to_d128(-1), -1));
     assert(decimal128_eq(bitint24_to_d128(-3942), -3942));
     assert(decimal128_eq(bitint24_to_d128((1 << 23) - 1), (1 << 23) - 1));
     assert(decimal128_eq(bitint24_to_d128((1 << 23)), -(1 << 23)));
-    assert(decimal128_eq(bitint180_to_d128((struct S3){{-1, -1, -1}}), -1));
+    assert(decimal128_eq(bitint180_to_d128((struct S3) {{-1, -1, -1}}), -1));
 
     assert(decimal32_eq(ubitint24_to_d32(10240), 10240));
     assert(decimal32_eq(ubitint24_to_d32(-1), (1 << 24) - 1));
     assert(decimal32_eq(ubitint24_to_d32(-3942), ((unsigned long) -3942) & ((1 << 24) - 1)));
     assert(decimal32_eq(ubitint24_to_d32((1 << 23) - 1), (1 << 23) - 1));
     assert(decimal32_eq(ubitint24_to_d32((1 << 23)), (1 << 23)));
-    assert(decimal32_eq(ubitint180_to_d32((struct S3){{0, 1, 0}}), 1 + (double) ~0ull));
-    assert(decimal32_eq(ubitint180_to_d32((struct S3){{0, -1, 0}}), ~0ull * (double) ~0ull));
-    assert(decimal32_eq(ubitint180_to_d32((struct S3){{0, 0, 1}}), 1 + ~0ull * (double) ~0ull));
+    assert(decimal32_eq(ubitint180_to_d32((struct S3) {{0, 1, 0}}), 1 + (double) ~0ull));
+    assert(decimal32_eq(ubitint180_to_d32((struct S3) {{0, -1, 0}}), ~0ull * (double) ~0ull));
+    assert(decimal32_eq(ubitint180_to_d32((struct S3) {{0, 0, 1}}), 1 + ~0ull * (double) ~0ull));
 
     assert(decimal64_eq(ubitint24_to_d64(10240), 10240));
     assert(decimal64_eq(ubitint24_to_d64(-1), (1 << 24) - 1));
     assert(decimal64_eq(ubitint24_to_d64(-3942), ((unsigned long) -3942) & ((1 << 24) - 1)));
     assert(decimal64_eq(ubitint24_to_d64((1 << 23) - 1), (1 << 23) - 1));
     assert(decimal64_eq(ubitint24_to_d64((1 << 23)), (1 << 23)));
-    assert(decimal64_eq(ubitint180_to_d64((struct S3){{0, 1, 0}}), 1 + (double) ~0ull));
-    assert(decimal64_eq(ubitint180_to_d64((struct S3){{0, -1, 0}}), ~0ull * (double) ~0ull));
-    assert(decimal64_eq(ubitint180_to_d64((struct S3){{0, 0, 1}}), 1 + ~0ull * (double) ~0ull));
+    assert(decimal64_eq(ubitint180_to_d64((struct S3) {{0, 1, 0}}), 1 + (double) ~0ull));
+    assert(decimal64_eq(ubitint180_to_d64((struct S3) {{0, -1, 0}}), ~0ull * (double) ~0ull));
+    assert(decimal64_eq(ubitint180_to_d64((struct S3) {{0, 0, 1}}), 1 + ~0ull * (double) ~0ull));
 
     assert(decimal128_eq(ubitint24_to_d128(10240), 10240));
     assert(decimal128_eq(ubitint24_to_d128(-1), (1 << 24) - 1));
     assert(decimal128_eq(ubitint24_to_d128(-3942), ((unsigned long) -3942) & ((1 << 24) - 1)));
     assert(decimal128_eq(ubitint24_to_d128((1 << 23) - 1), (1 << 23) - 1));
     assert(decimal128_eq(ubitint24_to_d128((1 << 23)), (1 << 23)));
-    assert(decimal128_eq(ubitint180_to_d128((struct S3){{0, 1, 0}}), 1 + (double) ~0ull));
-    assert(decimal128_eq(ubitint180_to_d128((struct S3){{0, 0, 1}}), 1 + ~0ull * (double) ~0ull));
+    assert(decimal128_eq(ubitint180_to_d128((struct S3) {{0, 1, 0}}), 1 + (double) ~0ull));
+    assert(decimal128_eq(ubitint180_to_d128((struct S3) {{0, 0, 1}}), 1 + ~0ull * (double) ~0ull));
 
     assert(MASK(d32_to_bitint24(3.14159e3), 24) == 3141);
     assert(MASK(d32_to_bitint24(-3.14159e3), 24) == MASK(-3141, 24));
@@ -150,7 +152,7 @@ int main(void) {
     assert(s3.arr[1] == 0);
     assert(MASK(s3.arr[2], 52) == 0);
     s3 = d32_to_bitint180(-(double) ~0ull);
-    assert(s3.arr[0] == 1 +  ~18446740000000000000ull);
+    assert(s3.arr[0] == 1 + ~18446740000000000000ull);
     assert(s3.arr[1] == ~0ull);
     assert(MASK(s3.arr[2], 52) == MASK(~0ull, 52));
     s3 = d32_to_bitint180(10 * (double) ~0ull);
@@ -171,7 +173,7 @@ int main(void) {
     assert(s3.arr[1] == 0);
     assert(MASK(s3.arr[2], 52) == 0);
     s3 = d64_to_bitint180(-(double) ~0ull);
-    assert(s3.arr[0] == 1 +  ~18446744073709550000ull);
+    assert(s3.arr[0] == 1 + ~18446744073709550000ull);
     assert(s3.arr[1] == ~0ull);
     assert(MASK(s3.arr[2], 52) == MASK(~0ull, 52));
     s3 = d64_to_bitint180(10 * (double) ~0ull);

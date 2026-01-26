@@ -46,14 +46,14 @@
 .L__kefir_text_section_begin:
 conv1:
 .file 0 "source/tests/end2end/extended_complex_float64_1/lib.kefir.c"
-.loc 0 82 1
+.loc 0 87 1
 .L__kefir_text_func_conv1_begin:
 .L__kefir_func_conv1_label11:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-.loc 0 83 5
+.loc 0 88 5
 .L__kefir_func_conv1_label24:
     push %rdi
 .L__kefir_func_conv1_label19:
@@ -83,14 +83,14 @@ conv1:
 .section .text
 
 conv2:
-.loc 0 86 1
+.loc 0 91 1
 .L__kefir_text_func_conv2_begin:
 .L__kefir_func_conv2_label17:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-.loc 0 87 5
+.loc 0 92 5
 .L__kefir_func_conv2_label34:
     push %rdi
     fildq (%rsp)
@@ -98,10 +98,10 @@ conv2:
     test %rdi, %rdi
 .L__kefir_func_conv2_label31:
     jns .L__kefir_func_conv2_label6
-.loc 0 87 5
+.loc 0 92 5
 .L__kefir_func_conv2_label35:
     fadds .L__kefir_constant_uint_to_long_double(%rip)
-.loc 0 87 5
+.loc 0 92 5
 .L__kefir_func_conv2_label6:
     fldt .L__kefir_func_conv2_label48(%rip)
 .L__kefir_func_conv2_label50:
@@ -127,14 +127,14 @@ conv2:
 .section .text
 
 conv3:
-.loc 0 90 1
+.loc 0 95 1
 .L__kefir_text_func_conv3_begin:
 .L__kefir_func_conv3_label11:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-.loc 0 91 5
+.loc 0 96 5
 .L__kefir_func_conv3_label24:
     movq %xmm0, -64(%rbp)
 .L__kefir_func_conv3_label21:
@@ -163,14 +163,14 @@ conv3:
 .section .text
 
 conv4:
-.loc 0 94 1
+.loc 0 99 1
 .L__kefir_text_func_conv4_begin:
 .L__kefir_func_conv4_label11:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-.loc 0 95 5
+.loc 0 100 5
 .L__kefir_func_conv4_label24:
     movq %xmm0, -64(%rbp)
 .L__kefir_func_conv4_label21:
@@ -199,7 +199,7 @@ conv4:
 .section .text
 
 conv5:
-.loc 0 98 1
+.loc 0 103 1
 .L__kefir_text_func_conv5_begin:
     push %rbp
     mov %rsp, %rbp
@@ -207,7 +207,7 @@ conv5:
     fstcw -8(%rbp)
 .L__kefir_func_conv5_label16:
     fldt 16(%rbp)
-.loc 0 99 5
+.loc 0 104 5
 .L__kefir_func_conv5_label21:
     fldt .L__kefir_func_conv5_label20(%rip)
 .L__kefir_func_conv5_label22:
@@ -232,7 +232,7 @@ conv5:
 .section .text
 
 conv6:
-.loc 0 102 1
+.loc 0 107 1
 .L__kefir_text_func_conv6_begin:
     push %rbp
     mov %rsp, %rbp
@@ -242,7 +242,7 @@ conv6:
 .L__kefir_func_conv6_label26:
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-.loc 0 103 5
+.loc 0 108 5
 .L__kefir_func_conv6_label34:
     movq %xmm0, -72(%rbp)
     flds -72(%rbp)
@@ -266,14 +266,14 @@ conv6:
 .L__kefir_text_func_conv6_end:
 
 conv7:
-.loc 0 106 1
+.loc 0 111 1
 .L__kefir_text_func_conv7_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-.loc 0 107 5
+.loc 0 112 5
 .L__kefir_func_conv7_label34:
     movq %xmm0, -64(%rbp)
     fldl -64(%rbp)
@@ -297,13 +297,13 @@ conv7:
 .L__kefir_text_func_conv7_end:
 
 conv8:
-.loc 0 110 1
+.loc 0 115 1
 .L__kefir_text_func_conv8_begin:
     push %rbp
     mov %rsp, %rbp
 .L__kefir_func_conv8_label16:
     lea 16(%rbp), %rax
-.loc 0 111 5
+.loc 0 116 5
 .L__kefir_func_conv8_label26:
     fldt 16(%rax)
     fldt (%rax)
@@ -314,7 +314,7 @@ conv8:
 .L__kefir_text_func_conv8_end:
 
 add64x:
-.loc 0 66 1
+.loc 0 71 1
 .L__kefir_text_func_add64x_begin:
     push %rbp
     mov %rsp, %rbp
@@ -324,7 +324,7 @@ add64x:
     lea 48(%rbp), %rax
 .L__kefir_func_add64x_label17:
     lea 16(%rbp), %rcx
-.loc 0 67 12
+.loc 0 72 12
 .L__kefir_func_add64x_label26:
     fldt (%rcx)
 .L__kefir_func_add64x_label30:
@@ -344,7 +344,7 @@ add64x:
     fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.loc 0 67 5
+.loc 0 72 5
 .L__kefir_func_add64x_label63:
     fldt -32(%rbp)
     fldt -48(%rbp)
@@ -356,7 +356,7 @@ add64x:
 .L__kefir_text_func_add64x_end:
 
 div64x:
-.loc 0 78 1
+.loc 0 83 1
 .L__kefir_text_func_div64x_begin:
     push %rbp
     mov %rsp, %rbp
@@ -366,7 +366,7 @@ div64x:
     lea 48(%rbp), %rax
 .L__kefir_func_div64x_label17:
     lea 16(%rbp), %rcx
-.loc 0 79 12
+.loc 0 84 12
 .L__kefir_func_div64x_label26:
     fldt (%rcx)
 .L__kefir_func_div64x_label27:
@@ -396,7 +396,7 @@ div64x:
     fstpt -80(%rbp)
     fstpt -64(%rbp)
     add $64, %rsp
-.loc 0 79 5
+.loc 0 84 5
 .L__kefir_func_div64x_label249:
     fldt -64(%rbp)
     fldt -80(%rbp)
@@ -408,7 +408,7 @@ div64x:
 .L__kefir_text_func_div64x_end:
 
 mul64x:
-.loc 0 74 1
+.loc 0 79 1
 .L__kefir_text_func_mul64x_begin:
     push %rbp
     mov %rsp, %rbp
@@ -418,7 +418,7 @@ mul64x:
     lea 48(%rbp), %rax
 .L__kefir_func_mul64x_label17:
     lea 16(%rbp), %rcx
-.loc 0 75 12
+.loc 0 80 12
 .L__kefir_func_mul64x_label26:
     fldt (%rcx)
 .L__kefir_func_mul64x_label27:
@@ -448,7 +448,7 @@ mul64x:
     fstpt -80(%rbp)
     fstpt -64(%rbp)
     add $64, %rsp
-.loc 0 75 5
+.loc 0 80 5
 .L__kefir_func_mul64x_label249:
     fldt -64(%rbp)
     fldt -80(%rbp)
@@ -460,7 +460,7 @@ mul64x:
 .L__kefir_text_func_mul64x_end:
 
 neg64x:
-.loc 0 62 1
+.loc 0 67 1
 .L__kefir_text_func_neg64x_begin:
     push %rbp
     mov %rsp, %rbp
@@ -468,7 +468,7 @@ neg64x:
     fstcw -8(%rbp)
 .L__kefir_func_neg64x_label16:
     lea 16(%rbp), %rax
-.loc 0 63 12
+.loc 0 68 12
 .L__kefir_func_neg64x_label20:
     fldt (%rax)
 .L__kefir_func_neg64x_label21:
@@ -482,7 +482,7 @@ neg64x:
     fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.loc 0 63 5
+.loc 0 68 5
 .L__kefir_func_neg64x_label54:
     fldt -32(%rbp)
     fldt -48(%rbp)
@@ -494,7 +494,7 @@ neg64x:
 .L__kefir_text_func_neg64x_end:
 
 sub64x:
-.loc 0 70 1
+.loc 0 75 1
 .L__kefir_text_func_sub64x_begin:
     push %rbp
     mov %rsp, %rbp
@@ -504,7 +504,7 @@ sub64x:
     lea 48(%rbp), %rax
 .L__kefir_func_sub64x_label17:
     lea 16(%rbp), %rcx
-.loc 0 71 12
+.loc 0 76 12
 .L__kefir_func_sub64x_label26:
     fldt (%rcx)
 .L__kefir_func_sub64x_label30:
@@ -524,7 +524,7 @@ sub64x:
     fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.loc 0 71 5
+.loc 0 76 5
 .L__kefir_func_sub64x_label63:
     fldt -32(%rbp)
     fldt -48(%rbp)
@@ -536,13 +536,13 @@ sub64x:
 .L__kefir_text_func_sub64x_end:
 
 get64x_1:
-.loc 0 54 1
+.loc 0 59 1
 .L__kefir_text_func_get64x_1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-.loc 0 55 5
+.loc 0 60 5
 .L__kefir_func_get64x_1_label15:
     fldt .L__kefir_func_get64x_1_label14(%rip)
 .L__kefir_func_get64x_1_label16:
@@ -573,13 +573,13 @@ get64x_1:
 .section .text
 
 get64x_2:
-.loc 0 58 1
+.loc 0 63 1
 .L__kefir_text_func_get64x_2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-.loc 0 59 12
+.loc 0 64 12
 .L__kefir_func_get64x_2_label15:
     fldt .L__kefir_func_get64x_2_label14(%rip)
 .L__kefir_func_get64x_2_label20:
@@ -589,7 +589,7 @@ get64x_2:
     fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.loc 0 59 5
+.loc 0 64 5
 .L__kefir_func_get64x_2_label33:
     fldt -32(%rbp)
     fldt -48(%rbp)
@@ -864,7 +864,7 @@ __kefir_debug_info_section_entry_2:
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_0
     .long __kefir_debug_str_section_entry_1
-    .quad 37
+    .quad 44
     .quad 20
 __kefir_debug_info_section_entry_4:
     .byte 5
@@ -903,7 +903,7 @@ __kefir_debug_info_section_entry_8:
     .long __kefir_debug_info_section_entry_9 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_4
     .long __kefir_debug_str_section_entry_1
-    .quad 26
+    .quad 35
     .quad 5
 __kefir_debug_info_section_entry_10:
     .byte 5
@@ -944,7 +944,7 @@ __kefir_debug_info_section_entry_13:
     .byte 0
     .long __kefir_debug_str_section_entry_7
     .long __kefir_debug_str_section_entry_1
-    .quad 82
+    .quad 87
     .quad 1
 __kefir_debug_info_section_entry_15:
     .byte 9
@@ -959,7 +959,7 @@ __kefir_debug_info_section_entry_17:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 82
+    .quad 87
     .quad 31
 __kefir_debug_info_section_entry_18:
     .byte 10
@@ -985,7 +985,7 @@ __kefir_debug_info_section_entry_20:
     .byte 0
     .long __kefir_debug_str_section_entry_11
     .long __kefir_debug_str_section_entry_1
-    .quad 86
+    .quad 91
     .quad 1
 __kefir_debug_info_section_entry_21:
     .byte 9
@@ -1000,7 +1000,7 @@ __kefir_debug_info_section_entry_23:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 86
+    .quad 91
     .quad 40
 __kefir_debug_info_section_entry_24:
     .byte 10
@@ -1026,7 +1026,7 @@ __kefir_debug_info_section_entry_26:
     .byte 0
     .long __kefir_debug_str_section_entry_12
     .long __kefir_debug_str_section_entry_1
-    .quad 90
+    .quad 95
     .quad 1
 __kefir_debug_info_section_entry_27:
     .byte 9
@@ -1041,7 +1041,7 @@ __kefir_debug_info_section_entry_29:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 90
+    .quad 95
     .quad 32
 __kefir_debug_info_section_entry_30:
     .byte 10
@@ -1067,7 +1067,7 @@ __kefir_debug_info_section_entry_32:
     .byte 0
     .long __kefir_debug_str_section_entry_13
     .long __kefir_debug_str_section_entry_1
-    .quad 94
+    .quad 99
     .quad 1
 __kefir_debug_info_section_entry_33:
     .byte 9
@@ -1082,7 +1082,7 @@ __kefir_debug_info_section_entry_35:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 94
+    .quad 99
     .quad 33
 __kefir_debug_info_section_entry_36:
     .byte 10
@@ -1108,7 +1108,7 @@ __kefir_debug_info_section_entry_38:
     .byte 0
     .long __kefir_debug_str_section_entry_14
     .long __kefir_debug_str_section_entry_1
-    .quad 98
+    .quad 103
     .quad 1
 __kefir_debug_info_section_entry_39:
     .byte 9
@@ -1123,7 +1123,7 @@ __kefir_debug_info_section_entry_41:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 98
+    .quad 103
     .quad 38
 __kefir_debug_info_section_entry_42:
     .byte 10
@@ -1149,7 +1149,7 @@ __kefir_debug_info_section_entry_44:
     .byte 0
     .long __kefir_debug_str_section_entry_15
     .long __kefir_debug_str_section_entry_1
-    .quad 102
+    .quad 107
     .quad 1
 __kefir_debug_info_section_entry_45:
     .byte 9
@@ -1164,7 +1164,7 @@ __kefir_debug_info_section_entry_47:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 102
+    .quad 107
     .quad 41
 __kefir_debug_info_section_entry_48:
     .byte 10
@@ -1190,7 +1190,7 @@ __kefir_debug_info_section_entry_50:
     .byte 0
     .long __kefir_debug_str_section_entry_16
     .long __kefir_debug_str_section_entry_1
-    .quad 106
+    .quad 111
     .quad 1
 __kefir_debug_info_section_entry_51:
     .byte 9
@@ -1205,7 +1205,7 @@ __kefir_debug_info_section_entry_53:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 106
+    .quad 111
     .quad 42
 __kefir_debug_info_section_entry_54:
     .byte 10
@@ -1231,7 +1231,7 @@ __kefir_debug_info_section_entry_56:
     .byte 0
     .long __kefir_debug_str_section_entry_17
     .long __kefir_debug_str_section_entry_1
-    .quad 110
+    .quad 115
     .quad 1
 __kefir_debug_info_section_entry_57:
     .byte 9
@@ -1246,7 +1246,7 @@ __kefir_debug_info_section_entry_59:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 110
+    .quad 115
     .quad 47
 __kefir_debug_info_section_entry_60:
     .byte 10
@@ -1272,7 +1272,7 @@ __kefir_debug_info_section_entry_62:
     .byte 0
     .long __kefir_debug_str_section_entry_18
     .long __kefir_debug_str_section_entry_1
-    .quad 66
+    .quad 71
     .quad 1
 __kefir_debug_info_section_entry_63:
     .byte 9
@@ -1292,7 +1292,7 @@ __kefir_debug_info_section_entry_65:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 66
+    .quad 71
     .quad 46
 __kefir_debug_info_section_entry_66:
     .byte 10
@@ -1302,7 +1302,7 @@ __kefir_debug_info_section_entry_66:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 66
+    .quad 71
     .quad 68
 __kefir_debug_info_section_entry_67:
     .byte 10
@@ -1328,7 +1328,7 @@ __kefir_debug_info_section_entry_69:
     .byte 0
     .long __kefir_debug_str_section_entry_20
     .long __kefir_debug_str_section_entry_1
-    .quad 78
+    .quad 83
     .quad 1
 __kefir_debug_info_section_entry_70:
     .byte 9
@@ -1348,7 +1348,7 @@ __kefir_debug_info_section_entry_72:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 78
+    .quad 83
     .quad 46
 __kefir_debug_info_section_entry_73:
     .byte 10
@@ -1358,7 +1358,7 @@ __kefir_debug_info_section_entry_73:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 78
+    .quad 83
     .quad 68
 __kefir_debug_info_section_entry_74:
     .byte 10
@@ -1384,7 +1384,7 @@ __kefir_debug_info_section_entry_76:
     .byte 0
     .long __kefir_debug_str_section_entry_21
     .long __kefir_debug_str_section_entry_1
-    .quad 74
+    .quad 79
     .quad 1
 __kefir_debug_info_section_entry_77:
     .byte 9
@@ -1404,7 +1404,7 @@ __kefir_debug_info_section_entry_79:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 74
+    .quad 79
     .quad 46
 __kefir_debug_info_section_entry_80:
     .byte 10
@@ -1414,7 +1414,7 @@ __kefir_debug_info_section_entry_80:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 74
+    .quad 79
     .quad 68
 __kefir_debug_info_section_entry_81:
     .byte 10
@@ -1440,7 +1440,7 @@ __kefir_debug_info_section_entry_83:
     .byte 0
     .long __kefir_debug_str_section_entry_22
     .long __kefir_debug_str_section_entry_1
-    .quad 62
+    .quad 67
     .quad 1
 __kefir_debug_info_section_entry_84:
     .byte 9
@@ -1455,7 +1455,7 @@ __kefir_debug_info_section_entry_85:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 62
+    .quad 67
     .quad 46
 __kefir_debug_info_section_entry_86:
     .byte 10
@@ -1481,7 +1481,7 @@ __kefir_debug_info_section_entry_88:
     .byte 0
     .long __kefir_debug_str_section_entry_23
     .long __kefir_debug_str_section_entry_1
-    .quad 70
+    .quad 75
     .quad 1
 __kefir_debug_info_section_entry_89:
     .byte 9
@@ -1501,7 +1501,7 @@ __kefir_debug_info_section_entry_91:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 70
+    .quad 75
     .quad 46
 __kefir_debug_info_section_entry_92:
     .byte 10
@@ -1511,7 +1511,7 @@ __kefir_debug_info_section_entry_92:
     .byte 0
     .byte 0
     .long __kefir_debug_str_section_entry_1
-    .quad 70
+    .quad 75
     .quad 68
 __kefir_debug_info_section_entry_93:
     .byte 10
@@ -1537,7 +1537,7 @@ __kefir_debug_info_section_entry_95:
     .byte 0
     .long __kefir_debug_str_section_entry_24
     .long __kefir_debug_str_section_entry_1
-    .quad 54
+    .quad 59
     .quad 1
 __kefir_debug_info_section_entry_96:
     .byte 10
@@ -1563,7 +1563,7 @@ __kefir_debug_info_section_entry_98:
     .byte 0
     .long __kefir_debug_str_section_entry_25
     .long __kefir_debug_str_section_entry_1
-    .quad 58
+    .quad 63
     .quad 1
 __kefir_debug_info_section_entry_99:
     .byte 10

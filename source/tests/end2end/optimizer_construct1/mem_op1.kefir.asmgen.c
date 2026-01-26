@@ -32,5 +32,5 @@ unsigned long getZ(struct S *s) {
 }
 
 void test_zero(struct S *s) {
-    *s = (struct S){0};
+    *s = (struct S) {0};
 }

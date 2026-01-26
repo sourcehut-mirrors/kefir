@@ -20,19 +20,19 @@
 
 #include "./definitions.h"
 
-_Bool test1 (_Bool someflag, char *buf1, unsigned long buf1_size, char *buf2, unsigned long buf2_size) {
-  if (someflag) {}
-  do {
-      unsigned long dst_len = buf2_size;
-      unsigned long src_len = buf1_size;
-      int rc = somefn (buf2, &dst_len, buf1, &src_len);
-      if (rc != 0) {
-        return 0;
-      }
-      buf2 += dst_len;
-      buf2_size -= dst_len;
-      buf1 += src_len;
-      buf1_size -= src_len;
-  } while (buf1_size > 0 && buf2_size > 0);
-  return 0;
+_Bool test1(_Bool someflag, char *buf1, unsigned long buf1_size, char *buf2, unsigned long buf2_size) {
+    if (someflag) {}
+    do {
+        unsigned long dst_len = buf2_size;
+        unsigned long src_len = buf1_size;
+        int rc = somefn(buf2, &dst_len, buf1, &src_len);
+        if (rc != 0) {
+            return 0;
+        }
+        buf2 += dst_len;
+        buf2_size -= dst_len;
+        buf1 += src_len;
+        buf1_size -= src_len;
+    } while (buf1_size > 0 && buf2_size > 0);
+    return 0;
 }

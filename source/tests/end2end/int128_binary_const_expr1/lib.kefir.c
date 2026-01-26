@@ -18,12 +18,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-unsigned __int128 a = ((unsigned __int128) 0x10000000100000001000000010000000uwb) + ((unsigned __int128) 0x00100000001000000010000000100001uwb);
+unsigned __int128 a = ((unsigned __int128) 0x10000000100000001000000010000000uwb) +
+                      ((unsigned __int128) 0x00100000001000000010000000100001uwb);
 unsigned __int128 b = ((unsigned __int128) 0xffffffffffffffffffffffffffffffffuwb) + 1;
-signed __int128 c = ((signed __int128) 0x010000000100000001000000010000000wb) + ((signed __int128) 0x10100000001000000010000000100001wb);
-signed __int128 d = ((signed __int128) 0) + ((signed __int128) - 1);
+signed __int128 c = ((signed __int128) 0x010000000100000001000000010000000wb) +
+                    ((signed __int128) 0x10100000001000000010000000100001wb);
+signed __int128 d = ((signed __int128) 0) + ((signed __int128) -1);
 
-unsigned __int128 e = ((unsigned __int128) 0x10000000100000001000000010000000uwb) - ((unsigned __int128) 0x00100000001000000010000000100001uwb);
+unsigned __int128 e = ((unsigned __int128) 0x10000000100000001000000010000000uwb) -
+                      ((unsigned __int128) 0x00100000001000000010000000100001uwb);
 unsigned __int128 f = ((signed __int128) 0) - 1;
-signed __int128 g = ((signed __int128) 0x010000000100000001000000010000000wb) - ((signed __int128) 0x10100000001000000010000000100001wb);
-signed __int128 h = ((signed __int128) 0) - ((signed __int128) - 1);
+signed __int128 g = ((signed __int128) 0x010000000100000001000000010000000wb) -
+                    ((signed __int128) 0x10100000001000000010000000100001wb);
+signed __int128 h = ((signed __int128) 0) - ((signed __int128) -1);

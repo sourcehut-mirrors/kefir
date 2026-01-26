@@ -56,13 +56,16 @@ kefir_result_t kefir_ast_analyze_statement_expression_node(struct kefir_mem *mem
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
         kefir_result_t res = kefir_ast_analyze_node(mem, context, item);
-        REQUIRE_CHAIN_SET(&res, item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
-                    item->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
-                    item->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR ||
-                    item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &item->source_location,
-                                       "Compound statement items shall be either statements or declarations"));
-        if (res == KEFIR_ANALYSIS_ERROR && KEFIR_AST_CONTEXT_DO_ERROR_RECOVERY(context, context->global_context->encountered_errors)) {
+        REQUIRE_CHAIN_SET(
+            &res,
+            item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+                item->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
+                item->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR ||
+                item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &item->source_location,
+                                   "Compound statement items shall be either statements or declarations"));
+        if (res == KEFIR_ANALYSIS_ERROR &&
+            KEFIR_AST_CONTEXT_DO_ERROR_RECOVERY(context, context->global_context->encountered_errors)) {
             has_analysis_errors = true;
             context->global_context->encountered_errors++;
         } else {

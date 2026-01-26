@@ -283,7 +283,7 @@ kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem,
                                                       type_id, type_index, &local_ref));
         REQUIRE_OK(kefir_hashtree_insert(mem, &state->locals, key, (kefir_hashtree_value_t) local_ref));
         REQUIRE_OK(kefir_opt_code_debug_info_add_local_variable_allocation(mem, &state->function->debug_info,
-                                                                                variable_id, local_ref));
+                                                                           variable_id, local_ref));
         *instr_ref = local_ref;
     }
 

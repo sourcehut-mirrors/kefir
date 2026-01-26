@@ -20,8 +20,8 @@
 
 #include "./definitions.h"
 
-struct Struct1 *S1 = &(struct Struct1){.x = 100, .y = -649, .z = 3.14f};
+struct Struct1 *S1 = &(struct Struct1) {.x = 100, .y = -649, .z = 3.14f};
 
-struct Struct1 *S2 = &(struct Struct1){.x = -1, .y = 0, .z = 2.71f};
+struct Struct1 *S2 = &(struct Struct1) {.x = -1, .y = 0, .z = 2.71f};
 
-struct Struct2 *S3 = &(struct Struct2){.a = 1.2e12, .b = 'A'};
+struct Struct2 *S3 = &(struct Struct2) {.a = 1.2e12, .b = 'A'};

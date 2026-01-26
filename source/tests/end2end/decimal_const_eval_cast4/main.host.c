@@ -81,7 +81,7 @@ int main(void) {
     i = 0;
     assert(MASK(c[i++], 62) == MASK(3, 62));
     assert(MASK(c[i++], 62) == MASK(-2, 62));
-    assert(MASK(c[i++], 62) == MASK(4818                                                                                                                                                                                                                                                            , 62));
+    assert(MASK(c[i++], 62) == MASK(4818, 62));
     assert(MASK(c[i++], 62) == MASK(-381, 62));
     assert(MASK(c[i++], 62) == MASK(42841840000000000, 62));
     assert(MASK(c[i++], 62) == MASK(-42841840000000000, 62));
@@ -206,13 +206,13 @@ int main(void) {
 
     i = 0;
     assert(f[i++] == 3);
-    assert(f[i++] == 0);   
+    assert(f[i++] == 0);
     assert(f[i++] == 0);
     assert(f[i++] == 0);
     assert(f[i++] == 0);
     assert(f[i++] == 0);
     assert(f[i++] == 4818);
-    assert(f[i++] == 0);                
+    assert(f[i++] == 0);
     assert(f[i++] == 0);
     assert(f[i++] == 0);
     assert(f[i++] == 0);
@@ -221,12 +221,12 @@ int main(void) {
     assert(f[i++] == 0);
     assert(f[i++] == 0);
     assert(f[i++] == 0);
-    assert(f[i++] == 0); 
-    assert(f[i++] == 0); 
-    assert(f[i++] == 0);               
-    assert(f[i++] == 0);                           
-    assert(f[i++] == 0);                                   
-    assert(f[i++] == -1);                                                                                                                                                                                                                                                              
+    assert(f[i++] == 0);
+    assert(f[i++] == 0);
+    assert(f[i++] == 0);
+    assert(f[i++] == 0);
+    assert(f[i++] == 0);
+    assert(f[i++] == -1);
     assert(f[i++] == -1);
     assert(f[i++] == 4503599627370495);
     assert(f[i++] == 3);

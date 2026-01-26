@@ -27,9 +27,11 @@
 
 int main(void) {
     assert(fabs(test(0)) < 1e-6);
-    assert(fabs(test(0, (struct S2){1.0, 2.0})) < 1e-6);
-    assert(fabs(test(1, (struct S2){1.0, 2.0}) - (1.0 - 2.0)) < 1e-6);
-    assert(fabs(test(2, (struct S2){1.0, 2.0}, (struct S2){100.0, 23.0}) - (1.0 - 2.0 + 100.0 - 23.0)) < 1e-6);
-    assert(fabs(test(5, (struct S2){1.0, 2.0}, (struct S2){100.0, 23.0}, (struct S2){-100, -200}, (struct S2){0, 0}, (struct S2){100, -200}) - (1.0 - 2.0 + 100.0 - 23.0 + 100 + 300)) < 1e-6);
+    assert(fabs(test(0, (struct S2) {1.0, 2.0})) < 1e-6);
+    assert(fabs(test(1, (struct S2) {1.0, 2.0}) - (1.0 - 2.0)) < 1e-6);
+    assert(fabs(test(2, (struct S2) {1.0, 2.0}, (struct S2) {100.0, 23.0}) - (1.0 - 2.0 + 100.0 - 23.0)) < 1e-6);
+    assert(fabs(test(5, (struct S2) {1.0, 2.0}, (struct S2) {100.0, 23.0}, (struct S2) {-100, -200}, (struct S2) {0, 0},
+                     (struct S2) {100, -200}) -
+                (1.0 - 2.0 + 100.0 - 23.0 + 100 + 300)) < 1e-6);
     return EXIT_SUCCESS;
 }

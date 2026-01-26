@@ -76,8 +76,7 @@ kefir_result_t kefir_ast_translate_labeled_statement_node(struct kefir_mem *mem,
         }
     }
 
-    control_struct =
-        node->base.properties.statement_props.target_flow_control_point->self;
+    control_struct = node->base.properties.statement_props.target_flow_control_point->self;
     for (; control_struct != NULL; control_struct = kefir_ast_flow_control_structure_parent(control_struct)) {
         if (control_struct->type != KEFIR_AST_FLOW_CONTROL_POINT) {
             REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(

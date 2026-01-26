@@ -35,7 +35,7 @@ int main(void) {
                 long res = testfn(i, j, k);
                 assert(res == somefn(k, i, j));
             }
-        }   
+        }
     }
 #endif
     return EXIT_SUCCESS;

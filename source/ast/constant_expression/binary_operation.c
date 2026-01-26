@@ -137,12 +137,13 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
     const struct kefir_ast_type *common_arith_type = kefir_ast_type_common_arithmetic(
         context->type_traits, arg1_normalized_type, node->arg1->properties.expression_props.bitfield_props,
         arg2_normalized_type, node->arg2->properties.expression_props.bitfield_props);
-    
+
     kefir_bool_t common_type_signed_integer = false;
     if (common_arith_type != NULL && KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(common_arith_type)) {
         REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, common_arith_type, &common_type_signed_integer));
     }
-    const kefir_bool_t both_imag = KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) && KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type);
+    const kefir_bool_t both_imag = KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg1_normalized_type) &&
+                                   KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(arg2_normalized_type);
 
     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->arg1),
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg1->source_location,
@@ -253,7 +254,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     value->decimal = kefir_dfp_decimal128_add(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
                     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                         REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                         REQUIRE_OK(kefir_bigint_add(value->bitprecise, rhs_value.bitprecise));
@@ -266,7 +268,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     }
                 } else {
                     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                         REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                         REQUIRE_OK(kefir_bigint_add(value->bitprecise, rhs_value.bitprecise));
@@ -337,7 +340,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     value->decimal = kefir_dfp_decimal128_sub(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
                     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                         REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                         REQUIRE_OK(kefir_bigint_subtract(value->bitprecise, rhs_value.bitprecise));
@@ -350,7 +354,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     }
                 } else {
                     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                         REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                         REQUIRE_OK(kefir_bigint_subtract(value->bitprecise, rhs_value.bitprecise));
@@ -408,7 +413,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 value->decimal = kefir_dfp_decimal128_mul(lhs_value.decimal, rhs_value.decimal);
             } else {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                    KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                     struct kefir_bigint *acc_bigint;
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &acc_bigint));
@@ -475,7 +481,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 value->decimal = kefir_dfp_decimal128_div(lhs_value.decimal, rhs_value.decimal);
             } else if (common_type_signed_integer) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                    KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                     struct kefir_bigint *remainder_bigint, *rhs_bigint;
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &remainder_bigint));
@@ -487,7 +494,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_bigint_resize_nocast(mem, remainder_bigint, value->bitprecise->bitwidth));
                     REQUIRE_OK(kefir_bigint_signed_divide(value->bitprecise, remainder_bigint, rhs_bigint));
                     REQUIRE_OK(
-                        kefir_bigint_resize_cast_signed(mem, value->bitprecise, KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type) ? context->type_traits->data_model->scalar_width.int128_bits : common_arith_type->bitprecise.width));
+                        kefir_bigint_resize_cast_signed(mem, value->bitprecise,
+                                                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)
+                                                            ? context->type_traits->data_model->scalar_width.int128_bits
+                                                            : common_arith_type->bitprecise.width));
                     REQUIRE_OK(kefir_bigint_get_signed(value->bitprecise, &value->integer));
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
@@ -528,7 +538,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 }
             } else {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                    KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                     struct kefir_bigint *remainder_bigint;
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &remainder_bigint));
@@ -537,8 +548,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                         kefir_bigint_resize_cast_unsigned(mem, value->bitprecise, value->bitprecise->bitwidth * 2 + 1));
                     REQUIRE_OK(kefir_bigint_resize_nocast(mem, remainder_bigint, value->bitprecise->bitwidth));
                     REQUIRE_OK(kefir_bigint_unsigned_divide(value->bitprecise, remainder_bigint, rhs_value.bitprecise));
-                    REQUIRE_OK(
-                        kefir_bigint_resize_cast_unsigned(mem, value->bitprecise, KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type) ? context->type_traits->data_model->scalar_width.int128_bits : common_arith_type->bitprecise.width));
+                    REQUIRE_OK(kefir_bigint_resize_cast_unsigned(
+                        mem, value->bitprecise,
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)
+                            ? context->type_traits->data_model->scalar_width.int128_bits
+                            : common_arith_type->bitprecise.width));
                     REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
@@ -587,7 +601,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (common_type_signed_integer) {
-                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                    KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                     struct kefir_bigint *result_bigint, *rhs_bigint;
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &result_bigint));
@@ -598,7 +613,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, result_bigint->bitwidth));
                     REQUIRE_OK(kefir_bigint_signed_divide(result_bigint, value->bitprecise, rhs_bigint));
                     REQUIRE_OK(
-                        kefir_bigint_resize_cast_signed(mem, value->bitprecise, KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type) ? context->type_traits->data_model->scalar_width.int128_bits : common_arith_type->bitprecise.width));
+                        kefir_bigint_resize_cast_signed(mem, value->bitprecise,
+                                                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)
+                                                            ? context->type_traits->data_model->scalar_width.int128_bits
+                                                            : common_arith_type->bitprecise.width));
                     REQUIRE_OK(kefir_bigint_get_signed(value->bitprecise, &value->integer));
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
@@ -638,7 +656,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     }
                 }
             } else {
-                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                    KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                     struct kefir_bigint *result_bigint;
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &result_bigint));
@@ -646,8 +665,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, result_bigint, result_bigint->bitwidth * 2 + 1));
                     REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, result_bigint->bitwidth));
                     REQUIRE_OK(kefir_bigint_unsigned_divide(result_bigint, value->bitprecise, rhs_value.bitprecise));
-                    REQUIRE_OK(
-                        kefir_bigint_resize_cast_unsigned(mem, value->bitprecise, KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type) ? context->type_traits->data_model->scalar_width.int128_bits : common_arith_type->bitprecise.width));
+                    REQUIRE_OK(kefir_bigint_resize_cast_unsigned(
+                        mem, value->bitprecise,
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)
+                            ? context->type_traits->data_model->scalar_width.int128_bits
+                            : common_arith_type->bitprecise.width));
                     REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
@@ -705,7 +727,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                                                 node->arg2, rhs_type, node->arg2->properties.type));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(lhs_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(lhs_type) ||
+                KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                 REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                 if (rhs_value.integer >= (kefir_int64_t) lhs_value.bitprecise->bitwidth) {
                     REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, lhs_value.bitprecise->bitwidth));
@@ -775,7 +798,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                                                 node->arg2, rhs_type, node->arg2->properties.type));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(lhs_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(lhs_type) ||
+                KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                 REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                 if (rhs_value.integer >= (kefir_int64_t) lhs_value.bitprecise->bitwidth) {
                     REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, lhs_value.bitprecise->bitwidth));
@@ -893,7 +917,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_dfp_require_supported(&node->base.source_location));
                     value->integer = kefir_dfp_decimal128_less(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_signed_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -905,7 +930,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                         APPLY_SIGNED_OP(type_info.size, value, &lhs_value, <, &rhs_value);
                     }
                 } else {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_unsigned_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -969,7 +995,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_dfp_require_supported(&node->base.source_location));
                     value->integer = kefir_dfp_decimal128_less_or_equal(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_signed_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -981,7 +1008,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                         APPLY_SIGNED_OP(type_info.size, value, &lhs_value, <=, &rhs_value);
                     }
                 } else {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_unsigned_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -1045,7 +1073,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_dfp_require_supported(&node->base.source_location));
                     value->integer = kefir_dfp_decimal128_greater(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_signed_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -1057,7 +1086,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                         APPLY_SIGNED_OP(type_info.size, value, &lhs_value, >, &rhs_value);
                     }
                 } else {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_unsigned_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -1121,7 +1151,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_dfp_require_supported(&node->base.source_location));
                     value->integer = kefir_dfp_decimal128_greater_or_equal(lhs_value.decimal, rhs_value.decimal);
                 } else if (common_type_signed_integer) {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_signed_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -1133,7 +1164,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                         APPLY_SIGNED_OP(type_info.size, value, &lhs_value, >=, &rhs_value);
                     }
                 } else {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_unsigned_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -1200,7 +1232,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_dfp_require_supported(&node->base.source_location));
                     value->integer = kefir_dfp_decimal128_equals(lhs_value.decimal, rhs_value.decimal);
                 } else {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_signed_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -1268,7 +1301,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_dfp_require_supported(&node->base.source_location));
                     value->integer = kefir_dfp_decimal128_not_equals(lhs_value.decimal, rhs_value.decimal);
                 } else {
-                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                        KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                         kefir_int_t comparison;
                         REQUIRE_OK(
                             kefir_bigint_signed_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
@@ -1293,7 +1327,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 common_arith_type, node->arg2->properties.type));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                 REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                 REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                 REQUIRE_OK(kefir_bigint_and(value->bitprecise, rhs_value.bitprecise));
@@ -1315,7 +1350,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 common_arith_type, node->arg2->properties.type));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                 REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                 REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                 REQUIRE_OK(kefir_bigint_or(value->bitprecise, rhs_value.bitprecise));
@@ -1337,7 +1373,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 common_arith_type, node->arg2->properties.type));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type) ||
+                KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(common_arith_type)) {
                 REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
                 REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                 REQUIRE_OK(kefir_bigint_xor(value->bitprecise, rhs_value.bitprecise));
@@ -1398,7 +1435,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.integral +
                                     KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset !=
                                 0;
-            } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg1_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_arg1_type)) {
+            } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg1_type) ||
+                       KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_arg1_type)) {
                 kefir_bool_t is_zero;
                 REQUIRE_OK(
                     kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->bitprecise, &is_zero));
@@ -1434,7 +1472,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                 KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.integral +
                                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset !=
                                     0;
-                } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg2_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_arg2_type)) {
+                } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg2_type) ||
+                           KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_arg2_type)) {
                     kefir_bool_t is_zero;
                     REQUIRE_OK(kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->bitprecise,
                                                     &is_zero));
@@ -1478,7 +1517,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.integral +
                                     KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset !=
                                 0;
-            } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg1_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_arg1_type)) {
+            } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg1_type) ||
+                       KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_arg1_type)) {
                 kefir_bool_t is_zero;
                 REQUIRE_OK(
                     kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->bitprecise, &is_zero));
@@ -1514,7 +1554,8 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                 KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.integral +
                                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset !=
                                     0;
-                } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg2_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_arg2_type)) {
+                } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg2_type) ||
+                           KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(unqualified_arg2_type)) {
                     kefir_bool_t is_zero;
                     REQUIRE_OK(kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->bitprecise,
                                                     &is_zero));

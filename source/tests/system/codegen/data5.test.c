@@ -57,12 +57,10 @@ extern _Thread_local const char *strpointer1_1;
 
 extern char int8_3[3];
 
-#define PTRLIST                                                                                                    \
-    {                                                                                                              \
-        &int8_1, &int8_2, &int16_1, &int16_2, &int32_1, &int32_2, &int64_1, &int64_2, &float32_1, &float32_2,      \
-            &float64_1, &float64_2, &long_double_1, &long_double_2, &struct1_1, &array1_1, &union1_1, &pointer1_1, \
-            &strpointer1_1                                                                                         \
-    }
+#define PTRLIST                                                                                      \
+    {&int8_1,    &int8_2,    &int16_1,   &int16_2,    &int32_1,      &int32_2,       &int64_1,       \
+     &int64_2,   &float32_1, &float32_2, &float64_1,  &float64_2,    &long_double_1, &long_double_2, \
+     &struct1_1, &array1_1,  &union1_1,  &pointer1_1, &strpointer1_1}
 
 static int cmp_pointers_res = 0;
 

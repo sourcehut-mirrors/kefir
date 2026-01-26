@@ -294,7 +294,8 @@ static kefir_result_t attach_label_to_instr(struct kefir_mem *, struct kefir_asm
 
 static kefir_result_t detach_label(struct kefir_mem *, struct kefir_asmcmp_context *, struct kefir_asmcmp_label *);
 
-static kefir_result_t allocate_value_symbols(struct kefir_mem *mem, struct kefir_asmcmp_context *context, struct kefir_asmcmp_value *value) {
+static kefir_result_t allocate_value_symbols(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                             struct kefir_asmcmp_value *value) {
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
@@ -310,7 +311,8 @@ static kefir_result_t allocate_value_symbols(struct kefir_mem *mem, struct kefir
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
             switch (value->indirect.type) {
                 case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
-                    value->indirect.base.external_label = kefir_string_pool_insert(mem, &context->strings, value->indirect.base.external_label, NULL);
+                    value->indirect.base.external_label =
+                        kefir_string_pool_insert(mem, &context->strings, value->indirect.base.external_label, NULL);
                     REQUIRE(value->indirect.base.external_label != NULL,
                             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert label name into string pool"));
                     break;
@@ -326,13 +328,15 @@ static kefir_result_t allocate_value_symbols(struct kefir_mem *mem, struct kefir
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
-            value->rip_indirection.external = kefir_string_pool_insert(mem, &context->strings, value->rip_indirection.external, NULL);
+            value->rip_indirection.external =
+                kefir_string_pool_insert(mem, &context->strings, value->rip_indirection.external, NULL);
             REQUIRE(value->rip_indirection.external != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert label name into string pool"));
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
-            value->external_label.symbolic = kefir_string_pool_insert(mem, &context->strings, value->external_label.symbolic, NULL);
+            value->external_label.symbolic =
+                kefir_string_pool_insert(mem, &context->strings, value->external_label.symbolic, NULL);
             REQUIRE(value->external_label.symbolic != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert label name into string pool"));
             break;
@@ -466,7 +470,7 @@ kefir_result_t kefir_asmcmp_context_instr_replace(struct kefir_asmcmp_context *c
 kefir_result_t kefir_asmcmp_context_instr_drop_code(struct kefir_mem *mem, struct kefir_asmcmp_context *context) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
-    
+
     REQUIRE_OK(kefir_hashtree_free(mem, &context->label_positions));
     for (kefir_size_t i = 0; i < context->labels_length; i++) {
         REQUIRE_OK(kefir_hashtreeset_free(mem, &context->labels[i].public_labels));
@@ -707,7 +711,8 @@ kefir_result_t kefir_asmcmp_context_label_add_public_name(struct kefir_mem *mem,
     REQUIRE(public_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbolic label"));
 
     public_label = kefir_string_pool_insert(mem, &context->strings, public_label, NULL);
-    REQUIRE(public_label != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert public label into string pool"));
+    REQUIRE(public_label != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert public label into string pool"));
 
     struct kefir_asmcmp_label *label = &context->labels[label_index];
     REQUIRE_OK(kefir_hashtreeset_add(mem, &label->public_labels, (kefir_hashtreeset_entry_t) public_label));
@@ -1007,10 +1012,9 @@ kefir_result_t kefir_asmcmp_virtual_set_spill_space_size(const struct kefir_asmc
     return KEFIR_OK;
 }
 
-
 kefir_result_t kefir_asmcmp_new_virtual_register_of_type(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                                   kefir_asmcmp_virtual_register_index_t vreg_idx,
-                                                   kefir_asmcmp_virtual_register_index_t *new_vreg_idx) {
+                                                         kefir_asmcmp_virtual_register_index_t vreg_idx,
+                                                         kefir_asmcmp_virtual_register_index_t *new_vreg_idx) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp context"));
 
@@ -1020,8 +1024,7 @@ kefir_result_t kefir_asmcmp_new_virtual_register_of_type(struct kefir_mem *mem, 
     switch (vreg->type) {
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED:
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, context, vreg->type, new_vreg_idx));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type_dependent(mem, context, *new_vreg_idx,
-                                                                            vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type_dependent(mem, context, *new_vreg_idx, vreg_idx));
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE:
@@ -1037,22 +1040,23 @@ kefir_result_t kefir_asmcmp_new_virtual_register_of_type(struct kefir_mem *mem, 
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE:
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER:
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, context,
-                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, new_vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                                                         new_vreg_idx));
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, context,
-                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, new_vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                                                         new_vreg_idx));
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR: {
             kefir_asmcmp_virtual_register_index_t first, second;
-            REQUIRE_OK(kefir_asmcmp_new_virtual_register_of_type(mem, context, vreg->parameters.pair.virtual_registers[0], &first));
-            REQUIRE_OK(
-                kefir_asmcmp_new_virtual_register_of_type(mem, context, vreg->parameters.pair.virtual_registers[1], &second));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, context, vreg->parameters.pair.type,
-                                                              first, second, new_vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_new_virtual_register_of_type(mem, context,
+                                                                 vreg->parameters.pair.virtual_registers[0], &first));
+            REQUIRE_OK(kefir_asmcmp_new_virtual_register_of_type(mem, context,
+                                                                 vreg->parameters.pair.virtual_registers[1], &second));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, context, vreg->parameters.pair.type, first, second,
+                                                              new_vreg_idx));
         } break;
     }
 

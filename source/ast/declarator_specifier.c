@@ -282,7 +282,9 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(
                     });
                 }
 
-                REQUIRE_CHAIN(&res, kefir_ast_node_attributes_clone(mem, &entry_clone->declaration.specifiers.attributes, &entry->declaration.specifiers.attributes));
+                REQUIRE_CHAIN(&res,
+                              kefir_ast_node_attributes_clone(mem, &entry_clone->declaration.specifiers.attributes,
+                                                              &entry->declaration.specifiers.attributes));
             }
 
             res = kefir_ast_structure_specifier_append_entry(mem, clone, entry_clone);

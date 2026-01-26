@@ -117,7 +117,7 @@ kefir_result_t kefir_ast_type_traversal_init(struct kefir_mem *mem, struct kefir
     REQUIRE(object_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid object type"));
 
     traversal->current_object_type = object_type;
-    traversal->events = (struct kefir_ast_type_traversal_events){0};
+    traversal->events = (struct kefir_ast_type_traversal_events) {0};
     REQUIRE_OK(kefir_list_init(&traversal->stack));
     REQUIRE_OK(kefir_list_on_remove(&traversal->stack, remove_layer, NULL));
     REQUIRE_OK(push_layer(mem, traversal, object_type, NULL));

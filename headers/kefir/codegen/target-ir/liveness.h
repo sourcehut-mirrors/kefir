@@ -68,11 +68,24 @@ typedef enum kefir_codegen_target_ir_liveness_class {
     KEFIR_CODEGEN_TARGET_IR_LIVENESS_END
 } kefir_codegen_target_ir_liveness_class_t;
 
-kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *, const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_liveness *);
-kefir_result_t kefir_codegen_target_ir_liveness_value_at(const struct kefir_codegen_target_ir_liveness *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_liveness_class_t, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_instruction_ref_t *);
-kefir_result_t kefir_codegen_target_ir_liveness_value_ranges(struct kefir_mem *, const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_liveness *, kefir_codegen_target_ir_block_ref_t, const struct kefir_codegen_target_ir_liveness_value_block_ranges **);
-kefir_result_t kefir_codegen_target_ir_liveness_build_update_alive_set(struct kefir_mem *, const struct kefir_codegen_target_ir_liveness *, kefir_codegen_target_ir_instruction_ref_t, const struct kefir_codegen_target_ir_liveness_value_block_ranges *, struct kefir_hashset *);
-kefir_result_t kefir_codegen_target_ir_liveness_range_get(const struct kefir_codegen_target_ir_liveness *, const struct kefir_codegen_target_ir_liveness_value_block_ranges *,
+kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *,
+                                                      const struct kefir_codegen_target_ir_control_flow *,
+                                                      struct kefir_codegen_target_ir_liveness *);
+kefir_result_t kefir_codegen_target_ir_liveness_value_at(const struct kefir_codegen_target_ir_liveness *,
+                                                         kefir_codegen_target_ir_value_ref_t,
+                                                         kefir_codegen_target_ir_block_ref_t,
+                                                         kefir_codegen_target_ir_liveness_class_t,
+                                                         kefir_codegen_target_ir_instruction_ref_t *,
+                                                         kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_liveness_value_ranges(
+    struct kefir_mem *, const struct kefir_codegen_target_ir_control_flow *,
+    const struct kefir_codegen_target_ir_liveness *, kefir_codegen_target_ir_block_ref_t,
+    const struct kefir_codegen_target_ir_liveness_value_block_ranges **);
+kefir_result_t kefir_codegen_target_ir_liveness_build_update_alive_set(
+    struct kefir_mem *, const struct kefir_codegen_target_ir_liveness *, kefir_codegen_target_ir_instruction_ref_t,
+    const struct kefir_codegen_target_ir_liveness_value_block_ranges *, struct kefir_hashset *);
+kefir_result_t kefir_codegen_target_ir_liveness_range_get(
+    const struct kefir_codegen_target_ir_liveness *, const struct kefir_codegen_target_ir_liveness_value_block_ranges *,
     kefir_codegen_target_ir_instruction_ref_t, const struct kefir_codegen_target_ir_liveness_index **);
 
 typedef struct kefir_codegen_target_ir_value_liveness_block_iterator {
@@ -82,14 +95,29 @@ typedef struct kefir_codegen_target_ir_value_liveness_block_iterator {
     kefir_uint32_t klass;
 } kefir_codegen_target_ir_value_liveness_block_iterator_t;
 
-kefir_result_t kefir_codegen_target_ir_value_liveness_at(const struct kefir_codegen_target_ir_liveness *, struct kefir_codegen_target_ir_value_liveness_block_iterator *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_block_ref_t, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_instruction_ref_t *);
-kefir_result_t kefir_codegen_target_ir_value_liveness_at_next(struct kefir_codegen_target_ir_value_liveness_block_iterator *, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_value_liveness_at(const struct kefir_codegen_target_ir_liveness *,
+                                                         struct kefir_codegen_target_ir_value_liveness_block_iterator *,
+                                                         kefir_codegen_target_ir_value_ref_t,
+                                                         kefir_codegen_target_ir_block_ref_t,
+                                                         kefir_codegen_target_ir_instruction_ref_t *,
+                                                         kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_value_liveness_at_next(
+    struct kefir_codegen_target_ir_value_liveness_block_iterator *, kefir_codegen_target_ir_instruction_ref_t *,
+    kefir_codegen_target_ir_instruction_ref_t *);
 
 typedef struct kefir_codegen_target_ir_value_liveness_iterator {
     struct kefir_hashtable_iterator iter;
 } kefir_codegen_target_ir_value_liveness_iterator_t;
 
-kefir_result_t kefir_codegen_target_ir_value_liveness_iter(const struct kefir_codegen_target_ir_liveness *, struct kefir_codegen_target_ir_value_liveness_iterator *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_block_ref_t *, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_instruction_ref_t *);
-kefir_result_t kefir_codegen_target_ir_value_liveness_next(struct kefir_codegen_target_ir_value_liveness_iterator *, kefir_codegen_target_ir_block_ref_t *, kefir_codegen_target_ir_instruction_ref_t *, kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_value_liveness_iter(const struct kefir_codegen_target_ir_liveness *,
+                                                           struct kefir_codegen_target_ir_value_liveness_iterator *,
+                                                           kefir_codegen_target_ir_value_ref_t,
+                                                           kefir_codegen_target_ir_block_ref_t *,
+                                                           kefir_codegen_target_ir_instruction_ref_t *,
+                                                           kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_value_liveness_next(struct kefir_codegen_target_ir_value_liveness_iterator *,
+                                                           kefir_codegen_target_ir_block_ref_t *,
+                                                           kefir_codegen_target_ir_instruction_ref_t *,
+                                                           kefir_codegen_target_ir_instruction_ref_t *);
 
 #endif

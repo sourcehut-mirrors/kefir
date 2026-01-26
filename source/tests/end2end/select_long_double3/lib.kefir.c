@@ -21,51 +21,61 @@
 #include "./definitions.h"
 
 long double get(long x, long a, long double b, long double c) {
-        if (x)  b = a == 1 ? b : c;
-        return b;
+    if (x)
+        b = a == 1 ? b : c;
+    return b;
 }
 
 long double get2(long x, long a, long double b, long double c) {
-        if (x)  b = a != 2 ? b : c;
-        return b;
+    if (x)
+        b = a != 2 ? b : c;
+    return b;
 }
 
 long double get3(long x, long a, long double b, long double c) {
-        if (x)  b = a > 3 ? b : c;
-        return b;
+    if (x)
+        b = a > 3 ? b : c;
+    return b;
 }
 
 long double get4(long x, long a, long double b, long double c) {
-        if (x)  b = a >= 4 ? b : c;
-        return b;
+    if (x)
+        b = a >= 4 ? b : c;
+    return b;
 }
 
 long double get5(long x, long a, long double b, long double c) {
-        if (x)  b = a < -3 ? b : c;
-        return b;
+    if (x)
+        b = a < -3 ? b : c;
+    return b;
 }
 
 long double get6(long x, long a, long double b, long double c) {
-        if (x)  b = a <= -4 ? b : c;
-        return b;
+    if (x)
+        b = a <= -4 ? b : c;
+    return b;
 }
 
 long double get7(long x, unsigned long a, long double b, long double c) {
-        if (x)  b = a > 30 ? b : c;
-        return b;
+    if (x)
+        b = a > 30 ? b : c;
+    return b;
 }
 
 long double get8(long x, unsigned long a, long double b, long double c) {
-        if (x)  b = a >= 40 ? b : c;
-        return b;
+    if (x)
+        b = a >= 40 ? b : c;
+    return b;
 }
 
 long double get9(long x, unsigned long a, long double b, long double c) {
-        if (x)  b = a < 100 ? b : c;
-        return b;
+    if (x)
+        b = a < 100 ? b : c;
+    return b;
 }
 
 long double get10(long x, unsigned long a, long double b, long double c) {
-        if (x)  b = a <= 200 ? b : c;
-        return b;
+    if (x)
+        b = a <= 200 ? b : c;
+    return b;
 }

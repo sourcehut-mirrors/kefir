@@ -31,13 +31,10 @@ struct B {
 };
 
 int test(int a, int b) {
-    struct B x = get4((struct B){a, b});
+    struct B x = get4((struct B) {a, b});
     return x.a ^ x.b;
 }
 
 struct B get4(struct B x) {
-    return (struct B) {
-        .a = x.a + x.b,
-        .b = x.a - x.b
-    };
+    return (struct B) {.a = x.a + x.b, .b = x.a - x.b};
 }

@@ -27,8 +27,6 @@ int y = 0;
 void fn1(void);
 void fn2(void) __attribute__((visibility("default")));
 
-void fn1(void) __attribute__((visibility("protected"))) {
-}
+void fn1(void) __attribute__((visibility("protected"))) {}
 
-void fn2(void) {
-}
+void fn2(void) {}

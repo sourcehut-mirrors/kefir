@@ -21,14 +21,13 @@
 #include "./definitions.h"
 
 double test1(double x) {
-  if (x) {
-    long double d;
-    asm ("" : "=t" (d) : "0" (x));
-    return d;
-  } else {
-    long double d;
-    asm ("" : "=t" (d) : "0" (x));
-    return d;
-  }
+    if (x) {
+        long double d;
+        asm("" : "=t"(d) : "0"(x));
+        return d;
+    } else {
+        long double d;
+        asm("" : "=t"(d) : "0"(x));
+        return d;
+    }
 }
-

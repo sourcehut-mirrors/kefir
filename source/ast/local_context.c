@@ -587,8 +587,9 @@ static kefir_result_t context_update_pragma_state(struct kefir_mem *mem, const s
     local_ctx->pragma_stats.disallow_fp_contract =
         local_ctx->pragma_stats.disallow_fp_contract || KEFIR_AST_PRAGMA_STATE_FP_CONTRACT_OFF(&local_ctx->pragmas);
     if (local_ctx->pragmas.cx_limited_range.present &&
-        ((local_ctx->pragmas.cx_limited_range.value == KEFIR_AST_PRAGMA_VALUE_ON && local_ctx->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_DEFAULT) ||
-        local_ctx->pragmas.cx_limited_range.value == KEFIR_AST_PRAGMA_VALUE_OFF)) {
+        ((local_ctx->pragmas.cx_limited_range.value == KEFIR_AST_PRAGMA_VALUE_ON &&
+          local_ctx->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_DEFAULT) ||
+         local_ctx->pragmas.cx_limited_range.value == KEFIR_AST_PRAGMA_VALUE_OFF)) {
         local_ctx->pragma_stats.cx_limited_range = local_ctx->pragmas.cx_limited_range.value;
     }
     return KEFIR_OK;
@@ -615,13 +616,16 @@ static kefir_result_t context_reset_pragma_state(struct kefir_mem *mem, const st
     return KEFIR_OK;
 }
 
-static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type, kefir_bool_t *analyze_ptr) {
+static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                          const struct kefir_ast_type *type, kefir_bool_t *analyze_ptr) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
-    REQUIRE_OK(context->global_context->context.before_type_analyze(mem, &context->global_context->context, type, analyze_ptr));
+    REQUIRE_OK(context->global_context->context.before_type_analyze(mem, &context->global_context->context, type,
+                                                                    analyze_ptr));
     return KEFIR_OK;
 }
 
-static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type) {
+static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                           const struct kefir_ast_type *type) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE_OK(context->global_context->context.type_analyze_success(mem, &context->global_context->context, type));
     return KEFIR_OK;

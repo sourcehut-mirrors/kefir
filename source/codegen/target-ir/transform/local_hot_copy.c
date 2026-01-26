@@ -26,13 +26,17 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t collect_local_hot_uses(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_regalloc_class *regalloc_klass, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_value_ref_t value_ref, struct kefir_hashset *local_hot_uses) {
+static kefir_result_t collect_local_hot_uses(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                             const struct kefir_codegen_target_ir_regalloc_class *regalloc_klass,
+                                             kefir_codegen_target_ir_instruction_ref_t instr_ref,
+                                             kefir_codegen_target_ir_value_ref_t value_ref,
+                                             struct kefir_hashset *local_hot_uses) {
     REQUIRE_OK(kefir_hashset_clear(mem, local_hot_uses));
 
     kefir_size_t lookahead = regalloc_klass->transforms->hot_copy_locality;
     for (instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref);
-        instr_ref != KEFIR_ID_NONE && lookahead > 0;
-        instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref), lookahead--) {
+         instr_ref != KEFIR_ID_NONE && lookahead > 0;
+         instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref), lookahead--) {
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
         if (instr->operation.opcode == code->klass->upsilon_opcode) {
@@ -61,20 +65,27 @@ static kefir_result_t collect_local_hot_uses(struct kefir_mem *mem, struct kefir
                         break;
 
                     case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
-                        if (KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[i].direct.value_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
+                        if (KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[i].direct.value_ref) ==
+                            KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
                             REQUIRE_OK(kefir_hashset_add(mem, local_hot_uses, (kefir_hashset_key_t) instr_ref));
                             lookahead = regalloc_klass->transforms->hot_copy_locality;
                         }
                         break;
 
                     case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT:
-                        if (instr->operation.parameters->indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
-                            KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[i].indirect.base.value_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
+                        if (instr->operation.parameters->indirect.type ==
+                                KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS &&
+                            KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(
+                                &instr->operation.parameters[i].indirect.base.value_ref) ==
+                                KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
                             REQUIRE_OK(kefir_hashset_add(mem, local_hot_uses, (kefir_hashset_key_t) instr_ref));
                             lookahead = regalloc_klass->transforms->hot_copy_locality;
                         }
-                        if (instr->operation.parameters->indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF &&
-                            KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&instr->operation.parameters[i].indirect.index.value_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
+                        if (instr->operation.parameters->indirect.index_type ==
+                                KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF &&
+                            KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(
+                                &instr->operation.parameters[i].indirect.index.value_ref) ==
+                                KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
                             REQUIRE_OK(kefir_hashset_add(mem, local_hot_uses, (kefir_hashset_key_t) instr_ref));
                             lookahead = regalloc_klass->transforms->hot_copy_locality;
                         }
@@ -87,18 +98,19 @@ static kefir_result_t collect_local_hot_uses(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t insert_cold_copy(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_value_ref_t value_ref, struct kefir_hashset *local_hot_uses, kefir_codegen_target_ir_value_ref_t *copy_value_ref_ptr) {
+static kefir_result_t insert_cold_copy(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                       kefir_codegen_target_ir_block_ref_t block_ref,
+                                       kefir_codegen_target_ir_instruction_ref_t instr_ref,
+                                       kefir_codegen_target_ir_value_ref_t value_ref,
+                                       struct kefir_hashset *local_hot_uses,
+                                       kefir_codegen_target_ir_value_ref_t *copy_value_ref_ptr) {
     kefir_result_t res;
     struct kefir_codegen_target_ir_use_iterator use_iter;
     kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
     kefir_codegen_target_ir_value_ref_t use_value_ref;
-    kefir_codegen_target_ir_value_ref_t copy_value_ref = {
-        .instr_ref = KEFIR_ID_NONE,
-        .aspect = value_ref.aspect
-    };
+    kefir_codegen_target_ir_value_ref_t copy_value_ref = {.instr_ref = KEFIR_ID_NONE, .aspect = value_ref.aspect};
     for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, &use_instr_ref, &use_value_ref);
-        res == KEFIR_OK;
-        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &use_value_ref)) {
+         res == KEFIR_OK; res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &use_value_ref)) {
         if (use_value_ref.aspect != value_ref.aspect ||
             kefir_hashset_has(local_hot_uses, (kefir_hashset_key_t) use_instr_ref)) {
             continue;
@@ -107,24 +119,24 @@ static kefir_result_t insert_cold_copy(struct kefir_mem *mem, struct kefir_codeg
         const struct kefir_codegen_target_ir_instruction *use_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &use_instr));
         if (use_instr->operation.opcode == code->klass->upsilon_opcode &&
-            KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&use_instr->operation.parameters->upsilon_ref) == KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
+            KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&use_instr->operation.parameters->upsilon_ref) ==
+                KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)) {
             continue;
         }
-        
+
         if (copy_value_ref.instr_ref == KEFIR_ID_NONE) {
-            const struct kefir_codegen_target_ir_value_type *value_type;        
+            const struct kefir_codegen_target_ir_value_type *value_type;
             REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, &value_type));
             struct kefir_codegen_target_ir_value_type copy_value_type = *value_type;
 
-            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref, instr_ref, 
+            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
+                mem, code, block_ref, instr_ref,
                 &(struct kefir_codegen_target_ir_operation) {
                     .opcode = code->klass->assign_opcode,
-                    .parameters[0] = {
-                        .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                        .direct.value_ref = value_ref,
-                        .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
-                    }
-                }, NULL, &copy_value_ref.instr_ref));
+                    .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                                      .direct.value_ref = value_ref,
+                                      .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},
+                NULL, &copy_value_ref.instr_ref));
             REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, copy_value_ref, &copy_value_type));
         }
 
@@ -137,31 +149,33 @@ static kefir_result_t insert_cold_copy(struct kefir_mem *mem, struct kefir_codeg
     return KEFIR_OK;
 }
 
-static kefir_result_t insert_local_hot_copy(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_value_ref_t value_ref, kefir_codegen_target_ir_block_ref_t block_ref, kefir_codegen_target_ir_instruction_ref_t head_use_instr_ref, struct kefir_hashset *local_hot_uses) {
-    kefir_codegen_target_ir_value_ref_t copy_value_ref = {
-        .aspect = value_ref.aspect
-    };
-    const struct kefir_codegen_target_ir_value_type *value_type;        
+static kefir_result_t insert_local_hot_copy(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                            kefir_codegen_target_ir_value_ref_t value_ref,
+                                            kefir_codegen_target_ir_block_ref_t block_ref,
+                                            kefir_codegen_target_ir_instruction_ref_t head_use_instr_ref,
+                                            struct kefir_hashset *local_hot_uses) {
+    kefir_codegen_target_ir_value_ref_t copy_value_ref = {.aspect = value_ref.aspect};
+    const struct kefir_codegen_target_ir_value_type *value_type;
     REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, &value_type));
     struct kefir_codegen_target_ir_value_type copy_value_type = *value_type;
 
-    REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, block_ref, kefir_codegen_target_ir_code_control_prev(code, head_use_instr_ref), 
+    REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
+        mem, code, block_ref, kefir_codegen_target_ir_code_control_prev(code, head_use_instr_ref),
         &(struct kefir_codegen_target_ir_operation) {
             .opcode = code->klass->assign_opcode,
-            .parameters[0] = {
-                .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                .direct.value_ref = value_ref,
-                .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
-            }
-        }, NULL, &copy_value_ref.instr_ref));
+            .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                              .direct.value_ref = value_ref,
+                              .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},
+        NULL, &copy_value_ref.instr_ref));
     REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, copy_value_ref, &copy_value_type));
 
     kefir_result_t res;
     struct kefir_hashset_iterator use_iter;
     kefir_hashset_key_t use_entry;
-    for (res = kefir_hashset_iter(local_hot_uses, &use_iter, &use_entry);
-            res == KEFIR_OK; res = kefir_hashset_next(&use_iter, &use_entry)) {
-        REQUIRE_OK(kefir_codegen_target_ir_code_replace_value_in(mem, code, (kefir_codegen_target_ir_instruction_ref_t) use_entry, copy_value_ref, value_ref));
+    for (res = kefir_hashset_iter(local_hot_uses, &use_iter, &use_entry); res == KEFIR_OK;
+         res = kefir_hashset_next(&use_iter, &use_entry)) {
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_value_in(
+            mem, code, (kefir_codegen_target_ir_instruction_ref_t) use_entry, copy_value_ref, value_ref));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -169,15 +183,20 @@ static kefir_result_t insert_local_hot_copy(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t collect_hot_use_regions_impl(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_liveness *liveness, const struct kefir_codegen_target_ir_regalloc *regalloc, kefir_codegen_target_ir_value_ref_t value_ref, struct kefir_hashtree *uses, struct kefir_hashset *local_hot_uses, kefir_bool_t *inserted) {
+static kefir_result_t collect_hot_use_regions_impl(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                                   const struct kefir_codegen_target_ir_liveness *liveness,
+                                                   const struct kefir_codegen_target_ir_regalloc *regalloc,
+                                                   kefir_codegen_target_ir_value_ref_t value_ref,
+                                                   struct kefir_hashtree *uses, struct kefir_hashset *local_hot_uses,
+                                                   kefir_bool_t *inserted) {
     REQUIRE_OK(kefir_hashtree_clean(mem, uses));
     kefir_result_t res;
     struct kefir_codegen_target_ir_use_iterator use_iter;
     kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
     kefir_codegen_target_ir_value_ref_t used_value_ref;
-    for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, value_ref.instr_ref, &use_instr_ref, &used_value_ref);
-        res == KEFIR_OK;
-        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
+    for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, value_ref.instr_ref, &use_instr_ref,
+                                                     &used_value_ref);
+         res == KEFIR_OK; res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
         if (used_value_ref.aspect != value_ref.aspect) {
             continue;
         }
@@ -214,15 +233,19 @@ static kefir_result_t collect_hot_use_regions_impl(struct kefir_mem *mem, struct
             }
 
             kefir_codegen_target_ir_regalloc_allocation_t output_allocation;
-            kefir_result_t res = kefir_codegen_target_ir_regalloc_get(regalloc, tie_classification.operands[i].output, &output_allocation);
+            kefir_result_t res = kefir_codegen_target_ir_regalloc_get(regalloc, tie_classification.operands[i].output,
+                                                                      &output_allocation);
             if (res == KEFIR_NOT_FOUND) {
                 continue;
             }
             REQUIRE_OK(res);
 
-            if (user_instr->operation.parameters[tie_classification.operands[i].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-                user_instr->operation.parameters[tie_classification.operands[i].read_index].direct.value_ref.instr_ref == value_ref.instr_ref &&
-                user_instr->operation.parameters[tie_classification.operands[i].read_index].direct.value_ref.aspect == value_ref.aspect &&
+            if (user_instr->operation.parameters[tie_classification.operands[i].read_index].type ==
+                    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                user_instr->operation.parameters[tie_classification.operands[i].read_index]
+                        .direct.value_ref.instr_ref == value_ref.instr_ref &&
+                user_instr->operation.parameters[tie_classification.operands[i].read_index].direct.value_ref.aspect ==
+                    value_ref.aspect &&
                 allocation == output_allocation) {
                 skip = true;
             }
@@ -254,12 +277,11 @@ static kefir_result_t collect_hot_use_regions_impl(struct kefir_mem *mem, struct
         kefir_codegen_target_ir_block_ref_t use_block_ref = key >> 32;
         kefir_uint32_t use_seq_idx = key;
 
-        if (current_block_ref == KEFIR_ID_NONE ||
-            current_block_ref != use_block_ref ||
+        if (current_block_ref == KEFIR_ID_NONE || current_block_ref != use_block_ref ||
             use_seq_idx - current_seq_tail_position > regalloc->klass->transforms->hot_copy_locality) {
-            if (current_seq_head_instr_ref != KEFIR_ID_NONE &&
-                current_seq_head_position != current_seq_tail_position) {
-                REQUIRE_OK(insert_local_hot_copy(mem, code, value_ref, current_block_ref, current_seq_head_instr_ref, local_hot_uses));
+            if (current_seq_head_instr_ref != KEFIR_ID_NONE && current_seq_head_position != current_seq_tail_position) {
+                REQUIRE_OK(insert_local_hot_copy(mem, code, value_ref, current_block_ref, current_seq_head_instr_ref,
+                                                 local_hot_uses));
                 ASSIGN_PTR(inserted, true);
             }
 
@@ -272,19 +294,24 @@ static kefir_result_t collect_hot_use_regions_impl(struct kefir_mem *mem, struct
         REQUIRE_OK(kefir_hashset_add(mem, local_hot_uses, (kefir_hashset_key_t) use_instr_ref));
     }
 
-    if (current_seq_head_instr_ref != KEFIR_ID_NONE &&
-        current_seq_head_position != current_seq_tail_position) {
-        REQUIRE_OK(insert_local_hot_copy(mem, code, value_ref, current_block_ref, current_seq_head_instr_ref, local_hot_uses));
+    if (current_seq_head_instr_ref != KEFIR_ID_NONE && current_seq_head_position != current_seq_tail_position) {
+        REQUIRE_OK(
+            insert_local_hot_copy(mem, code, value_ref, current_block_ref, current_seq_head_instr_ref, local_hot_uses));
         ASSIGN_PTR(inserted, true);
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t collect_hot_use_regions(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_liveness *liveness, const struct kefir_codegen_target_ir_regalloc *regalloc, kefir_codegen_target_ir_value_ref_t value_ref, struct kefir_hashset *local_hot_uses, kefir_bool_t *inserted) {
+static kefir_result_t collect_hot_use_regions(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                              const struct kefir_codegen_target_ir_liveness *liveness,
+                                              const struct kefir_codegen_target_ir_regalloc *regalloc,
+                                              kefir_codegen_target_ir_value_ref_t value_ref,
+                                              struct kefir_hashset *local_hot_uses, kefir_bool_t *inserted) {
     struct kefir_hashtree uses;
     REQUIRE_OK(kefir_hashtree_init(&uses, &kefir_hashtree_uint_ops));
 
-    kefir_result_t res = collect_hot_use_regions_impl(mem, code, liveness, regalloc, value_ref, &uses, local_hot_uses, inserted);
+    kefir_result_t res =
+        collect_hot_use_regions_impl(mem, code, liveness, regalloc, value_ref, &uses, local_hot_uses, inserted);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &uses);
         return res;
@@ -293,12 +320,15 @@ static kefir_result_t collect_hot_use_regions(struct kefir_mem *mem, struct kefi
     return KEFIR_OK;
 }
 
-static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_liveness *liveness, struct kefir_codegen_target_ir_regalloc *regalloc, kefir_codegen_target_ir_block_ref_t block_ref,
-    struct kefir_hashset *local_hot_uses) {
+static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                             const struct kefir_codegen_target_ir_liveness *liveness,
+                                             struct kefir_codegen_target_ir_regalloc *regalloc,
+                                             kefir_codegen_target_ir_block_ref_t block_ref,
+                                             struct kefir_hashset *local_hot_uses) {
 
-    for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
-        instr_ref != KEFIR_ID_NONE;
-        instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref)) {
+    for (kefir_codegen_target_ir_instruction_ref_t instr_ref =
+             kefir_codegen_target_ir_code_block_control_head(code, block_ref);
+         instr_ref != KEFIR_ID_NONE; instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref)) {
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
         if (instr->operation.opcode == code->klass->placeholder_opcode) {
@@ -314,13 +344,12 @@ static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir
         struct kefir_codegen_target_ir_value_ref value_ref;
         const struct kefir_codegen_target_ir_value_type *value_type;
         for (res = kefir_codegen_target_ir_code_value_iter(code, &value_iter, instr_ref, &value_ref, &value_type);
-            res == KEFIR_OK;
-            res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, NULL)) {
-            const struct kefir_codegen_target_ir_value_type *value_type;        
+             res == KEFIR_OK; res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, NULL)) {
+            const struct kefir_codegen_target_ir_value_type *value_type;
             REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, &value_type));
             if (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT ||
                 (value_type->kind != KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE &&
-                value_type->kind != KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT)) {
+                 value_type->kind != KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT)) {
                 continue;
             }
 
@@ -341,15 +370,18 @@ static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir
                 REQUIRE_OK(collect_local_hot_uses(mem, code, regalloc->klass, instr_ref, value_ref, local_hot_uses));
                 if (kefir_hashset_size(local_hot_uses) > 0) {
                     kefir_codegen_target_ir_value_ref_t copy_value_ref;
-                    REQUIRE_OK(insert_cold_copy(mem, code, block_ref, instr_ref, value_ref, local_hot_uses, &copy_value_ref));
+                    REQUIRE_OK(
+                        insert_cold_copy(mem, code, block_ref, instr_ref, value_ref, local_hot_uses, &copy_value_ref));
                     if (copy_value_ref.instr_ref != KEFIR_ID_NONE) {
-                        REQUIRE_OK(collect_hot_use_regions(mem, code, liveness, regalloc, copy_value_ref, local_hot_uses, NULL));
+                        REQUIRE_OK(collect_hot_use_regions(mem, code, liveness, regalloc, copy_value_ref,
+                                                           local_hot_uses, NULL));
                     }
                     break;
                 }
             }
             kefir_bool_t inserted_hot_copy = false;
-            REQUIRE_OK(collect_hot_use_regions(mem, code, liveness, regalloc, value_ref, local_hot_uses, &inserted_hot_copy));
+            REQUIRE_OK(
+                collect_hot_use_regions(mem, code, liveness, regalloc, value_ref, local_hot_uses, &inserted_hot_copy));
             if (inserted_hot_copy) {
                 break;
             }
@@ -361,7 +393,11 @@ static kefir_result_t do_insert_local_copies(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_transform_insert_local_hot_copy(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_liveness *liveness, const struct kefir_codegen_target_ir_interference *interference, struct kefir_codegen_target_ir_regalloc *regalloc) {
+kefir_result_t kefir_codegen_target_ir_transform_insert_local_hot_copy(
+    struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+    const struct kefir_codegen_target_ir_liveness *liveness,
+    const struct kefir_codegen_target_ir_interference *interference,
+    struct kefir_codegen_target_ir_regalloc *regalloc) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));

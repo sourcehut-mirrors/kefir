@@ -44,7 +44,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_signed)(
     REQUIRE_OK(kefir_asmcmp_amd64_shl(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
                                       &KEFIR_ASMCMP_MAKE_INT(64 - (instruction->operation.parameters.bitfield.length +
-                                                                    instruction->operation.parameters.bitfield.offset)),
+                                                                   instruction->operation.parameters.bitfield.offset)),
                                       NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_sar(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -76,7 +76,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_unsigned)(
     REQUIRE_OK(kefir_asmcmp_amd64_shl(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
                                       &KEFIR_ASMCMP_MAKE_INT(64 - (instruction->operation.parameters.bitfield.length +
-                                                                    instruction->operation.parameters.bitfield.offset)),
+                                                                   instruction->operation.parameters.bitfield.offset)),
                                       NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_shr(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

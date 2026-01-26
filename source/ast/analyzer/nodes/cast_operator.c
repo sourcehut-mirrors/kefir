@@ -48,16 +48,18 @@ kefir_result_t kefir_ast_analyze_cast_operator_node(struct kefir_mem *mem, const
         REQUIRE((KEFIR_AST_TYPE_IS_SCALAR_TYPE(expr_type) && KEFIR_AST_TYPE_IS_SCALAR_TYPE(cast_type)) ||
                     cast_type->tag == KEFIR_AST_TYPE_VOID,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cast->base.source_location,
-                                    "Cast should involve scalar types unless type name is void"));
+                                       "Cast should involve scalar types unless type name is void"));
         if (KEFIR_AST_TYPE_IS_FLOATING_POINT(cast_type)) {
-            REQUIRE(expr_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER && expr_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cast->expr->source_location,
-                                        "Pointer cannot be cast to floating-point value"));
+            REQUIRE(
+                expr_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER && expr_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cast->expr->source_location,
+                                       "Pointer cannot be cast to floating-point value"));
         }
         if (KEFIR_AST_TYPE_IS_FLOATING_POINT(expr_type)) {
-            REQUIRE(cast_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER && cast_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cast->expr->source_location,
-                                        "Floating-point value cannot be cast to pointer"));
+            REQUIRE(
+                cast_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER && cast_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cast->expr->source_location,
+                                       "Floating-point value cannot be cast to pointer"));
         }
     }
 

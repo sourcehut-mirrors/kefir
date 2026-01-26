@@ -20,10 +20,7 @@
 
 #include "./definitions.h"
 
-constexpr struct S1 x = {
-    100,
-    200
-};
+constexpr struct S1 x = {100, 200};
 
 struct S1 s1 = (volatile struct S1) x;
 

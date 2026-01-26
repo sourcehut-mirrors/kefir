@@ -18,11 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-extern __int128 somefn(__int128, __int128, __int128, __int128,
-        __int128, __int128, __int128, __int128,
-        __int128, __int128, __int128, __int128);
+extern __int128 somefn(__int128, __int128, __int128, __int128, __int128, __int128, __int128, __int128, __int128,
+                       __int128, __int128, __int128);
 
 __int128 test1(__int128 x) {
     return somefn(x, x + 1, x + 2, x + 3, x + 4, x + 5, x + 6, x + 7, x + 8, x + 9, x + 10, x + 11);
 }
-

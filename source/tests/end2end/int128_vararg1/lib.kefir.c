@@ -39,4 +39,3 @@ unsigned __int128 sum2(int x, ...) {
     __builtin_va_end(args);
     return sum;
 }
-

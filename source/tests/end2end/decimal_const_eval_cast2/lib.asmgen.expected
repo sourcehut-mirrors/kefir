@@ -187,7 +187,7 @@ __kefir_debug_info_section_entry_4:
     .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_2
     .long __kefir_debug_str_section_entry_1
-    .quad 41
+    .quad 39
     .quad 12
 __kefir_debug_info_section_entry_6:
     .byte 5
@@ -200,7 +200,7 @@ __kefir_debug_info_section_entry_6:
     .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
     .long __kefir_debug_str_section_entry_3
     .long __kefir_debug_str_section_entry_1
-    .quad 59
+    .quad 55
     .quad 13
 __kefir_debug_info_section_entry_3:
     .byte 2

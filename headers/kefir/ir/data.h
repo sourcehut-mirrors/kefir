@@ -138,11 +138,11 @@ kefir_result_t kefir_ir_data_set_complex_long_double(struct kefir_mem *, struct 
                                                      kefir_long_double_t, kefir_long_double_t);
 
 kefir_result_t kefir_ir_data_set_decimal32(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
-                                                     kefir_dfp_decimal32_t);
+                                           kefir_dfp_decimal32_t);
 kefir_result_t kefir_ir_data_set_decimal64(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
-                                                     kefir_dfp_decimal64_t);
+                                           kefir_dfp_decimal64_t);
 kefir_result_t kefir_ir_data_set_decimal128(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
-                                                     kefir_dfp_decimal128_t);
+                                            kefir_dfp_decimal128_t);
 
 kefir_result_t kefir_ir_data_set_string(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
                                         kefir_ir_string_literal_type_t, const void *, kefir_size_t);

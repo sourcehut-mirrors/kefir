@@ -45,13 +45,15 @@ typedef struct kefir_opt_code_block_schedule {
 
 typedef struct kefir_opt_code_schedule_builder {
     kefir_result_t (*schedule_block)(struct kefir_mem *, kefir_opt_block_id_t, kefir_uint32_t *, void *);
-    kefir_result_t (*schedule_instruction)(struct kefir_mem *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, kefir_uint32_t *, void *);
+    kefir_result_t (*schedule_instruction)(struct kefir_mem *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                           kefir_uint32_t *, void *);
     void *payload;
 } kefir_opt_code_schedule_builder_t;
 
 typedef struct kefir_opt_code_scheduler {
-    kefir_result_t (*do_schedule)(struct kefir_mem *, const struct kefir_opt_code_container *, const struct kefir_opt_code_analysis *,
-                                   const struct kefir_opt_code_schedule *, struct kefir_opt_code_schedule_builder *, void *);
+    kefir_result_t (*do_schedule)(struct kefir_mem *, const struct kefir_opt_code_container *,
+                                  const struct kefir_opt_code_analysis *, const struct kefir_opt_code_schedule *,
+                                  struct kefir_opt_code_schedule_builder *, void *);
     void *payload;
 } kefir_opt_code_scheduler_t;
 

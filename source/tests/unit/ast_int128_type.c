@@ -32,7 +32,7 @@ DEFINE_CASE(ast_int128_type1, "AST Type analysis - int128 type #1") {
 
     const struct kefir_ast_type *signed_type = kefir_ast_type_signed_int128();
     const struct kefir_ast_type *unsigned_type = kefir_ast_type_unsigned_int128();
-    
+
     ASSERT(signed_type != NULL);
     ASSERT(signed_type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT128);
     ASSERT(KEFIR_AST_TYPE_IS_EXTENDED_SIGNED_INTEGER(signed_type));
@@ -107,31 +107,52 @@ DEFINE_CASE(ast_int128_type1, "AST Type analysis - int128 type #1") {
     ASSERT(!KEFIR_AST_TYPE_COMPATIBLE(type_traits, unsigned_type, kefir_ast_type_signed_long_long()));
     ASSERT(!KEFIR_AST_TYPE_COMPATIBLE(type_traits, unsigned_type, kefir_ast_type_unsigned_long_long()));
 
-    const struct kefir_ast_type *composite_type = KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, signed_type);
+    const struct kefir_ast_type *composite_type =
+        KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, signed_type);
     ASSERT(KEFIR_AST_TYPE_SAME(signed_type, composite_type));
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_signed_char()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_unsigned_char()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_signed_short()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_unsigned_short()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_signed_int()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_unsigned_int()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_signed_long()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_unsigned_long()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_signed_long_long()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_unsigned_long_long()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_signed_char()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_unsigned_char()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_signed_short()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type,
+                                    kefir_ast_type_unsigned_short()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_signed_int()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_unsigned_int()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_signed_long()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type, kefir_ast_type_unsigned_long()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type,
+                                    kefir_ast_type_signed_long_long()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, signed_type,
+                                    kefir_ast_type_unsigned_long_long()) == NULL);
 
     composite_type = KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, unsigned_type);
     ASSERT(KEFIR_AST_TYPE_SAME(unsigned_type, composite_type));
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_signed_char()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_unsigned_char()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_signed_short()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_unsigned_short()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_signed_int()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_unsigned_int()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_signed_long()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_unsigned_long()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_signed_long_long()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_unsigned_long_long()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_signed_char()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type,
+                                    kefir_ast_type_unsigned_char()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type,
+                                    kefir_ast_type_signed_short()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type,
+                                    kefir_ast_type_unsigned_short()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_signed_int()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type,
+                                    kefir_ast_type_unsigned_int()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type, kefir_ast_type_signed_long()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type,
+                                    kefir_ast_type_unsigned_long()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type,
+                                    kefir_ast_type_signed_long_long()) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, unsigned_type,
+                                    kefir_ast_type_unsigned_long_long()) == NULL);
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
     ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));

@@ -666,7 +666,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float(struct kefir_mem
 }
 
 struct kefir_ast_constant *kefir_ast_new_constant_complex_float32(struct kefir_mem *mem, kefir_float32_t real,
-                                                                kefir_float32_t imaginary) {
+                                                                  kefir_float32_t imaginary) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -714,7 +714,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_me
 }
 
 struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_mem *mem, kefir_float64_t real,
-                                                                 kefir_float64_t imaginary) {
+                                                                   kefir_float64_t imaginary) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -738,7 +738,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_
 }
 
 struct kefir_ast_constant *kefir_ast_new_constant_complex_float64(struct kefir_mem *mem, kefir_float64_t real,
-                                                                 kefir_float64_t imaginary) {
+                                                                  kefir_float64_t imaginary) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -786,7 +786,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kef
 }
 
 struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_mem *mem, kefir_long_double_t real,
-                                                                      kefir_long_double_t imaginary) {
+                                                                   kefir_long_double_t imaginary) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -810,7 +810,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_
 }
 
 struct kefir_ast_constant *kefir_ast_new_constant_complex_float80(struct kefir_mem *mem, kefir_long_double_t real,
-                                                                      kefir_long_double_t imaginary) {
+                                                                  kefir_long_double_t imaginary) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);

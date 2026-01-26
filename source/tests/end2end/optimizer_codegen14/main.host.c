@@ -54,8 +54,8 @@ int main(void) {
     }
 
     assert(float_to_ulong((float) (ULONG_MAX - 1000000000000)) ==
-           (unsigned long) (volatile float){(float) (ULONG_MAX - 1000000000000)});
+           (unsigned long) (volatile float) {(float) (ULONG_MAX - 1000000000000)});
     assert(double_to_ulong((double) (ULONG_MAX - 10000000000)) ==
-           (unsigned long) (volatile double){(double) (ULONG_MAX - 10000000000)});
+           (unsigned long) (volatile double) {(double) (ULONG_MAX - 10000000000)});
     return EXIT_SUCCESS;
 }

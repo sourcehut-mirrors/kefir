@@ -96,9 +96,10 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct
 kefir_result_t kefir_codegen_amd64_function_assign_vreg(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         kefir_opt_instruction_ref_t,
                                                         kefir_asmcmp_virtual_register_index_t);
-kefir_result_t kefir_codegen_amd64_function_register_transient_vreg(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                        kefir_opt_instruction_ref_t,
-                                                        kefir_asmcmp_virtual_register_index_t);
+kefir_result_t kefir_codegen_amd64_function_register_transient_vreg(struct kefir_mem *,
+                                                                    struct kefir_codegen_amd64_function *,
+                                                                    kefir_opt_instruction_ref_t,
+                                                                    kefir_asmcmp_virtual_register_index_t);
 kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_function *, kefir_opt_instruction_ref_t,
                                                     kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, struct kefir_codegen_amd64_function *,
@@ -109,8 +110,8 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
                                                         kefir_asmcmp_virtual_register_index_t);
 
 kefir_result_t kefir_codegen_amd64_get_argument_register(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                        kefir_asm_amd64_xasmgen_register_t,
-                                                        kefir_asmcmp_virtual_register_index_t *);
+                                                         kefir_asm_amd64_xasmgen_register_t,
+                                                         kefir_asmcmp_virtual_register_index_t *);
 
 // clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \
@@ -620,7 +621,7 @@ kefir_result_t kefir_codegen_amd64_store_floating_point_register(struct kefir_me
 kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                       kefir_opt_call_id_t, kefir_bool_t *);
 kefir_result_t kefir_codegen_amd64_tail_call_return_aggregate_passthrough(struct kefir_codegen_amd64_function *,
-                                                                         kefir_opt_call_id_t, kefir_bool_t *);
+                                                                          kefir_opt_call_id_t, kefir_bool_t *);
 
 kefir_result_t kefir_codegen_amd64_function_x87_ensure(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                        kefir_size_t);
@@ -630,15 +631,16 @@ kefir_result_t kefir_codegen_amd64_function_x87_pop(struct kefir_mem *, struct k
 kefir_result_t kefir_codegen_amd64_function_x87_load(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                      kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_x87_load_consume_by(struct kefir_mem *,
-                                                           struct kefir_codegen_amd64_function *,
-                                                           kefir_opt_instruction_ref_t,
-                                                           kefir_opt_instruction_ref_t);
+                                                                struct kefir_codegen_amd64_function *,
+                                                                kefir_opt_instruction_ref_t,
+                                                                kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_x87_consume_by(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                            kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_x87_flush(struct kefir_mem *, struct kefir_codegen_amd64_function *);
-kefir_result_t kefir_codegen_amd64_function_x87_clear(struct kefir_mem *,
-                                                      struct kefir_codegen_amd64_function *, kefir_size_t);
-kefir_bool_t kefir_codegen_amd64_function_x87_has(const struct kefir_codegen_amd64_function *, kefir_opt_instruction_ref_t);
+kefir_result_t kefir_codegen_amd64_function_x87_clear(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                      kefir_size_t);
+kefir_bool_t kefir_codegen_amd64_function_x87_has(const struct kefir_codegen_amd64_function *,
+                                                  kefir_opt_instruction_ref_t);
 
 typedef struct kefir_codegen_amd64_function_x87_locations_iterator {
     const struct kefir_hashtree *x87_slots;
@@ -696,10 +698,12 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
                                                                const struct kefir_opt_call_node *,
                                                                kefir_asmcmp_virtual_register_index_t *);
 
-kefir_result_t kefir_codegen_amd64_do_call_direct(
-    struct kefir_mem *, struct kefir_codegen_amd64_function *, const char *, kefir_asmcmp_instruction_index_t *);
+kefir_result_t kefir_codegen_amd64_do_call_direct(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                  const char *, kefir_asmcmp_instruction_index_t *);
 
-kefir_result_t kefir_codegen_amd64_function_location_map_get(const struct kefir_codegen_amd64_function *, kefir_asmcmp_debug_info_value_location_reference_t, struct kefir_asmcmp_debug_info_value_location *);
+kefir_result_t kefir_codegen_amd64_function_location_map_get(const struct kefir_codegen_amd64_function *,
+                                                             kefir_asmcmp_debug_info_value_location_reference_t,
+                                                             struct kefir_asmcmp_debug_info_value_location *);
 
 #define BIGINT_GET_SET_SIGNED_INTEGER_FN "__kefir_bigint_set_signed_integer"
 #define BIGINT_GET_SET_UNSIGNED_INTEGER_FN "__kefir_bigint_set_unsigned_integer"

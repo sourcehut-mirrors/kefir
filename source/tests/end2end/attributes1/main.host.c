@@ -33,7 +33,7 @@ long sum(struct Test);
 int main(void) {
     assert(INTEGER == 192739);
     assert(INTEGER2 == -282761);
-    assert(sum((struct Test){INTEGER, INTEGER2}) == INTEGER + INTEGER2);
+    assert(sum((struct Test) {INTEGER, INTEGER2}) == INTEGER + INTEGER2);
     assert(get_one() == 1);
     assert(get_two() == 2);
     return EXIT_SUCCESS;

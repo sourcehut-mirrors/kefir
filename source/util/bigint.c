@@ -200,7 +200,8 @@ kefir_result_t kefir_bigint_get_bits(const struct kefir_bigint *bigint, kefir_si
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_bigint_set_bits(const struct kefir_bigint *bigint, kefir_uint64_t value, kefir_size_t offset, kefir_size_t length) {
+kefir_result_t kefir_bigint_set_bits(const struct kefir_bigint *bigint, kefir_uint64_t value, kefir_size_t offset,
+                                     kefir_size_t length) {
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
 
     (void) __kefir_bigint_set_bits(bigint->digits, value, offset, length, bigint->bitwidth);

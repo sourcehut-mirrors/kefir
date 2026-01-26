@@ -39,8 +39,7 @@ void kefir_clear_error(void) {
 }
 
 void kefir_pop_error(kefir_result_t res) {
-    if (next_error_index > 0 &&
-        error_stack[next_error_index - 1].code == res) {
+    if (next_error_index > 0 && error_stack[next_error_index - 1].code == res) {
         next_error_index--;
     }
 }

@@ -23,7 +23,8 @@
 #include <assert.h>
 #include "./definitions.h"
 
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__) && !defined(__DragonFly__)
+#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && \
+    !defined(__NetBSD__) && !defined(__DragonFly__)
 #pragma GCC diagnostic ignored "-Wpedantic"
 #define ENABLE_DECIMAL_TEST
 _Bool decimal32_eq(_Decimal32 a, _Decimal32 b) {
@@ -49,9 +50,12 @@ _Decimal32 arg32(_Decimal32);
 _Decimal64 arg64(_Decimal64);
 _Decimal128 arg128(_Decimal128);
 
-_Decimal32 arg32x(int, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32);
-_Decimal64 arg64x(int, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64);
-_Decimal128 arg128x(int, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128);
+_Decimal32 arg32x(int, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32,
+                  _Decimal32, _Decimal32, _Decimal32, _Decimal32);
+_Decimal64 arg64x(int, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64,
+                  _Decimal64, _Decimal64, _Decimal64, _Decimal64);
+_Decimal128 arg128x(int, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128,
+                    _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128);
 
 struct struct32 {
     _Decimal32 x;
@@ -106,10 +110,12 @@ void store32(_Decimal32 *, _Decimal32);
 void store64(_Decimal64 *, _Decimal64);
 void store128(_Decimal128 *, _Decimal128);
 
-struct struct32 ret32(_Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32);
-struct struct64 ret64(_Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64);
-struct struct128 ret128(_Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128);
-
+struct struct32 ret32(_Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32, _Decimal32,
+                      _Decimal32, _Decimal32, _Decimal32, _Decimal32);
+struct struct64 ret64(_Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64, _Decimal64,
+                      _Decimal64, _Decimal64, _Decimal64, _Decimal64);
+struct struct128 ret128(_Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128,
+                        _Decimal128, _Decimal128, _Decimal128, _Decimal128, _Decimal128);
 
 struct struct32_2 {
     _Decimal32 a;
@@ -141,24 +147,18 @@ int main(void) {
     assert(decimal64_eq(arg64(84428.47248), 84428.47248));
     assert(decimal128_eq(arg128(10381048.1891), 10381048.1891));
 
-    _Decimal32 args32[] = {
-        7371.41,
-        -3719.031,
-        4920.583,
-        8491.42,
-        -939.593,
-        -59.582,
-        495.38,
-        -593.852,
-        493.102,
-        -9310.9,
-        9410.18,
-        17291.38
-    };
+    _Decimal32 args32[] = {7371.41, -3719.031, 4920.583, 8491.42, -939.593, -59.582,
+                           495.38,  -593.852,  493.102,  -9310.9, 9410.18,  17291.38};
     for (unsigned int i = 0; i < sizeof(args32) / sizeof(args32[0]); i++) {
-        assert(decimal32_eq(arg32x(i, args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6], args32[7], args32[8], args32[9], args32[10], args32[11]), args32[i]));
-        assert(decimal64_eq(arg64x(i, args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6], args32[7], args32[8], args32[9], args32[10], args32[11]), args32[i]));
-        assert(decimal128_eq(arg128x(i, args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6], args32[7], args32[8], args32[9], args32[10], args32[11]), args32[i]));
+        assert(decimal32_eq(arg32x(i, args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6],
+                                   args32[7], args32[8], args32[9], args32[10], args32[11]),
+                            args32[i]));
+        assert(decimal64_eq(arg64x(i, args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6],
+                                   args32[7], args32[8], args32[9], args32[10], args32[11]),
+                            args32[i]));
+        assert(decimal128_eq(arg128x(i, args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6],
+                                     args32[7], args32[8], args32[9], args32[10], args32[11]),
+                             args32[i]));
 
         _Decimal64 clone64 = args32[i];
         _Decimal128 clone128 = args32[i];
@@ -177,7 +177,8 @@ int main(void) {
         assert(decimal64_eq(target64, args32[i]));
         assert(decimal128_eq(target128, args32[i]));
 
-        struct struct32 s32 = ret32(args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6], args32[7], args32[8], args32[9], args32[10], args32[11]);
+        struct struct32 s32 = ret32(args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6],
+                                    args32[7], args32[8], args32[9], args32[10], args32[11]);
         assert(decimal32_eq(s32.x, args32[0]));
         assert(decimal32_eq(s32.y, args32[1]));
         assert(decimal32_eq(s32.z, args32[2]));
@@ -191,7 +192,8 @@ int main(void) {
         assert(decimal32_eq(s32.g, args32[10]));
         assert(decimal32_eq(s32.h, args32[11]));
 
-        struct struct64 s64 = ret64(args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6], args32[7], args32[8], args32[9], args32[10], args32[11]);
+        struct struct64 s64 = ret64(args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6],
+                                    args32[7], args32[8], args32[9], args32[10], args32[11]);
         assert(decimal64_eq(s64.x, args32[0]));
         assert(decimal64_eq(s64.y, args32[1]));
         assert(decimal64_eq(s64.z, args32[2]));
@@ -205,7 +207,8 @@ int main(void) {
         assert(decimal64_eq(s64.g, args32[10]));
         assert(decimal64_eq(s64.h, args32[11]));
 
-        struct struct128 s128 = ret128(args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6], args32[7], args32[8], args32[9], args32[10], args32[11]);
+        struct struct128 s128 = ret128(args32[0], args32[1], args32[2], args32[3], args32[4], args32[5], args32[6],
+                                       args32[7], args32[8], args32[9], args32[10], args32[11]);
         assert(decimal128_eq(s128.x, args32[0]));
         assert(decimal128_eq(s128.y, args32[1]));
         assert(decimal128_eq(s128.z, args32[2]));
@@ -219,15 +222,15 @@ int main(void) {
         assert(decimal128_eq(s128.g, args32[10]));
         assert(decimal128_eq(s128.h, args32[11]));
 
-        struct struct32_2 s32_2 = swap32((struct struct32_2){4482.317, -381.47});
+        struct struct32_2 s32_2 = swap32((struct struct32_2) {4482.317, -381.47});
         assert(decimal32_eq(s32_2.a, -381.47));
         assert(decimal32_eq(s32_2.b, 4482.317));
 
-        struct struct64_2 s64_2 = swap64((struct struct64_2){4482.31217, -381.3247});
+        struct struct64_2 s64_2 = swap64((struct struct64_2) {4482.31217, -381.3247});
         assert(decimal64_eq(s64_2.a, -381.3247));
         assert(decimal64_eq(s64_2.b, 4482.31217));
 
-        struct struct128_2 s128_2 = swap128((struct struct128_2){449082.31217, -34281.3247});
+        struct struct128_2 s128_2 = swap128((struct struct128_2) {449082.31217, -34281.3247});
         assert(decimal128_eq(s128_2.a, -34281.3247));
         assert(decimal128_eq(s128_2.b, 449082.31217));
     }

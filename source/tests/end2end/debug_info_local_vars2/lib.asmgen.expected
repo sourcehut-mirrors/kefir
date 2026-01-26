@@ -37,7 +37,7 @@ test1:
     lea __kefir_function_test1_static_z_3(%rip), %rax
 .L__kefir_func_test1_label190:
     movl (%rax), %r13d
-.loc 0 26 25
+.loc 0 26 24
 .L__kefir_func_test1_label191:
     data16     lea __kefir_function_test1_static_w_2@tlsgd(%rip), %rdi
     .word 26214

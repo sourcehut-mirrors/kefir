@@ -63,13 +63,13 @@
 #define __KEFIR_SOFTFLOAT_MAKE_COMPLEX_LONG_DOUBLE__ MAKE_COMPLEX_LONG_DOUBLE
 #include "kefir_softfloat/softfloat.h"
 
-struct kefir_softfloat_complex_float kefir_softfloat_complex_float_mul(
-    struct kefir_softfloat_complex_float lhs, struct kefir_softfloat_complex_float rhs) {
+struct kefir_softfloat_complex_float kefir_softfloat_complex_float_mul(struct kefir_softfloat_complex_float lhs,
+                                                                       struct kefir_softfloat_complex_float rhs) {
     return __kefir_softfloat_complex_float_mul(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }
 
-struct kefir_softfloat_complex_double kefir_softfloat_complex_double_mul(
-    struct kefir_softfloat_complex_double lhs, struct kefir_softfloat_complex_double rhs) {
+struct kefir_softfloat_complex_double kefir_softfloat_complex_double_mul(struct kefir_softfloat_complex_double lhs,
+                                                                         struct kefir_softfloat_complex_double rhs) {
     return __kefir_softfloat_complex_double_mul(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }
 
@@ -78,13 +78,13 @@ struct kefir_softfloat_complex_long_double kefir_softfloat_complex_long_double_m
     return __kefir_softfloat_complex_long_double_mul(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }
 
-struct kefir_softfloat_complex_float kefir_softfloat_complex_float_div(
-    struct kefir_softfloat_complex_float lhs, struct kefir_softfloat_complex_float rhs) {
+struct kefir_softfloat_complex_float kefir_softfloat_complex_float_div(struct kefir_softfloat_complex_float lhs,
+                                                                       struct kefir_softfloat_complex_float rhs) {
     return __kefir_softfloat_complex_float_div(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }
 
-struct kefir_softfloat_complex_double kefir_softfloat_complex_double_div(
-    struct kefir_softfloat_complex_double lhs, struct kefir_softfloat_complex_double rhs) {
+struct kefir_softfloat_complex_double kefir_softfloat_complex_double_div(struct kefir_softfloat_complex_double lhs,
+                                                                         struct kefir_softfloat_complex_double rhs) {
     return __kefir_softfloat_complex_double_div(lhs.real, lhs.imaginary, rhs.real, rhs.imaginary);
 }
 

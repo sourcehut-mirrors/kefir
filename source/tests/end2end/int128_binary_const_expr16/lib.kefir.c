@@ -20,19 +20,18 @@
 
 #include "definitions.h"
 
-int bools[] = {((unsigned __int128) 123455465) && ((unsigned __int128) 3242),
-               ((unsigned __int128) 123455465) && ((signed __int128) 0uwb),
-               ((unsigned __int128) 0) && ((signed __int128) -132432498wb),
-               ((unsigned __int128) 134249) && ((signed __int128) -132432498wb),
-               ((unsigned __int128) 0x10000000000000000000000000000uwb) && 1,
-               ((signed __int128) -0x100000000000000000000000000wb) && 2,
-               0 && ((signed __int128) -0x10000000000000000000000wb),
+int bools[] = {
+    ((unsigned __int128) 123455465) && ((unsigned __int128) 3242),
+    ((unsigned __int128) 123455465) && ((signed __int128) 0uwb),
+    ((unsigned __int128) 0) && ((signed __int128) -132432498wb),
+    ((unsigned __int128) 134249) && ((signed __int128) -132432498wb),
+    ((unsigned __int128) 0x10000000000000000000000000000uwb) && 1,
+    ((signed __int128) -0x100000000000000000000000000wb) && 2,
+    0 && ((signed __int128) -0x10000000000000000000000wb),
 
-               ((unsigned __int128) 1232848274uwb) || ((unsigned __int128) 0),
-               ((unsigned __int128) 1232848274uwb) || ((signed __int128) -1),
-               ((unsigned __int128) 0b00000000uwb) || ((signed __int128) 0),
-               ((unsigned __int128) 0x10000000000000000000000000uwb) || ((signed __int128) 0x000000000000000wb),
-               ((unsigned __int128) 0x10000000000000000000000000uwb) ||
-                   ((signed __int128) 0x10000000000000000000000000wb),
-               ((signed __int128) -0x0000000000000000000000000000wb) ||
-                   ((unsigned __int128) -0x0000000000000000000000000uwb)};
+    ((unsigned __int128) 1232848274uwb) || ((unsigned __int128) 0),
+    ((unsigned __int128) 1232848274uwb) || ((signed __int128) -1),
+    ((unsigned __int128) 0b00000000uwb) || ((signed __int128) 0),
+    ((unsigned __int128) 0x10000000000000000000000000uwb) || ((signed __int128) 0x000000000000000wb),
+    ((unsigned __int128) 0x10000000000000000000000000uwb) || ((signed __int128) 0x10000000000000000000000000wb),
+    ((signed __int128) -0x0000000000000000000000000000wb) || ((unsigned __int128) -0x0000000000000000000000000uwb)};

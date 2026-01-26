@@ -21,25 +21,16 @@
 #include "./definitions.h"
 
 int arr[] = {
-    __kefir_builtin_int_precision(signed char),
-    __kefir_builtin_int_precision(signed short),
-    __kefir_builtin_int_precision(signed int),
-    __kefir_builtin_int_precision(signed long),
+    __kefir_builtin_int_precision(signed char),          __kefir_builtin_int_precision(signed short),
+    __kefir_builtin_int_precision(signed int),           __kefir_builtin_int_precision(signed long),
     __kefir_builtin_int_precision(signed long long),
 
-    __kefir_builtin_int_precision(unsigned char),
-    __kefir_builtin_int_precision(unsigned short),
-    __kefir_builtin_int_precision(unsigned int),
-    __kefir_builtin_int_precision(unsigned long),
+    __kefir_builtin_int_precision(unsigned char),        __kefir_builtin_int_precision(unsigned short),
+    __kefir_builtin_int_precision(unsigned int),         __kefir_builtin_int_precision(unsigned long),
     __kefir_builtin_int_precision(unsigned long long),
 
-    __kefir_builtin_int_precision(_BitInt(2)),
-    __kefir_builtin_int_precision(_BitInt(20)),
-    __kefir_builtin_int_precision(_BitInt(60)),
-    __kefir_builtin_int_precision(_BitInt(7000)),
+    __kefir_builtin_int_precision(_BitInt(2)),           __kefir_builtin_int_precision(_BitInt(20)),
+    __kefir_builtin_int_precision(_BitInt(60)),          __kefir_builtin_int_precision(_BitInt(7000)),
 
-    __kefir_builtin_int_precision(unsigned _BitInt(1)),
-    __kefir_builtin_int_precision(unsigned _BitInt(21)),
-    __kefir_builtin_int_precision(unsigned _BitInt(61)),
-    __kefir_builtin_int_precision(unsigned _BitInt(7001))
-};
+    __kefir_builtin_int_precision(unsigned _BitInt(1)),  __kefir_builtin_int_precision(unsigned _BitInt(21)),
+    __kefir_builtin_int_precision(unsigned _BitInt(61)), __kefir_builtin_int_precision(unsigned _BitInt(7001))};

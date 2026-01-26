@@ -43,7 +43,7 @@ int main(void) {
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    set_c((struct i128){{-18371882, -861}});
+    set_c((struct i128) {{-18371882, -861}});
 
     res = get_a();
     assert(res.arr[0] == 0);
@@ -61,7 +61,7 @@ int main(void) {
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    set_d((struct i128){{-0x7261, 0}});
+    set_d((struct i128) {{-0x7261, 0}});
 
     res = get_a();
     assert(res.arr[0] == 0);
@@ -79,7 +79,7 @@ int main(void) {
     assert(res.arr[0] == (unsigned long) -0x7261);
     assert(res.arr[1] == (unsigned long) -1);
 
-    set_b((struct i128){{0xbebabdbeb4bdull, 0x81724}});
+    set_b((struct i128) {{0xbebabdbeb4bdull, 0x81724}});
 
     res = get_a();
     assert(res.arr[0] == 0);
@@ -97,7 +97,7 @@ int main(void) {
     assert(res.arr[0] == (unsigned long) -0x7261);
     assert(res.arr[1] == (unsigned long) -1);
 
-    set_a((struct i128){{~0ull, ~3ull}});
+    set_a((struct i128) {{~0ull, ~3ull}});
 
     res = get_a();
     assert(res.arr[0] == ~0ull);
@@ -115,7 +115,7 @@ int main(void) {
     assert(res.arr[0] == (unsigned long) -0x7261);
     assert(res.arr[1] == (unsigned long) -1);
 
-    set_c((struct i128){{7921039, 998}});
+    set_c((struct i128) {{7921039, 998}});
 
     res = get_a();
     assert(res.arr[0] == ~0ull);
@@ -133,7 +133,7 @@ int main(void) {
     assert(res.arr[0] == (unsigned long) -0x7261);
     assert(res.arr[1] == (unsigned long) -1);
 
-    set_a((struct i128){{9189, 9981}});
+    set_a((struct i128) {{9189, 9981}});
 
     res = get_a();
     assert(res.arr[0] == 9189);

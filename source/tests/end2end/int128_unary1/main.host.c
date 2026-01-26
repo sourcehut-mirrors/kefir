@@ -25,169 +25,169 @@
 #include "./definitions.h"
 
 int main(void) {
-    struct i128 res = i128_neg((struct i128){{0, 0}});
+    struct i128 res = i128_neg((struct i128) {{0, 0}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = i128_neg((struct i128){{1, 0}});
+    res = i128_neg((struct i128) {{1, 0}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_neg((struct i128){{2, 0}});
+    res = i128_neg((struct i128) {{2, 0}});
     assert(res.arr[0] == (unsigned long) -2);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_neg((struct i128){{0, 1}});
+    res = i128_neg((struct i128) {{0, 1}});
     assert(res.arr[0] == (unsigned long) 0);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_neg((struct i128){{-1, -1}});
+    res = i128_neg((struct i128) {{-1, -1}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = i128_neg((struct i128){{-10, -1}});
+    res = i128_neg((struct i128) {{-10, -1}});
     assert(res.arr[0] == (unsigned long) 10);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = i128_neg((struct i128){{0, -1}});
+    res = i128_neg((struct i128) {{0, -1}});
     assert(res.arr[0] == (unsigned long) 0);
     assert(res.arr[1] == (unsigned long) 1);
 
-    res = i128_neg((struct i128){{-1, 0}});
+    res = i128_neg((struct i128) {{-1, 0}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_neg((struct i128){{1, -1}});
+    res = i128_neg((struct i128) {{1, -1}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = u128_neg((struct i128){{0, 0}});
+    res = u128_neg((struct i128) {{0, 0}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = u128_neg((struct i128){{1, 0}});
+    res = u128_neg((struct i128) {{1, 0}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_neg((struct i128){{2, 0}});
+    res = u128_neg((struct i128) {{2, 0}});
     assert(res.arr[0] == (unsigned long) -2);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_neg((struct i128){{0, 1}});
+    res = u128_neg((struct i128) {{0, 1}});
     assert(res.arr[0] == (unsigned long) 0);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_neg((struct i128){{-1, -1}});
+    res = u128_neg((struct i128) {{-1, -1}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = u128_neg((struct i128){{-10, -1}});
+    res = u128_neg((struct i128) {{-10, -1}});
     assert(res.arr[0] == (unsigned long) 10);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = u128_neg((struct i128){{0, -1}});
+    res = u128_neg((struct i128) {{0, -1}});
     assert(res.arr[0] == (unsigned long) 0);
     assert(res.arr[1] == (unsigned long) 1);
 
-    res = u128_neg((struct i128){{-1, 0}});
+    res = u128_neg((struct i128) {{-1, 0}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_neg((struct i128){{1, -1}});
+    res = u128_neg((struct i128) {{1, -1}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = i128_not((struct i128){{0, 0}});
+    res = i128_not((struct i128) {{0, 0}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_not((struct i128){{1, 0}});
+    res = i128_not((struct i128) {{1, 0}});
     assert(res.arr[0] == (unsigned long) -2);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_not((struct i128){{1024, 0}});
+    res = i128_not((struct i128) {{1024, 0}});
     assert(res.arr[0] == (unsigned long) -1025);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_not((struct i128){{-2, 0}});
+    res = i128_not((struct i128) {{-2, 0}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_not((struct i128){{-1, 0}});
+    res = i128_not((struct i128) {{-1, 0}});
     assert(res.arr[0] == (unsigned long) 0);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_not((struct i128){{-1, -1}});
+    res = i128_not((struct i128) {{-1, -1}});
     assert(res.arr[0] == (unsigned long) 0);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = i128_not((struct i128){{0, -1}});
+    res = i128_not((struct i128) {{0, -1}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = i128_not((struct i128){{1, -1}});
+    res = i128_not((struct i128) {{1, -1}});
     assert(res.arr[0] == (unsigned long) -2);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = i128_not((struct i128){{1, -10}});
+    res = i128_not((struct i128) {{1, -10}});
     assert(res.arr[0] == (unsigned long) -2);
     assert(res.arr[1] == (unsigned long) 9);
 
-    res = u128_not((struct i128){{0, 0}});
+    res = u128_not((struct i128) {{0, 0}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_not((struct i128){{1, 0}});
+    res = u128_not((struct i128) {{1, 0}});
     assert(res.arr[0] == (unsigned long) -2);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_not((struct i128){{1024, 0}});
+    res = u128_not((struct i128) {{1024, 0}});
     assert(res.arr[0] == (unsigned long) -1025);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_not((struct i128){{-2, 0}});
+    res = u128_not((struct i128) {{-2, 0}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_not((struct i128){{-1, 0}});
+    res = u128_not((struct i128) {{-1, 0}});
     assert(res.arr[0] == (unsigned long) 0);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_not((struct i128){{-1, -1}});
+    res = u128_not((struct i128) {{-1, -1}});
     assert(res.arr[0] == (unsigned long) 0);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = u128_not((struct i128){{0, -1}});
+    res = u128_not((struct i128) {{0, -1}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = u128_not((struct i128){{1, -1}});
+    res = u128_not((struct i128) {{1, -1}});
     assert(res.arr[0] == (unsigned long) -2);
     assert(res.arr[1] == (unsigned long) 0);
 
-    res = u128_not((struct i128){{1, -10}});
+    res = u128_not((struct i128) {{1, -10}});
     assert(res.arr[0] == (unsigned long) -2);
     assert(res.arr[1] == (unsigned long) 9);
 
-    assert(i128_bnot((struct i128){{0, 0}}));
-    assert(!i128_bnot((struct i128){{1, 0}}));
-    assert(!i128_bnot((struct i128){{1025, 0}}));
-    assert(!i128_bnot((struct i128){{-1, 0}}));
-    assert(!i128_bnot((struct i128){{0, 1}}));
-    assert(!i128_bnot((struct i128){{0, 0xffff}}));
-    assert(!i128_bnot((struct i128){{0, -1}}));
-    assert(!i128_bnot((struct i128){{1, -1}}));
-    assert(!i128_bnot((struct i128){{-1, -1}}));
+    assert(i128_bnot((struct i128) {{0, 0}}));
+    assert(!i128_bnot((struct i128) {{1, 0}}));
+    assert(!i128_bnot((struct i128) {{1025, 0}}));
+    assert(!i128_bnot((struct i128) {{-1, 0}}));
+    assert(!i128_bnot((struct i128) {{0, 1}}));
+    assert(!i128_bnot((struct i128) {{0, 0xffff}}));
+    assert(!i128_bnot((struct i128) {{0, -1}}));
+    assert(!i128_bnot((struct i128) {{1, -1}}));
+    assert(!i128_bnot((struct i128) {{-1, -1}}));
 
-    assert(u128_bnot((struct i128){{0, 0}}));
-    assert(!u128_bnot((struct i128){{1, 0}}));
-    assert(!u128_bnot((struct i128){{1025, 0}}));
-    assert(!u128_bnot((struct i128){{-1, 0}}));
-    assert(!u128_bnot((struct i128){{0, 1}}));
-    assert(!u128_bnot((struct i128){{0, 0xffff}}));
-    assert(!u128_bnot((struct i128){{0, -1}}));
-    assert(!u128_bnot((struct i128){{1, -1}}));
-    assert(!u128_bnot((struct i128){{-1, -1}}));
+    assert(u128_bnot((struct i128) {{0, 0}}));
+    assert(!u128_bnot((struct i128) {{1, 0}}));
+    assert(!u128_bnot((struct i128) {{1025, 0}}));
+    assert(!u128_bnot((struct i128) {{-1, 0}}));
+    assert(!u128_bnot((struct i128) {{0, 1}}));
+    assert(!u128_bnot((struct i128) {{0, 0xffff}}));
+    assert(!u128_bnot((struct i128) {{0, -1}}));
+    assert(!u128_bnot((struct i128) {{1, -1}}));
+    assert(!u128_bnot((struct i128) {{-1, -1}}));
 
     struct i128 arg = {{0, 0}};
     res = i128_preinc(&arg);
@@ -217,7 +217,7 @@ int main(void) {
     assert(arg.arr[0] == 0);
     assert(arg.arr[1] == 0);
 
-    arg = (struct i128){{0, 0}};
+    arg = (struct i128) {{0, 0}};
     res = i128_predec(&arg);
     assert(res.arr[0] == ~0ull);
     assert(res.arr[1] == ~0ull);
@@ -244,7 +244,7 @@ int main(void) {
     assert(res.arr[1] == ~0ull);
     assert(arg.arr[0] == ~0ull - 1);
     assert(arg.arr[1] == ~0ull);
-    
+
     arg = (struct i128) {{0, 0}};
     res = i128_postinc(&arg);
     assert(arg.arr[0] == 1);
@@ -273,7 +273,7 @@ int main(void) {
     assert(res.arr[0] == ~0ull);
     assert(res.arr[1] == ~0ull);
 
-    arg = (struct i128){{0, 0}};
+    arg = (struct i128) {{0, 0}};
     res = i128_postdec(&arg);
     assert(arg.arr[0] == ~0ull);
     assert(arg.arr[1] == ~0ull);

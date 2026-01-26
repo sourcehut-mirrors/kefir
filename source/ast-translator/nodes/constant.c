@@ -158,16 +158,20 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_DECIMAL32_CONSTANT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_DECIMAL32_CONST, node->value.decimal32.uvalue, 0, 0, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_DECIMAL32_CONST,
+                                                         node->value.decimal32.uvalue, 0, 0, 0));
             break;
 
         case KEFIR_AST_DECIMAL64_CONSTANT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_CONST, node->value.decimal64.uvalue));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_DECIMAL64_CONST,
+                                                       node->value.decimal64.uvalue));
             break;
 
         case KEFIR_AST_DECIMAL128_CONSTANT:
         case KEFIR_AST_DECIMAL64X_CONSTANT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST, node->value.decimal128.uvalue[0], node->value.decimal128.uvalue[1]));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST,
+                                                         node->value.decimal128.uvalue[0],
+                                                         node->value.decimal128.uvalue[1]));
             break;
 
         default:

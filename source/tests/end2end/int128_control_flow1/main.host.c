@@ -33,42 +33,42 @@ static int ref_fact(int x) {
 }
 
 int main(void) {
-    assert(test1((struct i128){{0, 0}}, 100, 200) == 200);
-    assert(test1((struct i128){{1, 0}}, 100, 200) == 100);
-    assert(test1((struct i128){{-1, 0}}, 100, 200) == 100);
-    assert(test1((struct i128){{0, 1}}, 100, 200) == 100);
-    assert(test1((struct i128){{0, -1}}, 100, 200) == 100);
-    assert(test1((struct i128){{-1, -1}}, 100, 200) == 100);
+    assert(test1((struct i128) {{0, 0}}, 100, 200) == 200);
+    assert(test1((struct i128) {{1, 0}}, 100, 200) == 100);
+    assert(test1((struct i128) {{-1, 0}}, 100, 200) == 100);
+    assert(test1((struct i128) {{0, 1}}, 100, 200) == 100);
+    assert(test1((struct i128) {{0, -1}}, 100, 200) == 100);
+    assert(test1((struct i128) {{-1, -1}}, 100, 200) == 100);
 
-    assert(test2((struct i128){{0, 0}}, 100, 200) == 200);
-    assert(test2((struct i128){{1, 0}}, 100, 200) == 100);
-    assert(test2((struct i128){{-1, 0}}, 100, 200) == 100);
-    assert(test2((struct i128){{0, 1}}, 100, 200) == 100);
-    assert(test2((struct i128){{0, -1}}, 100, 200) == 100);
-    assert(test2((struct i128){{-1, -1}}, 100, 200) == 100);
+    assert(test2((struct i128) {{0, 0}}, 100, 200) == 200);
+    assert(test2((struct i128) {{1, 0}}, 100, 200) == 100);
+    assert(test2((struct i128) {{-1, 0}}, 100, 200) == 100);
+    assert(test2((struct i128) {{0, 1}}, 100, 200) == 100);
+    assert(test2((struct i128) {{0, -1}}, 100, 200) == 100);
+    assert(test2((struct i128) {{-1, -1}}, 100, 200) == 100);
 
     for (int i = 0; i < 10; i++) {
-        struct i128 res = fact1((struct i128){{i, 0}});
+        struct i128 res = fact1((struct i128) {{i, 0}});
         assert(res.arr[0] == (unsigned long) ref_fact(i));
         assert(res.arr[1] == 0);
 
-        res = fact2((struct i128){{i, 0}});
+        res = fact2((struct i128) {{i, 0}});
         assert(res.arr[0] == (unsigned long) ref_fact(i));
         assert(res.arr[1] == 0);
 
-        res = fact3((struct i128){{i, 0}});
+        res = fact3((struct i128) {{i, 0}});
         assert(res.arr[0] == (unsigned long) ref_fact(i));
         assert(res.arr[1] == 0);
 
-        res = fact4((struct i128){{i, 0}});
+        res = fact4((struct i128) {{i, 0}});
         assert(res.arr[0] == (unsigned long) ref_fact(i));
         assert(res.arr[1] == 0);
 
-        res = fact5((struct i128){{i, 0}});
+        res = fact5((struct i128) {{i, 0}});
         assert(res.arr[0] == (unsigned long) ref_fact(i));
         assert(res.arr[1] == 0);
 
-        res = fact6((struct i128){{i, 0}});
+        res = fact6((struct i128) {{i, 0}});
         assert(res.arr[0] == (unsigned long) ref_fact(i));
         assert(res.arr[1] == 0);
     }

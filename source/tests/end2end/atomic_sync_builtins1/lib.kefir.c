@@ -20,9 +20,9 @@
 
 #include "./definitions.h"
 
-#define DEFINE_FETCH(_id, _op, _type)                              \
-    _type test_fetch_##_id(_Atomic _type *ptr, _type value) {      \
-        return __sync_fetch_and_##_op(ptr, value); \
+#define DEFINE_FETCH(_id, _op, _type)                         \
+    _type test_fetch_##_id(_Atomic _type *ptr, _type value) { \
+        return __sync_fetch_and_##_op(ptr, value);            \
     }
 
 DEFINE_FETCH(add_char, add, char)

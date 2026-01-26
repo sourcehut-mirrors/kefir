@@ -23,8 +23,8 @@
 
 #define DECL(_op, _sz, _type) _type _op##_##_sz(_Atomic _type *, _type)
 
-#define DECL_ALL(_op)               \
-    DECL(_op, f32, _Complex float); \
+#define DECL_ALL(_op)                \
+    DECL(_op, f32, _Complex float);  \
     DECL(_op, f64, _Complex double); \
     DECL(_op, ld, _Complex long double)
 

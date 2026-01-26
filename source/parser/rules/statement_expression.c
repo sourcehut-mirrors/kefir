@@ -49,19 +49,16 @@ static kefir_result_t parse_statement_expression(struct kefir_mem *mem, struct k
         if (res == KEFIR_NO_MATCH) {
             REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                          "Expected either declaration or statement");
+                                         "Expected either declaration or statement");
         }
-        
+
         if (res == KEFIR_SYNTAX_ERROR && KEFIR_PARSER_DO_ERROR_RECOVERY(parser)) {
             has_syntax_errors = true;
             builder->parser->encountered_errors++;
             REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
-            REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(builder->parser, &(struct kefir_parser_error_recovery_context) {
-                .sync_points = {
-                    .semicolon = true,
-                    .pragmas = true
-                }
-            }));
+            REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(
+                builder->parser,
+                &(struct kefir_parser_error_recovery_context) {.sync_points = {.semicolon = true, .pragmas = true}}));
         } else {
             REQUIRE_OK(res);
             REQUIRE_OK(kefir_parser_ast_builder_statement_expression_append(mem, builder));

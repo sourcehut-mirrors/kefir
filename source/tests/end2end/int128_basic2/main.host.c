@@ -31,7 +31,7 @@ int main(void) {
     assert(zero.arr[0] == 0);
     assert(zero.arr[1] == 0);
 
-    set((struct i128){{0xcafebabeull, 0x0badc0ffeull}});
+    set((struct i128) {{0xcafebabeull, 0x0badc0ffeull}});
     assert(value.arr[0] == 0xcafebabeull);
     assert(value.arr[1] == 0x0badc0ffeull);
 
@@ -42,7 +42,7 @@ int main(void) {
     assert(val.arr[0] == ~0xcafebabeull);
     assert(val.arr[1] == ~0x0badc0ffeull);
 
-    val = test((struct i128){{0x183918dd, 0x92829189fec}});
+    val = test((struct i128) {{0x183918dd, 0x92829189fec}});
     assert(val.arr[0] == 0x183918dd);
     assert(val.arr[1] == 0x92829189fec);
     return EXIT_SUCCESS;

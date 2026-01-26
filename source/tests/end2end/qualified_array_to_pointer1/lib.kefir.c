@@ -20,9 +20,7 @@
 
 #include "./definitions.h"
 
-int x[] = {
-    __builtin_types_compatible_p(__typeof(&(const struct S1){0}.arr[0]), int *),
-    __builtin_types_compatible_p(__typeof(&(const struct S1){0}.arr[0]), const int *),
-    __builtin_types_compatible_p(__typeof(&(const struct S1){0}.arr[0]), const volatile int *),
-    __builtin_types_compatible_p(__typeof(&(volatile const struct S1){0}.arr[0]), const volatile int *)
-};
+int x[] = {__builtin_types_compatible_p(__typeof(&(const struct S1) {0}.arr[0]), int *),
+           __builtin_types_compatible_p(__typeof(&(const struct S1) {0}.arr[0]), const int *),
+           __builtin_types_compatible_p(__typeof(&(const struct S1) {0}.arr[0]), const volatile int *),
+           __builtin_types_compatible_p(__typeof(&(volatile const struct S1) {0}.arr[0]), const volatile int *)};

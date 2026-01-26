@@ -27,7 +27,7 @@ int main(void) {
     for (int i = -100; i < 100; i++) {
         for (int j = -100; j < 100; j++) {
             assert(and(i, j) == (i && j));
-            assert(or(i, j) == (i || j));
+            assert(or (i, j) == (i || j));
         }
     }
     return EXIT_SUCCESS;

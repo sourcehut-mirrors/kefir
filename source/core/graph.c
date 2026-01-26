@@ -22,8 +22,8 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static  kefir_result_t free_graph_vertex(struct kefir_mem *mem, struct kefir_hashtable *table,
-                                                          kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
+static kefir_result_t free_graph_vertex(struct kefir_mem *mem, struct kefir_hashtable *table, kefir_hashtable_key_t key,
+                                        kefir_hashtable_value_t value, void *payload) {
     UNUSED(table);
     UNUSED(key);
     UNUSED(payload);
@@ -34,7 +34,7 @@ static  kefir_result_t free_graph_vertex(struct kefir_mem *mem, struct kefir_has
     REQUIRE_OK(kefir_hashset_free(mem, &vertex->edges));
     KEFIR_FREE(mem, vertex);
     return KEFIR_OK;
-}   
+}
 
 kefir_result_t kefir_graph_init(struct kefir_graph *graph) {
     REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to graph"));
@@ -52,7 +52,8 @@ kefir_result_t kefir_graph_free(struct kefir_mem *mem, struct kefir_graph *graph
     return KEFIR_OK;
 }
 
-static kefir_result_t get_vertex(struct kefir_mem *mem, struct kefir_graph *graph, kefir_graph_vertex_id_t vertex, struct kefir_graph_vertex **vertex_ptr) {
+static kefir_result_t get_vertex(struct kefir_mem *mem, struct kefir_graph *graph, kefir_graph_vertex_id_t vertex,
+                                 struct kefir_graph_vertex **vertex_ptr) {
     kefir_hashtable_value_t table_value;
     kefir_result_t res = kefir_hashtable_at(&graph->vertices, (kefir_hashtable_key_t) vertex, &table_value);
     if (res != KEFIR_NOT_FOUND) {
@@ -62,7 +63,8 @@ static kefir_result_t get_vertex(struct kefir_mem *mem, struct kefir_graph *grap
         struct kefir_graph_vertex *alloc_vertex = KEFIR_MALLOC(mem, sizeof(struct kefir_graph_vertex));
         REQUIRE(alloc_vertex != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate graph vertex"));
         res = kefir_hashset_init(&alloc_vertex->edges, &kefir_hashtable_uint_ops);
-        REQUIRE_CHAIN(&res, kefir_hashtable_insert(mem, &graph->vertices, (kefir_hashtable_key_t) vertex, (kefir_hashtable_value_t) alloc_vertex));
+        REQUIRE_CHAIN(&res, kefir_hashtable_insert(mem, &graph->vertices, (kefir_hashtable_key_t) vertex,
+                                                   (kefir_hashtable_value_t) alloc_vertex));
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_FREE(mem, alloc_vertex);
             return res;
@@ -80,7 +82,8 @@ kefir_result_t kefir_graph_clear(struct kefir_mem *mem, struct kefir_graph *grap
     return KEFIR_OK;
 }
 
-kefir_bool_t kefir_graph_has_edge(const struct kefir_graph *graph, kefir_graph_vertex_id_t vertex1_id, kefir_graph_vertex_id_t vertex2_id) {
+kefir_bool_t kefir_graph_has_edge(const struct kefir_graph *graph, kefir_graph_vertex_id_t vertex1_id,
+                                  kefir_graph_vertex_id_t vertex2_id) {
     REQUIRE(graph != NULL, false);
 
     kefir_hashtable_value_t table_value;
@@ -91,7 +94,8 @@ kefir_bool_t kefir_graph_has_edge(const struct kefir_graph *graph, kefir_graph_v
     return kefir_hashset_has(&vertex1->edges, (kefir_hashset_key_t) vertex2_id);
 }
 
-kefir_result_t kefir_graph_add_edge(struct kefir_mem *mem, struct kefir_graph *graph, kefir_graph_vertex_id_t src_vertex, kefir_graph_vertex_id_t dst_vertex) {
+kefir_result_t kefir_graph_add_edge(struct kefir_mem *mem, struct kefir_graph *graph,
+                                    kefir_graph_vertex_id_t src_vertex, kefir_graph_vertex_id_t dst_vertex) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph"));
 
@@ -101,7 +105,8 @@ kefir_result_t kefir_graph_add_edge(struct kefir_mem *mem, struct kefir_graph *g
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_graph_ensure(struct kefir_mem *mem, struct kefir_graph *graph, kefir_graph_vertex_id_t vertex_id, kefir_size_t edges) {
+kefir_result_t kefir_graph_ensure(struct kefir_mem *mem, struct kefir_graph *graph, kefir_graph_vertex_id_t vertex_id,
+                                  kefir_size_t edges) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph"));
 
@@ -111,10 +116,11 @@ kefir_result_t kefir_graph_ensure(struct kefir_mem *mem, struct kefir_graph *gra
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_graph_iter(const struct kefir_graph *graph, struct kefir_graph_vertex_iterator *iter, kefir_graph_vertex_id_t *vertex_id_ptr) {
+kefir_result_t kefir_graph_iter(const struct kefir_graph *graph, struct kefir_graph_vertex_iterator *iter,
+                                kefir_graph_vertex_id_t *vertex_id_ptr) {
     REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph vertex iterator"));
-    
+
     kefir_hashtable_key_t key;
     kefir_result_t res = kefir_hashtable_iter(&graph->vertices, &iter->iter, &key, NULL);
     if (res == KEFIR_ITERATOR_END) {
@@ -140,7 +146,8 @@ kefir_result_t kefir_graph_next(struct kefir_graph_vertex_iterator *iter, kefir_
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_graph_edge_iter(const struct kefir_graph *graph, struct kefir_graph_edge_iterator *iter, kefir_graph_vertex_id_t vertex_id, kefir_graph_vertex_id_t *dst_vertex_id_ptr) {
+kefir_result_t kefir_graph_edge_iter(const struct kefir_graph *graph, struct kefir_graph_edge_iterator *iter,
+                                     kefir_graph_vertex_id_t vertex_id, kefir_graph_vertex_id_t *dst_vertex_id_ptr) {
     REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph edge iterator"));
 
@@ -163,7 +170,8 @@ kefir_result_t kefir_graph_edge_iter(const struct kefir_graph *graph, struct kef
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_graph_edge_next(struct kefir_graph_edge_iterator *iter, kefir_graph_vertex_id_t *dst_vertex_id_ptr) {
+kefir_result_t kefir_graph_edge_next(struct kefir_graph_edge_iterator *iter,
+                                     kefir_graph_vertex_id_t *dst_vertex_id_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid graph edge iterator"));
 
     kefir_hashset_key_t key;

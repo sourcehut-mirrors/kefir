@@ -49,8 +49,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifier_abbre
         KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_type), KEFIR_DWARF(DW_FORM_ref4)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_linkage_name),
                                                   KEFIR_DWARF(DW_FORM_strp)));
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_decl_file),
-                                                  KEFIR_DWARF(DW_FORM_strp)));
+    REQUIRE_OK(
+        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_decl_file), KEFIR_DWARF(DW_FORM_strp)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_decl_line),
                                                   KEFIR_DWARF(DW_FORM_data8)));
     ;
@@ -192,8 +192,8 @@ static kefir_result_t generate_subprogram_declaration_abbrev(struct kefir_mem *m
                                                   KEFIR_DWARF(DW_FORM_flag)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_linkage_name),
                                                   KEFIR_DWARF(DW_FORM_strp)));
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_decl_file),
-                                                  KEFIR_DWARF(DW_FORM_strp)));
+    REQUIRE_OK(
+        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_decl_file), KEFIR_DWARF(DW_FORM_strp)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_decl_line),
                                                   KEFIR_DWARF(DW_FORM_data8)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_decl_column),
@@ -270,7 +270,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifier_info(
                                                   KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                                                   KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION))));
 
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen->xasmgen, context, identifier->alias != NULL ? identifier->alias : identifier->symbol));
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(
+        mem, &codegen->xasmgen, context, identifier->alias != NULL ? identifier->alias : identifier->symbol));
 
     kefir_bool_t has_source_location;
     REQUIRE_OK(kefir_ir_debug_entry_has_attribute(&ir_module->debug_info.entries, variable_entry_id,
@@ -333,8 +334,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_function_info(
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_DECLARATION, &attr));
     REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, attr->declaration ? 1 : 0));
 
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen->xasmgen, context,
-                                        identifier->alias != NULL ? identifier->alias : identifier->symbol));
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(
+        mem, &codegen->xasmgen, context, identifier->alias != NULL ? identifier->alias : identifier->symbol));
 
     kefir_bool_t has_source_location;
     REQUIRE_OK(kefir_ir_debug_entry_has_attribute(&ir_module->debug_info.entries, subprogram_decl_entry_id,

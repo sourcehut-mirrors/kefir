@@ -57,7 +57,8 @@ static void simple_assign(void) {
     }
 
     struct struct_param p = {0};
-    struct struct_param p2 = assign_struct(&p, (struct struct_param){.length = 5, {'1', '2', '3', '4', '5', '\0'}, &p});
+    struct struct_param p2 =
+        assign_struct(&p, (struct struct_param) {.length = 5, {'1', '2', '3', '4', '5', '\0'}, &p});
     ASSERT(p.length == 5);
     ASSERT(strcmp(p.content, "12345") == 0);
     ASSERT(p.payload == &p);

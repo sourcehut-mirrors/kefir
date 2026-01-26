@@ -25,11 +25,11 @@ struct Structure1 {
 };
 
 struct Structure1 zero() {
-    return (struct Structure1){0};
+    return (struct Structure1) {0};
 }
 
 struct Structure1 one() {
-    return (struct Structure1){1};
+    return (struct Structure1) {1};
 }
 
 int test(int x) {

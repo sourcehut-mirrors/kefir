@@ -26,20 +26,20 @@
 int main(void) {
     for (int i = -512; i < 512; i++) {
         for (int j = -64; j < 64; j++) {
-#define TEST_OP(_name, _type, _op)                      \
-        do {                                                \
-            assert(_name##_##_type(1, i, j) == (((_type) i) _op ((_type) j))); \
-            assert(_name##_##_type(0, i, j) == (((_type) i) _op ((_type) j))); \
-        } while (0)
-#define TEST_OPS(_name, _op)    \
-        TEST_OP(_name, schar, _op);  \
-        TEST_OP(_name, sshort, _op); \
-        TEST_OP(_name, sint, _op);   \
-        TEST_OP(_name, slong, _op); \
-        TEST_OP(_name, uchar, _op);  \
-        TEST_OP(_name, ushort, _op); \
-        TEST_OP(_name, uint, _op);   \
-        TEST_OP(_name, ulong, _op)
+#define TEST_OP(_name, _type, _op)                                        \
+    do {                                                                  \
+        assert(_name##_##_type(1, i, j) == (((_type) i) _op((_type) j))); \
+        assert(_name##_##_type(0, i, j) == (((_type) i) _op((_type) j))); \
+    } while (0)
+#define TEST_OPS(_name, _op)     \
+    TEST_OP(_name, schar, _op);  \
+    TEST_OP(_name, sshort, _op); \
+    TEST_OP(_name, sint, _op);   \
+    TEST_OP(_name, slong, _op);  \
+    TEST_OP(_name, uchar, _op);  \
+    TEST_OP(_name, ushort, _op); \
+    TEST_OP(_name, uint, _op);   \
+    TEST_OP(_name, ulong, _op)
 
             TEST_OPS(equal, ==);
             TEST_OPS(not_equal, !=);
@@ -48,15 +48,15 @@ int main(void) {
             TEST_OPS(less, <);
             TEST_OPS(less_or_equal, <=);
 
-#define TEST(_type) \
-            do { \
-                assert(test##_##_type(OP_EQ, i, j) == (((_type) i) == ((_type) j))); \
-                assert(test##_##_type(OP_NE, i, j) == (((_type) i) != ((_type) j))); \
-                assert(test##_##_type(OP_GT, i, j) == (((_type) i) > ((_type) j))); \
-                assert(test##_##_type(OP_GE, i, j) == (((_type) i) >= ((_type) j))); \
-                assert(test##_##_type(OP_LT, i, j) == (((_type) i) < ((_type) j))); \
-                assert(test##_##_type(OP_LE, i, j) == (((_type) i) <= ((_type) j))); \
-            } while (0)
+#define TEST(_type)                                                          \
+    do {                                                                     \
+        assert(test##_##_type(OP_EQ, i, j) == (((_type) i) == ((_type) j))); \
+        assert(test##_##_type(OP_NE, i, j) == (((_type) i) != ((_type) j))); \
+        assert(test##_##_type(OP_GT, i, j) == (((_type) i) > ((_type) j)));  \
+        assert(test##_##_type(OP_GE, i, j) == (((_type) i) >= ((_type) j))); \
+        assert(test##_##_type(OP_LT, i, j) == (((_type) i) < ((_type) j)));  \
+        assert(test##_##_type(OP_LE, i, j) == (((_type) i) <= ((_type) j))); \
+    } while (0)
 
             TEST(schar);
             TEST(sshort);

@@ -116,24 +116,24 @@ kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *mem, struct kefir_asmcm
         REQUIRE_OK(kefir_asmcmp_virtual_register_get(&(_target)->context, (_vreg_idx), &vreg));                       \
                                                                                                                       \
         struct register_preallocation *preallocation = NULL;                                                          \
-        kefir_hashtable_value_t value;                                                                      \
+        kefir_hashtable_value_t value;                                                                                \
         kefir_result_t res =                                                                                          \
-            kefir_hashtable_at(&(_target)->register_preallocation, (kefir_hashtable_key_t) (_vreg_idx), &value);         \
+            kefir_hashtable_at(&(_target)->register_preallocation, (kefir_hashtable_key_t) (_vreg_idx), &value);      \
         if (res == KEFIR_NOT_FOUND) {                                                                                 \
             preallocation = KEFIR_MALLOC((_mem), sizeof(struct register_preallocation));                              \
             REQUIRE(preallocation != NULL,                                                                            \
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register preallocation"));      \
                                                                                                                       \
             _init res =                                                                                               \
-                kefir_hashtable_insert((_mem), &(_target)->register_preallocation, (kefir_hashtable_key_t) (_vreg_idx), \
-                                      (kefir_hashtable_value_t) preallocation);                                        \
+                kefir_hashtable_insert((_mem), &(_target)->register_preallocation,                                    \
+                                       (kefir_hashtable_key_t) (_vreg_idx), (kefir_hashtable_value_t) preallocation); \
             REQUIRE_ELSE(res == KEFIR_OK, {                                                                           \
                 KEFIR_FREE(mem, preallocation);                                                                       \
                 return res;                                                                                           \
             });                                                                                                       \
         } else {                                                                                                      \
             REQUIRE_OK(res);                                                                                          \
-            preallocation = (struct register_preallocation *) value;                                            \
+            preallocation = (struct register_preallocation *) value;                                                  \
             _else                                                                                                     \
         }                                                                                                             \
     } while (false)
@@ -288,7 +288,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
             idx_ptr));                                                                                           \
         return KEFIR_OK;                                                                                         \
     }
-#define DEF_OPCODE_2_(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                           \
+#define DEF_OPCODE_2_(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                          \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(                                                                 \
         struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target, kefir_asmcmp_instruction_index_t after_index,  \
         const struct kefir_asmcmp_value *arg1, const struct kefir_asmcmp_value *arg2,                            \
@@ -306,8 +306,8 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
             idx_ptr));                                                                                           \
         return KEFIR_OK;                                                                                         \
     }
-#define DEF_OPCODE_2_REPEATABLE(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                           \
-    kefir_result_t kefir_asmcmp_amd64_##_opcode##_rep(                                                                 \
+#define DEF_OPCODE_2_REPEATABLE(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                \
+    kefir_result_t kefir_asmcmp_amd64_##_opcode##_rep(                                                           \
         struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target, kefir_asmcmp_instruction_index_t after_index,  \
         const struct kefir_asmcmp_value *arg1, const struct kefir_asmcmp_value *arg2,                            \
         kefir_asmcmp_instruction_index_t *idx_ptr) {                                                             \
@@ -324,7 +324,8 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
             idx_ptr));                                                                                           \
         return KEFIR_OK;                                                                                         \
     }
-#define DEF_OPCODE_2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) DEF_OPCODE_2_##_variant(_opcode, _mnemonic, _variant, _flags, _op1, _op2)
+#define DEF_OPCODE_2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) \
+    DEF_OPCODE_2_##_variant(_opcode, _mnemonic, _variant, _flags, _op1, _op2)
 #define DEF_OPCODE_3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)                                         \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(                                                                     \
         struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target, kefir_asmcmp_instruction_index_t after_index,      \
@@ -379,9 +380,9 @@ kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *mem, 
 }
 
 kefir_result_t kefir_asmcmp_amd64_produce_virtual_register(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
-                                                         kefir_asmcmp_instruction_index_t after_index,
-                                                         kefir_asmcmp_virtual_register_index_t vreg,
-                                                         kefir_asmcmp_instruction_index_t *idx_ptr) {
+                                                           kefir_asmcmp_instruction_index_t after_index,
+                                                           kefir_asmcmp_virtual_register_index_t vreg,
+                                                           kefir_asmcmp_instruction_index_t *idx_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
     REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(
@@ -415,9 +416,9 @@ kefir_result_t kefir_asmcmp_amd64_touch_virtual_register(struct kefir_mem *mem, 
 }
 
 kefir_result_t kefir_asmcmp_amd64_weak_touch_virtual_register(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
-                                                         kefir_asmcmp_instruction_index_t after_index,
-                                                         kefir_asmcmp_virtual_register_index_t vreg,
-                                                         kefir_asmcmp_instruction_index_t *idx_ptr) {
+                                                              kefir_asmcmp_instruction_index_t after_index,
+                                                              kefir_asmcmp_virtual_register_index_t vreg,
+                                                              kefir_asmcmp_instruction_index_t *idx_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
     REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(

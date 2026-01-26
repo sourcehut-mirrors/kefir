@@ -382,9 +382,9 @@ typedef struct kefir_opt_code_event_listener {
     kefir_result_t (*on_new_instruction)(struct kefir_mem *, const struct kefir_opt_code_container *,
                                          kefir_opt_instruction_ref_t, void *);
     kefir_result_t (*on_replace_instruction)(struct kefir_mem *, const struct kefir_opt_code_container *,
-                                         kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, void *);
+                                             kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, void *);
     kefir_result_t (*on_drop_instruction)(struct kefir_mem *, const struct kefir_opt_code_container *,
-                                         kefir_opt_instruction_ref_t, void *);
+                                          kefir_opt_instruction_ref_t, void *);
     void *payload;
 } kefir_opt_code_event_listener_t;
 

@@ -21,7 +21,7 @@
 #include "./definitions.h"
 
 long double get(int x, int a, long double b, long double c) {
-        if (x)  b = a ? b : c;
-        return b;
+    if (x)
+        b = a ? b : c;
+    return b;
 }
-

@@ -77,8 +77,8 @@ int main(void) {
     for (long x = -1000; x <= 1000; x++) {
         for (long y = -100; y <= 100; y++) {
             assert(test_hypot(x, y) == (x * x) + (y * y));
-            assert(test_hypotp((struct Pair){x, y}) == (x * x) + (y * y));
-            assert(test_hypoth((struct HugePair){.a = x, .b = y}) == (x * x) + (y * y));
+            assert(test_hypotp((struct Pair) {x, y}) == (x * x) + (y * y));
+            assert(test_hypoth((struct HugePair) {.a = x, .b = y}) == (x * x) + (y * y));
         }
     }
     return EXIT_SUCCESS;

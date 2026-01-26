@@ -58,9 +58,9 @@ int main(void) {
     assert(fabs(creal(f64) - creal(f64_expected)) < EPSILON_D);       \
     assert(fabs(cimag(f64) - cimag(f64_expected)) < EPSILON_D);       \
                                                                       \
-     ld = x + y * I;                                                \
+    ld = x + y * I;                                                   \
     ld_res = _id##_ld(&ld, y + x / 2 * I);                            \
-    ld_expected = (x + y * I) _op (y + x / 2 * I);                    \
+    ld_expected = (x + y * I) _op(y + x / 2 * I);                     \
     assert(fabsl(creall(ld_res) - creall(ld_expected)) < EPSILON_LD); \
     assert(fabsl(cimagl(ld_res) - cimagl(ld_expected)) < EPSILON_LD); \
     assert(fabsl(creall(ld) - creall(ld_expected)) < EPSILON_LD);     \

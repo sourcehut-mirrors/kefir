@@ -57,7 +57,8 @@ static kefir_result_t amd64_new_codegen(struct kefir_mem *mem, FILE *output,
 }
 
 static kefir_result_t amd64_lowering(struct kefir_mem *mem, struct kefir_opt_module *module,
-                                     struct kefir_opt_function *func, const struct kefir_optimizer_configuration *configuration, void *payload) {
+                                     struct kefir_opt_function *func,
+                                     const struct kefir_optimizer_configuration *configuration, void *payload) {
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));

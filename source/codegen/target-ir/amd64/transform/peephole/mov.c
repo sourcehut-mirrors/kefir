@@ -27,7 +27,10 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem,
+                                                           struct kefir_codegen_target_ir_code *code,
+                                                           const struct kefir_codegen_target_ir_instruction *instr,
+                                                           kefir_bool_t *replaced) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
@@ -49,141 +52,132 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
     REQUIRE_OK(res);
     REQUIRE(output_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT, KEFIR_OK);
 
-    if (instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-        instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
+    if (instr->operation.parameters[classification.operands[1].read_index].type ==
+            KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+        instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.aspect ==
+            KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
         kefir_int64_t value = 0;
-        res = kefir_codegen_target_ir_amd64_match_immediate(code, instr->operation.parameters[classification.operands[1].read_index].direct.value_ref, true, &value);
+        res = kefir_codegen_target_ir_amd64_match_immediate(
+            code, instr->operation.parameters[classification.operands[1].read_index].direct.value_ref, true, &value);
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
-#define CONST_FOLD \
-            if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movsx) && \
-                (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) && \
-                instr->operation.parameters[classification.operands[1].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT) { \
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, \
-                    &(struct kefir_codegen_target_ir_operation) { \
-                        .opcode = code->klass->assign_opcode, \
-                        .parameters[0] = { \
-                            .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, \
-                            .immediate = { \
-                                .int_immediate = (kefir_int8_t) value, \
-                                .variant = output_value_type->variant \
-                            } \
-                        } \
-                    }, NULL)); \
-                *replaced = true; \
-                return KEFIR_OK; \
-            } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movsx) && \
-                (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) && \
-                instr->operation.parameters[classification.operands[1].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) { \
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, \
-                    &(struct kefir_codegen_target_ir_operation) { \
-                        .opcode = code->klass->assign_opcode, \
-                        .parameters[0] = { \
-                            .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, \
-                            .immediate = { \
-                                .int_immediate = (kefir_int16_t) value, \
-                                .variant = output_value_type->variant \
-                            } \
-                        } \
-                    }, NULL)); \
-                *replaced = true; \
-                return KEFIR_OK; \
-            } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movsx) && \
-                (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) && \
-                instr->operation.parameters[classification.operands[1].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) { \
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, \
-                    &(struct kefir_codegen_target_ir_operation) { \
-                        .opcode = code->klass->assign_opcode, \
-                        .parameters[0] = { \
-                            .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, \
-                            .immediate = { \
-                                .int_immediate = (kefir_int32_t) value, \
-                                .variant = output_value_type->variant \
-                            } \
-                        } \
-                    }, NULL)); \
-                *replaced = true; \
-                return KEFIR_OK; \
-            } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movzx) && \
-                (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) && \
-                instr->operation.parameters[classification.operands[1].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT) { \
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, \
-                    &(struct kefir_codegen_target_ir_operation) { \
-                        .opcode = code->klass->assign_opcode, \
-                        .parameters[0] = { \
-                            .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, \
-                            .immediate = { \
-                                .int_immediate = (kefir_uint8_t) value, \
-                                .variant = output_value_type->variant \
-                            } \
-                        } \
-                    }, NULL)); \
-                *replaced = true; \
-                return KEFIR_OK; \
-            } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movzx) && \
-                (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) && \
-                instr->operation.parameters[classification.operands[1].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) { \
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, \
-                    &(struct kefir_codegen_target_ir_operation) { \
-                        .opcode = code->klass->assign_opcode, \
-                        .parameters[0] = { \
-                            .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, \
-                            .immediate = { \
-                                .int_immediate = (kefir_uint16_t) value, \
-                                .variant = output_value_type->variant \
-                            } \
-                        } \
-                    }, NULL)); \
-                *replaced = true; \
-                return KEFIR_OK; \
-            } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) && \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT && \
-                instr->operation.parameters[classification.operands[1].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) { \
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, \
-                    &(struct kefir_codegen_target_ir_operation) { \
-                        .opcode = code->klass->assign_opcode, \
-                        .parameters[0] = { \
-                            .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, \
-                            .immediate = { \
-                                .int_immediate = (kefir_uint32_t) value, \
-                                .variant = output_value_type->variant \
-                            } \
-                        } \
-                    }, NULL)); \
-                *replaced = true; \
-                return KEFIR_OK; \
-            } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) && \
-                (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT || \
-                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT) && \
-                (instr->operation.parameters[classification.operands[1].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT || \
-                instr->operation.parameters[classification.operands[1].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT)) { \
-                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, \
-                    &(struct kefir_codegen_target_ir_operation) { \
-                        .opcode = code->klass->assign_opcode, \
-                        .parameters[0] = { \
-                            .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, \
-                            .immediate = { \
-                                .int_immediate = value, \
-                                .variant = output_value_type->variant \
-                            } \
-                        } \
-                    }, NULL)); \
-                *replaced = true; \
-                return KEFIR_OK; \
-            }
+#define CONST_FOLD                                                                                                \
+    if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movsx) &&                                         \
+        (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||                         \
+         output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||                           \
+         output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&                          \
+        instr->operation.parameters[classification.operands[1].read_index].direct.variant ==                      \
+            KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT) {                                                       \
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                                \
+            mem, code, instr_ref,                                                                                 \
+            &(struct kefir_codegen_target_ir_operation) {                                                         \
+                .opcode = code->klass->assign_opcode,                                                             \
+                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,                           \
+                                  .immediate = {.int_immediate = (kefir_int8_t) value,                            \
+                                                .variant = output_value_type->variant}}},                         \
+            NULL));                                                                                               \
+        *replaced = true;                                                                                         \
+        return KEFIR_OK;                                                                                          \
+    } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movsx) &&                                  \
+               (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||                  \
+                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||                    \
+                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&                   \
+               instr->operation.parameters[classification.operands[1].read_index].direct.variant ==               \
+                   KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) {                                               \
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                                \
+            mem, code, instr_ref,                                                                                 \
+            &(struct kefir_codegen_target_ir_operation) {                                                         \
+                .opcode = code->klass->assign_opcode,                                                             \
+                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,                           \
+                                  .immediate = {.int_immediate = (kefir_int16_t) value,                           \
+                                                .variant = output_value_type->variant}}},                         \
+            NULL));                                                                                               \
+        *replaced = true;                                                                                         \
+        return KEFIR_OK;                                                                                          \
+    } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movsx) &&                                  \
+               (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||                  \
+                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||                    \
+                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&                   \
+               instr->operation.parameters[classification.operands[1].read_index].direct.variant ==               \
+                   KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) {                                               \
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                                \
+            mem, code, instr_ref,                                                                                 \
+            &(struct kefir_codegen_target_ir_operation) {                                                         \
+                .opcode = code->klass->assign_opcode,                                                             \
+                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,                           \
+                                  .immediate = {.int_immediate = (kefir_int32_t) value,                           \
+                                                .variant = output_value_type->variant}}},                         \
+            NULL));                                                                                               \
+        *replaced = true;                                                                                         \
+        return KEFIR_OK;                                                                                          \
+    } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movzx) &&                                  \
+               (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||                  \
+                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||                    \
+                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&                   \
+               instr->operation.parameters[classification.operands[1].read_index].direct.variant ==               \
+                   KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT) {                                                \
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                                \
+            mem, code, instr_ref,                                                                                 \
+            &(struct kefir_codegen_target_ir_operation) {                                                         \
+                .opcode = code->klass->assign_opcode,                                                             \
+                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,                           \
+                                  .immediate = {.int_immediate = (kefir_uint8_t) value,                           \
+                                                .variant = output_value_type->variant}}},                         \
+            NULL));                                                                                               \
+        *replaced = true;                                                                                         \
+        return KEFIR_OK;                                                                                          \
+    } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movzx) &&                                  \
+               (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||                  \
+                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||                    \
+                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&                   \
+               instr->operation.parameters[classification.operands[1].read_index].direct.variant ==               \
+                   KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) {                                               \
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                                \
+            mem, code, instr_ref,                                                                                 \
+            &(struct kefir_codegen_target_ir_operation) {                                                         \
+                .opcode = code->klass->assign_opcode,                                                             \
+                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,                           \
+                                  .immediate = {.int_immediate = (kefir_uint16_t) value,                          \
+                                                .variant = output_value_type->variant}}},                         \
+            NULL));                                                                                               \
+        *replaced = true;                                                                                         \
+        return KEFIR_OK;                                                                                          \
+    } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) &&                                    \
+               output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&                     \
+               instr->operation.parameters[classification.operands[1].read_index].direct.variant ==               \
+                   KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) {                                               \
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                                \
+            mem, code, instr_ref,                                                                                 \
+            &(struct kefir_codegen_target_ir_operation) {                                                         \
+                .opcode = code->klass->assign_opcode,                                                             \
+                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,                           \
+                                  .immediate = {.int_immediate = (kefir_uint32_t) value,                          \
+                                                .variant = output_value_type->variant}}},                         \
+            NULL));                                                                                               \
+        *replaced = true;                                                                                         \
+        return KEFIR_OK;                                                                                          \
+    } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) &&                                    \
+               (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||                    \
+                output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT) &&                 \
+               (instr->operation.parameters[classification.operands[1].read_index].direct.variant ==              \
+                    KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||                                              \
+                instr->operation.parameters[classification.operands[1].read_index].direct.variant ==              \
+                    KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT)) {                                           \
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                                \
+            mem, code, instr_ref,                                                                                 \
+            &(struct kefir_codegen_target_ir_operation) {                                                         \
+                .opcode = code->klass->assign_opcode,                                                             \
+                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,                           \
+                                  .immediate = {.int_immediate = value, .variant = output_value_type->variant}}}, \
+            NULL));                                                                                               \
+        *replaced = true;                                                                                         \
+        return KEFIR_OK;                                                                                          \
+    }
         }
-    } else if (instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
-        kefir_uint64_t value = instr->operation.parameters[classification.operands[1].read_index].immediate.uint_immediate;
+    } else if (instr->operation.parameters[classification.operands[1].read_index].type ==
+               KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
+        kefir_uint64_t value =
+            instr->operation.parameters[classification.operands[1].read_index].immediate.uint_immediate;
         switch (instr->operation.parameters[classification.operands[1].read_index].immediate.variant) {
             case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT:
                 value = (kefir_uint8_t) value;
@@ -207,18 +201,22 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
     }
 
     REQUIRE(classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
-        instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-        instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0), KEFIR_OK);
+                instr->operation.parameters[classification.operands[1].read_index].type ==
+                    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.aspect ==
+                    KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0),
+            KEFIR_OK);
 
-    const struct kefir_codegen_target_ir_operand input_param = instr->operation.parameters[classification.operands[1].read_index];
+    const struct kefir_codegen_target_ir_operand input_param =
+        instr->operation.parameters[classification.operands[1].read_index];
 
     kefir_bool_t ext_uses = false;
     struct kefir_codegen_target_ir_use_iterator use_iter;
     kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
     kefir_codegen_target_ir_value_ref_t used_value_ref;
     for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, &use_instr_ref, &used_value_ref);
-        res == KEFIR_OK && !ext_uses;
-        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
+         res == KEFIR_OK && !ext_uses;
+         res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
         if (used_value_ref.aspect != output_value_ref.aspect) {
             continue;
         }
@@ -226,8 +224,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
         const struct kefir_codegen_target_ir_instruction *user_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
         if (user_instr->operation.opcode == code->klass->phi_opcode ||
-            user_instr->operation.opcode == code->klass->inline_asm_opcode ||
-            user_instr->block_ref == KEFIR_ID_NONE) {
+            user_instr->operation.opcode == code->klass->inline_asm_opcode || user_instr->block_ref == KEFIR_ID_NONE) {
             ext_uses = true;
             continue;
         }
@@ -235,16 +232,16 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
         struct kefir_codegen_target_ir_operation oper = user_instr->operation;
         for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS && !ext_uses; i++) {
             if ((oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-                oper.parameters[i].direct.value_ref.instr_ref == output_value_ref.instr_ref &&
-                oper.parameters[i].direct.value_ref.aspect == output_value_ref.aspect &&
-                (oper.parameters[i].direct.tied ||
-                !(oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
-                (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
-                (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
-                (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
-                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT))))) {
+                 oper.parameters[i].direct.value_ref.instr_ref == output_value_ref.instr_ref &&
+                 oper.parameters[i].direct.value_ref.aspect == output_value_ref.aspect &&
+                 (oper.parameters[i].direct.tied ||
+                  !(oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
+                    (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
+                     input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
+                    (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
+                     input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
+                    (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
+                     input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT))))) {
                 ext_uses = true;
             }
         }
@@ -255,8 +252,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
 
     REQUIRE(!ext_uses, KEFIR_OK);
     for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, &use_instr_ref, &used_value_ref);
-        res == KEFIR_OK;
-        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
+         res == KEFIR_OK; res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
         if (used_value_ref.aspect != output_value_ref.aspect) {
             continue;
         }
@@ -264,11 +260,10 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
         const struct kefir_codegen_target_ir_instruction *user_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &user_instr));
         if (user_instr->operation.opcode == code->klass->phi_opcode ||
-            user_instr->operation.opcode == code->klass->inline_asm_opcode ||
-            user_instr->block_ref == KEFIR_ID_NONE) {
+            user_instr->operation.opcode == code->klass->inline_asm_opcode || user_instr->block_ref == KEFIR_ID_NONE) {
             continue;
         }
-        
+
         kefir_bool_t replace = false;
         struct kefir_codegen_target_ir_operation oper = user_instr->operation;
         for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
@@ -276,13 +271,13 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
                 oper.parameters[i].direct.value_ref.instr_ref == output_value_ref.instr_ref &&
                 oper.parameters[i].direct.value_ref.aspect == output_value_ref.aspect &&
                 (oper.parameters[i].direct.tied ||
-                (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
-                (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
-                (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
-                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
-                (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
-                input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT)))) {
+                 (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT ||
+                  (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
+                   input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT) ||
+                  (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_16BIT &&
+                   input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) ||
+                  (oper.parameters[i].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
+                   input_param.direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT)))) {
                 oper.parameters[i].direct.value_ref = input_param.direct.value_ref;
                 replace = true;
             }
@@ -300,18 +295,24 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movx(struct kefir_mem *mem
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_amd64_peephole_mov(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_mov(struct kefir_mem *mem,
+                                                          struct kefir_codegen_target_ir_code *code,
+                                                          const struct kefir_codegen_target_ir_instruction *instr,
+                                                          kefir_bool_t *replaced) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
     REQUIRE(replaced != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
-    
+
     struct kefir_codegen_target_ir_tie_classification classification;
     REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instr->instr_ref, &classification));
 
     REQUIRE(classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
-        instr->operation.parameters[classification.operands[1].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-        instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0), KEFIR_OK);
+                instr->operation.parameters[classification.operands[1].read_index].type ==
+                    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.aspect ==
+                    KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0),
+            KEFIR_OK);
 
     kefir_codegen_target_ir_value_ref_t output_value_ref = classification.operands[0].output;
     REQUIRE(output_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0), KEFIR_OK);
@@ -321,13 +322,15 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_mov(struct kefir_mem *mem,
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
 
-    const struct kefir_codegen_target_ir_operand *input_param = &instr->operation.parameters[classification.operands[1].read_index];
+    const struct kefir_codegen_target_ir_operand *input_param =
+        &instr->operation.parameters[classification.operands[1].read_index];
     if ((input_param->direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
-            input_param->direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT) &&
-            output_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT &&
-            (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
-            output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT)) {
-        REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, input_param->direct.value_ref, output_value_ref));
+         input_param->direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT) &&
+        output_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT &&
+        (output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+         output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT)) {
+        REQUIRE_OK(
+            kefir_codegen_target_ir_code_replace_value(mem, code, input_param->direct.value_ref, output_value_ref));
         REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, output_value_ref.instr_ref));
         *replaced = true;
     } else {

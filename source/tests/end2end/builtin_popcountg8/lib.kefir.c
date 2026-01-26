@@ -19,10 +19,10 @@
 */
 
 int arr[] = {__builtin_popcountg((__int128) 0),
-    __builtin_popcountg((__int128) 1),
-    __builtin_popcountg((__int128) 3),
-    __builtin_popcountg((__int128) 1023),
-    __builtin_popcountg((((__int128) 1023) << 60) + 1),
-    __builtin_popcountg(((__int128) 1023) << 100),
-    __builtin_popcountg(((__int128) 1023) << 118),
-    __builtin_popcountg(((__int128) 1023) << 119)};
+             __builtin_popcountg((__int128) 1),
+             __builtin_popcountg((__int128) 3),
+             __builtin_popcountg((__int128) 1023),
+             __builtin_popcountg((((__int128) 1023) << 60) + 1),
+             __builtin_popcountg(((__int128) 1023) << 100),
+             __builtin_popcountg(((__int128) 1023) << 118),
+             __builtin_popcountg(((__int128) 1023) << 119)};

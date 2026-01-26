@@ -35,23 +35,23 @@ int main(void) {
     assert(res.arr[0] == 9876);
     assert(res.arr[1] == 14524);
 
-    store_i128(&arg, (struct i128){{-1539281, 482918}});
+    store_i128(&arg, (struct i128) {{-1539281, 482918}});
     struct i128 val = arg;
     assert(val.arr[0] == (unsigned long) -1539281);
     assert(val.arr[1] == 482918);
-    store_u128(&arg, (struct i128){{93813911, -381931}});
+    store_u128(&arg, (struct i128) {{93813911, -381931}});
     val = arg;
     assert(val.arr[0] == 93813911);
     assert(val.arr[1] == (unsigned long) -381931);
 
-    val = add_i128(&arg, (struct i128){{~0ull, 0}});
+    val = add_i128(&arg, (struct i128) {{~0ull, 0}});
     assert(val.arr[0] == 93813910);
     assert(val.arr[1] == (unsigned long) -381930);
     val = arg;
     assert(val.arr[0] == 93813910);
     assert(val.arr[1] == (unsigned long) -381930);
 
-    val = add_u128(&arg, (struct i128){{~0ull, 0}});
+    val = add_u128(&arg, (struct i128) {{~0ull, 0}});
     assert(val.arr[0] == 93813909);
     assert(val.arr[1] == (unsigned long) -381929);
     val = arg;

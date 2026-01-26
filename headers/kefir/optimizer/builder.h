@@ -79,14 +79,14 @@ kefir_result_t kefir_opt_code_builder_long_double_constant(struct kefir_mem *, s
                                                            kefir_opt_block_id_t, kefir_long_double_t,
                                                            kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_decimal32_constant(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                           kefir_opt_block_id_t, kefir_dfp_decimal32_t,
-                                                           kefir_opt_instruction_ref_t *);
+                                                         kefir_opt_block_id_t, kefir_dfp_decimal32_t,
+                                                         kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_decimal64_constant(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                           kefir_opt_block_id_t, kefir_dfp_decimal64_t,
-                                                           kefir_opt_instruction_ref_t *);
+                                                         kefir_opt_block_id_t, kefir_dfp_decimal64_t,
+                                                         kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_decimal128_constant(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                           kefir_opt_block_id_t, kefir_dfp_decimal128_t,
-                                                           kefir_opt_instruction_ref_t *);
+                                                          kefir_opt_block_id_t, kefir_dfp_decimal128_t,
+                                                          kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_string_reference(struct kefir_mem *, struct kefir_opt_code_container *,
                                                        kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_block_label(struct kefir_mem *, struct kefir_opt_code_container *,

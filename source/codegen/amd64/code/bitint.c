@@ -48,8 +48,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_const)(struct kefir_m
     REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, qwords, 1, &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        result_vreg, NULL));
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
 
     for (kefir_size_t i = 0; i < qwords; i++) {
         kefir_uint64_t part;

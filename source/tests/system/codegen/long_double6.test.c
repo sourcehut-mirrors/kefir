@@ -44,7 +44,7 @@ int main(int argc, const char **argv) {
         ASSERT(DOUBLE_EQUALS(ldouble_to_double(x), (double) x, DOUBLE_EPSILON));
     }
     ASSERT(ldouble_to_ulong((long double) (ULONG_MAX - 1000000)) ==
-           (unsigned long) (volatile long double){(long double) (ULONG_MAX - 1000000)});
+           (unsigned long) (volatile long double) {(long double) (ULONG_MAX - 1000000)});
 
     for (long l = -1000; l < 1000; l++) {
         ASSERT(LONG_DOUBLE_EQUALS(ldouble_from_long(l), (long double) l, LONG_DOUBLE_EPSILON));

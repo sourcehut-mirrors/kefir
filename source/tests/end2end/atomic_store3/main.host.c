@@ -47,7 +47,7 @@ int main(void) {
         }
 
         set_arr2_el(&str, 0, a1);
-        set_arr2_el(&str, 1, (struct X){0});
+        set_arr2_el(&str, 1, (struct X) {0});
 #endif
 
         assert(str.i8 == (char) x);
@@ -65,7 +65,7 @@ int main(void) {
         }
 
         assert(memcmp(&str.arr2[0], &a1, sizeof(struct X)) == 0);
-        assert(memcmp(&str.arr2[1], &(struct X){0}, sizeof(struct X)) == 0);
+        assert(memcmp(&str.arr2[1], &(struct X) {0}, sizeof(struct X)) == 0);
 #endif
     }
     return EXIT_SUCCESS;

@@ -32,4 +32,3 @@ long double d = 1.0L / 100;
 
 #pragma STDC FENV_ROUND FE_TOWARDZERO
 long double e = 1.0L / 100;
-

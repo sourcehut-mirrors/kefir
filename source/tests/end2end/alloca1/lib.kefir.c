@@ -31,7 +31,7 @@ size_t total_strlen(const char *str1, const char *str2) {
     char *result = alloca((const size_t) (sz1 + sz2 + 1));
     strcpy(result, str1);
     strcat(result, str2);
-    char *result2 = __builtin_alloca_with_align((const size_t) (sz1 + sz2 + 1), (const size_t){16});
+    char *result2 = __builtin_alloca_with_align((const size_t) (sz1 + sz2 + 1), (const size_t) {16});
     if (((uintptr_t) result2) % 16 != 0) {
         return (size_t) -1;
     }

@@ -169,8 +169,10 @@ DEFINE_CASE(ast_interchange_float_types1, "AST Type analysis - interchange/exten
     ASSERT(KEFIR_AST_TYPE_SAME(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type32, type32), type32));
     ASSERT(KEFIR_AST_TYPE_SAME(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type64, type64), type64));
     ASSERT(KEFIR_AST_TYPE_SAME(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type80, type80), type80));
-    ASSERT(KEFIR_AST_TYPE_SAME(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type32x, type32x), type32x));
-    ASSERT(KEFIR_AST_TYPE_SAME(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type64x, type64x), type64x));
+    ASSERT(
+        KEFIR_AST_TYPE_SAME(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type32x, type32x), type32x));
+    ASSERT(
+        KEFIR_AST_TYPE_SAME(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type64x, type64x), type64x));
 
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type32, type64) == NULL);
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type32, type80) == NULL);
@@ -213,8 +215,10 @@ DEFINE_CASE(ast_interchange_float_types1, "AST Type analysis - interchange/exten
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, kefir_ast_type_float(), type32x) == NULL);
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type32x, kefir_ast_type_double()) == NULL);
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, kefir_ast_type_double(), type32x) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type32x, kefir_ast_type_long_double()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, kefir_ast_type_long_double(), type32x) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type32x, kefir_ast_type_long_double()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, kefir_ast_type_long_double(), type32x) ==
+           NULL);
 
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type64x, type32) == NULL);
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type64x, type64) == NULL);
@@ -224,8 +228,10 @@ DEFINE_CASE(ast_interchange_float_types1, "AST Type analysis - interchange/exten
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, kefir_ast_type_float(), type64x) == NULL);
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type64x, kefir_ast_type_double()) == NULL);
     ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, kefir_ast_type_double(), type64x) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type64x, kefir_ast_type_long_double()) == NULL);
-    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, kefir_ast_type_long_double(), type64x) == NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, type64x, kefir_ast_type_long_double()) ==
+           NULL);
+    ASSERT(KEFIR_AST_TYPE_COMPOSITE(&kft_mem, &type_bundle, type_traits, kefir_ast_type_long_double(), type64x) ==
+           NULL);
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
     ASSERT_OK(kefir_string_pool_free(&kft_mem, &strings));
@@ -236,268 +242,393 @@ DEFINE_CASE(ast_interchange_float_types2, "AST Type analysis - interchange/exten
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
 
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float32(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float32(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float32(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float32(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float32(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float32(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float32(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_float(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_double(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_long_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_long_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_long_double(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_long_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
 
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_float(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_long_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_long_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_long_double(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_long_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
 
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float80(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float80(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float80(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_float(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float80(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float80(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_long_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
 
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float32(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float80(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float32(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float32(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float32(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float32(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_float(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_long_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_long_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_double(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_long_double(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_long_double(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_long_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
 
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_interchange_float80(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                                                (struct kefir_ast_bitfield_properties) {0},
+                                                                kefir_ast_type_interchange_float80(),
+                                                                (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_float(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_float(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
     ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_float(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_double(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_long_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
-    ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_long_double(),
-        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-            kefir_ast_type_long_double(), (struct kefir_ast_bitfield_properties){0})));
+                               kefir_ast_type_common_arithmetic(
+                                   type_traits, kefir_ast_type_double(), (struct kefir_ast_bitfield_properties) {0},
+                                   kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_extended_float64(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_long_double(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_long_double(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
+    ASSERT(KEFIR_AST_TYPE_SAME(
+        kefir_ast_type_long_double(),
+        kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                         (struct kefir_ast_bitfield_properties) {0}, kefir_ast_type_long_double(),
+                                         (struct kefir_ast_bitfield_properties) {0})));
 
-    const struct kefir_ast_type *int_types[] = {
-        kefir_ast_type_boolean(),
-        kefir_ast_type_char(),
-        kefir_ast_type_signed_char(),
-        kefir_ast_type_unsigned_char(),
-        kefir_ast_type_signed_short(),
-        kefir_ast_type_unsigned_short(),
-        kefir_ast_type_signed_int(),
-        kefir_ast_type_unsigned_int(),
-        kefir_ast_type_signed_long(),
-        kefir_ast_type_unsigned_long(),
-        kefir_ast_type_signed_long_long(),
-        kefir_ast_type_unsigned_long_long()
-    };
+    const struct kefir_ast_type *int_types[] = {kefir_ast_type_boolean(),          kefir_ast_type_char(),
+                                                kefir_ast_type_signed_char(),      kefir_ast_type_unsigned_char(),
+                                                kefir_ast_type_signed_short(),     kefir_ast_type_unsigned_short(),
+                                                kefir_ast_type_signed_int(),       kefir_ast_type_unsigned_int(),
+                                                kefir_ast_type_signed_long(),      kefir_ast_type_unsigned_long(),
+                                                kefir_ast_type_signed_long_long(), kefir_ast_type_unsigned_long_long()};
     for (kefir_size_t i = 0; i < sizeof(int_types) / sizeof(int_types[0]); i++) {
-        ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float32(),
-            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-                int_types[i], (struct kefir_ast_bitfield_properties){0})));
-        ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float32(),
-            kefir_ast_type_common_arithmetic(type_traits, int_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0})));
+        ASSERT(KEFIR_AST_TYPE_SAME(
+            kefir_ast_type_interchange_float32(),
+            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                             (struct kefir_ast_bitfield_properties) {0}, int_types[i],
+                                             (struct kefir_ast_bitfield_properties) {0})));
+        ASSERT(KEFIR_AST_TYPE_SAME(
+            kefir_ast_type_interchange_float32(),
+            kefir_ast_type_common_arithmetic(type_traits, int_types[i], (struct kefir_ast_bitfield_properties) {0},
+                                             kefir_ast_type_interchange_float32(),
+                                             (struct kefir_ast_bitfield_properties) {0})));
 
-        ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-                int_types[i], (struct kefir_ast_bitfield_properties){0})));
-        ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float64(),
-            kefir_ast_type_common_arithmetic(type_traits, int_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0})));
+        ASSERT(KEFIR_AST_TYPE_SAME(
+            kefir_ast_type_interchange_float64(),
+            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                             (struct kefir_ast_bitfield_properties) {0}, int_types[i],
+                                             (struct kefir_ast_bitfield_properties) {0})));
+        ASSERT(KEFIR_AST_TYPE_SAME(
+            kefir_ast_type_interchange_float64(),
+            kefir_ast_type_common_arithmetic(type_traits, int_types[i], (struct kefir_ast_bitfield_properties) {0},
+                                             kefir_ast_type_interchange_float64(),
+                                             (struct kefir_ast_bitfield_properties) {0})));
 
-        ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-                int_types[i], (struct kefir_ast_bitfield_properties){0})));
-        ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_interchange_float80(),
-            kefir_ast_type_common_arithmetic(type_traits, int_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0})));
+        ASSERT(KEFIR_AST_TYPE_SAME(
+            kefir_ast_type_interchange_float80(),
+            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                             (struct kefir_ast_bitfield_properties) {0}, int_types[i],
+                                             (struct kefir_ast_bitfield_properties) {0})));
+        ASSERT(KEFIR_AST_TYPE_SAME(
+            kefir_ast_type_interchange_float80(),
+            kefir_ast_type_common_arithmetic(type_traits, int_types[i], (struct kefir_ast_bitfield_properties) {0},
+                                             kefir_ast_type_interchange_float80(),
+                                             (struct kefir_ast_bitfield_properties) {0})));
 
+        ASSERT(KEFIR_AST_TYPE_SAME(
+            kefir_ast_type_extended_float32(),
+            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                             (struct kefir_ast_bitfield_properties) {0}, int_types[i],
+                                             (struct kefir_ast_bitfield_properties) {0})));
         ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float32(),
-            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-                int_types[i], (struct kefir_ast_bitfield_properties){0})));
-        ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float32(),
-            kefir_ast_type_common_arithmetic(type_traits, int_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0})));
+                                   kefir_ast_type_common_arithmetic(
+                                       type_traits, int_types[i], (struct kefir_ast_bitfield_properties) {0},
+                                       kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties) {0})));
 
+        ASSERT(KEFIR_AST_TYPE_SAME(
+            kefir_ast_type_extended_float64(),
+            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                             (struct kefir_ast_bitfield_properties) {0}, int_types[i],
+                                             (struct kefir_ast_bitfield_properties) {0})));
         ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-            kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-                int_types[i], (struct kefir_ast_bitfield_properties){0})));
-        ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_extended_float64(),
-            kefir_ast_type_common_arithmetic(type_traits, int_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0})));
+                                   kefir_ast_type_common_arithmetic(
+                                       type_traits, int_types[i], (struct kefir_ast_bitfield_properties) {0},
+                                       kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties) {0})));
     }
 
-    const struct kefir_ast_type *decimal_types[] = {
-        kefir_ast_type_decimal32(),
-        kefir_ast_type_decimal64(),
-        kefir_ast_type_decimal128()
-    };
+    const struct kefir_ast_type *decimal_types[] = {kefir_ast_type_decimal32(), kefir_ast_type_decimal64(),
+                                                    kefir_ast_type_decimal128()};
     for (kefir_size_t i = 0; i < sizeof(decimal_types) / sizeof(decimal_types[0]); i++) {
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0},
-                decimal_types[i], (struct kefir_ast_bitfield_properties){0}) == NULL);
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties){0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float32(),
+                                                (struct kefir_ast_bitfield_properties) {0}, decimal_types[i],
+                                                (struct kefir_ast_bitfield_properties) {0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(
+                   type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties) {0},
+                   kefir_ast_type_interchange_float32(), (struct kefir_ast_bitfield_properties) {0}) == NULL);
 
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0},
-                decimal_types[i], (struct kefir_ast_bitfield_properties){0}) == NULL);
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties){0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float64(),
+                                                (struct kefir_ast_bitfield_properties) {0}, decimal_types[i],
+                                                (struct kefir_ast_bitfield_properties) {0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(
+                   type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties) {0},
+                   kefir_ast_type_interchange_float64(), (struct kefir_ast_bitfield_properties) {0}) == NULL);
 
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0},
-                decimal_types[i], (struct kefir_ast_bitfield_properties){0}) == NULL);
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties){0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_interchange_float80(),
+                                                (struct kefir_ast_bitfield_properties) {0}, decimal_types[i],
+                                                (struct kefir_ast_bitfield_properties) {0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(
+                   type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties) {0},
+                   kefir_ast_type_interchange_float80(), (struct kefir_ast_bitfield_properties) {0}) == NULL);
 
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0},
-                decimal_types[i], (struct kefir_ast_bitfield_properties){0}) == NULL);
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties){0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float32(),
+                                                (struct kefir_ast_bitfield_properties) {0}, decimal_types[i],
+                                                (struct kefir_ast_bitfield_properties) {0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(
+                   type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties) {0},
+                   kefir_ast_type_extended_float32(), (struct kefir_ast_bitfield_properties) {0}) == NULL);
 
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0},
-                decimal_types[i], (struct kefir_ast_bitfield_properties){0}) == NULL);
-        ASSERT(kefir_ast_type_common_arithmetic(type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties){0},
-                kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties){0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(type_traits, kefir_ast_type_extended_float64(),
+                                                (struct kefir_ast_bitfield_properties) {0}, decimal_types[i],
+                                                (struct kefir_ast_bitfield_properties) {0}) == NULL);
+        ASSERT(kefir_ast_type_common_arithmetic(
+                   type_traits, decimal_types[i], (struct kefir_ast_bitfield_properties) {0},
+                   kefir_ast_type_extended_float64(), (struct kefir_ast_bitfield_properties) {0}) == NULL);
     }
 }
 END_CASE

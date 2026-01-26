@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-struct S1 value = {65535UL,{0,-394,-51,3}};
+struct S1 value = {65535UL, {0, -394, -51, 3}};
 
 int main(void) {
     struct S1 res = gets1();

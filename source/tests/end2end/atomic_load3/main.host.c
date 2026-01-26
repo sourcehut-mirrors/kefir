@@ -65,7 +65,7 @@ int main(void) {
         assert(memcmp(&arr2_0_loaded, &a1, sizeof(struct X)) == 0);
 
         struct X arr2_1_loaded = get_arr2_el(&str, 1);
-        assert(memcmp(&arr2_1_loaded, &(struct X){0}, sizeof(struct X)) == 0);
+        assert(memcmp(&arr2_1_loaded, &(struct X) {0}, sizeof(struct X)) == 0);
 #endif
     }
     return EXIT_SUCCESS;

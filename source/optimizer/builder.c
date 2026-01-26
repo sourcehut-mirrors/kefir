@@ -347,43 +347,40 @@ kefir_result_t kefir_opt_code_builder_long_double_constant(struct kefir_mem *mem
 }
 
 kefir_result_t kefir_opt_code_builder_decimal32_constant(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                           kefir_opt_block_id_t block_id, kefir_dfp_decimal32_t value,
-                                                           kefir_opt_instruction_ref_t *instr_id_ptr) {
+                                                         kefir_opt_block_id_t block_id, kefir_dfp_decimal32_t value,
+                                                         kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_DECIMAL32_CONST,
-                                       .parameters.imm.decimal32 = value},
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_DECIMAL32_CONST, .parameters.imm.decimal32 = value},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_builder_decimal64_constant(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                           kefir_opt_block_id_t block_id, kefir_dfp_decimal64_t value,
-                                                           kefir_opt_instruction_ref_t *instr_id_ptr) {
+                                                         kefir_opt_block_id_t block_id, kefir_dfp_decimal64_t value,
+                                                         kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_DECIMAL64_CONST,
-                                       .parameters.imm.decimal64 = value},
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_DECIMAL64_CONST, .parameters.imm.decimal64 = value},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_builder_decimal128_constant(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                           kefir_opt_block_id_t block_id, kefir_dfp_decimal128_t value,
-                                                           kefir_opt_instruction_ref_t *instr_id_ptr) {
+                                                          kefir_opt_block_id_t block_id, kefir_dfp_decimal128_t value,
+                                                          kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_DECIMAL128_CONST,
-                                       .parameters.imm.decimal128 = value},
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_DECIMAL128_CONST, .parameters.imm.decimal128 = value},
         false, instr_id_ptr));
     return KEFIR_OK;
 }

@@ -22,34 +22,35 @@ int f64_size = sizeof(_Float64);
 int f64_alignment = _Alignof(_Float64);
 __constexpr _Float64 f64_const = 2.71828;
 const _Float64 *f64_const_ptr = &f64_const;
-#define CLASSIFY(_x) _Generic((_x), float : 1, double : 2, long double : 3, _Decimal32 : 4, _Decimal64 : 5, _Decimal128 : 6, _Float64 : -1, default : 0)
-int f64_compat[] = {
-    CLASSIFY((_Float64) 0.0f),
-    CLASSIFY(1 + (_Float64) 0.0f),
-    CLASSIFY(3.14f + (_Float64) 0.0f),
-    CLASSIFY(3.14 + (_Float64) 0.0f),
-    CLASSIFY(3.14l + (_Float64) 0.0f),
-    CLASSIFY(((_Float64) 3.14f) + (_Float64) 0.0f),
-    CLASSIFY(3.14 + (_Float64) 0.0f),
-    CLASSIFY(3.14l + (_Float64) 0.0f)
-};
+#define CLASSIFY(_x)    \
+    _Generic((_x),      \
+        float: 1,       \
+        double: 2,      \
+        long double: 3, \
+        _Decimal32: 4,  \
+        _Decimal64: 5,  \
+        _Decimal128: 6, \
+        _Float64: -1,   \
+        default: 0)
+int f64_compat[] = {CLASSIFY((_Float64) 0.0f),         CLASSIFY(1 + (_Float64) 0.0f),
+                    CLASSIFY(3.14f + (_Float64) 0.0f), CLASSIFY(3.14 + (_Float64) 0.0f),
+                    CLASSIFY(3.14l + (_Float64) 0.0f), CLASSIFY(((_Float64) 3.14f) + (_Float64) 0.0f),
+                    CLASSIFY(3.14 + (_Float64) 0.0f),  CLASSIFY(3.14l + (_Float64) 0.0f)};
 
-_Float64 f64[] = {
-    (_Float64) 3.14159f,
-    -((_Float64) 1902.318f),
-    ((_Float64) 273.3f) + ((_Float64) 1902.318f),
-    ((_Float64) 273.3f) - ((_Float64) 1902.318f),
-    ((_Float64) 273.3f) * ((_Float64) 1902.318f),
-    ((_Float64) 273.3f) / ((_Float64) 1902.318f),
-    (273.3f) + ((_Float64) 1902.318f),
-    (273.3f) - ((_Float64) 1902.318f),
-    (273.3f) * ((_Float64) 1902.318f),
-    (273.3f) / ((_Float64) 1902.318f),
-    ((double) 273.3f) + ((_Float64) 1902.318f),
-    ((double) 273.3f) - ((_Float64) 1902.318f),
-    ((double) 273.3f) * ((_Float64) 1902.318f),
-    ((double) 273.3f) / ((_Float64) 1902.318f)
-};
+_Float64 f64[] = {(_Float64) 3.14159f,
+                  -((_Float64) 1902.318f),
+                  ((_Float64) 273.3f) + ((_Float64) 1902.318f),
+                  ((_Float64) 273.3f) - ((_Float64) 1902.318f),
+                  ((_Float64) 273.3f) * ((_Float64) 1902.318f),
+                  ((_Float64) 273.3f) / ((_Float64) 1902.318f),
+                  (273.3f) + ((_Float64) 1902.318f),
+                  (273.3f) - ((_Float64) 1902.318f),
+                  (273.3f) * ((_Float64) 1902.318f),
+                  (273.3f) / ((_Float64) 1902.318f),
+                  ((double) 273.3f) + ((_Float64) 1902.318f),
+                  ((double) 273.3f) - ((_Float64) 1902.318f),
+                  ((double) 273.3f) * ((_Float64) 1902.318f),
+                  ((double) 273.3f) / ((_Float64) 1902.318f)};
 
 _Float64 get64_1(void) {
     return 5.428f;

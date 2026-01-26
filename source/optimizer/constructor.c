@@ -417,10 +417,14 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             kefir_uint64_t mark_key = (((kefir_uint64_t) current_block_id) << 32) | ((kefir_uint32_t) instr_ref2);
             kefir_hashtable_value_t value;
-            kefir_result_t res = kefir_hashtable_at(&state->local_lifetime_marks_per_block, (kefir_hashtable_key_t) mark_key, &value);
+            kefir_result_t res =
+                kefir_hashtable_at(&state->local_lifetime_marks_per_block, (kefir_hashtable_key_t) mark_key, &value);
             if (res == KEFIR_NOT_FOUND) {
-                REQUIRE_OK(kefir_opt_code_builder_local_lifetime_mark(mem, code, current_block_id, instr_ref2, &instr_ref));
-                REQUIRE_OK(kefir_hashtable_insert(mem, &state->local_lifetime_marks_per_block, (kefir_hashtable_key_t) mark_key, (kefir_hashtable_value_t) instr_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_local_lifetime_mark(mem, code, current_block_id, instr_ref2, &instr_ref));
+                REQUIRE_OK(kefir_hashtable_insert(mem, &state->local_lifetime_marks_per_block,
+                                                  (kefir_hashtable_key_t) mark_key,
+                                                  (kefir_hashtable_value_t) instr_ref));
             } else {
                 REQUIRE_OK(res);
                 instr_ref = (kefir_opt_instruction_ref_t) value;
@@ -487,20 +491,21 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             break;
 
         case KEFIR_IR_OPCODE_DECIMAL32_CONST:
-            REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(mem, code, current_block_id, (kefir_dfp_decimal32_t){instr->arg.u32[0]},
-                                                                   &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(
+                mem, code, current_block_id, (kefir_dfp_decimal32_t) {instr->arg.u32[0]}, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
         case KEFIR_IR_OPCODE_DECIMAL64_CONST:
-            REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, code, current_block_id, (kefir_dfp_decimal64_t){instr->arg.u64},
-                                                                   &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(mem, code, current_block_id,
+                                                                 (kefir_dfp_decimal64_t) {instr->arg.u64}, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
         case KEFIR_IR_OPCODE_DECIMAL128_CONST:
-            REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(mem, code, current_block_id, (kefir_dfp_decimal128_t){{instr->arg.u64_2[0], instr->arg.u64_2[1]}},
-                                                                   &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(
+                mem, code, current_block_id, (kefir_dfp_decimal128_t) {{instr->arg.u64_2[0], instr->arg.u64_2[1]}},
+                &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 

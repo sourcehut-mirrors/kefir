@@ -20,29 +20,6 @@
 
 #include "./definitions.h"
 
-struct S1 a = ((union S3) {
-    .a = {
-        .b = {
-            100,
-            3.14159f,
-            -4.564i + 384.0,
-            0xcafe,
-            0xbabe,
-            "Hello"
-        }
-    }
-}).a.b;
+struct S1 a = ((union S3) {.a = {.b = {100, 3.14159f, -4.564i + 384.0, 0xcafe, 0xbabe, "Hello"}}}).a.b;
 
-union S2 b = ((union S3) {
-    .a = {
-        .b = {
-            ~100,
-            -3.14159f,
-            4.564i - 384.0,
-            ~0xcafe,
-            ~0xbabe,
-            "Goodbye"
-        }
-    }
-}).a;
-
+union S2 b = ((union S3) {.a = {.b = {~100, -3.14159f, 4.564i - 384.0, ~0xcafe, ~0xbabe, "Goodbye"}}}).a;

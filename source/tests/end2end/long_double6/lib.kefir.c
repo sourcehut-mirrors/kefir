@@ -21,5 +21,5 @@
 #include "./definitions.h"
 
 struct S init_s(int x, unsigned int y, double z) {
-    return (struct S){x, y, z};
+    return (struct S) {x, y, z};
 }

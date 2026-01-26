@@ -47,7 +47,8 @@ static kefir_bool_t same_enumeration_type(const struct kefir_ast_type *type1, co
     REQUIRE(type1->tag == KEFIR_AST_TYPE_ENUMERATION && type2->tag == KEFIR_AST_TYPE_ENUMERATION, false);
     REQUIRE(type1->enumeration_type.complete == type2->enumeration_type.complete, false);
     REQUIRE((type1->enumeration_type.identifier == NULL && type2->enumeration_type.identifier == NULL) ||
-                (type1->enumeration_type.identifier != NULL && type2->enumeration_type.identifier != NULL && strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0),
+                (type1->enumeration_type.identifier != NULL && type2->enumeration_type.identifier != NULL &&
+                 strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0),
             false);
     REQUIRE(type1->enumeration_type.flags.no_discard == type2->enumeration_type.flags.no_discard, false);
     REQUIRE(type1->enumeration_type.flags.deprecated == type2->enumeration_type.flags.deprecated, false);
@@ -86,7 +87,8 @@ static kefir_bool_t compatible_enumeration_types(const struct kefir_ast_type_tra
     }
     REQUIRE(type1->tag == KEFIR_AST_TYPE_ENUMERATION && type2->tag == KEFIR_AST_TYPE_ENUMERATION, false);
     REQUIRE((type1->enumeration_type.identifier == NULL && type2->enumeration_type.identifier == NULL) ||
-                (type1->enumeration_type.identifier != NULL && type2->enumeration_type.identifier != NULL && strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0),
+                (type1->enumeration_type.identifier != NULL && type2->enumeration_type.identifier != NULL &&
+                 strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0),
             false);
     if (type1->enumeration_type.complete && type2->enumeration_type.complete) {
         REQUIRE(kefir_list_length(&type1->enumeration_type.enumerators) ==
@@ -127,33 +129,37 @@ const struct kefir_ast_type *composite_enum_types(struct kefir_mem *mem, struct 
     const struct kefir_ast_type *type;
     if (type1->enumeration_type.complete) {
         struct kefir_ast_enum_type *enum_type;
-        type = kefir_ast_type_enumeration(mem, type_bundle, type1->enumeration_type.identifier, type1->enumeration_type.underlying_type, &enum_type);
+        type = kefir_ast_type_enumeration(mem, type_bundle, type1->enumeration_type.identifier,
+                                          type1->enumeration_type.underlying_type, &enum_type);
         REQUIRE(type != NULL, NULL);
 
-        for (const struct kefir_list_entry *iter = kefir_list_head(&type1->enumeration_type.enumerators);
-            iter != NULL;
-            kefir_list_next(&iter)) {
-            ASSIGN_DECL_CAST(const struct kefir_ast_enum_enumerator *, enumerator,
-                iter->value);
+        for (const struct kefir_list_entry *iter = kefir_list_head(&type1->enumeration_type.enumerators); iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(const struct kefir_ast_enum_enumerator *, enumerator, iter->value);
             if (enumerator->has_value) {
-                kefir_result_t res = kefir_ast_enumeration_type_constant(mem, NULL, enum_type, enumerator->identifier, enumerator->value);
+                kefir_result_t res = kefir_ast_enumeration_type_constant(mem, NULL, enum_type, enumerator->identifier,
+                                                                         enumerator->value);
                 REQUIRE(res == KEFIR_OK, NULL);
             } else {
-                kefir_result_t res = kefir_ast_enumeration_type_constant_auto(mem, NULL, enum_type, enumerator->identifier);
+                kefir_result_t res =
+                    kefir_ast_enumeration_type_constant_auto(mem, NULL, enum_type, enumerator->identifier);
                 REQUIRE(res == KEFIR_OK, NULL);
             }
         }
 
-        enum_type->flags.no_discard = type1->enumeration_type.flags.no_discard || type2->enumeration_type.flags.no_discard;
-        enum_type->flags.no_discard_message = type1->enumeration_type.flags.no_discard_message != NULL 
-            ? type1->enumeration_type.flags.no_discard_message
-            : type2->enumeration_type.flags.no_discard_message;
-        enum_type->flags.deprecated = type1->enumeration_type.flags.deprecated || type2->enumeration_type.flags.deprecated;
-        enum_type->flags.deprecated_message = type1->enumeration_type.flags.deprecated_message != NULL 
-            ? type1->enumeration_type.flags.deprecated_message
-            : type2->enumeration_type.flags.deprecated_message;
+        enum_type->flags.no_discard =
+            type1->enumeration_type.flags.no_discard || type2->enumeration_type.flags.no_discard;
+        enum_type->flags.no_discard_message = type1->enumeration_type.flags.no_discard_message != NULL
+                                                  ? type1->enumeration_type.flags.no_discard_message
+                                                  : type2->enumeration_type.flags.no_discard_message;
+        enum_type->flags.deprecated =
+            type1->enumeration_type.flags.deprecated || type2->enumeration_type.flags.deprecated;
+        enum_type->flags.deprecated_message = type1->enumeration_type.flags.deprecated_message != NULL
+                                                  ? type1->enumeration_type.flags.deprecated_message
+                                                  : type2->enumeration_type.flags.deprecated_message;
     } else {
-        type = kefir_ast_type_incomplete_enumeration(mem, type_bundle, type1->enumeration_type.identifier, type1->enumeration_type.underlying_type);
+        type = kefir_ast_type_incomplete_enumeration(mem, type_bundle, type1->enumeration_type.identifier,
+                                                     type1->enumeration_type.underlying_type);
     }
     return type;
 }

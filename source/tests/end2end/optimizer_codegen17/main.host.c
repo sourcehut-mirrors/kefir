@@ -49,13 +49,13 @@ int main(void) {
         double id = (double) i;
         for (float j = -5.0f; j < 5.0f; j += 0.01f) {
             assert(fabs(my_hypotf(i, j) - (i * i + j * j)) < EPSILON_F);
-            assert(fabs(sumf((union Sumf){.x = i, .y = j}).result - (i + j)) < EPSILON_F);
-            assert(fabs(my_hypotf2((union Sumf){.x = i, .y = j}).result - (i * i + j * j)) < EPSILON_F);
+            assert(fabs(sumf((union Sumf) {.x = i, .y = j}).result - (i + j)) < EPSILON_F);
+            assert(fabs(my_hypotf2((union Sumf) {.x = i, .y = j}).result - (i * i + j * j)) < EPSILON_F);
 
             double jd = (double) j;
             assert(fabs(my_hypotd(id, jd) - (id * id + jd * jd)) < EPSILON_D);
-            assert(fabs(sumd((union Sumd){.x = id, .y = jd}).result - (id + jd)) < EPSILON_D);
-            assert(fabs(my_hypotd2((union Sumd){.x = id, .y = jd}).result - (id * id + jd * jd)) < EPSILON_D);
+            assert(fabs(sumd((union Sumd) {.x = id, .y = jd}).result - (id + jd)) < EPSILON_D);
+            assert(fabs(my_hypotd2((union Sumd) {.x = id, .y = jd}).result - (id * id + jd * jd)) < EPSILON_D);
         }
 
         assert(fabs(sum10f(-1, i, i * 2, i + 2, i + 3, i * 10, -5 * i, 0.0f, i, i + 100) -

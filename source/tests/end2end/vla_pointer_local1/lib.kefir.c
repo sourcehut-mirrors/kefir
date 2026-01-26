@@ -21,6 +21,6 @@
 #include "./definitions.h"
 
 unsigned long get_element(const void *ptr, unsigned long length, unsigned long index) {
-    const long(*array)[length] = ptr;
+    const long (*array)[length] = ptr;
     return (*array)[index];
 }

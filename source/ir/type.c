@@ -326,11 +326,12 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *type
     return KEFIR_OK;
 }
 
-kefir_int_t kefir_ir_typeentry_compare(const struct kefir_ir_typeentry *typeentry1, const struct kefir_ir_typeentry *typeentry2) {
+kefir_int_t kefir_ir_typeentry_compare(const struct kefir_ir_typeentry *typeentry1,
+                                       const struct kefir_ir_typeentry *typeentry2) {
     if (typeentry1 == NULL && typeentry2 == NULL) {
         return 0;
     } else if (typeentry1 == NULL) {
-        return  -1;
+        return -1;
     } else if (typeentry2 == NULL) {
         return 1;
     }
@@ -362,11 +363,14 @@ kefir_int_t kefir_ir_typeentry_compare(const struct kefir_ir_typeentry *typeentr
     return 0;
 }
 
-kefir_result_t kefir_ir_type_same(const struct kefir_ir_type *type1, kefir_size_t index1, const struct kefir_ir_type *type2, kefir_size_t index2, kefir_bool_t *same_ptr) {
+kefir_result_t kefir_ir_type_same(const struct kefir_ir_type *type1, kefir_size_t index1,
+                                  const struct kefir_ir_type *type2, kefir_size_t index2, kefir_bool_t *same_ptr) {
     REQUIRE(type1 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
     REQUIRE(type2 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
-    REQUIRE(index1 < kefir_ir_type_length(type1), KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided IR type index is out of bounds"));
-    REQUIRE(index2 < kefir_ir_type_length(type2), KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided IR type index is out of bounds"));
+    REQUIRE(index1 < kefir_ir_type_length(type1),
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided IR type index is out of bounds"));
+    REQUIRE(index2 < kefir_ir_type_length(type2),
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided IR type index is out of bounds"));
     REQUIRE(same_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean"));
 
     kefir_size_t type1_length = kefir_ir_type_length_of(type1, index1);
@@ -374,7 +378,7 @@ kefir_result_t kefir_ir_type_same(const struct kefir_ir_type *type1, kefir_size_
         *same_ptr = false;
         return KEFIR_OK;
     }
-    
+
     for (kefir_size_t i = 0; i < type1_length; i++) {
         const struct kefir_ir_typeentry *typeentry1 = kefir_ir_type_at(type1, index1 + i);
         const struct kefir_ir_typeentry *typeentry2 = kefir_ir_type_at(type2, index2 + i);

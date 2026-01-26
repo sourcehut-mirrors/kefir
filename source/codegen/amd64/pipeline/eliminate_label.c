@@ -24,7 +24,8 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t alive_label(struct kefir_mem *mem, struct kefir_asmcmp_context *context, kefir_asmcmp_label_index_t *label_idx, struct kefir_hashtable *label_mapping) {
+static kefir_result_t alive_label(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                  kefir_asmcmp_label_index_t *label_idx, struct kefir_hashtable *label_mapping) {
     const struct kefir_asmcmp_label *label;
     REQUIRE_OK(kefir_asmcmp_context_get_label(context, *label_idx, &label));
     REQUIRE(label->attached, KEFIR_OK);
@@ -34,14 +35,15 @@ static kefir_result_t alive_label(struct kefir_mem *mem, struct kefir_asmcmp_con
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         if (label->external_dependencies) {
-            REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, context, (kefir_asmcmp_label_index_t) table_value));
+            REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, context,
+                                                                             (kefir_asmcmp_label_index_t) table_value));
         }
 
         struct kefir_hashtreeset_iterator iter;
-        for (res = kefir_hashtreeset_iter(&label->public_labels, &iter);
-            res == KEFIR_OK;
-            res = kefir_hashtreeset_next(&iter)) {
-            REQUIRE_OK(kefir_asmcmp_context_label_add_public_name(mem, context, (kefir_asmcmp_label_index_t) table_value, (const char *) iter.entry));
+        for (res = kefir_hashtreeset_iter(&label->public_labels, &iter); res == KEFIR_OK;
+             res = kefir_hashtreeset_next(&iter)) {
+            REQUIRE_OK(kefir_asmcmp_context_label_add_public_name(
+                mem, context, (kefir_asmcmp_label_index_t) table_value, (const char *) iter.entry));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -49,21 +51,21 @@ static kefir_result_t alive_label(struct kefir_mem *mem, struct kefir_asmcmp_con
 
         *label_idx = (kefir_asmcmp_label_index_t) table_value;
     } else {
-        REQUIRE_OK(kefir_hashtable_insert(mem, label_mapping, (kefir_hashtable_key_t) label->position, (kefir_hashtable_value_t) *label_idx));
+        REQUIRE_OK(kefir_hashtable_insert(mem, label_mapping, (kefir_hashtable_key_t) label->position,
+                                          (kefir_hashtable_value_t) *label_idx));
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t collect_labels(struct kefir_mem *mem, struct kefir_asmcmp_context *context, struct kefir_asmcmp_value *value,
-                                     struct kefir_hashtable *label_mapping) {
+static kefir_result_t collect_labels(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                     struct kefir_asmcmp_value *value, struct kefir_hashtable *label_mapping) {
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
             REQUIRE_OK(alive_label(mem, context, &value->internal_label, label_mapping));
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
-            REQUIRE_OK(
-                alive_label(mem, context, &value->rip_indirection.internal, label_mapping));
+            REQUIRE_OK(alive_label(mem, context, &value->rip_indirection.internal, label_mapping));
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
@@ -85,9 +87,8 @@ static kefir_result_t collect_labels(struct kefir_mem *mem, struct kefir_asmcmp_
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX: {
             struct kefir_asmcmp_inline_assembly_fragment_iterator iter;
             kefir_result_t res;
-            for (res =
-                        kefir_asmcmp_inline_assembly_fragment_iter(context, value->inline_asm_idx, &iter);
-                    res == KEFIR_OK && iter.fragment != NULL; res = kefir_asmcmp_inline_assembly_fragment_next(&iter)) {
+            for (res = kefir_asmcmp_inline_assembly_fragment_iter(context, value->inline_asm_idx, &iter);
+                 res == KEFIR_OK && iter.fragment != NULL; res = kefir_asmcmp_inline_assembly_fragment_next(&iter)) {
 
                 switch (iter.fragment->type) {
                     case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_TEXT:
@@ -98,9 +99,12 @@ static kefir_result_t collect_labels(struct kefir_mem *mem, struct kefir_asmcmp_
                         if (iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL) {
                             REQUIRE_OK(alive_label(mem, context, &iter.fragment->value.internal_label, label_mapping));
                         } else if (iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL) {
-                            REQUIRE_OK(alive_label(mem, context, &iter.fragment->value.rip_indirection.internal, label_mapping));
-                        } else if (iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT && iter.fragment->value.indirect.type == KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS) {
-                            REQUIRE_OK(alive_label(mem, context, &iter.fragment->value.indirect.base.internal_label, label_mapping));
+                            REQUIRE_OK(alive_label(mem, context, &iter.fragment->value.rip_indirection.internal,
+                                                   label_mapping));
+                        } else if (iter.fragment->value.type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT &&
+                                   iter.fragment->value.indirect.type == KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS) {
+                            REQUIRE_OK(alive_label(mem, context, &iter.fragment->value.indirect.base.internal_label,
+                                                   label_mapping));
                         }
                         break;
                 }
@@ -137,16 +141,17 @@ static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_a
     kefir_result_t res;
     struct kefir_asmcmp_code_map_iterator code_map_iter;
     kefir_asmcmp_debug_info_code_reference_t code_ref;
-    for (res = kefir_asmcmp_code_map_iter(&context->debug_info.code_map, &code_map_iter, &code_ref);
-        res == KEFIR_OK;
-        res = kefir_asmcmp_code_map_next(&code_map_iter, &code_ref)) {
+    for (res = kefir_asmcmp_code_map_iter(&context->debug_info.code_map, &code_map_iter, &code_ref); res == KEFIR_OK;
+         res = kefir_asmcmp_code_map_next(&code_map_iter, &code_ref)) {
         struct kefir_asmcmp_code_map_fragment_iterator fragment_iter;
         const struct kefir_asmcmp_debug_info_code_fragment *code_fragment;
-        for (res = kefir_asmcmp_code_map_fragment_iter(&context->debug_info.code_map, code_ref, &fragment_iter, &code_fragment);
-            res == KEFIR_OK;
-            res = kefir_asmcmp_code_map_fragment_next(&fragment_iter, &code_fragment)) {
-            REQUIRE_OK(alive_label(mem, context, (kefir_asmcmp_label_index_t *) &code_fragment->begin_label, label_mapping));
-            REQUIRE_OK(alive_label(mem, context, (kefir_asmcmp_label_index_t *) &code_fragment->end_label, label_mapping));
+        for (res = kefir_asmcmp_code_map_fragment_iter(&context->debug_info.code_map, code_ref, &fragment_iter,
+                                                       &code_fragment);
+             res == KEFIR_OK; res = kefir_asmcmp_code_map_fragment_next(&fragment_iter, &code_fragment)) {
+            REQUIRE_OK(
+                alive_label(mem, context, (kefir_asmcmp_label_index_t *) &code_fragment->begin_label, label_mapping));
+            REQUIRE_OK(
+                alive_label(mem, context, (kefir_asmcmp_label_index_t *) &code_fragment->end_label, label_mapping));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -159,15 +164,16 @@ static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_a
     struct kefir_asmcmp_value_map_iterator value_map_iter;
     kefir_asmcmp_debug_info_value_reference_t value_ref;
     for (res = kefir_asmcmp_value_map_iter(&context->debug_info.value_map, &value_map_iter, &value_ref);
-        res == KEFIR_OK;
-        res = kefir_asmcmp_value_map_next(&value_map_iter, &value_ref)) {
+         res == KEFIR_OK; res = kefir_asmcmp_value_map_next(&value_map_iter, &value_ref)) {
         struct kefir_asmcmp_value_map_fragment_iterator fragment_iter;
         const struct kefir_asmcmp_debug_info_value_fragment *value_fragment;
-        for (res = kefir_asmcmp_value_map_fragment_iter(&context->debug_info.value_map, value_ref, &fragment_iter, &value_fragment);
-            res == KEFIR_OK;
-            res = kefir_asmcmp_value_map_fragment_next(&fragment_iter, &value_fragment)) {
-            REQUIRE_OK(alive_label(mem, context, (kefir_asmcmp_label_index_t *) &value_fragment->begin_label, label_mapping));
-            REQUIRE_OK(alive_label(mem, context, (kefir_asmcmp_label_index_t *) &value_fragment->end_label, label_mapping));
+        for (res = kefir_asmcmp_value_map_fragment_iter(&context->debug_info.value_map, value_ref, &fragment_iter,
+                                                        &value_fragment);
+             res == KEFIR_OK; res = kefir_asmcmp_value_map_fragment_next(&fragment_iter, &value_fragment)) {
+            REQUIRE_OK(
+                alive_label(mem, context, (kefir_asmcmp_label_index_t *) &value_fragment->begin_label, label_mapping));
+            REQUIRE_OK(
+                alive_label(mem, context, (kefir_asmcmp_label_index_t *) &value_fragment->end_label, label_mapping));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -200,13 +206,14 @@ static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_a
 
         if (label_index != value) {
             if (label->external_dependencies) {
-                REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, context, (kefir_asmcmp_label_index_t) value));
+                REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, context,
+                                                                                 (kefir_asmcmp_label_index_t) value));
             }
             struct kefir_hashtreeset_iterator iter;
-            for (res = kefir_hashtreeset_iter(&label->public_labels, &iter);
-                res == KEFIR_OK;
-                res = kefir_hashtreeset_next(&iter)) {
-                REQUIRE_OK(kefir_asmcmp_context_label_add_public_name(mem, context, (kefir_asmcmp_label_index_t) value, (const char *) iter.entry));
+            for (res = kefir_hashtreeset_iter(&label->public_labels, &iter); res == KEFIR_OK;
+                 res = kefir_hashtreeset_next(&iter)) {
+                REQUIRE_OK(kefir_asmcmp_context_label_add_public_name(mem, context, (kefir_asmcmp_label_index_t) value,
+                                                                      (const char *) iter.entry));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);

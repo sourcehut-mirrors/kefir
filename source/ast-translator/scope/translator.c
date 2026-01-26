@@ -107,9 +107,10 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                                   : scoped_identifier->value->object.asm_label,
                     .type = KEFIR_IR_IDENTIFIER_GLOBAL_DATA,
                     .visibility = !scoped_identifier->value->object.external
-                                      ? get_ir_visibility(scoped_identifier->value->object.visibility != KEFIR_AST_DECLARATOR_VISIBILITY_UNSET
-                                        ? scoped_identifier->value->object.visibility
-                                        : context->configuration->analysis.symbol_visibility)
+                                      ? get_ir_visibility(scoped_identifier->value->object.visibility !=
+                                                                  KEFIR_AST_DECLARATOR_VISIBILITY_UNSET
+                                                              ? scoped_identifier->value->object.visibility
+                                                              : context->configuration->analysis.symbol_visibility)
                                       : KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                     .alias = NULL,
                     .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
@@ -203,9 +204,10 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                     }
                 }
                 if (scoped_identifier->value->function.defined) {
-                    ir_identifier.visibility = get_ir_visibility(scoped_identifier->value->function.visibility != KEFIR_AST_DECLARATOR_VISIBILITY_UNSET
-                                        ? scoped_identifier->value->function.visibility
-                                        : context->configuration->analysis.symbol_visibility);
+                    ir_identifier.visibility = get_ir_visibility(
+                        scoped_identifier->value->function.visibility != KEFIR_AST_DECLARATOR_VISIBILITY_UNSET
+                            ? scoped_identifier->value->function.visibility
+                            : context->configuration->analysis.symbol_visibility);
                 }
 
                 REQUIRE_OK(
@@ -391,7 +393,7 @@ static kefir_result_t translate_static_thread_locals(
 
                 if (scoped_identifier->value->object.flags.common && !scoped_identifier->value->object.flags.weak &&
                     scoped_identifier->value->object.initializer == NULL &&
-                        context->configuration->analysis.enable_thread_local_common) {
+                    context->configuration->analysis.enable_thread_local_common) {
                     REQUIRE_OK(assign_common(mem, context, scoped_identifier->value->object.type, &ir_identifier));
                 }
 

@@ -41,15 +41,24 @@ typedef struct kefir_codegen_target_ir_code_schedule_builder {
 } kefir_codegen_target_ir_code_schedule_builder_t;
 
 typedef struct kefir_codegen_target_ir_code_scheduler {
-    kefir_result_t (*do_schedule)(struct kefir_mem *, const struct kefir_codegen_target_ir_code_schedule *, struct kefir_codegen_target_ir_code_schedule_builder *, kefir_codegen_target_ir_block_ref_t, void *);
+    kefir_result_t (*do_schedule)(struct kefir_mem *, const struct kefir_codegen_target_ir_code_schedule *,
+                                  struct kefir_codegen_target_ir_code_schedule_builder *,
+                                  kefir_codegen_target_ir_block_ref_t, void *);
     void *payload;
 } kefir_codegen_target_ir_code_scheduler_t;
 
-kefir_result_t kefir_codegen_target_ir_code_schedule_init(struct kefir_codegen_target_ir_code_schedule *, const struct kefir_codegen_target_ir_code *);
-kefir_result_t kefir_codegen_target_ir_code_schedule_free(struct kefir_mem *, struct kefir_codegen_target_ir_code_schedule *);
-kefir_result_t kefir_codegen_target_ir_code_schedule_build(struct kefir_mem *, struct kefir_codegen_target_ir_code_schedule *, const struct kefir_codegen_target_ir_code_scheduler *);
+kefir_result_t kefir_codegen_target_ir_code_schedule_init(struct kefir_codegen_target_ir_code_schedule *,
+                                                          const struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_code_schedule_free(struct kefir_mem *,
+                                                          struct kefir_codegen_target_ir_code_schedule *);
+kefir_result_t kefir_codegen_target_ir_code_schedule_build(struct kefir_mem *,
+                                                           struct kefir_codegen_target_ir_code_schedule *,
+                                                           const struct kefir_codegen_target_ir_code_scheduler *);
 
-kefir_bool_t kefir_codegen_target_ir_code_schedule_has_block(const struct kefir_codegen_target_ir_code_schedule *, kefir_codegen_target_ir_block_ref_t);
-kefir_result_t kefir_codegen_target_ir_code_schedule_of_block(const struct kefir_codegen_target_ir_code_schedule *, kefir_codegen_target_ir_block_ref_t, const struct kefir_codegen_target_ir_block_schedule **);
+kefir_bool_t kefir_codegen_target_ir_code_schedule_has_block(const struct kefir_codegen_target_ir_code_schedule *,
+                                                             kefir_codegen_target_ir_block_ref_t);
+kefir_result_t kefir_codegen_target_ir_code_schedule_of_block(const struct kefir_codegen_target_ir_code_schedule *,
+                                                              kefir_codegen_target_ir_block_ref_t,
+                                                              const struct kefir_codegen_target_ir_block_schedule **);
 
 #endif

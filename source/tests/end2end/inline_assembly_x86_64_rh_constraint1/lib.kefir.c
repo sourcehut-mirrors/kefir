@@ -22,25 +22,25 @@
 
 #ifdef __x86_64__
 unsigned short exchange1(unsigned short x) {
-    asm("xchgb %h0, %b0" : "+Q" (x));
+    asm("xchgb %h0, %b0" : "+Q"(x));
     return x;
 }
 
 unsigned short exchange2(unsigned short x) {
     unsigned short dummy[1];
-    asm("xchgb %h1, %b1" : "=a"(dummy[0]), "+Q" (x));
+    asm("xchgb %h1, %b1" : "=a"(dummy[0]), "+Q"(x));
     return x;
 }
 
 unsigned short exchange3(unsigned short x) {
     unsigned short dummy[2];
-    asm("xchgb %h2, %b2" : "=a"(dummy[0]), "=c"(dummy[1]), "+Q" (x));
+    asm("xchgb %h2, %b2" : "=a"(dummy[0]), "=c"(dummy[1]), "+Q"(x));
     return x;
 }
 
 unsigned short exchange4(unsigned short x) {
     unsigned short dummy[3];
-    asm("xchgb %h3, %b3" : "=a"(dummy[0]), "=c"(dummy[1]), "=d"(dummy[2]), "+Q" (x));
+    asm("xchgb %h3, %b3" : "=a"(dummy[0]), "=c"(dummy[1]), "=d"(dummy[2]), "+Q"(x));
     return x;
 }
 #endif

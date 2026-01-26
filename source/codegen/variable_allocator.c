@@ -132,20 +132,20 @@ static kefir_result_t allocator_run_impl(struct allocator_state *state) {
              res = kefir_hashset_next(&iter, &entry)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, entry);
             REQUIRE_OK(kefir_hashtree_at(&state->conflicts->block_alive_vars, (kefir_hashtree_key_t) block_id, &node));
-            ASSIGN_DECL_CAST(const struct kefir_opt_code_block_local_variables *, block_local_variables,
-                node->value);
+            ASSIGN_DECL_CAST(const struct kefir_opt_code_block_local_variables *, block_local_variables, node->value);
 
             struct kefir_hashset_iterator var_iter;
             for (res = kefir_hashset_iter(&block_local_variables->variables, &var_iter, &entry); res == KEFIR_OK;
-                res = kefir_hashset_next(&var_iter, &entry)) {
+                 res = kefir_hashset_next(&var_iter, &entry)) {
                 ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, conflict_instr_ref, entry);
                 if (instr_ref != conflict_instr_ref) {
                     struct kefir_hashtree_node *node;
-                    res = kefir_hashtree_at(&state->allocator->variable_locations, (kefir_hashtree_key_t) conflict_instr_ref,
-                                            &node);
+                    res = kefir_hashtree_at(&state->allocator->variable_locations,
+                                            (kefir_hashtree_key_t) conflict_instr_ref, &node);
                     if (res != KEFIR_NOT_FOUND) {
                         REQUIRE_OK(res);
-                        res = kefir_hashtree_insert(state->mem, &state->current_allocation, (kefir_hashtree_key_t) node->value,
+                        res = kefir_hashtree_insert(state->mem, &state->current_allocation,
+                                                    (kefir_hashtree_key_t) node->value,
                                                     (kefir_hashtree_value_t) node->key);
                         if (res != KEFIR_ALREADY_EXISTS) {
                             REQUIRE_OK(res);

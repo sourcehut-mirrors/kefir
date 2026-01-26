@@ -116,10 +116,9 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                                KEFIR_IR_COMPARE_INT64_EQUALS));
                     break;
-            
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
-                        builder, KEFIR_IR_OPCODE_INT128_EQUAL, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_EQUAL, 0));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
@@ -249,14 +248,13 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                                KEFIR_IR_COMPARE_INT64_EQUALS));
                     break;
-            
+
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
                         builder,
                         signed_controlling_expr ? KEFIR_IR_OPCODE_INT128_GREATER : KEFIR_IR_OPCODE_INT128_ABOVE, 0));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_EQUAL,
-                                                               0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_EQUAL, 0));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
@@ -268,8 +266,8 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
-                        builder,
-                        signed_controlling_expr ? KEFIR_IR_OPCODE_INT128_LESS : KEFIR_IR_OPCODE_INT128_BELOW, 0));
+                        builder, signed_controlling_expr ? KEFIR_IR_OPCODE_INT128_LESS : KEFIR_IR_OPCODE_INT128_BELOW,
+                        0));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT128_EQUAL, 0));
                     break;

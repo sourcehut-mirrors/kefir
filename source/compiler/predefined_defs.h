@@ -391,7 +391,7 @@ typedef unsigned __int128 __uint128_t;
                     __builtin_choose_expr(                                                                          \
                         sizeof(__result_t) == 8,                                                                    \
                         __kefir_builtin_atomic_fetch_add64((void *) (_ptr), (__UINT64_TYPE__) (_val), (_memorder)), \
-                        __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_add)))));  \
+                        __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_add))))); \
     })
 
 #define __atomic_fetch_sub(_ptr, _val, _memorder) __atomic_fetch_add((_ptr), -(_val), (_memorder))
@@ -442,10 +442,11 @@ typedef unsigned __int128 __uint128_t;
         __size == sizeof(__UINT8_TYPE__) || __size == sizeof(__UINT16_TYPE__) || __size == sizeof(__UINT32_TYPE__) || \
             __size == sizeof(__UINT64_TYPE__) || __atomic_is_lock_free(__size, (volatile void *) (_ptr));             \
     })
-#define __atomic_always_lock_free(_size, _ptr) \
-    (__builtin_choose_expr(__kefir_builtin_constant((_size)), \
-        (_size) == sizeof(__UINT8_TYPE__) || (_size) == sizeof(__UINT16_TYPE__) || (_size) == sizeof(__UINT32_TYPE__) || (_size) == sizeof(__UINT64_TYPE__), \
-        ({ _Static_assert(0, "__atomic_always_lock_free expects constant first argument"); })))
+#define __atomic_always_lock_free(_size, _ptr)                                                           \
+    (__builtin_choose_expr(__kefir_builtin_constant((_size)),                                            \
+                           (_size) == sizeof(__UINT8_TYPE__) || (_size) == sizeof(__UINT16_TYPE__) ||    \
+                               (_size) == sizeof(__UINT32_TYPE__) || (_size) == sizeof(__UINT64_TYPE__), \
+                           ({ _Static_assert(0, "__atomic_always_lock_free expects constant first argument"); })))
 #define __atomic_test_and_set(_ptr, _memorder)                                     \
     ({                                                                             \
         extern _Bool __kefir_builtin_atomic_seq_cst_test_and_set(volatile void *); \

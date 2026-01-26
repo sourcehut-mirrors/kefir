@@ -37,6 +37,8 @@ typedef struct kefir_codegen_target_ir_tie_classification {
     kefir_size_t untied_output_index;
 } kefir_codegen_target_ir_tie_classification_t;
 
-kefir_result_t kefir_codegen_target_ir_tie_operands(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t, struct kefir_codegen_target_ir_tie_classification *);
+kefir_result_t kefir_codegen_target_ir_tie_operands(const struct kefir_codegen_target_ir_code *,
+                                                    kefir_codegen_target_ir_instruction_ref_t,
+                                                    struct kefir_codegen_target_ir_tie_classification *);
 
 #endif

@@ -79,4 +79,3 @@ _Complex double div64(void) {
 _Complex long double div80(void) {
     return (3.14il + 1.1l) / (2.718l - 1.1il);
 }
-

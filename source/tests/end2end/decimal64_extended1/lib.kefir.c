@@ -25,34 +25,35 @@ int d64x_size = sizeof(_Decimal64x);
 int d64x_alignment = _Alignof(_Decimal64x);
 __constexpr _Decimal64x d64x_const = 2.71828;
 const _Decimal64x *d64x_const_ptr = &d64x_const;
-#define CLASSIFY(_x) _Generic((_x), float : 1, double : 2, long double : 3, _Decimal32 : 4, _Decimal64 : 5, _Decimal128 : 6, _Decimal64x : -1, default : 0)
-int d64x_compat[] = {
-    CLASSIFY((_Decimal64x) 0.0f),
-    CLASSIFY(1 + (_Decimal64x) 0.0f),
-    CLASSIFY(3.14df + (_Decimal64x) 0.0f),
-    CLASSIFY(3.14dd + (_Decimal64x) 0.0f),
-    CLASSIFY(3.14dl + (_Decimal64x) 0.0f),
-    CLASSIFY(((_Decimal64x) 3.14f) + (_Decimal64x) 0.0f),
-    CLASSIFY(3.14dd + (_Decimal64x) 0.0f),
-    CLASSIFY(3.14dl + (_Decimal64x) 0.0f)
-};
+#define CLASSIFY(_x)     \
+    _Generic((_x),       \
+        float: 1,        \
+        double: 2,       \
+        long double: 3,  \
+        _Decimal32: 4,   \
+        _Decimal64: 5,   \
+        _Decimal128: 6,  \
+        _Decimal64x: -1, \
+        default: 0)
+int d64x_compat[] = {CLASSIFY((_Decimal64x) 0.0f),          CLASSIFY(1 + (_Decimal64x) 0.0f),
+                     CLASSIFY(3.14df + (_Decimal64x) 0.0f), CLASSIFY(3.14dd + (_Decimal64x) 0.0f),
+                     CLASSIFY(3.14dl + (_Decimal64x) 0.0f), CLASSIFY(((_Decimal64x) 3.14f) + (_Decimal64x) 0.0f),
+                     CLASSIFY(3.14dd + (_Decimal64x) 0.0f), CLASSIFY(3.14dl + (_Decimal64x) 0.0f)};
 
-_Decimal64x d64x[] = {
-    (_Decimal64x) 3.14159f,
-    -((_Decimal64x) 1902.318f),
-    ((_Decimal64x) 273.3f) + ((_Decimal64x) 1902.318f),
-    ((_Decimal64x) 273.3f) - ((_Decimal64x) 1902.318f),
-    ((_Decimal64x) 273.3f) * ((_Decimal64x) 1902.318f),
-    ((_Decimal64x) 273.3f) / ((_Decimal64x) 1902.318f),
-    ((_Decimal32) 273.3f) + ((_Decimal64x) 1902.318f),
-    ((_Decimal32) 273.3f) - ((_Decimal64x) 1902.318f),
-    ((_Decimal32) 273.3f) * ((_Decimal64x) 1902.318f),
-    ((_Decimal32) 273.3f) / ((_Decimal64x) 1902.318f),
-    ((_Decimal64) 273.3f) + ((_Decimal64x) 1902.318f),
-    ((_Decimal64) 273.3f) - ((_Decimal64x) 1902.318f),
-    ((_Decimal64) 273.3f) * ((_Decimal64x) 1902.318f),
-    ((_Decimal64) 273.3f) / ((_Decimal64x) 1902.318f)
-};
+_Decimal64x d64x[] = {(_Decimal64x) 3.14159f,
+                      -((_Decimal64x) 1902.318f),
+                      ((_Decimal64x) 273.3f) + ((_Decimal64x) 1902.318f),
+                      ((_Decimal64x) 273.3f) - ((_Decimal64x) 1902.318f),
+                      ((_Decimal64x) 273.3f) * ((_Decimal64x) 1902.318f),
+                      ((_Decimal64x) 273.3f) / ((_Decimal64x) 1902.318f),
+                      ((_Decimal32) 273.3f) + ((_Decimal64x) 1902.318f),
+                      ((_Decimal32) 273.3f) - ((_Decimal64x) 1902.318f),
+                      ((_Decimal32) 273.3f) * ((_Decimal64x) 1902.318f),
+                      ((_Decimal32) 273.3f) / ((_Decimal64x) 1902.318f),
+                      ((_Decimal64) 273.3f) + ((_Decimal64x) 1902.318f),
+                      ((_Decimal64) 273.3f) - ((_Decimal64x) 1902.318f),
+                      ((_Decimal64) 273.3f) * ((_Decimal64x) 1902.318f),
+                      ((_Decimal64) 273.3f) / ((_Decimal64x) 1902.318f)};
 
 _Decimal64x get32x_1(void) {
     return 5.428f;

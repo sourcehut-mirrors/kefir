@@ -20,13 +20,13 @@
 
 #include "./definitions.h"
 
-#define DEF_OP(_type, _offset) \
-    _type idiv_##_type##_offset(_type x) { \
-        return x / (_type) (1ull << (_offset)); \
-    } \
+#define DEF_OP(_type, _offset)                              \
+    _type idiv_##_type##_offset(_type x) {                  \
+        return x / (_type) (1ull << (_offset));             \
+    }                                                       \
     unsigned _type div_##_type##_offset(unsigned _type x) { \
-        return x / (unsigned _type) (1ull << (_offset)); \
-    } \
+        return x / (unsigned _type)(1ull << (_offset));     \
+    }
 
 DEF_OP(char, 0)
 DEF_OP(char, 1)

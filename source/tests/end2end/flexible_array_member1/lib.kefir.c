@@ -37,7 +37,7 @@ struct Test1 *t3(void) {
     return &t3;
 }
 
-static struct Test2 T1 = {.len = 2, .content = {(struct Test1){.len = 3}, {.len = 20}}};
+static struct Test2 T1 = {.len = 2, .content = {(struct Test1) {.len = 3}, {.len = 20}}};
 
 struct Test1 *get_T2(int x) {
     if (x >= 0 && x < T1.len) {

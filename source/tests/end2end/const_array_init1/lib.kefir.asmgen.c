@@ -21,9 +21,4 @@
 const struct {
     const char *name;
     int flag;
-} x[] = {
-    { "Hello", 0 },
-    { "world", 1 },
-    { "!", 2 },
-    0
-};
+} x[] = {{"Hello", 0}, {"world", 1}, {"!", 2}, 0};

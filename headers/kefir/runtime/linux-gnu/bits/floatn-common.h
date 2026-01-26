@@ -31,8 +31,7 @@
 #define KEFIR_RUNTIME_LINUX_GNU_BITS_FLOATN_COMMON_H_
 
 #ifndef __KEFIRCC__
-#error \
-    "Included bits/floatn-common.h is inteded to be used strictly with Kefir C compiler."
+#error "Included bits/floatn-common.h is inteded to be used strictly with Kefir C compiler."
 #endif
 
 #if __has_include(<features.h>)

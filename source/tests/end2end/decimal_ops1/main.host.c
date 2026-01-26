@@ -24,7 +24,8 @@
 #include <math.h>
 #include "./definitions.h"
 
-#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && !defined(__NetBSD__) && !defined(__DragonFly__)
+#if ((defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || defined(__KEFIRCC_DECIMAL_SUPPORT__)) && \
+    !defined(__NetBSD__) && !defined(__DragonFly__)
 #pragma GCC diagnostic ignored "-Wpedantic"
 #define ENABLE_DECIMAL_TEST
 _Bool decimal32_eq(_Decimal32 a, _Decimal32 b) {
@@ -93,15 +94,9 @@ int main(void) {
     assert(decimal64_eq(neg64(-3.14159), 3.14159));
     assert(decimal128_eq(neg128(-3.14159), 3.14159));
 
-    _Decimal32 d32[] = {
-        3.14159, 2.71828
-    };
-    _Decimal64 d64[] = {
-        3.14159, 2.71828
-    };
-    _Decimal128 d128[] = {
-        3.14159, 2.71828
-    };
+    _Decimal32 d32[] = {3.14159, 2.71828};
+    _Decimal64 d64[] = {3.14159, 2.71828};
+    _Decimal128 d128[] = {3.14159, 2.71828};
     assert(eq32(d32[0], d32[0]));
     assert(eq32(d32[1], d32[1]));
     assert(!eq32(d32[0], d32[1]));

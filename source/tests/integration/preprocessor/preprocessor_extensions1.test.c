@@ -165,7 +165,7 @@ struct context_payload {
 
 static kefir_result_t close_source(struct kefir_mem *mem, struct kefir_preprocessor_source_file *source_file) {
     UNUSED(mem);
-    *source_file = (struct kefir_preprocessor_source_file){0};
+    *source_file = (struct kefir_preprocessor_source_file) {0};
     return KEFIR_OK;
 }
 

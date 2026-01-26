@@ -25,6 +25,5 @@ unsigned long test2(struct S2 x) {
 }
 
 unsigned long test8(struct S8 x) {
-    return x.arr[0] + x.arr[1] + x.arr[2] + x.arr[3] +
-        x.arr[4] + x.arr[5] + x.arr[6] + x.arr[7];
+    return x.arr[0] + x.arr[1] + x.arr[2] + x.arr[3] + x.arr[4] + x.arr[5] + x.arr[6] + x.arr[7];
 }

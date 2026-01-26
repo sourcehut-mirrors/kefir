@@ -94,7 +94,7 @@ __int128 select1(__int128 x) {
     switch (x) {
         case 0:
             return -100;
-        
+
         case -1:
             return -200;
 
@@ -104,7 +104,7 @@ __int128 select1(__int128 x) {
         case 100 ... 1000:
             return 0;
 
-        case -1000 ... -100:
+        case -1000 ... - 100:
             return 10;
 
         default:
@@ -116,7 +116,7 @@ unsigned __int128 select2(unsigned __int128 x) {
     switch (x) {
         case 0:
             return -100;
-        
+
         case -1:
             return -200;
 
@@ -126,7 +126,7 @@ unsigned __int128 select2(unsigned __int128 x) {
         case 100 ... 1000:
             return 0;
 
-        case -1000 ... -100:
+        case -1000 ... - 100:
             return 10;
 
         default:

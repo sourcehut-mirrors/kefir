@@ -20,5 +20,5 @@
 
 #include "./definitions.h"
 
-struct Test1 *arr[] = {(struct Test1[]){{1, "Hello"}, {2, "world"}, {3, "!"}, {0}},
-                       (struct Test1[]){{1, "Goodbye, world!"}, {0}}, 0};
+struct Test1 *arr[] = {(struct Test1[]) {{1, "Hello"}, {2, "world"}, {3, "!"}, {0}},
+                       (struct Test1[]) {{1, "Goodbye, world!"}, {0}}, 0};

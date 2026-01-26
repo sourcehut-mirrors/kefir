@@ -22,34 +22,35 @@ int f80_size = sizeof(_Float80);
 int f80_alignment = _Alignof(_Float80);
 __constexpr _Float80 f80_const = 2.71828;
 const _Float80 *f80_const_ptr = &f80_const;
-#define CLASSIFY(_x) _Generic((_x), float : 1, double : 2, long double : 3, _Decimal32 : 4, _Decimal64 : 5, _Decimal128 : 6, _Float80 : -1, default : 0)
-int f80_compat[] = {
-    CLASSIFY((_Float80) 0.0f),
-    CLASSIFY(1 + (_Float80) 0.0f),
-    CLASSIFY(3.14f + (_Float80) 0.0f),
-    CLASSIFY(3.14 + (_Float80) 0.0f),
-    CLASSIFY(3.14l + (_Float80) 0.0f),
-    CLASSIFY(((_Float80) 3.14f) + (_Float80) 0.0f),
-    CLASSIFY(3.14 + (_Float80) 0.0f),
-    CLASSIFY(3.14l + (_Float80) 0.0f)
-};
+#define CLASSIFY(_x)    \
+    _Generic((_x),      \
+        float: 1,       \
+        double: 2,      \
+        long double: 3, \
+        _Decimal32: 4,  \
+        _Decimal64: 5,  \
+        _Decimal128: 6, \
+        _Float80: -1,   \
+        default: 0)
+int f80_compat[] = {CLASSIFY((_Float80) 0.0f),         CLASSIFY(1 + (_Float80) 0.0f),
+                    CLASSIFY(3.14f + (_Float80) 0.0f), CLASSIFY(3.14 + (_Float80) 0.0f),
+                    CLASSIFY(3.14l + (_Float80) 0.0f), CLASSIFY(((_Float80) 3.14f) + (_Float80) 0.0f),
+                    CLASSIFY(3.14 + (_Float80) 0.0f),  CLASSIFY(3.14l + (_Float80) 0.0f)};
 
-_Float80 f80[] = {
-    (_Float80) 3.14159f,
-    -((_Float80) 1902.318f),
-    ((_Float80) 273.3f) + ((_Float80) 1902.318f),
-    ((_Float80) 273.3f) - ((_Float80) 1902.318f),
-    ((_Float80) 273.3f) * ((_Float80) 1902.318f),
-    ((_Float80) 273.3f) / ((_Float80) 1902.318f),
-    (273.3f) + ((_Float80) 1902.318f),
-    (273.3f) - ((_Float80) 1902.318f),
-    (273.3f) * ((_Float80) 1902.318f),
-    (273.3f) / ((_Float80) 1902.318f),
-    ((double) 273.3f) + ((_Float80) 1902.318f),
-    ((double) 273.3f) - ((_Float80) 1902.318f),
-    ((double) 273.3f) * ((_Float80) 1902.318f),
-    ((double) 273.3f) / ((_Float80) 1902.318f)
-};
+_Float80 f80[] = {(_Float80) 3.14159f,
+                  -((_Float80) 1902.318f),
+                  ((_Float80) 273.3f) + ((_Float80) 1902.318f),
+                  ((_Float80) 273.3f) - ((_Float80) 1902.318f),
+                  ((_Float80) 273.3f) * ((_Float80) 1902.318f),
+                  ((_Float80) 273.3f) / ((_Float80) 1902.318f),
+                  (273.3f) + ((_Float80) 1902.318f),
+                  (273.3f) - ((_Float80) 1902.318f),
+                  (273.3f) * ((_Float80) 1902.318f),
+                  (273.3f) / ((_Float80) 1902.318f),
+                  ((double) 273.3f) + ((_Float80) 1902.318f),
+                  ((double) 273.3f) - ((_Float80) 1902.318f),
+                  ((double) 273.3f) * ((_Float80) 1902.318f),
+                  ((double) 273.3f) / ((_Float80) 1902.318f)};
 
 _Float80 get80_1(void) {
     return 5.428f;

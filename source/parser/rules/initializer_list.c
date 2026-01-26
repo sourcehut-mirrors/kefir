@@ -73,14 +73,11 @@ static kefir_result_t scan_initializer_list(struct kefir_mem *mem, struct kefir_
             has_syntax_errors = true;
             parser->encountered_errors++;
             res = kefir_parser_token_cursor_restore(parser->cursor, cursor_state);
-            REQUIRE_CHAIN(&res, kefir_parser_error_recovery_skip_garbage(parser, &(struct kefir_parser_error_recovery_context) {
-                .sync_points = {
-                    .semicolon = true,
-                    .comma = true,
-                    .parentheses = true,
-                    .brackets = true
-                }
-            }));
+            REQUIRE_CHAIN(
+                &res, kefir_parser_error_recovery_skip_garbage(
+                          parser, &(struct kefir_parser_error_recovery_context) {
+                                      .sync_points = {
+                                          .semicolon = true, .comma = true, .parentheses = true, .brackets = true}}));
             REQUIRE_ELSE(res == KEFIR_OK, {
                 kefir_ast_initializer_free(mem, *initializer);
                 return res;

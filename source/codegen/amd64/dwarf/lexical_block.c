@@ -32,8 +32,8 @@ static kefir_result_t generate_lexical_block_abbrev(struct kefir_codegen_amd64 *
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(&codegen->xasmgen, context->abbrev.entries.lexical_block,
                                               KEFIR_DWARF(DW_TAG_lexical_block), KEFIR_DWARF(DW_CHILDREN_yes)));
-    REQUIRE_OK(
-        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_ranges), KEFIR_DWARF(DW_FORM_sec_offset)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_ranges),
+                                                  KEFIR_DWARF(DW_FORM_sec_offset)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV_END(&codegen->xasmgen));
     return KEFIR_OK;
 }
@@ -65,7 +65,7 @@ static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
         kefir_asm_amd64_xasmgen_operand_label(
             &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
             kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers,
-                                                KEFIR_AMD64_DWARF_DEBUG_RNGLIST_ENTRY, rnglist_entry_id))));
+                                                   KEFIR_AMD64_DWARF_DEBUG_RNGLIST_ENTRY, rnglist_entry_id))));
 
     REQUIRE_OK(
         kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, liveness, entry_id));
@@ -75,17 +75,16 @@ static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
 }
 
 static kefir_result_t generate_lexical_block_ranges(struct kefir_mem *mem,
-                                                  struct kefir_codegen_amd64_dwarf_context *context,
-                                                  struct kefir_codegen_amd64_function *codegen_function,
-                                                  const struct kefir_opt_module_liveness *liveness,
-                                                  kefir_ir_debug_entry_id_t entry_id,
-                                                  kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
+                                                    struct kefir_codegen_amd64_dwarf_context *context,
+                                                    struct kefir_codegen_amd64_function *codegen_function,
+                                                    const struct kefir_opt_module_liveness *liveness,
+                                                    kefir_ir_debug_entry_id_t entry_id,
+                                                    kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     UNUSED(mem);
     UNUSED(liveness);
     UNUSED(dwarf_entry_id);
     struct kefir_hashtree_node *node;
-    REQUIRE_OK(kefir_hashtree_at(&context->loclists.entries.ir_debug_entries, (kefir_hashtree_key_t) entry_id,
-                                 &node));
+    REQUIRE_OK(kefir_hashtree_at(&context->loclists.entries.ir_debug_entries, (kefir_hashtree_key_t) entry_id, &node));
     ASSIGN_DECL_CAST(kefir_codegen_amd64_dwarf_entry_id_t, rnglist_entry_id, node->value);
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_function->codegen->xasmgen, KEFIR_AMD64_DWARF_DEBUG_RNGLIST_ENTRY,

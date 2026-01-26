@@ -21,179 +21,56 @@
 #line __LINE__ "decimal_const_eval_builtins1"
 
 #ifdef __KEFIRCC_DECIMAL_SUPPORT__
-int a[] = {
-    __builtin_isnan(1.0df),
-    __builtin_isnan(1.0df / 2.0df),
-    __builtin_isnan(0.0df / 0.0df),
-    __builtin_isnan(-0.0df / 0.0df),
-    __builtin_isnan(1.0df / 0.0df),
-    __builtin_isnan(-1.0df / 0.0df),
-    __builtin_isnan(1.0dd),
-    __builtin_isnan(1.0dd / 2.0dd),
-    __builtin_isnan(0.0dd / 0.0dd),
-    __builtin_isnan(-0.0dd / 0.0dd),
-    __builtin_isnan(1.0dd / 0.0dd),
-    __builtin_isnan(-1.0dd / 0.0dd),
-    __builtin_isnan(1.0dl),
-    __builtin_isnan(1.0dl / 2.0dl),
-    __builtin_isnan(0.0dl / 0.0dl),
-    __builtin_isnan(-0.0dl / 0.0dl),
-    __builtin_isnan(1.0dl / 0.0dl),
-    __builtin_isnan(-1.0dl / 0.0dl)
-};
+int a[] = {__builtin_isnan(1.0df),          __builtin_isnan(1.0df / 2.0df), __builtin_isnan(0.0df / 0.0df),
+           __builtin_isnan(-0.0df / 0.0df), __builtin_isnan(1.0df / 0.0df), __builtin_isnan(-1.0df / 0.0df),
+           __builtin_isnan(1.0dd),          __builtin_isnan(1.0dd / 2.0dd), __builtin_isnan(0.0dd / 0.0dd),
+           __builtin_isnan(-0.0dd / 0.0dd), __builtin_isnan(1.0dd / 0.0dd), __builtin_isnan(-1.0dd / 0.0dd),
+           __builtin_isnan(1.0dl),          __builtin_isnan(1.0dl / 2.0dl), __builtin_isnan(0.0dl / 0.0dl),
+           __builtin_isnan(-0.0dl / 0.0dl), __builtin_isnan(1.0dl / 0.0dl), __builtin_isnan(-1.0dl / 0.0dl)};
 
 int b[] = {
-    __builtin_isinf_sign(1.0df),
-    __builtin_isinf_sign(1.0df / 2.0df),
-    __builtin_isinf_sign(0.0df / 0.0df),
-    __builtin_isinf_sign(-0.0df / 0.0df),
-    __builtin_isinf_sign(1.0df / 0.0df),
-    __builtin_isinf_sign(-1.0df / 0.0df),
-    __builtin_isinf_sign(1.0dd),
-    __builtin_isinf_sign(1.0dd / 2.0dd),
-    __builtin_isinf_sign(0.0dd / 0.0dd),
-    __builtin_isinf_sign(-0.0dd / 0.0dd),
-    __builtin_isinf_sign(1.0dd / 0.0dd),
-    __builtin_isinf_sign(-1.0dd / 0.0dd),
-    __builtin_isinf_sign(1.0dl),
-    __builtin_isinf_sign(1.0dl / 2.0dl),
-    __builtin_isinf_sign(0.0dl / 0.0dl),
-    __builtin_isinf_sign(-0.0dl / 0.0dl),
-    __builtin_isinf_sign(1.0dl / 0.0dl),
-    __builtin_isinf_sign(-1.0dl / 0.0dl)
-};
+    __builtin_isinf_sign(1.0df),          __builtin_isinf_sign(1.0df / 2.0df), __builtin_isinf_sign(0.0df / 0.0df),
+    __builtin_isinf_sign(-0.0df / 0.0df), __builtin_isinf_sign(1.0df / 0.0df), __builtin_isinf_sign(-1.0df / 0.0df),
+    __builtin_isinf_sign(1.0dd),          __builtin_isinf_sign(1.0dd / 2.0dd), __builtin_isinf_sign(0.0dd / 0.0dd),
+    __builtin_isinf_sign(-0.0dd / 0.0dd), __builtin_isinf_sign(1.0dd / 0.0dd), __builtin_isinf_sign(-1.0dd / 0.0dd),
+    __builtin_isinf_sign(1.0dl),          __builtin_isinf_sign(1.0dl / 2.0dl), __builtin_isinf_sign(0.0dl / 0.0dl),
+    __builtin_isinf_sign(-0.0dl / 0.0dl), __builtin_isinf_sign(1.0dl / 0.0dl), __builtin_isinf_sign(-1.0dl / 0.0dl)};
 
-int c[] = {
-    __builtin_isfinite(1.0df),
-    __builtin_isfinite(1.0df / 2.0df),
-    __builtin_isfinite(0.0df / 0.0df),
-    __builtin_isfinite(-0.0df / 0.0df),
-    __builtin_isfinite(1.0df / 0.0df),
-    __builtin_isfinite(-1.0df / 0.0df),
-    __builtin_isfinite(1.0dd),
-    __builtin_isfinite(1.0dd / 2.0dd),
-    __builtin_isfinite(0.0dd / 0.0dd),
-    __builtin_isfinite(-0.0dd / 0.0dd),
-    __builtin_isfinite(1.0dd / 0.0dd),
-    __builtin_isfinite(-1.0dd / 0.0dd),
-    __builtin_isfinite(1.0dl),
-    __builtin_isfinite(1.0dl / 2.0dl),
-    __builtin_isfinite(0.0dl / 0.0dl),
-    __builtin_isfinite(-0.0dl / 0.0dl),
-    __builtin_isfinite(1.0dl / 0.0dl),
-    __builtin_isfinite(-1.0dl / 0.0dl)
-};
+int c[] = {__builtin_isfinite(1.0df),          __builtin_isfinite(1.0df / 2.0df), __builtin_isfinite(0.0df / 0.0df),
+           __builtin_isfinite(-0.0df / 0.0df), __builtin_isfinite(1.0df / 0.0df), __builtin_isfinite(-1.0df / 0.0df),
+           __builtin_isfinite(1.0dd),          __builtin_isfinite(1.0dd / 2.0dd), __builtin_isfinite(0.0dd / 0.0dd),
+           __builtin_isfinite(-0.0dd / 0.0dd), __builtin_isfinite(1.0dd / 0.0dd), __builtin_isfinite(-1.0dd / 0.0dd),
+           __builtin_isfinite(1.0dl),          __builtin_isfinite(1.0dl / 2.0dl), __builtin_isfinite(0.0dl / 0.0dl),
+           __builtin_isfinite(-0.0dl / 0.0dl), __builtin_isfinite(1.0dl / 0.0dl), __builtin_isfinite(-1.0dl / 0.0dl)};
 
-int d[] = {
-    __builtin_isinf(1.0df),
-    __builtin_isinf(1.0df / 2.0df),
-    __builtin_isinf(0.0df / 0.0df),
-    __builtin_isinf(-0.0df / 0.0df),
-    __builtin_isinf(1.0df / 0.0df),
-    __builtin_isinf(-1.0df / 0.0df),
-    __builtin_isinf(1.0dd),
-    __builtin_isinf(1.0dd / 2.0dd),
-    __builtin_isinf(0.0dd / 0.0dd),
-    __builtin_isinf(-0.0dd / 0.0dd),
-    __builtin_isinf(1.0dd / 0.0dd),
-    __builtin_isinf(-1.0dd / 0.0dd),
-    __builtin_isinf(1.0dl),
-    __builtin_isinf(1.0dl / 2.0dl),
-    __builtin_isinf(0.0dl / 0.0dl),
-    __builtin_isinf(-0.0dl / 0.0dl),
-    __builtin_isinf(1.0dl / 0.0dl),
-    __builtin_isinf(-1.0dl / 0.0dl)
-};
+int d[] = {__builtin_isinf(1.0df),          __builtin_isinf(1.0df / 2.0df), __builtin_isinf(0.0df / 0.0df),
+           __builtin_isinf(-0.0df / 0.0df), __builtin_isinf(1.0df / 0.0df), __builtin_isinf(-1.0df / 0.0df),
+           __builtin_isinf(1.0dd),          __builtin_isinf(1.0dd / 2.0dd), __builtin_isinf(0.0dd / 0.0dd),
+           __builtin_isinf(-0.0dd / 0.0dd), __builtin_isinf(1.0dd / 0.0dd), __builtin_isinf(-1.0dd / 0.0dd),
+           __builtin_isinf(1.0dl),          __builtin_isinf(1.0dl / 2.0dl), __builtin_isinf(0.0dl / 0.0dl),
+           __builtin_isinf(-0.0dl / 0.0dl), __builtin_isinf(1.0dl / 0.0dl), __builtin_isinf(-1.0dl / 0.0dl)};
 #else
-int a[] = {
-    0,
-    0,
-    1,
-    1,
-    0,
-    0,
+int a[] = {0, 0, 1, 1, 0, 0,
 
-    0,
-    0,
-    1,
-    1,
-    0,
-    0,
+           0, 0, 1, 1, 0, 0,
 
-    0,
-    0,
-    1,
-    1,
-    0,
-    0
-};
+           0, 0, 1, 1, 0, 0};
 
-int b[] = {
-    0,
-    0,
-    0,
-    0,
-    1,
-    -1,
+int b[] = {0, 0, 0, 0, 1, -1,
 
-    0,
-    0,
-    0,
-    0,
-    1,
-    -1,
+           0, 0, 0, 0, 1, -1,
 
-    0,
-    0,
-    0,
-    0,
-    1,
-    -1
-};
+           0, 0, 0, 0, 1, -1};
 
-int c[] = {
-    1,
-    1,
-    0,
-    0,
-    0,
-    0,
-    
-    1,
-    1,
-    0,
-    0,
-    0,
-    0,
+int c[] = {1, 1, 0, 0, 0, 0,
 
-    1,
-    1,
-    0,
-    0,
-    0,
-    0
-};
+           1, 1, 0, 0, 0, 0,
 
-int d[] = {
-    0,
-    0,
-    0,
-    0,
-    1,
-    1,
+           1, 1, 0, 0, 0, 0};
 
-    0,
-    0,
-    0,
-    0,
-    1,
-    1,
+int d[] = {0, 0, 0, 0, 1, 1,
 
-    0,
-    0,
-    0,
-    0,
-    1,
-    1
-};
+           0, 0, 0, 0, 1, 1,
+
+           0, 0, 0, 0, 1, 1};
 #endif

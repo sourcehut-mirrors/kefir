@@ -22,34 +22,35 @@ int f32_size = sizeof(_Float32);
 int f32_alignment = _Alignof(_Float32);
 __constexpr _Float32 f32_const = 2.71828;
 const _Float32 *f32_const_ptr = &f32_const;
-#define CLASSIFY(_x) _Generic((_x), float : 1, double : 2, long double : 3, _Decimal32 : 4, _Decimal64 : 5, _Decimal128 : 6, _Float32 : -1, default : 0)
-int f32_compat[] = {
-    CLASSIFY((_Float32) 0.0f),
-    CLASSIFY(1 + (_Float32) 0.0f),
-    CLASSIFY(3.14f + (_Float32) 0.0f),
-    CLASSIFY(3.14 + (_Float32) 0.0f),
-    CLASSIFY(3.14l + (_Float32) 0.0f),
-    CLASSIFY(((_Float32) 3.14f) + (_Float32) 0.0f),
-    CLASSIFY(3.14 + (_Float32) 0.0f),
-    CLASSIFY(3.14l + (_Float32) 0.0f)
-};
+#define CLASSIFY(_x)    \
+    _Generic((_x),      \
+        float: 1,       \
+        double: 2,      \
+        long double: 3, \
+        _Decimal32: 4,  \
+        _Decimal64: 5,  \
+        _Decimal128: 6, \
+        _Float32: -1,   \
+        default: 0)
+int f32_compat[] = {CLASSIFY((_Float32) 0.0f),         CLASSIFY(1 + (_Float32) 0.0f),
+                    CLASSIFY(3.14f + (_Float32) 0.0f), CLASSIFY(3.14 + (_Float32) 0.0f),
+                    CLASSIFY(3.14l + (_Float32) 0.0f), CLASSIFY(((_Float32) 3.14f) + (_Float32) 0.0f),
+                    CLASSIFY(3.14 + (_Float32) 0.0f),  CLASSIFY(3.14l + (_Float32) 0.0f)};
 
-_Float32 f32[] = {
-    (_Float32) 3.14159f,
-    -((_Float32) 1902.318f),
-    ((_Float32) 273.3f) + ((_Float32) 1902.318f),
-    ((_Float32) 273.3f) - ((_Float32) 1902.318f),
-    ((_Float32) 273.3f) * ((_Float32) 1902.318f),
-    ((_Float32) 273.3f) / ((_Float32) 1902.318f),
-    (273.3f) + ((_Float32) 1902.318f),
-    (273.3f) - ((_Float32) 1902.318f),
-    (273.3f) * ((_Float32) 1902.318f),
-    (273.3f) / ((_Float32) 1902.318f),
-    ((double) 273.3f) + ((_Float32) 1902.318f),
-    ((double) 273.3f) - ((_Float32) 1902.318f),
-    ((double) 273.3f) * ((_Float32) 1902.318f),
-    ((double) 273.3f) / ((_Float32) 1902.318f)
-};
+_Float32 f32[] = {(_Float32) 3.14159f,
+                  -((_Float32) 1902.318f),
+                  ((_Float32) 273.3f) + ((_Float32) 1902.318f),
+                  ((_Float32) 273.3f) - ((_Float32) 1902.318f),
+                  ((_Float32) 273.3f) * ((_Float32) 1902.318f),
+                  ((_Float32) 273.3f) / ((_Float32) 1902.318f),
+                  (273.3f) + ((_Float32) 1902.318f),
+                  (273.3f) - ((_Float32) 1902.318f),
+                  (273.3f) * ((_Float32) 1902.318f),
+                  (273.3f) / ((_Float32) 1902.318f),
+                  ((double) 273.3f) + ((_Float32) 1902.318f),
+                  ((double) 273.3f) - ((_Float32) 1902.318f),
+                  ((double) 273.3f) * ((_Float32) 1902.318f),
+                  ((double) 273.3f) / ((_Float32) 1902.318f)};
 
 _Float32 get32_1(void) {
     return 5.428f;

@@ -19,12 +19,12 @@
 */
 
 struct inner {
-    int __attribute__ ((aligned (32))) a;
+    int __attribute__((aligned(32))) a;
 };
 
 struct outer {
-  int a;
-  struct inner b;
+    int a;
+    struct inner b;
 };
 
 int get(void) {

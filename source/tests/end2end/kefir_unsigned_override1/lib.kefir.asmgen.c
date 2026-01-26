@@ -34,8 +34,7 @@ typedef unsigned _BitInt(100) ubitint_t;
 typedef __typeof_unqual__((const volatile long) 100) tst1_t;
 typedef __typeof_unqual__((const volatile char) 100) tst2_t;
 
-#define ASSERT_TYPE(_type1, _type2) \
-    _Static_assert(_Generic(_type1, _type2 : 1, default : 0))
+#define ASSERT_TYPE(_type1, _type2) _Static_assert(_Generic(_type1, _type2: 1, default: 0))
 
 ASSERT_TYPE(__kefir_unsigned_override chr_t, unsigned char);
 ASSERT_TYPE(__kefir_unsigned_override schr_t, unsigned char);

@@ -18,22 +18,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-enum A {
-    A [[deprecated]],
-    B,
-    C [[deprecated("DEPRECATED")]]
-};
+enum A { A [[deprecated]], B, C [[deprecated("DEPRECATED")]] };
 
-int a = A ;
+int a = A;
 int b = B;
 int c = C;
 
 int fn() {
-    enum A2 {
-        A2 [[deprecated]],
-        B2,
-        C2 [[deprecated("DEPRECATED")]]
-    };
+    enum A2 { A2 [[deprecated]], B2, C2 [[deprecated("DEPRECATED")]] };
 
     int a = A2;
     int b = B2;
@@ -41,7 +33,7 @@ int fn() {
     return a + b + c;
 }
 
-int fn3(enum { X [[deprecated]], Y, Z [[deprecated("DEPRECATED")]] } x) {
+int fn3(enum {X [[deprecated]], Y, Z [[deprecated("DEPRECATED")]]} x) {
     int a = X;
     int b = Y;
     int c = Z;

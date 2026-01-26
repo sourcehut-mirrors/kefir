@@ -143,10 +143,10 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                 }
             }
 
-            REQUIRE_OK(kefir_asmcmp_new_virtual_register_of_type(mem, &function->code.context, source_vreg_idx, &target_vreg_idx));
-            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
-                                                                kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                                target_vreg_idx, NULL));
+            REQUIRE_OK(kefir_asmcmp_new_virtual_register_of_type(mem, &function->code.context, source_vreg_idx,
+                                                                 &target_vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), target_vreg_idx, NULL));
 
             if (deferred_target_vreg_idx != KEFIR_ASMCMP_INDEX_NONE) {
                 REQUIRE_OK(kefir_hashtree_insert(mem, deferred_target_vregs,
@@ -728,7 +728,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
     const struct kefir_opt_code_block_schedule *target_block_schedule, *source_block_schedule;
     REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, target_block->id, &target_block_schedule));
     REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, source_block->id, &source_block_schedule));
-    if (alternative_phi_outputs || target_block_schedule->linear_position != source_block_schedule->linear_position + 1) {
+    if (alternative_phi_outputs ||
+        target_block_schedule->linear_position != source_block_schedule->linear_position + 1) {
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block->id, &label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
@@ -846,7 +847,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
     const struct kefir_opt_code_block_schedule *target_block_schedule, *source_block_schedule;
     REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, target_block->id, &target_block_schedule));
     REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, source_block->id, &source_block_schedule));
-    if (alternative_phi_outputs || target_block_schedule->linear_position != source_block_schedule->linear_position + 1) {
+    if (alternative_phi_outputs ||
+        target_block_schedule->linear_position != source_block_schedule->linear_position + 1) {
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block->id, &label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
@@ -941,16 +943,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
                     mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_real_vreg));
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                     mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_imag_vreg));
-                REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_placement_real_vreg));
-                REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_placement_imag_vreg));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                             KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
+                                                             &result_placement_real_vreg));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                             KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
+                                                             &result_placement_imag_vreg));
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(
                     mem, &function->code.context, arg1_asmcmp_vreg->parameters.pair.type, arg2_placement_real_vreg,
                     arg2_placement_imag_vreg, &arg2_placement_vreg));
-                REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context,
-                                                                  arg1_asmcmp_vreg->parameters.pair.type,
-                                                                  result_placement_real_vreg, result_placement_imag_vreg, &result_placement_vreg));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(
+                    mem, &function->code.context, arg1_asmcmp_vreg->parameters.pair.type, result_placement_real_vreg,
+                    result_placement_imag_vreg, &result_placement_vreg));
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context,
                                                                   arg1_asmcmp_vreg->parameters.pair.type,
                                                                   result_real_vreg, result_imag_vreg, &result_vreg));
@@ -968,49 +972,58 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
                     mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_real_vreg));
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                     mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_imag_vreg));
-                REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_placement_real_vreg));
-                REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_placement_imag_vreg));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                             KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                                                             &result_placement_real_vreg));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                             KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                                                             &result_placement_imag_vreg));
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(
                     mem, &function->code.context, arg1_asmcmp_vreg->parameters.pair.type, arg2_placement_real_vreg,
                     arg2_placement_imag_vreg, &arg2_placement_vreg));
-                REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context,
-                                                                  arg1_asmcmp_vreg->parameters.pair.type,
-                                                                  result_placement_real_vreg, result_placement_imag_vreg, &result_placement_vreg));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(
+                    mem, &function->code.context, arg1_asmcmp_vreg->parameters.pair.type, result_placement_real_vreg,
+                    result_placement_imag_vreg, &result_placement_vreg));
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context,
                                                                   arg1_asmcmp_vreg->parameters.pair.type,
                                                                   result_real_vreg, result_imag_vreg, &result_vreg));
                 break;
         }
     } else if (arg1_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE ||
-        arg2_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE) {
+               arg2_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE) {
         REQUIRE(arg1_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE &&
                     arg2_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE &&
-                    arg1_asmcmp_vreg->parameters.spill_space_allocation.length == arg2_asmcmp_vreg->parameters.spill_space_allocation.length,
-                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected both virtual registers to be spill space allocations of the same length"));
+                    arg1_asmcmp_vreg->parameters.spill_space_allocation.length ==
+                        arg2_asmcmp_vreg->parameters.spill_space_allocation.length,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                "Expected both virtual registers to be spill space allocations of the same length"));
         REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-        const kefir_size_t max_alignment = MAX(arg1_asmcmp_vreg->parameters.spill_space_allocation.alignment, arg2_asmcmp_vreg->parameters.spill_space_allocation.alignment);
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &result_vreg));
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &result_placement_vreg));
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &arg2_placement_vreg));
+        const kefir_size_t max_alignment = MAX(arg1_asmcmp_vreg->parameters.spill_space_allocation.alignment,
+                                               arg2_asmcmp_vreg->parameters.spill_space_allocation.alignment);
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
+            mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment,
+            &result_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
+            mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment,
+            &result_placement_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
+            mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment,
+            &arg2_placement_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            result_vreg, NULL));
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
+                                                               kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                               result_placement_vreg, NULL));
         REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            result_placement_vreg, NULL));
-        REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            arg2_placement_vreg, NULL));
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), arg2_placement_vreg, NULL));
         use_conditional_mov = true;
     } else {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                    KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &arg2_placement_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+            mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &arg2_placement_vreg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_placement_vreg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                    KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
     }
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
@@ -1089,15 +1102,15 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
         kefir_asmcmp_label_index_t no_arg2_move_label;
         REQUIRE_OK(
             kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &no_arg2_move_label));
-        
+
         switch (instruction->operation.parameters.comparison) {
             case KEFIR_OPT_COMPARISON_INT8_EQUALS:
             case KEFIR_OPT_COMPARISON_INT16_EQUALS:
             case KEFIR_OPT_COMPARISON_INT32_EQUALS:
             case KEFIR_OPT_COMPARISON_INT64_EQUALS:
                 REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                 kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                 &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_NOT_EQUALS:
@@ -1105,8 +1118,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_NOT_EQUALS:
             case KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS:
                 REQUIRE_OK(kefir_asmcmp_amd64_jne(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                  kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                  &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_GREATER:
@@ -1114,8 +1127,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_GREATER:
             case KEFIR_OPT_COMPARISON_INT64_GREATER:
                 REQUIRE_OK(kefir_asmcmp_amd64_jg(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                 kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                 &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS:
@@ -1123,8 +1136,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_GREATER_OR_EQUALS:
             case KEFIR_OPT_COMPARISON_INT64_GREATER_OR_EQUALS:
                 REQUIRE_OK(kefir_asmcmp_amd64_jge(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                  kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                  &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_LESSER:
@@ -1132,8 +1145,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_LESSER:
             case KEFIR_OPT_COMPARISON_INT64_LESSER:
                 REQUIRE_OK(kefir_asmcmp_amd64_jl(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                 kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                 &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS:
@@ -1141,8 +1154,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_LESSER_OR_EQUALS:
             case KEFIR_OPT_COMPARISON_INT64_LESSER_OR_EQUALS:
                 REQUIRE_OK(kefir_asmcmp_amd64_jle(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                  kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                  &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_ABOVE:
@@ -1150,8 +1163,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_ABOVE:
             case KEFIR_OPT_COMPARISON_INT64_ABOVE:
                 REQUIRE_OK(kefir_asmcmp_amd64_ja(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                 kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                 &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS:
@@ -1159,8 +1172,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS:
             case KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS:
                 REQUIRE_OK(kefir_asmcmp_amd64_jae(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                  kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                  &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_BELOW:
@@ -1168,8 +1181,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_BELOW:
             case KEFIR_OPT_COMPARISON_INT64_BELOW:
                 REQUIRE_OK(kefir_asmcmp_amd64_jb(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                 kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                 &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS:
@@ -1177,8 +1190,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS:
             case KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS:
                 REQUIRE_OK(kefir_asmcmp_amd64_jbe(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
+                                                  kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                  &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(no_arg2_move_label), NULL));
                 break;
 
             default:
@@ -1196,9 +1209,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_EQUALS:
             case KEFIR_OPT_COMPARISON_INT64_EQUALS:
                 REQUIRE_OK(kefir_asmcmp_amd64_cmovne(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
+                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_NOT_EQUALS:
@@ -1216,9 +1229,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_GREATER:
             case KEFIR_OPT_COMPARISON_INT64_GREATER:
                 REQUIRE_OK(kefir_asmcmp_amd64_cmovle(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
+                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS:
@@ -1236,9 +1249,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_LESSER:
             case KEFIR_OPT_COMPARISON_INT64_LESSER:
                 REQUIRE_OK(kefir_asmcmp_amd64_cmovge(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
+                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS:
@@ -1256,9 +1269,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_ABOVE:
             case KEFIR_OPT_COMPARISON_INT64_ABOVE:
                 REQUIRE_OK(kefir_asmcmp_amd64_cmovbe(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
+                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS:
@@ -1276,9 +1289,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
             case KEFIR_OPT_COMPARISON_INT32_BELOW:
             case KEFIR_OPT_COMPARISON_INT64_BELOW:
                 REQUIRE_OK(kefir_asmcmp_amd64_cmovae(mem, &function->code,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
-                                                    &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
+                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(result_placement_vreg),
+                                                     &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
                 break;
 
             case KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS:
@@ -1376,21 +1389,26 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
                 break;
         }
     } else if (arg1_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE ||
-        arg2_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE) {
+               arg2_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE) {
         REQUIRE(arg1_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE &&
                     arg2_asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE &&
-                    arg1_asmcmp_vreg->parameters.spill_space_allocation.length == arg2_asmcmp_vreg->parameters.spill_space_allocation.length,
-                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected both virtual registers to be spill space allocations of the same length"));
+                    arg1_asmcmp_vreg->parameters.spill_space_allocation.length ==
+                        arg2_asmcmp_vreg->parameters.spill_space_allocation.length,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                "Expected both virtual registers to be spill space allocations of the same length"));
         REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-        const kefir_size_t max_alignment = MAX(arg1_asmcmp_vreg->parameters.spill_space_allocation.alignment, arg2_asmcmp_vreg->parameters.spill_space_allocation.alignment);
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &result_vreg));
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment, &arg2_placement_vreg));
+        const kefir_size_t max_alignment = MAX(arg1_asmcmp_vreg->parameters.spill_space_allocation.alignment,
+                                               arg2_asmcmp_vreg->parameters.spill_space_allocation.alignment);
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
+            mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment,
+            &result_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
+            mem, &function->code.context, arg1_asmcmp_vreg->parameters.spill_space_allocation.length, max_alignment,
+            &arg2_placement_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            arg2_placement_vreg, NULL));
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), arg2_placement_vreg, NULL));
         REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            result_vreg, NULL));
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
         use_conditional_mov = true;
     } else {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(

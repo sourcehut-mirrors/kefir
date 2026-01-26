@@ -55,7 +55,7 @@ _BitInt(192) int128_unsign_to_bitint(void) {
 }
 
 __int128 int128_from_bitint_sign(void) {
-    return (_BitInt(192)) -0x0bad0c0ffeell;
+    return (_BitInt(192)) - 0x0bad0c0ffeell;
 }
 
 __int128 int128_from_bitint_unsign(void) {

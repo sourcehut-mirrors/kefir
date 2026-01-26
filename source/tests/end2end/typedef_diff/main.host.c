@@ -26,7 +26,7 @@
 int main(void) {
     Struct1 Arr[256];
     for (int i = 0; i < 256; i++) {
-        assert(struct1_diff(&(struct Struct2){&Arr[i]}, &Arr[0]) == i);
+        assert(struct1_diff(&(struct Struct2) {&Arr[i]}, &Arr[0]) == i);
     }
     return EXIT_SUCCESS;
 }

@@ -21,14 +21,13 @@
 extern __int128 value;
 
 __int128 test(__int128 x) {
-        return x;
+    return x;
 }
 
 void set(__int128 x) {
-        value = x;
+    value = x;
 }
 
 __int128 get(void) {
-        return value;
+    return value;
 }
-

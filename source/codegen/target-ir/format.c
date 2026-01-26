@@ -32,7 +32,8 @@ static kefir_result_t id_format(struct kefir_json_output *json, kefir_id_t id) {
     return KEFIR_OK;
 }
 
-static kefir_result_t variant_format(struct kefir_json_output *json, kefir_codegen_target_ir_operand_variant_t variant) {
+static kefir_result_t variant_format(struct kefir_json_output *json,
+                                     kefir_codegen_target_ir_operand_variant_t variant) {
     switch (variant) {
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT:
             REQUIRE_OK(kefir_json_output_string(json, "default"));
@@ -77,10 +78,12 @@ static kefir_result_t variant_format(struct kefir_json_output *json, kefir_codeg
     return KEFIR_OK;
 }
 
-static kefir_result_t aspect_format(struct kefir_json_output *json, const struct kefir_codegen_target_ir_code_class *klass, kefir_uint32_t aspect) {
+static kefir_result_t aspect_format(struct kefir_json_output *json,
+                                    const struct kefir_codegen_target_ir_code_class *klass, kefir_uint32_t aspect) {
     if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_RESOURCE(aspect)) {
         const char *resource;
-        REQUIRE_OK(klass->resource_mnemonic(KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_INDEX(aspect), &resource, klass->payload));
+        REQUIRE_OK(klass->resource_mnemonic(KEFIR_CODEGEN_TARGET_IR_VALUE_GET_OUTPUT_INDEX(aspect), &resource,
+                                            klass->payload));
 
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "type"));
@@ -108,7 +111,8 @@ static kefir_result_t aspect_format(struct kefir_json_output *json, const struct
     return KEFIR_OK;
 }
 
-static kefir_result_t label_type_format(struct kefir_json_output *json, kefir_codegen_target_ir_external_label_relocation_t type) {
+static kefir_result_t label_type_format(struct kefir_json_output *json,
+                                        kefir_codegen_target_ir_external_label_relocation_t type) {
     switch (type) {
         case KEFIR_CODEGEN_TARGET_IR_EXTERNAL_LABEL_ABSOLUTE:
             REQUIRE_OK(kefir_json_output_string(json, "absolute"));
@@ -137,7 +141,8 @@ static kefir_result_t label_type_format(struct kefir_json_output *json, kefir_co
     return KEFIR_OK;
 }
 
-static kefir_result_t operand_format(struct kefir_json_output *json, const struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_operand *operand) {
+static kefir_result_t operand_format(struct kefir_json_output *json, const struct kefir_codegen_target_ir_code *code,
+                                     const struct kefir_codegen_target_ir_operand *operand) {
     switch (operand->type) {
         case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
             // Intentionally left blank
@@ -376,8 +381,10 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
     return KEFIR_OK;
 }
 
-static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code *code, struct kefir_codegen_target_ir_control_flow *control_flow,
-    const struct kefir_codegen_target_ir_regalloc *regalloc, struct kefir_json_output *json) {
+static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code *code,
+                                       struct kefir_codegen_target_ir_control_flow *control_flow,
+                                       const struct kefir_codegen_target_ir_regalloc *regalloc,
+                                       struct kefir_json_output *json) {
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, control_flow));
 
     REQUIRE_OK(kefir_json_output_object_begin(json));
@@ -399,10 +406,10 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
         REQUIRE_OK(id_format(json, block_ref));
         REQUIRE_OK(kefir_json_output_object_key(json, "code"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
-        for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
-            instr_ref != KEFIR_ID_NONE;
-            instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref)) {
-            REQUIRE_OK(kefir_json_output_object_begin(json));        
+        for (kefir_codegen_target_ir_instruction_ref_t instr_ref =
+                 kefir_codegen_target_ir_code_block_control_head(code, block_ref);
+             instr_ref != KEFIR_ID_NONE; instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref)) {
+            REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "instr_ref"));
             REQUIRE_OK(id_format(json, instr_ref));
             const struct kefir_codegen_target_ir_instruction *instr;
@@ -419,9 +426,10 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
                 struct kefir_codegen_target_ir_value_phi_link_iterator iter;
                 kefir_codegen_target_ir_block_ref_t link_block_ref;
                 struct kefir_codegen_target_ir_value_ref link_value_ref;
-                for (res = kefir_codegen_target_ir_code_phi_link_iter(code, &iter, instr_ref, &link_block_ref, &link_value_ref);
-                    res == KEFIR_OK;
-                    res = kefir_codegen_target_ir_code_phi_link_next(&iter, &link_block_ref, &link_value_ref)) {
+                for (res = kefir_codegen_target_ir_code_phi_link_iter(code, &iter, instr_ref, &link_block_ref,
+                                                                      &link_value_ref);
+                     res == KEFIR_OK;
+                     res = kefir_codegen_target_ir_code_phi_link_next(&iter, &link_block_ref, &link_value_ref)) {
                     REQUIRE_OK(kefir_json_output_object_begin(json));
                     REQUIRE_OK(kefir_json_output_object_key(json, "block_ref"));
                     REQUIRE_OK(id_format(json, link_block_ref));
@@ -447,9 +455,10 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
                 REQUIRE_OK(kefir_json_output_array_begin(json));
                 struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
                 const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
-                for (res = kefir_codegen_target_ir_code_inline_assembly_fragment_iter(code, &iter, instr_ref, &fragment);
-                    res == KEFIR_OK;
-                    res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
+                for (res =
+                         kefir_codegen_target_ir_code_inline_assembly_fragment_iter(code, &iter, instr_ref, &fragment);
+                     res == KEFIR_OK;
+                     res = kefir_codegen_target_ir_code_inline_assembly_fragment_next(&iter, &fragment)) {
                     REQUIRE_OK(kefir_json_output_object_begin(json));
                     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
                     switch (fragment->type) {
@@ -486,8 +495,7 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
             struct kefir_codegen_target_ir_value_ref value_ref;
             const struct kefir_codegen_target_ir_value_type *value_type;
             for (res = kefir_codegen_target_ir_code_value_iter(code, &value_iter, instr_ref, &value_ref, &value_type);
-                res == KEFIR_OK;
-                res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, &value_type)) {
+                 res == KEFIR_OK; res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, &value_type)) {
                 REQUIRE_OK(kefir_json_output_object_begin(json));
                 REQUIRE_OK(kefir_json_output_object_key(json, "aspect"));
                 REQUIRE_OK(aspect_format(json, code->klass, value_ref.aspect));
@@ -507,7 +515,8 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
 
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_RESOURCE: {
                         const char *resource;
-                        REQUIRE_OK(code->klass->resource_mnemonic(value_type->parameters.resource_id, &resource, code->klass->payload));
+                        REQUIRE_OK(code->klass->resource_mnemonic(value_type->parameters.resource_id, &resource,
+                                                                  code->klass->payload));
                         REQUIRE_OK(kefir_json_output_string(json, "resource"));
                         REQUIRE_OK(kefir_json_output_object_key(json, "resource"));
                         REQUIRE_OK(kefir_json_output_string(json, resource));
@@ -524,9 +533,11 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_SPILL_SPACE:
                         REQUIRE_OK(kefir_json_output_string(json, "spill_space"));
                         REQUIRE_OK(kefir_json_output_object_key(json, "alignment"));
-                        REQUIRE_OK(kefir_json_output_uinteger(json, value_type->parameters.spill_space_allocation.alignment));
+                        REQUIRE_OK(
+                            kefir_json_output_uinteger(json, value_type->parameters.spill_space_allocation.alignment));
                         REQUIRE_OK(kefir_json_output_object_key(json, "length"));
-                        REQUIRE_OK(kefir_json_output_uinteger(json, value_type->parameters.spill_space_allocation.length));
+                        REQUIRE_OK(
+                            kefir_json_output_uinteger(json, value_type->parameters.spill_space_allocation.length));
                         break;
 
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE:
@@ -539,7 +550,8 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
 
                     case KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_EXTERNAL_MEMORY: {
                         const char *mnemonic;
-                        REQUIRE_OK(code->klass->register_mnemonic(value_type->parameters.memory.base_reg, &mnemonic, code->klass->payload));
+                        REQUIRE_OK(code->klass->register_mnemonic(value_type->parameters.memory.base_reg, &mnemonic,
+                                                                  code->klass->payload));
                         REQUIRE_OK(kefir_json_output_string(json, "external_memory"));
                         REQUIRE_OK(kefir_json_output_object_key(json, "base_reg"));
                         REQUIRE_OK(kefir_json_output_string(json, mnemonic));
@@ -571,7 +583,8 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
                         case KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT: {
                             REQUIRE_OK(kefir_json_output_string(json, "requirement"));
                             const char *mnemonic;
-                            REQUIRE_OK(code->klass->register_mnemonic(value_type->constraint.physical_register, &mnemonic, code->klass->payload));
+                            REQUIRE_OK(code->klass->register_mnemonic(value_type->constraint.physical_register,
+                                                                      &mnemonic, code->klass->payload));
                             REQUIRE_OK(kefir_json_output_object_key(json, "register"));
                             REQUIRE_OK(kefir_json_output_string(json, mnemonic));
                         } break;
@@ -599,8 +612,8 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
             kefir_codegen_target_ir_native_id_t attribute;
             struct kefir_codegen_target_ir_code_attribute_iterator attr_iter;
             for (res = kefir_codegen_target_ir_code_instruction_attribute_iter(code, &attr_iter, instr_ref, &attribute);
-                res == KEFIR_OK;
-                res = kefir_codegen_target_ir_code_instruction_attribute_next(&attr_iter, &attribute)) {
+                 res == KEFIR_OK;
+                 res = kefir_codegen_target_ir_code_instruction_attribute_next(&attr_iter, &attribute)) {
                 if (!has_attributes) {
                     REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
                     REQUIRE_OK(kefir_json_output_array_begin(json));
@@ -652,7 +665,7 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
         struct kefir_hashtreeset_iterator iter;
         kefir_result_t res;
         for (res = kefir_hashtreeset_iter(&block->public_labels, &iter); res == KEFIR_OK;
-            res = kefir_hashtreeset_next(&iter)) {
+             res = kefir_hashtreeset_next(&iter)) {
             ASSIGN_DECL_CAST(const char *, public_label, iter.entry);
             REQUIRE_OK(kefir_json_output_string(json, public_label));
         }
@@ -667,7 +680,10 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_code_format(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_regalloc *regalloc, struct kefir_json_output *json) {
+kefir_result_t kefir_codegen_target_ir_code_format(struct kefir_mem *mem,
+                                                   const struct kefir_codegen_target_ir_code *code,
+                                                   const struct kefir_codegen_target_ir_regalloc *regalloc,
+                                                   struct kefir_json_output *json) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));

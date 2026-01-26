@@ -33,7 +33,10 @@ typedef struct kefir_codegen_target_ir_destructor_amd64_ops {
     struct kefir_asmcmp_debug_info_value_map debug_value_map;
 } kefir_codegen_target_ir_destructor_amd64_ops_t;
 
-kefir_result_t kefir_codegen_target_ir_destructor_amd64_ops_init(const struct kefir_codegen_amd64_function *, struct kefir_asmcmp_amd64 *, struct kefir_codegen_target_ir_destructor_amd64_ops *);
-kefir_result_t kefir_codegen_target_ir_destructor_amd64_ops_free(struct kefir_mem *, struct kefir_codegen_target_ir_destructor_amd64_ops *);
+kefir_result_t kefir_codegen_target_ir_destructor_amd64_ops_init(const struct kefir_codegen_amd64_function *,
+                                                                 struct kefir_asmcmp_amd64 *,
+                                                                 struct kefir_codegen_target_ir_destructor_amd64_ops *);
+kefir_result_t kefir_codegen_target_ir_destructor_amd64_ops_free(struct kefir_mem *,
+                                                                 struct kefir_codegen_target_ir_destructor_amd64_ops *);
 
 #endif

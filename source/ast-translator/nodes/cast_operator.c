@@ -49,8 +49,8 @@ kefir_result_t kefir_ast_translate_cast_operator_node(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr, builder, context));
 
     if (!KEFIR_AST_TYPE_COMPATIBLE(context->ast_context->type_traits, expr_type, arg_normalized_type)) {
-        REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits, expr_type,
-                                                arg_normalized_type));
+        REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                expr_type, arg_normalized_type));
     }
     return KEFIR_OK;
 }

@@ -76,8 +76,8 @@ static kefir_result_t load_predefined_defs(struct kefir_mem *mem, struct kefir_c
     REQUIRE_OK(kefir_token_buffer_init(&buffer));
 
     kefir_result_t res =
-        kefir_compiler_preprocess_lex(mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, &context->builtin_token_allocator, &buffer, KefirPredefinedDefs,
-                                      KefirPredefinedDefsLength, filename, filename);
+        kefir_compiler_preprocess_lex(mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, &context->builtin_token_allocator,
+                                      &buffer, KefirPredefinedDefs, KefirPredefinedDefsLength, filename, filename);
     REQUIRE_CHAIN(&res, kefir_compiler_parse(mem, context, &buffer, &defs_unit));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &buffer);
@@ -246,10 +246,10 @@ kefir_result_t kefir_compiler_preprocessor_tokenize(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_compiler_preprocess(struct kefir_mem *mem, struct kefir_compiler_context *context, kefir_preprocessor_mode_t mode,
-                                         struct kefir_token_allocator *allocator, struct kefir_token_buffer *buffer,
-                                         const char *content, kefir_size_t length, const char *source_id,
-                                         const char *filepath) {
+kefir_result_t kefir_compiler_preprocess(struct kefir_mem *mem, struct kefir_compiler_context *context,
+                                         kefir_preprocessor_mode_t mode, struct kefir_token_allocator *allocator,
+                                         struct kefir_token_buffer *buffer, const char *content, kefir_size_t length,
+                                         const char *source_id, const char *filepath) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler context"));
     REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
@@ -275,7 +275,8 @@ kefir_result_t kefir_compiler_preprocess(struct kefir_mem *mem, struct kefir_com
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_compiler_preprocess_lex(struct kefir_mem *mem, struct kefir_compiler_context *context, kefir_preprocessor_mode_t mode,
+kefir_result_t kefir_compiler_preprocess_lex(struct kefir_mem *mem, struct kefir_compiler_context *context,
+                                             kefir_preprocessor_mode_t mode,
                                              struct kefir_token_allocator *token_allocator,
                                              struct kefir_token_buffer *buffer, const char *content,
                                              kefir_size_t length, const char *source_id, const char *filepath) {
@@ -338,8 +339,8 @@ kefir_result_t kefir_compiler_preprocess_include(struct kefir_mem *mem, struct k
         mem, context->preprocessor_context.source_locator, filepath, false, NULL,
         KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file));
 
-    res = kefir_compiler_preprocess(mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, allocator, buffer, source_file.cursor.content,
-                                    source_file.cursor.length, source_id, filepath);
+    res = kefir_compiler_preprocess(mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, allocator, buffer,
+                                    source_file.cursor.content, source_file.cursor.length, source_id, filepath);
     REQUIRE_ELSE(res == KEFIR_OK, {
         source_file.close(mem, &source_file);
         return res;
@@ -516,10 +517,9 @@ kefir_result_t kefir_compiler_optimize(struct kefir_mem *mem, struct kefir_compi
 
     REQUIRE_OK(kefir_opt_module_construct(mem, context->translator_env.target_platform, opt_module));
     struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_ir_function *ir_func =
-             kefir_ir_module_function_iter(ir_module, &iter);
-         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
-            
+    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(ir_module, &iter); ir_func != NULL;
+         ir_func = kefir_ir_module_function_next(&iter)) {
+
         struct kefir_opt_function *func = NULL;
         REQUIRE_OK(kefir_opt_module_get_function(opt_module, ir_func->declaration->id, &func));
         func->debug_info.record_debug_info = context->optimizer_configuration.debug_info;

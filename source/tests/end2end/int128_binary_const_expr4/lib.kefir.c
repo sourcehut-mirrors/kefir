@@ -23,9 +23,9 @@ unsigned __int128 b = ((unsigned __int128) 0x12445uwb) % ((unsigned __int128) 0x
 unsigned __int128 c = ((unsigned __int128) 0x1245453535353553545uwb) % ((unsigned __int128) 0x1);
 
 signed __int128 d = ((signed __int128) 0x124542483945uwb) % ((signed __int128) -1);
-signed __int128 e = ((signed __int128) - 04353646357426464101wb) % ((signed __int128) 248247742847);
-signed __int128 f = ((signed __int128) - 0x43535edfe44242424414edfabc2wb) % -((signed __int128) 1111001);
+signed __int128 e = ((signed __int128) -04353646357426464101wb) % ((signed __int128) 248247742847);
+signed __int128 f = ((signed __int128) -0x43535edfe44242424414edfabc2wb) % -((signed __int128) 1111001);
 signed __int128 g = ((signed __int128) 0x43535edfe44242424414edfabc2wb) % ((signed __int128) 1111001);
 
-signed __int128 h = ((signed __int128) - 0x43535edfe44242424414edfabc2wb) % ((unsigned __int128) 0x100000001);
+signed __int128 h = ((signed __int128) -0x43535edfe44242424414edfabc2wb) % ((unsigned __int128) 0x100000001);
 unsigned __int128 i = ((unsigned __int128) 424453535243363533uwb) % ((signed __int128) -535353522);

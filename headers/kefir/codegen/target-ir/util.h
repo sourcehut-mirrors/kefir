@@ -25,7 +25,11 @@
 
 kefir_int64_t kefir_codegen_target_ir_sign_extend(kefir_int64_t, kefir_codegen_target_ir_operand_variant_t);
 kefir_int64_t kefir_codegen_target_ir_zero_extend(kefir_int64_t, kefir_codegen_target_ir_operand_variant_t);
-kefir_result_t kefir_codegen_target_ir_add_produced_resource_aspects(struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t);
-kefir_result_t kefir_codegen_target_ir_code_get_single_user(const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_add_produced_resource_aspects(struct kefir_mem *,
+                                                                     struct kefir_codegen_target_ir_code *,
+                                                                     kefir_codegen_target_ir_instruction_ref_t);
+kefir_result_t kefir_codegen_target_ir_code_get_single_user(const struct kefir_codegen_target_ir_code *,
+                                                            kefir_codegen_target_ir_value_ref_t,
+                                                            kefir_codegen_target_ir_instruction_ref_t *);
 
 #endif

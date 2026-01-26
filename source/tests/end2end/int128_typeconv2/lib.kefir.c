@@ -18,29 +18,32 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if (defined(__KEFIRCC_DECIMAL_SUPPORT__) && defined(__KEFIRCC_DECIMAL_SUPPORT_BID__) && defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__) && __KEFIRCC_DECIMAL_SUPPORT__ == __KEFIRCC_DECIMAL_SUPPORT_BID__) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)) || defined(KEFIR_END2END_ASMGEN)
+#if (defined(__KEFIRCC_DECIMAL_SUPPORT__) && defined(__KEFIRCC_DECIMAL_SUPPORT_BID__) && \
+     defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__) &&                                 \
+     __KEFIRCC_DECIMAL_SUPPORT__ == __KEFIRCC_DECIMAL_SUPPORT_BID__) &&                  \
+        !defined(KEFIR_PLATFORM_DECIMAL_DPD)) ||                                         \
+    defined(KEFIR_END2END_ASMGEN)
 _Decimal32 i128_to_d32(__int128 x) {
-    return  x;
+    return x;
 }
 
 _Decimal64 i128_to_d64(__int128 x) {
-    return  x;
+    return x;
 }
 
 _Decimal128 i128_to_d128(__int128 x) {
-    return  x;
+    return x;
 }
 
-
 _Decimal32 u128_to_d32(unsigned __int128 x) {
-    return  x;
+    return x;
 }
 
 _Decimal64 u128_to_d64(unsigned __int128 x) {
-    return  x;
+    return x;
 }
 
 _Decimal128 u128_to_d128(unsigned __int128 x) {
-    return  x;
+    return x;
 }
 #endif

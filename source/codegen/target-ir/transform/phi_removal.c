@@ -36,11 +36,15 @@ struct phi_scc_traversal {
     struct kefir_list scc_list;
 };
 
-static kefir_result_t phi_scc_tarjan_strongconnect(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct phi_scc_traversal *traversal, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
+static kefir_result_t phi_scc_tarjan_strongconnect(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                                   struct phi_scc_traversal *traversal,
+                                                   kefir_codegen_target_ir_instruction_ref_t instr_ref) {
     UNUSED(code);
 
-    kefir_uint64_t index_pair = (((kefir_uint64_t) traversal->current_index) << 32) | (kefir_uint32_t) traversal->current_index;
-    REQUIRE_OK(kefir_hashtable_insert(mem, &traversal->indices, (kefir_hashtable_key_t) instr_ref, (kefir_hashtable_value_t) index_pair));
+    kefir_uint64_t index_pair =
+        (((kefir_uint64_t) traversal->current_index) << 32) | (kefir_uint32_t) traversal->current_index;
+    REQUIRE_OK(kefir_hashtable_insert(mem, &traversal->indices, (kefir_hashtable_key_t) instr_ref,
+                                      (kefir_hashtable_value_t) index_pair));
     traversal->current_index++;
 
     REQUIRE_OK(kefir_list_insert_after(mem, &traversal->stack, NULL, (void *) (kefir_uptr_t) instr_ref));
@@ -49,9 +53,8 @@ static kefir_result_t phi_scc_tarjan_strongconnect(struct kefir_mem *mem, struct
     kefir_result_t res;
     kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
     struct kefir_codegen_target_ir_use_iterator use_iter;
-    for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, &use_instr_ref, NULL);
-        res == KEFIR_OK;
-        res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
+    for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, &use_instr_ref, NULL); res == KEFIR_OK;
+         res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
         const struct kefir_codegen_target_ir_instruction *use_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &use_instr));
         if (use_instr->operation.opcode != code->klass->phi_opcode) {
@@ -66,7 +69,8 @@ static kefir_result_t phi_scc_tarjan_strongconnect(struct kefir_mem *mem, struct
             kefir_uint32_t use_lowlink = ((kefir_uint64_t) table_value) >> 32;
 
             kefir_hashtable_value_t *table_value_ptr;
-            REQUIRE_OK(kefir_hashtable_at_mut(&traversal->indices, (kefir_hashtable_key_t) instr_ref, &table_value_ptr));
+            REQUIRE_OK(
+                kefir_hashtable_at_mut(&traversal->indices, (kefir_hashtable_key_t) instr_ref, &table_value_ptr));
             kefir_uint32_t instr_lowlink = ((kefir_uint64_t) *table_value_ptr) >> 32;
             kefir_uint32_t instr_index = (kefir_uint32_t) *table_value_ptr;
 
@@ -75,11 +79,13 @@ static kefir_result_t phi_scc_tarjan_strongconnect(struct kefir_mem *mem, struct
         } else {
             REQUIRE_OK(res);
             if (kefir_hashset_has(&traversal->on_stack, (kefir_hashset_key_t) use_instr_ref)) {
-                REQUIRE_OK(kefir_hashtable_at(&traversal->indices, (kefir_hashtable_key_t) use_instr_ref, &table_value));
+                REQUIRE_OK(
+                    kefir_hashtable_at(&traversal->indices, (kefir_hashtable_key_t) use_instr_ref, &table_value));
                 kefir_uint32_t use_index = (kefir_uint32_t) table_value;
 
                 kefir_hashtable_value_t *table_value_ptr;
-                REQUIRE_OK(kefir_hashtable_at_mut(&traversal->indices, (kefir_hashtable_key_t) instr_ref, &table_value_ptr));
+                REQUIRE_OK(
+                    kefir_hashtable_at_mut(&traversal->indices, (kefir_hashtable_key_t) instr_ref, &table_value_ptr));
                 kefir_uint32_t instr_lowlink = ((kefir_uint64_t) *table_value_ptr) >> 32;
                 kefir_uint32_t instr_index = (kefir_uint32_t) *table_value_ptr;
 
@@ -120,15 +126,17 @@ static kefir_result_t phi_scc_tarjan_strongconnect(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
-static kefir_result_t get_output_for(const struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_instruction_ref_t instr_ref, kefir_codegen_target_ir_value_ref_t *value_ref_ptr) {
+static kefir_result_t get_output_for(const struct kefir_codegen_target_ir_code *code,
+                                     kefir_codegen_target_ir_instruction_ref_t instr_ref,
+                                     kefir_codegen_target_ir_value_ref_t *value_ref_ptr) {
     struct kefir_codegen_target_ir_value_iterator iter;
     REQUIRE_OK(kefir_codegen_target_ir_code_value_iter(code, &iter, instr_ref, value_ref_ptr, NULL));
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_scc_uses(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct phi_scc_traversal *traversal, struct kefir_hashset *removal_set) {
-    for (struct kefir_list_entry *scc_iter = kefir_list_head(&traversal->scc_list);
-        scc_iter != NULL;) {
+static kefir_result_t scan_scc_uses(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                    struct phi_scc_traversal *traversal, struct kefir_hashset *removal_set) {
+    for (struct kefir_list_entry *scc_iter = kefir_list_head(&traversal->scc_list); scc_iter != NULL;) {
         ASSIGN_DECL_CAST(struct phi_scc *, scc, scc_iter->value);
 
         kefir_bool_t no_external_uses = true;
@@ -137,14 +145,14 @@ static kefir_result_t scan_scc_uses(struct kefir_mem *mem, struct kefir_codegen_
         struct kefir_hashset_iterator iter;
         kefir_hashset_key_t key;
         for (res = kefir_hashset_iter(&scc->phi_refs, &iter, &key); res == KEFIR_OK && no_external_uses;
-            res = kefir_hashset_next(&iter, &key)) {
+             res = kefir_hashset_next(&iter, &key)) {
             ASSIGN_DECL_CAST(kefir_codegen_target_ir_instruction_ref_t, phi_ref, key);
-            
+
             struct kefir_codegen_target_ir_use_iterator use_iter;
             kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
             for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, phi_ref, &use_instr_ref, NULL);
-                res == KEFIR_OK && no_external_uses;
-                res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
+                 res == KEFIR_OK && no_external_uses;
+                 res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
                 if (!kefir_hashset_has(&scc->phi_refs, (kefir_hashset_key_t) use_instr_ref)) {
                     no_external_uses = false;
                 }
@@ -163,7 +171,7 @@ static kefir_result_t scan_scc_uses(struct kefir_mem *mem, struct kefir_codegen_
         }
 
         for (res = kefir_hashset_iter(&scc->phi_refs, &iter, &key); res == KEFIR_OK && no_external_uses;
-            res = kefir_hashset_next(&iter, &key)) {
+             res = kefir_hashset_next(&iter, &key)) {
             ASSIGN_DECL_CAST(kefir_codegen_target_ir_instruction_ref_t, phi_ref, key);
             for (;;) {
                 struct kefir_codegen_target_ir_value_phi_link_iterator link_iter;
@@ -178,7 +186,7 @@ static kefir_result_t scan_scc_uses(struct kefir_mem *mem, struct kefir_codegen_
 
             REQUIRE_OK(kefir_hashset_add(mem, removal_set, (kefir_hashset_key_t) phi_ref));
         }
-        
+
         struct kefir_list_entry *next_iter = scc_iter->next;
         REQUIRE_OK(kefir_list_pop(mem, &traversal->scc_list, scc_iter));
         scc_iter = next_iter;
@@ -186,9 +194,9 @@ static kefir_result_t scan_scc_uses(struct kefir_mem *mem, struct kefir_codegen_
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_scc_inputs(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct phi_scc_traversal *traversal, struct kefir_hashset *removal_set) {
-    for (struct kefir_list_entry *scc_iter = kefir_list_head(&traversal->scc_list);
-        scc_iter != NULL;) {
+static kefir_result_t scan_scc_inputs(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                      struct phi_scc_traversal *traversal, struct kefir_hashset *removal_set) {
+    for (struct kefir_list_entry *scc_iter = kefir_list_head(&traversal->scc_list); scc_iter != NULL;) {
         ASSIGN_DECL_CAST(struct phi_scc *, scc, scc_iter->value);
 
         REQUIRE_OK(kefir_hashset_clear(mem, &scc->outside_inputs));
@@ -196,26 +204,29 @@ static kefir_result_t scan_scc_inputs(struct kefir_mem *mem, struct kefir_codege
         struct kefir_hashset_iterator iter;
         kefir_hashset_key_t key;
         for (res = kefir_hashset_iter(&scc->phi_refs, &iter, &key); res == KEFIR_OK;
-            res = kefir_hashset_next(&iter, &key)) {
+             res = kefir_hashset_next(&iter, &key)) {
             ASSIGN_DECL_CAST(kefir_codegen_target_ir_instruction_ref_t, phi_ref, key);
 
             struct kefir_codegen_target_ir_value_phi_link_iterator iter;
             kefir_codegen_target_ir_block_ref_t link_block_ref;
-            struct kefir_codegen_target_ir_value_ref link_value_ref, first_link_value_ref = {
-                .instr_ref = KEFIR_ID_NONE
-            };
+            struct kefir_codegen_target_ir_value_ref link_value_ref,
+                first_link_value_ref = {.instr_ref = KEFIR_ID_NONE};
             kefir_bool_t do_drop = true;
-            for (res = kefir_codegen_target_ir_code_phi_link_iter(code, &iter, phi_ref, &link_block_ref, &link_value_ref);
-                res == KEFIR_OK;
-                res = kefir_codegen_target_ir_code_phi_link_next(&iter, &link_block_ref, &link_value_ref)) {
+            for (res =
+                     kefir_codegen_target_ir_code_phi_link_iter(code, &iter, phi_ref, &link_block_ref, &link_value_ref);
+                 res == KEFIR_OK;
+                 res = kefir_codegen_target_ir_code_phi_link_next(&iter, &link_block_ref, &link_value_ref)) {
                 if (!kefir_hashset_has(&scc->phi_refs, (kefir_hashset_key_t) link_value_ref.instr_ref)) {
-                    REQUIRE_OK(kefir_hashset_add(mem, &scc->outside_inputs, (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&link_value_ref)));
+                    REQUIRE_OK(kefir_hashset_add(
+                        mem, &scc->outside_inputs,
+                        (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&link_value_ref)));
                 }
 
                 if (link_value_ref.instr_ref != phi_ref) {
                     if (first_link_value_ref.instr_ref == KEFIR_ID_NONE) {
                         first_link_value_ref = link_value_ref;
-                    } else if (first_link_value_ref.instr_ref != link_value_ref.instr_ref || first_link_value_ref.aspect != link_value_ref.aspect) {
+                    } else if (first_link_value_ref.instr_ref != link_value_ref.instr_ref ||
+                               first_link_value_ref.aspect != link_value_ref.aspect) {
                         do_drop = false;
                     }
                 }
@@ -241,7 +252,7 @@ static kefir_result_t scan_scc_inputs(struct kefir_mem *mem, struct kefir_codege
             kefir_codegen_target_ir_value_ref_t value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(key);
 
             for (res = kefir_hashset_iter(&scc->phi_refs, &iter, &key); res == KEFIR_OK;
-                res = kefir_hashset_next(&iter, &key)) {
+                 res = kefir_hashset_next(&iter, &key)) {
                 ASSIGN_DECL_CAST(kefir_codegen_target_ir_instruction_ref_t, phi_ref, key);
                 kefir_codegen_target_ir_value_ref_t phi_value_ref;
                 REQUIRE_OK(get_output_for(code, phi_ref, &phi_value_ref));
@@ -262,15 +273,16 @@ static kefir_result_t scan_scc_inputs(struct kefir_mem *mem, struct kefir_codege
     return KEFIR_OK;
 }
 
-static kefir_result_t remove_unused_phis_from_block(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref, struct kefir_hashset *removal_set) {
+static kefir_result_t remove_unused_phis_from_block(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                                    kefir_codegen_target_ir_block_ref_t block_ref,
+                                                    struct kefir_hashset *removal_set) {
     REQUIRE_OK(kefir_hashset_clear(mem, removal_set));
 
     kefir_result_t res;
     struct kefir_codegen_target_ir_value_phi_node_iterator phi_node_iter;
     kefir_codegen_target_ir_instruction_ref_t phi_ref;
-    for (res = kefir_codegen_target_ir_code_phi_node_iter(code, &phi_node_iter, block_ref, &phi_ref);
-        res == KEFIR_OK;
-        res = kefir_codegen_target_ir_code_phi_node_next(&phi_node_iter, &phi_ref)) {
+    for (res = kefir_codegen_target_ir_code_phi_node_iter(code, &phi_node_iter, block_ref, &phi_ref); res == KEFIR_OK;
+         res = kefir_codegen_target_ir_code_phi_node_next(&phi_node_iter, &phi_ref)) {
         struct kefir_codegen_target_ir_use_iterator use_iter;
         res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, phi_ref, NULL, NULL);
         if (res == KEFIR_ITERATOR_END) {
@@ -287,7 +299,8 @@ static kefir_result_t remove_unused_phis_from_block(struct kefir_mem *mem, struc
     kefir_hashset_key_t removal_key;
     for (res = kefir_hashset_iter(removal_set, &removal_iter, &removal_key); res == KEFIR_OK;
          res = kefir_hashset_next(&removal_iter, &removal_key)) {
-        REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, (kefir_codegen_target_ir_instruction_ref_t) removal_key));
+        REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(
+            mem, code, (kefir_codegen_target_ir_instruction_ref_t) removal_key));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -295,7 +308,10 @@ static kefir_result_t remove_unused_phis_from_block(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct phi_scc_traversal *traversal, struct kefir_hashset *removal_set, const struct kefir_codegen_target_ir_control_flow *control_flow, kefir_bool_t coalesce_phis) {
+static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                          struct phi_scc_traversal *traversal, struct kefir_hashset *removal_set,
+                                          const struct kefir_codegen_target_ir_control_flow *control_flow,
+                                          kefir_bool_t coalesce_phis) {
     for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
         REQUIRE_OK(remove_unused_phis_from_block(mem, code, block_ref, removal_set));
@@ -315,8 +331,7 @@ static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_co
         struct kefir_codegen_target_ir_value_phi_node_iterator phi_node_iter;
         kefir_codegen_target_ir_instruction_ref_t phi_ref;
         for (res = kefir_codegen_target_ir_code_phi_node_iter(code, &phi_node_iter, block_ref, &phi_ref);
-            res == KEFIR_OK;
-            res = kefir_codegen_target_ir_code_phi_node_next(&phi_node_iter, &phi_ref)) {
+             res == KEFIR_OK; res = kefir_codegen_target_ir_code_phi_node_next(&phi_node_iter, &phi_ref)) {
             if (!kefir_hashtable_has(&traversal->indices, (kefir_hashtable_key_t) phi_ref)) {
                 REQUIRE_OK(phi_scc_tarjan_strongconnect(mem, code, traversal, phi_ref));
             }
@@ -339,8 +354,9 @@ static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_co
         kefir_hashset_key_t removal_key;
         kefir_result_t res;
         for (res = kefir_hashset_iter(removal_set, &removal_iter, &removal_key); res == KEFIR_OK;
-            res = kefir_hashset_next(&removal_iter, &removal_key)) {
-            REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, (kefir_codegen_target_ir_instruction_ref_t) removal_key));
+             res = kefir_hashset_next(&removal_iter, &removal_key)) {
+            REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(
+                mem, code, (kefir_codegen_target_ir_instruction_ref_t) removal_key));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -354,13 +370,13 @@ static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_co
     return KEFIR_OK;
 }
 
-static kefir_result_t free_scc(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry, void *payload) {
+static kefir_result_t free_scc(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry,
+                               void *payload) {
     UNUSED(list);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Expected valid memory allocator"));
     REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Expected valid list entry"));
-    ASSIGN_DECL_CAST(struct phi_scc *, scc,
-        entry->value);
+    ASSIGN_DECL_CAST(struct phi_scc *, scc, entry->value);
     REQUIRE(scc != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Expected valid strongly connected component"));
 
     REQUIRE_OK(kefir_hashset_free(mem, &scc->phi_refs));
@@ -369,10 +385,11 @@ static kefir_result_t free_scc(struct kefir_mem *mem, struct kefir_list *list, s
     return KEFIR_OK;
 }
 
-static kefir_result_t phi_scc_tarjan(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashset *removal_set, const struct kefir_codegen_target_ir_control_flow *control_flow, kefir_bool_t coealsce_phis) {
-    struct phi_scc_traversal traversal = {
-        .current_index = 0
-    };
+static kefir_result_t phi_scc_tarjan(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                     struct kefir_hashset *removal_set,
+                                     const struct kefir_codegen_target_ir_control_flow *control_flow,
+                                     kefir_bool_t coealsce_phis) {
+    struct phi_scc_traversal traversal = {.current_index = 0};
     REQUIRE_OK(kefir_hashtable_init(&traversal.indices, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&traversal.stack));
     REQUIRE_OK(kefir_hashset_init(&traversal.on_stack, &kefir_hashtable_uint_ops));
@@ -409,13 +426,18 @@ static kefir_result_t phi_scc_tarjan(struct kefir_mem *mem, struct kefir_codegen
     return KEFIR_OK;
 }
 
-static kefir_result_t remove_phis(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, struct kefir_hashset *removal_set, struct kefir_codegen_target_ir_control_flow *control_flow, kefir_bool_t coalesce_phis) {
+static kefir_result_t remove_phis(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                  struct kefir_hashset *removal_set,
+                                  struct kefir_codegen_target_ir_control_flow *control_flow,
+                                  kefir_bool_t coalesce_phis) {
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_build(mem, control_flow));
     REQUIRE_OK(phi_scc_tarjan(mem, code, removal_set, control_flow, coalesce_phis));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_transform_phi_removal(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_bool_t coalesce_phis) {
+kefir_result_t kefir_codegen_target_ir_transform_phi_removal(struct kefir_mem *mem,
+                                                             struct kefir_codegen_target_ir_code *code,
+                                                             kefir_bool_t coalesce_phis) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
 

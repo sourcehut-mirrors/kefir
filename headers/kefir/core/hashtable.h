@@ -104,78 +104,80 @@ extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
 #define KEFIR_HASHTABLE_CAPACITY_TRIM(_occupied) MAX(4, (kefir_size_t) ((_occupied) * 4))
 #define KEFIR_HASHTABLE_WRAPAROUND(_index, _capacity) ((_index) & ((_capacity) - 1))
 
-#define KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(_ops, _entries, _entry_states, _capacity, _key, _position_ptr, _collisions_ptr) \
-    do {                                                                                                          \
-        kefir_uint64_t hash = (_ops)->hash((_key), (_ops)->payload); \
-        kefir_uint32_t upper_part = hash >> 32; \
-        kefir_uint32_t lower_part = (hash & ((1ull << 32) - 1)) | 1; \
-        kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(upper_part, (_capacity));      \
-        if ((_entry_states)[index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                          \
-            *(_position_ptr) = index;                                                                             \
-            return KEFIR_OK;                                                                                      \
-        }                                                                                                         \
-                                                                                                                  \
-        kefir_bool_t equal; \
-        if ((_entry_states)[index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
-            equal = (_key) == (_entries)[index].key || (_ops)->equal((_key), (_entries)[index].key, (_ops)->payload);                       \
+#define KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(_ops, _entries, _entry_states, _capacity, _key, _position_ptr,       \
+                                                 _collisions_ptr)                                                     \
+    do {                                                                                                              \
+        kefir_uint64_t hash = (_ops)->hash((_key), (_ops)->payload);                                                  \
+        kefir_uint32_t upper_part = hash >> 32;                                                                       \
+        kefir_uint32_t lower_part = (hash & ((1ull << 32) - 1)) | 1;                                                  \
+        kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(upper_part, (_capacity));                                     \
+        if ((_entry_states)[index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                                  \
+            *(_position_ptr) = index;                                                                                 \
+            return KEFIR_OK;                                                                                          \
+        }                                                                                                             \
+                                                                                                                      \
+        kefir_bool_t equal;                                                                                           \
+        if ((_entry_states)[index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                               \
+            equal = (_key) == (_entries)[index].key || (_ops)->equal((_key), (_entries)[index].key, (_ops)->payload); \
             if (equal) {                                                                                              \
                 *(_position_ptr) = index;                                                                             \
                 return KEFIR_OK;                                                                                      \
             }                                                                                                         \
-        } \
-                                                                                                                  \
-        kefir_size_t deleted_index = ~0ull; \
-        for (kefir_size_t i = 0; i < (_capacity); i++) {                                                \
-            kefir_size_t current_index = KEFIR_HASHTABLE_WRAPAROUND(index + i * lower_part, (_capacity)); \
-            (*(_collisions_ptr))++;                                                                               \
-            if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                          \
-                if (deleted_index == ~0ull) { \
-                    *(_position_ptr) = current_index;                                                                             \
+        }                                                                                                             \
+                                                                                                                      \
+        kefir_size_t deleted_index = ~0ull;                                                                           \
+        for (kefir_size_t i = 0; i < (_capacity); i++) {                                                              \
+            kefir_size_t current_index = KEFIR_HASHTABLE_WRAPAROUND(index + i * lower_part, (_capacity));             \
+            (*(_collisions_ptr))++;                                                                                   \
+            if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                      \
+                if (deleted_index == ~0ull) {                                                                         \
+                    *(_position_ptr) = current_index;                                                                 \
                     return KEFIR_OK;                                                                                  \
-                } else { \
-                    *(_position_ptr) = deleted_index;                                                                             \
-                    return KEFIR_OK; \
-                } \
-            } else if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_DELETED) {                                          \
-                if (deleted_index == ~0ull) { \
-                    deleted_index = current_index; \
-                } \
-            } else if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                                          \
-                equal = (_key) == (_entries)[current_index].key || (_ops)->equal((_key), (_entries)[current_index].key, (_ops)->payload);                                    \
-                if (equal) {                                                                                          \
-                    *(_position_ptr) = current_index;                                                                             \
+                } else {                                                                                              \
+                    *(_position_ptr) = deleted_index;                                                                 \
                     return KEFIR_OK;                                                                                  \
                 }                                                                                                     \
-            } \
-        }                                                                                                         \
-        if (deleted_index != ~0ull) { \
-            *(_position_ptr) = deleted_index;                                                                             \
-            return KEFIR_OK;                                                                                  \
-        } \
-                                                                                                                  \
-        return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to find position for element insertion");            \
+            } else if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_DELETED) {                             \
+                if (deleted_index == ~0ull) {                                                                         \
+                    deleted_index = current_index;                                                                    \
+                }                                                                                                     \
+            } else if ((_entry_states)[current_index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {                            \
+                equal = (_key) == (_entries)[current_index].key ||                                                    \
+                        (_ops)->equal((_key), (_entries)[current_index].key, (_ops)->payload);                        \
+                if (equal) {                                                                                          \
+                    *(_position_ptr) = current_index;                                                                 \
+                    return KEFIR_OK;                                                                                  \
+                }                                                                                                     \
+            }                                                                                                         \
+        }                                                                                                             \
+        if (deleted_index != ~0ull) {                                                                                 \
+            *(_position_ptr) = deleted_index;                                                                         \
+            return KEFIR_OK;                                                                                          \
+        }                                                                                                             \
+                                                                                                                      \
+        return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to find position for element insertion");                \
     } while (0)
 
 #define KEFIR_HASHTABLE_HAS(_hashtable, _key, on_found, _on_not_found)                                                \
     do {                                                                                                              \
         if ((_hashtable)->occupied > 0) {                                                                             \
-            kefir_uint64_t hash = (_hashtable)->ops->hash(key, (_hashtable)->ops->payload); \
-            kefir_uint32_t upper_part = hash >> 32; \
-            kefir_uint32_t lower_part = (hash & ((1ull << 32) - 1)) | 1; \
-            const kefir_size_t base_index = KEFIR_HASHTABLE_WRAPAROUND(                                               \
-                upper_part, (_hashtable)->capacity);                    \
-            for (kefir_size_t i = 0; i < (_hashtable)->capacity; i++) {                                                                                                      \
-                kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(base_index + i * lower_part, (_hashtable)->capacity);                                \
-                if ((_hashtable)->entry_states[index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                              \
+            kefir_uint64_t hash = (_hashtable)->ops->hash(key, (_hashtable)->ops->payload);                           \
+            kefir_uint32_t upper_part = hash >> 32;                                                                   \
+            kefir_uint32_t lower_part = (hash & ((1ull << 32) - 1)) | 1;                                              \
+            const kefir_size_t base_index = KEFIR_HASHTABLE_WRAPAROUND(upper_part, (_hashtable)->capacity);           \
+            for (kefir_size_t i = 0; i < (_hashtable)->capacity; i++) {                                               \
+                kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(base_index + i * lower_part, (_hashtable)->capacity); \
+                if ((_hashtable)->entry_states[index] == KEFIR_HASHTABLE_ENTRY_EMPTY) {                               \
                     break;                                                                                            \
                 }                                                                                                     \
                                                                                                                       \
-                if ((_hashtable)->entry_states[index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED &&                           \
-                    ((_key) == (_hashtable)->entries[index].key || \
-                    (_hashtable)->ops->equal((_key), (_hashtable)->entries[index].key, (_hashtable)->ops->payload))) { \
+                if ((_hashtable)->entry_states[index] == KEFIR_HASHTABLE_ENTRY_OCCUPIED &&                            \
+                    ((_key) == (_hashtable)->entries[index].key ||                                                    \
+                     (_hashtable)                                                                                     \
+                         ->ops->equal((_key), (_hashtable)->entries[index].key, (_hashtable)->ops->payload))) {       \
                     on_found                                                                                          \
                 }                                                                                                     \
-            }                                                                            \
+            }                                                                                                         \
         }                                                                                                             \
                                                                                                                       \
         _on_not_found                                                                                                 \

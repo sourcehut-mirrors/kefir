@@ -76,14 +76,16 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
 
     const struct kefir_opt_code_structure_block *block_props = &param->code_analysis->structure.blocks[block->id];
 
-    for (res = kefir_opt_code_block_instr_head(param->code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+    for (res = kefir_opt_code_block_instr_head(param->code, block, &instr_ref);
+         res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_sibling(param->code, instr_ref, &instr_ref)) {
 
         const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(param->code, instr_ref, &instr));
         if (instr->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT) {
             kefir_bool_t is_alive;
-            REQUIRE_OK(kefir_opt_code_liveness_instruction_is_alive(&param->code_analysis->liveness, instr_ref, &is_alive));
+            REQUIRE_OK(
+                kefir_opt_code_liveness_instruction_is_alive(&param->code_analysis->liveness, instr_ref, &is_alive));
             if (is_alive) {
                 REQUIRE_OK(schedule_stack_push(param, instr_ref, true, kefir_list_tail(&param->instr_queue)));
             }
@@ -91,14 +93,16 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
     }
     REQUIRE_OK(res);
 
-    for (res = kefir_opt_code_block_instr_head(param->code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+    for (res = kefir_opt_code_block_instr_head(param->code, block, &instr_ref);
+         res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_sibling(param->code, instr_ref, &instr_ref)) {
 
         const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(param->code, instr_ref, &instr));
         if (instr->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT) {
             kefir_bool_t is_alive;
-            REQUIRE_OK(kefir_opt_code_liveness_instruction_is_alive(&param->code_analysis->liveness, instr_ref, &is_alive));
+            REQUIRE_OK(
+                kefir_opt_code_liveness_instruction_is_alive(&param->code_analysis->liveness, instr_ref, &is_alive));
             if (is_alive) {
                 REQUIRE_OK(schedule_stack_push(param, instr_ref, true, kefir_list_tail(&param->instr_queue)));
             }
@@ -115,7 +119,8 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
         REQUIRE_OK(kefir_opt_code_container_instr(param->code, instr_ref, &instr));
         if (KEFIR_OPT_INSTRUCTION_IS_NONVOLATILE_LOAD(instr)) {
             kefir_bool_t is_alive;
-            REQUIRE_OK(kefir_opt_code_liveness_instruction_is_alive(&param->code_analysis->liveness, instr_ref, &is_alive));
+            REQUIRE_OK(
+                kefir_opt_code_liveness_instruction_is_alive(&param->code_analysis->liveness, instr_ref, &is_alive));
             if (!is_alive) {
                 continue;
             }
@@ -129,11 +134,12 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
                 REQUIRE_OK(kefir_opt_code_container_block(param->code, successor_block_id, &successor_block));
                 kefir_opt_phi_id_t phi_ref;
                 for (res = kefir_opt_code_block_phi_head(param->code, successor_block, &phi_ref);
-                     res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; kefir_opt_phi_next_sibling(param->code, phi_ref, &phi_ref)) {
+                     res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
+                     kefir_opt_phi_next_sibling(param->code, phi_ref, &phi_ref)) {
                     const struct kefir_opt_phi_node *phi_node;
                     REQUIRE_OK(kefir_opt_code_container_phi(param->code, phi_ref, &phi_node));
                     if (!kefir_hashset_has(&param->code_analysis->liveness.blocks[successor_block_id].alive_instr,
-                                             (kefir_hashset_key_t) phi_node->output_ref)) {
+                                           (kefir_hashset_key_t) phi_node->output_ref)) {
                         continue;
                     }
                     kefir_opt_instruction_ref_t instr_ref2;
@@ -145,8 +151,9 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
                 if (successor_block_id != block->id) {
                     struct kefir_hashset_iterator alive_instr_iter;
                     kefir_hashset_key_t alive_instr_entry;
-                    for (res = kefir_hashset_iter(&param->code_analysis->liveness.blocks[successor_block_id].alive_instr,
-                                                    &alive_instr_iter, &alive_instr_entry);
+                    for (res =
+                             kefir_hashset_iter(&param->code_analysis->liveness.blocks[successor_block_id].alive_instr,
+                                                &alive_instr_iter, &alive_instr_entry);
                          res == KEFIR_OK; res = kefir_hashset_next(&alive_instr_iter, &alive_instr_entry)) {
                         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, alive_instr_ref, alive_instr_entry);
                         const struct kefir_opt_instruction *alive_instr;
@@ -203,12 +210,13 @@ static kefir_result_t schedule_instructions(struct schedule_instruction_param *p
             struct push_instruction_input_param push_param = {.param = param, .insert_position = NULL};
             kefir_bool_t schedule_instr = false;
             REQUIRE_OK(param->scheduler->instr_callback(instr_ref, push_instruction_input, &push_param, &schedule_instr,
-                                                      param->scheduler->instr_callback_payload));
+                                                        param->scheduler->instr_callback_payload));
             if (schedule_instr) {
                 REQUIRE_OK(schedule_stack_push(param, instr_ref, false, push_param.insert_position));
             }
         } else {
-            REQUIRE_OK(param->schedule_builder->schedule_instruction(param->mem, param->block_id, instr_ref, NULL, param->schedule_builder->payload));
+            REQUIRE_OK(param->schedule_builder->schedule_instruction(param->mem, param->block_id, instr_ref, NULL,
+                                                                     param->schedule_builder->payload));
         }
     }
 
@@ -238,8 +246,13 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, const struct kefir_o
     kefir_uint32_t block_linear_index;
     REQUIRE_OK(schedule_builder->schedule_block(mem, block_id, &block_linear_index, schedule_builder->payload));
 
-    struct schedule_instruction_param param = {
-        .mem = mem, .schedule = schedule, .code = code, .code_analysis = code_analysis, .block_id = block_id, .schedule_builder = schedule_builder, .scheduler = scheduler};
+    struct schedule_instruction_param param = {.mem = mem,
+                                               .schedule = schedule,
+                                               .code = code,
+                                               .code_analysis = code_analysis,
+                                               .block_id = block_id,
+                                               .schedule_builder = schedule_builder,
+                                               .scheduler = scheduler};
 
     REQUIRE_OK(kefir_list_init(&param.instr_queue));
 
@@ -263,14 +276,19 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, const struct kefir_o
     return KEFIR_OK;
 }
 
-static kefir_result_t do_schedule(struct kefir_mem *mem, const struct kefir_opt_code_container *code, const struct kefir_opt_code_analysis *code_analysis, const struct kefir_opt_code_schedule *schedule, struct kefir_opt_code_schedule_builder *schedule_builder, void *payload) {
+static kefir_result_t do_schedule(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
+                                  const struct kefir_opt_code_analysis *code_analysis,
+                                  const struct kefir_opt_code_schedule *schedule,
+                                  struct kefir_opt_code_schedule_builder *schedule_builder, void *payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code schedule"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
     REQUIRE(code_analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
-    REQUIRE(schedule_builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code schedule builder"));
+    REQUIRE(schedule_builder != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code schedule builder"));
     ASSIGN_DECL_CAST(struct kefir_opt_code_topological_scheduler *, scheduler, payload);
-    REQUIRE(scheduler != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code topological scheduler"));
+    REQUIRE(scheduler != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code topological scheduler"));
 
     REQUIRE_OK(schedule_block(mem, schedule, code, code_analysis, code->entry_point, schedule_builder, scheduler));
     kefir_result_t res;
@@ -289,8 +307,8 @@ static kefir_result_t do_schedule(struct kefir_mem *mem, const struct kefir_opt_
 
 kefir_result_t kefir_opt_code_topological_scheduler_default_schedule(
     kefir_opt_instruction_ref_t instr_ref,
-    kefir_opt_code_topological_scheduler_instruction_dependency_callback_t dependency_callback, void *dependency_callback_payload,
-    kefir_bool_t *schedule_instruction, void *payload) {
+    kefir_opt_code_topological_scheduler_instruction_dependency_callback_t dependency_callback,
+    void *dependency_callback_payload, kefir_bool_t *schedule_instruction, void *payload) {
     REQUIRE(
         dependency_callback != NULL,
         KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction dependency scheduler callback"));
@@ -308,9 +326,14 @@ kefir_result_t kefir_opt_code_topological_scheduler_default_schedule(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_topological_scheduler_init(struct kefir_opt_code_topological_scheduler *scheduler, kefir_opt_code_topological_scheduler_instruction_callback_t instr_callback, void *instr_callback_payload) {
-    REQUIRE(scheduler != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code topological scheduler"));
-    REQUIRE(instr_callback != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code topological scheduler instruction callback"));
+kefir_result_t kefir_opt_code_topological_scheduler_init(
+    struct kefir_opt_code_topological_scheduler *scheduler,
+    kefir_opt_code_topological_scheduler_instruction_callback_t instr_callback, void *instr_callback_payload) {
+    REQUIRE(scheduler != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code topological scheduler"));
+    REQUIRE(instr_callback != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                            "Expected valid optimizer code topological scheduler instruction callback"));
 
     scheduler->scheduler.do_schedule = do_schedule;
     scheduler->scheduler.payload = scheduler;

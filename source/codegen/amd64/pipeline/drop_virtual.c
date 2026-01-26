@@ -25,7 +25,7 @@
 #include "kefir/core/util.h"
 
 static kefir_result_t drop_virtual_apply(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                 const struct kefir_asmcmp_pipeline_pass *pass) {
+                                         const struct kefir_asmcmp_pipeline_pass *pass) {
     UNUSED(mem);
     UNUSED(context);
     UNUSED(pass);
@@ -74,5 +74,7 @@ static kefir_result_t drop_virtual_apply(struct kefir_mem *mem, struct kefir_asm
     return KEFIR_OK;
 }
 
-const struct kefir_asmcmp_pipeline_pass KefirAsmcmpAmd64DropVirtualPass = {
-    .name = "amd64-drop-virtual", .type = KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL, .apply = drop_virtual_apply, .payload = NULL};
+const struct kefir_asmcmp_pipeline_pass KefirAsmcmpAmd64DropVirtualPass = {.name = "amd64-drop-virtual",
+                                                                           .type = KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
+                                                                           .apply = drop_virtual_apply,
+                                                                           .payload = NULL};

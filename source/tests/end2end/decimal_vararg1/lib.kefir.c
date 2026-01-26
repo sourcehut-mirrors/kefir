@@ -22,41 +22,44 @@
 
 #ifdef __KEFIRCC_DECIMAL_SUPPORT__
 _Decimal32 sum32(int x, ...) {
-        __builtin_va_list args;
-        __builtin_c23_va_start(args);
-        _Decimal32 sum = 0.0df;
-        while (x--) sum += __builtin_va_arg(args, _Decimal32);
-        __builtin_va_end(args);
-        return sum;
+    __builtin_va_list args;
+    __builtin_c23_va_start(args);
+    _Decimal32 sum = 0.0df;
+    while (x--)
+        sum += __builtin_va_arg(args, _Decimal32);
+    __builtin_va_end(args);
+    return sum;
 }
 
 _Decimal64 sum64(int x, ...) {
-        __builtin_va_list args;
-        __builtin_c23_va_start(args);
-        _Decimal64 sum = 0.0df;
-        while (x--) sum += __builtin_va_arg(args, _Decimal64);
-        __builtin_va_end(args);
-        return sum;
+    __builtin_va_list args;
+    __builtin_c23_va_start(args);
+    _Decimal64 sum = 0.0df;
+    while (x--)
+        sum += __builtin_va_arg(args, _Decimal64);
+    __builtin_va_end(args);
+    return sum;
 }
 
 _Decimal128 sum128(int x, ...) {
-        __builtin_va_list args;
-        __builtin_c23_va_start(args);
-        _Decimal128 sum = 0.0df;
-        while (x--) sum += __builtin_va_arg(args, _Decimal128);
-        __builtin_va_end(args);
-        return sum;
+    __builtin_va_list args;
+    __builtin_c23_va_start(args);
+    _Decimal128 sum = 0.0df;
+    while (x--)
+        sum += __builtin_va_arg(args, _Decimal128);
+    __builtin_va_end(args);
+    return sum;
 }
 
 _Decimal128 sum128_2(int x, ...) {
-        __builtin_va_list args;
-        __builtin_c23_va_start(args);
-        _Decimal128 sum = 0.0df;
-        while (x--) {
-            sum += __builtin_va_arg(args, _Decimal128);
-            (void) __builtin_va_arg(args, double);
-        }
-        __builtin_va_end(args);
-        return sum;
+    __builtin_va_list args;
+    __builtin_c23_va_start(args);
+    _Decimal128 sum = 0.0df;
+    while (x--) {
+        sum += __builtin_va_arg(args, _Decimal128);
+        (void) __builtin_va_arg(args, double);
+    }
+    __builtin_va_end(args);
+    return sum;
 }
 #endif

@@ -454,8 +454,7 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
             REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT,
                                                 entry_id_ptr));
             REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                          *entry_id_ptr,
-                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Float80")));
+                                                          *entry_id_ptr, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Float80")));
             REQUIRE_OK(
                 kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
                                                    &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
@@ -471,8 +470,7 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
             REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT,
                                                 entry_id_ptr));
             REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                          *entry_id_ptr,
-                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Float64x")));
+                                                          *entry_id_ptr, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Float64x")));
             REQUIRE_OK(
                 kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
                                                    &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
@@ -560,20 +558,20 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
                     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                                *entry_id_ptr,
-                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex float")));
+                                                                  *entry_id_ptr,
+                                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex float")));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
                     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                                *entry_id_ptr,
-                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex double")));
+                                                                  *entry_id_ptr,
+                                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex double")));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
-                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                                *entry_id_ptr,
-                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex long double")));
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                        mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                        &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Complex long double")));
                     break;
 
                 default:
@@ -598,20 +596,20 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
                     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                                *entry_id_ptr,
-                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Imaginary float")));
+                                                                  *entry_id_ptr,
+                                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Imaginary float")));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
-                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                                *entry_id_ptr,
-                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Imaginary double")));
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                        mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                        &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Imaginary double")));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
-                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                                *entry_id_ptr,
-                                                                &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Imaginary long double")));
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                        mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                        &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_Imaginary long double")));
                     break;
 
                 default:
@@ -961,8 +959,9 @@ static kefir_result_t kefir_ast_translate_debug_type_with_layout(
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain unqualified AST type"));
 
-    REQUIRE(type_layout == NULL || type_layout->type == unqualified_type || type_layout->actual_type == unqualified_type,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected AST type layout match"));
+    REQUIRE(
+        type_layout == NULL || type_layout->type == unqualified_type || type_layout->actual_type == unqualified_type,
+        KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected AST type layout match"));
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &type, type));
 
     unqualified_type = kefir_ast_unqualified_type(type);

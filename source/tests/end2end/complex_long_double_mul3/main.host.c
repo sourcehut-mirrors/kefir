@@ -33,8 +33,10 @@ static void test(_Complex long double x, _Complex long double y) {
     long double exp_imag = cimagl(expected);
     long double res_real = creall(res);
     long double res_imag = cimagl(res);
-    assert(fabsl(exp_real - res_real) < 1e-9L || (isnan(exp_real) && isnan(res_real)) || (isinf(exp_real) && isinf(res_real) && signbit(exp_real) == signbit(res_real)));
-    assert(fabsl(exp_imag - res_imag) < 1e-9L || (isnan(exp_imag) && isnan(res_imag)) || (isinf(exp_imag) && isinf(res_imag) && signbit(exp_imag) == signbit(res_imag)));
+    assert(fabsl(exp_real - res_real) < 1e-9L || (isnan(exp_real) && isnan(res_real)) ||
+           (isinf(exp_real) && isinf(res_real) && signbit(exp_real) == signbit(res_real)));
+    assert(fabsl(exp_imag - res_imag) < 1e-9L || (isnan(exp_imag) && isnan(res_imag)) ||
+           (isinf(exp_imag) && isinf(res_imag) && signbit(exp_imag) == signbit(res_imag)));
 }
 
 int main(void) {

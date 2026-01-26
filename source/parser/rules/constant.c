@@ -137,7 +137,8 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
             break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT64X:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float64x(mem, token->constant.long_double)),
+            REQUIRE_ALLOC(result,
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float64x(mem, token->constant.long_double)),
                           "Failed to allocate AST constant");
             break;
 
@@ -240,27 +241,25 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL32:
-            REQUIRE_ALLOC(
-                result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal32(mem, token->constant.decimal32)),
-                "Failed to allocate AST constant");
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal32(mem, token->constant.decimal32)),
+                          "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL64:
-            REQUIRE_ALLOC(
-                result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64(mem, token->constant.decimal64)),
-                "Failed to allocate AST constant");
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64(mem, token->constant.decimal64)),
+                          "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL128:
-            REQUIRE_ALLOC(
-                result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal128(mem, token->constant.decimal128)),
-                "Failed to allocate AST constant");
+            REQUIRE_ALLOC(result,
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal128(mem, token->constant.decimal128)),
+                          "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL64X:
-            REQUIRE_ALLOC(
-                result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64x(mem, token->constant.decimal128)),
-                "Failed to allocate AST constant");
+            REQUIRE_ALLOC(result,
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64x(mem, token->constant.decimal128)),
+                          "Failed to allocate AST constant");
             break;
     }
     REQUIRE_OK(PARSER_SHIFT(parser));

@@ -1,7 +1,7 @@
 Failed to compile! Error stack:
 No.  Message                                                                                 Class          Subclass
-  0| lib.kefir.asmgen.c@13:17 Expected pointer type on the left side of arrow operator |     Error|         Analysis
-  1| lib.kefir.asmgen.c@10:17 Expected pointer type on the left side of arrow operator |     Error|         Analysis
+  0| lib.kefir.asmgen.c@10:16 Expected pointer type on the left side of arrow operator |     Error|         Analysis
+  1| lib.kefir.asmgen.c@9:15 Expected pointer type on the left side of arrow operator  |     Error|         Analysis
   2| lib.kefir.asmgen.c@8:13 Expected pointer type on the left side of arrow operator  |     Error|         Analysis
   3| lib.kefir.asmgen.c@6:13 Expected pointer type on the left side of arrow operator  |     Error|         Analysis
   4| lib.kefir.asmgen.c@3:9 Expected pointer type on the left side of arrow operator   |     Error|         Analysis

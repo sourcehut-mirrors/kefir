@@ -29,29 +29,34 @@ int f64x_alignment = _Alignof(_Imaginary _Float64x);
 int f80_size = sizeof(_Imaginary _Float80);
 int f80_alignment = _Alignof(_Imaginary _Float80);
 
-#define CLASSIFY(_x) _Generic((_x), _Imaginary _Float32 : 1, _Imaginary _Float32x : 2, _Imaginary _Float64 : 3, _Imaginary _Float64x : 4, _Imaginary _Float80 : 5, default : 0)
-int compat[] = {
-    CLASSIFY((_Imaginary _Float32) 1.0if),
-    CLASSIFY((_Imaginary _Float32x) 1.0if),
-    CLASSIFY((_Imaginary _Float64) 1.0if),
-    CLASSIFY((_Imaginary _Float64x) 1.0if),
-    CLASSIFY((_Imaginary _Float80) 1.0if),
-    CLASSIFY(((_Imaginary _Float32) 1.0if) + (_Imaginary _Float32) 1.0if),
-    CLASSIFY(((_Imaginary _Float32x) 1.0if) + (_Imaginary _Float32x) 1.0if),
-    CLASSIFY(((_Imaginary _Float64) 1.0if) + (_Imaginary _Float64) 1.0if),
-    CLASSIFY(((_Imaginary _Float64x) 1.0if) + (_Imaginary _Float64x) 1.0if),
-    CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float80) 1.0if),
-    CLASSIFY(((_Imaginary _Float32x) 1.0if) + (_Imaginary _Float32) 1.0if),
-    CLASSIFY(((_Imaginary _Float64) 1.0if) + (_Imaginary _Float32x) 1.0if),
-    CLASSIFY(((_Imaginary _Float64x) 1.0if) + (_Imaginary _Float64) 1.0if),
-    CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float64x) 1.0if),
-    CLASSIFY(((_Imaginary _Float64) 1.0if) + (_Imaginary _Float32) 1.0if),
-    CLASSIFY(((_Imaginary _Float64x) 1.0if) + (_Imaginary _Float32x) 1.0if),
-    CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float64) 1.0if),
-    CLASSIFY(((_Imaginary _Float64x) 1.0if) + (_Imaginary _Float32) 1.0if),
-    CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float32x) 1.0if),
-    CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float32) 1.0if)
-};
+#define CLASSIFY(_x)             \
+    _Generic((_x),               \
+        _Imaginary _Float32: 1,  \
+        _Imaginary _Float32x: 2, \
+        _Imaginary _Float64: 3,  \
+        _Imaginary _Float64x: 4, \
+        _Imaginary _Float80: 5,  \
+        default: 0)
+int compat[] = {CLASSIFY((_Imaginary _Float32) 1.0if),
+                CLASSIFY((_Imaginary _Float32x) 1.0if),
+                CLASSIFY((_Imaginary _Float64) 1.0if),
+                CLASSIFY((_Imaginary _Float64x) 1.0if),
+                CLASSIFY((_Imaginary _Float80) 1.0if),
+                CLASSIFY(((_Imaginary _Float32) 1.0if) + (_Imaginary _Float32) 1.0if),
+                CLASSIFY(((_Imaginary _Float32x) 1.0if) + (_Imaginary _Float32x) 1.0if),
+                CLASSIFY(((_Imaginary _Float64) 1.0if) + (_Imaginary _Float64) 1.0if),
+                CLASSIFY(((_Imaginary _Float64x) 1.0if) + (_Imaginary _Float64x) 1.0if),
+                CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float80) 1.0if),
+                CLASSIFY(((_Imaginary _Float32x) 1.0if) + (_Imaginary _Float32) 1.0if),
+                CLASSIFY(((_Imaginary _Float64) 1.0if) + (_Imaginary _Float32x) 1.0if),
+                CLASSIFY(((_Imaginary _Float64x) 1.0if) + (_Imaginary _Float64) 1.0if),
+                CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float64x) 1.0if),
+                CLASSIFY(((_Imaginary _Float64) 1.0if) + (_Imaginary _Float32) 1.0if),
+                CLASSIFY(((_Imaginary _Float64x) 1.0if) + (_Imaginary _Float32x) 1.0if),
+                CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float64) 1.0if),
+                CLASSIFY(((_Imaginary _Float64x) 1.0if) + (_Imaginary _Float32) 1.0if),
+                CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float32x) 1.0if),
+                CLASSIFY(((_Imaginary _Float80) 1.0if) + (_Imaginary _Float32) 1.0if)};
 
 _Imaginary _Float32 f32_const = 3.14159i;
 _Imaginary _Float32x f32x_const = -3.14159i;

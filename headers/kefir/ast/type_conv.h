@@ -27,10 +27,10 @@ const struct kefir_ast_type *kefir_ast_type_int_promotion(const struct kefir_ast
                                                           const struct kefir_ast_type *,
                                                           struct kefir_ast_bitfield_properties);
 const struct kefir_ast_type *kefir_ast_type_multiplicative_common_arithmetic(const struct kefir_ast_type_traits *,
-                                                              const struct kefir_ast_type *,
-                                                              struct kefir_ast_bitfield_properties,
-                                                              const struct kefir_ast_type *,
-                                                              struct kefir_ast_bitfield_properties);
+                                                                             const struct kefir_ast_type *,
+                                                                             struct kefir_ast_bitfield_properties,
+                                                                             const struct kefir_ast_type *,
+                                                                             struct kefir_ast_bitfield_properties);
 const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir_ast_type_traits *,
                                                               const struct kefir_ast_type *,
                                                               struct kefir_ast_bitfield_properties,

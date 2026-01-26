@@ -21,6 +21,6 @@
 #include "./definitions.h"
 
 int test(char *usedinput, int x, int y, int z, long w, long a, long b, long c, long d, long e, long f, int param) {
-	usedinput[param/8] |= (unsigned char)(1 << (param&7));
-	return x + y + z + w + a + b + c + d + e + f;
+    usedinput[param / 8] |= (unsigned char) (1 << (param & 7));
+    return x + y + z + w + a + b + c + d + e + f;
 }

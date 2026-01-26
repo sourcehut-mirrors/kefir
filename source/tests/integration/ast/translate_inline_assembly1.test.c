@@ -64,9 +64,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     struct kefir_ast_inline_assembly *inline_asm0 = kefir_ast_new_inline_assembly(
-        mem, (struct kefir_ast_inline_assembly_qualifiers){0}, "inline assembly code here.\ntest...test...test...");
+        mem, (struct kefir_ast_inline_assembly_qualifiers) {0}, "inline assembly code here.\ntest...test...test...");
     struct kefir_ast_inline_assembly *inline_asm1 =
-        kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers){.inline_qualifier = true},
+        kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers) {.inline_qualifier = true},
                                       "some assembly code here.\n"
                                       "no outputs or inputs are permitted in global context");
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(inline_asm0)));
@@ -89,7 +89,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
         struct kefir_ast_inline_assembly *inline_asm2 =
-            kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers){0},
+            kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers) {0},
                                           "some assembly code here.\n"
                                           "register %0 is an output\n"
                                           "register %1 is an input\n"
@@ -133,7 +133,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
         struct kefir_ast_inline_assembly *inline_asm2 =
-            kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers){0},
+            kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers) {0},
                                           "some assembly code here.\n"
                                           "register %0 is an output\n"
                                           "register %1 is an input\n"
@@ -158,7 +158,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(kefir_ast_inline_assembly_add_clobber(mem, &global_context.symbols, inline_asm2, "rcx"));
 
         struct kefir_ast_inline_assembly *inline_asm3 = kefir_ast_new_inline_assembly(
-            mem, (struct kefir_ast_inline_assembly_qualifiers){.volatile_qualifier = true}, "another assembly");
+            mem, (struct kefir_ast_inline_assembly_qualifiers) {.volatile_qualifier = true}, "another assembly");
 
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm3)));

@@ -61,8 +61,7 @@ static kefir_asm_amd64_xasmgen_symbol_relocation_t symbol_type_for_label(
 static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                                     const struct kefir_codegen_amd64_stack_frame *stack_frame,
                                     const struct kefir_asmcmp_value *value,
-                                    struct instruction_argument_state *arg_state,
-                                    const char *symbol_prefix,
+                                    struct instruction_argument_state *arg_state, const char *symbol_prefix,
                                     kefir_asmcmp_operand_variant_t default_variant_override) {
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
@@ -82,7 +81,8 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 virtual register");
 
         case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
-            snprintf(arg_state->buf, BUFLEN, KEFIR_AMD64_LABEL, symbol_prefix, target->function_name, value->internal_label);
+            snprintf(arg_state->buf, BUFLEN, KEFIR_AMD64_LABEL, symbol_prefix, target->function_name,
+                     value->internal_label);
             arg_state->operand = kefir_asm_amd64_xasmgen_operand_label(
                 &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, arg_state->buf);
             break;
@@ -122,8 +122,7 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
                         &arg_state->base_operands[0], kefir_asm_amd64_xasmgen_operand_reg(value->indirect.base.phreg),
-                        index,
-                        value->indirect.offset);
+                        index, value->indirect.offset);
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
@@ -133,8 +132,7 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                         &arg_state->base_operands[0],
                         kefir_asm_amd64_xasmgen_operand_label(&arg_state->base_operands[1],
                                                               KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, arg_state->buf),
-                        index,
-                        value->indirect.offset);
+                        index, value->indirect.offset);
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
@@ -143,8 +141,7 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                         kefir_asm_amd64_xasmgen_operand_label(&arg_state->base_operands[1],
                                                               symbol_type_for_label(value->indirect.base.external_type),
                                                               value->indirect.base.external_label),
-                        index,
-                        value->indirect.offset);
+                        index, value->indirect.offset);
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS: {
@@ -153,16 +150,14 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                         stack_frame, value->indirect.base.local_variable_id, &offset));
                     base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
                         &arg_state->base_operands[0],
-                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        index,
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP), index,
                         stack_frame->offsets.local_area + offset + value->indirect.offset);
                 } break;
 
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                     base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
                         &arg_state->base_operands[0],
-                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        index,
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP), index,
                         stack_frame->offsets.spill_area + value->indirect.base.spill_index * KEFIR_AMD64_ABI_QWORD +
                             value->indirect.offset);
                     break;
@@ -385,7 +380,8 @@ static kefir_bool_t same_operands(const struct kefir_asmcmp_value *arg1, const s
 
                 case KEFIR_ASMCMP_INDIRECT_INDEX_PHYSICAL:
                     REQUIRE(arg1->indirect.index.phreg == arg2->indirect.index.phreg &&
-                        arg1->indirect.index.scale == arg2->indirect.index.scale, false);
+                                arg1->indirect.index.scale == arg2->indirect.index.scale,
+                            false);
                     break;
             }
             switch (arg1->indirect.type) {
@@ -436,8 +432,7 @@ static kefir_bool_t same_operands(const struct kefir_asmcmp_value *arg1, const s
 static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen,
                                      const struct kefir_asmcmp_amd64 *target,
                                      const struct kefir_codegen_amd64_stack_frame *stack_frame,
-                                     const char *symbol_prefix,
-                                     kefir_asmcmp_instruction_index_t index) {
+                                     const char *symbol_prefix, kefir_asmcmp_instruction_index_t index) {
     struct kefir_asmcmp_instruction *instr;
     REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, index, &instr));
     for (kefir_asmcmp_label_index_t label = kefir_asmcmp_context_instr_label_head(&target->context, index);
@@ -468,38 +463,38 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
         break;
 #define DEF_OPCODE0_PREFIX(_opcode) DEF_OPCODE0_(_opcode)
 #define DEF_OPCODE0(_opcode, _mnemonic, _variant, _flag) DEF_OPCODE0_##_variant(_opcode)
-#define DEF_OPCODE1(_opcode, _mnemonic, _variant, _flag, _op1)                                                         \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                           \
-        REQUIRE_OK(                                                                                                    \
-            build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
-        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand));                                             \
+#define DEF_OPCODE1(_opcode, _mnemonic, _variant, _flag, _op1)                                       \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                         \
+        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix, \
+                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                             \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand));                           \
         break;
-#define DEF_OPCODE2_(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                                                  \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                           \
-        REQUIRE_OK(                                                                                                    \
-            build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
-        REQUIRE_OK(                                                                                                    \
-            build_operand(target, stack_frame, &instr->args[1], &arg_state[1], symbol_prefix, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
-        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand));                       \
+#define DEF_OPCODE2_(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                                \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                         \
+        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix, \
+                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                             \
+        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[1], &arg_state[1], symbol_prefix, \
+                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                             \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand));     \
         break;
-#define DEF_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                                        \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                           \
-        REQUIRE_OK(                                                                                                    \
-            build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
-        REQUIRE_OK(                                                                                                    \
-            build_operand(target, stack_frame, &instr->args[1], &arg_state[1], symbol_prefix, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
-        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand, true));                 \
+#define DEF_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                        \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                           \
+        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix,   \
+                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                               \
+        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[1], &arg_state[1], symbol_prefix,   \
+                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                               \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand, true)); \
         break;
 #define DEF_OPCODE2(_opcode, _mnemonic, _variant, _flag, _op1, _op2) \
     DEF_OPCODE2_##_variant(_opcode, _mnemonic, _variant, _flag, _op1, _op2)
 #define DEF_OPCODE3(_opcode, _mnemonic, _variant, _flag, _op1, _op2, _op3)                                             \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                           \
-        REQUIRE_OK(                                                                                                    \
-            build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
-        REQUIRE_OK(                                                                                                    \
-            build_operand(target, stack_frame, &instr->args[1], &arg_state[1], symbol_prefix, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
-        REQUIRE_OK(                                                                                                    \
-            build_operand(target, stack_frame, &instr->args[2], &arg_state[2], symbol_prefix, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
+        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix,                   \
+                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                                               \
+        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[1], &arg_state[1], symbol_prefix,                   \
+                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                                               \
+        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[2], &arg_state[2], symbol_prefix,                   \
+                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                                               \
         REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand, arg_state[2].operand)); \
         break;
 
@@ -559,7 +554,8 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(inline_assembly):
-            REQUIRE_OK(format_inline_assembly(mem, xasmgen, target, stack_frame, symbol_prefix, instr->args[0].inline_asm_idx));
+            REQUIRE_OK(format_inline_assembly(mem, xasmgen, target, stack_frame, symbol_prefix,
+                                              instr->args[0].inline_asm_idx));
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register):
@@ -584,7 +580,8 @@ kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *mem, struct ke
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 assembly generator"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp amd64 target"));
     REQUIRE(stack_frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
-    REQUIRE(symbol_prefix != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 internal symbol prefix"));
+    REQUIRE(symbol_prefix != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 internal symbol prefix"));
 
     struct kefir_hashtreeset_iterator external_iter;
     kefir_result_t res;

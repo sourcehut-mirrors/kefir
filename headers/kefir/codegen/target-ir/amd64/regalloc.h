@@ -35,12 +35,12 @@ typedef enum kefir_codegen_target_ir_amd64_regalloc_type {
     KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL,
 } kefir_codegen_target_ir_amd64_regalloc_type_t;
 
-kefir_codegen_target_ir_amd64_regalloc_type_t kefir_codegen_target_ir_amd64_regalloc_get_type(kefir_codegen_target_ir_regalloc_allocation_t);
-kefir_asm_amd64_xasmgen_register_t kefir_codegen_target_ir_amd64_regalloc_register(kefir_codegen_target_ir_regalloc_allocation_t);
+kefir_codegen_target_ir_amd64_regalloc_type_t kefir_codegen_target_ir_amd64_regalloc_get_type(
+    kefir_codegen_target_ir_regalloc_allocation_t);
+kefir_asm_amd64_xasmgen_register_t kefir_codegen_target_ir_amd64_regalloc_register(
+    kefir_codegen_target_ir_regalloc_allocation_t);
 kefir_uint32_t kefir_codegen_target_ir_amd64_regalloc_spill_index(kefir_codegen_target_ir_regalloc_allocation_t);
 kefir_uint32_t kefir_codegen_target_ir_amd64_regalloc_spill_length(kefir_codegen_target_ir_regalloc_allocation_t);
-
-
 
 typedef union kefir_codegen_target_ir_amd64_regalloc_entry {
     kefir_codegen_target_ir_regalloc_allocation_t allocation;
@@ -53,17 +53,26 @@ typedef union kefir_codegen_target_ir_amd64_regalloc_entry {
     } reg;
     struct {
         kefir_uint8_t type;
-        kefir_uint32_t length : 24,
-                        index : 32;
+        kefir_uint32_t length : 24, index : 32;
     } spill_area;
 } kefir_codegen_target_ir_amd64_regalloc_entry_t;
 
-_Static_assert(sizeof(union kefir_codegen_target_ir_amd64_regalloc_entry) == sizeof(kefir_codegen_target_ir_regalloc_allocation_t), "Mismatch of target IR amd64 register allocator entry size");
+_Static_assert(sizeof(union kefir_codegen_target_ir_amd64_regalloc_entry) ==
+                   sizeof(kefir_codegen_target_ir_regalloc_allocation_t),
+               "Mismatch of target IR amd64 register allocator entry size");
 
-#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_NA ((kefir_codegen_target_ir_regalloc_allocation_t) (KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA << 56))
-#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_GP(_reg) (kefir_codegen_target_ir_regalloc_allocation_t) ((KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP << 56) | (kefir_uint32_t) (_reg))
-#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_SSE(_reg) (kefir_codegen_target_ir_regalloc_allocation_t) ((KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE << 56) | (kefir_uint32_t) (_reg))
-#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_SPILL(_index, _length) (kefir_codegen_target_ir_regalloc_allocation_t) ((KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL << 56) | (((kefir_uint64_t) (kefir_uint16_t) (_index)) << 32) | (kefir_uint32_t) (_length))
+#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_NA \
+    ((kefir_codegen_target_ir_regalloc_allocation_t) (KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA << 56))
+#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_GP(_reg)                                                      \
+    (kefir_codegen_target_ir_regalloc_allocation_t)((KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP << 56) | \
+                                                    (kefir_uint32_t) (_reg))
+#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_SSE(_reg)                                                      \
+    (kefir_codegen_target_ir_regalloc_allocation_t)((KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE << 56) | \
+                                                    (kefir_uint32_t) (_reg))
+#define KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_SPILL(_index, _length)                                           \
+    (kefir_codegen_target_ir_regalloc_allocation_t)((KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL << 56) | \
+                                                    (((kefir_uint64_t) (kefir_uint16_t) (_index)) << 32) |      \
+                                                    (kefir_uint32_t) (_length))
 
 typedef struct kefir_codegen_target_ir_amd64_regalloc_class {
     struct kefir_codegen_target_ir_regalloc_class klass;
@@ -74,6 +83,8 @@ typedef struct kefir_codegen_target_ir_amd64_regalloc_class {
     kefir_size_t num_of_sse_registers;
 } kefir_codegen_target_ir_amd64_regalloc_class_t;
 
-kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_mem *, struct kefir_codegen_target_ir_amd64_regalloc_class *, kefir_abi_amd64_variant_t);
+kefir_result_t kefir_codegen_target_ir_amd64_regalloc_class_init(struct kefir_mem *,
+                                                                 struct kefir_codegen_target_ir_amd64_regalloc_class *,
+                                                                 kefir_abi_amd64_variant_t);
 
 #endif

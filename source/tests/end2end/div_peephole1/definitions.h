@@ -21,7 +21,7 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-#define DECL_OP(_type, _offset) \
+#define DECL_OP(_type, _offset)         \
     _type idiv_##_type##_offset(_type); \
     unsigned _type div_##_type##_offset(unsigned _type)
 

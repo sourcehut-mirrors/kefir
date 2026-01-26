@@ -21,7 +21,7 @@
 #include "./definitions.h"
 
 struct Struct1 gets1(int seed) {
-    return (struct Struct1){.a = seed, .b = seed + 1, .c = seed + 2};
+    return (struct Struct1) {.a = seed, .b = seed + 1, .c = seed + 2};
 }
 
 struct Struct1 gets1_void(void) {

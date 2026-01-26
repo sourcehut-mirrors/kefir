@@ -22,15 +22,15 @@
 #define DEFINITIONS_H_
 
 struct S0 {
-   volatile signed f0 : 1;
-   volatile signed f1 : 18;
-   signed f2 : 12;
-   unsigned f3 : 8;
+    volatile signed f0 : 1;
+    volatile signed f1 : 18;
+    signed f2 : 12;
+    unsigned f3 : 8;
 };
 
 struct S1 {
-   unsigned short  f0;
-   struct S0  f1;
+    unsigned short f0;
+    struct S0 f1;
 };
 
 extern struct S1 value;

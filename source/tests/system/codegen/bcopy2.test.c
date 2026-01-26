@@ -32,11 +32,11 @@ int main(int argc, const char **argv) {
     bool b1 = false, b2 = true;
 
     REQUIRE(b1 == false, KEFIR_INTERNAL_ERROR);
-    copybool(&(bool){true}, &b1);
+    copybool(&(bool) {true}, &b1);
     REQUIRE(b1 == true, KEFIR_INTERNAL_ERROR);
 
     REQUIRE(b2 == true, KEFIR_INTERNAL_ERROR);
-    copybool(&(bool){false}, &b2);
+    copybool(&(bool) {false}, &b2);
     REQUIRE(b2 == false, KEFIR_INTERNAL_ERROR);
     return EXIT_SUCCESS;
 }

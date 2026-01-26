@@ -142,7 +142,7 @@ END_CASE
         for (kefir_int64_t i = (_min); i < (_max); i++) {                                                          \
             kefir_int64_t offset;                                                                                  \
             ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_OFFSET((_mem), (_env), opaque_type, i, &offset));        \
-            ASSERT(i *(_size) == offset);                                                                          \
+            ASSERT(i * (_size) == offset);                                                                         \
         }                                                                                                          \
         ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE((_mem), (_env), opaque_type));                            \
     } while (0)

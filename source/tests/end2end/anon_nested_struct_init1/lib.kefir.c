@@ -23,5 +23,5 @@
 union String STRING = {{{"12345", "6789"}}};
 
 union String init_string(char arr[5]) {
-    return (union String){{{{arr[4], arr[3], arr[2], arr[1], arr[0]}, "!!!!"}}};
+    return (union String) {{{{arr[4], arr[3], arr[2], arr[1], arr[0]}, "!!!!"}}};
 }

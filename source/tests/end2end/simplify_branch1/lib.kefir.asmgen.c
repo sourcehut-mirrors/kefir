@@ -19,12 +19,11 @@
 */
 
 int fn(int x, int y) {
-  if (x) {}
-  return y;
+    if (x) {}
+    return y;
 }
 
 int fn2(int x, int y) {
-  if (x > 0) {}
-  return y;
+    if (x > 0) {}
+    return y;
 }
-

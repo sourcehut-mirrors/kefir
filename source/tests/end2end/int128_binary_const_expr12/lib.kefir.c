@@ -20,21 +20,22 @@
 
 #include "definitions.h"
 
-int cmps[] = {
-    ((unsigned __int128) 0x0) != ((unsigned __int128) 0x0),
-    ((unsigned __int128) 0x0) != ((unsigned __int128) 0x1),
-    ((unsigned __int128) 0x100) != ((unsigned __int128) 0x100),
-    ((unsigned __int128) 0x100) != ((unsigned __int128) 0x1000),
+int cmps[] = {((unsigned __int128) 0x0) != ((unsigned __int128) 0x0),
+              ((unsigned __int128) 0x0) != ((unsigned __int128) 0x1),
+              ((unsigned __int128) 0x100) != ((unsigned __int128) 0x100),
+              ((unsigned __int128) 0x100) != ((unsigned __int128) 0x1000),
 
-    ((signed __int128) -1) != ((signed __int128) -1),
-    ((signed __int128) 1) != ((signed __int128) 1),
-    ((signed __int128) 1) != ((signed __int128) -1),
-    ((signed __int128) 1) != ((signed __int128) 1000),
+              ((signed __int128) -1) != ((signed __int128) -1),
+              ((signed __int128) 1) != ((signed __int128) 1),
+              ((signed __int128) 1) != ((signed __int128) -1),
+              ((signed __int128) 1) != ((signed __int128) 1000),
 
-    ((signed __int128) -1) != ((unsigned __int128) 0b11u),
-    ((signed __int128) -1) != ((unsigned __int128) 0b111u),
-    ((signed __int128) 0xfffffffffffffffffffffffffffffffffffffffffffffffffffwb) != ((unsigned __int128) 0xfffffffffffffffffffffffffffffffffffffffffffffffffffuwb),
-    ((signed __int128) 0xfffffffffffffffffffffffffffffffffffffffffffffffffffwb) != ((unsigned __int128) 0xffffffffffffffffffffffffffffffffffffffffffffffffffeuwb),
+              ((signed __int128) -1) != ((unsigned __int128) 0b11u),
+              ((signed __int128) -1) != ((unsigned __int128) 0b111u),
+              ((signed __int128) 0xfffffffffffffffffffffffffffffffffffffffffffffffffffwb) !=
+                  ((unsigned __int128) 0xfffffffffffffffffffffffffffffffffffffffffffffffffffuwb),
+              ((signed __int128) 0xfffffffffffffffffffffffffffffffffffffffffffffffffffwb) !=
+                  ((unsigned __int128) 0xffffffffffffffffffffffffffffffffffffffffffffffffffeuwb),
 
-    ((unsigned __int128) 1234u) != 1234,
-    ((unsigned __int128) -1234) != -1234};
+              ((unsigned __int128) 1234u) != 1234,
+              ((unsigned __int128) -1234) != -1234};

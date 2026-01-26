@@ -34,18 +34,29 @@ typedef struct kefir_codegen_target_ir_interference {
 } kefir_codegen_target_ir_interference_t;
 
 kefir_result_t kefir_codegen_target_ir_interference_init(struct kefir_codegen_target_ir_interference *);
-kefir_result_t kefir_codegen_target_ir_interference_free(struct kefir_mem *, struct kefir_codegen_target_ir_interference *);
-kefir_result_t kefir_codegen_target_ir_interference_reset(struct kefir_mem *, struct kefir_codegen_target_ir_interference *);
-kefir_result_t kefir_codegen_target_ir_interference_build(struct kefir_mem *, struct kefir_codegen_target_ir_interference *, const struct kefir_codegen_target_ir_control_flow *, const struct kefir_codegen_target_ir_liveness *);
+kefir_result_t kefir_codegen_target_ir_interference_free(struct kefir_mem *,
+                                                         struct kefir_codegen_target_ir_interference *);
+kefir_result_t kefir_codegen_target_ir_interference_reset(struct kefir_mem *,
+                                                          struct kefir_codegen_target_ir_interference *);
+kefir_result_t kefir_codegen_target_ir_interference_build(struct kefir_mem *,
+                                                          struct kefir_codegen_target_ir_interference *,
+                                                          const struct kefir_codegen_target_ir_control_flow *,
+                                                          const struct kefir_codegen_target_ir_liveness *);
 
-kefir_result_t kefir_codegen_target_ir_interference_has(const struct kefir_codegen_target_ir_interference *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_value_ref_t, kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_interference_has(const struct kefir_codegen_target_ir_interference *,
+                                                        kefir_codegen_target_ir_value_ref_t,
+                                                        kefir_codegen_target_ir_value_ref_t, kefir_bool_t *);
 
 typedef struct kefir_codegen_target_ir_interference_iterator {
     void *entry;
     kefir_size_t index;
 } kefir_codegen_target_ir_interference_iterator_t;
 
-kefir_result_t kefir_codegen_target_ir_interference_iter(const struct kefir_codegen_target_ir_interference *, struct kefir_codegen_target_ir_interference_iterator *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_value_ref_t *);
-kefir_result_t kefir_codegen_target_ir_interference_next(struct kefir_codegen_target_ir_interference_iterator *, kefir_codegen_target_ir_value_ref_t *);
+kefir_result_t kefir_codegen_target_ir_interference_iter(const struct kefir_codegen_target_ir_interference *,
+                                                         struct kefir_codegen_target_ir_interference_iterator *,
+                                                         kefir_codegen_target_ir_value_ref_t,
+                                                         kefir_codegen_target_ir_value_ref_t *);
+kefir_result_t kefir_codegen_target_ir_interference_next(struct kefir_codegen_target_ir_interference_iterator *,
+                                                         kefir_codegen_target_ir_value_ref_t *);
 
 #endif

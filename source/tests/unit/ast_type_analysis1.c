@@ -163,7 +163,7 @@ END_CASE
         kefir_bool_t _has_value;                                                   \
         kefir_ast_constant_expression_int_t _cnst;                                 \
         ASSERT_OK(kefir_ast_enumeration_get((_enum), (_id), &_has_value, &_cnst)); \
-        ASSERT(_has_value &&_cnst == (_value));                                    \
+        ASSERT(_has_value && _cnst == (_value));                                   \
     } while (0)
 
 DEFINE_CASE(ast_type_analysis_enumerations, "AST type analysis - enumerations") {

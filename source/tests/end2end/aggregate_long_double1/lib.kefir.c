@@ -27,11 +27,11 @@
 #define va_end(vararg) __builtin_va_end((vararg))
 
 struct Param1 ldneg(struct Param1 p) {
-    return (struct Param1){-p.value};
+    return (struct Param1) {-p.value};
 }
 
 struct Param1 ldsum(struct Param2 p) {
-    return (struct Param1){p.x + p.y};
+    return (struct Param1) {p.x + p.y};
 }
 
 struct Param1 ldvsum(int num, ...) {
@@ -42,7 +42,7 @@ struct Param1 ldvsum(int num, ...) {
         x += va_arg(list, long double);
     }
     va_end(list);
-    return (struct Param1){x};
+    return (struct Param1) {x};
 }
 
 struct Param1 ldvsum2(int num, ...) {
@@ -54,7 +54,7 @@ struct Param1 ldvsum2(int num, ...) {
         x += p.value;
     }
     va_end(list);
-    return (struct Param1){x};
+    return (struct Param1) {x};
 }
 
 long double ldunwrap(struct Param1 (*fn)()) {

@@ -24,14 +24,18 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t do_placeholder_sink(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref,
-    struct kefir_codegen_target_ir_control_flow *control_flow, struct kefir_codegen_target_ir_numbering *numbering, struct kefir_hashset *placeholders) {
+static kefir_result_t do_placeholder_sink(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                          kefir_codegen_target_ir_block_ref_t block_ref,
+                                          struct kefir_codegen_target_ir_control_flow *control_flow,
+                                          struct kefir_codegen_target_ir_numbering *numbering,
+                                          struct kefir_hashset *placeholders) {
     REQUIRE(kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref), KEFIR_OK);
     REQUIRE_OK(kefir_hashset_clear(mem, placeholders));
 
     kefir_result_t res;
-    for (kefir_codegen_target_ir_instruction_ref_t instr_ref = kefir_codegen_target_ir_code_block_control_head(code, block_ref);
-        instr_ref != KEFIR_ID_NONE;) {
+    for (kefir_codegen_target_ir_instruction_ref_t instr_ref =
+             kefir_codegen_target_ir_code_block_control_head(code, block_ref);
+         instr_ref != KEFIR_ID_NONE;) {
         const struct kefir_codegen_target_ir_instruction *placeholder_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &placeholder_instr));
         instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref);
@@ -53,9 +57,7 @@ static kefir_result_t do_placeholder_sink(struct kefir_mem *mem, struct kefir_co
 
     struct kefir_hashset_iterator iter;
     kefir_hashset_key_t key;
-    for (res = kefir_hashset_iter(placeholders, &iter, &key);
-        res == KEFIR_OK;
-        res = kefir_hashset_next(&iter, &key)) {
+    for (res = kefir_hashset_iter(placeholders, &iter, &key); res == KEFIR_OK; res = kefir_hashset_next(&iter, &key)) {
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_instruction_ref_t, instr_ref, key);
         const struct kefir_codegen_target_ir_instruction *placeholder_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &placeholder_instr));
@@ -66,9 +68,9 @@ static kefir_result_t do_placeholder_sink(struct kefir_mem *mem, struct kefir_co
         kefir_result_t res;
         struct kefir_codegen_target_ir_use_iterator use_iter;
         kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
-        for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, placeholder_instr->instr_ref, &use_instr_ref, NULL);
-            res == KEFIR_OK;
-            res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
+        for (res = kefir_codegen_target_ir_code_use_iter(code, &use_iter, placeholder_instr->instr_ref, &use_instr_ref,
+                                                         NULL);
+             res == KEFIR_OK; res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, NULL)) {
             const struct kefir_codegen_target_ir_instruction *use_instr;
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, use_instr_ref, &use_instr));
             if (use_instr->block_ref != placeholder_instr->block_ref) {
@@ -84,9 +86,15 @@ static kefir_result_t do_placeholder_sink(struct kefir_mem *mem, struct kefir_co
         }
 
         if (closest_local_user_ref != KEFIR_ID_NONE) {
-            REQUIRE_OK(kefir_codegen_target_ir_code_move_after(code, placeholder_instr->block_ref, kefir_codegen_target_ir_code_control_prev(code, closest_local_user_ref), placeholder_instr->instr_ref));
+            REQUIRE_OK(kefir_codegen_target_ir_code_move_after(
+                code, placeholder_instr->block_ref,
+                kefir_codegen_target_ir_code_control_prev(code, closest_local_user_ref), placeholder_instr->instr_ref));
         } else {
-            REQUIRE_OK(kefir_codegen_target_ir_code_move_after(code, placeholder_instr->block_ref, kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref)), placeholder_instr->instr_ref));
+            REQUIRE_OK(kefir_codegen_target_ir_code_move_after(
+                code, placeholder_instr->block_ref,
+                kefir_codegen_target_ir_code_control_prev(
+                    code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
+                placeholder_instr->instr_ref));
         }
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -95,7 +103,8 @@ static kefir_result_t do_placeholder_sink(struct kefir_mem *mem, struct kefir_co
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_transform_placeholder_sink(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code) {
+kefir_result_t kefir_codegen_target_ir_transform_placeholder_sink(struct kefir_mem *mem,
+                                                                  struct kefir_codegen_target_ir_code *code) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
 

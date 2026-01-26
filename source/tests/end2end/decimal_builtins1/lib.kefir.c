@@ -58,7 +58,6 @@ _Decimal128 get_d128_nan(void) {
     return __builtin_nand32("");
 }
 
-
 _Decimal32 get_d32_snan(void) {
     return __builtin_nansd32("");
 }

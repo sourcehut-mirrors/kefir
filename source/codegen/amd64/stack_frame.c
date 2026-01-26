@@ -101,12 +101,11 @@ kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefi
 }
 
 kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(
-    const struct kefir_codegen_amd64_stack_frame *frame, kefir_id_t variable_id,
-    kefir_int64_t *offset_ptr) {
+    const struct kefir_codegen_amd64_stack_frame *frame, kefir_id_t variable_id, kefir_int64_t *offset_ptr) {
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
-    REQUIRE_OK(kefir_codegen_local_variable_allocation_of(
-        frame->local_variables, (kefir_opt_instruction_ref_t) variable_id, offset_ptr));
+    REQUIRE_OK(kefir_codegen_local_variable_allocation_of(frame->local_variables,
+                                                          (kefir_opt_instruction_ref_t) variable_id, offset_ptr));
     return KEFIR_OK;
 }
 
@@ -200,16 +199,14 @@ kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmg
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FSTCW(
             xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                          &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        (struct kefir_asm_amd64_xasmgen_indirection_index){0},
-                         frame->offsets.x87_control_word)));
+                         (struct kefir_asm_amd64_xasmgen_indirection_index) {0}, frame->offsets.x87_control_word)));
     }
 
     if (frame->requirements.mxcsr_save) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_STMXCSR(
             xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                          &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        (struct kefir_asm_amd64_xasmgen_indirection_index){0},
-                         frame->offsets.mxcsr)));
+                         (struct kefir_asm_amd64_xasmgen_indirection_index) {0}, frame->offsets.mxcsr)));
     }
     return KEFIR_OK;
 }
@@ -226,16 +223,14 @@ kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmg
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LDMXCSR(
             xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                          &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        (struct kefir_asm_amd64_xasmgen_indirection_index){0},
-                         frame->offsets.mxcsr)));
+                         (struct kefir_asm_amd64_xasmgen_indirection_index) {0}, frame->offsets.mxcsr)));
     }
 
     if (frame->requirements.x87_control_word_save) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLDCW(
             xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                          &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        (struct kefir_asm_amd64_xasmgen_indirection_index){0},
-                         frame->offsets.x87_control_word)));
+                         (struct kefir_asm_amd64_xasmgen_indirection_index) {0}, frame->offsets.x87_control_word)));
     }
 
     if (frame->sizes.allocated_size > 0 || frame->requirements.reset_stack_pointer) {
@@ -243,8 +238,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmg
             xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
             kefir_asm_amd64_xasmgen_operand_indirect(
                 &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                (struct kefir_asm_amd64_xasmgen_indirection_index){0},
-                frame->offsets.preserved_regs)));
+                (struct kefir_asm_amd64_xasmgen_indirection_index) {0}, frame->offsets.preserved_regs)));
     }
 
     const kefir_size_t num_of_callee_preserved_gp =

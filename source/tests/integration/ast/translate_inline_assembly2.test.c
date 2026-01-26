@@ -69,7 +69,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
         struct kefir_ast_inline_assembly *inline_asm1 =
-            kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers){0}, "some assembly code");
+            kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers) {0}, "some assembly code");
         REQUIRE_OK(kefir_ast_inline_assembly_add_jump_label(mem, &global_context.symbols, inline_asm1, "label_begin"));
         REQUIRE_OK(kefir_ast_inline_assembly_add_jump_label(mem, &global_context.symbols, inline_asm1, "label_end"));
 

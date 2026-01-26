@@ -38,7 +38,7 @@ int main(int argc, const char **argv) {
 #ifdef __x86_64__
     for (long x = 0; x < 500; x++) {
         for (long y = 0; y < 500; y++) {
-            struct val r = process((struct val){x, y}, 25);
+            struct val r = process((struct val) {x, y}, 25);
             ASSERT(r.x == x + 25);
             ASSERT(r.y == y + 26);
         }

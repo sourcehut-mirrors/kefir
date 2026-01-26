@@ -35,29 +35,32 @@ kefir_result_t kefir_codegen_target_ir_coalesce_free(struct kefir_mem *, struct 
 kefir_result_t kefir_codegen_target_ir_coalesce_reset(struct kefir_mem *, struct kefir_codegen_target_ir_coalesce *);
 
 typedef struct kefir_codegen_target_ir_coalesce_callback {
-    kefir_result_t (*coalesce)(struct kefir_mem *, kefir_codegen_target_ir_value_ref_t, kefir_codegen_target_ir_value_ref_t, void *);
+    kefir_result_t (*coalesce)(struct kefir_mem *, kefir_codegen_target_ir_value_ref_t,
+                               kefir_codegen_target_ir_value_ref_t, void *);
     void *payload;
 } kefir_codegen_target_ir_coalesce_callback_t;
 
 typedef struct kefir_codegen_target_ir_coalesce_class {
-    kefir_result_t (*extract_coalescing)(struct kefir_mem *, const struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *, const struct kefir_codegen_target_ir_coalesce_callback *, void *);
+    kefir_result_t (*extract_coalescing)(struct kefir_mem *, const struct kefir_codegen_target_ir_code *,
+                                         const struct kefir_codegen_target_ir_instruction *,
+                                         const struct kefir_codegen_target_ir_coalesce_callback *, void *);
     void *payload;
 } kefir_codegen_target_ir_coalesce_class_t;
 
 kefir_result_t kefir_codegen_target_ir_coalesce_build(struct kefir_mem *, struct kefir_codegen_target_ir_coalesce *,
-    const struct kefir_codegen_target_ir_control_flow *,
-    const struct kefir_codegen_target_ir_interference *,
-    const struct kefir_codegen_target_ir_coalesce_class *);
+                                                      const struct kefir_codegen_target_ir_control_flow *,
+                                                      const struct kefir_codegen_target_ir_interference *,
+                                                      const struct kefir_codegen_target_ir_coalesce_class *);
 
 typedef struct kefir_codegen_target_ir_coalesce_iterator {
     struct kefir_graph_edge_iterator iter;
 } kefir_codegen_target_ir_coalesce_iterator_t;
 
 kefir_result_t kefir_codegen_target_ir_coalesce_iter(const struct kefir_codegen_target_ir_coalesce *,
-    struct kefir_codegen_target_ir_coalesce_iterator *,
-    kefir_codegen_target_ir_value_ref_t,
-    kefir_codegen_target_ir_value_ref_t *);
+                                                     struct kefir_codegen_target_ir_coalesce_iterator *,
+                                                     kefir_codegen_target_ir_value_ref_t,
+                                                     kefir_codegen_target_ir_value_ref_t *);
 kefir_result_t kefir_codegen_target_ir_coalesce_next(struct kefir_codegen_target_ir_coalesce_iterator *,
-    kefir_codegen_target_ir_value_ref_t *);
+                                                     kefir_codegen_target_ir_value_ref_t *);
 
 #endif

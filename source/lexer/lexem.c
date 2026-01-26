@@ -398,7 +398,7 @@ kefir_result_t kefir_token_new_constant_complex_float(kefir_float32_t real_value
 }
 
 kefir_result_t kefir_token_new_constant_complex_float32(kefir_float32_t real_value, kefir_float32_t imaginary_value,
-                                                      struct kefir_token *token) {
+                                                        struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
@@ -422,7 +422,7 @@ kefir_result_t kefir_token_new_constant_complex_double(kefir_float64_t real_valu
 }
 
 kefir_result_t kefir_token_new_constant_complex_float32x(kefir_float64_t real_value, kefir_float64_t imaginary_value,
-                                                       struct kefir_token *token) {
+                                                         struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
@@ -434,7 +434,7 @@ kefir_result_t kefir_token_new_constant_complex_float32x(kefir_float64_t real_va
 }
 
 kefir_result_t kefir_token_new_constant_complex_float64(kefir_float64_t real_value, kefir_float64_t imaginary_value,
-                                                       struct kefir_token *token) {
+                                                        struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
@@ -459,8 +459,8 @@ kefir_result_t kefir_token_new_constant_complex_long_double(kefir_long_double_t 
 }
 
 kefir_result_t kefir_token_new_constant_complex_float64x(kefir_long_double_t real_value,
-                                                            kefir_long_double_t imaginary_value,
-                                                            struct kefir_token *token) {
+                                                         kefir_long_double_t imaginary_value,
+                                                         struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
@@ -472,8 +472,8 @@ kefir_result_t kefir_token_new_constant_complex_float64x(kefir_long_double_t rea
 }
 
 kefir_result_t kefir_token_new_constant_complex_float80(kefir_long_double_t real_value,
-                                                            kefir_long_double_t imaginary_value,
-                                                            struct kefir_token *token) {
+                                                        kefir_long_double_t imaginary_value,
+                                                        struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;

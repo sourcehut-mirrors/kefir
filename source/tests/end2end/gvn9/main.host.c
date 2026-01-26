@@ -27,43 +27,43 @@
 #define UMASK(_x, _y) ((_x) & ((1ull << (_y)) - 1))
 
 int main(void) {
-    assert(test1(1, (struct S1){{0, 0}}, (struct S1){{0, 0}}));
-    assert(test1(1, (struct S1){{~0ull, ~0ull}}, (struct S1){{~0ull, ~0ull}}));
-    assert(!test1(1, (struct S1){{~0ull, 0}}, (struct S1){{1, 0}}));
-    assert(test1(0, (struct S1){{0, 0}}, (struct S1){{0, 0}}));
-    assert(test1(0, (struct S1){{~0ull, ~0ull}}, (struct S1){{~0ull, ~0ull}}));
-    assert(!test1(0, (struct S1){{~0ull, 0}}, (struct S1){{1, 0}}));
+    assert(test1(1, (struct S1) {{0, 0}}, (struct S1) {{0, 0}}));
+    assert(test1(1, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{~0ull, ~0ull}}));
+    assert(!test1(1, (struct S1) {{~0ull, 0}}, (struct S1) {{1, 0}}));
+    assert(test1(0, (struct S1) {{0, 0}}, (struct S1) {{0, 0}}));
+    assert(test1(0, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{~0ull, ~0ull}}));
+    assert(!test1(0, (struct S1) {{~0ull, 0}}, (struct S1) {{1, 0}}));
 
-    assert(test2(1, (struct S1){{1, 0}}, (struct S1){{0, 0}}));
-    assert(test2(1, (struct S1){{0, 1}}, (struct S1){{1, 0}}));
-    assert(test2(1, (struct S1){{~0ull, ~0ull}}, (struct S1){{0, ~0ull}}));
-    assert(!test2(1, (struct S1){{~0ull, 0}}, (struct S1){{0, 1}}));
-    assert(test2(0, (struct S1){{1, 0}}, (struct S1){{0, 0}}));
-    assert(test2(0, (struct S1){{0, 1}}, (struct S1){{1, 0}}));
-    assert(test2(0, (struct S1){{~0ull, ~0ull}}, (struct S1){{0, ~0ull}}));
-    assert(!test2(0, (struct S1){{~0ull, 0}}, (struct S1){{0, 1}}));
+    assert(test2(1, (struct S1) {{1, 0}}, (struct S1) {{0, 0}}));
+    assert(test2(1, (struct S1) {{0, 1}}, (struct S1) {{1, 0}}));
+    assert(test2(1, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{0, ~0ull}}));
+    assert(!test2(1, (struct S1) {{~0ull, 0}}, (struct S1) {{0, 1}}));
+    assert(test2(0, (struct S1) {{1, 0}}, (struct S1) {{0, 0}}));
+    assert(test2(0, (struct S1) {{0, 1}}, (struct S1) {{1, 0}}));
+    assert(test2(0, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{0, ~0ull}}));
+    assert(!test2(0, (struct S1) {{~0ull, 0}}, (struct S1) {{0, 1}}));
 
-    assert(!test3(1, (struct S1){{1, 0}}, (struct S1){{0, 0}}));
-    assert(!test3(1, (struct S1){{0, 1}}, (struct S1){{1, 0}}));
-    assert(!test3(1, (struct S1){{~0ull, ~0ull}}, (struct S1){{0, ~0ull}}));
-    assert(test3(1, (struct S1){{~0ull, 0}}, (struct S1){{0, 1}}));
-    assert(!test3(0, (struct S1){{1, 0}}, (struct S1){{0, 0}}));
-    assert(!test3(0, (struct S1){{0, 1}}, (struct S1){{1, 0}}));
-    assert(!test3(0, (struct S1){{~0ull, ~0ull}}, (struct S1){{0, ~0ull}}));
-    assert(test3(0, (struct S1){{~0ull, 0}}, (struct S1){{0, 1}}));
+    assert(!test3(1, (struct S1) {{1, 0}}, (struct S1) {{0, 0}}));
+    assert(!test3(1, (struct S1) {{0, 1}}, (struct S1) {{1, 0}}));
+    assert(!test3(1, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{0, ~0ull}}));
+    assert(test3(1, (struct S1) {{~0ull, 0}}, (struct S1) {{0, 1}}));
+    assert(!test3(0, (struct S1) {{1, 0}}, (struct S1) {{0, 0}}));
+    assert(!test3(0, (struct S1) {{0, 1}}, (struct S1) {{1, 0}}));
+    assert(!test3(0, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{0, ~0ull}}));
+    assert(test3(0, (struct S1) {{~0ull, 0}}, (struct S1) {{0, 1}}));
 
-    assert(test4(1, (struct S1){{1, 0}}, (struct S1){{0, 0}}));
-    assert(test4(1, (struct S1){{~0ull, ~0ull}}, (struct S1){{0, 0}}));
-    assert(!test4(1, (struct S1){{~1ull, ~0ull}}, (struct S1){{~0ull, ~0ull}}));
-    assert(test4(0, (struct S1){{1, 0}}, (struct S1){{0, 0}}));
-    assert(test4(0, (struct S1){{~0ull, ~0ull}}, (struct S1){{0, 0}}));
-    assert(!test4(0, (struct S1){{~1ull, ~0ull}}, (struct S1){{~0ull, ~0ull}}));
+    assert(test4(1, (struct S1) {{1, 0}}, (struct S1) {{0, 0}}));
+    assert(test4(1, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{0, 0}}));
+    assert(!test4(1, (struct S1) {{~1ull, ~0ull}}, (struct S1) {{~0ull, ~0ull}}));
+    assert(test4(0, (struct S1) {{1, 0}}, (struct S1) {{0, 0}}));
+    assert(test4(0, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{0, 0}}));
+    assert(!test4(0, (struct S1) {{~1ull, ~0ull}}, (struct S1) {{~0ull, ~0ull}}));
 
-    assert(!test5(1, (struct S1){{1, 0}}, (struct S1){{0, 0}}));
-    assert(!test5(1, (struct S1){{~0ull, ~0ull}}, (struct S1){{0, 0}}));
-    assert(test5(1, (struct S1){{~1ull, ~0ull}}, (struct S1){{~0ull, ~0ull}}));
-    assert(!test5(0, (struct S1){{1, 0}}, (struct S1){{0, 0}}));
-    assert(!test5(0, (struct S1){{~0ull, ~0ull}}, (struct S1){{0, 0}}));
-    assert(test5(0, (struct S1){{~1ull, ~0ull}}, (struct S1){{~0ull, ~0ull}}));
+    assert(!test5(1, (struct S1) {{1, 0}}, (struct S1) {{0, 0}}));
+    assert(!test5(1, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{0, 0}}));
+    assert(test5(1, (struct S1) {{~1ull, ~0ull}}, (struct S1) {{~0ull, ~0ull}}));
+    assert(!test5(0, (struct S1) {{1, 0}}, (struct S1) {{0, 0}}));
+    assert(!test5(0, (struct S1) {{~0ull, ~0ull}}, (struct S1) {{0, 0}}));
+    assert(test5(0, (struct S1) {{~1ull, ~0ull}}, (struct S1) {{~0ull, ~0ull}}));
     return EXIT_SUCCESS;
 }

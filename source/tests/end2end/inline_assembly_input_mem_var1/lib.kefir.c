@@ -22,24 +22,13 @@
 
 #ifdef __x86_64__
 long add(long *ptr, long x) {
-    asm (
-        "addq  %0, %1"
-        : "+r" (x)
-        : "m" (*ptr)
-        : "cc", "memory"
-    );
+    asm("addq  %0, %1" : "+r"(x) : "m"(*ptr) : "cc", "memory");
 
     return x;
 }
 
 long add2(long *ptr, long x) {
-    asm (
-        "addq  %0, %1"
-        : "+r" (x)
-          "+m" (*ptr)
-        :
-        : "cc", "memory"
-    );
+    asm("addq  %0, %1" : "+r"(x) "+m"(*ptr) : : "cc", "memory");
 
     return x;
 }

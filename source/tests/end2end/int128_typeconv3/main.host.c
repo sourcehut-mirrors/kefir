@@ -249,83 +249,83 @@ int main(void) {
     assert(res.arr[0] == 255);
     assert(res.arr[1] == 0);
 
-    res = i128_from_i256((struct i256){{0, 0, 0, 0}});
+    res = i128_from_i256((struct i256) {{0, 0, 0, 0}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = i128_from_i256((struct i256){{1, 0, 0, 0}});
+    res = i128_from_i256((struct i256) {{1, 0, 0, 0}});
     assert(res.arr[0] == 1);
     assert(res.arr[1] == 0);
 
-    res = i128_from_i256((struct i256){{-1, -1, -1, -1}});
+    res = i128_from_i256((struct i256) {{-1, -1, -1, -1}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_from_i256((struct i256){{-1, -1, 0, 0}});
+    res = i128_from_i256((struct i256) {{-1, -1, 0, 0}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_from_i256((struct i256){{1, -1, 0, 0}});
+    res = i128_from_i256((struct i256) {{1, -1, 0, 0}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_from_u256((struct i256){{0, 0, 0, 0}});
+    res = i128_from_u256((struct i256) {{0, 0, 0, 0}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = i128_from_u256((struct i256){{1, 0, 0, 0}});
+    res = i128_from_u256((struct i256) {{1, 0, 0, 0}});
     assert(res.arr[0] == 1);
     assert(res.arr[1] == 0);
 
-    res = i128_from_u256((struct i256){{-1, -1, -1, -1}});
+    res = i128_from_u256((struct i256) {{-1, -1, -1, -1}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_from_u256((struct i256){{-1, -1, 0, 0}});
+    res = i128_from_u256((struct i256) {{-1, -1, 0, 0}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = i128_from_u256((struct i256){{1, -1, 0, 0}});
+    res = i128_from_u256((struct i256) {{1, -1, 0, 0}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_from_i256((struct i256){{0, 0, 0, 0}});
+    res = u128_from_i256((struct i256) {{0, 0, 0, 0}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = u128_from_i256((struct i256){{1, 0, 0, 0}});
+    res = u128_from_i256((struct i256) {{1, 0, 0, 0}});
     assert(res.arr[0] == 1);
     assert(res.arr[1] == 0);
 
-    res = u128_from_i256((struct i256){{-1, -1, -1, -1}});
+    res = u128_from_i256((struct i256) {{-1, -1, -1, -1}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_from_i256((struct i256){{-1, -1, 0, 0}});
+    res = u128_from_i256((struct i256) {{-1, -1, 0, 0}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_from_i256((struct i256){{1, -1, 0, 0}});
+    res = u128_from_i256((struct i256) {{1, -1, 0, 0}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_from_u256((struct i256){{0, 0, 0, 0}});
+    res = u128_from_u256((struct i256) {{0, 0, 0, 0}});
     assert(res.arr[0] == 0);
     assert(res.arr[1] == 0);
 
-    res = u128_from_u256((struct i256){{1, 0, 0, 0}});
+    res = u128_from_u256((struct i256) {{1, 0, 0, 0}});
     assert(res.arr[0] == 1);
     assert(res.arr[1] == 0);
 
-    res = u128_from_u256((struct i256){{-1, -1, -1, -1}});
+    res = u128_from_u256((struct i256) {{-1, -1, -1, -1}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_from_u256((struct i256){{-1, -1, 0, 0}});
+    res = u128_from_u256((struct i256) {{-1, -1, 0, 0}});
     assert(res.arr[0] == (unsigned long) -1);
     assert(res.arr[1] == (unsigned long) -1);
 
-    res = u128_from_u256((struct i256){{1, -1, 0, 0}});
+    res = u128_from_u256((struct i256) {{1, -1, 0, 0}});
     assert(res.arr[0] == (unsigned long) 1);
     assert(res.arr[1] == (unsigned long) -1);
 #endif
