@@ -18,11 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 set -e
+
 ROOT="$(git rev-parse --show-toplevel)"
 
-function cleanup {
-    make clean
-}
 function format_file {
 	file="$1"
 	if [[ -f "$file" ]]; then
@@ -33,10 +31,12 @@ function format_file {
 
 
 cd "$ROOT"
-trap cleanup EXIT
 
-make clean
-make test USE_VALGRIND=yes USE_SANITIZER=yes PROFILE=reldebug EXTRA_CFLAGS="-Werror" -j$(nproc)
+if ! git diff --quiet; then
+  echo "Unstaged changes detected. Refusing to reformat" >&2
+  exit 1
+fi
+
 for file in `git diff-index --cached --name-only HEAD | grep '\.c$\|\.h$'` ; do
     format_file "$file"
 done
