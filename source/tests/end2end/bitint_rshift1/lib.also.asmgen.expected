@@ -227,8 +227,7 @@ __kefir_bigint_right_shift_whole_digits:
     movq %rsi, -40(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
@@ -343,8 +342,7 @@ __kefir_bigint_right_shift:
     ja .L__kefir_runtime_func___kefir_bigint_right_shift_label18
 .L__kefir_runtime_func___kefir_bigint_right_shift_label3:
     movq -48(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx

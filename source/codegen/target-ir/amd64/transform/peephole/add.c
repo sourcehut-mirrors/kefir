@@ -114,6 +114,63 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_add(struct kefir_mem *mem,
         }
     }
 
+    if (classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
+        classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+        classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+        instr->operation.parameters[classification.operands[0].read_index].type ==
+            KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+        instr->operation.parameters[classification.operands[0].read_index].direct.value_ref.aspect ==
+            KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0) &&
+        instr->operation.parameters[classification.operands[1].read_index].type ==
+            KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
+
+        const struct kefir_codegen_target_ir_instruction *arg_instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref.instr_ref,
+            &arg_instr));
+
+        if (arg_instr->instr_ref != instr_ref &&
+            (arg_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add) || arg_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(sub))) {
+            const struct kefir_codegen_target_ir_value_type *value_type, *arg_value_type;
+            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(
+                code, classification.operands[0].output, &value_type));
+            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(
+                code, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref, &arg_value_type));
+
+            struct kefir_codegen_target_ir_tie_classification arg_classification;
+            REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, arg_instr->instr_ref, &arg_classification));
+
+            if (value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT &&
+                arg_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT &&
+                arg_value_type->variant == instr->operation.parameters[classification.operands[0].read_index].direct.variant &&
+                arg_value_type->variant == value_type->variant &&
+                arg_instr->operation.parameters[arg_classification.operands[1].read_index].type ==
+                    KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
+
+                kefir_int64_t int_offset = kefir_codegen_target_ir_sign_extend(
+                    arg_instr->operation.parameters[arg_classification.operands[1].read_index].immediate.int_immediate,
+                    arg_instr->operation.parameters[arg_classification.operands[1].read_index].immediate.variant) *
+                    (arg_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(sub) ? -1 : 1);
+                int_offset += kefir_codegen_target_ir_sign_extend(
+                    instr->operation.parameters[classification.operands[1].read_index].immediate.int_immediate,
+                    instr->operation.parameters[classification.operands[1].read_index].immediate.variant) *
+                    (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(sub) ? -1 : 1);
+                    
+                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(
+                    mem, code, instr_ref, &(struct kefir_codegen_target_ir_operation) {
+                        .opcode = KEFIR_TARGET_IR_AMD64_OPCODE(add),
+                        .parameters[0] = arg_instr->operation.parameters[arg_classification.operands[0].read_index],
+                        .parameters[1] = {
+                            .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
+                            .immediate.int_immediate = kefir_codegen_target_ir_sign_extend(int_offset, value_type->variant),
+                            .immediate.variant = value_type->variant
+                        }
+                    }, NULL));
+                *replaced = true;
+                return KEFIR_OK;
+            }
+        }
+    }
+
     REQUIRE(
         instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
             instr->operation.parameters[0].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0) &&

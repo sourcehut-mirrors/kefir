@@ -14,8 +14,7 @@ func1:
     sub %rsp, 16
     mov QWORD PTR [%rbp - 16], %rsi
     lea %rax, [%rbp - 16]
-    add %rax, 8
-    add %rax, 40
+    add %rax, 48
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     lea %rsp, [%rbp]

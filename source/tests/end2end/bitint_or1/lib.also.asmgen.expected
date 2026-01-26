@@ -218,8 +218,7 @@ __kefir_bigint_or:
     movq %rsi, -32(%rbp)
     movq %rdi, -40(%rbp)
     movq -48(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx

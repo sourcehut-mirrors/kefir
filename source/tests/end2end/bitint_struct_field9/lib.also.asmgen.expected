@@ -812,8 +812,7 @@ __kefir_bigint_right_shift_whole_digits:
     movq %rsi, -40(%rbp)
     movq %rdi, -24(%rbp)
     movq -32(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
@@ -923,8 +922,7 @@ __kefir_bigint_or:
     movq %rsi, -32(%rbp)
     movq %rdi, -40(%rbp)
     movq -48(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
@@ -1180,8 +1178,7 @@ __kefir_bigint_right_shift:
     ja .L__kefir_runtime_func___kefir_bigint_right_shift_label18
 .L__kefir_runtime_func___kefir_bigint_right_shift_label3:
     movq -48(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
@@ -1301,8 +1298,7 @@ __kefir_bigint_left_shift:
     ja .L__kefir_runtime_func___kefir_bigint_left_shift_label18
 .L__kefir_runtime_func___kefir_bigint_left_shift_label3:
     movq -40(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
@@ -1401,8 +1397,7 @@ __kefir_bigint_set_unsigned_integer:
     ja .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label16
 .L__kefir_runtime_func___kefir_bigint_set_unsigned_integer_label5:
     movq -24(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
@@ -1462,8 +1457,7 @@ __kefir_bigint_and:
     movq %rsi, -32(%rbp)
     movq %rdi, -40(%rbp)
     movq -48(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
@@ -1660,8 +1654,7 @@ __kefir_bigint_set_signed_integer:
     ja .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label16
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label5:
     movq -24(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
@@ -1721,8 +1714,7 @@ __kefir_bigint_left_shift_whole_digits:
     movq %rsi, -48(%rbp)
     movq %rdi, -32(%rbp)
     movq -40(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx

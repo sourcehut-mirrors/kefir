@@ -129,8 +129,7 @@ __kefir_bigint_is_zero:
     cmp %rcx, %rax
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label18
     movq -56(%rbp), %rax
-    add $8, %rax
-    sub $1, %rax
+    add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
