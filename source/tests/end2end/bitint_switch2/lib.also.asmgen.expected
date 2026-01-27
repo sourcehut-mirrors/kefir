@@ -52,7 +52,6 @@ test1:
     or %sil, %dl
     setne %dl
     and %dl, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test1_label17
     mov %rax, %rcx
     shl $58, %rcx
@@ -83,7 +82,6 @@ test1:
     or %sil, %dl
     setne %dl
     and %dl, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test1_label14
     mov %rax, %rcx
     shl $58, %rcx
@@ -113,7 +111,6 @@ test1:
     or %al, %dl
     setne %al
     and %al, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test1_label11
     mov $4, %eax
     lea (%rbp), %rsp
@@ -174,7 +171,6 @@ test2:
     or %sil, %dl
     setne %dl
     and %dl, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test2_label17
     mov %rax, %rcx
     shl $50, %rcx
@@ -205,7 +201,6 @@ test2:
     or %sil, %dl
     setne %dl
     and %dl, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test2_label14
     mov %rax, %rcx
     shl $50, %rcx
@@ -235,7 +230,6 @@ test2:
     or %al, %dl
     setne %al
     and %al, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test2_label11
     mov $4, %eax
     lea (%rbp), %rsp
@@ -296,7 +290,6 @@ test3:
     or %sil, %dl
     setne %dl
     and %dl, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test3_label17
     mov %rax, %rcx
     shl $35, %rcx
@@ -327,7 +320,6 @@ test3:
     or %sil, %dl
     setne %dl
     and %dl, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test3_label14
     mov %rax, %rcx
     shl $35, %rcx
@@ -357,7 +349,6 @@ test3:
     or %al, %dl
     setne %al
     and %al, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test3_label11
     mov $4, %eax
     lea (%rbp), %rsp
@@ -418,7 +409,6 @@ test4:
     or %sil, %dl
     setne %dl
     and %dl, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test4_label17
     mov %rax, %rcx
     shl $4, %rcx
@@ -449,7 +439,6 @@ test4:
     or %sil, %dl
     setne %dl
     and %dl, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test4_label14
     mov %rax, %rcx
     shl $4, %rcx
@@ -479,7 +468,6 @@ test4:
     or %al, %dl
     setne %al
     and %al, %cl
-    test %cl, %cl
     jnz .L__kefir_func_test4_label11
     mov $4, %eax
     lea (%rbp), %rsp
@@ -558,7 +546,6 @@ test5:
     or %al, %r12b
     setne %al
     and %al, %bl
-    test %bl, %bl
     jnz .L__kefir_func_test5_label17
     movabs $2459547112355201023, %rax
     shl $1, %rax
@@ -609,7 +596,6 @@ test5:
     or %al, %r12b
     setne %al
     and %al, %bl
-    test %bl, %bl
     jnz .L__kefir_func_test5_label14
     movl $1145372671, -64(%rbp)
     movl $572657937, -60(%rbp)
@@ -663,7 +649,6 @@ test5:
     or %al, %r12b
     setne %al
     and %al, %bl
-    test %bl, %bl
     jnz .L__kefir_func_test5_label11
     mov $4, %eax
     lea -16(%rbp), %rsp

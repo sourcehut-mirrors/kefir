@@ -48,15 +48,16 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
                     KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
             KEFIR_OK);
 
-    if (kefir_codegen_target_ir_code_control_prev(code, instr_ref) != KEFIR_ID_NONE &&
-        kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_control_prev(code, instr_ref)) !=
+    kefir_codegen_target_ir_instruction_ref_t prev_instr_ref = kefir_codegen_target_ir_code_control_prev(code, instr_ref);
+    if (prev_instr_ref != KEFIR_ID_NONE &&
+        kefir_codegen_target_ir_code_control_prev(code, prev_instr_ref) !=
             KEFIR_ID_NONE) {
         const struct kefir_codegen_target_ir_instruction *prev_instr, *prev2_instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(
-            code, kefir_codegen_target_ir_code_control_prev(code, instr_ref), &prev_instr));
+            code, prev_instr_ref, &prev_instr));
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(
             code,
-            kefir_codegen_target_ir_code_control_prev(code, kefir_codegen_target_ir_code_control_prev(code, instr_ref)),
+            kefir_codegen_target_ir_code_control_prev(code, prev_instr_ref),
             &prev2_instr));
 
         if (prev2_instr->operation.opcode == instr->operation.opcode) {
@@ -114,6 +115,34 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
                         // Intentionally left blank
                         break;
                 }
+            }
+        }
+    }
+    if (prev_instr_ref != KEFIR_ID_NONE &&
+        instr->operation.parameters[classification.operands[0].read_index].direct.value_ref.instr_ref == prev_instr_ref &&
+        instr->operation.parameters[classification.operands[0].read_index].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0) &&
+        instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.instr_ref == prev_instr_ref &&
+        instr->operation.parameters[classification.operands[1].read_index].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
+        const struct kefir_codegen_target_ir_instruction *arg_instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, prev_instr_ref, &arg_instr));
+
+        if (arg_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(and) ||
+            arg_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(or)) {
+            struct kefir_codegen_target_ir_tie_classification arg_classification;
+            REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, prev_instr_ref, &arg_classification));
+
+            const struct kefir_codegen_target_ir_value_type *arg_value_type;
+            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref,
+                &arg_value_type));
+            if (arg_value_type->variant == instr->operation.parameters[classification.operands[0].read_index].direct.variant &&
+                arg_classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+                arg_classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+                arg_instr->operation.parameters[arg_classification.operands[0].read_index].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                arg_value_type->variant == arg_instr->operation.parameters[arg_classification.operands[0].read_index].direct.variant) {
+                REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, prev_instr_ref, instr_ref));
+                REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
+                *replaced = true;
+                return KEFIR_OK;
             }
         }
     }

@@ -326,6 +326,19 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(
             REQUIRE(res != KEFIR_NOT_FOUND, NO_MATCH_ERROR);
             REQUIRE_OK(res);
 
+            struct kefir_codegen_target_ir_use_iterator use_iter;
+            kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+            kefir_codegen_target_ir_value_ref_t used_value_ref;
+            for (res =
+                     kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, &use_instr_ref, &used_value_ref);
+                 res == KEFIR_OK;
+                 res = kefir_codegen_target_ir_code_use_next(&use_iter, &use_instr_ref, &used_value_ref)) {
+                REQUIRE(used_value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0), NO_MATCH_ERROR);
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+
             kefir_int64_t mask = kefir_codegen_target_ir_sign_extend(instr->operation.parameters[classification.operands[1].read_index].immediate.int_immediate,
                 instr->operation.parameters[classification.operands[1].read_index].immediate.variant);
 
