@@ -235,7 +235,7 @@ __kefir_bigint_is_zero:
     movl %edx, -20(%rbp)
     movl -20(%rbp), %eax
     movb -24(%rbp), %cl
-    and $255, %rcx
+    movzx %cl, %ecx
     and %eax, %ecx
     movb %cl, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label10

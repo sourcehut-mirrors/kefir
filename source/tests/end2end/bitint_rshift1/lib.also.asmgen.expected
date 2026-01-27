@@ -365,7 +365,7 @@ __kefir_bigint_right_shift:
     movq -40(%rbp), %rcx
     movq -16(%rbp), %rdx
     movb -1(%rcx, %rdx, 1), %sil
-    and $255, %rsi
+    movzx %sil, %esi
     and %eax, %esi
     movb %sil, -1(%rcx, %rdx, 1)
     movq -24(%rbp), %rax
@@ -395,7 +395,7 @@ __kefir_bigint_right_shift:
     movq -40(%rbp), %rcx
     movq -16(%rbp), %rdx
     movb -1(%rcx, %rdx, 1), %sil
-    and $255, %rsi
+    movzx %sil, %esi
     and %eax, %esi
     movb %sil, -1(%rcx, %rdx, 1)
     movq -56(%rbp), %rcx
@@ -416,9 +416,9 @@ __kefir_bigint_right_shift:
     movq -56(%rbp), %rax
     movq -40(%rbp), %rsi
     movq -8(%rbp), %r8
-    and $255, %rdx
+    movzx %dl, %edx
     sar %cl, %edx
-    and $255, %rdi
+    movzx %dil, %edi
     mov $8, %ecx
     sub %rax, %rcx
     shl %cl, %edi

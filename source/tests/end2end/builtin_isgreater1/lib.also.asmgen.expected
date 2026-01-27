@@ -81,7 +81,7 @@ is_greater_f80:
     xor %eax, %eax
     fucomi %st(1)
     seta %al
-    and $255, %rax
+    movzx %al, %eax
     fstp %st(0)
     fstp %st(0)
     fldcw -8(%rbp)

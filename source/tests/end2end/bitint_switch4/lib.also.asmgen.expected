@@ -177,7 +177,7 @@ __kefir_bigint_signed_compare:
     movq -32(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movq -16(%rbp), %rcx
-    and $255, %rdx
+    movzx %dl, %edx
     sar %cl, %edx
     and $1, %edx
     movl %edx, -40(%rbp)
@@ -185,7 +185,7 @@ __kefir_bigint_signed_compare:
     movq -32(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movq -16(%rbp), %rcx
-    and $255, %rdx
+    movzx %dl, %edx
     sar %cl, %edx
     and $1, %edx
     movl %edx, -36(%rbp)
@@ -268,7 +268,7 @@ __kefir_bigint_invert:
     movb (%rax, %rcx, 1), %dl
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
-    and $255, %rdx
+    movzx %dl, %edx
     not %edx
     movb %dl, (%rax, %rcx, 1)
     movq -8(%rbp), %rax
@@ -326,12 +326,12 @@ __kefir_bigint_unsigned_compare:
     movq -48(%rbp), %rax
     movq -24(%rbp), %rcx
     movb -1(%rax, %rcx, 1), %dl
-    and $255, %rdx
+    movzx %dl, %edx
     movl %edx, -16(%rbp)
     movq -40(%rbp), %rax
     movq -24(%rbp), %rcx
     movb -1(%rax, %rcx, 1), %dl
-    and $255, %rdx
+    movzx %dl, %edx
     movl %edx, -12(%rbp)
     movq -24(%rbp), %rax
     movq -32(%rbp), %rcx
@@ -443,7 +443,7 @@ __kefir_bigint_cast_signed:
     movq -16(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movq -64(%rbp), %rcx
-    and $255, %rdx
+    movzx %dl, %edx
     sar %cl, %edx
     and $1, %edx
     movl %edx, -80(%rbp)
@@ -502,7 +502,7 @@ __kefir_bigint_cast_signed:
     movq -88(%rbp), %rcx
     movq -16(%rbp), %rdx
     movb (%rcx, %rdx, 1), %sil
-    and $255, %rsi
+    movzx %sil, %esi
     and %eax, %esi
     movb %sil, (%rcx, %rdx, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label7
@@ -517,7 +517,7 @@ __kefir_bigint_cast_signed:
     movq -88(%rbp), %rcx
     movq -16(%rbp), %rdx
     movb (%rcx, %rdx, 1), %sil
-    and $255, %rsi
+    movzx %sil, %esi
     or %eax, %esi
     movb %sil, (%rcx, %rdx, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label7
@@ -552,7 +552,7 @@ __kefir_bigint_cast_signed:
     movq -48(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movq -56(%rbp), %rcx
-    and $255, %rdx
+    movzx %dl, %edx
     sar %cl, %edx
     and $1, %edx
     movl %edx, -76(%rbp)
@@ -568,7 +568,7 @@ __kefir_bigint_cast_signed:
     movq -88(%rbp), %rcx
     movq -48(%rbp), %rdx
     movb (%rcx, %rdx, 1), %sil
-    and $255, %rsi
+    movzx %sil, %esi
     and %eax, %esi
     movb %sil, (%rcx, %rdx, 1)
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label35:
@@ -587,7 +587,7 @@ __kefir_bigint_cast_signed:
     movq -88(%rbp), %rcx
     movq -48(%rbp), %rdx
     movb (%rcx, %rdx, 1), %sil
-    and $255, %rsi
+    movzx %sil, %esi
     or %eax, %esi
     movb %sil, (%rcx, %rdx, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label35
@@ -624,14 +624,14 @@ __kefir_bigint_util_add_digit_zero_extended:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
-    and $255, %rdx
+    movzx %dl, %edx
     movl %edx, -4(%rbp)
     movq -16(%rbp), %rax
     xor %ecx, %ecx
     cmp %rcx, %rax
     jnz .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label13
     movb -52(%rbp), %cl
-    and $255, %rcx
+    movzx %cl, %ecx
     lea -28(%rbp), %rax
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label11:
     movl %ecx, (%rax)

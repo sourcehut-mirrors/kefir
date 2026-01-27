@@ -241,7 +241,7 @@ __kefir_bigint_signed_compare:
     movq -32(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movq -16(%rbp), %rcx
-    and $255, %rdx
+    movzx %dl, %edx
     sar %cl, %edx
     and $1, %edx
     movl %edx, -40(%rbp)
@@ -249,7 +249,7 @@ __kefir_bigint_signed_compare:
     movq -32(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movq -16(%rbp), %rcx
-    and $255, %rdx
+    movzx %dl, %edx
     sar %cl, %edx
     and $1, %edx
     movl %edx, -36(%rbp)
@@ -331,12 +331,12 @@ __kefir_bigint_unsigned_compare:
     movq -48(%rbp), %rax
     movq -24(%rbp), %rcx
     movb -1(%rax, %rcx, 1), %dl
-    and $255, %rdx
+    movzx %dl, %edx
     movl %edx, -16(%rbp)
     movq -40(%rbp), %rax
     movq -24(%rbp), %rcx
     movb -1(%rax, %rcx, 1), %dl
-    and $255, %rdx
+    movzx %dl, %edx
     movl %edx, -12(%rbp)
     movq -24(%rbp), %rax
     movq -32(%rbp), %rcx

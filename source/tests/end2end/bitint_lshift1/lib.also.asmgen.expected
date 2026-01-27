@@ -281,9 +281,9 @@ __kefir_bigint_left_shift:
     movq -48(%rbp), %rax
     movq -32(%rbp), %rsi
     movq -8(%rbp), %r8
-    and $255, %rdx
+    movzx %dl, %edx
     shl %cl, %edx
-    and $255, %rdi
+    movzx %dil, %edi
     mov $8, %ecx
     sub %rax, %rcx
     sar %cl, %edi

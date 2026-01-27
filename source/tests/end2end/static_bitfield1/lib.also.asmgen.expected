@@ -14,7 +14,7 @@ getfield40:
     mov %rsp, %rbp
     movq struct1@GOTPCREL(%rip), %rax
     movb 8(%rax), %cl
-    and $255, %rcx
+    movzx %cl, %ecx
     shl $63, %rcx
     mov %rcx, %rax
     shr $63, %rax

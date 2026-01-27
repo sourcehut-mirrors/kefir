@@ -239,12 +239,12 @@ __kefir_bigint_add:
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
-    and $255, %rdx
+    movzx %dl, %edx
     movl %edx, -52(%rbp)
     movq -32(%rbp), %rax
     movq -16(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
-    and $255, %rdx
+    movzx %dl, %edx
     movl %edx, -8(%rbp)
     movl -56(%rbp), %eax
     movl -52(%rbp), %ecx
