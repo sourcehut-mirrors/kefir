@@ -235,9 +235,7 @@ __kefir_bigint_right_shift_whole_digits:
     movl -48(%rbp), %eax
     test %eax, %eax
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label27
-    xor %eax, %eax
-    mov %rax, %rcx
-    not %ecx
+    mov $-1, %rcx
     lea -44(%rbp), %rax
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label6:
     movb %cl, (%rax)

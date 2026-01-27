@@ -420,6 +420,10 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                         REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_neg(mem, code, instr, &instr_replaced));
                         break;
 
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(not):
+                        REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_not(mem, code, instr, &instr_replaced));
+                        break;
+
                     case KEFIR_TARGET_IR_AMD64_OPCODE(sbb):
                         REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_sbb(mem, code, instr, &instr_replaced));
                         break;

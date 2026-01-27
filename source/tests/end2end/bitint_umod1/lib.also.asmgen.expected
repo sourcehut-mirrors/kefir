@@ -431,9 +431,7 @@ __kefir_bigint_unsigned_divide:
     movq -56(%rbp), %rax
     movb (%rax), %cl
     and $255, %rcx
-    mov $1, %edx
-    not %edx
-    and %edx, %ecx
+    and $-2, %ecx
     movb %cl, (%rax)
     movq -32(%rbp), %rdi
     movq -48(%rbp), %rsi

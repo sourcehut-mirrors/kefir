@@ -1,0 +1,142 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global testl1
+.type testl1, @function
+.global testl2
+.type testl2, @function
+.global testl3
+.type testl3, @function
+.global testl4
+.type testl4, @function
+.global testl5
+.type testl5, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test1_end:
+
+test2:
+.L__kefir_text_func_test2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    not %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_end:
+
+test3:
+.L__kefir_text_func_test3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test3_end:
+
+test4:
+.L__kefir_text_func_test4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movabs $2147483648, %rax
+    not %eax
+    pop %rbp
+    ret
+.L__kefir_text_func_test4_end:
+
+test5:
+.L__kefir_text_func_test5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movabs $2147483649, %rax
+    not %eax
+    pop %rbp
+    ret
+.L__kefir_text_func_test5_end:
+
+testl1:
+.L__kefir_text_func_testl1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %rdi, -8(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_testl1_end:
+
+testl2:
+.L__kefir_text_func_testl2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %rdi, -8(%rbp)
+    movq -8(%rbp), %rax
+    not %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_testl2_end:
+
+testl3:
+.L__kefir_text_func_testl3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %rdi, -8(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_testl3_end:
+
+testl4:
+.L__kefir_text_func_testl4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movabs $-9223372036854775808, %rax
+    not %rax
+    pop %rbp
+    ret
+.L__kefir_text_func_testl4_end:
+
+testl5:
+.L__kefir_text_func_testl5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movabs $-9223372036854775807, %rax
+    not %rax
+    pop %rbp
+    ret
+.L__kefir_text_func_testl5_end:
+
+.L__kefir_text_section_end:
+
