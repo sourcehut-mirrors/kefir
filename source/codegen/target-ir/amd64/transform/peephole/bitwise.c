@@ -68,10 +68,10 @@
                                                                                                                        \
                     if (res != KEFIR_NO_MATCH) {                                                                       \
                         REQUIRE_OK(res);                                                                               \
-                        result = _op(lhs, rhs);                                                                        \
-                        result = kefir_codegen_target_ir_sign_extend(result, value_type->variant);                     \
                                                                                                                        \
                         if (_cond(lhs, rhs)) {                                                                         \
+                            result = _op(lhs, rhs);                                                                        \
+                            result = kefir_codegen_target_ir_sign_extend(result, value_type->variant);                     \
                             REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                 \
                                 mem, code, instr_ref,                                                                  \
                                 &(struct kefir_codegen_target_ir_operation) {                                          \
