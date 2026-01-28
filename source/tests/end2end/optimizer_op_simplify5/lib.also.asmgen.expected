@@ -27,8 +27,6 @@ less_or_equalsld:
     fstpt -48(%rbp)
     fldt -48(%rbp)
     fldt -32(%rbp)
-    fxch %st(1)
-    fxch %st(1)
     fld %st(0)
     fstpt -80(%rbp)
     fld %st(1)

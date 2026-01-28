@@ -71,20 +71,18 @@ add80:
 .L__kefir_func_add80_label45:
     fxch %st(1)
     faddp
-.L__kefir_func_add80_label62:
-    fxch %st(1)
-    fxch %st(1)
+.L__kefir_func_add80_label58:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 72 5
-.L__kefir_func_add80_label63:
+.L__kefir_func_add80_label59:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_add80_label73:
+.L__kefir_func_add80_label69:
 .L__kefir_text_func_add80_end:
 
 conv1:
@@ -104,18 +102,16 @@ conv1:
 .L__kefir_func_conv1_label25:
     fldt .L__kefir_func_conv1_label28(%rip)
 .L__kefir_func_conv1_label30:
-    fxch %st(1)
-    fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.L__kefir_func_conv1_label51:
+.L__kefir_func_conv1_label47:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv1_label52:
+.L__kefir_func_conv1_label48:
 .L__kefir_text_func_conv1_end:
 .section .rodata
     .align 8
@@ -147,18 +143,16 @@ conv2:
 .L__kefir_func_conv2_label6:
     fldt .L__kefir_func_conv2_label48(%rip)
 .L__kefir_func_conv2_label50:
-    fxch %st(1)
-    fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.L__kefir_func_conv2_label71:
+.L__kefir_func_conv2_label67:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv2_label72:
+.L__kefir_func_conv2_label68:
     jmp .L__kefir_func_conv2_label6
 .L__kefir_text_func_conv2_end:
 .section .rodata
@@ -184,18 +178,16 @@ conv3:
 .L__kefir_func_conv3_label25:
     fldt .L__kefir_func_conv3_label28(%rip)
 .L__kefir_func_conv3_label30:
-    fxch %st(1)
-    fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.L__kefir_func_conv3_label51:
+.L__kefir_func_conv3_label47:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv3_label52:
+.L__kefir_func_conv3_label48:
 .L__kefir_text_func_conv3_end:
 .section .rodata
     .align 8
@@ -220,18 +212,16 @@ conv4:
 .L__kefir_func_conv4_label25:
     fldt .L__kefir_func_conv4_label28(%rip)
 .L__kefir_func_conv4_label30:
-    fxch %st(1)
-    fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.L__kefir_func_conv4_label51:
+.L__kefir_func_conv4_label47:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv4_label52:
+.L__kefir_func_conv4_label48:
 .L__kefir_text_func_conv4_end:
 .section .rodata
     .align 8
@@ -253,18 +243,16 @@ conv5:
 .L__kefir_func_conv5_label21:
     fldt .L__kefir_func_conv5_label20(%rip)
 .L__kefir_func_conv5_label22:
-    fxch %st(1)
-    fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.L__kefir_func_conv5_label34:
+.L__kefir_func_conv5_label30:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv5_label44:
+.L__kefir_func_conv5_label40:
 .L__kefir_text_func_conv5_end:
 .section .rodata
     .align 8
@@ -292,11 +280,9 @@ conv6:
     movq %xmm1, -64(%rbp)
     flds -64(%rbp)
 .L__kefir_func_conv6_label43:
-    fxch %st(1)
-    fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.L__kefir_func_conv6_label55:
+.L__kefir_func_conv6_label51:
     fldt -32(%rbp)
     fldt -48(%rbp)
     ldmxcsr -16(%rbp)
@@ -304,7 +290,7 @@ conv6:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv6_label67:
+.L__kefir_func_conv6_label63:
 .L__kefir_text_func_conv6_end:
 
 conv7:
@@ -323,11 +309,9 @@ conv7:
     movq %xmm1, -56(%rbp)
     fldl -56(%rbp)
 .L__kefir_func_conv7_label43:
-    fxch %st(1)
-    fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.L__kefir_func_conv7_label55:
+.L__kefir_func_conv7_label51:
     fldt -32(%rbp)
     fldt -48(%rbp)
     ldmxcsr -16(%rbp)
@@ -335,7 +319,7 @@ conv7:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv7_label67:
+.L__kefir_func_conv7_label63:
 .L__kefir_text_func_conv7_end:
 
 conv8:
@@ -477,20 +461,18 @@ neg80:
     fldt 16(%rax)
 .L__kefir_func_neg80_label29:
     fchs
-.L__kefir_func_neg80_label44:
-    fxch %st(1)
-    fxch %st(1)
+.L__kefir_func_neg80_label40:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 68 5
-.L__kefir_func_neg80_label54:
+.L__kefir_func_neg80_label50:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_neg80_label55:
+.L__kefir_func_neg80_label51:
 .L__kefir_text_func_neg80_end:
 
 sub80:
@@ -519,20 +501,18 @@ sub80:
 .L__kefir_func_sub80_label45:
     fxch %st(1)
     fsubp
-.L__kefir_func_sub80_label62:
-    fxch %st(1)
-    fxch %st(1)
+.L__kefir_func_sub80_label58:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 76 5
-.L__kefir_func_sub80_label63:
+.L__kefir_func_sub80_label59:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_sub80_label73:
+.L__kefir_func_sub80_label69:
 .L__kefir_text_func_sub80_end:
 
 get80_1:
@@ -547,19 +527,17 @@ get80_1:
     fldt .L__kefir_func_get80_1_label14(%rip)
 .L__kefir_func_get80_1_label16:
     fldt .L__kefir_func_get80_1_label19(%rip)
-.L__kefir_func_get80_1_label32:
-    fxch %st(1)
-    fxch %st(1)
+.L__kefir_func_get80_1_label28:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.L__kefir_func_get80_1_label33:
+.L__kefir_func_get80_1_label29:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get80_1_label43:
+.L__kefir_func_get80_1_label39:
 .L__kefir_text_func_get80_1_end:
 .section .rodata
     .align 8
@@ -585,19 +563,17 @@ get80_2:
 .L__kefir_func_get80_2_label20:
     fldt .L__kefir_func_get80_2_label19(%rip)
 .L__kefir_func_get80_2_label21:
-    fxch %st(1)
-    fxch %st(1)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 64 5
-.L__kefir_func_get80_2_label33:
+.L__kefir_func_get80_2_label29:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get80_2_label43:
+.L__kefir_func_get80_2_label39:
 .L__kefir_text_func_get80_2_end:
 .section .rodata
     .align 8

@@ -171,6 +171,9 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_setbe(struct kefir_mem *, 
 kefir_result_t kefir_codegen_target_ir_amd64_peephole_seta(struct kefir_mem *, struct kefir_codegen_target_ir_code *,
                                                            const struct kefir_codegen_target_ir_instruction *,
                                                            kefir_bool_t *);
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_fxch(struct kefir_mem *, struct kefir_codegen_target_ir_code *,
+                                                           const struct kefir_codegen_target_ir_instruction *,
+                                                           kefir_bool_t *);
 
 #endif
 

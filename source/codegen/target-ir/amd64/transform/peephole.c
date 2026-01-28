@@ -531,6 +531,10 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                         REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_cmp(mem, code, instr, &instr_replaced));
                         break;
 
+                    case KEFIR_TARGET_IR_AMD64_OPCODE(fxch):
+                        REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_fxch(mem, code, instr, &instr_replaced));
+                        break;
+
                     default:
                         // Intentionally left blank
                         break;

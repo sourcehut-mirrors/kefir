@@ -37,12 +37,10 @@ temp:
     fldt .L__kefir_func_temp_label336(%rip)
 .L__kefir_func_temp_label338:
     fldt .L__kefir_func_temp_label341(%rip)
-.L__kefir_func_temp_label354:
-    fxch %st(1)
-    fxch %st(1)
+.L__kefir_func_temp_label350:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.L__kefir_func_temp_label534:
+.L__kefir_func_temp_label530:
     sub $32, %rsp
     mov $3, %edi
     mov $4, %esi
@@ -53,7 +51,7 @@ temp:
     call test3@PLT
     add $32, %rsp
 .loc 0 32 5
-.L__kefir_func_temp_label535:
+.L__kefir_func_temp_label531:
     mov $1, %edi
     mov $2, %esi
     mov $3, %edx
@@ -62,19 +60,19 @@ temp:
     xor %eax, %eax
     call test4@PLT
 .loc 0 33 5
-.L__kefir_func_temp_label886:
+.L__kefir_func_temp_label882:
     mov $1, %edi
     mov $2, %esi
     mov $3, %edx
     call test5@PLT
 .loc 0 34 5
-.L__kefir_func_temp_label887:
-    movq .L__kefir_func_temp_label890(%rip), %xmm0
-.L__kefir_func_temp_label896:
-    movd .L__kefir_func_temp_label895(%rip), %xmm1
-.L__kefir_func_temp_label901:
-    movd .L__kefir_func_temp_label900(%rip), %xmm2
-.L__kefir_func_temp_label902:
+.L__kefir_func_temp_label883:
+    movq .L__kefir_func_temp_label886(%rip), %xmm0
+.L__kefir_func_temp_label892:
+    movd .L__kefir_func_temp_label891(%rip), %xmm1
+.L__kefir_func_temp_label897:
+    movd .L__kefir_func_temp_label896(%rip), %xmm2
+.L__kefir_func_temp_label898:
     mov $1, %edi
     mov $2, %esi
     insertps $16, %xmm2, %xmm1
@@ -84,14 +82,14 @@ temp:
     mov $8, %r9d
     mov $2, %rax
     call test6@PLT
-.L__kefir_func_temp_label1098:
+.L__kefir_func_temp_label1094:
     mov $100, %edi
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     jmp test7@PLT
-.L__kefir_func_temp_label1106:
+.L__kefir_func_temp_label1102:
 .L__kefir_text_func_temp_end:
 .section .rodata
     .align 8
@@ -103,13 +101,13 @@ temp:
     .quad 0
     .quad 0
     .align 8
-.L__kefir_func_temp_label890:
+.L__kefir_func_temp_label886:
     .quad 4613937818241073152
     .align 4
-.L__kefir_func_temp_label895:
+.L__kefir_func_temp_label891:
     .long 1082130432
     .align 4
-.L__kefir_func_temp_label900:
+.L__kefir_func_temp_label896:
     .long 0
 .section .text
 
