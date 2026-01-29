@@ -66,7 +66,6 @@ or_fetch8:
     jnz .L__kefir_func_or_fetch8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_or_fetch8_label2
 .L__kefir_text_func_or_fetch8_end:
 
 add_fetch8:
@@ -83,7 +82,6 @@ add_fetch8:
     jnz .L__kefir_func_add_fetch8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_add_fetch8_label2
 .L__kefir_text_func_add_fetch8_end:
 
 and_fetch8:
@@ -100,7 +98,6 @@ and_fetch8:
     jnz .L__kefir_func_and_fetch8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_and_fetch8_label2
 .L__kefir_text_func_and_fetch8_end:
 
 or_fetch16:
@@ -117,7 +114,6 @@ or_fetch16:
     jnz .L__kefir_func_or_fetch16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_or_fetch16_label2
 .L__kefir_text_func_or_fetch16_end:
 
 or_fetch32:
@@ -132,7 +128,6 @@ or_fetch32:
     jnz .L__kefir_func_or_fetch32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_or_fetch32_label2
 .L__kefir_text_func_or_fetch32_end:
 
 or_fetch64:
@@ -147,7 +142,6 @@ or_fetch64:
     jnz .L__kefir_func_or_fetch64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_or_fetch64_label2
 .L__kefir_text_func_or_fetch64_end:
 
 sub_fetch8:
@@ -164,7 +158,6 @@ sub_fetch8:
     jnz .L__kefir_func_sub_fetch8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_sub_fetch8_label2
 .L__kefir_text_func_sub_fetch8_end:
 
 xor_fetch8:
@@ -181,7 +174,6 @@ xor_fetch8:
     jnz .L__kefir_func_xor_fetch8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_xor_fetch8_label2
 .L__kefir_text_func_xor_fetch8_end:
 
 add_fetch16:
@@ -198,7 +190,6 @@ add_fetch16:
     jnz .L__kefir_func_add_fetch16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_add_fetch16_label2
 .L__kefir_text_func_add_fetch16_end:
 
 add_fetch32:
@@ -213,7 +204,6 @@ add_fetch32:
     jnz .L__kefir_func_add_fetch32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_add_fetch32_label2
 .L__kefir_text_func_add_fetch32_end:
 
 add_fetch64:
@@ -228,7 +218,6 @@ add_fetch64:
     jnz .L__kefir_func_add_fetch64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_add_fetch64_label2
 .L__kefir_text_func_add_fetch64_end:
 
 and_fetch16:
@@ -245,7 +234,6 @@ and_fetch16:
     jnz .L__kefir_func_and_fetch16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_and_fetch16_label2
 .L__kefir_text_func_and_fetch16_end:
 
 and_fetch32:
@@ -260,7 +248,6 @@ and_fetch32:
     jnz .L__kefir_func_and_fetch32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_and_fetch32_label2
 .L__kefir_text_func_and_fetch32_end:
 
 and_fetch64:
@@ -275,7 +262,6 @@ and_fetch64:
     jnz .L__kefir_func_and_fetch64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_and_fetch64_label2
 .L__kefir_text_func_and_fetch64_end:
 
 nand_fetch8:
@@ -304,7 +290,6 @@ nand_fetch8:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_nand_fetch8_label4
 .L__kefir_text_func_nand_fetch8_end:
 
 sub_fetch16:
@@ -321,7 +306,6 @@ sub_fetch16:
     jnz .L__kefir_func_sub_fetch16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_sub_fetch16_label2
 .L__kefir_text_func_sub_fetch16_end:
 
 sub_fetch32:
@@ -336,7 +320,6 @@ sub_fetch32:
     jnz .L__kefir_func_sub_fetch32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_sub_fetch32_label2
 .L__kefir_text_func_sub_fetch32_end:
 
 sub_fetch64:
@@ -351,7 +334,6 @@ sub_fetch64:
     jnz .L__kefir_func_sub_fetch64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_sub_fetch64_label2
 .L__kefir_text_func_sub_fetch64_end:
 
 xor_fetch16:
@@ -368,7 +350,6 @@ xor_fetch16:
     jnz .L__kefir_func_xor_fetch16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_xor_fetch16_label2
 .L__kefir_text_func_xor_fetch16_end:
 
 xor_fetch32:
@@ -383,7 +364,6 @@ xor_fetch32:
     jnz .L__kefir_func_xor_fetch32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_xor_fetch32_label2
 .L__kefir_text_func_xor_fetch32_end:
 
 xor_fetch64:
@@ -398,7 +378,6 @@ xor_fetch64:
     jnz .L__kefir_func_xor_fetch64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_xor_fetch64_label2
 .L__kefir_text_func_xor_fetch64_end:
 
 nand_fetch16:
@@ -427,7 +406,6 @@ nand_fetch16:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_nand_fetch16_label4
 .L__kefir_text_func_nand_fetch16_end:
 
 nand_fetch32:
@@ -455,7 +433,6 @@ nand_fetch32:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_nand_fetch32_label4
 .L__kefir_text_func_nand_fetch32_end:
 
 nand_fetch64:
@@ -483,7 +460,6 @@ nand_fetch64:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_nand_fetch64_label4
 .L__kefir_text_func_nand_fetch64_end:
 
 .L__kefir_text_section_end:

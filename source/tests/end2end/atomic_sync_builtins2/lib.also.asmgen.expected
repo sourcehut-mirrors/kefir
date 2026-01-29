@@ -69,7 +69,6 @@ test_fetch_add_short:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_add_short_label4
 .L__kefir_text_func_test_fetch_add_short_end:
 
 test_fetch_and_short:
@@ -97,7 +96,6 @@ test_fetch_and_short:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_and_short_label4
 .L__kefir_text_func_test_fetch_and_short_end:
 
 test_fetch_sub_short:
@@ -125,7 +123,6 @@ test_fetch_sub_short:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_sub_short_label4
 .L__kefir_text_func_test_fetch_sub_short_end:
 
 test_fetch_xor_short:
@@ -153,7 +150,6 @@ test_fetch_xor_short:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_xor_short_label4
 .L__kefir_text_func_test_fetch_xor_short_end:
 
 test_fetch_or_int:
@@ -180,7 +176,6 @@ test_fetch_or_int:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_or_int_label4
 .L__kefir_text_func_test_fetch_or_int_end:
 
 test_fetch_add_char:
@@ -208,7 +203,6 @@ test_fetch_add_char:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_add_char_label4
 .L__kefir_text_func_test_fetch_add_char_end:
 
 test_fetch_add_long:
@@ -235,7 +229,6 @@ test_fetch_add_long:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_add_long_label4
 .L__kefir_text_func_test_fetch_add_long_end:
 
 test_fetch_and_char:
@@ -263,7 +256,6 @@ test_fetch_and_char:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_and_char_label4
 .L__kefir_text_func_test_fetch_and_char_end:
 
 test_fetch_and_long:
@@ -290,7 +282,6 @@ test_fetch_and_long:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_and_long_label4
 .L__kefir_text_func_test_fetch_and_long_end:
 
 test_fetch_or_short:
@@ -318,7 +309,6 @@ test_fetch_or_short:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_or_short_label4
 .L__kefir_text_func_test_fetch_or_short_end:
 
 test_fetch_sub_char:
@@ -346,7 +336,6 @@ test_fetch_sub_char:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_sub_char_label4
 .L__kefir_text_func_test_fetch_sub_char_end:
 
 test_fetch_sub_long:
@@ -373,7 +362,6 @@ test_fetch_sub_long:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_sub_long_label4
 .L__kefir_text_func_test_fetch_sub_long_end:
 
 test_fetch_xor_char:
@@ -401,7 +389,6 @@ test_fetch_xor_char:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_xor_char_label4
 .L__kefir_text_func_test_fetch_xor_char_end:
 
 test_fetch_xor_long:
@@ -428,7 +415,6 @@ test_fetch_xor_long:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_xor_long_label4
 .L__kefir_text_func_test_fetch_xor_long_end:
 
 test_fetch_add_int:
@@ -455,7 +441,6 @@ test_fetch_add_int:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_add_int_label4
 .L__kefir_text_func_test_fetch_add_int_end:
 
 test_fetch_and_int:
@@ -482,7 +467,6 @@ test_fetch_and_int:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_and_int_label4
 .L__kefir_text_func_test_fetch_and_int_end:
 
 test_fetch_or_char:
@@ -510,7 +494,6 @@ test_fetch_or_char:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_or_char_label4
 .L__kefir_text_func_test_fetch_or_char_end:
 
 test_fetch_or_long:
@@ -537,7 +520,6 @@ test_fetch_or_long:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_or_long_label4
 .L__kefir_text_func_test_fetch_or_long_end:
 
 test_fetch_sub_int:
@@ -564,7 +546,6 @@ test_fetch_sub_int:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_sub_int_label4
 .L__kefir_text_func_test_fetch_sub_int_end:
 
 test_fetch_xor_int:
@@ -591,7 +572,6 @@ test_fetch_xor_int:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_fetch_xor_int_label4
 .L__kefir_text_func_test_fetch_xor_int_end:
 
 .L__kefir_text_section_end:

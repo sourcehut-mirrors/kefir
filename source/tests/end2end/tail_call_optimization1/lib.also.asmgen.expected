@@ -187,7 +187,7 @@ op_loop_begin:
 .L__kefir_func_op_loop_begin_label9:
     cmp $0, %eax
     ja .L__kefir_func_op_loop_begin_label3
-.L__kefir_func_op_loop_begin_label20:
+.L__kefir_func_op_loop_begin_label12:
     movq (%rdi), %rax
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
@@ -211,7 +211,7 @@ op_loop_begin:
     movb %dl, 5134(%rdi)
     movzx %cl, %rcx
     movq %rax, 4104(%rdi, %rcx, 8)
-    jmp .L__kefir_func_op_loop_begin_label20
+    jmp .L__kefir_func_op_loop_begin_label12
 .L__kefir_text_func_op_loop_begin_end:
 
 op_terminate:

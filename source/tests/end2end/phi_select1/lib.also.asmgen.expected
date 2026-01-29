@@ -78,7 +78,6 @@ select5:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_select5_label3
 .L__kefir_text_func_select5_end:
 
 select6:
@@ -116,7 +115,6 @@ select7:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_select7_label3
 .L__kefir_text_func_select7_end:
 
 select8:

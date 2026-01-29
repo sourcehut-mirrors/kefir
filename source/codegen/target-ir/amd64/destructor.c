@@ -2205,15 +2205,6 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
                                           &table_value));
             ASSIGN_DECL_CAST(struct block_state *, alternative_block_state, table_value);
 
-            REQUIRE(!kefir_codegen_target_ir_control_flow_is_critical_edge(state->control_flow, instr->block_ref,
-                                                                           terminator_props.target_block_refs[0]),
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                    "Expected critical edges to be split before target IR destruction"));
-            REQUIRE(!kefir_codegen_target_ir_control_flow_is_critical_edge(state->control_flow, instr->block_ref,
-                                                                           terminator_props.target_block_refs[1]),
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                    "Expected critical edges to be split before target IR destruction"));
-
             asmcmp_instrs[0].opcode = classification.classification.opcode;
             asmcmp_instrs[0].args[0].type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL;
             asmcmp_instrs[0].args[0].internal_label = target_block_state->asmcmp_label;

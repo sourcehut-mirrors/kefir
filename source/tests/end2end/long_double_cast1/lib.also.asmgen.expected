@@ -218,7 +218,6 @@ uintcld:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_uintcld_label3
 .L__kefir_text_func_uintcld_end:
 
 imp_cast:

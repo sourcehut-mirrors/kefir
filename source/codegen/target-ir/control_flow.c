@@ -555,7 +555,6 @@ kefir_result_t kefir_codegen_target_ir_control_flow_reset(struct kefir_mem *mem,
     REQUIRE_OK(kefir_hashtreeset_clean(mem, &control_flow->indirect_jump_targets));
 
     control_flow->blocks = NULL;
-    control_flow->code = NULL;
     return KEFIR_OK;
 }
 

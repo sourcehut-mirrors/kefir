@@ -12,7 +12,7 @@ test1:
     mov %rsp, %rbp
     sub $224, %rsp
     test %al, %al
-    je .L__kefir_func_test1_label14
+    je .L__kefir_func_test1_label2
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
     movdqu %xmm2, -144(%rbp)
@@ -64,8 +64,6 @@ test1:
     mov %rcx, -24(%rbp)
     mov (%rax), %rax
     jmp .L__kefir_func_test1_label7
-.L__kefir_func_test1_label14:
-    jmp .L__kefir_func_test1_label2
 .L__kefir_text_func_test1_end:
 
 .L__kefir_text_section_end:

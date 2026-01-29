@@ -87,7 +87,6 @@ conv2:
     pop %rbp
     ret
 .L__kefir_func_conv2_label47:
-    jmp .L__kefir_func_conv2_label6
 .L__kefir_text_func_conv2_end:
 
 conv3:

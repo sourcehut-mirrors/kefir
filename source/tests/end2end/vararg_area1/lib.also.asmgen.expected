@@ -14,7 +14,7 @@ process:
     push %r12
     sub $240, %rsp
     test %al, %al
-    je .L__kefir_func_process_label18
+    je .L__kefir_func_process_label2
     movdqu %xmm0, -208(%rbp)
     movdqu %xmm1, -192(%rbp)
     movdqu %xmm2, -176(%rbp)
@@ -108,8 +108,6 @@ process:
     mov (%rax), %rax
     mov %rax, %rcx
     jmp .L__kefir_func_process_label15
-.L__kefir_func_process_label18:
-    jmp .L__kefir_func_process_label2
 .L__kefir_text_func_process_end:
 
 .L__kefir_text_section_end:

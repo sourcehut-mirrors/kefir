@@ -126,7 +126,6 @@ add_i8:
     jnz .L__kefir_func_add_i8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_add_i8_label2
 .L__kefir_text_func_add_i8_end:
 
 add_ld:
@@ -202,7 +201,6 @@ ior_i8:
     jnz .L__kefir_func_ior_i8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_ior_i8_label2
 .L__kefir_text_func_ior_i8_end:
 
 shl_i8:
@@ -218,7 +216,6 @@ shl_i8:
     jnz .L__kefir_func_shl_i8_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_shl_i8_label2
 .L__kefir_text_func_shl_i8_end:
 
 shr_i8:
@@ -234,7 +231,6 @@ shr_i8:
     jnz .L__kefir_func_shr_i8_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_shr_i8_label2
 .L__kefir_text_func_shr_i8_end:
 
 add_f32:
@@ -325,7 +321,6 @@ add_i16:
     jnz .L__kefir_func_add_i16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_add_i16_label2
 .L__kefir_text_func_add_i16_end:
 
 add_i32:
@@ -340,7 +335,6 @@ add_i32:
     jnz .L__kefir_func_add_i32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_add_i32_label2
 .L__kefir_text_func_add_i32_end:
 
 add_i64:
@@ -355,7 +349,6 @@ add_i64:
     jnz .L__kefir_func_add_i64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_add_i64_label2
 .L__kefir_text_func_add_i64_end:
 
 add_ptr:
@@ -371,7 +364,6 @@ add_ptr:
     jnz .L__kefir_func_add_ptr_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_add_ptr_label2
 .L__kefir_text_func_add_ptr_end:
 
 iand_i8:
@@ -388,7 +380,6 @@ iand_i8:
     jnz .L__kefir_func_iand_i8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_iand_i8_label2
 .L__kefir_text_func_iand_i8_end:
 
 ior_i16:
@@ -405,7 +396,6 @@ ior_i16:
     jnz .L__kefir_func_ior_i16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_ior_i16_label2
 .L__kefir_text_func_ior_i16_end:
 
 ior_i32:
@@ -420,7 +410,6 @@ ior_i32:
     jnz .L__kefir_func_ior_i32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_ior_i32_label2
 .L__kefir_text_func_ior_i32_end:
 
 ior_i64:
@@ -435,7 +424,6 @@ ior_i64:
     jnz .L__kefir_func_ior_i64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_ior_i64_label2
 .L__kefir_text_func_ior_i64_end:
 
 ixor_i8:
@@ -452,7 +440,6 @@ ixor_i8:
     jnz .L__kefir_func_ixor_i8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_ixor_i8_label2
 .L__kefir_text_func_ixor_i8_end:
 
 shl_i16:
@@ -468,7 +455,6 @@ shl_i16:
     jnz .L__kefir_func_shl_i16_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_shl_i16_label2
 .L__kefir_text_func_shl_i16_end:
 
 shl_i32:
@@ -484,7 +470,6 @@ shl_i32:
     jnz .L__kefir_func_shl_i32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_shl_i32_label2
 .L__kefir_text_func_shl_i32_end:
 
 shl_i64:
@@ -500,7 +485,6 @@ shl_i64:
     jnz .L__kefir_func_shl_i64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_shl_i64_label2
 .L__kefir_text_func_shl_i64_end:
 
 shr_i16:
@@ -516,7 +500,6 @@ shr_i16:
     jnz .L__kefir_func_shr_i16_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_shr_i16_label2
 .L__kefir_text_func_shr_i16_end:
 
 shr_i32:
@@ -532,7 +515,6 @@ shr_i32:
     jnz .L__kefir_func_shr_i32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_shr_i32_label2
 .L__kefir_text_func_shr_i32_end:
 
 shr_i64:
@@ -548,7 +530,6 @@ shr_i64:
     jnz .L__kefir_func_shr_i64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_shr_i64_label2
 .L__kefir_text_func_shr_i64_end:
 
 iand_i16:
@@ -565,7 +546,6 @@ iand_i16:
     jnz .L__kefir_func_iand_i16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_iand_i16_label2
 .L__kefir_text_func_iand_i16_end:
 
 iand_i32:
@@ -580,7 +560,6 @@ iand_i32:
     jnz .L__kefir_func_iand_i32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_iand_i32_label2
 .L__kefir_text_func_iand_i32_end:
 
 iand_i64:
@@ -595,7 +574,6 @@ iand_i64:
     jnz .L__kefir_func_iand_i64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_iand_i64_label2
 .L__kefir_text_func_iand_i64_end:
 
 ixor_i16:
@@ -612,7 +590,6 @@ ixor_i16:
     jnz .L__kefir_func_ixor_i16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_ixor_i16_label2
 .L__kefir_text_func_ixor_i16_end:
 
 ixor_i32:
@@ -627,7 +604,6 @@ ixor_i32:
     jnz .L__kefir_func_ixor_i32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_ixor_i32_label2
 .L__kefir_text_func_ixor_i32_end:
 
 ixor_i64:
@@ -642,7 +618,6 @@ ixor_i64:
     jnz .L__kefir_func_ixor_i64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_ixor_i64_label2
 .L__kefir_text_func_ixor_i64_end:
 
 divide_i8:
@@ -662,7 +637,6 @@ divide_i8:
     jnz .L__kefir_func_divide_i8_label2
     mov %r9, %rax
     ret
-    jmp .L__kefir_func_divide_i8_label2
 .L__kefir_text_func_divide_i8_end:
 
 divide_ld:
@@ -741,7 +715,6 @@ modulo_i8:
     jnz .L__kefir_func_modulo_i8_label2
     mov %r9, %rax
     ret
-    jmp .L__kefir_func_modulo_i8_label2
 .L__kefir_text_func_modulo_i8_end:
 
 divide_f32:
@@ -835,7 +808,6 @@ divide_i16:
     jnz .L__kefir_func_divide_i16_label2
     mov %r9, %rax
     ret
-    jmp .L__kefir_func_divide_i16_label2
 .L__kefir_text_func_divide_i16_end:
 
 divide_i32:
@@ -854,7 +826,6 @@ divide_i32:
     jnz .L__kefir_func_divide_i32_label2
     mov %r9, %rax
     ret
-    jmp .L__kefir_func_divide_i32_label2
 .L__kefir_text_func_divide_i32_end:
 
 divide_i64:
@@ -873,7 +844,6 @@ divide_i64:
     jnz .L__kefir_func_divide_i64_label2
     mov %r9, %rax
     ret
-    jmp .L__kefir_func_divide_i64_label2
 .L__kefir_text_func_divide_i64_end:
 
 modulo_i16:
@@ -893,7 +863,6 @@ modulo_i16:
     jnz .L__kefir_func_modulo_i16_label2
     mov %r9, %rax
     ret
-    jmp .L__kefir_func_modulo_i16_label2
 .L__kefir_text_func_modulo_i16_end:
 
 modulo_i32:
@@ -912,7 +881,6 @@ modulo_i32:
     jnz .L__kefir_func_modulo_i32_label2
     mov %r9, %rax
     ret
-    jmp .L__kefir_func_modulo_i32_label2
 .L__kefir_text_func_modulo_i32_end:
 
 modulo_i64:
@@ -931,7 +899,6 @@ modulo_i64:
     jnz .L__kefir_func_modulo_i64_label2
     mov %r9, %rax
     ret
-    jmp .L__kefir_func_modulo_i64_label2
 .L__kefir_text_func_modulo_i64_end:
 
 multiply_i8:
@@ -948,7 +915,6 @@ multiply_i8:
     jnz .L__kefir_func_multiply_i8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_multiply_i8_label2
 .L__kefir_text_func_multiply_i8_end:
 
 multiply_ld:
@@ -1024,7 +990,6 @@ subtract_i8:
     jnz .L__kefir_func_subtract_i8_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_subtract_i8_label2
 .L__kefir_text_func_subtract_i8_end:
 
 subtract_ld:
@@ -1174,7 +1139,6 @@ multiply_i16:
     jnz .L__kefir_func_multiply_i16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_multiply_i16_label2
 .L__kefir_text_func_multiply_i16_end:
 
 multiply_i32:
@@ -1189,7 +1153,6 @@ multiply_i32:
     jnz .L__kefir_func_multiply_i32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_multiply_i32_label2
 .L__kefir_text_func_multiply_i32_end:
 
 multiply_i64:
@@ -1204,7 +1167,6 @@ multiply_i64:
     jnz .L__kefir_func_multiply_i64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_multiply_i64_label2
 .L__kefir_text_func_multiply_i64_end:
 
 subtract_f32:
@@ -1295,7 +1257,6 @@ subtract_i16:
     jnz .L__kefir_func_subtract_i16_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_subtract_i16_label2
 .L__kefir_text_func_subtract_i16_end:
 
 subtract_i32:
@@ -1310,7 +1271,6 @@ subtract_i32:
     jnz .L__kefir_func_subtract_i32_label2
     mov %r8d, %eax
     ret
-    jmp .L__kefir_func_subtract_i32_label2
 .L__kefir_text_func_subtract_i32_end:
 
 subtract_i64:
@@ -1325,7 +1285,6 @@ subtract_i64:
     jnz .L__kefir_func_subtract_i64_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_subtract_i64_label2
 .L__kefir_text_func_subtract_i64_end:
 
 subtract_ptr:
@@ -1341,7 +1300,6 @@ subtract_ptr:
     jnz .L__kefir_func_subtract_ptr_label2
     mov %r8, %rax
     ret
-    jmp .L__kefir_func_subtract_ptr_label2
 .L__kefir_text_func_subtract_ptr_end:
 
 .L__kefir_text_section_end:

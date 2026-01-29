@@ -36,6 +36,7 @@
 #include "kefir/codegen/target-ir/amd64/destructor_ops.h"
 #include "kefir/codegen/target-ir/transform.h"
 #include "kefir/codegen/target-ir/amd64/transform.h"
+#include "kefir/codegen/target-ir/amd64/late_transform.h"
 #include "kefir/codegen/target-ir/amd64/regalloc.h"
 #include "kefir/codegen/target-ir/format.h"
 #include "kefir/codegen/target-ir/amd64/destructor.h"
@@ -1231,6 +1232,12 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_regalloc_run(
                             mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.liveness,
                             &func->target_ir.interference, &func->target_ir.coalesce, &stack_frame));
+
+    REQUIRE_CHAIN(&res, kefir_codegen_target_ir_amd64_transform_late_jump_propagation(mem, code, &func->target_ir.regalloc));
+    REQUIRE_CHAIN(&res, kefir_codegen_target_ir_control_flow_reset(mem, &func->target_ir.control_flow));
+    REQUIRE_CHAIN(&res, kefir_codegen_target_ir_control_flow_build(mem, &func->target_ir.control_flow));
+    REQUIRE_CHAIN(&res, kefir_codegen_target_ir_numbering_reset(mem, &func->target_ir.liveness.numbering));
+    REQUIRE_CHAIN(&res, kefir_codegen_target_ir_numbering_build(mem, &func->target_ir.liveness.numbering, code));
 
     REQUIRE_CHAIN(&res,
                   kefir_codegen_target_ir_amd64_destruct(

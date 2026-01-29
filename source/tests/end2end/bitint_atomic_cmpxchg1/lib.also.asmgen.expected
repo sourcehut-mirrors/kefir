@@ -42,13 +42,11 @@ add1:
     mov %rdi, %rdx
     mov %r8, %rcx
     lock     cmpxchgb %cl, (%rdx)
-    jnz .L__kefir_func_add1_label4
+    jnz .L__kefir_func_add1_label2
     mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_add1_label4:
-    jmp .L__kefir_func_add1_label2
 .L__kefir_text_func_add1_end:
 
 add2:
@@ -71,13 +69,11 @@ add2:
     mov %rdi, %rdx
     mov %r8, %rcx
     lock     cmpxchgw %cx, (%rdx)
-    jnz .L__kefir_func_add2_label4
+    jnz .L__kefir_func_add2_label2
     mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_add2_label4:
-    jmp .L__kefir_func_add2_label2
 .L__kefir_text_func_add2_end:
 
 add3:
@@ -100,13 +96,11 @@ add3:
     mov %rdi, %rdx
     mov %r8d, %ecx
     lock     cmpxchgl %ecx, (%rdx)
-    jnz .L__kefir_func_add3_label4
+    jnz .L__kefir_func_add3_label2
     mov %r8d, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_add3_label4:
-    jmp .L__kefir_func_add3_label2
 .L__kefir_text_func_add3_end:
 
 add4:
@@ -129,13 +123,11 @@ add4:
     mov %rdi, %rdx
     mov %r8, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    jnz .L__kefir_func_add4_label4
+    jnz .L__kefir_func_add4_label2
     mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_add4_label4:
-    jmp .L__kefir_func_add4_label2
 .L__kefir_text_func_add4_end:
 
 add5:

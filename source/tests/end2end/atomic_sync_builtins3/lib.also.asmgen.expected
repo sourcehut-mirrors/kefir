@@ -37,7 +37,6 @@ test_sync_bool_compare_and_swap16:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap16_label3
 .L__kefir_text_func_test_sync_bool_compare_and_swap16_end:
 
 test_sync_bool_compare_and_swap32:
@@ -57,7 +56,6 @@ test_sync_bool_compare_and_swap32:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap32_label3
 .L__kefir_text_func_test_sync_bool_compare_and_swap32_end:
 
 test_sync_bool_compare_and_swap64:
@@ -77,7 +75,6 @@ test_sync_bool_compare_and_swap64:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap64_label3
 .L__kefir_text_func_test_sync_bool_compare_and_swap64_end:
 
 test_sync_bool_compare_and_swap8:
@@ -97,7 +94,6 @@ test_sync_bool_compare_and_swap8:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_sync_bool_compare_and_swap8_label3
 .L__kefir_text_func_test_sync_bool_compare_and_swap8_end:
 
 test_sync_val_compare_and_swap8:
@@ -117,7 +113,6 @@ test_sync_val_compare_and_swap8:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_sync_val_compare_and_swap8_label3
 .L__kefir_text_func_test_sync_val_compare_and_swap8_end:
 
 test_sync_val_compare_and_swap16:
@@ -137,7 +132,6 @@ test_sync_val_compare_and_swap16:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_sync_val_compare_and_swap16_label3
 .L__kefir_text_func_test_sync_val_compare_and_swap16_end:
 
 test_sync_val_compare_and_swap32:
@@ -157,7 +151,6 @@ test_sync_val_compare_and_swap32:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_sync_val_compare_and_swap32_label3
 .L__kefir_text_func_test_sync_val_compare_and_swap32_end:
 
 test_sync_val_compare_and_swap64:
@@ -177,7 +170,6 @@ test_sync_val_compare_and_swap64:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test_sync_val_compare_and_swap64_label3
 .L__kefir_text_func_test_sync_val_compare_and_swap64_end:
 
 .L__kefir_text_section_end:

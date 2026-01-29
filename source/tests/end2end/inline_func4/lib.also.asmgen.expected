@@ -33,7 +33,6 @@ addx:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_addx_label4
 .L__kefir_text_func_addx_end:
 
 .L__kefir_text_section_end:

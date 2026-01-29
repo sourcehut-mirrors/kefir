@@ -90,7 +90,6 @@ sum:
 .L__kefir_func_sum_label229:
     jmp .L__kefir_func_sum_label14
 .L__kefir_func_sum_label235:
-    jmp .L__kefir_func_sum_label4
 .L__kefir_text_func_sum_end:
 
 .L__kefir_text_section_end:

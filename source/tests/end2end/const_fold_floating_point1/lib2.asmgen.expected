@@ -788,7 +788,6 @@ uint_to_float80:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_uint_to_float80_label3
 .L__kefir_text_func_uint_to_float80_end:
 
 float32_eq2_float32:

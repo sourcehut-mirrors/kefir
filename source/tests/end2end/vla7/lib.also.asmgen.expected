@@ -46,13 +46,11 @@ test:
     jnz .L__kefir_func_test_label10
     movl -32(%rbp), %eax
     cmp $1, %eax
-    jg .L__kefir_func_test_label13
+    jg .L__kefir_func_test_label2
     mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test_label13:
-    jmp .L__kefir_func_test_label2
 .L__kefir_func_test_label10:
     xor %eax, %eax
     lea (%rbp), %rsp

@@ -49,7 +49,6 @@ eval2:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_eval2_label3
 .L__kefir_text_func_eval2_end:
 
 .L__kefir_text_section_end:

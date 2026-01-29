@@ -2684,7 +2684,6 @@ __kefir_softfloat_fmaximum_numl:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label22:
     fldt -64(%rbp)
     fldcw -8(%rbp)

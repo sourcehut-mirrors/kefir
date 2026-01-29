@@ -455,7 +455,6 @@ __kefir_bigint_least_significant_nonzero:
     pop %rbx
     pop %rbp
     ret
-    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label19:
     xor %eax, %eax
     lea -8(%rbp), %rsp

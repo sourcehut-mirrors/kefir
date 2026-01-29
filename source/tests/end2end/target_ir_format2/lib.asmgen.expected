@@ -1864,12 +1864,12 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 76,
+#                    "instr_ref": 77,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 4
+#                            "block_ref": 2
 #                        },
 #                        {
 #                            "type": "block_ref",
@@ -1884,28 +1884,6 @@ test2:
 #                            },
 #                            "variant": "default",
 #                            "tied": true
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                }
-#            ],
-#            "externally_visible": false,
-#            "public_labels": []
-#        },
-#        {
-#            "block_ref": 4,
-#            "code": [
-#                {
-#                    "instr_ref": 61,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "block_ref",
-#                            "block_ref": 2
 #                        }
 #                    ],
 #                    "values": [],
@@ -2048,13 +2026,11 @@ test2:
     mov %rdi, %rdx
     mov %r8d, %ecx
     lock     cmpxchgl %ecx, (%rdx)
-    jnz .L__kefir_func_test2_label4
+    jnz .L__kefir_func_test2_label2
     mov %r8d, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test2_label4:
-    jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 
 test3:

@@ -107,7 +107,6 @@ test4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test4_label2
 .L__kefir_text_func_test4_end:
 
 test5:

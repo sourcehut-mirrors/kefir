@@ -53,7 +53,6 @@ test3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test3_label3
 .L__kefir_text_func_test3_end:
 .section .rodata
     .align 4
@@ -75,7 +74,6 @@ test4:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_test4_label3
 .L__kefir_text_func_test4_end:
 .section .rodata
     .align 8

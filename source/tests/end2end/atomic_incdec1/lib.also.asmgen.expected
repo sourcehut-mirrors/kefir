@@ -57,7 +57,6 @@ predec_i8:
     jnz .L__kefir_func_predec_i8_label2
     mov %rdi, %rax
     ret
-    jmp .L__kefir_func_predec_i8_label2
 .L__kefir_text_func_predec_i8_end:
 
 predec_ld:
@@ -136,7 +135,6 @@ preinc_i8:
     jnz .L__kefir_func_preinc_i8_label2
     mov %rdi, %rax
     ret
-    jmp .L__kefir_func_preinc_i8_label2
 .L__kefir_text_func_preinc_i8_end:
 
 preinc_ld:
@@ -305,7 +303,6 @@ predec_i16:
     jnz .L__kefir_func_predec_i16_label2
     mov %rdi, %rax
     ret
-    jmp .L__kefir_func_predec_i16_label2
 .L__kefir_text_func_predec_i16_end:
 
 predec_i32:
@@ -320,7 +317,6 @@ predec_i32:
     jnz .L__kefir_func_predec_i32_label2
     mov %edi, %eax
     ret
-    jmp .L__kefir_func_predec_i32_label2
 .L__kefir_text_func_predec_i32_end:
 
 predec_i64:
@@ -335,7 +331,6 @@ predec_i64:
     jnz .L__kefir_func_predec_i64_label2
     mov %rdi, %rax
     ret
-    jmp .L__kefir_func_predec_i64_label2
 .L__kefir_text_func_predec_i64_end:
 
 predec_ptr:
@@ -350,7 +345,6 @@ predec_ptr:
     jnz .L__kefir_func_predec_ptr_label2
     mov %rdi, %rax
     ret
-    jmp .L__kefir_func_predec_ptr_label2
 .L__kefir_text_func_predec_ptr_end:
 
 preinc_f32:
@@ -456,7 +450,6 @@ preinc_i16:
     jnz .L__kefir_func_preinc_i16_label2
     mov %rdi, %rax
     ret
-    jmp .L__kefir_func_preinc_i16_label2
 .L__kefir_text_func_preinc_i16_end:
 
 preinc_i32:
@@ -471,7 +464,6 @@ preinc_i32:
     jnz .L__kefir_func_preinc_i32_label2
     mov %edi, %eax
     ret
-    jmp .L__kefir_func_preinc_i32_label2
 .L__kefir_text_func_preinc_i32_end:
 
 preinc_i64:
@@ -486,7 +478,6 @@ preinc_i64:
     jnz .L__kefir_func_preinc_i64_label2
     mov %rdi, %rax
     ret
-    jmp .L__kefir_func_preinc_i64_label2
 .L__kefir_text_func_preinc_i64_end:
 
 preinc_ptr:
@@ -501,7 +492,6 @@ preinc_ptr:
     jnz .L__kefir_func_preinc_ptr_label2
     mov %rdi, %rax
     ret
-    jmp .L__kefir_func_preinc_ptr_label2
 .L__kefir_text_func_preinc_ptr_end:
 
 .L__kefir_text_section_end:

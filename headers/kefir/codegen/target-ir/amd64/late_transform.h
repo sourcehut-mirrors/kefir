@@ -25,6 +25,9 @@
 #include "kefir/codegen/asmcmp/context.h"
 #include "kefir/codegen/target-ir/regalloc.h"
 
+kefir_result_t kefir_codegen_target_ir_amd64_transform_late_jump_propagation(
+    struct kefir_mem *, struct kefir_codegen_target_ir_code *,
+    const struct kefir_codegen_target_ir_regalloc *);
 kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(
     struct kefir_mem *, const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,
     const struct kefir_codegen_target_ir_regalloc *, const struct kefir_hashset *, struct kefir_asmcmp_instruction *);

@@ -924,7 +924,7 @@ __kefir_bigint_left_shift:
     mov $8, %eax
     sub %rbx, %rax
     cmp $0, %rbx
-    ja .L__kefir_runtime_func___kefir_bigint_left_shift_label5
+    ja .L__kefir_runtime_func___kefir_bigint_left_shift_label9
 .L__kefir_runtime_func___kefir_bigint_left_shift_label7:
     xor %eax, %eax
     pop %r14
@@ -933,7 +933,7 @@ __kefir_bigint_left_shift:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_left_shift_label5:
+.L__kefir_runtime_func___kefir_bigint_left_shift_label9:
     cmp $0, %r13
     ja .L__kefir_runtime_func___kefir_bigint_left_shift_label13
     movb (%r12), %al
@@ -951,7 +951,7 @@ __kefir_bigint_left_shift:
     or %esi, %edx
     movb %dl, (%r12, %r13, 1)
     add $-1, %r13
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label5
+    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label9
 .L__kefir_runtime_func___kefir_bigint_left_shift_label15:
     mov %r12, %rdi
     mov %r14, %rsi

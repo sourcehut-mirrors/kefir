@@ -23,7 +23,6 @@ test1:
     mov %rdi, %rax
     not %eax
     ret
-    jmp .L__kefir_func_test1_label7
 .L__kefir_text_func_test1_end:
 
 test2:
@@ -41,7 +40,6 @@ test2:
 .L__kefir_func_test2_label7:
     neg %eax
     ret
-    jmp .L__kefir_func_test2_label7
 .L__kefir_text_func_test2_end:
 
 test3:
@@ -60,7 +58,6 @@ test3:
     ret
 .L__kefir_func_test3_label7:
     ret
-    jmp .L__kefir_func_test3_label5
 .L__kefir_text_func_test3_end:
 
 .L__kefir_text_section_end:

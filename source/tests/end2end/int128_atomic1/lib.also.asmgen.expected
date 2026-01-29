@@ -66,7 +66,6 @@ add_i128:
     pop %rbx
     pop %rbp
     ret
-    jmp .L__kefir_func_add_i128_label2
 .L__kefir_text_func_add_i128_end:
 
 add_u128:
@@ -119,7 +118,6 @@ add_u128:
     pop %rbx
     pop %rbp
     ret
-    jmp .L__kefir_func_add_u128_label2
 .L__kefir_text_func_add_u128_end:
 
 load_i128:

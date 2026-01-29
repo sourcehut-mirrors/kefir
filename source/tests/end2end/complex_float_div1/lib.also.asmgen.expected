@@ -653,7 +653,6 @@ __kefir_softfloat_fmaximum_numf:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label17
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label10:
     movaps %xmm1, %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label17
@@ -752,7 +751,6 @@ __kefir_softfloat_logbf:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_runtime_func___kefir_softfloat_logbf_label6
 .L__kefir_runtime_func___kefir_softfloat_logbf_label10:
     mulss %xmm0, %xmm0
     ldmxcsr -8(%rbp)

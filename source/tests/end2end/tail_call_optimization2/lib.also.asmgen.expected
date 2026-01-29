@@ -68,7 +68,6 @@ factorial_helper:
     lea (%rbp), %rsp
     pop %rbp
     jmp factorial_helper
-    jmp .L__kefir_func_factorial_helper_label4
 .L__kefir_text_func_factorial_helper_end:
 .section .rodata
     .align 8

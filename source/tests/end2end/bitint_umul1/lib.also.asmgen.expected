@@ -365,7 +365,7 @@ __kefir_bigint_unsigned_multiply:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label42
+    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label15
     movq -104(%rbp), %rax
     movq -16(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
@@ -413,8 +413,6 @@ __kefir_bigint_unsigned_multiply:
     and %eax, %ecx
     movb %cl, -106(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label25
-.L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label42:
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label15
 .L__kefir_runtime_func___kefir_bigint_unsigned_multiply_label31:
     movb -108(%rbp), %al
     movb -107(%rbp), %cl
