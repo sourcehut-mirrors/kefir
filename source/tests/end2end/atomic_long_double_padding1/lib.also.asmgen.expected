@@ -50,7 +50,6 @@ add_ld1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_add_ld1_label2
 .L__kefir_text_func_add_ld1_end:
 
 add_cld1:
@@ -101,7 +100,6 @@ add_cld1:
     pop %rbx
     pop %rbp
     ret
-    jmp .L__kefir_func_add_cld1_label2
 .L__kefir_text_func_add_cld1_end:
 
 .L__kefir_text_section_end:

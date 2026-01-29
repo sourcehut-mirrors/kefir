@@ -341,7 +341,6 @@ ubitint24_to_d128:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_ubitint24_to_d128_label3
 .L__kefir_text_func_ubitint24_to_d128_end:
 
 d32_to_bitint180:
@@ -460,7 +459,6 @@ ubitint24_to_d32:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_ubitint24_to_d32_label3
 .L__kefir_text_func_ubitint24_to_d32_end:
 
 ubitint24_to_d64:
@@ -488,7 +486,6 @@ ubitint24_to_d64:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_ubitint24_to_d64_label3
 .L__kefir_text_func_ubitint24_to_d64_end:
 
 d64_to_bitint24:

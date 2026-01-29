@@ -165,15 +165,13 @@ add5:
     lea -48(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_add5_label4
+    jz .L__kefir_func_add5_label2
     movq -48(%rbp), %rax
     movq -40(%rbp), %rdx
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_add5_label4:
-    jmp .L__kefir_func_add5_label2
 .L__kefir_text_func_add5_end:
 
 add6:
@@ -228,7 +226,7 @@ add6:
     lea -160(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_add6_label4
+    jz .L__kefir_func_add6_label2
     mov %rbx, %rax
     movdqu -160(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -241,8 +239,6 @@ add6:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_add6_label4:
-    jmp .L__kefir_func_add6_label2
 .L__kefir_text_func_add6_end:
 
 .L__kefir_text_section_end:

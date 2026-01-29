@@ -46,9 +46,9 @@ test3:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     ucomiss .L__kefir_func_test3_label12(%rip), %xmm0
-    jp .L__kefir_func_test3_label3
-    ja .L__kefir_func_test3_label3
-.L__kefir_func_test3_label3:
+    jp .L__kefir_func_test3_label4
+    ja .L__kefir_func_test3_label4
+.L__kefir_func_test3_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -67,9 +67,9 @@ test4:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     ucomisd .L__kefir_func_test4_label12(%rip), %xmm0
-    jp .L__kefir_func_test4_label3
-    ja .L__kefir_func_test4_label3
-.L__kefir_func_test4_label3:
+    jp .L__kefir_func_test4_label4
+    ja .L__kefir_func_test4_label4
+.L__kefir_func_test4_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -41,7 +41,6 @@ init_s:
     lea (%rbp), %rsp
     pop %rbp
     ret
-    jmp .L__kefir_func_init_s_label3
 .L__kefir_text_func_init_s_end:
 
 .L__kefir_text_section_end:

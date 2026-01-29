@@ -109,11 +109,10 @@ test2:
     mov %rax, %rsp
     movq (%rsp), %rcx
     add $16, %rsp
-.L__kefir_func_test2_label4:
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label7:
     mov %rax, %rcx
-    jmp .L__kefir_func_test2_label4
+    jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 
 .L__kefir_text_section_end:

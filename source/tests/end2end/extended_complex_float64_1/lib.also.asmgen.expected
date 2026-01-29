@@ -113,7 +113,6 @@ conv2:
     pop %rbp
     ret
 .L__kefir_func_conv2_label68:
-    jmp .L__kefir_func_conv2_label6
 .L__kefir_text_func_conv2_end:
 .section .rodata
     .align 8
