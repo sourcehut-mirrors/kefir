@@ -44,49 +44,6 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
         kefir_asmcmp_instruction_index_t next_instr_index = kefir_asmcmp_context_instr_next(context, instr_index);
 
         switch (instr->opcode) {
-            case KEFIR_ASMCMP_AMD64_OPCODE(jmp): {
-                struct kefir_asmcmp_instruction *next_instr = NULL;
-                if (next_instr_index != KEFIR_ASMCMP_INDEX_NONE) {
-                    REQUIRE_OK(kefir_asmcmp_context_instr_at(context, next_instr_index, &next_instr));
-                }
-                if (next_instr != NULL && next_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(jmp) &&
-                    next_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL) {
-                    kefir_asmcmp_label_index_t label = next_instr->args[0].internal_label;
-
-                    kefir_bool_t drop_instr = true;
-                    for (kefir_asmcmp_label_index_t instr_label =
-                             kefir_asmcmp_context_instr_label_head(context, next_instr_index);
-                         instr_label != KEFIR_ASMCMP_INDEX_NONE;) {
-
-                        if (instr_label == label) {
-                            drop_instr = false;
-                            instr_label = kefir_asmcmp_context_instr_label_next(context, instr_label);
-                            continue;
-                        }
-
-                        const struct kefir_asmcmp_label *asmlabel;
-                        REQUIRE_OK(kefir_asmcmp_context_get_label(context, instr_label, &asmlabel));
-
-                        if (!asmlabel->external_dependencies) {
-                            REQUIRE_OK(kefir_asmcmp_replace_labels(context, label, instr_label));
-                            kefir_asmcmp_label_index_t next_label =
-                                kefir_asmcmp_context_instr_label_next(context, instr_label);
-                            REQUIRE_OK(kefir_asmcmp_context_unbind_label(mem, context, instr_label));
-                            instr_label = next_label;
-                        } else {
-                            drop_instr = false;
-                            instr_label = kefir_asmcmp_context_instr_label_next(context, instr_label);
-                            continue;
-                        }
-                    }
-
-                    if (drop_instr) {
-                        REQUIRE_OK(kefir_asmcmp_context_instr_drop(context, next_instr_index));
-                        next_instr_index = instr_index;
-                    }
-                }
-            } break;
-
             default:
                 break;
         }
