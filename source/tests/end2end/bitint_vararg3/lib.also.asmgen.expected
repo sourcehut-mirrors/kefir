@@ -73,9 +73,7 @@ test1:
     lea -1(%eax), %ecx
     movl %ecx, -112(%rbp)
     test %eax, %eax
-    jz .L__kefir_func_test1_label10
-    jmp .L__kefir_func_test1_label4
-.L__kefir_func_test1_label10:
+    jnz .L__kefir_func_test1_label4
     movdqu -104(%rbp), %xmm0
     movdqu %xmm0, -176(%rbp)
     movdqu -88(%rbp), %xmm0

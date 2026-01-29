@@ -285,7 +285,6 @@ nand_fetch8:
     movb %al, -1(%rbp)
 .L__kefir_func_nand_fetch8_label4:
     jnz .L__kefir_func_nand_fetch8_label2
-.L__kefir_func_nand_fetch8_label7:
     mov %r8d, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -401,7 +400,6 @@ nand_fetch16:
     movw %ax, -2(%rbp)
 .L__kefir_func_nand_fetch16_label4:
     jnz .L__kefir_func_nand_fetch16_label2
-.L__kefir_func_nand_fetch16_label7:
     mov %r8d, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -428,7 +426,6 @@ nand_fetch32:
     movl %eax, -4(%rbp)
 .L__kefir_func_nand_fetch32_label4:
     jnz .L__kefir_func_nand_fetch32_label2
-.L__kefir_func_nand_fetch32_label7:
     mov %r8d, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -455,7 +452,6 @@ nand_fetch64:
     movq %rax, -8(%rbp)
 .L__kefir_func_nand_fetch64_label4:
     jnz .L__kefir_func_nand_fetch64_label2
-.L__kefir_func_nand_fetch64_label7:
     mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp

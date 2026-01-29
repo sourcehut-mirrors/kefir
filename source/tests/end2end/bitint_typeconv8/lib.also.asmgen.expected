@@ -351,9 +351,7 @@ __kefir_bigint_unsigned_from_float:
 .L__kefir_runtime_func___kefir_bigint_unsigned_from_float_label11:
     mov $0, %eax
     test $0, %eax
-    jz .L__kefir_runtime_func___kefir_bigint_unsigned_from_float_label14
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_from_float_label2
-.L__kefir_runtime_func___kefir_bigint_unsigned_from_float_label14:
+    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_from_float_label2
     xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -486,9 +484,7 @@ __kefir_bigint_unsigned_from_double:
 .L__kefir_runtime_func___kefir_bigint_unsigned_from_double_label11:
     mov $0, %eax
     test $0, %eax
-    jz .L__kefir_runtime_func___kefir_bigint_unsigned_from_double_label14
-    jmp .L__kefir_runtime_func___kefir_bigint_unsigned_from_double_label2
-.L__kefir_runtime_func___kefir_bigint_unsigned_from_double_label14:
+    jnz .L__kefir_runtime_func___kefir_bigint_unsigned_from_double_label2
     xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -957,9 +953,7 @@ __kefir_bigint_signed_from_double:
 .L__kefir_runtime_func___kefir_bigint_signed_from_double_label11:
     mov $0, %eax
     test $0, %eax
-    jz .L__kefir_runtime_func___kefir_bigint_signed_from_double_label14
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_from_double_label2
-.L__kefir_runtime_func___kefir_bigint_signed_from_double_label14:
+    jnz .L__kefir_runtime_func___kefir_bigint_signed_from_double_label2
     xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -1211,9 +1205,7 @@ __kefir_bigint_signed_from_float:
 .L__kefir_runtime_func___kefir_bigint_signed_from_float_label11:
     mov $0, %eax
     test $0, %eax
-    jz .L__kefir_runtime_func___kefir_bigint_signed_from_float_label14
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_from_float_label2
-.L__kefir_runtime_func___kefir_bigint_signed_from_float_label14:
+    jnz .L__kefir_runtime_func___kefir_bigint_signed_from_float_label2
     xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp

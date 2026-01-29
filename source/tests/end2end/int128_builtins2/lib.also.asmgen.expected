@@ -277,7 +277,6 @@ __kefir_bigint_unsigned_compare:
     add $-1, %r8
     cmp %r10d, %r9d
     jae .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label13:
     mov $-1, %rax
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label15:

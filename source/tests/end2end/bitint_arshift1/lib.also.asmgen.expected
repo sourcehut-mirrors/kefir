@@ -307,9 +307,7 @@ __kefir_bigint_right_shift_whole_digits:
     movabs $4294967295, %rdx
     and %rdx, %rax
     cmp %rcx, %rax
-    jb .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label25
-    jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label14
-.L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label25:
+    jae .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label14
     movb -44(%rbp), %al
     movq -24(%rbp), %rcx
     movl -8(%rbp), %edx

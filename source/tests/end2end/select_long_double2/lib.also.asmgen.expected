@@ -49,7 +49,6 @@ get:
     movdqu %xmm0, -64(%rbp)
     cmp $1, %esi
     jne .L__kefir_func_get_label3
-.L__kefir_func_get_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get_label3
@@ -80,7 +79,6 @@ get2:
     movdqu %xmm0, -64(%rbp)
     cmp $2, %esi
     je .L__kefir_func_get2_label3
-.L__kefir_func_get2_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get2_label3
@@ -111,7 +109,6 @@ get3:
     movdqu %xmm0, -64(%rbp)
     cmp $3, %esi
     jle .L__kefir_func_get3_label3
-.L__kefir_func_get3_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get3_label3
@@ -142,7 +139,6 @@ get4:
     movdqu %xmm0, -64(%rbp)
     cmp $4, %esi
     jl .L__kefir_func_get4_label3
-.L__kefir_func_get4_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get4_label3
@@ -173,7 +169,6 @@ get5:
     movdqu %xmm0, -64(%rbp)
     cmp $-3, %esi
     jge .L__kefir_func_get5_label3
-.L__kefir_func_get5_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get5_label3
@@ -204,7 +199,6 @@ get6:
     movdqu %xmm0, -64(%rbp)
     cmp $-4, %esi
     jg .L__kefir_func_get6_label3
-.L__kefir_func_get6_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get6_label3
@@ -235,7 +229,6 @@ get7:
     movdqu %xmm0, -64(%rbp)
     cmp $30, %esi
     jbe .L__kefir_func_get7_label3
-.L__kefir_func_get7_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get7_label3
@@ -266,7 +259,6 @@ get8:
     movdqu %xmm0, -64(%rbp)
     cmp $40, %esi
     jb .L__kefir_func_get8_label3
-.L__kefir_func_get8_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get8_label3
@@ -297,7 +289,6 @@ get9:
     movdqu %xmm0, -64(%rbp)
     cmp $100, %esi
     jae .L__kefir_func_get9_label3
-.L__kefir_func_get9_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get9_label3
@@ -328,7 +319,6 @@ get10:
     movdqu %xmm0, -64(%rbp)
     cmp $200, %esi
     ja .L__kefir_func_get10_label3
-.L__kefir_func_get10_label10:
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     jmp .L__kefir_func_get10_label3

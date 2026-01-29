@@ -494,7 +494,6 @@ __kefir_bigint_unsigned_compare:
     add $-1, %r8
     cmp %r10d, %r9d
     jae .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label13:
     mov $-1, %rax
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label15:
@@ -559,7 +558,6 @@ __kefir_bigint_right_shift_whole_digits:
     mov %eax, %edx
     cmp %rcx, %rdx
     jae .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label9
-.L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label18:
     mov %eax, %edx
     movb %r8b, (%rdi, %rdx, 1)
     add $1, %eax

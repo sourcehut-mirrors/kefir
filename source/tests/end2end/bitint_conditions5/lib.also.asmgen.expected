@@ -34,9 +34,7 @@ test1:
     shl $58, %rax
     shr $58, %rax
     test %al, %al
-    jz .L__kefir_func_test1_label7
-    jmp .L__kefir_func_test1_label2
-.L__kefir_func_test1_label7:
+    jnz .L__kefir_func_test1_label2
     mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -66,9 +64,7 @@ test2:
     shl $50, %rax
     shr $50, %rax
     test %ax, %ax
-    jz .L__kefir_func_test2_label7
-    jmp .L__kefir_func_test2_label2
-.L__kefir_func_test2_label7:
+    jnz .L__kefir_func_test2_label2
     mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -98,9 +94,7 @@ test3:
     shl $35, %rax
     shr $35, %rax
     test %eax, %eax
-    jz .L__kefir_func_test3_label7
-    jmp .L__kefir_func_test3_label2
-.L__kefir_func_test3_label7:
+    jnz .L__kefir_func_test3_label2
     mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -130,9 +124,7 @@ test4:
     shl $4, %rax
     shr $4, %rax
     test %rax, %rax
-    jz .L__kefir_func_test4_label7
-    jmp .L__kefir_func_test4_label2
-.L__kefir_func_test4_label7:
+    jnz .L__kefir_func_test4_label2
     mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -165,9 +157,7 @@ test5:
     mov $120, %esi
     call __kefir_bigint_is_zero
     test %al, %al
-    jnz .L__kefir_func_test5_label7
-    jmp .L__kefir_func_test5_label2
-.L__kefir_func_test5_label7:
+    jz .L__kefir_func_test5_label2
     mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -207,9 +197,7 @@ test6:
     mov $360, %esi
     call __kefir_bigint_is_zero
     test %al, %al
-    jnz .L__kefir_func_test6_label7
-    jmp .L__kefir_func_test6_label2
-.L__kefir_func_test6_label7:
+    jz .L__kefir_func_test6_label2
     mov $-1, %rax
     lea (%rbp), %rsp
     pop %rbp

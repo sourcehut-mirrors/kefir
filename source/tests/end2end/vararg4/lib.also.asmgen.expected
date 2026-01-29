@@ -59,7 +59,6 @@ get:
     fstpt -64(%rbp)
     cmp $0, %edx
     jne .L__kefir_func_get_label5
-.L__kefir_func_get_label11:
     mov -40(%rbp), %rax
     lea 16(%rax), %rcx
     mov %rcx, -40(%rbp)

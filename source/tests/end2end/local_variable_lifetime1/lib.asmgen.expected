@@ -62,7 +62,6 @@ test2:
     movl -12(%rbp), %eax
     cmp $10, %eax
     jge .L__kefir_func_test2_label4
-.L__kefir_func_test2_label11:
     mov $5, %edi
     lea -28(%rbp), %rsi
     lea -24(%rbp), %rdx
