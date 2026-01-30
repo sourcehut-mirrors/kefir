@@ -32,6 +32,11 @@ typedef struct kefir_codegen_runtime_hooks {
     void *payload;
 } kefir_codegen_runtime_hooks_t;
 
+typedef enum kefir_codegen_optimization_level {
+    KEFIR_CODEGEN_OPTIMIZATION_NONE = 0,
+    KEFIR_CODEGEN_OPTIMIZATION_FULL
+} kefir_codegen_optimization_level_t;
+
 typedef struct kefir_codegen_configuration {
     const char *symbol_prefix;
     kefir_bool_t emulated_tls;
@@ -42,6 +47,7 @@ typedef struct kefir_codegen_configuration {
     kefir_bool_t debug_info;
     kefir_bool_t valgrind_compatible_x87;
     kefir_bool_t runtime_function_generator_mode;
+    kefir_codegen_optimization_level_t optimization;
 } kefir_codegen_configuration_t;
 
 typedef struct kefir_codegen {

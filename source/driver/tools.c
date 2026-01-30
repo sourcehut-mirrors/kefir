@@ -271,6 +271,11 @@ static kefir_result_t output_compiler_config(FILE *output,
     if (configuration->codegen.print_details != NULL) {
         fprintf(output, " --codegen-details %s", configuration->codegen.print_details);
     }
+    if (configuration->codegen.optimization == KEFIR_CODEGEN_OPTIMIZATION_NONE) {
+        fprintf(output, " --codegen-no-optimize");
+    } else if (configuration->codegen.optimization == KEFIR_CODEGEN_OPTIMIZATION_FULL) {
+        fprintf(output, " --codegen-optimize");
+    }
 
     fprintf(output, "\n");
     return KEFIR_OK;
