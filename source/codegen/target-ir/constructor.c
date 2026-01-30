@@ -1042,8 +1042,7 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
         kefir_codegen_target_ir_operand_variant_t output_vreg_variants[KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS];
         for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
             kefir_asmcmp_virtual_register_index_t output_vreg = KEFIR_ASMCMP_INDEX_NONE;
-            kefir_codegen_target_ir_operand_variant_t output_variant =
-                KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;  // TODO
+            kefir_codegen_target_ir_operand_variant_t output_variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
             if (classification.operands[i].implicit) {
                 kefir_asmcmp_virtual_register_index_t vreg_idx = KEFIR_ID_NONE;
                 REQUIRE_OK(match_implicit_parameter_to_vreg(state, current_block_state, instr_idx,
