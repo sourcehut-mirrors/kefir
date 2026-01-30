@@ -21,21 +21,21 @@ _kefir_local_public_label_test_label3:
     movq (%rcx, %rax, 8), %rax
     movl $0, -8(%rbp)
     jmp *%rax
-.L__kefir_func_test_label4:
-_kefir_local_public_label_test_label1:
-    movl -12(%rbp), %eax
-    movl -4(%rbp), %ecx
-    add %ecx, %eax
 .L__kefir_func_test_label5:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test_label7:
 _kefir_local_public_label_test_label2:
     movl -12(%rbp), %eax
     movl -4(%rbp), %ecx
     imul %ecx, %eax
-    jmp .L__kefir_func_test_label5
+.L__kefir_func_test_label4:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_test_label3:
+_kefir_local_public_label_test_label1:
+    movl -12(%rbp), %eax
+    movl -4(%rbp), %ecx
+    add %ecx, %eax
+    jmp .L__kefir_func_test_label4
 .L__kefir_text_func_test_end:
 
 .L__kefir_text_section_end:

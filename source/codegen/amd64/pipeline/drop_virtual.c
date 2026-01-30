@@ -40,8 +40,6 @@ kefir_result_t kefir_asmcmp_drop_virtual_instructions(struct kefir_mem *mem, str
             case KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register):
             case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
             case KEFIR_ASMCMP_AMD64_OPCODE(weak_touch_virtual_register):
-            case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin):
-            case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end):
             case KEFIR_ASMCMP_AMD64_OPCODE(noop):
                 drop_instr = true;
                 break;

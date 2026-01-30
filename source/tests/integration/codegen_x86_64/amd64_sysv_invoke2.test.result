@@ -12,12 +12,12 @@ func1:
 .L__kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
-    movd %xmm0, [.L__kefir_func_func1_label4]
+    movd %xmm0, [.L__kefir_func_func1_label3]
     xor %edi, %edi
     mov %esi, 2
     call func2
-    movd %xmm0, [.L__kefir_func_func1_label5]
-    movd %xmm1, [.L__kefir_func_func1_label6]
+    movd %xmm0, [.L__kefir_func_func1_label4]
+    movd %xmm1, [.L__kefir_func_func1_label5]
     mov %edi, 2
     call func3
     pop %rbp
@@ -25,13 +25,13 @@ func1:
 .L__kefir_text_func_func1_end:
 .section .rodata
     .align 4
+.L__kefir_func_func1_label3:
+    .long 1065353216
+    .align 4
 .L__kefir_func_func1_label4:
     .long 1065353216
     .align 4
 .L__kefir_func_func1_label5:
-    .long 1065353216
-    .align 4
-.L__kefir_func_func1_label6:
     .long 1077936128
 .section .text
 

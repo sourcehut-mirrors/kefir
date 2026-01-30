@@ -18,68 +18,68 @@
 .L__kefir_text_section_begin:
 get1:
 .L__kefir_text_func_get1_begin:
-    movd .L__kefir_func_get1_label4(%rip), %xmm0
+    movd .L__kefir_func_get1_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_get1_end:
 .section .rodata
     .align 4
-.L__kefir_func_get1_label4:
+.L__kefir_func_get1_label3:
     .long 1134362624
 .section .text
 
 get2:
 .L__kefir_text_func_get2_begin:
-    movd .L__kefir_func_get2_label4(%rip), %xmm0
+    movd .L__kefir_func_get2_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_get2_end:
 .section .rodata
     .align 4
-.L__kefir_func_get2_label4:
+.L__kefir_func_get2_label3:
     .long 1132953600
 .section .text
 
 get3:
 .L__kefir_text_func_get3_begin:
-    movq .L__kefir_func_get3_label4(%rip), %xmm0
+    movq .L__kefir_func_get3_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_get3_end:
 .section .rodata
     .align 8
-.L__kefir_func_get3_label4:
+.L__kefir_func_get3_label3:
     .quad 4689140822988292096
 .section .text
 
 get4:
 .L__kefir_text_func_get4_begin:
-    movq .L__kefir_func_get4_label4(%rip), %xmm0
+    movq .L__kefir_func_get4_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_get4_end:
 .section .rodata
     .align 8
-.L__kefir_func_get4_label4:
+.L__kefir_func_get4_label3:
     .quad 4688413581945864192
 .section .text
 
 get5:
 .L__kefir_text_func_get5_begin:
-    fldt .L__kefir_func_get5_label4(%rip)
+    fldt .L__kefir_func_get5_label3(%rip)
     ret
 .L__kefir_text_func_get5_end:
 .section .rodata
     .align 8
-.L__kefir_func_get5_label4:
+.L__kefir_func_get5_label3:
     .quad 17271087967175180288
     .quad 16407
 .section .text
 
 get6:
 .L__kefir_text_func_get6_begin:
-    fldt .L__kefir_func_get6_label4(%rip)
+    fldt .L__kefir_func_get6_label3(%rip)
     ret
 .L__kefir_text_func_get6_end:
 .section .rodata
     .align 8
-.L__kefir_func_get6_label4:
+.L__kefir_func_get6_label3:
     .quad 11674931552571097088
     .quad 16414
 .section .text

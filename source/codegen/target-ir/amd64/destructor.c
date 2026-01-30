@@ -2758,8 +2758,6 @@ devirtualize_label:
 
         case KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link):
         case KEFIR_ASMCMP_AMD64_OPCODE(inline_assembly):
-        case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin):
-        case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end):
         case KEFIR_ASMCMP_AMD64_OPCODE(tail_call):
         case KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register):
         case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):

@@ -67,7 +67,7 @@ add_f32:
     lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_add_f32_label6
+    jz .L__kefir_func_add_f32_label4
     stmxcsr -136(%rbp)
     mov -136(%rbp), %rcx
     fnstsw %ax
@@ -85,7 +85,7 @@ add_f32:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_add_f32_label6:
+.L__kefir_func_add_f32_label4:
     fnclex
     jmp .L__kefir_func_add_f32_label2
 .L__kefir_text_func_add_f32_end:
@@ -133,7 +133,7 @@ add_f64:
     lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_add_f64_label6
+    jz .L__kefir_func_add_f64_label4
     stmxcsr -144(%rbp)
     mov -144(%rbp), %rcx
     fnstsw %ax
@@ -151,7 +151,7 @@ add_f64:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_add_f64_label6:
+.L__kefir_func_add_f64_label4:
     fnclex
     jmp .L__kefir_func_add_f64_label2
 .L__kefir_text_func_add_f64_end:
@@ -222,7 +222,7 @@ divide_f32:
     lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_divide_f32_label6
+    jz .L__kefir_func_divide_f32_label4
     stmxcsr -136(%rbp)
     mov -136(%rbp), %rcx
     fnstsw %ax
@@ -240,7 +240,7 @@ divide_f32:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_divide_f32_label6:
+.L__kefir_func_divide_f32_label4:
     fnclex
     jmp .L__kefir_func_divide_f32_label2
 .L__kefir_text_func_divide_f32_end:
@@ -319,7 +319,7 @@ divide_f64:
     lea -48(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_divide_f64_label6
+    jz .L__kefir_func_divide_f64_label4
     stmxcsr -160(%rbp)
     mov -160(%rbp), %rcx
     fnstsw %ax
@@ -338,7 +338,7 @@ divide_f64:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_divide_f64_label6:
+.L__kefir_func_divide_f64_label4:
     fnclex
     jmp .L__kefir_func_divide_f64_label2
 .L__kefir_text_func_divide_f64_end:
@@ -400,7 +400,7 @@ multiply_f32:
     lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_multiply_f32_label6
+    jz .L__kefir_func_multiply_f32_label4
     stmxcsr -136(%rbp)
     mov -136(%rbp), %rcx
     fnstsw %ax
@@ -418,7 +418,7 @@ multiply_f32:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_multiply_f32_label6:
+.L__kefir_func_multiply_f32_label4:
     fnclex
     jmp .L__kefir_func_multiply_f32_label2
 .L__kefir_text_func_multiply_f32_end:
@@ -476,7 +476,7 @@ multiply_f64:
     lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_multiply_f64_label6
+    jz .L__kefir_func_multiply_f64_label4
     stmxcsr -144(%rbp)
     mov -144(%rbp), %rcx
     fnstsw %ax
@@ -494,7 +494,7 @@ multiply_f64:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_multiply_f64_label6:
+.L__kefir_func_multiply_f64_label4:
     fnclex
     jmp .L__kefir_func_multiply_f64_label2
 .L__kefir_text_func_multiply_f64_end:
@@ -546,7 +546,7 @@ subtract_f32:
     lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_subtract_f32_label6
+    jz .L__kefir_func_subtract_f32_label4
     stmxcsr -136(%rbp)
     mov -136(%rbp), %rcx
     fnstsw %ax
@@ -564,7 +564,7 @@ subtract_f32:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_subtract_f32_label6:
+.L__kefir_func_subtract_f32_label4:
     fnclex
     jmp .L__kefir_func_subtract_f32_label2
 .L__kefir_text_func_subtract_f32_end:
@@ -612,7 +612,7 @@ subtract_f64:
     lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_subtract_f64_label6
+    jz .L__kefir_func_subtract_f64_label4
     stmxcsr -144(%rbp)
     mov -144(%rbp), %rcx
     fnstsw %ax
@@ -630,7 +630,7 @@ subtract_f64:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_subtract_f64_label6:
+.L__kefir_func_subtract_f64_label4:
     fnclex
     jmp .L__kefir_func_subtract_f64_label2
 .L__kefir_text_func_subtract_f64_end:

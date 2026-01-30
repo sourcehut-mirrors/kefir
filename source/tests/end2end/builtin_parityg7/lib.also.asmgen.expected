@@ -108,7 +108,7 @@ __kefir_bigint_nonzero_count:
     push %rbx
     push %r12
     cmp $0, %rsi
-    je .L__kefir_runtime_func___kefir_bigint_nonzero_count_label13
+    je .L__kefir_runtime_func___kefir_bigint_nonzero_count_label9
     lea 7(%rsi), %rax
     shr $3, %rax
     lea -1(%rax), %rcx
@@ -117,14 +117,14 @@ __kefir_bigint_nonzero_count:
     xor %ecx, %ecx
     xor %edx, %edx
     mov %rdx, %r8
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label4:
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label3:
     cmp %rax, %rcx
-    jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label8
+    jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label5
     mov %r8, %rax
     pop %r12
     pop %rbx
     ret
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label8:
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label5:
     movzxb (%rdi, %rcx, 1), %r9
     lea 1(%rcx), %rdx
     mov $8, %ecx
@@ -133,7 +133,7 @@ __kefir_bigint_nonzero_count:
     cmovae %rsi, %r10
     xor %ecx, %ecx
     mov %rcx, %r11
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label9:
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label6:
     lea 1(%r11), %rbx
     mov %r11, %rcx
     mov %r9, %r12
@@ -145,14 +145,14 @@ __kefir_bigint_nonzero_count:
     mov %r8, %rcx
     cmove %r12, %rcx
     cmp %r10, %r11
-    jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label17
+    jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label12
     mov %rdx, %rcx
-    jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label4
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label17:
+    jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label3
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label12:
     mov %rcx, %r8
     mov %rbx, %r11
-    jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label9
-.L__kefir_runtime_func___kefir_bigint_nonzero_count_label13:
+    jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label6
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label9:
     xor %eax, %eax
     pop %r12
     pop %rbx

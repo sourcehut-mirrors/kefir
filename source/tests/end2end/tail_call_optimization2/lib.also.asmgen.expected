@@ -12,10 +12,10 @@ factorial:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movq .L__kefir_func_factorial_label11(%rip), %xmm1
-    ucomisd .L__kefir_func_factorial_label12(%rip), %xmm0
+    movq .L__kefir_func_factorial_label9(%rip), %xmm1
+    ucomisd .L__kefir_func_factorial_label10(%rip), %xmm0
     jp .L__kefir_func_factorial_label3
-    ja .L__kefir_func_factorial_label6
+    ja .L__kefir_func_factorial_label5
 .L__kefir_func_factorial_label3:
     movaps %xmm1, %xmm0
 .L__kefir_func_factorial_label4:
@@ -23,10 +23,10 @@ factorial:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label6:
+.L__kefir_func_factorial_label5:
     movaps %xmm1, %xmm2
     mulsd %xmm0, %xmm2
-    movq .L__kefir_func_factorial_label13(%rip), %xmm1
+    movq .L__kefir_func_factorial_label11(%rip), %xmm1
     movaps %xmm0, %xmm3
     subsd %xmm1, %xmm3
     movaps %xmm3, %xmm1
@@ -36,13 +36,13 @@ factorial:
 .L__kefir_text_func_factorial_end:
 .section .rodata
     .align 8
+.L__kefir_func_factorial_label9:
+    .quad 4607182418800017408
+    .align 8
+.L__kefir_func_factorial_label10:
+    .quad 4607182418800017408
+    .align 8
 .L__kefir_func_factorial_label11:
-    .quad 4607182418800017408
-    .align 8
-.L__kefir_func_factorial_label12:
-    .quad 4607182418800017408
-    .align 8
-.L__kefir_func_factorial_label13:
     .quad 4607182418800017408
 .section .text
 
@@ -52,17 +52,17 @@ factorial_helper:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    ucomisd .L__kefir_func_factorial_helper_label10(%rip), %xmm1
-    jp .L__kefir_func_factorial_helper_label4
-    ja .L__kefir_func_factorial_helper_label6
-.L__kefir_func_factorial_helper_label4:
+    ucomisd .L__kefir_func_factorial_helper_label8(%rip), %xmm1
+    jp .L__kefir_func_factorial_helper_label3
+    ja .L__kefir_func_factorial_helper_label4
+.L__kefir_func_factorial_helper_label3:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_helper_label6:
+.L__kefir_func_factorial_helper_label4:
     mulsd %xmm1, %xmm0
-    movq .L__kefir_func_factorial_helper_label11(%rip), %xmm2
+    movq .L__kefir_func_factorial_helper_label9(%rip), %xmm2
     subsd %xmm2, %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -71,10 +71,10 @@ factorial_helper:
 .L__kefir_text_func_factorial_helper_end:
 .section .rodata
     .align 8
-.L__kefir_func_factorial_helper_label10:
+.L__kefir_func_factorial_helper_label8:
     .quad 4607182418800017408
     .align 8
-.L__kefir_func_factorial_helper_label11:
+.L__kefir_func_factorial_helper_label9:
     .quad 4607182418800017408
 .section .text
 

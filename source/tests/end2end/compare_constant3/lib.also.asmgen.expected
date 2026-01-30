@@ -20,29 +20,29 @@ compare1:
     stmxcsr -8(%rbp)
     xor %eax, %eax
     xor %ecx, %ecx
-    ucomiss .L__kefir_func_compare1_label4(%rip), %xmm0
+    ucomiss .L__kefir_func_compare1_label3(%rip), %xmm0
     setnp %cl
     cmovne %rax, %rcx
     mov $1, %rax
     xor %edx, %edx
-    ucomiss .L__kefir_func_compare1_label5(%rip), %xmm0
+    ucomiss .L__kefir_func_compare1_label4(%rip), %xmm0
     setp %dl
     cmovne %rax, %rdx
     add %edx, %ecx
     xor %eax, %eax
-    comiss .L__kefir_func_compare1_label6(%rip), %xmm0
+    comiss .L__kefir_func_compare1_label5(%rip), %xmm0
     seta %al
     add %eax, %ecx
     xor %eax, %eax
-    comiss .L__kefir_func_compare1_label7(%rip), %xmm0
+    comiss .L__kefir_func_compare1_label6(%rip), %xmm0
     setae %al
     add %eax, %ecx
-    movd .L__kefir_func_compare1_label8(%rip), %xmm1
+    movd .L__kefir_func_compare1_label7(%rip), %xmm1
     xor %eax, %eax
     comiss %xmm0, %xmm1
     seta %al
     add %eax, %ecx
-    movd .L__kefir_func_compare1_label9(%rip), %xmm1
+    movd .L__kefir_func_compare1_label8(%rip), %xmm1
     xor %eax, %eax
     comiss %xmm0, %xmm1
     setae %al
@@ -54,22 +54,22 @@ compare1:
 .L__kefir_text_func_compare1_end:
 .section .rodata
     .align 4
-.L__kefir_func_compare1_label4:
+.L__kefir_func_compare1_label3:
     .long 1120403456
     .align 4
-.L__kefir_func_compare1_label5:
+.L__kefir_func_compare1_label4:
     .long 1092616192
     .align 4
-.L__kefir_func_compare1_label6:
+.L__kefir_func_compare1_label5:
     .long 1073741824
     .align 4
-.L__kefir_func_compare1_label7:
+.L__kefir_func_compare1_label6:
     .long 1077936128
     .align 4
-.L__kefir_func_compare1_label8:
+.L__kefir_func_compare1_label7:
     .long 1082130432
     .align 4
-.L__kefir_func_compare1_label9:
+.L__kefir_func_compare1_label8:
     .long 1084227584
 .section .text
 
@@ -79,36 +79,36 @@ compare2:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd .L__kefir_func_compare2_label4(%rip), %xmm1
+    movd .L__kefir_func_compare2_label3(%rip), %xmm1
     xor %eax, %eax
     xor %ecx, %ecx
     ucomiss %xmm0, %xmm1
     setnp %cl
     cmovne %rax, %rcx
-    movd .L__kefir_func_compare2_label5(%rip), %xmm1
+    movd .L__kefir_func_compare2_label4(%rip), %xmm1
     mov $1, %rax
     xor %edx, %edx
     ucomiss %xmm0, %xmm1
     setp %dl
     cmovne %rax, %rdx
     add %edx, %ecx
-    movd .L__kefir_func_compare2_label6(%rip), %xmm1
+    movd .L__kefir_func_compare2_label5(%rip), %xmm1
     xor %eax, %eax
     comiss %xmm0, %xmm1
     seta %al
     add %eax, %ecx
-    movd .L__kefir_func_compare2_label7(%rip), %xmm1
+    movd .L__kefir_func_compare2_label6(%rip), %xmm1
     xor %eax, %eax
     comiss %xmm0, %xmm1
     setae %al
     add %eax, %ecx
     xor %eax, %eax
-    comiss .L__kefir_func_compare2_label8(%rip), %xmm0
+    comiss .L__kefir_func_compare2_label7(%rip), %xmm0
     seta %al
     add %eax, %ecx
     cvtss2sd %xmm0, %xmm0
     xor %eax, %eax
-    comisd .L__kefir_func_compare2_label9(%rip), %xmm0
+    comisd .L__kefir_func_compare2_label8(%rip), %xmm0
     setae %al
     add %ecx, %eax
     ldmxcsr -8(%rbp)
@@ -118,22 +118,22 @@ compare2:
 .L__kefir_text_func_compare2_end:
 .section .rodata
     .align 4
-.L__kefir_func_compare2_label4:
+.L__kefir_func_compare2_label3:
     .long 1120403456
     .align 4
-.L__kefir_func_compare2_label5:
+.L__kefir_func_compare2_label4:
     .long 1092616192
     .align 4
-.L__kefir_func_compare2_label6:
+.L__kefir_func_compare2_label5:
     .long 1073741824
     .align 4
-.L__kefir_func_compare2_label7:
+.L__kefir_func_compare2_label6:
     .long 1077936128
     .align 4
-.L__kefir_func_compare2_label8:
+.L__kefir_func_compare2_label7:
     .long 1082130432
     .align 8
-.L__kefir_func_compare2_label9:
+.L__kefir_func_compare2_label8:
     .quad 4617315517961601024
 .section .text
 
@@ -145,29 +145,29 @@ compare3:
     stmxcsr -8(%rbp)
     xor %eax, %eax
     xor %ecx, %ecx
-    ucomisd .L__kefir_func_compare3_label4(%rip), %xmm0
+    ucomisd .L__kefir_func_compare3_label3(%rip), %xmm0
     setnp %cl
     cmovne %rax, %rcx
     mov $1, %rax
     xor %edx, %edx
-    ucomisd .L__kefir_func_compare3_label5(%rip), %xmm0
+    ucomisd .L__kefir_func_compare3_label4(%rip), %xmm0
     setp %dl
     cmovne %rax, %rdx
     add %edx, %ecx
     xor %eax, %eax
-    comisd .L__kefir_func_compare3_label6(%rip), %xmm0
+    comisd .L__kefir_func_compare3_label5(%rip), %xmm0
     seta %al
     add %eax, %ecx
     xor %eax, %eax
-    comisd .L__kefir_func_compare3_label7(%rip), %xmm0
+    comisd .L__kefir_func_compare3_label6(%rip), %xmm0
     setae %al
     add %eax, %ecx
-    movq .L__kefir_func_compare3_label8(%rip), %xmm1
+    movq .L__kefir_func_compare3_label7(%rip), %xmm1
     xor %eax, %eax
     comisd %xmm0, %xmm1
     seta %al
     add %eax, %ecx
-    movq .L__kefir_func_compare3_label9(%rip), %xmm1
+    movq .L__kefir_func_compare3_label8(%rip), %xmm1
     xor %eax, %eax
     comisd %xmm0, %xmm1
     setae %al
@@ -179,22 +179,22 @@ compare3:
 .L__kefir_text_func_compare3_end:
 .section .rodata
     .align 8
-.L__kefir_func_compare3_label4:
+.L__kefir_func_compare3_label3:
     .quad 4636737291354636288
     .align 8
-.L__kefir_func_compare3_label5:
+.L__kefir_func_compare3_label4:
     .quad 4621819117588971520
     .align 8
-.L__kefir_func_compare3_label6:
+.L__kefir_func_compare3_label5:
     .quad 4611686018427387904
     .align 8
-.L__kefir_func_compare3_label7:
+.L__kefir_func_compare3_label6:
     .quad 4613937818241073152
     .align 8
-.L__kefir_func_compare3_label8:
+.L__kefir_func_compare3_label7:
     .quad 4616189618054758400
     .align 8
-.L__kefir_func_compare3_label9:
+.L__kefir_func_compare3_label8:
     .quad 4617315517961601024
 .section .text
 
@@ -204,35 +204,35 @@ compare4:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movq .L__kefir_func_compare4_label4(%rip), %xmm1
+    movq .L__kefir_func_compare4_label3(%rip), %xmm1
     xor %eax, %eax
     xor %ecx, %ecx
     ucomisd %xmm0, %xmm1
     setnp %cl
     cmovne %rax, %rcx
-    movq .L__kefir_func_compare4_label5(%rip), %xmm1
+    movq .L__kefir_func_compare4_label4(%rip), %xmm1
     mov $1, %rax
     xor %edx, %edx
     ucomisd %xmm0, %xmm1
     setp %dl
     cmovne %rax, %rdx
     add %edx, %ecx
-    movq .L__kefir_func_compare4_label6(%rip), %xmm1
+    movq .L__kefir_func_compare4_label5(%rip), %xmm1
     xor %eax, %eax
     comisd %xmm0, %xmm1
     seta %al
     add %eax, %ecx
-    movq .L__kefir_func_compare4_label7(%rip), %xmm1
+    movq .L__kefir_func_compare4_label6(%rip), %xmm1
     xor %eax, %eax
     comisd %xmm0, %xmm1
     setae %al
     add %eax, %ecx
     xor %eax, %eax
-    comisd .L__kefir_func_compare4_label8(%rip), %xmm0
+    comisd .L__kefir_func_compare4_label7(%rip), %xmm0
     seta %al
     add %eax, %ecx
     xor %eax, %eax
-    comisd .L__kefir_func_compare4_label9(%rip), %xmm0
+    comisd .L__kefir_func_compare4_label8(%rip), %xmm0
     setae %al
     add %ecx, %eax
     ldmxcsr -8(%rbp)
@@ -242,22 +242,22 @@ compare4:
 .L__kefir_text_func_compare4_end:
 .section .rodata
     .align 8
-.L__kefir_func_compare4_label4:
+.L__kefir_func_compare4_label3:
     .quad 4636737291354636288
     .align 8
-.L__kefir_func_compare4_label5:
+.L__kefir_func_compare4_label4:
     .quad 4621819117588971520
     .align 8
-.L__kefir_func_compare4_label6:
+.L__kefir_func_compare4_label5:
     .quad 4611686018427387904
     .align 8
-.L__kefir_func_compare4_label7:
+.L__kefir_func_compare4_label6:
     .quad 4613937818241073152
     .align 8
-.L__kefir_func_compare4_label8:
+.L__kefir_func_compare4_label7:
     .quad 4616189618054758400
     .align 8
-.L__kefir_func_compare4_label9:
+.L__kefir_func_compare4_label8:
     .quad 4617315517961601024
 .section .text
 

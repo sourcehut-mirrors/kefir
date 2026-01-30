@@ -19,16 +19,16 @@ getb:
 .loc 0 25 1
 .L__kefir_text_func_getb_begin:
 .loc 0 26 12
-.L__kefir_func_getb_label168:
+.L__kefir_func_getb_label166:
     movq __emutls_v.b@GOTPCREL(%rip), %rdi
     call __emutls_get_address@PLT
-.L__kefir_func_getb_label172:
+.L__kefir_func_getb_label170:
     movl (%rax), %eax
 .loc 0 26 5
-.L__kefir_func_getb_label173:
+.L__kefir_func_getb_label171:
     movq %rax, %xmm0
     ret
-.L__kefir_func_getb_label185:
+.L__kefir_func_getb_label183:
 .L__kefir_text_func_getb_end:
 
 .L__kefir_text_section_end:

@@ -35,23 +35,23 @@ test:
     movq %rax, -56(%rbp)
     lea -240(%rbp), %rax
     movq %rax, -48(%rbp)
-    movq .L__kefir_func_test_label18(%rip), %xmm0
+    movq .L__kefir_func_test_label15(%rip), %xmm0
 .L__kefir_func_test_label4:
     lea -1(%edi), %eax
     test %edi, %edi
-    jnz .L__kefir_func_test_label8
+    jnz .L__kefir_func_test_label6
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test_label8:
+.L__kefir_func_test_label6:
     movl -64(%rbp), %ecx
     cmp $48, %rcx
-    ja .L__kefir_func_test_label11
+    ja .L__kefir_func_test_label9
     movl -60(%rbp), %ecx
     add $32, %rcx
     cmp $176, %rcx
-    ja .L__kefir_func_test_label11
+    ja .L__kefir_func_test_label9
     lea -40(%rbp), %rcx
     movq -48(%rbp), %rdx
     movl -60(%rbp), %esi
@@ -60,7 +60,7 @@ test:
     movq 16(%rdx, %rsi, 1), %rdx
     movq %rdx, 8(%rcx)
     addl $32, -60(%rbp)
-.L__kefir_func_test_label12:
+.L__kefir_func_test_label10:
     movdqu (%rcx), %xmm1
     movdqu %xmm1, -24(%rbp)
     movq -24(%rbp), %rcx
@@ -71,15 +71,15 @@ test:
     addsd %xmm1, %xmm0
     mov %eax, %edi
     jmp .L__kefir_func_test_label4
-.L__kefir_func_test_label11:
+.L__kefir_func_test_label9:
     movq -56(%rbp), %rcx
     lea 16(%rcx), %rdx
     movq %rdx, -56(%rbp)
-    jmp .L__kefir_func_test_label12
+    jmp .L__kefir_func_test_label10
 .L__kefir_text_func_test_end:
 .section .rodata
     .align 8
-.L__kefir_func_test_label18:
+.L__kefir_func_test_label15:
     .quad 0
 .section .text
 

@@ -34,7 +34,7 @@ get3:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd .L__kefir_func_get3_label4(%rip), %xmm0
+    movd .L__kefir_func_get3_label3(%rip), %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0
     cvttss2si %xmm0, %rax
     ldmxcsr -8(%rbp)
@@ -44,7 +44,7 @@ get3:
 .L__kefir_text_func_get3_end:
 .section .rodata
     .align 4
-.L__kefir_func_get3_label4:
+.L__kefir_func_get3_label3:
     .long 1065353216
 .section .text
 

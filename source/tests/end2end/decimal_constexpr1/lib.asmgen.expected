@@ -12,34 +12,34 @@
 .L__kefir_text_section_begin:
 get32:
 .L__kefir_text_func_get32_begin:
-    movd .L__kefir_func_get32_label4(%rip), %xmm0
+    movd .L__kefir_func_get32_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_get32_end:
 .section .rodata
     .align 4
-.L__kefir_func_get32_label4:
+.L__kefir_func_get32_label3:
     .long 805892355
 .section .text
 
 get64:
 .L__kefir_text_func_get64_begin:
-    movq .L__kefir_func_get64_label4(%rip), %xmm0
+    movq .L__kefir_func_get64_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_get64_end:
 .section .rodata
     .align 8
-.L__kefir_func_get64_label4:
+.L__kefir_func_get64_label3:
     .quad 3539829307113795843
 .section .text
 
 get128:
 .L__kefir_text_func_get128_begin:
-    movdqu .L__kefir_func_get128_label4(%rip), %xmm0
+    movdqu .L__kefir_func_get128_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_get128_end:
 .section .rodata
     .align 16
-.L__kefir_func_get128_label4:
+.L__kefir_func_get128_label3:
     .quad 585987, 3473964162562916352
 .section .text
 

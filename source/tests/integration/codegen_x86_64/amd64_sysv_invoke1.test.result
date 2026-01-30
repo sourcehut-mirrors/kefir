@@ -12,7 +12,7 @@ func1:
 .L__kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
-    movd %xmm0, [.L__kefir_func_func1_label4]
+    movd %xmm0, [.L__kefir_func_func1_label3]
     sub %rsp, 32
     mov %edi, 1
     mov %esi, 2
@@ -31,7 +31,7 @@ func1:
 .L__kefir_text_func_func1_end:
 .section .rodata
     .align 4
-.L__kefir_func_func1_label4:
+.L__kefir_func_func1_label3:
     .long 1078523331
 .section .text
 

@@ -26,18 +26,18 @@ factorial2:
     movq %rsi, -8(%rbp)
     jmp *%rax
 .L__kefir_func_factorial2_label4:
+_kefir_local_public_label_factorial2_terminate:
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_factorial2_label3:
 _kefir_local_public_label_factorial2_round:
     movq -16(%rbp), %rax
     movq -8(%rbp), %rsi
     lea -1(%rax), %rdi
     imul %rax, %rsi
     jmp .L__kefir_func_factorial2_label2
-.L__kefir_func_factorial2_label6:
-_kefir_local_public_label_factorial2_terminate:
-    movq -8(%rbp), %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_text_func_factorial2_end:
 
 run_factorial:
@@ -52,7 +52,10 @@ run_factorial:
     movsx %edx, %rax
     movq (%rcx, %rax, 8), %rax
     jmp *%rax
-.L__kefir_func_run_factorial_label5:
+.L__kefir_func_run_factorial_label2:
+_kefir_local_public_label_run_factorial_terminate:
+    ret
+.L__kefir_func_run_factorial_label3:
 _kefir_local_public_label_run_factorial_round:
     movq factorial_param@GOTPCREL(%rip), %rax
     movq (%rax), %rax
@@ -65,9 +68,6 @@ _kefir_local_public_label_run_factorial_round:
     add $-1, %rcx
     movq %rcx, (%rax)
     jmp .L__kefir_func_run_factorial_label1
-.L__kefir_func_run_factorial_label3:
-_kefir_local_public_label_run_factorial_terminate:
-    ret
 .L__kefir_text_func_run_factorial_end:
 
 .L__kefir_text_section_end:

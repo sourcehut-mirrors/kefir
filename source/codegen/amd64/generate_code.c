@@ -561,8 +561,6 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
         case KEFIR_ASMCMP_AMD64_OPCODE(produce_virtual_register):
         case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
         case KEFIR_ASMCMP_AMD64_OPCODE(weak_touch_virtual_register):
-        case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin):
-        case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end):
         case KEFIR_ASMCMP_AMD64_OPCODE(noop):
             // Intentionally left blank
             break;

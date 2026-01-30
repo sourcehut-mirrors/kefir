@@ -138,7 +138,7 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 30,
+#                    "instr_ref": 29,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -177,7 +177,7 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 31,
+#                    "instr_ref": 30,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -216,13 +216,55 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 33,
+#                    "instr_ref": 32,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
 #                            "identifier": 2,
+#                            "offset": 0,
+#                            "variant": "8bit"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 29,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "8bit",
+#                            "tied": false
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect_ouput",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 34,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "local_var",
+#                            "identifier": 0,
 #                            "offset": 0,
 #                            "variant": "8bit"
 #                        },
@@ -259,48 +301,6 @@ test1:
 #                },
 #                {
 #                    "instr_ref": 35,
-#                    "opcode": "mov",
-#                    "parameters": [
-#                        {
-#                            "type": "indirect",
-#                            "basis": "local_var",
-#                            "identifier": 0,
-#                            "offset": 0,
-#                            "variant": "8bit"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 31,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "8bit",
-#                            "tied": false
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "indirect_ouput",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "indirect"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 36,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -328,12 +328,12 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 51,
+#                    "instr_ref": 50,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 36,
+#                            "instr_ref": 35,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -374,7 +374,7 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 38,
+#                    "instr_ref": 37,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -402,12 +402,12 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 52,
+#                    "instr_ref": 51,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 38,
+#                            "instr_ref": 37,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -448,12 +448,12 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 40,
+#                    "instr_ref": 39,
 #                    "opcode": "movsx",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 51,
+#                            "instr_ref": 50,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -487,12 +487,12 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 41,
+#                    "instr_ref": 40,
 #                    "opcode": "movsx",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 52,
+#                            "instr_ref": 51,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -526,12 +526,12 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 42,
+#                    "instr_ref": 41,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 40,
+#                            "instr_ref": 39,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -569,12 +569,12 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 43,
+#                    "instr_ref": 42,
 #                    "opcode": "cdq",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 42,
+#                            "instr_ref": 41,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -612,12 +612,12 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 44,
+#                    "instr_ref": 43,
 #                    "opcode": "idiv",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 41,
+#                            "instr_ref": 40,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -627,7 +627,7 @@ test1:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 42,
+#                            "instr_ref": 41,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -637,7 +637,7 @@ test1:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 43,
+#                            "instr_ref": 42,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -766,12 +766,12 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 45,
+#                    "instr_ref": 44,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 44,
+#                            "instr_ref": 43,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -805,12 +805,12 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 46,
+#                    "instr_ref": 45,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 45,
+#                            "instr_ref": 44,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -848,9 +848,30 @@ test1:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 47,
+#                    "instr_ref": 46,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 47,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 45,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -863,7 +884,7 @@ test1:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 46,
+#                            "instr_ref": 45,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -880,27 +901,6 @@ test1:
 #                },
 #                {
 #                    "instr_ref": 49,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 46,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 50,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": [],
@@ -1056,7 +1056,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 63,
+#                    "instr_ref": 59,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -1095,7 +1095,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 64,
+#                    "instr_ref": 60,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -1134,7 +1134,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 66,
+#                    "instr_ref": 62,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -1146,7 +1146,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 63,
+#                            "instr_ref": 59,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1176,7 +1176,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 68,
+#                    "instr_ref": 64,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -1188,7 +1188,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 64,
+#                            "instr_ref": 60,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1218,7 +1218,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 69,
+#                    "instr_ref": 65,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -1254,7 +1254,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 70,
+#                    "instr_ref": 66,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -1290,7 +1290,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 73,
+#                    "instr_ref": 69,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -1350,7 +1350,7 @@ test2:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 70,
+#                            "instr_ref": 66,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1466,7 +1466,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 74,
+#                    "instr_ref": 70,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
@@ -1481,7 +1481,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 69,
+#                            "instr_ref": 65,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1590,7 +1590,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 70,
+#                            "instr_ref": 66,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1633,7 +1633,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 74,
+#                            "instr_ref": 70,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1864,7 +1864,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 77,
+#                    "instr_ref": 73,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
@@ -1873,7 +1873,7 @@ test2:
 #                        },
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 6
+#                            "block_ref": 5
 #                        },
 #                        {
 #                            "type": "value_ref",
@@ -1897,15 +1897,15 @@ test2:
 #            "public_labels": []
 #        },
 #        {
-#            "block_ref": 6,
+#            "block_ref": 5,
 #            "code": [
 #                {
-#                    "instr_ref": 48,
+#                    "instr_ref": 47,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 74,
+#                            "instr_ref": 70,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1943,9 +1943,30 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 49,
+#                    "instr_ref": 48,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 49,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 47,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -1958,7 +1979,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 48,
+#                            "instr_ref": 47,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1975,27 +1996,6 @@ test2:
 #                },
 #                {
 #                    "instr_ref": 51,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 48,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 52,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": [],
@@ -2367,7 +2367,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 52,
+#                    "instr_ref": 51,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -2406,7 +2406,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 53,
+#                    "instr_ref": 52,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -2445,7 +2445,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 54,
+#                    "instr_ref": 53,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -2484,7 +2484,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 55,
+#                    "instr_ref": 54,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -2523,7 +2523,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 56,
+#                    "instr_ref": 55,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -2550,18 +2550,64 @@ test3:
 #                    }
 #                },
 #                {
+#                    "instr_ref": 56,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 55,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "offset": 0,
+#                            "variant": "default"
+#                        },
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 51,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": false
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "indirect_ouput",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
 #                    "instr_ref": 57,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 56,
+#                            "instr_ref": 55,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "offset": 0,
+#                            "offset": 8,
 #                            "variant": "default"
 #                        },
 #                        {
@@ -2597,17 +2643,44 @@ test3:
 #                },
 #                {
 #                    "instr_ref": 58,
+#                    "opcode": "placeholder",
+#                    "parameters": [],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "local_variable",
+#                                "identifier": 0,
+#                                "offset": 0
+#                            },
+#                            "allocation": null,
+#                            "metadata": {
+#                                "value_ref": 13
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 59,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 56,
+#                            "instr_ref": 58,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "offset": 8,
+#                            "offset": 0,
 #                            "variant": "default"
 #                        },
 #                        {
@@ -2642,45 +2715,18 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 59,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "local_variable",
-#                                "identifier": 0,
-#                                "offset": 0
-#                            },
-#                            "allocation": null,
-#                            "metadata": {
-#                                "value_ref": 13
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
 #                    "instr_ref": 60,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 59,
+#                            "instr_ref": 58,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
-#                            "offset": 0,
+#                            "offset": 8,
 #                            "variant": "default"
 #                        },
 #                        {
@@ -2721,53 +2767,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 59,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "offset": 8,
-#                            "variant": "default"
-#                        },
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 55,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": false
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "indirect_ouput",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "indirect"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 62,
-#                    "opcode": "mov",
-#                    "parameters": [
-#                        {
-#                            "type": "indirect",
-#                            "basis": "value_ref",
-#                            "instr_ref": 59,
+#                            "instr_ref": 58,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2801,13 +2801,13 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 63,
+#                    "instr_ref": 62,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 59,
+#                            "instr_ref": 58,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2841,13 +2841,13 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 64,
+#                    "instr_ref": 63,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 56,
+#                            "instr_ref": 55,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2881,13 +2881,13 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 65,
+#                    "instr_ref": 64,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 56,
+#                            "instr_ref": 55,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2921,12 +2921,12 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 77,
+#                    "instr_ref": 76,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 62,
+#                            "instr_ref": 61,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2936,7 +2936,7 @@ test3:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 64,
+#                            "instr_ref": 63,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3040,12 +3040,12 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 78,
+#                    "instr_ref": 77,
 #                    "opcode": "adc",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 63,
+#                            "instr_ref": 62,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3055,7 +3055,7 @@ test3:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 65,
+#                            "instr_ref": 64,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3065,7 +3065,7 @@ test3:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 77,
+#                            "instr_ref": 76,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_cf"
@@ -3169,12 +3169,12 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 68,
+#                    "instr_ref": 67,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 77,
+#                            "instr_ref": 76,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3212,12 +3212,12 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 69,
+#                    "instr_ref": 68,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 78,
+#                            "instr_ref": 77,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3255,9 +3255,30 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 70,
+#                    "instr_ref": 69,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 70,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 68,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -3270,7 +3291,7 @@ test3:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 69,
+#                            "instr_ref": 67,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3312,7 +3333,7 @@ test3:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 69,
+#                            "instr_ref": 0,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3333,27 +3354,6 @@ test3:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 0,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 75,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
 #                            "instr_ref": 6,
 #                            "aspect": {
 #                                "type": "direct_output",
@@ -3370,7 +3370,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 76,
+#                    "instr_ref": 75,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": [],
@@ -3408,7 +3408,7 @@ test3:
 test4:
 #{
 #    "entry_point": 0,
-#    "indirect_jump_gate": 7,
+#    "indirect_jump_gate": 5,
 #    "blocks": [
 #        {
 #            "block_ref": 0,
@@ -3477,7 +3477,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 26,
+#                    "instr_ref": 24,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -3516,7 +3516,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 28,
+#                    "instr_ref": 26,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -3528,7 +3528,7 @@ test4:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 26,
+#                            "instr_ref": 24,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3558,7 +3558,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 29,
+#                    "instr_ref": 27,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3690,7 +3690,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 33,
+#                    "instr_ref": 31,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -3742,7 +3742,7 @@ test4:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 33,
+#                            "instr_ref": 31,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3764,10 +3764,10 @@ test4:
 #            ]
 #        },
 #        {
-#            "block_ref": 4,
+#            "block_ref": 3,
 #            "code": [
 #                {
-#                    "instr_ref": 20,
+#                    "instr_ref": 19,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -3805,9 +3805,30 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 21,
+#                    "instr_ref": 20,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 21,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 19,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -3820,7 +3841,7 @@ test4:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 20,
+#                            "instr_ref": 19,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3837,27 +3858,6 @@ test4:
 #                },
 #                {
 #                    "instr_ref": 23,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 20,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 24,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": [],
@@ -3873,7 +3873,7 @@ test4:
 #            ]
 #        },
 #        {
-#            "block_ref": 7,
+#            "block_ref": 5,
 #            "code": [],
 #            "externally_visible": false,
 #            "public_labels": []
@@ -3892,7 +3892,7 @@ _kefir_local_public_label_test4_label1:
     movsx %eax, %rax
     movq (%rcx, %rax, 8), %rax
     jmp *%rax
-.L__kefir_func_test4_label4:
+.L__kefir_func_test4_label3:
 _kefir_local_public_label_test4_label2:
     mov $10, %eax
     lea (%rbp), %rsp
@@ -3918,7 +3918,7 @@ init_array:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 12,
+#                    "instr_ref": 11,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -3950,12 +3950,12 @@ init_array:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 13,
+#                    "instr_ref": 12,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 12,
+#                            "instr_ref": 11,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3971,7 +3971,7 @@ init_array:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 14,
+#                    "instr_ref": 13,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -4003,12 +4003,12 @@ init_array:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 15,
+#                    "instr_ref": 14,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 14,
+#                            "instr_ref": 13,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4024,7 +4024,7 @@ init_array:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 16,
+#                    "instr_ref": 15,
 #                    "opcode": "inline_assembly",
 #                    "target_block_ref": null,
 #                    "gate_block_ref": null,
@@ -4250,12 +4250,33 @@ init_array:
 #                    }
 #                },
 #                {
+#                    "instr_ref": 16,
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 11,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
 #                    "instr_ref": 17,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 12,
+#                            "instr_ref": 13,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -4272,27 +4293,6 @@ init_array:
 #                },
 #                {
 #                    "instr_ref": 18,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 14,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 19,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
 #                    "values": [],
@@ -4302,7 +4302,7 @@ init_array:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 20,
+#                    "instr_ref": 19,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": [],

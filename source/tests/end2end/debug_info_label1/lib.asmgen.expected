@@ -14,18 +14,18 @@ test1:
     push %rbp
     mov %rsp, %rbp
 .loc 0 25 5
-.L__kefir_func_test1_label166:
+.L__kefir_func_test1_label164:
     call test2@PLT
 .loc 0 28 9
 .L__kefir_func_test1_label4:
     call test2@PLT
 .loc 0 31 13
-.L__kefir_func_test1_label474:
+.L__kefir_func_test1_label472:
     call test2@PLT
 .loc 0 26 5
-.L__kefir_func_test1_label475:
+.L__kefir_func_test1_label473:
     jmp .L__kefir_func_test1_label4
-.L__kefir_func_test1_label479:
+.L__kefir_func_test1_label477:
 .L__kefir_text_func_test1_end:
 
 .L__kefir_text_section_end:
@@ -237,7 +237,7 @@ __kefir_debug_info_section_entry_4:
 __kefir_debug_info_section_entry_5:
     .byte 5
     .long __kefir_debug_str_section_entry_3
-    .quad .L__kefir_func_test1_label166
+    .quad .L__kefir_func_test1_label164
     .long __kefir_debug_str_section_entry_1
     .quad 24
     .quad 1
@@ -263,7 +263,7 @@ __kefir_debug_info_section_entry_10:
 __kefir_debug_info_section_entry_11:
     .byte 5
     .long __kefir_debug_str_section_entry_5
-    .quad .L__kefir_func_test1_label474
+    .quad .L__kefir_func_test1_label472
     .long __kefir_debug_str_section_entry_1
     .quad 30
     .quad 9
@@ -333,22 +333,22 @@ __kefir_debug_rnglists_section_begin:
 __kefir_debug_rnglist_section_entry_1:
     .byte 4
     .uleb128 .L__kefir_func_test1_label4 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_test1_label479 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label477 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_2:
     .byte 4
     .uleb128 .L__kefir_func_test1_label4 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_test1_label475 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label473 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_3:
     .byte 4
-    .uleb128 .L__kefir_func_test1_label474 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_test1_label475 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label472 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label473 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_4:
     .byte 4
-    .uleb128 .L__kefir_func_test1_label474 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_test1_label475 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label472 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_test1_label473 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:
 

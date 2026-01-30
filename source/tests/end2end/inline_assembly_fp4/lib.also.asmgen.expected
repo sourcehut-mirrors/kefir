@@ -12,10 +12,10 @@ circle_area:
     mov %rsp, %rbp
     sub $16, %rsp
     movd %xmm0, -8(%rbp)
-    movd .L__kefir_func_circle_area_label4(%rip), %xmm0
+    movd .L__kefir_func_circle_area_label3(%rip), %xmm0
     movd %xmm0, -4(%rbp)
     movl -8(%rbp), %eax
-    movd .L__kefir_func_circle_area_label5(%rip), %xmm3
+    movd .L__kefir_func_circle_area_label4(%rip), %xmm3
     movd -4(%rbp), %xmm0
     movq %rax, %xmm1
     movaps %xmm3, %xmm2
@@ -31,10 +31,10 @@ addss %xmm0, %xmm0
 .L__kefir_text_func_circle_area_end:
 .section .rodata
     .align 4
-.L__kefir_func_circle_area_label4:
+.L__kefir_func_circle_area_label3:
     .long 0
     .align 4
-.L__kefir_func_circle_area_label5:
+.L__kefir_func_circle_area_label4:
     .long 1078530000
 .section .text
 

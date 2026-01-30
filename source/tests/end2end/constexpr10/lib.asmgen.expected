@@ -22,10 +22,10 @@ get1:
     lea .L__kefir_string_literal0(%rip), %rax
     movq %rax, 8(%rdx)
     movq $58580, 16(%rdx)
-    movq .L__kefir_func_get1_label4(%rip), %xmm0
+    movq .L__kefir_func_get1_label3(%rip), %xmm0
     movq %xmm0, 24(%rdx)
-    movd .L__kefir_func_get1_label5(%rip), %xmm0
-    movd .L__kefir_func_get1_label6(%rip), %xmm1
+    movd .L__kefir_func_get1_label4(%rip), %xmm0
+    movd .L__kefir_func_get1_label5(%rip), %xmm1
     movd %xmm0, 32(%rdx)
     movd %xmm1, 36(%rdx)
     movl $1, 40(%rdx)
@@ -33,7 +33,7 @@ get1:
     movl $-1, 48(%rdx)
     movw $50, 56(%rdx)
     movq $-4451786, 64(%rdx)
-    movd .L__kefir_func_get1_label7(%rip), %xmm0
+    movd .L__kefir_func_get1_label6(%rip), %xmm0
     movd %xmm0, 72(%rdx)
     mov %rdx, %rax
     ldmxcsr -8(%rbp)
@@ -43,16 +43,16 @@ get1:
 .L__kefir_text_func_get1_end:
 .section .rodata
     .align 8
-.L__kefir_func_get1_label4:
+.L__kefir_func_get1_label3:
     .quad 4617793822760025908
     .align 4
-.L__kefir_func_get1_label5:
+.L__kefir_func_get1_label4:
     .long 2147483648
     .align 4
-.L__kefir_func_get1_label6:
+.L__kefir_func_get1_label5:
     .long 3317067981
     .align 4
-.L__kefir_func_get1_label7:
+.L__kefir_func_get1_label6:
     .long 1085116776
 .section .text
 

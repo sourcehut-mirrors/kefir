@@ -20,21 +20,21 @@ get:
     movw $10, (%rdx)
     movl $11, 8(%rdx)
     movq $12, 16(%rdx)
-    movd .L__kefir_func_get_label4(%rip), %xmm0
+    movd .L__kefir_func_get_label3(%rip), %xmm0
     movd %xmm0, 24(%rdx)
-    movq .L__kefir_func_get_label5(%rip), %xmm0
+    movq .L__kefir_func_get_label4(%rip), %xmm0
     movq %xmm0, 32(%rdx)
     movl $15, 40(%rdx)
     movq $16, 48(%rdx)
-    movd .L__kefir_func_get_label6(%rip), %xmm0
+    movd .L__kefir_func_get_label5(%rip), %xmm0
     movd %xmm0, 56(%rdx)
     movl $18, 112(%rdx)
     movq $19, 120(%rdx)
-    movd .L__kefir_func_get_label7(%rip), %xmm0
+    movd .L__kefir_func_get_label6(%rip), %xmm0
     movd %xmm0, 128(%rdx)
     movl $21, 136(%rdx)
     movq $22, 144(%rdx)
-    movd .L__kefir_func_get_label8(%rip), %xmm0
+    movd .L__kefir_func_get_label7(%rip), %xmm0
     movd %xmm0, 152(%rdx)
     lea -272(%rbp), %rdi
     xor %eax, %eax
@@ -60,13 +60,13 @@ get:
     movw $24, 432(%rdx)
     movl $25, 440(%rdx)
     movq $26, 448(%rdx)
-    movd .L__kefir_func_get_label9(%rip), %xmm0
+    movd .L__kefir_func_get_label8(%rip), %xmm0
     movd %xmm0, 456(%rdx)
-    movq .L__kefir_func_get_label10(%rip), %xmm0
+    movq .L__kefir_func_get_label9(%rip), %xmm0
     movq %xmm0, 464(%rdx)
     movl $29, 544(%rdx)
     movq $30, 552(%rdx)
-    movd .L__kefir_func_get_label11(%rip), %xmm0
+    movd .L__kefir_func_get_label10(%rip), %xmm0
     movd %xmm0, 560(%rdx)
     mov %rdx, %rax
     lea (%rbp), %rsp
@@ -75,28 +75,28 @@ get:
 .L__kefir_text_func_get_end:
 .section .rodata
     .align 4
-.L__kefir_func_get_label4:
+.L__kefir_func_get_label3:
     .long 1095761920
     .align 8
-.L__kefir_func_get_label5:
+.L__kefir_func_get_label4:
     .quad 4624070917402656768
     .align 4
-.L__kefir_func_get_label6:
+.L__kefir_func_get_label5:
     .long 1099431936
     .align 4
-.L__kefir_func_get_label7:
+.L__kefir_func_get_label6:
     .long 1101004800
     .align 4
-.L__kefir_func_get_label8:
+.L__kefir_func_get_label7:
     .long 1102577664
     .align 4
-.L__kefir_func_get_label9:
+.L__kefir_func_get_label8:
     .long 1104674816
     .align 8
-.L__kefir_func_get_label10:
+.L__kefir_func_get_label9:
     .quad 4628574517030027264
     .align 4
-.L__kefir_func_get_label11:
+.L__kefir_func_get_label10:
     .long 1106771968
 .section .text
 

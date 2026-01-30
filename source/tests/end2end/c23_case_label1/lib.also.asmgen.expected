@@ -13,13 +13,13 @@
 test1:
 .L__kefir_text_func_test1_begin:
     cmp $0, %edi
-    je .L__kefir_func_test1_label7
+    je .L__kefir_func_test1_label4
     cmp $1, %edi
-    je .L__kefir_func_test1_label7
+    je .L__kefir_func_test1_label4
     mov %rdi, %rax
     neg %eax
     ret
-.L__kefir_func_test1_label7:
+.L__kefir_func_test1_label4:
     mov %rdi, %rax
     not %eax
     ret
@@ -33,11 +33,11 @@ test2:
     cmp $9, %eax
     setle %dl
     and %dl, %cl
-    jnz .L__kefir_func_test2_label7
+    jnz .L__kefir_func_test2_label4
     cmp $10, %eax
-    je .L__kefir_func_test2_label7
+    je .L__kefir_func_test2_label4
     ret
-.L__kefir_func_test2_label7:
+.L__kefir_func_test2_label4:
     neg %eax
     ret
 .L__kefir_text_func_test2_end:
@@ -46,17 +46,17 @@ test3:
 .L__kefir_text_func_test3_begin:
     mov %rdi, %rax
     cmp $10, %eax
-    je .L__kefir_func_test3_label5
+    je .L__kefir_func_test3_label3
     cmp $0, %eax
     setge %cl
     cmp $9, %eax
     setle %dl
     and %dl, %cl
-    jnz .L__kefir_func_test3_label7
-.L__kefir_func_test3_label5:
+    jnz .L__kefir_func_test3_label4
+.L__kefir_func_test3_label3:
     neg %eax
     ret
-.L__kefir_func_test3_label7:
+.L__kefir_func_test3_label4:
     ret
 .L__kefir_text_func_test3_end:
 

@@ -131,14 +131,14 @@ test12:
 test13:
 .L__kefir_text_func_test13_begin:
     movq ld@GOTPCREL(%rip), %rax
-    fldt .L__kefir_func_test13_label4(%rip)
+    fldt .L__kefir_func_test13_label3(%rip)
     movq $0, 8(%rax)
     fstpt (%rax)
     ud2
 .L__kefir_text_func_test13_end:
 .section .rodata
     .align 8
-.L__kefir_func_test13_label4:
+.L__kefir_func_test13_label3:
     .quad 9223372036854775808
     .quad 16383
 .section .text
@@ -150,18 +150,18 @@ test14:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq c32@GOTPCREL(%rip), %rax
-    movd .L__kefir_func_test14_label4(%rip), %xmm0
-    movd .L__kefir_func_test14_label5(%rip), %xmm1
+    movd .L__kefir_func_test14_label3(%rip), %xmm0
+    movd .L__kefir_func_test14_label4(%rip), %xmm1
     movd %xmm0, (%rax)
     movd %xmm1, 4(%rax)
     ud2
 .L__kefir_text_func_test14_end:
 .section .rodata
     .align 4
-.L__kefir_func_test14_label4:
+.L__kefir_func_test14_label3:
     .long 1065353216
     .align 4
-.L__kefir_func_test14_label5:
+.L__kefir_func_test14_label4:
     .long 0
 .section .text
 
@@ -172,40 +172,40 @@ test15:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq c64@GOTPCREL(%rip), %rax
-    movq .L__kefir_func_test15_label4(%rip), %xmm0
-    movq .L__kefir_func_test15_label5(%rip), %xmm1
+    movq .L__kefir_func_test15_label3(%rip), %xmm0
+    movq .L__kefir_func_test15_label4(%rip), %xmm1
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
     ud2
 .L__kefir_text_func_test15_end:
 .section .rodata
     .align 8
-.L__kefir_func_test15_label4:
+.L__kefir_func_test15_label3:
     .quad 4607182418800017408
     .align 8
-.L__kefir_func_test15_label5:
+.L__kefir_func_test15_label4:
     .quad 0
 .section .text
 
 test16:
 .L__kefir_text_func_test16_begin:
     movq c80@GOTPCREL(%rip), %rax
-    fldt .L__kefir_func_test16_label4(%rip)
+    fldt .L__kefir_func_test16_label3(%rip)
     movq $0, 24(%rax)
     fstpt 16(%rax)
     movq c80@GOTPCREL(%rip), %rax
-    fldt .L__kefir_func_test16_label5(%rip)
+    fldt .L__kefir_func_test16_label4(%rip)
     movq $0, 8(%rax)
     fstpt (%rax)
     ud2
 .L__kefir_text_func_test16_end:
 .section .rodata
     .align 8
-.L__kefir_func_test16_label4:
+.L__kefir_func_test16_label3:
     .quad 0
     .quad 0
     .align 8
-.L__kefir_func_test16_label5:
+.L__kefir_func_test16_label4:
     .quad 9223372036854775808
     .quad 16383
 .section .text

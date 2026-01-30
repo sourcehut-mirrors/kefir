@@ -17,27 +17,27 @@ somefn:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movq .L__kefir_func_somefn_label9(%rip), %xmm0
-    movq .L__kefir_func_somefn_label10(%rip), %xmm1
+    movq .L__kefir_func_somefn_label6(%rip), %xmm0
+    movq .L__kefir_func_somefn_label7(%rip), %xmm1
 .L__kefir_func_somefn_label2:
     lea -1(%edi), %eax
     test %edi, %edi
-    jnz .L__kefir_func_somefn_label6
+    jnz .L__kefir_func_somefn_label4
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_somefn_label6:
+.L__kefir_func_somefn_label4:
     addsd %xmm1, %xmm0
     mov %eax, %edi
     jmp .L__kefir_func_somefn_label2
 .L__kefir_text_func_somefn_end:
 .section .rodata
     .align 8
-.L__kefir_func_somefn_label9:
+.L__kefir_func_somefn_label6:
     .quad 0
     .align 8
-.L__kefir_func_somefn_label10:
+.L__kefir_func_somefn_label7:
     .quad 4607182418800017408
 .section .text
 
@@ -55,10 +55,10 @@ assign_abs:
 condition1:
 .L__kefir_text_func_condition1_begin:
     cmp $0, %edi
-    jg .L__kefir_func_condition1_label5
+    jg .L__kefir_func_condition1_label3
     mov $10, %eax
     ret
-.L__kefir_func_condition1_label5:
+.L__kefir_func_condition1_label3:
     lea 10(%edi), %eax
     ret
 .L__kefir_text_func_condition1_end:

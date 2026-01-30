@@ -43,18 +43,6 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -301,24 +289,6 @@ factorial:
 #                    "line": 22,
 #                    "column": 5
 #                }
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 1,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -647,24 +617,6 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 3,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
 #                "opcode": "produce_virtual_register",
 #                "args": [
 #                    {
@@ -705,24 +657,6 @@ factorial:
 #                    "line": 27,
 #                    "column": 5
 #                }
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 7,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -914,24 +848,6 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 5,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -1029,24 +945,6 @@ factorial:
 #                    "line": 31,
 #                    "column": 5
 #                }
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 6,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
 #            },
 #            {
 #                "opcode": "mov",
@@ -1282,24 +1180,6 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -1399,24 +1279,6 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 2,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
 #                "opcode": "produce_virtual_register",
 #                "args": [
 #                    {
@@ -1509,12 +1371,6 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
 #                "opcode": "noop",
 #                "args": [],
 #                "labels": [
@@ -1529,87 +1385,87 @@ factorial:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_factorial_label44:
+.L__kefir_func_factorial_label30:
     movl %edi, -8(%rbp)
 .loc 0 22 9
-.L__kefir_func_factorial_label45:
+.L__kefir_func_factorial_label31:
     movl -8(%rbp), %eax
-.L__kefir_func_factorial_label52:
+.L__kefir_func_factorial_label38:
     cmp $0, %eax
 .loc 0 22 5
-.L__kefir_func_factorial_label53:
-    jl .L__kefir_func_factorial_label28
+.L__kefir_func_factorial_label39:
+    jl .L__kefir_func_factorial_label16
 .loc 0 24 9
-.L__kefir_func_factorial_label60:
+.L__kefir_func_factorial_label46:
     movl -8(%rbp), %eax
-.L__kefir_func_factorial_label61:
+.L__kefir_func_factorial_label47:
     xor %ecx, %ecx
     cmp $2, %eax
     setl %cl
-.L__kefir_func_factorial_label76:
+.L__kefir_func_factorial_label62:
     xor %edx, %edx
     mov $2, %esi
     cmp %eax, %esi
     sete %dl
-.L__kefir_func_factorial_label77:
+.L__kefir_func_factorial_label63:
     or %rdx, %rcx
 .loc 0 24 5
-.L__kefir_func_factorial_label81:
-    jnz .L__kefir_func_factorial_label24
+.L__kefir_func_factorial_label67:
+    jnz .L__kefir_func_factorial_label14
 .loc 0 27 5
-.L__kefir_func_factorial_label85:
+.L__kefir_func_factorial_label71:
     movl $1, -4(%rbp)
 .loc 0 28 12
-.L__kefir_func_factorial_label12:
+.L__kefir_func_factorial_label8:
     movl -8(%rbp), %eax
-.L__kefir_func_factorial_label95:
+.L__kefir_func_factorial_label81:
     cmp $1, %eax
 .loc 0 28 5
-.L__kefir_func_factorial_label102:
-    jg .L__kefir_func_factorial_label20
+.L__kefir_func_factorial_label88:
+    jg .L__kefir_func_factorial_label12
 .loc 0 31 12
-.L__kefir_func_factorial_label106:
+.L__kefir_func_factorial_label92:
     movl -4(%rbp), %eax
 .loc 0 31 5
-.L__kefir_func_factorial_label107:
+.L__kefir_func_factorial_label93:
     lea (%rbp), %rsp
     pop %rbp
     ret
 .loc 0 29 19
-.L__kefir_func_factorial_label20:
+.L__kefir_func_factorial_label12:
     movl -8(%rbp), %eax
 .loc 0 29 9
-.L__kefir_func_factorial_label126:
+.L__kefir_func_factorial_label112:
     movl -4(%rbp), %ecx
-.L__kefir_func_factorial_label127:
+.L__kefir_func_factorial_label113:
     imul %eax, %ecx
-.L__kefir_func_factorial_label134:
+.L__kefir_func_factorial_label120:
     movl %ecx, -4(%rbp)
 .loc 0 28 19
-.L__kefir_func_factorial_label135:
+.L__kefir_func_factorial_label121:
     movl -8(%rbp), %eax
-.L__kefir_func_factorial_label139:
+.L__kefir_func_factorial_label125:
     add $-1, %eax
-.L__kefir_func_factorial_label146:
+.L__kefir_func_factorial_label132:
     movl %eax, -8(%rbp)
 .loc 0 28 5
-.L__kefir_func_factorial_label150:
-    jmp .L__kefir_func_factorial_label12
+.L__kefir_func_factorial_label136:
+    jmp .L__kefir_func_factorial_label8
 .loc 0 25 16
-.L__kefir_func_factorial_label24:
+.L__kefir_func_factorial_label14:
     movl -8(%rbp), %eax
 .loc 0 25 9
-.L__kefir_func_factorial_label155:
+.L__kefir_func_factorial_label141:
     lea (%rbp), %rsp
     pop %rbp
     ret
 .loc 0 23 9
-.L__kefir_func_factorial_label28:
+.L__kefir_func_factorial_label16:
     xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label179:
+.L__kefir_func_factorial_label165:
 .L__kefir_text_func_factorial_end:
 
 .L__kefir_text_section_end:
@@ -1862,16 +1718,16 @@ __kefir_debug_loclist_section_entry_1:
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label45 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label179 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label31 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
     .byte 0
 __kefir_debug_loclist_section_entry_7:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label45 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label179 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label31 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
@@ -1890,32 +1746,32 @@ __kefir_debug_rnglists_section_begin:
     .long 0
 __kefir_debug_rnglist_section_entry_2:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label28 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label179 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label16 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label45 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label60 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label31 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label46 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_3:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label24 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label28 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label14 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label16 - .L__kefir_text_section_begin
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label60 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label85 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label46 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label71 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_4:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label12 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label106 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label8 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label92 - .L__kefir_text_section_begin
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label20 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label24 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label12 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label14 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_5:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label20 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label135 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label12 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label121 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:
 

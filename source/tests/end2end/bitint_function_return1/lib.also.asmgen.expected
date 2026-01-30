@@ -77,17 +77,6 @@ test1:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -2179,11 +2168,6 @@ test1:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
@@ -2288,17 +2272,6 @@ __kefir_bigint_invert:
 #            {
 #                "opcode": "function_prologue",
 #                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
 #                "labels": []
 #            },
 #            {
@@ -2542,22 +2515,6 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 3,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "weak_touch_virtual_register",
 #                "args": [
 #                    {
@@ -2593,22 +2550,6 @@ __kefir_bigint_invert:
 #                    {
 #                        "type": "internal_label",
 #                        "label": 6
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 1,
-#                        "variant": "default"
 #                    }
 #                ],
 #                "labels": []
@@ -2662,22 +2603,6 @@ __kefir_bigint_invert:
 #            {
 #                "opcode": "ret",
 #                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_block_begin",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 2,
-#                        "variant": "default"
-#                    }
-#                ],
 #                "labels": []
 #            },
 #            {
@@ -2848,11 +2773,6 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_block_end",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "noop",
 #                "args": [],
 #                "labels": [
@@ -2868,10 +2788,10 @@ __kefir_bigint_invert:
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_bigint_invert_label2:
     cmp %rsi, %rax
-    jb .L__kefir_runtime_func___kefir_bigint_invert_label6
+    jb .L__kefir_runtime_func___kefir_bigint_invert_label4
     xor %eax, %eax
     ret
-.L__kefir_runtime_func___kefir_bigint_invert_label6:
+.L__kefir_runtime_func___kefir_bigint_invert_label4:
     movzxb (%rdi, %rax, 1), %rcx
     not %ecx
     movb %cl, (%rdi, %rax, 1)

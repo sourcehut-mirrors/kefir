@@ -20,13 +20,13 @@ get_f32:
 .L__kefir_text_func_get_f32_begin:
     push %rbp
     mov %rsp, %rbp
-    movd .L__kefir_func_get_f32_label4(%rip), %xmm0
+    movd .L__kefir_func_get_f32_label3(%rip), %xmm0
     pop %rbp
     ret
 .L__kefir_text_func_get_f32_end:
 .section .rodata
     .align 4
-.L__kefir_func_get_f32_label4:
+.L__kefir_func_get_f32_label3:
     .long 2141192192
 .section .text
 
@@ -34,13 +34,13 @@ get_f64:
 .L__kefir_text_func_get_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    movq .L__kefir_func_get_f64_label4(%rip), %xmm0
+    movq .L__kefir_func_get_f64_label3(%rip), %xmm0
     pop %rbp
     ret
 .L__kefir_text_func_get_f64_end:
 .section .rodata
     .align 8
-.L__kefir_func_get_f64_label4:
+.L__kefir_func_get_f64_label3:
     .quad 9219994337134247936
 .section .text
 
@@ -48,13 +48,13 @@ get_f80:
 .L__kefir_text_func_get_f80_begin:
     push %rbp
     mov %rsp, %rbp
-    fldt .L__kefir_func_get_f80_label4(%rip)
+    fldt .L__kefir_func_get_f80_label3(%rip)
     pop %rbp
     ret
 .L__kefir_text_func_get_f80_end:
 .section .rodata
     .align 8
-.L__kefir_func_get_f80_label4:
+.L__kefir_func_get_f80_label3:
     .quad 11529215046068469760
     .quad 32767
 .section .text

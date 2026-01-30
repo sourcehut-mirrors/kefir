@@ -103,15 +103,15 @@ get5:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     test %eax, %eax
-    jz .L__kefir_func_get5_label6
+    jz .L__kefir_func_get5_label4
     lea __kefir_function_get5_static___kefir_local_temporary_0_12(%rip), %rax
-.L__kefir_func_get5_label4:
+.L__kefir_func_get5_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get5_label6:
+.L__kefir_func_get5_label4:
     lea __kefir_function_get5_static___kefir_local_temporary_1_13(%rip), %rax
-    jmp .L__kefir_func_get5_label4
+    jmp .L__kefir_func_get5_label3
 .L__kefir_text_func_get5_end:
 
 test1:

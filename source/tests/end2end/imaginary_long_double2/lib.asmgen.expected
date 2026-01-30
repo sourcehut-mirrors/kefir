@@ -30,70 +30,70 @@
 .L__kefir_text_section_begin:
 d32_to_fi80:
 .L__kefir_text_func_d32_to_fi80_begin:
-    fldt .L__kefir_func_d32_to_fi80_label4(%rip)
+    fldt .L__kefir_func_d32_to_fi80_label3(%rip)
     ret
 .L__kefir_text_func_d32_to_fi80_end:
 .section .rodata
     .align 8
-.L__kefir_func_d32_to_fi80_label4:
+.L__kefir_func_d32_to_fi80_label3:
     .quad 0
     .quad 0
 .section .text
 
 d64_to_fi80:
 .L__kefir_text_func_d64_to_fi80_begin:
-    fldt .L__kefir_func_d64_to_fi80_label4(%rip)
+    fldt .L__kefir_func_d64_to_fi80_label3(%rip)
     ret
 .L__kefir_text_func_d64_to_fi80_end:
 .section .rodata
     .align 8
-.L__kefir_func_d64_to_fi80_label4:
+.L__kefir_func_d64_to_fi80_label3:
     .quad 0
     .quad 0
 .section .text
 
 fi80_to_d32:
 .L__kefir_text_func_fi80_to_d32_begin:
-    movd .L__kefir_func_fi80_to_d32_label4(%rip), %xmm0
+    movd .L__kefir_func_fi80_to_d32_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_fi80_to_d32_end:
 .section .rodata
     .align 4
-.L__kefir_func_fi80_to_d32_label4:
+.L__kefir_func_fi80_to_d32_label3:
     .long 847249408
 .section .text
 
 fi80_to_d64:
 .L__kefir_text_func_fi80_to_d64_begin:
-    movq .L__kefir_func_fi80_to_d64_label4(%rip), %xmm0
+    movq .L__kefir_func_fi80_to_d64_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_fi80_to_d64_end:
 .section .rodata
     .align 8
-.L__kefir_func_fi80_to_d64_label4:
+.L__kefir_func_fi80_to_d64_label3:
     .quad 3584865303386914816
 .section .text
 
 d128_to_fi80:
 .L__kefir_text_func_d128_to_fi80_begin:
-    fldt .L__kefir_func_d128_to_fi80_label4(%rip)
+    fldt .L__kefir_func_d128_to_fi80_label3(%rip)
     ret
 .L__kefir_text_func_d128_to_fi80_end:
 .section .rodata
     .align 8
-.L__kefir_func_d128_to_fi80_label4:
+.L__kefir_func_d128_to_fi80_label3:
     .quad 0
     .quad 0
 .section .text
 
 fi80_to_d128:
 .L__kefir_text_func_fi80_to_d128_begin:
-    movdqu .L__kefir_func_fi80_to_d128_label4(%rip), %xmm0
+    movdqu .L__kefir_func_fi80_to_d128_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_fi80_to_d128_end:
 .section .rodata
     .align 16
-.L__kefir_func_fi80_to_d128_label4:
+.L__kefir_func_fi80_to_d128_label3:
     .quad 0, 3476778912330022912
 .section .text
 

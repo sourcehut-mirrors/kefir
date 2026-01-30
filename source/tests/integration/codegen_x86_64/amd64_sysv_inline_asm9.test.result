@@ -23,7 +23,7 @@ jmp .L__kefir_func_fn1_label5
     mov [%rdx], %rax
     mov %rax, 0
     mov [%rax], %rcx
-.L__kefir_func_fn1_label7:
+.L__kefir_func_fn1_label6:
     mov %rax, %r8
     pop %rbp
     ret
@@ -48,7 +48,7 @@ jmp .L__kefir_func_fn1_label5
     mov [%rdx], %rax
     mov %rax, 0
     mov [%rax], %rcx
-    jmp .L__kefir_func_fn1_label7
+    jmp .L__kefir_func_fn1_label6
 .L__kefir_text_func_fn1_end:
 
 .L__kefir_text_section_end:

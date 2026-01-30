@@ -717,11 +717,6 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             block_begin_idx = kefir_asmcmp_context_instr_tail(&func->code.context);
         }
 
-        REQUIRE_OK(
-            kefir_asmcmp_amd64_virtual_block_begin(mem, &func->code, block_begin_idx, block_id, &block_begin_idx));
-        REQUIRE_OK(kefir_asmcmp_amd64_virtual_block_end(
-            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), block_id, NULL));
-
         REQUIRE_OK(kefir_hashtree_at(&func->block_end_labels, (kefir_hashtree_key_t) block_id, &asmlabel_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, end_asmlabel, asmlabel_node->value);
         REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &func->code.context, end_asmlabel));

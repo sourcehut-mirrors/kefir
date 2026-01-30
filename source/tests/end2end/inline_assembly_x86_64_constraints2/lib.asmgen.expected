@@ -36,7 +36,7 @@ test1:
     movq %r14, -56(%rbp)
     movq -64(%rbp), %r14
     mov %r14, -80(%rbp)
-    movq .L__kefir_func_test1_label4(%rip), %xmm1
+    movq .L__kefir_func_test1_label3(%rip), %xmm1
     movq %r14, %xmm0
     addsd %xmm1, %xmm0
     movq %xmm0, -64(%rbp)
@@ -91,7 +91,7 @@ test1:
 .L__kefir_text_func_test1_end:
 .section .rodata
     .align 8
-.L__kefir_func_test1_label4:
+.L__kefir_func_test1_label3:
     .quad 4607182418800017408
 .section .text
 

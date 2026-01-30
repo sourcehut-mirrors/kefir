@@ -23,22 +23,22 @@ init_s:
     fld %st(0)
     fstpt -32(%rbp)
     fstpt (%rdx)
-    fldt .L__kefir_func_init_s_label4(%rip)
+    fldt .L__kefir_func_init_s_label3(%rip)
     fldt -32(%rbp)
     faddp
     movq $0, 72(%rdx)
     fstpt 64(%rdx)
-    fldt .L__kefir_func_init_s_label5(%rip)
+    fldt .L__kefir_func_init_s_label4(%rip)
     fldt -32(%rbp)
     fsubp
     movq $0, 88(%rdx)
     fstpt 80(%rdx)
-    fldt .L__kefir_func_init_s_label6(%rip)
+    fldt .L__kefir_func_init_s_label5(%rip)
     fldt -32(%rbp)
     fdivp
     movq $0, 40(%rdx)
     fstpt 32(%rdx)
-    fldt .L__kefir_func_init_s_label7(%rip)
+    fldt .L__kefir_func_init_s_label6(%rip)
     fldt -32(%rbp)
     fmulp
     movq $0, 56(%rdx)
@@ -62,19 +62,19 @@ init_s:
 .L__kefir_text_func_init_s_end:
 .section .rodata
     .align 8
+.L__kefir_func_init_s_label3:
+    .quad 9223372036854775808
+    .quad 16383
+    .align 8
 .L__kefir_func_init_s_label4:
     .quad 9223372036854775808
     .quad 16383
     .align 8
 .L__kefir_func_init_s_label5:
     .quad 9223372036854775808
-    .quad 16383
-    .align 8
-.L__kefir_func_init_s_label6:
-    .quad 9223372036854775808
     .quad 16384
     .align 8
-.L__kefir_func_init_s_label7:
+.L__kefir_func_init_s_label6:
     .quad 9223372036854775808
     .quad 16384
 .section .text

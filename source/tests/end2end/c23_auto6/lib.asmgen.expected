@@ -35,12 +35,12 @@ fn3:
     mov %rdi, %rbx
 .L__kefir_func_fn3_label2:
     cmp $0, %ebx
-    jg .L__kefir_func_fn3_label6
+    jg .L__kefir_func_fn3_label4
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_fn3_label6:
+.L__kefir_func_fn3_label4:
     call fn1
     add $-1, %ebx
     jmp .L__kefir_func_fn3_label2

@@ -15,12 +15,12 @@ test1:
     movl (%rax), %eax
     movl %eax, -4(%rbp)
     test %edi, %edi
-    jnz .L__kefir_func_test1_label5
+    jnz .L__kefir_func_test1_label3
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test1_label5:
+.L__kefir_func_test1_label3:
     mov $756091, %eax
     lea (%rbp), %rsp
     pop %rbp

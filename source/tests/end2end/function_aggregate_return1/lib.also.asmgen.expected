@@ -25,7 +25,7 @@ get1:
     cmp %rax, %rcx
     sete %sil
     or %rsi, %rdx
-    jz .L__kefir_func_get1_label6
+    jz .L__kefir_func_get1_label4
     xorps %xmm0, %xmm0
     movdqu %xmm0, -144(%rbp)
     movdqu %xmm0, -128(%rbp)
@@ -68,7 +68,7 @@ get1:
     movq %rcx, 56(%rax)
     lea -144(%rbp), %rax
     mov %rax, %rcx
-.L__kefir_func_get1_label4:
+.L__kefir_func_get1_label3:
     mov %r12, %rax
     movdqu (%rcx), %xmm0
     movdqu %xmm0, (%rax)
@@ -83,12 +83,12 @@ get1:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_get1_label6:
+.L__kefir_func_get1_label4:
     lea -80(%rbp), %rbx
     mov %rbx, %rdi
     call empty1@PLT
     mov %rax, %rcx
-    jmp .L__kefir_func_get1_label4
+    jmp .L__kefir_func_get1_label3
 .L__kefir_text_func_get1_end:
 
 .L__kefir_text_section_end:

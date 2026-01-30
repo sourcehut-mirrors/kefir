@@ -35,18 +35,18 @@ test:
     movq %rax, -104(%rbp)
     lea -304(%rbp), %rax
     movq %rax, -96(%rbp)
-    fldt .L__kefir_func_test_label12(%rip)
+    fldt .L__kefir_func_test_label9(%rip)
     fstpt -128(%rbp)
 .L__kefir_func_test_label4:
     lea -1(%edi), %eax
     test %edi, %edi
-    jnz .L__kefir_func_test_label8
+    jnz .L__kefir_func_test_label6
     fldt -128(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test_label8:
+.L__kefir_func_test_label6:
     movq -104(%rbp), %rcx
     add $15, %rcx
     and $-16, %rcx
@@ -68,7 +68,7 @@ test:
 .L__kefir_text_func_test_end:
 .section .rodata
     .align 8
-.L__kefir_func_test_label12:
+.L__kefir_func_test_label9:
     .quad 0
     .quad 0
 .section .text

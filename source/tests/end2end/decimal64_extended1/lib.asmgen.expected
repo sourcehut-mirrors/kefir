@@ -155,23 +155,23 @@ sub32x:
 
 get32x_1:
 .L__kefir_text_func_get32x_1_begin:
-    movdqu .L__kefir_func_get32x_1_label4(%rip), %xmm0
+    movdqu .L__kefir_func_get32x_1_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_get32x_1_end:
 .section .rodata
     .align 16
-.L__kefir_func_get32x_1_label4:
+.L__kefir_func_get32x_1_label3:
     .quad 4657215626510965521, 3464956963308175654
 .section .text
 
 get32x_2:
 .L__kefir_text_func_get32x_2_begin:
-    movdqu .L__kefir_func_get32x_2_label4(%rip), %xmm0
+    movdqu .L__kefir_func_get32x_2_label3(%rip), %xmm0
     ret
 .L__kefir_text_func_get32x_2_end:
 .section .rodata
     .align 16
-.L__kefir_func_get32x_2_label4:
+.L__kefir_func_get32x_2_label3:
     .quad 15702718261525870664, 3458348922121190810
 .section .text
 
