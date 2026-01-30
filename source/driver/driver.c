@@ -59,7 +59,7 @@
 #define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-func,local-alloc-sink,dead-code-elimination,dead-alloc,lowering"
 
 #define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC \
-    "amd64-drop-virtual,amd64-propagate-jump,amd64-eliminate-label"
+    "amd64-drop-virtual,amd64-eliminate-label"
 #define KEFIR_CODEGEN_AMD64_PIPELINE_MINI_SPEC \
     "amd64-drop-virtual,amd64-eliminate-label"
 // clang-format on
