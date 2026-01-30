@@ -39,7 +39,6 @@ typedef struct kefir_codegen_configuration {
     kefir_bool_t omit_frame_pointer;
     const char *syntax;
     const char *print_details;
-    const char *pipeline_spec;
     kefir_bool_t debug_info;
     kefir_bool_t valgrind_compatible_x87;
     kefir_bool_t runtime_function_generator_mode;

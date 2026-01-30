@@ -25,7 +25,6 @@
 #include "kefir/codegen/codegen.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
 #include "kefir/target/abi/amd64/platform.h"
-#include "kefir/codegen/asmcmp/pipeline.h"
 
 typedef struct kefir_codegen_amd64 {
     struct kefir_codegen codegen;
@@ -33,7 +32,6 @@ typedef struct kefir_codegen_amd64 {
     kefir_abi_amd64_variant_t abi_variant;
     struct kefir_amd64_xasmgen xasmgen;
     struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers;
-    struct kefir_asmcmp_pipeline pipeline;
     kefir_amd64_xasmgen_debug_info_tracker_t debug_info_tracker;
     const struct kefir_codegen_runtime_hooks *runtime_hooks;
     const char *symbol_prefix;

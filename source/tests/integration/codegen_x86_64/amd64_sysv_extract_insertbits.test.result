@@ -12,7 +12,6 @@
 .L__kefir_text_section_begin:
 insert:
 .L__kefir_text_func_insert_begin:
-.L__kefir_func_insert_label0:
     push %rbp
     mov %rbp, %rsp
     xor %eax, %eax
@@ -93,7 +92,6 @@ insert:
 
 extracts:
 .L__kefir_text_func_extracts_begin:
-.L__kefir_func_extracts_label0:
     push %rbp
     mov %rbp, %rsp
     xor %eax, %eax
@@ -171,7 +169,6 @@ extracts:
 
 extractu:
 .L__kefir_text_func_extractu_begin:
-.L__kefir_func_extractu_label0:
     push %rbp
     mov %rbp, %rsp
     xor %eax, %eax

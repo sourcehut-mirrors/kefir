@@ -8,7 +8,6 @@
 .L__kefir_text_section_begin:
 fn1:
 .L__kefir_text_func_fn1_begin:
-.L__kefir_func_fn1_label0:
     push %rbp
     mov %rbp, %rsp
 mov %rax, test0

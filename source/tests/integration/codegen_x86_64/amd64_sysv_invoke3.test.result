@@ -8,7 +8,6 @@
 .L__kefir_text_section_begin:
 proxyadd:
 .L__kefir_text_func_proxyadd_begin:
-.L__kefir_func_proxyadd_label0:
     push %rbp
     mov %rbp, %rsp
     push %rbx

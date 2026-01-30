@@ -274,7 +274,6 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.codegen_configuration.valgrind_compatible_x87 = options->codegen.valgrind_compatible_x87;
     compiler.codegen_configuration.syntax = options->codegen.syntax;
     compiler.codegen_configuration.print_details = options->codegen.print_details;
-    compiler.codegen_configuration.pipeline_spec = options->codegen.pipeline_spec;
 
     compiler.optimizer_configuration.imprecise_decimal_bitint_conv = options->codegen.imprecise_decimal_bitint_conv;
     compiler.optimizer_configuration.debug_info = options->debug_info;

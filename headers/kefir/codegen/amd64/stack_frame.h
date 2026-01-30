@@ -22,6 +22,7 @@
 #define KEFIR_CODEGEN_AMD64_STACK_FRAME_H_
 
 #include "kefir/codegen/amd64/codegen.h"
+#include "kefir/codegen/asmcmp/context.h"
 #include "kefir/codegen/variable_allocator.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/target/asm/amd64/xasmgen.h"

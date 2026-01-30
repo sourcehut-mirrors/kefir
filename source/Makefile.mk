@@ -16,7 +16,6 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/codegen/amd64/pipeline/*.c \
 	$(SOURCE_DIR)/codegen/amd64/dwarf/*.c \
 	$(SOURCE_DIR)/codegen/asmcmp/*.c \
-	$(SOURCE_DIR)/codegen/asmcmp/pipeline/*.c \
 	$(SOURCE_DIR)/codegen/target-ir/*.c \
 	$(SOURCE_DIR)/codegen/target-ir/amd64/*.c \
 	$(SOURCE_DIR)/codegen/target-ir/transform/*.c \

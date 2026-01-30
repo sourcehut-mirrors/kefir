@@ -137,7 +137,6 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_compiler_runner_decimal_encoding_t decimal_encoding;
         const char *syntax;
         const char *print_details;
-        const char *pipeline_spec;
     } codegen;
 } kefir_compiler_runner_configuration_t;
 

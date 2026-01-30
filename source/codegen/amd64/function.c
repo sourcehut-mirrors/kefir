@@ -24,6 +24,7 @@
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/module.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
+#include "kefir/codegen/asmcmp/transform.h"
 #include "kefir/codegen/asmcmp/format.h"
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/code_util.h"
@@ -1233,7 +1234,8 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
                             mem, &func->target_ir.regalloc, &func->target_ir.control_flow, &func->target_ir.liveness,
                             &func->target_ir.interference, &func->target_ir.coalesce, &stack_frame));
 
-    REQUIRE_CHAIN(&res, kefir_codegen_target_ir_amd64_transform_late_jump_propagation(mem, code, &func->target_ir.regalloc));
+    REQUIRE_CHAIN(&res,
+                  kefir_codegen_target_ir_amd64_transform_late_jump_propagation(mem, code, &func->target_ir.regalloc));
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_control_flow_reset(mem, &func->target_ir.control_flow));
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_control_flow_build(mem, &func->target_ir.control_flow));
     REQUIRE_CHAIN(&res, kefir_codegen_target_ir_numbering_reset(mem, &func->target_ir.liveness.numbering));
@@ -1324,8 +1326,6 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
         &func->function_analysis.variable_conflicts));
     REQUIRE_OK(kefir_opt_code_analysis_clear(mem, &func->function_analysis));
     REQUIRE_OK(propagate_virtual_register_hints(mem, func));
-    REQUIRE_OK(
-        kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_VIRTUAL, &func->code.context));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm") == 0) {
         REQUIRE_OK(output_asm(codegen, &func->code.context, codegen->config->debug_info));
@@ -1341,8 +1341,8 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     });
     REQUIRE_OK(kefir_asmcmp_amd64_free(mem, &asmcmp_code));
 
-    REQUIRE_OK(kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
-                                           &func->code.context));
+    REQUIRE_OK(kefir_asmcmp_drop_virtual_instructions(mem, &func->code.context));
+    REQUIRE_OK(kefir_asmcmp_compact_labels(mem, &func->code.context));
     REQUIRE_OK(kefir_asmcmp_code_map_coalesce(mem, &func->code.context.debug_info.code_map));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "devasm") == 0) {

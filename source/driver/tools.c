@@ -271,9 +271,6 @@ static kefir_result_t output_compiler_config(FILE *output,
     if (configuration->codegen.print_details != NULL) {
         fprintf(output, " --codegen-details %s", configuration->codegen.print_details);
     }
-    if (configuration->codegen.pipeline_spec != NULL) {
-        fprintf(output, " --codegen-pipeline %s", configuration->codegen.pipeline_spec);
-    }
 
     fprintf(output, "\n");
     return KEFIR_OK;

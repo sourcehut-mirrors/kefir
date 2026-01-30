@@ -18,18 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_CODEGEN_ASMCMP_PIPELINE_INTERNAL
-#include "kefir/codegen/asmcmp/pipeline.h"
-#include "kefir/core/error.h"
-#include "kefir/core/util.h"
+#ifndef KEFIR_CODEGEN_ASMCMP_TRANSFORM_H_
+#define KEFIR_CODEGEN_ASMCMP_TRANSFORM_H_
 
-static kefir_result_t noop_apply(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                 const struct kefir_asmcmp_pipeline_pass *pass) {
-    UNUSED(mem);
-    UNUSED(context);
-    UNUSED(pass);
-    return KEFIR_OK;
-}
+#include "kefir/codegen/asmcmp/context.h"
 
-const struct kefir_asmcmp_pipeline_pass KefirAsmcmpNoopPass = {
-    .name = "noop", .type = KEFIR_ASMCMP_PIPELINE_PASS_BOTH, .apply = noop_apply, .payload = NULL};
+kefir_result_t kefir_asmcmp_compact_labels(struct kefir_mem *, struct kefir_asmcmp_context *);
+kefir_result_t kefir_asmcmp_drop_virtual_instructions(struct kefir_mem *, struct kefir_asmcmp_context *);
+
+#endif

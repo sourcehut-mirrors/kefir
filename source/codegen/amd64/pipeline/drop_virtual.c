@@ -18,17 +18,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_CODEGEN_ASMCMP_PIPELINE_INTERNAL
-#include "kefir/codegen/asmcmp/pipeline.h"
+#include "kefir/codegen/asmcmp/transform.h"
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t drop_virtual_apply(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                         const struct kefir_asmcmp_pipeline_pass *pass) {
-    UNUSED(mem);
-    UNUSED(context);
-    UNUSED(pass);
+kefir_result_t kefir_asmcmp_drop_virtual_instructions(struct kefir_mem *mem, struct kefir_asmcmp_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp context"));
 
     for (kefir_asmcmp_instruction_index_t instr_index = kefir_asmcmp_context_instr_head(context), next_instr_index;
          instr_index != KEFIR_ASMCMP_INDEX_NONE; instr_index = next_instr_index) {
@@ -73,8 +70,3 @@ static kefir_result_t drop_virtual_apply(struct kefir_mem *mem, struct kefir_asm
     }
     return KEFIR_OK;
 }
-
-const struct kefir_asmcmp_pipeline_pass KefirAsmcmpAmd64DropVirtualPass = {.name = "amd64-drop-virtual",
-                                                                           .type = KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
-                                                                           .apply = drop_virtual_apply,
-                                                                           .payload = NULL};

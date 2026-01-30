@@ -857,34 +857,6 @@ static kefir_result_t close_impl(struct kefir_mem *mem, struct kefir_codegen *cg
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_FREE_DEBUG_INFO_TRACKER(mem, &codegen->xasmgen, codegen->debug_info_tracker));
     }
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_CLOSE(mem, &codegen->xasmgen));
-    REQUIRE_OK(kefir_asmcmp_pipeline_free(mem, &codegen->pipeline));
-    return KEFIR_OK;
-}
-
-static kefir_result_t build_pipeline(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen) {
-    REQUIRE(codegen->config->pipeline_spec != NULL, KEFIR_OK);
-
-    const char *spec_iter = codegen->config->pipeline_spec;
-    while (spec_iter != NULL && *spec_iter != '\0') {
-        char pass_spec[256];
-
-        const char *next_delim = strchr(spec_iter, ',');
-        if (next_delim == NULL) {
-            snprintf(pass_spec, sizeof(pass_spec), "%s", spec_iter);
-            spec_iter = NULL;
-        } else {
-            snprintf(pass_spec, sizeof(pass_spec), "%.*s", (int) (next_delim - spec_iter), spec_iter);
-            spec_iter = next_delim + 1;
-        }
-
-        if (*pass_spec == '\0') {
-            continue;
-        }
-
-        const struct kefir_asmcmp_pipeline_pass *pass;
-        REQUIRE_OK(kefir_asmcmp_pipeline_pass_resolve(pass_spec, &pass));
-        REQUIRE_OK(kefir_asmcmp_pipeline_add(mem, &codegen->pipeline, pass));
-    }
     return KEFIR_OK;
 }
 
@@ -903,7 +875,6 @@ kefir_result_t kefir_codegen_amd64_init(struct kefir_mem *mem, struct kefir_code
     kefir_asm_amd64_xasmgen_syntax_t syntax = KEFIR_AMD64_XASMGEN_SYNTAX_ATT;
     REQUIRE_OK(kefir_codegen_match_syntax(config->syntax, &syntax));
     REQUIRE_OK(kefir_asm_amd64_xasmgen_init(mem, &codegen->xasmgen, output, syntax));
-    REQUIRE_OK(kefir_asmcmp_pipeline_init(&codegen->pipeline));
     codegen->codegen.translate_optimized = translate_fn;
     codegen->codegen.close = close_impl;
     codegen->codegen.data = codegen;
@@ -924,7 +895,6 @@ kefir_result_t kefir_codegen_amd64_init(struct kefir_mem *mem, struct kefir_code
             prefix_length = snprintf(symbol_prefix, sizeof(symbol_prefix), "%s", config->symbol_prefix);
             break;
     }
-    REQUIRE_OK(build_pipeline(mem, codegen));
     if (config->debug_info) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEW_DEBUG_INFO_TRACKER(mem, &codegen->xasmgen, &codegen->debug_info_tracker));
     } else {

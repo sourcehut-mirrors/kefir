@@ -354,7 +354,6 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
            KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL, codegen.symbol_visibility),
     SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax),
     SIMPLE(0, "codegen-details", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.print_details),
-    SIMPLE(0, "codegen-pipeline", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.pipeline_spec)
 
 #undef SIMPLE
 #undef PREHOOK

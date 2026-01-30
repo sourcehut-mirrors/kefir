@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_CODEGEN_ASMCMP_PIPELINE_INTERNAL
-#include "kefir/codegen/asmcmp/pipeline.h"
+#include "kefir/codegen/asmcmp/transform.h"
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -225,11 +224,9 @@ static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_a
     return KEFIR_OK;
 }
 
-static kefir_result_t eliminate_label_apply(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                            const struct kefir_asmcmp_pipeline_pass *pass) {
-    UNUSED(mem);
-    UNUSED(context);
-    UNUSED(pass);
+kefir_result_t kefir_asmcmp_compact_labels(struct kefir_mem *mem, struct kefir_asmcmp_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp context"));
 
     struct kefir_hashtable label_mapping;
     REQUIRE_OK(kefir_hashtable_init(&label_mapping, &kefir_hashtable_uint_ops));
@@ -241,9 +238,3 @@ static kefir_result_t eliminate_label_apply(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_hashtable_free(mem, &label_mapping));
     return KEFIR_OK;
 }
-
-const struct kefir_asmcmp_pipeline_pass KefirAsmcmpAmd64EliminateLabelPass = {
-    .name = "amd64-eliminate-label",
-    .type = KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
-    .apply = eliminate_label_apply,
-    .payload = NULL};
