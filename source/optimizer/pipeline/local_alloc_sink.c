@@ -106,6 +106,7 @@ static kefir_result_t local_alloc_sink_apply(struct kefir_mem *mem, struct kefir
     REQUIRE_OK(kefir_opt_code_structure_init(&structure));
     kefir_result_t res = kefir_opt_code_structure_build(mem, &structure, &func->code);
     REQUIRE_CHAIN(&res, kefir_opt_code_container_trace(mem, &func->code, &tracer));
+    REQUIRE_CHAIN(&res, kefir_opt_code_container_trace(mem, &func->code, &tracer));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_structure_free(mem, &structure);
         return res;
