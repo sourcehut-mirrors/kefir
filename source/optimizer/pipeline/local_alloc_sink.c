@@ -42,7 +42,9 @@ static kefir_result_t trace_instruction_impl(kefir_opt_instruction_ref_t instr_r
 
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&param->func->code, instr_ref, &instr));
-    REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL, KEFIR_OK);
+    REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL ||
+                instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE,
+            KEFIR_OK);
 
     kefir_opt_block_id_t closest_dominator = KEFIR_ID_NONE;
 

@@ -2040,9 +2040,9 @@ __kefir_softfloat_ilogbf:
     movd %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
     movq -24(%rbp), %rcx
-    shl $9, %rcx
     shr $23, %rax
     movzx %al, %eax
+    shl $9, %rcx
     lea -127(%eax), %edx
     cmp $255, %eax
     je .L__kefir_runtime_func___kefir_softfloat_ilogbf_label11
