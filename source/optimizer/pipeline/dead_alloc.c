@@ -24,7 +24,8 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_opt_function *func) {
+static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                            kefir_bool_t *fixpoint_reached) {
     struct kefir_opt_code_container_iterator iter;
     for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&func->code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
@@ -41,7 +42,8 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
             }
 
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
-            if (instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+            if (instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL ||
+                instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE) {
                 kefir_bool_t only_lifetime_mark_uses = true;
                 struct kefir_opt_instruction_use_iterator use_iter;
                 for (res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, instr_id, &use_iter);
@@ -72,12 +74,17 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                 if (res != KEFIR_ITERATOR_END) {
                     REQUIRE_OK(res);
                 }
+                res = kefir_opt_instruction_next_sibling(&func->code, instr_id, &next_instr_id);
+                REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_id));
+                *fixpoint_reached = false;
+                continue;
             } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
                 const struct kefir_opt_instruction *arg_instr = NULL;
                 REQUIRE_OK(
                     kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg_instr));
                 REQUIRE(
-                    arg_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
+                    arg_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL ||
+                        arg_instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected local lifetime mark to reference local allocation"));
             }
             res = kefir_opt_instruction_next_sibling(&func->code, instr_id, &next_instr_id);
@@ -96,7 +103,11 @@ static kefir_result_t dead_alloc_apply(struct kefir_mem *mem, struct kefir_opt_m
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
-    REQUIRE_OK(dead_alloc_apply_impl(mem, func));
+    kefir_bool_t fixpoint_reached = false;
+    for (; !fixpoint_reached;) {
+        fixpoint_reached = true;
+        REQUIRE_OK(dead_alloc_apply_impl(mem, func, &fixpoint_reached));
+    }
     return KEFIR_OK;
 }
 
