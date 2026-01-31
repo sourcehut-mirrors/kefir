@@ -132,6 +132,10 @@
             "name": "intat",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -139,6 +143,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
                 },
                 {
                     "opcode": "get_local",
@@ -152,6 +160,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 1
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
                 },
                 {
                     "opcode": "get_local",
@@ -174,6 +186,10 @@
                     "arg": 0
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -190,6 +206,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -200,6 +220,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
                 },
                 {
                     "opcode": "get_local",
@@ -233,6 +257,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -240,6 +268,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
                 },
                 {
                     "opcode": "get_local",
@@ -254,6 +286,10 @@
                     "opcode": "return"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -261,6 +297,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
                 },
                 {
                     "opcode": "get_local",

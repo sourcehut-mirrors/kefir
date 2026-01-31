@@ -144,7 +144,11 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 9
+                    "arg": 10
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
                 },
                 {
                     "opcode": "get_local",
@@ -160,6 +164,10 @@
             "name": "conditional3",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 0,
                     "type": 0,
@@ -167,7 +175,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 6,
+                    "arg": 7,
                     "condition": "64bit"
                 },
                 {
@@ -182,7 +190,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 12
+                    "arg": 13
                 },
                 {
                     "opcode": "int_const",
@@ -190,7 +198,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 10,
+                    "arg": 11,
                     "condition": "32bit"
                 },
                 {
@@ -199,7 +207,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 12
+                    "arg": 13
                 },
                 {
                     "opcode": "float32_const",

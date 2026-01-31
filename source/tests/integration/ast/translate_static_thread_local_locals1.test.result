@@ -148,6 +148,10 @@
             "name": "fn",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -155,6 +159,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
                 },
                 {
                     "opcode": "get_local",
@@ -178,6 +186,10 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
                 },
                 {
                     "opcode": "get_local",
@@ -248,6 +260,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -258,6 +274,10 @@
                 },
                 {
                     "opcode": "return"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869184
                 },
                 {
                     "opcode": "get_local",

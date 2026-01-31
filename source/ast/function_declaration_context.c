@@ -500,10 +500,10 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     context->function_definition_context = function_definition_context;
     context->temporary_ids.next_id = 0;
 
-    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->ordinary_scope));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->ordinary_scope, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->ordinary_scope,
                                                           kefir_ast_context_free_scoped_identifier, NULL));
-    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->tag_scope));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->tag_scope, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->tag_scope, kefir_ast_context_free_scoped_identifier,
                                                           NULL));
     REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));

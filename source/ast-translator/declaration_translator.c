@@ -52,13 +52,14 @@ static kefir_result_t translate_vla_declaration(struct kefir_mem *mem, const str
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_STORE, KEFIR_IR_MEMORY_FLAG_NONE));
 
     REQUIRE_OK(
-        kefir_ast_translator_resolve_local_type_layout(builder, identifier_data->type_id, identifier_data->layout));
+        kefir_ast_translator_resolve_local_type_layout(builder, declaration->base.properties.declaration_props.scoped_id->definition_scope->identifier,
+            identifier_data->type_id, identifier_data->layout));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                identifier_data->layout->vl_array.array_ptr_relative_offset));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
     REQUIRE_OK(kefir_ast_translate_sizeof(mem, context, builder, node->properties.type, &node->source_location));
     REQUIRE_OK(
-        kefir_ast_translator_resolve_local_type_layout(builder, identifier_data->type_id, identifier_data->layout));
+        kefir_ast_translator_resolve_local_type_layout(builder, declaration->base.properties.declaration_props.scoped_id->definition_scope->identifier, identifier_data->type_id, identifier_data->layout));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                identifier_data->layout->vl_array.array_size_relative_offset));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));

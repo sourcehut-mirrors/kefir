@@ -233,6 +233,10 @@
             "name": "compound_literal1",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 0,
                     "type": 0,

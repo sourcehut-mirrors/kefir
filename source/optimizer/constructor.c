@@ -561,6 +561,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
+        case KEFIR_IR_OPCODE_GET_LOCAL_SCOPE:
+            // Intentionally left blank
+            break;
+
         case KEFIR_IR_OPCODE_GET_LOCAL:
             REQUIRE_OK(kefir_opt_constructor_get_local_allocation(
                 mem, state, (((kefir_uint64_t) instr->arg.u32[0]) << 32) | instr->arg.u32[1], instr->arg.u32[2],

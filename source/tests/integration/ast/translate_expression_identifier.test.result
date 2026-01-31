@@ -123,6 +123,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 0,
                     "type": 0,

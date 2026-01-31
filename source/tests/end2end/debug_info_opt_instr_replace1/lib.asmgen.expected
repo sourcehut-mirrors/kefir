@@ -15,21 +15,21 @@
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 6
                             },
                             {
                                 "id": 36,
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
-                                "ir_instruction": 66
+                                "ir_instruction": 87
                             },
                             {
                                 "id": 37,
                                 "opcode": "int32_not",
                                 "arg": 4,
                                 "control_next": null,
-                                "ir_instruction": 66
+                                "ir_instruction": 87
                             },
                             {
                                 "id": 38,
@@ -41,7 +41,7 @@
                                     37
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 66
+                                "ir_instruction": 87
                             },
                             {
                                 "id": 39,
@@ -51,7 +51,7 @@
                                     38
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 66
+                                "ir_instruction": 87
                             },
                             {
                                 "id": 41,
@@ -61,14 +61,14 @@
                                     39
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 19
+                                "ir_instruction": 26
                             },
                             {
                                 "id": 40,
                                 "opcode": "return",
                                 "arg": 41,
                                 "control_next": null,
-                                "ir_instruction": 24
+                                "ir_instruction": 33
                             }
                         ],
                         "public_labels": [],

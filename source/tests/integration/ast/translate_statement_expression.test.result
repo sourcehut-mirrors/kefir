@@ -234,6 +234,10 @@
             "name": "expr4",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 42949672960
+                },
+                {
                     "opcode": "get_local",
                     "id": 42949672960,
                     "type": 10,

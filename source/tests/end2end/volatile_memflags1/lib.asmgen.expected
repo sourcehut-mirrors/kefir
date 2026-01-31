@@ -1521,6 +1521,10 @@
             "name": "setA",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 558345748480
+                },
+                {
                     "opcode": "get_local",
                     "id": 558345748480,
                     "type": 113,
@@ -1532,6 +1536,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 558345748480
                 },
                 {
                     "opcode": "get_local",
@@ -1548,6 +1556,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 558345748480
                 },
                 {
                     "opcode": "get_local",
@@ -1589,6 +1601,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 558345748480
+                },
+                {
                     "opcode": "get_local",
                     "id": 558345748480,
                     "type": 113,
@@ -1605,6 +1621,10 @@
             "name": "setB",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 575525617664
+                },
+                {
                     "opcode": "get_local",
                     "id": 575525617664,
                     "type": 117,
@@ -1616,6 +1636,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 575525617664
                 },
                 {
                     "opcode": "get_local",
@@ -1632,6 +1656,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 575525617664
                 },
                 {
                     "opcode": "get_local",
@@ -1673,6 +1701,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 575525617664
+                },
+                {
                     "opcode": "get_local",
                     "id": 575525617664,
                     "type": 117,
@@ -1689,6 +1721,10 @@
             "name": "setC",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 592705486848
+                },
+                {
                     "opcode": "get_local",
                     "id": 592705486848,
                     "type": 121,
@@ -1700,6 +1736,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 592705486848
                 },
                 {
                     "opcode": "get_local",
@@ -1716,6 +1756,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 592705486848
                 },
                 {
                     "opcode": "get_local",
@@ -1757,6 +1801,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 592705486848
+                },
+                {
                     "opcode": "get_local",
                     "id": 592705486848,
                     "type": 121,
@@ -1773,6 +1821,10 @@
             "name": "setD",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 609885356032
+                },
+                {
                     "opcode": "get_local",
                     "id": 609885356032,
                     "type": 125,
@@ -1784,6 +1836,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 609885356032
                 },
                 {
                     "opcode": "get_local",
@@ -1800,6 +1856,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 609885356032
                 },
                 {
                     "opcode": "get_local",
@@ -1841,6 +1901,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 609885356032
+                },
+                {
                     "opcode": "get_local",
                     "id": 609885356032,
                     "type": 125,
@@ -1857,6 +1921,10 @@
             "name": "setS",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
+                },
+                {
                     "opcode": "get_local",
                     "id": 627065225216,
                     "type": 144,
@@ -1864,6 +1932,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
                 },
                 {
                     "opcode": "get_local",
@@ -1877,6 +1949,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 1
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
                 },
                 {
                     "opcode": "get_local",
@@ -1899,6 +1975,10 @@
                     "arg": 0
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
+                },
+                {
                     "opcode": "get_local",
                     "id": 627065225216,
                     "type": 144,
@@ -1915,6 +1995,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
+                },
+                {
                     "opcode": "get_local",
                     "id": 627065225217,
                     "type": 144,
@@ -1925,6 +2009,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
                 },
                 {
                     "opcode": "get_local",
@@ -2017,6 +2105,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
+                },
+                {
                     "opcode": "get_local",
                     "id": 627065225217,
                     "type": 144,
@@ -2027,6 +2119,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
                 },
                 {
                     "opcode": "get_local",
@@ -2119,6 +2215,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
+                },
+                {
                     "opcode": "get_local",
                     "id": 627065225217,
                     "type": 144,
@@ -2129,6 +2229,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
                 },
                 {
                     "opcode": "get_local",
@@ -2298,6 +2402,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
+                },
+                {
                     "opcode": "get_local",
                     "id": 627065225217,
                     "type": 144,
@@ -2311,6 +2419,10 @@
                 },
                 {
                     "opcode": "int64_sign_extend_32bits"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
                 },
                 {
                     "opcode": "get_local",
@@ -2480,6 +2592,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
+                },
+                {
                     "opcode": "get_local",
                     "id": 627065225217,
                     "type": 144,
@@ -2490,6 +2606,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
                 },
                 {
                     "opcode": "get_local",
@@ -2532,6 +2652,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
+                },
+                {
                     "opcode": "get_local",
                     "id": 627065225216,
                     "type": 144,
@@ -2539,6 +2663,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 627065225216
                 },
                 {
                     "opcode": "get_local",
@@ -2557,6 +2685,10 @@
             "name": "sumS",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 648540061696
+                },
+                {
                     "opcode": "get_local",
                     "id": 648540061696,
                     "type": 125,
@@ -2568,6 +2700,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 648540061696
                 },
                 {
                     "opcode": "get_local",
@@ -2584,6 +2720,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 648540061696
                 },
                 {
                     "opcode": "get_local",
@@ -2626,6 +2766,10 @@
                 },
                 {
                     "opcode": "int64_sign_extend_8bits"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 648540061696
                 },
                 {
                     "opcode": "get_local",
@@ -2673,6 +2817,10 @@
                     "opcode": "int32_add"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 648540061696
+                },
+                {
                     "opcode": "get_local",
                     "id": 648540061696,
                     "type": 125,
@@ -2763,6 +2911,10 @@
                     "opcode": "int64_sign_extend_32bits"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 648540061696
+                },
+                {
                     "opcode": "get_local",
                     "id": 648540061696,
                     "type": 125,
@@ -2850,6 +3002,10 @@
                     "opcode": "int64_add"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 648540061696
+                },
+                {
                     "opcode": "get_local",
                     "id": 648540061696,
                     "type": 125,
@@ -2881,6 +3037,10 @@
                     "opcode": "int64_add"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 648540061696
+                },
+                {
                     "opcode": "get_local",
                     "id": 648540061696,
                     "type": 125,
@@ -2891,6 +3051,10 @@
                 },
                 {
                     "opcode": "return"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 648540061696
                 },
                 {
                     "opcode": "get_local",
@@ -2909,6 +3073,10 @@
             "name": "vla_test",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
+                },
+                {
                     "opcode": "get_local",
                     "id": 670014898178,
                     "type": 156,
@@ -2920,6 +3088,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
                 },
                 {
                     "opcode": "get_local",
@@ -2938,6 +3110,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
+                },
+                {
                     "opcode": "get_local",
                     "id": 670014898179,
                     "type": 156,
@@ -2945,6 +3121,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
                 },
                 {
                     "opcode": "get_local",
@@ -2976,6 +3156,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
+                },
+                {
                     "opcode": "get_local",
                     "id": 670014898179,
                     "type": 156,
@@ -2991,6 +3175,10 @@
                 {
                     "opcode": "uint_const",
                     "arg": 8
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
                 },
                 {
                     "opcode": "get_local",
@@ -3009,6 +3197,10 @@
                 },
                 {
                     "opcode": "int64_mul"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
                 },
                 {
                     "opcode": "get_local",
@@ -3048,6 +3240,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
+                },
+                {
                     "opcode": "get_local",
                     "id": 670014898179,
                     "type": 156,
@@ -3065,6 +3261,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
                 },
                 {
                     "opcode": "get_local",
@@ -3110,6 +3310,10 @@
                 },
                 {
                     "opcode": "int64_add"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
                 },
                 {
                     "opcode": "get_local",
@@ -3169,6 +3373,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
+                },
+                {
                     "opcode": "get_local",
                     "id": 670014898176,
                     "type": 156,
@@ -3198,6 +3406,10 @@
                     "opcode": "scope_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
+                },
+                {
                     "opcode": "get_local",
                     "id": 670014898179,
                     "type": 156,
@@ -3205,6 +3417,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898176
                 },
                 {
                     "opcode": "get_local",

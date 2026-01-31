@@ -146,6 +146,10 @@
             "name": "sum",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
+                },
+                {
                     "opcode": "get_local",
                     "id": 21474836480,
                     "type": 5,
@@ -153,6 +157,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
                 },
                 {
                     "opcode": "get_local",
@@ -166,6 +174,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 1
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
                 },
                 {
                     "opcode": "get_local",
@@ -188,6 +200,10 @@
                     "arg": 0
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
+                },
+                {
                     "opcode": "get_local",
                     "id": 21474836480,
                     "type": 5,
@@ -204,6 +220,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
+                },
+                {
                     "opcode": "get_local",
                     "id": 21474836480,
                     "type": 5,
@@ -214,6 +234,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
                 },
                 {
                     "opcode": "get_local",
@@ -231,6 +255,10 @@
                     "opcode": "int32_add"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
+                },
+                {
                     "opcode": "get_local",
                     "id": 21474836480,
                     "type": 5,
@@ -238,6 +266,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
                 },
                 {
                     "opcode": "get_local",
@@ -252,6 +284,10 @@
                     "opcode": "return"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
+                },
+                {
                     "opcode": "get_local",
                     "id": 21474836480,
                     "type": 5,
@@ -259,6 +295,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 21474836480
                 },
                 {
                     "opcode": "get_local",

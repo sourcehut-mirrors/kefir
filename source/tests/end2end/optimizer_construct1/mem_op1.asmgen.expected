@@ -15,7 +15,7 @@
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
-                                "ir_instruction": 2
+                                "ir_instruction": 3
                             },
                             {
                                 "id": 0,
@@ -23,7 +23,7 @@
                                 "type_id": 92,
                                 "type_index": 0,
                                 "control_next": null,
-                                "ir_instruction": 0
+                                "ir_instruction": 1
                             },
                             {
                                 "id": 3,
@@ -34,7 +34,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 4,
-                                "ir_instruction": 5
+                                "ir_instruction": 7
                             },
                             {
                                 "id": 4,
@@ -45,14 +45,14 @@
                                     "volatile": false
                                 },
                                 "control_next": 7,
-                                "ir_instruction": 7
+                                "ir_instruction": 10
                             },
                             {
                                 "id": 5,
                                 "opcode": "uint_const",
                                 "value": 0,
                                 "control_next": null,
-                                "ir_instruction": 8
+                                "ir_instruction": 11
                             },
                             {
                                 "id": 6,
@@ -62,7 +62,7 @@
                                     5
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 9
+                                "ir_instruction": 12
                             },
                             {
                                 "id": 7,
@@ -73,21 +73,21 @@
                                     "volatile": false
                                 },
                                 "control_next": 1,
-                                "ir_instruction": 10
+                                "ir_instruction": 13
                             },
                             {
                                 "id": 1,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
                                 "control_next": 11,
-                                "ir_instruction": 1
+                                "ir_instruction": 2
                             },
                             {
                                 "id": 8,
                                 "opcode": "uint_const",
                                 "value": 65535,
                                 "control_next": null,
-                                "ir_instruction": 11
+                                "ir_instruction": 14
                             },
                             {
                                 "id": 9,
@@ -97,7 +97,7 @@
                                     8
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 12
+                                "ir_instruction": 15
                             },
                             {
                                 "id": 10,
@@ -107,14 +107,14 @@
                                 "offset": 5,
                                 "length": 10,
                                 "control_next": null,
-                                "ir_instruction": 13
+                                "ir_instruction": 16
                             },
                             {
                                 "id": 11,
                                 "opcode": "return",
                                 "arg": 10,
                                 "control_next": null,
-                                "ir_instruction": 16
+                                "ir_instruction": 20
                             }
                         ],
                         "public_labels": [],
@@ -167,7 +167,7 @@
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
-                                "ir_instruction": 2
+                                "ir_instruction": 3
                             },
                             {
                                 "id": 0,
@@ -175,7 +175,7 @@
                                 "type_id": 92,
                                 "type_index": 0,
                                 "control_next": null,
-                                "ir_instruction": 0
+                                "ir_instruction": 1
                             },
                             {
                                 "id": 3,
@@ -186,7 +186,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 4,
-                                "ir_instruction": 5
+                                "ir_instruction": 7
                             },
                             {
                                 "id": 4,
@@ -197,14 +197,14 @@
                                     "volatile": false
                                 },
                                 "control_next": 7,
-                                "ir_instruction": 7
+                                "ir_instruction": 10
                             },
                             {
                                 "id": 5,
                                 "opcode": "uint_const",
                                 "value": 1,
                                 "control_next": null,
-                                "ir_instruction": 8
+                                "ir_instruction": 11
                             },
                             {
                                 "id": 6,
@@ -214,7 +214,7 @@
                                     5
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 9
+                                "ir_instruction": 12
                             },
                             {
                                 "id": 7,
@@ -225,21 +225,21 @@
                                     "volatile": false
                                 },
                                 "control_next": 1,
-                                "ir_instruction": 10
+                                "ir_instruction": 13
                             },
                             {
                                 "id": 1,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
                                 "control_next": 11,
-                                "ir_instruction": 1
+                                "ir_instruction": 2
                             },
                             {
                                 "id": 8,
                                 "opcode": "uint_const",
                                 "value": 65535,
                                 "control_next": null,
-                                "ir_instruction": 11
+                                "ir_instruction": 14
                             },
                             {
                                 "id": 9,
@@ -249,7 +249,7 @@
                                     8
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 12
+                                "ir_instruction": 15
                             },
                             {
                                 "id": 10,
@@ -259,14 +259,14 @@
                                 "offset": 7,
                                 "length": 3,
                                 "control_next": null,
-                                "ir_instruction": 13
+                                "ir_instruction": 16
                             },
                             {
                                 "id": 11,
                                 "opcode": "return",
                                 "arg": 10,
                                 "control_next": null,
-                                "ir_instruction": 16
+                                "ir_instruction": 20
                             }
                         ],
                         "public_labels": [],
@@ -319,7 +319,7 @@
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 6
                             },
                             {
                                 "id": 0,
@@ -327,7 +327,7 @@
                                 "type_id": 104,
                                 "type_index": 0,
                                 "control_next": null,
-                                "ir_instruction": 0
+                                "ir_instruction": 1
                             },
                             {
                                 "id": 5,
@@ -338,7 +338,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 6,
-                                "ir_instruction": 7
+                                "ir_instruction": 10
                             },
                             {
                                 "id": 2,
@@ -346,7 +346,7 @@
                                 "type_id": 104,
                                 "type_index": 1,
                                 "control_next": null,
-                                "ir_instruction": 2
+                                "ir_instruction": 4
                             },
                             {
                                 "id": 6,
@@ -358,14 +358,14 @@
                                     "index": 0
                                 },
                                 "control_next": 10,
-                                "ir_instruction": 10
+                                "ir_instruction": 14
                             },
                             {
                                 "id": 8,
                                 "opcode": "uint_const",
                                 "value": 0,
                                 "control_next": null,
-                                "ir_instruction": 14
+                                "ir_instruction": 18
                             },
                             {
                                 "id": 9,
@@ -375,7 +375,7 @@
                                     8
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 15
+                                "ir_instruction": 19
                             },
                             {
                                 "id": 10,
@@ -386,14 +386,14 @@
                                     "volatile": false
                                 },
                                 "control_next": 16,
-                                "ir_instruction": 16
+                                "ir_instruction": 20
                             },
                             {
                                 "id": 14,
                                 "opcode": "uint_const",
                                 "value": 0,
                                 "control_next": null,
-                                "ir_instruction": 22
+                                "ir_instruction": 26
                             },
                             {
                                 "id": 15,
@@ -403,14 +403,14 @@
                                     14
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 23
+                                "ir_instruction": 27
                             },
                             {
                                 "id": 11,
                                 "opcode": "uint_const",
                                 "value": 255,
                                 "control_next": null,
-                                "ir_instruction": 17
+                                "ir_instruction": 21
                             },
                             {
                                 "id": 12,
@@ -420,14 +420,14 @@
                                     11
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 18
+                                "ir_instruction": 22
                             },
                             {
                                 "id": 7,
                                 "opcode": "int_const",
                                 "value": 0,
                                 "control_next": null,
-                                "ir_instruction": 12
+                                "ir_instruction": 16
                             },
                             {
                                 "id": 13,
@@ -437,7 +437,7 @@
                                 "offset": 0,
                                 "length": 5,
                                 "control_next": null,
-                                "ir_instruction": 20
+                                "ir_instruction": 24
                             },
                             {
                                 "id": 16,
@@ -448,7 +448,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 17,
-                                "ir_instruction": 25
+                                "ir_instruction": 29
                             },
                             {
                                 "id": 17,
@@ -459,7 +459,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 18,
-                                "ir_instruction": 27
+                                "ir_instruction": 32
                             },
                             {
                                 "id": 18,
@@ -471,21 +471,21 @@
                                     "index": 0
                                 },
                                 "control_next": 1,
-                                "ir_instruction": 31
+                                "ir_instruction": 36
                             },
                             {
                                 "id": 1,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
                                 "control_next": 3,
-                                "ir_instruction": 1
+                                "ir_instruction": 2
                             },
                             {
                                 "id": 3,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 2,
                                 "control_next": 19,
-                                "ir_instruction": 3
+                                "ir_instruction": 5
                             },
                             {
                                 "id": 19,

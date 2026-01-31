@@ -252,6 +252,10 @@
             "name": "assign_union",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 6,
                     "type": 0,
@@ -300,6 +304,10 @@
             "identifier": 0,
             "name": "assign_struct",
             "body": [
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
                 {
                     "opcode": "get_local",
                     "id": 0,

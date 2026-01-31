@@ -111,6 +111,10 @@
             "name": "while1",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
+                },
+                {
                     "opcode": "get_local",
                     "id": 4294967296,
                     "type": 1,
@@ -118,6 +122,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -147,6 +155,10 @@
                     "arg": {
                         "data": "str"
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -202,8 +214,12 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 32,
+                    "arg": 36,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -247,7 +263,11 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 7
+                    "arg": 9
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",

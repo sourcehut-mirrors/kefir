@@ -539,25 +539,25 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->type_traits = type_traits;
     context->target_env = target_env;
     context->temporary_ids.next_id = 0;
-    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->tag_scope));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->tag_scope, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->tag_scope, kefir_ast_context_free_scoped_identifier,
                                                           NULL));
     REQUIRE_OK(kefir_list_init(&context->function_decl_contexts));
     REQUIRE_OK(kefir_list_on_remove(&context->function_decl_contexts, free_func_decl_context, NULL));
 
-    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->object_identifiers));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->object_identifiers, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->object_identifiers,
                                                           kefir_ast_context_free_scoped_identifier, NULL));
-    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->constant_identifiers));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->constant_identifiers, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->constant_identifiers,
                                                           kefir_ast_context_free_scoped_identifier, NULL));
-    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->type_identifiers));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->type_identifiers, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->type_identifiers,
                                                           kefir_ast_context_free_scoped_identifier, NULL));
-    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->function_identifiers));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->function_identifiers, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->function_identifiers,
                                                           kefir_ast_context_free_scoped_identifier, NULL));
-    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->ordinary_scope));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->ordinary_scope, 0));
     REQUIRE_OK(kefir_ast_context_configuration_defaults(&context->configuration));
     REQUIRE_OK(kefir_hashtree_init(&context->owned_objects, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&context->owned_objects, free_owned_object, NULL));

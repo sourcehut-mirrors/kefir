@@ -942,6 +942,10 @@
             "name": "test1",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056640,
                     "type": 90,
@@ -949,6 +953,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -960,6 +968,10 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056642,
                     "type": 90,
@@ -967,6 +979,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -980,6 +996,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -996,6 +1016,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1018,6 +1042,10 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1040,6 +1068,10 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1064,6 +1096,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056640,
                     "type": 90,
@@ -1080,8 +1116,12 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 58,
+                    "arg": 77,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1093,6 +1133,10 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056645,
                     "type": 90,
@@ -1100,6 +1144,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1124,6 +1172,10 @@
                     "opcode": "vstack_pop"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056645,
                     "type": 90,
@@ -1131,6 +1183,10 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1149,8 +1205,12 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 53,
+                    "arg": 70,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1162,6 +1222,10 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056646,
                     "type": 90,
@@ -1169,6 +1233,10 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1181,7 +1249,11 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 42
+                    "arg": 55
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1191,6 +1263,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1203,7 +1279,11 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 64
+                    "arg": 86
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1215,6 +1295,10 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056647,
                     "type": 90,
@@ -1222,6 +1306,10 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1237,6 +1325,10 @@
                     "arg": 0
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056640,
                     "type": 90,
@@ -1244,6 +1336,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1255,6 +1351,10 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056642,
                     "type": 90,
@@ -1262,6 +1362,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1276,6 +1380,10 @@
                     "opcode": "return"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056640,
                     "type": 90,
@@ -1283,6 +1391,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1294,6 +1406,10 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056642,
                     "type": 90,
@@ -1301,6 +1417,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056640
                 },
                 {
                     "opcode": "get_local",
@@ -1319,113 +1439,113 @@
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 22,
                     "column": 5,
-                    "begin": 12,
-                    "end": 17
+                    "begin": 17,
+                    "end": 23
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 23,
                     "column": 5,
-                    "begin": 17,
-                    "end": 22
+                    "begin": 23,
+                    "end": 29
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 24,
                     "column": 5,
-                    "begin": 22,
-                    "end": 27
+                    "begin": 29,
+                    "end": 35
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 9,
-                    "begin": 27,
-                    "end": 29
+                    "begin": 35,
+                    "end": 38
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 5,
-                    "begin": 27,
-                    "end": 64
+                    "begin": 35,
+                    "end": 86
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 12,
-                    "begin": 31,
-                    "end": 57
+                    "begin": 40,
+                    "end": 76
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 26,
                     "column": 9,
-                    "begin": 35,
-                    "end": 40
-                },
-                {
-                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
-                    "line": 27,
-                    "column": 9,
-                    "begin": 40,
-                    "end": 42
-                },
-                {
-                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
-                    "line": 28,
-                    "column": 16,
-                    "begin": 42,
-                    "end": 44
-                },
-                {
-                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
-                    "line": 28,
-                    "column": 9,
-                    "begin": 42,
-                    "end": 53
-                },
-                {
-                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
-                    "line": 28,
-                    "column": 19,
                     "begin": 46,
                     "end": 52
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 27,
+                    "column": 9,
+                    "begin": 52,
+                    "end": 55
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 28,
+                    "column": 16,
+                    "begin": 55,
+                    "end": 58
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 28,
+                    "column": 9,
+                    "begin": 55,
+                    "end": 70
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 28,
+                    "column": 19,
+                    "begin": 60,
+                    "end": 69
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 29,
                     "column": 13,
-                    "begin": 48,
-                    "end": 50
+                    "begin": 63,
+                    "end": 66
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 31,
                     "column": 12,
-                    "begin": 58,
-                    "end": 64
+                    "begin": 77,
+                    "end": 86
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 32,
                     "column": 9,
-                    "begin": 60,
-                    "end": 62
+                    "begin": 80,
+                    "end": 83
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 34,
                     "column": 12,
-                    "begin": 64,
-                    "end": 65
+                    "begin": 86,
+                    "end": 87
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 34,
                     "column": 5,
-                    "begin": 64,
-                    "end": 74
+                    "begin": 86,
+                    "end": 100
                 }
             ]
         }
@@ -4001,11 +4121,11 @@
                     },
                     {
                         "tag": "code_begin",
-                        "value": 12
+                        "value": 17
                     },
                     {
                         "tag": "code_end",
-                        "value": 74
+                        "value": 100
                     },
                     {
                         "tag": "external",
@@ -4054,11 +4174,11 @@
                         "attributes": [
                             {
                                 "tag": "code_begin",
-                                "value": 27
+                                "value": 35
                             },
                             {
                                 "tag": "code_end",
-                                "value": 64
+                                "value": 86
                             }
                         ],
                         "children": [
@@ -4068,11 +4188,11 @@
                                 "attributes": [
                                     {
                                         "tag": "code_begin",
-                                        "value": 31
+                                        "value": 40
                                     },
                                     {
                                         "tag": "code_end",
-                                        "value": 53
+                                        "value": 70
                                     }
                                 ],
                                 "children": [
@@ -4082,11 +4202,11 @@
                                         "attributes": [
                                             {
                                                 "tag": "code_begin",
-                                                "value": 42
+                                                "value": 55
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 53
+                                                "value": 70
                                             }
                                         ],
                                         "children": [
@@ -4096,11 +4216,11 @@
                                                 "attributes": [
                                                     {
                                                         "tag": "code_begin",
-                                                        "value": 46
+                                                        "value": 60
                                                     },
                                                     {
                                                         "tag": "code_end",
-                                                        "value": 50
+                                                        "value": 66
                                                     }
                                                 ],
                                                 "children": [
@@ -4118,11 +4238,11 @@
                                                             },
                                                             {
                                                                 "tag": "code_begin",
-                                                                "value": 46
+                                                                "value": 60
                                                             },
                                                             {
                                                                 "tag": "code_end",
-                                                                "value": 50
+                                                                "value": 66
                                                             },
                                                             {
                                                                 "tag": "local_variable",
@@ -4173,11 +4293,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 31
+                                                "value": 40
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 53
+                                                "value": 70
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -4224,11 +4344,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 31
+                                                "value": 40
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 53
+                                                "value": 70
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -4269,11 +4389,11 @@
                                 "attributes": [
                                     {
                                         "tag": "code_begin",
-                                        "value": 58
+                                        "value": 77
                                     },
                                     {
                                         "tag": "code_end",
-                                        "value": 62
+                                        "value": 83
                                     }
                                 ],
                                 "children": [
@@ -4291,11 +4411,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 58
+                                                "value": 77
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 62
+                                                "value": 83
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -4346,11 +4466,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 12
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 74
+                                "value": 100
                             },
                             {
                                 "tag": "local_variable",
@@ -4397,11 +4517,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 12
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 74
+                                "value": 100
                             },
                             {
                                 "tag": "local_variable",
@@ -4448,11 +4568,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 12
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 74
+                                "value": 100
                             },
                             {
                                 "tag": "local_variable",
@@ -4499,11 +4619,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 12
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 74
+                                "value": 100
                             },
                             {
                                 "tag": "local_variable",
@@ -4550,11 +4670,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 12
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 74
+                                "value": 100
                             },
                             {
                                 "tag": "global_variable",

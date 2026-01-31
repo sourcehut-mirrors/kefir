@@ -159,6 +159,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
+                },
+                {
                     "opcode": "get_local",
                     "id": 4294967296,
                     "type": 1,
@@ -192,10 +196,18 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 34359738368
+                },
+                {
                     "opcode": "get_local",
                     "id": 34359738368,
                     "type": 8,
                     "type_index": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 34359738368
                 },
                 {
                     "opcode": "get_local",

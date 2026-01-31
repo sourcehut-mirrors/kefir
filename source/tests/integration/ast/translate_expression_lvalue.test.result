@@ -291,6 +291,10 @@
                     }
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 0,
                     "type": 0,
@@ -343,6 +347,10 @@
             "identifier": 3,
             "name": "struct_field_indirect",
             "body": [
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
                 {
                     "opcode": "get_local",
                     "id": 0,

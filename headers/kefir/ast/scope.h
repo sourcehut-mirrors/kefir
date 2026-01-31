@@ -137,6 +137,7 @@ typedef struct kefir_ast_identifier_flat_scope_iterator {
 } kefir_ast_identifier_flat_scope_iterator_t;
 
 typedef struct kefir_ast_identifier_flat_scope {
+    kefir_id_t identifier;
     struct kefir_hashtree content;
 
     kefir_result_t (*remove_callback)(struct kefir_mem *, struct kefir_ast_scoped_identifier *, void *);
@@ -151,7 +152,7 @@ typedef struct kefir_ast_identifier_flat_scope {
 
 kefir_result_t kefir_ast_scoped_identifier_run_cleanup(struct kefir_mem *, struct kefir_ast_scoped_identifier *);
 
-kefir_result_t kefir_ast_identifier_flat_scope_init(struct kefir_ast_identifier_flat_scope *);
+kefir_result_t kefir_ast_identifier_flat_scope_init(struct kefir_ast_identifier_flat_scope *, kefir_id_t);
 kefir_result_t kefir_ast_identifier_flat_scope_free(struct kefir_mem *, struct kefir_ast_identifier_flat_scope *);
 kefir_result_t kefir_ast_identifier_flat_scope_cleanup_payload(struct kefir_mem *,
                                                                const struct kefir_ast_identifier_flat_scope *);

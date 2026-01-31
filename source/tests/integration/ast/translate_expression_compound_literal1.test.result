@@ -173,6 +173,10 @@
             "name": "compound_literal1",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 0,
                     "type": 0,
@@ -205,6 +209,10 @@
             "identifier": 1,
             "name": "compound_literal2",
             "body": [
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
                 {
                     "opcode": "get_local",
                     "id": 1,
@@ -309,6 +317,10 @@
             "identifier": 2,
             "name": "compound_literal3",
             "body": [
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
                 {
                     "opcode": "get_local",
                     "id": 6,

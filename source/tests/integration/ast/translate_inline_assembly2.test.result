@@ -53,6 +53,10 @@
             "name": "inline_asm1",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
+                },
+                {
                     "opcode": "get_local",
                     "id": 4294967296,
                     "type": 1,
@@ -60,6 +64,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -76,15 +84,19 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 8
-                },
-                {
-                    "opcode": "jump",
                     "arg": 10
                 },
                 {
                     "opcode": "jump",
-                    "arg": 2
+                    "arg": 13
+                },
+                {
+                    "opcode": "jump",
+                    "arg": 3
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -94,6 +106,10 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -123,7 +139,7 @@
                         "[label_end]"
                     ],
                     "function": "inline_asm1",
-                    "target": 6
+                    "target": 8
                 },
                 {
                     "identifier": 1,
@@ -132,7 +148,7 @@
                         "[label_begin]"
                     ],
                     "function": "inline_asm1",
-                    "target": 7
+                    "target": 9
                 }
             ]
         }

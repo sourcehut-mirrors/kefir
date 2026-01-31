@@ -589,6 +589,10 @@
             "name": "set_value",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 64424509440
+                },
+                {
                     "opcode": "get_local",
                     "id": 64424509440,
                     "type": 15,
@@ -600,6 +604,10 @@
                 {
                     "opcode": "get_argument",
                     "arg": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 64424509440
                 },
                 {
                     "opcode": "get_local",
@@ -616,6 +624,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 64424509440
                 },
                 {
                     "opcode": "get_local",
@@ -655,6 +667,10 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 64424509440
                 },
                 {
                     "opcode": "get_local",

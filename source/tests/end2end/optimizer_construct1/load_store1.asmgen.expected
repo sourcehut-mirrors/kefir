@@ -368,21 +368,21 @@
                                 "opcode": "get_argument",
                                 "index": 2,
                                 "control_next": null,
-                                "ir_instruction": 6
+                                "ir_instruction": 9
                             },
                             {
                                 "id": 8,
                                 "opcode": "get_argument",
                                 "index": 1,
                                 "control_next": null,
-                                "ir_instruction": 10
+                                "ir_instruction": 14
                             },
                             {
                                 "id": 10,
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
-                                "ir_instruction": 14
+                                "ir_instruction": 19
                             },
                             {
                                 "id": 4,
@@ -390,7 +390,7 @@
                                 "type_id": 116,
                                 "type_index": 2,
                                 "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 7
                             },
                             {
                                 "id": 7,
@@ -401,7 +401,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 9,
-                                "ir_instruction": 9
+                                "ir_instruction": 13
                             },
                             {
                                 "id": 2,
@@ -409,7 +409,7 @@
                                 "type_id": 116,
                                 "type_index": 1,
                                 "control_next": null,
-                                "ir_instruction": 2
+                                "ir_instruction": 4
                             },
                             {
                                 "id": 9,
@@ -420,7 +420,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 11,
-                                "ir_instruction": 13
+                                "ir_instruction": 18
                             },
                             {
                                 "id": 0,
@@ -428,7 +428,7 @@
                                 "type_id": 116,
                                 "type_index": 0,
                                 "control_next": null,
-                                "ir_instruction": 0
+                                "ir_instruction": 1
                             },
                             {
                                 "id": 11,
@@ -439,7 +439,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 12,
-                                "ir_instruction": 17
+                                "ir_instruction": 23
                             },
                             {
                                 "id": 12,
@@ -450,7 +450,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 14,
-                                "ir_instruction": 19
+                                "ir_instruction": 26
                             },
                             {
                                 "id": 14,
@@ -461,7 +461,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 16,
-                                "ir_instruction": 22
+                                "ir_instruction": 30
                             },
                             {
                                 "id": 16,
@@ -472,7 +472,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 19,
-                                "ir_instruction": 25
+                                "ir_instruction": 34
                             },
                             {
                                 "id": 18,
@@ -480,7 +480,7 @@
                                 "global_ref": 79,
                                 "offset": 0,
                                 "control_next": null,
-                                "ir_instruction": 27
+                                "ir_instruction": 36
                             },
                             {
                                 "id": 19,
@@ -491,42 +491,42 @@
                                     "volatile": false
                                 },
                                 "control_next": 1,
-                                "ir_instruction": 28
+                                "ir_instruction": 37
                             },
                             {
                                 "id": 1,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
                                 "control_next": 3,
-                                "ir_instruction": 1
+                                "ir_instruction": 2
                             },
                             {
                                 "id": 3,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 2,
                                 "control_next": 5,
-                                "ir_instruction": 3
+                                "ir_instruction": 5
                             },
                             {
                                 "id": 5,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 4,
                                 "control_next": 23,
-                                "ir_instruction": 5
+                                "ir_instruction": 8
                             },
                             {
                                 "id": 13,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 12,
                                 "control_next": null,
-                                "ir_instruction": 20
+                                "ir_instruction": 27
                             },
                             {
                                 "id": 15,
                                 "opcode": "int64_sign_extend_8bits",
                                 "arg": 14,
                                 "control_next": null,
-                                "ir_instruction": 23
+                                "ir_instruction": 31
                             },
                             {
                                 "id": 17,
@@ -536,14 +536,14 @@
                                     16
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 26
+                                "ir_instruction": 35
                             },
                             {
                                 "id": 20,
                                 "opcode": "int64_sign_extend_16bits",
                                 "arg": 19,
                                 "control_next": null,
-                                "ir_instruction": 29
+                                "ir_instruction": 38
                             },
                             {
                                 "id": 21,
@@ -553,7 +553,7 @@
                                     20
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 30
+                                "ir_instruction": 39
                             },
                             {
                                 "id": 22,
@@ -563,14 +563,14 @@
                                     21
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 31
+                                "ir_instruction": 40
                             },
                             {
                                 "id": 23,
                                 "opcode": "return",
                                 "arg": 22,
                                 "control_next": null,
-                                "ir_instruction": 38
+                                "ir_instruction": 50
                             }
                         ],
                         "public_labels": [],

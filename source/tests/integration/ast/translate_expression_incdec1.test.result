@@ -259,6 +259,10 @@
             "name": "decrement_int1",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 0,
                     "type": 0,
@@ -302,6 +306,10 @@
             "identifier": 3,
             "name": "decrement_int2",
             "body": [
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
                 {
                     "opcode": "get_local",
                     "id": 4,
@@ -347,6 +355,10 @@
             "name": "increment_int1",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 0,
                     "type": 0,
@@ -390,6 +402,10 @@
             "identifier": 1,
             "name": "increment_int2",
             "body": [
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
                 {
                     "opcode": "get_local",
                     "id": 4,
@@ -435,6 +451,10 @@
             "name": "increment_double",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 5,
                     "type": 0,
@@ -478,6 +498,10 @@
             "identifier": 8,
             "name": "increment_pointer1",
             "body": [
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
                 {
                     "opcode": "get_local",
                     "id": 1,
@@ -530,6 +554,10 @@
             "name": "increment_pointer2",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 2,
                     "type": 0,
@@ -581,6 +609,10 @@
             "name": "decrement_double",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 5,
                     "type": 0,
@@ -624,6 +656,10 @@
             "identifier": 10,
             "name": "decrement_pointer1",
             "body": [
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
                 {
                     "opcode": "get_local",
                     "id": 1,
@@ -676,6 +712,10 @@
             "name": "decrement_pointer2",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 2,
                     "type": 0,
@@ -727,6 +767,10 @@
             "name": "decrement_float",
             "body": [
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 3,
                     "type": 0,
@@ -770,6 +814,10 @@
             "identifier": 4,
             "name": "increment_float",
             "body": [
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 0
+                },
                 {
                     "opcode": "get_local",
                     "id": 3,

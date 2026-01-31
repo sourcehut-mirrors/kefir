@@ -645,7 +645,7 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_ast_identifier_block_scope_init(mem, &context->tag_scope));
     REQUIRE_OK(kefir_ast_identifier_block_scope_on_removal(&context->tag_scope,
                                                            kefir_ast_context_free_scoped_identifier, NULL));
-    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->label_scope));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->label_scope, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->label_scope,
                                                           kefir_ast_context_free_scoped_identifier, NULL));
     REQUIRE_OK(kefir_ast_flow_control_tree_init(&context->flow_control_tree));
