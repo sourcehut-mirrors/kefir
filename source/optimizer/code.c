@@ -2692,11 +2692,12 @@ static kefir_result_t replace_references_bitfield(struct kefir_opt_instruction *
     return KEFIR_OK;
 }
 
-static kefir_result_t replace_references_type(struct kefir_opt_instruction *instr, kefir_opt_instruction_ref_t to_ref,
+static kefir_result_t replace_references_localvar(struct kefir_opt_instruction *instr, kefir_opt_instruction_ref_t to_ref,
                                               kefir_opt_instruction_ref_t from_ref) {
     UNUSED(instr);
     UNUSED(to_ref);
     UNUSED(from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
     return KEFIR_OK;
 }
 

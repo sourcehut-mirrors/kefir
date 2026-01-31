@@ -152,6 +152,7 @@ kefir_result_t kefir_opt_constructor_init(struct kefir_opt_function *function,
     REQUIRE_OK(kefir_hashtree_init(&state->code_block_index, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&state->indirect_jump_targets, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&state->locals, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&state->local_scopes, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&state->local_lifetime_marks_per_block, &kefir_hashtable_uint_ops));
 
     state->function = function;
@@ -168,6 +169,7 @@ kefir_result_t kefir_opt_constructor_free(struct kefir_mem *mem, struct kefir_op
     REQUIRE_OK(kefir_hashtreeset_free(mem, &state->indirect_jump_targets));
     REQUIRE_OK(kefir_hashtree_free(mem, &state->code_block_index));
     REQUIRE_OK(kefir_hashtree_free(mem, &state->code_blocks));
+    REQUIRE_OK(kefir_hashtree_free(mem, &state->local_scopes));
     REQUIRE_OK(kefir_hashtree_free(mem, &state->locals));
     state->function = NULL;
     state->current_block = NULL;
@@ -261,6 +263,7 @@ kefir_result_t kefir_opt_constructor_stack_exchange(struct kefir_mem *mem, struc
 
 kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem,
                                                           struct kefir_opt_constructor_state *state,
+                                                          kefir_opt_instruction_ref_t scope_ref,
                                                           kefir_uint64_t variable_id, kefir_id_t type_id,
                                                           kefir_size_t type_index,
                                                           kefir_opt_instruction_ref_t *instr_ref) {
@@ -276,15 +279,44 @@ kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem,
     kefir_result_t res = kefir_hashtree_at(&state->locals, key, &node);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
+        const struct kefir_opt_instruction *instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(&state->function->code, node->value, &instr));
+        REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
+            instr->operation.parameters.refs[0] == scope_ref, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Scope mismatch in local variable allocation construction"));
         *instr_ref = (kefir_opt_instruction_ref_t) node->value;
     } else {
         kefir_opt_instruction_ref_t local_ref;
         REQUIRE_OK(kefir_opt_code_builder_alloc_local(mem, &state->function->code, state->entry_block->block_id,
-                                                      type_id, type_index, &local_ref));
+                                                      scope_ref, type_id, type_index, &local_ref));
         REQUIRE_OK(kefir_hashtree_insert(mem, &state->locals, key, (kefir_hashtree_value_t) local_ref));
         REQUIRE_OK(kefir_opt_code_debug_info_add_local_variable_allocation(mem, &state->function->debug_info,
                                                                            variable_id, local_ref));
         *instr_ref = local_ref;
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_constructor_get_local_scope(struct kefir_mem *mem,
+                                                          struct kefir_opt_constructor_state *state,
+                                                          kefir_uint64_t scope_id,
+                                                          kefir_opt_instruction_ref_t *instr_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+    REQUIRE(state->entry_block != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid current optimizer code block state"));
+    REQUIRE(instr_ref, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to instruction reference"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&state->local_scopes, (kefir_hashtree_key_t) scope_id, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        *instr_ref = (kefir_opt_instruction_ref_t) node->value;
+    } else {
+        kefir_opt_instruction_ref_t scope_ref;
+        REQUIRE_OK(kefir_opt_code_builder_local_scope(mem, &state->function->code, state->entry_block->block_id, &scope_ref));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &state->local_scopes, (kefir_hashtree_key_t) scope_id, (kefir_hashtree_value_t) scope_ref));
+        *instr_ref = scope_ref;
     }
 
     return KEFIR_OK;

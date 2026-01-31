@@ -34,6 +34,17 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(local_lifetime_mark)(
     return KEFIR_OK;
 }
 
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(local_scope)(
+    struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+    const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    // Intentionally left blank
+    return KEFIR_OK;
+}
+
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(temporary_object)(struct kefir_mem *mem,
                                                                       struct kefir_codegen_amd64_function *function,
                                                                       const struct kefir_opt_instruction *instruction) {

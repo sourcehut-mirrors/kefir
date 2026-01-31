@@ -844,11 +844,13 @@ static kefir_result_t format_operation_variable(struct kefir_json_output *json, 
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_type(struct kefir_json_output *json, const struct kefir_opt_module *module,
+static kefir_result_t format_operation_localvar(struct kefir_json_output *json, const struct kefir_opt_module *module,
                                             const struct kefir_opt_code_container *code,
                                             const struct kefir_opt_operation *oper) {
     UNUSED(module);
     UNUSED(code);
+    REQUIRE_OK(kefir_json_output_object_key(json, "scope"));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
     REQUIRE_OK(kefir_json_output_object_key(json, "type_id"));
     REQUIRE_OK(id_format(json, oper->parameters.type.type_id));
     REQUIRE_OK(kefir_json_output_object_key(json, "type_index"));

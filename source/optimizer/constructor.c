@@ -562,12 +562,15 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             break;
 
         case KEFIR_IR_OPCODE_GET_LOCAL_SCOPE:
-            // Intentionally left blank
+            REQUIRE_OK(kefir_opt_constructor_get_local_scope(
+                mem, state, instr->arg.u64, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
         case KEFIR_IR_OPCODE_GET_LOCAL:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_get_local_allocation(
-                mem, state, (((kefir_uint64_t) instr->arg.u32[0]) << 32) | instr->arg.u32[1], instr->arg.u32[2],
+                mem, state, instr_ref2, (((kefir_uint64_t) instr->arg.u32[0]) << 32) | instr->arg.u32[1], instr->arg.u32[2],
                 instr->arg.u32[3], &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
@@ -1614,6 +1617,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             break;
 
         case KEFIR_IR_OPCODE_PHI:
+        case KEFIR_IR_OPCODE_LOCAL_SCOPE:
         case KEFIR_IR_OPCODE_ALLOC_LOCAL:
         case KEFIR_IR_OPCODE_REF_LOCAL:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR instruction opcode");

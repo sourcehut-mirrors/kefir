@@ -222,7 +222,7 @@ test1:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "8bit"
 #                        },
@@ -264,7 +264,7 @@ test1:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 0,
+#                            "identifier": 1,
 #                            "offset": 0,
 #                            "variant": "8bit"
 #                        },
@@ -344,7 +344,7 @@ test1:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 0,
+#                            "identifier": 1,
 #                            "offset": 0,
 #                            "variant": "8bit"
 #                        }
@@ -418,7 +418,7 @@ test1:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "8bit"
 #                        }
@@ -1140,7 +1140,7 @@ test2:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        },
@@ -1182,7 +1182,7 @@ test2:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 0,
+#                            "identifier": 1,
 #                            "offset": 0,
 #                            "variant": "64bit"
 #                        },
@@ -1224,7 +1224,7 @@ test2:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }
@@ -1260,7 +1260,7 @@ test2:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 0,
+#                            "identifier": 1,
 #                            "offset": 0,
 #                            "variant": "64bit"
 #                        }
@@ -2535,7 +2535,7 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "local_variable",
-#                                "identifier": 2,
+#                                "identifier": 3,
 #                                "offset": 0
 #                            },
 #                            "allocation": null,
@@ -2654,7 +2654,7 @@ test3:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "local_variable",
-#                                "identifier": 0,
+#                                "identifier": 1,
 #                                "offset": 0
 #                            },
 #                            "allocation": null,
@@ -3522,7 +3522,7 @@ test4:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 0,
+#                            "identifier": 1,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        },
@@ -3586,7 +3586,7 @@ test4:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 0,
+#                            "identifier": 1,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }

@@ -1454,13 +1454,13 @@ __kefir_softfloat_complex_double_mul:
     movabs $9218868437227405312, %r9
     cmp %r9, %rcx
     cmove %eax, %r8d
-    test %edi, %edi
-    setne %al
     test %r8d, %r8d
+    setne %al
+    test %edi, %edi
     setne %cl
-    test %esi, %esi
-    setne %r9b
     test %edx, %edx
+    setne %r9b
+    test %esi, %esi
     setne %r10b
     or %esi, %edx
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label48
@@ -1628,7 +1628,7 @@ __kefir_softfloat_complex_double_mul:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label64(%rip), %xmm11
     movq %xmm0, %rdx
     movq %xmm11, %rsi
-    test %al, %al
+    test %cl, %cl
     cmovz %rsi, %rdx
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm11
@@ -1639,15 +1639,15 @@ __kefir_softfloat_complex_double_mul:
     orpd %xmm11, %xmm2
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label65(%rip), %xmm0
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label66(%rip), %xmm11
-    movq %xmm0, %rax
+    movq %xmm0, %rcx
     movq %xmm11, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
+    test %al, %al
+    cmovz %rdx, %rcx
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm11
     andpd %xmm3, %xmm11
     movaps %xmm0, %xmm3
-    movq %rax, %xmm12
+    movq %rcx, %xmm12
     andnpd %xmm12, %xmm3
     orpd %xmm11, %xmm3
     ucomisd %xmm4, %xmm4
@@ -1681,7 +1681,7 @@ __kefir_softfloat_complex_double_mul:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label70(%rip), %xmm11
     movq %xmm4, %rdx
     movq %xmm11, %rsi
-    test %r10b, %r10b
+    test %r9b, %r9b
     cmovz %rsi, %rdx
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm4
     movaps %xmm4, %xmm11
@@ -1694,7 +1694,7 @@ __kefir_softfloat_complex_double_mul:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label72(%rip), %xmm11
     movq %xmm0, %rdx
     movq %xmm11, %rsi
-    test %r9b, %r9b
+    test %r10b, %r10b
     cmovz %rsi, %rdx
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm11
@@ -2016,10 +2016,10 @@ __kefir_softfloat_ilogb:
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
     movq -24(%rbp), %rcx
+    shl $12, %rcx
     shr $52, %rax
     and $2047, %rax
     lea -1023(%eax), %edx
-    shl $12, %rcx
     cmp $2047, %eax
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label11
     cmp $0, %eax

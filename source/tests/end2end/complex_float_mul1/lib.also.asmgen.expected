@@ -101,9 +101,9 @@ __kefir_softfloat_complex_float_mul:
     xor %r8d, %r8d
     cmp $2139095040, %ecx
     cmove %eax, %r8d
-    test %edi, %edi
-    setne %al
     test %r8d, %r8d
+    setne %al
+    test %edi, %edi
     setne %cl
     test %edx, %edx
     setne %r9b
@@ -270,7 +270,7 @@ __kefir_softfloat_complex_float_mul:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label64(%rip), %xmm11
     movq %xmm0, %rdx
     movq %xmm11, %rsi
-    test %al, %al
+    test %cl, %cl
     cmovz %rsi, %rdx
     movq %rdx, %xmm12
     cvtsd2ss %xmm12, %xmm11
@@ -282,11 +282,11 @@ __kefir_softfloat_complex_float_mul:
     orps %xmm12, %xmm2
     movq .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label65(%rip), %xmm0
     movq .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label66(%rip), %xmm11
-    movq %xmm0, %rax
+    movq %xmm0, %rcx
     movq %xmm11, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
-    movq %rax, %xmm12
+    test %al, %al
+    cmovz %rdx, %rcx
+    movq %rcx, %xmm12
     cvtsd2ss %xmm12, %xmm11
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm0
     movaps %xmm0, %xmm12

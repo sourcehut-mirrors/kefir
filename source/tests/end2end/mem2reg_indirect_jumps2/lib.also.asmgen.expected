@@ -22,19 +22,19 @@ factorial2:
     setg %cl
     movsx %ecx, %rcx
     movq (%rax, %rcx, 8), %rax
-    movq %rdi, -16(%rbp)
-    movq %rsi, -8(%rbp)
+    movq %rdi, -8(%rbp)
+    movq %rsi, -16(%rbp)
     jmp *%rax
 .L__kefir_func_factorial2_label4:
 _kefir_local_public_label_factorial2_terminate:
-    movq -8(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_factorial2_label3:
 _kefir_local_public_label_factorial2_round:
-    movq -16(%rbp), %rax
-    movq -8(%rbp), %rsi
+    movq -8(%rbp), %rax
+    movq -16(%rbp), %rsi
     lea -1(%rax), %rdi
     imul %rax, %rsi
     jmp .L__kefir_func_factorial2_label2

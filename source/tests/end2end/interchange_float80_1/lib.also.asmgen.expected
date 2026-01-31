@@ -48,7 +48,7 @@ add80:
     fstcw -8(%rbp)
 .L__kefir_func_add80_label14:
     fldt 32(%rbp)
-.L__kefir_func_add80_label20:
+.L__kefir_func_add80_label15:
     fldt 16(%rbp)
 .loc 0 68 12
 .L__kefir_func_add80_label24:
@@ -76,7 +76,7 @@ conv1:
 .L__kefir_func_conv1_label17:
     fildq (%rsp)
     add $8, %rsp
-.L__kefir_func_conv1_label23:
+.L__kefir_func_conv1_label28:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -125,7 +125,7 @@ conv3:
     movq %xmm0, -16(%rbp)
 .L__kefir_func_conv3_label19:
     flds -16(%rbp)
-.L__kefir_func_conv3_label23:
+.L__kefir_func_conv3_label28:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -146,7 +146,7 @@ conv4:
     movq %xmm0, -16(%rbp)
 .L__kefir_func_conv4_label19:
     fldl -16(%rbp)
-.L__kefir_func_conv4_label23:
+.L__kefir_func_conv4_label28:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -162,7 +162,7 @@ conv5:
 .L__kefir_func_conv5_label14:
     fldt 16(%rbp)
 .loc 0 100 5
-.L__kefir_func_conv5_label20:
+.L__kefir_func_conv5_label15:
     pop %rbp
     ret
 .L__kefir_func_conv5_label21:
@@ -177,7 +177,7 @@ div80:
     fstcw -8(%rbp)
 .L__kefir_func_div80_label14:
     fldt 32(%rbp)
-.L__kefir_func_div80_label20:
+.L__kefir_func_div80_label15:
     fldt 16(%rbp)
 .loc 0 80 12
 .L__kefir_func_div80_label24:
@@ -200,7 +200,7 @@ mul80:
     fstcw -8(%rbp)
 .L__kefir_func_mul80_label14:
     fldt 32(%rbp)
-.L__kefir_func_mul80_label20:
+.L__kefir_func_mul80_label15:
     fldt 16(%rbp)
 .loc 0 76 12
 .L__kefir_func_mul80_label24:
@@ -224,7 +224,7 @@ neg80:
 .L__kefir_func_neg80_label14:
     fldt 16(%rbp)
 .loc 0 64 12
-.L__kefir_func_neg80_label18:
+.L__kefir_func_neg80_label15:
     fchs
 .loc 0 64 5
 .L__kefir_func_neg80_label19:
@@ -244,7 +244,7 @@ sub80:
     fstcw -8(%rbp)
 .L__kefir_func_sub80_label14:
     fldt 32(%rbp)
-.L__kefir_func_sub80_label20:
+.L__kefir_func_sub80_label15:
     fldt 16(%rbp)
 .loc 0 72 12
 .L__kefir_func_sub80_label24:

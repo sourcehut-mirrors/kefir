@@ -42,12 +42,12 @@ get:
 .loc 0 29 5
 .L__kefir_func_get_label10:
     xor %eax, %eax
-.L__kefir_func_get_label14:
+.L__kefir_func_get_label11:
     movw %ax, -2(%rbp)
 .loc 0 30 12
-.L__kefir_func_get_label15:
+.L__kefir_func_get_label20:
     movw -2(%rbp), %ax
-.L__kefir_func_get_label26:
+.L__kefir_func_get_label21:
     shl $55, %rax
     sar $55, %rax
 .loc 0 30 5
@@ -59,7 +59,7 @@ get:
     mov $90, %esi
     mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
-.L__kefir_func_get_label203:
+.L__kefir_func_get_label220:
     movq -32(%rbp), %rax
     movq -24(%rbp), %rdx
     lea (%rbp), %rsp
@@ -77,12 +77,12 @@ get2:
 .loc 0 41 5
 .L__kefir_func_get2_label10:
     xor %eax, %eax
-.L__kefir_func_get2_label14:
+.L__kefir_func_get2_label11:
     movw %ax, -2(%rbp)
 .loc 0 42 12
-.L__kefir_func_get2_label15:
+.L__kefir_func_get2_label20:
     movw -2(%rbp), %ax
-.L__kefir_func_get2_label26:
+.L__kefir_func_get2_label21:
     shl $55, %rax
     shr $55, %rax
 .loc 0 42 5
@@ -94,7 +94,7 @@ get2:
     mov $90, %esi
     mov %rax, %rdx
     call __kefir_bigint_set_unsigned_integer
-.L__kefir_func_get2_label203:
+.L__kefir_func_get2_label220:
     movq -32(%rbp), %rax
     movq -24(%rbp), %rdx
     lea (%rbp), %rsp

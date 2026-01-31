@@ -21,7 +21,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 0,
+#                        "identifier": 1,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -42,7 +42,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 0,
+#                        "identifier": 1,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -84,7 +84,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 0,
+#                        "identifier": 1,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -213,7 +213,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -235,7 +235,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 0,
+#                        "identifier": 1,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -279,7 +279,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -306,7 +306,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 0,
+#                        "identifier": 1,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -325,7 +325,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -352,7 +352,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -373,7 +373,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 0,
+#                        "identifier": 1,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -401,7 +401,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 0,
+#                        "identifier": 1,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -432,7 +432,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 0,
+#                        "identifier": 1,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }

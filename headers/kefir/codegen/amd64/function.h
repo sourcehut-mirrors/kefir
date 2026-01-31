@@ -134,6 +134,7 @@ kefir_result_t kefir_codegen_amd64_get_argument_register(struct kefir_mem *, str
     _def(temporary_object, KEFIR_OPT_OPCODE_TEMPORARY_OBJECT) _separator \
     _def(pair, KEFIR_OPT_OPCODE_PAIR) _separator \
     _def(local_lifetime_mark, KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) _separator \
+    _def(local_scope, KEFIR_OPT_OPCODE_LOCAL_SCOPE) _separator \
     _def(alloc_local, KEFIR_OPT_OPCODE_ALLOC_LOCAL) _separator \
     _def(ref_local, KEFIR_OPT_OPCODE_REF_LOCAL) _separator \
     _def(get_global, KEFIR_OPT_OPCODE_GET_GLOBAL) _separator \

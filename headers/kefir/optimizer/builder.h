@@ -127,7 +127,10 @@ kefir_result_t kefir_opt_code_builder_get_thread_local(struct kefir_mem *, struc
                                                        kefir_opt_block_id_t, kefir_id_t, kefir_int64_t,
                                                        kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_alloc_local(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                  kefir_opt_block_id_t, kefir_id_t, kefir_size_t,
+                                                  kefir_opt_block_id_t, kefir_opt_instruction_ref_t, kefir_id_t, kefir_size_t,
+                                                  kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_local_scope(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                  kefir_opt_block_id_t,
                                                   kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_ref_local(struct kefir_mem *, struct kefir_opt_code_container *,
                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t, kefir_int64_t,
