@@ -25,12 +25,14 @@
 #include "kefir/optimizer/structure.h"
 #include "kefir/optimizer/liveness.h"
 #include "kefir/optimizer/local_variables.h"
+#include "kefir/optimizer/variable_scope.h"
 #include "kefir/core/hashtree.h"
 
 typedef struct kefir_opt_code_analysis {
     struct kefir_opt_code_structure structure;
     struct kefir_opt_code_liveness liveness;
     struct kefir_opt_code_variable_conflicts variable_conflicts;
+    struct kefir_opt_code_variable_scopes variable_scopes;
 } kefir_opt_code_analysis_t;
 
 kefir_result_t kefir_opt_code_analysis_init(struct kefir_opt_code_analysis *);
